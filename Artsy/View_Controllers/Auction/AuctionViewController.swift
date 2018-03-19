@@ -2,8 +2,8 @@ import UIKit
 import Then
 
 class AuctionViewController: UIViewController {
-    let saleID: String
-    var saleViewModel: SaleViewModel!
+    @objc let saleID: String
+    @objc var saleViewModel: SaleViewModel!
     var appeared = false
 
     var headerStack: ORStackView?
@@ -31,7 +31,7 @@ class AuctionViewController: UIViewController {
         return AuctionNetworkModel(saleID: self.saleID)
     }()
 
-    init(saleID: String) {
+    @objc init(saleID: String) {
         self.saleID = saleID
         super.init(nibName: nil, bundle: nil)
     }
@@ -239,7 +239,7 @@ extension AuctionViewController {
         self.showLiveInterfaceWhenAuctionOpensTimer = Timer.scheduledTimer(timeInterval: timeToLiveStart, target: self, selector: #selector(AuctionViewController.setupLiveInterfaceAndPop), userInfo: nil, repeats: false)
     }
 
-    func setupLiveInterfaceAndPop() {
+    @objc func setupLiveInterfaceAndPop() {
         let liveCV = ARSwitchBoard.sharedInstance().loadLiveAuction(saleID)
 
         ARTopMenuViewController.shared().push(liveCV!, animated: true) {
@@ -285,7 +285,7 @@ extension AuctionViewController {
         present(refineViewController, animated: animated, completion: nil)
     }
 
-    func showRefineTapped() {
+    @objc func showRefineTapped() {
         self.showRefineTappedAnimated(true)
     }
 
@@ -318,7 +318,7 @@ extension AuctionViewController {
 
 fileprivate typealias NotificationCenterObservers = AuctionViewController
 extension NotificationCenterObservers {
-    func registrationUpdated(_ notification: Notification) {
+    @objc func registrationUpdated(_ notification: Notification) {
         networkModel.fetchBidders().next { [weak self] bidders in
             self?.saleViewModel.bidders = bidders
             self?.titleView?.updateRegistrationStatus()

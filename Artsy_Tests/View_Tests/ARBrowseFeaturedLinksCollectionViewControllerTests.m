@@ -58,7 +58,7 @@ describe(@"appearance", ^{
 
         itBehavesLike(@"general view setup", @{@"vc":[[ARBrowseFeaturedLinksCollectionViewController alloc] initWithStyle:style]});
 
-        UIViewController*(^block)() = ^UIViewController *(){
+        UIViewController*(^block)(void) = ^UIViewController *(){
             vc = [[ARBrowseFeaturedLinksCollectionViewController alloc] initWithStyle:style];
             UIViewController *parentVC = [[UIViewController alloc] init];
             [parentVC ar_addChildViewController:vc atFrame:CGRectZero];

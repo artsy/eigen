@@ -142,11 +142,6 @@
     self.view.superview.backgroundColor = [UIColor artsyGraySemibold];
 }
 
-- (BOOL)wantsFullScreenLayout
-{
-    return YES;
-}
-
 - (BOOL)definesPresentationContext
 {
     return YES;

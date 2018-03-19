@@ -3,7 +3,7 @@ import UIKit
 extension UIViewController {
     /// Creates a new tag-based stack scroll view, configures it, and sets it to self.view.
     /// Returns the view for convenience, you don't need the return value usually.
-    @discardableResult
+    @objc @discardableResult
     func setupTaggedStackView() -> ORStackScrollView {
         // Build, configure the stack view.
         let stackScrollView = ORStackScrollView(stackViewClass: ORTagBasedAutoStackView.self)

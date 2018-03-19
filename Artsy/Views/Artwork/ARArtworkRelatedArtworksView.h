@@ -29,6 +29,6 @@ typedef NS_ENUM(NSInteger, ARRelatedArtworksSubviewOrder) {
 - (void)cancelRequests;
 
 - (void)updateWithArtwork:(Artwork *)artwork;
-- (void)updateWithArtwork:(Artwork *)artwork withCompletion:(void (^)())completion;
+- (void)updateWithArtwork:(Artwork *)artwork withCompletion:(void (^)(void))completion;
 
 @end

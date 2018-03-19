@@ -245,7 +245,6 @@
 		5162E5911F71AE7C00E404CD /* ARPaymentRequestWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5162E5901F71AE7C00E404CD /* ARPaymentRequestWebViewController.m */; };
 		5168A76E1B46A70500FFBCBF /* ARFilteredStackTrace.m in Sources */ = {isa = PBXBuildFile; fileRef = 5168A76D1B46A70500FFBCBF /* ARFilteredStackTrace.m */; };
 		5168A7701B46D6D000FFBCBF /* NotificationsButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5168A76F1B46D6D000FFBCBF /* NotificationsButton@2x.png */; };
-		516C829A1D9581D50087B786 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 516C82991D9581D50087B786 /* assets */; };
 		516CDA631BB32B6A001C02B2 /* ARSpotlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 516CDA621BB32B6A001C02B2 /* ARSpotlight.m */; };
 		516CDA691BB55B54001C02B2 /* UIViewController+WithLoadedData.m in Sources */ = {isa = PBXBuildFile; fileRef = 516CDA681BB55B54001C02B2 /* UIViewController+WithLoadedData.m */; };
 		516CDA6C1BB56611001C02B2 /* UIViewController+ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 516CDA6B1BB56611001C02B2 /* UIViewController+ARUserActivity.m */; };
@@ -1217,7 +1216,6 @@
 		5168A76C1B46A70500FFBCBF /* ARFilteredStackTrace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFilteredStackTrace.h; sourceTree = "<group>"; };
 		5168A76D1B46A70500FFBCBF /* ARFilteredStackTrace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFilteredStackTrace.m; sourceTree = "<group>"; };
 		5168A76F1B46D6D000FFBCBF /* NotificationsButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotificationsButton@2x.png"; sourceTree = "<group>"; };
-		516C82991D9581D50087B786 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = Pods/Emission/Pod/Assets/assets; sourceTree = SOURCE_ROOT; };
 		516CDA611BB32B6A001C02B2 /* ARSpotlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSpotlight.h; sourceTree = "<group>"; };
 		516CDA621BB32B6A001C02B2 /* ARSpotlight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSpotlight.m; sourceTree = "<group>"; };
 		516CDA671BB55B54001C02B2 /* UIViewController+WithLoadedData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WithLoadedData.h"; sourceTree = "<group>"; };
@@ -4145,7 +4143,6 @@
 				51F2C5F31CEE8A7700B881BE /* ARAppDelegate+Emission.m */,
 				1C6C00CC1E1BC597000B2C52 /* ARAppDelegate+TestScenarios.h */,
 				1C6C00CD1E1BC597000B2C52 /* ARAppDelegate+TestScenarios.m */,
-				516C82991D9581D50087B786 /* assets */,
 			);
 			name = Setup;
 			sourceTree = "<group>";
@@ -4797,7 +4794,7 @@
 			attributes = {
 				CLASSPREFIX = AR;
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = Artsy;
 				TargetAttributes = {
 					1C40C19B1DF8B1B7003F454F = {
@@ -4808,7 +4805,7 @@
 					};
 					49BA7DFE1655ABE600C06572 = {
 						DevelopmentTeam = 23KMWZ572J;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0930;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -4838,7 +4835,7 @@
 					};
 					B3ECE8251819D1E6009F5C5B = {
 						DevelopmentTeam = 23KMWZ572J;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0930;
 						TestTargetID = 49BA7DFE1655ABE600C06572;
 					};
 				};
@@ -5007,7 +5004,6 @@
 				1CC9EBA31CC76CDD00A74E3C /* followButton@3x.png in Resources */,
 				608C6DCF1FAA11630044E235 /* nav_profile@2x.png in Resources */,
 				608B709417D4A1C80088A56C /* CloseButtonLarge@2x.png in Resources */,
-				516C829A1D9581D50087B786 /* assets in Resources */,
 				608C6DC91FAA11630044E235 /* nav_search@2x.png in Resources */,
 				608B708017D4A1C80088A56C /* MenuClose@2x.png in Resources */,
 				60D8E63C18D256BB0040BEFD /* ARDemoSplashViewController.xib in Resources */,
@@ -6023,12 +6019,20 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -6108,7 +6112,8 @@
 				SPRINGBOARD_DISPLAY_NAME = "Δrtsy";
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WARNING_CFLAGS = (
 					"-Wobjc-missing-super-calls",
@@ -6253,12 +6258,20 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -6327,7 +6340,8 @@
 				SDKROOT = iphoneos;
 				SPRINGBOARD_DISPLAY_NAME = Artsy;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WARNING_CFLAGS = (
 					"-Wobjc-missing-super-calls",
@@ -6372,7 +6386,8 @@
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy_Tests/Supporting_Files/Artsy-Tests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
 				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -6388,12 +6403,20 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -6462,7 +6485,8 @@
 				SDKROOT = iphoneos;
 				SPRINGBOARD_DISPLAY_NAME = Artsy;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WARNING_CFLAGS = (
 					"-Wobjc-missing-super-calls",
@@ -6505,7 +6529,8 @@
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy_Tests/Supporting_Files/Artsy-Tests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -6546,7 +6571,8 @@
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy_Tests/Supporting_Files/Artsy-Tests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
 				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = xctest;

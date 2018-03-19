@@ -467,7 +467,7 @@
 
 }
 
-- (void)loginUserWithEmail:(NSString *)email password:(NSString *)password withSuccess:(void (^)())success
+- (void)loginUserWithEmail:(NSString *)email password:(NSString *)password withSuccess:(void (^)(void))success
 {
     __weak typeof(self) wself = self;
     [[ARUserManager sharedManager] loginWithUsername:email

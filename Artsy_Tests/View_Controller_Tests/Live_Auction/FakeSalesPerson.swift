@@ -12,7 +12,7 @@ func stub_auctionSalesPerson(_ auctionViewModel: LiveAuctionViewModelType? = nil
 
     let auctionViewModelCreator: LiveAuctionsSalesPerson.AuctionViewModelCreator
     if let auctionViewModel = auctionViewModel {
-        auctionViewModelCreator = { _ in return auctionViewModel }
+        auctionViewModelCreator = { _,_,_  in return auctionViewModel }
     } else {
         auctionViewModelCreator = LiveAuctionsSalesPerson.defaultAuctionViewModelCreator()
     }

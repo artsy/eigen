@@ -71,7 +71,7 @@ class AuctionInformationViewController: UIViewController {
         if let thumbnail = saleViewModel.profileImageURL {
             let partnerNameThumbnail = UIImageView()
             stackView?.addSubview(partnerNameThumbnail, withTopMargin: "20")
-            partnerNameThumbnail.ar_setImage(with: thumbnail as URL!)
+            partnerNameThumbnail.ar_setImage(with: thumbnail)
             partnerNameThumbnail.alignLeadingEdge(withView: view, predicate: "20")
             partnerNameThumbnail.constrainWidth("50")
             partnerNameThumbnail.constrainHeight("50")
@@ -235,7 +235,7 @@ extension AuctionInformationViewController {
         var currentlyExpandedEntryView: EntryView?
 
         var entryViews: [EntryView] {
-            return self.stackView.subviews.flatMap { $0 as? EntryView }
+            return self.stackView.subviews.compactMap { $0 as? EntryView }
         }
 
         required init(entries: [AuctionInformation.FAQEntry]) {
@@ -372,7 +372,7 @@ extension AuctionInformationViewController {
             tapDirection.transform = CGAffineTransform.identity
         }
 
-        func didTap() {
+        @objc func didTap() {
             tapHandler(self)
         }
     }

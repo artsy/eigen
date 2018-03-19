@@ -41,7 +41,7 @@ class LiveAuctionViewController: UIViewController {
     lazy var app = UIApplication.shared
     var suppressJumpingToOpenLots = false
 
-    init(saleSlugOrID: String) {
+    @objc init(saleSlugOrID: String) {
         self.saleSlugOrID = saleSlugOrID
 
         super.init(nibName: nil, bundle: nil)
@@ -85,7 +85,9 @@ class LiveAuctionViewController: UIViewController {
         guard loadingView == nil else { return } // Already showing a loading view, don't show another.
 
         loadingView = LiveAuctionLoadingView().then {
-            $0.operation = applyWeakly(self, LiveAuctionViewController.dismissLiveAuctionsModal)
+            $0.operation = { [weak self] in
+                self?.dismissLiveAuctionsModal()
+            }
             view.addSubview($0)
             $0.align(toView: view)
         }
@@ -171,13 +173,13 @@ class LiveAuctionViewController: UIViewController {
         closeButton.constrainWidth("\(dimension)", height: "\(dimension)")
     }
 
-    func userHasChangedRegistrationStatus() {
+    @objc func userHasChangedRegistrationStatus() {
         // We receive the notification while not at the foremost of the VC hierarhcy, so we need 
         // to delay until we reappear.
         registrationStatusChanged = true
     }
 
-    func dismissLiveAuctionsModal() {
+    @objc func dismissLiveAuctionsModal() {
         overlaySubscription?.unsubscribe()
         saleOnHoldSubscription?.unsubscribe()
         self.presentingViewController?.dismiss(animated: true, completion: nil)
@@ -197,7 +199,7 @@ class LiveAuctionViewController: UIViewController {
         }
     }
 
-    func showSaleOnHoldBanner() {
+    @objc func showSaleOnHoldBanner() {
         saleOnHoldBanner = SaleOnHoldOverlayView(messages: saleOnHoldMessageSignal).then {
             view.addSubview($0)
             $0.align(toView: view)

@@ -102,11 +102,16 @@
     return YES;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+
 // Yes, this is deprecated, but it's the most straightforward way to change 2 values for iPad landscape
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self finaliseValuesForiPadWithInterfaceOrientation:toInterfaceOrientation];
 }
+
+#pragma clang diagnostic pop
 
 - (void)finaliseValuesForiPadWithInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

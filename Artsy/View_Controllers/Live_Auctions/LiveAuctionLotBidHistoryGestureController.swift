@@ -35,7 +35,7 @@ class LiveAuctionLotBidHistoryGestureController: NSObject {
 
     fileprivate var _initialBidHistoryState: BidHistoryState = .closed
 
-    func userDidDragToolbar(_ gestureRecognizer: UIPanGestureRecognizer) {
+    @objc func userDidDragToolbar(_ gestureRecognizer: UIPanGestureRecognizer) {
         let translation = gestureRecognizer.translation(in: gestureRecognizer.view)
         let velocity = gestureRecognizer.velocity(in: gestureRecognizer.view)
 

@@ -13,7 +13,7 @@
 - (ARFeedItem *)itemAtIndex:(NSInteger)index;
 
 - (void)getNewItems:(void (^)(NSArray *items))success failure:(void (^)(NSError *error))failure;
-- (void)getNextPage:(void (^)(NSArray *items))success failure:(void (^)(NSError *error))failure completion:(void (^)())completion;
+- (void)getNextPage:(void (^)(NSArray *items))success failure:(void (^)(NSError *error))failure completion:(void (^)(void))completion;
 - (void)removeAllItems;
 
 @property (nonatomic, strong, readonly) NSMutableOrderedSet *items;

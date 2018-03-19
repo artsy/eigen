@@ -50,21 +50,21 @@ class RefinementOptionsViewController<R: RefinableType>: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    func sliderValueDidChange(_ slider: MARKRangeSlider) {
+    @objc func sliderValueDidChange(_ slider: MARKRangeSlider) {
         let range = (min: Int(slider.leftValue), max: Int(slider.rightValue))
         currentSettings = currentSettings.refineSettingsWithPriceRange(range)
     }
 
-    func userDidPressApply() {
+    @objc func userDidPressApply() {
         applyButtonPressedAnalyticsOption?.sendAsEvent()
         userDidApplyClosure?(currentSettings)
     }
 
-    func userDidCancel() {
+    @objc func userDidCancel() {
         userDidCancelClosure?(self)
     }
 
-    func userDidPressReset() {
+    @objc func userDidPressReset() {
         // Reset all UI back to its default settings, including a hard reload on the table view.
         currentSettings = defaultSettings
         sortTableView?.reloadData()

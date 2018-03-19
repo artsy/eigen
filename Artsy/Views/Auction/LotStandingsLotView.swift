@@ -109,7 +109,7 @@ extension LotStandingsLotView {
         addGestureRecognizer(tapGestureRecognizer)
     }
 
-    func tapped() {
+    @objc func tapped() {
         tappedClosure?()
     }
 }

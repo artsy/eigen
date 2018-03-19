@@ -112,7 +112,7 @@ extension LiveAuctionStaticDataFetcherType {
 
     func parseBidderCredentials(_ json: JSON) -> BiddingCredentials {
         let paddleNumber = json["data"]["me"]["paddle_number"].string
-        let bidders = json["data"]["me"]["bidders"].arrayValue.flatMap { bidder in
+        let bidders = json["data"]["me"]["bidders"].arrayValue.compactMap { bidder in
             return Bidder(json: bidder.dictionaryObject)
         }
         return BiddingCredentials(bidders: bidders, paddleNumber: paddleNumber)

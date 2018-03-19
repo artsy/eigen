@@ -210,7 +210,7 @@ extension PrivateFunctions {
 
         // Bid button setup.
         let bidButton = LiveAuctionBidButton(viewModel: biddingViewModel)
-        bidButton.setContentHuggingPriority(UILayoutPriorityDefaultHigh, for: .vertical)
+        bidButton.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .vertical)
         bidButton.delegate = self
         metadataStack.addSubview(bidButton, withTopMargin: "0", sideMargin: sideMargin)
 

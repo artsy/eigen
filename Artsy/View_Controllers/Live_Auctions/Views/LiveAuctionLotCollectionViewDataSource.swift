@@ -14,13 +14,13 @@ class LiveAuctionLotCollectionViewDataSource: NSObject {
         super.init()
 
         ar_dispatch_after(2) { [weak self] in
-            self?.beginThumnailPrecache()
+            self?.beginThumbnailPrecache()
         }
     }
 
-    func beginThumnailPrecache() {
-        let thumnailURLs = (1..<salesPerson.lotCount).map { return salesPerson.lotViewModelForIndex($0).urlForThumbnail }
-        imagePrefetcher?.prefetchURLs(thumnailURLs)
+    func beginThumbnailPrecache() {
+        let thumbnailURLs = (1..<salesPerson.lotCount).compactMap { return salesPerson.lotViewModelForIndex($0).urlForThumbnail }
+        imagePrefetcher?.prefetchURLs(thumbnailURLs)
     }
 
     fileprivate func offsetForIndex(_ index: Int) -> Int {

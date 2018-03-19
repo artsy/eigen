@@ -145,7 +145,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         // This is a bit of a shame, we need to also make.
         // sure the scrollview resizes on orientation changes.
         if let pageControllerView = pageControllerView,
-           let scrollView = pageController.view.subviews.flatMap({ $0 as? UIScrollView }).first {
+           let scrollView = pageController.view.subviews.compactMap({ $0 as? UIScrollView }).first {
             scrollView.align(toView: pageControllerView)
             scrollView.delegate = self
         }
@@ -251,12 +251,12 @@ class LiveAuctionLotSetViewController: UIViewController {
         navigationItem.rightBarButtonItems = items
     }
 
-    func dismissModal() {
+    @objc func dismissModal() {
         guard let presentor = splitViewController?.presentingViewController else { return }
         presentor.dismiss(animated: true, completion: nil)
     }
 
-    func moreInfo() {
+    @objc func moreInfo() {
         guard let sale = saleNetworkModel.sale else { return }
 
         let saleVM = SaleViewModel(sale: sale, saleArtworks: [], bidders: biddersNetworkModel.bidders, lotStandings: [])
@@ -267,7 +267,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         self.navigationController?.present(nav, animated: true, completion: nil)
     }
 
-    func showLots() {
+    @objc func showLots() {
         let lotListController = LiveAuctionLotListViewController(salesPerson: salesPerson, currentLotSignal: salesPerson.currentLotSignal, auctionViewModel: salesPerson.auctionViewModel)
         lotListController.delegate = self
         lotListController.selectedIndex = salesPerson.currentFocusedLotIndex.peek()
@@ -289,7 +289,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         guard let startVC = auctionDataSource.liveAuctionPreviewViewControllerForIndex(0) else { return }
         pageController.setViewControllers([startVC], direction: .forward, animated: false, completion: nil)
 
-        pageViewScrollView = pageController.view.subviews.flatMap({ $0 as? UIScrollView }).first
+        pageViewScrollView = pageController.view.subviews.compactMap({ $0 as? UIScrollView }).first
 
         salesPerson
             .currentLotSignal
@@ -306,7 +306,9 @@ class LiveAuctionLotSetViewController: UIViewController {
         }
 
         // To make sure we can handle transitioning to the next live auction
-        salesPerson.currentLotSignal.subscribe(applyWeakly(self, LiveAuctionLotSetViewController.hasChangedCurrentLot))
+        salesPerson.currentLotSignal.subscribe { [weak self] currentLot in
+            self?.hasChangedCurrentLot(currentLot)
+        }
     }
 
     func jumpToLotAtIndex(_ index: Int) {
@@ -320,7 +322,7 @@ class LiveAuctionLotSetViewController: UIViewController {
         }
     }
 
-    func jumpToLiveLot() {
+    @objc func jumpToLiveLot() {
         // currentLotSignal might have a nil, and peek() returns a wrapped optional, so we need to double-unwrap.
         guard case let .some(.some(currentLot)) = salesPerson.currentLotSignal.peek() else { return }
         guard let liveLotIndex = salesPerson.indexForViewModel(currentLot) else { return }

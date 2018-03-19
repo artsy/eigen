@@ -75,7 +75,7 @@ class SaleOnHoldOverlayView: UIView {
         button.alignBottomEdge(withView: self, predicate: "-60")
     }
 
-    func userDidTapButton() {
+    @objc func userDidTapButton() {
         self.delegate?.userDidTapDismiss(forSaleOnHoldOverlayView: self)
     }
 }

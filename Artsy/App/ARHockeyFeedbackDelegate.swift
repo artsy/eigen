@@ -3,9 +3,9 @@ import Photos
 import ReplayKit
 
 class ARHockeyFeedbackDelegate: NSObject {
-    static let shared = ARHockeyFeedbackDelegate()
+    @objc static let shared = ARHockeyFeedbackDelegate()
 
-    func listenForScreenshots() {
+    @objc func listenForScreenshots() {
         let mainQueue = OperationQueue.main
         let notifications = NotificationCenter.default
         notifications.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil, queue: mainQueue) { notification in
@@ -23,7 +23,7 @@ class ARHockeyFeedbackDelegate: NSObject {
         }
     }
 
-    func showFeedback(_ image: UIImage? = nil, data: Data? = nil) {
+    @objc func showFeedback(_ image: UIImage? = nil, data: Data? = nil) {
         let hockeyProvider = ARAnalytics.providerInstance(of: HockeyAppProvider.self)
         var analyticsLog: BITHockeyAttachment?
 

@@ -82,7 +82,7 @@
     [self updateWithArtwork:artwork withCompletion:nil];
 }
 
-- (void)updateWithArtwork:(Artwork *)artwork withCompletion:(void (^)())completion
+- (void)updateWithArtwork:(Artwork *)artwork withCompletion:(void (^)(void))completion
 {
     if (self.hasRequested) {
         return;

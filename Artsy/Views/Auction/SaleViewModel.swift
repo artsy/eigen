@@ -13,9 +13,6 @@ class SaleViewModel: NSObject {
         self.bidders = bidders
         self.lotStandings = lotStandings
     }
-}
-
-extension SaleViewModel {
 
     var saleIsClosed: Bool {
         switch saleAvailability {
@@ -66,7 +63,7 @@ extension SaleViewModel {
     }
 
     // This is used by analytics
-    var saleAvailabilityString: String {
+    @objc var saleAvailabilityString: String {
         switch saleAvailability {
         case .active: return "active"
         case .closed: return "closed"
@@ -188,7 +185,7 @@ extension SaleArtwork: AuctionOrderable {
 
     var currentBid: Int {
         guard let saleHighestBid = self.saleHighestBid else { return 0 }
-        return saleHighestBid.cents as Int
+        return saleHighestBid.cents as! Int
     }
 }
 
@@ -207,8 +204,8 @@ private extension SaleViewModel {
     }
 
     var lowEstimates: [Int] {
-        return saleArtworks.flatMap { saleArtwork in
-            return Int(saleArtwork.lowEstimateCents ?? 0)
+        return saleArtworks.compactMap { saleArtwork in
+            return Int(truncating: saleArtwork.lowEstimateCents ?? 0)
         }
     }
 }

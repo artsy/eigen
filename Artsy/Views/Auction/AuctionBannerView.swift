@@ -46,7 +46,7 @@ extension AuctionBannerView {
         let logoImageView = UIImageView()
 
         // Add all as subviews to self.
-        [backgroundImageView, darkeningView, logoImageView].forEach(apply(addSubview))
+        [backgroundImageView, darkeningView, logoImageView].forEach { addSubview($0) }
 
         // Background + darkening view always cover self totally.
         backgroundImageView.align(toView: self)
@@ -111,7 +111,7 @@ extension AuctionBannerView {
             countdownView?.alignBottomEdge(withView: self, predicate: "-30")
 
             // The background will stretch us to be larger (based on its image height), so we want to prevent that.
-            backgroundImageView.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, for: .vertical)
+            backgroundImageView.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: .vertical)
 
             logoImageView.alignCenterX(withView: self, predicate: "0")
             countdownView?.alignCenterX(withView: self, predicate: "0")

@@ -53,7 +53,7 @@ class LiveAuctionStateManager: NSObject {
             self?.stateReconciler.updateState(state)
             self?.handleOperatorConnectedState(state)
             self?.handleSaleOnHoldInitialState(state)
-            self?.initialStateLoadedSignal.update()
+            self?.initialStateLoadedSignal.update(())
         }
 
         socketCommunicator.lotUpdateBroadcasts.subscribe { [weak self] broadcast in
@@ -80,7 +80,9 @@ class LiveAuctionStateManager: NSObject {
             self?.handleSaleOnHoldState(response)
         }
 
-        socketCommunicator.operatorConnectedSignal.subscribe(applyWeakly(self, LiveAuctionStateManager.handleOperatorConnectedState))
+        socketCommunicator.operatorConnectedSignal.subscribe { [weak self] state in
+            self?.handleOperatorConnectedState(state)
+        }
     }
 }
 

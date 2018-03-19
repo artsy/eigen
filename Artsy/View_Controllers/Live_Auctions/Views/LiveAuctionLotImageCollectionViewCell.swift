@@ -22,7 +22,7 @@ class LiveAuctionLotImageCollectionViewCell: UICollectionViewCell {
         if lastUpdatedIndex != (layoutAttributes.indexPath as IndexPath).item {
             lastUpdatedIndex = (layoutAttributes.indexPath as IndexPath).item
 
-            lotImageView.ar_setImage(with: url as URL!)
+            lotImageView.ar_setImage(with: url)
         }
     }
 }
@@ -47,7 +47,7 @@ extension PublicFunctions {
         guard index != lastUpdatedIndex else { return }
         lastUpdatedIndex = index
 
-        lotImageView.ar_setImage(with: lot.urlForThumbnail as URL!)
+        lotImageView.ar_setImage(with: lot.urlForThumbnail)
     }
 
 }

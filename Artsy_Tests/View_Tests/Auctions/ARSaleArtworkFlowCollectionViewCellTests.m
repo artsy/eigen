@@ -16,7 +16,8 @@ beforeEach(^{
     id stub2 = [[[saleArtworkMock stub] andReturn:@"$1,000 (4 Bids)"] currentOrStartingBidWithNumberOfBids:YES];
     [(SaleArtworkViewModel *)[[saleArtworkMock stub] andReturn:@"4"] lotLabel];
     [(SaleArtworkViewModel *)[[saleArtworkMock stub] andReturn:@"4"] numberOfBids];
-    stub1 = nil, stub2 = nil;
+    stub1 = nil;
+    stub2 = nil;
 });
 
 it(@"looks good with compact cells", ^{

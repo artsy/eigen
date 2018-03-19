@@ -76,7 +76,7 @@ extension Centable {
         guard number.int32Value > 1000_00 else { return number.uint64Value }
         // dollarsFromCents will round something like 1500_00 up to $2000, but we want to round _down_.
         // So we divide by 1000_00 to turn us into dollars k momentarily, then back into cents to remove their significant digits.
-        let dollarsK = UInt64(floor(Float(self.number) / Float(1000_00)))
+        let dollarsK = UInt64(floor(Float(truncating: self.number) / Float(1000_00)))
         let cents = dollarsK * 1000_00
         return cents
     }

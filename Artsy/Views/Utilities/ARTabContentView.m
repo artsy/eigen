@@ -197,7 +197,7 @@ static BOOL ARTabViewDirectionRight = YES;
         [self.currentNavigationController didMoveToParentViewController:_hostViewController];
     }
 
-    void (^animationBlock)();
+    void (^animationBlock)(void);
     animationBlock = ^{
         self.currentNavigationController.view.frame = self.bounds;
         oldViewController.view.frame = oldViewEndFrame;
