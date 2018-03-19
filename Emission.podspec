@@ -30,7 +30,7 @@ podspec = Pod::Spec.new do |s|
   s.dependency 'Artsy+UIFonts', '>= 3.0.0'
   s.dependency 'Extraction', '>= 1.2.1'
 
-  s.dependency 'yoga', "#{react_native_version}.React"
+  # React
   s.dependency 'React/Core', react_native_version
   s.dependency 'React/CxxBridge', react_native_version
   s.dependency 'React/RCTAnimation', react_native_version
@@ -39,6 +39,18 @@ podspec = Pod::Spec.new do |s|
   s.dependency 'React/RCTLinkingIOS', react_native_version
   s.dependency 'React/RCTNetwork', react_native_version
   s.dependency 'React/RCTText', react_native_version
+
+  # React's Dependencies
+  s.dependency 'yoga', "#{react_native_version}.React"
+  podspecs = [
+    'node_modules/react-native/third-party-podspecs/DoubleConversion.podspec',
+    'node_modules/react-native/third-party-podspecs/Folly.podspec',
+    'node_modules/react-native/third-party-podspecs/glog.podspec'
+  ]
+  podspecs.each do |podspec_path|
+    podspec_json = JSON.parse(`pod ipc spec #{podspec_path}`)
+    s.dependency podspec_json['name'], podspec_json['version']
+  end
 
   s.dependency 'SDWebImage', '>= 3.7.2', '< 4'
   # This needs to be locked down because we’re including this specific version’s JS in our bundle, so it needs to match
