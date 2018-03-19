@@ -13,6 +13,7 @@ end
 
 group :test do
   gem 'danger' # Stop saying 'you forgot to...'
+  gem 'xcode-install' # To ensure we have the right SDK installed for running tests
   gem 'nokogiri', '>= 1.6.7' # Lols, just to specify the version
   gem 'second_curtain' # to upload snapshot fails
   gem 'xcpretty' # Makes CI readable
