@@ -460,6 +460,9 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
     self.debugSizeLabel.text = [NSString stringWithFormat:@" %@ \n %@ px \n at %f", self.artwork.dimensionsInches, NSStringFromCGSize(self.artworkImageView.bounds.size), self.zoomScale];
 }
 
+// TODO: Update to new rotation functions, however functions still work, and are much simpler to work 
+// with than the functions they replace
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-implementations"
 
