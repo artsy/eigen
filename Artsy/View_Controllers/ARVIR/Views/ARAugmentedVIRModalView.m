@@ -22,7 +22,7 @@
 
     ARButton *allowAccessButton = [[ARWhiteFlatButton alloc] init];
     [allowAccessButton setTitle:@"TRY AGAIN" forState:UIControlStateNormal];
-    [allowAccessButton addTarget:self.delegate action:@selector(hitRetry) forControlEvents:UIControlEventTouchUpInside];
+    [allowAccessButton addTarget:self action:@selector(hitRetry) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:allowAccessButton];
 
     UILabel *subtitle = [[UILabel alloc] init];

@@ -5,6 +5,7 @@
 #import "ARDispatchManager.h"
 #import "ARFonts.h"
 #import "ARAppConstants.h"
+#import "ARDefaults.h"
 #import <Artsy-UIButtons/ARButtonSubclasses.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 
@@ -169,16 +170,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 // What to show when we first
 
+NSString *ARInitialSubtitle =  @"Aim at an object on your wall and move your phone in a circle.";
+
 - (void)initialState
 {
     ar_dispatch_main_queue(^{
         self.resetButton.hidden = YES;
         self.phoneImage.hidden = NO;
         self.placeArtworkButton.hidden = YES;
-        self.textLabel.text = @"Aim at an object on your wall and move your phone in a circle.";
+
+        BOOL firstTime = [[NSUserDefaults standardUserDefaults] boolForKey:ARAugmentedRealityHasSuccessfullyRan];
+        self.textLabel.text = firstTime ? ARInitialSubtitle : @"";
 
         if (ARPerformWorkAsynchronously) {
             [self startTimerForModal];
+            [self startTimerFadingOutIntroText];
         }
     });
 
@@ -188,8 +194,29 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)startTimerForModal
 {
-    CGFloat wallTimeoutWarning = ARPerformWorkAsynchronously ? 30 : 0;
+    CGFloat wallTimeoutWarning = ARPerformWorkAsynchronously ? 15 : 0;
     [self performSelector:@selector(showModalForError) withObject:nil afterDelay:wallTimeoutWarning];
+}
+
+- (void)startTimerFadingOutIntroText
+{
+    CGFloat fadeTimeoutWarning = ARPerformWorkAsynchronously ? 7 : 0;
+    [self performSelector:@selector(fadeOutIntroText) withObject:nil afterDelay:fadeTimeoutWarning];
+}
+
+- (void)fadeOutIntroText
+{
+    if ([self.textLabel.text isEqualToString:ARInitialSubtitle]) {
+        CGFloat fadeTime = ARPerformWorkAsynchronously ? 0.3 : 0;
+
+        [UIView animateWithDuration:fadeTime animations:^{
+            self.textLabel.alpha = 0;
+
+        } completion:^(BOOL finished) {
+            self.textLabel.text = @"";
+            self.textLabel.alpha = 1;
+        }];
+    }
 }
 
 // Pop up an error message
@@ -199,9 +226,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *errorMessage = @"We’re having trouble finding your wall. Make sure the room is well-lit or try focusing on a different object on the wall.";
     ARAugmentedVIRModalView *modal = [[ARAugmentedVIRModalView alloc] initWithTitle:errorMessage delegate:self];
     [self.view addSubview:modal];
-    [modal alignToView:self];
-
-    [self viewWillDisappear:YES];
+    [modal alignToView:self.view];
 }
 
 // Re-create the AR session, and start again
@@ -255,7 +280,7 @@ NS_ASSUME_NONNULL_BEGIN
     ar_dispatch_main_queue(^{
         self.resetButton.hidden = NO;
         self.phoneImage.hidden = YES;
-        self.textLabel.text = @"";
+        self.textLabel.text = @"Keep your phone pointed at the work and walk around the room.";
     });
 }
 
@@ -294,7 +319,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)resetAR
 {
-    [self initialState];
+    [self hasRegisteredPlanes];
+
     [self.interactionController restart];
 }
 
@@ -309,7 +335,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (IBAction)panMoved:(UIPanGestureRecognizer *)gesture
 {
-    [self.interactionController pannedOnScreen:gesture];
+//     [self.interactionController pannedOnScreen:gesture];
 }
 
 // When you leave and come back to this VC, ARKit cannot correctly keep track of the world, need to reset

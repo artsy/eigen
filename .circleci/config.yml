@@ -1,0 +1,83 @@
+# .circleci/config.yml
+
+# Specify the config version - version 2 is latest.
+version: 2
+
+# Define the jobs for the current project.
+jobs:
+  build-and-test:
+    environment:
+      # Public - Yay
+      UPLOAD_IOS_SNAPSHOT_BUCKET_NAME: eigen-ci
+
+      # Private - Keeps us in business! Yay
+      AWS_ACCESS_KEY_ID: from_admin
+      AWS_SECRET_ACCESS_KEY: from_admin
+      DANGER_GITHUB_API_TOKEN: from_admin
+      MATCH_PASSWORD : from_admin
+      HOCKEY_API_TOKEN : from_admin
+      FASTLANE_USERNAME : from_admin
+      FASTLANE_PASSWORD : from_admin
+      ArtsyAPIClientSecret: from_admin
+      ArtsyAPIClientKey: from_admin
+      ArtsyFacebookAppID: from_admin
+      ArtsyTwitterKey: from_admin
+      ArtsyTwitterSecret: from_admin
+      ArtsyTwitterStagingKey: from_admin
+      ArtsyTwitterStagingSecret: from_admin
+      SegmentProductionWriteKey: from_admin
+      SegmentDevWriteKey: from_admin
+      AdjustProductionAppToken: from_admin
+      ArtsyEchoProductionToken:  from_admin
+
+    # Specify the Xcode version to use.
+    macos:
+      xcode: "9.3.0"
+
+    # Define the steps required to build the project.
+    steps:
+
+      # Get the code from the VCS provider.
+      - checkout
+
+      - run:
+          name: Install Gems
+          command: bundle install
+
+      - run:
+          name: Install 10.3.x
+          command: sudo xcversion simulators --install='iOS 10.3.1'
+
+      - run:
+          name: List devices
+          command: instruments -s devices
+
+      - run:
+          name: Install CocoaPods
+          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+
+      - run:
+          name: Install Pods
+          command: bundle exec pod install
+
+      - run:
+          name: Install Deps
+          command: make ci
+
+      - run:
+          name: Run tests
+          command: make test
+
+      - run:
+          name: Danger
+          command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
+      
+      - run:
+          name: Deploy if beta
+          command: make deploy_if_beta_branch
+
+workflows:
+  version: 2
+  build-test:
+    jobs:
+      - build-and-test

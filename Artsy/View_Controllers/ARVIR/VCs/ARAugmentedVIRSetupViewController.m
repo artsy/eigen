@@ -31,11 +31,11 @@ NSString *const arTitle = @"Art in your home";
 
 NSString *const needsAccessButtonTitle = @"Allow camera access";
 NSString *const hasDeniedAccessButtonTitle = @"Update Camera Access";
-NSString *const hasAccessButtonTitle = @"Continue";
+NSString *const hasAccessButtonTitle = @"Get Started";
 
 NSString *const needsAccessSubtitle = @"To view works in your room, we'll need access to your camera.";
-NSString *const hasDeniedAccessSubtitle = @"To view works in your room using augmented reality, we’ll need access to your camera. \n\nPlease update camera access permissions in the iOS settings.";
-NSString *const hasAccessSubtitle = @"To view works in your room using augmented reality, find a wall and [something].";
+NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll need access to your camera. \n\nPlease update camera access permissions in the iOS settings.";
+NSString *const hasAccessSubtitle = @"To view works in your room using augmented reality, find a wall and [something]."; // TODO : remove
 
 @implementation ARAugmentedVIRSetupViewController
 
@@ -48,7 +48,6 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
     return self;
 }
 
-
 // Main potential states:
 //
 //  - First time with permission (given from consignments)
@@ -60,19 +59,11 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
 - (NSString *)subtitleWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission
 {
     BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasSeenSetup];
-    if (firstTime && hasPermission) {
-        return hasAccessSubtitle;
-
-    } else if(firstTime && !hasPermission) {
+    if (firstTime) {
         return needsAccessSubtitle;
+    } else {
+        return hasDeniedAccessSubtitle;
     }
-
-    BOOL notCompleted = ![defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
-    if (notCompleted) {
-        return hasAccessSubtitle;
-    }
-
-    return hasDeniedAccessSubtitle;
 }
 
 - (NSString *)buttonTitleWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission
@@ -85,11 +76,6 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
         return needsAccessButtonTitle;
     }
 
-    BOOL notCompleted = ![defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
-    if (notCompleted) {
-        return hasAccessButtonTitle;
-    }
-
     return hasDeniedAccessButtonTitle;
 }
 
@@ -100,11 +86,6 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
         return @selector(next);
 
     } else if(firstTime && !hasPermission) {
-        return @selector(next);
-    }
-
-    BOOL notCompleted = ![defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
-    if (notCompleted) {
         return @selector(next);
     }
 
@@ -247,10 +228,8 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
 + (void)canSkipARSetup:(NSUserDefaults *)defaults callback:(void (^)(bool allowedAccess))closure
 {
     BOOL access = [defaults boolForKey:ARAugmentedRealityCameraAccessGiven];
-    BOOL used = [defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
-    BOOL shouldBeFine = access && used;
     // We know it's a no, so return early
-    if (!shouldBeFine) {
+    if (!access) {
         return closure(NO);
     }
 
