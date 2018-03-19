@@ -30,12 +30,11 @@
 NSString *const arTitle = @"Art in your home";
 
 NSString *const needsAccessButtonTitle = @"Allow camera access";
-NSString *const needsAccessSubtitle = @"To view works in your room, we'll need access to your camera.";
-
 NSString *const hasDeniedAccessButtonTitle = @"Update Camera Access";
-NSString *const hasDeniedAccessSubtitle = @"To view works in your room using augmented reality, we’ll need access to your camera. \n\nPlease update camera access permissions in the iOS settings.";
-
 NSString *const hasAccessButtonTitle = @"Continue";
+
+NSString *const needsAccessSubtitle = @"To view works in your room, we'll need access to your camera.";
+NSString *const hasDeniedAccessSubtitle = @"To view works in your room using augmented reality, we’ll need access to your camera. \n\nPlease update camera access permissions in the iOS settings.";
 NSString *const hasAccessSubtitle = @"To view works in your room using augmented reality, find a wall and [something].";
 
 @implementation ARAugmentedVIRSetupViewController
@@ -49,6 +48,70 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
     return self;
 }
 
+
+// Main potential states:
+//
+//  - First time with permission (given from consignments)
+//  - First time without permission
+//  - Xth time with permission because they couldn't place a work
+//  - Xth time without permission because they denied after the fact
+//
+
+- (NSString *)subtitleWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission
+{
+    BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasSeenSetup];
+    if (firstTime && hasPermission) {
+        return hasAccessSubtitle;
+
+    } else if(firstTime && !hasPermission) {
+        return needsAccessSubtitle;
+    }
+
+    BOOL notCompleted = ![defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
+    if (notCompleted) {
+        return hasAccessSubtitle;
+    }
+
+    return hasDeniedAccessSubtitle;
+}
+
+- (NSString *)buttonTitleWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission
+{
+    BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasSeenSetup];
+    if (firstTime && hasPermission) {
+        return hasAccessButtonTitle;
+
+    } else if(firstTime && !hasPermission) {
+        return needsAccessButtonTitle;
+    }
+
+    BOOL notCompleted = ![defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
+    if (notCompleted) {
+        return hasAccessButtonTitle;
+    }
+
+    return hasDeniedAccessButtonTitle;
+}
+
+- (SEL)buttonSelectorWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission
+{
+    BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasSeenSetup];
+    if (firstTime && hasPermission) {
+        return @selector(next);
+
+    } else if(firstTime && !hasPermission) {
+        return @selector(next);
+    }
+
+    BOOL notCompleted = ![defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
+    if (notCompleted) {
+        return @selector(next);
+    }
+
+    return @selector(sendToSettings);
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -56,21 +119,9 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
     // Re-use the class check, this means it takes into account whether permissions have been changed after a user
     // has successfully set up an Artwork.
     [self.class canSkipARSetup:self.defaults callback:^(bool hasGivenAccess) {
-        BOOL firstTime = ![self.defaults boolForKey:ARAugmentedRealityHasSeenSetup];
-
-        // Main potential states:
-        //
-        //  - First time with permission (given from consignments)
-        //  - First time without permission
-        //  - Xth time with permission because they couldn't place a work
-        //  - Xth time without permission because they denied after the fact
-        //
-        NSString *buttonTitle = firstTime && !hasGivenAccess ? needsAccessButtonTitle : hasDeniedAccessButtonTitle ;
-        NSString *subtitleText = firstTime && !hasGivenAccess ? needsAccessSubtitle: hasDeniedAccessSubtitle;
-        buttonTitle = hasGivenAccess ? hasAccessButtonTitle : buttonTitle;
-        subtitleText = hasGivenAccess ? hasAccessSubtitle : subtitleText;
-
-        SEL nextButtonSelector = firstTime || hasGivenAccess ? @selector(next) : @selector(sendToSettings);
+        NSString *buttonTitle = [self buttonTitleWithDefaults:self.defaults hasPermission:hasGivenAccess];
+        NSString *subtitleText = [self subtitleWithDefaults:self.defaults hasPermission:hasGivenAccess];
+        SEL nextButtonSelector = [self buttonSelectorWithDefaults:self.defaults hasPermission:hasGivenAccess];
 
         // Have a potential background video, otherwise it's a black screen
         AVPlayerViewController *playVC = [[AVPlayerViewController alloc] init];

@@ -7,34 +7,64 @@
 @property (nonatomic, copy) NSUserDefaults *defaults;
 
 - (void)back;
+- (NSString *)subtitleWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission;
+- (NSString *)buttonTitleWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission;
+- (SEL)buttonSelectorWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission;
+
 @end
 
 
 SpecBegin(ARAugmentRealitySetupViewController);
+__block ForgeriesUserDefaults *untouchedDefaults;
+__block ForgeriesUserDefaults *deniedDefaults;
+__block ForgeriesUserDefaults *completedDefaults;
+__block ForgeriesUserDefaults *setupButNotRanDefaults;
 
-ForgeriesUserDefaults *untouchedDefaults = [ForgeriesUserDefaults defaults:@{
-    ARAugmentedRealityCameraAccessGiven: @(NO),
-    ARAugmentedRealityHasSeenSetup: @(NO),
-    ARAugmentedRealityHasSuccessfullyRan: @(NO)
-}];
+beforeEach(^{
+    untouchedDefaults = [ForgeriesUserDefaults defaults:@{
+        ARAugmentedRealityCameraAccessGiven: @(NO),
+        ARAugmentedRealityHasSeenSetup: @(NO),
+        ARAugmentedRealityHasSuccessfullyRan: @(NO)
+    }];
 
-ForgeriesUserDefaults *deniedDefaults = [ForgeriesUserDefaults defaults:@{
-    ARAugmentedRealityCameraAccessGiven: @(NO),
-    ARAugmentedRealityHasSeenSetup: @(YES),
-    ARAugmentedRealityHasSuccessfullyRan: @(YES)
-}];
+    deniedDefaults = [ForgeriesUserDefaults defaults:@{
+        ARAugmentedRealityCameraAccessGiven: @(NO),
+        ARAugmentedRealityHasSeenSetup: @(YES),
+        ARAugmentedRealityHasSuccessfullyRan: @(YES)
+    }];
 
-ForgeriesUserDefaults *completedDefaults = [ForgeriesUserDefaults defaults:@{
-    ARAugmentedRealityCameraAccessGiven: @(YES),
-    ARAugmentedRealityHasSeenSetup: @(YES),
-    ARAugmentedRealityHasSuccessfullyRan: @(YES)
-}];
+    completedDefaults = [ForgeriesUserDefaults defaults:@{
+        ARAugmentedRealityCameraAccessGiven: @(YES),
+        ARAugmentedRealityHasSeenSetup: @(YES),
+        ARAugmentedRealityHasSuccessfullyRan: @(YES)
+    }];
 
-ForgeriesUserDefaults *setupButNotRanDefaults = [ForgeriesUserDefaults defaults:@{
-    ARAugmentedRealityCameraAccessGiven: @(YES),
-    ARAugmentedRealityHasSeenSetup: @(YES),
-    ARAugmentedRealityHasSuccessfullyRan: @(NO)
-}];
+    setupButNotRanDefaults = [ForgeriesUserDefaults defaults:@{
+        ARAugmentedRealityCameraAccessGiven: @(YES),
+        ARAugmentedRealityHasSeenSetup: @(YES),
+        ARAugmentedRealityHasSuccessfullyRan: @(NO)
+    }];
+});
+
+
+it(@"gives the right messages for the right setup",^{
+    ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
+
+    expect([vc subtitleWithDefaults:(id)untouchedDefaults hasPermission:NO]).to.equal(@"To view works in your room, we'll need access to your camera.");
+    expect([vc subtitleWithDefaults:(id)untouchedDefaults hasPermission:YES]).to.equal(@"To view works in your room using augmented reality, find a wall and [something].");
+
+    expect([vc subtitleWithDefaults:(id)deniedDefaults hasPermission:NO]).to.equal(@"To view works in your room using augmented reality, we’ll need access to your camera. \n\nPlease update camera access permissions in the iOS settings.");
+    // Should never happen
+    expect([vc subtitleWithDefaults:(id)deniedDefaults hasPermission:YES]).to.equal(@"To view works in your room using augmented reality, we’ll need access to your camera. \n\nPlease update camera access permissions in the iOS settings.");
+
+    expect([vc subtitleWithDefaults:(id)completedDefaults hasPermission:NO]).to.equal(@"To view works in your room using augmented reality, we’ll need access to your camera. \n\nPlease update camera access permissions in the iOS settings.");
+    // Should never happen
+    expect([vc subtitleWithDefaults:(id)completedDefaults hasPermission:YES]).to.equal(@"To view works in your room using augmented reality, we’ll need access to your camera. \n\nPlease update camera access permissions in the iOS settings.");
+
+    expect([vc subtitleWithDefaults:(id)setupButNotRanDefaults hasPermission:NO]).to.equal(@"To view works in your room using augmented reality, find a wall and [something].");
+    expect([vc subtitleWithDefaults:(id)setupButNotRanDefaults hasPermission:YES]).to.equal(@"To view works in your room using augmented reality, find a wall and [something].");
+});
+
 
 it(@"defaults to asking for camera access",^{
     ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil ];
