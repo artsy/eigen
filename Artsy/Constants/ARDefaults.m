@@ -28,6 +28,7 @@ NSString *const ARPushNotificationsDialogueLastSeenDate = @"eigen-push-seen-dial
 NSString *const AREmissionHeadVersionDefault = @"emission-head-version";
 
 NSString *const ARAugmentedRealityHasSeenSetup = @"ARAugmentedRealityHasSeenSetup";
+NSString *const ARAugmentedRealityHasTriedToSetup = @"ARAugmentedRealityHasTriedToSetup";
 NSString *const ARAugmentedRealityCameraAccessGiven = @"ARAugmentedRealityCameraAccessGiven";
 NSString *const ARAugmentedRealityHasSuccessfullyRan = @"ARAugmentedRealityHasSuccessfullyRan";
 

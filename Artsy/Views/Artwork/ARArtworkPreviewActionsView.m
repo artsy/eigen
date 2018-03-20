@@ -125,6 +125,9 @@ const CGFloat ARArtworkActionButtonNoCircleSpacing = 30;
 
     if (show) {
         self.viewInRoomButton = [self newViewInRoomButton];
+        // TODO do once?
+        [self.delegate showInformationBannerForVIR:self.viewInRoomButton];
+
     } else {
         [self.viewInRoomButton removeFromSuperview];
         self.viewInRoomButton = nil;
@@ -155,7 +158,6 @@ const CGFloat ARArtworkActionButtonNoCircleSpacing = 30;
     BOOL showViewInRoom = canDisplayViewInRoom && artwork.canViewInRoom;
 
     [self toggleViewInRoomButton:showViewInRoom];
-
 
     BOOL canDisplayMap = [UIDevice isPhone];
     if (fair && canDisplayMap) {

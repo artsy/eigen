@@ -96,7 +96,7 @@
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Used for beta testers to collect usage information.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Camera access is needed to view works in your room and for consignment submissions.</string>
+	<string>Camera access is needed for this experience.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photos will be used to gauge the quality of the work you are submitting.</string>
 	<key>UIAppFonts</key>

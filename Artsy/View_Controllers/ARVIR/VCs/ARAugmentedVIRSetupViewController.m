@@ -58,7 +58,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 
 - (NSString *)subtitleWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission
 {
-    BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasSeenSetup];
+    BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasTriedToSetup];
     BOOL hasSeenAR = [defaults objectForKey:ARAugmentedRealityCameraAccessGiven] != nil;
 
     if (firstTime) {
@@ -72,7 +72,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 
 - (NSString *)buttonTitleWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission
 {
-    BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasSeenSetup];
+    BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasTriedToSetup];
     BOOL hasSeenAR = [defaults objectForKey:ARAugmentedRealityCameraAccessGiven] != nil;
 
     if (firstTime && !hasPermission) {
@@ -87,7 +87,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 
 - (SEL)buttonSelectorWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission
 {
-    BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasSeenSetup];
+    BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasTriedToSetup];
     if (firstTime && hasPermission) {
         return @selector(next);
 
@@ -102,6 +102,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.defaults setBool:YES forKey:ARAugmentedRealityHasSeenSetup];
 
     // Re-use the class check, this means it takes into account whether permissions have been changed after a user
     // has successfully set up an Artwork.
@@ -219,7 +220,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 {
     [self.class validateAVAccess:self.defaults callback:^(bool allowedAccess) {
         if (allowedAccess) {
-            [self.defaults setBool:YES forKey:ARAugmentedRealityHasSeenSetup];
+            [self.defaults setBool:YES forKey:ARAugmentedRealityHasTriedToSetup];
 
             ARAugmentedVIRViewController *vc = [[ARAugmentedVIRViewController alloc] initWithConfig:self.config];
             [self.navigationController pushViewController:vc animated:YES];

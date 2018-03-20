@@ -32,6 +32,7 @@
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];
     _fair = fair;
 
+
     ARArtworkPreviewImageView *artworkPreview = [[ARArtworkPreviewImageView alloc] init];
     ARArtworkPreviewActionsView *previewActionsView = [[ARArtworkPreviewActionsView alloc] initWithArtwork:artwork andFair:fair modern: ![UIDevice isPad]];
 
@@ -41,6 +42,7 @@
     self.actionsView = artworkActionsView;
     self.artworkPreviewActions = previewActionsView;
     self.artworkDetailView = artworkDetailView;
+
 
     UIView *left = [[UIView alloc] init];
     UIView *right = [[UIView alloc] init];

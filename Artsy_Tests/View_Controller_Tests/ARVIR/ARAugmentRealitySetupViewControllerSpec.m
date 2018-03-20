@@ -23,25 +23,25 @@ __block ForgeriesUserDefaults *setupButNotRanDefaults;
 beforeEach(^{
     untouchedDefaults = [ForgeriesUserDefaults defaults:@{
         ARAugmentedRealityCameraAccessGiven: @(NO),
-        ARAugmentedRealityHasSeenSetup: @(NO),
+        ARAugmentedRealityHasTriedToSetup: @(NO),
         ARAugmentedRealityHasSuccessfullyRan: @(NO)
     }];
 
     deniedDefaults = [ForgeriesUserDefaults defaults:@{
         ARAugmentedRealityCameraAccessGiven: @(NO),
-        ARAugmentedRealityHasSeenSetup: @(YES),
+        ARAugmentedRealityHasTriedToSetup: @(YES),
         ARAugmentedRealityHasSuccessfullyRan: @(YES)
     }];
 
     completedDefaults = [ForgeriesUserDefaults defaults:@{
         ARAugmentedRealityCameraAccessGiven: @(YES),
-        ARAugmentedRealityHasSeenSetup: @(YES),
+        ARAugmentedRealityHasTriedToSetup: @(YES),
         ARAugmentedRealityHasSuccessfullyRan: @(YES)
     }];
 
     setupButNotRanDefaults = [ForgeriesUserDefaults defaults:@{
         ARAugmentedRealityCameraAccessGiven: @(YES),
-        ARAugmentedRealityHasSeenSetup: @(YES),
+        ARAugmentedRealityHasTriedToSetup: @(YES),
         ARAugmentedRealityHasSuccessfullyRan: @(NO)
     }];
 });
@@ -73,16 +73,16 @@ it(@"defaults to asking for camera access",^{
     expect(vc).to.haveValidSnapshot();
 });
 
-it(@"viewWillAppear sets ARAugmentedRealityHasSeenSetup",^{
+it(@"viewWillAppear sets ARAugmentedRealityHasTriedToSetup",^{
     ForgeriesUserDefaults *defaults = [ForgeriesUserDefaults defaults:@{
-      ARAugmentedRealityHasSeenSetup: @(NO)
+      ARAugmentedRealityHasTriedToSetup: @(NO)
     }];
 
     ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
     vc.defaults = (id)defaults;
     [vc viewWillAppear:NO];
 
-    expect([defaults boolForKey:ARAugmentedRealityHasSeenSetup]).to.beTruthy();
+    expect([defaults boolForKey:ARAugmentedRealityHasTriedToSetup]).to.beTruthy();
 });
 
 

@@ -5,6 +5,7 @@
 
 @protocol ARArtworkPreviewActionsViewDelegate <NSObject>
 
+- (void)showInformationBannerForVIR:(UIView *)virButton;
 - (void)tappedArtworkFavorite:(id)sender;
 - (void)tappedArtworkShare:(id)sender;
 - (void)tappedArtworkViewInRoom;

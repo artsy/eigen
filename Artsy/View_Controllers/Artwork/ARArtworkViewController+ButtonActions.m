@@ -34,6 +34,7 @@
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRViewController.h"
 #import <Emission/ARInquiryComponentViewController.h>
+#import "ARFullWidthCalloutLabelView.h"
 
 @implementation ARArtworkViewController (ButtonActions)
 
@@ -47,6 +48,21 @@
 }
 
 #pragma mark - ARArtworkPreviewActionsViewDelegate
+
+- (void)showInformationBannerForVIR:(UIView *)virButton
+{
+    // First time user, and can show AR
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:ARAugmentedRealityHasSeenSetup] && [ARAugmentedVIRSetupViewController canOpenARView]) {
+        ARFullWidthCalloutLabelView *callout = [[ARFullWidthCalloutLabelView alloc] initWithTitle:@"See what this work looks like on your wall." delegate:self];
+        [callout addToRootView:self.view highlightView:virButton animated:YES];
+    }
+}
+
+- (void)tappedOnLabelSide:(ARFullWidthCalloutLabelView *)view
+{
+    [view dismissAnimated:YES];
+    [self tappedArtworkViewInRoom];
+}
 
 - (void)tappedArtworkFavorite:(ARHeartButton *)sender
 {

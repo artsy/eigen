@@ -7,7 +7,8 @@
 #import "ARArtworkPreviewImageView.h"
 #import "ARArtworkDetailView.h"
 
+#import "ARFullWidthCalloutLabelView.h"
 
-@interface ARArtworkViewController (ButtonActions) <ARArtworkDetailViewButtonDelegate, ARArtworkPreviewActionsViewDelegate, ARArtworkActionsViewDelegate, ARArtworkPreviewImageViewDelegate, ARArtworkActionsViewButtonDelegate>
+@interface ARArtworkViewController (ButtonActions) <ARArtworkDetailViewButtonDelegate, ARArtworkPreviewActionsViewDelegate, ARArtworkActionsViewDelegate, ARArtworkPreviewImageViewDelegate, ARArtworkActionsViewButtonDelegate, ARFullWidthCalloutLabelCallback>
 
 @end

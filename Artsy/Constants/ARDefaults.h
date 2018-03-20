@@ -45,8 +45,10 @@ extern NSString *const AREmissionHeadVersionDefault;
 extern NSString *const ARAugmentedRealityCameraAccessGiven;
 /// Have they gone all the way to placing an artwork?
 extern NSString *const ARAugmentedRealityHasSuccessfullyRan;
-/// Have they got past the setup screen?
+/// Have they seen the setup screen?
 extern NSString *const ARAugmentedRealityHasSeenSetup;
+/// Have they got past the setup screen?
+extern NSString *const ARAugmentedRealityHasTriedToSetup;
 
 @interface ARDefaults : NSObject
 + (void)setup;

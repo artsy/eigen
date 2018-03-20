@@ -181,7 +181,10 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
         self.phoneImage.hidden = NO;
         self.placeArtworkButton.hidden = YES;
 
-        BOOL firstTime = [[NSUserDefaults standardUserDefaults] boolForKey:ARAugmentedRealityHasSuccessfullyRan];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:YES forKey:ARAugmentedRealityHasSeenSetup];
+
+        BOOL firstTime = [defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
         self.textLabel.text = firstTime ? ARInitialARVIRSubtitle : @"";
 
         if (ARPerformWorkAsynchronously) {
