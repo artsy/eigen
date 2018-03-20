@@ -33,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *artworkID;
 @property (nonatomic, copy) NSString *artworkUUID;
+@property (nonatomic, copy) NSString *slug;
+
 @property (nonatomic, strong) NSNumber *depth;
 @property (nonatomic, strong) NSNumber *diameter;
 @property (nonatomic, strong) NSNumber *height;

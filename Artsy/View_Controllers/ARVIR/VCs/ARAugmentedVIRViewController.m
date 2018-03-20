@@ -28,8 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) UIButton *resetButton;
 @property (nonatomic, weak, nullable) UIButton *placeArtworkButton;
 @property (nonatomic, weak, nullable) UILabel *textLabel;
+@property (nonatomic, strong, nullable) NSDate *dateOpenedAR;
 
-@property (nonatomic, strong, readonly) ARAugmentedRealityConfig *config;
 
 @end
 
@@ -52,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)viewDidLoad {
     if (@available(iOS 11.0, *)) {
+        _dateOpenedAR = [NSDate date];
 
         self.view.backgroundColor = UIColor.whiteColor;
         [super viewDidLoad];
@@ -86,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
         [backButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
         [backButton setImage:[UIImage imageNamed:@"ARVIRBack"] forState:UIControlStateNormal];
         backButton.translatesAutoresizingMaskIntoConstraints = false;
-        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        [backButton addTarget:self action:@selector(exitARContext) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:backButton];
 
         // Reset
@@ -303,7 +304,7 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
 
 // Pop back, and potentially skip the AR Setup VC if it's there
 
-- (void)back
+- (void)exitARContext
 {
     // Ensure we jump past the SetupVC
     NSArray *vcs = self.navigationController.viewControllers;
@@ -316,6 +317,11 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
 
     // I can't think of an edge case for this, but better to be comprehensive
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (NSTimeInterval)timeInAR
+{
+    return  [self.dateOpenedAR timeIntervalSinceNow] * -1;
 }
 
 // When a user requests to reset, update the UI to the beginnning

@@ -86,6 +86,8 @@
 
             CGSize size = CGSizeMake(self.artwork.widthInches, self.artwork.heightInches);
             ARAugmentedRealityConfig *config = [[ARAugmentedRealityConfig alloc] initWithImage:self.imageView.image size:size];
+            config.artworkID = self.artwork.artworkUUID;
+            config.artworkSlug = self.artwork.artworkID;
             config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
 
             if (shouldSkipSetup) {
@@ -110,7 +112,6 @@
     } else {
         ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:self.artwork];
         [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
-
     }
 }
 
