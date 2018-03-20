@@ -91,9 +91,9 @@ jobs:
           name: Pre-Build App
           command: make ci
 
-      - run:
-          name: Run tests
-          command: make test
+    #   - run:
+    #       name: Run tests
+    #       command: make test
 
       - store_artifacts:
           path: xcode_build_raw.log
