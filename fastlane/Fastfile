@@ -4,6 +4,10 @@ require 'fileutils'
 
 APP_ID = 'net.artsy.artsy'.freeze
 
+before_all do
+  setup_circle_ci
+end
+
 lane :ship_beta do
   verify_pod_keys
 
