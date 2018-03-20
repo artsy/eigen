@@ -3,7 +3,8 @@ source 'https://rubygems.org'
 gem 'cocoapods', git: 'https://github.com/CocoaPods/CocoaPods.git'
 gem 'cocoapods-core', git: 'https://github.com/CocoaPods/Core.git'
 
-gem 'cocoapods-check' # So we know if we need to run `pod install`
+# So we know if we need to run `pod install`
+gem 'cocoapods-check',  git: 'https://github.com/orta/cocoapods-check.git', branch: 'different_manifests'
 gem 'cocoapods-keys' # So we don't leak ENV vars
 gem 'psych' # So our Podfile.lock is consistent
 
