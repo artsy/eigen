@@ -24,6 +24,8 @@
 @property (nonatomic, weak) UILabel *subtitleLabel;
 @property (nonatomic, weak) UIButton *button;
 
+@property (nonatomic, weak) AVPlayer *avPlayer;
+
 @property (nonatomic, assign) BOOL hasSentToSettings;
 @end
 
@@ -35,7 +37,6 @@ NSString *const hasAccessButtonTitle = @"Get Started";
 
 NSString *const needsAccessSubtitle = @"To view works in your room, we'll need access to your camera.";
 NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll need access to your camera. \n\nPlease update camera access permissions in the iOS settings.";
-NSString *const hasAccessSubtitle = @"To view works in your room using augmented reality, find a wall and [something]."; // TODO : remove
 
 @implementation ARAugmentedVIRSetupViewController
 
@@ -52,7 +53,6 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
 //
 //  - First time with permission (given from consignments)
 //  - First time without permission
-//  - Xth time with permission because they couldn't place a work
 //  - Xth time without permission because they denied after the fact
 //
 
@@ -106,8 +106,15 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
 
         // Have a potential background video, otherwise it's a black screen
         AVPlayerViewController *playVC = [[AVPlayerViewController alloc] init];
-        playVC.player = [[AVPlayer alloc] initWithURL: self.movieURL];
+        playVC.allowsPictureInPicturePlayback = NO;
+        playVC.updatesNowPlayingInfoCenter = NO;
         playVC.showsPlaybackControls = NO;
+        playVC.videoGravity = AVLayerVideoGravityResizeAspectFill;
+
+        playVC.player = [AVPlayer playerWithURL:self.movieURL];
+        self.avPlayer = playVC.player;
+        [playVC.player play];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartVideo:) name:AVPlayerItemDidPlayToEndTimeNotification object:playVC.player.currentItem];
 
         // Add the AV player as a childVC, aligned edge to edge
         [playVC willMoveToParentViewController:self];
@@ -172,6 +179,13 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
             [backButton alignBottomEdgeWithView:self.view predicate:@"-20"];
         }
     }];
+}
+
+- (void)restartVideo:(NSNotification *)notification
+{
+    AVPlayerItem *item = notification.object;
+    [item seekToTime:kCMTimeZero];
+    [self.avPlayer play];
 }
 
 - (void)viewWillAppear:(BOOL)animated
