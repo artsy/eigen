@@ -240,21 +240,21 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
     [self viewWillAppear:YES];
 }
 
+// Let's you exit easily if you're not having a good time
+
 - (void)hitBackFromModal:(ARAugmentedVIRModalView *)modal
 {
     [self exitARContext];
 }
-
 
 // Offer the ability to place an artwork
 
 - (void)hasRegisteredPlanes
 {
     ar_dispatch_main_queue(^{
-        self.resetButton.hidden = NO;
+        self.resetButton.hidden = YES;
         self.phoneImage.hidden = YES;
         self.placeArtworkButton.hidden = YES;
-        self.textLabel.text = @"Tap the screen to place the work.";
 
         [self.class cancelPreviousPerformRequestsWithTarget:self selector:@selector(showModalForError) object:nil];
     });
@@ -269,8 +269,6 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
         self.placeArtworkButton.hidden = NO;
         self.placeArtworkButton.enabled = showing;
         self.textLabel.text = @"";
-        self.resetButton.hidden = NO;
-        self.phoneImage.hidden = YES;
     });
 }
 
