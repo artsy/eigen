@@ -4,6 +4,7 @@
 
 @protocol VIRModalDelegate
 - (void)hitTryAgainFromModal:(ARAugmentedVIRModalView *)modal;
+- (void)hitBackFromModal:(ARAugmentedVIRModalView *)modal;
 @end
 
 @interface ARAugmentedVIRModalView : UIView

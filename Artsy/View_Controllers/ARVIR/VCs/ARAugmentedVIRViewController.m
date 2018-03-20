@@ -240,6 +240,12 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
     [self viewWillAppear:YES];
 }
 
+- (void)hitBackFromModal:(ARAugmentedVIRModalView *)modal
+{
+    [self exitARContext];
+}
+
+
 // Offer the ability to place an artwork
 
 - (void)hasRegisteredPlanes
