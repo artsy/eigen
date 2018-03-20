@@ -41,8 +41,11 @@ extern NSString *const AREmissionHeadVersionDefault;
 #pragma mark -
 #pragma mark user permissions
 
+/// Has given access to the camera for AR? nil when they've not been asked yet
 extern NSString *const ARAugmentedRealityCameraAccessGiven;
+/// Have they gone all the way to placing an artwork?
 extern NSString *const ARAugmentedRealityHasSuccessfullyRan;
+/// Have they got past the setup screen?
 extern NSString *const ARAugmentedRealityHasSeenSetup;
 
 @interface ARDefaults : NSObject

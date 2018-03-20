@@ -81,8 +81,7 @@
 - (void)tappedArtworkViewInRoom
 {
     BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];
-
-    if(supportsARVIR && [AROptions boolForOption:AROptionsUseARVIR]) {
+    if (supportsARVIR) {
         [ARAugmentedVIRSetupViewController canSkipARSetup:[NSUserDefaults standardUserDefaults] callback:^(bool shouldSkipSetup) {
 
             CGSize size = CGSizeMake(self.artwork.widthInches, self.artwork.heightInches);
@@ -108,7 +107,6 @@
                 [self.navigationController pushViewController:setupVC animated:ARPerformWorkAsynchronously];
             }
         }];
-
     } else {
         ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:self.artwork];
         [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];

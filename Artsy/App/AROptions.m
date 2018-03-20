@@ -9,7 +9,6 @@ NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
 NSString *const AROptionsDisableNativeLiveAuctions = @"Disable native live auctions";
 NSString *const AROptionsStagingReactEnv = @"Use Staging React ENV";
 NSString *const AROptionsDevReactEnv = @"Use Dev React ENV";
-NSString *const AROptionsUseARVIR = @"Use AR View in Room";
 NSString *const AROptionsDebugARVIR = @"Debug AR View in Room";
 
 @implementation AROptions
@@ -21,7 +20,6 @@ NSString *const AROptionsDebugARVIR = @"Debug AR View in Room";
         AROptionsSettingsMenu,
         AROptionsTappingPartnerSendsToPartner,
         AROptionsDisableNativeLiveAuctions,
-        AROptionsUseARVIR,
         AROptionsDebugARVIR
     ];
 }
