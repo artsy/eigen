@@ -29,6 +29,7 @@ jobs:
       SegmentDevWriteKey: from_admin
       AdjustProductionAppToken: from_admin
       ArtsyEchoProductionToken:  from_admin
+      BUNDLE_PATH: vendor/bundle  # path to install gems and use for caching
 
     # Specify the Xcode version to use.
     macos:
@@ -40,41 +41,79 @@ jobs:
       # Get the code from the VCS provider.
       - checkout
 
+      - restore_cache:
+          keys:
+          - v1-gems-{{ checksum "Gemfile.lock" }}
+          # Fall back to using the latest cache if no exact match is found.
+          - v1-gems-
+
+      # Install gems.
       - run:
-          name: Install Gems
-          command: bundle install
+          name: Bundle install
+          command: bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
+
+      - save_cache:
+          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
 
       - run:
           name: Install 10.3.x
-          command: sudo xcversion simulators --install='iOS 10.3.1'
-
+          command: echo "" | xcversion simulators --install='iOS 10.3.1'
+ 
       - run:
           name: List devices
           command: instruments -s devices
 
+      - restore_cache:
+          keys:
+          - v1-pods-{{ checksum "Podfile.lock" }}
+          # Fall back to using the latest cache if no exact match is found.
+          - v1-pods-
+
       - run:
           name: Install CocoaPods
-          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+          command: bundle exec pod check || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
 
       - run:
           name: Install Pods
-          command: bundle exec pod install
+          command: bundle exec pod check || bundle exec pod install
+
+      - save_cache:
+          key: v1-pods-{{ checksum "Podfile.lock" }}
+          paths:
+            - Pods
 
       - run:
-          name: Install Deps
+          name: Pre-Build App
           command: make ci
 
       - run:
           name: Run tests
           command: make test
 
-      - run:
-          name: Danger
-          command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
+      - store_artifacts:
+          path: xcode_build_raw.log
+          prefix: build
+
+      - store_artifacts:
+          path: xcode_test_raw.log
+          prefix: tests
+
+      - store_test_results:
+          path: test-results.xml
+  
+    #   - run:
+    #       name: Danger
+    #       command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
       
       - run:
           name: Deploy if beta
           command: make deploy_if_beta_branch
+
 
 workflows:
   version: 2
