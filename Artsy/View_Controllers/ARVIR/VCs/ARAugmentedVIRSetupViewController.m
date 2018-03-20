@@ -59,7 +59,11 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 - (NSString *)subtitleWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission
 {
     BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasSeenSetup];
+    BOOL hasSeenAR = [defaults objectForKey:ARAugmentedRealityCameraAccessGiven] != nil;
+
     if (firstTime) {
+        return needsAccessSubtitle;
+    } else if(!hasSeenAR) {
         return needsAccessSubtitle;
     } else {
         return hasDeniedAccessSubtitle;
@@ -69,11 +73,13 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 - (NSString *)buttonTitleWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission
 {
     BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasSeenSetup];
-    if (firstTime && hasPermission) {
+    BOOL hasSeenAR = [defaults objectForKey:ARAugmentedRealityCameraAccessGiven] != nil;
+
+    if (firstTime && !hasPermission) {
         return hasAccessButtonTitle;
 
-    } else if(firstTime && !hasPermission) {
-        return needsAccessButtonTitle;
+    } else if (firstTime && !hasSeenAR) {
+        return hasAccessButtonTitle;
     }
 
     return hasDeniedAccessButtonTitle;
@@ -191,7 +197,6 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.defaults setBool:YES forKey:ARAugmentedRealityHasSeenSetup];
 
     // Re-run the validation steps when they've come back from settings
     if (self.hasSentToSettings) {
@@ -214,6 +219,8 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 {
     [self.class validateAVAccess:self.defaults callback:^(bool allowedAccess) {
         if (allowedAccess) {
+            [self.defaults setBool:YES forKey:ARAugmentedRealityHasSeenSetup];
+
             ARAugmentedVIRViewController *vc = [[ARAugmentedVIRViewController alloc] initWithConfig:self.config];
             [self.navigationController pushViewController:vc animated:YES];
         } else {

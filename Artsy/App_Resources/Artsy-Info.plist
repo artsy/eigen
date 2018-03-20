@@ -36,7 +36,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.0.4</string>
+	<string>4.1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -96,7 +96,7 @@
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Used for beta testers to collect usage information.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Used to be able to create photos of artworks that the collector wishes to consign.</string>
+	<string>Used for viewing works on a wall, and to be able to create photos of artworks that the collector wishes to consign.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photos will be used to gauge the quality of the work you are submitting</string>
 	<key>UIAppFonts</key>

@@ -170,7 +170,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 // What to show when we first
 
-NSString *ARInitialSubtitle =  @"Aim at an object on your wall and move your phone in a circle.";
+NSString *ARInitialARVIRSubtitle =  @"Aim at an object on your wall and move your phone in a circle.";
+NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and walk around the room.";
 
 - (void)initialState
 {
@@ -180,14 +181,12 @@ NSString *ARInitialSubtitle =  @"Aim at an object on your wall and move your pho
         self.placeArtworkButton.hidden = YES;
 
         BOOL firstTime = [[NSUserDefaults standardUserDefaults] boolForKey:ARAugmentedRealityHasSuccessfullyRan];
-        self.textLabel.text = firstTime ? ARInitialSubtitle : @"";
+        self.textLabel.text = firstTime ? ARInitialARVIRSubtitle : @"";
 
         if (ARPerformWorkAsynchronously) {
             [self startTimerForModal];
-            [self startTimerFadingOutIntroText];
         }
     });
-
 }
 
 // Wait 30 seconds from starting AR, then show a timeout modal if a wall hasn't been found.
@@ -198,15 +197,15 @@ NSString *ARInitialSubtitle =  @"Aim at an object on your wall and move your pho
     [self performSelector:@selector(showModalForError) withObject:nil afterDelay:wallTimeoutWarning];
 }
 
-- (void)startTimerFadingOutIntroText
+- (void)startTimerFadingOutFinalText
 {
     CGFloat fadeTimeoutWarning = ARPerformWorkAsynchronously ? 7 : 0;
-    [self performSelector:@selector(fadeOutIntroText) withObject:nil afterDelay:fadeTimeoutWarning];
+    [self performSelector:@selector(fadeOutFinalText) withObject:nil afterDelay:fadeTimeoutWarning];
 }
 
-- (void)fadeOutIntroText
+- (void)fadeOutFinalText
 {
-    if ([self.textLabel.text isEqualToString:ARInitialSubtitle]) {
+    if ([self.textLabel.text isEqualToString:ARFinalARVIRSubtitle]) {
         CGFloat fadeTime = ARPerformWorkAsynchronously ? 0.3 : 0;
 
         [UIView animateWithDuration:fadeTime animations:^{
@@ -280,7 +279,11 @@ NSString *ARInitialSubtitle =  @"Aim at an object on your wall and move your pho
     ar_dispatch_main_queue(^{
         self.resetButton.hidden = NO;
         self.phoneImage.hidden = YES;
-        self.textLabel.text = @"Keep your phone pointed at the work and walk around the room.";
+        self.textLabel.text = ARFinalARVIRSubtitle;
+
+        if (ARPerformWorkAsynchronously) {
+            [self startTimerFadingOutFinalText];
+        }
     });
 }
 
