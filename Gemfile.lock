@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/CocoaPods/CocoaPods.git
-  revision: 3edf0f3fdc4e34327e5a9507b4d933fd325339b8
+  revision: 18fd90e1395974dfa10225194e75280aa0ea9839
   specs:
     cocoapods (1.4.0)
       activesupport (>= 4.0.2, < 5)
@@ -24,12 +24,20 @@ GIT
 
 GIT
   remote: https://github.com/CocoaPods/Core.git
-  revision: 1a92ff1b5aa2bd21b9694d0941406aff328fdd2a
+  revision: 07273d3a68c845d76b7a292d1364c4ac3c0b2d69
   specs:
     cocoapods-core (1.4.0)
       activesupport (>= 4.0.2, < 6)
       fuzzy_match (~> 2.0.4)
       nap (~> 1.0)
+
+GIT
+  remote: https://github.com/orta/cocoapods-check.git
+  revision: 9746c399a70f3b3aaf0be47ad8f31f759a4a2e2f
+  branch: different_manifests
+  specs:
+    cocoapods-check (1.0.1)
+      cocoapods (~> 1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -76,8 +84,6 @@ GEM
       cork
       nap
       open4 (~> 1.3)
-    cocoapods-check (1.0.0)
-      cocoapods (~> 1.0)
     cocoapods-deintegrate (1.0.2)
     cocoapods-downloader (1.1.3)
     cocoapods-keys (1.6.1)
@@ -276,7 +282,7 @@ PLATFORMS
 
 DEPENDENCIES
   cocoapods!
-  cocoapods-check
+  cocoapods-check!
   cocoapods-core!
   cocoapods-keys
   danger
