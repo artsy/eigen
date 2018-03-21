@@ -6,7 +6,7 @@ upcoming:
     - Removes `apply` function family from SwiftExtensions.swift - ash
   user_facing:
     - Artwork action buttons (fav/map/vir/share) now center horizontally on iPhone - orta
-    - None yet
+    - Description change for Ephemera atrwork classification field - oksana
   dev:
     - Reduce time spent in dyld at launch by changing Pods from dynamic frameworks to static libraries - alloy
   ARVIR:

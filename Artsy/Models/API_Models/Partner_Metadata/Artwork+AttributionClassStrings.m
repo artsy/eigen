@@ -25,7 +25,7 @@
         return @"This is a non-editioned multiple.";
 
     } else if ([self.attributionClass isEqualToString:@"ephemera"]) {
-        return @"This is a peripheral artifact related to the artist.";
+        return @"This is ephemera, an artifact related to the artist.";
 
     } else {
         return nil;
