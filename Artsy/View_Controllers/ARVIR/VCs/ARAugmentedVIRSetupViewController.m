@@ -130,6 +130,17 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
         [playVC.view alignToView:self.view];
         [playVC didMoveToParentViewController:self];
 
+        UIImageView *poster = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ar_vir_opening_frame.jpg"]];
+        poster.contentMode = UIViewContentModeScaleAspectFill;
+        [self.view addSubview:poster];
+        [poster alignToView:self.view];
+
+        [playVC.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.5, 600) queue:nil usingBlock:^(CMTime time) {
+            if (CMTimeGetSeconds(time) > 0) {
+                [poster removeFromSuperview];
+            }
+        }];
+
         UIView *overlay = [[UIView alloc] init];
         [self.view addSubview:overlay];
         [overlay alignToView:self.view];

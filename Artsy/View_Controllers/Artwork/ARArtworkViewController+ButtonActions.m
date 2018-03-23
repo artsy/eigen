@@ -116,6 +116,8 @@
                 // (Creds in 1pass) and update the ARVIRVideo message with the full URL
                 //
                 ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+                [echo setup];
+
                 Message *setupURL = [[echo.messages select:^BOOL(Message *message) {
                     return [message.name isEqualToString:@"ARVIRVideo"];
                 }] firstObject];
