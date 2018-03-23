@@ -184,7 +184,7 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:YES forKey:ARAugmentedRealityHasSeenSetup];
 
-        BOOL firstTime = [defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
+        BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
         self.textLabel.text = firstTime ? ARInitialARVIRSubtitle : @"";
 
         if (ARPerformWorkAsynchronously) {
