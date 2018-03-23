@@ -73,9 +73,9 @@ export class ArtworkCarousel extends Component<Props, State> {
     }
   }
 
-  async componentDidMount() {
-    await this.refreshData()
-  }
+  // async componentDidMount() {
+  //   await this.refreshData()
+  // }
 
   componentWillUnmount() {
     if (this.props.registerRailModule) {
@@ -334,7 +334,7 @@ export default createRefetchContainer(
   ArtworkCarousel,
   graphql`
     fragment ArtworkCarousel_rail on HomePageArtworkModule
-      @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: false }) {
+      @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: true }) {
       ...ArtworkCarouselHeader_rail
       __id
       key

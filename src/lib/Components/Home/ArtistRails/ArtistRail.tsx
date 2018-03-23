@@ -53,9 +53,9 @@ export class ArtistRail extends Component<Props, State> {
     }
   }
 
-  async componentDidMount() {
-    await this.refreshData()
-  }
+  // async componentDidMount() {
+  //   await this.refreshData()
+  // }
 
   componentWillUnmount() {
     if (this.props.registerRailModule) {
@@ -300,7 +300,7 @@ export default createRefetchContainer(
   ArtistRail,
   graphql`
     fragment ArtistRail_rail on HomePageArtistModule
-      @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: false }) {
+      @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: true }) {
       __id
       key
       results @include(if: $fetchContent) {

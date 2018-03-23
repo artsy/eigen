@@ -10,6 +10,26 @@ import RelayQueryResponseCache from "relay-runtime/lib/RelayQueryResponseCache"
  */
 const cache = new RelayQueryResponseCache({ size: 250, ttl: 2 * 60 * 1000 })
 
+class Cache {
+  _responseCache: RelayQueryResponseCache
+
+  constructor() {
+    this._responseCache = new RelayQueryResponseCache({ size: 250, ttl: 2 * 60 * 1000 })
+  }
+
+  get(text, variables) {
+    this._responseCache.get(text, variables)
+  }
+
+  set(text, variables, json) {
+    this._responseCache.set(text, variables, json)
+  }
+
+  clear() {
+    this._responseCache.clear()
+  }
+}
+
 export const fetchQuery: FetchFunction = (operation, variables, cacheConfig, _uploadables) => {
   const text = operation.text
   const isQuery = operation.operationKind === "query"

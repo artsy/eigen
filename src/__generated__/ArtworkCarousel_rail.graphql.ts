@@ -63,7 +63,7 @@ return {
       "kind": "LocalArgument",
       "name": "fetchContent",
       "type": "Boolean!",
-      "defaultValue": false
+      "defaultValue": true
     }
   ],
   "selections": [
@@ -176,5 +176,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '40c7c47c0d5c7633cf5205f9bf043c9b';
+(node as any).hash = 'd09f449e998ed8a80fda8b9cf4aa55a2';
 export default node;
