@@ -1,6 +1,6 @@
 /// Psh, managers are for Java
 
-#import <UIKit/UIkit.h>
+#import <UIKit/UIKit.h>
 
 
 @interface ARScrollNavigationChief : NSObject <UIScrollViewDelegate, UICollectionViewDelegate>
