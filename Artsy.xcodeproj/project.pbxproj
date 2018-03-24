@@ -3228,7 +3228,8 @@
 				E6FFEAAC19C7925600A0D7DE /* splash_4@2x~iphone.jpg */,
 				E6FFEAAD19C7925600A0D7DE /* splash_5@2x~ipad.jpg */,
 			);
-			path = Onboarding;
+			name = Onboarding;
+			path = onboarding;
 			sourceTree = "<group>";
 		};
 		60059B3917CEA46700BE132D /* Onboarding Personalization */ = {
@@ -5116,16 +5117,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Bold.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-BoldItalic.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Italic.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Regular.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Semibold.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AVG65lig.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Italic.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Medium.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-MediumItalic.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Regular.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/EBGaramond08-Italic.ttf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/EBGaramond08-Regular.ttf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/EBGaramond12-Italic.ttf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/EBGaramond12-Regular.ttf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/texgyreadventor-bold.ttf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/texgyreadventor-regular.ttf",
 				"${PODS_ROOT}/Artsy+UILabels/Pod/Assets/Chevron_Black.png",
 				"${PODS_ROOT}/Artsy+UILabels/Pod/Assets/Chevron_Black@2x.png",
 				"${PODS_ROOT}/Emission/Pod/Assets/Emission.js",
@@ -5159,16 +5156,12 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Bold.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-BoldItalic.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Italic.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Regular.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Semibold.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AVG65lig.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Italic.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Medium.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-MediumItalic.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Regular.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EBGaramond08-Italic.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EBGaramond08-Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EBGaramond12-Italic.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EBGaramond12-Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/texgyreadventor-bold.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/texgyreadventor-regular.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Chevron_Black.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Chevron_Black@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Emission.js",

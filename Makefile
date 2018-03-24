@@ -45,10 +45,6 @@ oss:
 	bundle exec pod keys set "ArtsyAPIClientSecret" "3a33d2085cbd1176153f99781bbce7c6" Artsy
 	bundle exec pod keys set "ArtsyAPIClientKey" "e750db60ac506978fc70"
 	bundle exec pod keys set "ArtsyFacebookAppID" "-"
-	bundle exec pod keys set "ArtsyTwitterKey" "-"
-	bundle exec pod keys set "ArtsyTwitterSecret" "-"
-	bundle exec pod keys set "ArtsyTwitterStagingKey" "-"
-	bundle exec pod keys set "ArtsyTwitterStagingSecret" "-"
 	bundle exec pod keys set "SegmentProductionWriteKey" "-"
 	bundle exec pod keys set "SegmentDevWriteKey" "-"
 	bundle exec pod keys set "AdjustProductionAppToken" "-"
