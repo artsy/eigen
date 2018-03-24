@@ -48,15 +48,15 @@ PODS:
   - ARGenericTableViewController (1.0.2)
   - ARTiledImageView (1.2.0):
     - SDWebImage/Core
-  - Artsy+UIColors (3.1.0)
-  - Artsy+UIFonts (3.2.0)
-  - Artsy+UILabels (2.2.0):
-    - Artsy+UIColors (~> 3.0)
-    - Artsy+UIFonts
+  - "Artsy+UIColors (3.1.0)"
+  - "Artsy+UIFonts (3.2.0)"
+  - "Artsy+UILabels (2.2.0)":
+    - "Artsy+UIColors (~> 3.0)"
+    - "Artsy+UIFonts"
   - Artsy-UIButtons (2.1.0):
-    - Artsy+UIColors (~> 3.0)
-    - Artsy+UIFonts
-    - UIView+BooleanAnimations
+    - "Artsy+UIColors (~> 3.0)"
+    - "Artsy+UIFonts"
+    - "UIView+BooleanAnimations"
   - Bolts (1.9.0):
     - Bolts/AppLinks (= 1.9.0)
     - Bolts/Tasks (= 1.9.0)
@@ -74,8 +74,8 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - EDColor (1.0.0)
   - Emission (1.4.6):
-    - Artsy+UIColors
-    - Artsy+UIFonts (>= 3.0.0)
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts (>= 3.0.0)"
     - Extraction (>= 1.2.1)
     - React/BatchedBridge (= 0.48.4)
     - React/Core (= 0.48.4)
@@ -89,7 +89,7 @@ PODS:
     - SentryReactNative (= 0.30.3)
     - Yoga (= 0.48.4.React)
   - Expecta (1.0.5)
-  - Expecta+Snapshots (3.0.0):
+  - "Expecta+Snapshots (3.0.0)":
     - Expecta (~> 1.0)
     - FBSnapshotTestCase/Core (~> 2.0)
     - Specta (~> 1.0)
@@ -98,23 +98,23 @@ PODS:
     - Extraction/ARLoadFailureView (= 1.2.3)
     - Extraction/ARSpinner (= 1.2.3)
     - Extraction/ARSwitchView (= 1.2.3)
-    - Extraction/UILabel+Typography (= 1.2.3)
-    - Extraction/UIView+ARSpinner (= 1.2.3)
+    - "Extraction/UILabel+Typography (= 1.2.3)"
+    - "Extraction/UIView+ARSpinner (= 1.2.3)"
   - Extraction/ARAnimationContinuation (1.2.3)
   - Extraction/ARLoadFailureView (1.2.3):
     - Artsy-UIButtons
-    - Extraction/UILabel+Typography
+    - "Extraction/UILabel+Typography"
     - ORStackView (< 3)
   - Extraction/ARSpinner (1.2.3):
-    - Extraction/UIView+ARSpinner
-    - UIView+BooleanAnimations
+    - "Extraction/UIView+ARSpinner"
+    - "UIView+BooleanAnimations"
   - Extraction/ARSwitchView (1.2.3):
-    - Artsy+UIColors
-    - Artsy+UIFonts (>= 1.1.0)
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts (>= 1.1.0)"
     - FLKAutoLayout
-    - UIView+BooleanAnimations
-  - Extraction/UILabel+Typography (1.2.3)
-  - Extraction/UIView+ARSpinner (1.2.3):
+    - "UIView+BooleanAnimations"
+  - "Extraction/UILabel+Typography (1.2.3)"
+  - "Extraction/UIView+ARSpinner (1.2.3)":
     - Extraction/ARAnimationContinuation
   - FBSDKCoreKit (4.31.0):
     - Bolts (~> 1.7)
@@ -224,9 +224,9 @@ PODS:
   - SwiftyJSON (4.0.0)
   - Then (2.3.0)
   - UICKeyChainStore (1.0.5)
-  - UIView+BooleanAnimations (1.0.2)
+  - "UIView+BooleanAnimations (1.0.2)"
   - VCRURLConnection (0.2.0)
-  - XCTest+OHHTTPStubSuiteCleanUp (1.0.0):
+  - "XCTest+OHHTTPStubSuiteCleanUp (1.0.0)":
     - OHHTTPStubs
   - Yoga (0.48.4.React)
 
@@ -243,16 +243,16 @@ DEPENDENCIES:
   - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`)
   - ARGenericTableViewController (from `https://github.com/orta/ARGenericTableViewController.git`)
   - ARTiledImageView (from `https://github.com/dblock/ARTiledImageView`)
-  - Artsy+UIColors
-  - Artsy+UIFonts
-  - Artsy+UILabels
+  - "Artsy+UIColors"
+  - "Artsy+UIFonts"
+  - "Artsy+UILabels"
   - Artsy-UIButtons
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
   - Emission (~> 1.4.6)
   - Expecta
-  - Expecta+Snapshots
+  - "Expecta+Snapshots"
   - Extraction
   - FBSDKCoreKit (~> 4.9)
   - FBSDKLoginKit (~> 4.9)
@@ -293,16 +293,16 @@ DEPENDENCIES:
   - SwiftyJSON
   - Then
   - UICKeyChainStore
-  - UIView+BooleanAnimations
+  - "UIView+BooleanAnimations"
   - VCRURLConnection
-  - XCTest+OHHTTPStubSuiteCleanUp
+  - "XCTest+OHHTTPStubSuiteCleanUp"
 
 SPEC REPOS:
   https://github.com/artsy/Specs.git:
     - Aerodramus
-    - Artsy+UIColors
-    - Artsy+UIFonts
-    - Artsy+UILabels
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts"
+    - "Artsy+UILabels"
     - Artsy-UIButtons
     - Emission
     - Extraction
@@ -319,7 +319,7 @@ SPEC REPOS:
     - DHCShakeNotifier
     - EDColor
     - Expecta
-    - Expecta+Snapshots
+    - "Expecta+Snapshots"
     - FBSDKCoreKit
     - FBSDKLoginKit
     - FBSnapshotTestCase
@@ -352,9 +352,9 @@ SPEC REPOS:
     - SwiftyJSON
     - Then
     - UICKeyChainStore
-    - UIView+BooleanAnimations
+    - "UIView+BooleanAnimations"
     - VCRURLConnection
-    - XCTest+OHHTTPStubSuiteCleanUp
+    - "XCTest+OHHTTPStubSuiteCleanUp"
 
 EXTERNAL SOURCES:
   AFOAuth1Client:
@@ -437,9 +437,9 @@ SPEC CHECKSUMS:
   ARCollectionViewMasonryLayout: 97cb468434b546b79a98c7c0908447ff803eb85e
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
-  Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  Artsy+UIFonts: d29579aa105e3709032651fb3145d24f8339e905
-  Artsy+UILabels: 7cb6e290a4f70dddba037b7dbeb21e90b49d7275
+  "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
+  "Artsy+UIFonts": d29579aa105e3709032651fb3145d24f8339e905
+  "Artsy+UILabels": 7cb6e290a4f70dddba037b7dbeb21e90b49d7275
   Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
@@ -447,7 +447,7 @@ SPEC CHECKSUMS:
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
   Emission: d09265166632f16b0968044c5024cdb99bf10169
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  Expecta+Snapshots: c343f410c7a6392f3e22e78f94c44b6c0749a516
+  "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
   FBSDKCoreKit: 54db4c581123745d25a9f7c1608020b3aeabd118
   FBSDKLoginKit: 95a252ddffd6919c0f132a02292f0824616d8709
@@ -491,11 +491,11 @@ SPEC CHECKSUMS:
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
   UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377
-  UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
+  "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
-  XCTest+OHHTTPStubSuiteCleanUp: 4469ec8863c6bc022c5089a9b94233eb3416c5ee
+  "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 2efb0a2b24e5c17cf1aea8c785d4428bd077f667
 
 PODFILE CHECKSUM: 8d0f9b31f28cd90ca0cc04927d540b795cfede18
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0.beta.1

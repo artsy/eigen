@@ -1,11 +1,11 @@
 GIT
   remote: https://github.com/CocoaPods/CocoaPods.git
-  revision: 18fd90e1395974dfa10225194e75280aa0ea9839
+  revision: 377d9cdf4b542e7762fe833e01817a9e423edb34
   specs:
-    cocoapods (1.4.0)
+    cocoapods (1.5.0.beta.1)
       activesupport (>= 4.0.2, < 5)
       claide (>= 1.0.2, < 2.0)
-      cocoapods-core (= 1.4.0)
+      cocoapods-core (= 1.5.0.beta.1)
       cocoapods-deintegrate (>= 1.0.2, < 2.0)
       cocoapods-downloader (>= 1.1.3, < 2.0)
       cocoapods-plugins (>= 1.0.0, < 2.0)
@@ -17,24 +17,23 @@ GIT
       escape (~> 0.0.4)
       fourflusher (~> 2.0.1)
       gh_inspector (~> 1.0)
-      molinillo (~> 0.6.4)
+      molinillo (~> 0.6.5)
       nap (~> 1.0)
       ruby-macho (~> 1.1)
-      xcodeproj (>= 1.5.6, < 2.0)
+      xcodeproj (>= 1.5.7, < 2.0)
 
 GIT
   remote: https://github.com/CocoaPods/Core.git
-  revision: 07273d3a68c845d76b7a292d1364c4ac3c0b2d69
+  revision: 1738fe598fef20b93001a1a08025ce00f0fc2cec
   specs:
-    cocoapods-core (1.4.0)
+    cocoapods-core (1.5.0.beta.1)
       activesupport (>= 4.0.2, < 6)
       fuzzy_match (~> 2.0.4)
       nap (~> 1.0)
 
 GIT
-  remote: https://github.com/orta/cocoapods-check.git
-  revision: 9746c399a70f3b3aaf0be47ad8f31f759a4a2e2f
-  branch: different_manifests
+  remote: https://github.com/square/cocoapods-check.git
+  revision: 3fa1ea89e08a1e678a5c80c9f1beeb73ad1075bc
   specs:
     cocoapods-check (1.0.1)
       cocoapods (~> 1.0)
@@ -209,12 +208,12 @@ GEM
     mini_magick (4.5.1)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
-    molinillo (0.6.4)
+    molinillo (0.6.5)
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     mustache (0.99.8)
-    nanaimo (0.2.3)
+    nanaimo (0.2.4)
     nap (1.1.0)
     netrc (0.11.0)
     nio4r (1.2.1)
@@ -266,12 +265,12 @@ GEM
     xcode-install (2.3.1)
       claide (>= 0.9.1, < 1.1.0)
       fastlane (>= 2.1.0, < 3.0.0)
-    xcodeproj (1.5.6)
-      CFPropertyList (~> 2.3.3)
+    xcodeproj (1.5.7)
+      CFPropertyList (>= 2.3.3, < 4.0)
       atomos (~> 0.1.2)
       claide (>= 1.0.2, < 2.0)
       colored2 (~> 3.1)
-      nanaimo (~> 0.2.3)
+      nanaimo (~> 0.2.4)
     xcpretty (0.2.4)
       rouge (~> 1.8)
     xcpretty-travis-formatter (1.0.0)
