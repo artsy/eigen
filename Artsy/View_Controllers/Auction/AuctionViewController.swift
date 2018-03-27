@@ -122,7 +122,7 @@ class AuctionViewController: UIViewController {
     }
 
     enum ViewTags: Int {
-        case banner = 0, title, lotStandings
+        case banner = 0, title, lotStandings, buyNow
 
         case whitespaceGobbler
     }
@@ -163,6 +163,12 @@ extension AuctionViewController {
         )
         lotStandingsView.tag = ViewTags.lotStandings.rawValue
         headerStack?.addSubview(lotStandingsView, withTopMargin: "0", sideMargin: "0")
+    }
+    
+    func addBuyNow() {        
+        let buyNowView = AuctionBuyNowView(isCompact: isCompactSize)
+        buyNowView.tag = ViewTags.buyNow.rawValue
+        headerStack?.addSubview(buyNowView, withTopMargin: "0", sideMargin: "0")
     }
 
     var isCompactSize: Bool { return traitCollection.horizontalSizeClass == .compact }
@@ -218,6 +224,7 @@ extension AuctionViewController {
         self.titleView = titleView
 
         addLotStandings()
+//        addBuyNow()
 
         stickyHeader = ScrollingStickyHeaderView().then {
             $0.toggleAttatched(false, animated: false)
