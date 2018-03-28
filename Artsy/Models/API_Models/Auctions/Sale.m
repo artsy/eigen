@@ -25,15 +25,16 @@
 {
     return @{
         ar_keypath(Sale.new, saleID) : @"id",
-        ar_keypath(Sale.new, isAuction) : @"is_auction",
-        ar_keypath(Sale.new, startDate) : @"start_at",
-        ar_keypath(Sale.new, endDate) : @"end_at",
-        ar_keypath(Sale.new, saleState) : @"auction_state",
-        ar_keypath(Sale.new, liveAuctionStartDate) : @"live_start_at",
-        ar_keypath(Sale.new, registrationEndsAtDate) : @"registration_ends_at",
         ar_keypath(Sale.new, buyersPremium) : @"buyers_premium",
+        ar_keypath(Sale.new, endDate) : @"end_at",
         ar_keypath(Sale.new, imageURLs) : @"image_urls",
+        ar_keypath(Sale.new, isAuction) : @"is_auction",
+        ar_keypath(Sale.new, liveAuctionStartDate) : @"live_start_at",
+        ar_keypath(Sale.new, promotedSaleID) : @"promoted_sale.id",
+        ar_keypath(Sale.new, registrationEndsAtDate) : @"registration_ends_at",
         ar_keypath(Sale.new, saleDescription) : @"description",
+        ar_keypath(Sale.new, saleState) : @"auction_state",
+        ar_keypath(Sale.new, startDate) : @"start_at",
     };
 }
 
@@ -69,10 +70,20 @@
 
 + (NSValueTransformer *)saleStateJSONTransformer
 {
-    return [ARTwoWayDictionaryTransformer reversibleTransformerWithDictionary:@{
-        @"preview" : @(SaleStatePreview),
-        @"open" : @(SaleStateOpen),
-        @"closed" : @(SaleStateClosed),
+    NSDictionary *stateMapping = @{
+                                   @"preview" : @(SaleStatePreview),
+                                   @"open" : @(SaleStateOpen),
+                                   @"closed" : @(SaleStateClosed),
+                                   };
+
+    return [MTLValueTransformer reversibleTransformerWithForwardBlock:^id(id str) {
+        if (str) {
+            return stateMapping[str];
+        } else {
+            return @(SaleStateOpen);
+        }
+    } reverseBlock:^id(id type) {
+        return [stateMapping allKeysForObject:type].lastObject;
     }];
 }
 

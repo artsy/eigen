@@ -14,6 +14,7 @@ typedef enum: NSUInteger {
 
 @property (nonatomic, copy, readonly) NSString *name;
 @property (nonatomic, copy, readonly) NSString *saleID;
+@property (nonatomic, strong, readonly) NSString *promotedSaleID;
 @property (nonatomic, copy, readonly) NSString *saleDescription;
 @property (nonatomic, assign, readonly) SaleState saleState;
 
@@ -30,7 +31,6 @@ typedef enum: NSUInteger {
 
 @property (nonatomic, readonly) BOOL isAuction;
 @property (nonatomic, readonly) BOOL requireBidderApproval;
-
 
 - (BOOL)shouldShowLiveInterface;
 - (NSString *)bannerImageURLString;

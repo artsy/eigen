@@ -3,8 +3,6 @@
 //
 
 #import "UIViewController+FullScreenLoading.h"
-#import "ArtsyAPI+Sales.h"
-#import "ArtsyAPI+Pages.h"
 
 #import "ARUserActivity.h"
 
@@ -13,7 +11,11 @@
 #import "ARCountdownView.h"
 #import "UIView+HitTestExpansion.h"
 #import "ARSeparatorViews.h"
+
 #import "ArtsyAPI+CurrentUserFunctions.h"
+#import "ArtsyAPI+Sales.h"
+#import "ArtsyAPI+Pages.h"
+
 #import "ARSaleArtworkItemWidthDependentModule.h"
 #import "ARArtworkSetViewController.h"
 //#import "Fair.h" // Required by the switchboard's loadArtworkWithID(inFair:) function, even if we just pass nil in as a fair.

@@ -4,14 +4,16 @@ class SaleViewModel: NSObject {
     fileprivate let sale: Sale
     fileprivate let saleArtworks: [SaleArtwork]
     fileprivate var lotStandings: [LotStanding]
+    fileprivate let promotedSale: Sale?
 
     var bidders: [Bidder]
 
-    init(sale: Sale, saleArtworks: [SaleArtwork], bidders: [Bidder], lotStandings: [LotStanding]) {
+    init(sale: Sale, saleArtworks: [SaleArtwork], bidders: [Bidder], lotStandings: [LotStanding], promotedSale: Sale? = nil) {
         self.sale = sale
         self.saleArtworks = saleArtworks
         self.bidders = bidders
         self.lotStandings = lotStandings
+        self.promotedSale = promotedSale
     }
 
     var saleIsClosed: Bool {

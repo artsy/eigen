@@ -35,15 +35,15 @@
             }
             return;
         }
-
-        NSArray *artworks = [saleArtworksJSON map:^id(id json) {
+        
+        NSArray *saleArtworks = [saleArtworksJSON map:^id(id json) {
             // AFNetworking will remove keys from dictionaries that contain null values, but not arrays that contain *only* nulls.
             // Once https://github.com/AFNetworking/AFNetworking/pull/4052 is merged, we can update AFNetworking and remove this NSNull check.
             // So we need to do some additional checking, just to be safe.
             if (json == [NSNull null]) { return nil; }
             id artworkJSON = json[@"artwork"];
             if (!artworkJSON) { return nil; }
-
+            
             // This is messy, sorry. We need to fill those back references from artwork -> sale artwork
             // without creating a reference cycle. So we inflate two models with JSON.
             SaleArtwork *saleArtwork = [SaleArtwork modelWithJSON:json];
@@ -52,9 +52,9 @@
             artwork.saleArtwork = saleArtwork;
             return artwork;
         }];
-        
+
         if (success) {
-            success(artworks);
+            success(saleArtworks);
         }
     } failure:failure];
 }
