@@ -287,6 +287,7 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
     ar_dispatch_main_queue(^{
         self.resetButton.hidden = NO;
         self.phoneImage.hidden = YES;
+        self.placeArtworkButton.hidden = YES;
         self.textLabel.text = ARFinalARVIRSubtitle;
 
         if (ARPerformWorkAsynchronously) {
