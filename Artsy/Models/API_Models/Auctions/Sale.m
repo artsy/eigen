@@ -71,11 +71,13 @@
 + (NSValueTransformer *)saleStateJSONTransformer
 {
     NSDictionary *stateMapping = @{
-                                   @"preview" : @(SaleStatePreview),
-                                   @"open" : @(SaleStateOpen),
-                                   @"closed" : @(SaleStateClosed),
-                                   };
+        @"preview" : @(SaleStatePreview),
+        @"open" : @(SaleStateOpen),
+        @"closed" : @(SaleStateClosed),
+    };
 
+    // Some Sales will have associated Promoted Sales, but most will not. For
+    // instances where this value is missing we default to a `SaleStateOpen` state.
     return [MTLValueTransformer reversibleTransformerWithForwardBlock:^id(id str) {
         if (str) {
             return stateMapping[str];

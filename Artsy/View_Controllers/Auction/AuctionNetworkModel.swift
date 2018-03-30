@@ -65,8 +65,8 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                 Result<[LotStanding]>,
                 Result<Sale>,
                 Result<[SaleArtwork]>,
-                Result<Sale>)
-            > in
+                Result<Sale>)> in
+
                 switch sale {
                 case .success(let sale):
                     return combine(
@@ -74,7 +74,7 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                         self.fetchLotStanding(self.saleID),
                         self.fetchSale(sale.promotedSaleID),
                         self.fetchSaleArtworks(self.saleID),
-                        Observable(Result(success:sale))
+                        Observable(Result(success: sale))
                     )
                 case .error(let error):
                     print(error)
@@ -189,8 +189,7 @@ func combine<A, B, C, D, E>(
         Result<B>,
         Result<C>,
         Result<D>,
-        Result<E>
-    )>()
+        Result<E>)>()
 
     let notifyIfComplete: () -> Void = {
         if  let aResult = aResult,
