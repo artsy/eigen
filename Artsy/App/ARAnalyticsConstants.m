@@ -16,7 +16,7 @@ NSString *const ARAnalyticsDeepLinkOpened = @"Deep link opened";
 
 NSString *const ARAnalyticsAccountCreated = @"Created account";
 NSString *const ARAnalyticsLoggedIn = @"Successfully logged in";
-NSString *const ARAnalyticsAuthError =@"Authentication error";
+NSString *const ARAnalyticsAuthError = @"Authentication error";
 
 NSString *const ARAnalyticsSlideshowStarted = @"Slideshow started";
 

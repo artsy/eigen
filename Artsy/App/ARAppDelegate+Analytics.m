@@ -53,6 +53,9 @@
 #import "ARNavigationController.h"
 #import "ARArtworkInfoViewController.h"
 #import "ARSentryAnalyticsProvider.h"
+#import "ARAugmentedRealityConfig.h"
+#import "ARAugmentedVIRSetupViewController.h"
+#import "ARAugmentedVIRViewController.h"
 
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARArtistComponentViewController.h>
@@ -344,7 +347,17 @@
                                     @"gallery_slug": controller.artwork.partner.partnerID ?: @"",
                                 };
                             },
-
+                        },
+                        @{
+                            ARAnalyticsEventName: @"tap",
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedArtworkViewInRoom)),
+                            ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *_){
+                                return @{
+                                    @"context_screen_owner_slug": controller.artwork.artworkID ?: @"",
+                                    @"context_screen_owner_type": @"Artwork",
+                                    @"action_name": @"tappedArtworkViewInRoom"
+                                 };
+                            },
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsFairMapButtonTapped,
@@ -921,6 +934,44 @@
                         }
                     ]
                 },
+                   @{
+                    ARAnalyticsClass: ARAugmentedVIRViewController.class,
+                    ARAnalyticsDetails: @[
+                        @{
+                            ARAnalyticsEventName: @"success",
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(hasRegisteredPlanes),
+                            ARAnalyticsProperties: ^NSDictionary *(ARAugmentedVIRViewController *controller, NSArray *parameters) {
+                                return @{
+                                    @"action_name" : @"ar detected planes",
+                                    @"owner_type" : @"artwork",
+                                    @"owner_id" : controller.config.artworkID ?: @"unknown",
+                                    @"owner_slug": controller.config.artworkSlug ?: @"unknown",
+                                };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: @"success",
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(hasPlacedArtwork),
+                            ARAnalyticsProperties: ^NSDictionary *(ARAugmentedVIRViewController *controller, NSArray *parameters) {
+                                return @{
+                                    @"action_name" : @"placed artwork",
+                                    @"owner_type" : @"artwork",
+                                    @"owner_id" : controller.config.artworkID ?: @"unknown",
+                                    @"owner_slug": controller.config.artworkSlug ?: @"unknown",
+                                };
+                            }
+                        },
+                        @{
+                            ARAnalyticsEventName: @"ar_view_in_room_time",
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(exitARContext),
+                            ARAnalyticsProperties: ^NSDictionary *(ARAugmentedVIRViewController *controller, NSArray *parameters) {
+                                return @{
+                                    @"length" : @([controller timeInAR])
+                                };
+                            }
+                        }
+                    ]
+                },
             ], // ========== SCREENS ==========
             ARAnalyticsTrackedScreens: @[
                 // ========== ONBOARDING ==========
@@ -931,46 +982,46 @@
                 @{
                     ARAnalyticsClass: ARPersonalizeViewController.class,
                     ARAnalyticsDetails: @[
-                            @{
-                                ARAnalyticsPageName: @"Onboarding enter your email",
-                                ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
-                                    return (controller.state == AROnboardingStagePersonalizeEmail);
-                                    }
+                        @{
+                            ARAnalyticsPageName: @"Onboarding enter your email",
+                            ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                return (controller.state == AROnboardingStagePersonalizeEmail);
                                 }
-                            ]
+                            }
+                        ]
                     },
                 @{
                     ARAnalyticsClass: ARPersonalizeViewController.class,
                     ARAnalyticsDetails: @[
-                            @{
-                                ARAnalyticsPageName: @"Onboarding enter your password",
-                                ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
-                                    return (controller.state == AROnboardingStagePersonalizeLogin);
-                                    }
+                        @{
+                            ARAnalyticsPageName: @"Onboarding enter your password",
+                            ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                return (controller.state == AROnboardingStagePersonalizeLogin);
                                 }
-                            ]
+                            }
+                        ]
                     },
                 @{
                     ARAnalyticsClass: ARPersonalizeViewController.class,
                     ARAnalyticsDetails: @[
-                            @{
-                                ARAnalyticsPageName: @"Onboarding create a password",
-                                ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
-                                    return (controller.state == AROnboardingStagePersonalizePassword);
-                                    }
+                        @{
+                            ARAnalyticsPageName: @"Onboarding create a password",
+                            ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                return (controller.state == AROnboardingStagePersonalizePassword);
                                 }
-                            ]
+                            }
+                        ]
                     },
                 @{
                     ARAnalyticsClass: ARPersonalizeViewController.class,
                     ARAnalyticsDetails: @[
-                            @{
-                                ARAnalyticsPageName: @"Onboarding enter your full name",
-                                ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
-                                    return (controller.state == AROnboardingStagePersonalizeName);
-                                    }
+                        @{
+                            ARAnalyticsPageName: @"Onboarding enter your full name",
+                            ARAnalyticsShouldFire: ^BOOL(ARPersonalizeViewController *controller, NSArray *_) {
+                                return (controller.state == AROnboardingStagePersonalizeName);
                                 }
-                            ]
+                            }
+                        ]
                     },
                 @{
                     ARAnalyticsClass: ARPersonalizeViewController.class,
@@ -1059,11 +1110,11 @@
                             ARAnalyticsPageName: @"Artist",
                             ARAnalyticsProperties: ^NSDictionary *(ARArtistComponentViewController *controller, NSArray *_) {
                                 return @{
-                                         @"owner_type": @"artist",
-                                         @"owner_id": @"",
-                                         @"owner_slug": controller.artistID ?: @"",
-                                         @"partial" : @"true"
-                                         };
+                                     @"owner_type": @"artist",
+                                     @"owner_id": @"",
+                                     @"owner_slug": controller.artistID ?: @"",
+                                     @"partial" : @"true"
+                                 };
                             }
                         }
                     ]
@@ -1076,9 +1127,9 @@
                             ARAnalyticsSelectorName: @"showDidLoad",
                             ARAnalyticsProperties:^NSDictionary *(ARShowViewController *controller, NSArray *_) {
                                 NSDictionary *basics =  @{
-                                                          @"owner_type": @"partner_show",
-                                                          @"owner_id": controller.show.showUUID,
-                                                          @"owner_slug": controller.show.showID,
+                                      @"owner_type": @"partner_show",
+                                      @"owner_id": controller.show.showUUID,
+                                      @"owner_slug": controller.show.showID,
                                 };
 
                                 if (controller.show.fair.fairID) {
@@ -1096,11 +1147,12 @@
                         @{
                             ARAnalyticsPageName: @"Category",
                             ARAnalyticsProperties: ^NSDictionary *(ARGeneComponentViewController *controller, NSArray *_) {
-                                return @{ @"owner-type": @"gene",
-                                          @"owner-id": @"",
-                                          @"owner-slug": controller.geneID ?: @"",
-                                          @"partial" : @"true"
-                                          };
+                                return @{
+                                    @"owner-type": @"gene",
+                                    @"owner-id": @"",
+                                    @"owner-slug": controller.geneID ?: @"",
+                                    @"partial" : @"true"
+                                };
                             }
                         }
                     ]
@@ -1188,6 +1240,14 @@
                             }
                         }
                     ]
+                },
+                @{
+                    ARAnalyticsClass: ARAugmentedVIRSetupViewController.class,
+                    ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"AR Allow Camera Access" } ]
+                },
+                @{
+                    ARAnalyticsClass: ARAugmentedVIRViewController.class,
+                    ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"AR View in Room" } ]
                 },
             ]
         }

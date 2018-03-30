@@ -4,6 +4,10 @@ require 'fileutils'
 
 APP_ID = 'net.artsy.artsy'.freeze
 
+before_all do
+  setup_circle_ci
+end
+
 lane :ship_beta do
   verify_pod_keys
 
@@ -71,49 +75,49 @@ lane :ship_beta do
   dsyms_path = File.join(root, 'dSYMs')
   sh "unzip -d #{dsyms_path} #{dsym_archive}"
 
-  sentry = lambda do |project_slug|
-    org_slug = 'artsynet'
+  # sentry = lambda do |project_slug|
+  #   org_slug = 'artsynet'
 
-    sentry_create_release auth_token: ENV['SentryUploadAuthKey'],
-                          org_slug: org_slug,
-                          project_slug: project_slug,
-                          version: sentry_version,
-                          finalize: false
-    puts "Created a release for #{project_slug}"
+  #   sentry_create_release auth_token: ENV['SentryUploadAuthKey'],
+  #                         org_slug: org_slug,
+  #                         project_slug: project_slug,
+  #                         version: sentry_version,
+  #                         finalize: false
+  #   puts "Created a release for #{project_slug}"
 
-    Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
-      # No need to specify `dist` as the build number is encoded in the dSYM’s Info.plist
-      sentry_upload_dsym auth_token: ENV['SentryUploadAuthKey'],
-                         org_slug: org_slug,
-                         project_slug: project_slug,
-                         dsym_path: dsym_path
-    end
+  #   Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
+  #     # No need to specify `dist` as the build number is encoded in the dSYM’s Info.plist
+  #     sentry_upload_dsym auth_token: ENV['SentryUploadAuthKey'],
+  #                        org_slug: org_slug,
+  #                        project_slug: project_slug,
+  #                        dsym_path: dsym_path
+  #   end
 
-    puts "Uploaded dsym for #{project_slug}"
+  #   puts "Uploaded dsym for #{project_slug}"
 
-    sentry_upload_file auth_token: ENV['SentryUploadAuthKey'],
-                       org_slug: org_slug,
-                       project_slug: project_slug,
-                       version: sentry_version,
-                       dist: sentry_dist,
-                       file: 'Pods/Emission/Pod/Assets/Emission.js'
-    puts "Uploaded Emission.js for #{project_slug}"
+  #   sentry_upload_file auth_token: ENV['SentryUploadAuthKey'],
+  #                      org_slug: org_slug,
+  #                      project_slug: project_slug,
+  #                      version: sentry_version,
+  #                      dist: sentry_dist,
+  #                      file: 'Pods/Emission/Pod/Assets/Emission.js'
+  #   puts "Uploaded Emission.js for #{project_slug}"
 
-    sentry_upload_sourcemap auth_token: ENV['SentryUploadAuthKey'],
-                            org_slug: org_slug,
-                            project_slug: project_slug,
-                            version: sentry_version,
-                            dist: sentry_dist,
-                            sourcemap: 'Pods/Emission/Pod/Assets/Emission.js.map',
-                            rewrite: true
-    puts "Uploaded Emission.js.map for #{project_slug}"
-  end
+  #   sentry_upload_sourcemap auth_token: ENV['SentryUploadAuthKey'],
+  #                           org_slug: org_slug,
+  #                           project_slug: project_slug,
+  #                           version: sentry_version,
+  #                           dist: sentry_dist,
+  #                           sourcemap: 'Pods/Emission/Pod/Assets/Emission.js.map',
+  #                           rewrite: true
+  #   puts "Uploaded Emission.js.map for #{project_slug}"
+  # end
 
-  sentry.call('eigen')
+  # sentry.call('eigen')
   # sentry.call("eigen-staging")
 
   # Make dSYM archive available in case we failed to put them in the right place in Sentry.
-  FileUtils.mv(dsym_archive, ENV['CIRCLE_ARTIFACTS'])
+  # FileUtils.mv(dsym_archive, ENV['CIRCLE_ARTIFACTS'])
 
   # # Send to the app store
   pilot changelog: beta_readme, itc_provider: 'ArtsyInc'
@@ -128,7 +132,7 @@ lane :ship_beta do
 end
 
 error do |_, exception|
-  File.open(File.join(ENV['CIRCLE_ARTIFACTS'], 'fastlane-error.txt'), 'w') do |file|
+  File.open(File.join(".", 'fastlane-error.txt'), 'w') do |file|
     file.puts("#{exception.message}\n\t#{exception.backtrace.join("\n\t")}")
   end
 end

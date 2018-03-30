@@ -5,6 +5,7 @@
 #import "ARDispatchManager.h"
 #import "ARFonts.h"
 #import "ARAppConstants.h"
+#import "ARDefaults.h"
 #import <Artsy-UIButtons/ARButtonSubclasses.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 
@@ -27,8 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) UIButton *resetButton;
 @property (nonatomic, weak, nullable) UIButton *placeArtworkButton;
 @property (nonatomic, weak, nullable) UILabel *textLabel;
+@property (nonatomic, strong, nullable) NSDate *dateOpenedAR;
 
-@property (nonatomic, strong, readonly) ARAugmentedRealityConfig *config;
 
 @end
 
@@ -51,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)viewDidLoad {
     if (@available(iOS 11.0, *)) {
+        _dateOpenedAR = [NSDate date];
 
         self.view.backgroundColor = UIColor.whiteColor;
         [super viewDidLoad];
@@ -85,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
         [backButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
         [backButton setImage:[UIImage imageNamed:@"ARVIRBack"] forState:UIControlStateNormal];
         backButton.translatesAutoresizingMaskIntoConstraints = false;
-        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        [backButton addTarget:self action:@selector(exitARContext) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:backButton];
 
         // Reset
@@ -169,27 +171,55 @@ NS_ASSUME_NONNULL_BEGIN
 
 // What to show when we first
 
+NSString *ARInitialARVIRSubtitle =  @"Aim at an object on your wall and move your phone in a circle.";
+NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and walk around the room.";
+
 - (void)initialState
 {
     ar_dispatch_main_queue(^{
         self.resetButton.hidden = YES;
         self.phoneImage.hidden = NO;
         self.placeArtworkButton.hidden = YES;
-        self.textLabel.text = @"Aim at an object on your wall and move your phone in a circle.";
+
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:YES forKey:ARAugmentedRealityHasSeenSetup];
+
+        BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
+        self.textLabel.text = firstTime ? ARInitialARVIRSubtitle : @"";
 
         if (ARPerformWorkAsynchronously) {
             [self startTimerForModal];
         }
     });
-
 }
 
 // Wait 30 seconds from starting AR, then show a timeout modal if a wall hasn't been found.
 
 - (void)startTimerForModal
 {
-    CGFloat wallTimeoutWarning = ARPerformWorkAsynchronously ? 30 : 0;
+    CGFloat wallTimeoutWarning = ARPerformWorkAsynchronously ? 15 : 0;
     [self performSelector:@selector(showModalForError) withObject:nil afterDelay:wallTimeoutWarning];
+}
+
+- (void)startTimerFadingOutFinalText
+{
+    CGFloat fadeTimeoutWarning = ARPerformWorkAsynchronously ? 7 : 0;
+    [self performSelector:@selector(fadeOutFinalText) withObject:nil afterDelay:fadeTimeoutWarning];
+}
+
+- (void)fadeOutFinalText
+{
+    if ([self.textLabel.text isEqualToString:ARFinalARVIRSubtitle]) {
+        CGFloat fadeTime = ARPerformWorkAsynchronously ? 0.3 : 0;
+
+        [UIView animateWithDuration:fadeTime animations:^{
+            self.textLabel.alpha = 0;
+
+        } completion:^(BOOL finished) {
+            self.textLabel.text = @"";
+            self.textLabel.alpha = 1;
+        }];
+    }
 }
 
 // Pop up an error message
@@ -199,9 +229,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSString *errorMessage = @"We’re having trouble finding your wall. Make sure the room is well-lit or try focusing on a different object on the wall.";
     ARAugmentedVIRModalView *modal = [[ARAugmentedVIRModalView alloc] initWithTitle:errorMessage delegate:self];
     [self.view addSubview:modal];
-    [modal alignToView:self];
-
-    [self viewWillDisappear:YES];
+    [modal alignToView:self.view];
 }
 
 // Re-create the AR session, and start again
@@ -212,15 +240,21 @@ NS_ASSUME_NONNULL_BEGIN
     [self viewWillAppear:YES];
 }
 
+// Let's you exit easily if you're not having a good time
+
+- (void)hitBackFromModal:(ARAugmentedVIRModalView *)modal
+{
+    [self exitARContext];
+}
+
 // Offer the ability to place an artwork
 
 - (void)hasRegisteredPlanes
 {
     ar_dispatch_main_queue(^{
-        self.resetButton.hidden = NO;
+        self.resetButton.hidden = YES;
         self.phoneImage.hidden = YES;
         self.placeArtworkButton.hidden = YES;
-        self.textLabel.text = @"Tap the screen to place the work.";
 
         [self.class cancelPreviousPerformRequestsWithTarget:self selector:@selector(showModalForError) object:nil];
     });
@@ -235,8 +269,6 @@ NS_ASSUME_NONNULL_BEGIN
         self.placeArtworkButton.hidden = NO;
         self.placeArtworkButton.enabled = showing;
         self.textLabel.text = @"";
-        self.resetButton.hidden = NO;
-        self.phoneImage.hidden = YES;
     });
 }
 
@@ -255,7 +287,11 @@ NS_ASSUME_NONNULL_BEGIN
     ar_dispatch_main_queue(^{
         self.resetButton.hidden = NO;
         self.phoneImage.hidden = YES;
-        self.textLabel.text = @"";
+        self.textLabel.text = ARFinalARVIRSubtitle;
+
+        if (ARPerformWorkAsynchronously) {
+            [self startTimerFadingOutFinalText];
+        }
     });
 }
 
@@ -275,7 +311,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Pop back, and potentially skip the AR Setup VC if it's there
 
-- (void)back
+- (void)exitARContext
 {
     // Ensure we jump past the SetupVC
     NSArray *vcs = self.navigationController.viewControllers;
@@ -290,11 +326,17 @@ NS_ASSUME_NONNULL_BEGIN
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (NSTimeInterval)timeInAR
+{
+    return  [self.dateOpenedAR timeIntervalSinceNow] * -1;
+}
+
 // When a user requests to reset, update the UI to the beginnning
 
 - (void)resetAR
 {
-    [self initialState];
+    [self hasRegisteredPlanes];
+
     [self.interactionController restart];
 }
 
@@ -309,7 +351,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (IBAction)panMoved:(UIPanGestureRecognizer *)gesture
 {
-    [self.interactionController pannedOnScreen:gesture];
+//     [self.interactionController pannedOnScreen:gesture];
 }
 
 // When you leave and come back to this VC, ARKit cannot correctly keep track of the world, need to reset
