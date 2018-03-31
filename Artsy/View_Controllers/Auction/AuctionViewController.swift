@@ -10,7 +10,7 @@ class AuctionViewController: UIViewController {
     var stickyHeader: ScrollingStickyHeaderView!
     var titleView: AuctionTitleView?
     var lotStandingsView: LotStandingsView?
-    var buyNowView: AuctionBuyNowView?
+    var buyNowViewController: AuctionBuyNowViewController?
 
     var allowAnimations = true
 
@@ -192,10 +192,10 @@ extension AuctionViewController {
     }
 
     func addBuyNow() {
-        let buyNowView = AuctionBuyNowView(isCompact: isCompactSize)
-        buyNowView.tag = ViewTags.buyNow.rawValue
-        headerStack?.addSubview(buyNowView, withTopMargin: "0", sideMargin: "0")
-        self.buyNowView = buyNowView
+        let buyNowViewController = AuctionBuyNowViewController(isCompact: isCompactSize, promotedSaleArtworks: self.saleViewModel.promotedSaleArtworks?)
+        buyNowViewController.view.tag = ViewTags.buyNow.rawValue
+        headerStack?.addSubview(buyNowViewController.view, withTopMargin: "0", sideMargin: "0")
+        self.buyNowViewController = buyNowViewController
     }
 
     func setupForUpcomingSale(_ saleViewModel: SaleViewModel) {

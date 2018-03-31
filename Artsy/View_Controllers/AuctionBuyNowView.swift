@@ -2,7 +2,8 @@ import UIKit
 import Then
 
 class AuctionBuyNowView: UIView {
-    let isCompact: Bool
+    fileprivate let isCompact: Bool
+    fileprivate var saleArtworksViewController: ARModelInfiniteScrollViewController!
     
     init(isCompact: Bool) {
         self.isCompact = isCompact
@@ -25,6 +26,10 @@ extension PrivateFunctions {
         titleView.alignTopEdge(withView: self, predicate: "0")
         titleView.alignLeading("0", trailing: "0", toView: self)
         titleView.alignBottomEdge(withView: self, predicate: "0")
+
+//        saleArtworksViewController = ARModelInfiniteScrollViewController()
+//        let saleArtworksView = addSubview(saleArtworksViewController)
+
         
         let bottomBorder = UIView().then {
             $0.backgroundColor = UIColor.artsyGrayRegular()

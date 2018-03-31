@@ -4,16 +4,16 @@ class SaleViewModel: NSObject {
     fileprivate let sale: Sale
     fileprivate let saleArtworks: [SaleArtwork]
     fileprivate var lotStandings: [LotStanding]
-    fileprivate let promotedSale: Sale?
+    let promotedSaleArtworks: [SaleArtwork]?
 
     var bidders: [Bidder]
 
-    init(sale: Sale, saleArtworks: [SaleArtwork], bidders: [Bidder], lotStandings: [LotStanding], promotedSale: Sale? = nil) {
+    init(sale: Sale, saleArtworks: [SaleArtwork], promotedSaleArtworks: [SaleArtwork]? = nil, bidders: [Bidder], lotStandings: [LotStanding]) {
         self.sale = sale
         self.saleArtworks = saleArtworks
+        self.promotedSaleArtworks = promotedSaleArtworks
         self.bidders = bidders
         self.lotStandings = lotStandings
-        self.promotedSale = promotedSale
     }
 
     var saleIsClosed: Bool {
@@ -133,9 +133,7 @@ class SaleViewModel: NSObject {
     func refinedSaleArtworks(_ refineSettings: AuctionRefineSettings) -> [SaleArtworkViewModel] {
         return refineSettings.ordering.sortSaleArtworks(saleArtworks)
             .filter(SaleArtwork.includedInRefineSettings(refineSettings))
-            .map { saleArtwork in
-                return SaleArtworkViewModel(saleArtwork: saleArtwork)
-        }
+            .map { SaleArtworkViewModel(saleArtwork: $0 ) }
     }
 
     func subtitleForRefineSettings(_ refineSettings: AuctionRefineSettings, defaultRefineSettings: AuctionRefineSettings) -> String {

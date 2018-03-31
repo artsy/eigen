@@ -11,6 +11,8 @@ protocol AuctionNetworkModelType {
     func fetchLotStanding(_ saleID: String) -> Observable<Result<[LotStanding]>>
 }
 
+typealias PromotedSaleArtworks = [SaleArtwork]
+
 /// Network model for everything auction-related. It delegates out to other
 /// network models and doesn't itself perform any networking.
 class AuctionNetworkModel {
@@ -60,21 +62,21 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
         let saleID = self.saleID
 
         return fetchSale(saleID)
-            .flatMap { sale -> Observable<(
-                Result<[Bidder]>,
-                Result<[LotStanding]>,
+            .flatMap { (sale: Result<Sale>) -> Observable<(
                 Result<Sale>,
                 Result<[SaleArtwork]>,
-                Result<Sale>)> in
+                Result<PromotedSaleArtworks>,
+                Result<[Bidder]>,
+                Result<[LotStanding]>)> in
 
                 switch sale {
                 case .success(let sale):
                     return combine(
-                        self.fetchBidders(self.saleID),
-                        self.fetchLotStanding(self.saleID),
-                        self.fetchSale(sale.promotedSaleID),
+                        Observable(Result(success: sale)),
                         self.fetchSaleArtworks(self.saleID),
-                        Observable(Result(success: sale))
+                        self.fetchSaleArtworks(sale.promotedSaleID),
+                        self.fetchBidders(self.saleID),
+                        self.fetchLotStanding(self.saleID)
                     )
                 case .error(let error):
                     print(error)
@@ -85,11 +87,11 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                 }
             }
             .flatMap { [weak self] (
-                bidders,
-                lotStandings,
-                promotedSale,
+                sale,
                 saleArtworks,
-                sale
+                promotedSaleArtworks,
+                bidders,
+                lotStandings
             ) -> Observable<Result<SaleViewModel>> in
                 guard let `self` = self else { return Observable() }
 
@@ -105,11 +107,11 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                 case .success(let bidders):
                     return Observable(
                         self.createViewModel(
-                            bidders: bidders,
-                            lotStandings: retrievedLotStandings,
                             sale: sale,
                             saleArtworks: saleArtworks,
-                            promotedSale: promotedSale
+                            promotedSaleArtworks: promotedSaleArtworks,
+                            bidders: bidders,
+                            lotStandings: retrievedLotStandings
                         )
                     )
                 case .error(let error):
@@ -123,22 +125,26 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
     }
 
     func createViewModel(
-        bidders: [Bidder],
-        lotStandings: [LotStanding],
         sale: Result<Sale>,
         saleArtworks: Result<[SaleArtwork]>,
-        promotedSale: Result<Sale>
+        promotedSaleArtworks: Result<PromotedSaleArtworks>,
+        bidders: [Bidder],
+        lotStandings: [LotStanding]
     ) -> Result<SaleViewModel> {
 
         // We need to extract them from their respective Result containers. If
         // either failed, we pass along that failure.
-        switch (sale, saleArtworks, promotedSale) {
+        switch (sale, saleArtworks, promotedSaleArtworks) {
 
         case (.success(let sale),
               .success(let saleArtworks),
-              .success(let promotedSale)):
+              .success(let promotedSaleArtworks)):
 
             saleArtworks.forEach {
+                $0.auction = sale
+            }
+
+            promotedSaleArtworks.forEach {
                 $0.auction = sale
             }
 
@@ -146,9 +152,9 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                 SaleViewModel(
                     sale: sale,
                     saleArtworks: saleArtworks,
+                    promotedSaleArtworks: promotedSaleArtworks,
                     bidders: bidders,
-                    lotStandings: lotStandings,
-                    promotedSale: promotedSale
+                    lotStandings: lotStandings
                 )
             )
 
