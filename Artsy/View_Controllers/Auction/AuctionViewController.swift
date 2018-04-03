@@ -191,8 +191,13 @@ extension AuctionViewController {
         self.lotStandingsView = lotStandingsView
     }
 
-    func addBuyNow() {
-        let buyNowViewController = AuctionBuyNowViewController(isCompact: isCompactSize, promotedSaleArtworks: self.saleViewModel.promotedSaleArtworks?)
+    // TODO make function name include maybe
+    func maybeAddBuyNow() {
+        guard let promotedSaleArtworks = self.saleViewModel.promotedSaleArtworks else {
+            return
+        }
+
+        let buyNowViewController = AuctionBuyNowViewController(isCompact: isCompactSize, promotedSaleArtworks: promotedSaleArtworks)
         buyNowViewController.view.tag = ViewTags.buyNow.rawValue
         headerStack?.addSubview(buyNowViewController.view, withTopMargin: "0", sideMargin: "0")
         self.buyNowViewController = buyNowViewController
@@ -241,7 +246,7 @@ extension AuctionViewController {
 
         addTitleView()
         addLotStandings()
-        addBuyNow()
+        maybeAddBuyNow()
         displayCurrentItems()
 
         saleArtworksViewController.invalidateHeaderHeight()
