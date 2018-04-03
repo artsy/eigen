@@ -23,50 +23,45 @@ class AuctionBuyNowViewController: UIViewController {
         super.viewWillAppear(animated)
         setup()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setup()
+    }
 }
 
 private typealias PrivateFunctions = AuctionBuyNowViewController
 extension PrivateFunctions {
-    func setup() {
-        addTitle()
-        addSaleArtworks()
-        addBottomBorder()
-    }
 
-    func addTitle() {
+    func setup() {
         let titleView = AuctionBuyNowTitleView(isCompact: isCompact)
         self.view.addSubview(titleView)
         titleView.alignTopEdge(withView: self.view, predicate: "0")
         titleView.alignLeading("0", trailing: "0", toView: self.view)
-        titleView.alignBottomEdge(withView: self.view, predicate: "0")
-    }
 
-    var sideSpacing: CGFloat {
-        let compactSize = traitCollection.horizontalSizeClass == .compact
-        return compactSize ? 40 : 80
-    }
-
-    func addSaleArtworks() {
-        let viewWidth = self.view.bounds.size.width
+        // It's hard to know the full width ahead of time, so we use the ARTopMenuViewController
+        // which is consistent across orientations, etc
+        let viewWidth = ARTopMenuViewController.shared().view.bounds.size.width
+        let sideSpacing: CGFloat = isCompact ? 40 : 80
         let module = ARSaleArtworkItemMasonryModule(traitCollection: traitCollection, width: viewWidth - sideSpacing)
         let items = promotedSaleArtworks.map { SaleArtworkViewModel(saleArtwork: $0 ) }
         let viewController = AREmbeddedModelsViewController()
+
+        ar_addModernChildViewController(viewController)
+
+        viewController.view.constrainTopSpace(toView: titleView, predicate: "0")
+        viewController.view.alignLeading("0", trailing: "0", toView: self.view)
         viewController.activeModule = module
-        viewController.showTrailingLoadingIndicator = true
+        viewController.constrainHeightAutomatically = true
         viewController.appendItems(items)
 
-        ar_addAlignedModernChildViewController(viewController)
-    }
-
-    func addBottomBorder() {
-        let bottomBorder = UIView().then {
-            $0.backgroundColor = UIColor.artsyGrayRegular()
-            $0.constrainHeight("1")
-        }
-
+        let bottomBorder = UIView()
+        bottomBorder.backgroundColor = .artsyGrayRegular()
+        bottomBorder.constrainHeight("1")
         self.view.addSubview(bottomBorder)
 
-        bottomBorder.alignBottomEdge(withView: self.view, predicate: "0")
+        bottomBorder.constrainTopSpace(toView: viewController.view, predicate: "0")
         bottomBorder.alignLeading("0", trailing: "0", toView: self.view)
+        bottomBorder.alignBottomEdge(withView: self.view, predicate: "0")
     }
 }

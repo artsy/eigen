@@ -33,7 +33,12 @@ extension PrivateFunctions {
         let borderColor = UIColor.artsyGrayRegular()
         
         if isCompact {
-            titleLabel.alignTop("20", leading: sideSpacing, bottom: "0", trailing: trailingSpacing, toView: self)
+            titleLabel.alignTop("20",
+                leading: sideSpacing,
+                bottom: "0",
+                trailing: trailingSpacing,
+                toView: self
+            )
             
             let topBorder = UIView().then {
                 $0.backgroundColor = borderColor
