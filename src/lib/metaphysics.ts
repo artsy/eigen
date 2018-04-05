@@ -5,7 +5,7 @@ import { metaphysicsURL } from "./relay/config"
 import { NetworkError } from "./utils/errors"
 
 export function metaphysics<T>(
-  payload: { query: string; variables?: object },
+  payload: { query: string; variables?: object } | { documentID: string; variables?: object },
   checkStatus: boolean = true
 ): Promise<T> {
   return fetch(metaphysicsURL, {

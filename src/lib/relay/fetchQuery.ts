@@ -1,4 +1,4 @@
-import { metaphysics } from "../metaphysics"
+import query, { metaphysics } from "../metaphysics"
 
 import { FetchFunction } from "relay-runtime"
 import RelayQueryResponseCache from "relay-runtime/lib/RelayQueryResponseCache"
@@ -10,6 +10,7 @@ import RelayQueryResponseCache from "relay-runtime/lib/RelayQueryResponseCache"
  */
 const cache = new RelayQueryResponseCache({ size: 250, ttl: 2 * 60 * 1000 })
 
+// TODO: Look on disk for cached data
 class Cache {
   _responseCache: RelayQueryResponseCache
 
@@ -31,19 +32,28 @@ class Cache {
 }
 
 export const fetchQuery: FetchFunction = (operation, variables, cacheConfig, _uploadables) => {
-  const text = operation.text
   const isQuery = operation.operationKind === "query"
+  let queryOrID
+  let body
+
+  if (__DEV__) {
+    queryOrID = require("../../__generated__/complete.queryMap.json")[operation.id]
+    body = { query: queryOrID, variables }
+  } else {
+    queryOrID = operation.id
+    body = { documentID: queryOrID, variables }
+  }
 
   if (isQuery && !cacheConfig.force) {
-    const fromCache = cache.get(text, variables)
+    const fromCache = cache.get(queryOrID, variables)
     if (fromCache) {
       return fromCache
     }
   }
 
-  return metaphysics({ query: text, variables }).then(json => {
+  return metaphysics(body).then(json => {
     if (json && isQuery) {
-      cache.set(text, variables, json)
+      cache.set(queryOrID, variables, json)
     } else if (!isQuery) {
       cache.clear()
     }
