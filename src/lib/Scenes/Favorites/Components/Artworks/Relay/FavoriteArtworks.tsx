@@ -9,13 +9,15 @@ export default ({ render }) => {
     <QueryRenderer
       environment={environment}
       query={graphql`
-        query ArtistsRendererQuery {
+        query FavoriteArtworksQuery {
           me {
-            ...Artists_me
+            ...Artworks_me
           }
         }
       `}
-      variables={{ count: 10 }}
+      variables={{
+        count: 10,
+      }}
       render={render}
     />
   )

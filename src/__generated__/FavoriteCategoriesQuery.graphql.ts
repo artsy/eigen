@@ -1,9 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type ArtistsRendererQueryVariables = {
+export type FavoriteCategoriesQueryVariables = {
 };
-export type ArtistsRendererQueryResponse = {
+export type FavoriteCategoriesQueryResponse = {
     readonly me: ({
     }) | null;
 };
@@ -11,22 +11,22 @@ export type ArtistsRendererQueryResponse = {
 
 
 /*
-query ArtistsRendererQuery {
+query FavoriteCategoriesQuery {
   me {
-    ...Artists_me
+    ...Categories_me
     __id
   }
 }
 
-fragment Artists_me on Me {
-  followed_artists_connection(first: 10) {
+fragment Categories_me on Me {
+  followed_genes(first: 10) {
     pageInfo {
       endCursor
       hasNextPage
     }
     edges {
       node {
-        artist {
+        gene {
           id
           __id
           name
@@ -56,13 +56,13 @@ var v0 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "ArtistsRendererQuery",
-  "id": "3cb7dc36dd2ead25dac6cab92c61cc53",
+  "name": "FavoriteCategoriesQuery",
+  "id": "814089538a6782827e8d5bc579eea904",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "ArtistsRendererQuery",
+    "name": "FavoriteCategoriesQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -78,7 +78,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Artists_me",
+            "name": "Categories_me",
             "args": null
           },
           v0
@@ -88,7 +88,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ArtistsRendererQuery",
+    "name": "FavoriteCategoriesQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -103,8 +103,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "followed_artists_connection",
-            "storageKey": "followed_artists_connection(first:10)",
+            "name": "followed_genes",
+            "storageKey": "followed_genes(first:10)",
             "args": [
               {
                 "kind": "Literal",
@@ -113,7 +113,7 @@ return {
                 "type": "Int"
               }
             ],
-            "concreteType": "FollowArtistConnection",
+            "concreteType": "FollowGeneConnection",
             "plural": false,
             "selections": [
               {
@@ -147,7 +147,7 @@ return {
                 "name": "edges",
                 "storageKey": null,
                 "args": null,
-                "concreteType": "FollowArtistEdge",
+                "concreteType": "FollowGeneEdge",
                 "plural": true,
                 "selections": [
                   {
@@ -156,16 +156,16 @@ return {
                     "name": "node",
                     "storageKey": null,
                     "args": null,
-                    "concreteType": "FollowArtist",
+                    "concreteType": "FollowGene",
                     "plural": false,
                     "selections": [
                       {
                         "kind": "LinkedField",
                         "alias": null,
-                        "name": "artist",
+                        "name": "gene",
                         "storageKey": null,
                         "args": null,
-                        "concreteType": "Artist",
+                        "concreteType": "Gene",
                         "plural": false,
                         "selections": [
                           {
@@ -234,7 +234,7 @@ return {
           {
             "kind": "LinkedHandle",
             "alias": null,
-            "name": "followed_artists_connection",
+            "name": "followed_genes",
             "args": [
               {
                 "kind": "Literal",
@@ -244,7 +244,7 @@ return {
               }
             ],
             "handle": "connection",
-            "key": "Artists_followed_artists_connection",
+            "key": "Categories_followed_genes",
             "filters": null
           },
           v0
@@ -254,5 +254,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'db235ffe8620a880041d9f2636675510';
+(node as any).hash = 'a31860bfc29ee72bfc110b9bb673d455';
 export default node;

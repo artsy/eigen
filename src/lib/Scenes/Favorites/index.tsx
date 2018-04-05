@@ -12,13 +12,13 @@ import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import { Fonts } from "lib/data/fonts"
 
 import Artists from "./Components/Artists"
-import ArtistsRenderer from "./Components/Artists/Relay/ArtistsRenderer"
+import ArtistsRenderer from "./Components/Artists/Relay/FavoriteArtists"
 
 import Artworks from "./Components/Artworks"
-import ArtworksRenderer from "./Components/Artworks/Relay/ArtworksRenderer"
+import ArtworksRenderer from "./Components/Artworks/Relay/FavoriteArtworks"
 
 import Categories from "./Components/Categories"
-import CategoriesRenderer from "./Components/Categories/Relay/CategoriesRenderer"
+import CategoriesRenderer from "./Components/Categories/Relay/FavoriteCategories"
 
 import { gravityURL } from "lib/relay/config"
 
