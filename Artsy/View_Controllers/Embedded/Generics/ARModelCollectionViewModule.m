@@ -36,6 +36,7 @@
 
 - (CGSize)intrinsicSize
 {
+    NSAssert(YES, @"intrinsicSize not set on module subclass");
     return (CGSize){240, 240};
 }
 

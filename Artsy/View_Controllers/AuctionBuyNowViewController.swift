@@ -1,67 +1,61 @@
 import UIKit
 
+class AuctionBuyNowView: ORStackView {
+    var embeddedVC: AREmbeddedModelsViewController?
+    var actionDelegate: UIViewController?
 
-class AuctionBuyNowViewController: UIViewController {
-    var isCompact: Bool
-    var promotedSaleArtworks: [SaleArtwork]
+    var saleArtworks: [SaleArtwork]?
+    var isCompact = true
 
-    init(isCompact: Bool, promotedSaleArtworks: [SaleArtwork]) {
-        self.isCompact = isCompact
-        self.promotedSaleArtworks = promotedSaleArtworks
+    func setup(isCompact: Bool, promotedSaleArtworks: [SaleArtwork], viewController: UIViewController, delegate: UIViewController) {
 
-        super.init(
-            nibName: nil,
-            bundle: nil
-        )
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setup()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        setup()
-    }
-}
-
-private typealias PrivateFunctions = AuctionBuyNowViewController
-extension PrivateFunctions {
-
-    func setup() {
         let titleView = AuctionBuyNowTitleView(isCompact: isCompact)
-        self.view.addSubview(titleView)
-        titleView.alignTopEdge(withView: self.view, predicate: "0")
-        titleView.alignLeading("0", trailing: "0", toView: self.view)
-
-        // It's hard to know the full width ahead of time, so we use the ARTopMenuViewController
-        // which is consistent across orientations, etc
-        let viewWidth = ARTopMenuViewController.shared().view.bounds.size.width
+        let viewWidth = superview!.bounds.width
         let sideSpacing: CGFloat = isCompact ? 40 : 80
+
+        addSubview(titleView, withTopMargin: "0", sideMargin:"0")
         let module = ARSaleArtworkItemMasonryModule(traitCollection: traitCollection, width: viewWidth - sideSpacing)
+        
         let items = promotedSaleArtworks.map { SaleArtworkViewModel(saleArtwork: $0 ) }
-        let viewController = AREmbeddedModelsViewController()
+        let buyNowWorksVC = AREmbeddedModelsViewController()
 
-        ar_addModernChildViewController(viewController)
+        add(buyNowWorksVC, toParent: viewController, withTopMargin: "0", sideMargin: "0")
 
-        viewController.view.constrainTopSpace(toView: titleView, predicate: "0")
-        viewController.view.alignLeading("0", trailing: "0", toView: self.view)
-        viewController.activeModule = module
-        viewController.constrainHeightAutomatically = true
-        viewController.appendItems(items)
+        buyNowWorksVC.activeModule = module
+        buyNowWorksVC.constrainHeightAutomatically = true
+        buyNowWorksVC.appendItems(items)
+        buyNowWorksVC.delegate = self
 
         let bottomBorder = UIView()
         bottomBorder.backgroundColor = .artsyGrayRegular()
         bottomBorder.constrainHeight("1")
-        self.view.addSubview(bottomBorder)
+        addSubview(bottomBorder, withTopMargin: "2")
 
-        bottomBorder.constrainTopSpace(toView: viewController.view, predicate: "0")
-        bottomBorder.alignLeading("0", trailing: "0", toView: self.view)
-        bottomBorder.alignBottomEdge(withView: self.view, predicate: "0")
+        bottomMarginHeight = 0
+
+        self.embeddedVC = buyNowWorksVC
+        self.isCompact = isCompact
+        self.saleArtworks = promotedSaleArtworks
+        self.actionDelegate = delegate
+    }
+
+    override func updateConstraints() {
+        self.embeddedVC?.activeModule = self.embeddedVC?.activeModule
+        self.embeddedVC?.collectionView.reloadData()
+        self.embeddedVC?.updateViewConstraints()
+        super.updateConstraints()
+    }
+}
+
+
+fileprivate typealias EmbeddedModelCallbacks = AuctionBuyNowView
+extension EmbeddedModelCallbacks: AREmbeddedModelsViewControllerDelegate {
+    func embeddedModelsViewController(_ controller: AREmbeddedModelsViewController!, didTapItemAt index: UInt) {
+        let viewController = ARArtworkSetViewController(artworkSet: saleArtworks?.map { $0.artwork }, at: Int(index))
+        self.actionDelegate?.navigationController?.pushViewController(viewController!, animated: true)
+    }
+
+    func embeddedModelsViewController(_ controller: AREmbeddedModelsViewController!, shouldPresent viewController: UIViewController!) {
+        self.actionDelegate?.navigationController?.pushViewController(viewController, animated: true)
     }
 }

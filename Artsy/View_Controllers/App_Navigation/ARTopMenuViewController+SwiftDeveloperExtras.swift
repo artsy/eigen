@@ -22,6 +22,6 @@ extension ARTopMenuViewController {
 
     @objc func runSwiftDeveloperExtras() {
         // run swift code here at startup
-        ARTopMenuViewController.shared().push(AuctionViewController(saleID: "forum-auctions-urban-jungle"))
+        ARTopMenuViewController.shared().push(AuctionViewController(saleID: "phillips-photographs-5"))
     }
 }

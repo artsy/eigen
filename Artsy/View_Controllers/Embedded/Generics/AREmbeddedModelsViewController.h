@@ -18,7 +18,7 @@
 - (void)embeddedModelsViewControllerDidScrollPastEdge:(AREmbeddedModelsViewController *)controller;
 
 /// This message gets passed if the associated sticky header has changed it's stickyness
-- (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller stickyHeaderDidChangeStickyness:(BOOL)isAttatchedToLeadingEdge;
+- (void)embeddedModelsViewController:(AREmbeddedModelsViewController *)controller stickyHeaderDidChangeStickyness:(BOOL)isAttachedToLeadingEdge;
 
 @end
 

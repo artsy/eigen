@@ -49,6 +49,11 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
         return self.saleArtworksNetworkModel.fetchSaleArtworks(saleID)
     }
 
+    func skipFetchForSaleArtworks() -> Observable<Result<[SaleArtwork]>> {
+        return Observable(Result(success: Array<SaleArtwork>()))
+    }
+
+
     func fetchBidders(_ saleID: String) -> Observable<Result<[Bidder]>> {
         let signal = Observable(saleID)
         return signal.flatMap(bidderNetworkModel.fetchBiddersForSale)
@@ -74,7 +79,7 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                     return combine(
                         Observable(Result(success: sale)),
                         self.fetchSaleArtworks(self.saleID),
-                        self.fetchSaleArtworks(sale.promotedSaleID),
+                        sale.promotedSaleID != nil ? self.fetchSaleArtworks(sale.promotedSaleID) : self.skipFetchForSaleArtworks(),
                         self.fetchBidders(self.saleID),
                         self.fetchLotStanding(self.saleID)
                     )

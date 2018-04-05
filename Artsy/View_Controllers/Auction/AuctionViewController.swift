@@ -10,7 +10,7 @@ class AuctionViewController: UIViewController {
     var stickyHeader: ScrollingStickyHeaderView!
     var titleView: AuctionTitleView?
     var lotStandingsView: LotStandingsView?
-    var buyNowViewController: AuctionBuyNowViewController?
+    var buyNowView: AuctionBuyNowView?
 
     var allowAnimations = true
 
@@ -183,6 +183,7 @@ extension AuctionViewController {
             lotStandingTappedClosure: { [weak self] index in
                 guard let lotStanding = self?.saleViewModel?.lotStanding(at: index) else { return }
                 guard let artworkViewController = ARArtworkSetViewController(artwork: lotStanding.saleArtwork.artwork) else { return }
+                
                 self?.navigationController?.pushViewController(artworkViewController, animated: true)
             }
         )
@@ -192,15 +193,25 @@ extension AuctionViewController {
     }
 
     func maybeAddBuyNow() {
-        guard let promotedSaleArtworks = self.saleViewModel.promotedSaleArtworks else {
+        guard let promotedSaleArtworks = self.saleViewModel.promotedSaleArtworks, promotedSaleArtworks.count > 0, self.buyNowView == nil else {
             return
         }
 
-        let buyNowViewController = AuctionBuyNowViewController(isCompact: isCompactSize, promotedSaleArtworks: promotedSaleArtworks)
-        buyNowViewController.view.tag = ViewTags.buyNow.rawValue
-        headerStack?.addSubview(buyNowViewController.view, withTopMargin: "0", sideMargin: "0")
-        buyNowViewController.view.setNeedsLayout()
-        self.buyNowViewController = buyNowViewController
+        let buyNowView = AuctionBuyNowView()
+        buyNowView.tag = ViewTags.buyNow.rawValue
+        headerStack?.addSubview(buyNowView, withTopMargin: "0", sideMargin: "0")
+
+        self.buyNowView = buyNowView
+
+        // Needs to dispatch because of UIKit ¯\_(ツ)_/¯
+        DispatchQueue.main.async {
+            buyNowView.setup(isCompact: self.isCompactSize, promotedSaleArtworks: promotedSaleArtworks, viewController: self.saleArtworksViewController.childViewControllers.first!, delegate:self)
+
+            buyNowView.setNeedsUpdateConstraints()
+            self.headerStack?.setNeedsUpdateConstraints()
+            self.headerStack?.updateConstraintsIfNeeded()
+            self.saleArtworksViewController.invalidateHeaderHeight()
+        }
     }
 
     func setupForUpcomingSale(_ saleViewModel: SaleViewModel) {
@@ -381,8 +392,8 @@ extension EmbeddedModelCallbacks: ARModelInfiniteScrollViewControllerDelegate {
         navigationController?.pushViewController(viewController, animated: true)
     }
 
-    func embeddedModelsViewController(_ controller: AREmbeddedModelsViewController!, stickyHeaderDidChangeStickyness isAttatchedToLeadingEdge: Bool) {
-        stickyHeader.stickyHeaderHeight.constant = isAttatchedToLeadingEdge ? 120 : 60
-        stickyHeader.toggleAttatched(isAttatchedToLeadingEdge, animated: true)
+    func embeddedModelsViewController(_ controller: AREmbeddedModelsViewController!, stickyHeaderDidChangeStickyness isAttachedToLeadingEdge: Bool) {
+        stickyHeader.stickyHeaderHeight.constant = isAttachedToLeadingEdge ? 120 : 60
+        stickyHeader.toggleAttatched(isAttachedToLeadingEdge, animated: true)
     }
 }
