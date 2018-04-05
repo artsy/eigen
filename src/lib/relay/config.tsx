@@ -4,9 +4,9 @@ const { Emission } = NativeModules
 let metaphysicsURL
 let gravityURL
 
-if (Emission && Emission.gravityAPIHost && Emission.metaphysicsAPIHost) {
-  metaphysicsURL = Emission.metaphysicsAPIHost
-  gravityURL = Emission.gravityAPIHost
+if (Emission && Emission.gravityURL && Emission.metaphysicsURL) {
+  metaphysicsURL = Emission.metaphysicsURL
+  gravityURL = Emission.gravityURL
 } else {
   metaphysicsURL = "https://metaphysics-production.artsy.net"
   gravityURL = "https://api.artsy.net"
