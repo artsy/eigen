@@ -17,14 +17,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@class AREmissionConfiguration;
+@class AREmissionConfiguration, ARGraphQLQueryCache;
 
 @interface ARGraphQLQueryPreloader : NSObject <RCTBridgeModule>
 
 @property (readonly, nonatomic, strong, nonnull) AREmissionConfiguration *configuration;
+@property (readonly, nonatomic, strong, nonnull) ARGraphQLQueryCache *cache;
 
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithConfiguration:(AREmissionConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConfiguration:(AREmissionConfiguration *)configuration
+                                cache:(ARGraphQLQueryCache *)cache NS_DESIGNATED_INITIALIZER;
 
 - (void)preloadQueries:(NSArray<ARGraphQLQuery *> *)queries;
 

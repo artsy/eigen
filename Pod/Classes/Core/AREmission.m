@@ -8,6 +8,7 @@
 #import "ARNotificationsManager.h"
 #import "ARCocoaConstantsModule.h"
 #import "ARGraphQLQueryPreloader.h"
+#import "ARGraphQLQueryCache.h"
 
 #import <SentryReactNative/RNSentry.h>
 
@@ -87,7 +88,9 @@ static AREmission *_sharedInstance = nil;
     _worksForYouModule = [ARWorksForYouModule new];
     _cameraModule = [ARTakeCameraPhotoModule new];
     _notificationsManagerModule = [ARNotificationsManager new];
-    _graphQLQueryPreloaderModule = [[ARGraphQLQueryPreloader alloc] initWithConfiguration:config];
+    _graphQLQueryCacheModule = [ARGraphQLQueryCache new];
+    _graphQLQueryPreloaderModule = [[ARGraphQLQueryPreloader alloc] initWithConfiguration:config
+                                                                                    cache:_graphQLQueryCacheModule];
 
     _configurationModule = config;
 

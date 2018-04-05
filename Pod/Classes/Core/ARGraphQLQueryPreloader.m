@@ -1,5 +1,6 @@
 #import "ARGraphQLQueryPreloader.h"
 #import "AREmission.h"
+#import "ARGraphQLQueryCache.h"
 
 /*
  * If this file exists, it will contain a hardcoded list of names to queries for as fast as possible loading on launch.
@@ -77,10 +78,12 @@ ARGraphQLQueryIDToText(NSString *ID)
 
 RCT_EXPORT_MODULE();
 
-- (instancetype)initWithConfiguration:(AREmissionConfiguration *)configuration;
+- (instancetype)initWithConfiguration:(AREmissionConfiguration *)configuration
+                                cache:(ARGraphQLQueryCache *)cache;
 {
     if ((self = [super init])) {
         _configuration = configuration;
+        _cache = cache;
     }
     return self;
 }
@@ -94,7 +97,7 @@ RCT_EXPORT_MODULE();
     
     for (ARGraphQLQuery *query in queries) {
         NSString *ID = ARGraphQLQueryNameToID(query.queryName);
-        
+
         NSDictionary *body = nil;
 #ifdef HAVE_QUERY_MAP
         body = @{ @"documentID": ID, @"variables": query.variables };
@@ -109,7 +112,12 @@ RCT_EXPORT_MODULE();
             continue;
         }
 //        NSLog(@"%@", [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding]);
-        
+
+        // indicate we’re fetching this
+        [self.cache setResponse:nil
+                     forQueryID:ID
+                  withVariables:query.variables];
+
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:metaphysicsURL];
         request.HTTPMethod = @"POST";
         request.HTTPBody = bodyData;
@@ -118,32 +126,18 @@ RCT_EXPORT_MODULE();
         [request setValue:self.configuration.userID forHTTPHeaderField:@"X-USER-ID"];
         [request setValue:self.configuration.authenticationToken forHTTPHeaderField:@"X-ACCESS-TOKEN"];
         
-        NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:request
-                                                        completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-           // TODO: Reject promise
+        NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
            if (error) {
                NSLog(@"Unable to download response: %@", error);
+               [self.cache clearQueryID:ID withVariables:query.variables];
            } else if ([(NSHTTPURLResponse *)response statusCode] != 200) {
                NSLog(@"Got unexpected HTTP response %ld and therefor discarding response body", [(NSHTTPURLResponse *)response statusCode]);
+               [self.cache clearQueryID:ID withVariables:query.variables];
            } else {
-           // TODO: Resolve promise
-               NSLog(@"Downloaded response body to: %@", location);
-               NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-               NSString *cacheDirectory = paths[0];
-               NSURL *responseCacheDirectory = [NSURL fileURLWithPath:[cacheDirectory stringByAppendingPathComponent:@"RelayResponseCache"]];
-               NSError *fsError = nil;
-               [[NSFileManager defaultManager] createDirectoryAtURL:responseCacheDirectory withIntermediateDirectories:YES attributes:nil error:&fsError];
-               if (fsError) {
-                   NSLog(@"Unable to create response cache directory: %@", fsError);
-                   return;
-               }
-               NSURL *responseCacheFile = [responseCacheDirectory URLByAppendingPathComponent:[ID stringByAppendingPathExtension:@"json"]];
-               [[NSFileManager defaultManager] replaceItemAtURL:responseCacheFile withItemAtURL:location backupItemName:nil options:0 resultingItemURL:nil error:&fsError];
-               if (fsError) {
-                   NSLog(@"Unable to move response body to response cache directory: %@", fsError);
-                   return;
-               }
-               NSLog(@"Moved response body to: %@", responseCacheFile);
+               [self.cache setResponse:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]
+                            forQueryID:ID
+                         withVariables:query.variables];
            }
         }];
         [task resume];
