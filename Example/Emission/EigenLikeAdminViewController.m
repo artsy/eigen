@@ -1,22 +1,70 @@
 #import "EigenLikeAdminViewController.h"
+
+#import <objc/runtime.h>
 #import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
+#import <Emission/AREmission.h>
+#import <Emission/ARGraphQLQueryPreloader.h>
 
 NSString *const AROptionCell = @"OptionCell";
 NSString *const ARLabOptionCell = @"LabOptionCell";
 
+@interface _BlockInvoker : NSObject
+@property (nonatomic, copy, nonnull) dispatch_block_t block;
+@end
+
+@implementation _BlockInvoker
+- (instancetype)initWithBlock:(dispatch_block_t)block;
+{
+  if ((self = [super init])) {
+    _block = block;
+  }
+  return self;
+}
+- (void)invoke;
+{
+  self.block();
+}
+@end
+
 @implementation EigenLikeAdminViewController
 
-- (ARCellData *)tappableCellDataWithTitle:(NSString *)title selection:(dispatch_block_t)selection
+- (ARCellData *)tappableCellDataWithTitle:(NSString *)title selection:(dispatch_block_t)selection configuration:(CellConfigurationBlock_t)configuration;
 {
   ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
   [cellData setCellConfigurationBlock:^(UITableViewCell *cell) {
     cell.textLabel.text = title;
+    if (configuration) {
+      configuration(cell);
+    }
   }];
-
+  
   [cellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
     selection();
   }];
   return cellData;
+}
+
+- (ARCellData *)tappableCellDataWithTitle:(NSString *)title selection:(dispatch_block_t)selection
+{
+  return [self tappableCellDataWithTitle:title selection:selection configuration:nil];
+}
+
+- (ARCellData *)viewControllerCellDataWithTitle:(NSString *)title
+                                      selection:(dispatch_block_t)selection
+                                        preload:(ARAdminVCPreloadBlock)preload;
+{
+  return [self tappableCellDataWithTitle:title selection:selection configuration:^(UITableViewCell *cell) {
+    cell.accessoryView = [UIButton buttonWithType:UIButtonTypeCustom];
+    __weak UIButton *button = (id)cell.accessoryView;
+    [button setImage:[UIImage imageNamed:@"UITabBarDownloadsTemplate"] forState:UIControlStateNormal];
+    [button sizeToFit];
+    _BlockInvoker *blockInvoker = [[_BlockInvoker alloc] initWithBlock:^{
+      NSLog(@"Preload: %@", title);
+      [[[AREmission sharedInstance] graphQLQueryPreloaderModule] preloadQueries:preload()];
+    }];
+    objc_setAssociatedObject(button, &_cmd, blockInvoker, OBJC_ASSOCIATION_RETAIN);
+    [button addTarget:blockInvoker action:@selector(invoke) forControlEvents:UIControlEventTouchUpInside];
+  }];
 }
 
 - (ARCellData *)informationCellDataWithTitle:(NSString *)title
