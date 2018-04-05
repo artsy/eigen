@@ -84,7 +84,6 @@
   [sectionData addCellData:self.jumpToHomepage];
   [sectionData addCellData:self.jumpToGene];
   [sectionData addCellData:self.jumpToRefinedGene];
-  [sectionData addCellData:self.jumpToWorksForYou];
   [sectionData addCellData:self.jumpToMyProfile];
   [sectionData addCellData:self.jumpToConsignments];
   [sectionData addCellData:self.jumpToInbox];
@@ -135,9 +134,14 @@
 
 - (ARCellData *)jumpToArtist
 {
-  return [self tappableCellDataWithTitle:@"Artist" selection: ^{
-    id viewController = [[ARArtistComponentViewController alloc] initWithArtistID:@"marina-abramovic-1"];
+  NSString *artistID = @"marina-abramovic-1";
+  return [self viewControllerCellDataWithTitle:@"Artist"
+                                     selection:^{
+    id viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
     [self.navigationController pushViewController:viewController animated:YES];
+  }
+                                       preload:^NSArray<ARGraphQLQuery *> *{
+    return [ARArtistComponentViewController preloadQueriesWithArtistID:artistID];
   }];
 }
 
@@ -168,43 +172,53 @@
 
 - (ARCellData *)jumpToHomepage
 {
-  return [self tappableCellDataWithTitle:@"Homepage" selection: ^{
+  return [self viewControllerCellDataWithTitle:@"Homepage"
+                                     selection:^{
     id viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:nil tab:ARHomeTabArtists emission:nil];
     [self.navigationController pushViewController:viewController animated:YES];
+  }
+                                       preload:^NSArray<ARGraphQLQuery *> *{
+    return [ARHomeComponentViewController preloadQueriesWithSelectedArtist:nil tab:ARHomeTabArtists];
   }];
 }
 
 - (ARCellData *)jumpToGene
 {
-  return [self tappableCellDataWithTitle:@"Gene" selection: ^{
-    id viewController = [[ARGeneComponentViewController alloc] initWithGeneID:@"website"];
+  NSString *geneID = @"minimalis";
+  return [self viewControllerCellDataWithTitle:@"Gene"
+                                     selection:^{
+    id viewController = [[ARGeneComponentViewController alloc] initWithGeneID:geneID];
     [self.navigationController pushViewController:viewController animated:YES];
+  }
+                                       preload:^NSArray<ARGraphQLQuery *> *{
+    return [ARGeneComponentViewController preloadQueriesWithGeneID:geneID refineSettings:@{}];
   }];
 }
 
 - (ARCellData *)jumpToRefinedGene
 {
   // From: https://github.com/artsy/metaphysics/blob/master/schema/home/add_generic_genes.js
-  return [self tappableCellDataWithTitle:@"Gene Refined" selection: ^{
-    id viewController = [[ARGeneComponentViewController alloc] initWithGeneID:@"emerging-art" refineSettings:@{ @"medium": @"painting", @"price_range": @"50.00-10000.00" }];
+  NSString *geneID = @"emerging-art";
+  NSDictionary *refineSettings = @{ @"medium": @"painting", @"price_range": @"50.00-10000.00" };
+  return [self viewControllerCellDataWithTitle:@"Gene Refined"
+                                     selection:^{
+    id viewController = [[ARGeneComponentViewController alloc] initWithGeneID:geneID refineSettings:refineSettings];
     [self.navigationController pushViewController:viewController animated:YES];
+  }
+                                       preload:^NSArray<ARGraphQLQuery *> *{
+    return [ARGeneComponentViewController preloadQueriesWithGeneID:geneID refineSettings:refineSettings];
   }];
 }
-
-- (ARCellData *)jumpToWorksForYou
-{
-  return [self tappableCellDataWithTitle:@"Works For You" selection:^{
-    id viewController = [[ARWorksForYouComponentViewController alloc] initWithSelectedArtist:nil];
-    [self.navigationController pushViewController:viewController animated:YES];
-  }];
-}
-
 
 - (ARCellData *)jumpToMyProfile
 {
-  return [self tappableCellDataWithTitle:@"My Profile" selection:^{
+  return [self viewControllerCellDataWithTitle:@"My Profile"
+                                     selection:^{
     id viewController = [[ARMyProfileViewController alloc] init];
     [self.navigationController pushViewController:viewController animated:YES];
+  }
+                                       preload:^NSArray<ARGraphQLQuery *> *{
+    return [ARMyProfileViewController preloadQueries];
   }];
 }
 
@@ -223,9 +237,13 @@
 
 - (ARCellData *)jumpToInbox
 {
-  return [self tappableCellDataWithTitle:@"Inbox" selection:^{
+  return [self viewControllerCellDataWithTitle:@"Inbox"
+                                     selection:^{
     id viewController = [[ARInboxComponentViewController alloc] initWithInbox];
     [self.navigationController pushViewController:viewController animated:YES];
+  }
+                                       preload:^NSArray<ARGraphQLQuery *> *{
+    return [ARInboxComponentViewController preloadQueries];
   }];
 }
 
@@ -239,9 +257,13 @@
 
 - (ARCellData *)jumpToFavorites
 {
-  return [self tappableCellDataWithTitle:@"Favorites" selection:^{
+  return [self viewControllerCellDataWithTitle:@"Favorites"
+                                     selection:^{
     id viewController = [[ARFavoritesComponentViewController alloc] init];
     [self.navigationController pushViewController:viewController animated:YES];
+  }
+                                       preload:^NSArray<ARGraphQLQuery *> *{
+    return [ARFavoritesComponentViewController preloadQueries];
   }];
 }
 
@@ -338,6 +360,7 @@
 #if defined(DEPLOY)
   [sectionData addCellData:self.jumpToUserDocs];
 #endif
+  
   return sectionData;
 }
 
