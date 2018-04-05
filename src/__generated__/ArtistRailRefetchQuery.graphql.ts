@@ -82,8 +82,8 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtistRailRefetchQuery",
-  "id": null,
-  "text": "query ArtistRailRefetchQuery(\n  $__id: ID!\n  $fetchContent: Boolean!\n) {\n  node(__id: $__id) {\n    __typename\n    ...ArtistRail_rail_abFTe\n    __id\n  }\n}\n\nfragment ArtistRail_rail_abFTe on HomePageArtistModule {\n  __id\n  key\n  results @include(if: $fetchContent) {\n    _id\n    __id\n    ...ArtistCard_artist\n  }\n}\n\nfragment ArtistCard_artist on Artist {\n  id\n  _id\n  href\n  name\n  formatted_artworks_count\n  formatted_nationality_and_birthday\n  image {\n    url(version: \"large\")\n  }\n  __id\n}\n",
+  "id": "60ba6ee8b71bf2ae44779e2eddafc036",
+  "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

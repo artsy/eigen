@@ -90,8 +90,8 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ActiveBidsQuery",
-  "id": null,
-  "text": "query ActiveBidsQuery {\n  me {\n    ...ActiveBids_me\n    __id\n  }\n}\n\nfragment ActiveBids_me on Me {\n  lot_standings(live: true) {\n    most_recent_bid {\n      __id\n    }\n    ...ActiveBid_bid\n  }\n  __id\n}\n\nfragment ActiveBid_bid on LotStanding {\n  is_leading_bidder\n  sale {\n    href\n    is_live_open\n    __id\n  }\n  most_recent_bid {\n    __id\n    max_bid {\n      display\n    }\n    sale_artwork {\n      artwork {\n        href\n        image {\n          url\n        }\n        artist_names\n        __id\n      }\n      counts {\n        bidder_positions\n      }\n      highest_bid {\n        display\n        __id: id\n      }\n      lot_number\n      reserve_status\n      __id\n    }\n  }\n}\n",
+  "id": "ff999f5e1d50496e9b0dcfc8e6561436",
+  "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

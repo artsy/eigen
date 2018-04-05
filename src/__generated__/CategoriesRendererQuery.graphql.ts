@@ -57,8 +57,8 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "CategoriesRendererQuery",
-  "id": null,
-  "text": "query CategoriesRendererQuery {\n  me {\n    ...Categories_me\n    __id\n  }\n}\n\nfragment Categories_me on Me {\n  followed_genes(first: 10) {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      node {\n        gene {\n          id\n          __id\n          name\n          href\n          image {\n            url\n          }\n        }\n        __id\n        __typename\n      }\n      cursor\n    }\n  }\n  __id\n}\n",
+  "id": "4f44bcc329feefa2c108ba3f1d6e2355",
+  "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

@@ -57,8 +57,8 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtistsRendererQuery",
-  "id": null,
-  "text": "query ArtistsRendererQuery {\n  me {\n    ...Artists_me\n    __id\n  }\n}\n\nfragment Artists_me on Me {\n  followed_artists_connection(first: 10) {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      node {\n        artist {\n          id\n          __id\n          name\n          href\n          image {\n            url\n          }\n        }\n        __id\n        __typename\n      }\n      cursor\n    }\n  }\n  __id\n}\n",
+  "id": "3cb7dc36dd2ead25dac6cab92c61cc53",
+  "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

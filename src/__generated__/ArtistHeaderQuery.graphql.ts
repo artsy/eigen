@@ -62,8 +62,8 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtistHeaderQuery",
-  "id": null,
-  "text": "query ArtistHeaderQuery(\n  $artistID: String!\n) {\n  artist(id: $artistID) {\n    ...Header_artist\n    __id\n  }\n}\n\nfragment Header_artist on Artist {\n  _id\n  id\n  name\n  nationality\n  birthday\n  counts {\n    follows\n  }\n  __id\n}\n",
+  "id": "20f67d6007cf7611bf0a615112af2fa3",
+  "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
