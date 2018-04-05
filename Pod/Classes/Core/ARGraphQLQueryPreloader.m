@@ -56,6 +56,11 @@ ARGraphQLQueryIDToText(NSString *ID)
 
 @implementation ARGraphQLQuery
 
+- (instancetype)initWithQueryName:(NSString *)queryName;
+{
+    return [self initWithQueryName:queryName variables:nil];
+}
+
 - (instancetype)initWithQueryName:(NSString *)queryName
                         variables:(nullable NSDictionary *)variables;
 {

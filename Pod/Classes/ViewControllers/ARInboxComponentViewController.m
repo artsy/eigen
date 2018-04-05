@@ -1,11 +1,14 @@
 #import "ARInboxComponentViewController.h"
+#import "ARGraphQLQueryPreloader.h"
+
 #import <React/RCTRootView.h>
 
-@interface ARInboxComponentViewController ()
-
-@end
-
 @implementation ARInboxComponentViewController
+
++ (NSArray<ARGraphQLQuery *> *)preloadQueries;
+{
+    return @[[[ARGraphQLQuery alloc] initWithQueryName:@"QueryRenderersInboxQuery"]];
+}
 
 - (instancetype)initWithInbox;
 {

@@ -8,8 +8,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nonatomic, copy, nonnull) NSString *queryName;
 @property (readonly, nonatomic, copy, nonnull) NSDictionary<NSString *, NSString *> *variables;
 
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithQueryName:(NSString *)queryName;
+
 - (instancetype)initWithQueryName:(NSString *)queryName
-                        variables:(nullable NSDictionary *)variables;
+                        variables:(nullable NSDictionary *)variables NS_DESIGNATED_INITIALIZER;
 
 @end
 
