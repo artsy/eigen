@@ -10,28 +10,35 @@ class AuctionBuyNowView: ORStackView {
     func setup(isCompact: Bool, promotedSaleArtworks: [SaleArtwork], viewController: UIViewController, delegate: UIViewController) {
 
         let titleView = AuctionBuyNowTitleView(isCompact: isCompact)
-        let viewWidth = superview!.bounds.width
-        let sideSpacing: CGFloat = isCompact ? 40 : 80
-
         addSubview(titleView, withTopMargin: "0", sideMargin:"0")
-        let module = ARSaleArtworkItemMasonryModule(traitCollection: traitCollection, width: viewWidth - sideSpacing)
-        
-        let items = promotedSaleArtworks.map { SaleArtworkViewModel(saleArtwork: $0 ) }
+
+        let screenSize = ARTopMenuViewController.shared().view.bounds.size
+        let layout = UIDevice.isPad() && (screenSize.width > screenSize.height) ? ARArtworkMasonryLayout.layout3Column : ARArtworkMasonryLayout.layout2Column
+
+        let module = ARArtworkMasonryModule(layout: layout, andStyle: .artworkMetadata)
         let buyNowWorksVC = AREmbeddedModelsViewController()
 
         add(buyNowWorksVC, toParent: viewController, withTopMargin: "0", sideMargin: "0")
 
+        let artworks = promotedSaleArtworks.map { $0.artwork }
+        // Basically only show the saleMessage if there is a price
+        artworks.forEach {
+            if(!$0.forSale.boolValue || $0.isPriceHidden.boolValue || $0.price.count == 0) {
+                $0.saleMessage = ""
+            }
+        }
+
         buyNowWorksVC.activeModule = module
         buyNowWorksVC.constrainHeightAutomatically = true
-        buyNowWorksVC.appendItems(items)
+        buyNowWorksVC.appendItems(artworks)
         buyNowWorksVC.delegate = self
 
         let bottomBorder = UIView()
         bottomBorder.backgroundColor = .artsyGrayRegular()
         bottomBorder.constrainHeight("1")
-        addSubview(bottomBorder, withTopMargin: "2")
+        addSubview(bottomBorder, withTopMargin: "2", sideMargin: "0")
 
-        bottomMarginHeight = 0
+        bottomMarginHeight = 2
 
         self.embeddedVC = buyNowWorksVC
         self.isCompact = isCompact
@@ -46,7 +53,6 @@ class AuctionBuyNowView: ORStackView {
         super.updateConstraints()
     }
 }
-
 
 fileprivate typealias EmbeddedModelCallbacks = AuctionBuyNowView
 extension EmbeddedModelCallbacks: AREmbeddedModelsViewControllerDelegate {

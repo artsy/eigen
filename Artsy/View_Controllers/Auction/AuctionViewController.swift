@@ -234,6 +234,7 @@ extension AuctionViewController {
         saleArtworksViewController = ARModelInfiniteScrollViewController()
 
         ar_addAlignedModernChildViewController(saleArtworksViewController)
+        saleArtworksViewController.view.backgroundColor = .black
 
         // Disable the vertical offset for status bar.
         automaticallyAdjustsScrollViewInsets = false

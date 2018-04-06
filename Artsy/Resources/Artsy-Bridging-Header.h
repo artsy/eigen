@@ -124,3 +124,4 @@
 #import <SSFadingScrollView/SSFadingScrollView.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
+#import "UIDevice-Hardware.h"
