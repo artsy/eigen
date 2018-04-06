@@ -16,7 +16,7 @@ class AuctionTitleViewSpec: QuickSpec {
         var fullWidth: Bool!
 
         beforeEach {
-            viewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], bidders: [qualifiedBidder])
+            viewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [qualifiedBidder], lotStandings: [])
         }
 
         sharedExamples("title view") { (context: SharedExampleContext) in
@@ -35,7 +35,7 @@ class AuctionTitleViewSpec: QuickSpec {
             }
 
             it("looks good with a not registered registration status") {
-                viewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], bidders: [])
+                viewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [])
                 let subject = AuctionTitleView(viewModel: viewModel, delegate: delegate, fullWidth: fullWidth, showAdditionalInformation: true, titleTextAlignment: .left)
                 subject.bounds.size.width = 400
 
