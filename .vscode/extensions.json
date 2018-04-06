@@ -4,6 +4,5 @@
   "recommendations": [
     "Orta.vscode-ios-common-files",
     "Orta.vscode-danger",
-    "djabraham.vscode-yaml-validation"
   ]
 }

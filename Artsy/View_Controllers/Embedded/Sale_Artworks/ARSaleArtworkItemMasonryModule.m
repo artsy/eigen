@@ -52,6 +52,11 @@ static CGFloat marginForTraitCollection(UITraitCollection *traitCollection)
     return staticDimension / viewModel.aspectRatio + [ARSaleArtworkMasonryCollectionViewCell paddingForMetadata];
 }
 
+- (CGSize)intrinsicSize
+{
+    return [self.moduleLayout.collectionView contentSize];
+}
+
 #pragma mark - ARSaleArtworkItemWidthDependentModule
 
 - (void)setWidth:(CGFloat)width
