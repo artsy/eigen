@@ -23,7 +23,7 @@ class AuctionBuyNowView: ORStackView {
         let artworks = promotedSaleArtworks.map { $0.artwork }
         // Basically only show the saleMessage if there is a price
         artworks.forEach {
-            if(!$0.forSale.boolValue || $0.isPriceHidden.boolValue || $0.price.count == 0) {
+            if($0.isPriceHidden.boolValue || $0.price.count == 0) {
                 $0.saleMessage = ""
             }
         }
