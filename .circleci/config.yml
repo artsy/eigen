@@ -63,10 +63,6 @@ jobs:
       - run:
           name: List sims
           command: xcversion simulators
-
-      - run:
-          name: Install 10.3.x
-          command: echo "" | xcversion simulators --install='iOS 10.3.1'
  
       - run:
           name: List devices
@@ -95,9 +91,9 @@ jobs:
           name: Pre-Build App
           command: make ci
 
-      - run:
-          name: Run tests
-          command: make test
+    #   - run:
+    #       name: Run tests
+    #       command: make test
 
       - store_artifacts:
           path: xcode_build_raw.log
