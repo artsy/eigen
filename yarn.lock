@@ -8737,9 +8737,9 @@ react-native-typescript-transformer@^1.2.3:
     semver "^5.4.1"
     source-map "^0.5.6"
 
-react-native@0.54.2:
-  version "0.54.2"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.54.2.tgz#73786e7bf3f80b0b060ca0bfe5b192f9c2f253da"
+react-native@0.54.4:
+  version "0.54.4"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.54.4.tgz#19c6c598f6acf04f1c032fe9a1812f0c640fa8b7"
   dependencies:
     absolute-path "^0.0.0"
     art "^0.10.0"
