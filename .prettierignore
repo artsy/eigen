@@ -1,2 +1,3 @@
 src/__generated__/*.ts
+src/__generated__/*.json
 node_modules
