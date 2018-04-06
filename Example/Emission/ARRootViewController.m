@@ -11,6 +11,9 @@
 
 #import "ARRootViewController+PRs.h"
 
+#import <Emission/AREmission.h>
+#import <Emission/ARGraphQLQueryCache.h>
+
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
@@ -368,6 +371,7 @@
 {
   ARSectionData *sectionData = [[ARSectionData alloc] init];
   [self setupSection:sectionData withTitle:@"Admin"];
+  
   AppSetup *setup = [AppSetup ambientSetup];
   if (setup.inStaging) {
     [sectionData addCellDataFromArray:@[
@@ -380,8 +384,16 @@
 
   [sectionData addCellData:self.toggleRNPSwitch];
   [sectionData addCellData:self.generateStagingSwitch];
+  [sectionData addCellData:self.clearGraphQLQueryCache];
   [sectionData addCellData:self.logOutButton];
   return sectionData;
+}
+
+- (ARCellData *)clearGraphQLQueryCache;
+{
+  return [self tappableCellDataWithTitle:@"Clear GraphQL Query Cache" selection:^{
+    [[[AREmission sharedInstance] graphQLQueryCacheModule] clearAll];
+  }];
 }
 
 - (ARCellData *)logOutButton
@@ -394,8 +406,5 @@
     }];
   }];
 }
-
-
-
 
 @end

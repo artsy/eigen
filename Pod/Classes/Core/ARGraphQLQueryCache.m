@@ -126,23 +126,30 @@ InvalidateExpiredCacheEntry(NSCache * _Nullable cache, NSString * _Nonnull cache
                 ttl:(NSTimeInterval)ttl;
 {
     dispatch_async(self.methodQueue, ^{
-        [self setResponseForQueryIDWithVariables:response :queryID :variables :ttl];
+        [self _setResponseForQueryIDWithVariables:response :queryID :variables :ttl];
     });
 }
 
 - (void)clearQueryID:(nonnull NSString *)queryID withVariables:(nonnull NSDictionary *)variables;
 {
     dispatch_async(self.methodQueue, ^{
-        [self clearQueryIDWithVariables:queryID :variables];
+        [self _clearQueryIDWithVariables:queryID :variables];
+    });
+}
+
+- (void)clearAll;
+{
+    dispatch_async(self.methodQueue, ^{
+        [self _clearAll];
     });
 }
 
 #pragma mark React Native API
 
-RCT_EXPORT_METHOD(setResponseForQueryIDWithVariables:(nullable NSString *)response
-                                                    :(nonnull NSString *)queryID
-                                                    :(nonnull NSDictionary *)variables
-                                                    :(NSTimeInterval)ttl)
+RCT_EXPORT_METHOD(_setResponseForQueryIDWithVariables:(nullable NSString *)response
+                                                     :(nonnull NSString *)queryID
+                                                     :(nonnull NSDictionary *)variables
+                                                     :(NSTimeInterval)ttl)
 {
     NSString *cacheKey = CacheKey(queryID, variables);
     if (ttl == 0) {
@@ -174,10 +181,10 @@ RCT_EXPORT_METHOD(setResponseForQueryIDWithVariables:(nullable NSString *)respon
     }
 }
 
-RCT_EXPORT_METHOD(responseForQueryIDWithVariables:(nonnull NSString *)queryID
-                                                 :(nonnull NSDictionary *)variables
-                                                 :(RCTPromiseResolveBlock)resolve
-                                                 :(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(_responseForQueryIDWithVariables:(nonnull NSString *)queryID
+                                                  :(nonnull NSDictionary *)variables
+                                                  :(RCTPromiseResolveBlock)resolve
+                                                  :(RCTPromiseRejectBlock)reject)
 {
     NSString *cacheKey = CacheKey(queryID, variables);
     DLog(@"[ARGraphQLQueryCache] [%@] Fetch response", cacheKey);
@@ -193,7 +200,7 @@ RCT_EXPORT_METHOD(responseForQueryIDWithVariables:(nonnull NSString *)queryID
             // don’t resolve at all right now
             return;
         } else if (IsCacheValid(cacheResult[@"validUntil"])) {
-            DLog(@"[ARGraphQLQueryCache] [%@] Cache hit", cacheKey);
+            DLog(@"[ARGraphQLQueryCache] [%@] In-memory cache hit", cacheKey);
             response = cacheResult[@"response"];
         } else {
             InvalidateExpiredCacheEntry(self.inMemoryCache, cacheKey, &error);
@@ -206,6 +213,7 @@ RCT_EXPORT_METHOD(responseForQueryIDWithVariables:(nonnull NSString *)queryID
         NSDate *validUntil = attributes[CacheValidUntil];
         if (validUntil) {
             if (IsCacheValid(validUntil)) {
+                DLog(@"[ARGraphQLQueryCache] [%@] On-disk cache hit", cacheKey);
                 response = [NSString stringWithContentsOfURL:cacheFile encoding:NSUTF8StringEncoding error:&error];
                 // cache in-memory for next time
                 [self.inMemoryCache setObject:@{ @"response": response, @"validUntil": validUntil } forKey:cacheKey];
@@ -225,7 +233,7 @@ RCT_EXPORT_METHOD(responseForQueryIDWithVariables:(nonnull NSString *)queryID
     resolve(response);
 }
 
-RCT_EXPORT_METHOD(clearAll)
+RCT_EXPORT_METHOD(_clearAll)
 {
     DLog(@"[ARGraphQLQueryCache] [-] Clear all entries");
     // reject promises that were waiting
@@ -245,8 +253,8 @@ RCT_EXPORT_METHOD(clearAll)
                                                    error:nil];
 }
 
-RCT_EXPORT_METHOD(clearQueryIDWithVariables:(nonnull NSString *)queryID
-                                           :(nonnull NSDictionary *)variables)
+RCT_EXPORT_METHOD(_clearQueryIDWithVariables:(nonnull NSString *)queryID
+                                            :(nonnull NSDictionary *)variables)
 {
     NSString *cacheKey = CacheKey(queryID, variables);
     DLog(@"[ARGraphQLQueryCache] [%@] Clear entry", cacheKey);

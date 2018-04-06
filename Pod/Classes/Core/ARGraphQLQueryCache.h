@@ -49,4 +49,9 @@ extern const NSTimeInterval ARGraphQLQueryCacheDefaultTTL;
 - (void)clearQueryID:(nonnull NSString *)queryID
        withVariables:(nonnull NSDictionary *)variables;
 
+/**
+ * Removes all cached responses. Also resolves any pending promises with a `nil` value.
+ */
+- (void)clearAll;
+
 @end
