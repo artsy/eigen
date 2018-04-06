@@ -7,7 +7,7 @@ upcoming:
   
 releases:
   - version: 4.1.0
-    date: TBA
+    date: Apr 6, 2018
     emission_version: 1.4.6
     dev:
       - Potential fixes for Adjust session registering with anon users - orta
@@ -24,8 +24,9 @@ releases:
       - Updated "wall attachment" style AR flow - orta
       - Pan gestures move the artwork, and you use a place button to attach the work to a wall - orta
       - Adds a modal timeout to the VIR screen if we can't find a wall in 30s - orta
+
   - version: 4.0.3
-    date: TBA
+    date: Mar 7, 2018
     emission_version: 1.4.6
     dev:
       - Potential fixes for Adjust session registering with anon users - orta
