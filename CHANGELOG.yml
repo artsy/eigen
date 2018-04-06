@@ -1,11 +1,12 @@
 upcoming:
-  version: 4.0.4
+  version: 4.1.0
   emission_version: 1.4.6
   dev:
     - Potential fixes for Adjust session registering with anon users - orta
     - Removes `apply` function family from SwiftExtensions.swift - ash
   user_facing:
     - Artwork action buttons (fav/map/vir/share) now center horizontally on iPhone - orta
+    - ARVIR for 11.3 users - orta
     - Description change for Ephemera atrwork classification field - oksana
   dev:
     - Reduce time spent in dyld at launch by changing Pods from dynamic frameworks to static libraries - alloy

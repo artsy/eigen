@@ -68,7 +68,7 @@
         UIActivityTypePostToFlickr,
         UIActivityTypePostToVimeo,
         UIActivityTypePostToTencentWeibo
-        ];
+    ];
 
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [[ARTopMenuViewController sharedController] presentViewController:activityVC animated:YES completion:nil];

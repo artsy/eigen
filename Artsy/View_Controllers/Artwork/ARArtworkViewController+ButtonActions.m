@@ -34,6 +34,7 @@
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRViewController.h"
 #import <Emission/ARInquiryComponentViewController.h>
+#import "ARFullWidthCalloutLabelView.h"
 
 @implementation ARArtworkViewController (ButtonActions)
 
@@ -47,6 +48,21 @@
 }
 
 #pragma mark - ARArtworkPreviewActionsViewDelegate
+
+- (void)showInformationBannerForVIR:(UIView *)virButton
+{
+    // First time user, and can show AR
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:ARAugmentedRealityHasSeenSetup] && [ARAugmentedVIRSetupViewController canOpenARView]) {
+        ARFullWidthCalloutLabelView *callout = [[ARFullWidthCalloutLabelView alloc] initWithTitle:@"See what this work looks like on your wall." delegate:self];
+        [callout addToRootView:self.view highlightView:virButton animated:YES];
+    }
+}
+
+- (void)tappedOnLabelSide:(ARFullWidthCalloutLabelView *)view
+{
+    [view dismissAnimated:YES];
+    [self tappedArtworkViewInRoom];
+}
 
 - (void)tappedArtworkFavorite:(ARHeartButton *)sender
 {
@@ -81,12 +97,13 @@
 - (void)tappedArtworkViewInRoom
 {
     BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];
-
-    if(supportsARVIR && [AROptions boolForOption:AROptionsUseARVIR]) {
+    if (supportsARVIR) {
         [ARAugmentedVIRSetupViewController canSkipARSetup:[NSUserDefaults standardUserDefaults] callback:^(bool shouldSkipSetup) {
 
             CGSize size = CGSizeMake(self.artwork.widthInches, self.artwork.heightInches);
             ARAugmentedRealityConfig *config = [[ARAugmentedRealityConfig alloc] initWithImage:self.imageView.image size:size];
+            config.artworkID = self.artwork.artworkUUID;
+            config.artworkSlug = self.artwork.artworkID;
             config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
 
             if (shouldSkipSetup) {
@@ -99,6 +116,8 @@
                 // (Creds in 1pass) and update the ARVIRVideo message with the full URL
                 //
                 ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+                [echo setup];
+
                 Message *setupURL = [[echo.messages select:^BOOL(Message *message) {
                     return [message.name isEqualToString:@"ARVIRVideo"];
                 }] firstObject];
@@ -108,11 +127,9 @@
                 [self.navigationController pushViewController:setupVC animated:ARPerformWorkAsynchronously];
             }
         }];
-
     } else {
         ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:self.artwork];
         [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
-
     }
 }
 

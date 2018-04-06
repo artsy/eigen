@@ -11,4 +11,11 @@
 
 - (instancetype)initWithConfig:(ARAugmentedRealityConfig *)config;
 
+@property (readonly, nonatomic) ARAugmentedRealityConfig *config;
+
+// Used to exit AR
+- (void)exitARContext;
+
+// Time spent in AR, in seconds
+- (NSTimeInterval)timeInAR;
 @end

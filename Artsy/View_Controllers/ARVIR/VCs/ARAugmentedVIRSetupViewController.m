@@ -24,6 +24,8 @@
 @property (nonatomic, weak) UILabel *subtitleLabel;
 @property (nonatomic, weak) UIButton *button;
 
+@property (nonatomic, weak) AVPlayer *avPlayer;
+
 @property (nonatomic, assign) BOOL hasSentToSettings;
 @end
 
@@ -31,11 +33,10 @@ NSString *const arTitle = @"Art in your home";
 
 NSString *const needsAccessButtonTitle = @"Allow camera access";
 NSString *const hasDeniedAccessButtonTitle = @"Update Camera Access";
-NSString *const hasAccessButtonTitle = @"Continue";
+NSString *const hasAccessButtonTitle = @"Get Started";
 
 NSString *const needsAccessSubtitle = @"To view works in your room, we'll need access to your camera.";
-NSString *const hasDeniedAccessSubtitle = @"To view works in your room using augmented reality, we’ll need access to your camera. \n\nPlease update camera access permissions in the iOS settings.";
-NSString *const hasAccessSubtitle = @"To view works in your room using augmented reality, find a wall and [something].";
+NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll need access to your camera. \n\nPlease update camera access permissions in the iOS settings.";
 
 @implementation ARAugmentedVIRSetupViewController
 
@@ -48,45 +49,36 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
     return self;
 }
 
-
 // Main potential states:
 //
 //  - First time with permission (given from consignments)
 //  - First time without permission
-//  - Xth time with permission because they couldn't place a work
 //  - Xth time without permission because they denied after the fact
 //
 
 - (NSString *)subtitleWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission
 {
-    BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasSeenSetup];
-    if (firstTime && hasPermission) {
-        return hasAccessSubtitle;
+    BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasTriedToSetup];
+    BOOL hasSeenAR = [defaults objectForKey:ARAugmentedRealityCameraAccessGiven] != nil;
 
-    } else if(firstTime && !hasPermission) {
+    if (firstTime) {
         return needsAccessSubtitle;
+    } else if(!hasSeenAR) {
+        return needsAccessSubtitle;
+    } else {
+        return hasDeniedAccessSubtitle;
     }
-
-    BOOL notCompleted = ![defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
-    if (notCompleted) {
-        return hasAccessSubtitle;
-    }
-
-    return hasDeniedAccessSubtitle;
 }
 
 - (NSString *)buttonTitleWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission
 {
-    BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasSeenSetup];
-    if (firstTime && hasPermission) {
+    BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasTriedToSetup];
+    BOOL hasSeenAR = [defaults objectForKey:ARAugmentedRealityCameraAccessGiven] != nil;
+
+    if (firstTime && !hasPermission) {
         return hasAccessButtonTitle;
 
-    } else if(firstTime && !hasPermission) {
-        return needsAccessButtonTitle;
-    }
-
-    BOOL notCompleted = ![defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
-    if (notCompleted) {
+    } else if (firstTime && !hasSeenAR) {
         return hasAccessButtonTitle;
     }
 
@@ -95,16 +87,11 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
 
 - (SEL)buttonSelectorWithDefaults:(NSUserDefaults *)defaults hasPermission:(BOOL)hasPermission
 {
-    BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasSeenSetup];
+    BOOL firstTime = ![defaults boolForKey:ARAugmentedRealityHasTriedToSetup];
     if (firstTime && hasPermission) {
         return @selector(next);
 
     } else if(firstTime && !hasPermission) {
-        return @selector(next);
-    }
-
-    BOOL notCompleted = ![defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
-    if (notCompleted) {
         return @selector(next);
     }
 
@@ -115,6 +102,7 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.defaults setBool:YES forKey:ARAugmentedRealityHasSeenSetup];
 
     // Re-use the class check, this means it takes into account whether permissions have been changed after a user
     // has successfully set up an Artwork.
@@ -125,8 +113,15 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
 
         // Have a potential background video, otherwise it's a black screen
         AVPlayerViewController *playVC = [[AVPlayerViewController alloc] init];
-        playVC.player = [[AVPlayer alloc] initWithURL: self.movieURL];
+        playVC.allowsPictureInPicturePlayback = NO;
+        playVC.updatesNowPlayingInfoCenter = NO;
         playVC.showsPlaybackControls = NO;
+        playVC.videoGravity = AVLayerVideoGravityResizeAspectFill;
+
+        playVC.player = [AVPlayer playerWithURL:self.movieURL];
+        self.avPlayer = playVC.player;
+        [playVC.player play];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartVideo:) name:AVPlayerItemDidPlayToEndTimeNotification object:playVC.player.currentItem];
 
         // Add the AV player as a childVC, aligned edge to edge
         [playVC willMoveToParentViewController:self];
@@ -134,6 +129,17 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
         [self.view addSubview:playVC.view];
         [playVC.view alignToView:self.view];
         [playVC didMoveToParentViewController:self];
+
+        UIImageView *poster = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ar_vir_opening_frame.jpg"]];
+        poster.contentMode = UIViewContentModeScaleAspectFill;
+        [self.view addSubview:poster];
+        [poster alignToView:self.view];
+
+        [playVC.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.5, 600) queue:nil usingBlock:^(CMTime time) {
+            if (CMTimeGetSeconds(time) > 0) {
+                [poster removeFromSuperview];
+            }
+        }];
 
         UIView *overlay = [[UIView alloc] init];
         [self.view addSubview:overlay];
@@ -193,10 +199,16 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
     }];
 }
 
+- (void)restartVideo:(NSNotification *)notification
+{
+    AVPlayerItem *item = notification.object;
+    [item seekToTime:kCMTimeZero];
+    [self.avPlayer play];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.defaults setBool:YES forKey:ARAugmentedRealityHasSeenSetup];
 
     // Re-run the validation steps when they've come back from settings
     if (self.hasSentToSettings) {
@@ -219,6 +231,8 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
 {
     [self.class validateAVAccess:self.defaults callback:^(bool allowedAccess) {
         if (allowedAccess) {
+            [self.defaults setBool:YES forKey:ARAugmentedRealityHasTriedToSetup];
+
             ARAugmentedVIRViewController *vc = [[ARAugmentedVIRViewController alloc] initWithConfig:self.config];
             [self.navigationController pushViewController:vc animated:YES];
         } else {
@@ -247,10 +261,8 @@ NSString *const hasAccessSubtitle = @"To view works in your room using augmented
 + (void)canSkipARSetup:(NSUserDefaults *)defaults callback:(void (^)(bool allowedAccess))closure
 {
     BOOL access = [defaults boolForKey:ARAugmentedRealityCameraAccessGiven];
-    BOOL used = [defaults boolForKey:ARAugmentedRealityHasSuccessfullyRan];
-    BOOL shouldBeFine = access && used;
     // We know it's a no, so return early
-    if (!shouldBeFine) {
+    if (!access) {
         return closure(NO);
     }
 

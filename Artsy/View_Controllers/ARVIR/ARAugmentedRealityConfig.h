@@ -23,5 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
 /** Should we show more information in the UI */
 @property (nonatomic, assign) BOOL debugMode;
 
+/** Optional ID for an Artwork being represented */
+@property (nonatomic, copy) NSString *artworkID;
+
+/** Optional Slug for an Artwork being represented */
+@property (nonatomic, copy) NSString *artworkSlug;
+
 NS_ASSUME_NONNULL_END
 @end

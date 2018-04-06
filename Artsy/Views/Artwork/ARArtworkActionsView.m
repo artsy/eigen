@@ -31,6 +31,7 @@
 @property (nonatomic, strong) SaleArtwork *saleArtwork;
 @property (nonatomic, strong) ARNavigationButtonsViewController *navigationButtonsVC;
 @property (nonatomic, strong) ARSpinner *spinner;
+@property (nonatomic, strong) UIView *bannerView;
 
 @end
 
@@ -112,7 +113,9 @@
 - (void)updateUI
 {
     for (UIView *subview in self.subviews) {
-        [self removeSubview:subview];
+        if (subview != self.bannerView) {
+            [self removeSubview:subview];
+        }
     }
 
     NSMutableArray *buttonsWhoseMarginCanChange = [NSMutableArray array];
