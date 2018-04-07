@@ -18,17 +18,17 @@ PODS:
     - Extraction (>= 1.2.1)
     - Folly (= 2016.09.26.00)
     - glog (= 0.3.4)
-    - React/Core (= 0.54.2)
-    - React/CxxBridge (= 0.54.2)
-    - React/RCTAnimation (= 0.54.2)
-    - React/RCTCameraRoll (= 0.54.2)
-    - React/RCTImage (= 0.54.2)
-    - React/RCTLinkingIOS (= 0.54.2)
-    - React/RCTNetwork (= 0.54.2)
-    - React/RCTText (= 0.54.2)
+    - React/Core (= 0.54.4)
+    - React/CxxBridge (= 0.54.4)
+    - React/RCTAnimation (= 0.54.4)
+    - React/RCTCameraRoll (= 0.54.4)
+    - React/RCTImage (= 0.54.4)
+    - React/RCTLinkingIOS (= 0.54.4)
+    - React/RCTNetwork (= 0.54.4)
+    - React/RCTText (= 0.54.4)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.30.3)
-    - yoga (= 0.54.2.React)
+    - yoga (= 0.54.4.React)
   - Extraction (1.2.3):
     - Extraction/ARAnimationContinuation (= 1.2.3)
     - Extraction/ARLoadFailureView (= 1.2.3)
@@ -73,45 +73,45 @@ PODS:
   - NSURL+QueryDictionary (1.2.0)
   - ORStackView (2.0.3):
     - FLKAutoLayout
-  - React (0.54.2):
-    - React/Core (= 0.54.2)
-  - React/Core (0.54.2):
-    - yoga (= 0.54.2.React)
-  - React/CxxBridge (0.54.2):
+  - React (0.54.4):
+    - React/Core (= 0.54.4)
+  - React/Core (0.54.4):
+    - yoga (= 0.54.4.React)
+  - React/CxxBridge (0.54.4):
     - Folly (= 2016.09.26.00)
     - React/Core
     - React/cxxreact
-  - React/cxxreact (0.54.2):
+  - React/cxxreact (0.54.4):
     - boost-for-react-native (= 1.63.0)
     - Folly (= 2016.09.26.00)
     - React/jschelpers
     - React/jsinspector
-  - React/DevSupport (0.54.2):
+  - React/DevSupport (0.54.4):
     - React/Core
     - React/RCTWebSocket
-  - React/fishhook (0.54.2)
-  - React/jschelpers (0.54.2):
+  - React/fishhook (0.54.4)
+  - React/jschelpers (0.54.4):
     - Folly (= 2016.09.26.00)
     - React/PrivateDatabase
-  - React/jsinspector (0.54.2)
-  - React/PrivateDatabase (0.54.2)
-  - React/RCTAnimation (0.54.2):
+  - React/jsinspector (0.54.4)
+  - React/PrivateDatabase (0.54.4)
+  - React/RCTAnimation (0.54.4):
     - React/Core
-  - React/RCTBlob (0.54.2):
+  - React/RCTBlob (0.54.4):
     - React/Core
-  - React/RCTCameraRoll (0.54.2):
+  - React/RCTCameraRoll (0.54.4):
     - React/Core
     - React/RCTImage
-  - React/RCTImage (0.54.2):
+  - React/RCTImage (0.54.4):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.54.2):
+  - React/RCTLinkingIOS (0.54.4):
     - React/Core
-  - React/RCTNetwork (0.54.2):
+  - React/RCTNetwork (0.54.4):
     - React/Core
-  - React/RCTText (0.54.2):
+  - React/RCTText (0.54.4):
     - React/Core
-  - React/RCTWebSocket (0.54.2):
+  - React/RCTWebSocket (0.54.4):
     - React/Core
     - React/fishhook
     - React/RCTBlob
@@ -130,7 +130,7 @@ PODS:
     - Sentry (~> 3.9.0)
     - Sentry/KSCrash (~> 3.9.0)
   - UIView+BooleanAnimations (1.0.2)
-  - yoga (0.54.2.React)
+  - yoga (0.54.4.React)
 
 DEPENDENCIES:
   - ARGenericTableViewController
@@ -201,6 +201,6 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: 128959142ec5a788e779c9a2f4497b309bba756d
+PODFILE CHECKSUM: 42bccfbea6ae5679fae84d25a1145ae9b472fede
 
 COCOAPODS: 1.4.0

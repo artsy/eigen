@@ -60,13 +60,7 @@ plugin 'cocoapods-keys', {
   ]
 }
 
-def edit_pod_file(file, old_code, new_code)
-  code = File.read(file)
-  if code.include?(old_code)
-    FileUtils.chmod("+w", file)
-    File.write(file, code.sub(old_code, new_code))
-  end
-end
+plugin 'cocoapods-fix-react-native'
 
 post_install do |installer|
   emission = installer.pods_project.targets.find { |target| target.name == 'Emission' }
@@ -75,14 +69,4 @@ post_install do |installer|
     # Work around https://github.com/rs/SDWebImage/issues/2022, because we don’t want to upgrade to SDWebImage 4 atm.
     config.build_settings['CLANG_WARN_STRICT_PROTOTYPES'] = 'NO'
   end
-
-  # Bug with 0.51 where they include the TV remote handler without using it
-  # It's fixed in master.
-  react_scrollview_file = '../node_modules/react-native/React/Views/RCTModalHostView.m'
-  react_scrollview_old_code = '#import "RCTTVRemoteHandler.h"'
-  react_scrollview_new_code = '//#import "RCTTVRemoteHandler.h"'
-  edit_pod_file react_scrollview_file, react_scrollview_old_code, react_scrollview_new_code
-
-  # https://github.com/facebook/react-native/pull/17783
-  edit_pod_file '../node_modules/react-native/React.podspec', "Libraries/Text/*.{h,m}", "Libraries/Text/**/*.{h,m}"
 end
