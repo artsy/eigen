@@ -187,7 +187,7 @@
 
 - (ARCellData *)jumpToGene
 {
-  NSString *geneID = @"minimalis";
+  NSString *geneID = @"minimalism";
   return [self viewControllerCellDataWithTitle:@"Gene"
                                      selection:^{
     id viewController = [[ARGeneComponentViewController alloc] initWithGeneID:geneID];
