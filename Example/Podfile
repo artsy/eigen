@@ -68,5 +68,10 @@ post_install do |installer|
     config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'YES'
     # Work around https://github.com/rs/SDWebImage/issues/2022, because we don’t want to upgrade to SDWebImage 4 atm.
     config.build_settings['CLANG_WARN_STRICT_PROTOTYPES'] = 'NO'
+    # Use dynamic queries by default in development mode.
+    if config.name == 'Debug'
+      query_map = File.expand_path('../src/__generated__/complete.queryMap.json', __dir__)
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = "$(inherited) USE_DYNAMIC_GRAPHQL_MAP='#{query_map}'"
+    end
   end
 end

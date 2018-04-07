@@ -2,25 +2,35 @@
 #import "AREmission.h"
 #import "ARGraphQLQueryCache.h"
 
-/*
- * If this file exists, it will contain a hardcoded list of names to queries for as fast as possible loading on launch.
- */
-#if __has_include("ARGraphQLQueryMap.m")
-#define HAVE_QUERY_MAP
-#endif
-
-#ifdef HAVE_QUERY_MAP
-#include "ARGraphQLQueryMap.m"
+// Unless disabled, this will use a hardcoded map of names to query IDs for as fast as possible loading on launch.
+//#undef USE_DYNAMIC_GRAPHQL_MAP
+#ifndef USE_DYNAMIC_GRAPHQL_MAP
+#include "ARGraphQLQueryMap.generated.objc"
 #else
 #ifndef DEBUG
-#error Expected to have ARPreloadQueryMap.m in release mode.
+#error Expected to have ARGraphQLQueryMap.generated.objc in release mode.
 #endif
 
 static
 NSDictionary *
 ARGraphQLQueryMap(void) {
-    NSURL *queryMapURL = [[NSBundle bundleForClass:ARGraphQLQueryPreloader.class] URLForResource:@"complete"
-                                                                                   withExtension:@".queryMap.json"];
+    static NSURL *queryMapURL = nil;
+    static dispatch_once_t onceToken = 0;
+    dispatch_once(&onceToken, ^{
+// Actually use the passed in local query map when running on the simulator so the app does not need to be rebuild to
+// pick-up changes to the query map.
+#if TARGET_IPHONE_SIMULATOR
+// CPP hoops to create an NSString literal out of a macro.
+#define STRINGIZE1(x) #x
+#define STRINGIZE2(x) STRINGIZE1(x)
+#define QUERY_MAP_PATH @ STRINGIZE2(USE_DYNAMIC_GRAPHQL_MAP)
+        queryMapURL = [NSURL fileURLWithPath:QUERY_MAP_PATH];
+#else
+        queryMapURL = [[NSBundle bundleForClass:ARGraphQLQueryPreloader.class] URLForResource:@"complete"
+                                                                                withExtension:@".queryMap.json"];
+#endif
+        NSLog(@"[ARGraphQLQueryMap] Using dynamic query map: %@", queryMapURL);
+    });
     NSError *error = nil;
     NSData *data = [NSData dataWithContentsOfURL:queryMapURL options:0 error:&error];
     NSCAssert(error == nil, @"Unable to load query map at `%@`: %@", queryMapURL, error);
@@ -53,7 +63,6 @@ ARGraphQLQueryIDToText(NSString *ID)
 }
 
 #endif
-
 
 @implementation ARGraphQLQuery
 
@@ -99,10 +108,10 @@ RCT_EXPORT_MODULE();
         NSString *ID = ARGraphQLQueryNameToID(query.queryName);
 
         NSDictionary *body = nil;
-#ifdef HAVE_QUERY_MAP
-        body = @{ @"documentID": ID, @"variables": query.variables };
-#else
+#ifdef USE_DYNAMIC_GRAPHQL_MAP
         body = @{ @"query": ARGraphQLQueryIDToText(ID), @"variables": query.variables };
+#else
+        body = @{ @"documentID": ID, @"variables": query.variables };
 #endif
         
         NSError *error = nil;
@@ -111,7 +120,6 @@ RCT_EXPORT_MODULE();
             NSLog(@"Unable to generate JSON for GraphQL query %@: %@", query.queryName, error);
             continue;
         }
-//        NSLog(@"%@", [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding]);
 
         // indicate we’re fetching this
         [self.cache setResponse:nil
