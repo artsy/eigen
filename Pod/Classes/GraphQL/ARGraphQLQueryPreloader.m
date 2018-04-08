@@ -5,6 +5,8 @@
 // Unless disabled, this will use a hardcoded map of names to query IDs for as fast as possible loading on launch.
 //#undef USE_DYNAMIC_GRAPHQL_MAP
 #ifndef USE_DYNAMIC_GRAPHQL_MAP
+// This is an inline import of the generated obj-c from `yarn generate-graphql-query-map`
+// to avoid having it treated as a compilation unit in Xcode
 #include "ARGraphQLQueryMap.generated.objc"
 #else
 #ifndef DEBUG
