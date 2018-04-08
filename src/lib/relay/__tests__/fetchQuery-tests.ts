@@ -1,23 +1,22 @@
-jest.mock("relay-runtime/lib/RelayQueryResponseCache")
-import RelayQueryResponseCache from "relay-runtime/lib/RelayQueryResponseCache"
+jest.mock("../../NativeModules/GraphQLQueryCache")
+import * as _cache from "../../NativeModules/GraphQLQueryCache"
 
-jest.mock("../../metaphysics", () => ({ metaphysics: jest.fn() }))
-import { metaphysics as _metaphysics } from "../../metaphysics"
+type Mockify<T> = { [P in keyof T]: jest.MockInstance<T[P]> }
+
+const cache: Mockify<typeof _cache> = _cache as any
+
+jest.mock("../../metaphysics", () => ({
+  request: jest.fn(),
+}))
+import { request as _request } from "../../metaphysics"
 
 import { fetchQuery } from "../fetchQuery"
 
 describe("fetchQuery", () => {
-  const metaphysicsMock: jest.MockInstance<typeof _metaphysics> = _metaphysics as any
-  const cacheMock = RelayQueryResponseCache.mock.instances[0]
+  const metaphysicsMock: jest.MockInstance<typeof _request> = _request as any
 
   const operation = {
-    text: `
-      query ArtistQuery($id: ID!) {
-        artist(id: $id) {
-          name
-        }
-      }
-    `,
+    id: "SomeQueryID",
     operationKind: "query",
   }
   const variables = {
@@ -29,13 +28,17 @@ describe("fetchQuery", () => {
   const response = { data: { artist: { name: "Banksy" } } }
 
   beforeEach(() => {
-    cacheMock.clear()
+    cache.clear.mockClear()
+    cache.clearAll.mockClear()
+    cache.get.mockClear()
+    cache.set.mockClear()
     metaphysicsMock.mockReset()
   })
 
   describe("without cached data", () => {
     beforeEach(() => {
-      metaphysicsMock.mockImplementation(() => Promise.resolve(response))
+      cache.get.mockImplementation(() => Promise.resolve(null))
+      metaphysicsMock.mockImplementation(() => Promise.resolve({ text: () => JSON.stringify(response) }))
     })
 
     it("performs a fetch", async () => {
@@ -44,26 +47,26 @@ describe("fetchQuery", () => {
 
     it("caches the fetched data", async () => {
       await fetchQuery(operation, variables, cacheConfig)
-      expect(cacheMock.set).toHaveBeenCalledWith(operation.text, variables, response)
+      expect(cache.set).toHaveBeenCalledWith(operation.id, variables, JSON.stringify(response))
     })
   })
 
   describe("with cached data", () => {
     it("does not perform a fetch by default", async () => {
-      cacheMock.get.mockImplementation(() => Promise.resolve(response))
+      cache.get.mockImplementation(() => Promise.resolve(JSON.stringify(response)))
       expect(await fetchQuery(operation, variables, cacheConfig)).toEqual(response)
       expect(metaphysicsMock).not.toHaveBeenCalled()
     })
 
     it("does perform a fetch when forced", async () => {
-      metaphysicsMock.mockImplementation(() => Promise.resolve(response))
+      metaphysicsMock.mockImplementation(() => Promise.resolve({ text: () => JSON.stringify(response) }))
       expect(await fetchQuery(operation, variables, { force: true })).toEqual(response)
     })
 
     it("clears the cache after a mutation", async () => {
-      metaphysicsMock.mockImplementation(() => Promise.resolve(response))
-      await fetchQuery({ text: `mutation FollowArtist(id: ID!) {}`, operationKind: "mutation" }, variables, cacheConfig)
-      expect(cacheMock.clear).toHaveBeenCalled()
+      metaphysicsMock.mockImplementation(() => Promise.resolve({ text: () => JSON.stringify(response) }))
+      await fetchQuery({ id: "SomeMutation", operationKind: "mutation" }, variables, cacheConfig)
+      expect(cache.clearAll).toHaveBeenCalled()
     })
   })
 })
