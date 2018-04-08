@@ -104,6 +104,7 @@ static AREmission *_sharedInstance = nil;
         _cameraModule,
         _notificationsManagerModule,
         _graphQLQueryPreloaderModule,
+        _graphQLQueryCacheModule,
         [ARCocoaConstantsModule new],
     ];
 
