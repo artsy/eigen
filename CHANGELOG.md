@@ -20,7 +20,9 @@
 * Follow Force and reduce image quality to 80 - alloy
 * Inquiries use the same user-agent as emission - orta
 * Optimise the generic artwork grid for rotation - maxim
-* Cache queries for 2 minutes, which is the average session time in recent app versions - alloy
+* Cache queries on-disk for 1 day - alloy
+* Add persisted queries support to Relay - alloy
+* Add ability to preload queries - alloy
 
 ## 1.4.6
 
