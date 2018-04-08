@@ -2,9 +2,9 @@ import React from "react"
 import { FlatList, RefreshControl, ScrollView, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
-import ArtistRail, { ArtistRail as ArtistRailType } from "lib/Components/Home/ArtistRails/ArtistRail"
-import ArtworkCarousel, { ArtworkCarousel as ArtworkCarouselType } from "./Components/ArtworkCarousel"
-import FairsRail, { FairsRail as FairsRailType } from "./Components/FairsRail"
+import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
+import ArtworkCarousel from "./Components/ArtworkCarousel"
+import FairsRail from "./Components/FairsRail"
 
 import { ForYou_forYou } from "__generated__/ForYou_forYou.graphql"
 
