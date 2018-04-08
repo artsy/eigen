@@ -9,7 +9,6 @@
 #import "ARCocoaConstantsModule.h"
 #import "ARGraphQLQueryPreloader.h"
 #import "ARGraphQLQueryCache.h"
-#import "ARGraphQLQueryCacheModule.h"
 
 #import <SentryReactNative/RNSentry.h>
 
@@ -89,9 +88,9 @@ static AREmission *_sharedInstance = nil;
     _worksForYouModule = [ARWorksForYouModule new];
     _cameraModule = [ARTakeCameraPhotoModule new];
     _notificationsManagerModule = [ARNotificationsManager new];
-    _graphQLQueryCacheModule = [ARGraphQLQueryCacheModule new];
+    _graphQLQueryCacheModule = [ARGraphQLQueryCache new];
     _graphQLQueryPreloaderModule = [[ARGraphQLQueryPreloader alloc] initWithConfiguration:config
-                                                                                    cache:[ARGraphQLQueryCache sharedInstance]];
+                                                                                    cache:_graphQLQueryCacheModule];
 
     _configurationModule = config;
 
@@ -105,7 +104,6 @@ static AREmission *_sharedInstance = nil;
         _cameraModule,
         _notificationsManagerModule,
         _graphQLQueryPreloaderModule,
-        // TODO: Seems like the weird double init is just because I didn’t actually add the cache module here :/
         [ARCocoaConstantsModule new],
     ];
 

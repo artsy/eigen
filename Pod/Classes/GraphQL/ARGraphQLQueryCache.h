@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
-
-typedef void(^ARGraphQLQueryCachePromise)(NSString * _Nullable response);
+#import <React/RCTBridgeModule.h>
 
 /**
  * The TTL applied to responses that are stored with a TTL of `0`.
@@ -9,12 +8,7 @@ typedef void(^ARGraphQLQueryCachePromise)(NSString * _Nullable response);
  */
 extern const NSTimeInterval ARGraphQLQueryCacheDefaultTTL;
 
-@interface ARGraphQLQueryCache : NSObject
-
-/**
- * Very shared.
- */
-+ (nonnull instancetype)sharedInstance;
+@interface ARGraphQLQueryCache : NSObject <RCTBridgeModule>
 
 /**
  * Uses the default TTL defined by `ARGraphQLQueryCacheDefaultTTL`.
@@ -43,20 +37,6 @@ extern const NSTimeInterval ARGraphQLQueryCacheDefaultTTL;
          forQueryID:(nonnull NSString *)queryID
       withVariables:(nonnull NSDictionary *)variables
                 ttl:(NSTimeInterval)ttl;
-
-/**
- * Retrieves a response from the cache if it exists, or queues the promise for an in-flight request.
- *
- * @param queryID
- *        The persisted ID of the GraphQL document.
- * @param variables
- *        The variables used for this query, which combined with the `queryID` make the cache key.
- * @param promise
- *        A block that will receive the cached response or `nil` in case of a cache miss.
- */
-- (void)responseForQueryID:(nonnull NSString *)queryID
-             withVariables:(nonnull NSDictionary *)variables
-                completion:(nonnull ARGraphQLQueryCachePromise)promise;
 
 /**
  * Removes an individual response from the cache. Also resolves any pending promises for the key with a `nil` value.
