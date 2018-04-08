@@ -2,6 +2,7 @@
 #import "ARAnimatedTickView.h"
 #import "ARTickedTableViewCell.h"
 #import "ARAdminTableViewCell.h"
+#import "ARAdminPreloadTableViewCell.h"
 #import <SAMKeychain/SAMKeychain.h>
 
 #import "AppDelegate.h"
@@ -42,6 +43,7 @@
   ARTableViewData *tableViewData = [[ARTableViewData alloc] init];
   [self registerClass:ARTickedTableViewCell.class forCellReuseIdentifier:ARLabOptionCell];
   [self registerClass:ARAdminTableViewCell.class forCellReuseIdentifier:AROptionCell];
+  [self registerClass:ARAdminPreloadTableViewCell.class forCellReuseIdentifier:ARPreloadOptionCell];
 
   ARSectionData *appData = [[ARSectionData alloc] init];
   [self setupSection:appData withTitle:[self titleForApp]];

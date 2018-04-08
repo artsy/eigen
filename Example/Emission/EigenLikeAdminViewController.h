@@ -3,6 +3,8 @@
 
 /// Tickable cells
 extern NSString *const AROptionCell;
+/// Cells with a preload button
+extern NSString *const ARPreloadOptionCell;
 /// Normal cells
 extern NSString *const ARLabOptionCell;
 

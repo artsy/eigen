@@ -15,6 +15,7 @@
 		510DCB361CCA69EC0075E8CB /* EmissionUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB351CCA69EC0075E8CB /* EmissionUITests.m */; };
 		510E94FD1CCA828900BDF098 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 510E94FB1CCA828900BDF098 /* LaunchScreen.xib */; };
 		510E95141CCEB84F00BDF098 /* TestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 510E95131CCEB84F00BDF098 /* TestHelper.m */; };
+		515687BE2079A300002F365C /* ARAdminPreloadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 515687BD2079A300002F365C /* ARAdminPreloadTableViewCell.m */; };
 		515926A8206BA0C000048C74 /* complete.queryMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 515926A7206BA0C000048C74 /* complete.queryMap.json */; };
 		515926AE206CF8BA00048C74 /* UITabBarDownloadsTemplate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 515926AD206CF8B900048C74 /* UITabBarDownloadsTemplate@2x.png */; };
 		51F3E9A41CF3B8A4004A2013 /* EigenLikeNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51F3E9A31CF3B8A4004A2013 /* EigenLikeNavigationController.m */; };
@@ -78,6 +79,8 @@
 		510E94FC1CCA828900BDF098 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		510E95131CCEB84F00BDF098 /* TestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestHelper.m; sourceTree = "<group>"; };
 		510E95151CCEC22C00BDF098 /* TestHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestHelper.h; sourceTree = "<group>"; };
+		515687BC2079A300002F365C /* ARAdminPreloadTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAdminPreloadTableViewCell.h; sourceTree = "<group>"; };
+		515687BD2079A300002F365C /* ARAdminPreloadTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAdminPreloadTableViewCell.m; sourceTree = "<group>"; };
 		515926A7206BA0C000048C74 /* complete.queryMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = complete.queryMap.json; path = ../../src/__generated__/complete.queryMap.json; sourceTree = "<group>"; };
 		515926AD206CF8B900048C74 /* UITabBarDownloadsTemplate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UITabBarDownloadsTemplate@2x.png"; sourceTree = "<group>"; };
 		51F3E9A21CF3B8A4004A2013 /* EigenLikeNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EigenLikeNavigationController.h; sourceTree = "<group>"; };
@@ -225,6 +228,8 @@
 				6011C2421DAF61AF00CE54E5 /* ARAnimatedTickView.m */,
 				6011C24C1DAF697B00CE54E5 /* EigenLikeAdminViewController.h */,
 				6011C24D1DAF697B00CE54E5 /* EigenLikeAdminViewController.m */,
+				515687BC2079A300002F365C /* ARAdminPreloadTableViewCell.h */,
+				515687BD2079A300002F365C /* ARAdminPreloadTableViewCell.m */,
 			);
 			name = "Admin Tableview Cells";
 			sourceTree = "<group>";
@@ -645,6 +650,7 @@
 				60B743B71D3EB12600E6B2A3 /* ARStorybookComponentViewController.m in Sources */,
 				51F3E9A41CF3B8A4004A2013 /* EigenLikeNavigationController.m in Sources */,
 				60DA49AB1EE7D219001FE871 /* EmissionPRChooseViewController.m in Sources */,
+				515687BE2079A300002F365C /* ARAdminPreloadTableViewCell.m in Sources */,
 				6011C2461DAF61AF00CE54E5 /* ARTickedTableViewCell.m in Sources */,
 				60AE1D801EE7DF9C00FC800A /* PRNetworkModel.m in Sources */,
 				60E4ABF71EE7D85000E8C3B1 /* LoadingSpinner.m in Sources */,
