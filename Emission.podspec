@@ -49,8 +49,8 @@ podspec = Pod::Spec.new do |s|
     'node_modules/react-native/third-party-podspecs/glog.podspec'
   ]
   podspecs.each do |podspec_path|
-    podspec_json = JSON.parse(`pod ipc spec #{podspec_path}`)
-    s.dependency podspec_json['name'], podspec_json['version']
+    spec = Pod::Specification.from_file podspec_path
+    s.dependency spec.name, "#{spec.version}"
   end
 
   s.dependency 'SDWebImage', '>= 3.7.2', '< 4'
