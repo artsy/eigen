@@ -1,32 +1,55 @@
-import { metaphysics } from "../metaphysics"
+import { request } from "../metaphysics"
+import * as cache from "../NativeModules/GraphQLQueryCache"
 
 import { FetchFunction } from "relay-runtime"
-import RelayQueryResponseCache from "relay-runtime/lib/RelayQueryResponseCache"
-
-/**
- * Cache requests/responses for 2 minutes, which is the average session time people spend in the app in recent versions.
- *
- * @see https://artsy.looker.com/sql/mj6pnhjdsxfhqv
- */
-const cache = new RelayQueryResponseCache({ size: 250, ttl: 2 * 60 * 1000 })
 
 export const fetchQuery: FetchFunction = (operation, variables, cacheConfig, _uploadables) => {
-  const text = operation.text
   const isQuery = operation.operationKind === "query"
+  const queryID = operation.id
 
   if (isQuery && !cacheConfig.force) {
-    const fromCache = cache.get(text, variables)
-    if (fromCache) {
-      return fromCache
-    }
+    return cache.get(queryID, variables).then(fromCache => {
+      if (fromCache) {
+        return JSON.parse(fromCache)
+      }
+      return _fetchQuery(queryID, variables, isQuery)
+    })
+  } else {
+    return _fetchQuery(queryID, variables, isQuery)
+  }
+}
+
+function _fetchQuery(queryID: string, variables: object, isQuery: boolean) {
+  // Mark queryID as in-flight
+  cache.set(queryID, variables, null)
+
+  let body
+  if (__DEV__) {
+    body = { query: require("../../__generated__/complete.queryMap.json")[queryID], variables }
+  } else {
+    body = { documentID: queryID, variables }
   }
 
-  return metaphysics({ query: text, variables }).then(json => {
-    if (json && isQuery) {
-      cache.set(text, variables, json)
-    } else if (!isQuery) {
-      cache.clear()
-    }
-    return json
-  })
+  return request(body)
+    .then(response => response.text())
+    .then(responseBody => {
+      const json: { errors: any[] } = JSON.parse(responseBody)
+      if (json.errors) {
+        // Unmark as in-flight
+        cache.clear(queryID, variables)
+        // Log to console/Sentry
+        json.errors.forEach(console.error)
+        // Throw here so that our error view gets shown.
+        // See https://github.com/facebook/relay/issues/1913
+        throw new Error("Server-side error occurred")
+      }
+      if (isQuery) {
+        // Fullfil in-flight request
+        cache.set(queryID, variables, responseBody)
+      } else if (!isQuery) {
+        // In case of a mutation clear all.
+        cache.clearAll()
+      }
+      return json
+    })
 }

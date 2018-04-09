@@ -1,7 +1,10 @@
 #import <Emission/ARComponentViewController.h>
 
+@class ARGraphQLQuery;
+
 NS_ASSUME_NONNULL_BEGIN
 
+// When changing this, be sure to adjust the implementation of +preloadQueriesWithSelectedArtist:tab:
 typedef enum ARHomeTabType {
     ARHomeTabArtists,
     ARHomeTabForYou,
@@ -11,6 +14,9 @@ typedef enum ARHomeTabType {
 @interface ARHomeComponentViewController : ARComponentViewController
 
 @property (nonatomic, strong, readonly) NSString *selectedArtist;
+
++ (NSArray<ARGraphQLQuery *> *)preloadQueriesWithSelectedArtist:(nullable NSString *)artistID
+                                                            tab:(ARHomeTabType)selectedTab;
 
 - (instancetype)initWithSelectedArtist:(nullable NSString *)artistID
                                    tab:(ARHomeTabType)selectedTab

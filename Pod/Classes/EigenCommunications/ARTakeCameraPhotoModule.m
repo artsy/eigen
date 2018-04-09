@@ -37,7 +37,16 @@ static NSArray<NSString *> *ErrorJSKeys = nil;
 
 @synthesize bridge = _bridge;
 
-+ (NSString *)moduleName { return nil; }
+// RN Ceremony
++ (NSString *)moduleName;
+{
+    return nil;
+}
+
++ (BOOL)requiresMainQueueSetup;
+{
+    return NO;
+}
 
 + (void)load;
 {

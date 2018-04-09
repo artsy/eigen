@@ -24,6 +24,7 @@ podspec = Pod::Spec.new do |s|
   s.platform       = :ios, '8.0'
   s.requires_arc   = true
   s.source_files   = 'Pod/Classes/**/*.{h,m}'
+  s.preserve_paths = 'Pod/Classes/**/*.generated.objc'
   s.resources      = 'Pod/Assets/{Emission.js,assets}'
 
   s.dependency 'Artsy+UIColors'

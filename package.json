@@ -11,9 +11,9 @@
   "main": "index.ios.js",
   "scripts": {
     "bundle":
-      "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
+      "yarn generate-graphql-query-map && react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
     "bundle-with-storybooks":
-      "react-native bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output  Pod/Assets/Emission.js --assets-dest Pod/Assets",
+      "yarn generate-graphql-query-map && react-native bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output  Pod/Assets/Emission.js --assets-dest Pod/Assets",
     "type-check": "tsc --noEmit --pretty",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "lint-fix": "lint -- --fix",
@@ -34,7 +34,9 @@
     "test:ci": "jest --outputFile test-results.json --json --runInBand",
     "testing": "jest --watch",
     "relay":
-      "relay-compiler --src ./src --schema data/schema.graphql --language typescript --artifactDirectory ./src/__generated__",
+      "relay-compiler --src ./src --schema data/schema.graphql --language typescript --artifactDirectory ./src/__generated__ --persist --persistOutput ./src/__generated__/complete.queryMap.json",
+    "generate-graphql-query-map":
+      "node scripts/generate-graphql-query-map.js > Pod/Classes/GraphQL/ARGraphQLQueryMap.generated.objc",
     "sync-colors":
       "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
@@ -63,7 +65,7 @@
   "files": ["index.js", "data", "lib"],
   "resolutions": {
     "graphql": "^0.12.3",
-    "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/relay-runtime-1.5.0-artsy.3.tgz"
+    "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/relay-runtime-1.5.0-artsy.5.tgz"
   },
   "dependencies": {
     "lodash": "^4.17.4",
@@ -76,9 +78,9 @@
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-sentry": "^0.30.2",
-    "react-relay": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/react-relay-1.5.0-artsy.3.tgz",
+    "react-relay": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/react-relay-1.5.0-artsy.5.tgz",
     "react-tracking": "^5.0.0",
-    "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/relay-runtime-1.5.0-artsy.3.tgz",
+    "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/relay-runtime-1.5.0-artsy.5.tgz",
     "remove-markdown": "0.1.0",
     "styled-components": "^3.1.4"
   },
@@ -96,7 +98,7 @@
     "awesome-typescript-loader": "^3.2.3",
     "babel-jest": "^22.1.0",
     "babel-plugin-relay":
-      "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/babel-plugin-relay-1.5.0-artsy.3.tgz",
+      "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/babel-plugin-relay-1.5.0-artsy.5.tgz",
     "babel-polyfill": "^6.13.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
@@ -120,7 +122,7 @@
     "react-test-renderer": "^16.3.0-alpha.1",
     "recursive-readdir-sync": "^1.0.6",
     "relay-compiler":
-      "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/relay-compiler-1.5.0-artsy.3.tgz",
+      "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/relay-compiler-1.5.0-artsy.5.tgz",
     "relay-compiler-language-typescript": "^0.9.0",
     "relay2ts": "^0.2.0",
     "snapshot-diff": "^0.2.1",

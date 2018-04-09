@@ -3,8 +3,14 @@
 
 /// Tickable cells
 extern NSString *const AROptionCell;
+/// Cells with a preload button
+extern NSString *const ARPreloadOptionCell;
 /// Normal cells
 extern NSString *const ARLabOptionCell;
+
+@class ARGraphQLQuery;
+
+typedef NSArray<ARGraphQLQuery *> *(^ARAdminVCPreloadBlock)(void);
 
 /// Provides some setup + extra functions on ARGenericTableViewController
 /// that are extra useful for admin tooling
@@ -28,5 +34,9 @@ extern NSString *const ARLabOptionCell;
 
 /// Simple cell that shows info
 - (ARCellData *)informationCellDataWithTitle:(NSString *)title;
+
+- (ARCellData *)viewControllerCellDataWithTitle:(NSString *)title
+                                      selection:(dispatch_block_t)selection
+                                        preload:(ARAdminVCPreloadBlock)preload;
 
 @end

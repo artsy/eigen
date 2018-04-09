@@ -103,7 +103,7 @@ randomBOOL(void)
 
   AppSetup *setup = [AppSetup ambientSetup];
 
-  AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID authenticationToken:accessToken sentryDSN:nil googleMapsAPIKey:nil gravityHost:setup.gravityURL metaphysicsHost:setup.metaphysicsURL userAgent:@"Emission Example"];
+  AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID authenticationToken:accessToken sentryDSN:nil googleMapsAPIKey:nil gravityURL:setup.gravityURL metaphysicsURL:setup.metaphysicsURL userAgent:@"Emission Example"];
 
   emission = [[AREmission alloc] initWithConfiguration:config packagerURL:setup.jsCodeLocation];
   [AREmission setSharedInstance:emission];

@@ -74,8 +74,8 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersInquiryQuery",
-  "id": null,
-  "text": "query QueryRenderersInquiryQuery(\n  $artworkID: String!\n) {\n  artwork(id: $artworkID) {\n    ...Inquiry_artwork\n    __id\n  }\n}\n\nfragment Inquiry_artwork on Artwork {\n  _id\n  id\n  contact_message\n  partner {\n    name\n    __id\n  }\n  ...ArtworkPreview_artwork\n  __id\n}\n\nfragment ArtworkPreview_artwork on Artwork {\n  id\n  _id\n  title\n  artist_names\n  date\n  image {\n    url\n  }\n  __id\n}\n",
+  "id": "a061d9dbefece2ef49ce726b8725c34c",
+  "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

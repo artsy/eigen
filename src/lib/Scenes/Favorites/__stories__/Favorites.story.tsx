@@ -8,9 +8,9 @@ import Artworks from "../Components/Artworks"
 import Categories from "../Components/Categories"
 
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import ArtistsRenderer from "../Components/Artists/Relay/ArtistsRenderer"
-import ArtworksRenderer from "../Components/Artworks/Relay/ArtworksRenderer"
-import CategoriesRenderer from "../Components/Categories/Relay/CategoriesRenderer"
+import ArtistsRenderer from "../Components/Artists/Relay/FavoriteArtists"
+import ArtworksRenderer from "../Components/Artworks/Relay/FavoriteArtworks"
+import CategoriesRenderer from "../Components/Categories/Relay/FavoriteCategories"
 
 storiesOf("Favourites/Relay")
   .add("Root", () => <Favourites tracking={trackingData => console.log(trackingData)} />)

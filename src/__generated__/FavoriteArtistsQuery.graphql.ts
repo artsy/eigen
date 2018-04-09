@@ -1,9 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type ArtistsRendererQueryVariables = {
+export type FavoriteArtistsQueryVariables = {
 };
-export type ArtistsRendererQueryResponse = {
+export type FavoriteArtistsQueryResponse = {
     readonly me: ({
     }) | null;
 };
@@ -11,7 +11,7 @@ export type ArtistsRendererQueryResponse = {
 
 
 /*
-query ArtistsRendererQuery {
+query FavoriteArtistsQuery {
   me {
     ...Artists_me
     __id
@@ -56,13 +56,13 @@ var v0 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "ArtistsRendererQuery",
-  "id": null,
-  "text": "query ArtistsRendererQuery {\n  me {\n    ...Artists_me\n    __id\n  }\n}\n\nfragment Artists_me on Me {\n  followed_artists_connection(first: 10) {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      node {\n        artist {\n          id\n          __id\n          name\n          href\n          image {\n            url\n          }\n        }\n        __id\n        __typename\n      }\n      cursor\n    }\n  }\n  __id\n}\n",
+  "name": "FavoriteArtistsQuery",
+  "id": "49eaf7c16805166359df52ba8cb4f488",
+  "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "ArtistsRendererQuery",
+    "name": "FavoriteArtistsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -88,7 +88,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ArtistsRendererQuery",
+    "name": "FavoriteArtistsQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -254,5 +254,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'db235ffe8620a880041d9f2636675510';
+(node as any).hash = '1a3b1c0e2584328d41f07185fb29f309';
 export default node;

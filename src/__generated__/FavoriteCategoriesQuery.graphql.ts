@@ -1,9 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type CategoriesRendererQueryVariables = {
+export type FavoriteCategoriesQueryVariables = {
 };
-export type CategoriesRendererQueryResponse = {
+export type FavoriteCategoriesQueryResponse = {
     readonly me: ({
     }) | null;
 };
@@ -11,7 +11,7 @@ export type CategoriesRendererQueryResponse = {
 
 
 /*
-query CategoriesRendererQuery {
+query FavoriteCategoriesQuery {
   me {
     ...Categories_me
     __id
@@ -56,13 +56,13 @@ var v0 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "CategoriesRendererQuery",
-  "id": null,
-  "text": "query CategoriesRendererQuery {\n  me {\n    ...Categories_me\n    __id\n  }\n}\n\nfragment Categories_me on Me {\n  followed_genes(first: 10) {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      node {\n        gene {\n          id\n          __id\n          name\n          href\n          image {\n            url\n          }\n        }\n        __id\n        __typename\n      }\n      cursor\n    }\n  }\n  __id\n}\n",
+  "name": "FavoriteCategoriesQuery",
+  "id": "814089538a6782827e8d5bc579eea904",
+  "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "CategoriesRendererQuery",
+    "name": "FavoriteCategoriesQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -88,7 +88,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "CategoriesRendererQuery",
+    "name": "FavoriteCategoriesQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -254,5 +254,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'b70381a6a0f14668279e15e043e0337a';
+(node as any).hash = 'a31860bfc29ee72bfc110b9bb673d455';
 export default node;

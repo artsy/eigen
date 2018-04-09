@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { createFragmentContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import { Dimensions, TouchableHighlight } from "react-native"
@@ -32,24 +32,10 @@ const TouchableWrapper = styled.View`
 `
 
 interface Props {
-  relay: RelayRefetchProp
   fairs_module: FairsRail_fairs_module
-  registerRailModule?: (module: FairsRail | null) => void
 }
 
 export class FairsRail extends Component<Props, null> {
-  componentWillMount() {
-    if (this.props.registerRailModule) {
-      this.props.registerRailModule(this)
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.props.registerRailModule) {
-      this.props.registerRailModule(null)
-    }
-  }
-
   renderFairs() {
     if (!this.props.fairs_module.results.length) {
       return
@@ -89,12 +75,6 @@ export class FairsRail extends Component<Props, null> {
         {icons}
       </IconCarousel>
     )
-  }
-
-  refreshData = () => {
-    return new Promise((resolve, _reject) => {
-      resolve() // Refetch not needed yet
-    })
   }
 
   render() {
