@@ -90,7 +90,7 @@ class RefinementOptionsViewControllerSpec: QuickSpec {
         it("looks good with gene refine settings showing price") {
             let json = jsonForStub("gene_refine_example_medium_price")
 
-            guard let geneSettings = GeneRefineSettings.refinementFromAggregationJSON(json, initial: false) else { return fail() }
+            guard let geneSettings =  GeneRefineSettings.refinementFromAggregationJSON(json, initial: false) else { return fail() }
 
             let subject = RefinementOptionsViewController(defaultSettings: geneSettings, initialSettings: geneSettings, currencySymbol: "$", userDidCancelClosure: nil, userDidApplyClosure: nil)
 
@@ -111,6 +111,6 @@ extension UIViewController {
 
         if lookup != nil { return lookup }
 
-        return view.subviews.flatMap { findViewOfClass($0, type: type) }.first
+        return view.subviews.compactMap { findViewOfClass($0, type: type) }.first
     }
 }
