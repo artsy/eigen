@@ -54,7 +54,9 @@ NS_ASSUME_NONNULL_BEGIN
     if (@available(iOS 11.0, *)) {
         _dateOpenedAR = [NSDate date];
 
-        self.view.backgroundColor = UIColor.whiteColor;
+        self.view.backgroundColor = UIColor.blackColor;
+        _sceneView.backgroundColor = UIColor.blackColor;
+
         [super viewDidLoad];
 
         [self.view addSubview:self.sceneView];
