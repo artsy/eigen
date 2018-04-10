@@ -942,7 +942,7 @@
                             ARAnalyticsSelectorName: ARAnalyticsSelector(hasRegisteredPlanes),
                             ARAnalyticsProperties: ^NSDictionary *(ARAugmentedVIRViewController *controller, NSArray *parameters) {
                                 return @{
-                                    @"action_name" : @"ar detected planes",
+                                    @"action_name" : @"arDetectedPlanes",
                                     @"owner_type" : @"artwork",
                                     @"owner_id" : controller.config.artworkID ?: @"unknown",
                                     @"owner_slug": controller.config.artworkSlug ?: @"unknown",
@@ -954,7 +954,7 @@
                             ARAnalyticsSelectorName: ARAnalyticsSelector(hasPlacedArtwork),
                             ARAnalyticsProperties: ^NSDictionary *(ARAugmentedVIRViewController *controller, NSArray *parameters) {
                                 return @{
-                                    @"action_name" : @"placed artwork",
+                                    @"action_name" : @"arPlacedArtwork",
                                     @"owner_type" : @"artwork",
                                     @"owner_id" : controller.config.artworkID ?: @"unknown",
                                     @"owner_slug": controller.config.artworkSlug ?: @"unknown",
