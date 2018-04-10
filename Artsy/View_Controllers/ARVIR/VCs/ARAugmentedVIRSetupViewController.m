@@ -280,7 +280,6 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
             closure(granted);
         });
     }];
-
 }
 
 + (void)validateAVAccess:(NSUserDefaults *)defaults callback:(void (^)(bool allowedAccess))closure
@@ -315,6 +314,16 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 }
 
 - (BOOL)hidesToolbarMenu
+{
+    return YES;
+}
+
+- (BOOL)hidesStatusBarBackground
+{
+    return YES;
+}
+
+- (BOOL)prefersStatusBarHidden
 {
     return YES;
 }
