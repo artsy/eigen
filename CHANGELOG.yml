@@ -3,7 +3,7 @@ upcoming:
   date: TBA
   emission_version: 1.4.6
   user_facing:
-    -  [WIP] Buy now works show in an Auction screen - Chris
+    -  WIP Buy now works show in an Auction screen - Chris
     -  ARVIR fixes & improvements - orta
   
 releases:
