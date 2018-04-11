@@ -1,6 +1,7 @@
 import React from "react"
 import { AppRegistry, View } from "react-native"
 
+import BidFlow from "./Components/Bidding/Screens/BidFlow"
 import Consignments from "./Components/Consignments"
 import Containers from "./Containers/index"
 import {
@@ -99,3 +100,4 @@ AppRegistry.registerComponent("Inbox", () => Inbox)
 AppRegistry.registerComponent("Conversation", () => Conversation)
 AppRegistry.registerComponent("Inquiry", () => Inquiry)
 AppRegistry.registerComponent("Favorites", () => FavoritesScene)
+AppRegistry.registerComponent("BidFlow", () => BidFlow)
