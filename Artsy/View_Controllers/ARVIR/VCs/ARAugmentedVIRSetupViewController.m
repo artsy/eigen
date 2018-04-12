@@ -190,10 +190,12 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 
         // ARKit is on on 11.0 so, this removes a bunch of warnings
         if (@available(iOS 11.0, *)) {
+
             [NSLayoutConstraint activateConstraints:@[
-                [backButton.bottomAnchor constraintEqualToSystemSpacingBelowAnchor:overlay.safeAreaLayoutGuide.bottomAnchor multiplier:0]
+              [backButton.bottomAnchor constraintGreaterThanOrEqualToAnchor:overlay.safeAreaLayoutGuide.bottomAnchor constant:-20]
             ]];
         } else {
+            // Mainly used for testing screenshots
             [backButton alignBottomEdgeWithView:self.view predicate:@"-20"];
         }
     }];
@@ -278,7 +280,6 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
             closure(granted);
         });
     }];
-
 }
 
 + (void)validateAVAccess:(NSUserDefaults *)defaults callback:(void (^)(bool allowedAccess))closure
@@ -313,6 +314,16 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 }
 
 - (BOOL)hidesToolbarMenu
+{
+    return YES;
+}
+
+- (BOOL)hidesStatusBarBackground
+{
+    return YES;
+}
+
+- (BOOL)prefersStatusBarHidden
 {
     return YES;
 }
