@@ -23,6 +23,7 @@
 * Cache queries on-disk for 1 day - alloy
 * Add persisted queries support to Relay - alloy
 * Add ability to preload queries - alloy
+* Adds (empty) BidFlow component and view controller - ashfurrow
 
 ## 1.4.6
 

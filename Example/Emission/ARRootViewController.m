@@ -25,6 +25,7 @@
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARMyProfileViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
+#import <Emission/ARBidFlowViewController.h>
 
 #import "ARStorybookComponentViewController.h"
 
@@ -94,6 +95,7 @@
   [sectionData addCellData:self.jumpToInbox];
   [sectionData addCellData:self.jumpToInquiry];
   [sectionData addCellData:self.jumpToFavorites];
+  [sectionData addCellData:self.jumpToBidFlow];
 
   return sectionData;
 }
@@ -269,6 +271,13 @@
   }
                                        preload:^NSArray<ARGraphQLQuery *> *{
     return [ARFavoritesComponentViewController preloadQueries];
+  }];
+}
+
+- (ARCellData *)jumpToBidFlow
+{
+  return [self tappableCellDataWithTitle:@"Bid Flow" selection: ^{
+    [self.navigationController pushViewController:[[ARBidFlowViewController alloc] initWithSaleArtworkID:@"5aada729139b216c0bf18103"] animated:YES];
   }];
 }
 
