@@ -37,7 +37,7 @@ storiesOf("MyNewComponent").add("Show default component", () => {
 })
 ```
 
-Run `yarn storybook`. This will pick up the new storybook and modify the `storyLoader.js` to add it to Emission's storybooks. You should now be able to run the Emission app and see the component through your storybook browser.
+Rerun `yarn start`. This will pick up the new storybook and modify the `storyLoader.js` to add it to Emission's storybooks. You should now be able to run the Emission app and see the component through your storybook browser.
 
 ## Adding a Native Controller (Optional)
 
