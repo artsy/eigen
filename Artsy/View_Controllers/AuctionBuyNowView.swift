@@ -12,7 +12,7 @@ class AuctionBuyNowView: ORStackView {
         let titleView = AuctionBuyNowTitleView(isCompact: isCompact)
         addSubview(titleView, withTopMargin: "0", sideMargin:"0")
 
-        let layout = UIDevice.isPad() ? ARArtworkMasonryLayout.layout3Column : ARArtworkMasonryLayout.layout2Column
+        let layout = isCompact ? ARArtworkMasonryLayout.layout2Column : ARArtworkMasonryLayout.layout3Column
 
         let module = ARArtworkMasonryModule(layout: layout, andStyle: .artworkMetadata)
         let buyNowWorksVC = AREmbeddedModelsViewController()
