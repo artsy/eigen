@@ -173,8 +173,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 // What to show when we first
 
-NSString *ARInitialARVIRSubtitle =  @"Aim at an object on your wall and move your phone in a circle.";
-NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and walk around the room.";
+NSString *ARInitialARVIRSubtitle =  @"Stand a couple feet from your wall. Aim at a prominent object on the wall and move your phone in a circle.";
+NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in the room.";
 
 - (void)initialState
 {
@@ -227,7 +227,7 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
 
 - (void)showModalForError
 {
-    NSString *errorMessage = @"We’re having trouble finding your wall. Make sure the room is well-lit or try focusing on a different object on the wall.";
+    NSString *errorMessage = @"We’re having trouble finding your wall. Make sure the room is well-lit, or try focusing on a different object on the wall.";
     ARAugmentedVIRModalView *modal = [[ARAugmentedVIRModalView alloc] initWithTitle:errorMessage delegate:self];
     [self.view addSubview:modal];
     [modal alignToView:self.view];
