@@ -168,6 +168,9 @@ NS_ASSUME_NONNULL_BEGIN
         if (ARPerformWorkAsynchronously) {
             [self animateImageView];
         }
+
+        // Makes it so that the screen doesn't dim
+        [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     }
 }
 
@@ -325,6 +328,8 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
 
     // I can't think of an edge case for this, but better to be comprehensive
     [self.navigationController popViewControllerAnimated:YES];
+    // Makes it so that the screen can dim again
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 }
 
 - (NSTimeInterval)timeInAR
