@@ -147,7 +147,9 @@ export default class Button extends React.Component<Props, State> {
       style: [styles.button, { backgroundColor, borderColor }, this.props.style],
     }
 
-    const headlineStyles = [styles.text, { opacity: this.state.textOpacity, color }]
+    const textStyle = this.props.textStyle || {}
+
+    const headlineStyles = [styles.text, textStyle, { opacity: this.state.textOpacity, color }]
 
     return (
       <TouchableWithoutFeedback onPress={this.onPress} onPressIn={this.startHighlight} onPressOut={this.endHighlight}>
