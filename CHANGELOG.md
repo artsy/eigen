@@ -24,6 +24,7 @@
 * Add persisted queries support to Relay - alloy
 * Add ability to preload queries - alloy
 * Add ability to specifically style the button headline - yuki24
+* Adds (empty) BidFlow component and view controller - ashfurrow
 
 ## 1.4.6
 
