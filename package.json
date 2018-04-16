@@ -105,7 +105,7 @@
     "babel-preset-react-native": "^4.0.0",
     "babel-preset-stage-0": "^6.24.1",
     "concurrently": "^2.2.0",
-    "danger": "^2.1.5",
+    "danger": "^3",
     "danger-plugin-jest": "^1.1.0",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
