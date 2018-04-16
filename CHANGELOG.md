@@ -25,6 +25,7 @@
 * Add ability to preload queries - alloy
 * Add ability to specifically style the button headline - yuki24
 * Adds (empty) BidFlow component and view controller - ashfurrow
+* Use a more appropriate type for textStyle in ButtonProps - yuki24
 
 ## 1.4.6
 
