@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<Text
+  accessible={true}
+  allowFontScaling={true}
+  ellipsizeMode="tail"
+  style={
+    Array [
+      Object {
+        "fontFamily": "AGaramondPro-Regular",
+        "fontSize": 20,
+        "fontWeight": "bold",
+        "marginBottom": 10,
+        "marginLeft": 10,
+        "marginRight": 10,
+        "marginTop": 10,
+        "textAlign": "center",
+      },
+      undefined,
+    ]
+  }
+>
+  Confirm your bid
+</Text>
+`;

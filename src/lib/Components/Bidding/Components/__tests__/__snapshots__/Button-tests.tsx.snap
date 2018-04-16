@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<View
+  accessibilityComponentType={undefined}
+  accessibilityLabel={undefined}
+  accessibilityTraits={undefined}
+  accessible={true}
+  collapsable={undefined}
+  hitSlop={undefined}
+  nativeID={undefined}
+  onLayout={undefined}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "rgba(51, 51, 51, 1)",
+      "borderColor": "rgba(248, 248, 248, 1)",
+      "borderWidth": 1,
+      "height": 46,
+      "justifyContent": "center",
+    }
+  }
+  testID={undefined}
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    style={
+      Array [
+        Object {
+          "fontSize": 12,
+        },
+        Object {
+          "color": "rgba(204, 204, 204, 1)",
+          "fontFamily": "AGaramondPro-Regular",
+          "fontSize": 14,
+          "opacity": 1,
+        },
+        Object {
+          "fontFamily": "AvantGardeGothicITC",
+        },
+      ]
+    }
+  >
+    NEXT
+  </Text>
+</View>
+`;

@@ -1,5 +1,5 @@
 import React from "react"
-import { Animated, TextStyle, ViewProperties } from "react-native"
+import { Animated, StyleProp, TextStyle, ViewProperties } from "react-native"
 
 import { Colors } from "lib/data/colors"
 
@@ -103,7 +103,7 @@ export interface ButtonProps extends ViewProperties {
   /** Optional callback for when an animation is finished */
   onSelectionAnimationFinished?: Animated.EndCallback
   /** CSS properties applied to the text of the button */
-  textStyle?: TextStyle
+  textStyle?: StyleProp<TextStyle>
 }
 
 export const InvertedButton = (props: ButtonProps) => <Button {...props} stateColors={flatBlackTheme} />
