@@ -33,7 +33,7 @@ class LotStandingsViewTests: QuickSpec {
             }
 
             it("looks good") {
-                let subject = LotStandingsView(saleViewModel: saleViewModel, isCompact: isCompact, lotStandingTappedClosure: { _ in })
+                let subject = LotStandingsView(saleViewModel: saleViewModel, isCompact: isCompact, lotStandingTappedClosure: { _ in }, isFinalHeaderElement: true)
 
                 subject.stubHorizontalSizeClass(horizontalSizeClass)
                 if isCompact {
