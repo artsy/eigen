@@ -107,9 +107,14 @@ NS_ASSUME_NONNULL_BEGIN
         phoneImage.translatesAutoresizingMaskIntoConstraints = false;
         [self.view addSubview:phoneImage];
 
+        // A beta button in the top right
+        UIImageView *betaImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRBeta"]];
+        betaImage.translatesAutoresizingMaskIntoConstraints = false;
+        [self.view addSubview:betaImage];
+
         [self.view addConstraints: @[
-            [backButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:20],
-            [backButton.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant: 20.0],
+            [backButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:-17],
+            [backButton.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant: 4.0],
             [backButton.heightAnchor constraintEqualToConstant:50.0],
             [backButton.widthAnchor constraintEqualToConstant:50.0],
 
@@ -119,7 +124,10 @@ NS_ASSUME_NONNULL_BEGIN
             [resetButton.widthAnchor constraintEqualToConstant:50.0],
 
             [phoneImage.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
-            [phoneImage.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
+            [phoneImage.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
+
+            [betaImage.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:0],
+            [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20.0]
         ]];
 
         // Text label for messaging
@@ -446,6 +454,11 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
 }
 
 - (BOOL)hidesStatusBarBackground
+{
+    return YES;
+}
+
+- (BOOL)prefersStatusBarHidden
 {
     return YES;
 }

@@ -590,6 +590,8 @@
 		609A82F017A10C5C00AFDF13 /* ARNavigationTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609A82EF17A10C5C00AFDF13 /* ARNavigationTransitionController.m */; };
 		609A82FB17A1147800AFDF13 /* ARNavigationTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 609A82FA17A1147800AFDF13 /* ARNavigationTransition.m */; };
 		609B3C091761F80C00953CB2 /* ARSiteHeroUnitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 609B3C081761F80C00953CB2 /* ARSiteHeroUnitView.m */; };
+		609E1B06208677430070E070 /* ARVIRBeta@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 609E1B04208677420070E070 /* ARVIRBeta@3x.png */; };
+		609E1B07208677430070E070 /* ARVIRBeta@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 609E1B05208677420070E070 /* ARVIRBeta@2x.png */; };
 		609E394F1CA01FBC0035C6FC /* LiveAuctionsAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6019A9071C7E76EF00E292FA /* LiveAuctionsAssets.xcassets */; };
 		609F985F1AC1054D0079FE21 /* PartnerShowCoordinates.m in Sources */ = {isa = PBXBuildFile; fileRef = 609F985E1AC1054D0079FE21 /* PartnerShowCoordinates.m */; };
 		60A0AD4A1797FD2E00E976B7 /* ARThemedFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 60A0AD491797FD2E00E976B7 /* ARThemedFactory.m */; };
@@ -1725,6 +1727,8 @@
 		609A82FA17A1147800AFDF13 /* ARNavigationTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTransition.m; sourceTree = "<group>"; };
 		609B3C071761F80C00953CB2 /* ARSiteHeroUnitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSiteHeroUnitView.h; sourceTree = "<group>"; };
 		609B3C081761F80C00953CB2 /* ARSiteHeroUnitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSiteHeroUnitView.m; sourceTree = "<group>"; };
+		609E1B04208677420070E070 /* ARVIRBeta@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRBeta@3x.png"; sourceTree = "<group>"; };
+		609E1B05208677420070E070 /* ARVIRBeta@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRBeta@2x.png"; sourceTree = "<group>"; };
 		609F985D1AC1054D0079FE21 /* PartnerShowCoordinates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartnerShowCoordinates.h; sourceTree = "<group>"; };
 		609F985E1AC1054D0079FE21 /* PartnerShowCoordinates.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartnerShowCoordinates.m; sourceTree = "<group>"; };
 		60A0AD481797FD2E00E976B7 /* ARThemedFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARThemedFactory.h; sourceTree = "<group>"; };
@@ -4213,6 +4217,8 @@
 		60A168CD20647951008A086C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				609E1B05208677420070E070 /* ARVIRBeta@2x.png */,
+				609E1B04208677420070E070 /* ARVIRBeta@3x.png */,
 				60A168CE20647965008A086C /* ar_vir_opening_frame.jpg */,
 			);
 			name = Resources;
@@ -4993,6 +4999,7 @@
 				3C4AE98819094DAA009C0E8B /* MapAnnotation_Transport@2x.png in Resources */,
 				5E17B1991C5965CC00CE6E98 /* Thumb@2x.png in Resources */,
 				605191931C7525AF0002E11A /* serif_modal_close@2x.png in Resources */,
+				609E1B07208677430070E070 /* ARVIRBeta@2x.png in Resources */,
 				608C6DCD1FAA11630044E235 /* nav_profile@3x.png in Resources */,
 				608C6DCB1FAA11630044E235 /* nav_home@2x.png in Resources */,
 				E6543CDB18AD795E00A6B9AF /* Parallax_Overlay_Bottom@2x.png in Resources */,
@@ -5063,6 +5070,7 @@
 				608C6DC91FAA11630044E235 /* nav_search@2x.png in Resources */,
 				608B708017D4A1C80088A56C /* MenuClose@2x.png in Resources */,
 				60D8E63C18D256BB0040BEFD /* ARDemoSplashViewController.xib in Resources */,
+				609E1B06208677430070E070 /* ARVIRBeta@3x.png in Resources */,
 				5E6BA6E91C56B5D700B942C1 /* CircularCancelButton@2x.png in Resources */,
 				66A43C671CE470C400FFD6ED /* Hash.png in Resources */,
 				3C4AE98219094DAA009C0E8B /* MapAnnotation_Info@2x.png in Resources */,
