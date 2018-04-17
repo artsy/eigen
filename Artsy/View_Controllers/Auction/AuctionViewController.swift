@@ -136,6 +136,13 @@ extension AuctionViewController {
     var isCompactSize: Bool {
         return traitCollection.horizontalSizeClass == .compact
     }
+    
+    var buyNowSegmentWillBeShown: Bool {
+        guard let promotedSaleArtworks = self.saleViewModel.promotedSaleArtworks , promotedSaleArtworks.count > 0 else {
+            return false
+        }
+        return true
+    }
 
     // Fetches new lot standings, updates the model, removes the old standings view, and adds a fresh one.
     func fetchLotStandingsAndUpdate() {
@@ -185,7 +192,8 @@ extension AuctionViewController {
                 guard let artworkViewController = ARArtworkSetViewController(artwork: lotStanding.saleArtwork.artwork) else { return }
                 
                 self?.navigationController?.pushViewController(artworkViewController, animated: true)
-            }
+            },
+            isFinalHeaderElement: !self.buyNowSegmentWillBeShown
         )
         lotStandingsView.tag = ViewTags.lotStandings.rawValue
         headerStack?.addSubview(lotStandingsView, withTopMargin: "0", sideMargin: "0")

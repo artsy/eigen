@@ -7,11 +7,13 @@ class LotStandingsView: UIView {
     let saleViewModel: SaleViewModel
     let isCompact: Bool
     let lotStandingTappedClosure: LotStandingTappedClosure
+    let isFinalHeaderElement: Bool
 
-    init(saleViewModel: SaleViewModel, isCompact: Bool, lotStandingTappedClosure: @escaping LotStandingTappedClosure) {
+    init(saleViewModel: SaleViewModel, isCompact: Bool, lotStandingTappedClosure: @escaping LotStandingTappedClosure, isFinalHeaderElement: Bool) {
         self.saleViewModel = saleViewModel
         self.isCompact = isCompact
         self.lotStandingTappedClosure = lotStandingTappedClosure
+        self.isFinalHeaderElement = isFinalHeaderElement
 
         super.init(frame: CGRect.zero)
 
@@ -38,13 +40,15 @@ extension PrivateFunctions {
         listView.constrainTopSpace(toView: titleView, predicate: "0")
         listView.alignLeading("0", trailing: "0", toView: self)
         listView.alignBottomEdge(withView: self, predicate: isCompact ? "-10" : "-30")
-
-        let bottomBorder = UIView().then {
-            $0.backgroundColor = UIColor.artsyGrayRegular()
-            $0.constrainHeight("1")
+        
+        if (self.isFinalHeaderElement) {
+            let bottomBorder = UIView().then {
+                $0.backgroundColor = UIColor.artsyGrayRegular()
+                $0.constrainHeight("1")
+            }
+            addSubview(bottomBorder)
+            bottomBorder.alignBottomEdge(withView: self, predicate: "0")
+            bottomBorder.alignLeading("0", trailing: "0", toView: self)
         }
-        addSubview(bottomBorder)
-        bottomBorder.alignBottomEdge(withView: self, predicate: "0")
-        bottomBorder.alignLeading("0", trailing: "0", toView: self)
     }
 }
