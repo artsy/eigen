@@ -92,6 +92,12 @@ NS_ASSUME_NONNULL_BEGIN
         [backButton addTarget:self action:@selector(exitARContext) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:backButton];
 
+        backButton.layer.masksToBounds = NO;
+        backButton.layer.shadowColor = [UIColor blackColor].CGColor;
+        backButton.layer.shadowOffset = CGSizeMake(0, 0);
+        backButton.layer.shadowOpacity = 0.4;
+        backButton.layer.shouldRasterize = YES;
+
         // Reset
         ARClearFlatButton *resetButton = [[ARClearFlatButton alloc] init];
         [resetButton setImage:[UIImage imageNamed:@"ARVIRRefresh"] forState:UIControlStateNormal];
@@ -100,6 +106,13 @@ NS_ASSUME_NONNULL_BEGIN
         [resetButton setBorderColor:[UIColor clearColor] forState:UIControlStateNormal];
         [resetButton setBorderColor:[UIColor clearColor] forState:UIControlStateHighlighted];
         [resetButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
+
+        resetButton.layer.masksToBounds = NO;
+        resetButton.layer.shadowColor = [UIColor blackColor].CGColor;
+        resetButton.layer.shadowOffset = CGSizeMake(0, 0);
+        resetButton.layer.shadowOpacity = 0.4;
+        resetButton.layer.shouldRasterize = YES;
+
         [self.view addSubview:resetButton];
 
         // A phone image which rotates to indicate how to calibrate
