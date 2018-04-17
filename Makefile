@@ -67,22 +67,21 @@ ifndef JQ
 		$(error "Please install jq before running `brew install jq`")
 endif
 
+	# Comment out Yoga, as it's dealt with below in ship_yoga
+
 	@echo "Updating Artsy specs repo";
 	pod repo update artsy
 
 	@echo "Creating folder in artsy specs repo";
 	mkdir ~/.cocoapods/repos/artsy/React/$(RNVERSION)
-	mkdir ~/.cocoapods/repos/artsy/yoga/$(YOGAVERSION)
-	mkdir ~/.cocoapods/repos/artsy/Folly/$(FOLLYVERSION)
-	mkdir ~/.cocoapods/repos/artsy/DoubleConversion/$(DOUBLECONVERSIONVERSION)
-	mkdir ~/.cocoapods/repos/artsy/glog/$(GLOGVERSION)
+	# mkdir ~/.cocoapods/repos/artsy/yoga/$(YOGAVERSION)
 
 	@echo "Putting JSON specs in the folders";
 	cd node_modules/react-native && pod ipc spec React.podspec >  ~/.cocoapods/repos/artsy/React/$(RNVERSION)/React.podspec.json
-	cd node_modules/react-native/ReactCommon/yoga && pod ipc spec yoga.podspec >  ~/.cocoapods/repos/artsy/yoga/$(YOGAVERSION)/yoga.podspec.json
+	# cd node_modules/react-native/ReactCommon/yoga && pod ipc spec yoga.podspec >  ~/.cocoapods/repos/artsy/yoga/$(YOGAVERSION)/yoga.podspec.json
 
-	@echo "Modifying Yoga to reflect the React Native repo paths"
-	sed -i -e 's/$(YOGA_SRC_BEFORE)/$(YOGA_SRC_AFTER)/g' ~/.cocoapods/repos/artsy/Yoga/$(YOGAVERSION)/Yoga.podspec.json
+	# @echo "Modifying Yoga to reflect the React Native repo paths"
+	# sed -i -e 's/$(YOGA_SRC_BEFORE)/$(YOGA_SRC_AFTER)/g' ~/.cocoapods/repos/artsy/Yoga/$(YOGAVERSION)/Yoga.podspec.json
 
 	@echo "Commiting the changes to our shared repo"
 	cd ~/.cocoapods/repos/artsy && git add .
