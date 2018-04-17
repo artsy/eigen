@@ -14,7 +14,9 @@
 
 -->
 
-## Master
+## master
+
+## 1.5.0
 
 * Upgrade to React Native 0.54.4 - alloy/orta
 * Follow Force and reduce image quality to 80 - alloy
