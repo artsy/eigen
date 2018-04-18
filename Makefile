@@ -34,7 +34,7 @@ all: ci
 
 ### Aliases
 
-appstore: update_bundle_version set_git_properties change_version_to_date ship_appstore
+appstore: update_bundle_version set_git_properties change_version_to_date
 next: update_bundle_version set_git_properties change_version_to_date
 
 ### General setup
