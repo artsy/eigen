@@ -1,5 +1,270 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`renders not highest bid screen properly 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexDirection": "column",
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "justifyContent": "space-between",
+        "marginBottom": 20,
+        "marginLeft": 20,
+        "marginRight": 20,
+        "marginTop": 20,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "flexBasis": 0,
+          "flexGrow": 1,
+          "flexShrink": 1,
+          "justifyContent": "center",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Image
+      source={
+        Object {
+          "testUri": "../../../images/circle-x-red.png",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "height": 20,
+            "marginBottom": 10,
+            "marginLeft": 10,
+            "marginRight": 10,
+            "marginTop": 10,
+            "width": 20,
+          },
+          undefined,
+        ]
+      }
+    />
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 20,
+            "fontWeight": "bold",
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      Your bid wasn’t high enough
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "color": "#666666",
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 16,
+            "marginBottom": 10,
+            "marginLeft": 10,
+            "marginRight": 10,
+            "marginTop": 10,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      Another bidder placed a higher max bid or the same max bid before you did.
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "color": "#666666",
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 16,
+            "marginBottom": 10,
+            "marginLeft": 10,
+            "marginRight": 10,
+            "marginTop": 10,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      Increase your max bid to take the lead.
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "color": "#666666",
+            "fontSize": 12,
+            "marginTop": 10,
+          },
+          undefined,
+        ]
+      }
+    >
+      Time left
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "color": "#000000",
+            "fontSize": 14,
+            "fontWeight": "500",
+          },
+          undefined,
+        ]
+      }
+    >
+      00
+      d 
+      00
+      h
+       
+      20
+      m 
+      00
+      s
+    </Text>
+    <View
+      style={
+        Array [
+          Object {
+            "borderBottomColor": "#e5e5e5",
+            "borderBottomWidth": 1,
+            "marginBottom": 20,
+            "marginLeft": 0,
+            "marginRight": 0,
+            "marginTop": 30,
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      style={
+        Array [
+          Object {
+            "fontSize": 17,
+          },
+          undefined,
+          Object {
+            "fontFamily": "AGaramondPro-Regular",
+          },
+        ]
+      }
+    >
+      Current bid
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 20,
+            "fontWeight": "bold",
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      $45,000
+    </Text>
+  </View>
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    collapsable={undefined}
+    hitSlop={undefined}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "rgba(0, 0, 0, 1)",
+        "borderColor": "rgba(0, 0, 0, 1)",
+        "borderWidth": 1,
+        "height": 46,
+        "justifyContent": "center",
+      }
+    }
+    testID={undefined}
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "fontSize": 12,
+          },
+          Object {
+            "color": "rgba(255, 255, 255, 1)",
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 14,
+            "opacity": 1,
+          },
+          Object {
+            "fontFamily": "AvantGardeGothicITC",
+          },
+        ]
+      }
+    >
+      BID AGAIN
+    </Text>
+  </View>
+</View>
+`;
+
 exports[`renders winning screen properly 1`] = `
 <View
   style={
@@ -57,10 +322,6 @@ exports[`renders winning screen properly 1`] = `
               "fontFamily": "AGaramondPro-Regular",
               "fontSize": 20,
               "fontWeight": "bold",
-              "marginBottom": 10,
-              "marginLeft": 10,
-              "marginRight": 10,
-              "marginTop": 10,
               "textAlign": "center",
             },
             undefined,

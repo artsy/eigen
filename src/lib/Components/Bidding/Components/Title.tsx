@@ -12,7 +12,6 @@ export class Title extends React.Component<TextProperties> {
 
 const StyledText = styled.Text`
   font-family: "${Fonts.GaramondRegular}";
-  margin: 10px;
   font-weight: bold;
   font-size: 20px;
   text-align: center;

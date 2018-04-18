@@ -22,3 +22,6 @@ storiesOf("Bidding")
   .add("Bidding Result (winning)", () => {
     return <BidResult winning />
   })
+  .add("Bidding Result (not highest bid)", () => {
+    return <BidResult winning={false} />
+  })
