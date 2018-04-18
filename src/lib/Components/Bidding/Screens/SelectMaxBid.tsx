@@ -6,7 +6,7 @@ import { Button } from "../Components/Button"
 import { MaxBidPicker } from "../Components/MaxBidPicker"
 import { Title } from "../Components/Title"
 
-import { SelectMaxBid_saleArtwork } from "__generated__/SelectMaxBid_SaleArtwork.graphql"
+import { SelectMaxBid_saleArtwork } from "__generated__/SelectMaxBid_saleArtwork.graphql"
 
 interface SelectMaxBidProps /* extends ViewProperties */ {
   saleArtworkID: string
