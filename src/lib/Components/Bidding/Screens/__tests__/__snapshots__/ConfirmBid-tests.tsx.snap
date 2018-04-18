@@ -1,0 +1,257 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexDirection": "column",
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    style={
+      Array [
+        Object {
+          "flexBasis": 0,
+          "flexGrow": 1,
+          "flexShrink": 1,
+          "fontFamily": "AGaramondPro-Regular",
+          "fontSize": 20,
+          "marginBottom": 18,
+          "marginLeft": 18,
+          "marginRight": 18,
+          "marginTop": 18,
+          "textAlign": "center",
+        },
+        undefined,
+      ]
+    }
+  >
+    Confirm your bid
+  </Text>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    style={
+      Array [
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+          "fontSize": 18,
+          "textAlign": "center",
+        },
+        undefined,
+      ]
+    }
+  >
+    Makiko Kudo
+  </Text>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    style={
+      Array [
+        Object {
+          "fontFamily": "AGaramondPro-Regular",
+          "fontSize": 14,
+          "textAlign": "center",
+        },
+        undefined,
+      ]
+    }
+  >
+    Lot 
+    538
+  </Text>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    style={
+      Array [
+        Object {
+          "color": "#666666",
+          "fontFamily": "AGaramondPro-Italic",
+          "fontSize": 14,
+          "textAlign": "center",
+        },
+        undefined,
+      ]
+    }
+  >
+    Meteor Shower
+    , 
+    2015
+  </Text>
+  <View
+    style={
+      Array [
+        Object {
+          "borderBottomWidth": 1,
+          "borderColor": "#e5e5e5",
+          "borderStyle": "solid",
+          "borderTopWidth": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "marginTop": 20,
+          "paddingBottom": 20,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 20,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 18,
+          },
+          undefined,
+        ]
+      }
+    >
+      Max bid
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 18,
+            "textAlign": "right",
+          },
+          undefined,
+        ]
+      }
+    >
+      $45,000
+    </Text>
+  </View>
+  <View
+    style={
+      Array [
+        Object {
+          "flexBasis": 0,
+          "flexGrow": 1,
+          "flexShrink": 1,
+          "justifyContent": "flex-end",
+          "marginBottom": 10,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "color": "#666666",
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 14,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      You agree to Artsy's 
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "textDecorationLine": "underline",
+            },
+            undefined,
+          ]
+        }
+      >
+        Condition of Sale.
+      </Text>
+    </Text>
+  </View>
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    collapsable={undefined}
+    hitSlop={undefined}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "rgba(51, 51, 51, 1)",
+        "borderColor": "rgba(248, 248, 248, 1)",
+        "borderWidth": 1,
+        "height": 46,
+        "justifyContent": "center",
+        "margin": 10,
+      }
+    }
+    testID={undefined}
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "fontSize": 12,
+          },
+          Object {
+            "color": "rgba(204, 204, 204, 1)",
+            "fontFamily": "AGaramondPro-Regular",
+            "opacity": 1,
+          },
+          Object {
+            "fontFamily": "AvantGardeGothicITC",
+          },
+        ]
+      }
+    >
+      PLACE BID
+    </Text>
+  </View>
+</View>
+`;
