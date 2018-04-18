@@ -237,8 +237,7 @@ export const SelectMaxBidRenderer: React.SFC<SelectMaxBidProps> = ({ render, sal
       query={graphql`
         query QueryRenderersBidQuery($saleArtworkID: String!) {
           sale_artwork(id: $saleArtworkID) {
-            id
-            bid_increments
+            ...SelectMaxBid_sale_artwork
           }
         }
       `}

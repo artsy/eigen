@@ -84,7 +84,7 @@ exports[`renders properly 1`] = `
       onChange={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      selectedIndex={2}
+      selectedIndex={0}
       style={
         Array [
           Object {

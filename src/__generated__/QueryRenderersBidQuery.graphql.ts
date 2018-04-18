@@ -6,8 +6,6 @@ export type QueryRenderersBidQueryVariables = {
 };
 export type QueryRenderersBidQueryResponse = {
     readonly sale_artwork: ({
-        readonly id: string;
-        readonly bid_increments: ReadonlyArray<number | null> | null;
     }) | null;
 };
 
@@ -18,10 +16,14 @@ query QueryRenderersBidQuery(
   $saleArtworkID: String!
 ) {
   sale_artwork(id: $saleArtworkID) {
-    id
-    bid_increments
+    ...SelectMaxBid_sale_artwork
     __id
   }
+}
+
+fragment SelectMaxBid_sale_artwork on SaleArtwork {
+  bid_increments
+  __id
 }
 */
 
@@ -36,50 +38,24 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "sale_artwork",
-    "storageKey": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "id",
-        "variableName": "saleArtworkID",
-        "type": "String!"
-      }
-    ],
-    "concreteType": "SaleArtwork",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "id",
-        "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "bid_increments",
-        "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "__id",
-        "args": null,
-        "storageKey": null
-      }
-    ]
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "saleArtworkID",
+    "type": "String!"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "__id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersBidQuery",
-  "id": "642b6bc565585ce3d6401ea15d821149",
+  "id": "f4bc97f17d2aa22994ebda3aaa3c304f",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -88,15 +64,53 @@ return {
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": v0,
-    "selections": v1
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "sale_artwork",
+        "storageKey": null,
+        "args": v1,
+        "concreteType": "SaleArtwork",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "SelectMaxBid_sale_artwork",
+            "args": null
+          },
+          v2
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "QueryRenderersBidQuery",
     "argumentDefinitions": v0,
-    "selections": v1
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "sale_artwork",
+        "storageKey": null,
+        "args": v1,
+        "concreteType": "SaleArtwork",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "bid_increments",
+            "args": null,
+            "storageKey": null
+          },
+          v2
+        ]
+      }
+    ]
   }
 };
 })();
-(node as any).hash = 'b18369052e62e9d14feed2b575ef44cb';
+(node as any).hash = 'ecaa905790e0ba4566d97ee647807e18';
 export default node;
