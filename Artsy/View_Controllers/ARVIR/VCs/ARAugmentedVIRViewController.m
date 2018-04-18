@@ -1,6 +1,10 @@
 @import ARKit;
 @import SceneKit;
 
+// This needs to be a top level UIViewController
+// which will have safeAreaInsets thgat reflect the phone
+#import "ARTopMenuViewController.h"
+
 #import "ARMenuAwareViewController.h"
 #import "ARDispatchManager.h"
 #import "ARFonts.h"
@@ -112,8 +116,12 @@ NS_ASSUME_NONNULL_BEGIN
         betaImage.translatesAutoresizingMaskIntoConstraints = false;
         [self.view addSubview:betaImage];
 
+        BOOL isEdgeToEdgePhone = !UIEdgeInsetsEqualToEdgeInsets( [ARTopMenuViewController sharedController].view.safeAreaInsets, UIEdgeInsetsZero);
+        CGFloat backTopMargin = isEdgeToEdgePhone ? -17 : 9;
+        CGFloat betaTopMargin = isEdgeToEdgePhone ? 0 : 26;
+
         [self.view addConstraints: @[
-            [backButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:-17],
+            [backButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:backTopMargin],
             [backButton.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant: 4.0],
             [backButton.heightAnchor constraintEqualToConstant:50.0],
             [backButton.widthAnchor constraintEqualToConstant:50.0],
@@ -126,8 +134,8 @@ NS_ASSUME_NONNULL_BEGIN
             [phoneImage.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
             [phoneImage.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
 
-            [betaImage.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:0],
-            [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20.0]
+            [betaImage.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:betaTopMargin],
+            [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20]
         ]];
 
         // Text label for messaging
