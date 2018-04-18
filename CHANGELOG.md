@@ -27,6 +27,7 @@
 * Adds (empty) BidFlow component and view controller - ashfurrow
 * Use a more appropriate type for textStyle in ButtonProps - yuki24
 * Adds confrirm bid screen for Bid Flow - sepans
+* Load Bid prices dynamically - sepans
 
 ## 1.4.6
 
