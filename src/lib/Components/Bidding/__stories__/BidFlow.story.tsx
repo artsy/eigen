@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
 
-import BidFlow from "../Screens/BidFlow"
+import { BidFlow } from "../Screens/BidFlow"
 import { ConfirmBid } from "../Screens/ConfirmBid"
 import { SelectMaxBid } from "../Screens/SelectMaxBid"
 

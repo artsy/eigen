@@ -1,7 +1,7 @@
 import React from "react"
 import { AppRegistry, View } from "react-native"
 
-import BidFlow from "./Components/Bidding/Screens/BidFlow"
+import { BidFlow } from "./Components/Bidding/Screens/BidFlow"
 import Consignments from "./Components/Consignments"
 import Containers from "./Containers/index"
 import {

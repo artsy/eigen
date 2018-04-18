@@ -1,12 +1,26 @@
 import React from "react"
-import SerifText from "../../../Components/Text/Serif"
 
-interface BidFlowProps {
+import { NavigatorIOS, ViewProperties } from "react-native"
+import { SelectMaxBid } from "./SelectMaxBid"
+
+interface BidFlowProps extends ViewProperties {
   saleArtworkID: string
 }
 
-export default class BidFlow extends React.Component<BidFlowProps> {
+export class BidFlow extends React.Component<BidFlowProps> {
   render() {
-    return <SerifText>This will be the home of the new bidding flow.</SerifText>
+    return (
+      <NavigatorIOS
+        navigationBarHidden={true}
+        initialRoute={{
+          component: SelectMaxBid,
+          title: "Your max bid", // title is required, though we won't likely use/display it.
+          passProps: {
+            saleArtworkID: this.props.saleArtworkID,
+          },
+        }}
+        style={{ flex: 1 }}
+      />
+    )
   }
 }
