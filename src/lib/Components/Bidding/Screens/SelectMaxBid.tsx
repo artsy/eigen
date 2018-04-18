@@ -21,7 +21,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps> {
       <Container>
         <Title>Your max bid</Title>
 
-        <MaxBidPicker selectedValue={4500000} bids={bids} />
+        <MaxBidPicker bids={bids} />
 
         <Button text="NEXT" onPress={() => null} />
       </Container>
