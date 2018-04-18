@@ -5,6 +5,7 @@ upcoming:
   user_facing:
     - WIP Buy now works show in an Auction screen - Chris
     - ARVIR fixes & improvements - orta
+    - Wall positions are not updated after placing a work - orta
     - Buy now layout adjustments, 3 columns on ipad - maxim
     - conditionally adding horizontal line to lotstandings view wrt buy now - maxim
   
