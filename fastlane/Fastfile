@@ -33,7 +33,7 @@ lane :ship_beta do
 
   # Builds the app
   sync_code_signing(app_identifier: ['net.artsy.artsy', 'net.artsy.artsy.Artsy-Stickers'], type: 'appstore')
-  
+
   disable_automatic_code_signing(
     path: 'Artsy.xcodeproj',
     team_id: '23KMWZ572J',
@@ -122,13 +122,6 @@ lane :ship_beta do
   # # Send to the app store
   pilot changelog: beta_readme, itc_provider: 'ArtsyInc'
 
-  # Let us know everything has finished
-  slack message: 'There is a new Eigen beta available. Grab it from Testflight on your iOS device.',
-        payload: {
-          'Version' => latest_version,
-          'What\'s new' => beta_readme
-        },
-        default_payloads: []
 end
 
 error do |_, exception|
