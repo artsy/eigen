@@ -55,27 +55,27 @@ exports[`renders properly 1`] = `
       items={
         Array [
           Object {
-            "label": "$35,000 USD",
+            "label": "3500000",
             "textColor": undefined,
             "value": 3500000,
           },
           Object {
-            "label": "$40,000 USD",
+            "label": "4000000",
             "textColor": undefined,
             "value": 4000000,
           },
           Object {
-            "label": "$45,000 USD",
+            "label": "4500000",
             "textColor": undefined,
             "value": 4500000,
           },
           Object {
-            "label": "$50,000 USD",
+            "label": "5000000",
             "textColor": undefined,
             "value": 5000000,
           },
           Object {
-            "label": "$55,000 USD",
+            "label": "5500000",
             "textColor": undefined,
             "value": 5500000,
           },

@@ -13,7 +13,7 @@ interface SelectMaxBidProps /* extends ViewProperties */ {
   sale_artwork: SelectMaxBid_saleArtwork
 }
 
-class SelectMaxBid extends React.Component<SelectMaxBidProps> {
+export class SelectMaxBid extends React.Component<SelectMaxBidProps> {
   render() {
     // TODO metaphysics should return formatted values
     const bids = this.props.sale_artwork.bid_increments.map(d => ({ label: d.toString(), value: d }))
