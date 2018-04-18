@@ -31,7 +31,9 @@ exports[`renders properly 1`] = `
           "fontWeight": "bold",
           "textAlign": "center",
         },
-        undefined,
+        Object {
+          "margin": 10,
+        },
       ]
     }
   >

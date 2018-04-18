@@ -9,8 +9,6 @@ const SaleArtwork = {
 }
 
 it("renders properly", () => {
-  const bg = renderer
-    .create(<SelectMaxBid saleArtworkID="5aada729139b216c0bf18103" sale_artwork={SaleArtwork} />)
-    .toJSON()
+  const bg = renderer.create(<SelectMaxBid sale_artwork={SaleArtwork} />).toJSON()
   expect(bg).toMatchSnapshot()
 })
