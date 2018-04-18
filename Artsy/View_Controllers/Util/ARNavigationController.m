@@ -1,6 +1,7 @@
 #import <MultiDelegate/AIMultiDelegate.h>
 #import <objc/runtime.h>
 #import <objc/message.h>
+#import "ARDispatchManager.h"
 
 #import "UIView+HitTestExpansion.h"
 #import "UIViewController+InnermostTopViewController.h"
@@ -192,8 +193,10 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
         [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:animated white:useWhite];
         [self setNeedsStatusBarAppearanceUpdate];
 
-        BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
-        [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:animated];
+        ar_dispatch_after(0.05, ^{
+            BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
+            [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:animated];
+        });
     }
 }
 

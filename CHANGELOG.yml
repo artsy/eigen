@@ -8,6 +8,7 @@ upcoming:
     - Wall positions are not updated after placing a work - orta
     - Buy now layout adjustments, 3 columns on ipad - maxim
     - conditionally adding horizontal line to lotstandings view wrt buy now - maxim
+    - Artwork Screen does not get overscrolled after coming back from ARVIR - orta
   
 releases:
   - version: 4.1.0

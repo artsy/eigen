@@ -445,7 +445,9 @@ static const CGFloat ARMenuButtonDimension = 50;
 {
     CGFloat bottomMargin = [self bottomMargin];
     CGFloat newConstant = hideToolbar ? CGRectGetHeight(self.tabContainer.frame) : bottomMargin;
-    if (newConstant == self.tabBottomConstraint.constant) { return; }
+    CGFloat oldConstant = self.tabBottomConstraint.constant;
+    BOOL shouldChange = newConstant != oldConstant;
+    if (!shouldChange) { return; }
 
     [UIView animateIf:animated duration:ARAnimationQuickDuration:^{
         self.tabBottomConstraint.constant = newConstant;
