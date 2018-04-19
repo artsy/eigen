@@ -225,3 +225,26 @@ export const MyProfileRenderer: React.SFC<RendererProps> = ({ render }) => {
     />
   )
 }
+
+interface SelectMaxBidProps extends RendererProps {
+  saleArtworkID: string
+}
+
+export const SelectMaxBidRenderer: React.SFC<SelectMaxBidProps> = ({ render, saleArtworkID }) => {
+  return (
+    <QueryRenderer
+      environment={environment}
+      query={graphql`
+        query QueryRenderersBidQuery($saleArtworkID: String!) {
+          sale_artwork(id: $saleArtworkID) {
+            ...SelectMaxBid_sale_artwork
+          }
+        }
+      `}
+      variables={{
+        saleArtworkID,
+      }}
+      render={render}
+    />
+  )
+}

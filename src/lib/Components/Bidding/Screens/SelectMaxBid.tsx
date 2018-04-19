@@ -1,45 +1,30 @@
 import React from "react"
+import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import { Button } from "../Components/Button"
 import { MaxBidPicker } from "../Components/MaxBidPicker"
 import { Title } from "../Components/Title"
 
-interface SelectMaxBidProps {
-  saleArtworkID: string
-}
+import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
 
-// we are using hard-coded values for now.
-const Bids = [
-  {
-    label: "$35,000 USD",
-    value: 3500000,
-  },
-  {
-    label: "$40,000 USD",
-    value: 4000000,
-  },
-  {
-    label: "$45,000 USD",
-    value: 4500000,
-  },
-  {
-    label: "$50,000 USD",
-    value: 5000000,
-  },
-  {
-    label: "$55,000 USD",
-    value: 5500000,
-  },
-]
+interface SelectMaxBidProps /* extends ViewProperties */ {
+  saleArtworkID: string
+  sale_artwork: SelectMaxBid_sale_artwork
+}
 
 export class SelectMaxBid extends React.Component<SelectMaxBidProps> {
   render() {
+    // TODO metaphysics should return formatted values
+    const bids =
+      this.props.sale_artwork &&
+      this.props.sale_artwork.bid_increments &&
+      this.props.sale_artwork.bid_increments.map(d => ({ label: d.toString(), value: d }))
     return (
       <Container>
         <Title>Your max bid</Title>
 
-        <MaxBidPicker selectedValue={4500000} bids={Bids} />
+        <MaxBidPicker bids={bids} />
 
         <Button text="NEXT" onPress={() => null} />
       </Container>
@@ -53,3 +38,12 @@ const Container = styled.View`
   justify-content: space-between;
   margin: 20px;
 `
+
+export const MaxBidScreen = createFragmentContainer(
+  SelectMaxBid,
+  graphql`
+    fragment SelectMaxBid_sale_artwork on SaleArtwork {
+      bid_increments
+    }
+  `
+)
