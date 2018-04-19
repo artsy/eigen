@@ -1,6 +1,6 @@
 import moment from "moment"
 import React from "react"
-import styled from "styled-components/native"
+import { Sans14 } from "../Elements/Typography"
 
 interface BidResultProps {
   // TODO: Change ths to endsAt or until that is formatted in ISO8601
@@ -40,10 +40,12 @@ export class Timer extends React.Component<BidResultProps, BidResultState> {
     const duration = moment.duration(this.state.timeLeftInMilliseconds)
 
     return (
-      <TimerText>
-        {this.padWithZero(duration.days())}d {this.padWithZero(duration.hours())}h{" "}
-        {this.padWithZero(duration.minutes())}m {this.padWithZero(duration.seconds())}s
-      </TimerText>
+      <Sans14>
+        {this.padWithZero(duration.days())}d{"  "}
+        {this.padWithZero(duration.hours())}h{"  "}
+        {this.padWithZero(duration.minutes())}m{"  "}
+        {this.padWithZero(duration.seconds())}s
+      </Sans14>
     )
   }
 
@@ -51,10 +53,3 @@ export class Timer extends React.Component<BidResultProps, BidResultState> {
     return (number.toString() as any).padStart(2, "0")
   }
 }
-
-const TimerText = styled.Text`
-  font-size: 14px;
-  font-weight: 500;
-  color: #000000;
-`
-TimerText.displayName = "TimerText"

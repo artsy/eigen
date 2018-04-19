@@ -2,14 +2,16 @@
 
 exports[`renders not highest bid screen properly 1`] = `
 <View
+  flex={1}
+  flexDirection="column"
+  justifyContent="space-between"
+  m={4}
   style={
     Array [
       Object {
         "flexBasis": 0,
-        "flexDirection": "column",
         "flexGrow": 1,
         "flexShrink": 1,
-        "justifyContent": "space-between",
         "marginBottom": 20,
         "marginLeft": 20,
         "marginRight": 20,
@@ -20,20 +22,23 @@ exports[`renders not highest bid screen properly 1`] = `
   }
 >
   <View
+    alignItems="center"
+    flex={1}
+    justifyContent="center"
     style={
       Array [
         Object {
-          "alignItems": "center",
           "flexBasis": 0,
           "flexGrow": 1,
           "flexShrink": 1,
-          "justifyContent": "center",
         },
         undefined,
       ]
     }
   >
     <Image
+      height={20}
+      m={2}
       source={
         Object {
           "testUri": "../../../images/circle-x-red.png",
@@ -43,27 +48,27 @@ exports[`renders not highest bid screen properly 1`] = `
         Array [
           Object {
             "height": 20,
-            "marginBottom": 10,
-            "marginLeft": 10,
-            "marginRight": 10,
-            "marginTop": 10,
+            "marginBottom": 5,
+            "marginLeft": 5,
+            "marginRight": 5,
+            "marginTop": 5,
             "width": 20,
           },
           undefined,
         ]
       }
+      width={20}
     />
     <Text
       accessible={true}
       allowFontScaling={true}
       ellipsizeMode="tail"
+      fontSize={4}
       style={
         Array [
           Object {
-            "fontFamily": "AGaramondPro-Regular",
-            "fontSize": 20,
-            "fontWeight": "bold",
-            "textAlign": "center",
+            "fontFamily": "AGaramondPro-Semibold",
+            "fontSize": 18,
           },
           undefined,
         ]
@@ -74,11 +79,14 @@ exports[`renders not highest bid screen properly 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
+      color="black60"
       ellipsizeMode="tail"
+      fontSize={3}
+      m={3}
       style={
         Array [
           Object {
-            "color": "#666666",
+            "color": "#666",
             "fontFamily": "AGaramondPro-Regular",
             "fontSize": 16,
             "marginBottom": 10,
@@ -90,17 +98,21 @@ exports[`renders not highest bid screen properly 1`] = `
           undefined,
         ]
       }
+      textAlign="center"
     >
       Another bidder placed a higher max bid or the same max bid before you did.
     </Text>
     <Text
       accessible={true}
       allowFontScaling={true}
+      color="black60"
       ellipsizeMode="tail"
+      fontSize={3}
+      m={3}
       style={
         Array [
           Object {
-            "color": "#666666",
+            "color": "#666",
             "fontFamily": "AGaramondPro-Regular",
             "fontSize": 16,
             "marginBottom": 10,
@@ -112,17 +124,22 @@ exports[`renders not highest bid screen properly 1`] = `
           undefined,
         ]
       }
+      textAlign="center"
     >
       Increase your max bid to take the lead.
     </Text>
     <Text
       accessible={true}
       allowFontScaling={true}
+      color="black60"
       ellipsizeMode="tail"
+      fontSize={1}
+      mt={3}
       style={
         Array [
           Object {
-            "color": "#666666",
+            "color": "#666",
+            "fontFamily": "Unica77LL-Medium",
             "fontSize": 12,
             "marginTop": 10,
           },
@@ -136,57 +153,61 @@ exports[`renders not highest bid screen properly 1`] = `
       accessible={true}
       allowFontScaling={true}
       ellipsizeMode="tail"
+      fontSize={2}
       style={
         Array [
           Object {
-            "color": "#000000",
+            "fontFamily": "Unica77LL-Medium",
             "fontSize": 14,
-            "fontWeight": "500",
           },
           undefined,
         ]
       }
     >
       00
-      d 
+      d
+        
       00
       h
-       
+        
       20
-      m 
+      m
+        
       00
       s
     </Text>
     <View
+      border={1}
+      borderBottomWidth={0}
+      mb={4}
+      mt={5}
       style={
         Array [
           Object {
-            "borderBottomColor": "#e5e5e5",
-            "borderBottomWidth": 1,
+            "borderColor": "#E5E5E5",
+            "borderStyle": "solid",
+            "borderWidth": 1,
             "marginBottom": 20,
-            "marginLeft": 0,
-            "marginRight": 0,
             "marginTop": 30,
             "width": "100%",
           },
           undefined,
         ]
       }
+      width="100%"
     />
     <Text
       accessible={true}
       allowFontScaling={true}
       ellipsizeMode="tail"
-      numberOfLines={1}
+      fontSize={3}
       style={
         Array [
           Object {
-            "fontSize": 17,
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 16,
           },
           undefined,
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
         ]
       }
     >
@@ -196,13 +217,12 @@ exports[`renders not highest bid screen properly 1`] = `
       accessible={true}
       allowFontScaling={true}
       ellipsizeMode="tail"
+      fontSize={4}
       style={
         Array [
           Object {
-            "fontFamily": "AGaramondPro-Regular",
-            "fontSize": 20,
-            "fontWeight": "bold",
-            "textAlign": "center",
+            "fontFamily": "AGaramondPro-Semibold",
+            "fontSize": 18,
           },
           undefined,
         ]
@@ -267,14 +287,15 @@ exports[`renders not highest bid screen properly 1`] = `
 
 exports[`renders winning screen properly 1`] = `
 <View
+  alignItems="center"
+  flex={1}
+  justifyContent="center"
   style={
     Array [
       Object {
-        "alignItems": "center",
         "flexBasis": 0,
         "flexGrow": 1,
         "flexShrink": 1,
-        "justifyContent": "center",
       },
       undefined,
     ]
@@ -293,6 +314,8 @@ exports[`renders winning screen properly 1`] = `
       }
     >
       <Image
+        height={20}
+        m={2}
         source={
           Object {
             "testUri": "../../../images/circle-check-green.png",
@@ -302,27 +325,27 @@ exports[`renders winning screen properly 1`] = `
           Array [
             Object {
               "height": 20,
-              "marginBottom": 10,
-              "marginLeft": 10,
-              "marginRight": 10,
-              "marginTop": 10,
+              "marginBottom": 5,
+              "marginLeft": 5,
+              "marginRight": 5,
+              "marginTop": 5,
               "width": 20,
             },
             undefined,
           ]
         }
+        width={20}
       />
       <Text
         accessible={true}
         allowFontScaling={true}
         ellipsizeMode="tail"
+        fontSize={4}
         style={
           Array [
             Object {
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 20,
-              "fontWeight": "bold",
-              "textAlign": "center",
+              "fontFamily": "AGaramondPro-Semibold",
+              "fontSize": 18,
             },
             undefined,
           ]
@@ -333,11 +356,15 @@ exports[`renders winning screen properly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
+        color="black60"
         ellipsizeMode="tail"
+        fontSize={1}
+        mt={3}
         style={
           Array [
             Object {
-              "color": "#666666",
+              "color": "#666",
+              "fontFamily": "Unica77LL-Medium",
               "fontSize": 12,
               "marginTop": 10,
             },
@@ -351,24 +378,26 @@ exports[`renders winning screen properly 1`] = `
         accessible={true}
         allowFontScaling={true}
         ellipsizeMode="tail"
+        fontSize={2}
         style={
           Array [
             Object {
-              "color": "#000000",
+              "fontFamily": "Unica77LL-Medium",
               "fontSize": 14,
-              "fontWeight": "500",
             },
             undefined,
           ]
         }
       >
         00
-        d 
+        d
+          
         00
         h
-         
+          
         20
-        m 
+        m
+          
         00
         s
       </Text>
