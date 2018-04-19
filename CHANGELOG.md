@@ -28,6 +28,7 @@
 * Use a more appropriate type for textStyle in ButtonProps - yuki24
 * Adds confrirm bid screen for Bid Flow - sepans
 * Load Bid prices dynamically - sepans
+* Adds bid result screens - yuki24
 
 ## 1.4.6
 
