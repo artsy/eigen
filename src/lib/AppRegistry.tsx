@@ -91,10 +91,9 @@ const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoad
 interface BidFlowProps {
   saleArtworkID: string
 }
-const BidFlow: React.SFC<BidFlowProps> = track<BidFlowProps>(props => {
-  // TODO: Add analytics data for new bid flow here.
-  return {}
-})(props => <BidFlowRenderer {...props} render={renderWithLoadProgress(Containers.BidFlow)} />)
+const BidFlow: React.SFC<BidFlowProps> = props => (
+  <BidFlowRenderer {...props} render={renderWithLoadProgress(Containers.BidFlow)} />
+)
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)

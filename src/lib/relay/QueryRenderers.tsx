@@ -27,7 +27,6 @@ import Inbox from "../Containers/Inbox"
 Inbox
 // tslint:enable:no-unused-expression
 
-import { GrayActionButton } from "../Components/Buttons"
 import createEnvironment from "./createEnvironment"
 const environment = createEnvironment()
 
