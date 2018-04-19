@@ -14,7 +14,7 @@ export class BidFlow extends React.Component<BidFlowProps> {
         navigationBarHidden={true}
         initialRoute={{
           component: SelectMaxBid,
-          title: "Your max bid", // title is required, though we won't likely use/display it.
+          title: "", // title is required, though we don't use it because our navigation bar is hidden.
           passProps: {
             saleArtworkID: this.props.saleArtworkID,
           },

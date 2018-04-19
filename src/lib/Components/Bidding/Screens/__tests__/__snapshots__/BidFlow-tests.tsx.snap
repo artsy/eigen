@@ -26,7 +26,7 @@ exports[`renders properly 1`] = `
           "passProps": Object {
             "saleArtworkID": "5aada729139b216c0bf18103",
           },
-          "title": "Your max bid",
+          "title": "",
         }
       }
       navigationBarHidden={true}
@@ -45,7 +45,7 @@ exports[`renders properly 1`] = `
           undefined,
         ]
       }
-      title="Your max bid"
+      title=""
       translucent={true}
     >
       <View
