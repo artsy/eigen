@@ -5,6 +5,9 @@ import { graphql, QueryRenderer, QueryRendererProps } from "react-relay"
 import Artist from "../Containers/Artist"
 Artist
 
+import BidFlow from "../Containers/BidFlow"
+BidFlow
+
 import Conversation from "../Containers/Conversation"
 Conversation
 
@@ -24,6 +27,7 @@ import Inbox from "../Containers/Inbox"
 Inbox
 // tslint:enable:no-unused-expression
 
+import { GrayActionButton } from "../Components/Buttons"
 import createEnvironment from "./createEnvironment"
 const environment = createEnvironment()
 
@@ -50,6 +54,29 @@ export const ArtistRenderer: React.SFC<ArtistRendererProps> = ({ render, artistI
         }
       `}
       variables={{ artistID, isPad }}
+      render={render}
+    />
+  )
+}
+
+interface BidFlowRendererProps extends RendererProps {
+  saleArtworkID: string
+}
+
+export const BidFlowRenderer: React.SFC<BidFlowRendererProps> = ({ render, saleArtworkID }) => {
+  return (
+    <QueryRenderer
+      environment={environment}
+      query={graphql`
+        query QueryRenderersBidFlowQuery($saleArtworkID: String!) {
+          sale_artwork(id: $saleArtworkID) {
+            ...BidFlow_sale_artwork
+          }
+        }
+      `}
+      variables={{
+        saleArtworkID,
+      }}
       render={render}
     />
   )

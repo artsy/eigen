@@ -1,7 +1,7 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-export type SelectMaxBid_sale_artwork = {
+export type BidFlow_sale_artwork = {
     readonly bid_increments: ReadonlyArray<number | null> | null;
 };
 
@@ -9,7 +9,7 @@ export type SelectMaxBid_sale_artwork = {
 
 const node: ConcreteFragment = {
   "kind": "Fragment",
-  "name": "SelectMaxBid_sale_artwork",
+  "name": "BidFlow_sale_artwork",
   "type": "SaleArtwork",
   "metadata": {},
   "argumentDefinitions": [],
@@ -22,6 +22,11 @@ const node: ConcreteFragment = {
       "storageKey": null
     },
     {
+      "kind": "FragmentSpread",
+      "name": "SelectMaxBid_sale_artwork",
+      "args": null
+    },
+    {
       "kind": "ScalarField",
       "alias": null,
       "name": "__id",
@@ -30,5 +35,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = '9b5cd077ad96f8c8349b1e1a060733ca';
+(node as any).hash = '7bde3a2109d18f581b0b6c0d2e577f6d';
 export default node;
