@@ -31,8 +31,7 @@ class BidFlow extends React.Component<BidFlowProps> {
 export default createFragmentContainer(
   BidFlow,
   graphql`
-    fragment BidFlow_sale_artwork on SaleArtwork @relay(mask: false) {
-      bid_increments
+    fragment BidFlow_sale_artwork on SaleArtwork {
       ...SelectMaxBid_sale_artwork
     }
   `

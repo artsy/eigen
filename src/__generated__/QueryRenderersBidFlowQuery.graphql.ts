@@ -22,7 +22,6 @@ query QueryRenderersBidFlowQuery(
 }
 
 fragment BidFlow_sale_artwork on SaleArtwork {
-  bid_increments
   ...SelectMaxBid_sale_artwork
   __id
 }
@@ -61,7 +60,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersBidFlowQuery",
-  "id": "446b43e0b6eb4ef74e0ec17c45338729",
+  "id": "17d3f6c962e80c3cb5b9224a42086f75",
   "text": null,
   "metadata": {},
   "fragment": {

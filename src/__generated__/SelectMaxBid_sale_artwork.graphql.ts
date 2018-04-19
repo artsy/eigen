@@ -11,7 +11,7 @@ const node: ConcreteFragment = {
   "kind": "Fragment",
   "name": "SelectMaxBid_sale_artwork",
   "type": "SaleArtwork",
-  "metadata": {},
+  "metadata": null,
   "argumentDefinitions": [],
   "selections": [
     {
@@ -30,5 +30,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = '9b5cd077ad96f8c8349b1e1a060733ca';
+(node as any).hash = '52dc8e7bdfe90020241f2b017f8cee27';
 export default node;

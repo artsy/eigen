@@ -43,7 +43,7 @@ const Container = styled.View`
 export const MaxBidScreen = createFragmentContainer(
   SelectMaxBid,
   graphql`
-    fragment SelectMaxBid_sale_artwork on SaleArtwork @relay(mask: false) {
+    fragment SelectMaxBid_sale_artwork on SaleArtwork {
       bid_increments
     }
   `
