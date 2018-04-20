@@ -2,7 +2,10 @@
 
 import { ConcreteFragment } from "relay-runtime";
 export type BidFlow_sale_artwork = {
-    readonly bid_increments: ReadonlyArray<number | null> | null;
+    readonly increments: ReadonlyArray<({
+            readonly display: string | null;
+            readonly cents: number | null;
+        }) | null> | null;
 };
 
 
@@ -15,11 +18,29 @@ const node: ConcreteFragment = {
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "ScalarField",
+      "kind": "LinkedField",
       "alias": null,
-      "name": "bid_increments",
+      "name": "increments",
+      "storageKey": null,
       "args": null,
-      "storageKey": null
+      "concreteType": "BidIncrementsFormatted",
+      "plural": true,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "display",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "cents",
+          "args": null,
+          "storageKey": null
+        }
+      ]
     },
     {
       "kind": "ScalarField",

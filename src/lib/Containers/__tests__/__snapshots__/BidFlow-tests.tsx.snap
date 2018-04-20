@@ -25,12 +25,27 @@ exports[`renders properly 1`] = `
           "component": [Function],
           "passProps": Object {
             "sale_artwork": Object {
-              "bid_increments": Array [
-                3500000,
-                4000000,
-                4500000,
-                5000000,
-                5500000,
+              "increments": Array [
+                Object {
+                  "cents": 3500000,
+                  "display": "$35,000",
+                },
+                Object {
+                  "cents": 4000000,
+                  "display": "$40,000",
+                },
+                Object {
+                  "cents": 4500000,
+                  "display": "$45,000",
+                },
+                Object {
+                  "cents": 5000000,
+                  "display": "$50,000",
+                },
+                Object {
+                  "cents": 5500000,
+                  "display": "$55,000",
+                },
               ],
             },
           },
@@ -108,27 +123,27 @@ exports[`renders properly 1`] = `
             items={
               Array [
                 Object {
-                  "label": "3500000",
+                  "label": "$35,000",
                   "textColor": undefined,
                   "value": 3500000,
                 },
                 Object {
-                  "label": "4000000",
+                  "label": "$40,000",
                   "textColor": undefined,
                   "value": 4000000,
                 },
                 Object {
-                  "label": "4500000",
+                  "label": "$45,000",
                   "textColor": undefined,
                   "value": 4500000,
                 },
                 Object {
-                  "label": "5000000",
+                  "label": "$50,000",
                   "textColor": undefined,
                   "value": 5000000,
                 },
                 Object {
-                  "label": "5500000",
+                  "label": "$55,000",
                   "textColor": undefined,
                   "value": 5500000,
                 },

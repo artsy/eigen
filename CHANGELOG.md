@@ -29,6 +29,7 @@
 * Adds confrirm bid screen for Bid Flow - sepans
 * Load Bid prices dynamically - sepans
 * Adds bid result screens - yuki24
+* Updates bid flow to consume preformatted bid increments - ash
 
 ## 1.4.6
 

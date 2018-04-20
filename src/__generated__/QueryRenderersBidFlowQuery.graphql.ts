@@ -22,7 +22,10 @@ query QueryRenderersBidFlowQuery(
 }
 
 fragment BidFlow_sale_artwork on SaleArtwork {
-  bid_increments
+  increments {
+    display
+    cents
+  }
   __id
 }
 */
@@ -55,7 +58,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersBidFlowQuery",
-  "id": "0d027936574588c1b968f7d9a87ea74b",
+  "id": "17db481eec8d0a013fd6a48a11cf6049",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -99,11 +102,29 @@ return {
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
+            "kind": "LinkedField",
             "alias": null,
-            "name": "bid_increments",
+            "name": "increments",
+            "storageKey": null,
             "args": null,
-            "storageKey": null
+            "concreteType": "BidIncrementsFormatted",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "display",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "cents",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           },
           v2
         ]
