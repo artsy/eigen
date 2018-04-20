@@ -2,6 +2,7 @@
 
 import { ConcreteFragment } from "relay-runtime";
 export type BidFlow_sale_artwork = {
+    readonly bid_increments: ReadonlyArray<number | null> | null;
 };
 
 
@@ -14,9 +15,11 @@ const node: ConcreteFragment = {
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "FragmentSpread",
-      "name": "SelectMaxBid_sale_artwork",
-      "args": null
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "bid_increments",
+      "args": null,
+      "storageKey": null
     },
     {
       "kind": "ScalarField",
@@ -27,5 +30,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = '783deb640df28b5155fc21968460a57c';
+(node as any).hash = 'ec3c6aca869a3151e0c323ca0c473ada';
 export default node;

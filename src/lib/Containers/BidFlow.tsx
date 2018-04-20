@@ -32,7 +32,7 @@ export default createFragmentContainer(
   BidFlow,
   graphql`
     fragment BidFlow_sale_artwork on SaleArtwork {
-      ...SelectMaxBid_sale_artwork
+      ...SelectMaxBid_sale_artwork @relay(mask: false)
     }
   `
 )
