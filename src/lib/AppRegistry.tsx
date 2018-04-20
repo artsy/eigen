@@ -1,11 +1,11 @@
 import React from "react"
 import { AppRegistry, View } from "react-native"
 
-import BidFlow from "./Components/Bidding/Screens/BidFlow"
 import Consignments from "./Components/Consignments"
 import Containers from "./Containers/index"
 import {
   ArtistRenderer,
+  BidFlowRenderer,
   ConversationRenderer,
   GeneRenderer,
   InboxRenderer,
@@ -87,6 +87,13 @@ const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(prop
 })(props => <ConversationRenderer {...props} render={renderWithLoadProgress(Containers.Conversation, props)} />)
 
 const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoadProgress(Containers.MyProfile)} />
+
+interface BidFlowProps {
+  saleArtworkID: string
+}
+const BidFlow: React.SFC<BidFlowProps> = props => (
+  <BidFlowRenderer {...props} render={renderWithLoadProgress(Containers.BidFlow)} />
+)
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)

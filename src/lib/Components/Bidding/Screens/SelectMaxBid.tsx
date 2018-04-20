@@ -18,10 +18,10 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps> {
   render() {
     // TODO metaphysics should return formatted values
     const bids =
-      this.props.sale_artwork &&
-      this.props.sale_artwork.bid_increments &&
-      this.props.sale_artwork.bid_increments.map(d => ({ label: d.toString(), value: d }))
-
+      (this.props.sale_artwork &&
+        this.props.sale_artwork.bid_increments &&
+        this.props.sale_artwork.bid_increments.map(d => ({ label: d.toString(), value: d }))) ||
+      []
     return (
       <Container>
         <Title style={Margins.m1}>Your max bid</Title>

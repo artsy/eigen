@@ -24,7 +24,7 @@
 * Add persisted queries support to Relay - alloy
 * Add ability to preload queries - alloy
 * Add ability to specifically style the button headline - yuki24
-* Adds (empty) BidFlow component and view controller - ashfurrow
+* Adds BidFlow component and view controller - ashfurrow
 * Use a more appropriate type for textStyle in ButtonProps - yuki24
 * Adds confrirm bid screen for Bid Flow - sepans
 * Load Bid prices dynamically - sepans
