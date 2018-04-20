@@ -19,8 +19,8 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps> {
     // TODO metaphysics should return formatted values
     const bids =
       (this.props.sale_artwork &&
-        this.props.sale_artwork.bid_increments &&
-        this.props.sale_artwork.bid_increments.map(d => ({ label: d.toString(), value: d }))) ||
+        this.props.sale_artwork.increments &&
+        this.props.sale_artwork.increments.map(i => ({ label: i.display, value: i.cents }))) ||
       []
     return (
       <Container>
@@ -38,7 +38,10 @@ export const MaxBidScreen = createFragmentContainer(
   SelectMaxBid,
   graphql`
     fragment SelectMaxBid_sale_artwork on SaleArtwork {
-      bid_increments
+      increments {
+        display
+        cents
+      }
     }
   `
 )
