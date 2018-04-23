@@ -9,13 +9,19 @@ interface Bid {
 
 export interface MaxBidPickerProps extends PickerProperties {
   bids: Bid[]
+  selectedBidIndex: number
+  onSelectNewBidIndex: (number) => void
 }
 
 export class MaxBidPicker extends React.Component<MaxBidPickerProps> {
   render() {
     return (
-      <StyledPicker {...this.props}>
-        {this.props.bids.map((bid, index) => <Picker.Item key={index} {...bid} />)}
+      <StyledPicker
+        {...this.props}
+        onValueChange={(_, index) => this.props.onSelectNewBidIndex(index)}
+        selectedValue={this.props.selectedBidIndex}
+      >
+        {this.props.bids.map((bid, index) => <Picker.Item key={index} value={index} label={bid.label} />)}
       </StyledPicker>
     )
   }

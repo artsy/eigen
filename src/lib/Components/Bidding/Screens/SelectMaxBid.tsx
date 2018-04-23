@@ -14,7 +14,14 @@ interface SelectMaxBidProps extends ViewProperties {
   sale_artwork: SelectMaxBid_sale_artwork
 }
 
-export class SelectMaxBid extends React.Component<SelectMaxBidProps> {
+interface SelectMaxBidState {
+  selectedBidIndex: number
+}
+
+export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBidState> {
+  state = {
+    selectedBidIndex: 0,
+  }
   render() {
     // TODO metaphysics should return formatted values
     const bids =
@@ -26,7 +33,11 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps> {
       <Container>
         <Title style={Margins.m1}>Your max bid</Title>
 
-        <MaxBidPicker bids={bids} />
+        <MaxBidPicker
+          bids={bids}
+          selectedBidIndex={this.state.selectedBidIndex}
+          onSelectNewBidIndex={index => this.setState({ selectedBidIndex: index })}
+        />
 
         <Button text="NEXT" onPress={() => null} />
       </Container>
