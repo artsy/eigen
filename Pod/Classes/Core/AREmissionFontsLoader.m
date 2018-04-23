@@ -25,6 +25,10 @@
   font = [UIFont serifFontWithSize:12];
   font = [UIFont serifItalicFontWithSize:12];
   font = [UIFont sansSerifFontWithSize:12];
+  font = [UIFont displaySansSerifFontWithSize:12];
+  font = [UIFont displayItalicSansSerifFontWithSize:12];
+  font = [UIFont displayMediumSansSerifFontWithSize:12];
+  font = [UIFont displayMediumItalicSansSerifFontWithSize:12];
 //  font = [UIFont smallCapsSerifFontWithSize:12];
 }
 
