@@ -75,6 +75,12 @@
     } failure:failure];
 }
 
++ (AFHTTPRequestOperation *)recordViewingOfArtwork:(NSString *)artworkID success:(void (^)(Artwork *artwork))success failure:(void (^)(NSError *error))failure
+{
+  NSURLRequest *request = [ARRouter recordArtworkViewRequest:artworkID];
+  return [self performGraphQLRequest:request success:success failure:failure];
+}
+
 + (AFHTTPRequestOperation *)getArtworksForGene:(Gene *)gene atPage:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newArtworksFromGeneRequest:gene.geneID atPage:page];

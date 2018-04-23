@@ -16,6 +16,8 @@
 #import "UIViewController+ARUserActivity.h"
 #import "ARScrollNavigationChief.h"
 
+#import "ArtsyAPI+Artworks.h"
+
 #import "UIDevice-Hardware.h"
 
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
@@ -102,6 +104,8 @@
     } failure:^(NSError *error) {
         completion();
     }];
+  
+    [ArtsyAPI recordViewingOfArtwork:self.artwork.artworkID success:nil failure:nil];
 
     [super viewDidLoad];
 }

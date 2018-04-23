@@ -298,7 +298,7 @@ DEPENDENCIES:
   - "XCTest+OHHTTPStubSuiteCleanUp"
 
 SPEC REPOS:
-  https://github.com/artsy/Specs.git:
+  https://github.com/artsy/Specs:
     - Aerodramus
     - "Artsy+UIColors"
     - "Artsy+UIFonts"

@@ -22,4 +22,6 @@
 
 + (AFHTTPRequestOperation *)createPendingOrderWithArtworkID:(NSString *)artworkID editionSetID:(NSString *)editionSetID success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure;
 
++ (AFHTTPRequestOperation *)recordViewingOfArtwork:(NSString *)artworkID success:(void (^)(Artwork *artwork))success failure:(void (^)(NSError *error))failure;
+
 @end
