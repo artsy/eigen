@@ -105,7 +105,7 @@ RCT_EXPORT_MODULE();
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
                                                           delegate:nil
                                                      delegateQueue:nil];
-    
+
     for (ARGraphQLQuery *query in queries) {
         NSString *ID = ARGraphQLQueryNameToID(query.queryName);
 
@@ -115,7 +115,7 @@ RCT_EXPORT_MODULE();
 #else
         body = @{ @"documentID": ID, @"variables": query.variables };
 #endif
-        
+
         NSError *error = nil;
         NSData *bodyData = [NSJSONSerialization dataWithJSONObject:body options:0 error:&error];
         if (error) {
@@ -135,14 +135,14 @@ RCT_EXPORT_MODULE();
         [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         [request setValue:self.configuration.userID forHTTPHeaderField:@"X-USER-ID"];
         [request setValue:self.configuration.authenticationToken forHTTPHeaderField:@"X-ACCESS-TOKEN"];
-        
+
         NSURLSessionDataTask *task = [session dataTaskWithRequest:request
                                                 completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
            if (error) {
                NSLog(@"Unable to download response: %@", error);
                [self.cache clearQueryID:ID withVariables:query.variables];
            } else if ([(NSHTTPURLResponse *)response statusCode] != 200) {
-               NSLog(@"Got unexpected HTTP response %ld and therefor discarding response body", [(NSHTTPURLResponse *)response statusCode]);
+               NSLog(@"Got unexpected HTTP response %@ and therefor discarding response body", @([(NSHTTPURLResponse *)response statusCode]));
                [self.cache clearQueryID:ID withVariables:query.variables];
            } else {
                [self.cache setResponse:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]

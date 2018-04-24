@@ -31,7 +31,7 @@ static NSURL *_cacheDirectory = nil;
     // RN ceremony
     RCT_EXTERN void RCTRegisterModule(Class);
     RCTRegisterModule(self);
-    
+
     // Ensure the cache directory exists
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     _cacheDirectory = [NSURL fileURLWithPath:[paths[0] stringByAppendingPathComponent:@"RelayResponseCache"]];
@@ -64,7 +64,7 @@ CacheKey(NSString *queryID, NSDictionary *variables) {
     NSData *variablesJSONData = [NSJSONSerialization dataWithJSONObject:variables options:0 error:nil];
     NSString *variablesJSON = [[NSString alloc] initWithData:variablesJSONData encoding:NSUTF8StringEncoding];
     NSString *longCacheKey = [queryID stringByAppendingString:variablesJSON];
-    
+
     const char *pointer = longCacheKey.UTF8String;
     unsigned char md5Buffer[CC_MD5_DIGEST_LENGTH];
 
@@ -74,7 +74,7 @@ CacheKey(NSString *queryID, NSDictionary *variables) {
     for (int i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
         [encodedCacheKey appendFormat:@"%02x", md5Buffer[i]];
     }
-    
+
     return encodedCacheKey;
 }
 
@@ -93,7 +93,7 @@ ResolvePromiseQueue(NSString *cacheKey, PromiseQueue *promiseQueue, id value) {
     if (promiseQueue) {
 #ifdef DEBUG
         if (promiseQueue.count > 0) {
-            DLog(@"[ARGraphQLQueryCache] [%@] Dispatching %ld queued promises", cacheKey, promiseQueue.count);
+            DLog(@"[ARGraphQLQueryCache] [%@] Dispatching %@ queued promises", cacheKey, @(promiseQueue.count));
         }
 #endif
         for (NSDictionary *promise in promiseQueue) {
