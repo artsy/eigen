@@ -26,6 +26,18 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
     display
     cents
   }
+  ...ConfirmBid_sale_artwork
+  __id
+}
+
+fragment ConfirmBid_sale_artwork on SaleArtwork {
+  artwork {
+    title
+    date
+    artist_names
+    __id
+  }
+  lot_label
   __id
 }
 */
@@ -58,7 +70,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "BidFlowSelectMaxBidRendererQuery",
-  "id": "56f3395837891c85150dd10347154336",
+  "id": "3f934d701ae3932f4af2eff2809d5b0c",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -125,6 +137,46 @@ return {
                 "storageKey": null
               }
             ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artwork",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artwork",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "title",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "date",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "artist_names",
+                "args": null,
+                "storageKey": null
+              },
+              v2
+            ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "lot_label",
+            "args": null,
+            "storageKey": null
           },
           v2
         ]

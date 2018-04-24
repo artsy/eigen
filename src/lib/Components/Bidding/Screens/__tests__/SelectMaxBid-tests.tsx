@@ -2,7 +2,7 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import { MaxBidScreen } from "../SelectMaxBid"
+import { SelectMaxBid } from "../SelectMaxBid"
 
 const SaleArtwork = {
   increments: [
@@ -30,6 +30,6 @@ const SaleArtwork = {
 }
 
 it("renders properly", () => {
-  const bg = renderer.create(<MaxBidScreen sale_artwork={SaleArtwork} />).toJSON()
+  const bg = renderer.create(<SelectMaxBid sale_artwork={SaleArtwork} navigator={jest.fn() as any} />).toJSON()
   expect(bg).toMatchSnapshot()
 })

@@ -1,6 +1,6 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
-import { graphql, QueryRenderer, QueryRendererProps } from "react-relay"
+import { graphql, QueryRenderer } from "react-relay"
 import createEnvironment from "../../../relay/createEnvironment"
 
 import BidFlow from "../../../Containers/BidFlow"
@@ -30,7 +30,7 @@ const SelectMaxBidRenderer: React.SFC<any> = ({ render, saleArtworkID }) => {
   )
 }
 
-const ConfirmBidScreenRenderer: React.SFC<any> = ({ render, saleArtworkID, bid }) => {
+const ConfirmBidScreenRenderer: React.SFC<any> = ({ render, saleArtworkID }) => {
   return (
     <QueryRenderer
       environment={createEnvironment()}

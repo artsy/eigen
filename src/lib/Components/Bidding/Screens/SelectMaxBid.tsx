@@ -25,9 +25,8 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
     selectedBidIndex: 0,
   }
   onPressNext = () => {
-    console.log("Hey there", ConfirmBidScreen)
     this.props.navigator.push({
-      ConfirmBidScreen,
+      component: ConfirmBidScreen,
       title: "",
       passProps: {
         sale_artwork: this.props.sale_artwork,
@@ -37,7 +36,6 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
   }
 
   render() {
-    // TODO metaphysics should return formatted values
     const bids =
       (this.props.sale_artwork &&
         this.props.sale_artwork.increments &&
@@ -67,6 +65,7 @@ export const MaxBidScreen = createFragmentContainer(
         display
         cents
       }
+      ...ConfirmBid_sale_artwork
     }
   `
 )

@@ -33,7 +33,6 @@ export default createFragmentContainer(
   graphql`
     fragment BidFlow_sale_artwork on SaleArtwork {
       ...SelectMaxBid_sale_artwork
-      ...ConfirmBid_sale_artwork
     }
   `
 )
