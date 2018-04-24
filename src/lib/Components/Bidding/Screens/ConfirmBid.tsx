@@ -17,7 +17,7 @@ interface ConfirmBidProps extends ViewProperties {
   }
 }
 
-class ConfirmBid extends React.Component<ConfirmBidProps> {
+export class ConfirmBid extends React.Component<ConfirmBidProps> {
   render() {
     return (
       <Container>

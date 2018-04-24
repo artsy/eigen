@@ -20,7 +20,7 @@ interface SelectMaxBidState {
   selectedBidIndex: number
 }
 
-class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBidState> {
+export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBidState> {
   state = {
     selectedBidIndex: 0,
   }
