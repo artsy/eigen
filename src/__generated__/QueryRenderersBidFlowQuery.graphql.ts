@@ -22,11 +22,16 @@ query QueryRenderersBidFlowQuery(
 }
 
 fragment BidFlow_sale_artwork on SaleArtwork {
+  ...SelectMaxBid_sale_artwork
+  ...ConfirmBid_sale_artwork
+  __id
+}
+
+fragment SelectMaxBid_sale_artwork on SaleArtwork {
   increments {
     display
     cents
   }
-  ...ConfirmBid_sale_artwork
   __id
 }
 
@@ -70,7 +75,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersBidFlowQuery",
-  "id": "5d39a9687fc7576a5f744f7f45d6a9bc",
+  "id": "ae4e9c4f119cde43dd7169f0ffdd5b3d",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -138,6 +143,7 @@ return {
               }
             ]
           },
+          v2,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -177,8 +183,7 @@ return {
             "name": "lot_label",
             "args": null,
             "storageKey": null
-          },
-          v2
+          }
         ]
       }
     ]

@@ -20,17 +20,19 @@ interface SelectMaxBidState {
   selectedBidIndex: number
 }
 
-export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBidState> {
+class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBidState> {
   state = {
     selectedBidIndex: 0,
   }
-
   onPressNext = () => {
-    const component = null // <ConfirmBid saleArtworkID={this.props.sale_artwork} />
+    console.log("Hey there", ConfirmBidScreen)
     this.props.navigator.push({
-      component,
+      ConfirmBidScreen,
       title: "",
-      passProps: {},
+      passProps: {
+        sale_artwork: this.props.sale_artwork,
+        bid: this.props.sale_artwork.increments[this.state.selectedBidIndex],
+      },
     })
   }
 

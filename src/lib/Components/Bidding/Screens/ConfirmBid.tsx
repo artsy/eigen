@@ -18,10 +18,6 @@ interface ConfirmBidProps extends ViewProperties {
 }
 
 class ConfirmBid extends React.Component<ConfirmBidProps> {
-  // TODO move to utils?
-  formatAmountCent(amount) {
-    return !isNaN(amount) ? "$" + (amount / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : ""
-  }
   render() {
     return (
       <Container>
@@ -37,7 +33,7 @@ class ConfirmBid extends React.Component<ConfirmBidProps> {
 
         <MaxBidContainer>
           <Title>Max bid</Title>
-          <Amount>{this.formatAmountCent(this.props.bid.cents)}</Amount>
+          <Amount>{this.props.bid.display}</Amount>
         </MaxBidContainer>
         <NoteContainer>
           <Note>
