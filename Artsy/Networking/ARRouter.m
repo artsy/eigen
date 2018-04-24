@@ -1099,7 +1099,7 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)graphQLRequestForQuery:(NSString *)query
 {
-  return [self graphQLRequestForQuery:query variables:nil];
+    return [self graphQLRequestForQuery:query variables:nil];
 }
 
 + (NSURLRequest *)graphQLRequestForQuery:(NSString *)query variables:(NSDictionary *)variables
@@ -1120,9 +1120,12 @@ static NSString *hostFromString(NSString *string)
   }
   NSError *error;
   
-  NSString *variablesAsString = variables && variables.count > 0 ? [self jsonDictionaryForVariables:variables] : nil;
-  
-  NSMutableURLRequest *request = [jsonSerializer requestWithMethod:@"POST" URLString:url parameters:@{ @"query" : query, @"variables": variablesAsString } error:&error];
+  NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:@{ @"query" : query }];
+  if (variables && variables.count > 0) {
+    [params setValue:[self jsonDictionaryForVariables:variables] forKey:@"variables"];
+  }
+
+  NSMutableURLRequest *request = [jsonSerializer requestWithMethod:@"POST" URLString:url parameters:params error:&error];
   
   if (error) {
     NSLog(@"Error serializing request: %@", error);

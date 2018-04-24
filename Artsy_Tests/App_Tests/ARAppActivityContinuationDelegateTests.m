@@ -49,6 +49,8 @@ describe(@"concerning loading a VC from a URL and reporting analytics", ^{
         [[[userManagerMock stub] andReturnValue:@(YES)] hasExistingAccount];
         
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@{}];
+      
+        [OHHTTPStubs stubJSONResponseForHost:@"metaphysics*.artsy.net" withResponse:@{}];
 
         topMenuMock = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
         [[topMenuMock expect] pushViewController:[OCMArg checkWithBlock:^(ARArtworkSetViewController *viewController) {

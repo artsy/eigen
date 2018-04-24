@@ -1,6 +1,6 @@
 #import "ARArtworkViewController.h"
 #import "ARArtworkView.h"
-
+#import "ArtsyAPI+Artworks.h"
 
 void stubEmptyBidderPositions(void);
 void stubEmptySaleArtworks(void);
@@ -10,7 +10,6 @@ void stubBidder(BOOL requiresApproval);
 @interface ARArtworkViewController ()
 
 @property (nonatomic, strong) NSTimer *updateInterfaceWhenAuctionChangesTimer;
-
 @end
 
 SpecBegin(ARArtworkViewController);
@@ -26,6 +25,7 @@ beforeEach(^{
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/some-artwork" withResponse:@{ @"id": @"some-artwork", @"title": @"Some Title" }];
+    [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:@{}];
 });
 
 describe(@"no related data", ^{
@@ -274,6 +274,18 @@ it(@"creates an NSUserActivity", ^{
     expect(vc.userActivity).notTo.beNil();
     expect(vc.userActivity.title).to.equal(@"Some Title");
 });
+
+it(@"calls recordViewingOfArtwork within viewDidLoad", ^{
+  ARArtworkViewController *vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+  id apiMock = [OCMockObject niceMockForClass:ArtsyAPI.class];
+  
+  [[apiMock expect] recordViewingOfArtwork:@"some-artwork" success:nil failure:nil];
+  
+  [vc viewDidLoad];
+  [apiMock verify];
+});
+
+
 
 pending(@"at a fair");
 
