@@ -1073,6 +1073,11 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARSalesForArtworkURL parameters:params];
 }
 
++ (NSURLRequest *)recordArtworkViewRequest:(NSString *)artworkID
+{
+  return [self graphQLRequestForQuery:[self graphQueryToRecordViewingOfArtwork:artworkID] variables:@{@"artwork_id" : artworkID}];
+}
+
 + (NSURLRequest *)artworksForSaleRequest:(NSString *)saleID
 {
     return [self graphQLRequestForQuery:[self graphQueryForArtworksInSale:saleID]];
@@ -1094,28 +1099,45 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)graphQLRequestForQuery:(NSString *)query
 {
-    // Note that we're relying on the host to specify the domain for the request.
-    NSString *url = [self baseMetaphysicsApiURLString];
+    return [self graphQLRequestForQuery:query variables:nil];
+}
 
-    // Makes a copy of the request serializer, one that will encode HTTP body as JSON instead of URL-encoded params.
-    AFJSONRequestSerializer *jsonSerializer = [[AFJSONRequestSerializer alloc] init];
-    for (NSString *key in staticHTTPClient.requestSerializer.HTTPRequestHeaders.allKeys) {
-        id value = staticHTTPClient.requestSerializer.HTTPRequestHeaders[key];
-        [jsonSerializer setValue:value forHTTPHeaderField:key];
-    }
-    if (ARIsRunningInDemoMode) {
-        [jsonSerializer setValue:@"502d15746e721400020006fa" forHTTPHeaderField:@"X-User-ID"];
-    } else {
-        [jsonSerializer setValue:[User currentUser].userID forHTTPHeaderField:@"X-User-ID"];
-    }
-    NSError *error;
-    NSMutableURLRequest *request = [jsonSerializer requestWithMethod:@"POST" URLString:url parameters:@{ @"query" : query } error:&error];
++ (NSURLRequest *)graphQLRequestForQuery:(NSString *)query variables:(NSDictionary *)variables
+{
+  // Note that we're relying on the host to specify the domain for the request.
+  NSString *url = [self baseMetaphysicsApiURLString];
+  
+  // Makes a copy of the request serializer, one that will encode HTTP body as JSON instead of URL-encoded params.
+  AFJSONRequestSerializer *jsonSerializer = [[AFJSONRequestSerializer alloc] init];
+  for (NSString *key in staticHTTPClient.requestSerializer.HTTPRequestHeaders.allKeys) {
+    id value = staticHTTPClient.requestSerializer.HTTPRequestHeaders[key];
+    [jsonSerializer setValue:value forHTTPHeaderField:key];
+  }
+  if (ARIsRunningInDemoMode) {
+    [jsonSerializer setValue:@"502d15746e721400020006fa" forHTTPHeaderField:@"X-User-ID"];
+  } else {
+    [jsonSerializer setValue:[User currentUser].userID forHTTPHeaderField:@"X-User-ID"];
+  }
+  NSError *error;
+  
+  NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:@{ @"query" : query }];
+  if (variables && variables.count > 0) {
+    [params setValue:[self jsonDictionaryForVariables:variables] forKey:@"variables"];
+  }
 
-    if (error) {
-        NSLog(@"Error serializing request: %@", error);
-    }
+  NSMutableURLRequest *request = [jsonSerializer requestWithMethod:@"POST" URLString:url parameters:params error:&error];
+  
+  if (error) {
+    NSLog(@"Error serializing request: %@", error);
+  }
+  
+  return request;
+}
 
-    return request;
++ (NSString *)jsonDictionaryForVariables:(NSDictionary *)variables
+{
+  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:variables options:0 error:nil];
+  return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
 + (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role
