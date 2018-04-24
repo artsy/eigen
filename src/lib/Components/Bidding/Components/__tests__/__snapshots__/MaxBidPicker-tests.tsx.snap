@@ -17,12 +17,12 @@ exports[`renders properly 1`] = `
         Object {
           "label": "$35,000 USD",
           "textColor": undefined,
-          "value": 3500000,
+          "value": 0,
         },
         Object {
           "label": "$40,000 USD",
           "textColor": undefined,
-          "value": 4000000,
+          "value": 1,
         },
       ]
     }
