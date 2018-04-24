@@ -1,10 +1,10 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type QueryRenderersBidQueryVariables = {
+export type BidFlowSelectMaxBidRendererQueryVariables = {
     readonly saleArtworkID: string;
 };
-export type QueryRenderersBidQueryResponse = {
+export type BidFlowSelectMaxBidRendererQueryResponse = {
     readonly sale_artwork: ({
     }) | null;
 };
@@ -12,7 +12,7 @@ export type QueryRenderersBidQueryResponse = {
 
 
 /*
-query QueryRenderersBidQuery(
+query BidFlowSelectMaxBidRendererQuery(
   $saleArtworkID: String!
 ) {
   sale_artwork(id: $saleArtworkID) {
@@ -57,13 +57,13 @@ v2 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "QueryRenderersBidQuery",
-  "id": "570bf17a10d25bbeace6fd7184c03120",
+  "name": "BidFlowSelectMaxBidRendererQuery",
+  "id": "56f3395837891c85150dd10347154336",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersBidQuery",
+    "name": "BidFlowSelectMaxBidRendererQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -89,7 +89,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersBidQuery",
+    "name": "BidFlowSelectMaxBidRendererQuery",
     "argumentDefinitions": v0,
     "selections": [
       {
@@ -133,5 +133,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'ecaa905790e0ba4566d97ee647807e18';
+(node as any).hash = 'dcde3e88d982c125ae7d58799e69d88e';
 export default node;

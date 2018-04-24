@@ -1,10 +1,10 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type QueryRenderersBidFlowQueryVariables = {
+export type BidFlowConfirmBidScreenRendererQueryVariables = {
     readonly saleArtworkID: string;
 };
-export type QueryRenderersBidFlowQueryResponse = {
+export type BidFlowConfirmBidScreenRendererQueryResponse = {
     readonly sale_artwork: ({
     }) | null;
 };
@@ -12,21 +12,21 @@ export type QueryRenderersBidFlowQueryResponse = {
 
 
 /*
-query QueryRenderersBidFlowQuery(
+query BidFlowConfirmBidScreenRendererQuery(
   $saleArtworkID: String!
 ) {
   sale_artwork(id: $saleArtworkID) {
-    ...BidFlow_sale_artwork
+    ...SelectMaxBid_sale_artwork
+    ...ConfirmBid_sale_artwork
     __id
   }
 }
 
-fragment BidFlow_sale_artwork on SaleArtwork {
+fragment SelectMaxBid_sale_artwork on SaleArtwork {
   increments {
     display
     cents
   }
-  ...ConfirmBid_sale_artwork
   __id
 }
 
@@ -69,13 +69,13 @@ v2 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "QueryRenderersBidFlowQuery",
-  "id": "5d39a9687fc7576a5f744f7f45d6a9bc",
+  "name": "BidFlowConfirmBidScreenRendererQuery",
+  "id": "129c7b7d77ed03cc490c83ec9fe6f9f3",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersBidFlowQuery",
+    "name": "BidFlowConfirmBidScreenRendererQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -91,7 +91,12 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "BidFlow_sale_artwork",
+            "name": "SelectMaxBid_sale_artwork",
+            "args": null
+          },
+          {
+            "kind": "FragmentSpread",
+            "name": "ConfirmBid_sale_artwork",
             "args": null
           },
           v2
@@ -101,7 +106,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersBidFlowQuery",
+    "name": "BidFlowConfirmBidScreenRendererQuery",
     "argumentDefinitions": v0,
     "selections": [
       {
@@ -138,6 +143,7 @@ return {
               }
             ]
           },
+          v2,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -177,13 +183,12 @@ return {
             "name": "lot_label",
             "args": null,
             "storageKey": null
-          },
-          v2
+          }
         ]
       }
     ]
   }
 };
 })();
-(node as any).hash = 'f12416f909511f5de8b83cc919f5d84f';
+(node as any).hash = 'ccdd01ad0ba581723c2a9e35a68181dd';
 export default node;

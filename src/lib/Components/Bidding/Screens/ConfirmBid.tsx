@@ -1,21 +1,23 @@
 import React from "react"
+import { ViewProperties } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import { Colors } from "lib/data/colors"
 import { Fonts } from "lib/data/fonts"
 import { InvertedButton } from "../../Buttons"
 
-// hard-coded values for now.
-const saleArtwork = {
-  artwork: {
-    title: "Meteor Shower",
-    date: "2015",
-    artist_names: "Makiko Kudo",
-  },
-  lot_label: "538",
+import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
+
+interface ConfirmBidProps extends ViewProperties {
+  sale_artwork: ConfirmBid_sale_artwork
+  bid: {
+    display: string
+    cents: number
+  }
 }
 
-export class ConfirmBid extends React.Component<ConfirmBidProps> {
+class ConfirmBid extends React.Component<ConfirmBidProps> {
   // TODO move to utils?
   formatAmountCent(amount) {
     return !isNaN(amount) ? "$" + (amount / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : ""
@@ -25,17 +27,17 @@ export class ConfirmBid extends React.Component<ConfirmBidProps> {
       <Container>
         <Header>Confirm your bid</Header>
 
-        <ArtistInfo>{saleArtwork.artwork.artist_names}</ArtistInfo>
+        <ArtistInfo>{this.props.sale_artwork.artwork.artist_names}</ArtistInfo>
 
-        <LotInfo>Lot {saleArtwork.lot_label}</LotInfo>
+        <LotInfo>Lot {this.props.sale_artwork.lot_label}</LotInfo>
 
         <ArtworkInfo>
-          {saleArtwork.artwork.title}, {saleArtwork.artwork.date}
+          {this.props.sale_artwork.artwork.title}, {this.props.sale_artwork.artwork.date}
         </ArtworkInfo>
 
         <MaxBidContainer>
           <Title>Max bid</Title>
-          <Amount>{this.formatAmountCent(this.props.bidAmountCents)}</Amount>
+          <Amount>{this.formatAmountCent(this.props.bid.cents)}</Amount>
         </MaxBidContainer>
         <NoteContainer>
           <Note>
@@ -46,11 +48,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps> {
       </Container>
     )
   }
-}
-
-interface ConfirmBidProps {
-  saleArtworkID: string
-  bidAmountCents: number
 }
 
 const Container = styled.View`
@@ -125,3 +122,17 @@ const Note = styled.Text`
 const LinkText = styled.Text`
   text-decoration-line: underline;
 `
+
+export const ConfirmBidScreen = createFragmentContainer(
+  ConfirmBid,
+  graphql`
+    fragment ConfirmBid_sale_artwork on SaleArtwork {
+      artwork {
+        title
+        date
+        artist_names
+      }
+      lot_label
+    }
+  `
+)

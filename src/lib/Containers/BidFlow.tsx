@@ -33,6 +33,7 @@ export default createFragmentContainer(
   graphql`
     fragment BidFlow_sale_artwork on SaleArtwork {
       ...SelectMaxBid_sale_artwork @relay(mask: false)
+      ...ConfirmBid_sale_artwork
     }
   `
 )
