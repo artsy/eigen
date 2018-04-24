@@ -281,7 +281,7 @@ it(@"calls recordViewingOfArtwork within viewDidLoad", ^{
   
   [[apiMock expect] recordViewingOfArtwork:@"some-artwork" success:nil failure:nil];
   
-  [vc viewDidLoad];
+  [vc viewWillAppear:NO];
   [apiMock verify];
 });
 

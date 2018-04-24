@@ -104,8 +104,6 @@
     } failure:^(NSError *error) {
         completion();
     }];
-  
-    [ArtsyAPI recordViewingOfArtwork:self.artwork.artworkID success:nil failure:nil];
 
     [super viewDidLoad];
 }
@@ -113,6 +111,12 @@
 - (UIImageView *)imageView
 {
     return self.view.metadataView.imageView;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+  [super viewWillAppear:animated];
+  [ArtsyAPI recordViewingOfArtwork:self.artwork.artworkID success:nil failure:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
