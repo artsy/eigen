@@ -47,8 +47,8 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
 
         <MaxBidPicker
           bids={bids}
-          selectedBidIndex={this.state.selectedBidIndex}
-          onSelectNewBidIndex={index => this.setState({ selectedBidIndex: index })}
+          onValueChange={(_, index) => this.setState({ selectedBidIndex: index })}
+          selectedValue={this.state.selectedBidIndex}
         />
 
         <Button text="NEXT" onPress={this.onPressNext} />

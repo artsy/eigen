@@ -16,6 +16,6 @@ const Bids = [
 ]
 
 it("renders properly", () => {
-  const bg = renderer.create(<MaxBidPicker bids={Bids} selectedBidIndex={0} onSelectNewBidIndex={jest.fn()} />).toJSON()
+  const bg = renderer.create(<MaxBidPicker bids={Bids} selectedValue={0} onValueChange={jest.fn()} />).toJSON()
   expect(bg).toMatchSnapshot()
 })
