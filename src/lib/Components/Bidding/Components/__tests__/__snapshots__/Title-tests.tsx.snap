@@ -5,17 +5,18 @@ exports[`renders properly 1`] = `
   accessible={true}
   allowFontScaling={true}
   ellipsizeMode="tail"
+  fontSize={4}
   style={
     Array [
       Object {
-        "fontFamily": "AGaramondPro-Regular",
-        "fontSize": 20,
-        "fontWeight": "bold",
+        "fontFamily": "AGaramondPro-Semibold",
+        "fontSize": 24,
         "textAlign": "center",
       },
       undefined,
     ]
   }
+  textAlign="center"
 >
   Confirm your bid
 </Text>
