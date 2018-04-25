@@ -142,7 +142,7 @@ RCT_EXPORT_MODULE();
                NSLog(@"Unable to download response: %@", error);
                [self.cache clearQueryID:ID withVariables:query.variables];
            } else if ([(NSHTTPURLResponse *)response statusCode] != 200) {
-               NSLog(@"Got unexpected HTTP response %@ and therefor discarding response body", @([(NSHTTPURLResponse *)response statusCode]));
+               NSLog(@"Got unexpected HTTP response %@ and therefore discarding response body", @([(NSHTTPURLResponse *)response statusCode]));
                [self.cache clearQueryID:ID withVariables:query.variables];
            } else {
                [self.cache setResponse:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]
