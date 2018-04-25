@@ -1,6 +1,6 @@
 import React from "react"
-import { View, ViewProperties } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { NavigatorIOS, View, ViewProperties } from "react-native"
+import { commitMutation, createFragmentContainer,graphql,  RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
 import { Flex } from "../Elements/Flex"
@@ -21,6 +21,7 @@ import { Divider } from "../Components/Divider"
 import { Title } from "../Components/Title"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { BidResult } from "./BidResult"
 
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
 
@@ -30,12 +31,62 @@ interface ConfirmBidProps extends ViewProperties {
     display: string
     cents: number
   }
+  relay: RelayPaginationProp
+  navigator: NavigatorIOS
 }
 
 export class ConfirmBid extends React.Component<ConfirmBidProps> {
   onPressConditionsOfSale = () => {
     SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
   }
+  placeBid() {
+    const selectedBidAmount = this.props.bid.cents
+    const input = {
+      sale_id: this.props.sale_artwork.sale.id,
+      artwork_id: this.props.sale_artwork.artwork.id,
+      max_bid_amount_cents: selectedBidAmount,
+    }
+    const query = graphql`
+      mutation ConfirmBidMutation($input: BidderPositionInput!) {
+        createBidderPosition(input: $input) {
+          position {
+            suggested_next_bid_cents
+          }
+        }
+      }
+    `
+    console.log(input)
+    const environment = this.props.relay.environment
+    try {
+      commitMutation(environment, {
+        onCompleted: this.showBidResult.bind(this),
+        onError: e => {
+          console.log("ERROR", e)
+          this.showBidResult(null, e)
+        },
+        mutation: query,
+        variables: {
+          input,
+        },
+      })
+    } catch (e) {
+      console.log("ERROR", e)
+    }
+  }
+
+  showBidResult(result, error) {
+    console.log("result", result, error)
+    this.props.navigator.push({
+      component: BidResult,
+      title: "",
+      passProps: {
+        sale_artwork: this.props.sale_artwork,
+        bid: this.props.bid,
+        winning: true,
+      },
+    })
+  }
+
   render() {
     return (
       <BiddingThemeProvider>
@@ -72,7 +123,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps> {
             </Serif14>
 
             <Flex m={4}>
-              <Button text="Place Bid" onPress={() => null} />
+              <Button text="Place Bid" onPress={() => { this.placeBid() }} />
             </Flex>
           </View>
         </Container>
@@ -89,7 +140,11 @@ export const ConfirmBidScreen = createFragmentContainer(
   ConfirmBid,
   graphql`
     fragment ConfirmBid_sale_artwork on SaleArtwork {
+      sale {
+        id
+      }
       artwork {
+        id
         title
         date
         artist_names
