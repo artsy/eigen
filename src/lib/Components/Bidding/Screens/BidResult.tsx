@@ -24,11 +24,9 @@ export class BidResult extends React.Component<BidResultProps> {
             <View>
               <TopOffset>
                 <Icon20 m={2} source={require("../../../../../images/circle-check-green.png")} />
-                <SerifSemibold18>You're the highest bidder</SerifSemibold18>
+                <SerifSemibold18 mb={4}>You're the highest bidder</SerifSemibold18>
 
-                <Sans12 mt={3} color="black60">
-                  Time left
-                </Sans12>
+                <Sans12 color="black60">Time left</Sans12>
                 <Timer timeLeftInMilliseconds={1000 * 60 * 20} />
               </TopOffset>
             </View>
@@ -41,14 +39,14 @@ export class BidResult extends React.Component<BidResultProps> {
           <Container>
             <CenteringContainer>
               <Icon20 m={2} source={require("../../../../../images/circle-x-red.png")} />
-              <SerifSemibold18>Your bid wasn’t high enough</SerifSemibold18>
+              <SerifSemibold18 mb={4}>Your bid wasn’t high enough</SerifSemibold18>
 
-              <StyledText>Another bidder placed a higher max bid or the same max bid before you did.</StyledText>
+              <StyledText maxWidth={280}>
+                Another bidder placed a higher max bid or the same max bid before you did.
+              </StyledText>
               <StyledText>Increase your max bid to take the lead.</StyledText>
 
-              <Sans12 mt={3} color="black60">
-                Time left
-              </Sans12>
+              <Sans12 color="black60">Time left</Sans12>
               <Timer timeLeftInMilliseconds={1000 * 60 * 20} />
 
               <Divider mt={5} mb={4} />
@@ -70,4 +68,4 @@ const TopOffset = styled.View`
   align-items: center;
 `
 
-const StyledText = props => <Serif16 m={3} textAlign="center" color="black60" {...props} />
+const StyledText = props => <Serif16 mb={5} textAlign="center" color="black60" {...props} />

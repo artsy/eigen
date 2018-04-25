@@ -64,11 +64,13 @@ exports[`renders not highest bid screen properly 1`] = `
       allowFontScaling={true}
       ellipsizeMode="tail"
       fontSize={4}
+      mb={4}
       style={
         Array [
           Object {
             "fontFamily": "AGaramondPro-Semibold",
             "fontSize": 18,
+            "marginBottom": 20,
           },
           undefined,
         ]
@@ -82,17 +84,16 @@ exports[`renders not highest bid screen properly 1`] = `
       color="black60"
       ellipsizeMode="tail"
       fontSize={3}
-      m={3}
+      maxWidth={280}
+      mb={5}
       style={
         Array [
           Object {
             "color": "#666",
             "fontFamily": "AGaramondPro-Regular",
             "fontSize": 16,
-            "marginBottom": 10,
-            "marginLeft": 10,
-            "marginRight": 10,
-            "marginTop": 10,
+            "marginBottom": 30,
+            "maxWidth": 280,
             "textAlign": "center",
           },
           undefined,
@@ -108,17 +109,14 @@ exports[`renders not highest bid screen properly 1`] = `
       color="black60"
       ellipsizeMode="tail"
       fontSize={3}
-      m={3}
+      mb={5}
       style={
         Array [
           Object {
             "color": "#666",
             "fontFamily": "AGaramondPro-Regular",
             "fontSize": 16,
-            "marginBottom": 10,
-            "marginLeft": 10,
-            "marginRight": 10,
-            "marginTop": 10,
+            "marginBottom": 30,
             "textAlign": "center",
           },
           undefined,
@@ -134,14 +132,12 @@ exports[`renders not highest bid screen properly 1`] = `
       color="black60"
       ellipsizeMode="tail"
       fontSize={1}
-      mt={3}
       style={
         Array [
           Object {
             "color": "#666",
             "fontFamily": "Unica77LL-Medium",
             "fontSize": 12,
-            "marginTop": 10,
           },
           undefined,
         ]
@@ -341,11 +337,13 @@ exports[`renders winning screen properly 1`] = `
         allowFontScaling={true}
         ellipsizeMode="tail"
         fontSize={4}
+        mb={4}
         style={
           Array [
             Object {
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 18,
+              "marginBottom": 20,
             },
             undefined,
           ]
@@ -359,14 +357,12 @@ exports[`renders winning screen properly 1`] = `
         color="black60"
         ellipsizeMode="tail"
         fontSize={1}
-        mt={3}
         style={
           Array [
             Object {
               "color": "#666",
               "fontFamily": "Unica77LL-Medium",
               "fontSize": 12,
-              "marginTop": 10,
             },
             undefined,
           ]

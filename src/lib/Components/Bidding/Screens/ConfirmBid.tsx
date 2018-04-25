@@ -36,7 +36,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps> {
     return (
       <BiddingThemeProvider>
         <Container m={0}>
-          <Title m={5}>Confirm your bid</Title>
+          <Title>Confirm your bid</Title>
 
           <View>
             <Flex m={4} alignItems="center">
@@ -63,8 +63,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps> {
           </View>
 
           <View>
-            <Serif14 color="black60" textAlign="center">
-              You agree to Artsy's <LinkText>Condition of Sale.</LinkText>
+            <Serif14 mb={3} color="black60" textAlign="center">
+              You agree to <LinkText>Condition of Sale</LinkText>.
             </Serif14>
 
             <Button style={Margins.m2} text="Place Bid" onPress={() => null} />

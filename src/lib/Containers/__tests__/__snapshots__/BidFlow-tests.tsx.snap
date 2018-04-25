@@ -75,17 +75,17 @@ exports[`renders properly 1`] = `
         flex={1}
         flexDirection="column"
         justifyContent="space-between"
-        m={3}
+        m={0}
         style={
           Array [
             Object {
               "flexBasis": 0,
               "flexGrow": 1,
               "flexShrink": 1,
-              "marginBottom": 10,
-              "marginLeft": 10,
-              "marginRight": 10,
-              "marginTop": 10,
+              "marginBottom": 0,
+              "marginLeft": 0,
+              "marginRight": 0,
+              "marginTop": 0,
             },
             undefined,
           ]
@@ -95,17 +95,20 @@ exports[`renders properly 1`] = `
           accessible={true}
           allowFontScaling={true}
           ellipsizeMode="tail"
-          fontSize={4}
+          fontSize={5}
+          m={4}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Semibold",
-                "fontSize": 18,
+                "fontSize": 22,
+                "marginBottom": 20,
+                "marginLeft": 20,
+                "marginRight": 20,
+                "marginTop": 20,
                 "textAlign": "center",
               },
-              Object {
-                "margin": 10,
-              },
+              undefined,
             ]
           }
           textAlign="center"
@@ -189,7 +192,7 @@ exports[`renders properly 1`] = `
               "borderWidth": 1,
               "height": 46,
               "justifyContent": "center",
-              "margin": 10,
+              "margin": 20,
             }
           }
           testID={undefined}
