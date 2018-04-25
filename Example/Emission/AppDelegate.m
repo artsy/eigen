@@ -62,7 +62,7 @@ randomBOOL(void)
 
   ARRootViewController *rootVC = [ARRootViewController new];
   rootVC.authenticationManager = auth;
-  
+
   self.navigationController = [[EigenLikeNavigationController alloc] initWithRootViewController:rootVC];
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -149,7 +149,7 @@ randomBOOL(void)
       //      }
     });
   };
-  
+
   emission.APIModule.notificationReadStatusAssigner = ^(RCTResponseSenderBlock block) {
     NSLog(@"notificationReadStatusAssigner from APIModule called");
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -195,10 +195,10 @@ randomBOOL(void)
     sleep(1);
     resolve(@{ @"sort": @"-year", @"medium": @"design", @"selectedPrice": @"0-50000" });
   };
-  
+
   emission.worksForYouModule.setNotificationsCount = ^(NSInteger count) {
     sleep(1);
-    NSLog(@"Set notifications count: %ld", (long)count);
+    NSLog(@"Set notifications count: %@", @(count));
   };
 }
 
@@ -239,7 +239,7 @@ randomBOOL(void)
     NSURLComponents *components = [[NSURLComponents alloc] initWithString:route];
     NSString *artistID = [self valueForKey:@"artist_id" fromQueryItems:components.queryItems];
     viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:artistID tab:ARHomeTabArtists emission:nil];
-    
+
   } else {
 
     viewController = [[UnroutedViewController alloc] initWithRoute:route];
