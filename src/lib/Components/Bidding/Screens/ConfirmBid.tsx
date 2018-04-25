@@ -31,8 +31,8 @@ interface ConfirmBidProps extends ViewProperties {
     display: string
     cents: number
   }
-  relay: RelayPaginationProp
-  navigator: NavigatorIOS
+  relay?: RelayPaginationProp
+  navigator?: NavigatorIOS
 }
 
 export class ConfirmBid extends React.Component<ConfirmBidProps> {
