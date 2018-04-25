@@ -2,10 +2,6 @@
 
 import { ConcreteFragment } from "relay-runtime";
 export type BidFlow_sale_artwork = {
-    readonly increments: ReadonlyArray<({
-            readonly display: string | null;
-            readonly cents: number | null;
-        }) | null> | null;
 };
 
 
@@ -18,29 +14,9 @@ const node: ConcreteFragment = {
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "increments",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "BidIncrementsFormatted",
-      "plural": true,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "display",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "cents",
-          "args": null,
-          "storageKey": null
-        }
-      ]
+      "kind": "FragmentSpread",
+      "name": "SelectMaxBid_sale_artwork",
+      "args": null
     },
     {
       "kind": "ScalarField",
@@ -51,5 +27,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = 'ec3c6aca869a3151e0c323ca0c473ada';
+(node as any).hash = '783deb640df28b5155fc21968460a57c';
 export default node;

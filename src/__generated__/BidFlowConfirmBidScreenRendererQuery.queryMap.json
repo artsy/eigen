@@ -1,0 +1,3 @@
+{
+  "4e1f63820a703d4d9ba62de14cbc9c83": "query BidFlowConfirmBidScreenRendererQuery(\n  $saleArtworkID: String!\n) {\n  sale_artwork(id: $saleArtworkID) {\n    ...ConfirmBid_sale_artwork\n    __id\n  }\n}\n\nfragment ConfirmBid_sale_artwork on SaleArtwork {\n  artwork {\n    title\n    date\n    artist_names\n    __id\n  }\n  lot_label\n  __id\n}\n"
+}

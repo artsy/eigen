@@ -1,10 +1,10 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type QueryRenderersBidFlowQueryVariables = {
+export type BidFlowConfirmBidScreenRendererQueryVariables = {
     readonly saleArtworkID: string;
 };
-export type QueryRenderersBidFlowQueryResponse = {
+export type BidFlowConfirmBidScreenRendererQueryResponse = {
     readonly sale_artwork: ({
     }) | null;
 };
@@ -12,27 +12,13 @@ export type QueryRenderersBidFlowQueryResponse = {
 
 
 /*
-query QueryRenderersBidFlowQuery(
+query BidFlowConfirmBidScreenRendererQuery(
   $saleArtworkID: String!
 ) {
   sale_artwork(id: $saleArtworkID) {
-    ...BidFlow_sale_artwork
+    ...ConfirmBid_sale_artwork
     __id
   }
-}
-
-fragment BidFlow_sale_artwork on SaleArtwork {
-  ...SelectMaxBid_sale_artwork
-  __id
-}
-
-fragment SelectMaxBid_sale_artwork on SaleArtwork {
-  increments {
-    display
-    cents
-  }
-  ...ConfirmBid_sale_artwork
-  __id
 }
 
 fragment ConfirmBid_sale_artwork on SaleArtwork {
@@ -74,13 +60,13 @@ v2 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "QueryRenderersBidFlowQuery",
-  "id": "e1e3474aee692f4e720d00c39d743aed",
+  "name": "BidFlowConfirmBidScreenRendererQuery",
+  "id": "4e1f63820a703d4d9ba62de14cbc9c83",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersBidFlowQuery",
+    "name": "BidFlowConfirmBidScreenRendererQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -96,7 +82,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "BidFlow_sale_artwork",
+            "name": "ConfirmBid_sale_artwork",
             "args": null
           },
           v2
@@ -106,7 +92,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersBidFlowQuery",
+    "name": "BidFlowConfirmBidScreenRendererQuery",
     "argumentDefinitions": v0,
     "selections": [
       {
@@ -118,31 +104,6 @@ return {
         "concreteType": "SaleArtwork",
         "plural": false,
         "selections": [
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "increments",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "BidIncrementsFormatted",
-            "plural": true,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "display",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "cents",
-                "args": null,
-                "storageKey": null
-              }
-            ]
-          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -190,5 +151,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'f12416f909511f5de8b83cc919f5d84f';
+(node as any).hash = '4b3def96e7917ce25eac8990cae528a0';
 export default node;

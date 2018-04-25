@@ -1,5 +1,5 @@
 import React from "react"
-import { ViewProperties } from "react-native"
+import { NavigatorIOS, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { Button } from "../Components/Button"
@@ -7,11 +7,13 @@ import { Container } from "../Components/Container"
 import { Margins } from "../Components/Margins"
 import { MaxBidPicker } from "../Components/MaxBidPicker"
 import { Title } from "../Components/Title"
+import { ConfirmBidScreen } from "./ConfirmBid"
 
 import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
 
 interface SelectMaxBidProps extends ViewProperties {
   sale_artwork: SelectMaxBid_sale_artwork
+  navigator: NavigatorIOS
 }
 
 interface SelectMaxBidState {
@@ -22,8 +24,18 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
   state = {
     selectedBidIndex: 0,
   }
+  onPressNext = () => {
+    this.props.navigator.push({
+      component: ConfirmBidScreen,
+      title: "",
+      passProps: {
+        sale_artwork: this.props.sale_artwork,
+        bid: this.props.sale_artwork.increments[this.state.selectedBidIndex],
+      },
+    })
+  }
+
   render() {
-    // TODO metaphysics should return formatted values
     const bids =
       (this.props.sale_artwork &&
         this.props.sale_artwork.increments &&
@@ -39,7 +51,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
           selectedValue={this.state.selectedBidIndex}
         />
 
-        <Button text="NEXT" onPress={() => null} />
+        <Button text="NEXT" onPress={this.onPressNext} />
       </Container>
     )
   }
@@ -53,6 +65,7 @@ export const MaxBidScreen = createFragmentContainer(
         display
         cents
       }
+      ...ConfirmBid_sale_artwork
     }
   `
 )

@@ -30,6 +30,6 @@ const SaleArtwork = {
 }
 
 it("renders properly", () => {
-  const bg = renderer.create(<SelectMaxBid sale_artwork={SaleArtwork} />).toJSON()
+  const bg = renderer.create(<SelectMaxBid sale_artwork={SaleArtwork} navigator={jest.fn() as any} />).toJSON()
   expect(bg).toMatchSnapshot()
 })

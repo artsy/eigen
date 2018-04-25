@@ -1,3 +1,0 @@
-{
-  "570bf17a10d25bbeace6fd7184c03120": "query QueryRenderersBidQuery(\n  $saleArtworkID: String!\n) {\n  sale_artwork(id: $saleArtworkID) {\n    ...SelectMaxBid_sale_artwork\n    __id\n  }\n}\n\nfragment SelectMaxBid_sale_artwork on SaleArtwork {\n  increments {\n    display\n    cents\n  }\n  __id\n}\n"
-}

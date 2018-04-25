@@ -33,6 +33,7 @@
 * Updates MaxBidPicker to maintain state of currently selected bid increment - ash
 * Adds commonly used typefaces - yuki24
 * Updates logging in native code to use NSNumber instead of platform-specific casts - ash
+* Transitions between the bid picker to the bid confirmation components - ash
 
 ## 1.4.6
 
