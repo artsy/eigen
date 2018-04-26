@@ -25,17 +25,17 @@ exports[`renders properly 1`] = `
     accessible={true}
     allowFontScaling={true}
     ellipsizeMode="tail"
-    fontSize={4}
-    m={5}
+    fontSize={5}
+    m={4}
     style={
       Array [
         Object {
           "fontFamily": "AGaramondPro-Semibold",
-          "fontSize": 18,
-          "marginBottom": 30,
-          "marginLeft": 30,
-          "marginRight": 30,
-          "marginTop": 30,
+          "fontSize": 22,
+          "marginBottom": 20,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 20,
           "textAlign": "center",
         },
         undefined,
@@ -256,12 +256,14 @@ exports[`renders properly 1`] = `
       color="black60"
       ellipsizeMode="tail"
       fontSize={2}
+      mb={3}
       style={
         Array [
           Object {
             "color": "#666",
             "fontFamily": "AGaramondPro-Regular",
             "fontSize": 14,
+            "marginBottom": 10,
             "textAlign": "center",
           },
           undefined,
@@ -269,7 +271,7 @@ exports[`renders properly 1`] = `
       }
       textAlign="center"
     >
-      You agree to Artsy's 
+      You agree to 
       <Text
         accessible={true}
         allowFontScaling={true}
@@ -283,8 +285,9 @@ exports[`renders properly 1`] = `
           ]
         }
       >
-        Condition of Sale.
+        Condition of Sale
       </Text>
+      .
     </Text>
     <View
       accessibilityComponentType={undefined}

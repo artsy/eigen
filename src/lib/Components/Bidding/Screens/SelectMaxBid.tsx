@@ -25,6 +25,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
   state = {
     selectedBidIndex: 0,
   }
+
   onPressNext = () => {
     this.props.navigator.push({
       component: ConfirmBidScreen,
@@ -45,8 +46,8 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
 
     return (
       <BiddingThemeProvider>
-        <Container m={3}>
-          <Title style={Margins.m1}>Your max bid</Title>
+        <Container m={0}>
+          <Title>Your max bid</Title>
 
           <MaxBidPicker
             bids={bids}
@@ -54,7 +55,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
             selectedValue={this.state.selectedBidIndex}
           />
 
-          <Button style={Margins.m1} text="NEXT" onPress={this.onPressNext} />
+          <Button style={Margins.m2} text="NEXT" onPress={this.onPressNext} />
         </Container>
       </BiddingThemeProvider>
     )
