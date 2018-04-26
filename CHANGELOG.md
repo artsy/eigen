@@ -16,6 +16,7 @@
 
 ## Master
 
+* Adds Recently Viewed Works rail to Home - sarah
 * Upgrade to React Native 0.54.4 - alloy/orta
 * Follow Force and reduce image quality to 80 - alloy
 * Inquiries use the same user-agent as emission - orta
