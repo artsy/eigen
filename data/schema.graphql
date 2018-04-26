@@ -1409,6 +1409,13 @@ type BidderPosition {
   suggested_next_bid_cents: Int @deprecated(reason: "Favor `suggested_next_bid`")
 }
 
+input BidderPositionInput {
+  sale_id: String!
+  artwork_id: String!
+  max_bid_amount_cents: Float!
+  clientMutationId: String
+}
+
 type BidderPositionMaxBid {
   # A formatted price with various currency formatting options.
   amount(
@@ -1426,6 +1433,11 @@ type BidderPositionMaxBid {
 
   # A pre-formatted price.
   display: String
+}
+
+type BidderPositionPayload {
+  position: BidderPosition
+  clientMutationId: String
 }
 
 type BidderPositionSuggestedNextBid {
@@ -2854,6 +2866,7 @@ enum HomePageArtworkModuleTypes {
   RECOMMENDED_WORKS
   RELATED_ARTISTS
   SAVED_WORKS
+  RECENTLY_VIEWED_WORKS
 }
 
 type HomePageFairsModule {
@@ -3506,6 +3519,8 @@ type MessageInitiator {
 }
 
 type Mutation {
+  # Creates a bidder position
+  createBidderPosition(input: BidderPositionInput!): BidderPositionPayload
   createCreditCard(input: CreditCardInput!): CreditCardPayload
   followArtist(input: FollowArtistInput!): FollowArtistPayload
   followGene(input: FollowGeneInput!): FollowGenePayload
