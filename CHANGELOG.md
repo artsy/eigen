@@ -14,7 +14,7 @@
 
 -->
 
-## Master
+### Master
 
 * Adds Recently Viewed Works rail to Home - sarah
 * Upgrade to React Native 0.54.4 - alloy/orta
@@ -37,7 +37,7 @@
 * Transitions between the bid picker to the bid confirmation components - ash
 * Adds a more re-useable low-level components - yuki24
 
-## 1.4.6
+### 1.4.6
 
 * Scroll to last sent message upon send - sarah
 * Upgrade to latest Relay, including our custome Node ID and language plugin patches - alloy
