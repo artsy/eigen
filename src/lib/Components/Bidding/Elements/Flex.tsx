@@ -1,14 +1,33 @@
 import styled from "styled-components/native"
-import { borders, color, flex, fontSize, space, width } from "styled-system"
-import { BorderWidthProps, ColorProps, FlexboxProps, FontSizeProps, SpaceProps, WidthProps } from "./types"
+import { borderColor, borders, color, flex, fontSize, height, space, width } from "styled-system"
+import {
+  BorderColorProps,
+  BorderProps,
+  ColorProps,
+  FlexboxProps,
+  FontSizeProps,
+  HeightProps,
+  SpaceProps,
+  WidthProps,
+} from "./types"
 
-interface FlexProps extends BorderWidthProps, SpaceProps, WidthProps, FontSizeProps, ColorProps, FlexboxProps {}
+export interface FlexProps
+  extends BorderColorProps,
+    BorderProps,
+    ColorProps,
+    FlexboxProps,
+    FontSizeProps,
+    HeightProps,
+    SpaceProps,
+    WidthProps {}
 
 export const Flex = styled.View.attrs<FlexProps>({})`
   ${borders};
-  ${space};
-  ${width};
-  ${fontSize};
+  ${borderColor};
   ${color};
   ${flex};
+  ${fontSize};
+  ${height};
+  ${space};
+  ${width};
 `

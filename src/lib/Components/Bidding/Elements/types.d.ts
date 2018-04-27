@@ -36,7 +36,7 @@ export type HeightValue = number | string
 export type ResponsiveHeightValue = ResponsiveValue<HeightValue>
 
 export interface HeightProps {
-  width?: ResponsiveHeightValue
+  height?: ResponsiveHeightValue
 }
 
 // fontSize
@@ -88,10 +88,10 @@ export interface BorderColorProps {
 
 export function borderColor(...args: any[]): any
 
-export type BorderWidthValue = number
+export type BorderValue = string | number
 
-export interface BorderWidthProps {
-  borderWidth?: BorderWidthValue
+export interface BorderProps {
+  border?: BorderValue
   borderTop?: boolean
   borderRight?: boolean
   borderBottom?: boolean
@@ -146,7 +146,7 @@ export type JustifyContentValue =
 export type ResponsiveJustifyContentValue = ResponsiveValue<JustifyContentValue>
 
 export interface JustifyContentProps {
-  justify?: ResponsiveJustifyContentValue
+  justifyContent?: ResponsiveJustifyContentValue
 }
 
 export function justifyContent(...args: any[]): any
@@ -203,8 +203,8 @@ export function alignSelf(...args: any[]): any
 
 export interface FlexboxProps
   extends AlignItemsProps,
-    JustifyContentProps,
+    AlignSelfProps,
     FlexWrapProps,
     FlexDirectionProps,
     FlexProps,
-    AlignSelfProps {}
+    JustifyContentProps {}
