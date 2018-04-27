@@ -56,16 +56,16 @@ const ConfirmBidScreenRenderer: React.SFC<any> = ({ render, saleArtworkID }) => 
 
 storiesOf("Bidding")
   .add("Show bid flow", () => {
-    return <BidFlowRenderer render={renderWithLoadProgress(BidFlow)} saleArtworkID="5add4d9951344235322f02e8" />
+    return <BidFlowRenderer render={renderWithLoadProgress(BidFlow)} saleArtworkID="5add4d9a51344235322f02f8" />
   })
   .add("Select Max Bid", () => (
-    <SelectMaxBidRenderer render={renderWithLoadProgress(MaxBidScreen)} saleArtworkID="5add4d9951344235322f02e8" />
+    <SelectMaxBidRenderer render={renderWithLoadProgress(MaxBidScreen)} saleArtworkID="5add4d9a51344235322f02f8" />
   ))
   .add("Confirm Bid", () => {
     return (
       <ConfirmBidScreenRenderer
         render={renderWithLoadProgress(ConfirmBidScreen, { bid: { display: "$20,000", cents: 2000000 } })}
-        saleArtworkID="5add4d9951344235322f02e8"
+        saleArtworkID="5add4d9a51344235322f02f8"
       />
     )
   })

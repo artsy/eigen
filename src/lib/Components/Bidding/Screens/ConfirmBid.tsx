@@ -21,6 +21,8 @@ import { Divider } from "../Components/Divider"
 import { Title } from "../Components/Title"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { metaphysics } from "../../../metaphysics"
+
 import { BidResult } from "./BidResult"
 
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
@@ -35,54 +37,102 @@ interface ConfirmBidProps extends ViewProperties {
   navigator?: NavigatorIOS
 }
 
-export class ConfirmBid extends React.Component<ConfirmBidProps> {
+interface ConformBidState {
+  pollCount: number
+  intervalToken: number
+}
+
+const MAX_POLL_ATTEMPTS = 20
+
+const bidderPositionMutation = graphql`
+  mutation ConfirmBidMutation($input: BidderPositionInput!) {
+    createBidderPosition(input: $input) {
+      position {
+        id
+        suggested_next_bid_cents
+      }
+    }
+  }
+`
+
+export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState> {
+  state = {
+    pollCount: 0,
+    intervalToken: 0,
+  }
+
   onPressConditionsOfSale = () => {
     SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
   }
+
   placeBid() {
-    const selectedBidAmount = this.props.bid.cents
-    const input = {
-      sale_id: this.props.sale_artwork.sale.id,
-      artwork_id: this.props.sale_artwork.artwork.id,
-      max_bid_amount_cents: selectedBidAmount,
-    }
-    const query = graphql`
-      mutation ConfirmBidMutation($input: BidderPositionInput!) {
-        createBidderPosition(input: $input) {
-          position {
-            suggested_next_bid_cents
+    commitMutation(this.props.relay.environment, {
+      onCompleted: (results, errors) => {
+        this.verifyBidPosition(results, errors)
+      },
+      onError: e => {
+        // TODO catch error!
+        // this.verifyAndShowBidResult(null, e)
+        console.log("error!", e, e.message)
+      },
+      mutation: bidderPositionMutation,
+      variables: {
+        input: {
+          sale_id: this.props.sale_artwork.sale.id,
+          artwork_id: this.props.sale_artwork.artwork.id,
+          max_bid_amount_cents: this.props.bid.cents,
+        },
+      },
+    })
+  }
+
+  verifyBidPosition(results, errors) {
+    const positionId = results.createBidderPosition.position.id
+    const query = `
+      {
+        me {
+          bidder_position(id: "${positionId}") {
+            processed_at
+            is_active
           }
         }
       }
     `
-    console.log(input)
-    const environment = this.props.relay.environment
-    try {
-      commitMutation(environment, {
-        onCompleted: this.showBidResult.bind(this),
-        onError: e => {
-          console.log("ERROR", e)
-          this.showBidResult(null, e)
-        },
-        mutation: query,
-        variables: {
-          input,
-        },
-      })
-    } catch (e) {
-      console.log("ERROR", e)
+    if (!errors) {
+      const interval = setInterval(() => {
+        metaphysics({ query }).then<T>(res => this.checkBidPosition(res.data.me.bidder_position))
+      }, 2000)
+      this.setState({ intervalToken: interval })
     }
   }
 
-  showBidResult(result, error) {
-    console.log("result", result, error)
+  checkBidPosition(bidderPosition) {
+    if (bidderPosition.processed_at) {
+      clearInterval(this.state.intervalToken)
+      if (bidderPosition.is_active) {
+        // wining
+        this.showBidResult(true)
+      } else {
+        // outbid
+        this.showBidResult(false)
+      }
+    } else {
+      // poll again
+      if (this.state.pollCount > MAX_POLL_ATTEMPTS) {
+        clearInterval(this.state.intervalToken)
+      }
+      this.setState({ pollCount: this.state.pollCount + 1 })
+    }
+  }
+
+  showBidResult(winning) {
     this.props.navigator.push({
       component: BidResult,
       title: "",
       passProps: {
         sale_artwork: this.props.sale_artwork,
         bid: this.props.bid,
-        winning: true,
+        winning,
       },
     })
   }
@@ -150,6 +200,9 @@ export const ConfirmBidScreen = createFragmentContainer(
         artist_names
       }
       lot_label
+      minimum_next_bid {
+        cents
+      }
     }
   `
 )
