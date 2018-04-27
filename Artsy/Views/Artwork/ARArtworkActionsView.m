@@ -26,12 +26,15 @@
 @property (nonatomic, strong) ARArtworkPriceView *priceView;
 @property (nonatomic, strong) ARArtworkAuctionPriceView *auctionPriceView;
 @property (nonatomic, strong) ARAuctionBidderStateLabel *bidderStatusLabel;
+@property (nonatomic, strong) ARSpinner *spinner;
+@property (nonatomic, strong) UIView *bannerView;
+
+@property (nonatomic, strong) ARNavigationButtonsViewController *navigationButtonsVC;
+
 @property (nonatomic, strong) ARBidButton *bidButton;
 @property (nonatomic, strong) Artwork *artwork;
 @property (nonatomic, strong) SaleArtwork *saleArtwork;
-@property (nonatomic, strong) ARNavigationButtonsViewController *navigationButtonsVC;
-@property (nonatomic, strong) ARSpinner *spinner;
-@property (nonatomic, strong) UIView *bannerView;
+
 
 @end
 
@@ -140,7 +143,7 @@
         if ([self showAuctionPriceView]) {
             self.auctionPriceView = [[ARArtworkAuctionPriceView alloc] init];
             [self.auctionPriceView updateWithSaleArtwork:self.saleArtwork];
-            [self addSubview:self.auctionPriceView withTopMargin:@"12" sideMargin:@"0"];
+            [self addSubview:self.auctionPriceView withTopMargin:@"26" sideMargin:@"0"];
         }
 
         ARBidButton *bidButton = [[ARBidButton alloc] init];
