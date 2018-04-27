@@ -36,6 +36,7 @@
 * Updates logging in native code to use NSNumber instead of platform-specific casts - ash
 * Transitions between the bid picker to the bid confirmation components - ash
 * Adds a more re-useable low-level components - yuki24
+* Adds a confirmation screen for first-time bidders - yuki24
 
 ## 1.4.6
 
