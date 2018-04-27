@@ -10,6 +10,7 @@ import { MaxBidScreen } from "../Screens/SelectMaxBid"
 
 import { BidFlowRenderer } from "lib/relay/QueryRenderers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { ConfirmFirstTimeBid } from "../Screens/ConfirmFirstTimeBid"
 
 const SelectMaxBidRenderer: React.SFC<any> = ({ render, saleArtworkID }) => {
   return (
@@ -59,6 +60,21 @@ storiesOf("Bidding")
       <ConfirmBidScreenRenderer
         render={renderWithLoadProgress(ConfirmBidScreen, { bid: { display: "$20,000", cents: 2000000 } })}
         saleArtworkID="5aada729139b216c0bf18103"
+      />
+    )
+  })
+  .add("Confirm Bid (first time)", () => {
+    return (
+      <ConfirmFirstTimeBid
+        sale_artwork={{
+          artwork: {
+            title: "Morgan Hill (Prototype)",
+            date: "1973",
+            artist_names: "Lewis balts",
+          },
+          lot_label: "1",
+        }}
+        bid={{ display: "$45,000", cents: 4500000 }}
       />
     )
   })
