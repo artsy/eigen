@@ -48,7 +48,6 @@
             [backButton.widthAnchor constraintEqualToConstant:50.0],
         ]];
 
-
         UILabel *subtitle = [[UILabel alloc] init];
         subtitle.numberOfLines = 0;
         subtitle.font = [UIFont displaySansSerifFontWithSize:16];

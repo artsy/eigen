@@ -244,6 +244,7 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
         CGFloat fadeTime = ARPerformWorkAsynchronously ? 0.3 : 0;
 
         [UIView animateWithDuration:fadeTime animations:^{
+            self.placeArtworkButton.hidden = YES;
             self.textLabel.alpha = 0;
 
         } completion:^(BOOL finished) {
@@ -317,6 +318,7 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
 {
     ar_dispatch_main_queue(^{
         self.resetButton.hidden = NO;
+        self.placeArtworkButton.hidden = YES;
         self.phoneImage.hidden = YES;
         self.textLabel.text = ARFinalARVIRSubtitle;
 

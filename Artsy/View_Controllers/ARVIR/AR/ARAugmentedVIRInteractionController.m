@@ -159,11 +159,11 @@ NSInteger wallHeightMeters = 5;
 - (void)renderer:(id <SCNSceneRenderer>)renderer didAddNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor API_AVAILABLE(ios(11.0));
 {
     // Only handle adding plane nodes
-    if(!anchor) { return; }
-    if(![anchor isKindOfClass:ARPlaneAnchor.class]) { return; }
+    if (!anchor) { return; }
+    if (![anchor isKindOfClass:ARPlaneAnchor.class]) { return; }
 
     // Send a callback that we're in a state to attach works
-    if(!self.hasSentRegisteredCallback) {
+    if (!self.hasSentRegisteredCallback) {
         [self.delegate hasRegisteredPlanes];
         self.hasSentRegisteredCallback = YES;
     }
