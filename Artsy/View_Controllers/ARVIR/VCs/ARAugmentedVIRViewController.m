@@ -129,7 +129,6 @@ NS_ASSUME_NONNULL_BEGIN
 
         BOOL isEdgeToEdgePhone = !UIEdgeInsetsEqualToEdgeInsets( [ARTopMenuViewController sharedController].view.safeAreaInsets, UIEdgeInsetsZero);
         CGFloat backTopMargin = isEdgeToEdgePhone ? -17 : 9;
-        CGFloat betaTopMargin = isEdgeToEdgePhone ? 0 : 26;
 
         [self.view addConstraints: @[
             [backButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:backTopMargin],
@@ -137,7 +136,7 @@ NS_ASSUME_NONNULL_BEGIN
             [backButton.heightAnchor constraintEqualToConstant:50.0],
             [backButton.widthAnchor constraintEqualToConstant:50.0],
 
-            [resetButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:20],
+            [resetButton.centerYAnchor constraintEqualToAnchor:backButton.centerYAnchor constant:0],
             [resetButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:0],
             [resetButton.heightAnchor constraintEqualToConstant:50.0],
             [resetButton.widthAnchor constraintEqualToConstant:50.0],
@@ -145,7 +144,7 @@ NS_ASSUME_NONNULL_BEGIN
             [phoneImage.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
             [phoneImage.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
 
-            [betaImage.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:betaTopMargin],
+            [betaImage.centerYAnchor constraintEqualToAnchor:backButton.centerYAnchor constant:0],
             [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20]
         ]];
 
