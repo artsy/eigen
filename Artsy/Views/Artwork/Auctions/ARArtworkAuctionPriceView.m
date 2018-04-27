@@ -13,18 +13,37 @@
 
 - (void)updateWithSaleArtwork:(SaleArtwork *)saleArtwork
 {
-    ARArtworkPriceRowView *row = [[ARArtworkPriceRowView alloc] initWithFrame:CGRectZero];
+    ARArtworkPriceRowView *currentOrStartingBidRow = [[ARArtworkPriceRowView alloc] initWithFrame:CGRectZero];
     BOOL hasBids = saleArtwork.auctionState & ARAuctionStateArtworkHasBids;
-    row.messageLabel.text = hasBids ? @"Current bid" : @"Starting Bid";
-    row.messageLabel.font = [UIFont serifSemiBoldFontWithSize:18];
+    currentOrStartingBidRow.messageLabel.text = hasBids ? @"Current bid" : @"Starting Bid";
+    currentOrStartingBidRow.messageLabel.font = [UIFont serifSemiBoldFontWithSize:18];
 
-    NSNumber *cents = hasBids ? saleArtwork.saleHighestBid.cents : saleArtwork.openingBidCents;
-    row.priceLabel.text = [SaleArtwork dollarsFromCents:cents currencySymbol:saleArtwork.currencySymbol];
-    row.priceLabel.font = [UIFont serifSemiBoldFontWithSize:18];
+    NSNumber *currentOrtStartingBidCents = hasBids ? saleArtwork.saleHighestBid.cents : saleArtwork.openingBidCents;
+    currentOrStartingBidRow.priceLabel.text = [SaleArtwork dollarsFromCents:currentOrtStartingBidCents currencySymbol:saleArtwork.currencySymbol];
+    currentOrStartingBidRow.priceLabel.font = [UIFont serifSemiBoldFontWithSize:18];
 
-    row.margin = 16;
-    [self addSubview:row withTopMargin:@"26" sideMargin:@"0"];
-    [row alignLeadingEdgeWithView:self predicate:@"0"];
+    currentOrStartingBidRow.margin = 16;
+    [self addSubview:currentOrStartingBidRow withTopMargin:@"19" sideMargin:@"0"];
+    [currentOrStartingBidRow alignLeadingEdgeWithView:self predicate:@"0"];
+
+    if (saleArtwork.auctionState & ARAuctionStateUserIsBidder) {
+        ARArtworkPriceRowView *userMaxBidRow = [[ARArtworkPriceRowView alloc] initWithFrame:CGRectZero];
+        userMaxBidRow.messageLabel.text = @"Your max bid";
+        userMaxBidRow.messageLabel.font = [UIFont serifSemiBoldFontWithSize:18];
+
+        userMaxBidRow.priceLabel.text = [SaleArtwork dollarsFromCents:saleArtwork.userMaxBidderPosition.maxBidAmountCents currencySymbol:saleArtwork.currencySymbol];
+        userMaxBidRow.priceLabel.font = [UIFont serifSemiBoldFontWithSize:18];
+
+        if (saleArtwork.auctionState & ARAuctionStateUserIsHighBidder) {
+            userMaxBidRow.priceLabel.textColor = [UIColor artsyGreenRegular];
+            userMaxBidRow.priceAccessoryImage = [UIImage imageNamed:@"CircleCheckGreen"];
+        } else {
+            userMaxBidRow.priceLabel.textColor = [UIColor artsyRedRegular];
+            userMaxBidRow.priceAccessoryImage = [UIImage imageNamed:@"CircleXRed"];
+        }
+
+        [self addSubview:userMaxBidRow withTopMargin:@"19" sideMargin:@"0"];
+    }
 }
 
 - (void)layoutSubviews

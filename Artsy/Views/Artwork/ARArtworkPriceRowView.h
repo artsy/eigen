@@ -3,8 +3,10 @@
 
 @interface ARArtworkPriceRowView : UIView
 
-@property (nonatomic, strong) UILabel *messageLabel;
 @property (nonatomic) CGFloat margin;
+@property (nonatomic, strong) UILabel *messageLabel;
 @property (nonatomic, strong) UILabel *priceLabel;
+
+- (void)setPriceAccessoryImage:(UIImage *)image;
 
 @end

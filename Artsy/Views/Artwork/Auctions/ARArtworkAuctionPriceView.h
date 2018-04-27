@@ -3,5 +3,7 @@
 @class SaleArtwork;
 
 @interface ARArtworkAuctionPriceView : ORStackView
+
 - (void)updateWithSaleArtwork:(SaleArtwork *)saleArtwork;
+
 @end
