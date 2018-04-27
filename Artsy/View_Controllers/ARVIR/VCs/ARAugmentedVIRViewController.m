@@ -127,6 +127,7 @@ NS_ASSUME_NONNULL_BEGIN
         betaImage.translatesAutoresizingMaskIntoConstraints = false;
         [self.view addSubview:betaImage];
 
+        // Any changes to this will need to be reflected in ARAugmentedVIRModalView also
         BOOL isEdgeToEdgePhone = !UIEdgeInsetsEqualToEdgeInsets( [ARTopMenuViewController sharedController].view.safeAreaInsets, UIEdgeInsetsZero);
         CGFloat backTopMargin = isEdgeToEdgePhone ? -17 : 9;
 
