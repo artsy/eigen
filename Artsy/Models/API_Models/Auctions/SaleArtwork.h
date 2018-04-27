@@ -33,7 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) Bid *_Nullable saleHighestBid;
 @property (nonatomic, strong) NSNumber *artworkNumPositions;
 
-@property (nonatomic, strong) BidderPosition *_Nullable userBidderPosition;
 @property (nonatomic, strong) NSArray *positions;
 
 @property (nonatomic, strong) NSString *currencySymbol;
