@@ -100,7 +100,6 @@ NS_ASSUME_NONNULL_BEGIN
         backButton.layer.shadowColor = [UIColor blackColor].CGColor;
         backButton.layer.shadowOffset = CGSizeMake(0, 0);
         backButton.layer.shadowOpacity = 0.4;
-        backButton.layer.shouldRasterize = YES;
 
         // Reset
         ARClearFlatButton *resetButton = [[ARClearFlatButton alloc] init];
@@ -115,7 +114,6 @@ NS_ASSUME_NONNULL_BEGIN
         resetButton.layer.shadowColor = [UIColor blackColor].CGColor;
         resetButton.layer.shadowOffset = CGSizeMake(0, 0);
         resetButton.layer.shadowOpacity = 0.4;
-        resetButton.layer.shouldRasterize = YES;
 
         [self.view addSubview:resetButton];
 
