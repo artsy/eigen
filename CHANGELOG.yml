@@ -10,6 +10,7 @@ upcoming:
     - conditionally adding horizontal line to lotstandings view wrt buy now - maxim
     - Artwork Screen does not get overscrolled after coming back from ARVIR - orta
     - Fixes crash when submitting consignments from iOS 11 - ash
+    - Redesigned bid status view on artwork page - ash
   dev:
     - Records artwork views using metaphysics mutation - Sarah
   
