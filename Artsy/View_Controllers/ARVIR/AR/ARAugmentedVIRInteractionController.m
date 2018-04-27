@@ -110,7 +110,7 @@ NSInteger wallHeightMeters = 5;
             if (!self.ghostWork) {
                 SCNArtworkNode *ghostBox = [SCNArtworkNode nodeWithConfig:self.config];
                 SCNNode *ghostWork = [SCNNode nodeWithGeometry:ghostBox];
-                ghostWork.opacity = 0.5;
+                ghostWork.opacity = 0.55;
 
                 [result.node addChildNode:ghostWork];
                 self.ghostWork = ghostWork;
