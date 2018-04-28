@@ -93,7 +93,7 @@ exports[`renders properly 1`] = `
           ]
         }
       >
-        Lot
+        Lot 
         538
       </Text>
       <Text
@@ -114,7 +114,7 @@ exports[`renders properly 1`] = `
         }
       >
         Meteor Shower
-        ,
+        , 
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -271,7 +271,7 @@ exports[`renders properly 1`] = `
       }
       textAlign="center"
     >
-      You agree to
+      You agree to 
       <Text
         accessible={true}
         allowFontScaling={true}
