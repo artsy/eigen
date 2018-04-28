@@ -12,9 +12,6 @@ export type ConfirmBid_sale_artwork = {
         readonly artist_names: string | null;
     }) | null;
     readonly lot_label: string | null;
-    readonly minimum_next_bid: ({
-        readonly cents: number | null;
-    }) | null;
 };
 
 
@@ -95,27 +92,9 @@ return {
       "args": null,
       "storageKey": null
     },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "minimum_next_bid",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "SaleArtworkMinimumNextBid",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "cents",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
     v1
   ]
 };
 })();
-(node as any).hash = '808b52688267b2c90c1b31efdc1ff849';
+(node as any).hash = '68b289ecbfa9dc78611a2751c2985569';
 export default node;

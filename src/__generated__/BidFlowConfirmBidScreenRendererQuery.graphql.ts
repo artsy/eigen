@@ -34,9 +34,6 @@ fragment ConfirmBid_sale_artwork on SaleArtwork {
     __id
   }
   lot_label
-  minimum_next_bid {
-    cents
-  }
   __id
 }
 */
@@ -76,7 +73,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "BidFlowConfirmBidScreenRendererQuery",
-  "id": "1de69bed63cc81635e6efbe7e1b33644",
+  "id": "ba1b830044df67408515cc63dcc04fa0",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -172,24 +169,6 @@ return {
             "name": "lot_label",
             "args": null,
             "storageKey": null
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "minimum_next_bid",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "SaleArtworkMinimumNextBid",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "cents",
-                "args": null,
-                "storageKey": null
-              }
-            ]
           },
           v2
         ]

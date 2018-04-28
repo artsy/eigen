@@ -73,7 +73,11 @@ storiesOf("Bidding")
     return (
       <ConfirmFirstTimeBid
         sale_artwork={{
+          sale: {
+            id: "1",
+          },
           artwork: {
+            id: "1",
             title: "Morgan Hill (Prototype)",
             date: "1973",
             artist_names: "Lewis balts",

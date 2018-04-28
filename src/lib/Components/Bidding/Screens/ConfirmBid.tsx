@@ -1,6 +1,6 @@
 import React from "react"
 import { NavigatorIOS, View, ViewProperties } from "react-native"
-import { commitMutation, createFragmentContainer,graphql,  RelayPaginationProp } from "react-relay"
+import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
 import { Flex } from "../Elements/Flex"
@@ -100,13 +100,14 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     `
     if (!errors) {
       const interval = setInterval(() => {
-        metaphysics({ query }).then<T>(res => this.checkBidPosition(res.data.me.bidder_position))
+        metaphysics({ query }).then(this.checkBidPosition.bind(this))
       }, 2000)
       this.setState({ intervalToken: interval })
     }
   }
 
-  checkBidPosition(bidderPosition) {
+  checkBidPosition(result) {
+    const bidderPosition = result.data.me.bidder_position
     if (bidderPosition.processed_at) {
       clearInterval(this.state.intervalToken)
       if (bidderPosition.is_active) {
@@ -172,9 +173,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
               You agree to <LinkText onPress={this.onPressConditionsOfSale}>Conditions of Sale</LinkText>.
             </Serif14>
 
-            <Flex m={4}>
-              <Button text="Place Bid" onPress={() => { this.placeBid() }} />
-            </Flex>
+            <Button
+              text="Place Bid"
+              onPress={() => {
+                this.placeBid()
+              }}
+            />
           </View>
         </Container>
       </BiddingThemeProvider>
@@ -200,9 +204,6 @@ export const ConfirmBidScreen = createFragmentContainer(
         artist_names
       }
       lot_label
-      minimum_next_bid {
-        cents
-      }
     }
   `
 )
