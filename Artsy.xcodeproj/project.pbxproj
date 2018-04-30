@@ -707,6 +707,7 @@
 		CB42B64F181092480069A801 /* ARCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB42B64E181092480069A801 /* ARCountdownView.m */; };
 		CB4D652717C80A9600390550 /* AROnboardingSearchField.m in Sources */ = {isa = PBXBuildFile; fileRef = CB4D652617C80A9600390550 /* AROnboardingSearchField.m */; };
 		CB73B48B17D2581400891305 /* SiteFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = CB73B48A17D2581400891305 /* SiteFeature.m */; };
+		CB821E7918217AF500CC934E /* ARAuctionBannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB821E7818217AF500CC934E /* ARAuctionBannerView.m */; };
 		CB879D0C180746C900E2D8EC /* AuctionLot.m in Sources */ = {isa = PBXBuildFile; fileRef = CB879D0B180746C900E2D8EC /* AuctionLot.m */; };
 		CB9E244117CBC36F00773A9A /* ARAuthProviders.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9E244017CBC36F00773A9A /* ARAuthProviders.m */; };
 		CBB469D0181F1F1200B5692B /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB469CF181F1F1200B5692B /* Bid.m */; };
@@ -1928,6 +1929,8 @@
 		CB4D652617C80A9600390550 /* AROnboardingSearchField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROnboardingSearchField.m; sourceTree = "<group>"; };
 		CB73B48917D2581400891305 /* SiteFeature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteFeature.h; sourceTree = "<group>"; };
 		CB73B48A17D2581400891305 /* SiteFeature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteFeature.m; sourceTree = "<group>"; };
+		CB821E7718217AF500CC934E /* ARAuctionBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuctionBannerView.h; sourceTree = "<group>"; };
+		CB821E7818217AF500CC934E /* ARAuctionBannerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionBannerView.m; sourceTree = "<group>"; };
 		CB879D0A180746C900E2D8EC /* AuctionLot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuctionLot.h; sourceTree = "<group>"; };
 		CB879D0B180746C900E2D8EC /* AuctionLot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuctionLot.m; sourceTree = "<group>"; };
 		CB9E243F17CBC36F00773A9A /* ARAuthProviders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuthProviders.h; sourceTree = "<group>"; };
@@ -2986,6 +2989,8 @@
 				603D7C021958849C00ACA840 /* Auctions */,
 				E616B2461911664900D1CBC6 /* ARArtworkView.h */,
 				E616B2471911664900D1CBC6 /* ARArtworkView.m */,
+				CB821E7718217AF500CC934E /* ARAuctionBannerView.h */,
+				CB821E7818217AF500CC934E /* ARAuctionBannerView.m */,
 				6089243117F617140023D1AC /* ARArtworkMetadataView.h */,
 				6089243217F617140023D1AC /* ARArtworkMetadataView.m */,
 				607E2E8217C8CF6B00396120 /* ARArtworkPreviewActionsView.h */,
@@ -5632,6 +5637,7 @@
 				60CEA77E19B61F8000CC3A91 /* ARArtistNetworkModel.m in Sources */,
 				60289229176BE98C00512977 /* ARViewInRoomViewController.m in Sources */,
 				6016C190178C2B7F008EC8E7 /* AREmbeddedModelsViewController.m in Sources */,
+				CB821E7918217AF500CC934E /* ARAuctionBannerView.m in Sources */,
 				5E4E329F1E4E6BD000C7F724 /* LotStandingsView.swift in Sources */,
 				60BF0C4B204736900017D9BA /* ARAugmentedVIRInteractionController.m in Sources */,
 				60889874175DEBC2008C9319 /* ARFeedSubclasses.m in Sources */,

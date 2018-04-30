@@ -5,7 +5,8 @@
 #import "ARArtworkViewController.h"
 
 typedef NS_ENUM(NSInteger, ARArtworkViewIndex) {
-    ARArtworkUnpublishedWarning = 1,
+    ARArtworkBanner = 1,
+    ARArtworkUnpublishedWarning,
     ARArtworkPreview,
     ARArtworkBlurb,
     ARArtworkSpinner,

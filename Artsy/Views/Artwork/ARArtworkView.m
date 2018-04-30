@@ -2,6 +2,7 @@
 
 #import "Artwork.h"
 #import "ARSpinner.h"
+#import "ARAuctionBannerView.h"
 #import "ARWhitespaceGobbler.h"
 #import "ARCustomEigenLabels.h"
 #import "ARNavigationController.h"
@@ -19,6 +20,7 @@
 @property (nonatomic, strong) Fair *fair;
 @property (nonatomic, strong) PartnerShow *show;
 @property (nonatomic, strong) ARSpinner *spinner;
+@property (nonatomic, strong) ARAuctionBannerView *banner;
 @property (nonatomic, strong) ARWhitespaceGobbler *gobbler;
 @end
 
@@ -65,6 +67,10 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     relatedArtworks.tag = ARArtworkRelatedArtworks;
     self.relatedArtworksView = relatedArtworks;
 
+    ARAuctionBannerView *banner = [[ARAuctionBannerView alloc] init];
+    banner.tag = ARArtworkBanner;
+    self.banner = banner;
+
     ARWhitespaceGobbler *gobbler = [[ARWhitespaceGobbler alloc] init];
     gobbler.tag = ARArtworkGobbler;
     self.gobbler = gobbler;
@@ -90,6 +96,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     [self.stackView addSubview:self.artworkBlurbView withTopMargin:@"0" sideMargin:[UIDevice isPad] ? @"100" : @"40"];
     [self.stackView addSubview:self.spinner withTopMargin:@"0" sideMargin:@"0"];
     [self.stackView addSubview:self.relatedArtworksView withTopMargin:[UIDevice isPad] ? @"20" : @"0" sideMargin:@"0"];
+    [self.stackView addSubview:self.banner withTopMargin:@"0" sideMargin:nil];
     [self.stackView addSubview:self.gobbler withTopMargin:@"0"];
     [self setNeedsLayout];
     [self layoutIfNeeded];
@@ -131,9 +138,14 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     } failure:nil];
 
     [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
+        __strong typeof (wself) sself = wself;
         if (saleArtwork.auctionState & ARAuctionStateUserIsBidder) {
-            // TODO: Move this to Emission? Seems excessive to have a callback just for Analytics.
             [ARAnalytics setUserProperty:@"has_placed_bid" toValue:@"true"];
+            sself.banner.auctionState = saleArtwork.auctionState;
+            [UIView animateIf:ARPerformWorkAsynchronously duration:ARAnimationDuration :^{
+                [sself.banner updateHeightConstraint];
+                [sself.stackView layoutIfNeeded];
+            }];
         }
     } failure:nil];
 }
