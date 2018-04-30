@@ -146,7 +146,6 @@
 
         if ([self showBuyersPremium]) {
             ARInquireButton *premium = [[ARInquireButton alloc] init];
-            premium.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
             [premium setUnderlinedTitle:@"This work has a Buyer's Premium" underlineRange:NSMakeRange(16, 15) forState:UIControlStateNormal];
             [premium addTarget:self action:@selector(tappedBuyersPremium:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:premium withTopMargin:@"8" sideMargin:nil];
