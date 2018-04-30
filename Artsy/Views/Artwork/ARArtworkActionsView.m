@@ -26,10 +26,10 @@
 @property (nonatomic, strong) ARArtworkAuctionPriceView *auctionPriceView;
 @property (nonatomic, strong) ARSpinner *spinner;
 @property (nonatomic, strong) UIView *bannerView;
+@property (nonatomic, strong) ARBidButton *bidButton;
 
 @property (nonatomic, strong) ARNavigationButtonsViewController *navigationButtonsVC;
 
-@property (nonatomic, strong) ARBidButton *bidButton;
 @property (nonatomic, strong) Artwork *artwork;
 @property (nonatomic, strong) SaleArtwork *saleArtwork;
 
