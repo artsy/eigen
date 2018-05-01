@@ -200,6 +200,11 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
         return [[ARNavigationController alloc] initWithRootViewController:submissionVC];
     }];
 
+    [self.routes addRoute:@"/conditions-of-sale" handler:JLRouteParams {
+        UIViewController *webViewController = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/conditions-of-sale"]];
+        return [[SerifModalWebNavigationController alloc] initWithRootViewController:webViewController];
+    }];
+
 
     // We don't show a native fairs UI for iPad
     if (![UIDevice isPad]) {
