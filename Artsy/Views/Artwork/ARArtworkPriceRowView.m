@@ -25,13 +25,11 @@
 
 - (void)initialSetup {
     UILabel *messageLabel = [[ARSerifLabel alloc] init];
-    messageLabel.font = [UIFont serifSemiBoldFontWithSize:18];
     [self addSubview:messageLabel];
     self.messageLabel = messageLabel;
 
     UILabel *priceLabel = [[ARSerifLabel alloc] init];
     priceLabel.textAlignment = NSTextAlignmentRight;
-    priceLabel.font = [UIFont serifSemiBoldFontWithSize:18];
     [self addSubview:priceLabel];
     self.priceLabel = priceLabel;
 
