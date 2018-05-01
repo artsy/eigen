@@ -34,10 +34,11 @@
 
     // Set the green check / red x accessory image.
     if (hasUserBid) {
-        if (isUserHighestBidder && isReserveMet) {
+        BOOL showGreen = isUserHighestBidder && (isReserveMet || !hasReserve);
+        if (showGreen) {
             currentOrStartingBidRow.priceAccessoryImage = [UIImage imageNamed:@"CircleCheckGreen"];
         } else {
-            // Infer here that the user has been outbid or the reserve is not met.
+            // Infer here that the user has been outbid, or the reserve is not met, or both.
             currentOrStartingBidRow.priceAccessoryImage = [UIImage imageNamed:@"CircleXRed"];
         }
     }
