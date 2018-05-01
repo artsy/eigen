@@ -1,5 +1,6 @@
 #import "ARAugmentedVIRModalView.h"
 
+#import "ARTopMenuViewController.h"
 #import <Artsy-UIButtons/ARButtonSubclasses.h>
 #import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
@@ -28,21 +29,24 @@
 
 
         ARClearFlatButton *backButton = [[ARClearFlatButton alloc] init];
-        [backButton setBorderColor:[UIColor clearColor] forState:UIControlStateNormal];
-        [backButton setBorderColor:[UIColor clearColor] forState:UIControlStateHighlighted];
-        [backButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
+        [backButton setBorderColor:[UIColor clearColor] forState:UIControlStateNormal animated:NO];
+        [backButton setBorderColor:[UIColor clearColor] forState:UIControlStateHighlighted animated:NO];
+        [backButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted animated:NO];
         [backButton setImage:[UIImage imageNamed:@"ARVIRBack"] forState:UIControlStateNormal];
         backButton.translatesAutoresizingMaskIntoConstraints = false;
         [backButton addTarget:self action:@selector(hitBack) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:backButton];
 
+        // Any changes to this will need to be reflected in ARAugmentedVIRViewCcontroller also
+        BOOL isEdgeToEdgePhone = !UIEdgeInsetsEqualToEdgeInsets( [ARTopMenuViewController sharedController].view.safeAreaInsets, UIEdgeInsetsZero);
+        CGFloat backTopMargin = isEdgeToEdgePhone ? -17 : 9;
+
         [self addConstraints: @[
-            [backButton.topAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.topAnchor constant:20],
-            [backButton.leftAnchor constraintEqualToAnchor:self.leftAnchor constant: 20.0],
+            [backButton.topAnchor constraintEqualToAnchor:self.safeAreaLayoutGuide.topAnchor constant:backTopMargin],
+            [backButton.leftAnchor constraintEqualToAnchor:self.leftAnchor constant: 4.0],
             [backButton.heightAnchor constraintEqualToConstant:50.0],
             [backButton.widthAnchor constraintEqualToConstant:50.0],
         ]];
-
 
         UILabel *subtitle = [[UILabel alloc] init];
         subtitle.numberOfLines = 0;
