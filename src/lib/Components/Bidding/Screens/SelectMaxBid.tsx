@@ -2,9 +2,10 @@ import React from "react"
 import { NavigatorIOS, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
+import { Flex } from "../Elements/Flex"
+
 import { Button } from "../Components/Button"
 import { Container } from "../Components/Containers"
-import { Margins } from "../Components/Margins"
 import { MaxBidPicker } from "../Components/MaxBidPicker"
 import { Title } from "../Components/Title"
 import { ConfirmBidScreen } from "./ConfirmBid"
@@ -55,7 +56,9 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
             selectedValue={this.state.selectedBidIndex}
           />
 
-          <Button style={Margins.m2} text="NEXT" onPress={this.onPressNext} />
+          <Flex m={4}>
+            <Button text="NEXT" onPress={this.onPressNext} />
+          </Flex>
         </Container>
       </BiddingThemeProvider>
     )
