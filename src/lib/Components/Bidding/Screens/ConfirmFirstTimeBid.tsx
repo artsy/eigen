@@ -19,6 +19,8 @@ import { Container } from "../Components/Containers"
 import { Divider } from "../Components/Divider"
 import { Title } from "../Components/Title"
 
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
 import { Checkbox } from "../Components/Checkbox"
 
@@ -31,6 +33,9 @@ interface ConfirmBidProps extends ViewProperties {
 }
 
 export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps> {
+  onPressConditionsOfSale = () => {
+    SwitchBoard.presentModalViewController(this, "/conditions-of-sale")
+  }
   render() {
     return (
       <BiddingThemeProvider>
@@ -86,7 +91,7 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps> {
           <View>
             <Checkbox alignSelf="center" m={3}>
               <Serif16 mt={2} textAlign="center" color="black60">
-                Agree to <LinkText>Condition of Sale</LinkText>.
+                Agree to <LinkText onPress={this.onPressConditionsOfSale}>Conditions of Sale</LinkText>.
               </Serif16>
             </Checkbox>
 

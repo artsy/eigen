@@ -566,6 +566,7 @@ exports[`renders properly 1`] = `
               accessible={true}
               allowFontScaling={true}
               ellipsizeMode="tail"
+              onPress={[Function]}
               style={
                 Array [
                   Object {
@@ -575,7 +576,7 @@ exports[`renders properly 1`] = `
                 ]
               }
             >
-              Condition of Sale
+              Conditions of Sale
             </Text>
             .
           </Text>
