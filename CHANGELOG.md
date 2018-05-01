@@ -37,6 +37,8 @@
 * Transitions between the bid picker to the bid confirmation components - ash
 * Adds a more re-useable low-level components - yuki24
 * Adds a confirmation screen for first-time bidders - yuki24
+* Adds a new color `red100` (`#F7625A`) to the theme - yuki24
+* Adds a `<CheckBox>` component - yuki24
 
 ### 1.4.6
 

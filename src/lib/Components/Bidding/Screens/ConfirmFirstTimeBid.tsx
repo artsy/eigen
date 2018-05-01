@@ -1,6 +1,5 @@
 import React from "react"
 import { View, ViewProperties } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import { Flex } from "../Elements/Flex"
@@ -21,6 +20,7 @@ import { Divider } from "../Components/Divider"
 import { Title } from "../Components/Title"
 
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
+import { Checkbox } from "../Components/Checkbox"
 
 interface ConfirmBidProps extends ViewProperties {
   sale_artwork: ConfirmBid_sale_artwork
@@ -84,9 +84,11 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps> {
           </View>
 
           <View>
-            <Serif14 textAlign="center" color="black60">
-              Agree to <LinkText>Condition of Sale</LinkText>.
-            </Serif14>
+            <Checkbox alignSelf="center" m={3}>
+              <Serif16 mt={2} textAlign="center" color="black60">
+                Agree to <LinkText>Condition of Sale</LinkText>.
+              </Serif16>
+            </Checkbox>
 
             <Flex m={4}>
               <Button text="Place Bid" onPress={() => null} />
@@ -101,17 +103,3 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps> {
 const LinkText = styled.Text`
   text-decoration-line: underline;
 `
-
-export const ConfirmFirstTimeBidScreen = createFragmentContainer(
-  ConfirmFirstTimeBid,
-  graphql`
-    fragment ConfirmFirstTimeBid_sale_artwork on SaleArtwork {
-      artwork {
-        title
-        date
-        artist_names
-      }
-      lot_label
-    }
-  `
-)

@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<View
+  accessibilityComponentType={undefined}
+  accessibilityLabel={undefined}
+  accessibilityTraits={undefined}
+  accessible={true}
+  flexDirection="column"
+  hitSlop={undefined}
+  nativeID={undefined}
+  onLayout={undefined}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Array [
+      Object {},
+      undefined,
+    ]
+  }
+  testID={undefined}
+>
+  <View
+    alignItems="center"
+    flexDirection="row"
+    mb={2}
+    style={
+      Array [
+        Object {
+          "marginBottom": 5,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      alignItems="center"
+      bg={null}
+      border="2px solid"
+      borderColor="black10"
+      height={20}
+      justifyContent="center"
+      mr={3}
+      style={
+        Array [
+          Object {
+            "borderColor": "#E5E5E5",
+            "borderStyle": "solid",
+            "borderWidth": 2,
+            "height": 20,
+            "marginRight": 10,
+            "width": 20,
+          },
+          undefined,
+        ]
+      }
+      width={20}
+    >
+      <View
+        collapsable={undefined}
+        duration={250}
+        show={false}
+        style={
+          Object {
+            "opacity": 0,
+            "transform": Array [
+              Object {
+                "scale": 1.1,
+              },
+            ],
+          }
+        }
+      />
+    </View>
+    <View
+      style={
+        Array [
+          Object {},
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+      >
+        Remember me
+      </Text>
+    </View>
+  </View>
+</View>
+`;

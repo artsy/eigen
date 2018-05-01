@@ -1,16 +1,22 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
+
+import { BidFlowRenderer } from "lib/relay/QueryRenderers"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import createEnvironment from "../../../relay/createEnvironment"
+
+import { Flex } from "../Elements/Flex"
+import { Serif16 } from "../Elements/Typography"
+
+import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
+import { Checkbox } from "../Components/Checkbox"
 
 import BidFlow from "../../../Containers/BidFlow"
 import { BidResult } from "../Screens/BidResult"
 import { ConfirmBidScreen } from "../Screens/ConfirmBid"
-import { MaxBidScreen } from "../Screens/SelectMaxBid"
-
-import { BidFlowRenderer } from "lib/relay/QueryRenderers"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ConfirmFirstTimeBid } from "../Screens/ConfirmFirstTimeBid"
+import { MaxBidScreen } from "../Screens/SelectMaxBid"
 
 const SelectMaxBidRenderer: React.SFC<any> = ({ render, saleArtworkID }) => {
   return (
@@ -84,3 +90,33 @@ storiesOf("Bidding")
   .add("Bidding Result (not highest bid)", () => {
     return <BidResult winning={false} />
   })
+
+storiesOf("App Style/Input").add("Check Boxes", () => (
+  <BiddingThemeProvider>
+    <Flex mt={7}>
+      <Checkbox pl={3} pb={1}>
+        <Serif16 mt={2}>Remember me</Serif16>
+      </Checkbox>
+
+      <Checkbox pl={3} pb={1} checked>
+        <Serif16 mt={2}>Remember me</Serif16>
+      </Checkbox>
+
+      <Checkbox pl={3} pb={1} error="Please agree to the terms and conditions">
+        <Serif16 mt={2}>Agree to Terms and Conditions</Serif16>
+      </Checkbox>
+
+      <Checkbox p={3} checked error="Please agree to the terms and conditions">
+        <Serif16 mt={2}>Agree to Terms and Conditions</Serif16>
+      </Checkbox>
+
+      <Checkbox pl={3} pb={1} disabled>
+        <Serif16 mt={2}>Remember me</Serif16>
+      </Checkbox>
+
+      <Checkbox pl={3} pb={1} checked disabled>
+        <Serif16 mt={2}>Remember me</Serif16>
+      </Checkbox>
+    </Flex>
+  </BiddingThemeProvider>
+))

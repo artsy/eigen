@@ -11,6 +11,7 @@ export const theme = {
     purple100: "#6E1EFF",
     purple30: "#D3BBFF",
     green100: "#0EDA83",
+    red100: "#F7625A",
     yellow100: "#F1AF1B",
     yellow30: "#FAE7BA",
     yellow10: "#FDF7E8",
