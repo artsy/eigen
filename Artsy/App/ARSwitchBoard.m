@@ -201,8 +201,13 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
     }];
 
     [self.routes addRoute:@"/conditions-of-sale" handler:JLRouteParams {
-        UIViewController *webViewController = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/conditions-of-sale"]];
-        return [[SerifModalWebNavigationController alloc] initWithRootViewController:webViewController];
+        // We want to fall back to the default routing unless this query parameter is specified, from Emission.
+        if ([parameters[@"present_modally"] boolValue]) {
+            UIViewController *webViewController = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"/conditions-of-sale"]];
+            return [[SerifModalWebNavigationController alloc] initWithRootViewController:webViewController];
+        } else {
+            return nil;
+        }
     }];
 
 
