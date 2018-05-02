@@ -34,7 +34,7 @@ interface ConfirmBidProps extends ViewProperties {
 
 export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps> {
   onPressConditionsOfSale = () => {
-    SwitchBoard.presentModalViewController(this, "/conditions-of-sale")
+    SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
   }
   render() {
     return (
