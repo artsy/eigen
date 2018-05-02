@@ -64,8 +64,8 @@
                                                                   authenticationToken:@""
                                                                             sentryDSN:@""
                                                                      googleMapsAPIKey:@""
-                                                                          gravityHost:gravity
-                                                                      metaphysicsHost:metaphysics
+                                                                           gravityURL:gravity
+                                                                       metaphysicsURL:metaphysics
                                                                             userAgent:@"Eigen Tests"];
 
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:nil];
