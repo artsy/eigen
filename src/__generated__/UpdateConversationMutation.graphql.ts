@@ -19,8 +19,12 @@ export type ConfirmBidMutationResponse = {
     readonly createBidderPosition: ({
         readonly position: ({
             readonly id: string;
+<<<<<<< HEAD:src/__generated__/UpdateConversationMutation.graphql.ts
             readonly suggested_next_bid_cents: number | null;
 >>>>>>> mp poll:src/__generated__/ConfirmBidMutation.graphql.ts
+=======
+            readonly message: string | null;
+>>>>>>> handling `message` passed from mp when bid is not high enough:src/__generated__/ConfirmBidMutation.graphql.ts
         }) | null;
     }) | null;
 };
@@ -40,8 +44,12 @@ mutation UpdateConversationMutation(
   createBidderPosition(input: $input) {
     position {
       id
+<<<<<<< HEAD:src/__generated__/UpdateConversationMutation.graphql.ts
       suggested_next_bid_cents
 >>>>>>> mp poll:src/__generated__/ConfirmBidMutation.graphql.ts
+=======
+      message
+>>>>>>> handling `message` passed from mp when bid is not high enough:src/__generated__/ConfirmBidMutation.graphql.ts
       __id
     }
   }
@@ -94,10 +102,14 @@ v1 = [
             "kind": "ScalarField",
             "alias": null,
 <<<<<<< HEAD:src/__generated__/UpdateConversationMutation.graphql.ts
+<<<<<<< HEAD:src/__generated__/UpdateConversationMutation.graphql.ts
             "name": "from_last_viewed_message_id",
 =======
             "name": "suggested_next_bid_cents",
 >>>>>>> mp poll:src/__generated__/ConfirmBidMutation.graphql.ts
+=======
+            "name": "message",
+>>>>>>> handling `message` passed from mp when bid is not high enough:src/__generated__/ConfirmBidMutation.graphql.ts
             "args": null,
             "storageKey": null
           },
@@ -121,8 +133,12 @@ return {
   "id": "376ca21dfba9abce2459940af585be24",
 =======
   "name": "ConfirmBidMutation",
+<<<<<<< HEAD:src/__generated__/UpdateConversationMutation.graphql.ts
   "id": "efae4ac745260fb43161d28a5ce9f4cf",
 >>>>>>> mp poll:src/__generated__/ConfirmBidMutation.graphql.ts
+=======
+  "id": "abfaebe826f21f53fc4df95e1dc8aa7e",
+>>>>>>> handling `message` passed from mp when bid is not high enough:src/__generated__/ConfirmBidMutation.graphql.ts
   "text": null,
   "metadata": {},
   "fragment": {
@@ -142,8 +158,12 @@ return {
 };
 })();
 <<<<<<< HEAD:src/__generated__/UpdateConversationMutation.graphql.ts
+<<<<<<< HEAD:src/__generated__/UpdateConversationMutation.graphql.ts
 (node as any).hash = '630d49bc88d58a296ed3b55fc479d569';
 =======
 (node as any).hash = 'db06d2829de6d44afd20eaee48fd3cdf';
 >>>>>>> mp poll:src/__generated__/ConfirmBidMutation.graphql.ts
+=======
+(node as any).hash = '54619c39088dcf5a798b978baf37ba40';
+>>>>>>> handling `message` passed from mp when bid is not high enough:src/__generated__/ConfirmBidMutation.graphql.ts
 export default node;

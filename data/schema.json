@@ -189,7 +189,8 @@
               "args": [
                 {
                   "name": "ids",
-                  "description": "\n        Only return artists matching specified ids.\n        Accepts list of ids.\n      ",
+                  "description":
+                    "\n        Only return artists matching specified ids.\n        Accepts list of ids.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -408,7 +409,8 @@
                 },
                 {
                   "name": "ids",
-                  "description": "\n        Only return fairs matching specified ids.\n        Accepts list of ids.\n      ",
+                  "description":
+                    "\n        Only return fairs matching specified ids.\n        Accepts list of ids.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -583,7 +585,8 @@
                 },
                 {
                   "name": "partner_categories",
-                  "description": "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
+                  "description":
+                    "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -1667,7 +1670,8 @@
                 },
                 {
                   "name": "ids",
-                  "description": "\n        Only return shows matching specified ids.\n        Accepts list of ids.\n      ",
+                  "description":
+                    "\n        Only return shows matching specified ids.\n        Accepts list of ids.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -1842,7 +1846,8 @@
                 },
                 {
                   "name": "partner_categories",
-                  "description": "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
+                  "description":
+                    "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -2183,7 +2188,8 @@
                 },
                 {
                   "name": "ids",
-                  "description": "\n        Only return sales matching specified ids.\n        Accepts list of ids.\n      ",
+                  "description":
+                    "\n        Only return sales matching specified ids.\n        Accepts list of ids.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -2384,6 +2390,29 @@
               "deprecationReason": null
             },
             {
+              "name": "user",
+              "description": null,
+              "args": [
+                {
+                  "name": "email",
+                  "description": "Email to search for user by",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "users",
               "description": "A list of Users",
               "args": [
@@ -2482,7 +2511,8 @@
         {
           "kind": "SCALAR",
           "name": "String",
-          "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
+          "description":
+            "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -2956,7 +2986,8 @@
         {
           "kind": "SCALAR",
           "name": "ID",
-          "description": "The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"4\"`) or integer (such as `4`) input value will be accepted as an ID.",
+          "description":
+            "The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"4\"`) or integer (such as `4`) input value will be accepted as an ID.",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -2966,7 +2997,8 @@
         {
           "kind": "SCALAR",
           "name": "Int",
-          "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. ",
+          "description":
+            "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. ",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -3489,7 +3521,8 @@
         {
           "kind": "SCALAR",
           "name": "Float",
-          "description": "The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). ",
+          "description":
+            "The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). ",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -7480,7 +7513,8 @@
         {
           "kind": "SCALAR",
           "name": "FormattedNumber",
-          "description": "The `FormattedNumber` type represents a number that can optionally be returnedas a formatted String. It does not try to coerce the type.",
+          "description":
+            "The `FormattedNumber` type represents a number that can optionally be returnedas a formatted String. It does not try to coerce the type.",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -9961,7 +9995,8 @@
                 },
                 {
                   "name": "ids",
-                  "description": "\n        Only return shows matching specified ids.\n        Accepts list of ids.\n      ",
+                  "description":
+                    "\n        Only return shows matching specified ids.\n        Accepts list of ids.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -26160,6 +26195,33 @@
               "deprecationReason": null
             },
             {
+              "name": "bidder_position",
+              "description": "Returns a single bidder position",
+              "args": [
+                {
+                  "name": "id",
+                  "description": null,
+                  "type": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "String",
+                      "ofType": null
+                    }
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "BidderPosition",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "collector_profile",
               "description": null,
               "args": [],
@@ -26452,6 +26514,18 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "FollowsAndSaves",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "has_qualified_credit_cards",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -26765,7 +26839,8 @@
                 },
                 {
                   "name": "ids",
-                  "description": "\n        Only return sales matching specified ids.\n        Accepts list of ids.\n      ",
+                  "description":
+                    "\n        Only return sales matching specified ids.\n        Accepts list of ids.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -28178,6 +28253,18 @@
               },
               "isDeprecated": true,
               "deprecationReason": "Favor `suggested_next_bid`"
+            },
+            {
+              "name": "message",
+              "description": "used when createBidderPosition returns a message",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -29471,7 +29558,8 @@
             },
             {
               "name": "reply_to_impulse_ids",
-              "description": "An array of Impulse IDs that correspond to all email addresses that messages should be sent to",
+              "description":
+                "An array of Impulse IDs that correspond to all email addresses that messages should be sent to",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -35373,7 +35461,8 @@
                 },
                 {
                   "name": "partner_categories",
-                  "description": "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
+                  "description":
+                    "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -36202,6 +36291,22 @@
           "description": null,
           "fields": [
             {
+              "name": "__id",
+              "description": "A globally unique ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "id",
               "description": "User id.",
               "args": [],
@@ -36213,6 +36318,34 @@
                   "name": "String",
                   "ofType": null
                 }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "_id",
+              "description": "A type-specific Gravity Mongo Document ID.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "cached",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -36280,6 +36413,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "userAlreadyExists",
+              "description": "Check whether a user exists by email address before creating an account.",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -36498,7 +36643,8 @@
               "args": [
                 {
                   "name": "ids",
-                  "description": "\n        Only return artists matching specified ids.\n        Accepts list of ids.\n      ",
+                  "description":
+                    "\n        Only return artists matching specified ids.\n        Accepts list of ids.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -36717,7 +36863,8 @@
                 },
                 {
                   "name": "ids",
-                  "description": "\n        Only return fairs matching specified ids.\n        Accepts list of ids.\n      ",
+                  "description":
+                    "\n        Only return fairs matching specified ids.\n        Accepts list of ids.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -36892,7 +37039,8 @@
                 },
                 {
                   "name": "partner_categories",
-                  "description": "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
+                  "description":
+                    "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -37976,7 +38124,8 @@
                 },
                 {
                   "name": "ids",
-                  "description": "\n        Only return shows matching specified ids.\n        Accepts list of ids.\n      ",
+                  "description":
+                    "\n        Only return shows matching specified ids.\n        Accepts list of ids.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -38151,7 +38300,8 @@
                 },
                 {
                   "name": "partner_categories",
-                  "description": "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
+                  "description":
+                    "\n        Only return partners of the specified partner categories.\n        Accepts list of slugs.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -38492,7 +38642,8 @@
                 },
                 {
                   "name": "ids",
-                  "description": "\n        Only return sales matching specified ids.\n        Accepts list of ids.\n      ",
+                  "description":
+                    "\n        Only return sales matching specified ids.\n        Accepts list of ids.\n      ",
                   "type": {
                     "kind": "LIST",
                     "name": null,
@@ -38687,6 +38838,29 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "TrendingArtists",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "user",
+              "description": null,
+              "args": [
+                {
+                  "name": "email",
+                  "description": "Email to search for user by",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "User",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -41852,7 +42026,8 @@
             },
             {
               "name": "metadata",
-              "description": "Additional JSON data to pass through gemini, should deiinitely contain an `id` and a `_type`",
+              "description":
+                "Additional JSON data to pass through gemini, should deiinitely contain an `id` and a `_type`",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -41882,7 +42057,8 @@
         {
           "kind": "SCALAR",
           "name": "JSON",
-          "description": "The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).",
+          "description":
+            "The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -42723,7 +42899,8 @@
         {
           "kind": "OBJECT",
           "name": "__Schema",
-          "description": "A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations.",
+          "description":
+            "A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations.",
           "fields": [
             {
               "name": "types",
@@ -42779,7 +42956,8 @@
             },
             {
               "name": "subscriptionType",
-              "description": "If this server support subscription, the type that subscription operations will be rooted at.",
+              "description":
+                "If this server support subscription, the type that subscription operations will be rooted at.",
               "args": [],
               "type": {
                 "kind": "OBJECT",
@@ -42822,7 +43000,8 @@
         {
           "kind": "OBJECT",
           "name": "__Type",
-          "description": "The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name and description, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.",
+          "description":
+            "The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.\n\nDepending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name and description, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.",
           "fields": [
             {
               "name": "kind",
@@ -43066,7 +43245,8 @@
         {
           "kind": "OBJECT",
           "name": "__Field",
-          "description": "Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type.",
+          "description":
+            "Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type.",
           "fields": [
             {
               "name": "name",
@@ -43173,7 +43353,8 @@
         {
           "kind": "OBJECT",
           "name": "__InputValue",
-          "description": "Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value.",
+          "description":
+            "Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value.",
           "fields": [
             {
               "name": "name",
@@ -43240,7 +43421,8 @@
         {
           "kind": "OBJECT",
           "name": "__EnumValue",
-          "description": "One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string.",
+          "description":
+            "One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string.",
           "fields": [
             {
               "name": "name",
@@ -43307,7 +43489,8 @@
         {
           "kind": "OBJECT",
           "name": "__Directive",
-          "description": "A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.\n\nIn some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.",
+          "description":
+            "A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.\n\nIn some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.",
           "fields": [
             {
               "name": "name",
@@ -43442,7 +43625,8 @@
         {
           "kind": "ENUM",
           "name": "__DirectiveLocation",
-          "description": "A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies.",
+          "description":
+            "A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies.",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -43563,11 +43747,7 @@
         {
           "name": "include",
           "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
-          "locations": [
-            "FIELD",
-            "FRAGMENT_SPREAD",
-            "INLINE_FRAGMENT"
-          ],
+          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
           "args": [
             {
               "name": "if",
@@ -43588,11 +43768,7 @@
         {
           "name": "skip",
           "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
-          "locations": [
-            "FIELD",
-            "FRAGMENT_SPREAD",
-            "INLINE_FRAGMENT"
-          ],
+          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
           "args": [
             {
               "name": "if",
@@ -43613,14 +43789,12 @@
         {
           "name": "deprecated",
           "description": "Marks an element of a GraphQL schema as no longer supported.",
-          "locations": [
-            "FIELD_DEFINITION",
-            "ENUM_VALUE"
-          ],
+          "locations": ["FIELD_DEFINITION", "ENUM_VALUE"],
           "args": [
             {
               "name": "reason",
-              "description": "Explains why this element was deprecated, usually also including a suggestion for how to access supported similar data. Formatted in [Markdown](https://daringfireball.net/projects/markdown/).",
+              "description":
+                "Explains why this element was deprecated, usually also including a suggestion for how to access supported similar data. Formatted in [Markdown](https://daringfireball.net/projects/markdown/).",
               "type": {
                 "kind": "SCALAR",
                 "name": "String",

@@ -44,12 +44,14 @@ interface ConformBidState {
 
 const MAX_POLL_ATTEMPTS = 20
 
+const BID_NOT_HIGH_ENOUGH = "BID_NOT_HIGH_ENOUGH"
+
 const bidderPositionMutation = graphql`
   mutation ConfirmBidMutation($input: BidderPositionInput!) {
     createBidderPosition(input: $input) {
       position {
         id
-        suggested_next_bid_cents
+        message
       }
     }
   }
@@ -98,11 +100,14 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
         }
       }
     `
-    if (!errors) {
+    if (!errors && positionId !== BID_NOT_HIGH_ENOUGH) {
       const interval = setInterval(() => {
         metaphysics({ query }).then(this.checkBidPosition.bind(this))
       }, 2000)
       this.setState({ intervalToken: interval })
+    } else if (positionId === BID_NOT_HIGH_ENOUGH) {
+      console.log(BID_NOT_HIGH_ENOUGH, results.createBidderPosition)
+      this.showBidResult(false)
     }
   }
 

@@ -1407,6 +1407,9 @@ type BidderPosition {
   sale_artwork: SaleArtwork
   suggested_next_bid: BidderPositionSuggestedNextBid
   suggested_next_bid_cents: Int @deprecated(reason: "Favor `suggested_next_bid`")
+
+  # used when createBidderPosition returns a message
+  message: String
 }
 
 input BidderPositionInput {
@@ -3348,6 +3351,9 @@ type Me implements Node {
     # Only the bidder positions for a specific auction
     sale_id: String
   ): [BidderPosition]
+
+  # Returns a single bidder position
+  bidder_position(id: String!): BidderPosition
   collector_profile: CollectorProfileType
 
   # A conversation, usually between a user and a partner
@@ -3376,6 +3382,7 @@ type Me implements Node {
   # A list of the current user’s inquiry requests
   followed_genes(after: String, first: Int, before: String, last: Int): FollowGeneConnection
   followsAndSaves: FollowsAndSaves
+  has_qualified_credit_cards: Boolean
 
   # An invoice
   invoice(
@@ -4538,6 +4545,10 @@ type Query {
     # Number of results to return
     size: Int = 40
   ): TrendingArtists
+  user(
+    # Email to search for user by
+    email: String
+  ): User
 
   # A list of Users
   users(ids: [String]): [User]
@@ -5537,8 +5548,15 @@ type UpdateSubmissionMutationPayload {
 }
 
 type User {
+  # A globally unique ID.
+  __id: ID!
+
   # User id.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
+  _id: String!
+  cached: Int
 
   # The given name of the user.
   name: String!
@@ -5554,6 +5572,9 @@ type User {
 
   # The price range the collector has selected
   price_range: String
+
+  # Check whether a user exists by email address before creating an account.
+  userAlreadyExists: Boolean
 }
 
 # A wildcard used to support complex root queries in Relay
@@ -5921,6 +5942,10 @@ type Viewer {
     # Number of results to return
     size: Int = 40
   ): TrendingArtists
+  user(
+    # Email to search for user by
+    email: String
+  ): User
 
   # A list of Users
   users(ids: [String]): [User]
