@@ -181,6 +181,7 @@ randomBOOL(void)
     }
     UIViewController *viewController = [self viewControllerForRoute:route];
     UINavigationController *navigationController = [[EigenLikeNavigationController alloc] initWithRootViewController:viewController];
+    navigationController.navigationBarHidden = NO;
     viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                     target:self
                                                                                                     action:@selector(dismissModalViewController)];
@@ -251,7 +252,7 @@ randomBOOL(void)
 - (void)dismissModalViewController;
 {
   UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-  [navigationController.visibleViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
+  [navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)downloadPRBuildAndLoginWithUserID:(NSString *)userID
