@@ -2,11 +2,7 @@
 
 import { ConcreteFragment } from "relay-runtime";
 export type ConfirmBid_sale_artwork = {
-    readonly sale: ({
-        readonly id: string;
-    }) | null;
     readonly artwork: ({
-        readonly id: string;
         readonly title: string | null;
         readonly date: string | null;
         readonly artist_names: string | null;
@@ -18,13 +14,6 @@ export type ConfirmBid_sale_artwork = {
 
 const node: ConcreteFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
@@ -41,26 +30,12 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "sale",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Sale",
-      "plural": false,
-      "selections": [
-        v0,
-        v1
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
       "name": "artwork",
       "storageKey": null,
       "args": null,
       "concreteType": "Artwork",
       "plural": false,
       "selections": [
-        v0,
         {
           "kind": "ScalarField",
           "alias": null,
@@ -82,7 +57,7 @@ return {
           "args": null,
           "storageKey": null
         },
-        v1
+        v0
       ]
     },
     {
@@ -92,9 +67,9 @@ return {
       "args": null,
       "storageKey": null
     },
-    v1
+    v0
   ]
 };
 })();
-(node as any).hash = '68b289ecbfa9dc78611a2751c2985569';
+(node as any).hash = '6eef32e224b2213ed8012c151c7dc02b';
 export default node;

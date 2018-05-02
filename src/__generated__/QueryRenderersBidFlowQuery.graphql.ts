@@ -36,12 +36,7 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
 }
 
 fragment ConfirmBid_sale_artwork on SaleArtwork {
-  sale {
-    id
-    __id
-  }
   artwork {
-    id
     title
     date
     artist_names
@@ -75,19 +70,12 @@ v2 = {
   "name": "__id",
   "args": null,
   "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersBidFlowQuery",
-  "id": "2eb6a561cc8b9ef8bf26b08897debfc5",
+  "id": "e1e3474aee692f4e720d00c39d743aed",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -158,26 +146,12 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "sale",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Sale",
-            "plural": false,
-            "selections": [
-              v3,
-              v2
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
             "name": "artwork",
             "storageKey": null,
             "args": null,
             "concreteType": "Artwork",
             "plural": false,
             "selections": [
-              v3,
               {
                 "kind": "ScalarField",
                 "alias": null,

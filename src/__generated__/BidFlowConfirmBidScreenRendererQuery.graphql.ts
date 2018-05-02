@@ -22,12 +22,7 @@ query BidFlowConfirmBidScreenRendererQuery(
 }
 
 fragment ConfirmBid_sale_artwork on SaleArtwork {
-  sale {
-    id
-    __id
-  }
   artwork {
-    id
     title
     date
     artist_names
@@ -61,19 +56,12 @@ v2 = {
   "name": "__id",
   "args": null,
   "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "BidFlowConfirmBidScreenRendererQuery",
-  "id": "ba1b830044df67408515cc63dcc04fa0",
+  "id": "4e1f63820a703d4d9ba62de14cbc9c83",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -119,26 +107,12 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "sale",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Sale",
-            "plural": false,
-            "selections": [
-              v3,
-              v2
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
             "name": "artwork",
             "storageKey": null,
             "args": null,
             "concreteType": "Artwork",
             "plural": false,
             "selections": [
-              v3,
               {
                 "kind": "ScalarField",
                 "alias": null,
