@@ -106,7 +106,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     if (!errors && positionId !== BID_NOT_HIGH_ENOUGH) {
       const interval = setInterval(() => {
         metaphysics({ query }).then(this.checkBidPosition.bind(this))
-      }, 2000)
+      }, 1000)
       this.setState({ intervalToken: interval })
     } else {
       const message_header = results.createBidderPosition.result.message_header
@@ -116,6 +116,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   }
 
   checkBidPosition(result) {
+    // TODO: move polling logic to a separate file https://github.com/artsy/emission/pull/1025#discussion_r185931915
     const bidderPosition = result.data.me.bidder_position
     if (bidderPosition.processed_at) {
       clearInterval(this.state.intervalToken)
