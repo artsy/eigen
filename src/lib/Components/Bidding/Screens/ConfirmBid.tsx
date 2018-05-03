@@ -21,6 +21,8 @@ import { Divider } from "../Components/Divider"
 import { Margins } from "../Components/Margins"
 import { Title } from "../Components/Title"
 
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
 
 interface ConfirmBidProps extends ViewProperties {
@@ -32,6 +34,9 @@ interface ConfirmBidProps extends ViewProperties {
 }
 
 export class ConfirmBid extends React.Component<ConfirmBidProps> {
+  onPressConditionsOfSale = () => {
+    SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
+  }
   render() {
     return (
       <BiddingThemeProvider>
@@ -64,7 +69,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps> {
 
           <View>
             <Serif14 mb={3} color="black60" textAlign="center">
-              You agree to <LinkText>Condition of Sale</LinkText>.
+              You agree to <LinkText onPress={this.onPressConditionsOfSale}>Conditions of Sale</LinkText>.
             </Serif14>
 
             <Button style={Margins.m2} text="Place Bid" onPress={() => null} />
