@@ -4,10 +4,10 @@
 #import "ARDefaults.h"
 #import "SCNArtworkNode.h"
 #import "ARAugmentedRealityConfig.h"
-#import "ARAugmentedVIRInteractionController.h"
+#import "ARVIRVerticalWallInteractionController.h"
 
 API_AVAILABLE(ios(11.0))
-@interface ARAugmentedVIRInteractionController()
+@interface ARVIRVerticalWallInteractionController()
 @property (nonatomic, weak) ARSession *session;
 @property (nonatomic, weak) ARSCNView *sceneView;
 @property (nonatomic, weak) id <ARVIRDelegate> delegate;
@@ -22,7 +22,7 @@ API_AVAILABLE(ios(11.0))
 
 NSInteger wallHeightMeters = 5;
 
-@implementation ARAugmentedVIRInteractionController
+@implementation ARVIRVerticalWallInteractionController
 
 - (instancetype)initWithSession:(ARSession *)session config:(ARAugmentedRealityConfig *)config scene:(ARSCNView *)scene delegate:(id <ARVIRDelegate>)delegate
 {
@@ -170,6 +170,9 @@ NSInteger wallHeightMeters = 5;
     // Create an anchor node, which can get moved around as we become more sure of where the
     // plane actually is.
     ARPlaneAnchor *planeAnchor = (id)anchor;
+    if (planeAnchor.alignment == ARPlaneAnchorAlignmentHorizontal) {
+        return;
+    }
 
     SCNNode *planeNode = [self whiteBoxForPlaneAnchor:planeAnchor];
     [node addChildNode:planeNode];

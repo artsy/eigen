@@ -15,7 +15,8 @@
 
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRViewController.h"
-#import "ARAugmentedVIRInteractionController.h"
+#import "ARVIRVerticalWallInteractionController.h"
+#import "ARVIRHorizontalPlaneInteractionController.h"
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedVIRModalView.h"
 
@@ -48,7 +49,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     if (@available(iOS 11.0, *)) {
         _sceneView = [[ARSCNView alloc] init];
-        _interactionController = [[ARAugmentedVIRInteractionController alloc] initWithSession:_sceneView.session config:config scene:_sceneView delegate:self];
+        _interactionController = [[ARVIRHorizontalPlaneInteractionController alloc] initWithSession:_sceneView.session config:config scene:_sceneView delegate:self];
     }
 
     return self;
@@ -399,9 +400,7 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
     if (@available(iOS 11.3, *)) {
         ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
 
-        // While Xcode 10.3 is in beta, we won't be shipping CI builds with it
-//        configuration.planeDetection = ARPlaneDetectionVertical;
-        configuration.planeDetection = 2;
+        configuration.planeDetection = ARPlaneDetectionHorizontal;
 
         // Run the view's session
         [self.sceneView.session runWithConfiguration:configuration];
