@@ -291,70 +291,55 @@ exports[`renders properly 1`] = `
       .
     </Text>
     <View
-      m={4}
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      collapsable={undefined}
+      hitSlop={undefined}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        Array [
-          Object {
-            "marginBottom": 20,
-            "marginLeft": 20,
-            "marginRight": 20,
-            "marginTop": 20,
-          },
-          undefined,
-        ]
-      }
-    >
-      <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
-        accessible={true}
-        collapsable={undefined}
-        hitSlop={undefined}
-        nativeID={undefined}
-        onLayout={undefined}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
-        style={
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "rgba(0, 0, 0, 1)",
-            "borderColor": "rgba(0, 0, 0, 1)",
-            "borderWidth": 1,
-            "height": 46,
-            "justifyContent": "center",
-          }
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "rgba(0, 0, 0, 1)",
+          "borderColor": "rgba(0, 0, 0, 1)",
+          "borderWidth": 1,
+          "height": 46,
+          "justifyContent": "center",
         }
-        testID={undefined}
+      }
+      testID={undefined}
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "fontSize": 12,
+            },
+            Object {
+              "color": "rgba(255, 255, 255, 1)",
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 14,
+              "opacity": 1,
+            },
+            Object {
+              "fontFamily": "AvantGardeGothicITC",
+            },
+          ]
+        }
       >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          style={
-            Array [
-              Object {
-                "fontSize": 12,
-              },
-              Object {
-                "color": "rgba(255, 255, 255, 1)",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 14,
-                "opacity": 1,
-              },
-              Object {
-                "fontFamily": "AvantGardeGothicITC",
-              },
-            ]
-          }
-        >
-          PLACE BID
-        </Text>
-      </View>
+        PLACE BID
+      </Text>
     </View>
   </View>
 </View>
