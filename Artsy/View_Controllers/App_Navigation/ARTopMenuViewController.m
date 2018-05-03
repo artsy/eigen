@@ -531,17 +531,10 @@ static const CGFloat ARMenuButtonDimension = 50;
     }
 
     if ([viewController respondsToSelector:@selector(isRootNavViewController)] && [(id<ARRootViewController>)viewController isRootNavViewController]) {
-        [self presentRootViewController:viewController animated:animated];
-    } else if ([self isEmissionRootViewController:viewController]){
-        // Override animation, because tab switching should never be animated
         [self presentRootViewController:viewController animated:NO];
     } else {
         [self.rootNavigationController pushViewController:viewController animated:animated];
     }
-}
-
-- (BOOL)isEmissionRootViewController:(UIViewController *)viewController {
-    return [viewController isKindOfClass:ARInboxComponentViewController.class] || [viewController isKindOfClass:ARHomeComponentViewController.class] || [viewController isKindOfClass:ARFavoritesComponentViewController.class];
 }
 
 - (void)presentRootViewControllerAtIndex:(NSInteger)index animated:(BOOL)animated;
