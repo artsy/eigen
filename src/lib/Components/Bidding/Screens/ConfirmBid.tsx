@@ -44,14 +44,17 @@ interface ConformBidState {
 
 const MAX_POLL_ATTEMPTS = 20
 
-const BID_NOT_HIGH_ENOUGH = "BID_NOT_HIGH_ENOUGH"
-
 const bidderPositionMutation = graphql`
   mutation ConfirmBidMutation($input: BidderPositionInput!) {
     createBidderPosition(input: $input) {
-      position {
-        id
-        message
+      result {
+        position {
+          id
+        }
+        status
+        message_header
+        message_description
+        message_description_md
       }
     }
   }
@@ -105,9 +108,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
         metaphysics({ query }).then(this.checkBidPosition.bind(this))
       }, 2000)
       this.setState({ intervalToken: interval })
-    } else if (positionId === BID_NOT_HIGH_ENOUGH) {
-      console.log(BID_NOT_HIGH_ENOUGH, results.createBidderPosition)
-      this.showBidResult(false)
+    } else {
+      const message_header = results.createBidderPosition.result.message_header
+      const message_description_md = results.createBidderPosition.result.message_description_md
+      this.showBidResult(false, message_header, message_description_md)
     }
   }
 
@@ -131,13 +135,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     }
   }
 
-  showBidResult(winning) {
+  showBidResult(winning: boolean, messageHeader?: string, messageDescriptionMd?: string) {
     this.props.navigator.push({
       component: BidResult,
       title: "",
       passProps: {
-        sale_artwork: this.props.sale_artwork,
-        bid: this.props.bid,
+        message_header: messageHeader,
+        message_description_md: messageDescriptionMd,
         winning,
       },
     })

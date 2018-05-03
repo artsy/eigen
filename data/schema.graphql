@@ -91,7 +91,15 @@ type Artist implements Node {
     filter: [ArtistArtworksFilters]
     exclude: [String]
   ): [Artwork]
-  artworks_connection(sort: ArtworkSorts, filter: [ArtistArtworksFilters], published: Boolean = true, after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artworks_connection(
+    sort: ArtworkSorts
+    filter: [ArtistArtworksFilters]
+    published: Boolean = true
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
   auctionResults(
     sort: AuctionResultSorts
 
@@ -153,7 +161,14 @@ type Artist implements Node {
   meta: ArtistMeta
   nationality: String
   name: String
-  partners(represented_by: Boolean, partner_category: [String], after: String, first: Int, before: String, last: Int): PartnerArtistConnection
+  partners(
+    represented_by: Boolean
+    partner_category: [String]
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): PartnerArtistConnection
   partner_artists(
     # The number of PartnerArtists to return
     size: Int
@@ -263,7 +278,15 @@ type ArtistEdge {
 }
 
 type ArtistHighlights {
-  partners(represented_by: Boolean, partner_category: [String], display_on_partner_profile: Boolean, after: String, first: Int, before: String, last: Int): PartnerArtistConnection
+  partners(
+    represented_by: Boolean
+    partner_category: [String]
+    display_on_partner_profile: Boolean
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): PartnerArtistConnection
 }
 
 type ArtistItem implements Node {
@@ -292,7 +315,15 @@ type ArtistItem implements Node {
     filter: [ArtistArtworksFilters]
     exclude: [String]
   ): [Artwork]
-  artworks_connection(sort: ArtworkSorts, filter: [ArtistArtworksFilters], published: Boolean = true, after: String, first: Int, before: String, last: Int): ArtworkConnection
+  artworks_connection(
+    sort: ArtworkSorts
+    filter: [ArtistArtworksFilters]
+    published: Boolean = true
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
   auctionResults(
     sort: AuctionResultSorts
 
@@ -354,7 +385,14 @@ type ArtistItem implements Node {
   meta: ArtistMeta
   nationality: String
   name: String
-  partners(represented_by: Boolean, partner_category: [String], after: String, first: Int, before: String, last: Int): PartnerArtistConnection
+  partners(
+    represented_by: Boolean
+    partner_category: [String]
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): PartnerArtistConnection
   partner_artists(
     # The number of PartnerArtists to return
     size: Int
@@ -1438,6 +1476,14 @@ type BidderPositionMaxBid {
   display: String
 }
 
+type BidderPositionMutationResult {
+  status: String!
+  message_header: String
+  message_description: String
+  message_description_md: String
+  position: BidderPosition
+}
+
 type BidderPositionPayload {
   position: BidderPosition
   clientMutationId: String
@@ -1519,7 +1565,14 @@ type Collection implements Node {
   # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
-  artworks_connection(after: String, first: Int, before: String, last: Int, private: Boolean = false, sort: CollectionSorts = POSITION_DESC): ArtworkConnection
+  artworks_connection(
+    after: String
+    first: Int
+    before: String
+    last: Int
+    private: Boolean = false
+    sort: CollectionSorts = POSITION_DESC
+  ): ArtworkConnection
   description: String!
   default: Boolean!
   name: String!
@@ -2155,7 +2208,8 @@ type FilterArtworks implements Node {
 
   # Returns aggregation counts for the given filter query.
   aggregations: [ArtworksAggregationResults]
-  artworks_connection(sort: String, after: String, first: Int, before: String, last: Int): ArtworkConnection @deprecated(reason: "Favour artwork connections that take filter arguments.")
+  artworks_connection(sort: String, after: String, first: Int, before: String, last: Int): ArtworkConnection
+    @deprecated(reason: "Favour artwork connections that take filter arguments.")
   counts: FilterArtworksCounts
   followed_artists_total: Int @deprecated(reason: "Favor `favor counts.followed_artists`")
 
@@ -2339,7 +2393,13 @@ type FollowGenePayload {
 
 type FollowsAndSaves {
   # A list of published artworks by followed artists (grouped by date and artists).
-  bundledArtworksByArtist(sort: ArtworkSorts, after: String, first: Int, before: String, last: Int): FollowedArtistsArtworksGroupConnection
+  bundledArtworksByArtist(
+    sort: ArtworkSorts
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FollowedArtistsArtworksGroupConnection
 }
 
 enum Format {
@@ -2919,7 +2979,14 @@ enum HomePageHeroUnitPlatform {
   MARTSY
 }
 
-union HomePageModuleContext = HomePageModuleContextFair | HomePageModuleContextFollowArtists | HomePageModuleContextFollowedArtist | HomePageModuleContextGene | HomePageModuleContextRelatedArtist | HomePageModuleContextSale | HomePageModuleContextTrending
+union HomePageModuleContext =
+    HomePageModuleContextFair
+  | HomePageModuleContextFollowArtists
+  | HomePageModuleContextFollowedArtist
+  | HomePageModuleContextGene
+  | HomePageModuleContextRelatedArtist
+  | HomePageModuleContextSale
+  | HomePageModuleContextTrending
 
 type HomePageModuleContextFair {
   # A globally unique ID.
@@ -3326,7 +3393,13 @@ type Me implements Node {
   id: String!
 
   # A list of the current user’s consignment submissions
-  consignment_submissions(after: String, first: Int, before: String, last: Int, completed: Boolean): ConsignmentSubmissionConnection
+  consignment_submissions(
+    after: String
+    first: Int
+    before: String
+    last: Int
+    completed: Boolean
+  ): ConsignmentSubmissionConnection
 
   # A list of the current user’s inquiry requests
   artwork_inquiries_connection(after: String, first: Int, before: String, last: Int): ArtworkInquiryConnection
@@ -3414,7 +3487,8 @@ type Me implements Node {
   initials(length: Int = 3): String
 
   # A list of feed items, indicating published artworks (grouped by date and artists).
-  notifications_connection(after: String, first: Int, before: String, last: Int): NotificationsFeedItemConnection @deprecated(reason: "Prefer to use followed_artists_artwork_groups.")
+  notifications_connection(after: String, first: Int, before: String, last: Int): NotificationsFeedItemConnection
+    @deprecated(reason: "Prefer to use followed_artists_artwork_groups.")
   paddle_number: String
 
   # A list of the current user’s recently viewed artworks.
@@ -3426,7 +3500,7 @@ type Me implements Node {
     #
     #         Only return sales matching specified ids.
     #         Accepts list of ids.
-    #       
+    #
     ids: [String]
 
     # Limit by live status.
@@ -3551,7 +3625,9 @@ type Mutation {
   endSale(input: EndSaleInput!): EndSalePayload
 
   # Attach an gemini asset to a consignment submission
-  requestCredentialsForAssetUpload(input: RequestCredentialsForAssetUploadInput!): RequestCredentialsForAssetUploadPayload
+  requestCredentialsForAssetUpload(
+    input: RequestCredentialsForAssetUploadInput!
+  ): RequestCredentialsForAssetUploadPayload
 
   # Attach an gemini asset to a consignment submission
   createGeminiEntryForAsset(input: CreateGeminiEntryForAssetInput!): CreateGeminiEntryForAssetPayload
@@ -3781,7 +3857,8 @@ type Partner implements Node {
   href: String
   initials(length: Int = 3): String
   is_default_profile_public: Boolean
-  is_limited_fair_partner: Boolean @deprecated(reason: "This field no longer exists, this is for backwards compatability")
+  is_limited_fair_partner: Boolean
+    @deprecated(reason: "This field no longer exists, this is for backwards compatability")
   is_linkable: Boolean
   is_pre_qualify: Boolean
   locations(size: Int = 25): [Location]
@@ -3796,7 +3873,7 @@ type Partner implements Node {
     #
     #         Only return shows matching specified ids.
     #         Accepts list of ids.
-    #       
+    #
     ids: [String]
     near: Near
     size: Int
@@ -3899,7 +3976,7 @@ type PartnerCategory {
     #
     #         Only return partners of the specified partner categories.
     #         Accepts list of slugs.
-    #       
+    #
     partner_categories: [String]
     size: Int
     sort: PartnersSortType
@@ -4211,7 +4288,7 @@ type Query {
     #
     #         Only return artists matching specified ids.
     #         Accepts list of ids.
-    #       
+    #
     ids: [String]
     page: Int = 1
     size: Int
@@ -4252,7 +4329,7 @@ type Query {
     #
     #         Only return fairs matching specified ids.
     #         Accepts list of ids.
-    #       
+    #
     ids: [String]
     near: Near
     page: Int
@@ -4284,7 +4361,7 @@ type Query {
     #
     #         Only return partners of the specified partner categories.
     #         Accepts list of slugs.
-    #       
+    #
     partner_categories: [String]
     size: Int
     sort: PartnersSortType
@@ -4329,7 +4406,19 @@ type Query {
   ): FilterArtworks
 
   # Sale Artworks Elastic Search results
-  filter_sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, live_sale: Boolean, is_auction: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String): FilterSaleArtworks @deprecated(reason: "This type has been superceded by `sale_artworks`")
+  filter_sale_artworks(
+    aggregations: [SaleArtworkAggregation]
+    artist_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    live_sale: Boolean
+    is_auction: Boolean
+    gene_ids: [String]
+    estimate_range: String
+    page: Int
+    sale_id: ID
+    size: Int
+    sort: String
+  ): FilterSaleArtworks @deprecated(reason: "This type has been superceded by `sale_artworks`")
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -4434,7 +4523,7 @@ type Query {
     #
     #         Only return shows matching specified ids.
     #         Accepts list of ids.
-    #       
+    #
     ids: [String]
     near: Near
     partner_id: String
@@ -4466,7 +4555,7 @@ type Query {
     #
     #         Only return partners of the specified partner categories.
     #         Accepts list of slugs.
-    #       
+    #
     partner_categories: [String]
     size: Int
     sort: PartnersSortType
@@ -4495,7 +4584,23 @@ type Query {
   ): SaleArtwork
 
   # Sale Artworks search results
-  sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, live_sale: Boolean, is_auction: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String, after: String, first: Int, before: String, last: Int): SaleArtworksConnection
+  sale_artworks(
+    aggregations: [SaleArtworkAggregation]
+    artist_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    live_sale: Boolean
+    is_auction: Boolean
+    gene_ids: [String]
+    estimate_range: String
+    page: Int
+    sale_id: ID
+    size: Int
+    sort: String
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SaleArtworksConnection
 
   # A list of Sales
   sales(
@@ -4505,7 +4610,7 @@ type Query {
     #
     #         Only return sales matching specified ids.
     #         Accepts list of ids.
-    #       
+    #
     ids: [String]
 
     # Limit by live status.
@@ -5608,7 +5713,7 @@ type Viewer {
     #
     #         Only return artists matching specified ids.
     #         Accepts list of ids.
-    #       
+    #
     ids: [String]
     page: Int = 1
     size: Int
@@ -5649,7 +5754,7 @@ type Viewer {
     #
     #         Only return fairs matching specified ids.
     #         Accepts list of ids.
-    #       
+    #
     ids: [String]
     near: Near
     page: Int
@@ -5681,7 +5786,7 @@ type Viewer {
     #
     #         Only return partners of the specified partner categories.
     #         Accepts list of slugs.
-    #       
+    #
     partner_categories: [String]
     size: Int
     sort: PartnersSortType
@@ -5726,7 +5831,19 @@ type Viewer {
   ): FilterArtworks
 
   # Sale Artworks Elastic Search results
-  filter_sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, live_sale: Boolean, is_auction: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String): FilterSaleArtworks @deprecated(reason: "This type has been superceded by `sale_artworks`")
+  filter_sale_artworks(
+    aggregations: [SaleArtworkAggregation]
+    artist_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    live_sale: Boolean
+    is_auction: Boolean
+    gene_ids: [String]
+    estimate_range: String
+    page: Int
+    sale_id: ID
+    size: Int
+    sort: String
+  ): FilterSaleArtworks @deprecated(reason: "This type has been superceded by `sale_artworks`")
   gene(
     # The slug or ID of the Gene
     id: String!
@@ -5831,7 +5948,7 @@ type Viewer {
     #
     #         Only return shows matching specified ids.
     #         Accepts list of ids.
-    #       
+    #
     ids: [String]
     near: Near
     partner_id: String
@@ -5863,7 +5980,7 @@ type Viewer {
     #
     #         Only return partners of the specified partner categories.
     #         Accepts list of slugs.
-    #       
+    #
     partner_categories: [String]
     size: Int
     sort: PartnersSortType
@@ -5892,7 +6009,23 @@ type Viewer {
   ): SaleArtwork
 
   # Sale Artworks search results
-  sale_artworks(aggregations: [SaleArtworkAggregation], artist_ids: [String], include_artworks_by_followed_artists: Boolean, live_sale: Boolean, is_auction: Boolean, gene_ids: [String], estimate_range: String, page: Int, sale_id: ID, size: Int, sort: String, after: String, first: Int, before: String, last: Int): SaleArtworksConnection
+  sale_artworks(
+    aggregations: [SaleArtworkAggregation]
+    artist_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    live_sale: Boolean
+    is_auction: Boolean
+    gene_ids: [String]
+    estimate_range: String
+    page: Int
+    sale_id: ID
+    size: Int
+    sort: String
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SaleArtworksConnection
 
   # A list of Sales
   sales(
@@ -5902,7 +6035,7 @@ type Viewer {
     #
     #         Only return sales matching specified ids.
     #         Accepts list of ids.
-    #       
+    #
     ids: [String]
 
     # Limit by live status.
