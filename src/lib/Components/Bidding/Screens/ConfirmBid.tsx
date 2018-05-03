@@ -18,7 +18,6 @@ import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Button } from "../Components/Button"
 import { Container } from "../Components/Containers"
 import { Divider } from "../Components/Divider"
-import { Margins } from "../Components/Margins"
 import { Title } from "../Components/Title"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -72,7 +71,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps> {
               You agree to <LinkText onPress={this.onPressConditionsOfSale}>Conditions of Sale</LinkText>.
             </Serif14>
 
-            <Button style={Margins.m2} text="Place Bid" onPress={() => null} />
+            <Flex m={4}>
+              <Button text="Place Bid" onPress={() => null} />
+            </Flex>
           </View>
         </Container>
       </BiddingThemeProvider>
