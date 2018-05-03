@@ -32,6 +32,8 @@
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
+#import <Emission/ARInboxComponentViewController.h>
+#import <Emission/ARFavoritesComponentViewController.h>
 
 #import <React/RCTUtils.h>
 #import <objc/runtime.h>
@@ -234,6 +236,30 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 @end
 
 @implementation ARHomeComponentViewController (ARRootViewController)
+
+- (BOOL)isRootNavViewController
+{
+    return YES;
+}
+
+@end
+
+@interface ARInboxComponentViewController (ARRootViewController) <ARRootViewController>
+@end
+
+@implementation ARInboxComponentViewController (ARRootViewController)
+
+- (BOOL)isRootNavViewController
+{
+    return YES;
+}
+
+@end
+
+@interface ARFavoritesComponentViewController (ARRootViewController) <ARRootViewController>
+@end
+
+@implementation ARFavoritesComponentViewController (ARRootViewController)
 
 - (BOOL)isRootNavViewController
 {

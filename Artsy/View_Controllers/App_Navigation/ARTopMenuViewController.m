@@ -531,7 +531,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     }
 
     if ([viewController respondsToSelector:@selector(isRootNavViewController)] && [(id<ARRootViewController>)viewController isRootNavViewController]) {
-        [self presentRootViewController:viewController animated:animated];
+        [self presentRootViewController:viewController animated:NO];
     } else {
         [self.rootNavigationController pushViewController:viewController animated:animated];
     }
