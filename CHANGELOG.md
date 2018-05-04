@@ -40,6 +40,7 @@
 * Adds a new color `red100` (`#F7625A`) to the theme - yuki24
 * Adds a `<CheckBox>` component - yuki24
 * Adds support for viewing conditions of sale - ash
+* Fixes crash when following an artist from the ‘related artist’ Home/ForYou rail - alloy
 
 ### 1.4.6
 

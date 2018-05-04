@@ -99,7 +99,7 @@ class ArtworkCarouselHeader extends Component<Props, State> {
   }
 
   @track(props => {
-    const artist = props.rail.followedArtistContext.artist || props.rail.relatedArtistContext.artist
+    const artist = getSubjectArtist(props)
     return {
       action_name: Schema.ActionNames.HomeArtistArtworksBlockFollow,
       action_type: Schema.ActionTypes.Tap,
@@ -109,14 +109,18 @@ class ArtworkCarouselHeader extends Component<Props, State> {
     }
   })
   handleFollowChange() {
-    const context = this.props.rail.followedArtistContext || this.props.rail.relatedArtistContext
-    ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, context.artist.id, (error, following) => {
+    const artist = getSubjectArtist(this.props)
+    ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, artist.id, (error, following) => {
       if (error) {
         console.error("ArtworkCarouselHeader.tsx", error)
       }
       this.setState({ following })
     })
   }
+}
+
+export function getSubjectArtist(props: Props) {
+  return props.rail.followedArtistContext.artist || props.rail.relatedArtistContext.artist
 }
 
 interface Styles {
