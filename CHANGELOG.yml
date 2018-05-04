@@ -1,7 +1,7 @@
 upcoming:
   version: 4.1.1
   date: TBA
-  emission_version: 1.4.6
+  emission_version: 1.4.7
   user_facing:
     - WIP Buy now works show in an Auction screen - Chris
     - ARVIR fixes & improvements - orta
