@@ -85,7 +85,7 @@ API_AVAILABLE(ios(11.0))
             }
 
             // Raycast the current artwork on to the invisible wall, and make the ghost invisible
-            if (([self.invisibleFloors containsObject:result.node] || [self.detectedPlanes containsObject:result.node]) ) {
+            if ([self.invisibleFloors containsObject:result.node]) {
 
                 // Try clone the node
 
@@ -94,10 +94,20 @@ API_AVAILABLE(ios(11.0))
 ////                [wall lookAt:self.sceneView.pointOfView.worldPosition];
 //                [result.node.parentNode addChildNode:wall];
 
+                SCNNode *staticCameraReference = [self.sceneView.pointOfView copy];
+                [self.sceneView.pointOfView.parentNode addChildNode:staticCameraReference];
+
                 ARSCNWallNode *wall = [ARSCNWallNode fullWallNode];
                 SCNNode *userWall = [SCNNode nodeWithGeometry:wall];
-                userWall.position = result.localCoordinates;
-                userWall.eulerAngles = SCNVector3Make(M_PI_2, 0, 0);
+                userWall.position = self.ghostWall.position;
+                userWall.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
+
+                // Pitch, Yaw, Roll
+
+                SCNLookAtConstraint *lookAtCamera = [SCNLookAtConstraint lookAtConstraintWithTarget:staticCameraReference];
+                lookAtCamera.gimbalLockEnabled = YES;
+                userWall.constraints = @[lookAtCamera];
+
                 [result.node addChildNode: userWall];
 
                 // When adding as a child node and setting the same as the ghost
@@ -269,7 +279,7 @@ API_AVAILABLE(ios(11.0))
     planeNode.position = SCNVector3Make(planeAnchor.center.x, planeAnchor.center.y, planeAnchor.center.z);
     planeNode.name = @"Detected Area";
 
-    planeNode.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
+//    planeNode.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
     return planeNode;
 }
 
