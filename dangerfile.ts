@@ -44,6 +44,11 @@ if (modifiedAppFiles.length > 0 && !trivialPR && !changelogChanges) {
   fail("No CHANGELOG added.")
 }
 
+// Check that the changelog contains only H3's
+if (changelogChanges && fs.readFileSync("CHANGELOG.md", "utf8").includes("\n## ")) {
+  fail("Changelog must only contain H3's, but contains H2's.")
+}
+
 // Check that every file touched has a corresponding test file
 const correspondingTestsForAppFiles = touchedAppOnlyFiles.map(f => {
   const newPath = path.dirname(f)
