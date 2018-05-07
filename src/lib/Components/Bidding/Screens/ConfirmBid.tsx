@@ -53,7 +53,6 @@ const bidderPositionMutation = graphql`
         }
         status
         message_header
-        message_description
         message_description_md
       }
     }
@@ -92,18 +91,19 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   }
 
   verifyBidPosition(results, errors) {
-    const positionId = results.createBidderPosition.position.id
-    const query = `
-      {
-        me {
-          bidder_position(id: "${positionId}") {
-            processed_at
-            is_active
+    const status = results.createBidderPosition.result.status
+    if (!errors && status === "SUCCESS") {
+      const positionId = results.createBidderPosition.result.position.id
+      const query = `
+        {
+          me {
+            bidder_position(id: "${positionId}") {
+              processed_at
+              is_active
+            }
           }
         }
-      }
-    `
-    if (!errors && positionId !== BID_NOT_HIGH_ENOUGH) {
+      `
       const interval = setInterval(() => {
         metaphysics({ query }).then(this.checkBidPosition.bind(this))
       }, 1000)

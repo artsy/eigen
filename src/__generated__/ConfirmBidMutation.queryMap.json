@@ -1,7 +1,3 @@
 {
-<<<<<<< HEAD
-  "abfaebe826f21f53fc4df95e1dc8aa7e": "mutation ConfirmBidMutation(\n  $input: BidderPositionInput!\n) {\n  createBidderPosition(input: $input) {\n    position {\n      id\n      message\n      __id\n    }\n  }\n}\n"
-=======
-  "2eac42d92890d52d7ca9b651f5927d31": "mutation ConfirmBidMutation(\n  $input: BidderPositionInput!\n) {\n  createBidderPosition(input: $input) {\n    result {\n      position {\n        id\n        __id\n      }\n      status\n      message_header\n      message_description\n      message_description_md\n    }\n  }\n}\n"
->>>>>>> err msg from gravity
+  "9cf3c122310f21fb4a09d56a43533837": "mutation ConfirmBidMutation(\n  $input: BidderPositionInput!\n) {\n  createBidderPosition(input: $input) {\n    result {\n      position {\n        id\n        __id\n      }\n      status\n      message_header\n      message_description_md\n    }\n  }\n}\n"
 }

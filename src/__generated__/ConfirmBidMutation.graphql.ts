@@ -17,7 +17,6 @@ export type ConfirmBidMutationResponse = {
             }) | null;
             readonly status: string;
             readonly message_header: string | null;
-            readonly message_description: string | null;
             readonly message_description_md: string | null;
         }) | null;
     }) | null;
@@ -37,7 +36,6 @@ mutation ConfirmBidMutation(
       }
       status
       message_header
-      message_description
       message_description_md
     }
   }
@@ -121,13 +119,6 @@ v1 = [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "message_description",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
             "name": "message_description_md",
             "args": null,
             "storageKey": null
@@ -141,7 +132,7 @@ return {
   "kind": "Request",
   "operationKind": "mutation",
   "name": "ConfirmBidMutation",
-  "id": "2eac42d92890d52d7ca9b651f5927d31",
+  "id": "9cf3c122310f21fb4a09d56a43533837",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -160,5 +151,5 @@ return {
   }
 };
 })();
-(node as any).hash = '4c22688bc42017fa01cba981b9eda1d8';
+(node as any).hash = '26d40f7613c91a0fe6bce9cf70932f3d';
 export default node;
