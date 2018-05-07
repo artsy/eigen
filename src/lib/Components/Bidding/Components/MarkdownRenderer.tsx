@@ -56,11 +56,11 @@ export const toReact = md => {
   return reactOutput(syntaxTree)
 }
 
-interface NariveMarkdownProps {
+interface NativeMarkdownProps {
   md: string
 }
 
-export class MarkdownRenderer extends React.Component<NariveMarkdownProps> {
+export class MarkdownRenderer extends React.Component<NativeMarkdownProps> {
   render() {
     return <View key={0}>{reactOutput(parser(this.props.md))}</View>
   }
