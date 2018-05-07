@@ -108,29 +108,6 @@ exports[`renders not highest bid screen properly 1`] = `
       allowFontScaling={true}
       color="black60"
       ellipsizeMode="tail"
-      fontSize={3}
-      mb={5}
-      style={
-        Array [
-          Object {
-            "color": "#666",
-            "fontFamily": "AGaramondPro-Regular",
-            "fontSize": 16,
-            "marginBottom": 30,
-            "textAlign": "center",
-          },
-          undefined,
-        ]
-      }
-      textAlign="center"
-    >
-      Increase your max bid to take the lead.
-    </Text>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      color="black60"
-      ellipsizeMode="tail"
       fontSize={1}
       style={
         Array [

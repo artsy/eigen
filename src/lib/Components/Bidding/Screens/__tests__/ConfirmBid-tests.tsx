@@ -7,9 +7,13 @@ import { ConfirmBid } from "../ConfirmBid"
 it("renders properly", () => {
   const saleArtwork = {
     artwork: {
+      id: "meteor shower",
       title: "Meteor Shower",
       date: "2015",
       artist_names: "Makiko Kudo",
+    },
+    sale: {
+      id: "best art sale in town",
     },
     lot_label: "538",
   }

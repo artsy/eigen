@@ -13,6 +13,8 @@ import { Timer } from "../Components/Timer"
 
 interface BidResultProps {
   winning: boolean
+  message_header?: string
+  message_description_md?: string
 }
 
 export class BidResult extends React.Component<BidResultProps> {
@@ -39,12 +41,9 @@ export class BidResult extends React.Component<BidResultProps> {
           <Container>
             <CenteringContainer>
               <Icon20 m={2} source={require("../../../../../images/circle-x-red.png")} />
-              <SerifSemibold18 mb={4}>Your bid wasn’t high enough</SerifSemibold18>
-
-              <StyledText maxWidth={280}>
-                Another bidder placed a higher max bid or the same max bid before you did.
-              </StyledText>
-              <StyledText>Increase your max bid to take the lead.</StyledText>
+              <SerifSemibold18 mb={4}>{this.props.message_header}</SerifSemibold18>
+              {/* TODO: parse makedown and render links */}
+              <StyledText maxWidth={280}>{this.props.message_description_md}</StyledText>
 
               <Sans12 color="black60">Time left</Sans12>
               <Timer timeLeftInMilliseconds={1000 * 60 * 20} />

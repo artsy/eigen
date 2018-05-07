@@ -76,7 +76,7 @@ type Artist implements Node {
   _id: String!
   cached: Int
   alternate_names: [String]
-  articles(sort: ArticleSorts, limit: Int): [Article]
+  articles(sort: ArticleSorts, limit: Int, in_editorial_feed: Boolean): [Article]
   artists(
     # The number of Artists to return
     size: Int
@@ -136,6 +136,9 @@ type Artist implements Node {
 
   # A string of the form "Nationality, Birthday (or Birthday-Deathday)"
   formatted_nationality_and_birthday: String
+
+  # A list of genes associated with an artist
+  genes: [Gene]
   gender: String
   href: String
   has_metadata: Boolean
@@ -277,7 +280,7 @@ type ArtistItem implements Node {
   _id: String!
   cached: Int
   alternate_names: [String]
-  articles(sort: ArticleSorts, limit: Int): [Article]
+  articles(sort: ArticleSorts, limit: Int, in_editorial_feed: Boolean): [Article]
   artists(
     # The number of Artists to return
     size: Int
@@ -337,6 +340,9 @@ type ArtistItem implements Node {
 
   # A string of the form "Nationality, Birthday (or Birthday-Deathday)"
   formatted_nationality_and_birthday: String
+
+  # A list of genes associated with an artist
+  genes: [Gene]
   gender: String
   href: String
   has_metadata: Boolean
@@ -1435,8 +1441,15 @@ type BidderPositionMaxBid {
   display: String
 }
 
-type BidderPositionPayload {
+type BidderPositionMutationResult {
+  status: String!
+  message_header: String
+  message_description_md: String
   position: BidderPosition
+}
+
+type BidderPositionPayload {
+  result: BidderPositionMutationResult
   clientMutationId: String
 }
 
@@ -2440,6 +2453,7 @@ type Gene implements Node {
   href: String
   image: Image
   is_published: Boolean
+  is_followed: Boolean
   mode: String
   name: String
 
@@ -2604,6 +2618,7 @@ type GeneItem implements Node {
   href: String
   image: Image
   is_published: Boolean
+  is_followed: Boolean
   mode: String
   name: String
 
@@ -3067,6 +3082,7 @@ type HomePageModuleContextGene implements Node {
   href: String
   image: Image
   is_published: Boolean
+  is_followed: Boolean
   mode: String
   name: String
 
@@ -3348,6 +3364,9 @@ type Me implements Node {
     # Only the bidder positions for a specific auction
     sale_id: String
   ): [BidderPosition]
+
+  # Returns a single bidder position
+  bidder_position(id: String!): BidderPosition
   collector_profile: CollectorProfileType
 
   # A conversation, usually between a user and a partner
@@ -3376,6 +3395,7 @@ type Me implements Node {
   # A list of the current user’s inquiry requests
   followed_genes(after: String, first: Int, before: String, last: Int): FollowGeneConnection
   followsAndSaves: FollowsAndSaves
+  has_qualified_credit_cards: Boolean
 
   # An invoice
   invoice(
@@ -4206,6 +4226,12 @@ type Query {
     #         Accepts list of ids.
     #       
     ids: [String]
+
+    #
+    #         Only return artists matching specified slugs.
+    #         Accepts list of slugs. (e.g. 'andy-warhol', 'banksy')
+    #       
+    slugs: [String]
     page: Int = 1
     size: Int
     sort: ArtistSorts
@@ -4327,6 +4353,17 @@ type Query {
     # The slug or ID of the Gene
     id: String!
   ): Gene
+
+  # A list of Genes
+  genes(
+    size: Int
+
+    #
+    #         Only return genes matching specified slugs.
+    #         Accepts list of slugs.
+    #       
+    slugs: [String]
+  ): [Gene]
 
   # List of curated genes with custom images
   suggested_genes: [Gene]
@@ -4538,6 +4575,10 @@ type Query {
     # Number of results to return
     size: Int = 40
   ): TrendingArtists
+  user(
+    # Email to search for user by
+    email: String
+  ): User
 
   # A list of Users
   users(ids: [String]): [User]
@@ -5537,8 +5578,15 @@ type UpdateSubmissionMutationPayload {
 }
 
 type User {
+  # A globally unique ID.
+  __id: ID!
+
   # User id.
   id: String!
+
+  # A type-specific Gravity Mongo Document ID.
+  _id: String!
+  cached: Int
 
   # The given name of the user.
   name: String!
@@ -5554,6 +5602,9 @@ type User {
 
   # The price range the collector has selected
   price_range: String
+
+  # Check whether a user exists by email address before creating an account.
+  userAlreadyExists: Boolean
 }
 
 # A wildcard used to support complex root queries in Relay
@@ -5589,6 +5640,12 @@ type Viewer {
     #         Accepts list of ids.
     #       
     ids: [String]
+
+    #
+    #         Only return artists matching specified slugs.
+    #         Accepts list of slugs. (e.g. 'andy-warhol', 'banksy')
+    #       
+    slugs: [String]
     page: Int = 1
     size: Int
     sort: ArtistSorts
@@ -5710,6 +5767,17 @@ type Viewer {
     # The slug or ID of the Gene
     id: String!
   ): Gene
+
+  # A list of Genes
+  genes(
+    size: Int
+
+    #
+    #         Only return genes matching specified slugs.
+    #         Accepts list of slugs.
+    #       
+    slugs: [String]
+  ): [Gene]
 
   # List of curated genes with custom images
   suggested_genes: [Gene]
@@ -5921,6 +5989,10 @@ type Viewer {
     # Number of results to return
     size: Int = 40
   ): TrendingArtists
+  user(
+    # Email to search for user by
+    email: String
+  ): User
 
   # A list of Users
   users(ids: [String]): [User]
