@@ -9749,6 +9749,10 @@ signedsource@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/signedsource/-/signedsource-1.0.0.tgz#1ddace4981798f93bd833973803d80d52e93ad6a"
 
+simple-markdown@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/simple-markdown/-/simple-markdown-0.4.0.tgz#86ec1344c7747a3ca120f5e4325be88cb4a67cc3"
+
 simple-plist@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/simple-plist/-/simple-plist-0.2.1.tgz#71766db352326928cf3a807242ba762322636723"
