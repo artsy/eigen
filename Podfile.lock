@@ -73,7 +73,7 @@ PODS:
     - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
   - EDColor (1.0.0)
-  - Emission (1.4.6):
+  - Emission (1.4.8):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - Extraction (>= 1.2.1)
@@ -298,7 +298,7 @@ DEPENDENCIES:
   - "XCTest+OHHTTPStubSuiteCleanUp"
 
 SPEC REPOS:
-  https://github.com/artsy/Specs:
+  https://github.com/artsy/Specs.git:
     - Aerodramus
     - "Artsy+UIColors"
     - "Artsy+UIFonts"
@@ -445,7 +445,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: d09265166632f16b0968044c5024cdb99bf10169
+  Emission: ece22c8238543667b49ab7d255618ca848072d6d
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
