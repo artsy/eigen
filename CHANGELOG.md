@@ -42,6 +42,7 @@
 * Adds support for viewing conditions of sale - ash
 * Fixes crash when following an artist from the ‘related artist’ Home/ForYou rail - alloy
 * Creates and verifies bidder position - sepans
+* Adds `<MarkdownRenderer>` component - sepans
 
 ### 1.4.6
 
