@@ -18,7 +18,7 @@ query QueryRenderersForYouQuery {
 }
 
 fragment ForYou_forYou on HomePage {
-  artwork_modules(max_rails: -1, max_followed_gene_rails: -1, order: [ACTIVE_BIDS, RECOMMENDED_WORKS, FOLLOWED_ARTISTS, RELATED_ARTISTS, FOLLOWED_GALLERIES, SAVED_WORKS, LIVE_AUCTIONS, CURRENT_FAIRS, FOLLOWED_GENES, GENERIC_GENES], exclude: [FOLLOWED_ARTISTS]) {
+  artwork_modules(max_rails: -1, max_followed_gene_rails: -1, order: [ACTIVE_BIDS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_ARTISTS, RELATED_ARTISTS, FOLLOWED_GALLERIES, SAVED_WORKS, LIVE_AUCTIONS, CURRENT_FAIRS, FOLLOWED_GENES, GENERIC_GENES], exclude: [FOLLOWED_ARTISTS]) {
     __id
     ...ArtworkCarousel_rail
   }
@@ -322,7 +322,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersForYouQuery",
-  "id": "4e1dcbf019f47acb19343c270e0bbc78",
+  "id": "bee98558579f6cfb3966d8b70c43fbe9",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -368,7 +368,7 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "artwork_modules",
-            "storageKey": "artwork_modules(exclude:[\"FOLLOWED_ARTISTS\"],max_followed_gene_rails:-1,max_rails:-1,order:[\"ACTIVE_BIDS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\",\"GENERIC_GENES\"])",
+            "storageKey": "artwork_modules(exclude:[\"FOLLOWED_ARTISTS\"],max_followed_gene_rails:-1,max_rails:-1,order:[\"ACTIVE_BIDS\",\"RECENTLY_VIEWED_WORKS\",\"RECOMMENDED_WORKS\",\"FOLLOWED_ARTISTS\",\"RELATED_ARTISTS\",\"FOLLOWED_GALLERIES\",\"SAVED_WORKS\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"FOLLOWED_GENES\",\"GENERIC_GENES\"])",
             "args": [
               {
                 "kind": "Literal",
@@ -395,6 +395,7 @@ return {
                 "name": "order",
                 "value": [
                   "ACTIVE_BIDS",
+                  "RECENTLY_VIEWED_WORKS",
                   "RECOMMENDED_WORKS",
                   "FOLLOWED_ARTISTS",
                   "RELATED_ARTISTS",

@@ -91,7 +91,7 @@ Unhandled JS Exception: RelayQL: Unexpected invocation at runtime. Either the Ba
 failed to identify this call site. Make sure it is being used verbatim as `Relay.QL`
 ```
 
-### Deployment
+### Deploying Emission
 
 1. Ensure that the React version required by Emission has been published to [our spec-repo][spec-repo].
    Assuming no breaking changes in RN's folder structures, you can run `make update_specs_repos`.
@@ -100,6 +100,10 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 4. For non-beta releases, use either `npm version patch`, `npm version minor`, or `npm version major`. For
    beta releases use `npm version prerelease`.
 5. If integrating in Eigen consult the docs [on updating Emission](/artsy/eigen/blob/master/docs/updating_emission.md)
+
+### Automated Emission App Deploys
+
+The Emission app (in `Example/`) is deployed automatically to TestFlight once a week through [emission-nebula](https://github.com/artsy/emission-nebula). See that repo for more details.
 
 ### Resources
 

@@ -2,18 +2,20 @@
 
 exports[`renders properly 1`] = `
 <View
+  flex={1}
+  flexDirection="column"
+  justifyContent="space-between"
+  m={0}
   style={
     Array [
       Object {
         "flexBasis": 0,
-        "flexDirection": "column",
         "flexGrow": 1,
         "flexShrink": 1,
-        "justifyContent": "space-between",
-        "marginBottom": 20,
-        "marginLeft": 20,
-        "marginRight": 20,
-        "marginTop": 20,
+        "marginBottom": 0,
+        "marginLeft": 0,
+        "marginRight": 0,
+        "marginTop": 0,
       },
       undefined,
     ]
@@ -23,21 +25,23 @@ exports[`renders properly 1`] = `
     accessible={true}
     allowFontScaling={true}
     ellipsizeMode="tail"
+    fontSize={5}
+    m={4}
     style={
       Array [
         Object {
-          "fontFamily": "AGaramondPro-Regular",
-          "fontSize": 20,
-          "fontWeight": "bold",
-          "marginBottom": 10,
-          "marginLeft": 10,
-          "marginRight": 10,
-          "marginTop": 10,
+          "fontFamily": "AGaramondPro-Semibold",
+          "fontSize": 22,
+          "marginBottom": 20,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 20,
           "textAlign": "center",
         },
         undefined,
       ]
     }
+    textAlign="center"
   >
     Your max bid
   </Text>
@@ -55,36 +59,36 @@ exports[`renders properly 1`] = `
       items={
         Array [
           Object {
-            "label": "$35,000 USD",
+            "label": "$35,000",
             "textColor": undefined,
-            "value": 3500000,
+            "value": 0,
           },
           Object {
-            "label": "$40,000 USD",
+            "label": "$40,000",
             "textColor": undefined,
-            "value": 4000000,
+            "value": 1,
           },
           Object {
-            "label": "$45,000 USD",
+            "label": "$45,000",
             "textColor": undefined,
-            "value": 4500000,
+            "value": 2,
           },
           Object {
-            "label": "$50,000 USD",
+            "label": "$50,000",
             "textColor": undefined,
-            "value": 5000000,
+            "value": 3,
           },
           Object {
-            "label": "$55,000 USD",
+            "label": "$55,000",
             "textColor": undefined,
-            "value": 5500000,
+            "value": 4,
           },
         ]
       }
       onChange={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      selectedIndex={2}
+      selectedIndex={0}
       style={
         Array [
           Object {
@@ -96,55 +100,70 @@ exports[`renders properly 1`] = `
     />
   </View>
   <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
-    accessible={true}
-    collapsable={undefined}
-    hitSlop={undefined}
-    nativeID={undefined}
-    onLayout={undefined}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
+    m={4}
     style={
-      Object {
-        "alignItems": "center",
-        "backgroundColor": "rgba(0, 0, 0, 1)",
-        "borderColor": "rgba(0, 0, 0, 1)",
-        "borderWidth": 1,
-        "height": 46,
-        "justifyContent": "center",
-      }
+      Array [
+        Object {
+          "marginBottom": 20,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 20,
+        },
+        undefined,
+      ]
     }
-    testID={undefined}
   >
-    <Text
+    <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
       accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
+      collapsable={undefined}
+      hitSlop={undefined}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        Array [
-          Object {
-            "fontSize": 12,
-          },
-          Object {
-            "color": "rgba(255, 255, 255, 1)",
-            "fontFamily": "AGaramondPro-Regular",
-            "fontSize": 14,
-            "opacity": 1,
-          },
-          Object {
-            "fontFamily": "AvantGardeGothicITC",
-          },
-        ]
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "rgba(0, 0, 0, 1)",
+          "borderColor": "rgba(0, 0, 0, 1)",
+          "borderWidth": 1,
+          "height": 46,
+          "justifyContent": "center",
+        }
       }
+      testID={undefined}
     >
-      NEXT
-    </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "fontSize": 12,
+            },
+            Object {
+              "color": "rgba(255, 255, 255, 1)",
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 14,
+              "opacity": 1,
+            },
+            Object {
+              "fontFamily": "AvantGardeGothicITC",
+            },
+          ]
+        }
+      >
+        NEXT
+      </Text>
+    </View>
   </View>
 </View>
 `;

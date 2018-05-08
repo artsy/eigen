@@ -1,55 +1,79 @@
 import React from "react"
-import styled from "styled-components/native"
+import { NavigatorIOS, ViewProperties } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
+
+import { Flex } from "../Elements/Flex"
 
 import { Button } from "../Components/Button"
+import { Container } from "../Components/Containers"
 import { MaxBidPicker } from "../Components/MaxBidPicker"
 import { Title } from "../Components/Title"
+import { ConfirmBidScreen } from "./ConfirmBid"
 
-interface SelectMaxBidProps {
-  saleArtworkID: string
+import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
+import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
+
+interface SelectMaxBidProps extends ViewProperties {
+  sale_artwork: SelectMaxBid_sale_artwork
+  navigator: NavigatorIOS
 }
 
-// we are using hard-coded values for now.
-const Bids = [
-  {
-    label: "$35,000 USD",
-    value: 3500000,
-  },
-  {
-    label: "$40,000 USD",
-    value: 4000000,
-  },
-  {
-    label: "$45,000 USD",
-    value: 4500000,
-  },
-  {
-    label: "$50,000 USD",
-    value: 5000000,
-  },
-  {
-    label: "$55,000 USD",
-    value: 5500000,
-  },
-]
+interface SelectMaxBidState {
+  selectedBidIndex: number
+}
 
-export class SelectMaxBid extends React.Component<SelectMaxBidProps> {
+export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBidState> {
+  state = {
+    selectedBidIndex: 0,
+  }
+
+  onPressNext = () => {
+    this.props.navigator.push({
+      component: ConfirmBidScreen,
+      title: "",
+      passProps: {
+        sale_artwork: this.props.sale_artwork,
+        bid: this.props.sale_artwork.increments[this.state.selectedBidIndex],
+      },
+    })
+  }
+
   render() {
+    const bids =
+      (this.props.sale_artwork &&
+        this.props.sale_artwork.increments &&
+        this.props.sale_artwork.increments.map(i => ({ label: i.display, value: i.cents }))) ||
+      []
+
     return (
-      <Container>
-        <Title>Your max bid</Title>
+      <BiddingThemeProvider>
+        <Container m={0}>
+          <Title>Your max bid</Title>
 
-        <MaxBidPicker selectedValue={4500000} bids={Bids} />
+          <MaxBidPicker
+            bids={bids}
+            onValueChange={(_, index) => this.setState({ selectedBidIndex: index })}
+            selectedValue={this.state.selectedBidIndex}
+          />
 
-        <Button text="NEXT" onPress={() => null} />
-      </Container>
+          <Flex m={4}>
+            <Button text="NEXT" onPress={this.onPressNext} />
+          </Flex>
+        </Container>
+      </BiddingThemeProvider>
     )
   }
 }
 
-const Container = styled.View`
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
-  margin: 20px;
-`
+export const MaxBidScreen = createFragmentContainer(
+  SelectMaxBid,
+  graphql`
+    fragment SelectMaxBid_sale_artwork on SaleArtwork {
+      increments {
+        display
+        cents
+      }
+      ...ConfirmBid_sale_artwork
+    }
+  `
+)

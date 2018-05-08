@@ -127,6 +127,7 @@ export default createRefetchContainer(
         max_followed_gene_rails: -1
         order: [
           ACTIVE_BIDS
+          RECENTLY_VIEWED_WORKS
           RECOMMENDED_WORKS
           FOLLOWED_ARTISTS
           RELATED_ARTISTS

@@ -14,10 +14,9 @@
 
 -->
 
-## Master
-
 ## 1.5.0
 
+* Adds Recently Viewed Works rail to Home - sarah
 * Upgrade to React Native 0.54.4 - alloy/orta
 * Follow Force and reduce image quality to 80 - alloy
 * Inquiries use the same user-agent as emission - orta
@@ -26,10 +25,26 @@
 * Add persisted queries support to Relay - alloy
 * Add ability to preload queries - alloy
 * Add ability to specifically style the button headline - yuki24
-* Adds (empty) BidFlow component and view controller - ashfurrow
+* Adds BidFlow component and view controller - ashfurrow
 * Use a more appropriate type for textStyle in ButtonProps - yuki24
+* Adds confrirm bid screen for Bid Flow - sepans
+* Load Bid prices dynamically - sepans
+* Adds bid result screens - yuki24
+* Updates bid flow to consume preformatted bid increments - ash
+* Updates MaxBidPicker to maintain state of currently selected bid increment - ash
+* Adds commonly used typefaces - yuki24
+* Updates logging in native code to use NSNumber instead of platform-specific casts - ash
+* Transitions between the bid picker to the bid confirmation components - ash
+* Adds a more re-useable low-level components - yuki24
+* Adds a confirmation screen for first-time bidders - yuki24
+* Adds a new color `red100` (`#F7625A`) to the theme - yuki24
+* Adds a `<CheckBox>` component - yuki24
+* Adds support for viewing conditions of sale - ash
+* Fixes crash when following an artist from the ‘related artist’ Home/ForYou rail - alloy
+* Creates and verifies bidder position - sepans
+* Adds `<MarkdownRenderer>` component - sepans
 
-## 1.4.6
+### 1.4.6
 
 * Scroll to last sent message upon send - sarah
 * Upgrade to latest Relay, including our custome Node ID and language plugin patches - alloy

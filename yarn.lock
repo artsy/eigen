@@ -9749,6 +9749,10 @@ signedsource@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/signedsource/-/signedsource-1.0.0.tgz#1ddace4981798f93bd833973803d80d52e93ad6a"
 
+simple-markdown@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/simple-markdown/-/simple-markdown-0.4.0.tgz#86ec1344c7747a3ca120f5e4325be88cb4a67cc3"
+
 simple-plist@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/simple-plist/-/simple-plist-0.2.1.tgz#71766db352326928cf3a807242ba762322636723"
@@ -10150,6 +10154,12 @@ styled-components@^3.1.4:
     stylis "^3.4.0"
     stylis-rule-sheet "^0.0.7"
     supports-color "^3.2.3"
+
+styled-system@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/styled-system/-/styled-system-2.2.4.tgz#9dbdca131c9ad75364dc8917e1df0eb0b92eb38e"
+  dependencies:
+    prop-types "^15.6.0"
 
 stylelint-config-recommended@^2.0.0:
   version "2.0.1"
@@ -11007,7 +11017,7 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
-"vm2@github:patriksimek/vm2#custom_files":
+vm2@patriksimek/vm2#custom_files:
   version "3.5.0"
   resolved "https://codeload.github.com/patriksimek/vm2/tar.gz/7e82f90ac705fc44fad044147cb0df09b4c79a57"
 
