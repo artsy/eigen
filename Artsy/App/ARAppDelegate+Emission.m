@@ -181,18 +181,16 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
             [[ARTopMenuViewController sharedController].rootNavigationController toggleSearch];
         } else {
             UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadPath:route];
+            UIViewController *targetViewController = [ARTopMenuViewController sharedController];
 
             // We need to accomodate presenting a modal _on top_ of an existing modal view controller. Consignments
             // and BidFlow are presented modally, and we want to let them present modal view controllers on top of themselves.
-            if ([[ARTopMenuViewController sharedController] presentedViewController]) {
-                [[[ARTopMenuViewController sharedController] presentedViewController] presentViewController:viewController
-                                                                                                   animated:ARPerformWorkAsynchronously
-                                                                                                 completion:nil];
-            } else {
-                [[ARTopMenuViewController sharedController] presentViewController:viewController
-                                                                         animated:ARPerformWorkAsynchronously
-                                                                       completion:nil];
+            if (targetViewController.presentedViewController) {
+                targetViewController = targetViewController.presentedViewController;
             }
+            [targetViewController presentViewController:viewController
+                                               animated:ARPerformWorkAsynchronously
+                                             completion:nil];
         }
     };
 
