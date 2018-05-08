@@ -104,6 +104,7 @@
             ARAugmentedRealityConfig *config = [[ARAugmentedRealityConfig alloc] initWithImage:self.imageView.image size:size];
             config.artworkID = self.artwork.artworkUUID;
             config.artworkSlug = self.artwork.artworkID;
+            config.floorBasedVIR = [AROptions boolForOption:AROptionsFloorBasedARVIR];
             config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
 
             if (shouldSkipSetup) {

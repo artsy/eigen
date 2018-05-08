@@ -1,7 +1,7 @@
 upcoming:
   version: 4.1.1
   date: TBA
-  emission_version: 1.4.6
+  emission_version: 1.4.8
   user_facing:
     - WIP Buy now works show in an Auction screen - Chris
     - ARVIR fixes & improvements - orta
@@ -10,9 +10,10 @@ upcoming:
     - conditionally adding horizontal line to lotstandings view wrt buy now - maxim
     - Artwork Screen does not get overscrolled after coming back from ARVIR - orta
     - Fixes crash when submitting consignments from iOS 11 - ash
+    - Adds a method to determine root emission VCs for tabbing - maxim
   dev:
     - Records artwork views using metaphysics mutation - Sarah
-  
+
 releases:
   - version: 4.1.0
     date: Apr 6, 2018

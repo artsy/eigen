@@ -74,28 +74,37 @@ API_AVAILABLE(ios(11.0))
         NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.pointOnScreenForArtworkProjection options: options];
         for (SCNHitTestResult *result in results) {
 
+            // When you want to place down an Artwork
             if ([result.node isEqual:self.wall]) {
                 SCNBox *box = [SCNArtworkNode nodeWithConfig:self.config];
                 SCNNode *artwork = [SCNNode nodeWithGeometry:box];
                 artwork.position = result.localCoordinates;
                 // Pitch, Yaw, Roll
-                artwork.eulerAngles = SCNVector3Make(0, 0, -M_PI_2);
+                artwork.eulerAngles = SCNVector3Make(0, 0, M_PI);
+
                 [result.node addChildNode:artwork];
 
                 self.artwork = artwork;
-
                 [self.ghostWall removeFromParentNode];
                 return;
             }
 
-            // Raycast the current artwork on to the invisible wall, and make the ghost invisible
+            // When you want to place the invisible wall, based on the current ghostWall
             if (!self.wall && [self.invisibleFloors containsObject:result.node]) {
-
                 ARSCNWallNode *wall = [ARSCNWallNode fullWallNode];
                 SCNNode *userWall = [SCNNode nodeWithGeometry:wall];
-                userWall.position = SCNVector3Make(self.ghostWall.position.x, self.ghostWall.position.y + wall.height/2, self.ghostWall.position.z) ;
+                userWall.position = SCNVector3Make(
+                  self.ghostWall.position.x,
+                  self.ghostWall.position.y,
+                  self.ghostWall.position.z + wall.height/2
+                );
+
                 userWall.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
-              [result.node addChildNode: userWall];
+                [result.node addChildNode: userWall];
+                [self.ghostWall removeFromParentNode];
+
+                self.wall = userWall;
+                self.ghostWall = nil;
 
                 // While the positioning of some of this is still unpredictable, I'd like to keep my
                 // notes and other attempts around while I figure out some of the details
@@ -116,7 +125,6 @@ API_AVAILABLE(ios(11.0))
 //                lookAtCamera.gimbalLockEnabled = YES;
 //                userWall.constraints = @[lookAtCamera];
 //
-
 
                 // When adding as a child node and setting the same as the ghost
 
@@ -144,10 +152,6 @@ API_AVAILABLE(ios(11.0))
 //                permenentWall.rotation = self.ghostWall.world;
 //
 //                [self.sceneView.scene.rootNode addChildNode:userWall];
-
-                [self.ghostWall removeFromParentNode];
-
-                self.wall = userWall;
             }
         }
     }
@@ -182,14 +186,20 @@ API_AVAILABLE(ios(11.0))
     NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.pointOnScreenForArtworkProjection options: options];
     for (SCNHitTestResult *result in results) {
         
-        if ([self.wall isEqual:result]) {
+        if ([self.wall isEqual:result.node]) {
             // Create a ghost artwork
             if (!self.ghostArtwork) {
                 // TODO add white lines around the artwork
+
                 SCNBox *box = [SCNArtworkNode nodeWithConfig:self.config];
                 SCNNode *artwork = [SCNNode nodeWithGeometry:box];
                 artwork.position = result.localCoordinates;
+                // Pitch, Yaw, Roll
+                artwork.eulerAngles = SCNVector3Make(0, 0, M_PI);
+                artwork.opacity = 0.5;
+
                 [result.node addChildNode:artwork];
+                self.ghostArtwork = artwork;
             }
             self.ghostArtwork.position = result.localCoordinates;
             return;
