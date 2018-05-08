@@ -100,7 +100,6 @@ NS_ASSUME_NONNULL_BEGIN
         backButton.layer.shadowColor = [UIColor blackColor].CGColor;
         backButton.layer.shadowOffset = CGSizeMake(0, 0);
         backButton.layer.shadowOpacity = 0.4;
-        backButton.layer.shouldRasterize = YES;
 
         // Reset
         ARClearFlatButton *resetButton = [[ARClearFlatButton alloc] init];
@@ -115,7 +114,6 @@ NS_ASSUME_NONNULL_BEGIN
         resetButton.layer.shadowColor = [UIColor blackColor].CGColor;
         resetButton.layer.shadowOffset = CGSizeMake(0, 0);
         resetButton.layer.shadowOpacity = 0.4;
-        resetButton.layer.shouldRasterize = YES;
 
         [self.view addSubview:resetButton];
 
@@ -129,9 +127,9 @@ NS_ASSUME_NONNULL_BEGIN
         betaImage.translatesAutoresizingMaskIntoConstraints = false;
         [self.view addSubview:betaImage];
 
+        // Any changes to this will need to be reflected in ARAugmentedVIRModalView also
         BOOL isEdgeToEdgePhone = !UIEdgeInsetsEqualToEdgeInsets( [ARTopMenuViewController sharedController].view.safeAreaInsets, UIEdgeInsetsZero);
         CGFloat backTopMargin = isEdgeToEdgePhone ? -17 : 9;
-        CGFloat betaTopMargin = isEdgeToEdgePhone ? 0 : 26;
 
         [self.view addConstraints: @[
             [backButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:backTopMargin],
@@ -139,7 +137,7 @@ NS_ASSUME_NONNULL_BEGIN
             [backButton.heightAnchor constraintEqualToConstant:50.0],
             [backButton.widthAnchor constraintEqualToConstant:50.0],
 
-            [resetButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:20],
+            [resetButton.centerYAnchor constraintEqualToAnchor:backButton.centerYAnchor constant:0],
             [resetButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:0],
             [resetButton.heightAnchor constraintEqualToConstant:50.0],
             [resetButton.widthAnchor constraintEqualToConstant:50.0],
@@ -147,7 +145,7 @@ NS_ASSUME_NONNULL_BEGIN
             [phoneImage.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
             [phoneImage.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
 
-            [betaImage.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:betaTopMargin],
+            [betaImage.centerYAnchor constraintEqualToAnchor:backButton.centerYAnchor constant:0],
             [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20]
         ]];
 
@@ -246,6 +244,7 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
         CGFloat fadeTime = ARPerformWorkAsynchronously ? 0.3 : 0;
 
         [UIView animateWithDuration:fadeTime animations:^{
+            self.placeArtworkButton.hidden = YES;
             self.textLabel.alpha = 0;
 
         } completion:^(BOOL finished) {
@@ -319,6 +318,7 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
 {
     ar_dispatch_main_queue(^{
         self.resetButton.hidden = NO;
+        self.placeArtworkButton.hidden = YES;
         self.phoneImage.hidden = YES;
         self.textLabel.text = ARFinalARVIRSubtitle;
 
