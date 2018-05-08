@@ -35,7 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable) UILabel *textLabel;
 @property (nonatomic, strong, nullable) NSDate *dateOpenedAR;
 
-
 @end
 
 @implementation ARAugmentedVIRViewController
@@ -49,13 +48,16 @@ NS_ASSUME_NONNULL_BEGIN
 
     if (@available(iOS 11.0, *)) {
         _sceneView = [[ARSCNView alloc] init];
-        _interactionController = [[ARVIRHorizontalPlaneInteractionController alloc] initWithSession:_sceneView.session config:config scene:_sceneView delegate:self];
+
+        id Interactor = config.floorBasedVIR ? ARVIRHorizontalPlaneInteractionController.class  : ARVIRVerticalWallInteractionController.class;
+        _interactionController = [[Interactor alloc] initWithSession:_sceneView.session config:config scene:_sceneView delegate:self];
     }
 
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     if (@available(iOS 11.0, *)) {
         _dateOpenedAR = [NSDate date];
 
@@ -207,6 +209,10 @@ NS_ASSUME_NONNULL_BEGIN
 NSString *ARInitialARVIRSubtitle =  @"Stand a couple feet from your wall. Aim at a prominent object on the wall and move your phone in a circle.";
 NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in the room.";
 
+NSString *ARInitialFloorARVIRSubtitle =  @"Scan the floor by aiming at the ground and moving your phone left and right.";
+NSString *ARFloorAlignToWallARVIRSubtitle =   @"Align the marker where the floor meets the wall.";
+
+
 - (void)initialState
 {
     ar_dispatch_main_queue(^{
@@ -217,7 +223,7 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:YES forKey:ARAugmentedRealityHasSeenSetup];
 
-        self.textLabel.text = ARInitialARVIRSubtitle;
+        self.textLabel.text = self.config.floorBasedVIR ? ARInitialFloorARVIRSubtitle : ARInitialARVIRSubtitle;
 
         if (ARPerformWorkAsynchronously) {
             [self startTimerForModal];
@@ -241,7 +247,8 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
 
 - (void)fadeOutFinalText
 {
-    if ([self.textLabel.text isEqualToString:ARFinalARVIRSubtitle]) {
+    NSString *finalLabel = self.config.floorBasedVIR ? ARFloorAlignToWallARVIRSubtitle : ARFinalARVIRSubtitle;
+    if ([self.textLabel.text isEqualToString:finalLabel]) {
         CGFloat fadeTime = ARPerformWorkAsynchronously ? 0.3 : 0;
 
         [UIView animateWithDuration:fadeTime animations:^{
@@ -259,7 +266,8 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
 
 - (void)showModalForError
 {
-    NSString *errorMessage = @"We’re having trouble finding your wall. Make sure the room is well-lit, or try focusing on a different object on the wall.";
+    NSString *surface = self.config.floorBasedVIR ? @"floor" : @"wall";
+    NSString *errorMessage = [NSString stringWithFormat: @"We’re having trouble finding your %@. Make sure the room is well-lit, or try focusing on a different object on the %@.", surface, surface];
     ARAugmentedVIRModalView *modal = [[ARAugmentedVIRModalView alloc] initWithTitle:errorMessage delegate:self];
     [self.view addSubview:modal];
     [modal alignToView:self.view];
@@ -321,7 +329,7 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
         self.resetButton.hidden = NO;
         self.placeArtworkButton.hidden = YES;
         self.phoneImage.hidden = YES;
-        self.textLabel.text = ARFinalARVIRSubtitle;
+        self.textLabel.text = self.config.floorBasedVIR ? ARFloorAlignToWallARVIRSubtitle : ARFinalARVIRSubtitle;
 
         if (ARPerformWorkAsynchronously) {
             [self startTimerFadingOutFinalText];

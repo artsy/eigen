@@ -78,37 +78,45 @@ API_AVAILABLE(ios(11.0))
                 SCNBox *box = [SCNArtworkNode nodeWithConfig:self.config];
                 SCNNode *artwork = [SCNNode nodeWithGeometry:box];
                 artwork.position = result.localCoordinates;
+                // Pitch, Yaw, Roll
+                artwork.eulerAngles = SCNVector3Make(0, 0, -M_PI_2);
                 [result.node addChildNode:artwork];
 
                 self.artwork = artwork;
+
                 [self.ghostWall removeFromParentNode];
+                return;
             }
 
             // Raycast the current artwork on to the invisible wall, and make the ghost invisible
-            if ([self.invisibleFloors containsObject:result.node]) {
+            if (!self.wall && [self.invisibleFloors containsObject:result.node]) {
+
+                ARSCNWallNode *wall = [ARSCNWallNode fullWallNode];
+                SCNNode *userWall = [SCNNode nodeWithGeometry:wall];
+                userWall.position = SCNVector3Make(self.ghostWall.position.x, self.ghostWall.position.y + wall.height/2, self.ghostWall.position.z) ;
+                userWall.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
+              [result.node addChildNode: userWall];
+
+                // While the positioning of some of this is still unpredictable, I'd like to keep my
+                // notes and other attempts around while I figure out some of the details
 
                 // Try clone the node
 
 //                SCNNode *wall = [self.ghostWall clone];
 //                wall.constraints = @[];
-////                [wall lookAt:self.sceneView.pointOfView.worldPosition];
+//                [wall lookAt:self.sceneView.pointOfView.worldPosition];
 //                [result.node.parentNode addChildNode:wall];
-
-                SCNNode *staticCameraReference = [self.sceneView.pointOfView copy];
-                [self.sceneView.pointOfView.parentNode addChildNode:staticCameraReference];
-
-                ARSCNWallNode *wall = [ARSCNWallNode fullWallNode];
-                SCNNode *userWall = [SCNNode nodeWithGeometry:wall];
-                userWall.position = self.ghostWall.position;
-                userWall.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
+//
+//                SCNNode *staticCameraReference = [self.sceneView.pointOfView copy];
+//                [self.sceneView.pointOfView.parentNode addChildNode:staticCameraReference];
 
                 // Pitch, Yaw, Roll
+//
+//                SCNLookAtConstraint *lookAtCamera = [SCNLookAtConstraint lookAtConstraintWithTarget:staticCameraReference];
+//                lookAtCamera.gimbalLockEnabled = YES;
+//                userWall.constraints = @[lookAtCamera];
+//
 
-                SCNLookAtConstraint *lookAtCamera = [SCNLookAtConstraint lookAtConstraintWithTarget:staticCameraReference];
-                lookAtCamera.gimbalLockEnabled = YES;
-                userWall.constraints = @[lookAtCamera];
-
-                [result.node addChildNode: userWall];
 
                 // When adding as a child node and setting the same as the ghost
 
@@ -118,25 +126,26 @@ API_AVAILABLE(ios(11.0))
 
 //                userWall.transform = self.ghostWall.transform;
 //                userWall.orientation = self.ghostWall.orientation;
-////                userWall.eulerAngles = self.ghostWall.eulerAngles;
+//                userWall.eulerAngles = self.ghostWall.eulerAngles;
 //                userWall.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
 //
 //
 //                userWall.position = SCNVector3Make(
-//               self.ghostWall.position.x,
-//               self.ghostWall.position.y + wall.height,
-//               self.ghostWall.position.z
+//                 self.ghostWall.position.x,
+//                 self.ghostWall.position.y + wall.height,
+//                 self.ghostWall.position.z
 //               );
+//
 //                permenentWall.worldTransform = self.ghostWall.worldTransform;
 //                [userWall lookAt:self.sceneView.pointOfView.worldPosition];
 //                userWall.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
-
+//
 //                permenentWall.eulerAngles = self.ghostWall.eulerAngles;
 //                permenentWall.rotation = self.ghostWall.world;
-
+//
 //                [self.sceneView.scene.rootNode addChildNode:userWall];
 
-//                [self.ghostWall removeFromParentNode];
+                [self.ghostWall removeFromParentNode];
 
                 self.wall = userWall;
             }
@@ -166,20 +175,24 @@ API_AVAILABLE(ios(11.0))
     NSDictionary *options = @{
         SCNHitTestIgnoreHiddenNodesKey: @NO,
         SCNHitTestFirstFoundOnlyKey: @YES,
-        SCNHitTestOptionSearchMode: @(SCNHitTestSearchModeAll)
+        SCNHitTestOptionSearchMode: @(SCNHitTestSearchModeAll),
+        SCNHitTestBackFaceCullingKey: @NO
     };
 
     NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.pointOnScreenForArtworkProjection options: options];
     for (SCNHitTestResult *result in results) {
+        
         if ([self.wall isEqual:result]) {
             // Create a ghost artwork
             if (!self.ghostArtwork) {
+                // TODO add white lines around the artwork
                 SCNBox *box = [SCNArtworkNode nodeWithConfig:self.config];
                 SCNNode *artwork = [SCNNode nodeWithGeometry:box];
                 artwork.position = result.localCoordinates;
                 [result.node addChildNode:artwork];
             }
             self.ghostArtwork.position = result.localCoordinates;
+            return;
         }
 
         if ([self.invisibleFloors containsObject:result.node]) {
@@ -218,23 +231,26 @@ API_AVAILABLE(ios(11.0))
     if (!anchor) { return; }
     if (![anchor isKindOfClass:ARPlaneAnchor.class]) { return; }
 
-//    // Animate instead of jumping positions
-//    SCNTransaction.animationDuration = 0.1;
-//    ARPlaneAnchor *planeAnchor = (id)anchor;
-//
-//    for (SCNNode *planeNode in node.childNodes) {
-//        SCNPlane *plane = (id)planeNode.geometry;
-//
-//        if ([self.detectedPlanes containsObject:planeNode]) {
-//            plane.width = planeAnchor.extent.x;
-//            plane.height = planeAnchor.extent.z;
-//            planeNode.position = SCNVector3FromFloat3(planeAnchor.center);
-//        }
-//
-//        if ([self.invisibleFloors containsObject:planeNode]) {
-//            planeNode.position = SCNVector3FromFloat3(planeAnchor.center);
-//        }
-//    }
+    // We can get some really gnarly jumps of world positioniing  with this version of ARVIR, I had initially
+    // assumed this could be fixed
+
+    // Animate instead of jumping positions
+    SCNTransaction.animationDuration = 0.1;
+    ARPlaneAnchor *planeAnchor = (id)anchor;
+
+    for (SCNNode *planeNode in node.childNodes) {
+        SCNPlane *plane = (id)planeNode.geometry;
+
+        if ([self.detectedPlanes containsObject:planeNode]) {
+            plane.width = planeAnchor.extent.x;
+            plane.height = planeAnchor.extent.z;
+            planeNode.position = SCNVector3FromFloat3(planeAnchor.center);
+        }
+
+        if ([self.invisibleFloors containsObject:planeNode]) {
+            planeNode.position = SCNVector3FromFloat3(planeAnchor.center);
+        }
+    }
 }
 
 - (void)renderer:(id <SCNSceneRenderer>)renderer didAddNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor API_AVAILABLE(ios(11.0));
@@ -255,8 +271,12 @@ API_AVAILABLE(ios(11.0))
     // Create an anchor node, which can get moved around as we become more sure of where the
     // plane actually is.
     ARPlaneAnchor *planeAnchor = (id)anchor;
-    if (planeAnchor.alignment == ARPlaneAnchorAlignmentVertical) {
-        return;
+    if (@available(iOS 11.3, *)) {
+        if (planeAnchor.alignment == ARPlaneAnchorAlignmentVertical) {
+            return;
+        }
+    } else {
+        // Fallback on earlier versions
     }
 
     SCNNode *planeNode = [self whiteBoxForPlaneAnchor:planeAnchor];
