@@ -58,38 +58,39 @@ oss:
 JQ := $(shell command -v jq 2> /dev/null)
 RNVERSION=$(shell cd node_modules/react-native && pod ipc spec React.podspec | jq '.version' -r)
 YOGAVERSION=$(shell cd node_modules/react-native/ReactCommon/yoga && pod ipc spec yoga.podspec | jq '.version' -r)
-FOLLYVERSION=$(shell cd node_modules/react-native/third-party-podspecs && pod ipc spec Folly.podspec | jq '.version' -r)
-DOUBLECONVERSIONVERSION=$(shell cd node_modules/react-native/third-party-podspecs && pod ipc spec DoubleConversion.podspec | jq '.version' -r)
-GLOGVERSION=$(shell cd node_modules/react-native/third-party-podspecs && pod ipc spec glog.podspec | jq '.version' -r)
 YOGA_SRC_BEFORE=yoga\/\*\*\/\*.{c,h}
 YOGA_SRC_AFTER=ReactCommon\/yoga\/yoga\/\*\*\/\*.\{c,h\}
+YOGA_MASTER_PODSPEC_URL = "https://raw.githubusercontent.com/facebook/react-native/master/ReactCommon/yoga/yoga.podspec"
 
 update_specs_repos:
 ifndef JQ
 		$(error "Please install jq before running `brew install jq`")
 endif
 
+	# Comment out Yoga, as it's dealt with below in ship_yoga
+
 	@echo "Updating Artsy specs repo";
 	pod repo update artsy
 
 	@echo "Creating folder in artsy specs repo";
 	mkdir ~/.cocoapods/repos/artsy/React/$(RNVERSION)
-	mkdir ~/.cocoapods/repos/artsy/yoga/$(YOGAVERSION)
-	mkdir ~/.cocoapods/repos/artsy/Folly/$(FOLLYVERSION)
-	mkdir ~/.cocoapods/repos/artsy/DoubleConversion/$(DOUBLECONVERSIONVERSION)
-	mkdir ~/.cocoapods/repos/artsy/glog/$(GLOGVERSION)
+	# mkdir ~/.cocoapods/repos/artsy/yoga/$(YOGAVERSION)
 
 	@echo "Putting JSON specs in the folders";
 	cd node_modules/react-native && pod ipc spec React.podspec >  ~/.cocoapods/repos/artsy/React/$(RNVERSION)/React.podspec.json
-	cd node_modules/react-native/ReactCommon/yoga && pod ipc spec yoga.podspec >  ~/.cocoapods/repos/artsy/yoga/$(YOGAVERSION)/yoga.podspec.json
-	cd node_modules/react-native/third-party-podspecs && pod ipc spec Folly.podspec >  ~/.cocoapods/repos/artsy/Folly/$(FOLLYVERSION)/Folly.podspec.json
-	cd node_modules/react-native/third-party-podspecs && pod ipc spec DoubleConversion.podspec >  ~/.cocoapods/repos/artsy/DoubleConversion/$(DOUBLECONVERSIONVERSION)/DoubleConversion.podspec.json
-	cd node_modules/react-native/third-party-podspecs && pod ipc spec glog.podspec >  ~/.cocoapods/repos/artsy/glog/$(GLOGVERSION)/glog.podspec.json
+	# cd node_modules/react-native/ReactCommon/yoga && pod ipc spec yoga.podspec >  ~/.cocoapods/repos/artsy/yoga/$(YOGAVERSION)/yoga.podspec.json
 
-	@echo "Modifying Yoga to reflect the React Native repo paths"
-	sed -i -e 's/$(YOGA_SRC_BEFORE)/$(YOGA_SRC_AFTER)/g' ~/.cocoapods/repos/artsy/Yoga/$(YOGAVERSION)/Yoga.podspec.json
+	# @echo "Modifying Yoga to reflect the React Native repo paths"
+	# sed -i -e 's/$(YOGA_SRC_BEFORE)/$(YOGA_SRC_AFTER)/g' ~/.cocoapods/repos/artsy/Yoga/$(YOGAVERSION)/Yoga.podspec.json
 
 	@echo "Commiting the changes to our shared repo"
 	cd ~/.cocoapods/repos/artsy && git add .
 	cd ~/.cocoapods/repos/artsy && git commit -m "Shipping a new version of the React deps: v$(RNVERSION) for Emission deploys"
 	cd ~/.cocoapods/repos/artsy && git push
+
+# Use this PR for yoga podspec
+# https://github.com/facebook/react-native/pull/18492
+ship_yoga:
+	# curl $(YOGA_MASTER_PODSPEC_URL) > ./externals/yoga/yoga.podspec
+	INSTALL_YOGA_WITHOUT_PATH_OPTION="true" pod ipc spec ./externals/yoga/yoga.podspec > ./externals/yoga/yoga.podspec.json
+	# rm -f ./externals/yoga/yoga.podspec
