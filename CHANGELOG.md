@@ -14,7 +14,7 @@
 
 -->
 
-## 1.5.0
+### 1.5.0
 
 * Adds Recently Viewed Works rail to Home - sarah
 * Upgrade to React Native 0.54.4 - alloy/orta
