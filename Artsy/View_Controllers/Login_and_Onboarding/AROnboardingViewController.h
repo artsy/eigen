@@ -7,6 +7,7 @@
 @protocol AROnboardingStepsDelegate <NSObject>
 - (void)personalizeEmailDone:(NSString *)email;
 - (void)personalizePasswordDone:(NSString *)password;
+- (void)personalizeAcceptConditionsDone;
 - (void)personalizeLoginWithPasswordDone:(NSString *)password;
 - (void)personalizeNameDone:(NSString *)name;
 - (void)personalizeArtistsDone;
@@ -35,6 +36,7 @@ typedef NS_ENUM(NSInteger, ARInitialOnboardingState) {
 typedef NS_ENUM(NSInteger, AROnboardingStage) {
     AROnboardingStageSlideshow,
     AROnboardingStageStart,
+    AROnboardingStateAcceptConditions,
     AROnboardingStagePersonalizeEmail,
     AROnboardingStagePersonalizePassword,
     AROnboardingStagePersonalizeLogin,
@@ -42,7 +44,7 @@ typedef NS_ENUM(NSInteger, AROnboardingStage) {
     AROnboardingStagePersonalizeArtists,
     AROnboardingStagePersonalizeCategories,
     AROnboardingStagePersonalizeBudget,
-    AROnboardingStageFollowNotification
+    AROnboardingStageFollowNotification,
 };
 
 /// A state-machine based VC that implements the app onboarding process

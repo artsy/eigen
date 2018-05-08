@@ -6,6 +6,7 @@
 #import "AROnboardingPersonalizeTableViewController.h"
 #import "AROnboardingNavigationItemsView.h"
 #import "AROnboardingHeaderView.h"
+#import "ARAcceptConditionsView.h"
 #import "ARLoginFieldsView.h"
 #import "ARTextFieldWithPlaceholder.h"
 #import "ARSecureTextFieldWithPlaceholder.h"
@@ -13,6 +14,7 @@
 #import "ARPriceRangeViewController.h"
 #import "Gene.h"
 #import "ARLogger.h"
+#import "UILabel+Typography.h"
 
 #import "MTLModel+JSON.h"
 
@@ -34,8 +36,10 @@
 @property (nonatomic, strong, readwrite) AROnboardingNavigationItemsView *onboardingNavigationItems;
 @property (nonatomic, strong, readwrite) ARLoginFieldsView *onboardingTextFields;
 @property (nonatomic, strong) ARLoginButtonsView *onboardingButtonsView;
+@property (nonatomic, strong) ARAcceptConditionsView *acceptConditionsView;
 @property (nonatomic, strong, readwrite) AROnboardingPersonalizeTableViewController *searchResultsTable;
 @property (nonatomic, strong, readwrite) ARPriceRangeViewController *budgetTable;
+@property (nonatomic, strong, readwrite) UIButton *acceptButton;
 @property (nonatomic, assign, readwrite) BOOL followedAtLeastOneCategory;
 @property (nonatomic, strong) NSLayoutConstraint *navigationItemsBottomConstraint;
 @property (nonatomic, assign, readwrite) BOOL comingBack;
@@ -167,6 +171,11 @@
             [self.onboardingTextFields.emailField becomeFirstResponder];
             [self addFacebookButton];
             break;
+        case AROnboardingStateAcceptConditions:
+            [self.onboardingNavigationItems disableNextStep];
+            [self.headerView setupHeaderViewWithTitle:@"Agree to Terms" withLargeLayout:self.useLargeLayout];
+            [self addAcceptConditionsView];
+            break;
         case AROnboardingStagePersonalizePassword:
             [self.onboardingNavigationItems disableNextStep];
             [self.headerView setupHeaderViewWithTitle:@"Create a password" withLargeLayout:self.useLargeLayout];
@@ -288,6 +297,21 @@
     } else {
         [self.onboardingTextFields constrainHeight:@"100"];
     }
+}
+
+- (void)addAcceptConditionsView
+{
+    self.acceptConditionsView = [[ARAcceptConditionsView alloc] init];
+    [self.view addSubview:self.acceptConditionsView];
+    
+    [self.acceptConditionsView constrainWidthToView:self.view predicate:@"0"];
+    [self.acceptConditionsView alignCenterXWithView:self.view predicate:@"0"];
+    [self.acceptConditionsView constrainTopSpaceToView:self.headerView.titleLabel predicate:@"0"];
+    [self.acceptConditionsView constrainHeight:@"300"];
+    
+    [self.acceptConditionsView.checkboxButton addTarget:self
+                                                 action:@selector(checkboxButtonPressed:)
+                                       forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)addButtons
@@ -518,6 +542,16 @@
     if (self.onboardingTextFields.nameField.text.length > 0) {
         [self.onboardingNavigationItems enableNextStep];
     }
+}
+
+- (void)checkboxButtonPressed:(id)sender
+{
+    if (self.acceptConditionsView.checkboxButton.selected) {
+        [self.onboardingNavigationItems disableNextStep];
+    } else {
+        [self.onboardingNavigationItems enableNextStep];
+    }
+    self.acceptConditionsView.checkboxButton.selected = !self.acceptConditionsView.checkboxButton.selected;
 }
 
 - (BOOL)validEmail:(NSString *)email
@@ -835,8 +869,11 @@
             [self.delegate personalizeLoginWithPasswordDone:self.onboardingTextFields.passwordField.text];
             break;
         case AROnboardingStagePersonalizeName:
-            [self.onboardingNavigationItems showSpinner];
             [self.delegate personalizeNameDone:self.onboardingTextFields.nameField.text];
+            break;
+        case AROnboardingStateAcceptConditions:
+            [self.onboardingNavigationItems showSpinner];
+            [self.delegate personalizeAcceptConditionsDone];
             break;
         case AROnboardingStagePersonalizeArtists:
             [self.delegate personalizeArtistsDone];

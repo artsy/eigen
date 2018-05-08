@@ -5,6 +5,7 @@
 @interface AROnboardingHeaderView : UIView
 
 @property (nonatomic, strong, readonly) AROnboardingSearchField *searchField;
+@property (nonatomic, strong, readonly) UILabel *titleLabel;
 
 - (void)setupHeaderViewWithTitle:(NSString *)title withLargeLayout:(BOOL)useLargeLayout;
 - (void)addHelpText:(NSString *)helpText withLargeLayout:(BOOL)useLargeLayout;
