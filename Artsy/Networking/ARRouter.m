@@ -352,7 +352,8 @@ static NSString *hostFromString(NSString *string)
     NSDictionary *params = @{
         @"email" : email,
         @"password" : password,
-        @"name" : name
+        @"name" : name,
+        @"agreed_to_receive_emails": @YES
     };
     return [self requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];
 }
@@ -363,7 +364,8 @@ static NSString *hostFromString(NSString *string)
         @"provider" : @"facebook",
         @"oauth_token" : token,
         @"email" : email,
-        @"name" : name
+        @"name" : name,
+        @"agreed_to_receive_emails": @YES
     };
 
     return [self requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];
