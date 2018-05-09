@@ -91,6 +91,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   }
 
   verifyBidPosition(results, errors) {
+    // TODO: Need to handle if the results object is empty, for example if errors occurred and no request was made
     const status = results.createBidderPosition.result.status
     if (!errors && status === "SUCCESS") {
       const positionId = results.createBidderPosition.result.position.id
@@ -129,7 +130,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
       }
     } else {
       // poll again
+      // TODO: Actually poll again.
       if (this.state.pollCount > MAX_POLL_ATTEMPTS) {
+        // TODO: Present error message to user.
         clearInterval(this.state.intervalToken)
       }
       this.setState({ pollCount: this.state.pollCount + 1 })
