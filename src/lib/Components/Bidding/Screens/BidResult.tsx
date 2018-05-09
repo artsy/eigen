@@ -43,9 +43,7 @@ export class BidResult extends React.Component<BidResultProps> {
             <CenteringContainer>
               <Icon20 m={2} source={require("../../../../../images/circle-x-red.png")} />
               <SerifSemibold18 mb={4}>{this.props.message_header}</SerifSemibold18>
-              {/* TODO: parse makedown and render links */}
-              <MarkdownRenderer>{"1" + this.props.message_description_md}</MarkdownRenderer>
-              <StyledText maxWidth={280}>{"2" + this.props.message_description_md}</StyledText>
+              <MarkdownRenderer>{this.props.message_description_md}</MarkdownRenderer>
 
               <Sans12 color="black60">Time left</Sans12>
               <Timer timeLeftInMilliseconds={1000 * 60 * 20} />

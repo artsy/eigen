@@ -100,7 +100,7 @@ storiesOf("Bidding")
   })
   .add("Bidding Result (not highest bid)", () => {
     const messageHeader = "Your bid wasn’t high enough"
-    const messageDescriptionMd = `Hello Hello [Your](http://example.com) bid didn’t meet the reserve price for this work.
+    const messageDescriptionMd = `Your [bid](http://example.com) didn’t meet the reserve price for this work.
 
 Bid again to take the lead.`
 

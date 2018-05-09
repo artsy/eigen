@@ -1,71 +1,68 @@
 import React from "react"
-import { Text, View } from "react-native"
-import SimpleMarkdown from "simple-markdown"
+import { Text } from "react-native"
 import styled from "styled-components/native"
 
-import { Row } from "../Elements/Grid"
+import { Serif16 } from "../Elements/Typography"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
-// Rules for rendering parsed markdown. Currently only handles links and text. Add rules similar to
-// https://github.com/CharlesMangwa/react-native-simple-markdown/blob/next/src/rules.js for new functionalities.
-const rules = {
-  ...SimpleMarkdown.defaultRules,
-  link: {
-    ...SimpleMarkdown.defaultRules.link,
-    react: (node, output, state) => {
-      state.withinText = true
-      let element
-      const openUrl = url => {
-        SwitchBoard.presentModalViewController(element, url)
-      }
-      return (
-        <LinkText key={state.key} onPress={() => openUrl(node.target)} ref={el => (element = el)}>
-          {output(node.content, state)}
-        </LinkText>
-      )
-    },
-  },
-  text: {
-    ...SimpleMarkdown.defaultRules.text,
-    react: (node, _output, state) => {
-      return <Text key={state.key}>{node.content}</Text>
-    },
-  },
-  paragraph: {
-    ...SimpleMarkdown.defaultRules.paragraph,
-    react: (node, output, state) => {
-      return (
-        <Row style={{ flexDirection: "row" }} key={state.key}>
-          {output(node.content, state)}
-        </Row>
-      )
-    },
-  },
-}
-// Markdown parser setup
-const rawBuiltParser = SimpleMarkdown.parserFor(rules)
-const parser = source => {
-  const blockSource = source + "\n\n"
-  return rawBuiltParser(blockSource, { inline: false })
-}
-const reactOutput = SimpleMarkdown.reactFor(SimpleMarkdown.ruleOutput(rules, "react"))
-
-export const toReact = md => {
-  const syntaxTree = parser(md)
-  return reactOutput(syntaxTree)
-}
-
 interface NativeMarkdownProps {
-  md: string
+  children: string
 }
+
+const PARAGRAPH_BREAK = "   "
 
 export class MarkdownRenderer extends React.Component<NativeMarkdownProps> {
   render() {
-    return <View key={0}>{reactOutput(parser(this.props.md))}</View>
+    const message = this.props.children
+    if (!message) {
+      return
+    }
+
+    const paragraphs = message.split(PARAGRAPH_BREAK)
+    const paragraphEls = paragraphs.map((p, i) => {
+      let paragraph = p
+      const re = new RegExp(/\[([\w\s]*)\]\(([\w\:\/\.]*)\)/g)
+      let linkData = re.exec(paragraph)
+      const content = []
+      let j = 0
+      while (linkData && linkData.length) {
+        // closure to keep a local copy of href
+        ;(() => {
+          const text = linkData[1]
+          const href = linkData[2]
+          // linkData.index is the index of first match e.g. link
+          const textBefore = paragraph.slice(0, linkData.index)
+          content.push(
+            <Text key={j}>
+              {textBefore}
+              <LinkText
+                onPress={() => {
+                  SwitchBoard.presentModalViewController(this, href)
+                }}
+              >
+                {text}
+              </LinkText>
+            </Text>
+          )
+        })()
+        // remove the processed link and reset regex state
+        paragraph = paragraph.slice(linkData.index + linkData[0].length)
+        re.lastIndex = 0
+        linkData = re.exec(paragraph)
+        j++
+      }
+      // add text after link
+      content.push(<Text key={"rest"}>{paragraph}</Text>)
+
+      return <Paragraph key={i}>{content}</Paragraph>
+    })
+    return paragraphEls
   }
 }
 
 const LinkText = styled.Text`
   text-decoration-line: underline;
 `
+
+const Paragraph = props => <Serif16 mb={5} textAlign="center" color="black60" maxWidth={280} {...props} />

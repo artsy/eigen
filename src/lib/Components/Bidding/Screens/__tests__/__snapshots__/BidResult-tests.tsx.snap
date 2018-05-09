@@ -101,7 +101,38 @@ exports[`renders not highest bid screen properly 1`] = `
       }
       textAlign="center"
     >
-      Another bidder placed a higher max bid or the same max bid before you did.
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+      >
+        Hello Hello 
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          onPress={[Function]}
+          style={
+            Array [
+              Object {
+                "textDecorationLine": "underline",
+              },
+              undefined,
+            ]
+          }
+        >
+          Your
+        </Text>
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+      >
+         bid didn’t meet the reserve price for this work.
+
+Bid again to take the lead.
+      </Text>
     </Text>
     <Text
       accessible={true}
