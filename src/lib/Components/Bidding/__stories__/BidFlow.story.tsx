@@ -99,7 +99,12 @@ storiesOf("Bidding")
     return <BidResult winning />
   })
   .add("Bidding Result (not highest bid)", () => {
-    return <BidResult winning={false} />
+    const messageHeader = "Your bid wasn’t high enough"
+    const messageDescriptionMd = `Hello Hello [Your](http://example.com) bid didn’t meet the reserve price for this work.
+
+Bid again to take the lead.`
+
+    return <BidResult winning={false} message_header={messageHeader} message_description_md={messageDescriptionMd} />
   })
 
 storiesOf("App Style/Input")

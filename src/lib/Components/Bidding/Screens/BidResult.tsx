@@ -9,6 +9,7 @@ import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Button } from "../Components/Button"
 import { CenteringContainer, Container } from "../Components/Containers"
 import { Divider } from "../Components/Divider"
+import { MarkdownRenderer } from "../Components/MarkdownRenderer"
 import { Timer } from "../Components/Timer"
 
 interface BidResultProps {
@@ -43,7 +44,8 @@ export class BidResult extends React.Component<BidResultProps> {
               <Icon20 m={2} source={require("../../../../../images/circle-x-red.png")} />
               <SerifSemibold18 mb={4}>{this.props.message_header}</SerifSemibold18>
               {/* TODO: parse makedown and render links */}
-              <StyledText maxWidth={280}>{this.props.message_description_md}</StyledText>
+              <MarkdownRenderer>{"1" + this.props.message_description_md}</MarkdownRenderer>
+              <StyledText maxWidth={280}>{"2" + this.props.message_description_md}</StyledText>
 
               <Sans12 color="black60">Time left</Sans12>
               <Timer timeLeftInMilliseconds={1000 * 60 * 20} />

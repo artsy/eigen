@@ -16,7 +16,9 @@ it("renders winning screen properly", () => {
 it("renders not highest bid screen properly", () => {
   jest.useFakeTimers()
   const messageHeader = "Your bid wasn’t high enough"
-  const messageDescriptionMd = "Another bidder placed a higher max bid or the same max bid before you did."
+  const messageDescriptionMd = `Hello Hello [Your](http://example.com) bid didn’t meet the reserve price for this work.
+
+Bid again to take the lead.`
   const bg = renderer
     .create(<BidResult winning={false} message_header={messageHeader} message_description_md={messageDescriptionMd} />)
     .toJSON()
