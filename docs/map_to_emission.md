@@ -60,6 +60,10 @@ Other interactions are handled by the `APIModules`, for example when Eigen needs
 * [Emission switchboard to call out to Eigen](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/Pod/Classes/Core/ARSwitchBoardModule.m)
 * [Callbacks between JS and native code are set up here](https://github.com/artsy/emission/blob/24c0fdaf91aa79654a33fd6e476405047819be5b/Pod/Classes/TemporaryAPI/ARTemporaryAPIModule.m).
 
+### Analytics
+
+There is [extensive inline documentation](https://github.com/artsy/emission/blob/7a4eb922cee70c621c9938bfda1db460e65414fc/src/lib/utils/track.ts#L175-L359) in our tracking code, including examples.
+
 ### Miscellaneous
 
 * [Making network requests outside of Relay](https://github.com/artsy/emission/blob/019a106517b31cebfb1c5293891215cc7ebf7a4d/src/lib/Components/Consignments/Screens/Overview.tsx#L135-L150)
