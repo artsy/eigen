@@ -267,7 +267,7 @@ NSString *ARFloorAlignToWallARVIRSubtitle =   @"Align the marker where the floor
 - (void)showModalForError
 {
     NSString *errorMessageWall = @"We’re having trouble finding your %@. Make sure the room is well-lit, or try focusing on a different object on the %@.";
-    NSString *errorMessageFloor = @"We’re having trouble finding your floor. Make sure the room is well-lit, or try focusing on a different part of the floor."
+    NSString *errorMessageFloor = @"We’re having trouble finding your floor. Make sure the room is well-lit, or try focusing on a different part of the floor.";
 
     NSString *errorMessage = self.config.floorBasedVIR ? errorMessageFloor : errorMessageWall;
 

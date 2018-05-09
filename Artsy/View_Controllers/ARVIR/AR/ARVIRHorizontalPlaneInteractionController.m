@@ -1,5 +1,6 @@
 @import OpenGLES;
 @import ARKit;
+@import SceneKit;
 
 #import "ARDefaults.h"
 #import "ARSCNWallNode.h"
@@ -169,8 +170,46 @@ API_AVAILABLE(ios(11.0))
     self.artwork = nil;
 }
 
-- (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0));
-{
+    SCNNode *ARPointCloudNode = nil;
+
+    - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0));
+    {
+
+        NSInteger pointCount = frame.rawFeaturePoints.count;
+        if (pointCount) {
+            // We want a root node to work in, it's going to hold the all of the represented spheres
+            // that come together to make the point cloud
+            if (!ARPointCloudNode) {
+                ARPointCloudNode = [SCNNode node];
+                [self.sceneView.scene.rootNode addChildNode:ARPointCloudNode];
+            }
+
+            // It's going to need some colour
+            SCNMaterial *whiteMaterial = [SCNMaterial material];
+            whiteMaterial.diffuse.contents = [UIColor whiteColor];
+            whiteMaterial.locksAmbientWithDiffuse = YES;
+
+            // Remove the old point clouds (this happens per-frame
+            for (SCNNode *child in ARPointCloudNode.childNodes) {
+                [child removeFromParentNode];
+            }
+
+            // Use the frames point cloud to create a set of SCNSpheres
+            // which live at the feature point in the AR world
+            for (NSInteger i = 0; i < pointCount; i++) {
+                vector_float3 point = frame.rawFeaturePoints.points[i];
+                SCNVector3 vector = SCNVector3Make(point[0], point[1], point[2]);
+
+                SCNSphere *pointSphere = [SCNSphere sphereWithRadius:0.001];
+                pointSphere.materials = @[whiteMaterial];
+
+                SCNNode *pointNode = [SCNNode nodeWithGeometry:pointSphere];
+                pointNode.position = vector;
+
+                [ARPointCloudNode addChildNode:pointNode];
+            }
+        }
+
     // Bail early if we don't have walls to fire at, or have an artwork already up
     if (!self.invisibleFloors.count || self.artwork) {
         return;
