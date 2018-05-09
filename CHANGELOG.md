@@ -44,6 +44,7 @@
 * Creates and verifies bidder position - sepans
 * Adds `<MarkdownRenderer>` component - sepans
 * Adds a `<Input>` component - yuki24
+* Adds a billing address screen - yuki24
 
 ### 1.4.6
 
