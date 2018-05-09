@@ -43,9 +43,11 @@
 @property (nonatomic, strong, readwrite) NSLayoutConstraint *iPhoneXStatusBarHeightConstraint;
 @property (nonatomic, strong, readwrite) UIView *progressBar;
 @property (nonatomic, strong, readwrite) UIView *progressBackgroundBar;
+@property (nonatomic, strong, readwrite) NSString *name;
 @property (nonatomic, strong, readwrite) NSString *email;
 @property (nonatomic, strong, readwrite) NSString *password;
 @property (nonatomic, nonnull, strong, readwrite) UITextField *tempTextField;
+@property (nonatomic, assign, readwrite) BOOL shouldPresentFacebook;
 
 @end
 
@@ -60,6 +62,7 @@
     }
 
     self.navigationBarHidden = YES;
+    self.shouldPresentFacebook = NO;
     self.delegate = self;
     _followedItemsDuringOnboarding = [[NSMutableSet alloc] init];
     _initialState = state;
@@ -279,6 +282,16 @@
     [self updateProgress:0.20];
 }
 
+- (void)presentPersonalizationAcceptConditions
+{
+    self.state = AROnboardingStateAcceptConditions;
+    ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
+    personalize.delegate = self;
+    [self pushViewController:personalize animated:YES];
+    [self updateProgress:0.40];
+}
+
+
 - (void)presentPersonalizationLogin
 {
     [self.tempTextField becomeFirstResponder];
@@ -349,7 +362,8 @@
 
 - (void)personaliseFacebookTapped
 {
-    [self fb];
+    self.shouldPresentFacebook = YES;
+    [self presentPersonalizationAcceptConditions];
 }
 
 - (void)personalizePasswordDone:(NSString *)password
@@ -369,7 +383,17 @@
 
 - (void)personalizeNameDone:(NSString *)name
 {
-    [self createUserWithName:name email:self.email password:self.password];
+    self.name = name;
+    [self presentPersonalizationAcceptConditions];
+}
+
+- (void)personalizeAcceptConditionsDone
+{
+    if (self.shouldPresentFacebook) {
+         [self fb];
+    } else {
+        [self createUserWithName:self.name email:self.email password:self.password];
+    }
 }
 
 - (void)personalizeArtistsDone
@@ -412,6 +436,16 @@
 - (void)followableItemFollowed:(id<ARFollowable>)item
 {
     [self.followedItemsDuringOnboarding addObject:item];
+}
+
+- (void)privacyPolicyLinkTapped
+{
+    [self showPrivacyPolicy];
+}
+
+- (void)termsAndConditionsLinkTapped
+{
+    [self showTermsAndConditions];
 }
 
 - (void)setPriceRangeDone:(NSInteger)range
