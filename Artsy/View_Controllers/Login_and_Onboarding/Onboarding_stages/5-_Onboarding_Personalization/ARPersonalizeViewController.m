@@ -14,7 +14,6 @@
 #import "ARPriceRangeViewController.h"
 #import "Gene.h"
 #import "ARLogger.h"
-#import "UILabel+Typography.h"
 
 #import "MTLModel+JSON.h"
 
@@ -39,7 +38,6 @@
 @property (nonatomic, strong) ARAcceptConditionsView *acceptConditionsView;
 @property (nonatomic, strong, readwrite) AROnboardingPersonalizeTableViewController *searchResultsTable;
 @property (nonatomic, strong, readwrite) ARPriceRangeViewController *budgetTable;
-@property (nonatomic, strong, readwrite) UIButton *acceptButton;
 @property (nonatomic, assign, readwrite) BOOL followedAtLeastOneCategory;
 @property (nonatomic, strong) NSLayoutConstraint *navigationItemsBottomConstraint;
 @property (nonatomic, assign, readwrite) BOOL comingBack;

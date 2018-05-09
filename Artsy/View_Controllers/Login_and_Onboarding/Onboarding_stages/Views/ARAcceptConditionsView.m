@@ -1,11 +1,3 @@
-//
-//  ARAcceptConditionsView.m
-//  Artsy
-//
-//  Created by Luc Succes on 5/8/18.
-//  Copyright © 2018 Artsy. All rights reserved.
-//
-
 #import "ARAcceptConditionsView.h"
 #import "UIColor+ArtsyColors.h"
 #import "ARFonts.h"
@@ -83,7 +75,7 @@
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [self addSubview:button];
     
-    [button setImage:[UIImage imageNamed:@"followButton"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"checkbox_unselected"] forState:UIControlStateNormal];
     [button setImage:[UIImage imageNamed:@"followButtonChecked"] forState:UIControlStateSelected | UIControlStateHighlighted];
     [button setImage:[UIImage imageNamed:@"followButtonChecked"] forState:UIControlStateSelected];
     [button setImage:[UIImage imageNamed:@"followButtonChecked"] forState:UIControlStateHighlighted];
@@ -95,7 +87,7 @@
                                                                                 }];
     
     [button setAttributedTitle:checkboxDescription forState:UIControlStateNormal];
-    [button constrainTopSpaceToView:self.helpTextLabel predicate:@"0"];
+    [button constrainTopSpaceToView:self.helpTextLabel predicate:@"20"];
     [button alignLeadingEdgeWithView:self predicate:@"20"];
     [button setTitleEdgeInsets:UIEdgeInsetsMake(4, 10, 0, 10)];
     [button constrainWidth:@"140"];
