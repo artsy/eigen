@@ -137,6 +137,7 @@ exports[`renders properly 1`] = `
     <View
       border={1}
       borderBottomWidth={0}
+      borderColor="black10"
       mb={2}
       style={
         Array [
@@ -235,6 +236,7 @@ exports[`renders properly 1`] = `
     <View
       border={1}
       borderBottomWidth={0}
+      borderColor="black10"
       style={
         Array [
           Object {

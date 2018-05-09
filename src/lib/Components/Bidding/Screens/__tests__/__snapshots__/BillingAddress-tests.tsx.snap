@@ -1,0 +1,400 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      flex={1}
+      flexDirection="column"
+      justifyContent="space-between"
+      m={4}
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "marginBottom": 20,
+            "marginLeft": 20,
+            "marginRight": 20,
+            "marginTop": 20,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        fontSize={5}
+        m={4}
+        mb={6}
+        mt={0}
+        style={
+          Array [
+            Object {
+              "fontFamily": "AGaramondPro-Semibold",
+              "fontSize": 22,
+              "marginBottom": 40,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "marginTop": 0,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+        textAlign="center"
+      >
+        Your billing address
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        fontSize={3}
+        mb={2}
+        style={
+          Array [
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "marginBottom": 5,
+            },
+            undefined,
+          ]
+        }
+      >
+        Full name
+      </Text>
+      <TextInput
+        allowFontScaling={true}
+        border={1}
+        borderColor="black10"
+        fontSize={3}
+        mb={4}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        p={3}
+        pb={2}
+        placeholder="Enter your full name"
+        style={
+          Array [
+            Object {
+              "borderColor": "#E5E5E5",
+              "borderStyle": "solid",
+              "borderWidth": 1,
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "height": 40,
+              "marginBottom": 20,
+              "paddingBottom": 5,
+              "paddingLeft": 10,
+              "paddingRight": 10,
+              "paddingTop": 10,
+            },
+            undefined,
+          ]
+        }
+      />
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        fontSize={3}
+        mb={2}
+        style={
+          Array [
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "marginBottom": 5,
+            },
+            undefined,
+          ]
+        }
+      >
+        Address line 1
+      </Text>
+      <TextInput
+        allowFontScaling={true}
+        border={1}
+        borderColor="black10"
+        fontSize={3}
+        mb={4}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        p={3}
+        pb={2}
+        placeholder="Enter your street address"
+        style={
+          Array [
+            Object {
+              "borderColor": "#E5E5E5",
+              "borderStyle": "solid",
+              "borderWidth": 1,
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "height": 40,
+              "marginBottom": 20,
+              "paddingBottom": 5,
+              "paddingLeft": 10,
+              "paddingRight": 10,
+              "paddingTop": 10,
+            },
+            undefined,
+          ]
+        }
+      />
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        fontSize={3}
+        mb={2}
+        style={
+          Array [
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "marginBottom": 5,
+            },
+            undefined,
+          ]
+        }
+      >
+        Address line 2 (optional)
+      </Text>
+      <TextInput
+        allowFontScaling={true}
+        border={1}
+        borderColor="black10"
+        fontSize={3}
+        mb={4}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        p={3}
+        pb={2}
+        placeholder="Enter your apt, floor, suite, etc."
+        style={
+          Array [
+            Object {
+              "borderColor": "#E5E5E5",
+              "borderStyle": "solid",
+              "borderWidth": 1,
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "height": 40,
+              "marginBottom": 20,
+              "paddingBottom": 5,
+              "paddingLeft": 10,
+              "paddingRight": 10,
+              "paddingTop": 10,
+            },
+            undefined,
+          ]
+        }
+      />
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        fontSize={3}
+        mb={2}
+        style={
+          Array [
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "marginBottom": 5,
+            },
+            undefined,
+          ]
+        }
+      >
+        City
+      </Text>
+      <TextInput
+        allowFontScaling={true}
+        border={1}
+        borderColor="black10"
+        fontSize={3}
+        mb={4}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        p={3}
+        pb={2}
+        placeholder="Enter city"
+        style={
+          Array [
+            Object {
+              "borderColor": "#E5E5E5",
+              "borderStyle": "solid",
+              "borderWidth": 1,
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "height": 40,
+              "marginBottom": 20,
+              "paddingBottom": 5,
+              "paddingLeft": 10,
+              "paddingRight": 10,
+              "paddingTop": 10,
+            },
+            undefined,
+          ]
+        }
+      />
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        fontSize={3}
+        mb={2}
+        style={
+          Array [
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "marginBottom": 5,
+            },
+            undefined,
+          ]
+        }
+      >
+        State, Province, or Region
+      </Text>
+      <TextInput
+        allowFontScaling={true}
+        border={1}
+        borderColor="black10"
+        fontSize={3}
+        mb={4}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        p={3}
+        pb={2}
+        placeholder="Enter state, province, or region"
+        style={
+          Array [
+            Object {
+              "borderColor": "#E5E5E5",
+              "borderStyle": "solid",
+              "borderWidth": 1,
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "height": 40,
+              "marginBottom": 20,
+              "paddingBottom": 5,
+              "paddingLeft": 10,
+              "paddingRight": 10,
+              "paddingTop": 10,
+            },
+            undefined,
+          ]
+        }
+      />
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        fontSize={3}
+        mb={2}
+        style={
+          Array [
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "marginBottom": 5,
+            },
+            undefined,
+          ]
+        }
+      >
+        Postal code
+      </Text>
+      <TextInput
+        allowFontScaling={true}
+        border={1}
+        borderColor="black10"
+        fontSize={3}
+        mb={4}
+        onBlur={[Function]}
+        onFocus={[Function]}
+        p={3}
+        pb={2}
+        placeholder="Enter your postal code"
+        style={
+          Array [
+            Object {
+              "borderColor": "#E5E5E5",
+              "borderStyle": "solid",
+              "borderWidth": 1,
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "height": 40,
+              "marginBottom": 20,
+              "paddingBottom": 5,
+              "paddingLeft": 10,
+              "paddingRight": 10,
+              "paddingTop": 10,
+            },
+            undefined,
+          ]
+        }
+      />
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        collapsable={undefined}
+        hitSlop={undefined}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "rgba(0, 0, 0, 1)",
+            "borderColor": "rgba(0, 0, 0, 1)",
+            "borderWidth": 1,
+            "height": 46,
+            "justifyContent": "center",
+          }
+        }
+        testID={undefined}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "fontSize": 12,
+              },
+              Object {
+                "color": "rgba(255, 255, 255, 1)",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 14,
+                "opacity": 1,
+              },
+              Object {
+                "fontFamily": "AvantGardeGothicITC",
+              },
+            ]
+          }
+        >
+          ADD BILLING ADDRESS
+        </Text>
+      </View>
+    </View>
+  </View>
+</RCTScrollView>
+`;
