@@ -152,6 +152,7 @@ exports[`renders not highest bid screen properly 1`] = `
     <View
       border={1}
       borderBottomWidth={0}
+      borderColor="black10"
       mb={4}
       mt={5}
       style={
