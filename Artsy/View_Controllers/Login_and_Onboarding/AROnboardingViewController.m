@@ -47,7 +47,7 @@
 @property (nonatomic, strong, readwrite) NSString *email;
 @property (nonatomic, strong, readwrite) NSString *password;
 @property (nonatomic, nonnull, strong, readwrite) UITextField *tempTextField;
-@property (nonatomic) BOOL shouldPresentFacebook;
+@property (nonatomic, assign, readwrite) BOOL shouldPresentFacebook;
 
 @end
 
