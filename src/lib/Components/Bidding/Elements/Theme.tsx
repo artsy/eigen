@@ -24,5 +24,5 @@ export const theme = {
   // https://www.notion.so/artsy/Typography-d1f9f6731f3d47c78003d6d016c30221
   fontSizes: [10, 12, 14, 16, 18, 22, 28, 42, 64, 80, 100],
 
-  borders: [0, "1px #E5E5E5 solid"],
+  borders: [0, "1px solid"],
 }
