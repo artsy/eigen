@@ -438,6 +438,16 @@
     [self.followedItemsDuringOnboarding addObject:item];
 }
 
+- (void)privacyPolicyLinkTapped
+{
+    [self showPrivacyPolicy];
+}
+
+- (void)termsAndConditionsLinkTapped
+{
+    [self showTermsAndConditions];
+}
+
 - (void)setPriceRangeDone:(NSInteger)range
 {
     self.budgetRange = range;

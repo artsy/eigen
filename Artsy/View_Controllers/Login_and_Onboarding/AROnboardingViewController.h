@@ -20,6 +20,8 @@
 - (void)slideshowDone;
 - (void)setPriceRangeDone:(NSInteger)range;
 - (void)sendPasswordResetEmail:(NSString *)email sender:(id)sender;
+- (void)privacyPolicyLinkTapped;
+- (void)termsAndConditionsLinkTapped;
 - (NSString *)userEmail;
 @end
 

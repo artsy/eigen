@@ -12,9 +12,6 @@
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
-@interface ARAcceptConditionsView () <UITextViewDelegate>
-@end
-
 @implementation ARAcceptConditionsView
 
 - (instancetype)init
@@ -41,7 +38,6 @@
     self.helpTextLabel.tintColor = textColor;
     self.helpTextLabel.textContainerInset = UIEdgeInsetsZero;
     self.helpTextLabel.textContainer.lineFragmentPadding = 0;
-    self.helpTextLabel.delegate = self;
 
     NSString *string = @"Please agree to Artsy's Terms of Use and Privacy Policy, and to receive emails from Artsy.";
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -110,19 +106,5 @@
     [self addSubview:button];
     self.checkboxButton = button;
 }
-
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
-{
-    NSString *path = [[URL.absoluteString componentsSeparatedByString:@"/"] lastObject];
-    if ([path isEqualToString:@"terms"]) {
-        [[UIApplication sharedApplication] sendAction:@selector(openTerms) to:nil from:self forEvent:nil];
-        
-    } else if ([path isEqualToString:@"privacy"]) {
-        [[UIApplication sharedApplication] sendAction:@selector(openPrivacy) to:nil from:self forEvent:nil];
-    }
-    
-    return NO;
-}
-
 
 @end

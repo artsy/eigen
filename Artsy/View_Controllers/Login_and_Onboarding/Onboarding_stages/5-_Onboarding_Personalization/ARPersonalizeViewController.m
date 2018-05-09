@@ -27,7 +27,7 @@
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
-@interface ARPersonalizeViewController () <UITextFieldDelegate, ARPersonalizeNetworkDelegate, ARPersonalizeContainer>
+@interface ARPersonalizeViewController () <UITextFieldDelegate, UITextViewDelegate, ARPersonalizeNetworkDelegate, ARPersonalizeContainer>
 
 @property (nonatomic, assign, readwrite) AROnboardingStage state;
 
@@ -309,6 +309,7 @@
     [self.acceptConditionsView constrainTopSpaceToView:self.headerView.titleLabel predicate:@"0"];
     [self.acceptConditionsView constrainHeight:@"300"];
     
+    self.acceptConditionsView.helpTextLabel.delegate = self;
     [self.acceptConditionsView.checkboxButton addTarget:self
                                                  action:@selector(checkboxButtonPressed:)
                                        forControlEvents:UIControlEventTouchUpInside];
@@ -406,6 +407,21 @@
         CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
         self.navigationItemsBottomConstraint.constant = -keyboardSize.height;
     }
+}
+
+#pragma mark -
+#pragma mark Text View Delegate
+
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
+{
+    NSString *path = [[URL.absoluteString componentsSeparatedByString:@"/"] lastObject];
+    if ([path isEqualToString:@"terms"]) {
+        [self.delegate termsAndConditionsLinkTapped];
+    } else if ([path isEqualToString:@"privacy"]) {
+        [self.delegate privacyPolicyLinkTapped];
+    }
+    
+    return NO;
 }
 
 #pragma mark -
