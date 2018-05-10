@@ -6,6 +6,7 @@ upcoming:
     - WIP Buy now works show in an Auction screen - Chris
     - ARVIR fixes & improvements - orta
     - Buy now layout adjustments, 3 columns on ipad - maxim
+    - Integrates new BidFlow component from Emission - ash
   
 releases:
   - version: 4.1.0

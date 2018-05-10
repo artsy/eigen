@@ -368,13 +368,13 @@
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsAuctionBidTapped,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(bidCompleted:)),
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedBidButton:forSaleArtworkID:saleID:)),
                             ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
-                                SaleArtwork *saleArtwork = parameters.firstObject;
+                                NSString *saleID = parameters[2];
                                 return @{
                                     @"artwork_slug": controller.artwork.artworkID ?: @"",
                                     @"artist_slug": controller.artwork.artist.artistID ?: @"",
-                                    @"auction_id": saleArtwork.auction.saleID ?: @"",
+                                    @"auction_id": saleID ?: @"",
                                     @"context_type" : @"Artwork"
                                 };
                             },

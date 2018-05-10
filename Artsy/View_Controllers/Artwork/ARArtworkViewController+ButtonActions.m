@@ -34,6 +34,7 @@
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRViewController.h"
 #import <Emission/ARInquiryComponentViewController.h>
+#import <Emission/ARBidFlowViewController.h>
 #import "ARFullWidthCalloutLabelView.h"
 
 @implementation ARArtworkViewController (ButtonActions)
@@ -189,27 +190,20 @@
     [[ARTopMenuViewController sharedController] pushViewController:viewController];
 }
 
-- (void)tappedBidButton:(UIButton *)button
-{
-    button.enabled = false;
-    [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
-        button.enabled = true;
-        [self bidCompleted:saleArtwork];
-    } failure:^(NSError *error) {
-        ARErrorLog(@"Can't get sale to bid for artwork %@. Error: %@", self.artwork.artworkID, error.localizedDescription);
-    }];
-}
-
-- (void)bidCompleted:(SaleArtwork *)saleArtwork
+- (void)tappedBidButton:(UIButton *)button forSaleArtworkID:(NSString *)saleArtworkID saleID:(NSString *)saleID
 {
     [ARAnalytics setUserProperty:@"has_started_bid" toValue:@"true"];
 
     ADJEvent *event = [ADJEvent eventWithEventToken:ARAdjustSentArtworkInquiry];
     [Adjust trackEvent:event];
 
-    ARAuctionWebViewController *viewController = [ARSwitchBoard.sharedInstance loadBidUIForArtwork:self.artwork.artworkID
-                                                                                            inSale:saleArtwork.auction.saleID];
-    [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+    if ([AROptions boolForOption:AROptionsUseNewBidFlow]) {
+        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadBidFlowForSaleArtworkID:saleArtworkID];
+        [self presentViewController:viewController animated:YES completion:nil];
+    } else {
+        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadBidUIForArtwork:self.artwork.artworkID inSale:saleID];
+        [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
+    }
 }
 
 - (void)tappedBuyersPremium:(UIButton *)button

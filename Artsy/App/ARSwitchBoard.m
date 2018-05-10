@@ -173,6 +173,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 3;
 
     [self registerEchoRouteForKey:@"ARAuctionBidArtworkRoute" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
+        // TODO: We need the saleArtworkID for the new bid flow.
         return [sself loadBidUIForArtwork:parameters[@"artwork_id"] inSale:parameters[@"id"]];
     }];
 
