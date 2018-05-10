@@ -7,11 +7,22 @@ export type BidResult_sale_artwork = {
         readonly cents: number | null;
         readonly display: string | null;
     }) | null;
+    readonly sale: ({
+        readonly live_start_at: string | null;
+    }) | null;
 };
 
 
 
-const node: ConcreteFragment = {
+const node: ConcreteFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "__id",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "BidResult_sale_artwork",
   "type": "SaleArtwork",
@@ -51,13 +62,27 @@ const node: ConcreteFragment = {
       ]
     },
     {
-      "kind": "ScalarField",
+      "kind": "LinkedField",
       "alias": null,
-      "name": "__id",
+      "name": "sale",
+      "storageKey": null,
       "args": null,
-      "storageKey": null
-    }
+      "concreteType": "Sale",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "live_start_at",
+          "args": null,
+          "storageKey": null
+        },
+        v0
+      ]
+    },
+    v0
   ]
 };
-(node as any).hash = '20235276159d0607c48b1475fb06dca7';
+})();
+(node as any).hash = '4ece1994f6eddcbb0af6262953ca33c4';
 export default node;

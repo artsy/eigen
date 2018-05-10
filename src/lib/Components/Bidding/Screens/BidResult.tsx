@@ -37,6 +37,7 @@ class BidResult extends React.Component<BidResultProps> {
   }
 
   render() {
+    const millisToLiveStart = Date.parse(this.props.sale_artwork.sale.live_start_at) - Date.now()
     if (this.props.winning) {
       return (
         <BiddingThemeProvider>
@@ -47,7 +48,7 @@ class BidResult extends React.Component<BidResultProps> {
                 <SerifSemibold18 mb={4}>You're the highest bidder</SerifSemibold18>
 
                 <Sans12 color="black60">Time left</Sans12>
-                <Timer timeLeftInMilliseconds={1000 * 60 * 20} />
+                <Timer timeLeftInMilliseconds={millisToLiveStart} />
               </TopOffset>
             </View>
           </CenteringContainer>
@@ -63,7 +64,7 @@ class BidResult extends React.Component<BidResultProps> {
               <MarkdownRenderer>{this.props.message_description_md}</MarkdownRenderer>
 
               <Sans12 color="black60">Time left</Sans12>
-              <Timer timeLeftInMilliseconds={1000 * 60 * 20} />
+              <Timer timeLeftInMilliseconds={millisToLiveStart} />
 
               <Divider mt={5} mb={4} />
 
@@ -97,6 +98,9 @@ export const BidResultScreen = createFragmentContainer(
         amount
         cents
         display
+      }
+      sale {
+        live_start_at
       }
     }
   `

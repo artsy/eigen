@@ -53,6 +53,10 @@ fragment BidResult_sale_artwork on SaleArtwork {
     cents
     display
   }
+  sale {
+    live_start_at
+    __id
+  }
   __id
 }
 */
@@ -106,7 +110,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "BidFlowSelectMaxBidRendererQuery",
-  "id": "ebe67c9f21fe2647c985a33271b39fbc",
+  "id": "1a847210617c941b4d2796f405476dfc",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -172,7 +176,14 @@ return {
             "plural": false,
             "selections": [
               v5,
-              v2
+              v2,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "live_start_at",
+                "args": null,
+                "storageKey": null
+              }
             ]
           },
           {
