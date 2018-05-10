@@ -132,12 +132,16 @@ storiesOf("App Style/Input")
           <Serif16 mt={2}>Remember me</Serif16>
         </Checkbox>
 
-        <Checkbox pl={3} pb={1} error="Please agree to the terms and conditions">
-          <Serif16 mt={2}>Agree to Terms and Conditions</Serif16>
+        <Checkbox pl={3} pb={1} error>
+          <Serif16 mt={2} color="red100">
+            Agree to Terms and Conditions
+          </Serif16>
         </Checkbox>
 
-        <Checkbox p={3} checked error="Please agree to the terms and conditions">
-          <Serif16 mt={2}>Agree to Terms and Conditions</Serif16>
+        <Checkbox pl={3} pb={1} checked error>
+          <Serif16 mt={2} color="red100">
+            Agree to Terms and Conditions
+          </Serif16>
         </Checkbox>
 
         <Checkbox pl={3} pb={1} disabled>
