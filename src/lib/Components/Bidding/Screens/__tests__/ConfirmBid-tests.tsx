@@ -18,7 +18,7 @@ const saleArtwork = {
     artist_names: "Makiko Kudo",
   },
   sale: {
-    id: "best art sale in town",
+    id: "best-art-sale-in-town",
   },
   lot_label: "538",
 }
