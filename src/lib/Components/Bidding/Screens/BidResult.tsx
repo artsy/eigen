@@ -29,7 +29,7 @@ interface BidResultProps {
   navigator: NavigatorIOS
 }
 
-class BidResult extends React.Component<BidResultProps> {
+export class BidResult extends React.Component<BidResultProps> {
   onPressBidAgain = () => {
     // pushing to MaxBidScreen creates a sircular relay reference but this works
     // TODO: correct the screen transision animation

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders not highest bid screen properly 1`] = `
+exports[`BidResult component renders not highest bid screen properly 1`] = `
 <View
   flex={1}
   flexDirection="column"
@@ -131,7 +131,7 @@ exports[`renders not highest bid screen properly 1`] = `
       >
          bid didn’t meet the reserve price for this work.
 
-Bid again to take the lead.
+  Bid again to take the lead.
       </Text>
     </Text>
     <Text
@@ -168,16 +168,16 @@ Bid again to take the lead.
         ]
       }
     >
-      00
+      22
       d
         
-      00
+      03
       h
         
-      20
+      40
       m
         
-      00
+      27
       s
     </Text>
     <View
@@ -233,7 +233,7 @@ Bid again to take the lead.
         ]
       }
     >
-      $45,000
+      CHF 10,000
     </Text>
   </View>
   <View
@@ -290,7 +290,7 @@ Bid again to take the lead.
 </View>
 `;
 
-exports[`renders winning screen properly 1`] = `
+exports[`BidResult component renders winning screen properly 1`] = `
 <View
   alignItems="center"
   flex={1}
@@ -394,16 +394,16 @@ exports[`renders winning screen properly 1`] = `
           ]
         }
       >
-        00
+        22
         d
           
-        00
+        03
         h
           
-        20
+        40
         m
           
-        00
+        27
         s
       </Text>
     </View>

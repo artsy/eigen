@@ -23,38 +23,32 @@ const testSaleArtworkID = "5ae73b417622dd026f0fe473"
 const testArtworkID = "ran-hwang-ephemeral-blossom-pp"
 const testSaleID = "cityarts-benefit-auction-2018"
 
-const SelectMaxBidRenderer: React.SFC<any> = ({ render, saleArtworkID }) => {
-  return (
-    <QueryRenderer
-      environment={createEnvironment()}
-      query={graphql`
-        query BidFlowSelectMaxBidRendererQuery($saleArtworkID: String!) {
-          sale_artwork(id: $saleArtworkID) {
-            ...SelectMaxBid_sale_artwork
-          }
-        }
-      `}
-      variables={{ saleArtworkID }}
-      render={render}
-    />
-  )
-}
+const selectMaxBidQuery = graphql`
+  query BidFlowSelectMaxBidRendererQuery($saleArtworkID: String!) {
+    sale_artwork(id: $saleArtworkID) {
+      ...SelectMaxBid_sale_artwork
+    }
+  }
+`
 
-const ConfirmBidScreenRenderer: React.SFC<any> = ({ render, saleArtworkID }) => {
-  return (
-    <QueryRenderer
-      environment={createEnvironment()}
-      query={graphql`
-        query BidFlowConfirmBidScreenRendererQuery($saleArtworkID: String!) {
-          sale_artwork(id: $saleArtworkID) {
-            ...ConfirmBid_sale_artwork
-          }
-        }
-      `}
-      variables={{ saleArtworkID }}
-      render={render}
-    />
-  )
+const confirmBidQuery = graphql`
+  query BidFlowConfirmBidScreenRendererQuery($saleArtworkID: String!) {
+    sale_artwork(id: $saleArtworkID) {
+      ...ConfirmBid_sale_artwork
+    }
+  }
+`
+
+const bidResultQuery = graphql`
+  query BidFlowConfirmBidScreenRendererQuery($saleArtworkID: String!) {
+    sale_artwork(id: $saleArtworkID) {
+      ...BidResult_sale_artwork
+    }
+  }
+`
+
+const BidFlowStoryRenderer: React.SFC<any> = ({ render, query, saleArtworkID }) => {
+  return <QueryRenderer environment={createEnvironment()} query={query} variables={{ saleArtworkID }} render={render} />
 }
 
 storiesOf("Bidding")
@@ -62,14 +56,19 @@ storiesOf("Bidding")
     return <BidFlowRenderer render={renderWithLoadProgress(BidFlow)} artworkID={testArtworkID} saleID={testSaleID} />
   })
   .add("Select Max Bid", () => (
-    <SelectMaxBidRenderer render={renderWithLoadProgress(MaxBidScreen)} saleArtworkID={testSaleArtworkID} />
+    <BidFlowStoryRenderer
+      render={renderWithLoadProgress(MaxBidScreen)}
+      query={selectMaxBidQuery}
+      saleArtworkID={testSaleArtworkID}
+    />
   ))
   .add("Confirm Bid", () => {
     return (
-      <ConfirmBidScreenRenderer
+      <BidFlowStoryRenderer
         render={renderWithLoadProgress(ConfirmBidScreen, {
           bid: { display: "$20,000", cents: 2000000 },
         })}
+        query={confirmBidQuery}
         saleArtworkID={testSaleArtworkID}
       />
     )
@@ -94,16 +93,31 @@ storiesOf("Bidding")
     )
   })
   .add("Bidding Result (winning)", () => {
-    return <BidResultScreen winning />
+    return (
+      <BidFlowStoryRenderer
+        render={renderWithLoadProgress(BidResultScreen, {
+          winning: true,
+        })}
+        query={bidResultQuery}
+        saleArtworkID={testSaleArtworkID}
+      />
+    )
   })
   .add("Bidding Result (not highest bid)", () => {
     const messageHeader = "Your bid wasn’t high enough"
     const messageDescriptionMd = `Your [bid](http://example.com) didn’t meet the reserve price for this work.
 
 Bid again to take the lead.`
-
     return (
-      <BidResultScreen winning={false} message_header={messageHeader} message_description_md={messageDescriptionMd} />
+      <BidFlowStoryRenderer
+        render={renderWithLoadProgress(BidResultScreen, {
+          winning: true,
+          message_header: messageHeader,
+          message_description_md: messageDescriptionMd,
+        })}
+        query={bidResultQuery}
+        saleArtworkID={testSaleArtworkID}
+      />
     )
   })
 
