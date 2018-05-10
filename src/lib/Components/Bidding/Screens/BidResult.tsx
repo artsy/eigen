@@ -1,5 +1,5 @@
 import React from "react"
-import { View } from "react-native"
+import { NavigatorIOS, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -26,11 +26,17 @@ interface BidResultProps {
   winning: boolean
   message_header?: string
   message_description_md?: string
+  navigator: NavigatorIOS
 }
 
 class BidResult extends React.Component<BidResultProps> {
+  onPressBidAgain = () => {
+    // pushing to MaxBidScreen creates a sircular relay reference but this works
+    // TODO: correct the screen transision animation
+    this.props.navigator.popToTop()
+  }
+
   render() {
-    console.log(this.props)
     if (this.props.winning) {
       return (
         <BiddingThemeProvider>
@@ -65,7 +71,12 @@ class BidResult extends React.Component<BidResultProps> {
               <SerifSemibold18>{this.props.sale_artwork.current_bid.display}</SerifSemibold18>
             </CenteringContainer>
 
-            <Button text="Bid again" onPress={() => null} />
+            <Button
+              text="Bid again"
+              onPress={() => {
+                this.onPressBidAgain()
+              }}
+            />
           </Container>
         </BiddingThemeProvider>
       )
