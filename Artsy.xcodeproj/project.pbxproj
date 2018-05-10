@@ -680,6 +680,10 @@
 		6F3D85ED204DD876000BF304 /* Artwork+AttributionClassStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3D85EC204DD876000BF304 /* Artwork+AttributionClassStrings.m */; };
 		6F3D85F0204DDB37000BF304 /* ArtworkAttributionClassTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3D85EE204DDB1C000BF304 /* ArtworkAttributionClassTests.m */; };
 		7F45A1682003C7100063D6B5 /* conversations.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 7F45A1672003C7100063D6B5 /* conversations.graphql */; };
+		7FB8852720A3704700DE5E82 /* checkbox_unselected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8852420A3704600DE5E82 /* checkbox_unselected@3x.png */; };
+		7FB8852820A3704700DE5E82 /* checkbox_unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8852520A3704600DE5E82 /* checkbox_unselected@2x.png */; };
+		7FB8852920A3704700DE5E82 /* checkbox_unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8852620A3704700DE5E82 /* checkbox_unselected.png */; };
+		7FC37D0A20A1F0FA0029296A /* ARAcceptConditionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC37D0920A1F0FA0029296A /* ARAcceptConditionsView.m */; };
 		83071C79208DFE27006020DB /* record_artwork_view_mutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 83071C78208DFE27006020DB /* record_artwork_view_mutation.graphql */; };
 		837CEC841C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */; };
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
@@ -1882,6 +1886,11 @@
 		6F3D85EC204DD876000BF304 /* Artwork+AttributionClassStrings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Artwork+AttributionClassStrings.m"; sourceTree = "<group>"; };
 		6F3D85EE204DDB1C000BF304 /* ArtworkAttributionClassTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArtworkAttributionClassTests.m; sourceTree = "<group>"; };
 		7F45A1672003C7100063D6B5 /* conversations.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = conversations.graphql; sourceTree = "<group>"; };
+		7FB8852420A3704600DE5E82 /* checkbox_unselected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox_unselected@3x.png"; sourceTree = "<group>"; };
+		7FB8852520A3704600DE5E82 /* checkbox_unselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox_unselected@2x.png"; sourceTree = "<group>"; };
+		7FB8852620A3704700DE5E82 /* checkbox_unselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_unselected.png; sourceTree = "<group>"; };
+		7FC37D0820A1F0FA0029296A /* ARAcceptConditionsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAcceptConditionsView.h; sourceTree = "<group>"; };
+		7FC37D0920A1F0FA0029296A /* ARAcceptConditionsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAcceptConditionsView.m; sourceTree = "<group>"; };
 		83071C78208DFE27006020DB /* record_artwork_view_mutation.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = record_artwork_view_mutation.graphql; sourceTree = "<group>"; };
 		83282D751EB0D9F1006F30C2 /* ARRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRootViewController.h; sourceTree = "<group>"; };
 		837CEC821C876B7C00A7E0E1 /* ArtsyAPI+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Notifications.h"; sourceTree = "<group>"; };
@@ -3240,6 +3249,9 @@
 		60059B2017CE9CEE00BE132D /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				7FB8852620A3704700DE5E82 /* checkbox_unselected.png */,
+				7FB8852520A3704600DE5E82 /* checkbox_unselected@2x.png */,
+				7FB8852420A3704600DE5E82 /* checkbox_unselected@3x.png */,
 				1C09DFA51E53BAAD003F7BA7 /* onboardingspinner.png */,
 				1C09DFA61E53BAAD003F7BA7 /* onboardingspinner@2x.png */,
 				E6FFEA9F19C7925600A0D7DE /* onboard_1@2x~ipad.jpg */,
@@ -3850,6 +3862,8 @@
 				605B11B417CFE7CC00334196 /* ARTermsAndConditionsView.m */,
 				4938743417BDB2CD00724795 /* ARCrossfadingImageView.h */,
 				4938743517BDB2CD00724795 /* ARCrossfadingImageView.m */,
+				7FC37D0820A1F0FA0029296A /* ARAcceptConditionsView.h */,
+				7FC37D0920A1F0FA0029296A /* ARAcceptConditionsView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4985,6 +4999,7 @@
 				3C4AE98119094DAA009C0E8B /* MapAnnotation_Highlighted@2x.png in Resources */,
 				60E71A011B4C60AC008948FA /* Artsy_Logo.png in Resources */,
 				605002E317D8912300C090B8 /* Artwork_Icon_Share@2x.png in Resources */,
+				7FB8852820A3704700DE5E82 /* checkbox_unselected@2x.png in Resources */,
 				E6FFEABD19C7925600A0D7DE /* splash_5@2x~ipad.jpg in Resources */,
 				3C4AE96819094969009C0E8B /* SearchIcon_LightGrey@2x.png in Resources */,
 				608B706C17D4A1C80088A56C /* Artwork_Icon_Share.png in Resources */,
@@ -5043,6 +5058,7 @@
 				0CD4E9B11BC42675005F0913 /* Heart_Shortcut.png in Resources */,
 				608C6DD01FAA11630044E235 /* nav_search@3x.png in Resources */,
 				608B708A17D4A1C80088A56C /* SettingsButton@2x.png in Resources */,
+				7FB8852720A3704700DE5E82 /* checkbox_unselected@3x.png in Resources */,
 				3C4AE99719094F96009C0E8B /* ViewInRoom_Wall@2x.png in Resources */,
 				51E576091BFFA16C00A146C1 /* Artsy.Store.entitlements in Resources */,
 				608C6DC81FAA11630044E235 /* nav_favs@2x.png in Resources */,
@@ -5076,6 +5092,7 @@
 				1CC9EBA51CC76CDD00A74E3C /* followButtonChecked@2x.png in Resources */,
 				E6FFEABC19C7925600A0D7DE /* splash_4@2x~iphone.jpg in Resources */,
 				66A43C6B1CE48FA800FFD6ED /* SearchButtonWhite@2x.png in Resources */,
+				7FB8852920A3704700DE5E82 /* checkbox_unselected.png in Resources */,
 				3C4AE99619094F96009C0E8B /* ViewInRoom_Wall_Right@2x.png in Resources */,
 				5E17B1941C59645E00CE6E98 /* Range@2x.png in Resources */,
 				1CC9EBA31CC76CDD00A74E3C /* followButton@3x.png in Resources */,
@@ -5550,6 +5567,7 @@
 				E6A3500518AAEBFF0075398F /* NSKeyedUnarchiver+ErrorLogging.m in Sources */,
 				5E0846D71C6E474800855667 /* ARSaleArtworkItemFlowModule.m in Sources */,
 				60C26DED1BBC6FEA00229CE8 /* AREmbeddedModelPreviewViewController.m in Sources */,
+				7FC37D0A20A1F0FA0029296A /* ARAcceptConditionsView.m in Sources */,
 				5E20BB651C62BF8300C6D781 /* AuctionColors.swift in Sources */,
 				3CCCC89B18996DD4008015DD /* Post.m in Sources */,
 				5144331B1AD68D8400FBBCE5 /* ARTopMenuInternalMobileWebViewController.m in Sources */,
