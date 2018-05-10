@@ -56,7 +56,7 @@ describe("when pressing bid button", () => {
       expect(confirmBid.verifyBidPosition).toHaveBeenCalled()
     })
 
-    it("commits the mutation and verifies bid position on success", () => {
+    it("commits the mutation and verifies bid position on error", () => {
       const confirmBid = new ConfirmBid(initialProps)
       confirmBid.verifyBidPosition = jest.fn()
       console.log = jest.fn() // Silences component logging.
@@ -100,6 +100,25 @@ describe("polling to verify bid position", () => {
     const query = mockphysics.mock.calls[0][0].query
     expect(query).toContain(bidAcceptedResults.createBidderPosition.result.position.id)
     expect(confirmBid.checkBidPosition).toHaveBeenCalled()
+  })
+
+  xdescribe("bid pending", () => {
+    const result = {
+      data: {
+        me: {
+          bidder_position: {},
+        },
+      },
+    }
+
+    xit("polls for new results", () => {
+      const confirmBid = new ConfirmBid(initialProps)
+      confirmBid.verifyBidPosition = jest.fn()
+
+      confirmBid.checkBidPosition(result)
+
+      expect(confirmBid.verifyBidPosition).toHaveBeenCalledWith(true)
+    })
   })
 
   describe("bid success", () => {
@@ -158,5 +177,7 @@ describe("polling to verify bid position", () => {
         bidFailedResults.createBidderPosition.result.message_description_md
       )
     })
+
+    xit("shows the error screen with a network failure")
   })
 })
