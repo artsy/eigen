@@ -1,5 +1,6 @@
 import React from "react"
 import { View } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import { Icon20 } from "../Elements/Icon"
@@ -12,14 +13,24 @@ import { Divider } from "../Components/Divider"
 import { MarkdownRenderer } from "../Components/MarkdownRenderer"
 import { Timer } from "../Components/Timer"
 
+// import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
+import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
+
+// interface MinimumNextBid {
+//   display: string
+//   cents: number
+// }
+
 interface BidResultProps {
+  sale_artwork: BidResult_sale_artwork
   winning: boolean
   message_header?: string
   message_description_md?: string
 }
 
-export class BidResult extends React.Component<BidResultProps> {
+class BidResult extends React.Component<BidResultProps> {
   render() {
+    console.log(this.props)
     if (this.props.winning) {
       return (
         <BiddingThemeProvider>
@@ -51,7 +62,7 @@ export class BidResult extends React.Component<BidResultProps> {
               <Divider mt={5} mb={4} />
 
               <Serif16>Current bid</Serif16>
-              <SerifSemibold18>$45,000</SerifSemibold18>
+              <SerifSemibold18>{this.props.sale_artwork.current_bid.display}</SerifSemibold18>
             </CenteringContainer>
 
             <Button text="Bid again" onPress={() => null} />
@@ -67,4 +78,15 @@ const TopOffset = styled.View`
   align-items: center;
 `
 
-const StyledText = props => <Serif16 mb={5} textAlign="center" color="black60" {...props} />
+export const BidResultScreen = createFragmentContainer(
+  BidResult,
+  graphql`
+    fragment BidResult_sale_artwork on SaleArtwork {
+      current_bid {
+        amount
+        cents
+        display
+      }
+    }
+  `
+)

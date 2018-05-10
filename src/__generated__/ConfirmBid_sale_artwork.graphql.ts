@@ -92,9 +92,14 @@ return {
       "args": null,
       "storageKey": null
     },
+    {
+      "kind": "FragmentSpread",
+      "name": "BidResult_sale_artwork",
+      "args": null
+    },
     v1
   ]
 };
 })();
-(node as any).hash = '68b289ecbfa9dc78611a2751c2985569';
+(node as any).hash = 'd21108fb42ad36cab435409017b294ba';
 export default node;

@@ -23,7 +23,7 @@ import { Title } from "../Components/Title"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { metaphysics } from "../../../metaphysics"
 
-import { BidResult } from "./BidResult"
+import { BidResultScreen } from "./BidResult"
 
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
 
@@ -138,9 +138,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
 
   showBidResult(winning: boolean, messageHeader?: string, messageDescriptionMd?: string) {
     this.props.navigator.push({
-      component: BidResult,
+      component: BidResultScreen,
       title: "",
       passProps: {
+        sale_artwork: this.props.sale_artwork,
         message_header: messageHeader,
         message_description_md: messageDescriptionMd,
         winning,
@@ -214,6 +215,7 @@ export const ConfirmBidScreen = createFragmentContainer(
         artist_names
       }
       lot_label
+      ...BidResult_sale_artwork
     }
   `
 )

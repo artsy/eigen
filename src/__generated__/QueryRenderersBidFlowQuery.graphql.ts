@@ -55,6 +55,16 @@ fragment ConfirmBid_sale_artwork on SaleArtwork {
     __id
   }
   lot_label
+  ...BidResult_sale_artwork
+  __id
+}
+
+fragment BidResult_sale_artwork on SaleArtwork {
+  current_bid {
+    amount
+    cents
+    display
+  }
   __id
 }
 */
@@ -100,6 +110,20 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "display",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "cents",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
@@ -108,7 +132,11 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersBidFlowQuery",
+<<<<<<< HEAD
   "id": "0a615ed0d3710d159ec8fc60f04c2de2",
+=======
+  "id": "a2c9a6aa101fb74640dd4454310c1f6e",
+>>>>>>> display current bid
   "text": null,
   "metadata": {},
   "fragment": {
@@ -172,6 +200,7 @@ return {
             "concreteType": "SaleArtwork",
             "plural": false,
             "selections": [
+<<<<<<< HEAD
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -199,6 +228,37 @@ return {
               },
               {
                 "kind": "LinkedField",
+=======
+              v3,
+              v4
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "sale",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Sale",
+            "plural": false,
+            "selections": [
+              v5,
+              v2
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artwork",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artwork",
+            "plural": false,
+            "selections": [
+              v5,
+              {
+                "kind": "ScalarField",
+>>>>>>> display current bid
                 "alias": null,
                 "name": "sale",
                 "storageKey": null,
@@ -254,7 +314,38 @@ return {
               v3
             ]
           },
+<<<<<<< HEAD
           v3
+=======
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "lot_label",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "current_bid",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "SaleArtworkCurrentBid",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "amount",
+                "args": null,
+                "storageKey": null
+              },
+              v4,
+              v3
+            ]
+          },
+          v2
+>>>>>>> display current bid
         ]
       }
     ]

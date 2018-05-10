@@ -14,7 +14,7 @@ import { Checkbox } from "../Components/Checkbox"
 
 import BidFlow from "../../../Containers/BidFlow"
 import { Input } from "../Components/Input"
-import { BidResult } from "../Screens/BidResult"
+import { BidResultScreen } from "../Screens/BidResult"
 import { ConfirmBidScreen } from "../Screens/ConfirmBid"
 import { ConfirmFirstTimeBid } from "../Screens/ConfirmFirstTimeBid"
 import { MaxBidScreen } from "../Screens/SelectMaxBid"
@@ -34,9 +34,7 @@ const SelectMaxBidRenderer: React.SFC<any> = ({ render, saleArtworkID }) => {
           }
         }
       `}
-      variables={{
-        saleArtworkID,
-      }}
+      variables={{ saleArtworkID }}
       render={render}
     />
   )
@@ -96,7 +94,7 @@ storiesOf("Bidding")
     )
   })
   .add("Bidding Result (winning)", () => {
-    return <BidResult winning />
+    return <BidResultScreen winning />
   })
   .add("Bidding Result (not highest bid)", () => {
     const messageHeader = "Your bid wasn’t high enough"
@@ -104,7 +102,9 @@ storiesOf("Bidding")
 
 Bid again to take the lead.`
 
-    return <BidResult winning={false} message_header={messageHeader} message_description_md={messageDescriptionMd} />
+    return (
+      <BidResultScreen winning={false} message_header={messageHeader} message_description_md={messageDescriptionMd} />
+    )
   })
 
 storiesOf("App Style/Input")
