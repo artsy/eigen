@@ -55,6 +55,7 @@ fragment BidResult_sale_artwork on SaleArtwork {
   }
   sale {
     live_start_at
+    end_at
     __id
   }
   __id
@@ -110,7 +111,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "BidFlowSelectMaxBidRendererQuery",
-  "id": "1a847210617c941b4d2796f405476dfc",
+  "id": "f2b415404f38d89144fe2f7198604fa9",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -181,6 +182,13 @@ return {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "live_start_at",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "end_at",
                 "args": null,
                 "storageKey": null
               }

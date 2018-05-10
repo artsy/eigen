@@ -67,6 +67,7 @@ fragment BidResult_sale_artwork on SaleArtwork {
   }
   sale {
     live_start_at
+    end_at
     __id
   }
   __id
@@ -138,6 +139,7 @@ return {
   "name": "QueryRenderersBidFlowQuery",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "id": "0a615ed0d3710d159ec8fc60f04c2de2",
 =======
   "id": "a2c9a6aa101fb74640dd4454310c1f6e",
@@ -145,6 +147,9 @@ return {
 =======
   "id": "21c76ca65cad8ae46231cd74411a4afc",
 >>>>>>> countdown to live_start_at
+=======
+  "id": "5cc347f0645f81aec7e0f4db5c6e3558",
+>>>>>>> fix storybook
   "text": null,
   "metadata": {},
   "fragment": {
@@ -256,6 +261,13 @@ return {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "live_start_at",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "end_at",
                 "args": null,
                 "storageKey": null
               }

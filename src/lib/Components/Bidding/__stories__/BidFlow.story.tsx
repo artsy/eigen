@@ -40,7 +40,7 @@ const confirmBidQuery = graphql`
 `
 
 const bidResultQuery = graphql`
-  query BidFlowConfirmBidScreenRendererQuery($saleArtworkID: String!) {
+  query BidFlowBidResultScreenRendererQuery($saleArtworkID: String!) {
     sale_artwork(id: $saleArtworkID) {
       ...BidResult_sale_artwork
     }
@@ -111,7 +111,7 @@ Bid again to take the lead.`
     return (
       <BidFlowStoryRenderer
         render={renderWithLoadProgress(BidResultScreen, {
-          winning: true,
+          winning: false,
           message_header: messageHeader,
           message_description_md: messageDescriptionMd,
         })}

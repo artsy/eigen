@@ -12,6 +12,7 @@ const saleArtwork = {
   },
   sale: {
     live_start_at: "2022-01-01T00:03:00+00:00",
+    end_at: "2022-05-01T00:03:00+00:00",
   },
 }
 describe("BidResult component", () => {
