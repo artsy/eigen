@@ -14,7 +14,7 @@
 
 -->
 
-### Master
+### 1.5.0
 
 * Adds Recently Viewed Works rail to Home - sarah
 * Upgrade to React Native 0.54.4 - alloy/orta
@@ -44,6 +44,9 @@
 * Creates and verifies bidder position - sepans
 * Adds `<MarkdownRenderer>` component - sepans
 * Changes `<BidFlow>` component and `ARBidFlowViewController` to accept artworkID and saleID as params - ash
+* Adds a `<Input>` component - yuki24
+* Adds a billing address screen - yuki24
+* Reflect style updates for the `<Checkbox>` component - yuki24
 
 ### 1.4.6
 
