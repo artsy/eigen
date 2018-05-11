@@ -21,6 +21,7 @@ import { MaxBidScreen } from "../Screens/SelectMaxBid"
 const testSaleArtworkID = "5aefc5898b3b814ecdd59561"
 
 const SelectMaxBidRenderer: React.SFC<any> = ({ render, saleArtworkID }) => {
+  // TODO: Need to change this too.
   return (
     <QueryRenderer
       environment={createEnvironment()}

@@ -59,22 +59,27 @@ export const ArtistRenderer: React.SFC<ArtistRendererProps> = ({ render, artistI
 }
 
 interface BidFlowRendererProps extends RendererProps {
-  saleArtworkID: string
+  artworkID: string
+  saleID: string
 }
 
-export const BidFlowRenderer: React.SFC<BidFlowRendererProps> = ({ render, saleArtworkID }) => {
+export const BidFlowRenderer: React.SFC<BidFlowRendererProps> = ({ render, artworkID, saleID }) => {
+  console.log("artworkID", artworkID)
   return (
     <QueryRenderer
       environment={environment}
       query={graphql`
-        query QueryRenderersBidFlowQuery($saleArtworkID: String!) {
-          sale_artwork(id: $saleArtworkID) {
-            ...BidFlow_sale_artwork
+        query QueryRenderersBidFlowQuery($artworkID: String!, $saleID: String!) {
+          artwork(id: $artworkID) {
+            sale_artwork(sale_id: $saleID) {
+              ...BidFlow_sale_artwork
+            }
           }
         }
       `}
       variables={{
-        saleArtworkID,
+        artworkID,
+        saleID,
       }}
       render={render}
     />

@@ -89,7 +89,8 @@ const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(prop
 const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoadProgress(Containers.MyProfile)} />
 
 interface BidFlowProps {
-  saleArtworkID: string
+  artworkID: string
+  saleID: string
 }
 const BidFlow: React.SFC<BidFlowProps> = props => (
   <BidFlowRenderer {...props} render={renderWithLoadProgress(Containers.BidFlow)} />

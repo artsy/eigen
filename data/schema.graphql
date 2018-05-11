@@ -540,7 +540,7 @@ type Artwork implements Node {
   publisher(format: Format): String
   related(size: Int): [Artwork]
   sale: Sale
-  sale_artwork: SaleArtwork
+  sale_artwork(sale_id: String = null): SaleArtwork
   sale_message: String
   series(format: Format): String
   show(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): PartnerShow
@@ -1157,7 +1157,7 @@ type ArtworkItem implements Node {
   publisher(format: Format): String
   related(size: Int): [Artwork]
   sale: Sale
-  sale_artwork: SaleArtwork
+  sale_artwork(sale_id: String = null): SaleArtwork
   sale_message: String
   series(format: Format): String
   show(size: Int, active: Boolean, at_a_fair: Boolean, sort: PartnerShowSorts): PartnerShow
@@ -1236,6 +1236,7 @@ type Asset {
   asset_type: String
 }
 
+# Fields of an attachment (currently from Radiation)
 type Attachment {
   # Attachment id.
   id: String!
@@ -1507,6 +1508,7 @@ type BuyersPremium {
   percent: Float
 }
 
+# Fields of partner category (currently from Gravity).
 type Category {
   id: String!
   category_type: String
@@ -1593,6 +1595,8 @@ type ConsignmentSubmission implements Node {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
+
+  # The gravity ID for an Artist
   artist_id: String!
 
   # Does the artwork come with an certificate of authenticity?
@@ -1825,6 +1829,7 @@ type CreateGeminiEntryForAssetPayload {
 }
 
 input CreateSubmissionMutationInput {
+  # The gravity ID for an Artist
   artist_id: String!
 
   # Does the artwork come with an certificate of authenticity?
@@ -1972,6 +1977,7 @@ type DeepZoomImageSize {
   Height: Int
 }
 
+# Fields of a delivery (currently from Radiation)
 type Delivery {
   # Delivery id.
   id: String!
@@ -3255,6 +3261,7 @@ enum Intents {
   READ_ART_MARKET_NEWS
 }
 
+# Fields of an invoice (currently from Lewitt)
 type Invoice implements Node {
   # A globally unique ID.
   __id: ID!
@@ -3367,6 +3374,8 @@ type Me implements Node {
 
   # Returns a single bidder position
   bidder_position(id: String!): BidderPosition
+
+  # A collector profile.
   collector_profile: CollectorProfileType
 
   # A conversation, usually between a user and a partner
@@ -3429,6 +3438,7 @@ type Me implements Node {
   # A list of feed items, indicating published artworks (grouped by date and artists).
   notifications_connection(after: String, first: Int, before: String, last: Int): NotificationsFeedItemConnection @deprecated(reason: "Prefer to use followed_artists_artwork_groups.")
   paddle_number: String
+  recentlyViewedArtworkIds: [String]!
 
   # A list of the current user’s recently viewed artworks.
   recentlyViewedArtworks(after: String, first: Int, before: String, last: Int): ArtworkConnection
@@ -3541,9 +3551,17 @@ type MessageInitiator {
 type Mutation {
   # Creates a bidder position
   createBidderPosition(input: BidderPositionInput!): BidderPositionPayload
+
+  # Create a credit card
   createCreditCard(input: CreditCardInput!): CreditCardPayload
+
+  # Follow (or unfollow) an artist
   followArtist(input: FollowArtistInput!): FollowArtistPayload
+
+  # Follow (or unfollow) an gene
   followGene(input: FollowGeneInput!): FollowGenePayload
+
+  # Updating a collector profile (loyalty applicant status).
   updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
 
   # Update the current logged in user.
@@ -3551,7 +3569,11 @@ type Mutation {
 
   # Update a conversation.
   updateConversation(input: UpdateConversationMutationInput!): UpdateConversationMutationPayload
+
+  # Update an order
   updateOrder(input: UpdateOrderInput!): UpdateOrderPayload
+
+  # Submit an order with payment
   submitOrder(input: SubmitOrderInput!): SubmitOrderPayload
 
   # Appending a message to a conversation thread
@@ -3794,7 +3816,7 @@ type Partner implements Node {
   href: String
   initials(length: Int = 3): String
   is_default_profile_public: Boolean
-  is_limited_fair_partner: Boolean @deprecated(reason: "This field no longer exists, this is for backwards compatability")
+  is_limited_fair_partner: Boolean @deprecated(reason: "This field no longer exists, this is for backwards compatibility")
   is_linkable: Boolean
   is_pre_qualify: Boolean
   locations(size: Int = 25): [Location]
@@ -5511,6 +5533,8 @@ type UpdateOrderPayload {
 input UpdateSubmissionMutationInput {
   # A type-specific ID.
   id: String!
+
+  # The gravity ID for an Artist
   artist_id: String!
 
   # Does the artwork come with an certificate of authenticity?
