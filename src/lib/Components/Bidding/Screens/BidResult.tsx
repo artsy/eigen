@@ -1,29 +1,27 @@
+import moment from "moment"
 import React from "react"
 import { NavigatorIOS, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import { Icon20 } from "../Elements/Icon"
-import { Sans12, Serif16, SerifSemibold18 } from "../Elements/Typography"
+import { Sans12 } from "../Elements/Typography"
 
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { Button } from "../Components/Button"
-import { CenteringContainer, Container } from "../Components/Containers"
-import { Divider } from "../Components/Divider"
+import { BidGhostButton, Button } from "../Components/Button"
+import { Container } from "../Components/Containers"
 import { MarkdownRenderer } from "../Components/MarkdownRenderer"
 import { Timer } from "../Components/Timer"
+import { Title } from "../Components/Title"
 
-// import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 
-// interface MinimumNextBid {
-//   display: string
-//   cents: number
-// }
+const SHOW_TIMER_STATUSES = ["SUCCESS", "ERROR_BID_LOW"]
 
 interface BidResultProps {
   sale_artwork: BidResult_sale_artwork
   winning: boolean
+  status: string
   message_header?: string
   message_description_md?: string
   navigator: NavigatorIOS
@@ -31,7 +29,7 @@ interface BidResultProps {
 
 export class BidResult extends React.Component<BidResultProps> {
   onPressBidAgain = () => {
-    // pushing to MaxBidScreen creates a sircular relay reference but this works
+    // pushing to MaxBidScreen creates a circular relay reference but this works
     // TODO: correct the screen transision animation
     this.props.navigator.popToTop()
   }
@@ -44,43 +42,44 @@ export class BidResult extends React.Component<BidResultProps> {
     if (this.props.winning) {
       return (
         <BiddingThemeProvider>
-          <CenteringContainer>
+          <Container mt={40}>
             <View>
-              <TopOffset>
-                <Icon20 m={2} source={require("../../../../../images/circle-check-green.png")} />
-                <SerifSemibold18 mb={4}>You're the highest bidder</SerifSemibold18>
-
-                <Sans12 color="black60">Time left</Sans12>
-                <Timer timeLeftInMilliseconds={timeLeftToBidMillis} />
-              </TopOffset>
+              <CenteredView>
+                <Icon20 source={require("../../../../../images/circle-check-green.png")} />
+                <Title m={4}>You're the highest bidder</Title>
+                <TimeLeftToBidDisplay timeLeftToBid={timeLeftToBid} timeLeftToBidMillis={timeLeftToBidMillis} />
+              </CenteredView>
             </View>
-          </CenteringContainer>
+            <BidGhostButton text="Continue" onPress={() => null} />
+          </Container>
         </BiddingThemeProvider>
       )
     } else {
+      const bidAgain = SHOW_TIMER_STATUSES.indexOf(this.props.status) > -1
+      const buttonMsg = bidAgain ? `Bid ${this.props.sale_artwork.current_bid.display} or more` : "Continue"
       return (
         <BiddingThemeProvider>
-          <Container>
-            <CenteringContainer>
-              <Icon20 m={2} source={require("../../../../../images/circle-x-red.png")} />
-              <SerifSemibold18 mb={4}>{this.props.message_header}</SerifSemibold18>
-              <MarkdownRenderer>{this.props.message_description_md}</MarkdownRenderer>
-
-              <Sans12 color="black60">Time left</Sans12>
-              <Timer timeLeftInMilliseconds={timeLeftToBidMillis} />
-
-              <Divider mt={5} mb={4} />
-
-              <Serif16>Current bid</Serif16>
-              <SerifSemibold18>{this.props.sale_artwork.current_bid.display}</SerifSemibold18>
-            </CenteringContainer>
-
-            <Button
-              text="Bid again"
-              onPress={() => {
-                this.onPressBidAgain()
-              }}
-            />
+          <Container mt={40}>
+            <View>
+              <CenteredView>
+                <Icon20 source={require("../../../../../images/circle-x-red.png")} />
+                <Title m={4}>{this.props.message_header}</Title>
+                <MarkdownRenderer>{this.props.message_description_md}</MarkdownRenderer>
+                {bidAgain && (
+                  <TimeLeftToBidDisplay timeLeftToBid={timeLeftToBid} timeLeftToBidMillis={timeLeftToBidMillis} />
+                )}
+              </CenteredView>
+            </View>
+            {bidAgain ? (
+              <Button
+                text={buttonMsg}
+                onPress={() => {
+                  this.onPressBidAgain()
+                }}
+              />
+            ) : (
+              <BidGhostButton text="Continue" onPress={() => null} />
+            )}
           </Container>
         </BiddingThemeProvider>
       )
@@ -88,8 +87,16 @@ export class BidResult extends React.Component<BidResultProps> {
   }
 }
 
-const TopOffset = styled.View`
-  top: -50%;
+const TimeLeftToBidDisplay = props => {
+  return (
+    <CenteredView>
+      <Sans12>Ends {moment(props.timeLeftToBid, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("MMM D, ha")}</Sans12>
+      <Timer timeLeftInMilliseconds={props.timeLeftToBidMillis} />
+    </CenteredView>
+  )
+}
+
+const CenteredView = styled.View`
   align-items: center;
 `
 

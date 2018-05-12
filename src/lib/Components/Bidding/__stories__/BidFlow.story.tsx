@@ -93,10 +93,12 @@ storiesOf("Bidding")
     )
   })
   .add("Bidding Result (winning)", () => {
+    const status = "SUCCESS"
     return (
       <BidFlowStoryRenderer
         render={renderWithLoadProgress(BidResultScreen, {
           winning: true,
+          status,
         })}
         query={bidResultQuery}
         saleArtworkID={testSaleArtworkID}
@@ -104,14 +106,33 @@ storiesOf("Bidding")
     )
   })
   .add("Bidding Result (not highest bid)", () => {
+    const status = "ERROR_BID_LOW"
     const messageHeader = "Your bid wasn’t high enough"
-    const messageDescriptionMd = `Your [bid](http://example.com) didn’t meet the reserve price for this work.
-
-Bid again to take the lead.`
+    const messageDescriptionMd = `Another bidder placed a higher max bid or the same max bid before you did.  \
+ Bid again to take the lead.`
     return (
       <BidFlowStoryRenderer
         render={renderWithLoadProgress(BidResultScreen, {
           winning: false,
+          status,
+          message_header: messageHeader,
+          message_description_md: messageDescriptionMd,
+        })}
+        query={bidResultQuery}
+        saleArtworkID={testSaleArtworkID}
+      />
+    )
+  })
+  .add("Bidding Result (live bidding started)", () => {
+    const status = "ERROR_LIVE_BIDDING_STARTED"
+    const messageHeader = "Live bidding has started"
+    const messageDescriptionMd = `Sorry, your bid wasn’t received before live bidding started.\
+ To continue bidding, please [join the live auction](http://live-staging.artsy.net/).`
+    return (
+      <BidFlowStoryRenderer
+        render={renderWithLoadProgress(BidResultScreen, {
+          winning: false,
+          status,
           message_header: messageHeader,
           message_description_md: messageDescriptionMd,
         })}
