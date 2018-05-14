@@ -253,7 +253,6 @@ SCNNode *ARPointCloudNode = nil;
                 self.ghostArtwork = artwork;
             }
             self.ghostArtwork.position = result.localCoordinates;
-//            return;
         }
 
         if ([self.invisibleFloors containsObject:result.node]) {
@@ -386,7 +385,7 @@ SCNNode *ARPointCloudNode = nil;
              */
 
             //                ghostWall.rotation = self.sceneView.session.currentFrame.camera
-            ARCamera *camera = self.sceneView.session.currentFrame.camera;
+//            ARCamera *camera = self.sceneView.session.currentFrame.camera;
 //            NSLog(@"V: %f %f %f", camera.eulerAngles[0],camera.eulerAngles[1],camera.eulerAngles[2] );
 //            NSLog(@"L: %f %f %f", self.ghostWallLine.orientation.x,self.ghostWallLine.orientation.y, self.ghostWallLine.orientation.z);
 //            self.ghostWallLine.eulerAngles = SCNVector3Make(self.sceneView.session.currentFrame.camera.eulerAngles[1], 0, 0);

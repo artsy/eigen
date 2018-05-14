@@ -33,6 +33,7 @@
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRViewController.h"
+#import "ARAugmentedFloorBasedVIRViewController.h"
 #import <Emission/ARInquiryComponentViewController.h>
 #import "ARFullWidthCalloutLabelView.h"
 
@@ -108,7 +109,9 @@
             config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
 
             if (shouldSkipSetup) {
-                ARAugmentedVIRViewController *viewInRoomVC = [[ARAugmentedVIRViewController alloc] initWithConfig:config];
+                Class Controller = [AROptions boolForOption:AROptionsFloorBasedARVIR] ? ARAugmentedVIRViewController.class : ARAugmentedFloorBasedVIRViewController.class;
+
+                id viewInRoomVC = [[Controller alloc] initWithConfig:config];
                 [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
             } else {
                 // Currently an empty string, which is interpreted as nil
@@ -122,6 +125,7 @@
                 Message *setupURL = [[echo.messages select:^BOOL(Message *message) {
                     return [message.name isEqualToString:@"ARVIRVideo"];
                 }] firstObject];
+
 
                 NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;
                 ARAugmentedVIRSetupViewController *setupVC = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:movieURL config:config];
