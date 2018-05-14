@@ -27,12 +27,14 @@
 #import "User.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARNetworkErrorManager.h"
+#import "UIViewController+TopMenuViewController.h"
 #import "ARTopMenuViewController.h"
 #import "ARLogger.h"
 #import "Artsy-Swift.h"
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRViewController.h"
+#import "ARTopMenuViewController.h"
 #import <Emission/ARInquiryComponentViewController.h>
 #import <Emission/ARBidFlowViewController.h>
 #import "ARFullWidthCalloutLabelView.h"
@@ -197,13 +199,8 @@
     ADJEvent *event = [ADJEvent eventWithEventToken:ARAdjustSentArtworkInquiry];
     [Adjust trackEvent:event];
 
-    if ([AROptions boolForOption:AROptionsUseNewBidFlow]) {
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadBidFlowForSaleArtworkID:saleArtworkID];
-        [self presentViewController:viewController animated:YES completion:nil];
-    } else {
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadBidUIForArtwork:self.artwork.artworkID inSale:saleID];
-        [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
-    }
+    UIViewController *viewController = [ARSwitchBoard.sharedInstance loadBidUIForArtwork:self.artwork.artworkID inSale:saleID];
+    [self.ar_TopMenuViewController pushViewController:viewController animated:ARPerformWorkAsynchronously];
 }
 
 - (void)tappedBuyersPremium:(UIButton *)button

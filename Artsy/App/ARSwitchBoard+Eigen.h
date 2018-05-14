@@ -57,8 +57,7 @@
 - (UIViewController *)loadAuctionWithID:(NSString *)auctionID;
 - (UIViewController *)loadLiveAuction:(NSString *)auctionID;
 
-- (UIViewController *)loadBidFlowForSaleArtworkID:(NSString *)saleArtworkID;
-- (ARAuctionWebViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID;
+- (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID;
 
 - (ARAuctionWebViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;
 

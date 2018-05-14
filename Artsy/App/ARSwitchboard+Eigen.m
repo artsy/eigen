@@ -111,17 +111,15 @@
     return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
 }
 
-- (UIViewController *)loadBidFlowForSaleArtworkID:(NSString *)saleArtworkID
+- (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
 {
-    ARBidFlowViewController *bidFlowViewController = [[ARBidFlowViewController alloc] initWithSaleArtworkID:saleArtworkID];
-    return [[ARSerifNavigationViewController alloc] initWithRootViewController:bidFlowViewController];
-}
-
-- (ARAuctionWebViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
-{
-    NSString *path = [NSString stringWithFormat:@"/auction/%@/bid/%@", saleID, artworkID];
-    NSURL *URL = [self resolveRelativeUrl:path];
-    return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:artworkID];
+    if ([AROptions boolForOption:AROptionsUseNewBidFlow]) {
+        return [[ARBidFlowViewController alloc] initWithArtworkID:artworkID saleID:saleID];
+    } else {
+        NSString *path = [NSString stringWithFormat:@"/auction/%@/bid/%@", saleID, artworkID];
+        NSURL *URL = [self resolveRelativeUrl:path];
+        return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:artworkID];
+    }
 }
 
 - (ARArtworkInfoViewController *)loadMoreInfoForArtwork:(Artwork *)artwork
