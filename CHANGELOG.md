@@ -14,18 +14,11 @@
 
 -->
 
-### 1.5.0
+### Upcoming
+
+### 1.5.1
 
 * Adds Recently Viewed Works rail to Home - sarah
-* Upgrade to React Native 0.54.4 - alloy/orta
-* Follow Force and reduce image quality to 80 - alloy
-* Inquiries use the same user-agent as emission - orta
-* Optimise the generic artwork grid for rotation - maxim
-* Cache queries on-disk for 1 day - alloy
-* Add persisted queries support to Relay - alloy
-* Add ability to preload queries - alloy
-* Add ability to specifically style the button headline - yuki24
-* Adds BidFlow component and view controller - ashfurrow
 * Use a more appropriate type for textStyle in ButtonProps - yuki24
 * Adds confrirm bid screen for Bid Flow - sepans
 * Load Bid prices dynamically - sepans
@@ -40,13 +33,25 @@
 * Adds a new color `red100` (`#F7625A`) to the theme - yuki24
 * Adds a `<CheckBox>` component - yuki24
 * Adds support for viewing conditions of sale - ash
-* Fixes crash when following an artist from the ‘related artist’ Home/ForYou rail - alloy
+* Add ability to specifically style the button headline - yuki24
 * Creates and verifies bidder position - sepans
 * Adds `<MarkdownRenderer>` component - sepans
 * Changes `<BidFlow>` component and `ARBidFlowViewController` to accept artworkID and saleID as params - ash
 * Adds a `<Input>` component - yuki24
 * Adds a billing address screen - yuki24
 * Reflect style updates for the `<Checkbox>` component - yuki24
+
+### 1.5.0
+
+* Upgrade to React Native 0.54.4 - alloy/orta
+* Follow Force and reduce image quality to 80 - alloy
+* Inquiries use the same user-agent as emission - orta
+* Optimise the generic artwork grid for rotation - maxim
+* Cache queries on-disk for 1 day - alloy
+* Add persisted queries support to Relay - alloy
+* Add ability to preload queries - alloy
+* Adds BidFlow component and view controller - ashfurrow
+* Fixes crash when following an artist from the ‘related artist’ Home/ForYou rail - alloy
 
 ### 1.4.6
 
