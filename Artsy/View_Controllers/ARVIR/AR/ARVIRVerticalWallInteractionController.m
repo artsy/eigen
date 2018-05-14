@@ -34,7 +34,7 @@ NSInteger wallHeightMeters = 5;
     _detectedPlanes = @[];
     _delegate = delegate;
     CGRect bounds = [UIScreen mainScreen].bounds;
-    _pointOnScreenForArtworkProjection =CGPointMake(bounds.size.width/2, bounds.size.height/2);
+    _pointOnScreenForArtworkProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
     return self;
 }
 

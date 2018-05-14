@@ -37,7 +37,7 @@
     material.lightingModelName = SCNLightingModelConstant;
 
     ARSCNWallNode *box = [ARSCNWallNode boxWithWidth:20 height:6 length:0.1 chamferRadius:0];
-    box.materials =  @[frontMaterial, material, frontMaterial, material, material, material];
+    box.materials =  @[material, frontMaterial, material, material, material, material];
 
     return box;
 }
