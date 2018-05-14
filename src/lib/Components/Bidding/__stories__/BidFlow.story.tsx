@@ -19,7 +19,9 @@ import { ConfirmBidScreen } from "../Screens/ConfirmBid"
 import { ConfirmFirstTimeBid } from "../Screens/ConfirmFirstTimeBid"
 import { MaxBidScreen } from "../Screens/SelectMaxBid"
 
-const testSaleArtworkID = "5aefc5898b3b814ecdd59561"
+const testSaleArtworkID = "5ae73b417622dd026f0fe473"
+const testArtworkID = "ran-hwang-ephemeral-blossom-pp"
+const testSaleID = "cityarts-benefit-auction-2018"
 
 const SelectMaxBidRenderer: React.SFC<any> = ({ render, saleArtworkID }) => {
   return (
@@ -59,7 +61,7 @@ const ConfirmBidScreenRenderer: React.SFC<any> = ({ render, saleArtworkID }) => 
 
 storiesOf("Bidding")
   .add("Show bid flow", () => {
-    return <BidFlowRenderer render={renderWithLoadProgress(BidFlow)} saleArtworkID={testSaleArtworkID} />
+    return <BidFlowRenderer render={renderWithLoadProgress(BidFlow)} artworkID={testArtworkID} saleID={testSaleID} />
   })
   .add("Select Max Bid", () => (
     <SelectMaxBidRenderer render={renderWithLoadProgress(MaxBidScreen)} saleArtworkID={testSaleArtworkID} />

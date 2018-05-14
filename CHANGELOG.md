@@ -43,6 +43,7 @@
 * Fixes crash when following an artist from the ‘related artist’ Home/ForYou rail - alloy
 * Creates and verifies bidder position - sepans
 * Adds `<MarkdownRenderer>` component - sepans
+* Changes `<BidFlow>` component and `ARBidFlowViewController` to accept artworkID and saleID as params - ash
 * Adds a `<Input>` component - yuki24
 * Adds a billing address screen - yuki24
 * Reflect style updates for the `<Checkbox>` component - yuki24

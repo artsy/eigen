@@ -277,7 +277,7 @@
 - (ARCellData *)jumpToBidFlow
 {
   return [self tappableCellDataWithTitle:@"Bid Flow" selection: ^{
-    [self.navigationController pushViewController:[[ARBidFlowViewController alloc] initWithSaleArtworkID:@"5aada729139b216c0bf18103"] animated:YES];
+    [self.navigationController pushViewController:[[ARBidFlowViewController alloc] initWithArtworkID:@"lewis-baltz-morgan-hill-prototype" saleID:@"phillips-photographs-5"] animated:YES];
   }];
 }
 
@@ -374,7 +374,7 @@
 #if defined(DEPLOY)
   [sectionData addCellData:self.jumpToUserDocs];
 #endif
-  
+
   return sectionData;
 }
 
@@ -382,7 +382,7 @@
 {
   ARSectionData *sectionData = [[ARSectionData alloc] init];
   [self setupSection:sectionData withTitle:@"Admin"];
-  
+
   AppSetup *setup = [AppSetup ambientSetup];
   if (setup.inStaging) {
     [sectionData addCellDataFromArray:@[
