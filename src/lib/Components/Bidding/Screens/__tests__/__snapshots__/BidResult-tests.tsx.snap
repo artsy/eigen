@@ -6,7 +6,7 @@ exports[`BidResult component doesn't render timer when live bidding is started 1
   flexDirection="column"
   justifyContent="space-between"
   m={4}
-  mt={40}
+  mt={6}
   style={
     Array [
       Object {
@@ -24,11 +24,10 @@ exports[`BidResult component doesn't render timer when live bidding is started 1
 >
   <View>
     <View
+      alignItems="center"
       style={
         Array [
-          Object {
-            "alignItems": "center",
-          },
+          Object {},
           undefined,
         ]
       }
@@ -191,7 +190,7 @@ exports[`BidResult component renders timer and error message when bid is low 1`]
   flexDirection="column"
   justifyContent="space-between"
   m={4}
-  mt={40}
+  mt={6}
   style={
     Array [
       Object {
@@ -209,11 +208,10 @@ exports[`BidResult component renders timer and error message when bid is low 1`]
 >
   <View>
     <View
+      alignItems="center"
       style={
         Array [
-          Object {
-            "alignItems": "center",
-          },
+          Object {},
           undefined,
         ]
       }
@@ -323,11 +321,10 @@ exports[`BidResult component renders timer and error message when bid is low 1`]
         </Text>
       </Text>
       <View
+        alignItems="center"
         style={
           Array [
-            Object {
-              "alignItems": "center",
-            },
+            Object {},
             undefined,
           ]
         }
@@ -347,7 +344,8 @@ exports[`BidResult component renders timer and error message when bid is low 1`]
             ]
           }
         >
-          Ends 
+          Live 
+           
           Jan 1, 12am
         </Text>
         <Text
@@ -440,7 +438,7 @@ exports[`BidResult component renders winning screen properly 1`] = `
   flexDirection="column"
   justifyContent="space-between"
   m={4}
-  mt={40}
+  mt={6}
   style={
     Array [
       Object {
@@ -458,11 +456,10 @@ exports[`BidResult component renders winning screen properly 1`] = `
 >
   <View>
     <View
+      alignItems="center"
       style={
         Array [
-          Object {
-            "alignItems": "center",
-          },
+          Object {},
           undefined,
         ]
       }
@@ -510,11 +507,10 @@ exports[`BidResult component renders winning screen properly 1`] = `
         You're the highest bidder
       </Text>
       <View
+        alignItems="center"
         style={
           Array [
-            Object {
-              "alignItems": "center",
-            },
+            Object {},
             undefined,
           ]
         }
@@ -534,7 +530,8 @@ exports[`BidResult component renders winning screen properly 1`] = `
             ]
           }
         >
-          Ends 
+          Live 
+           
           Jan 1, 12am
         </Text>
         <Text

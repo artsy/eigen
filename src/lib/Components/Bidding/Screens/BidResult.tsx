@@ -2,8 +2,8 @@ import moment from "moment"
 import React from "react"
 import { NavigatorIOS, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
 
+import { Flex } from "../Elements/Flex"
 import { Icon20 } from "../Elements/Icon"
 import { Sans12 } from "../Elements/Typography"
 
@@ -37,18 +37,16 @@ export class BidResult extends React.Component<BidResultProps> {
   render() {
     const { live_start_at, end_at } = this.props.sale_artwork.sale
     // non-live sale doesn't have live_start_at so bidding is open until end time
-    const timeLeftToBid = live_start_at || end_at
-    const timeLeftToBidMillis = Date.parse(timeLeftToBid) - Date.now()
     if (this.props.winning) {
       return (
         <BiddingThemeProvider>
-          <Container mt={40}>
+          <Container mt={6}>
             <View>
-              <CenteredView>
+              <Flex alignItems="center">
                 <Icon20 source={require("../../../../../images/circle-check-green.png")} />
                 <Title m={4}>You're the highest bidder</Title>
-                <TimeLeftToBidDisplay timeLeftToBid={timeLeftToBid} timeLeftToBidMillis={timeLeftToBidMillis} />
-              </CenteredView>
+                <TimeLeftToBidDisplay liveStartsAt={live_start_at} endAt={end_at} />
+              </Flex>
             </View>
             <BidGhostButton text="Continue" onPress={() => null} />
           </Container>
@@ -59,16 +57,14 @@ export class BidResult extends React.Component<BidResultProps> {
       const buttonMsg = bidAgain ? `Bid ${this.props.sale_artwork.current_bid.display} or more` : "Continue"
       return (
         <BiddingThemeProvider>
-          <Container mt={40}>
+          <Container mt={6}>
             <View>
-              <CenteredView>
+              <Flex alignItems="center">
                 <Icon20 source={require("../../../../../images/circle-x-red.png")} />
                 <Title m={4}>{this.props.message_header}</Title>
                 <MarkdownRenderer>{this.props.message_description_md}</MarkdownRenderer>
-                {bidAgain && (
-                  <TimeLeftToBidDisplay timeLeftToBid={timeLeftToBid} timeLeftToBidMillis={timeLeftToBidMillis} />
-                )}
-              </CenteredView>
+                {bidAgain && <TimeLeftToBidDisplay liveStartsAt={live_start_at} endAt={end_at} />}
+              </Flex>
             </View>
             {bidAgain ? (
               <Button
@@ -87,18 +83,26 @@ export class BidResult extends React.Component<BidResultProps> {
   }
 }
 
-const TimeLeftToBidDisplay = props => {
-  return (
-    <CenteredView>
-      <Sans12>Ends {moment(props.timeLeftToBid, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("MMM D, ha")}</Sans12>
-      <Timer timeLeftInMilliseconds={props.timeLeftToBidMillis} />
-    </CenteredView>
-  )
+interface TimeLeftToBidDisplayProps {
+  liveStartsAt: string
+  endAt: string
 }
 
-const CenteredView = styled.View`
-  align-items: center;
-`
+const TimeLeftToBidDisplay: React.SFC<TimeLeftToBidDisplayProps> = props => {
+  const { liveStartsAt, endAt } = props
+  const timeLeftToBid = liveStartsAt || endAt
+  const timeLeftToBidMillis = Date.parse(timeLeftToBid) - Date.now()
+  const endOrLive = liveStartsAt ? "Live " : "Ends "
+
+  return (
+    <Flex alignItems="center">
+      <Sans12>
+        {endOrLive} {moment(timeLeftToBid, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("MMM D, ha")}
+      </Sans12>
+      <Timer timeLeftInMilliseconds={timeLeftToBidMillis} />
+    </Flex>
+  )
+}
 
 export const BidResultScreen = createFragmentContainer(
   BidResult,
