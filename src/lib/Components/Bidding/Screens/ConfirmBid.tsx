@@ -183,12 +183,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
               You agree to <LinkText onPress={this.onPressConditionsOfSale}>Conditions of Sale</LinkText>.
             </Serif14>
 
-            <Button
-              text="Place Bid"
-              onPress={() => {
-                this.placeBid()
-              }}
-            />
+            <Flex m={4}>
+              <Button text="Place Bid" onPress={this.state.conditionsOfSaleChecked && (() => this.placeBid())} />
+            </Flex>
           </View>
         </Container>
       </BiddingThemeProvider>
