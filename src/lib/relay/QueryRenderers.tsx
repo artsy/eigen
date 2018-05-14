@@ -64,7 +64,6 @@ interface BidFlowRendererProps extends RendererProps {
 }
 
 export const BidFlowRenderer: React.SFC<BidFlowRendererProps> = ({ render, artworkID, saleID }) => {
-  console.log("artworkID", artworkID)
   return (
     <QueryRenderer
       environment={environment}
@@ -81,7 +80,21 @@ export const BidFlowRenderer: React.SFC<BidFlowRendererProps> = ({ render, artwo
         artworkID,
         saleID,
       }}
-      render={render}
+      render={({ props, error }) => {
+        if (error) {
+          console.error(error)
+        } else if (props) {
+          // Note that we need to flatten the query above before passing into the BidFlow component.
+          // i.e.: the `sale_artwork` is nested within `artwork`, but we want the sale_artwork itself as a prop.
+          return render({
+            props: {
+              sale_artwork: props.artwork.sale_artwork,
+            },
+            error,
+          })
+        }
+        return null
+      }}
     />
   )
 }
