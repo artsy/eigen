@@ -21,41 +21,80 @@ exports[`renders properly 1`] = `
     ]
   }
 >
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
-    fontSize={5}
-    m={4}
+  <View
+    alignItems="center"
     style={
       Array [
-        Object {
-          "fontFamily": "AGaramondPro-Semibold",
-          "fontSize": 22,
-          "marginBottom": 20,
-          "marginLeft": 20,
-          "marginRight": 20,
-          "marginTop": 20,
-          "textAlign": "center",
-        },
+        Object {},
         undefined,
       ]
     }
-    textAlign="center"
   >
-    Confirm your bid
-  </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      fontSize={5}
+      m={4}
+      mb={3}
+      style={
+        Array [
+          Object {
+            "fontFamily": "AGaramondPro-Semibold",
+            "fontSize": 22,
+            "marginBottom": 10,
+            "marginLeft": 20,
+            "marginRight": 20,
+            "marginTop": 20,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+      textAlign="center"
+    >
+      Confirm your bid
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      fontSize={2}
+      style={
+        Array [
+          Object {
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 14,
+          },
+          undefined,
+        ]
+      }
+    >
+      00
+      d
+        
+      00
+      h
+        
+      20
+      m
+        
+      00
+      s
+    </Text>
+  </View>
   <View>
     <View
       alignItems="center"
       m={4}
+      mt={0}
       style={
         Array [
           Object {
             "marginBottom": 20,
             "marginLeft": 20,
             "marginRight": 20,
-            "marginTop": 20,
+            "marginTop": 0,
           },
           undefined,
         ]
@@ -108,10 +147,12 @@ exports[`renders properly 1`] = `
               "color": "#666",
               "fontFamily": "AGaramondPro-Italic",
               "fontSize": 14,
+              "textAlign": "center",
             },
             undefined,
           ]
         }
+        textAlign="center"
       >
         Meteor Shower
         , 
@@ -237,12 +278,14 @@ exports[`renders properly 1`] = `
       border={1}
       borderBottomWidth={0}
       borderColor="black10"
+      mb={9}
       style={
         Array [
           Object {
             "borderColor": "#E5E5E5",
             "borderStyle": "solid",
             "borderWidth": 1,
+            "marginBottom": 120,
             "width": "100%",
           },
           undefined,
@@ -252,96 +295,173 @@ exports[`renders properly 1`] = `
     />
   </View>
   <View>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      color="black60"
-      ellipsizeMode="tail"
-      fontSize={2}
-      mb={3}
-      style={
-        Array [
-          Object {
-            "color": "#666",
-            "fontFamily": "AGaramondPro-Regular",
-            "fontSize": 14,
-            "marginBottom": 10,
-            "textAlign": "center",
-          },
-          undefined,
-        ]
-      }
-      textAlign="center"
-    >
-      You agree to 
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-        onPress={[Function]}
-        style={
-          Array [
-            Object {
-              "textDecorationLine": "underline",
-            },
-            undefined,
-          ]
-        }
-      >
-        Conditions of Sale
-      </Text>
-      .
-    </Text>
     <View
       accessibilityComponentType={undefined}
       accessibilityLabel={undefined}
       accessibilityTraits={undefined}
       accessible={true}
-      collapsable={undefined}
+      alignItems="center"
+      flexDirection="row"
       hitSlop={undefined}
+      justifyContent="center"
       nativeID={undefined}
       onLayout={undefined}
+      onPress={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
+      pb={1}
+      pl={3}
       style={
-        Object {
-          "alignItems": "center",
-          "backgroundColor": "rgba(0, 0, 0, 1)",
-          "borderColor": "rgba(0, 0, 0, 1)",
-          "borderWidth": 1,
-          "height": 46,
-          "justifyContent": "center",
-        }
+        Array [
+          Object {
+            "paddingBottom": 3,
+            "paddingLeft": 10,
+          },
+          undefined,
+        ]
       }
       testID={undefined}
     >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
+      <View
+        animate={
+          Array [
+            "backgroundColor",
+            "borderColor",
+          ]
+        }
+        collapsable={undefined}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "rgba(255, 255, 255, 1)",
+            "borderColor": "rgba(229, 229, 229, 1)",
+            "borderStyle": "solid",
+            "borderWidth": 2,
+            "display": "flex",
+            "height": 20,
+            "justifyContent": "center",
+            "marginRight": 10,
+            "width": 20,
+          }
+        }
+      />
+      <View
         style={
           Array [
-            Object {
-              "fontSize": 12,
-            },
-            Object {
-              "color": "rgba(255, 255, 255, 1)",
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 14,
-              "opacity": 1,
-            },
-            Object {
-              "fontFamily": "AvantGardeGothicITC",
-            },
+            Object {},
+            undefined,
           ]
         }
       >
-        PLACE BID
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          color="black60"
+          ellipsizeMode="tail"
+          fontSize={2}
+          mt={2}
+          style={
+            Array [
+              Object {
+                "color": "#666",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 14,
+                "marginTop": 5,
+              },
+              undefined,
+            ]
+          }
+        >
+          You agree to 
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            onPress={[Function]}
+            style={
+              Array [
+                Object {
+                  "textDecorationLine": "underline",
+                },
+                undefined,
+              ]
+            }
+          >
+            Conditions of Sale
+          </Text>
+          .
+        </Text>
+      </View>
+    </View>
+    <View
+      m={4}
+      style={
+        Array [
+          Object {
+            "marginBottom": 20,
+            "marginLeft": 20,
+            "marginRight": 20,
+            "marginTop": 20,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        collapsable={undefined}
+        hitSlop={undefined}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "rgba(51, 51, 51, 1)",
+            "borderColor": "rgba(248, 248, 248, 1)",
+            "borderWidth": 1,
+            "height": 46,
+            "justifyContent": "center",
+          }
+        }
+        testID={undefined}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "fontSize": 12,
+              },
+              Object {
+                "color": "rgba(204, 204, 204, 1)",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 14,
+                "opacity": 1,
+              },
+              Object {
+                "fontFamily": "AvantGardeGothicITC",
+              },
+            ]
+          }
+        >
+          PLACE BID
+        </Text>
+      </View>
     </View>
   </View>
 </View>

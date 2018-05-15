@@ -16,6 +16,8 @@
 
 ### Upcoming
 
+* Adds a checkbox to the confirm your bid screen - yuki24
+
 ### 1.5.1
 
 * Adds Recently Viewed Works rail to Home - sarah

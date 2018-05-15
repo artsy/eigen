@@ -24,13 +24,24 @@ beforeEach(() => {
 })
 
 it("renders properly", () => {
-  const bg = renderer.create(<ConfirmBid {...initialProps} />).toJSON()
-  expect(bg).toMatchSnapshot()
+  const component = renderer.create(<ConfirmBid {...initialProps} />).toJSON()
+  expect(component).toMatchSnapshot()
+})
+
+it("enables the bit button when checkbox is ticked", () => {
+  const component = renderer.create(<ConfirmBid {...initialProps} />)
+
+  expect(component.root.findByType(Button).instance.props.onPress).toBeFalsy()
+
+  component.root.instance.setState({ conditionsOfSaleChecked: true })
+
+  expect(component.root.findByType(Button).instance.props.onPress).toBeDefined()
 })
 
 describe("when pressing bid button", () => {
   it("commits mutation", () => {
     const component = renderer.create(<ConfirmBid {...initialProps} />)
+    component.root.instance.setState({ conditionsOfSaleChecked: true })
     mockRelay.commitMutation = jest.fn()
 
     component.root.findByType(Button).instance.props.onPress()
@@ -42,6 +53,7 @@ describe("when pressing bid button", () => {
   describe("when pressing bid", () => {
     it("commits the mutation", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} navigator={mockNavigator} />)
+      component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestedBidder))
       relay.commitMutation = jest.fn()
 
@@ -54,6 +66,7 @@ describe("when pressing bid button", () => {
       it("does not verify bid position", () => {
         // Probably due to a network problem.
         const component = renderer.create(<ConfirmBid {...initialProps} navigator={mockNavigator} />)
+        component.root.instance.setState({ conditionsOfSaleChecked: true })
         console.error = jest.fn() // Silences component logging.
         relay.commitMutation = jest.fn((_, { onError }) => {
           onError(new Error("An error occurred."))
@@ -76,6 +89,7 @@ describe("polling to verify bid position", () => {
   describe("bid success", () => {
     it("shows successful bid result when highest bidder", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} navigator={mockNavigator} />)
+      component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestedBidder))
       relay.commitMutation = jest.fn((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placeingBid.bidAccepted)
@@ -90,6 +104,7 @@ describe("polling to verify bid position", () => {
 
     it("shows outbid bidSuccessResult when outbid", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} navigator={mockNavigator} />)
+      component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.outbid))
       relay.commitMutation = jest.fn((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placeingBid.bidAccepted)
@@ -106,6 +121,7 @@ describe("polling to verify bid position", () => {
   describe("bid failure", () => {
     it("shows the error screen with a failure", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} navigator={mockNavigator} />)
+      component.root.instance.setState({ conditionsOfSaleChecked: true })
       relay.commitMutation = jest.fn((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placeingBid.bidRejected)
       })

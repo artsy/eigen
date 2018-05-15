@@ -26,6 +26,8 @@ import { metaphysics } from "../../../metaphysics"
 import { BidResult } from "./BidResult"
 
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
+import { Checkbox } from "../Components/Checkbox"
+import { Timer } from "../Components/Timer"
 
 interface ConfirmBidProps extends ViewProperties {
   sale_artwork: ConfirmBid_sale_artwork
@@ -40,6 +42,7 @@ interface ConfirmBidProps extends ViewProperties {
 interface ConformBidState {
   pollCount: number
   intervalToken: number
+  conditionsOfSaleChecked: boolean
 }
 
 const MAX_POLL_ATTEMPTS = 20
@@ -63,6 +66,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   state = {
     pollCount: 0,
     intervalToken: 0,
+    conditionsOfSaleChecked: false,
   }
 
   onPressConditionsOfSale = () => {
@@ -147,18 +151,27 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     })
   }
 
+  conditionsOfSalePressed() {
+    this.setState({
+      conditionsOfSaleChecked: !this.state.conditionsOfSaleChecked,
+    })
+  }
+
   render() {
     return (
       <BiddingThemeProvider>
         <Container m={0}>
-          <Title>Confirm your bid</Title>
+          <Flex alignItems="center">
+            <Title mb={3}>Confirm your bid</Title>
+            <Timer timeLeftInMilliseconds={1000 * 60 * 20} />
+          </Flex>
 
           <View>
-            <Flex m={4} alignItems="center">
+            <Flex m={4} mt={0} alignItems="center">
               <SerifSemibold18>{this.props.sale_artwork.artwork.artist_names}</SerifSemibold18>
               <SerifSemibold14>Lot {this.props.sale_artwork.lot_label}</SerifSemibold14>
 
-              <SerifItalic14 color="black60">
+              <SerifItalic14 color="black60" textAlign="center">
                 {this.props.sale_artwork.artwork.title}, <Serif14>{this.props.sale_artwork.artwork.date}</Serif14>
               </SerifItalic14>
             </Flex>
@@ -174,20 +187,19 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
               </Col>
             </Row>
 
-            <Divider />
+            <Divider mb={9} />
           </View>
 
           <View>
-            <Serif14 mb={3} color="black60" textAlign="center">
-              You agree to <LinkText onPress={this.onPressConditionsOfSale}>Conditions of Sale</LinkText>.
-            </Serif14>
+            <Checkbox pl={3} pb={1} justifyContent="center" onPress={() => this.conditionsOfSalePressed()}>
+              <Serif14 mt={2} color="black60">
+                You agree to <LinkText onPress={this.onPressConditionsOfSale}>Conditions of Sale</LinkText>.
+              </Serif14>
+            </Checkbox>
 
-            <Button
-              text="Place Bid"
-              onPress={() => {
-                this.placeBid()
-              }}
-            />
+            <Flex m={4}>
+              <Button text="Place Bid" onPress={this.state.conditionsOfSaleChecked && (() => this.placeBid())} />
+            </Flex>
           </View>
         </Container>
       </BiddingThemeProvider>
