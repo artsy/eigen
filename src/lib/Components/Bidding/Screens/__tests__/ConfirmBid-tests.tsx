@@ -5,6 +5,8 @@ import * as renderer from "react-test-renderer"
 import { ConfirmBid } from "../ConfirmBid"
 
 it("renders properly", () => {
+  jest.useFakeTimers()
+
   const saleArtwork = {
     artwork: {
       id: "meteor shower",
@@ -17,8 +19,10 @@ it("renders properly", () => {
     },
     lot_label: "538",
   }
-  const bg = renderer
+
+  const component = renderer
     .create(<ConfirmBid sale_artwork={saleArtwork} bid={{ cents: 450000, display: "$45,000" }} />)
     .toJSON()
-  expect(bg).toMatchSnapshot()
+
+  expect(component).toMatchSnapshot()
 })

@@ -27,6 +27,7 @@ import { BidResult } from "./BidResult"
 
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
 import { Checkbox } from "../Components/Checkbox"
+import { Timer } from "../Components/Timer"
 
 interface ConfirmBidProps extends ViewProperties {
   sale_artwork: ConfirmBid_sale_artwork
@@ -161,7 +162,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     return (
       <BiddingThemeProvider>
         <Container m={0}>
-          <Title>Confirm your bid</Title>
+          <Flex alignItems="center">
+            <Title mb={3}>Confirm your bid</Title>
+            <Timer timeLeftInMilliseconds={1000 * 60 * 20} />
+          </Flex>
 
           <View>
             <Flex m={4} alignItems="center">

@@ -21,30 +21,68 @@ exports[`renders properly 1`] = `
     ]
   }
 >
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
-    fontSize={5}
-    m={4}
+  <View
+    alignItems="center"
     style={
       Array [
-        Object {
-          "fontFamily": "AGaramondPro-Semibold",
-          "fontSize": 22,
-          "marginBottom": 20,
-          "marginLeft": 20,
-          "marginRight": 20,
-          "marginTop": 20,
-          "textAlign": "center",
-        },
+        Object {},
         undefined,
       ]
     }
-    textAlign="center"
   >
-    Confirm your bid
-  </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      fontSize={5}
+      m={4}
+      mb={3}
+      style={
+        Array [
+          Object {
+            "fontFamily": "AGaramondPro-Semibold",
+            "fontSize": 22,
+            "marginBottom": 10,
+            "marginLeft": 20,
+            "marginRight": 20,
+            "marginTop": 20,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+      textAlign="center"
+    >
+      Confirm your bid
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      fontSize={2}
+      style={
+        Array [
+          Object {
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 14,
+          },
+          undefined,
+        ]
+      }
+    >
+      00
+      d
+        
+      00
+      h
+        
+      20
+      m
+        
+      00
+      s
+    </Text>
+  </View>
   <View>
     <View
       alignItems="center"
