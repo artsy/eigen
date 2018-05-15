@@ -192,7 +192,7 @@
     [[ARTopMenuViewController sharedController] pushViewController:viewController];
 }
 
-- (void)tappedBidButton:(UIButton *)button forSaleArtworkID:(NSString *)saleArtworkID saleID:(NSString *)saleID
+- (void)tappedBidButton:(UIButton *)button saleID:(NSString *)saleID
 {
     [ARAnalytics setUserProperty:@"has_started_bid" toValue:@"true"];
 

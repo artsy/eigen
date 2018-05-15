@@ -368,9 +368,9 @@
                         },
                         @{
                             ARAnalyticsEventName: ARAnalyticsAuctionBidTapped,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedBidButton:forSaleArtworkID:saleID:)),
+                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(tappedBidButton:saleID:)),
                             ARAnalyticsProperties: ^NSDictionary*(ARArtworkViewController *controller, NSArray *parameters){
-                                NSString *saleID = parameters[2];
+                                NSString *saleID = parameters[1];
                                 return @{
                                     @"artwork_slug": controller.artwork.artworkID ?: @"",
                                     @"artist_slug": controller.artwork.artist.artistID ?: @"",

@@ -28,7 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)highestOrStartingBidString;
 
 @property (nonatomic, copy, readonly) NSString *saleArtworkID;
-@property (nonatomic, copy, readonly) NSString *internalSaleArtworkID;
 @property (nonatomic, strong) Sale *_Nullable auction;
 @property (nonatomic, strong) Bidder *_Nullable bidder;
 @property (nonatomic, strong) Bid *_Nullable saleHighestBid;

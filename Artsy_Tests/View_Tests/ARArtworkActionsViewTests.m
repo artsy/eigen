@@ -463,7 +463,7 @@ describe(@"mocked artwork promises", ^{
         id mockDelegate = [OCMockObject mockForProtocol:@protocol(ARArtworkActionsViewButtonDelegate)];
         view.delegate = mockDelegate;
 
-        [[mockDelegate expect] tappedBidButton:nil forSaleArtworkID:OCMOCK_ANY saleID:OCMOCK_ANY];
+        [[mockDelegate expect] tappedBidButton:nil saleID:OCMOCK_ANY];
         [view tappedBidButton:nil];
 
         [mockDelegate verify];
