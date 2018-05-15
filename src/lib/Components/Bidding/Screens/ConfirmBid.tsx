@@ -26,6 +26,7 @@ import { metaphysics } from "../../../metaphysics"
 import { BidResult } from "./BidResult"
 
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
+import { Checkbox } from "../Components/Checkbox"
 
 interface ConfirmBidProps extends ViewProperties {
   sale_artwork: ConfirmBid_sale_artwork
@@ -40,6 +41,7 @@ interface ConfirmBidProps extends ViewProperties {
 interface ConformBidState {
   pollCount: number
   intervalToken: number
+  conditionsOfSaleChecked: boolean
 }
 
 const MAX_POLL_ATTEMPTS = 20
@@ -63,6 +65,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   state = {
     pollCount: 0,
     intervalToken: 0,
+    conditionsOfSaleChecked: false,
   }
 
   onPressConditionsOfSale = () => {
@@ -148,6 +151,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     })
   }
 
+  conditionsOfSalePressed() {
+    this.setState({
+      conditionsOfSaleChecked: !this.state.conditionsOfSaleChecked,
+    })
+  }
+
   render() {
     return (
       <BiddingThemeProvider>
@@ -179,9 +188,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
           </View>
 
           <View>
-            <Serif14 mb={3} color="black60" textAlign="center">
-              You agree to <LinkText onPress={this.onPressConditionsOfSale}>Conditions of Sale</LinkText>.
-            </Serif14>
+            <Checkbox pl={3} pb={1} justifyContent="center" onPress={() => this.conditionsOfSalePressed()}>
+              <Serif14 mt={2} color="black60">
+                You agree to <LinkText onPress={this.onPressConditionsOfSale}>Conditions of Sale</LinkText>.
+              </Serif14>
+            </Checkbox>
 
             <Flex m={4}>
               <Button text="Place Bid" onPress={this.state.conditionsOfSaleChecked && (() => this.placeBid())} />

@@ -252,46 +252,108 @@ exports[`renders properly 1`] = `
     />
   </View>
   <View>
-    <Text
+    <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
       accessible={true}
-      allowFontScaling={true}
-      color="black60"
-      ellipsizeMode="tail"
-      fontSize={2}
-      mb={3}
+      alignItems="center"
+      flexDirection="row"
+      hitSlop={undefined}
+      justifyContent="center"
+      nativeID={undefined}
+      onLayout={undefined}
+      onPress={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      pb={1}
+      pl={3}
       style={
         Array [
           Object {
-            "color": "#666",
-            "fontFamily": "AGaramondPro-Regular",
-            "fontSize": 14,
-            "marginBottom": 10,
-            "textAlign": "center",
+            "paddingBottom": 3,
+            "paddingLeft": 10,
           },
           undefined,
         ]
       }
-      textAlign="center"
+      testID={undefined}
     >
-      You agree to 
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-        onPress={[Function]}
+      <View
+        animate={
+          Array [
+            "backgroundColor",
+            "borderColor",
+          ]
+        }
+        collapsable={undefined}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "rgba(255, 255, 255, 1)",
+            "borderColor": "rgba(229, 229, 229, 1)",
+            "borderStyle": "solid",
+            "borderWidth": 2,
+            "display": "flex",
+            "height": 20,
+            "justifyContent": "center",
+            "marginRight": 10,
+            "width": 20,
+          }
+        }
+      />
+      <View
         style={
           Array [
-            Object {
-              "textDecorationLine": "underline",
-            },
+            Object {},
             undefined,
           ]
         }
       >
-        Conditions of Sale
-      </Text>
-      .
-    </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          color="black60"
+          ellipsizeMode="tail"
+          fontSize={2}
+          mt={2}
+          style={
+            Array [
+              Object {
+                "color": "#666",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 14,
+                "marginTop": 5,
+              },
+              undefined,
+            ]
+          }
+        >
+          You agree to 
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            onPress={[Function]}
+            style={
+              Array [
+                Object {
+                  "textDecorationLine": "underline",
+                },
+                undefined,
+              ]
+            }
+          >
+            Conditions of Sale
+          </Text>
+          .
+        </Text>
+      </View>
+    </View>
     <View
       m={4}
       style={
