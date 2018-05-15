@@ -114,7 +114,8 @@
 - (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
 {
     if ([AROptions boolForOption:AROptionsUseNewBidFlow]) {
-        return [[ARBidFlowViewController alloc] initWithArtworkID:artworkID saleID:saleID];
+        ARBidFlowViewController *viewController = [[ARBidFlowViewController alloc] initWithArtworkID:artworkID saleID:saleID];
+        return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
     } else {
         NSString *path = [NSString stringWithFormat:@"/auction/%@/bid/%@", saleID, artworkID];
         NSURL *URL = [self resolveRelativeUrl:path];
