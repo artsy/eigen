@@ -5,4 +5,5 @@
 + (instancetype)shortWallNode;
 + (instancetype)fullWallNode;
 
++ (CGFloat)wallHeight;
 @end

@@ -133,29 +133,19 @@ NSInteger attempt = 0;
 
             // When you want to place the invisible wall, based on the current ghostWall
             if (!self.wall && [self.invisibleFloors containsObject:result.node]) {
-                // TODO moved to the runtime
 
                 ARSCNWallNode *wall = [ARSCNWallNode fullWallNode];
                 SCNNode *userWall = [SCNNode nodeWithGeometry:wall];
-                userWall.position = SCNVector3Make(
-                                                   result.localCoordinates.x,
-                                                   result.localCoordinates.y,
-                                                   result.localCoordinates.z + wall.height/2
-                                                   );
+                [result.node addChildNode:userWall];
 
+                userWall.position = result.localCoordinates;
                 userWall.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
-                [result.node addChildNode: userWall];
 
+                SCNVector3 userPosition = self.sceneView.pointOfView.position;
+                SCNVector3 bottomPosition = SCNVector3Make(userPosition.x, result.worldCoordinates.y, userPosition.z);
+                [userWall lookAt:bottomPosition];
 
                 self.wall = userWall;
-
-//                SCNNode *targetNode = [SCNNode node];
-//                targetNode.position = self.sceneView.pointOfView.position;
-//                [self.sceneView.scene.rootNode addChildNode:targetNode];
-
-                SCNLookAtConstraint *lookAtCamera = [SCNLookAtConstraint lookAtConstraintWithTarget:self.sceneView.pointOfView];
-                lookAtCamera.gimbalLockEnabled = YES;
-                userWall.constraints = @[lookAtCamera];
             }
         }
     }
@@ -245,8 +235,7 @@ SCNNode *ARPointCloudNode = nil;
                 SCNBox *box = [SCNArtworkNode nodeWithConfig:self.config];
                 SCNNode *artwork = [SCNNode nodeWithGeometry:box];
                 artwork.position = result.localCoordinates;
-                // Pitch, Yaw, Roll
-//                artwork.eulerAngles = SCNVector3Make(0, 0, M_PI);
+
                 artwork.opacity = 0.5;
 
                 [result.node addChildNode:artwork];
@@ -268,128 +257,8 @@ SCNNode *ARPointCloudNode = nil;
                 lookAtCamera.gimbalLockEnabled = YES;
                 ghostWall.constraints = @[lookAtCamera];
 
-
                 self.ghostWallLine = ghostWall;
             }
-
-            if(!self.wall) {
-                ARSCNWallNode *wall = [ARSCNWallNode fullWallNode];
-                SCNNode *userWall = [SCNNode nodeWithGeometry:wall];
-                userWall.position = SCNVector3Make(
-                   result.localCoordinates.x,
-                   result.localCoordinates.y,
-                   result.localCoordinates.z + wall.height/2
-                   );
-
-//            userWall.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
-            [result.node addChildNode: userWall];
-
-
-            self.wall = userWall;
-
-            SCNLookAtConstraint *lookAtCamera = [SCNLookAtConstraint lookAtConstraintWithTarget:self.sceneView.pointOfView];
-            lookAtCamera.gimbalLockEnabled = YES;
-            userWall.constraints = @[lookAtCamera];
-
-//            [self.ghostWallLine removeFromParentNode];
-//            self.ghostWallLine = nil;
-            }
-
-//
-//            SCNNode *targetNode = [SCNNode node];
-//            targetNode.position = self.sceneView.pointOfView.position;
-//            [self.sceneView.scene.rootNode addChildNode:targetNode];
-
-//            SCNLookAtConstraint *lookAtCamera = [SCNLookAtConstraint lookAtConstraintWithTarget:targetNode];
-//            lookAtCamera.gimbalLockEnabled = YES;
-//            //                lookAtCamera.localFront = SCNVector3Make(0, 1, 0);
-//            lookAtCamera.localFront = [SCNNode localUp  ];
-//            self.wall.constraints = @[lookAtCamera];
-
-
-
-            self.wall.position = SCNVector3Make(
-               result.localCoordinates.x,
-               result.localCoordinates.y,
-               result.localCoordinates.z // + self.wall.height/2
-           );
-
-
-            self.wall.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
-
-
-
-
-            //                targetNode.position = self.sceneView.session.currentFrame.camera;
-
-            // While the positioning of some of this is still unpredictable, I'd like to keep my
-            // notes and other attempts around while I figure out some of the details
-
-            // Try clone the node
-
-            //                SCNNode *wall = [self.ghostWall clone];
-            //                wall.constraints = @[];
-            //                [wall lookAt:self.sceneView.pointOfView.worldPosition];
-            //                [result.node.parentNode addChildNode:wall];
-            //
-            //                SCNNode *staticCameraReference = [self.sceneView.pointOfView copy];
-            //                [self.sceneView.pointOfView.parentNode addChildNode:staticCameraReference];
-
-            // Pitch, Yaw, Roll
-            //
-            //                SCNLookAtConstraint *lookAtCamera = [SCNLookAtConstraint lookAtConstraintWithTarget:staticCameraReference];
-            //                lookAtCamera.gimbalLockEnabled = YES;
-            //                userWall.constraints = @[lookAtCamera];
-            //
-
-            // When adding as a child node and setting the same as the ghost
-
-            //                [result.node addChildNode: userWall];
-            //                userWall.position = self.ghostWall.position;
-
-
-            //                userWall.transform = self.ghostWall.transform;
-            //                userWall.orientation = self.ghostWall.orientation;
-            //                userWall.eulerAngles = self.ghostWall.eulerAngles;
-            //                userWall.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
-            //
-            //
-            //                userWall.position = SCNVector3Make(
-            //                 self.ghostWall.position.x,
-            //                 self.ghostWall.position.y + wall.height,
-            //                 self.ghostWall.position.z
-            //               );
-            //
-            //                permenentWall.worldTransform = self.ghostWall.worldTransform;
-            //                [userWall lookAt:self.sceneView.pointOfView.worldPosition];
-            //                userWall.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
-            //
-            //                permenentWall.eulerAngles = self.ghostWall.eulerAngles;
-            //                permenentWall.rotation = self.ghostWall.world;
-            //
-            //                [self.sceneView.scene.rootNode addChildNode:userWall];
-
-
-
-            /**
-             The camera’s orientation defined as Euler angles.
-
-             @dicussion The order of components in this vector matches the axes of rotation:
-             1. Pitch (the x component) is the rotation about the node’s x-axis (in radians)
-             2. Yaw   (the y component) is the rotation about the node’s y-axis (in radians)
-             3. Roll  (the z component) is the rotation about the node’s z-axis (in radians)
-             ARKit applies these rotations in the reverse order of the components:
-             1. first roll
-             2. then yaw
-             3. then pitch
-             */
-
-            //                ghostWall.rotation = self.sceneView.session.currentFrame.camera
-//            ARCamera *camera = self.sceneView.session.currentFrame.camera;
-//            NSLog(@"V: %f %f %f", camera.eulerAngles[0],camera.eulerAngles[1],camera.eulerAngles[2] );
-//            NSLog(@"L: %f %f %f", self.ghostWallLine.orientation.x,self.ghostWallLine.orientation.y, self.ghostWallLine.orientation.z);
-//            self.ghostWallLine.eulerAngles = SCNVector3Make(self.sceneView.session.currentFrame.camera.eulerAngles[1], 0, 0);
-//            self.ghostWallLine.eulerAngles = SCNVector3FromFloat3(camera.eulerAngles);
 
             SCNTransaction.animationDuration = 0.1;
             self.ghostWallLine.position = result.localCoordinates;

@@ -36,10 +36,15 @@
     material.locksAmbientWithDiffuse = YES;
     material.lightingModelName = SCNLightingModelConstant;
 
-    ARSCNWallNode *box = [ARSCNWallNode boxWithWidth:20 height:6 length:0.1 chamferRadius:0];
+    ARSCNWallNode *box = [ARSCNWallNode boxWithWidth:20 height:[self.class wallHeight] length:0.1 chamferRadius:0];
     box.materials =  @[material, frontMaterial, material, material, material, material];
 
     return box;
+}
+
++ (CGFloat)wallHeight
+{
+    return 6;
 }
 
 @end
