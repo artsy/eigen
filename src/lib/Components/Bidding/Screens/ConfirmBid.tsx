@@ -168,11 +168,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
           </Flex>
 
           <View>
-            <Flex m={4} alignItems="center">
+            <Flex m={4} mt={0} alignItems="center">
               <SerifSemibold18>{this.props.sale_artwork.artwork.artist_names}</SerifSemibold18>
               <SerifSemibold14>Lot {this.props.sale_artwork.lot_label}</SerifSemibold14>
 
-              <SerifItalic14 color="black60">
+              <SerifItalic14 color="black60" textAlign="center">
                 {this.props.sale_artwork.artwork.title}, <Serif14>{this.props.sale_artwork.artwork.date}</Serif14>
               </SerifItalic14>
             </Flex>
@@ -188,7 +188,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
               </Col>
             </Row>
 
-            <Divider />
+            <Divider mb={9} />
           </View>
 
           <View>

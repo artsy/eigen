@@ -87,13 +87,14 @@ exports[`renders properly 1`] = `
     <View
       alignItems="center"
       m={4}
+      mt={0}
       style={
         Array [
           Object {
             "marginBottom": 20,
             "marginLeft": 20,
             "marginRight": 20,
-            "marginTop": 20,
+            "marginTop": 0,
           },
           undefined,
         ]
@@ -146,10 +147,12 @@ exports[`renders properly 1`] = `
               "color": "#666",
               "fontFamily": "AGaramondPro-Italic",
               "fontSize": 14,
+              "textAlign": "center",
             },
             undefined,
           ]
         }
+        textAlign="center"
       >
         Meteor Shower
         , 
@@ -275,12 +278,14 @@ exports[`renders properly 1`] = `
       border={1}
       borderBottomWidth={0}
       borderColor="black10"
+      mb={9}
       style={
         Array [
           Object {
             "borderColor": "#E5E5E5",
             "borderStyle": "solid",
             "borderWidth": 1,
+            "marginBottom": 120,
             "width": "100%",
           },
           undefined,
