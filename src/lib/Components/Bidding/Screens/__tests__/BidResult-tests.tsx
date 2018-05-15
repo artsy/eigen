@@ -1,3 +1,4 @@
+import { shallow } from "enzyme"
 import React from "react"
 import "react-native"
 
@@ -20,12 +21,13 @@ describe("BidResult component", () => {
   it("renders winning screen properly", () => {
     jest.useFakeTimers()
 
-    const bg = renderer
-      .create(<BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} navigator={jest.fn() as any} />)
-      .toJSON()
+    const bidResult = <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
+    const bg = renderer.create(bidResult).toJSON()
+
+    const component = shallow(bidResult)
+    expect(component.find("TimeLeftToBidDisplay")).toHaveLength(1)
 
     expect(bg).toMatchSnapshot()
-    expect(setInterval).toHaveBeenCalledTimes(1)
   })
 
   it("renders timer and error message when bid is low", () => {
@@ -34,20 +36,21 @@ describe("BidResult component", () => {
     const messageDescriptionMd = `Another bidder placed a higher max bid or the same max bid before you did.  \
  Bid again to take the lead.`
 
-    const bg = renderer
-      .create(
-        <BidResult
-          winning={false}
-          sale_artwork={saleArtwork}
-          status="ERROR_BID_LOW"
-          message_header={messageHeader}
-          message_description_md={messageDescriptionMd}
-          navigator={jest.fn() as any}
-        />
-      )
-      .toJSON()
+    const bidResult = (
+      <BidResult
+        winning={false}
+        sale_artwork={saleArtwork}
+        status="ERROR_BID_LOW"
+        message_header={messageHeader}
+        message_description_md={messageDescriptionMd}
+        navigator={jest.fn() as any}
+      />
+    )
+    const bg = renderer.create(bidResult).toJSON()
     expect(bg).toMatchSnapshot()
-    expect(setInterval).toHaveBeenCalledTimes(1)
+
+    const component = shallow(bidResult)
+    expect(component.find("TimeLeftToBidDisplay")).toHaveLength(1)
   })
   it("doesn't render timer when live bidding is started", () => {
     jest.useFakeTimers()
@@ -56,20 +59,21 @@ describe("BidResult component", () => {
     const messageDescriptionMd = `Sorry, your bid wasn’t received before live bidding started.\
  To continue bidding, please [join the live auction](http://live-staging.artsy.net/).`
 
-    const bg = renderer
-      .create(
-        <BidResult
-          winning={false}
-          sale_artwork={saleArtwork}
-          status={status}
-          message_header={messageHeader}
-          message_description_md={messageDescriptionMd}
-          navigator={jest.fn() as any}
-        />
-      )
-      .toJSON()
+    const bidResult = (
+      <BidResult
+        winning={false}
+        sale_artwork={saleArtwork}
+        status={status}
+        message_header={messageHeader}
+        message_description_md={messageDescriptionMd}
+        navigator={jest.fn() as any}
+      />
+    )
+    const bg = renderer.create(bidResult).toJSON()
 
     expect(bg).toMatchSnapshot()
-    expect(setInterval).toHaveBeenCalledTimes(0)
+
+    const component = shallow(bidResult)
+    expect(component.find("TimeLeftToBidDisplay")).toHaveLength(0)
   })
 })
