@@ -35,11 +35,7 @@
         } else {
             FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me?fields=name,id,email" parameters:nil];
             
-            // The next line is important.
-            // It prevents FB SDK from handling the error automatically
-            // and allows you to handle the error yourself.
-            // In this way you avoid(!) the FBSDK dialog that says
-            // "Please login to this app again to reconnect with Facebook".
+            // We need to disable FB's in-house error reporting so we can show our own
             [request setGraphErrorRecoveryDisabled:YES];
             [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, NSDictionary *user, NSError *error) {
                 if (!error) {
