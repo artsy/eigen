@@ -1,11 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders not highest bid screen properly 1`] = `
+exports[`BidResult component doesn't render timer when live bidding is started 1`] = `
 <View
   flex={1}
   flexDirection="column"
   justifyContent="space-between"
   m={4}
+  mt={6}
   style={
     Array [
       Object {
@@ -15,195 +16,367 @@ exports[`renders not highest bid screen properly 1`] = `
         "marginBottom": 20,
         "marginLeft": 20,
         "marginRight": 20,
-        "marginTop": 20,
+        "marginTop": 40,
       },
       undefined,
     ]
   }
 >
-  <View
-    alignItems="center"
-    flex={1}
-    justifyContent="center"
-    style={
-      Array [
-        Object {
-          "flexBasis": 0,
-          "flexGrow": 1,
-          "flexShrink": 1,
-        },
-        undefined,
-      ]
-    }
-  >
-    <Image
-      height={20}
-      m={2}
-      source={
-        Object {
-          "testUri": "../../../images/circle-x-red.png",
+  <View>
+    <View
+      alignItems="center"
+      style={
+        Array [
+          Object {},
+          undefined,
+        ]
+      }
+    >
+      <Image
+        height={20}
+        source={
+          Object {
+            "testUri": "../../../images/circle-x-red.png",
+          }
         }
+        style={
+          Array [
+            Object {
+              "height": 20,
+              "width": 20,
+            },
+            undefined,
+          ]
+        }
+        width={20}
+      />
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        fontSize={5}
+        m={4}
+        style={
+          Array [
+            Object {
+              "fontFamily": "AGaramondPro-Semibold",
+              "fontSize": 22,
+              "marginBottom": 20,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "marginTop": 20,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+        textAlign="center"
+      >
+        Live bidding has started
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        color="black60"
+        ellipsizeMode="tail"
+        fontSize={3}
+        maxWidth={280}
+        mb={5}
+        style={
+          Array [
+            Object {
+              "color": "#666",
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "marginBottom": 30,
+              "maxWidth": 280,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+        textAlign="center"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Sorry, your bid wasn’t received before live bidding started. To continue bidding, please 
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            onPress={[Function]}
+            style={
+              Array [
+                Object {
+                  "textDecorationLine": "underline",
+                },
+                undefined,
+              ]
+            }
+          >
+            join the live auction
+          </Text>
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          .
+        </Text>
+      </Text>
+    </View>
+  </View>
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    collapsable={undefined}
+    hitSlop={undefined}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "rgba(255, 255, 255, 1)",
+        "borderColor": "rgba(229, 229, 229, 1)",
+        "borderWidth": 1,
+        "height": 46,
+        "justifyContent": "center",
       }
-      style={
-        Array [
-          Object {
-            "height": 20,
-            "marginBottom": 5,
-            "marginLeft": 5,
-            "marginRight": 5,
-            "marginTop": 5,
-            "width": 20,
-          },
-          undefined,
-        ]
-      }
-      width={20}
-    />
+    }
+    testID={undefined}
+  >
     <Text
       accessible={true}
       allowFontScaling={true}
       ellipsizeMode="tail"
-      fontSize={4}
-      mb={4}
       style={
         Array [
           Object {
-            "fontFamily": "AGaramondPro-Semibold",
-            "fontSize": 18,
-            "marginBottom": 20,
-          },
-          undefined,
-        ]
-      }
-    >
-      Your bid wasn’t high enough
-    </Text>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      color="black60"
-      ellipsizeMode="tail"
-      fontSize={3}
-      maxWidth={280}
-      mb={5}
-      style={
-        Array [
-          Object {
-            "color": "#666",
-            "fontFamily": "AGaramondPro-Regular",
-            "fontSize": 16,
-            "marginBottom": 30,
-            "maxWidth": 280,
-            "textAlign": "center",
-          },
-          undefined,
-        ]
-      }
-      textAlign="center"
-    >
-      Another bidder placed a higher max bid or the same max bid before you did.
-    </Text>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      color="black60"
-      ellipsizeMode="tail"
-      fontSize={1}
-      style={
-        Array [
-          Object {
-            "color": "#666",
-            "fontFamily": "Unica77LL-Medium",
             "fontSize": 12,
           },
-          undefined,
-        ]
-      }
-    >
-      Time left
-    </Text>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
-      fontSize={2}
-      style={
-        Array [
           Object {
-            "fontFamily": "Unica77LL-Medium",
-            "fontSize": 14,
-          },
-          undefined,
-        ]
-      }
-    >
-      00
-      d
-        
-      00
-      h
-        
-      20
-      m
-        
-      00
-      s
-    </Text>
-    <View
-      border={1}
-      borderBottomWidth={0}
-      borderColor="black10"
-      mb={4}
-      mt={5}
-      style={
-        Array [
-          Object {
-            "borderColor": "#E5E5E5",
-            "borderStyle": "solid",
-            "borderWidth": 1,
-            "marginBottom": 20,
-            "marginTop": 30,
-            "width": "100%",
-          },
-          undefined,
-        ]
-      }
-      width="100%"
-    />
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
-      fontSize={3}
-      style={
-        Array [
-          Object {
+            "color": "rgba(0, 0, 0, 1)",
             "fontFamily": "AGaramondPro-Regular",
-            "fontSize": 16,
+            "fontSize": 14,
+            "opacity": 1,
           },
-          undefined,
+          Object {
+            "fontFamily": "AvantGardeGothicITC",
+          },
         ]
       }
     >
-      Current bid
+      CONTINUE
     </Text>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
-      fontSize={4}
+  </View>
+</View>
+`;
+
+exports[`BidResult component renders timer and error message when bid is low 1`] = `
+<View
+  flex={1}
+  flexDirection="column"
+  justifyContent="space-between"
+  m={4}
+  mt={6}
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "marginBottom": 20,
+        "marginLeft": 20,
+        "marginRight": 20,
+        "marginTop": 40,
+      },
+      undefined,
+    ]
+  }
+>
+  <View>
+    <View
+      alignItems="center"
       style={
         Array [
-          Object {
-            "fontFamily": "AGaramondPro-Semibold",
-            "fontSize": 18,
-          },
+          Object {},
           undefined,
         ]
       }
     >
-      $45,000
-    </Text>
+      <Image
+        height={20}
+        source={
+          Object {
+            "testUri": "../../../images/circle-x-red.png",
+          }
+        }
+        style={
+          Array [
+            Object {
+              "height": 20,
+              "width": 20,
+            },
+            undefined,
+          ]
+        }
+        width={20}
+      />
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        fontSize={5}
+        m={4}
+        style={
+          Array [
+            Object {
+              "fontFamily": "AGaramondPro-Semibold",
+              "fontSize": 22,
+              "marginBottom": 20,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "marginTop": 20,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+        textAlign="center"
+      >
+        Your bid wasn’t high enough
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        color="black60"
+        ellipsizeMode="tail"
+        fontSize={3}
+        maxWidth={280}
+        mb={5}
+        style={
+          Array [
+            Object {
+              "color": "#666",
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "marginBottom": 30,
+              "maxWidth": 280,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+        textAlign="center"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Another bidder placed a higher max bid or the same max bid before you did.
+        </Text>
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        color="black60"
+        ellipsizeMode="tail"
+        fontSize={3}
+        maxWidth={280}
+        mb={5}
+        style={
+          Array [
+            Object {
+              "color": "#666",
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "marginBottom": 30,
+              "maxWidth": 280,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+        textAlign="center"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Bid again to take the lead.
+        </Text>
+      </Text>
+      <View
+        alignItems="center"
+        style={
+          Array [
+            Object {},
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={1}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+              },
+              undefined,
+            ]
+          }
+        >
+          Live 
+           
+          Jan 1, 12am
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={2}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 14,
+              },
+              undefined,
+            ]
+          }
+        >
+          22
+          d
+            
+          03
+          h
+            
+          40
+          m
+            
+          27
+          s
+        </Text>
+      </View>
+    </View>
   </View>
   <View
     accessibilityComponentType={undefined}
@@ -253,23 +426,29 @@ exports[`renders not highest bid screen properly 1`] = `
         ]
       }
     >
-      BID AGAIN
+      BID CHF 10,000 OR MORE
     </Text>
   </View>
 </View>
 `;
 
-exports[`renders winning screen properly 1`] = `
+exports[`BidResult component renders winning screen properly 1`] = `
 <View
-  alignItems="center"
   flex={1}
-  justifyContent="center"
+  flexDirection="column"
+  justifyContent="space-between"
+  m={4}
+  mt={6}
   style={
     Array [
       Object {
         "flexBasis": 0,
         "flexGrow": 1,
         "flexShrink": 1,
+        "marginBottom": 20,
+        "marginLeft": 20,
+        "marginRight": 20,
+        "marginTop": 40,
       },
       undefined,
     ]
@@ -277,19 +456,16 @@ exports[`renders winning screen properly 1`] = `
 >
   <View>
     <View
+      alignItems="center"
       style={
         Array [
-          Object {
-            "alignItems": "center",
-            "top": "-50%",
-          },
+          Object {},
           undefined,
         ]
       }
     >
       <Image
         height={20}
-        m={2}
         source={
           Object {
             "testUri": "../../../images/circle-check-green.png",
@@ -299,10 +475,6 @@ exports[`renders winning screen properly 1`] = `
           Array [
             Object {
               "height": 20,
-              "marginBottom": 5,
-              "marginLeft": 5,
-              "marginRight": 5,
-              "marginTop": 5,
               "width": 20,
             },
             undefined,
@@ -314,68 +486,134 @@ exports[`renders winning screen properly 1`] = `
         accessible={true}
         allowFontScaling={true}
         ellipsizeMode="tail"
-        fontSize={4}
-        mb={4}
+        fontSize={5}
+        m={4}
         style={
           Array [
             Object {
               "fontFamily": "AGaramondPro-Semibold",
-              "fontSize": 18,
+              "fontSize": 22,
               "marginBottom": 20,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "marginTop": 20,
+              "textAlign": "center",
             },
             undefined,
           ]
         }
+        textAlign="center"
       >
         You're the highest bidder
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        color="black60"
-        ellipsizeMode="tail"
-        fontSize={1}
+      <View
+        alignItems="center"
         style={
           Array [
-            Object {
-              "color": "#666",
-              "fontFamily": "Unica77LL-Medium",
-              "fontSize": 12,
-            },
+            Object {},
             undefined,
           ]
         }
       >
-        Time left
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-        fontSize={2}
-        style={
-          Array [
-            Object {
-              "fontFamily": "Unica77LL-Medium",
-              "fontSize": 14,
-            },
-            undefined,
-          ]
-        }
-      >
-        00
-        d
-          
-        00
-        h
-          
-        20
-        m
-          
-        00
-        s
-      </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={1}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+              },
+              undefined,
+            ]
+          }
+        >
+          Live 
+           
+          Jan 1, 12am
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={2}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 14,
+              },
+              undefined,
+            ]
+          }
+        >
+          22
+          d
+            
+          03
+          h
+            
+          40
+          m
+            
+          27
+          s
+        </Text>
+      </View>
     </View>
+  </View>
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    collapsable={undefined}
+    hitSlop={undefined}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "rgba(255, 255, 255, 1)",
+        "borderColor": "rgba(229, 229, 229, 1)",
+        "borderWidth": 1,
+        "height": 46,
+        "justifyContent": "center",
+      }
+    }
+    testID={undefined}
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Array [
+          Object {
+            "fontSize": 12,
+          },
+          Object {
+            "color": "rgba(0, 0, 0, 1)",
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 14,
+            "opacity": 1,
+          },
+          Object {
+            "fontFamily": "AvantGardeGothicITC",
+          },
+        ]
+      }
+    >
+      CONTINUE
+    </Text>
   </View>
 </View>
 `;

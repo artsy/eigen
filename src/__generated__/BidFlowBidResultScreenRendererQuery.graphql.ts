@@ -1,10 +1,10 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type BidFlowConfirmBidScreenRendererQueryVariables = {
+export type BidFlowBidResultScreenRendererQueryVariables = {
     readonly saleArtworkID: string;
 };
-export type BidFlowConfirmBidScreenRendererQueryResponse = {
+export type BidFlowBidResultScreenRendererQueryResponse = {
     readonly sale_artwork: ({
     }) | null;
 };
@@ -12,30 +12,13 @@ export type BidFlowConfirmBidScreenRendererQueryResponse = {
 
 
 /*
-query BidFlowConfirmBidScreenRendererQuery(
+query BidFlowBidResultScreenRendererQuery(
   $saleArtworkID: String!
 ) {
   sale_artwork(id: $saleArtworkID) {
-    ...ConfirmBid_sale_artwork
+    ...BidResult_sale_artwork
     __id
   }
-}
-
-fragment ConfirmBid_sale_artwork on SaleArtwork {
-  sale {
-    id
-    __id
-  }
-  artwork {
-    id
-    title
-    date
-    artist_names
-    __id
-  }
-  lot_label
-  ...BidResult_sale_artwork
-  __id
 }
 
 fragment BidResult_sale_artwork on SaleArtwork {
@@ -76,24 +59,17 @@ v2 = {
   "name": "__id",
   "args": null,
   "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
 };
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "BidFlowConfirmBidScreenRendererQuery",
-  "id": "9433394e0e43b03a2e903b5628b1bd36",
+  "name": "BidFlowBidResultScreenRendererQuery",
+  "id": "97bfa80afb8759624c4ccee8e286cd96",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "BidFlowConfirmBidScreenRendererQuery",
+    "name": "BidFlowBidResultScreenRendererQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -109,7 +85,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "ConfirmBid_sale_artwork",
+            "name": "BidResult_sale_artwork",
             "args": null
           },
           v2
@@ -119,7 +95,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "BidFlowConfirmBidScreenRendererQuery",
+    "name": "BidFlowBidResultScreenRendererQuery",
     "argumentDefinitions": v0,
     "selections": [
       {
@@ -131,74 +107,6 @@ return {
         "concreteType": "SaleArtwork",
         "plural": false,
         "selections": [
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "sale",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Sale",
-            "plural": false,
-            "selections": [
-              v3,
-              v2,
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "live_start_at",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "end_at",
-                "args": null,
-                "storageKey": null
-              }
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "artwork",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Artwork",
-            "plural": false,
-            "selections": [
-              v3,
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "title",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "date",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "artist_names",
-                "args": null,
-                "storageKey": null
-              },
-              v2
-            ]
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "lot_label",
-            "args": null,
-            "storageKey": null
-          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -231,6 +139,32 @@ return {
               }
             ]
           },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "sale",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Sale",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "live_start_at",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "end_at",
+                "args": null,
+                "storageKey": null
+              },
+              v2
+            ]
+          },
           v2
         ]
       }
@@ -238,5 +172,5 @@ return {
   }
 };
 })();
-(node as any).hash = '4b3def96e7917ce25eac8990cae528a0';
+(node as any).hash = '5f0851fcf7cf1db25af2d7ee758fc7d5';
 export default node;
