@@ -46,7 +46,6 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb-</string>
 				<string>fb308278682573501</string>
 			</array>
 		</dict>

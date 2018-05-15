@@ -34,12 +34,18 @@
 
         } else {
             FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me?fields=name,id,email" parameters:nil];
+            
+            // The next line is important.
+            // It prevents FB SDK from handling the error automatically
+            // and allows you to handle the error yourself.
+            // In this way you avoid(!) the FBSDK dialog that says
+            // "Please login to this app again to reconnect with Facebook".
+            [request setGraphErrorRecoveryDisabled:YES];
             [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, NSDictionary *user, NSError *error) {
                 if (!error) {
-                    
                     NSString *email = user[@"email"];
                     NSString *name = user[@"name"];
-                    success(result.token.tokenString, email, name);
+                    success([FBSDKAccessToken currentAccessToken].tokenString, email, name);
                 } else {
                     ARErrorLog(@"Couldn't get user info from Facebook");
                     failure(error);

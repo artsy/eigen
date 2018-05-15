@@ -672,9 +672,11 @@
 
 - (void)displayError:(NSString *)errorMessage
 {
+    if (self.state == AROnboardingStateAcceptConditions) {
+        [self popViewControllerAnimated:YES];
+    }
     [(ARPersonalizeViewController *)self.topViewController showErrorWithMessage:errorMessage];
     [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : errorMessage}];
-
 }
 
 - (void)displayNetworkFailureError
