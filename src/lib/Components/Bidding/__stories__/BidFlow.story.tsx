@@ -19,7 +19,9 @@ import { ConfirmBidScreen } from "../Screens/ConfirmBid"
 import { ConfirmFirstTimeBid } from "../Screens/ConfirmFirstTimeBid"
 import { MaxBidScreen } from "../Screens/SelectMaxBid"
 
-const testSaleArtworkID = "5aefc5898b3b814ecdd59561"
+const testSaleArtworkID = "5ae73b417622dd026f0fe473"
+const testArtworkID = "ran-hwang-ephemeral-blossom-pp"
+const testSaleID = "cityarts-benefit-auction-2018"
 
 const SelectMaxBidRenderer: React.SFC<any> = ({ render, saleArtworkID }) => {
   return (
@@ -59,7 +61,7 @@ const ConfirmBidScreenRenderer: React.SFC<any> = ({ render, saleArtworkID }) => 
 
 storiesOf("Bidding")
   .add("Show bid flow", () => {
-    return <BidFlowRenderer render={renderWithLoadProgress(BidFlow)} saleArtworkID={testSaleArtworkID} />
+    return <BidFlowRenderer render={renderWithLoadProgress(BidFlow)} artworkID={testArtworkID} saleID={testSaleID} />
   })
   .add("Select Max Bid", () => (
     <SelectMaxBidRenderer render={renderWithLoadProgress(MaxBidScreen)} saleArtworkID={testSaleArtworkID} />
@@ -132,12 +134,16 @@ storiesOf("App Style/Input")
           <Serif16 mt={2}>Remember me</Serif16>
         </Checkbox>
 
-        <Checkbox pl={3} pb={1} error="Please agree to the terms and conditions">
-          <Serif16 mt={2}>Agree to Terms and Conditions</Serif16>
+        <Checkbox pl={3} pb={1} error>
+          <Serif16 mt={2} color="red100">
+            Agree to Terms and Conditions
+          </Serif16>
         </Checkbox>
 
-        <Checkbox p={3} checked error="Please agree to the terms and conditions">
-          <Serif16 mt={2}>Agree to Terms and Conditions</Serif16>
+        <Checkbox pl={3} pb={1} checked error>
+          <Serif16 mt={2} color="red100">
+            Agree to Terms and Conditions
+          </Serif16>
         </Checkbox>
 
         <Checkbox pl={3} pb={1} disabled>
