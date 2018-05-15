@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Markdown parser renders multiple paragraphs 1`] = `
+exports[`Markdown parser component renders multiple paragraphs matches the snapshot 1`] = `
 <Text
   accessible={true}
   allowFontScaling={true}
@@ -36,7 +36,7 @@ paragraph 2 also has text
 </Text>
 `;
 
-exports[`Markdown parser renders text only 1`] = `
+exports[`Markdown parser component renders text matches the snapshot 1`] = `
 <Text
   accessible={true}
   allowFontScaling={true}
@@ -70,7 +70,7 @@ exports[`Markdown parser renders text only 1`] = `
 </Text>
 `;
 
-exports[`Markdown parser renders text with link 1`] = `
+exports[`Markdown parser component renders text with link matches the snapshot 1`] = `
 <Text
   accessible={true}
   allowFontScaling={true}

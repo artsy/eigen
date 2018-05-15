@@ -11,6 +11,7 @@ interface NativeMarkdownProps {
 }
 
 const PARAGRAPH_BREAK = "   "
+export const markdownLinkRegex = /\[([^\]]*)\]\(([-a-zA-Z0-9@:%._\+~#=\?\:\/]*)\)/g
 
 export class MarkdownRenderer extends React.Component<NativeMarkdownProps> {
   render() {
@@ -23,7 +24,7 @@ export class MarkdownRenderer extends React.Component<NativeMarkdownProps> {
     const paragraphEls = paragraphs.map((p, i) => {
       let paragraph = p
       // regex for [anything](url) though url doesn't need to be strictly validated.
-      const re = new RegExp(/\[([^\]]*)\]\(([-a-zA-Z0-9@:%._\+~#=\:\/]*)\)/g)
+      const re = new RegExp(markdownLinkRegex)
       let linkData = re.exec(paragraph)
       const content = []
       let j = 0
