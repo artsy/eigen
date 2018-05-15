@@ -20,6 +20,7 @@ const mockNavigator = { push: route => (nextStep = route) }
 jest.useFakeTimers()
 
 beforeEach(() => {
+  // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
   mockphysics.mockReset()
 })
 
