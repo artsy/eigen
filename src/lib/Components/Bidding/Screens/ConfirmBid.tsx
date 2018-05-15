@@ -77,7 +77,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
       onError: e => {
         // TODO catch error!
         // this.verifyAndShowBidResult(null, e)
-        console.log("error!", e, e.message)
+        console.error("error!", e, e.message)
       },
       mutation: bidderPositionMutation,
       variables: {
@@ -105,10 +105,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
           }
         }
       `
-      const interval = setInterval(() => {
-        metaphysics({ query }).then(this.checkBidPosition.bind(this))
-      }, 1000)
-      this.setState({ intervalToken: interval })
+      metaphysics({ query }).then(this.checkBidPosition.bind(this))
     } else {
       const message_header = results.createBidderPosition.result.message_header
       const message_description_md = results.createBidderPosition.result.message_description_md
@@ -129,7 +126,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
         this.showBidResult(false)
       }
     } else {
-      // poll again
       // TODO: Actually poll again.
       if (this.state.pollCount > MAX_POLL_ATTEMPTS) {
         // TODO: Present error message to user.
