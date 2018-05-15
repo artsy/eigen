@@ -564,6 +564,8 @@
         [self.onboardingNavigationItems disableNextStep];
     } else {
         [self.onboardingNavigationItems enableNextStep];
+        [self.onboardingTextFields disableErrorState];
+        [self.onboardingNavigationItems hideError];
     }
     self.acceptConditionsView.checkboxButton.selected = !self.acceptConditionsView.checkboxButton.selected;
 }

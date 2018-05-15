@@ -288,7 +288,7 @@
     ARPersonalizeViewController *personalize = [[ARPersonalizeViewController alloc] initForStage:self.state];
     personalize.delegate = self;
     [self pushViewController:personalize animated:YES];
-    [self updateProgress:0.40];
+    [self updateProgress:0.65];
 }
 
 
@@ -646,7 +646,7 @@
                                                       __strong typeof (wself) sself = wself;
                                                       // we've logged them in, let's wrap up
                                                       [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
-                                                      if (sself.state == AROnboardingStagePersonalizeEmail) {
+                                                      if (sself.state == AROnboardingStagePersonalizeEmail || sself.state == AROnboardingStateAcceptConditions) {
                                                           [[NSUserDefaults standardUserDefaults] setInteger:AROnboardingStageOnboarded forKey:AROnboardingUserProgressionStage];
                                                           [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"facebook"}];
                                                           [sself finishAccountCreation];
@@ -672,9 +672,12 @@
 
 - (void)displayError:(NSString *)errorMessage
 {
+    if (self.state == AROnboardingStateAcceptConditions) {
+        self.shouldPresentFacebook = NO;
+        [self popViewControllerAnimated:YES];
+    }
     [(ARPersonalizeViewController *)self.topViewController showErrorWithMessage:errorMessage];
     [ARAnalytics event:ARAnalyticsAuthError withProperties:@{@"error_message" : errorMessage}];
-
 }
 
 - (void)displayNetworkFailureError

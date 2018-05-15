@@ -116,9 +116,9 @@ PODS:
   - "Extraction/UILabel+Typography (1.2.3)"
   - "Extraction/UIView+ARSpinner (1.2.3)":
     - Extraction/ARAnimationContinuation
-  - FBSDKCoreKit (4.31.0):
+  - FBSDKCoreKit (4.33.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.31.0):
+  - FBSDKLoginKit (4.33.0):
     - FBSDKCoreKit
   - FBSnapshotTestCase (2.1.4):
     - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
@@ -254,8 +254,8 @@ DEPENDENCIES:
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
-  - FBSDKCoreKit (~> 4.9)
-  - FBSDKLoginKit (~> 4.9)
+  - FBSDKCoreKit (~> 4.33)
+  - FBSDKLoginKit (~> 4.33)
   - FBSnapshotTestCase
   - FLKAutoLayout (from `https://github.com/orta/FLKAutoLayout.git`, branch `v1`)
   - Forgeries/Mocks
@@ -449,8 +449,8 @@ SPEC CHECKSUMS:
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
-  FBSDKCoreKit: 54db4c581123745d25a9f7c1608020b3aeabd118
-  FBSDKLoginKit: 95a252ddffd6919c0f132a02292f0824616d8709
+  FBSDKCoreKit: 572b047a7e029bc44542bcf8a59414e7ff2b543e
+  FBSDKLoginKit: 88cb456349cfb3b554427ce4f8b43729d85dfb40
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
@@ -496,6 +496,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 2efb0a2b24e5c17cf1aea8c785d4428bd077f667
 
-PODFILE CHECKSUM: 8d0f9b31f28cd90ca0cc04927d540b795cfede18
+PODFILE CHECKSUM: 7505628644ddd3a8f51f8888ebdce8a0759df567
 
 COCOAPODS: 1.5.0.beta.1
