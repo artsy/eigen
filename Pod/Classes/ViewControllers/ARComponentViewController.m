@@ -7,7 +7,6 @@
 @property (nonatomic, strong, readonly) AREmission *emission;
 @property (nonatomic, strong, readonly) NSString *moduleName;
 @property (nonatomic, strong, readonly) NSDictionary *initialProperties;
-@property (nonatomic, strong) RCTRootView *rootView;
 @end
 
 @implementation ARComponentViewController

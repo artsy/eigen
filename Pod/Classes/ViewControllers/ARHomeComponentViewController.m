@@ -3,9 +3,16 @@
 
 @implementation ARHomeComponentViewController
 
+- (void)changeHomeTabTo:(ARHomeTabType)tab
+{
+    NSMutableDictionary *appProperties = [self.rootView.appProperties mutableCopy];
+    appProperties[@"selectedTab"] = @(tab);
+    self.rootView.appProperties = appProperties;
+}
+
 - (instancetype)initWithSelectedArtist:(nullable NSString *)artistID tab:(ARHomeTabType)selectedTab emission:(nullable AREmission*)emission;
 {
-    NSDictionary *initialProps = artistID ? @{ @"selectedArtist": artistID, @"selectedTab": @(selectedTab) } : @{ @"selectedTab": @(selectedTab) };
+    NSDictionary *initialProperties = artistID ? @{ @"selectedArtist": artistID, @"initialTab": @(selectedTab) } : @{ @"initialTab": @(selectedTab) };
     if ((self = [super initWithEmission:emission
                              moduleName:@"Home"
                       initialProperties:initialProps])) {

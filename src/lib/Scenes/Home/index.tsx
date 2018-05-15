@@ -24,6 +24,7 @@ const TabBarContainer = styled.View``
 interface Props {
   selectedArtist?: string
   selectedTab?: number
+  initialTab?: number
   tracking: any
 }
 
@@ -71,6 +72,9 @@ export default class Home extends React.Component<Props, State> {
     if (newProps.isVisible) {
       this.fireHomeScreenViewAnalytics()
     }
+    if (this.props.selectedTab !== newProps.selectedTab) {
+      this.setState({ selectedTab: newProps.selectedTab })
+    }
   }
 
   _handleAppStateChange = nextAppState => {
@@ -85,7 +89,8 @@ export default class Home extends React.Component<Props, State> {
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView
-          initialPage={this.props.selectedTab || ArtistsWorksForYouTab}
+          initialPage={this.props.initialTab || ArtistsWorksForYouTab}
+          page={this.state.selectedTab || ArtistsWorksForYouTab}
           ref={tabView => (this.tabView = tabView)}
           onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
           renderTabBar={props => (
