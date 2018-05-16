@@ -23,6 +23,7 @@ API_AVAILABLE(ios(11.0))
 @property (nonatomic, strong) ARAugmentedRealityConfig *config;
 
 @property (nonatomic, assign) ARHorizontalVIRMode state;
+@property (nonatomic, strong) SCNNode *pointCloudNode;
 
 @property (nonatomic, strong) NSArray<SCNNode *> *detectedPlanes;
 @property (nonatomic, strong) NSArray<SCNNode *> *invisibleFloors;
@@ -34,7 +35,7 @@ API_AVAILABLE(ios(11.0))
 
 // The final version of the artwork shown on a wall
 @property (nonatomic, strong) SCNNode *artwork;
-// The WIP version of the artwork placed on the `wall` above
+// The WIP version of the artwork placed on the `wall` abovea
 @property (nonatomic, strong) SCNNode *ghostArtwork;
 
 
@@ -163,14 +164,12 @@ NSInteger attempt = 0;
     self.artwork = nil;
 }
 
-SCNNode *ARPointCloudNode = nil;
-
 - (void)fadeOutAndPresentTheLine
 {
     SCNAction *fade = [SCNAction fadeInWithDuration: 0.3];
-    [ARPointCloudNode runAction:fade completionHandler:^{
-        [ARPointCloudNode removeFromParentNode];
-        ARPointCloudNode = nil;
+    [self.pointCloudNode runAction:fade completionHandler:^{
+        [self.pointCloudNode removeFromParentNode];
+        self.pointCloudNode = nil;
     }];
 }
 
@@ -181,9 +180,9 @@ SCNNode *ARPointCloudNode = nil;
     if (pointCount && self.state == ARHorizontalVIRModeLaunching) {
         // We want a root node to work in, it's going to hold the all of the represented spheres
         // that come together to make the point cloud
-        if (!ARPointCloudNode) {
-            ARPointCloudNode = [SCNNode node];
-            [self.sceneView.scene.rootNode addChildNode:ARPointCloudNode];
+        if (!self.pointCloudNode) {
+            self.pointCloudNode = [SCNNode node];
+            [self.sceneView.scene.rootNode addChildNode:self.pointCloudNode];
         }
 
         // It's going to need some colour
@@ -192,7 +191,7 @@ SCNNode *ARPointCloudNode = nil;
         whiteMaterial.locksAmbientWithDiffuse = YES;
 
         // Remove the old point clouds (this happens per-frame
-        for (SCNNode *child in ARPointCloudNode.childNodes) {
+        for (SCNNode *child in self.pointCloudNode.childNodes) {
             [child removeFromParentNode];
         }
 
@@ -208,7 +207,7 @@ SCNNode *ARPointCloudNode = nil;
             SCNNode *pointNode = [SCNNode nodeWithGeometry:pointSphere];
             pointNode.position = vector;
 
-            [ARPointCloudNode addChildNode:pointNode];
+            [self.pointCloudNode addChildNode:pointNode];
         }
     }
 
