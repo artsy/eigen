@@ -34,12 +34,14 @@
 
         } else {
             FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me?fields=name,id,email" parameters:nil];
+            
+            // We need to disable FB's in-house error reporting so we can show our own
+            [request setGraphErrorRecoveryDisabled:YES];
             [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, NSDictionary *user, NSError *error) {
                 if (!error) {
-                    
                     NSString *email = user[@"email"];
                     NSString *name = user[@"name"];
-                    success(result.token.tokenString, email, name);
+                    success([FBSDKAccessToken currentAccessToken].tokenString, email, name);
                 } else {
                     ARErrorLog(@"Couldn't get user info from Facebook");
                     failure(error);
