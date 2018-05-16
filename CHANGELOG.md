@@ -38,6 +38,7 @@
 * Add ability to specifically style the button headline - yuki24
 * Creates and verifies bidder position - sepans
 * Adds `<MarkdownRenderer>` component - sepans
+* Expands ConfirmBid tests - ash
 * Changes `<BidFlow>` component and `ARBidFlowViewController` to accept artworkID and saleID as params - ash
 * Adds a `<Input>` component - yuki24
 * Adds a billing address screen - yuki24
