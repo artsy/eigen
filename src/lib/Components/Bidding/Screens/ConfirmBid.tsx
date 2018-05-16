@@ -23,7 +23,7 @@ import { Title } from "../Components/Title"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { metaphysics } from "../../../metaphysics"
 
-import { BidResult } from "./BidResult"
+import { BidResultScreen } from "./BidResult"
 
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
 import { Checkbox } from "../Components/Checkbox"
@@ -41,7 +41,6 @@ interface ConfirmBidProps extends ViewProperties {
 
 interface ConformBidState {
   pollCount: number
-  intervalToken: number
   conditionsOfSaleChecked: boolean
 }
 
@@ -117,7 +116,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     } else {
       const message_header = results.createBidderPosition.result.message_header
       const message_description_md = results.createBidderPosition.result.message_description_md
-      this.showBidResult(false, message_header, message_description_md)
+      this.showBidResult(false, status, message_header, message_description_md)
     }
   }
 
@@ -126,10 +125,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     if (bidderPosition.processed_at) {
       if (bidderPosition.is_active) {
         // wining
-        this.showBidResult(true)
+        this.showBidResult(true, "SUCCESS")
       } else {
         // outbid
-        this.showBidResult(false)
+        this.showBidResult(false, "ERROR_BID_LOW")
       }
     } else {
       if (this.state.pollCount > MAX_POLL_ATTEMPTS) {
@@ -143,11 +142,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     }
   }
 
-  showBidResult(winning: boolean, messageHeader?: string, messageDescriptionMd?: string) {
+  showBidResult(winning: boolean, status: string, messageHeader?: string, messageDescriptionMd?: string) {
     this.props.navigator.push({
-      component: BidResult,
+      component: BidResultScreen,
       title: "",
       passProps: {
+        sale_artwork: this.props.sale_artwork,
+        status,
         message_header: messageHeader,
         message_description_md: messageDescriptionMd,
         winning,
@@ -229,6 +230,7 @@ export const ConfirmBidScreen = createFragmentContainer(
         artist_names
       }
       lot_label
+      ...BidResult_sale_artwork
     }
   `
 )

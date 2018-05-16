@@ -8,7 +8,7 @@ import { metaphysics } from "../../../../metaphysics"
 const mockphysics = metaphysics as jest.Mock<any>
 
 import { Button } from "../../Components/Button"
-import { BidResult } from "../BidResult"
+import { BidResultScreen } from "../BidResult"
 import { ConfirmBid } from "../ConfirmBid"
 
 // This let's us import the actual react-relay module, and replace specific functions within it with mocks.
@@ -105,7 +105,7 @@ describe("polling to verify bid position", () => {
         jest.runAllTicks()
       })
 
-      expect(nextStep.component).toEqual(BidResult)
+      expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps.winning).toBeTruthy()
     })
 
@@ -122,7 +122,7 @@ describe("polling to verify bid position", () => {
       component.root.findByType(Button).instance.props.onPress()
       jest.runAllTicks() // Required as metaphysics async call defers execution to next invocation of Node event loop.
 
-      expect(nextStep.component).toEqual(BidResult)
+      expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps.winning).toBeTruthy()
     })
 
@@ -137,7 +137,7 @@ describe("polling to verify bid position", () => {
       component.root.findByType(Button).instance.props.onPress()
       jest.runAllTicks()
 
-      expect(nextStep.component).toEqual(BidResult)
+      expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps.winning).toBeFalsy()
     })
   })
