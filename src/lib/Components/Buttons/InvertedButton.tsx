@@ -1,5 +1,5 @@
 import React from "react"
-import { Animated, StyleSheet, TouchableHighlight, View } from "react-native"
+import { Animated, StyleProp, StyleSheet, TextStyle, TouchableHighlight, View } from "react-native"
 
 import colors from "lib/data/colors"
 import Spinner from "../Spinner"
@@ -11,6 +11,7 @@ const AnimatedHeadline = Animated.createAnimatedComponent(Headline)
 
 interface InvertedButtonProps extends React.Props<InvertedButton> {
   text: string
+  textStyle?: StyleProp<TextStyle>
   selected?: boolean
   inProgress?: boolean
   onPress?: React.TouchEventHandler<InvertedButton>
@@ -60,7 +61,8 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
     if (this.props.inProgress) {
       content = <Spinner spinnerColor="white" style={{ backgroundColor: "transparent" }} />
     } else {
-      const headlineStyles = [styles.text, { opacity: this.state.textOpacity }]
+      const customStyle = this.props.textStyle || {}
+      const headlineStyles = [styles.text, customStyle, { opacity: this.state.textOpacity }]
       content = <AnimatedHeadline style={headlineStyles}>{this.props.text}</AnimatedHeadline>
     }
     return (
