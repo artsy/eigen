@@ -12,7 +12,7 @@
 - (void)tappedContactGallery;
 - (void)tappedAuctionInfo;
 - (void)tappedConditionsOfSale;
-- (void)tappedBidButton:(UIButton *)button;
+- (void)tappedBidButton:(UIButton *)button saleID:(NSString *)saleID;
 - (void)tappedLiveSaleButton:(UIButton *)button;
 - (void)tappedBuyersPremium:(UIButton *)button;
 - (void)tappedBuyButton;

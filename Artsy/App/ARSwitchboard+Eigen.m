@@ -19,6 +19,7 @@
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARConversationComponentViewController.h>
+#import <Emission/ARBidFlowViewController.h>
 
 #import "ARArtistViewController.h"
 // TODO This does not use the new React based VC yet.
@@ -110,11 +111,16 @@
     return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
 }
 
-- (ARAuctionWebViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
+- (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
 {
-    NSString *path = [NSString stringWithFormat:@"/auction/%@/bid/%@", saleID, artworkID];
-    NSURL *URL = [self resolveRelativeUrl:path];
-    return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:artworkID];
+    if ([AROptions boolForOption:AROptionsUseNewBidFlow]) {
+        ARBidFlowViewController *viewController = [[ARBidFlowViewController alloc] initWithArtworkID:artworkID saleID:saleID];
+        return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
+    } else {
+        NSString *path = [NSString stringWithFormat:@"/auction/%@/bid/%@", saleID, artworkID];
+        NSURL *URL = [self resolveRelativeUrl:path];
+        return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:artworkID];
+    }
 }
 
 - (ARArtworkInfoViewController *)loadMoreInfoForArtwork:(Artwork *)artwork
