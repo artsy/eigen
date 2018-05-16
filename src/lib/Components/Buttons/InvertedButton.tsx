@@ -9,7 +9,7 @@ const AnimationDuration = 250
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableHighlight)
 const AnimatedHeadline = Animated.createAnimatedComponent(Headline)
 
-interface InvertedButtonProps extends React.Props<InvertedButton> {
+export interface InvertedButtonProps extends React.Props<InvertedButton> {
   text: string
   textStyle?: StyleProp<TextStyle>
   selected?: boolean

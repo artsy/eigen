@@ -18,6 +18,7 @@
 
 * Adds a checkbox to the confirm your bid screen - yuki24
 * Adds the ability to style the text in the inverted button with a spinner - yuki24
+* Now the `<ConfirmBid>` component shows a spinner while loading - yuki24
 
 ### 1.5.1
 
