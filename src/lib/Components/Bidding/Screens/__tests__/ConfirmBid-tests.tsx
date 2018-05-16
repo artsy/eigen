@@ -1,3 +1,4 @@
+import { times } from "lodash"
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
@@ -13,7 +14,6 @@ import { ConfirmBid } from "../ConfirmBid"
 // This let's us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
 import relay from "react-relay"
-const mockRelay = relay as any
 
 let nextStep
 const mockNavigator = { push: route => (nextStep = route) }
@@ -43,12 +43,11 @@ describe("when pressing bid button", () => {
   it("commits mutation", () => {
     const component = renderer.create(<ConfirmBid {...initialProps} />)
     component.root.instance.setState({ conditionsOfSaleChecked: true })
-    mockRelay.commitMutation = jest.fn()
+    relay.commitMutation = jest.fn()
 
     component.root.findByType(Button).instance.props.onPress()
 
     expect(relay.commitMutation).toHaveBeenCalled()
-    expect(mockphysics).not.toHaveBeenCalled()
   })
 
   describe("when pressing bid", () => {
@@ -83,11 +82,35 @@ describe("when pressing bid button", () => {
 })
 
 describe("polling to verify bid position", () => {
-  xdescribe("bid pending", () => {
-    xit("polls for new results")
-  })
-
   describe("bid success", () => {
+    it("polls for new results", () => {
+      const component = renderer.create(<ConfirmBid {...initialProps} navigator={mockNavigator} />)
+      component.root.instance.setState({ conditionsOfSaleChecked: true })
+      relay.commitMutation = jest.fn((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.placeingBid.bidAccepted)
+      })
+      let requestCounter = 0 // On the fifth attempt, return highestBidder
+      mockphysics.mockImplementation(() => {
+        requestCounter++
+        if (requestCounter > 5) {
+          return Promise.resolve(mockRequestResponses.pollingForBid.highestedBidder)
+        } else {
+          return Promise.resolve(mockRequestResponses.pollingForBid.pending)
+        }
+      })
+
+      component.root.findByType(Button).instance.props.onPress()
+      times(6, () => {
+        jest.runOnlyPendingTimers()
+        jest.runAllTicks()
+      })
+
+      expect(nextStep.component).toEqual(BidResult)
+      expect(nextStep.passProps.winning).toBeTruthy()
+    })
+
+    xit("shows error when polling attempts exceed max")
+
     it("shows successful bid result when highest bidder", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} navigator={mockNavigator} />)
       component.root.instance.setState({ conditionsOfSaleChecked: true })
@@ -191,6 +214,14 @@ const mockRequestResponses = {
             processed_at: "whatever-time",
             is_active: false,
           },
+        },
+      },
+    },
+    pending: {
+      data: {
+        me: {
+          bidder_position: {},
+          is_active: false,
         },
       },
     },

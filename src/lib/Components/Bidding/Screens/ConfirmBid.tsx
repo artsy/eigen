@@ -65,7 +65,6 @@ const bidderPositionMutation = graphql`
 export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState> {
   state = {
     pollCount: 0,
-    intervalToken: 0,
     conditionsOfSaleChecked: false,
   }
 
@@ -94,22 +93,27 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     })
   }
 
-  verifyBidPosition(results, errors) {
-    // TODO: Need to handle if the results object is empty, for example if errors occurred and no request was made
-    const status = results.createBidderPosition.result.status
-    if (!errors && status === "SUCCESS") {
-      const positionId = results.createBidderPosition.result.position.id
-      const query = `
+  queryForBidPosition(bidderPositionID: string) {
+    const query = `
         {
           me {
-            bidder_position(id: "${positionId}") {
+            bidder_position(id: "${bidderPositionID}") {
+              id
               processed_at
               is_active
             }
           }
         }
       `
-      metaphysics({ query }).then(this.checkBidPosition.bind(this))
+    return metaphysics({ query })
+  }
+
+  verifyBidPosition(results, errors) {
+    // TODO: Need to handle if the results object is empty, for example if errors occurred and no request was made
+    const status = results.createBidderPosition.result.status
+    if (!errors && status === "SUCCESS") {
+      const positionId = results.createBidderPosition.result.position.id
+      this.queryForBidPosition(positionId).then(this.checkBidPosition.bind(this))
     } else {
       const message_header = results.createBidderPosition.result.message_header
       const message_description_md = results.createBidderPosition.result.message_description_md
@@ -118,10 +122,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   }
 
   checkBidPosition(result) {
-    // TODO: move polling logic to a separate file https://github.com/artsy/emission/pull/1025#discussion_r185931915
     const bidderPosition = result.data.me.bidder_position
     if (bidderPosition.processed_at) {
-      clearInterval(this.state.intervalToken)
       if (bidderPosition.is_active) {
         // wining
         this.showBidResult(true)
@@ -130,12 +132,14 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
         this.showBidResult(false)
       }
     } else {
-      // TODO: Actually poll again.
       if (this.state.pollCount > MAX_POLL_ATTEMPTS) {
         // TODO: Present error message to user.
-        clearInterval(this.state.intervalToken)
+      } else {
+        setTimeout(() => {
+          this.queryForBidPosition(bidderPosition.id).then(this.checkBidPosition.bind(this))
+        }, 1000)
+        this.setState({ pollCount: this.state.pollCount + 1 })
       }
-      this.setState({ pollCount: this.state.pollCount + 1 })
     }
   }
 
