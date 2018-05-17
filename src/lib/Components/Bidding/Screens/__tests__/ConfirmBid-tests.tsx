@@ -120,7 +120,25 @@ describe("polling to verify bid position", () => {
       expect(nextStep.passProps.winning).toBeTruthy()
     })
 
-    xit("shows error when polling attempts exceed max")
+    it("shows error when polling attempts exceed max", () => {
+      const component = renderer.create(<ConfirmBid {...initialProps} navigator={mockNavigator} />)
+      component.root.instance.setState({ conditionsOfSaleChecked: true })
+      mockphysics.mockReturnValue(Promise.resolve(mockRequestResponses.pollingForBid.pending))
+      relay.commitMutation = jest.fn((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.placeingBid.bidAccepted)
+      })
+
+      component.root.findByType(Button).instance.props.onPress()
+
+      times(22, () => {
+        jest.runOnlyPendingTimers()
+        jest.runAllTicks()
+      })
+
+      expect(nextStep.component).toEqual(BidResultScreen)
+      expect(nextStep.passProps.winning).toBeFalsy()
+      expect(nextStep.passProps.message_header).toMatch("Bid Processing")
+    })
 
     it("shows successful bid result when highest bidder", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} navigator={mockNavigator} />)
@@ -141,6 +159,21 @@ describe("polling to verify bid position", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} navigator={mockNavigator} />)
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.outbid))
+      relay.commitMutation = jest.fn((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.placeingBid.bidAccepted)
+      })
+
+      component.root.findByType(Button).instance.props.onPress()
+      jest.runAllTicks()
+
+      expect(nextStep.component).toEqual(BidResultScreen)
+      expect(nextStep.passProps.winning).toBeFalsy()
+    })
+
+    it("shows reserve not met when reserve is not met", () => {
+      const component = renderer.create(<ConfirmBid {...initialProps} navigator={mockNavigator} />)
+      component.root.instance.setState({ conditionsOfSaleChecked: true })
+      mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
       relay.commitMutation = jest.fn((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.placeingBid.bidAccepted)
       })
@@ -212,8 +245,8 @@ const mockRequestResponses = {
       data: {
         me: {
           bidder_position: {
-            processed_at: "whatever-time",
-            is_active: true,
+            status: "SUCCESS",
+            position: {},
           },
         },
       },
@@ -222,8 +255,8 @@ const mockRequestResponses = {
       data: {
         me: {
           bidder_position: {
-            processed_at: "whatever-time",
-            is_active: false,
+            status: "OUTBID",
+            position: {},
           },
         },
       },
@@ -231,8 +264,20 @@ const mockRequestResponses = {
     pending: {
       data: {
         me: {
-          bidder_position: {},
-          is_active: false,
+          bidder_position: {
+            position: {},
+            status: "PENDING",
+          },
+        },
+      },
+    },
+    reserveNotMet: {
+      data: {
+        me: {
+          bidder_position: {
+            position: {},
+            status: "RESERVE_NOT_MET",
+          },
         },
       },
     },
