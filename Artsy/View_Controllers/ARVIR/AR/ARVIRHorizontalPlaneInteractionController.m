@@ -12,6 +12,7 @@
 typedef NS_ENUM(NSInteger, ARHorizontalVIRMode) {
     ARHorizontalVIRModeLaunching,
     ARHorizontalVIRModeDetectedFloor,
+    ARHorizontalVIRModeCreatedWall,
     ARHorizontalVIRModePlacedOnWall
 };
 
@@ -76,6 +77,9 @@ NSInteger attempt = 0;
             [self fadeOutAndPresentTheLine];
             [self vibrate:UIImpactFeedbackStyleLight];
             break;
+        case ARHorizontalVIRModeCreatedWall:
+            [self vibrate:UIImpactFeedbackStyleMedium];
+            break;
         case ARHorizontalVIRModePlacedOnWall:
             [self vibrate:UIImpactFeedbackStyleHeavy];
             break;
@@ -105,6 +109,44 @@ NSInteger attempt = 0;
     NSLog(@"Attempt: %@", @(attempt));
 }
 
+
+- (void)placeWall
+{
+    if (@available(iOS 11.0, *)) {
+        NSDictionary *options = @{
+            SCNHitTestIgnoreHiddenNodesKey: @NO,
+            SCNHitTestFirstFoundOnlyKey: @YES,
+            SCNHitTestOptionSearchMode: @(SCNHitTestSearchModeAll)
+        };
+
+        NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.pointOnScreenForArtworkProjection options: options];
+        for (SCNHitTestResult *result in results) {
+
+            // When you want to place the invisible wall, based on the current ghostWall
+            if (!self.wall && [self.invisibleFloors containsObject:result.node]) {
+
+                ARSCNWallNode *wall = [ARSCNWallNode fullWallNode];
+                SCNNode *userWall = [SCNNode nodeWithGeometry:wall];
+                [result.node addChildNode:userWall];
+
+                userWall.position = result.localCoordinates;
+                userWall.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
+
+                SCNVector3 userPosition = self.sceneView.pointOfView.position;
+                SCNVector3 bottomPosition = SCNVector3Make(userPosition.x, result.worldCoordinates.y, userPosition.z);
+                [userWall lookAt:bottomPosition];
+
+                self.wall = userWall;
+
+                self.state = ARHorizontalVIRModeCreatedWall;
+                [self.delegate hasPlacedWall];
+                return;
+            }
+        }
+    }
+}
+
+
 - (void)placeArtwork
 {
     if (@available(iOS 11.0, *)) {
@@ -122,35 +164,19 @@ NSInteger attempt = 0;
                 SCNBox *box = [SCNArtworkNode nodeWithConfig:self.config];
                 SCNNode *artwork = [SCNNode nodeWithGeometry:box];
                 artwork.position = result.localCoordinates;
-                // Pitch, Yaw, Roll
-//                artwork.eulerAngles = SCNVector3Make(0, 0, M_PI);
-
                 [result.node addChildNode:artwork];
 
                 self.artwork = artwork;
                 [self.ghostWallLine removeFromParentNode];
+
+                self.state = ARHorizontalVIRModePlacedOnWall;
+                [self.delegate hasPlacedWall];
                 return;
-            }
-
-            // When you want to place the invisible wall, based on the current ghostWall
-            if (!self.wall && [self.invisibleFloors containsObject:result.node]) {
-
-                ARSCNWallNode *wall = [ARSCNWallNode fullWallNode];
-                SCNNode *userWall = [SCNNode nodeWithGeometry:wall];
-                [result.node addChildNode:userWall];
-
-                userWall.position = result.localCoordinates;
-                userWall.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
-
-                SCNVector3 userPosition = self.sceneView.pointOfView.position;
-                SCNVector3 bottomPosition = SCNVector3Make(userPosition.x, result.worldCoordinates.y, userPosition.z);
-                [userWall lookAt:bottomPosition];
-
-                self.wall = userWall;
             }
         }
     }
 }
+
 
 - (void)restart
 {
@@ -176,8 +202,30 @@ NSInteger attempt = 0;
 
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0));
 {
+    switch (self.state) {
+        case ARHorizontalVIRModeLaunching: {
+            [self renderWhileFindingFloor:frame];
+            break;
+        }
+
+        case ARHorizontalVIRModeDetectedFloor: {
+            [self renderWhenPlacingWall:frame];
+            break;
+        }
+
+        case ARHorizontalVIRModeCreatedWall: {
+            [self renderWhenPlacingArtwork:frame];
+            break;
+        }
+
+        case ARHorizontalVIRModePlacedOnWall: break;
+    }
+}
+
+- (void)renderWhileFindingFloor:(ARFrame *)frame API_AVAILABLE(ios(11.0));
+{
     NSInteger pointCount = frame.rawFeaturePoints.count;
-    if (pointCount && self.state == ARHorizontalVIRModeLaunching) {
+    if (pointCount) {
         // We want a root node to work in, it's going to hold the all of the represented spheres
         // that come together to make the point cloud
         if (!self.pointCloudNode) {
@@ -210,12 +258,10 @@ NSInteger attempt = 0;
             [self.pointCloudNode addChildNode:pointNode];
         }
     }
+}
 
-    // Bail early if we don't have walls to fire at, or have an artwork already up
-    if (!self.invisibleFloors.count || self.artwork) {
-        return;
-    }
-
+- (void)renderWhenPlacingWall:(ARFrame *)frame API_AVAILABLE(ios(11.0));
+{
     NSDictionary *options = @{
         SCNHitTestIgnoreHiddenNodesKey: @NO,
         SCNHitTestFirstFoundOnlyKey: @YES,
@@ -225,23 +271,6 @@ NSInteger attempt = 0;
 
     NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.pointOnScreenForArtworkProjection options: options];
     for (SCNHitTestResult *result in results) {
-        
-        if ([self.wall isEqual:result.node]) {
-            // Create a ghost artwork
-            if (!self.ghostArtwork) {
-                // TODO add white lines around the artwork
-
-                SCNBox *box = [SCNArtworkNode nodeWithConfig:self.config];
-                SCNNode *artwork = [SCNNode nodeWithGeometry:box];
-                artwork.position = result.localCoordinates;
-
-                artwork.opacity = 0.5;
-
-                [result.node addChildNode:artwork];
-                self.ghostArtwork = artwork;
-            }
-            self.ghostArtwork.position = result.localCoordinates;
-        }
 
         if ([self.invisibleFloors containsObject:result.node]) {
             // Create a ghost wall if we don't have one already
@@ -259,19 +288,58 @@ NSInteger attempt = 0;
                 self.ghostWallLine = ghostWall;
             }
 
-            SCNTransaction.animationDuration = 0.1;
+            SCNTransaction.animationDuration = 0.04;
             self.ghostWallLine.position = result.localCoordinates;
-            [self.delegate isShowingGhostWork:YES];
+            [self.delegate isShowingGhostWall:YES];
             return;
         }
     }
 
     if (self.ghostWallLine) {
-        [self.delegate isShowingGhostWork:NO];
+        [self.delegate isShowingGhostWall:NO];
         [self.ghostWallLine removeFromParentNode];
         self.ghostWallLine = nil;
     }
 }
+
+
+- (void)renderWhenPlacingArtwork:(ARFrame *)frame API_AVAILABLE(ios(11.0));
+{
+    NSDictionary *options = @{
+        SCNHitTestIgnoreHiddenNodesKey: @NO,
+        SCNHitTestFirstFoundOnlyKey: @YES,
+        SCNHitTestOptionSearchMode: @(SCNHitTestSearchModeAll),
+        SCNHitTestBackFaceCullingKey: @NO
+    };
+
+    NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.pointOnScreenForArtworkProjection options: options];
+    for (SCNHitTestResult *result in results) {
+
+        if ([self.wall isEqual:result.node]) {
+            // Create a ghost artwork
+            if (!self.ghostArtwork) {
+                SCNBox *box = [SCNArtworkNode nodeWithConfig:self.config];
+                SCNNode *artwork = [SCNNode nodeWithGeometry:box];
+                artwork.position = result.localCoordinates;
+
+                artwork.opacity = 0.5;
+
+                [result.node addChildNode:artwork];
+                self.ghostArtwork = artwork;
+            }
+
+            self.ghostArtwork.position = result.localCoordinates;
+            return;
+        }
+    }
+
+    if (self.ghostArtwork) {
+        [self.delegate isShowingGhostWork:NO];
+        [self.ghostArtwork removeFromParentNode];
+        self.ghostArtwork = nil;
+    }
+}
+
 
 - (void)renderer:(id<SCNSceneRenderer>)renderer didUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor API_AVAILABLE(ios(11.0))
 {

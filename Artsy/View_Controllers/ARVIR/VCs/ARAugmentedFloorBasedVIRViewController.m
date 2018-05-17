@@ -72,23 +72,27 @@ NS_ASSUME_NONNULL_BEGIN
     positionWallMarker.bodyString = @"Position the marker where the floor meets the wall and tap to set.";
     ARWhiteFlatButton *setMarkerButton = [[ARWhiteFlatButton alloc] init];
     [setMarkerButton setTitle:@"Set Marker" forState:UIControlStateNormal];
+    [setMarkerButton addTarget:self.interactionController action:@selector(placeWall) forControlEvents:UIControlEventTouchUpInside];
     positionWallMarker.contents = setMarkerButton;
-    positionWallMarker.onStart = ^(UIView *customView) {
-        NSLog(@"Hello");
-    };
 
     InformationalViewState *positionArtworkMarker = [[InformationalViewState alloc] init];
     positionArtworkMarker.xOutOfYMessage = @"Step 3 of 3";
     positionArtworkMarker.bodyString = @"Position the work on the wall and tap to place.";
-    positionArtworkMarker.contents = [[UIView alloc] init];
-    positionArtworkMarker.onStart = ^(UIView *customView) {
-        NSLog(@"Hello");
-    };
+
+    ARWhiteFlatButton *placeArtworkButton = [[ARWhiteFlatButton alloc] init];
+    [placeArtworkButton setTitle:@"Place Work" forState:UIControlStateNormal];
+    [placeArtworkButton addTarget:self.interactionController action:@selector(placeArtwork) forControlEvents:UIControlEventTouchUpInside];
+    positionArtworkMarker.contents = placeArtworkButton;
 
     InformationalViewState *congratsArtworkMarker = [[InformationalViewState alloc] init];
-    congratsArtworkMarker.xOutOfYMessage = @"";
+    congratsArtworkMarker.xOutOfYMessage = @" ";
     congratsArtworkMarker.bodyString = @"OK – the work has been placed. Walk around the work to view it in your space.";
-    congratsArtworkMarker.contents = [[UIView alloc] init];
+
+    ARClearFlatButton *doneArtworkButton = [[ARClearFlatButton alloc] init];
+    [doneArtworkButton setTitle:@"Done" forState:UIControlStateNormal];
+    [doneArtworkButton addTarget:self action:@selector(dismissInformationalView) forControlEvents:UIControlEventTouchUpInside];
+    congratsArtworkMarker.contents = doneArtworkButton;
+
     congratsArtworkMarker.onStart = ^(UIView *customView) {
         ar_dispatch_after(2, ^{
             // dismiss
@@ -172,24 +176,33 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)presentInformationalInterface:(BOOL)animated
 {
-    ARInformationView *informationView = [[ARInformationView alloc] init];
-    [informationView setupWithStates:[self viewStatesForInformationView:informationView]];
+    ar_dispatch_after(0.5, ^{
+        ARInformationView *informationView = [[ARInformationView alloc] init];
+        [informationView setupWithStates:[self viewStatesForInformationView:informationView]];
 
-    [self.view addSubview:informationView];
-    [informationView alignLeading:@"0" trailing:@"0" toView:self.view];
-    [informationView constrainHeight:@"180"];
+        [self.view addSubview:informationView];
+        [informationView alignLeading:@"0" trailing:@"0" toView:self.view];
+        [informationView constrainHeight:@"180"];
 
-    NSLayoutConstraint *bottomContraint = [informationView alignBottomEdgeWithView:self.view predicate:@"-20"];
-
-    [UIView animateIf:animated duration:ARAnimationDuration :^{
-        // Animate into the right place
-        bottomContraint.constant = 0;
-
-        [informationView setNeedsUpdateConstraints];
+        NSLayoutConstraint *bottomContraint = [informationView alignBottomEdgeWithView:self.view predicate:@"-20"];
         [informationView layoutIfNeeded];
-    }];
+        [self.view layoutIfNeeded];
 
-    self.informationView = informationView;
+        [UIView animateIf:animated duration:ARAnimationDuration :^{
+            // Animate into the right place
+            bottomContraint.constant = 0;
+
+            [informationView setNeedsUpdateConstraints];
+            [informationView layoutIfNeeded];
+        }];
+
+        self.informationView = informationView;
+    });
+}
+
+- (void)dismissInformationalView
+{
+    [self.informationView removeFromSuperview];
 }
 
 - (void)initialState
@@ -243,6 +256,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)hasRegisteredPlanes
 {
     ar_dispatch_main_queue(^{
+        // TODO, show tick, then hit next
         [self.informationView next];
     });
 }
@@ -253,7 +267,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)isShowingGhostWork:(BOOL)showing
 {
     ar_dispatch_main_queue(^{
-        // TODO
+        UIButton *buttonForPlace = (UIButton *)self.informationView.currentState.contents;
+        [buttonForPlace setEnabled:showing];
+    });
+}
+
+- (void)isShowingGhostWall:(BOOL)showing
+{
+    ar_dispatch_main_queue(^{
+        UIButton *buttonForPlace = (UIButton *)self.informationView.currentState.contents;
+        [buttonForPlace setEnabled:showing];
     });
 }
 
@@ -267,6 +290,15 @@ NS_ASSUME_NONNULL_BEGIN
 // Once we known we've placed an artwork, update the UI
 
 - (void)hasPlacedArtwork
+{
+    ar_dispatch_main_queue(^{
+        [self.informationView next];
+    });
+}
+
+// Once we known we've placed an artwork, update the UI
+
+- (void)hasPlacedWall
 {
     ar_dispatch_main_queue(^{
         [self.informationView next];
