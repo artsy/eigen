@@ -9,12 +9,14 @@
 
 #import "ARAppConstants.h"
 #import "ARDefaults.h"
+#import "AROptions.h"
 #import "UIDevice-Hardware.h"
 #import "ARMenuAwareViewController.h"
 #import "ARAugmentedRealityConfig.h"
 #import "UIViewController+SimpleChildren.h"
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedVIRViewController.h"
+#import "ARAugmentedFloorBasedVIRViewController.h"
 
 @interface ARAugmentedVIRSetupViewController () <ARMenuAwareViewController>
 @property (nonatomic, copy) NSURL *movieURL;
@@ -235,7 +237,8 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
         if (allowedAccess) {
             [self.defaults setBool:YES forKey:ARAugmentedRealityHasTriedToSetup];
 
-            ARAugmentedVIRViewController *vc = [[ARAugmentedVIRViewController alloc] initWithConfig:self.config];
+            Class Controller = [AROptions boolForOption:AROptionsFloorBasedARVIR] ? ARAugmentedVIRViewController.class : ARAugmentedFloorBasedVIRViewController.class;
+            id vc = [[Controller alloc] initWithConfig:self.config];
             [self.navigationController pushViewController:vc animated:YES];
         } else {
             [self requestDenied];

@@ -2,7 +2,7 @@
 @import SceneKit;
 
 // This needs to be a top level UIViewController
-// which will have safeAreaInsets thgat reflect the phone
+// which will have safeAreaInsets that reflect the phone
 #import "ARTopMenuViewController.h"
 
 #import "ARMenuAwareViewController.h"
@@ -11,33 +11,32 @@
 #import "ARAppConstants.h"
 #import "ARDefaults.h"
 #import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
+#import <Extraction/ARSpinner.h>
 
 #import "ARAugmentedRealityConfig.h"
-#import "ARAugmentedVIRViewController.h"
-#import "ARVIRVerticalWallInteractionController.h"
+#import "ARAugmentedFloorBasedVIRViewController.h"
+#import "ARVIRHorizontalPlaneInteractionController.h"
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedVIRModalView.h"
+#import "ARInformationView.h"
 
 API_AVAILABLE(ios(11.0))
-@interface ARAugmentedVIRViewController () <ARSCNViewDelegate, ARSessionDelegate, ARVIRDelegate, ARMenuAwareViewController, VIRModalDelegate>
+@interface ARAugmentedFloorBasedVIRViewController () <ARSCNViewDelegate, ARSessionDelegate, ARVIRDelegate, ARMenuAwareViewController, VIRModalDelegate>
 NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) ARSCNView *sceneView;
+@property (nonatomic, strong) ARInformationView *informationView;
 
 @property (nonatomic, strong) id <ARSCNViewDelegate, ARVIRInteractive, ARSessionDelegate> interactionController;
 
-@property (nonatomic, weak, nullable) UIImageView *phoneImage;
 @property (nonatomic, weak, nullable) UIButton *backButton;
-@property (nonatomic, weak, nullable) UIButton *resetButton;
-@property (nonatomic, weak, nullable) UIButton *placeArtworkButton;
-@property (nonatomic, weak, nullable) UILabel *textLabel;
 @property (nonatomic, strong, nullable) NSDate *dateOpenedAR;
-
 
 @end
 
-@implementation ARAugmentedVIRViewController
+@implementation ARAugmentedFloorBasedVIRViewController
 
 - (instancetype)initWithConfig:(ARAugmentedRealityConfig *)config
 {
@@ -48,13 +47,59 @@ NS_ASSUME_NONNULL_BEGIN
 
     if (@available(iOS 11.0, *)) {
         _sceneView = [[ARSCNView alloc] init];
-        _interactionController = [[ARVIRVerticalWallInteractionController alloc] initWithSession:_sceneView.session config:config scene:_sceneView delegate:self];
+
+        _interactionController = [[ARVIRHorizontalPlaneInteractionController alloc] initWithSession:_sceneView.session config:config scene:_sceneView delegate:self];
     }
 
     return self;
 }
 
-- (void)viewDidLoad {
+- (NSArray <InformationalViewState *> *)viewStatesForInformationView:(ARInformationView *)view
+{
+    InformationalViewState *start = [[InformationalViewState alloc] init];
+    start.xOutOfYMessage = @"Step 1 of 3";
+    start.bodyString = @"Aim at the floor and slowly move your phone in a circular motion.";
+    ARSpinner *spinner = [[ARSpinner alloc] init];
+    spinner.spinnerColor = [UIColor whiteColor];
+    [spinner constrainHeight:@"40"];
+    start.contents = spinner;
+    start.onStart = ^(UIView *customView) {
+        [spinner startAnimating];
+    };
+
+    InformationalViewState *positionWallMarker = [[InformationalViewState alloc] init];
+    positionWallMarker.xOutOfYMessage = @"Step 2 of 3";
+    positionWallMarker.bodyString = @"Position the marker where the floor meets the wall and tap to set.";
+    ARWhiteFlatButton *setMarkerButton = [[ARWhiteFlatButton alloc] init];
+    [setMarkerButton setTitle:@"Set Marker" forState:UIControlStateNormal];
+    positionWallMarker.contents = setMarkerButton;
+    positionWallMarker.onStart = ^(UIView *customView) {
+        NSLog(@"Hello");
+    };
+
+    InformationalViewState *positionArtworkMarker = [[InformationalViewState alloc] init];
+    positionArtworkMarker.xOutOfYMessage = @"Step 3 of 3";
+    positionArtworkMarker.bodyString = @"Position the work on the wall and tap to place.";
+    positionArtworkMarker.contents = [[UIView alloc] init];
+    positionArtworkMarker.onStart = ^(UIView *customView) {
+        NSLog(@"Hello");
+    };
+
+    InformationalViewState *congratsArtworkMarker = [[InformationalViewState alloc] init];
+    congratsArtworkMarker.xOutOfYMessage = @"";
+    congratsArtworkMarker.bodyString = @"OK – the work has been placed. Walk around the work to view it in your space.";
+    congratsArtworkMarker.contents = [[UIView alloc] init];
+    congratsArtworkMarker.onStart = ^(UIView *customView) {
+        ar_dispatch_after(2, ^{
+            // dismiss
+        });
+    };
+
+    return @[start, positionWallMarker, positionArtworkMarker, congratsArtworkMarker];
+}
+
+- (void)viewDidLoad
+{
     if (@available(iOS 11.0, *)) {
         _dateOpenedAR = [NSDate date];
 
@@ -101,27 +146,6 @@ NS_ASSUME_NONNULL_BEGIN
         backButton.layer.shadowOffset = CGSizeMake(0, 0);
         backButton.layer.shadowOpacity = 0.4;
 
-        // Reset
-        ARClearFlatButton *resetButton = [[ARClearFlatButton alloc] init];
-        [resetButton setImage:[UIImage imageNamed:@"ARVIRRefresh"] forState:UIControlStateNormal];
-        resetButton.translatesAutoresizingMaskIntoConstraints = false;
-        [resetButton addTarget:self action:@selector(resetAR) forControlEvents:UIControlEventTouchUpInside];
-        [resetButton setBorderColor:[UIColor clearColor] forState:UIControlStateNormal];
-        [resetButton setBorderColor:[UIColor clearColor] forState:UIControlStateHighlighted];
-        [resetButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
-
-        resetButton.layer.masksToBounds = NO;
-        resetButton.layer.shadowColor = [UIColor blackColor].CGColor;
-        resetButton.layer.shadowOffset = CGSizeMake(0, 0);
-        resetButton.layer.shadowOpacity = 0.4;
-
-        [self.view addSubview:resetButton];
-
-        // A phone image which rotates to indicate how to calibrate
-        UIImageView *phoneImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRPhone"]];
-        phoneImage.translatesAutoresizingMaskIntoConstraints = false;
-        [self.view addSubview:phoneImage];
-
         // A beta button in the top right
         UIImageView *betaImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRBeta"]];
         betaImage.translatesAutoresizingMaskIntoConstraints = false;
@@ -133,90 +157,46 @@ NS_ASSUME_NONNULL_BEGIN
 
         [self.view addConstraints: @[
             [backButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:backTopMargin],
-            [backButton.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant: 4.0],
+            [backButton.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20.0],
             [backButton.heightAnchor constraintEqualToConstant:50.0],
             [backButton.widthAnchor constraintEqualToConstant:50.0],
 
-            [resetButton.centerYAnchor constraintEqualToAnchor:backButton.centerYAnchor constant:0],
-            [resetButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:0],
-            [resetButton.heightAnchor constraintEqualToConstant:50.0],
-            [resetButton.widthAnchor constraintEqualToConstant:50.0],
-
-            [phoneImage.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
-            [phoneImage.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
-
             [betaImage.centerYAnchor constraintEqualToAnchor:backButton.centerYAnchor constant:0],
-            [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20]
+            [betaImage.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant: 20]
         ]];
-
-        // Text label for messaging
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-        label.textColor = UIColor.whiteColor;
-        label.font = [UIFont displaySansSerifFontWithSize:16];
-        label.translatesAutoresizingMaskIntoConstraints = false;
-        label.numberOfLines = 0;
-        label.lineBreakMode = NSLineBreakByWordWrapping;
-        label.textAlignment = NSTextAlignmentCenter;
-
-        label.layer.shadowColor = [UIColor blackColor].CGColor;
-        label.layer.shadowOffset = CGSizeMake(0.0, 0.0);
-        label.layer.shadowRadius = 3.0;
-        label.layer.shadowOpacity = 0.5;
-        label.layer.masksToBounds = NO;
-        label.layer.shouldRasterize = YES;
-
-        [self.view addSubview:label];
-
-        [self.view addConstraints: @[
-            [label.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:50.0],
-            [label.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant: -140.0],
-            [label.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant: -50.0]
-        ]];
-
-        ARWhiteFlatButton *placeArtworkButton = [[ARWhiteFlatButton alloc] initWithFrame:CGRectMake(0, 0, 144, 44)];
-        [placeArtworkButton setTitle:@"Tap to Place" forState:UIControlStateNormal];
-        [placeArtworkButton addTarget:self action:@selector(placeArtwork) forControlEvents:UIControlEventTouchUpInside];
-
-        [self.view addSubview:placeArtworkButton];
-
-        [placeArtworkButton alignCenterXWithView:self.view predicate:@"0"];
-        [placeArtworkButton constrainHeight:@"44"];
-        [placeArtworkButton constrainWidth:@"140"];
-        [placeArtworkButton alignBottomEdgeWithView:self.view predicate:@"-140"];
-
-        self.textLabel = label;
-        self.backButton = backButton;
-        self.resetButton = resetButton;
-        self.phoneImage = phoneImage;
-        self.placeArtworkButton = placeArtworkButton;
-
-        [self initialState];
-
-        if (ARPerformWorkAsynchronously) {
-            [self animateImageView];
-        }
 
         // Makes it so that the screen doesn't dim
         [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     }
 }
 
-// What to show when we first
+- (void)presentInformationalInterface:(BOOL)animated
+{
+    ARInformationView *informationView = [[ARInformationView alloc] init];
+    [informationView setupWithStates:[self viewStatesForInformationView:informationView]];
 
-NSString *ARInitialARVIRSubtitle =  @"Stand a couple feet from your wall. Aim at a prominent object on the wall and move your phone in a circle.";
-NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in the room.";
+    [self.view addSubview:informationView];
+    [informationView alignLeading:@"0" trailing:@"0" toView:self.view];
+    [informationView constrainHeight:@"180"];
+
+    NSLayoutConstraint *bottomContraint = [informationView alignBottomEdgeWithView:self.view predicate:@"-20"];
+
+    [UIView animateIf:animated duration:ARAnimationDuration :^{
+        // Animate into the right place
+        bottomContraint.constant = 0;
+
+        [informationView setNeedsUpdateConstraints];
+        [informationView layoutIfNeeded];
+    }];
+
+    self.informationView = informationView;
+}
 
 - (void)initialState
 {
     ar_dispatch_main_queue(^{
-        self.resetButton.hidden = YES;
-        self.phoneImage.hidden = NO;
-        self.placeArtworkButton.hidden = YES;
-
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:YES forKey:ARAugmentedRealityHasSeenSetup];
-
-        self.textLabel.text = ARInitialARVIRSubtitle;
 
         if (ARPerformWorkAsynchronously) {
             [self startTimerForModal];
@@ -232,34 +212,13 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
     [self performSelector:@selector(showModalForError) withObject:nil afterDelay:wallTimeoutWarning];
 }
 
-- (void)startTimerFadingOutFinalText
-{
-    CGFloat fadeTimeoutWarning = ARPerformWorkAsynchronously ? 7 : 0;
-    [self performSelector:@selector(fadeOutFinalText) withObject:nil afterDelay:fadeTimeoutWarning];
-}
-
-- (void)fadeOutFinalText
-{
-    if ([self.textLabel.text isEqualToString:ARFinalARVIRSubtitle]) {
-        CGFloat fadeTime = ARPerformWorkAsynchronously ? 0.3 : 0;
-
-        [UIView animateWithDuration:fadeTime animations:^{
-            self.placeArtworkButton.hidden = YES;
-            self.textLabel.alpha = 0;
-
-        } completion:^(BOOL finished) {
-            self.textLabel.text = @"";
-            self.textLabel.alpha = 1;
-        }];
-    }
-}
-
 // Pop up an error message
 
 - (void)showModalForError
 {
-    NSString *errorMessage = @"We’re having trouble finding your wall. Make sure the room is well-lit, or try focusing on a different object on the wall.";
-    ARAugmentedVIRModalView *modal = [[ARAugmentedVIRModalView alloc] initWithTitle:errorMessage delegate:self];
+    NSString *errorMessageFloor = @"We’re having trouble finding your floor. Make sure the room is well-lit, or try focusing on a different part of the floor.";
+
+    ARAugmentedVIRModalView *modal = [[ARAugmentedVIRModalView alloc] initWithTitle:errorMessageFloor delegate:self];
     [self.view addSubview:modal];
     [modal alignToView:self.view];
 }
@@ -284,11 +243,7 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
 - (void)hasRegisteredPlanes
 {
     ar_dispatch_main_queue(^{
-        self.resetButton.hidden = YES;
-        self.phoneImage.hidden = YES;
-        self.placeArtworkButton.hidden = YES;
-
-        [self.class cancelPreviousPerformRequestsWithTarget:self selector:@selector(showModalForError) object:nil];
+        [self.informationView next];
     });
 }
 
@@ -298,9 +253,7 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
 - (void)isShowingGhostWork:(BOOL)showing
 {
     ar_dispatch_main_queue(^{
-        self.placeArtworkButton.hidden = NO;
-        self.placeArtworkButton.enabled = showing;
-        self.textLabel.text = @"";
+        // TODO
     });
 }
 
@@ -308,8 +261,7 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
 
 - (void)placeArtwork
 {
-    [self.interactionController placeArtwork];
-    self.placeArtworkButton.hidden = YES;
+    // TODO
 }
 
 // Once we known we've placed an artwork, update the UI
@@ -317,29 +269,8 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
 - (void)hasPlacedArtwork
 {
     ar_dispatch_main_queue(^{
-        self.resetButton.hidden = NO;
-        self.placeArtworkButton.hidden = YES;
-        self.phoneImage.hidden = YES;
-        self.textLabel.text = ARFinalARVIRSubtitle;
-
-        if (ARPerformWorkAsynchronously) {
-            [self startTimerFadingOutFinalText];
-        }
+        [self.informationView next];
     });
-}
-
-// Rotate the imageview around in a circle
-
-- (void)animateImageView
-{
-    UIBezierPath *circlePath = [UIBezierPath bezierPathWithArcCenter:self.view.center radius:10 startAngle:0 endAngle:M_PI * 2 clockwise:YES];
-    CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
-
-    animation.path = circlePath.CGPath;
-    animation.duration = 1.3;
-    animation.repeatCount = HUGE;
-
-    [self.phoneImage.layer addAnimation:animation forKey:@"orbit"];
 }
 
 // Pop back, and potentially skip the AR Setup VC if it's there
@@ -370,7 +301,6 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
 
 - (void)resetAR
 {
-    [self hasRegisteredPlanes];
 
     [self.interactionController restart];
 }
@@ -398,16 +328,18 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
     // Create a session configuration
     if (@available(iOS 11.3, *)) {
         ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
-
-        // While Xcode 10.3 is in beta, we won't be shipping CI builds with it
-//        configuration.planeDetection = ARPlaneDetectionVertical;
-        configuration.planeDetection = 2;
+        configuration.planeDetection = ARPlaneDetectionHorizontal;
 
         // Run the view's session
         [self.sceneView.session runWithConfiguration:configuration];
 
         // Reset the delegate
         [self.interactionController restart];
+    }
+
+    // Create the informational view and animate it into view
+    if (!self.informationView) {
+        [self presentInformationalInterface:animated];
     }
 }
 
