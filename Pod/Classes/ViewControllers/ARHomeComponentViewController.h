@@ -12,6 +12,8 @@ typedef enum ARHomeTabType {
 
 @property (nonatomic, strong, readonly) NSString *selectedArtist;
 
+- (void)changeHomeTabTo:(ARHomeTabType)tab;
+
 - (instancetype)initWithSelectedArtist:(nullable NSString *)artistID
                                    tab:(ARHomeTabType)selectedTab
                               emission:(nullable AREmission*)emission NS_DESIGNATED_INITIALIZER;
