@@ -299,6 +299,10 @@ static const CGFloat ARMenuButtonDimension = 50;
     [switchboard registerPathCallbackAtPath:@"/works-for-you" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
         return [self rootNavigationControllerAtIndex:ARTopTabControllerIndexHome parameters:parameters].rootViewController;
     }];
+    
+    [switchboard registerPathCallbackAtPath:@"/auctions" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
+        return [self rootNavigationControllerHomeWithTab:ARHomeTabAuctions].rootViewController;
+    }];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -347,6 +351,12 @@ static const CGFloat ARMenuButtonDimension = 50;
     return (ARNavigationController *)[self.navigationDataSource navigationControllerAtIndex:index parameters:params];
 }
 
+- (ARNavigationController *)rootNavigationControllerHomeWithTab:(ARHomeTabType)tab
+{
+    ARNavigationController *homeRootNavigationViewController = [self rootNavigationControllerAtIndex:ARTopTabControllerIndexHome];
+    [(ARHomeComponentViewController *)homeRootNavigationViewController.rootViewController changeHomeTabTo:tab];
+    return homeRootNavigationViewController;
+}
 
 - (NSInteger)indexOfRootViewController:(UIViewController *)viewController;
 {
@@ -565,6 +575,9 @@ static const CGFloat ARMenuButtonDimension = 50;
             if (showWorksForYouWithSelectedArtistFromUniversalLink) {
                 NSString *selectedArtistID = [(ARHomeComponentViewController *)viewController selectedArtist];
                 presentableController = [self.navigationDataSource navigationControllerAtIndex:ARTopTabControllerIndexHome parameters:@{@"artist_id": selectedArtistID}];
+            } else if ([viewController isKindOfClass:ARHomeComponentViewController.class]) {
+                // just show the home controller as passed in / intended, as it may have tab selections
+                presentableController = (ARNavigationController *)viewController.navigationController;
             } else {
                 presentableController = [self rootNavigationControllerAtIndex:index];
             }
@@ -573,6 +586,8 @@ static const CGFloat ARMenuButtonDimension = 50;
             presentableController = [self rootNavigationControllerAtIndex:index];
             break;
         case ARTopTabControllerIndexFavorites:
+            presentableController = [self rootNavigationControllerAtIndex:index];
+            break;
         case ARTopTabControllerIndexProfile:
             presentableController = [[ARNavigationController alloc] initWithRootViewController:viewController];
 
@@ -596,6 +611,8 @@ static const CGFloat ARMenuButtonDimension = 50;
     } else if (showWorksForYouWithSelectedArtistFromUniversalLink) {
         // We are already on Home, and need to force the tab view to show the new Home with its selected artist & without animation
         [self.tabContentView forceSetViewController:presentableController atIndex:ARTopTabControllerIndexHome animated:NO];
+    } else {
+        [self.tabContentView forceSetViewController:presentableController atIndex:index animated:NO];
     }
 }
 
@@ -649,20 +666,6 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index
 {
-    // TODO MAXIM : Change this for demo mode
-    //    BOOL favoritesInDemoMode = (index == ARTopTabControllerIndexFavorites && ARIsRunningInDemoMode);
-    //    BOOL loggedOutBellOrFavorites = (index == ARTopTabControllerIndexFavorites || index == ARTopTabControllerIndexNotifications) && [User isLocalTemporaryUser];
-    //    if (!favoritesInDemoMode && loggedOutBellOrFavorites) {
-    //        ARTrialContext context = (index == ARTopTabControllerIndexFavorites) ? ARTrialContextShowingFavorites : ARTrialContextNotifications;
-    //        [ARTrialController presentTrialWithContext:context success:^(BOOL newUser) {
-    //            if (newUser) {
-    //                [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexFeed animated:NO];
-    //            } else {
-    //                [self.tabContentView setCurrentViewIndex:index animated:NO];
-    //            }
-    //        }];
-    //        return NO;
-    //    }
 
     if (index == self.selectedTabIndex) {
         ARNavigationController *controller = (id)[tabContentView currentNavigationController];
