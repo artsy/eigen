@@ -15,7 +15,7 @@
     NSDictionary *initialProperties = artistID ? @{ @"selectedArtist": artistID, @"initialTab": @(selectedTab) } : @{ @"initialTab": @(selectedTab) };
     if ((self = [super initWithEmission:emission
                              moduleName:@"Home"
-                      initialProperties:initialProps])) {
+                      initialProperties:initialProperties])) {
         _selectedArtist = artistID;
     }
     return self;
