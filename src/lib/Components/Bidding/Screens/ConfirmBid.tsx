@@ -212,12 +212,14 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   }
 
   render() {
+    const { live_start_at, end_at } = this.props.sale_artwork.sale
+
     return (
       <BiddingThemeProvider>
         <Container m={0}>
           <Flex alignItems="center">
             <Title mb={3}>Confirm your bid</Title>
-            <Timer timeLeftInMilliseconds={1000 * 60 * 20} />
+            <Timer liveStartsAt={live_start_at} endsAt={end_at} />
           </Flex>
 
           <View>
@@ -269,6 +271,8 @@ export const ConfirmBidScreen = createFragmentContainer(
     fragment ConfirmBid_sale_artwork on SaleArtwork {
       sale {
         id
+        live_start_at
+        end_at
       }
       artwork {
         id

@@ -4,6 +4,8 @@ import { ConcreteFragment } from "relay-runtime";
 export type ConfirmFirstTimeBid_sale_artwork = {
     readonly sale: ({
         readonly id: string;
+        readonly live_start_at: string | null;
+        readonly end_at: string | null;
     }) | null;
     readonly artwork: ({
         readonly id: string;
@@ -48,6 +50,20 @@ return {
       "plural": false,
       "selections": [
         v0,
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "live_start_at",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "end_at",
+          "args": null,
+          "storageKey": null
+        },
         v1
       ]
     },
@@ -101,5 +117,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7e1eadcba9d11868ad51532c0ba852e1';
+(node as any).hash = '7a943debec8b3e31b469d04f4e9d8f9a';
 export default node;
