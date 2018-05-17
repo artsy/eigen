@@ -102,9 +102,14 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
         {
           me {
             bidder_position(id: "${bidderPositionID}") {
-              id
-              processed_at
-              is_active
+              status
+              message_header
+              message_description_md
+              position {
+                id
+                processed_at
+                is_active
+              }
             }
           }
         }
@@ -126,24 +131,29 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   }
 
   checkBidPosition(result) {
-    const bidderPosition = result.data.me.bidder_position
-    if (bidderPosition.processed_at) {
-      if (bidderPosition.is_active) {
-        // wining
-        this.showBidResult(true, "SUCCESS")
-      } else {
-        // outbid
-        this.showBidResult(false, "ERROR_BID_LOW")
-      }
-    } else {
+    const bidderPosition = result.data.me.bidder_position.position
+    const status = result.data.me.bidder_position.status
+    if (status === "SUCCESS") {
+      this.showBidResult(true, "SUCCESS")
+    } else if (status === "PENDING") {
       if (this.state.pollCount > MAX_POLL_ATTEMPTS) {
-        // TODO: Present error message to user.
+        const md = `We're receiving a high volume of traffic and your bid is still processing.  \
+If you don’t receive an update soon, please contact [support@artsy.net](mailto:support@artsy.net). `
+
+        this.showBidResult(false, "PROCESSING", "Bid Processing", md)
       } else {
         setTimeout(() => {
           this.queryForBidPosition(bidderPosition.id).then(this.checkBidPosition.bind(this))
         }, 1000)
         this.setState({ pollCount: this.state.pollCount + 1 })
       }
+    } else {
+      this.showBidResult(
+        false,
+        status,
+        result.data.me.bidder_position.message_header,
+        result.data.me.bidder_position.message_description_md
+      )
     }
   }
 

@@ -16,7 +16,7 @@ import { Title } from "../Components/Title"
 
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 
-const SHOW_TIMER_STATUSES = ["SUCCESS", "ERROR_BID_LOW"]
+const SHOW_TIMER_STATUSES = ["SUCCESS", "BID_LOW", "RESERVE_NOT_MET"]
 
 interface BidResultProps {
   sale_artwork: BidResult_sale_artwork
