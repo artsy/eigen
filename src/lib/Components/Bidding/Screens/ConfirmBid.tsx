@@ -42,6 +42,7 @@ interface ConfirmBidProps extends ViewProperties {
 interface ConformBidState {
   pollCount: number
   conditionsOfSaleChecked: boolean
+  isLoading: boolean
 }
 
 const MAX_POLL_ATTEMPTS = 20
@@ -65,6 +66,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   state = {
     pollCount: 0,
     conditionsOfSaleChecked: false,
+    isLoading: false,
   }
 
   onPressConditionsOfSale = () => {
@@ -72,11 +74,14 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   }
 
   placeBid() {
+    this.setState({ isLoading: true })
+
     commitMutation(this.props.relay.environment, {
       onCompleted: (results, errors) => {
         this.verifyBidPosition(results, errors)
       },
       onError: e => {
+        this.setState({ isLoading: false })
         // TODO catch error!
         // this.verifyAndShowBidResult(null, e)
         console.error("error!", e, e.message)
@@ -154,6 +159,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
         winning,
       },
     })
+
+    this.setState({ isLoading: false })
   }
 
   conditionsOfSalePressed() {
@@ -203,7 +210,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
             </Checkbox>
 
             <Flex m={4}>
-              <Button text="Place Bid" onPress={this.state.conditionsOfSaleChecked && (() => this.placeBid())} />
+              <Button
+                text="Place Bid"
+                inProgress={this.state.isLoading}
+                selected={this.state.isLoading}
+                onPress={this.state.conditionsOfSaleChecked ? () => this.placeBid() : null}
+              />
             </Flex>
           </View>
         </Container>

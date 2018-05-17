@@ -14,6 +14,7 @@ import { ConfirmBid } from "../ConfirmBid"
 // This let's us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
 import relay from "react-relay"
+import Spinner from "../../../Spinner"
 
 let nextStep
 const mockNavigator = { push: route => (nextStep = route) }
@@ -48,6 +49,16 @@ describe("when pressing bid button", () => {
     component.root.findByType(Button).instance.props.onPress()
 
     expect(relay.commitMutation).toHaveBeenCalled()
+  })
+
+  it("shows a spinner", () => {
+    const component = renderer.create(<ConfirmBid {...initialProps} />)
+    component.root.instance.setState({ conditionsOfSaleChecked: true })
+    relay.commitMutation = jest.fn()
+
+    component.root.findByType(Button).instance.props.onPress()
+
+    expect(component.root.findAllByType(Spinner).length).toEqual(1)
   })
 
   describe("when pressing bid", () => {
