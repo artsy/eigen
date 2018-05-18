@@ -1,5 +1,5 @@
 upcoming:
-  version: 4.1.1
+  version: 4.1.2
   date: TBA
   emission_version: 1.4.6
   user_facing:
@@ -7,6 +7,7 @@ upcoming:
     - ARVIR fixes & improvements - orta
     - Buy now layout adjustments, 3 columns on ipad - maxim
     - Conditions-of-sale routing works - ash
+    - Integrates new BidFlow component from Emission - ash
   
 releases:
   - version: 4.1.0

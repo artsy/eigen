@@ -10,6 +10,7 @@ NSString *const AROptionsDisableNativeLiveAuctions = @"Disable native live aucti
 NSString *const AROptionsStagingReactEnv = @"Use Staging React ENV";
 NSString *const AROptionsDevReactEnv = @"Use Dev React ENV";
 NSString *const AROptionsDebugARVIR = @"Debug AR View in Room";
+NSString *const AROptionsUseNewBidFlow = @"Use new Bid Flow";
 
 @implementation AROptions
 
@@ -20,7 +21,8 @@ NSString *const AROptionsDebugARVIR = @"Debug AR View in Room";
         AROptionsSettingsMenu,
         AROptionsTappingPartnerSendsToPartner,
         AROptionsDisableNativeLiveAuctions,
-        AROptionsDebugARVIR
+        AROptionsDebugARVIR,
+        AROptionsUseNewBidFlow
     ];
 }
 

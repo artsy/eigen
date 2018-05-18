@@ -273,7 +273,7 @@
 
 - (void)tappedBidButton:(id)sender
 {
-    [self.delegate tappedBidButton:sender];
+    [self.delegate tappedBidButton:sender saleID:self.saleArtwork.auction.saleID];
 }
 
 - (void)tappedLiveSaleButton:(id)sender
