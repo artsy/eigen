@@ -28,11 +28,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) ARSCNView *sceneView;
 @property (nonatomic, strong) ARInformationView *informationView;
+@property (nonatomic, strong) NSLayoutConstraint *informationViewBottomConstraint;
 
 @property (nonatomic, strong) id <ARSCNViewDelegate, ARVIRInteractive, ARSessionDelegate> interactionController;
 
 @property (nonatomic, weak, nullable) UIButton *backButton;
 @property (nonatomic, strong, nullable) NSDate *dateOpenedAR;
+
+// Used to determine whether to delay loading the floor detection
+@property (nonatomic, assign) BOOL hasLoaded;
 
 @end
 
@@ -90,14 +94,8 @@ NS_ASSUME_NONNULL_BEGIN
 
     ARClearFlatButton *doneArtworkButton = [[ARClearFlatButton alloc] init];
     [doneArtworkButton setTitle:@"Done" forState:UIControlStateNormal];
-    [doneArtworkButton addTarget:self action:@selector(dismissInformationalView) forControlEvents:UIControlEventTouchUpInside];
+    [doneArtworkButton addTarget:self action:@selector(dismissInformationalViewAnimated) forControlEvents:UIControlEventTouchUpInside];
     congratsArtworkMarker.contents = doneArtworkButton;
-
-    congratsArtworkMarker.onStart = ^(UIView *customView) {
-        ar_dispatch_after(2, ^{
-            // dismiss
-        });
-    };
 
     return @[start, positionWallMarker, positionArtworkMarker, congratsArtworkMarker];
 }
@@ -176,33 +174,36 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)presentInformationalInterface:(BOOL)animated
 {
-    ar_dispatch_after(0.5, ^{
-        ARInformationView *informationView = [[ARInformationView alloc] init];
-        [informationView setupWithStates:[self viewStatesForInformationView:informationView]];
+    ARInformationView *informationView = [[ARInformationView alloc] init];
+    [informationView setupWithStates:[self viewStatesForInformationView:informationView]];
 
-        [self.view addSubview:informationView];
-        [informationView alignLeading:@"0" trailing:@"0" toView:self.view];
-        [informationView constrainHeight:@"180"];
+    [self.view addSubview:informationView];
+    [informationView alignLeading:@"0" trailing:@"0" toView:self.view];
+    [informationView constrainHeight:@"180"];
 
-        NSLayoutConstraint *bottomContraint = [informationView alignBottomEdgeWithView:self.view predicate:@"-20"];
-        [informationView layoutIfNeeded];
-        [self.view layoutIfNeeded];
-
-        [UIView animateIf:animated duration:ARAnimationDuration :^{
-            // Animate into the right place
-            bottomContraint.constant = 0;
-
-            [informationView setNeedsUpdateConstraints];
-            [informationView layoutIfNeeded];
-        }];
-
-        self.informationView = informationView;
-    });
+    self.informationViewBottomConstraint = [informationView alignBottomEdgeWithView:self.view predicate:@"0"];
+    self.informationView = informationView;
 }
 
-- (void)dismissInformationalView
+- (void)dismissInformationalViewAnimated
 {
-    [self.informationView removeFromSuperview];
+    [self dismissInformationalView:YES];
+}
+
+- (void)dismissInformationalView:(BOOL)animated
+{
+    UIView *informational = self.informationView;
+    [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
+        // Animate it out
+        self.informationViewBottomConstraint.constant = 40;
+        informational.alpha = 0;
+
+        [informational setNeedsUpdateConstraints];
+        [self.view layoutIfNeeded];
+        [informational layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [informational removeFromSuperview];
+    }];
 }
 
 - (void)initialState
@@ -280,13 +281,6 @@ NS_ASSUME_NONNULL_BEGIN
     });
 }
 
-// Request to place an artwork with the interaction controller
-
-- (void)placeArtwork
-{
-    // TODO
-}
-
 // Once we known we've placed an artwork, update the UI
 
 - (void)hasPlacedArtwork
@@ -360,13 +354,25 @@ NS_ASSUME_NONNULL_BEGIN
     // Create a session configuration
     if (@available(iOS 11.3, *)) {
         ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
-        configuration.planeDetection = ARPlaneDetectionHorizontal;
 
-        // Run the view's session
-        [self.sceneView.session runWithConfiguration:configuration];
+        if (self.hasLoaded) {
+            configuration.planeDetection = ARPlaneDetectionHorizontal;
+            [self.sceneView.session runWithConfiguration:configuration];
 
-        // Reset the delegate
-        [self.interactionController restart];
+            // Reset the delegate
+            [self.interactionController restart];
+        } else {
+            self.hasLoaded = YES;
+
+            // On the 1st time the app launches
+            // Start the AR session, without looking for floors, to delay
+            // floor detection by 1s to give someone time to read the docs.
+            [self.sceneView.session runWithConfiguration:configuration];
+            ar_dispatch_after(1, ^{
+                configuration.planeDetection = ARPlaneDetectionHorizontal;
+                [self.sceneView.session runWithConfiguration:configuration];
+            });
+        }
     }
 
     // Create the informational view and animate it into view

@@ -25,12 +25,12 @@
 {
     // Sides
     SCNMaterial *material = [SCNMaterial material];
-    material.diffuse.contents = [[UIColor blueColor] colorWithAlphaComponent:0.3];
+    material.diffuse.contents = [[UIColor blueColor] colorWithAlphaComponent:0];
     material.locksAmbientWithDiffuse = YES;
 
     // Back / Front
     SCNMaterial *frontMaterial = [[SCNMaterial alloc] init];
-    frontMaterial.diffuse.contents = [[UIColor greenColor] colorWithAlphaComponent:0.3];
+    frontMaterial.diffuse.contents = [[UIColor greenColor] colorWithAlphaComponent:0];
     frontMaterial.locksAmbientWithDiffuse = YES;
 
     material.locksAmbientWithDiffuse = YES;
