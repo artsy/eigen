@@ -133,8 +133,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   checkBidPosition(result) {
     const bidderPosition = result.data.me.bidder_position.position
     const status = result.data.me.bidder_position.status
-    if (status === "SUCCESS") {
-      this.showBidResult(true, "SUCCESS")
+    if (status === "WINNING") {
+      this.showBidResult(true, "WINNING")
     } else if (status === "PENDING") {
       if (this.state.pollCount > MAX_POLL_ATTEMPTS) {
         const md = `We're receiving a high volume of traffic and your bid is still processing.  \

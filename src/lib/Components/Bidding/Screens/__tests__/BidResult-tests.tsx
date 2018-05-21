@@ -6,7 +6,7 @@ import * as renderer from "react-test-renderer"
 import { BidResult } from "../BidResult"
 
 const saleArtwork = {
-  current_bid: {
+  minimum_next_bid: {
     amount: "CHF10,000",
     cents: 1000000,
     display: "CHF 10,000",
@@ -40,7 +40,7 @@ describe("BidResult component", () => {
       <BidResult
         winning={false}
         sale_artwork={saleArtwork}
-        status="ERROR_BID_LOW"
+        status="OUTBID"
         message_header={messageHeader}
         message_description_md={messageDescriptionMd}
         navigator={jest.fn() as any}
@@ -54,7 +54,7 @@ describe("BidResult component", () => {
   })
   it("doesn't render timer when live bidding is started", () => {
     jest.useFakeTimers()
-    const status = "ERROR_LIVE_BIDDING_STARTED"
+    const status = "LIVE_BIDDING_STARTED"
     const messageHeader = "Live bidding has started"
     const messageDescriptionMd = `Sorry, your bid wasn’t received before live bidding started.\
  To continue bidding, please [join the live auction](http://live-staging.artsy.net/).`

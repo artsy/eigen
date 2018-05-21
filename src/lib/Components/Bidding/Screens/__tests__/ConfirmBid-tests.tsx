@@ -115,7 +115,6 @@ describe("polling to verify bid position", () => {
         jest.runOnlyPendingTimers()
         jest.runAllTicks()
       })
-
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps.winning).toBeTruthy()
     })
@@ -245,7 +244,7 @@ const mockRequestResponses = {
       data: {
         me: {
           bidder_position: {
-            status: "SUCCESS",
+            status: "WINNING",
             position: {},
           },
         },
