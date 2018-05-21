@@ -54,7 +54,7 @@ export class BidResult extends React.Component<BidResultProps> {
       )
     } else {
       const bidAgain = SHOW_TIMER_STATUSES.indexOf(this.props.status) > -1
-      const buttonMsg = bidAgain ? `Bid ${this.props.sale_artwork.current_bid.display} or more` : "Continue"
+      const buttonMsg = bidAgain ? `Bid ${this.props.sale_artwork.minimum_next_bid.display} or more` : "Continue"
       return (
         <BiddingThemeProvider>
           <Container mt={6}>
@@ -108,7 +108,7 @@ export const BidResultScreen = createFragmentContainer(
   BidResult,
   graphql`
     fragment BidResult_sale_artwork on SaleArtwork {
-      current_bid {
+      minimum_next_bid {
         amount
         cents
         display

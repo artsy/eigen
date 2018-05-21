@@ -2,7 +2,7 @@
 
 import { ConcreteFragment } from "relay-runtime";
 export type BidResult_sale_artwork = {
-    readonly current_bid: ({
+    readonly minimum_next_bid: ({
         readonly amount: string | null;
         readonly cents: number | null;
         readonly display: string | null;
@@ -33,10 +33,10 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "current_bid",
+      "name": "minimum_next_bid",
       "storageKey": null,
       "args": null,
-      "concreteType": "SaleArtworkCurrentBid",
+      "concreteType": "SaleArtworkMinimumNextBid",
       "plural": false,
       "selections": [
         {
@@ -92,5 +92,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '8b4ef9f1b528bcd831d1bb5404834b8a';
+(node as any).hash = '1c9bd467a90c8af66cdc008299b5d9b6';
 export default node;

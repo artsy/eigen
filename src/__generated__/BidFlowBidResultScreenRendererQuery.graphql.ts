@@ -22,7 +22,7 @@ query BidFlowBidResultScreenRendererQuery(
 }
 
 fragment BidResult_sale_artwork on SaleArtwork {
-  current_bid {
+  minimum_next_bid {
     amount
     cents
     display
@@ -64,7 +64,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "BidFlowBidResultScreenRendererQuery",
-  "id": "97bfa80afb8759624c4ccee8e286cd96",
+  "id": "328c2282b05e4a3efec9b99c0d29c101",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -110,10 +110,10 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "current_bid",
+            "name": "minimum_next_bid",
             "storageKey": null,
             "args": null,
-            "concreteType": "SaleArtworkCurrentBid",
+            "concreteType": "SaleArtworkMinimumNextBid",
             "plural": false,
             "selections": [
               {
