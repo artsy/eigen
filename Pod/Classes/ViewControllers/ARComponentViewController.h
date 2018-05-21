@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
                       moduleName:(NSString *)moduleName
                initialProperties:(nullable NSDictionary *)initialProperties NS_DESIGNATED_INITIALIZER;
 
+/// This sets a prop on the rootView, or sets a prop to be passed in on rootView initialization.
+- (void)setProperty:(id)value forKey:(NSString *)key;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -5,9 +5,7 @@
 
 - (void)changeHomeTabTo:(ARHomeTabType)tab
 {
-    NSMutableDictionary *appProperties = [self.rootView.appProperties mutableCopy];
-    appProperties[@"selectedTab"] = @(tab);
-    self.rootView.appProperties = appProperties;
+    [self setProperty:@(tab) forKey:(self.isViewLoaded ? @"selectedTab" : @"initialTab")];
 }
 
 - (instancetype)initWithSelectedArtist:(nullable NSString *)artistID tab:(ARHomeTabType)selectedTab emission:(nullable AREmission*)emission;
