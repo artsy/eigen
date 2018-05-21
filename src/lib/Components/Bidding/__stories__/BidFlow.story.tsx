@@ -15,7 +15,7 @@ import { Checkbox } from "../Components/Checkbox"
 import BidFlow from "../../../Containers/BidFlow"
 import { Input } from "../Components/Input"
 import { BidResultScreen } from "../Screens/BidResult"
-import { ConfirmBidScreen } from "../Screens/ConfirmBid"
+import { ConfirmBid } from "../Screens/ConfirmBid"
 import { ConfirmFirstTimeBid } from "../Screens/ConfirmFirstTimeBid"
 import { MaxBidScreen } from "../Screens/SelectMaxBid"
 
@@ -27,14 +27,6 @@ const selectMaxBidQuery = graphql`
   query BidFlowSelectMaxBidRendererQuery($saleArtworkID: String!) {
     sale_artwork(id: $saleArtworkID) {
       ...SelectMaxBid_sale_artwork
-    }
-  }
-`
-
-const confirmBidQuery = graphql`
-  query BidFlowConfirmBidScreenRendererQuery($saleArtworkID: String!) {
-    sale_artwork(id: $saleArtworkID) {
-      ...ConfirmBid_sale_artwork
     }
   }
 `
@@ -64,12 +56,20 @@ storiesOf("Bidding")
   ))
   .add("Confirm Bid", () => {
     return (
-      <BidFlowStoryRenderer
-        render={renderWithLoadProgress(ConfirmBidScreen, {
-          bid: { display: "$20,000", cents: 2000000 },
-        })}
-        query={confirmBidQuery}
-        saleArtworkID={testSaleArtworkID}
+      <ConfirmBid
+        sale_artwork={{
+          sale: {
+            id: "1",
+          },
+          artwork: {
+            id: "1",
+            title: "Morgan Hill (Prototype)",
+            date: "1973",
+            artist_names: "Lewis balts",
+          },
+          lot_label: "1",
+        }}
+        bid={{ display: "$45,000", cents: 4500000 }}
       />
     )
   })
