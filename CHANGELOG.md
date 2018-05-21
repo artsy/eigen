@@ -17,6 +17,7 @@
 ### 1.4.8
 
 * Fixing broken previous deploy, no changes - alloy
+* Adds setProperty:forKey: to ARComponentViewController - ash&maxim
 * Add support for changing tabs of the home vc - maxim
 
 ### 1.4.7
