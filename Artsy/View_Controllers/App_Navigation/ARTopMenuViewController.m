@@ -297,7 +297,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     }
     
     [switchboard registerPathCallbackAtPath:@"/works-for-you" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
-        return [self rootNavigationControllerAtIndex:ARTopTabControllerIndexHome parameters:parameters].rootViewController;
+        return [self rootNavigationControllerHomeWithTab:ARHomeTabArtists].rootViewController;
     }];
     
     [switchboard registerPathCallbackAtPath:@"/auctions" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
@@ -611,8 +611,6 @@ static const CGFloat ARMenuButtonDimension = 50;
     } else if (showWorksForYouWithSelectedArtistFromUniversalLink) {
         // We are already on Home, and need to force the tab view to show the new Home with its selected artist & without animation
         [self.tabContentView forceSetViewController:presentableController atIndex:ARTopTabControllerIndexHome animated:NO];
-    } else {
-        [self.tabContentView forceSetViewController:presentableController atIndex:index animated:NO];
     }
 }
 
