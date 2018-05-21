@@ -5,6 +5,7 @@ upcoming:
   user_facing:
     - Adds GDPR compliance screen to sign up flow - luc
     - Add push notification support for /auctions - maxim
+    - Adds a new ARVIR behind a feature flag - orta
 
 releases:
   - version: 4.1.1

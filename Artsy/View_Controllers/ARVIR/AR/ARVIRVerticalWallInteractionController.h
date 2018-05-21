@@ -28,7 +28,7 @@
  The abstraction is being that when making new interactions you can just copy & paste this file, rename it,
  and assign the new object in the ARViewController.
  */
-@interface ARAugmentedVIRInteractionController : NSObject <ARSCNViewDelegate, ARVIRInteractive, ARSessionDelegate>
+@interface ARVIRVerticalWallInteractionController : NSObject <ARSCNViewDelegate, ARVIRInteractive, ARSessionDelegate>
 
 - (instancetype)initWithSession:(ARSession *)session config:(ARAugmentedRealityConfig *)config scene:(SCNView *)scene delegate:(id <ARVIRDelegate>)delegate API_AVAILABLE(ios(11.0));
 
