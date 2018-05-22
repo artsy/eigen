@@ -49,18 +49,9 @@ lane :ship_beta do
 
   build_ios_app(configuration: 'Store')
 
-  # Find out how many builds we've sent for this version
-  # if it's zero, it will raise an exception
-  build_version = 0
-  begin
-    train = app.build_trains[latest_version]
-    build_version = train.builds.count + 1
-  rescue
-  end
-
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for circle is read-only
-  tag = "#{latest_version}-#{build_version}"
+  tag = "#{latest_version}-#{latest_testflight_build_number}"
   `git tag -d "#{tag}"`
 
   add_git_tag tag: tag
