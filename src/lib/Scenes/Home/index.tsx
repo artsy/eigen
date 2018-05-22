@@ -89,7 +89,7 @@ export default class Home extends React.Component<Props, State> {
       this.fireHomeScreenViewAnalytics()
     }
     if (this.props.selectedTab !== newProps.selectedTab) {
-      this.setState({ selectedTab: newProps.selectedTab })
+      this.setState({ selectedTab: newProps.selectedTab }, () => this.tabView.goToPage(this.state.selectedTab))
     }
   }
 
@@ -106,7 +106,6 @@ export default class Home extends React.Component<Props, State> {
       <View style={{ flex: 1 }}>
         <ScrollableTabView
           initialPage={this.props.initialTab || ArtistsWorksForYouTab}
-          page={this.state.selectedTab || ArtistsWorksForYouTab}
           ref={tabView => (this.tabView = tabView)}
           onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
           renderTabBar={props => (
