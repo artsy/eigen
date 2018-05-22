@@ -18,6 +18,7 @@
 
 * Adds setProperty:forKey: to ARComponentViewController - ash&maxim
 * Add support for changing tabs of the home vc - maxim
+* Update home analytics for tab changes and inital tab props - maxim
 
 ### 1.4.8
 
