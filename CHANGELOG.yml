@@ -5,6 +5,8 @@ upcoming:
   user_facing:
     - Add push notification support for /auctions - maxim
     - Adds a new ARVIR behind a feature flag - orta
+  admin:
+    - Adds an admin button to trigger getting notifications - orta
 
 releases:
   - version: 4.1.2

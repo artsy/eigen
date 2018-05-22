@@ -20,7 +20,7 @@
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
 #import "ARAdminNetworkModel.h"
-
+#import "ARAppNotificationsDelegate.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARInboxComponentViewController.h>
@@ -44,7 +44,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString *gitCommitRevision = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"GITCommitRev"];
-
 
     ARSectionData *userSectionData = [[ARSectionData alloc] init];
     userSectionData.headerTitle = [NSString stringWithFormat:@"%@ v%@, build %@ (%@)", name, version, build, gitCommitRevision];
@@ -254,6 +253,13 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return [self tappableCellDataWithTitle:@"Copy Push Notification Token" selection:^{
         NSString *deviceToken = [[NSUserDefaults standardUserDefaults] valueForKey:ARAPNSDeviceTokenKey];
         [[UIPasteboard generalPasteboard] setValue:deviceToken forPasteboardType:(NSString *)kUTTypePlainText];
+    }];
+}
+
+- (ARCellData *)requestNotificationsAlert;
+{
+    return [self tappableCellDataWithTitle:@"Request Receiveing Notifications" selection:^{
+        [ARAppNotificationsDelegate registerForDeviceNotificationsWithApple];
     }];
 }
 #endif
@@ -473,6 +479,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 #if !TARGET_IPHONE_SIMULATOR
         [self generateNotificationTokenPasteboardCopy],
+        [self requestNotificationsAlert],
 #endif
         [self editableTextCellDataWithName:@"Gravity API" defaultKey:ARStagingAPIURLDefault],
         [self editableTextCellDataWithName:@"Web" defaultKey:ARStagingWebURLDefault],
