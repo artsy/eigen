@@ -142,6 +142,7 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
 
         this.showBidResult(false, "PROCESSING", "Bid Processing", md)
       } else {
+        // initiating new request here (vs setInterval) to make sure we wait for the previus calls to return before making a new one
         setTimeout(() => {
           this.queryForBidPosition(bidderPosition.id).then(this.checkBidPosition.bind(this))
         }, 1000)
@@ -167,6 +168,7 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
         message_header: messageHeader,
         message_description_md: messageDescriptionMd,
         winning,
+        bid: this.props.bid,
       },
     })
 

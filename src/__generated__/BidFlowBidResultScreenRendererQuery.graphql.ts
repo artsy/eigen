@@ -32,6 +32,10 @@ fragment BidResult_sale_artwork on SaleArtwork {
     end_at
     __id
   }
+  increments {
+    display
+    cents
+  }
   __id
 }
 */
@@ -59,12 +63,26 @@ v2 = {
   "name": "__id",
   "args": null,
   "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "cents",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "display",
+  "args": null,
+  "storageKey": null
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "BidFlowBidResultScreenRendererQuery",
-  "id": "328c2282b05e4a3efec9b99c0d29c101",
+  "id": "071d49e7e8aeccdece6e204cb9a419c4",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -123,20 +141,8 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "cents",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "display",
-                "args": null,
-                "storageKey": null
-              }
+              v3,
+              v4
             ]
           },
           {
@@ -163,6 +169,19 @@ return {
                 "storageKey": null
               },
               v2
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "increments",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "BidIncrementsFormatted",
+            "plural": true,
+            "selections": [
+              v4,
+              v3
             ]
           },
           v2

@@ -6,6 +6,28 @@ import * as renderer from "react-test-renderer"
 import { BidResult } from "../BidResult"
 
 const saleArtwork = {
+  increments: [
+    {
+      display: "$10,000",
+      cents: 1000000,
+    },
+    {
+      display: "$11,000",
+      cents: 1100000,
+    },
+    {
+      display: "$12,000",
+      cents: 1200000,
+    },
+    {
+      display: "$13,000",
+      cents: 1300000,
+    },
+    {
+      display: "$14,000",
+      cents: 1400000,
+    },
+  ],
   minimum_next_bid: {
     amount: "CHF10,000",
     cents: 1000000,
@@ -16,12 +38,18 @@ const saleArtwork = {
     end_at: "2022-05-01T00:03:00+00:00",
   },
 }
+const bid = {
+  display: "$11,000",
+  cents: 1100000,
+}
 describe("BidResult component", () => {
   Date.now = jest.fn(() => 1525983752116)
   it("renders winning screen properly", () => {
     jest.useFakeTimers()
 
-    const bidResult = <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
+    const bidResult = (
+      <BidResult winning status={"SUCCESS"} bid={bid} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
+    )
     const bg = renderer.create(bidResult).toJSON()
 
     const component = shallow(bidResult)
@@ -40,6 +68,7 @@ describe("BidResult component", () => {
       <BidResult
         winning={false}
         sale_artwork={saleArtwork}
+        bid={bid}
         status="OUTBID"
         message_header={messageHeader}
         message_description_md={messageDescriptionMd}
@@ -64,6 +93,7 @@ describe("BidResult component", () => {
         winning={false}
         sale_artwork={saleArtwork}
         status={status}
+        bid={bid}
         message_header={messageHeader}
         message_description_md={messageDescriptionMd}
         navigator={jest.fn() as any}

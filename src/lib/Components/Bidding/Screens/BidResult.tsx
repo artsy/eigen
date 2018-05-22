@@ -20,6 +20,10 @@ const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 
 interface BidResultProps {
   sale_artwork: BidResult_sale_artwork
+  bid: {
+    display: string
+    cents: number
+  }
   winning: boolean
   status: string
   message_header?: string
@@ -54,7 +58,15 @@ export class BidResult extends React.Component<BidResultProps> {
       )
     } else {
       const bidAgain = SHOW_TIMER_STATUSES.indexOf(this.props.status) > -1
-      const buttonMsg = bidAgain ? `Bid ${this.props.sale_artwork.minimum_next_bid.display} or more` : "Continue"
+      let nextBid = this.props.sale_artwork.minimum_next_bid.display
+      if (
+        this.props.status === "RESERVE_NOT_MET" &&
+        this.props.bid.cents > this.props.sale_artwork.minimum_next_bid.cents
+      ) {
+        // make sure nextBid is higher than users current bid when reserve is not met
+        nextBid = this.props.sale_artwork.increments.filter(d => d.cents > this.props.bid.cents)[0].display
+      }
+      const buttonMsg = bidAgain ? `Bid ${nextBid} or more` : "Continue"
       return (
         <BiddingThemeProvider>
           <Container mt={6}>
@@ -116,6 +128,10 @@ export const BidResultScreen = createFragmentContainer(
       sale {
         live_start_at
         end_at
+      }
+      increments {
+        display
+        cents
       }
     }
   `

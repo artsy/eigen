@@ -11,12 +11,30 @@ export type BidResult_sale_artwork = {
         readonly live_start_at: string | null;
         readonly end_at: string | null;
     }) | null;
+    readonly increments: ReadonlyArray<({
+            readonly display: string | null;
+            readonly cents: number | null;
+        }) | null> | null;
 };
 
 
 
 const node: ConcreteFragment = (function(){
 var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "cents",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "display",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
@@ -46,20 +64,8 @@ return {
           "args": null,
           "storageKey": null
         },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "cents",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "display",
-          "args": null,
-          "storageKey": null
-        }
+        v0,
+        v1
       ]
     },
     {
@@ -85,12 +91,25 @@ return {
           "args": null,
           "storageKey": null
         },
+        v2
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "increments",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "BidIncrementsFormatted",
+      "plural": true,
+      "selections": [
+        v1,
         v0
       ]
     },
-    v0
+    v2
   ]
 };
 })();
-(node as any).hash = '1c9bd467a90c8af66cdc008299b5d9b6';
+(node as any).hash = '49f5c71ce5914f28f5d7cdb6e0db6a47';
 export default node;
