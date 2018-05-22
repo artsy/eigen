@@ -28,11 +28,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) ARSCNView *sceneView;
 @property (nonatomic, strong) ARInformationView *informationView;
+@property (nonatomic, strong) NSLayoutConstraint *informationViewBottomConstraint;
 
 @property (nonatomic, strong) id <ARSCNViewDelegate, ARVIRInteractive, ARSessionDelegate> interactionController;
 
 @property (nonatomic, weak, nullable) UIButton *backButton;
 @property (nonatomic, strong, nullable) NSDate *dateOpenedAR;
+
+// Used to determine whether to delay loading the floor detection
+@property (nonatomic, assign) BOOL hasLoaded;
 
 @end
 
@@ -72,28 +76,26 @@ NS_ASSUME_NONNULL_BEGIN
     positionWallMarker.bodyString = @"Position the marker where the floor meets the wall and tap to set.";
     ARWhiteFlatButton *setMarkerButton = [[ARWhiteFlatButton alloc] init];
     [setMarkerButton setTitle:@"Set Marker" forState:UIControlStateNormal];
+    [setMarkerButton addTarget:self.interactionController action:@selector(placeWall) forControlEvents:UIControlEventTouchUpInside];
     positionWallMarker.contents = setMarkerButton;
-    positionWallMarker.onStart = ^(UIView *customView) {
-        NSLog(@"Hello");
-    };
 
     InformationalViewState *positionArtworkMarker = [[InformationalViewState alloc] init];
     positionArtworkMarker.xOutOfYMessage = @"Step 3 of 3";
     positionArtworkMarker.bodyString = @"Position the work on the wall and tap to place.";
-    positionArtworkMarker.contents = [[UIView alloc] init];
-    positionArtworkMarker.onStart = ^(UIView *customView) {
-        NSLog(@"Hello");
-    };
+
+    ARWhiteFlatButton *placeArtworkButton = [[ARWhiteFlatButton alloc] init];
+    [placeArtworkButton setTitle:@"Place Work" forState:UIControlStateNormal];
+    [placeArtworkButton addTarget:self.interactionController action:@selector(placeArtwork) forControlEvents:UIControlEventTouchUpInside];
+    positionArtworkMarker.contents = placeArtworkButton;
 
     InformationalViewState *congratsArtworkMarker = [[InformationalViewState alloc] init];
-    congratsArtworkMarker.xOutOfYMessage = @"";
+    congratsArtworkMarker.xOutOfYMessage = @" ";
     congratsArtworkMarker.bodyString = @"OK – the work has been placed. Walk around the work to view it in your space.";
-    congratsArtworkMarker.contents = [[UIView alloc] init];
-    congratsArtworkMarker.onStart = ^(UIView *customView) {
-        ar_dispatch_after(2, ^{
-            // dismiss
-        });
-    };
+
+    ARClearFlatButton *doneArtworkButton = [[ARClearFlatButton alloc] init];
+    [doneArtworkButton setTitle:@"Done" forState:UIControlStateNormal];
+    [doneArtworkButton addTarget:self action:@selector(dismissInformationalViewAnimated) forControlEvents:UIControlEventTouchUpInside];
+    congratsArtworkMarker.contents = doneArtworkButton;
 
     return @[start, positionWallMarker, positionArtworkMarker, congratsArtworkMarker];
 }
@@ -179,17 +181,29 @@ NS_ASSUME_NONNULL_BEGIN
     [informationView alignLeading:@"0" trailing:@"0" toView:self.view];
     [informationView constrainHeight:@"180"];
 
-    NSLayoutConstraint *bottomContraint = [informationView alignBottomEdgeWithView:self.view predicate:@"-20"];
-
-    [UIView animateIf:animated duration:ARAnimationDuration :^{
-        // Animate into the right place
-        bottomContraint.constant = 0;
-
-        [informationView setNeedsUpdateConstraints];
-        [informationView layoutIfNeeded];
-    }];
-
+    self.informationViewBottomConstraint = [informationView alignBottomEdgeWithView:self.view predicate:@"0"];
     self.informationView = informationView;
+}
+
+- (void)dismissInformationalViewAnimated
+{
+    [self dismissInformationalView:YES];
+}
+
+- (void)dismissInformationalView:(BOOL)animated
+{
+    UIView *informational = self.informationView;
+    [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
+        // Animate it out
+        self.informationViewBottomConstraint.constant = 40;
+        informational.alpha = 0;
+
+        [informational setNeedsUpdateConstraints];
+        [self.view layoutIfNeeded];
+        [informational layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        [informational removeFromSuperview];
+    }];
 }
 
 - (void)initialState
@@ -243,6 +257,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)hasRegisteredPlanes
 {
     ar_dispatch_main_queue(^{
+        // TODO, show tick, then hit next
         [self.informationView next];
     });
 }
@@ -253,20 +268,31 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)isShowingGhostWork:(BOOL)showing
 {
     ar_dispatch_main_queue(^{
-        // TODO
+        UIButton *buttonForPlace = (UIButton *)self.informationView.currentState.contents;
+        [buttonForPlace setEnabled:showing];
     });
 }
 
-// Request to place an artwork with the interaction controller
-
-- (void)placeArtwork
+- (void)isShowingGhostWall:(BOOL)showing
 {
-    // TODO
+    ar_dispatch_main_queue(^{
+        UIButton *buttonForPlace = (UIButton *)self.informationView.currentState.contents;
+        [buttonForPlace setEnabled:showing];
+    });
 }
 
 // Once we known we've placed an artwork, update the UI
 
 - (void)hasPlacedArtwork
+{
+    ar_dispatch_main_queue(^{
+        [self.informationView next];
+    });
+}
+
+// Once we known we've placed an artwork, update the UI
+
+- (void)hasPlacedWall
 {
     ar_dispatch_main_queue(^{
         [self.informationView next];
@@ -328,13 +354,25 @@ NS_ASSUME_NONNULL_BEGIN
     // Create a session configuration
     if (@available(iOS 11.3, *)) {
         ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
-        configuration.planeDetection = ARPlaneDetectionHorizontal;
 
-        // Run the view's session
-        [self.sceneView.session runWithConfiguration:configuration];
+        if (self.hasLoaded) {
+            configuration.planeDetection = ARPlaneDetectionHorizontal;
+            [self.sceneView.session runWithConfiguration:configuration];
 
-        // Reset the delegate
-        [self.interactionController restart];
+            // Reset the delegate
+            [self.interactionController restart];
+        } else {
+            self.hasLoaded = YES;
+
+            // On the 1st time the app launches
+            // Start the AR session, without looking for floors, to delay
+            // floor detection by 1s to give someone time to read the docs.
+            [self.sceneView.session runWithConfiguration:configuration];
+            ar_dispatch_after(1, ^{
+                configuration.planeDetection = ARPlaneDetectionHorizontal;
+                [self.sceneView.session runWithConfiguration:configuration];
+            });
+        }
     }
 
     // Create the informational view and animate it into view

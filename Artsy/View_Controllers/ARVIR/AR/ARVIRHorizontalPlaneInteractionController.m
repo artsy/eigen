@@ -12,6 +12,7 @@
 typedef NS_ENUM(NSInteger, ARHorizontalVIRMode) {
     ARHorizontalVIRModeLaunching,
     ARHorizontalVIRModeDetectedFloor,
+    ARHorizontalVIRModeCreatedWall,
     ARHorizontalVIRModePlacedOnWall
 };
 
@@ -38,8 +39,6 @@ API_AVAILABLE(ios(11.0))
 // The WIP version of the artwork placed on the `wall` abovea
 @property (nonatomic, strong) SCNNode *ghostArtwork;
 
-
-@property (nonatomic, assign) BOOL hasSentRegisteredCallback;
 @property (nonatomic, assign) CGPoint pointOnScreenForArtworkProjection;
 @end
 
@@ -74,9 +73,15 @@ NSInteger attempt = 0;
             break;
         case ARHorizontalVIRModeDetectedFloor:
             [self fadeOutAndPresentTheLine];
-            [self vibrate:UIImpactFeedbackStyleLight];
+            [self.delegate hasPlacedWall];
+            [self vibrate:UIImpactFeedbackStyleHeavy];
+            break;
+        case ARHorizontalVIRModeCreatedWall:
+            [self.delegate hasPlacedWall];
+            [self vibrate:UIImpactFeedbackStyleHeavy];
             break;
         case ARHorizontalVIRModePlacedOnWall:
+            [self.delegate hasPlacedArtwork];
             [self vibrate:UIImpactFeedbackStyleHeavy];
             break;
     }
@@ -105,6 +110,43 @@ NSInteger attempt = 0;
     NSLog(@"Attempt: %@", @(attempt));
 }
 
+
+- (void)placeWall
+{
+    if (@available(iOS 11.0, *)) {
+        NSDictionary *options = @{
+            SCNHitTestIgnoreHiddenNodesKey: @NO,
+            SCNHitTestFirstFoundOnlyKey: @YES,
+            SCNHitTestOptionSearchMode: @(SCNHitTestSearchModeAll)
+        };
+
+        NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.pointOnScreenForArtworkProjection options: options];
+        for (SCNHitTestResult *result in results) {
+
+            // When you want to place the invisible wall, based on the current ghostWall
+            if (!self.wall && [self.invisibleFloors containsObject:result.node]) {
+
+                ARSCNWallNode *wall = [ARSCNWallNode fullWallNode];
+                SCNNode *userWall = [SCNNode nodeWithGeometry:wall];
+                [result.node addChildNode:userWall];
+
+                userWall.position = result.localCoordinates;
+                userWall.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
+
+                SCNVector3 userPosition = self.sceneView.pointOfView.position;
+                SCNVector3 bottomPosition = SCNVector3Make(userPosition.x, result.worldCoordinates.y, userPosition.z);
+                [userWall lookAt:bottomPosition];
+
+                self.wall = userWall;
+
+                self.state = ARHorizontalVIRModeCreatedWall;
+                return;
+            }
+        }
+    }
+}
+
+
 - (void)placeArtwork
 {
     if (@available(iOS 11.0, *)) {
@@ -122,35 +164,19 @@ NSInteger attempt = 0;
                 SCNBox *box = [SCNArtworkNode nodeWithConfig:self.config];
                 SCNNode *artwork = [SCNNode nodeWithGeometry:box];
                 artwork.position = result.localCoordinates;
-                // Pitch, Yaw, Roll
-//                artwork.eulerAngles = SCNVector3Make(0, 0, M_PI);
-
+                artwork.eulerAngles = SCNVector3Make(0, 0, -M_PI);
                 [result.node addChildNode:artwork];
 
                 self.artwork = artwork;
                 [self.ghostWallLine removeFromParentNode];
+
+                self.state = ARHorizontalVIRModePlacedOnWall;
                 return;
-            }
-
-            // When you want to place the invisible wall, based on the current ghostWall
-            if (!self.wall && [self.invisibleFloors containsObject:result.node]) {
-
-                ARSCNWallNode *wall = [ARSCNWallNode fullWallNode];
-                SCNNode *userWall = [SCNNode nodeWithGeometry:wall];
-                [result.node addChildNode:userWall];
-
-                userWall.position = result.localCoordinates;
-                userWall.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
-
-                SCNVector3 userPosition = self.sceneView.pointOfView.position;
-                SCNVector3 bottomPosition = SCNVector3Make(userPosition.x, result.worldCoordinates.y, userPosition.z);
-                [userWall lookAt:bottomPosition];
-
-                self.wall = userWall;
             }
         }
     }
 }
+
 
 - (void)restart
 {
@@ -166,7 +192,7 @@ NSInteger attempt = 0;
 
 - (void)fadeOutAndPresentTheLine
 {
-    SCNAction *fade = [SCNAction fadeInWithDuration: 0.3];
+    SCNAction *fade = [SCNAction fadeOutWithDuration:0.3];
     [self.pointCloudNode runAction:fade completionHandler:^{
         [self.pointCloudNode removeFromParentNode];
         self.pointCloudNode = nil;
@@ -176,8 +202,30 @@ NSInteger attempt = 0;
 
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0));
 {
+    switch (self.state) {
+        case ARHorizontalVIRModeLaunching: {
+            [self renderWhileFindingFloor:frame];
+            break;
+        }
+
+        case ARHorizontalVIRModeDetectedFloor: {
+            [self renderWhenPlacingWall:frame];
+            break;
+        }
+
+        case ARHorizontalVIRModeCreatedWall: {
+            [self renderWhenPlacingArtwork:frame];
+            break;
+        }
+
+        case ARHorizontalVIRModePlacedOnWall: break;
+    }
+}
+
+- (void)renderWhileFindingFloor:(ARFrame *)frame API_AVAILABLE(ios(11.0));
+{
     NSInteger pointCount = frame.rawFeaturePoints.count;
-    if (pointCount && self.state == ARHorizontalVIRModeLaunching) {
+    if (pointCount) {
         // We want a root node to work in, it's going to hold the all of the represented spheres
         // that come together to make the point cloud
         if (!self.pointCloudNode) {
@@ -210,12 +258,10 @@ NSInteger attempt = 0;
             [self.pointCloudNode addChildNode:pointNode];
         }
     }
+}
 
-    // Bail early if we don't have walls to fire at, or have an artwork already up
-    if (!self.invisibleFloors.count || self.artwork) {
-        return;
-    }
-
+- (void)renderWhenPlacingWall:(ARFrame *)frame API_AVAILABLE(ios(11.0));
+{
     NSDictionary *options = @{
         SCNHitTestIgnoreHiddenNodesKey: @NO,
         SCNHitTestFirstFoundOnlyKey: @YES,
@@ -225,23 +271,6 @@ NSInteger attempt = 0;
 
     NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.pointOnScreenForArtworkProjection options: options];
     for (SCNHitTestResult *result in results) {
-        
-        if ([self.wall isEqual:result.node]) {
-            // Create a ghost artwork
-            if (!self.ghostArtwork) {
-                // TODO add white lines around the artwork
-
-                SCNBox *box = [SCNArtworkNode nodeWithConfig:self.config];
-                SCNNode *artwork = [SCNNode nodeWithGeometry:box];
-                artwork.position = result.localCoordinates;
-
-                artwork.opacity = 0.5;
-
-                [result.node addChildNode:artwork];
-                self.ghostArtwork = artwork;
-            }
-            self.ghostArtwork.position = result.localCoordinates;
-        }
 
         if ([self.invisibleFloors containsObject:result.node]) {
             // Create a ghost wall if we don't have one already
@@ -259,28 +288,65 @@ NSInteger attempt = 0;
                 self.ghostWallLine = ghostWall;
             }
 
-            SCNTransaction.animationDuration = 0.1;
+            SCNTransaction.animationDuration = 0.04;
             self.ghostWallLine.position = result.localCoordinates;
-            [self.delegate isShowingGhostWork:YES];
+            [self.delegate isShowingGhostWall:YES];
             return;
         }
     }
 
     if (self.ghostWallLine) {
-        [self.delegate isShowingGhostWork:NO];
+        [self.delegate isShowingGhostWall:NO];
         [self.ghostWallLine removeFromParentNode];
         self.ghostWallLine = nil;
     }
 }
+
+
+- (void)renderWhenPlacingArtwork:(ARFrame *)frame API_AVAILABLE(ios(11.0));
+{
+    NSDictionary *options = @{
+        SCNHitTestIgnoreHiddenNodesKey: @NO,
+        SCNHitTestFirstFoundOnlyKey: @YES,
+        SCNHitTestOptionSearchMode: @(SCNHitTestSearchModeAll),
+        SCNHitTestBackFaceCullingKey: @NO
+    };
+
+    NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.pointOnScreenForArtworkProjection options: options];
+    for (SCNHitTestResult *result in results) {
+
+        if ([self.wall isEqual:result.node]) {
+            // Create a ghost artwork
+            if (!self.ghostArtwork) {
+                SCNBox *box = [SCNArtworkNode nodeWithConfig:self.config];
+                SCNNode *artwork = [SCNNode nodeWithGeometry:box];
+                artwork.position = result.localCoordinates;
+
+                artwork.opacity = 0.5;
+                artwork.eulerAngles = SCNVector3Make(0, 0, -M_PI);
+
+                [result.node addChildNode:artwork];
+                self.ghostArtwork = artwork;
+            }
+
+            self.ghostArtwork.position = result.localCoordinates;
+            return;
+        }
+    }
+
+    if (self.ghostArtwork) {
+        [self.delegate isShowingGhostWork:NO];
+        [self.ghostArtwork removeFromParentNode];
+        self.ghostArtwork = nil;
+    }
+}
+
 
 - (void)renderer:(id<SCNSceneRenderer>)renderer didUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor API_AVAILABLE(ios(11.0))
 {
     // Used to update and re-align vertical planes as ARKit sends new updates for the positioning
     if (!anchor) { return; }
     if (![anchor isKindOfClass:ARPlaneAnchor.class]) { return; }
-
-    // We can get some really gnarly jumps of world positioniing  with this version of ARVIR, I had initially
-    // assumed this could be fixed
 
     // Animate instead of jumping positions
     SCNTransaction.animationDuration = 0.1;
@@ -312,12 +378,6 @@ NSInteger attempt = 0;
         self.state = ARHorizontalVIRModeDetectedFloor;
     }
 
-    // Send a callback that we're in a state to attach works
-    if (!self.hasSentRegisteredCallback) {
-        [self.delegate hasRegisteredPlanes];
-        self.hasSentRegisteredCallback = YES;
-    }
-
     // Create an anchor node, which can get moved around as we become more sure of where the
     // plane actually is.
     ARPlaneAnchor *planeAnchor = (id)anchor;
@@ -329,28 +389,10 @@ NSInteger attempt = 0;
         // Fallback on earlier versions
     }
 
-    SCNNode *planeNode = [self whiteBoxForPlaneAnchor:planeAnchor];
-    [node addChildNode:planeNode];
-
     SCNNode *wallNode = [self invisibleWallNodeForPlaneAnchor:planeAnchor];
     [node addChildNode:wallNode];
 
     self.invisibleFloors = [self.invisibleFloors arrayByAddingObject:wallNode];
-    self.detectedPlanes = [self.detectedPlanes arrayByAddingObject:planeNode];
-}
-
-- (SCNNode *)whiteBoxForPlaneAnchor:(ARPlaneAnchor *)planeAnchor API_AVAILABLE(ios(11.0))
-{
-    SCNPlane *plane = [SCNPlane planeWithWidth:planeAnchor.extent.x height:planeAnchor.extent.z];
-    UIColor *planeColor = self.config.debugMode ? [[UIColor whiteColor] colorWithAlphaComponent:0.3] : [UIColor clearColor];
-    plane.firstMaterial.diffuse.contents = planeColor;
-
-    SCNNode *planeNode = [SCNNode nodeWithGeometry:plane];
-    planeNode.position = SCNVector3Make(planeAnchor.center.x, planeAnchor.center.y, planeAnchor.center.z);
-    planeNode.name = @"Detected Area";
-
-//    planeNode.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
-    return planeNode;
 }
 
 - (SCNNode *)invisibleWallNodeForPlaneAnchor:(ARPlaneAnchor *)planeAnchor API_AVAILABLE(ios(11.0))
@@ -358,17 +400,11 @@ NSInteger attempt = 0;
     SCNPlane *hiddenPlane = [SCNPlane planeWithWidth:64 height:64];
 
     UIColor *planeColor = self.config.debugMode ? [UIColor colorWithRed:0.410 green:0.000 blue:0.775 alpha:0.50] : [UIColor clearColor];
-
     hiddenPlane.materials.firstObject.diffuse.contents = planeColor;
 
     SCNNode *hittablePlane = [SCNNode nodeWithGeometry:hiddenPlane];
-
     SCNVector3 wallCenter = SCNVector3FromFloat3(planeAnchor.center);
-    // As we're creating a wall, we want it to be raised higher than it would be lower.
-    // E.g. a wall goes more "up" than "down" from the planes y center point
-//    wallCenter.y -= 5 * 0.8;
-    // The plane will always be a *tiny* bit infront of the wall, so offset a bit
-//    wallCenter.x -= 0.1;
+
     hittablePlane.position = wallCenter;
     hittablePlane.eulerAngles = SCNVector3Make(-M_PI_2, 0, 0);
 
