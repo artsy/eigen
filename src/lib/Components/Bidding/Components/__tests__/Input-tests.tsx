@@ -53,3 +53,24 @@ it("shows a red border if error is true", () => {
 
   expect(component.toJSON().props.style[0].borderColor).toEqual(theme.colors.red100)
 })
+
+it("updates the borde color when the parent component updates the props", () => {
+  class TestFormForInput extends React.Component {
+    state = { error: false }
+
+    render() {
+      return (
+        <BiddingThemeProvider>
+          <Input error={this.state.error} />
+        </BiddingThemeProvider>
+      )
+    }
+  }
+
+  const component = renderer.create(<TestFormForInput />)
+
+  // Explicitly calling setState to force-render the Input component
+  component.root.instance.setState({ error: true })
+
+  expect(component.toJSON().props.style[0].borderColor).toEqual(theme.colors.red100)
+})
