@@ -69,7 +69,6 @@
     "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/relay-runtime-1.5.0-artsy.5.tgz"
   },
   "dependencies": {
-    "formik": "^0.11.11",
     "lodash": "^4.17.4",
     "moment": "^2.19.4",
     "prop-types": "^15.5.10",
@@ -86,8 +85,7 @@
     "remove-markdown": "0.1.0",
     "simple-markdown": "^0.4.0",
     "styled-components": "^3.1.4",
-    "styled-system": "^2.2.4",
-    "yup": "^0.25.1"
+    "styled-system": "^2.2.4"
   },
   "devDependencies": {
     "@playlyfe/gql": "^2.3.2",

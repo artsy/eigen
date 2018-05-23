@@ -217,7 +217,9 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
               </Col>
               <Col alignItems="center" justifyContent="flex-end" flexDirection="row">
                 <Serif16>{this.props.bid.display}</Serif16>
-                <Sans12 color="purple100" ml={3} mb={2}>Edit</Sans12>
+                <Sans12 color="purple100" ml={3} mb={2}>
+                  Edit
+                </Sans12>
               </Col>
             </Row>
 

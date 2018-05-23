@@ -49,300 +49,390 @@ exports[`renders properly 1`] = `
       >
         Your billing address
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-        fontSize={3}
-        mb={2}
+      <View
+        mb={4}
         style={
           Array [
             Object {
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "marginBottom": 5,
+              "marginBottom": 20,
             },
             undefined,
           ]
         }
       >
-        Full name
-      </Text>
-      <TextInput
-        allowFontScaling={true}
-        border={1}
-        borderColor="black10"
-        fontSize={3}
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={3}
+          mb={2}
+          style={
+            Array [
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "marginBottom": 5,
+              },
+              undefined,
+            ]
+          }
+        >
+          Full name
+        </Text>
+        <TextInput
+          allowFontScaling={true}
+          border={1}
+          borderColor="black10"
+          error={false}
+          fontSize={3}
+          mb={3}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          p={3}
+          pb={2}
+          placeholder="Enter your full name"
+          style={
+            Array [
+              Object {
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "height": 40,
+                "marginBottom": 10,
+                "paddingBottom": 5,
+                "paddingLeft": 10,
+                "paddingRight": 10,
+                "paddingTop": 10,
+              },
+              undefined,
+            ]
+          }
+          value={undefined}
+        />
+      </View>
+      <View
         mb={4}
-        onBlur={[Function]}
-        onFocus={[Function]}
-        p={3}
-        pb={2}
-        placeholder="Enter your full name"
         style={
           Array [
             Object {
-              "borderColor": "#E5E5E5",
-              "borderStyle": "solid",
-              "borderWidth": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "height": 40,
               "marginBottom": 20,
-              "paddingBottom": 5,
-              "paddingLeft": 10,
-              "paddingRight": 10,
-              "paddingTop": 10,
-            },
-            undefined,
-          ]
-        }
-      />
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-        fontSize={3}
-        mb={2}
-        style={
-          Array [
-            Object {
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "marginBottom": 5,
             },
             undefined,
           ]
         }
       >
-        Address line 1
-      </Text>
-      <TextInput
-        allowFontScaling={true}
-        border={1}
-        borderColor="black10"
-        fontSize={3}
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={3}
+          mb={2}
+          style={
+            Array [
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "marginBottom": 5,
+              },
+              undefined,
+            ]
+          }
+        >
+          Address line 1
+        </Text>
+        <TextInput
+          allowFontScaling={true}
+          border={1}
+          borderColor="black10"
+          error={false}
+          fontSize={3}
+          mb={3}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          p={3}
+          pb={2}
+          placeholder="Enter your street address"
+          style={
+            Array [
+              Object {
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "height": 40,
+                "marginBottom": 10,
+                "paddingBottom": 5,
+                "paddingLeft": 10,
+                "paddingRight": 10,
+                "paddingTop": 10,
+              },
+              undefined,
+            ]
+          }
+          value={undefined}
+        />
+      </View>
+      <View
         mb={4}
-        onBlur={[Function]}
-        onFocus={[Function]}
-        p={3}
-        pb={2}
-        placeholder="Enter your street address"
         style={
           Array [
             Object {
-              "borderColor": "#E5E5E5",
-              "borderStyle": "solid",
-              "borderWidth": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "height": 40,
               "marginBottom": 20,
-              "paddingBottom": 5,
-              "paddingLeft": 10,
-              "paddingRight": 10,
-              "paddingTop": 10,
-            },
-            undefined,
-          ]
-        }
-      />
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-        fontSize={3}
-        mb={2}
-        style={
-          Array [
-            Object {
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "marginBottom": 5,
             },
             undefined,
           ]
         }
       >
-        Address line 2 (optional)
-      </Text>
-      <TextInput
-        allowFontScaling={true}
-        border={1}
-        borderColor="black10"
-        fontSize={3}
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={3}
+          mb={2}
+          style={
+            Array [
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "marginBottom": 5,
+              },
+              undefined,
+            ]
+          }
+        >
+          Address line 2 (optional)
+        </Text>
+        <TextInput
+          allowFontScaling={true}
+          border={1}
+          borderColor="black10"
+          error={false}
+          fontSize={3}
+          mb={3}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          p={3}
+          pb={2}
+          placeholder="Enter your apt, floor, suite, etc."
+          style={
+            Array [
+              Object {
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "height": 40,
+                "marginBottom": 10,
+                "paddingBottom": 5,
+                "paddingLeft": 10,
+                "paddingRight": 10,
+                "paddingTop": 10,
+              },
+              undefined,
+            ]
+          }
+          value={undefined}
+        />
+      </View>
+      <View
         mb={4}
-        onBlur={[Function]}
-        onFocus={[Function]}
-        p={3}
-        pb={2}
-        placeholder="Enter your apt, floor, suite, etc."
         style={
           Array [
             Object {
-              "borderColor": "#E5E5E5",
-              "borderStyle": "solid",
-              "borderWidth": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "height": 40,
               "marginBottom": 20,
-              "paddingBottom": 5,
-              "paddingLeft": 10,
-              "paddingRight": 10,
-              "paddingTop": 10,
-            },
-            undefined,
-          ]
-        }
-      />
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-        fontSize={3}
-        mb={2}
-        style={
-          Array [
-            Object {
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "marginBottom": 5,
             },
             undefined,
           ]
         }
       >
-        City
-      </Text>
-      <TextInput
-        allowFontScaling={true}
-        border={1}
-        borderColor="black10"
-        fontSize={3}
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={3}
+          mb={2}
+          style={
+            Array [
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "marginBottom": 5,
+              },
+              undefined,
+            ]
+          }
+        >
+          City
+        </Text>
+        <TextInput
+          allowFontScaling={true}
+          border={1}
+          borderColor="black10"
+          error={false}
+          fontSize={3}
+          mb={3}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          p={3}
+          pb={2}
+          placeholder="Enter city"
+          style={
+            Array [
+              Object {
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "height": 40,
+                "marginBottom": 10,
+                "paddingBottom": 5,
+                "paddingLeft": 10,
+                "paddingRight": 10,
+                "paddingTop": 10,
+              },
+              undefined,
+            ]
+          }
+          value={undefined}
+        />
+      </View>
+      <View
         mb={4}
-        onBlur={[Function]}
-        onFocus={[Function]}
-        p={3}
-        pb={2}
-        placeholder="Enter city"
         style={
           Array [
             Object {
-              "borderColor": "#E5E5E5",
-              "borderStyle": "solid",
-              "borderWidth": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "height": 40,
               "marginBottom": 20,
-              "paddingBottom": 5,
-              "paddingLeft": 10,
-              "paddingRight": 10,
-              "paddingTop": 10,
-            },
-            undefined,
-          ]
-        }
-      />
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-        fontSize={3}
-        mb={2}
-        style={
-          Array [
-            Object {
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "marginBottom": 5,
             },
             undefined,
           ]
         }
       >
-        State, Province, or Region
-      </Text>
-      <TextInput
-        allowFontScaling={true}
-        border={1}
-        borderColor="black10"
-        fontSize={3}
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={3}
+          mb={2}
+          style={
+            Array [
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "marginBottom": 5,
+              },
+              undefined,
+            ]
+          }
+        >
+          State, Province, or Region
+        </Text>
+        <TextInput
+          allowFontScaling={true}
+          border={1}
+          borderColor="black10"
+          error={false}
+          fontSize={3}
+          mb={3}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          p={3}
+          pb={2}
+          placeholder="Enter state, province, or region"
+          style={
+            Array [
+              Object {
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "height": 40,
+                "marginBottom": 10,
+                "paddingBottom": 5,
+                "paddingLeft": 10,
+                "paddingRight": 10,
+                "paddingTop": 10,
+              },
+              undefined,
+            ]
+          }
+          value={undefined}
+        />
+      </View>
+      <View
         mb={4}
-        onBlur={[Function]}
-        onFocus={[Function]}
-        p={3}
-        pb={2}
-        placeholder="Enter state, province, or region"
         style={
           Array [
             Object {
-              "borderColor": "#E5E5E5",
-              "borderStyle": "solid",
-              "borderWidth": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "height": 40,
               "marginBottom": 20,
-              "paddingBottom": 5,
-              "paddingLeft": 10,
-              "paddingRight": 10,
-              "paddingTop": 10,
-            },
-            undefined,
-          ]
-        }
-      />
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-        fontSize={3}
-        mb={2}
-        style={
-          Array [
-            Object {
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "marginBottom": 5,
             },
             undefined,
           ]
         }
       >
-        Postal code
-      </Text>
-      <TextInput
-        allowFontScaling={true}
-        border={1}
-        borderColor="black10"
-        fontSize={3}
-        mb={4}
-        onBlur={[Function]}
-        onFocus={[Function]}
-        p={3}
-        pb={2}
-        placeholder="Enter your postal code"
-        style={
-          Array [
-            Object {
-              "borderColor": "#E5E5E5",
-              "borderStyle": "solid",
-              "borderWidth": 1,
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "height": 40,
-              "marginBottom": 20,
-              "paddingBottom": 5,
-              "paddingLeft": 10,
-              "paddingRight": 10,
-              "paddingTop": 10,
-            },
-            undefined,
-          ]
-        }
-      />
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={3}
+          mb={2}
+          style={
+            Array [
+              Object {
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "marginBottom": 5,
+              },
+              undefined,
+            ]
+          }
+        >
+          Postal code
+        </Text>
+        <TextInput
+          allowFontScaling={true}
+          border={1}
+          borderColor="black10"
+          error={false}
+          fontSize={3}
+          mb={3}
+          onBlur={[Function]}
+          onChangeText={[Function]}
+          onFocus={[Function]}
+          p={3}
+          pb={2}
+          placeholder="Enter your postal code"
+          style={
+            Array [
+              Object {
+                "borderColor": "#E5E5E5",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "height": 40,
+                "marginBottom": 10,
+                "paddingBottom": 5,
+                "paddingLeft": 10,
+                "paddingRight": 10,
+                "paddingTop": 10,
+              },
+              undefined,
+            ]
+          }
+          value={undefined}
+        />
+      </View>
       <View
         height={50}
         style={

@@ -1,7 +1,10 @@
 import React from "react"
 import { ScrollView } from "react-native"
 
+import { Flex } from "../Elements/Flex"
 import { Sans12, Serif16 } from "../Elements/Typography"
+
+import { validatePresence } from "../Validators"
 
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Button } from "../Components/Button"
@@ -9,9 +12,6 @@ import { Container } from "../Components/Containers"
 import { Input } from "../Components/Input"
 import { Title } from "../Components/Title"
 
-import { Formik, FormikProps } from "formik"
-import * as Yup from "yup"
-import { Flex } from "../Elements/Flex"
 import { Address } from "./ConfirmFirstTimeBid"
 
 interface BillingAddressProps {
@@ -19,97 +19,107 @@ interface BillingAddressProps {
   billingAddress?: Address
 }
 
-export class BillingAddress extends React.Component<BillingAddressProps> {
-  static defaultProps = {
-    billingAddress: {
-      fullName: "",
-      addressLine1: "",
-      addressLine2: "",
-      city: "",
-      state: "",
-      postalCode: "",
-    },
+interface BillingAddressState {
+  values: Address
+  errors: {
+    fullName?: string
+    addressLine1?: string
+    addressLine2?: string
+    city?: string
+    state?: string
+    postalCode?: string
+  }
+}
+
+export class BillingAddress extends React.Component<BillingAddressProps, BillingAddressState> {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      values: { ...this.props.billingAddress },
+      errors: {},
+    }
   }
 
-  validationSchema = Yup.object().shape({
-    fullName: Yup.string().required("This field is required"),
-    addressLine1: Yup.string().required("This field is required"),
-    addressLine2: Yup.string(),
-    city: Yup.string().required("This field is required"),
-    state: Yup.string().required("This field is required"),
-    postalCode: Yup.string().required("This field is required"),
-  })
+  validateAddress(address: Address) {
+    const { fullName, addressLine1, city, state, postalCode } = address
+
+    return {
+      fullName: validatePresence(fullName),
+      addressLine1: validatePresence(addressLine1),
+      city: validatePresence(city),
+      state: validatePresence(state),
+      postalCode: validatePresence(postalCode),
+    }
+  }
+
+  validateField(field: string) {
+    this.setState({
+      errors: { ...this.state.errors, [field]: this.validateAddress(this.state.values)[field] },
+    })
+  }
+
+  onSubmit() {
+    const errors = this.validateAddress(this.state.values)
+
+    if (Object.keys(errors).filter(key => errors[key]).length > 0) {
+      this.setState({ errors })
+    } else {
+      this.props.onSubmit(this.state.values)
+    }
+  }
 
   render() {
     return (
       <BiddingThemeProvider>
         <ScrollView>
-          <Formik
-            validationSchema={this.validationSchema}
-            initialValues={this.props.billingAddress}
-            onSubmit={(values: Address) => this.props.onSubmit(values)}
-          >
-            {({ values, errors, touched, setFieldValue, handleSubmit }: FormikProps<Address>) => (
-              <Container>
-                <Title mt={0} mb={6}>
-                  Your billing address
-                </Title>
+          <Container>
+            <Title mt={0} mb={6}>
+              Your billing address
+            </Title>
 
-                <StyledInput
-                  error={touched.fullName && errors.fullName}
-                  label="Full name"
-                  onChangeText={text => setFieldValue("fullName", text)}
-                  placeholder="Enter your full name"
-                  value={values.fullName}
-                />
+            <StyledInput label="Full name" placeholder="Enter your full name" {...this.propsForInput("fullName")} />
 
-                <StyledInput
-                  error={touched.addressLine1 && errors.addressLine1}
-                  label="Address line 1"
-                  onChangeText={text => setFieldValue("addressLine1", text)}
-                  placeholder="Enter your street address"
-                  value={values.addressLine1}
-                />
+            <StyledInput
+              label="Address line 1"
+              placeholder="Enter your street address"
+              {...this.propsForInput("addressLine1")}
+            />
 
-                <StyledInput
-                  error={touched.addressLine2 && errors.addressLine2}
-                  label="Address line 2 (optional)P"
-                  onChangeText={text => setFieldValue("addressLine2", text)}
-                  placeholder="Enter your apt, floor, suite, etc."
-                  value={values.addressLine2}
-                />
+            <StyledInput
+              label="Address line 2 (optional)"
+              placeholder="Enter your apt, floor, suite, etc."
+              {...this.propsForInput("addressLine2")}
+            />
 
-                <StyledInput
-                  error={touched.city && errors.city}
-                  label="City"
-                  onChangeText={text => setFieldValue("city", text)}
-                  placeholder="Enter city"
-                  value={values.city}
-                />
+            <StyledInput label="City" placeholder="Enter city" {...this.propsForInput("city")} />
 
-                <StyledInput
-                  error={touched.state && errors.state}
-                  label="State, Province, or Region"
-                  onChangeText={text => setFieldValue("state", text)}
-                  placeholder="Enter state, province, or region"
-                  value={values.state}
-                />
+            <StyledInput
+              label="State, Province, or Region"
+              placeholder="Enter state, province, or region"
+              {...this.propsForInput("state")}
+            />
 
-                <StyledInput
-                  error={touched.postalCode && errors.postalCode}
-                  label="Postal code"
-                  onChangeText={text => setFieldValue("postalCode", text)}
-                  placeholder="Enter your postal code"
-                  value={values.postalCode}
-                />
+            <StyledInput
+              label="Postal code"
+              placeholder="Enter your postal code"
+              {...this.propsForInput("postalCode")}
+            />
 
-                <Button text="Add billing address" onPress={handleSubmit} />
-              </Container>
-            )}
-          </Formik>
+            <Button text="Add billing address" onPress={() => this.onSubmit()} />
+          </Container>
         </ScrollView>
       </BiddingThemeProvider>
     )
+  }
+
+  private propsForInput(field: string) {
+    return {
+      error: this.state.errors[field],
+      onChangeText: value => this.setState({ values: { ...this.state.values, [field]: value } }),
+      onBlur: () => this.validateField(field),
+      value: this.state.values[field],
+    }
   }
 }
 
