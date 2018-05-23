@@ -1,7 +1,7 @@
 import React from "react"
 import { ScrollView } from "react-native"
 
-import { Serif16 } from "../Elements/Typography"
+import { Sans12, Serif16 } from "../Elements/Typography"
 
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Button } from "../Components/Button"
@@ -9,38 +9,114 @@ import { Container } from "../Components/Containers"
 import { Input } from "../Components/Input"
 import { Title } from "../Components/Title"
 
-export class BillingAddress extends React.Component {
+import { Formik, FormikProps } from "formik"
+import * as Yup from "yup"
+import { Flex } from "../Elements/Flex"
+import { Address } from "./ConfirmFirstTimeBid"
+
+interface BillingAddressProps {
+  onSubmit?: (values: Address) => null
+  billingAddress?: Address
+}
+
+export class BillingAddress extends React.Component<BillingAddressProps> {
+  static defaultProps = {
+    billingAddress: {
+      fullName: "",
+      addressLine1: "",
+      addressLine2: "",
+      city: "",
+      state: "",
+      postalCode: "",
+    },
+  }
+
+  validationSchema = Yup.object().shape({
+    fullName: Yup.string().required("This field is required"),
+    addressLine1: Yup.string().required("This field is required"),
+    addressLine2: Yup.string(),
+    city: Yup.string().required("This field is required"),
+    state: Yup.string().required("This field is required"),
+    postalCode: Yup.string().required("This field is required"),
+  })
+
   render() {
     return (
       <BiddingThemeProvider>
         <ScrollView>
-          <Container>
-            <Title mt={0} mb={6}>
-              Your billing address
-            </Title>
+          <Formik
+            validationSchema={this.validationSchema}
+            initialValues={this.props.billingAddress}
+            onSubmit={(values: Address) => this.props.onSubmit(values)}
+          >
+            {({ values, errors, touched, setFieldValue, handleSubmit }: FormikProps<Address>) => (
+              <Container>
+                <Title mt={0} mb={6}>
+                  Your billing address
+                </Title>
 
-            <Serif16 mb={2}>Full name</Serif16>
-            <Input placeholder="Enter your full name" mb={4} />
+                <StyledInput
+                  error={touched.fullName && errors.fullName}
+                  label="Full name"
+                  onChangeText={text => setFieldValue("fullName", text)}
+                  placeholder="Enter your full name"
+                  value={values.fullName}
+                />
 
-            <Serif16 mb={2}>Address line 1</Serif16>
-            <Input placeholder="Enter your street address" mb={4} />
+                <StyledInput
+                  error={touched.addressLine1 && errors.addressLine1}
+                  label="Address line 1"
+                  onChangeText={text => setFieldValue("addressLine1", text)}
+                  placeholder="Enter your street address"
+                  value={values.addressLine1}
+                />
 
-            <Serif16 mb={2}>Address line 2 (optional)</Serif16>
-            <Input placeholder="Enter your apt, floor, suite, etc." mb={4} />
+                <StyledInput
+                  error={touched.addressLine2 && errors.addressLine2}
+                  label="Address line 2 (optional)P"
+                  onChangeText={text => setFieldValue("addressLine2", text)}
+                  placeholder="Enter your apt, floor, suite, etc."
+                  value={values.addressLine2}
+                />
 
-            <Serif16 mb={2}>City</Serif16>
-            <Input placeholder="Enter city" mb={4} />
+                <StyledInput
+                  error={touched.city && errors.city}
+                  label="City"
+                  onChangeText={text => setFieldValue("city", text)}
+                  placeholder="Enter city"
+                  value={values.city}
+                />
 
-            <Serif16 mb={2}>State, Province, or Region</Serif16>
-            <Input placeholder="Enter state, province, or region" mb={4} />
+                <StyledInput
+                  error={touched.state && errors.state}
+                  label="State, Province, or Region"
+                  onChangeText={text => setFieldValue("state", text)}
+                  placeholder="Enter state, province, or region"
+                  value={values.state}
+                />
 
-            <Serif16 mb={2}>Postal code</Serif16>
-            <Input placeholder="Enter your postal code" mb={4} />
+                <StyledInput
+                  error={touched.postalCode && errors.postalCode}
+                  label="Postal code"
+                  onChangeText={text => setFieldValue("postalCode", text)}
+                  placeholder="Enter your postal code"
+                  value={values.postalCode}
+                />
 
-            <Button text="Add billing address" onPress={() => null} />
-          </Container>
+                <Button text="Add billing address" onPress={handleSubmit} />
+              </Container>
+            )}
+          </Formik>
         </ScrollView>
       </BiddingThemeProvider>
     )
   }
 }
+
+const StyledInput = ({ label, error, ...props }) => (
+  <Flex mb={4}>
+    <Serif16 mb={2}>{label}</Serif16>
+    <Input mb={3} error={Boolean(error)} {...props} />
+    {error && <Sans12 color="red100">{error}</Sans12>}
+  </Flex>
+)

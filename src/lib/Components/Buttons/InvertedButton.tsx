@@ -14,7 +14,7 @@ export interface InvertedButtonProps extends React.Props<InvertedButton> {
   textStyle?: StyleProp<TextStyle>
   selected?: boolean
   inProgress?: boolean
-  onPress?: React.TouchEventHandler<InvertedButton>
+  onPress?: React.TouchEventHandler<InvertedButton> | ((event: React.FormEvent<any>) => void)
   onSelectionAnimationFinished?: Animated.EndCallback
 }
 
