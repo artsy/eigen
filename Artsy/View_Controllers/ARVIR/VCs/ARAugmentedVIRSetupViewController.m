@@ -166,7 +166,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
         title.font = [UIFont serifSemiBoldFontWithSize:26];
         title.backgroundColor = [UIColor clearColor];
         title.textColor = [UIColor whiteColor];
-        title.text = [arTitle uppercaseString];
+        title.text = arTitle;
         title.numberOfLines = 1;
         [overlay addSubview:title];
 
@@ -237,7 +237,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
         if (allowedAccess) {
             [self.defaults setBool:YES forKey:ARAugmentedRealityHasTriedToSetup];
 
-            Class Controller = [AROptions boolForOption:AROptionsFloorBasedARVIR] ? ARAugmentedVIRViewController.class : ARAugmentedFloorBasedVIRViewController.class;
+            Class Controller = [AROptions boolForOption:AROptionsFloorBasedARVIR] ? ARAugmentedFloorBasedVIRViewController.class : ARAugmentedVIRViewController.class;
             id vc = [[Controller alloc] initWithConfig:self.config];
             [self.navigationController pushViewController:vc animated:YES];
         } else {
