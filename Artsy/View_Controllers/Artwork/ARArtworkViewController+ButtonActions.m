@@ -109,7 +109,7 @@
             config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
 
             if (shouldSkipSetup) {
-                Class Controller = [AROptions boolForOption:AROptionsFloorBasedARVIR] ? ARAugmentedVIRViewController.class : ARAugmentedFloorBasedVIRViewController.class;
+                Class Controller = [AROptions boolForOption:AROptionsFloorBasedARVIR] ? ARAugmentedFloorBasedVIRViewController.class : ARAugmentedVIRViewController.class;
 
                 id viewInRoomVC = [[Controller alloc] initWithConfig:config];
                 [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];

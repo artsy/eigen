@@ -137,6 +137,8 @@ NSInteger attempt = 0;
                 SCNVector3 bottomPosition = SCNVector3Make(userPosition.x, result.worldCoordinates.y, userPosition.z);
                 [userWall lookAt:bottomPosition];
 
+                userWall.position = SCNVector3Make(userWall.position.x, userWall.position.y, userWall.position.z +  + [ARSCNWallNode wallHeight] / 2);
+
                 self.wall = userWall;
 
                 self.state = ARHorizontalVIRModeCreatedWall;
@@ -330,6 +332,7 @@ NSInteger attempt = 0;
             }
 
             self.ghostArtwork.position = result.localCoordinates;
+            [self.delegate isShowingGhostWork:YES];
             return;
         }
     }

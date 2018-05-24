@@ -258,8 +258,8 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
 - (ARCellData *)requestNotificationsAlert;
 {
-    return [self tappableCellDataWithTitle:@"Request Receiveing Notifications" selection:^{
-        [ARAppNotificationsDelegate registerForDeviceNotificationsWithApple];
+    return [self tappableCellDataWithTitle:@"Request Receiving Notifications" selection:^{
+        [[[ARAppNotificationsDelegate alloc] init] registerForDeviceNotificationsWithApple];
     }];
 }
 #endif
