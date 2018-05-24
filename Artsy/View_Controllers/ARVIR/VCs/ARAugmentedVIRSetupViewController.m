@@ -154,7 +154,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
         self.button = allowAccessButton;
 
         UILabel *subtitle = [[ARSerifLabel alloc] init];
-        subtitle.font = [UIFont displaySansSerifFontWithSize:16];
+        subtitle.font = [UIFont serifSemiBoldFontWithSize:16];
         subtitle.backgroundColor = [UIColor clearColor];
         subtitle.textColor = [UIColor whiteColor];
         subtitle.text = subtitleText;
@@ -163,7 +163,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
         self.subtitleLabel = subtitle;
 
         UILabel *title = [[ARSansSerifLabel alloc] init];
-        title.font = [UIFont sansSerifFontWithSize:20];
+        title.font = [UIFont serifSemiBoldFontWithSize:26];
         title.backgroundColor = [UIColor clearColor];
         title.textColor = [UIColor whiteColor];
         title.text = [arTitle uppercaseString];
