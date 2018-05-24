@@ -90,6 +90,12 @@ NSInteger wallHeightMeters = 5;
     self.artwork = nil;
 }
 
+- (void)placeWall
+{
+
+}
+
+
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0));
 {
     // Bail early if we don't have walls to fire at, or have an artwork already up

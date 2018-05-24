@@ -328,6 +328,16 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
     });
 }
 
+- (void)hasPlacedWall
+{
+    // NOOP
+}
+
+- (void)isShowingGhostWall:(BOOL)showing
+{
+    // NOOP
+}
+
 // Rotate the imageview around in a circle
 
 - (void)animateImageView
@@ -371,7 +381,7 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
 - (void)resetAR
 {
     [self hasRegisteredPlanes];
-
+    
     [self.interactionController restart];
 }
 
@@ -386,7 +396,7 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
 
 - (IBAction)panMoved:(UIPanGestureRecognizer *)gesture
 {
-//     [self.interactionController pannedOnScreen:gesture];
+    //     [self.interactionController pannedOnScreen:gesture];
 }
 
 // When you leave and come back to this VC, ARKit cannot correctly keep track of the world, need to reset
@@ -400,8 +410,7 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
         ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
 
         // While Xcode 10.3 is in beta, we won't be shipping CI builds with it
-//        configuration.planeDetection = ARPlaneDetectionVertical;
-        configuration.planeDetection = 2;
+        configuration.planeDetection = ARPlaneDetectionVertical;
 
         // Run the view's session
         [self.sceneView.session runWithConfiguration:configuration];
@@ -416,7 +425,7 @@ NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+
     // Pause the view's session
     [self.sceneView.session pause];
 }

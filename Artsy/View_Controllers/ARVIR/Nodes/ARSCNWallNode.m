@@ -19,8 +19,6 @@
     return box;
 }
 
-// TODO: MAke this invisible once it's reliable
-
 + (instancetype)fullWallNode
 {
     // Sides
@@ -44,7 +42,7 @@
 
 + (CGFloat)wallHeight
 {
-    return 6;
+    return 4;
 }
 
 @end

@@ -138,15 +138,10 @@ NS_ASSUME_NONNULL_BEGIN
         [backButton setBorderColor:[UIColor clearColor] forState:UIControlStateNormal];
         [backButton setBorderColor:[UIColor clearColor] forState:UIControlStateHighlighted];
         [backButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
-        [backButton setImage:[UIImage imageNamed:@"ARVIRBack"] forState:UIControlStateNormal];
+        [backButton setImage:[UIImage imageNamed:@"ARVIRModalClose"] forState:UIControlStateNormal];
         backButton.translatesAutoresizingMaskIntoConstraints = false;
         [backButton addTarget:self action:@selector(exitARContext) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:backButton];
-
-        backButton.layer.masksToBounds = NO;
-        backButton.layer.shadowColor = [UIColor blackColor].CGColor;
-        backButton.layer.shadowOffset = CGSizeMake(0, 0);
-        backButton.layer.shadowOpacity = 0.4;
 
         // A beta button in the top right
         UIImageView *betaImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRBeta"]];

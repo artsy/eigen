@@ -15,4 +15,7 @@ typedef NS_ENUM(NSInteger, ARAppNotificationsRequestContext) {
 - (void)registerForDeviceNotificationsWithContext:(ARAppNotificationsRequestContext)requestContext;
 - (void)fetchNotificationCounts;
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo inApplicationState:(UIApplicationState)applicationState;
+
+/// Private API, used only in admin tools
+- (void)registerForDeviceNotificationsWithApple;
 @end
