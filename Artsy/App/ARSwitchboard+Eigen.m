@@ -39,9 +39,6 @@
 
 - (UIViewController *)loadAdminMenu;
 {
-    if (!ARAppStatus.isBetaDevOrAdmin) {
-        return nil;
-    }
     return [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 }
 

@@ -7,6 +7,7 @@ upcoming:
     - Adds a new ARVIR behind a feature flag - orta
   admin:
     - Adds an admin button to trigger getting notifications - orta
+    - Adds ability to see admin screen when logged in as non-admins via URL - ash
 
 releases:
   - version: 4.1.2
