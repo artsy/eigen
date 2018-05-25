@@ -3,6 +3,8 @@ import React from "react"
 import { NavigatorIOS, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+
 import { Flex } from "../Elements/Flex"
 import { Icon20 } from "../Elements/Icon"
 import { Sans12 } from "../Elements/Typography"
@@ -34,6 +36,17 @@ export class BidResult extends React.Component<BidResultProps> {
     this.props.navigator.popToTop()
   }
 
+  get bidAgain() {
+    return SHOW_TIMER_STATUSES.indexOf(this.props.status) > -1
+  }
+
+  exitBidFlow = async () => {
+    await SwitchBoard.dismissModalViewController(this)
+    if (this.props.status === "ERROR_LIVE_BIDDING_STARTED") {
+      SwitchBoard.presentModalViewController(this, `/auction/${this.props.sale_artwork.sale.id}`)
+    }
+  }
+
   render() {
     const { live_start_at, end_at } = this.props.sale_artwork.sale
     // non-live sale doesn't have live_start_at so bidding is open until end time
@@ -48,13 +61,12 @@ export class BidResult extends React.Component<BidResultProps> {
                 <TimeLeftToBidDisplay liveStartsAt={live_start_at} endAt={end_at} />
               </Flex>
             </View>
-            <BidGhostButton text="Continue" onPress={() => null} />
+            <BidGhostButton text="Continue" onPress={this.exitBidFlow} />
           </Container>
         </BiddingThemeProvider>
       )
     } else {
-      const bidAgain = SHOW_TIMER_STATUSES.indexOf(this.props.status) > -1
-      const buttonMsg = bidAgain ? `Bid ${this.props.sale_artwork.current_bid.display} or more` : "Continue"
+      const buttonMsg = this.bidAgain ? `Bid ${this.props.sale_artwork.current_bid.display} or more` : "Continue"
       return (
         <BiddingThemeProvider>
           <Container mt={6}>
@@ -63,10 +75,10 @@ export class BidResult extends React.Component<BidResultProps> {
                 <Icon20 source={require("../../../../../images/circle-x-red.png")} />
                 <Title m={4}>{this.props.message_header}</Title>
                 <MarkdownRenderer>{this.props.message_description_md}</MarkdownRenderer>
-                {bidAgain && <TimeLeftToBidDisplay liveStartsAt={live_start_at} endAt={end_at} />}
+                {this.bidAgain && <TimeLeftToBidDisplay liveStartsAt={live_start_at} endAt={end_at} />}
               </Flex>
             </View>
-            {bidAgain ? (
+            {this.bidAgain ? (
               <Button
                 text={buttonMsg}
                 onPress={() => {
@@ -74,7 +86,7 @@ export class BidResult extends React.Component<BidResultProps> {
                 }}
               />
             ) : (
-              <BidGhostButton text="Continue" onPress={() => null} />
+              <BidGhostButton text="Continue" onPress={this.exitBidFlow} />
             )}
           </Container>
         </BiddingThemeProvider>
@@ -116,6 +128,7 @@ export const BidResultScreen = createFragmentContainer(
       sale {
         live_start_at
         end_at
+        id
       }
     }
   `

@@ -1,3 +1,3 @@
 {
-  "97bfa80afb8759624c4ccee8e286cd96": "query BidFlowBidResultScreenRendererQuery(\n  $saleArtworkID: String!\n) {\n  sale_artwork(id: $saleArtworkID) {\n    ...BidResult_sale_artwork\n    __id\n  }\n}\n\nfragment BidResult_sale_artwork on SaleArtwork {\n  current_bid {\n    amount\n    cents\n    display\n  }\n  sale {\n    live_start_at\n    end_at\n    __id\n  }\n  __id\n}\n"
+  "89e596bb925bb82ae3f90f761a5e8bb5": "query BidFlowBidResultScreenRendererQuery(\n  $saleArtworkID: String!\n) {\n  sale_artwork(id: $saleArtworkID) {\n    ...BidResult_sale_artwork\n    __id\n  }\n}\n\nfragment BidResult_sale_artwork on SaleArtwork {\n  current_bid {\n    amount\n    cents\n    display\n  }\n  sale {\n    live_start_at\n    end_at\n    id\n    __id\n  }\n  __id\n}\n"
 }
