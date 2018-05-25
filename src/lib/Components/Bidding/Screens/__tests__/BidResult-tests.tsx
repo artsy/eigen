@@ -29,11 +29,10 @@ const saleArtwork = {
 }
 describe("BidResult component", () => {
   Date.now = jest.fn(() => 1525983752116)
+  jest.useFakeTimers()
 
   describe("high bidder", () => {
     it("renders winning screen properly", () => {
-      jest.useFakeTimers()
-
       const bidResult = <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
       const bg = renderer.create(bidResult).toJSON()
 
@@ -44,7 +43,6 @@ describe("BidResult component", () => {
     })
 
     it("dismisses the controller when the continue button is pressed", () => {
-      jest.useFakeTimers()
       const bidResult = renderer.create(
         <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
       )
@@ -59,12 +57,12 @@ describe("BidResult component", () => {
   })
 
   describe("low bidder", () => {
-    it("renders timer and error message", () => {
-      jest.useFakeTimers()
-      const messageHeader = "Your bid wasn’t high enough"
-      const messageDescriptionMd = `Another bidder placed a higher max bid or the same max bid before you did.  \
- Bid again to take the lead.`
+    const messageHeader = "Your bid wasn’t high enough"
+    const messageDescriptionMd =
+      "Another bidder placed a higher max bid or the same max bid before you did.  \
+ Bid again to take the lead."
 
+    it("renders timer and error message", () => {
       const bidResult = (
         <BidResult
           winning={false}
@@ -83,10 +81,6 @@ describe("BidResult component", () => {
     })
 
     it("pops to root when bid-again button is pressed", () => {
-      jest.useFakeTimers()
-      const messageHeader = "Your bid wasn’t high enough"
-      const messageDescriptionMd = `Another bidder placed a higher max bid or the same max bid before you did.  \
- Bid again to take the lead.`
       const bidResult = renderer.create(
         <BidResult
           winning={false}
@@ -105,13 +99,12 @@ describe("BidResult component", () => {
   })
 
   describe("live bidding has started", () => {
-    it("doesn't render timer", () => {
-      jest.useFakeTimers()
-      const status = "ERROR_LIVE_BIDDING_STARTED"
-      const messageHeader = "Live bidding has started"
-      const messageDescriptionMd = `Sorry, your bid wasn’t received before live bidding started.\
- To continue bidding, please [join the live auction](http://live-staging.artsy.net/).`
+    const status = "ERROR_LIVE_BIDDING_STARTED"
+    const messageHeader = "Live bidding has started"
+    const messageDescriptionMd = `Sorry, your bid wasn’t received before live bidding started. \
+To continue bidding, please [join the live auction](http://live-staging.artsy.net/).`
 
+    it("doesn't render timer", () => {
       const bidResult = (
         <BidResult
           winning={false}
@@ -131,12 +124,6 @@ describe("BidResult component", () => {
     })
 
     it("dismisses controller and presents live interface when continue button is pressed", () => {
-      jest.useFakeTimers()
-      const status = "ERROR_LIVE_BIDDING_STARTED"
-      const messageHeader = "Live bidding has started"
-      const messageDescriptionMd = `Sorry, your bid wasn’t received before live bidding started.\
- To continue bidding, please [join the live auction](http://live-staging.artsy.net/).`
-
       const bidResult = renderer.create(
         <BidResult
           winning={false}
