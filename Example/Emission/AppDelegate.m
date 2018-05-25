@@ -185,7 +185,11 @@ randomBOOL(void)
     viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                     target:self
                                                                                                     action:@selector(dismissModalViewController)];
-    [fromViewController.navigationController presentViewController:navigationController animated:YES completion:nil];
+    if (fromViewController.isBeingDismissed || fromViewController.navigationController.isBeingDismissed) {
+      [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    } else {
+      [fromViewController.navigationController presentViewController:navigationController animated:YES completion:nil];
+    }
   };
 
   emission.eventsModule.eventOccurred = ^(NSDictionary * _Nonnull info) {

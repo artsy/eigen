@@ -39,10 +39,12 @@ RCT_EXPORT_METHOD(presentModalViewController:(nonnull NSNumber *)reactTag route:
   [self invokeCallback:self.presentModalViewController reactTag:reactTag route:route];
 }
 
-RCT_EXPORT_METHOD(dismissModalViewController:(nonnull NSNumber *)reactTag)
+RCT_EXPORT_METHOD(dismissModalViewController:(nonnull NSNumber *)reactTag resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
     [self invokeCallback:^(UIViewController *fromViewController, id _) {
-      [fromViewController dismissViewControllerAnimated:YES completion:nil];
+        [fromViewController dismissViewControllerAnimated:YES completion:^{
+            resolve(nil);
+        }];
     } reactTag:reactTag];
 }
 

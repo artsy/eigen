@@ -3,6 +3,7 @@
 #import "ARTickedTableViewCell.h"
 #import "ARAdminTableViewCell.h"
 #import "ARAdminPreloadTableViewCell.h"
+#import "EigenLikeNavigationController.h"
 #import <SAMKeychain/SAMKeychain.h>
 
 #import "AppDelegate.h"
@@ -277,7 +278,10 @@
 - (ARCellData *)jumpToBidFlow
 {
   return [self tappableCellDataWithTitle:@"Bid Flow" selection: ^{
-    [self.navigationController pushViewController:[[ARBidFlowViewController alloc] initWithArtworkID:@"lewis-baltz-morgan-hill-prototype" saleID:@"phillips-photographs-5"] animated:YES];
+    ARBidFlowViewController *bidFlowController = [[ARBidFlowViewController alloc] initWithArtworkID:@"tom-stoddart-insects" saleID:@"shared-live-mocktion-k8s"];
+    EigenLikeNavigationController *navigationController = [[EigenLikeNavigationController alloc] initWithRootViewController:bidFlowController];
+    navigationController.showBackButtonOnRoot = YES;
+    [self presentViewController:navigationController animated:YES completion:nil];
   }];
 }
 
