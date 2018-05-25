@@ -36,10 +36,6 @@ export class BidResult extends React.Component<BidResultProps> {
     this.props.navigator.popToTop()
   }
 
-  get bidAgain() {
-    return SHOW_TIMER_STATUSES.indexOf(this.props.status) > -1
-  }
-
   exitBidFlow = async () => {
     await SwitchBoard.dismissModalViewController(this)
     if (this.props.status === "ERROR_LIVE_BIDDING_STARTED") {
@@ -66,7 +62,8 @@ export class BidResult extends React.Component<BidResultProps> {
         </BiddingThemeProvider>
       )
     } else {
-      const buttonMsg = this.bidAgain ? `Bid ${this.props.sale_artwork.current_bid.display} or more` : "Continue"
+      const bidAgain = SHOW_TIMER_STATUSES.indexOf(this.props.status) > -1
+      const buttonMsg = bidAgain ? `Bid ${this.props.sale_artwork.current_bid.display} or more` : "Continue"
       return (
         <BiddingThemeProvider>
           <Container mt={6}>
@@ -75,10 +72,10 @@ export class BidResult extends React.Component<BidResultProps> {
                 <Icon20 source={require("../../../../../images/circle-x-red.png")} />
                 <Title m={4}>{this.props.message_header}</Title>
                 <MarkdownRenderer>{this.props.message_description_md}</MarkdownRenderer>
-                {this.bidAgain && <TimeLeftToBidDisplay liveStartsAt={live_start_at} endAt={end_at} />}
+                {bidAgain && <TimeLeftToBidDisplay liveStartsAt={live_start_at} endAt={end_at} />}
               </Flex>
             </View>
-            {this.bidAgain ? (
+            {bidAgain ? (
               <Button
                 text={buttonMsg}
                 onPress={() => {
