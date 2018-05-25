@@ -5,7 +5,7 @@ upcoming:
   user_facing:
     - Add push notification support for /auctions - maxim
     - Adds a new ARVIR behind a feature flag - orta
-    - Update sthe type on the setup page for AR - orta
+    - Updates the type on the setup page for AR - orta
   admin:
     - Adds an admin button to trigger getting notifications - orta
 

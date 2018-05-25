@@ -78,6 +78,8 @@
 #import "ARFairFavoritesNetworkModel+Private.h"
 #import <Keys/ArtsyKeys.h>
 
+#import <Sentry/SentryClient.h>
+
 // Note the Eigen Schema:
 // https://docs.google.com/spreadsheets/u/1/d/1bLbeOgVFaWzLSjxLOBDNOKs757-zBGoLSM1lIz3OPiI/edit#gid=497747862
 

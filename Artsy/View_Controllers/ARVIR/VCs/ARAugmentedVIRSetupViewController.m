@@ -162,7 +162,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
         [overlay addSubview:subtitle];
         self.subtitleLabel = subtitle;
 
-        UILabel *title = [[ARSansSerifLabel alloc] init];
+        UILabel *title = [[ARSerifLabel alloc] init];
         title.font = [UIFont serifSemiBoldFontWithSize:26];
         title.backgroundColor = [UIColor clearColor];
         title.textColor = [UIColor whiteColor];

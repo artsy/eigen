@@ -25,6 +25,7 @@
 #import <Emission/AREmission.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
+#import <Sentry/SentryClient.h>
 
 #if DEBUG
 #import <VCRURLConnection/VCR.h>
@@ -475,8 +476,12 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     ARSectionData *labsSectionData = [[ARSectionData alloc] init];
     labsSectionData.headerTitle = @"Developer";
 
-    [labsSectionData addCellDataFromArray:@[
+    ARCellData *crashCellData = [self tappableCellDataWithTitle:@"Crash App" selection:^{
+        [SentryClient.sharedClient crash];
+    }];
 
+    [labsSectionData addCellDataFromArray:@[
+        crashCellData,
 #if !TARGET_IPHONE_SIMULATOR
         [self generateNotificationTokenPasteboardCopy],
         [self requestNotificationsAlert],
