@@ -75,7 +75,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.5)
   - EDColor (1.0.0)
-  - Emission (1.5.0):
+  - Emission (1.5.2):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.5)
@@ -314,7 +314,7 @@ DEPENDENCIES:
   - "UIView+BooleanAnimations"
   - VCRURLConnection
   - "XCTest+OHHTTPStubSuiteCleanUp"
-  - yoga (from `https://raw.githubusercontent.com/artsy/emission/v1.5.0/externals/yoga/yoga.podspec.json`)
+  - yoga (from `https://raw.githubusercontent.com/artsy/emission/v1.5.2/externals/yoga/yoga.podspec.json`)
 
 SPEC REPOS:
   https://github.com/artsy/Specs.git:
@@ -410,7 +410,7 @@ EXTERNAL SOURCES:
     :branch: add-axial-support
     :git: https://github.com/alloy/SSFadingScrollView.git
   yoga:
-    :podspec: https://raw.githubusercontent.com/artsy/emission/v1.5.0/externals/yoga/yoga.podspec.json
+    :podspec: https://raw.githubusercontent.com/artsy/emission/v1.5.2/externals/yoga/yoga.podspec.json
 
 CHECKOUT OPTIONS:
   AFOAuth1Client:
@@ -471,7 +471,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 211370423bc603714666b17df5695c7d91ac52de
+  Emission: d13b673c127fc968e7a9ade570407230f9ee37ca
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
@@ -524,6 +524,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: de8782b10b9fdede33554bcad8a2a6653e0ebb30
 
-PODFILE CHECKSUM: 16c298e5fb12230387d2a418aee86104a45394c9
+PODFILE CHECKSUM: 7728f3027b162ad03105f6387dd4a754ea9b482e
 
 COCOAPODS: 1.5.0

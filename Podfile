@@ -81,7 +81,7 @@ target 'Artsy' do
   pod 'Extraction'
 
   pod 'Emission', '~> 1.5.0'
-  pod 'yoga', :podspec => "https://raw.githubusercontent.com/artsy/emission/v1.5.0/externals/yoga/yoga.podspec.json"
+  pod 'yoga', :podspec => "https://raw.githubusercontent.com/artsy/emission/v1.5.2/externals/yoga/yoga.podspec.json"
   pod 'React/Core'
 
   # Facebook
