@@ -1,96 +1,105 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Markdown parser renders multiple paragraphs 1`] = `
-<View>
-  <View
-    flexDirection="row"
-    justifyContent="space-between"
-    style={
-      Array [
-        Object {},
-        Object {
-          "flexDirection": "row",
-        },
-      ]
-    }
+exports[`Markdown parser component renders multiple paragraphs matches the snapshot 1`] = `
+<Text
+  accessible={true}
+  allowFontScaling={true}
+  color="black60"
+  ellipsizeMode="tail"
+  fontSize={3}
+  maxWidth={280}
+  mb={5}
+  style={
+    Array [
+      Object {
+        "color": "#666",
+        "fontFamily": "AGaramondPro-Regular",
+        "fontSize": 16,
+        "marginBottom": 30,
+        "maxWidth": 280,
+        "textAlign": "center",
+      },
+      undefined,
+    ]
+  }
+  textAlign="center"
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
   >
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
-    >
-      paragraph 1 has some text
-    </Text>
-  </View>
-  <View
-    flexDirection="row"
-    justifyContent="space-between"
-    style={
-      Array [
-        Object {},
-        Object {
-          "flexDirection": "row",
-        },
-      ]
-    }
-  >
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
-    >
-      paragraph 2 also has text
-    </Text>
-  </View>
-</View>
+    paragraph 1 has some text
+
+paragraph 2 also has text
+  </Text>
+</Text>
 `;
 
-exports[`Markdown parser renders text 1`] = `
-<View>
-  <View
-    flexDirection="row"
-    justifyContent="space-between"
-    style={
-      Array [
-        Object {},
-        Object {
-          "flexDirection": "row",
-        },
-      ]
-    }
+exports[`Markdown parser component renders text matches the snapshot 1`] = `
+<Text
+  accessible={true}
+  allowFontScaling={true}
+  color="black60"
+  ellipsizeMode="tail"
+  fontSize={3}
+  maxWidth={280}
+  mb={5}
+  style={
+    Array [
+      Object {
+        "color": "#666",
+        "fontFamily": "AGaramondPro-Regular",
+        "fontSize": 16,
+        "marginBottom": 30,
+        "maxWidth": 280,
+        "textAlign": "center",
+      },
+      undefined,
+    ]
+  }
+  textAlign="center"
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
   >
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
-    >
-      text without link
-    </Text>
-  </View>
-</View>
+    text without link
+  </Text>
+</Text>
 `;
 
-exports[`Markdown parser renders text with link 1`] = `
-<View>
-  <View
-    flexDirection="row"
-    justifyContent="space-between"
-    style={
-      Array [
-        Object {},
-        Object {
-          "flexDirection": "row",
-        },
-      ]
-    }
+exports[`Markdown parser component renders text with link matches the snapshot 1`] = `
+<Text
+  accessible={true}
+  allowFontScaling={true}
+  color="black60"
+  ellipsizeMode="tail"
+  fontSize={3}
+  maxWidth={280}
+  mb={5}
+  style={
+    Array [
+      Object {
+        "color": "#666",
+        "fontFamily": "AGaramondPro-Regular",
+        "fontSize": 16,
+        "marginBottom": 30,
+        "maxWidth": 280,
+        "textAlign": "center",
+      },
+      undefined,
+    ]
+  }
+  textAlign="center"
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
   >
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
-    >
-      text with some 
-    </Text>
+    text with some 
     <Text
       accessible={true}
       allowFontScaling={true}
@@ -105,21 +114,15 @@ exports[`Markdown parser renders text with link 1`] = `
         ]
       }
     >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-      >
-        link
-      </Text>
+      link
     </Text>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
-    >
-       in it
-    </Text>
-  </View>
-</View>
+  </Text>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+  >
+     in it
+  </Text>
+</Text>
 `;

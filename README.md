@@ -93,6 +93,8 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 
 ### Deploying Emission
 
+You must have [Metaphysics][metaphysics] checked out in a folder adjacent to Emission's code. So there should be `~/code/emission` and `~/code/metaphysics`.
+
 1. Ensure that the React version required by Emission has been published to [our spec-repo][spec-repo].
    Assuming no breaking changes in RN's folder structures, you can run `make update_specs_repos`.
 2. Update the [CHANGELOG](CHANGELOG.md) file to reflect the version that will be released and commit it.
@@ -153,3 +155,4 @@ The Emission app (in `Example/`) is deployed automatically to TestFlight once a 
 [glossary-yarn]: http://artsy.github.io/blog/2016/11/14/JS-Glossary/#yarn
 [blog here]: http://artsy.github.io/blog/2016/08/24/On-Emission/
 [spec-repo]: https://github.com/artsy/Specs/tree/master/React
+[metaphysics]: https://github.com/artsy/metaphysics

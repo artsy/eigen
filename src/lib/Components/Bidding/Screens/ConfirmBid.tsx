@@ -23,9 +23,11 @@ import { Title } from "../Components/Title"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { metaphysics } from "../../../metaphysics"
 
-import { BidResult } from "./BidResult"
+import { BidResultScreen } from "./BidResult"
 
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
+import { Checkbox } from "../Components/Checkbox"
+import { Timer } from "../Components/Timer"
 
 interface ConfirmBidProps extends ViewProperties {
   sale_artwork: ConfirmBid_sale_artwork
@@ -39,7 +41,8 @@ interface ConfirmBidProps extends ViewProperties {
 
 interface ConformBidState {
   pollCount: number
-  intervalToken: number
+  conditionsOfSaleChecked: boolean
+  isLoading: boolean
 }
 
 const MAX_POLL_ATTEMPTS = 20
@@ -62,7 +65,8 @@ const bidderPositionMutation = graphql`
 export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState> {
   state = {
     pollCount: 0,
-    intervalToken: 0,
+    conditionsOfSaleChecked: false,
+    isLoading: false,
   }
 
   onPressConditionsOfSale = () => {
@@ -70,14 +74,17 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   }
 
   placeBid() {
+    this.setState({ isLoading: true })
+
     commitMutation(this.props.relay.environment, {
       onCompleted: (results, errors) => {
         this.verifyBidPosition(results, errors)
       },
       onError: e => {
+        this.setState({ isLoading: false })
         // TODO catch error!
         // this.verifyAndShowBidResult(null, e)
-        console.log("error!", e, e.message)
+        console.error("error!", e, e.message)
       },
       mutation: bidderPositionMutation,
       variables: {
@@ -90,61 +97,75 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     })
   }
 
-  verifyBidPosition(results, errors) {
-    const status = results.createBidderPosition.result.status
-    if (!errors && status === "SUCCESS") {
-      const positionId = results.createBidderPosition.result.position.id
-      const query = `
+  queryForBidPosition(bidderPositionID: string) {
+    const query = `
         {
           me {
-            bidder_position(id: "${positionId}") {
+            bidder_position(id: "${bidderPositionID}") {
+              id
               processed_at
               is_active
             }
           }
         }
       `
-      const interval = setInterval(() => {
-        metaphysics({ query }).then(this.checkBidPosition.bind(this))
-      }, 1000)
-      this.setState({ intervalToken: interval })
+    return metaphysics({ query })
+  }
+
+  verifyBidPosition(results, errors) {
+    // TODO: Need to handle if the results object is empty, for example if errors occurred and no request was made
+    const status = results.createBidderPosition.result.status
+    if (!errors && status === "SUCCESS") {
+      const positionId = results.createBidderPosition.result.position.id
+      this.queryForBidPosition(positionId).then(this.checkBidPosition.bind(this))
     } else {
       const message_header = results.createBidderPosition.result.message_header
       const message_description_md = results.createBidderPosition.result.message_description_md
-      this.showBidResult(false, message_header, message_description_md)
+      this.showBidResult(false, status, message_header, message_description_md)
     }
   }
 
   checkBidPosition(result) {
-    // TODO: move polling logic to a separate file https://github.com/artsy/emission/pull/1025#discussion_r185931915
     const bidderPosition = result.data.me.bidder_position
     if (bidderPosition.processed_at) {
-      clearInterval(this.state.intervalToken)
       if (bidderPosition.is_active) {
         // wining
-        this.showBidResult(true)
+        this.showBidResult(true, "SUCCESS")
       } else {
         // outbid
-        this.showBidResult(false)
+        this.showBidResult(false, "ERROR_BID_LOW")
       }
     } else {
-      // poll again
       if (this.state.pollCount > MAX_POLL_ATTEMPTS) {
-        clearInterval(this.state.intervalToken)
+        // TODO: Present error message to user.
+      } else {
+        setTimeout(() => {
+          this.queryForBidPosition(bidderPosition.id).then(this.checkBidPosition.bind(this))
+        }, 1000)
+        this.setState({ pollCount: this.state.pollCount + 1 })
       }
-      this.setState({ pollCount: this.state.pollCount + 1 })
     }
   }
 
-  showBidResult(winning: boolean, messageHeader?: string, messageDescriptionMd?: string) {
+  showBidResult(winning: boolean, status: string, messageHeader?: string, messageDescriptionMd?: string) {
     this.props.navigator.push({
-      component: BidResult,
+      component: BidResultScreen,
       title: "",
       passProps: {
+        sale_artwork: this.props.sale_artwork,
+        status,
         message_header: messageHeader,
         message_description_md: messageDescriptionMd,
         winning,
       },
+    })
+
+    this.setState({ isLoading: false })
+  }
+
+  conditionsOfSalePressed() {
+    this.setState({
+      conditionsOfSaleChecked: !this.state.conditionsOfSaleChecked,
     })
   }
 
@@ -152,14 +173,17 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     return (
       <BiddingThemeProvider>
         <Container m={0}>
-          <Title>Confirm your bid</Title>
+          <Flex alignItems="center">
+            <Title mb={3}>Confirm your bid</Title>
+            <Timer timeLeftInMilliseconds={1000 * 60 * 20} />
+          </Flex>
 
           <View>
-            <Flex m={4} alignItems="center">
+            <Flex m={4} mt={0} alignItems="center">
               <SerifSemibold18>{this.props.sale_artwork.artwork.artist_names}</SerifSemibold18>
               <SerifSemibold14>Lot {this.props.sale_artwork.lot_label}</SerifSemibold14>
 
-              <SerifItalic14 color="black60">
+              <SerifItalic14 color="black60" textAlign="center">
                 {this.props.sale_artwork.artwork.title}, <Serif14>{this.props.sale_artwork.artwork.date}</Serif14>
               </SerifItalic14>
             </Flex>
@@ -175,20 +199,24 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
               </Col>
             </Row>
 
-            <Divider />
+            <Divider mb={9} />
           </View>
 
           <View>
-            <Serif14 mb={3} color="black60" textAlign="center">
-              You agree to <LinkText onPress={this.onPressConditionsOfSale}>Conditions of Sale</LinkText>.
-            </Serif14>
+            <Checkbox pl={3} pb={1} justifyContent="center" onPress={() => this.conditionsOfSalePressed()}>
+              <Serif14 mt={2} color="black60">
+                You agree to <LinkText onPress={this.onPressConditionsOfSale}>Conditions of Sale</LinkText>.
+              </Serif14>
+            </Checkbox>
 
-            <Button
-              text="Place Bid"
-              onPress={() => {
-                this.placeBid()
-              }}
-            />
+            <Flex m={4}>
+              <Button
+                text="Place Bid"
+                inProgress={this.state.isLoading}
+                selected={this.state.isLoading}
+                onPress={this.state.conditionsOfSaleChecked ? () => this.placeBid() : null}
+              />
+            </Flex>
           </View>
         </Container>
       </BiddingThemeProvider>
@@ -214,6 +242,7 @@ export const ConfirmBidScreen = createFragmentContainer(
         artist_names
       }
       lot_label
+      ...BidResult_sale_artwork
     }
   `
 )

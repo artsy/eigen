@@ -2,12 +2,13 @@
 
 @implementation ARBidFlowViewController
 
-- (instancetype)initWithSaleArtworkID:(NSString *)saleArtworkID
+- (instancetype)initWithArtworkID:(NSString *)artworkID saleID:(NSString *)saleID
 {
   if ((self = [super initWithEmission:nil
                            moduleName:@"BidFlow"
-                    initialProperties:@{ @"saleArtworkID": saleArtworkID }])) {
-    _saleArtworkID = saleArtworkID;
+                    initialProperties:@{ @"artworkID": artworkID, @"saleID": saleID }])) {
+    _artworkID = artworkID;
+    _saleID = saleID;
   }
   return self;
 }
