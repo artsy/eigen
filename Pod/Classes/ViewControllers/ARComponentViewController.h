@@ -1,10 +1,13 @@
 #import <UIKit/UIKit.h>
 
 @class AREmission;
+@class RCTRootView;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ARComponentViewController : UIViewController
+
+@property (nonatomic, strong) RCTRootView *rootView;
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
@@ -13,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithEmission:(nullable AREmission *)emission
                       moduleName:(NSString *)moduleName
                initialProperties:(nullable NSDictionary *)initialProperties NS_DESIGNATED_INITIALIZER;
+
+/// This sets a prop on the rootView, or sets a prop to be passed in on rootView initialization.
+- (void)setProperty:(id)value forKey:(NSString *)key;
 
 @end
 

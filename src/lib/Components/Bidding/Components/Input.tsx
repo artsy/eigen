@@ -20,9 +20,9 @@ export class Input extends Component<InputProps, InputState> {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.error) {
-      this.setState({ borderColor: "red100" })
-    }
+    this.setState({
+      borderColor: nextProps.error ? "red100" : "black10",
+    })
   }
 
   onBlur() {

@@ -14,7 +14,9 @@
 
 -->
 
-### Upcoming
+### Master
+
+### 1.5.2
 
 * Adds a checkbox to the confirm your bid screen - yuki24
 * Adds the ability to style the text in the inverted button with a spinner - yuki24
@@ -49,6 +51,7 @@
 * Adds a billing address screen - yuki24
 * Reflect style updates for the `<Checkbox>` component - yuki24
 * Load Real values into `BidResult` screen + reimplement `<MarkdownRenderer>` - sepans
+* Fixes an edge case where the border color of an `<Input>` component does not get updated properly - yuki24
 
 ### 1.5.0
 
@@ -60,6 +63,21 @@
 * Add persisted queries support to Relay - alloy
 * Add ability to preload queries - alloy
 * Adds BidFlow component and view controller - ashfurrow
+* Fixes crash when following an artist from the ‘related artist’ Home/ForYou rail - alloy
+
+### 1.4.9
+
+* Adds setProperty:forKey: to ARComponentViewController - ash&maxim
+* Add support for changing tabs of the home vc - maxim
+* Update home analytics for tab changes and inital tab props - maxim
+* Update switching for home tabs - ash&maxim
+
+### 1.4.8
+
+* Fixing broken previous deploy, no changes - alloy
+
+### 1.4.7
+
 * Fixes crash when following an artist from the ‘related artist’ Home/ForYou rail - alloy
 
 ### 1.4.6

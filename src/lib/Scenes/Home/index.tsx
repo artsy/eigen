@@ -24,7 +24,9 @@ const TabBarContainer = styled.View``
 interface Props {
   selectedArtist?: string
   selectedTab?: number
+  initialTab: number
   tracking: any
+  isVisible: boolean
 }
 
 interface State {
@@ -36,13 +38,27 @@ const ArtistsWorksForYouTab = 0
 const ForYouTab = 1
 const AuctionsTab = 2
 
+const screenSchemaForCurrentTab = currentSelectedTab => {
+  let screenType
+
+  if (currentSelectedTab === ArtistsWorksForYouTab) {
+    screenType = Schema.PageNames.HomeArtistsWorksForYou
+  } else if (currentSelectedTab === ForYouTab) {
+    screenType = Schema.PageNames.HomeForYou
+  } else if (currentSelectedTab === AuctionsTab) {
+    screenType = Schema.PageNames.HomeAuctions
+  }
+
+  return screenType
+}
+
 // This kills two birds with one stone:
 // It's necessary to wrap all tracks nested in this component, so they dispatch properly
 // Also, it'll only fire when the home screen is mounted, the only event we would otherwise miss with our own callbacks
-@screenTrack({
-  context_screen: Schema.PageNames.HomeArtistsWorksForYou,
+@screenTrack((props: Props) => ({
+  context_screen: screenSchemaForCurrentTab(props.initialTab),
   context_screen_owner_type: null,
-})
+}))
 export default class Home extends React.Component<Props, State> {
   tabView?: ScrollableTabView | any
 
@@ -51,7 +67,7 @@ export default class Home extends React.Component<Props, State> {
 
     this.state = {
       appState: AppState.currentState,
-      selectedTab: ArtistsWorksForYouTab, // default to the WorksForYou view
+      selectedTab: this.props.initialTab,
     }
   }
 
@@ -68,8 +84,12 @@ export default class Home extends React.Component<Props, State> {
   // This is called when the overall home component appears in Eigen
   // We use it to dispatch screen events at that point
   componentWillReceiveProps(newProps) {
-    if (newProps.isVisible) {
+    // Only if we weren't visible, but we are now, should we fire analytics for this.
+    if (newProps.isVisible && !this.props.isVisible) {
       this.fireHomeScreenViewAnalytics()
+    }
+    if (this.props.selectedTab !== newProps.selectedTab) {
+      this.setState({ selectedTab: newProps.selectedTab }, () => this.tabView.goToPage(this.state.selectedTab))
     }
   }
 
@@ -85,7 +105,7 @@ export default class Home extends React.Component<Props, State> {
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView
-          initialPage={this.props.selectedTab || ArtistsWorksForYouTab}
+          initialPage={this.props.initialTab || ArtistsWorksForYouTab}
           ref={tabView => (this.tabView = tabView)}
           onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
           renderTabBar={props => (
@@ -128,17 +148,8 @@ export default class Home extends React.Component<Props, State> {
   }
 
   fireHomeScreenViewAnalytics = () => {
-    let screenType
-
-    if (this.state.selectedTab === ArtistsWorksForYouTab) {
-      screenType = Schema.PageNames.HomeArtistsWorksForYou
-    } else if (this.state.selectedTab === ForYouTab) {
-      screenType = Schema.PageNames.HomeForYou
-    } else if (this.state.selectedTab === AuctionsTab) {
-      screenType = Schema.PageNames.HomeAuctions
-    }
     this.props.tracking.trackEvent({
-      context_screen: screenType,
+      context_screen: screenSchemaForCurrentTab(this.state.selectedTab),
       context_screen_owner_type: null,
     })
   }

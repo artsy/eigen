@@ -15,6 +15,8 @@ typedef enum ARHomeTabType {
 
 @property (nonatomic, strong, readonly) NSString *selectedArtist;
 
+- (void)changeHomeTabTo:(ARHomeTabType)tab;
+
 + (NSArray<ARGraphQLQuery *> *)preloadQueriesWithSelectedArtist:(nullable NSString *)artistID
                                                             tab:(ARHomeTabType)selectedTab;
 
