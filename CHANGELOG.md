@@ -49,6 +49,7 @@
 * Adds a billing address screen - yuki24
 * Reflect style updates for the `<Checkbox>` component - yuki24
 * Load Real values into `BidResult` screen + reimplement `<MarkdownRenderer>` - sepans
+* Fixes an edge case where the border color of an `<Input>` component does not get updated properly - yuki24
 
 ### 1.5.0
 
