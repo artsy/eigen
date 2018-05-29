@@ -63,6 +63,7 @@ PODS:
   - Bolts/AppLinks (1.9.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.9.0)
+  - boost-for-react-native (1.63.0)
   - CocoaLumberjack (2.0.1):
     - CocoaLumberjack/Default (= 2.0.1)
     - CocoaLumberjack/Extensions (= 2.0.1)
@@ -72,22 +73,26 @@ PODS:
   - CocoaLumberjack/Extensions (2.0.1):
     - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
+  - DoubleConversion (1.1.5)
   - EDColor (1.0.0)
-  - Emission (1.4.9):
+  - Emission (1.5.2):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
+    - DoubleConversion (= 1.1.5)
     - Extraction (>= 1.2.1)
-    - React/BatchedBridge (= 0.48.4)
-    - React/Core (= 0.48.4)
-    - React/RCTAnimation (= 0.48.4)
-    - React/RCTCameraRoll (= 0.48.4)
-    - React/RCTImage (= 0.48.4)
-    - React/RCTLinkingIOS (= 0.48.4)
-    - React/RCTNetwork (= 0.48.4)
-    - React/RCTText (= 0.48.4)
+    - Folly (= 2016.09.26.00)
+    - glog (= 0.3.4)
+    - React/Core (= 0.54.4)
+    - React/CxxBridge (= 0.54.4)
+    - React/RCTAnimation (= 0.54.4)
+    - React/RCTCameraRoll (= 0.54.4)
+    - React/RCTImage (= 0.54.4)
+    - React/RCTLinkingIOS (= 0.54.4)
+    - React/RCTNetwork (= 0.54.4)
+    - React/RCTText (= 0.54.4)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.30.3)
-    - Yoga (= 0.48.4.React)
+    - yoga (= 0.54.4.React)
   - Expecta (1.0.5)
   - "Expecta+Snapshots (3.0.0)":
     - Expecta (~> 1.0)
@@ -126,11 +131,16 @@ PODS:
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
   - FLKAutoLayout (1.0.0)
+  - Folly (2016.09.26.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - glog
   - Forgeries/Core (1.0.0)
   - Forgeries/Mocks (1.0.0):
     - Forgeries/Core
     - OCMock
   - FXBlurView (1.6.1)
+  - glog (0.3.4)
   - HockeySDK-Source (4.1.5)
   - Interstellar/Core (2.0.0)
   - iRate (1.10.2)
@@ -173,29 +183,37 @@ PODS:
   - ORStackView (2.0.3):
     - FLKAutoLayout
   - Quick (1.2.0)
-  - React (0.48.4):
-    - React/Core (= 0.48.4)
-  - React/BatchedBridge (0.48.4):
+  - React (0.54.4):
+    - React/Core (= 0.54.4)
+  - React/Core (0.54.4):
+    - yoga (= 0.54.4.React)
+  - React/CxxBridge (0.54.4):
+    - Folly (= 2016.09.26.00)
     - React/Core
-    - React/cxxreact_legacy
-  - React/Core (0.48.4):
-    - Yoga (= 0.48.4.React)
-  - React/cxxreact_legacy (0.48.4):
-    - React/jschelpers_legacy
-  - React/jschelpers_legacy (0.48.4)
-  - React/RCTAnimation (0.48.4):
+    - React/cxxreact
+  - React/cxxreact (0.54.4):
+    - boost-for-react-native (= 1.63.0)
+    - Folly (= 2016.09.26.00)
+    - React/jschelpers
+    - React/jsinspector
+  - React/jschelpers (0.54.4):
+    - Folly (= 2016.09.26.00)
+    - React/PrivateDatabase
+  - React/jsinspector (0.54.4)
+  - React/PrivateDatabase (0.54.4)
+  - React/RCTAnimation (0.54.4):
     - React/Core
-  - React/RCTCameraRoll (0.48.4):
+  - React/RCTCameraRoll (0.54.4):
     - React/Core
     - React/RCTImage
-  - React/RCTImage (0.48.4):
+  - React/RCTImage (0.54.4):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.48.4):
+  - React/RCTLinkingIOS (0.54.4):
     - React/Core
-  - React/RCTNetwork (0.48.4):
+  - React/RCTNetwork (0.54.4):
     - React/Core
-  - React/RCTText (0.48.4):
+  - React/RCTText (0.54.4):
     - React/Core
   - ReactiveCocoa (2.5):
     - ReactiveCocoa/UI (= 2.5)
@@ -228,7 +246,7 @@ PODS:
   - VCRURLConnection (0.2.0)
   - "XCTest+OHHTTPStubSuiteCleanUp (1.0.0)":
     - OHHTTPStubs
-  - Yoga (0.48.4.React)
+  - yoga (0.54.4.React)
 
 DEPENDENCIES:
   - Aerodramus
@@ -250,7 +268,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission (~> 1.4.6)
+  - Emission (~> 1.5.0)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -296,6 +314,7 @@ DEPENDENCIES:
   - "UIView+BooleanAnimations"
   - VCRURLConnection
   - "XCTest+OHHTTPStubSuiteCleanUp"
+  - yoga (from `https://raw.githubusercontent.com/artsy/emission/v1.5.2/externals/yoga/yoga.podspec.json`)
 
 SPEC REPOS:
   https://github.com/artsy/Specs.git:
@@ -308,7 +327,6 @@ SPEC REPOS:
     - Extraction
     - React
     - SentryReactNative
-    - Yoga
   https://github.com/cocoapods/specs.git:
     - Adjust
     - AFNetworkActivityLogger
@@ -316,15 +334,19 @@ SPEC REPOS:
     - Analytics
     - ARAnalytics
     - Bolts
+    - boost-for-react-native
     - DHCShakeNotifier
+    - DoubleConversion
     - EDColor
     - Expecta
     - "Expecta+Snapshots"
     - FBSDKCoreKit
     - FBSDKLoginKit
     - FBSnapshotTestCase
+    - Folly
     - Forgeries
     - FXBlurView
+    - glog
     - iRate
     - JSDecoupledAppDelegate
     - JWTDecode
@@ -387,6 +409,8 @@ EXTERNAL SOURCES:
   SSFadingScrollView:
     :branch: add-axial-support
     :git: https://github.com/alloy/SSFadingScrollView.git
+  yoga:
+    :podspec: https://raw.githubusercontent.com/artsy/emission/v1.5.2/externals/yoga/yoga.podspec.json
 
 CHECKOUT OPTIONS:
   AFOAuth1Client:
@@ -442,10 +466,12 @@ SPEC CHECKSUMS:
   "Artsy+UILabels": 7cb6e290a4f70dddba037b7dbeb21e90b49d7275
   Artsy-UIButtons: db125dcd964bb8d2eaac0828a4538467d9526bf2
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
+  boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
+  DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: e111efb4d128656160df73fc75c3b34c2d4f58d0
+  Emission: d13b673c127fc968e7a9ade570407230f9ee37ca
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
@@ -453,8 +479,10 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: 88cb456349cfb3b554427ce4f8b43729d85dfb40
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
+  Folly: 211775e49d8da0ca658aebc8eab89d642935755c
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
+  glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
   HockeySDK-Source: ab4eef2ac5c07c45db5844ae724bf6f06199b214
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
@@ -479,7 +507,7 @@ SPEC CHECKSUMS:
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
-  React: 6d68659481a8a56e0f6b3dbecd984d5b9bb2d6c5
+  React: e8b3cf60f93a0e64045862a003c1bf9408098cff
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
@@ -494,8 +522,8 @@ SPEC CHECKSUMS:
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
-  Yoga: 2efb0a2b24e5c17cf1aea8c785d4428bd077f667
+  yoga: de8782b10b9fdede33554bcad8a2a6653e0ebb30
 
-PODFILE CHECKSUM: 7505628644ddd3a8f51f8888ebdce8a0759df567
+PODFILE CHECKSUM: a0c79c1dea94ed4796d6385f79a25534da8e84cc
 
 COCOAPODS: 1.5.3

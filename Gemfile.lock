@@ -69,7 +69,8 @@ GEM
       fuzzy_match (~> 2.0.4)
       nap (~> 1.0)
     cocoapods-deintegrate (1.0.2)
-    cocoapods-downloader (1.2.1)
+    cocoapods-downloader (1.2.0)
+    cocoapods-fix-react-native (2018.04.17.13)
     cocoapods-keys (1.6.1)
       dotenv
       osx_keychain
@@ -267,6 +268,7 @@ PLATFORMS
 DEPENDENCIES
   cocoapods
   cocoapods-check
+  cocoapods-fix-react-native
   cocoapods-keys
   danger
   lowdown
@@ -277,4 +279,4 @@ DEPENDENCIES
   xcpretty
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
