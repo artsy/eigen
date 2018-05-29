@@ -53,7 +53,7 @@ PODS:
   - "Artsy+UILabels (2.2.0)":
     - "Artsy+UIColors (~> 3.0)"
     - "Artsy+UIFonts"
-  - Artsy-UIButtons (2.1.0):
+  - Artsy-UIButtons (2.2.0):
     - "Artsy+UIColors (~> 3.0)"
     - "Artsy+UIFonts"
     - "UIView+BooleanAnimations"
@@ -309,7 +309,7 @@ SPEC REPOS:
     - React
     - SentryReactNative
     - Yoga
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - Adjust
     - AFNetworkActivityLogger
     - AFNetworking
@@ -440,7 +440,7 @@ SPEC CHECKSUMS:
   "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   "Artsy+UIFonts": d29579aa105e3709032651fb3145d24f8339e905
   "Artsy+UILabels": 7cb6e290a4f70dddba037b7dbeb21e90b49d7275
-  Artsy-UIButtons: cdcc3ccf4d0d31ee80f45c1d11ffd2d772695b74
+  Artsy-UIButtons: db125dcd964bb8d2eaac0828a4538467d9526bf2
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
@@ -498,4 +498,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 7505628644ddd3a8f51f8888ebdce8a0759df567
 
-COCOAPODS: 1.5.0.beta.1
+COCOAPODS: 1.5.3
