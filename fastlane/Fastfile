@@ -26,7 +26,8 @@ lane :ship_beta do
 
   upcoming = readme_data['upcoming']
   commit = `git log -n1 --format='%h'`.strip
-  beta_readme = "## #{upcoming['version']} - #{commit} \n\n - #{upcoming['user_facing'].join "\n - "} \n\n"
+  notes = upcoming['user_facing'] || []
+  beta_readme = "## #{upcoming['version']} - #{commit} \n\n - #{notes.join "\n - "} \n\n"
 
   # Make sure the stickers app is up to date in it's plist
   `/usr/libexec/PlistBuddy -c "Set CFBundleVersion #{latest_version}" Artsy\ Stickers/Info.plist`
@@ -37,30 +38,21 @@ lane :ship_beta do
   disable_automatic_code_signing(
     path: 'Artsy.xcodeproj',
     team_id: '23KMWZ572J',
-    targets: ["Artsy"],
-    profile_name: "match AppStore net.artsy.artsy"
+    targets: ['Artsy'],
+    profile_name: 'match AppStore net.artsy.artsy'
   )
   disable_automatic_code_signing(
     path: 'Artsy.xcodeproj',
     team_id: '23KMWZ572J',
-    targets: ["Artsy Stickers"],
-    profile_name: "match AppStore net.artsy.artsy.Artsy-Stickers"
+    targets: ['Artsy Stickers'],
+    profile_name: 'match AppStore net.artsy.artsy.Artsy-Stickers'
   )
 
   build_ios_app(configuration: 'Store')
 
-  # Find out how many builds we've sent for this version
-  # if it's zero, it will raise an exception
-  build_version = 0
-  begin
-    train = app.build_trains[latest_version]
-    build_version = train.builds.count + 1
-  rescue
-  end
-
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for circle is read-only
-  tag = "#{latest_version}-#{build_version}"
+  tag = "#{latest_version}-#{latest_testflight_build_number}"
   `git tag -d "#{tag}"`
 
   add_git_tag tag: tag
@@ -75,57 +67,55 @@ lane :ship_beta do
   dsyms_path = File.join(root, 'dSYMs')
   sh "unzip -d #{dsyms_path} #{dsym_archive}"
 
-  # sentry = lambda do |project_slug|
-  #   org_slug = 'artsynet'
+  upload_to_sentry = lambda do |project_slug|
+    org_slug = 'artsynet'
+    sentry_create_release auth_token: ENV['SentryUploadAuthKey'],
+                          org_slug: org_slug,
+                          project_slug: project_slug,
+                          version: sentry_version,
+                          finalize: false
+    puts "Created a release for #{project_slug}"
+  
+    Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
+      # No need to specify `dist` as the build number is encoded in the dSYM’s Info.plist
+      sentry_upload_dsym auth_token: ENV['SentryUploadAuthKey'],
+                         org_slug: org_slug,
+                         project_slug: project_slug,
+                         dsym_path: dsym_path
+                         puts "Uploaded dsym for #{project_slug}"
+    end
 
-  #   sentry_create_release auth_token: ENV['SentryUploadAuthKey'],
-  #                         org_slug: org_slug,
-  #                         project_slug: project_slug,
-  #                         version: sentry_version,
-  #                         finalize: false
-  #   puts "Created a release for #{project_slug}"
+    begin
+      sentry_upload_file auth_token: ENV['SentryUploadAuthKey'],
+      org_slug: org_slug,
+      project_slug: project_slug,
+      version: sentry_version,
+      dist: sentry_dist,
+      file: 'Pods/Emission/Pod/Assets/Emission.js'
+      puts "Uploaded Emission.js for #{project_slug}"
 
-  #   Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
-  #     # No need to specify `dist` as the build number is encoded in the dSYM’s Info.plist
-  #     sentry_upload_dsym auth_token: ENV['SentryUploadAuthKey'],
-  #                        org_slug: org_slug,
-  #                        project_slug: project_slug,
-  #                        dsym_path: dsym_path
-  #   end
+      sentry_upload_sourcemap auth_token: ENV['SentryUploadAuthKey'],
+      org_slug: org_slug,
+      project_slug: project_slug,
+      version: sentry_version,
+      dist: sentry_dist,
+      sourcemap: 'Pods/Emission/Pod/Assets/Emission.js.map',
+      rewrite: true
+      puts "Uploaded Emission.js.map for #{project_slug}"
 
-  #   puts "Uploaded dsym for #{project_slug}"
-
-  #   sentry_upload_file auth_token: ENV['SentryUploadAuthKey'],
-  #                      org_slug: org_slug,
-  #                      project_slug: project_slug,
-  #                      version: sentry_version,
-  #                      dist: sentry_dist,
-  #                      file: 'Pods/Emission/Pod/Assets/Emission.js'
-  #   puts "Uploaded Emission.js for #{project_slug}"
-
-  #   sentry_upload_sourcemap auth_token: ENV['SentryUploadAuthKey'],
-  #                           org_slug: org_slug,
-  #                           project_slug: project_slug,
-  #                           version: sentry_version,
-  #                           dist: sentry_dist,
-  #                           sourcemap: 'Pods/Emission/Pod/Assets/Emission.js.map',
-  #                           rewrite: true
-  #   puts "Uploaded Emission.js.map for #{project_slug}"
-  # end
-
-  # sentry.call('eigen')
-  # sentry.call("eigen-staging")
-
-  # Make dSYM archive available in case we failed to put them in the right place in Sentry.
-  # FileUtils.mv(dsym_archive, ENV['CIRCLE_ARTIFACTS'])
-
-  # # Send to the app store
-  pilot changelog: beta_readme, itc_provider: 'ArtsyInc'
-
-end
-
-error do |_, exception|
-  File.open(File.join(".", 'fastlane-error.txt'), 'w') do |file|
-    file.puts("#{exception.message}\n\t#{exception.backtrace.join("\n\t")}")
+    rescue => exception
+      puts "Uploading the JS to sentry failed, this usually only happens when you are shipping many builds to sentry"
+      puts exception.message
+      puts exception.backtrace.join("\n\t")
+    end
   end
+
+  upload_to_sentry.call('eigen')
+  # We get "file already present" when trying to upload this for staging
+  # https://circleci.com/gh/artsy/eigen/5274
+  #
+  # upload_to_sentry.call('eigen-staging')
+
+  # Send to the app store
+  pilot changelog: beta_readme, itc_provider: 'ArtsyInc'
 end

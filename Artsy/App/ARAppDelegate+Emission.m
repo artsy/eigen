@@ -94,13 +94,15 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
     NSString *gravity = [[ARRouter baseApiURL] absoluteString];
     NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
+
+
     AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
-                                                                  authenticationToken:authenticationToken
-                                                                            sentryDSN:sentryDSN
-                                                                     googleMapsAPIKey:[keys googleMapsAPIKey]
-                                                                          gravityHost:gravity
-                                                                      metaphysicsHost:metaphysics
-                                                                            userAgent:ARRouter.userAgent];
+                                                                      authenticationToken:authenticationToken
+                                                                                sentryDSN:sentryDSN
+                                                                         googleMapsAPIKey:[keys googleMapsAPIKey]
+                                                                               gravityURL:gravity
+                                                                           metaphysicsURL:metaphysics
+                                                                                userAgent:ARRouter.userAgent];
 
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:packagerURL];
     [AREmission setSharedInstance:emission];

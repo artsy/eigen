@@ -1,7 +1,7 @@
 @import UIKit;
 @class ARAugmentedRealityConfig;
 
-#import "ARAugmentedVIRInteractionController.h"
+#import "ARVIRVerticalWallInteractionController.h"
 
 /**
  A view controller which handles interacting with an VIRInteractionController to

@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'cocoapods', git: 'https://github.com/CocoaPods/CocoaPods.git'
-gem 'cocoapods-core', git: 'https://github.com/CocoaPods/Core.git'
+gem 'cocoapods'
 
 # So we know if we need to run `pod install`
-gem 'cocoapods-check',  git: 'https://github.com/square/cocoapods-check.git'
+gem 'cocoapods-check'
 gem 'cocoapods-keys' # So we don't leak ENV vars
+gem "cocoapods-fix-react-native"
 gem 'psych' # So our Podfile.lock is consistent
 
 group :development do

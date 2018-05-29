@@ -1,10 +1,10 @@
 @class ARSCNView, SCNScene;
 
 #import "ARDefaults.h"
-#import "ARAugmentedVIRViewController.h"
+#import "ARAugmentedFloorBasedVIRViewController.h"
 
 API_AVAILABLE(ios(11.0))
-@interface ARAugmentedVIRViewController ()
+@interface ARAugmentedFloorBasedVIRViewController ()
 @property (nonatomic, strong) ARSCNView *sceneView;
 @end
 
@@ -40,13 +40,13 @@ SpecBegin(ARAugmentedVIRViewController);
 if (@available(iOS 11.3, *)) {
 
 it(@"defaults to showing info",^{
-    ARAugmentedVIRViewController *vc = [[ARAugmentedVIRViewController alloc] initWithConfig:nil];
+    ARAugmentedFloorBasedVIRViewController *vc = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:nil];
     vc.sceneView = (id)[[FakeSceneView alloc] init];
     expect(vc).to.haveValidSnapshot();
 });
 
 it(@"shows the right info when a wall is registered",^{
-    ARAugmentedVIRViewController *vc = [[ARAugmentedVIRViewController alloc] initWithConfig:nil];
+    ARAugmentedFloorBasedVIRViewController *vc = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:nil];
     vc.sceneView = (id)[[FakeSceneView alloc] init];
     [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
     [vc hasRegisteredPlanes];
@@ -55,7 +55,7 @@ it(@"shows the right info when a wall is registered",^{
 });
 
 it(@"shows the right info when an artwork was placed",^{
-    ARAugmentedVIRViewController *vc = [[ARAugmentedVIRViewController alloc] initWithConfig:nil];
+    ARAugmentedFloorBasedVIRViewController *vc = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:nil];
     vc.sceneView = (id)[[FakeSceneView alloc] init];
     [vc ar_presentWithFrame:[UIScreen mainScreen].bounds];
     [vc hasPlacedArtwork];

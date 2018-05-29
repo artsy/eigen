@@ -1,43 +1,3 @@
-GIT
-  remote: https://github.com/CocoaPods/CocoaPods.git
-  revision: 377d9cdf4b542e7762fe833e01817a9e423edb34
-  specs:
-    cocoapods (1.5.0.beta.1)
-      activesupport (>= 4.0.2, < 5)
-      claide (>= 1.0.2, < 2.0)
-      cocoapods-core (= 1.5.0.beta.1)
-      cocoapods-deintegrate (>= 1.0.2, < 2.0)
-      cocoapods-downloader (>= 1.1.3, < 2.0)
-      cocoapods-plugins (>= 1.0.0, < 2.0)
-      cocoapods-search (>= 1.0.0, < 2.0)
-      cocoapods-stats (>= 1.0.0, < 2.0)
-      cocoapods-trunk (>= 1.3.0, < 2.0)
-      cocoapods-try (>= 1.1.0, < 2.0)
-      colored2 (~> 3.1)
-      escape (~> 0.0.4)
-      fourflusher (~> 2.0.1)
-      gh_inspector (~> 1.0)
-      molinillo (~> 0.6.5)
-      nap (~> 1.0)
-      ruby-macho (~> 1.1)
-      xcodeproj (>= 1.5.7, < 2.0)
-
-GIT
-  remote: https://github.com/CocoaPods/Core.git
-  revision: 1738fe598fef20b93001a1a08025ce00f0fc2cec
-  specs:
-    cocoapods-core (1.5.0.beta.1)
-      activesupport (>= 4.0.2, < 6)
-      fuzzy_match (~> 2.0.4)
-      nap (~> 1.0)
-
-GIT
-  remote: https://github.com/square/cocoapods-check.git
-  revision: 3fa1ea89e08a1e678a5c80c9f1beeb73ad1075bc
-  specs:
-    cocoapods-check (1.0.1)
-      cocoapods (~> 1.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -83,8 +43,34 @@ GEM
       cork
       nap
       open4 (~> 1.3)
+    cocoapods (1.5.3)
+      activesupport (>= 4.0.2, < 5)
+      claide (>= 1.0.2, < 2.0)
+      cocoapods-core (= 1.5.3)
+      cocoapods-deintegrate (>= 1.0.2, < 2.0)
+      cocoapods-downloader (>= 1.2.0, < 2.0)
+      cocoapods-plugins (>= 1.0.0, < 2.0)
+      cocoapods-search (>= 1.0.0, < 2.0)
+      cocoapods-stats (>= 1.0.0, < 2.0)
+      cocoapods-trunk (>= 1.3.0, < 2.0)
+      cocoapods-try (>= 1.1.0, < 2.0)
+      colored2 (~> 3.1)
+      escape (~> 0.0.4)
+      fourflusher (~> 2.0.1)
+      gh_inspector (~> 1.0)
+      molinillo (~> 0.6.5)
+      nap (~> 1.0)
+      ruby-macho (~> 1.1)
+      xcodeproj (>= 1.5.7, < 2.0)
+    cocoapods-check (1.0.2)
+      cocoapods (~> 1.0)
+    cocoapods-core (1.5.3)
+      activesupport (>= 4.0.2, < 6)
+      fuzzy_match (~> 2.0.4)
+      nap (~> 1.0)
     cocoapods-deintegrate (1.0.2)
-    cocoapods-downloader (1.1.3)
+    cocoapods-downloader (1.2.0)
+    cocoapods-fix-react-native (2018.04.17.13)
     cocoapods-keys (1.6.1)
       dotenv
       osx_keychain
@@ -213,7 +199,7 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     mustache (0.99.8)
-    nanaimo (0.2.4)
+    nanaimo (0.2.5)
     nap (1.1.0)
     netrc (0.11.0)
     nio4r (1.2.1)
@@ -265,12 +251,12 @@ GEM
     xcode-install (2.3.1)
       claide (>= 0.9.1, < 1.1.0)
       fastlane (>= 2.1.0, < 3.0.0)
-    xcodeproj (1.5.7)
+    xcodeproj (1.5.9)
       CFPropertyList (>= 2.3.3, < 4.0)
       atomos (~> 0.1.2)
       claide (>= 1.0.2, < 2.0)
       colored2 (~> 3.1)
-      nanaimo (~> 0.2.4)
+      nanaimo (~> 0.2.5)
     xcpretty (0.2.4)
       rouge (~> 1.8)
     xcpretty-travis-formatter (1.0.0)
@@ -280,9 +266,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cocoapods!
-  cocoapods-check!
-  cocoapods-core!
+  cocoapods
+  cocoapods-check
+  cocoapods-fix-react-native
   cocoapods-keys
   danger
   lowdown
@@ -293,4 +279,4 @@ DEPENDENCIES
   xcpretty
 
 BUNDLED WITH
-   1.16.1
+   1.16.2

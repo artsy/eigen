@@ -55,7 +55,7 @@
 #import "ARSentryAnalyticsProvider.h"
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRSetupViewController.h"
-#import "ARAugmentedVIRViewController.h"
+#import "ARAugmentedFloorBasedVIRViewController.h"
 
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARArtistComponentViewController.h>
@@ -77,6 +77,8 @@
 // Models
 #import "ARFairFavoritesNetworkModel+Private.h"
 #import <Keys/ArtsyKeys.h>
+
+#import <Sentry/SentryClient.h>
 
 // Note the Eigen Schema:
 // https://docs.google.com/spreadsheets/u/1/d/1bLbeOgVFaWzLSjxLOBDNOKs757-zBGoLSM1lIz3OPiI/edit#gid=497747862
@@ -935,12 +937,12 @@
                     ]
                 },
                    @{
-                    ARAnalyticsClass: ARAugmentedVIRViewController.class,
+                    ARAnalyticsClass: ARAugmentedFloorBasedVIRViewController.class,
                     ARAnalyticsDetails: @[
                         @{
                             ARAnalyticsEventName: @"success",
                             ARAnalyticsSelectorName: ARAnalyticsSelector(hasRegisteredPlanes),
-                            ARAnalyticsProperties: ^NSDictionary *(ARAugmentedVIRViewController *controller, NSArray *parameters) {
+                            ARAnalyticsProperties: ^NSDictionary *(ARAugmentedFloorBasedVIRViewController *controller, NSArray *parameters) {
                                 return @{
                                     @"action_name" : @"arDetectedPlanes",
                                     @"owner_type" : @"artwork",
@@ -952,7 +954,7 @@
                         @{
                             ARAnalyticsEventName: @"success",
                             ARAnalyticsSelectorName: ARAnalyticsSelector(hasPlacedArtwork),
-                            ARAnalyticsProperties: ^NSDictionary *(ARAugmentedVIRViewController *controller, NSArray *parameters) {
+                            ARAnalyticsProperties: ^NSDictionary *(ARAugmentedFloorBasedVIRViewController *controller, NSArray *parameters) {
                                 return @{
                                     @"action_name" : @"arPlacedArtwork",
                                     @"owner_type" : @"artwork",
@@ -964,7 +966,7 @@
                         @{
                             ARAnalyticsEventName: @"ar_view_in_room_time",
                             ARAnalyticsSelectorName: ARAnalyticsSelector(exitARContext),
-                            ARAnalyticsProperties: ^NSDictionary *(ARAugmentedVIRViewController *controller, NSArray *parameters) {
+                            ARAnalyticsProperties: ^NSDictionary *(ARAugmentedFloorBasedVIRViewController *controller, NSArray *parameters) {
                                 return @{
                                     @"length" : @([controller timeInAR])
                                 };
@@ -1246,7 +1248,7 @@
                     ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"AR Allow Camera Access" } ]
                 },
                 @{
-                    ARAnalyticsClass: ARAugmentedVIRViewController.class,
+                    ARAnalyticsClass: ARAugmentedFloorBasedVIRViewController.class,
                     ARAnalyticsDetails: @[ @{ ARAnalyticsPageName: @"AR View in Room" } ]
                 },
             ]

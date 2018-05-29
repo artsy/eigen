@@ -29,5 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 /** Optional Slug for an Artwork being represented */
 @property (nonatomic, copy) NSString *artworkSlug;
 
+/** Should we use a floor based wall finder for the Artwork */
+@property (nonatomic, assign) BOOL floorBasedVIR;
+
 NS_ASSUME_NONNULL_END
 @end
