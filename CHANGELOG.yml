@@ -1,16 +1,22 @@
 upcoming:
-  version: 4.1.3
+  version: 4.2.0
   date: TBA
-  emission_version: 1.4.9
+  emission_version: 1.5.2
   user_facing:
-    - Add push notification support for /auctions - maxim
-    - Adds a new ARVIR behind a feature flag - orta
-    - Updates the type on the setup page for AR - orta
-  admin:
-    - Adds an admin button to trigger getting notifications - orta
-    - Adds ability to see admin screen when logged in as non-admins via URL - ash
+    - Adds a round corner to all native buttons - orta
 
 releases:
+  - version: 4.1.3
+    date: May 25, 2018
+    emission_version: 1.4.9
+    user_facing:
+      - Add push notification support for /auctions - maxim
+      - Adds a new ARVIR behind a feature flag - orta
+      - Updates the type on the setup page for AR - orta
+    admin:
+      - Adds an admin button to trigger getting notifications - orta
+      - Adds ability to see admin screen when logged in as non-admins via URL - ash
+
   - version: 4.1.2
     date: May 22, 2018
     emission_version: 1.4.8
