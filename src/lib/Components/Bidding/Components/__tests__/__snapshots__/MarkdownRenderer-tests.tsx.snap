@@ -1,0 +1,125 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Markdown parser renders multiple paragraphs 1`] = `
+<View>
+  <View
+    flexDirection="row"
+    justifyContent="space-between"
+    style={
+      Array [
+        Object {},
+        Object {
+          "flexDirection": "row",
+        },
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+    >
+      paragraph 1 has some text
+    </Text>
+  </View>
+  <View
+    flexDirection="row"
+    justifyContent="space-between"
+    style={
+      Array [
+        Object {},
+        Object {
+          "flexDirection": "row",
+        },
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+    >
+      paragraph 2 also has text
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Markdown parser renders text 1`] = `
+<View>
+  <View
+    flexDirection="row"
+    justifyContent="space-between"
+    style={
+      Array [
+        Object {},
+        Object {
+          "flexDirection": "row",
+        },
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+    >
+      text without link
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Markdown parser renders text with link 1`] = `
+<View>
+  <View
+    flexDirection="row"
+    justifyContent="space-between"
+    style={
+      Array [
+        Object {},
+        Object {
+          "flexDirection": "row",
+        },
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+    >
+      text with some 
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Array [
+          Object {
+            "textDecorationLine": "underline",
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+      >
+        link
+      </Text>
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+    >
+       in it
+    </Text>
+  </View>
+</View>
+`;

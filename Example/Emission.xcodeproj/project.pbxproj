@@ -15,6 +15,9 @@
 		510DCB361CCA69EC0075E8CB /* EmissionUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB351CCA69EC0075E8CB /* EmissionUITests.m */; };
 		510E94FD1CCA828900BDF098 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 510E94FB1CCA828900BDF098 /* LaunchScreen.xib */; };
 		510E95141CCEB84F00BDF098 /* TestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 510E95131CCEB84F00BDF098 /* TestHelper.m */; };
+		515687BE2079A300002F365C /* ARAdminPreloadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 515687BD2079A300002F365C /* ARAdminPreloadTableViewCell.m */; };
+		515926A8206BA0C000048C74 /* complete.queryMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 515926A7206BA0C000048C74 /* complete.queryMap.json */; };
+		515926AE206CF8BA00048C74 /* UITabBarDownloadsTemplate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 515926AD206CF8B900048C74 /* UITabBarDownloadsTemplate@2x.png */; };
 		51F3E9A41CF3B8A4004A2013 /* EigenLikeNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51F3E9A31CF3B8A4004A2013 /* EigenLikeNavigationController.m */; };
 		6011C23B1DAF5DD900CE54E5 /* ARRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C23A1DAF5DD900CE54E5 /* ARRootViewController.m */; };
 		6011C2451DAF61AF00CE54E5 /* ARAdminTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C23E1DAF61AF00CE54E5 /* ARAdminTableViewCell.m */; };
@@ -76,6 +79,10 @@
 		510E94FC1CCA828900BDF098 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		510E95131CCEB84F00BDF098 /* TestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestHelper.m; sourceTree = "<group>"; };
 		510E95151CCEC22C00BDF098 /* TestHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestHelper.h; sourceTree = "<group>"; };
+		515687BC2079A300002F365C /* ARAdminPreloadTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAdminPreloadTableViewCell.h; sourceTree = "<group>"; };
+		515687BD2079A300002F365C /* ARAdminPreloadTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAdminPreloadTableViewCell.m; sourceTree = "<group>"; };
+		515926A7206BA0C000048C74 /* complete.queryMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = complete.queryMap.json; path = ../../src/__generated__/complete.queryMap.json; sourceTree = "<group>"; };
+		515926AD206CF8B900048C74 /* UITabBarDownloadsTemplate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UITabBarDownloadsTemplate@2x.png"; sourceTree = "<group>"; };
 		51F3E9A21CF3B8A4004A2013 /* EigenLikeNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EigenLikeNavigationController.h; sourceTree = "<group>"; };
 		51F3E9A31CF3B8A4004A2013 /* EigenLikeNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EigenLikeNavigationController.m; sourceTree = "<group>"; };
 		6011C2391DAF5DD900CE54E5 /* ARRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRootViewController.h; sourceTree = "<group>"; };
@@ -157,6 +164,7 @@
 		510DCB0F1CCA69EC0075E8CB /* Emission */ = {
 			isa = PBXGroup;
 			children = (
+				515926AC206CF8B900048C74 /* Resources */,
 				60F61A881DAF849700A72101 /* App */,
 				60AEE79D1ECC620F008058E3 /* Categories */,
 				60F61A871DAF848E00A72101 /* View Controllers */,
@@ -200,6 +208,15 @@
 			path = EmissionUITests;
 			sourceTree = "<group>";
 		};
+		515926AC206CF8B900048C74 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				515926A7206BA0C000048C74 /* complete.queryMap.json */,
+				515926AD206CF8B900048C74 /* UITabBarDownloadsTemplate@2x.png */,
+			);
+			path = Resources;
+			sourceTree = SOURCE_ROOT;
+		};
 		6011C23C1DAF619700CE54E5 /* Admin Tableview Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -211,6 +228,8 @@
 				6011C2421DAF61AF00CE54E5 /* ARAnimatedTickView.m */,
 				6011C24C1DAF697B00CE54E5 /* EigenLikeAdminViewController.h */,
 				6011C24D1DAF697B00CE54E5 /* EigenLikeAdminViewController.m */,
+				515687BC2079A300002F365C /* ARAdminPreloadTableViewCell.h */,
+				515687BD2079A300002F365C /* ARAdminPreloadTableViewCell.m */,
 			);
 			name = "Admin Tableview Cells";
 			sourceTree = "<group>";
@@ -427,7 +446,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = CocoaPods;
 				TargetAttributes = {
 					510DCB0D1CCA69EC0075E8CB = {
@@ -478,7 +497,9 @@
 			files = (
 				510E94FD1CCA828900BDF098 /* LaunchScreen.xib in Resources */,
 				6011C2561DAF835900CE54E5 /* logo@2x.png in Resources */,
+				515926A8206BA0C000048C74 /* complete.queryMap.json in Resources */,
 				60A1A77F1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png in Resources */,
+				515926AE206CF8BA00048C74 /* UITabBarDownloadsTemplate@2x.png in Resources */,
 				60A1A7801DA3A23C005E3357 /* BackArrowBlack@2x.png in Resources */,
 				510DCB1D1CCA69EC0075E8CB /* Assets.xcassets in Resources */,
 				60A1A77E1DA3A23C005E3357 /* BackArrow@2x.png in Resources */,
@@ -573,7 +594,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ \"$CONFIGURATION\" = \"Release\" ]\nthen\ncd .. && npm run bundle\nfi";
+			shellScript = "if [ \"$CONFIGURATION\" = \"Release\" ]\nthen\nexport NVM_DIR=\"$HOME/.nvm\"\n[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"\ncd .. && nvm use && npm run bundle\nfi";
 			showEnvVarsInLog = 0;
 		};
 		5157C2E92018C82400DE6B07 /* Record Packager Host IP for Debug */ = {
@@ -637,6 +658,7 @@
 				60B743B71D3EB12600E6B2A3 /* ARStorybookComponentViewController.m in Sources */,
 				51F3E9A41CF3B8A4004A2013 /* EigenLikeNavigationController.m in Sources */,
 				60DA49AB1EE7D219001FE871 /* EmissionPRChooseViewController.m in Sources */,
+				515687BE2079A300002F365C /* ARAdminPreloadTableViewCell.m in Sources */,
 				6011C2461DAF61AF00CE54E5 /* ARTickedTableViewCell.m in Sources */,
 				60AE1D801EE7DF9C00FC800A /* PRNetworkModel.m in Sources */,
 				60E4ABF71EE7D85000E8C3B1 /* LoadingSpinner.m in Sources */,
@@ -820,12 +842,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -873,12 +897,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -918,12 +944,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

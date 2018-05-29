@@ -7,6 +7,8 @@
 #import "ARTakeCameraPhotoModule.h"
 #import "ARNotificationsManager.h"
 #import "ARCocoaConstantsModule.h"
+#import "ARGraphQLQueryPreloader.h"
+#import "ARGraphQLQueryCache.h"
 
 #import <SentryReactNative/RNSentry.h>
 
@@ -14,14 +16,19 @@
 
 RCT_EXPORT_MODULE(Emission);
 
++ (BOOL)requiresMainQueueSetup;
+{
+    return NO;
+}
+
 - (NSDictionary *)constantsToExport
 {
   return @{
     @"userID": self.userID,
     @"authenticationToken": self.authenticationToken,
 
-    @"gravityAPIHost": self.gravityAPIHost,
-    @"metaphysicsAPIHost": self.metaphysicsAPIHost,
+    @"gravityURL": self.gravityURL,
+    @"metaphysicsURL": self.metaphysicsURL,
 
     // Empty is falsy in JS, so these are fine too.
     @"googleMapsAPIKey": self.googleMapsAPIKey ?: @"",
@@ -35,8 +42,8 @@ RCT_EXPORT_MODULE(Emission);
            authenticationToken:(NSString *)token
                      sentryDSN:(NSString *)sentryDSN
               googleMapsAPIKey:(NSString *)googleAPIKey
-                   gravityHost:(NSString *)gravity
-               metaphysicsHost:(NSString *)metaphysics
+                    gravityURL:(NSString *)gravity
+                metaphysicsURL:(NSString *)metaphysics
                      userAgent:(nonnull NSString *)userAgent
 {
     self = [super init];
@@ -44,8 +51,8 @@ RCT_EXPORT_MODULE(Emission);
     _authenticationToken = token.copy;
     _sentryDSN = sentryDSN.copy;
     _googleMapsAPIKey = googleAPIKey.copy;
-    _gravityAPIHost = gravity.copy;
-    _metaphysicsAPIHost = metaphysics.copy;
+    _gravityURL = gravity.copy;
+    _metaphysicsURL = metaphysics.copy;
     _userAgent = userAgent.copy;
     return self;
 }
@@ -73,8 +80,8 @@ static AREmission *_sharedInstance = nil;
   NSParameterAssert(config);
   NSParameterAssert(config.userID);
   NSParameterAssert(config.authenticationToken);
-  NSParameterAssert(config.gravityAPIHost);
-  NSParameterAssert(config.metaphysicsAPIHost);
+  NSParameterAssert(config.gravityURL);
+  NSParameterAssert(config.metaphysicsURL);
 
   if ((self = [super init])) {
     // When adding a new native module, remember to add it
@@ -86,6 +93,9 @@ static AREmission *_sharedInstance = nil;
     _worksForYouModule = [ARWorksForYouModule new];
     _cameraModule = [ARTakeCameraPhotoModule new];
     _notificationsManagerModule = [ARNotificationsManager new];
+    _graphQLQueryCacheModule = [ARGraphQLQueryCache new];
+    _graphQLQueryPreloaderModule = [[ARGraphQLQueryPreloader alloc] initWithConfiguration:config
+                                                                                    cache:_graphQLQueryCacheModule];
 
     _configurationModule = config;
 
@@ -98,6 +108,8 @@ static AREmission *_sharedInstance = nil;
         _worksForYouModule,
         _cameraModule,
         _notificationsManagerModule,
+        _graphQLQueryPreloaderModule,
+        _graphQLQueryCacheModule,
         [ARCocoaConstantsModule new],
     ];
 

@@ -95,7 +95,6 @@ exports[`renders correctly with a show 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -166,7 +165,6 @@ exports[`renders correctly with a show 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
@@ -186,7 +184,6 @@ exports[`renders correctly with a show 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             style={
               Array [
@@ -206,7 +203,6 @@ exports[`renders correctly with a show 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={
@@ -228,7 +224,6 @@ exports[`renders correctly with a show 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [
@@ -359,7 +354,6 @@ exports[`renders correctly with an artwork 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [
@@ -430,7 +424,6 @@ exports[`renders correctly with an artwork 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
@@ -450,7 +443,6 @@ exports[`renders correctly with an artwork 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             style={
               Array [
@@ -468,7 +460,6 @@ exports[`renders correctly with an artwork 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             style={
               Array [
@@ -491,7 +482,6 @@ exports[`renders correctly with an artwork 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             style={
               Array [
@@ -511,7 +501,6 @@ exports[`renders correctly with an artwork 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={
@@ -533,7 +522,6 @@ exports[`renders correctly with an artwork 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         style={
           Array [

@@ -5,6 +5,7 @@ import Consignments from "./Components/Consignments"
 import Containers from "./Containers/index"
 import {
   ArtistRenderer,
+  BidFlowRenderer,
   ConversationRenderer,
   GeneRenderer,
   InboxRenderer,
@@ -87,6 +88,13 @@ const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(prop
 
 const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoadProgress(Containers.MyProfile)} />
 
+interface BidFlowProps {
+  saleArtworkID: string
+}
+const BidFlow: React.SFC<BidFlowProps> = props => (
+  <BidFlowRenderer {...props} render={renderWithLoadProgress(Containers.BidFlow)} />
+)
+
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Home", () => HomeScene)
@@ -99,3 +107,4 @@ AppRegistry.registerComponent("Inbox", () => Inbox)
 AppRegistry.registerComponent("Conversation", () => Conversation)
 AppRegistry.registerComponent("Inquiry", () => Inquiry)
 AppRegistry.registerComponent("Favorites", () => FavoritesScene)
+AppRegistry.registerComponent("BidFlow", () => BidFlow)

@@ -1,5 +1,7 @@
 #import <Emission/ARComponentViewController.h>
 
+@class ARGraphQLQuery;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -7,6 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
  *           otherwise the ZeroInboxState may not be updated to reveal bids/messages.
  */
 @interface ARInboxComponentViewController : ARComponentViewController
+
++ (NSArray<ARGraphQLQuery *> *)preloadQueries;
 
 - (instancetype)initWithInbox;
 

@@ -2,7 +2,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBridgeModule.h>
 
-@class AREventsModule, ARSwitchBoardModule, ARTemporaryAPIModule, ARRefineOptionsModule, ARWorksForYouModule, ARTakeCameraPhotoModule, RCTBridge, ARNotificationsManager;
+@class AREventsModule, ARSwitchBoardModule, ARTemporaryAPIModule, ARRefineOptionsModule, ARWorksForYouModule, ARTakeCameraPhotoModule, RCTBridge, ARNotificationsManager, ARGraphQLQueryPreloader, ARGraphQLQueryCache;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,8 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly, nullable) NSString *googleMapsAPIKey;
 
 // Server configuration
-@property (nonatomic, copy, readonly) NSString *gravityAPIHost;
-@property (nonatomic, copy, readonly) NSString *metaphysicsAPIHost;
+@property (nonatomic, copy, readonly) NSString *gravityURL;
+@property (nonatomic, copy, readonly) NSString *metaphysicsURL;
 @property (nonatomic, copy, readonly) NSString *userAgent;
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -31,8 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
            authenticationToken:(NSString *)token
                      sentryDSN:(nullable NSString *)sentryDSN
               googleMapsAPIKey:(nullable NSString *)googleAPIKey
-                   gravityHost:(NSString *)gravity
-               metaphysicsHost:(NSString *)metaphysics
+                    gravityURL:(NSString *)gravity
+                metaphysicsURL:(NSString *)metaphysics
                      userAgent:(NSString *)userAgent;
 @end
 
@@ -47,6 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) ARWorksForYouModule *worksForYouModule;
 @property (nonatomic, strong, readonly) ARTakeCameraPhotoModule *cameraModule;
 @property (nonatomic, strong, readonly) ARNotificationsManager *notificationsManagerModule;
+@property (nonatomic, strong, readonly) ARGraphQLQueryPreloader *graphQLQueryPreloaderModule;
+@property (nonatomic, strong, readonly) ARGraphQLQueryCache *graphQLQueryCacheModule;
 
 @property (nonatomic, strong, readwrite) AREmissionConfiguration *configurationModule;
 

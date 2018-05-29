@@ -76,8 +76,8 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "CategoriesMeQuery",
-  "id": null,
-  "text": "query CategoriesMeQuery(\n  $count: Int!\n  $cursor: String\n) {\n  me {\n    ...Categories_me_1G22uz\n    __id\n  }\n}\n\nfragment Categories_me_1G22uz on Me {\n  followed_genes(first: $count, after: $cursor) {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      node {\n        gene {\n          id\n          __id\n          name\n          href\n          image {\n            url\n          }\n        }\n        __id\n        __typename\n      }\n      cursor\n    }\n  }\n  __id\n}\n",
+  "id": "812cc470cfee86444e17b02bab63bd57",
+  "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

@@ -17,6 +17,15 @@ const style = {
   style: { margin: 10 },
 }
 
+const largeButtonStyle = {
+  height: 46,
+  margin: 10,
+}
+
+const textStyle = {
+  fontSize: 14,
+}
+
 const emptyFunc = () => ""
 
 storiesOf("App Style/Buttons")
@@ -25,6 +34,12 @@ storiesOf("App Style/Buttons")
     return [
       <GhostButton text="Disabled" {...style} key="1" />,
       <GhostButton text="Clickable" onPress={emptyFunc} {...style} key="2" />,
+    ]
+  })
+  .add("Button With Text Style", () => {
+    return [
+      <GhostButton text="Clickable" onPress={emptyFunc} style={largeButtonStyle} textStyle={textStyle} key="1" />,
+      <InvertedButton text="Clickable" onPress={emptyFunc} style={largeButtonStyle} textStyle={textStyle} key="2" />,
     ]
   })
   .add("Inverted Button", () => {

@@ -10,7 +10,7 @@ matrix:
   - node_js: '8.4'
     script:
       - yarn ci
-      - yarn danger
+      - yarn danger ci --verbose
 
   # Deployment related tasks
   - node_js: "8.4.0"

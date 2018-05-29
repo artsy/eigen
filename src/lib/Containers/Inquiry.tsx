@@ -150,6 +150,7 @@ export class Inquiry extends React.Component<Props, State> {
       headers: {
         "Content-Type": "application/json",
         "X-ACCESS-TOKEN": Emission.authenticationToken,
+        "User-Agent": Emission.userAgent,
       },
       body: JSON.stringify({
         artwork: this.props.artwork.id,

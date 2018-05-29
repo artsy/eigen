@@ -1,0 +1,55 @@
+
+static
+NSString *
+ARGraphQLQueryNameToID(NSString *name) {
+  static NSDictionary *queryMap = nil;
+  static dispatch_once_t onceToken = 0;
+  dispatch_once(&onceToken, ^{
+#ifdef DEBUG
+    NSLog(@"[ARGraphQLQueryMap] Using static query map.");
+#endif
+    queryMap = @{
+      @"ActiveBidsQuery": @"ff999f5e1d50496e9b0dcfc8e6561436",
+      @"ActiveBidsRefetchQuery": @"a7bd30f1cd6c622b9118b99c03a8cb91",
+      @"ArtistForSaleArtworksGridQuery": @"af21874d492fed7a9598943303e00a34",
+      @"ArtistHeaderQuery": @"20f67d6007cf7611bf0a615112af2fa3",
+      @"ArtistNotForSaleArtworksGridQuery": @"30b06f20a14a994499c8cd373aed9bcb",
+      @"ArtistQuery": @"38d5ac912e4c4b0a78f25fece1bb48b2",
+      @"ArtistsMeQuery": @"fee55966107b409fcea48f9422b25d5f",
+      @"ArtworkRailRefetchQuery": @"e91e109e110c82fe249bcd3d70615b27",
+      @"ArtworksQuery": @"b9ca87a193846b4d57214e9ea354cedc",
+      @"CategoriesMeQuery": @"812cc470cfee86444e17b02bab63bd57",
+      @"ConversationsQuery": @"4af7bbf7a45f0e2bfd6f6eaf48108225",
+      @"FavoriteArtistsQuery": @"49eaf7c16805166359df52ba8cb4f488",
+      @"FavoriteArtworksQuery": @"2a9b186c399df0f8b49677460aa0ae44",
+      @"FavoriteCategoriesQuery": @"814089538a6782827e8d5bc579eea904",
+      @"ForYouRefetchQuery": @"a4bb7f2ebcdfdd11a05ab486b44b528c",
+      @"GeneArtworksGridQuery": @"758b787aa0d4f7cf56b5ed01c6b33394",
+      @"GeneRefetchQuery": @"bb08e3ab0da78cb6e03ad6a0e9426a32",
+      @"InboxQuery": @"17540c1514e3b590735ff30349efb2ee",
+      @"InboxRefetchQuery": @"20ad4063e6e46bd80f0856f3a45e0e35",
+      @"InvoicePreviewRefetchQuery": @"6aaebb5a741e71949b67417a6c71890a",
+      @"LotsByFollowedArtistsQuery": @"e9b5df59deea03c09af65212cd87ac9f",
+      @"MessagesQuery": @"045ea41b64eb6c7df5960867574aa196",
+      @"QueryRenderersArtistQuery": @"dcd9369fe3930002a7b945f18f1193f1",
+      @"QueryRenderersConversationQuery": @"e497726ea96581d8a9f121a7c97823c8",
+      @"QueryRenderersForYouQuery": @"4e1dcbf019f47acb19343c270e0bbc78",
+      @"QueryRenderersGeneQuery": @"a353a267fd57bd63e008dfb46123d020",
+      @"QueryRenderersInboxQuery": @"927e7fd3e0d34488bc507ebd9d77bfa2",
+      @"QueryRenderersInquiryQuery": @"a061d9dbefece2ef49ce726b8725c34c",
+      @"QueryRenderersMyProfileQuery": @"85b61ef601f4dbaf3081af4877d57680",
+      @"QueryRenderersSaleQuery": @"d841e27359cba5fd8adb9a1677b4e6b3",
+      @"QueryRenderersWorksForYouQuery": @"ab2f1c2a40df7163fd8f3f363efdf0da",
+      @"SaleArtworksGridQuery": @"fe2fcd91244ec95555407491413ecb12",
+      @"SaleQuery": @"78ac3f2a4e143dd51b39a2f9fcf28aa7",
+      @"SaleRefetchQuery": @"86ae783f8c001e4d10f4e949b3a43d49",
+      @"SalesQuery": @"6459275fa4e5cee075e83e7e0506e963",
+      @"SalesRendererQuery": @"486986327c4c2b0ce00dc1170edbe6ed",
+      @"SendConversationMessageMutation": @"fafb72e0ce2a42a7b7eb5db013f1f6a5",
+      @"UpdateConversationMutation": @"376ca21dfba9abce2459940af585be24",
+      @"WorksForYouQuery": @"03402e06719b105d2d1174c8d3b0159a"
+    };
+  });
+  return queryMap[name];
+}
+

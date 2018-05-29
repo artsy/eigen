@@ -62,7 +62,7 @@ randomBOOL(void)
 
   ARRootViewController *rootVC = [ARRootViewController new];
   rootVC.authenticationManager = auth;
-  
+
   self.navigationController = [[EigenLikeNavigationController alloc] initWithRootViewController:rootVC];
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -103,7 +103,7 @@ randomBOOL(void)
 
   AppSetup *setup = [AppSetup ambientSetup];
 
-  AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID authenticationToken:accessToken sentryDSN:nil googleMapsAPIKey:nil gravityHost:setup.gravityURL metaphysicsHost:setup.metaphysicsURL userAgent:@"Emission Example"];
+  AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID authenticationToken:accessToken sentryDSN:nil googleMapsAPIKey:nil gravityURL:setup.gravityURL metaphysicsURL:setup.metaphysicsURL userAgent:@"Emission Example"];
 
   emission = [[AREmission alloc] initWithConfiguration:config packagerURL:setup.jsCodeLocation];
   [AREmission setSharedInstance:emission];
@@ -149,7 +149,7 @@ randomBOOL(void)
       //      }
     });
   };
-  
+
   emission.APIModule.notificationReadStatusAssigner = ^(RCTResponseSenderBlock block) {
     NSLog(@"notificationReadStatusAssigner from APIModule called");
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -181,6 +181,7 @@ randomBOOL(void)
     }
     UIViewController *viewController = [self viewControllerForRoute:route];
     UINavigationController *navigationController = [[EigenLikeNavigationController alloc] initWithRootViewController:viewController];
+    navigationController.navigationBarHidden = NO;
     viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                     target:self
                                                                                                     action:@selector(dismissModalViewController)];
@@ -195,10 +196,10 @@ randomBOOL(void)
     sleep(1);
     resolve(@{ @"sort": @"-year", @"medium": @"design", @"selectedPrice": @"0-50000" });
   };
-  
+
   emission.worksForYouModule.setNotificationsCount = ^(NSInteger count) {
     sleep(1);
-    NSLog(@"Set notifications count: %ld", (long)count);
+    NSLog(@"Set notifications count: %@", @(count));
   };
 }
 
@@ -239,7 +240,7 @@ randomBOOL(void)
     NSURLComponents *components = [[NSURLComponents alloc] initWithString:route];
     NSString *artistID = [self valueForKey:@"artist_id" fromQueryItems:components.queryItems];
     viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:artistID tab:ARHomeTabArtists emission:nil];
-    
+
   } else {
 
     viewController = [[UnroutedViewController alloc] initWithRoute:route];
@@ -251,7 +252,7 @@ randomBOOL(void)
 - (void)dismissModalViewController;
 {
   UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-  [navigationController.visibleViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
+  [navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)downloadPRBuildAndLoginWithUserID:(NSString *)userID

@@ -14,7 +14,7 @@ export type ArtworkCarousel_rail = {
         }) | null;
         readonly href?: string | null;
     }) | null;
-    readonly results?: ReadonlyArray<({
+    readonly results: ReadonlyArray<({
         }) | null> | null;
 };
 
@@ -58,14 +58,7 @@ return {
   "name": "ArtworkCarousel_rail",
   "type": "HomePageArtworkModule",
   "metadata": null,
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "fetchContent",
-      "type": "Boolean!",
-      "defaultValue": false
-    }
-  ],
+  "argumentDefinitions": [],
   "selections": [
     {
       "kind": "FragmentSpread",
@@ -150,31 +143,24 @@ return {
       ]
     },
     {
-      "kind": "Condition",
-      "passingValue": true,
-      "condition": "fetchContent",
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "results",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Artwork",
+      "plural": true,
       "selections": [
         {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "results",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Artwork",
-          "plural": true,
-          "selections": [
-            {
-              "kind": "FragmentSpread",
-              "name": "GenericGrid_artworks",
-              "args": null
-            },
-            v0
-          ]
-        }
+          "kind": "FragmentSpread",
+          "name": "GenericGrid_artworks",
+          "args": null
+        },
+        v0
       ]
     }
   ]
 };
 })();
-(node as any).hash = '40c7c47c0d5c7633cf5205f9bf043c9b';
+(node as any).hash = '62f372546f8faf443146792fe2668c27';
 export default node;

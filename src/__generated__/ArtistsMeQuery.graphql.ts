@@ -76,8 +76,8 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtistsMeQuery",
-  "id": null,
-  "text": "query ArtistsMeQuery(\n  $count: Int!\n  $cursor: String\n) {\n  me {\n    ...Artists_me_1G22uz\n    __id\n  }\n}\n\nfragment Artists_me_1G22uz on Me {\n  followed_artists_connection(first: $count, after: $cursor) {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      node {\n        artist {\n          id\n          __id\n          name\n          href\n          image {\n            url\n          }\n        }\n        __id\n        __typename\n      }\n      cursor\n    }\n  }\n  __id\n}\n",
+  "id": "fee55966107b409fcea48f9422b25d5f",
+  "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

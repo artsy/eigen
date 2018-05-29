@@ -1,6 +1,6 @@
 import { omit } from "lodash"
 import React, { Component } from "react"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createFragmentContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import {
   Dimensions,
@@ -22,7 +22,6 @@ import Spinner from "lib/Components/Spinner"
 import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { Disposable } from "relay-runtime"
 import ArtworkCarouselHeader from "./ArtworkCarouselHeader"
 
 import { ArtworkCarousel_rail } from "__generated__/ArtworkCarousel_rail.graphql"
@@ -47,40 +46,17 @@ export const minRailHeight = 400
 interface Props extends ViewProperties {
   rail: ArtworkCarousel_rail
   relay: RelayRefetchProp
-  registerRailModule?: (rail: ArtworkCarousel | null) => void
 }
 
 interface State {
-  didPerformFetch: boolean
   expanded: boolean
   gridHeight: number
-  loadFailed: boolean
 }
 
 export class ArtworkCarousel extends Component<Props, State> {
-  inflightRequest: Disposable
-
   state = {
-    didPerformFetch: false,
     expanded: false,
     gridHeight: 0,
-    loadFailed: false,
-  }
-
-  componentWillMount() {
-    if (this.props.registerRailModule) {
-      this.props.registerRailModule(this)
-    }
-  }
-
-  async componentDidMount() {
-    await this.refreshData()
-  }
-
-  componentWillUnmount() {
-    if (this.props.registerRailModule) {
-      this.props.registerRailModule(null)
-    }
   }
 
   expand = () => {
@@ -230,51 +206,12 @@ export class ArtworkCarousel extends Component<Props, State> {
 
   railStyle() {
     const style: any = { marginLeft: 20, marginRight: 20 }
-
-    if (!this.state.didPerformFetch) {
-      style.minHeight = minRailHeight
-    }
-
     return style
   }
 
-  refreshData = () => {
-    if (this.inflightRequest) {
-      this.inflightRequest.dispose()
-    }
-
-    return new Promise((resolve, reject) => {
-      this.inflightRequest = this.props.relay.refetch({ ...this.props.rail, fetchContent: true }, null, error => {
-        if (error) {
-          console.error("ArtworkCarousel.jsx", error.message)
-
-          this.setState({
-            loadFailed: true,
-          })
-
-          reject(error)
-        } else {
-          this.inflightRequest = null
-
-          this.setState({
-            didPerformFetch: true,
-          })
-
-          resolve()
-        }
-      })
-    })
-  }
-
   render() {
-    if (this.state.loadFailed) {
-      return null
-    }
-
     const hasArtworks = this.props.rail.results && this.props.rail.results.length
-
-    // if the data has been fetched but there are no results, hide the whole thing
-    if (this.state.didPerformFetch && !hasArtworks) {
+    if (!hasArtworks) {
       return null
     }
 
@@ -330,11 +267,10 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createRefetchContainer(
+export default createFragmentContainer(
   ArtworkCarousel,
   graphql`
-    fragment ArtworkCarousel_rail on HomePageArtworkModule
-      @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: false }) {
+    fragment ArtworkCarousel_rail on HomePageArtworkModule {
       ...ArtworkCarouselHeader_rail
       __id
       key
@@ -363,15 +299,8 @@ export default createRefetchContainer(
           href
         }
       }
-      results @include(if: $fetchContent) {
+      results {
         ...GenericGrid_artworks
-      }
-    }
-  `,
-  graphql`
-    query ArtworkCarouselRefetchQuery($__id: ID!, $fetchContent: Boolean!) {
-      node(__id: $__id) {
-        ...ArtworkCarousel_rail @arguments(fetchContent: $fetchContent)
       }
     }
   `

@@ -1,22 +1,56 @@
 #import "EigenLikeAdminViewController.h"
+#import "ARAdminPreloadTableViewCell.h"
+
+#import <objc/runtime.h>
 #import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
+#import <Emission/AREmission.h>
+#import <Emission/ARGraphQLQueryPreloader.h>
 
 NSString *const AROptionCell = @"OptionCell";
 NSString *const ARLabOptionCell = @"LabOptionCell";
+NSString *const ARPreloadOptionCell = @"PreloadOptionCell";
 
 @implementation EigenLikeAdminViewController
 
-- (ARCellData *)tappableCellDataWithTitle:(NSString *)title selection:(dispatch_block_t)selection
+- (ARCellData *)tappableCellDataWithTitle:(NSString *)title selection:(dispatch_block_t)selection configuration:(CellConfigurationBlock_t)configuration;
 {
-  ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+  return [self tappableCellDataWithTitle:title selection:selection identifier:AROptionCell configuration:configuration];
+}
+
+- (ARCellData *)tappableCellDataWithTitle:(NSString *)title selection:(dispatch_block_t)selection identifier:(NSString *)identifier configuration:(CellConfigurationBlock_t)configuration;
+{
+  ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:identifier];
   [cellData setCellConfigurationBlock:^(UITableViewCell *cell) {
     cell.textLabel.text = title;
+    if (configuration) {
+      configuration(cell);
+    }
   }];
-
+  
   [cellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
     selection();
   }];
   return cellData;
+}
+
+- (ARCellData *)tappableCellDataWithTitle:(NSString *)title selection:(dispatch_block_t)selection
+{
+  return [self tappableCellDataWithTitle:title selection:selection configuration:nil];
+}
+
+- (ARCellData *)viewControllerCellDataWithTitle:(NSString *)title
+                                      selection:(dispatch_block_t)selection
+                                        preload:(ARAdminVCPreloadBlock)preload;
+{
+  return [self tappableCellDataWithTitle:title
+                               selection:selection
+                              identifier:ARPreloadOptionCell
+                           configuration:^(ARAdminPreloadTableViewCell *cell) {
+    cell.preloadBlock = ^{
+      NSLog(@"Preload: %@", title);
+      [[[AREmission sharedInstance] graphQLQueryPreloaderModule] preloadQueries:preload()];
+    };
+  }];
 }
 
 - (ARCellData *)informationCellDataWithTitle:(NSString *)title

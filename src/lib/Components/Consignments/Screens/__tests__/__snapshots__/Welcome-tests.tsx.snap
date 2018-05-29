@@ -73,7 +73,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
             <Text
               accessible={true}
               allowFontScaling={true}
-              disabled={false}
               ellipsizeMode="tail"
               isPad={true}
               isPortrait={false}
@@ -112,7 +111,11 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/cam.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -127,7 +130,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -184,7 +186,11 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/offer.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -199,7 +205,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -256,7 +261,11 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/sell.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -271,7 +280,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -328,7 +336,11 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/money.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -343,7 +355,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -436,7 +447,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                   style={
                     Array [
@@ -489,7 +499,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                   style={
                     Array [
@@ -592,7 +601,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
             <Text
               accessible={true}
               allowFontScaling={true}
-              disabled={false}
               ellipsizeMode="tail"
               isPad={true}
               isPortrait={true}
@@ -631,7 +639,11 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/cam.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -646,7 +658,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -703,7 +714,11 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/offer.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -718,7 +733,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -775,7 +789,11 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/sell.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -790,7 +808,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -847,7 +864,11 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/money.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -862,7 +883,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -955,7 +975,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                   style={
                     Array [
@@ -1008,7 +1027,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                   style={
                     Array [
@@ -1111,7 +1129,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
             <Text
               accessible={true}
               allowFontScaling={true}
-              disabled={false}
               ellipsizeMode="tail"
               isPad={false}
               isPortrait={true}
@@ -1150,7 +1167,11 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/cam.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -1165,7 +1186,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -1222,7 +1242,11 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/offer.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -1237,7 +1261,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -1294,7 +1317,11 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/sell.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -1309,7 +1336,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -1366,7 +1392,11 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/money.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -1381,7 +1411,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -1474,7 +1503,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                   style={
                     Array [
@@ -1527,7 +1555,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                   style={
                     Array [
@@ -1630,7 +1657,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
             <Text
               accessible={true}
               allowFontScaling={true}
-              disabled={false}
               ellipsizeMode="tail"
               isPad={false}
               isPortrait={true}
@@ -1669,7 +1695,11 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/cam.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -1684,7 +1714,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -1741,7 +1770,11 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/offer.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -1756,7 +1789,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -1813,7 +1845,11 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/sell.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -1828,7 +1864,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -1885,7 +1920,11 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/money.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -1900,7 +1939,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -1993,7 +2031,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                   style={
                     Array [
@@ -2046,7 +2083,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                   style={
                     Array [
@@ -2149,7 +2185,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
             <Text
               accessible={true}
               allowFontScaling={true}
-              disabled={false}
               ellipsizeMode="tail"
               isPad={false}
               isPortrait={true}
@@ -2188,7 +2223,11 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/cam.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -2203,7 +2242,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -2260,7 +2298,11 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/offer.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -2275,7 +2317,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -2332,7 +2373,11 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/sell.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -2347,7 +2392,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -2404,7 +2448,11 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
               }
             >
               <Image
-                source={1}
+                source={
+                  Object {
+                    "testUri": "../../../images/money.png",
+                  }
+                }
                 style={
                   Array [
                     Object {
@@ -2419,7 +2467,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -2512,7 +2559,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                   style={
                     Array [
@@ -2565,7 +2611,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                   style={
                     Array [

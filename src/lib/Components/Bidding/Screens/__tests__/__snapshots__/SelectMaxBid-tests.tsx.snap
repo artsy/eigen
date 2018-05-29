@@ -1,0 +1,169 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<View
+  flex={1}
+  flexDirection="column"
+  justifyContent="space-between"
+  m={0}
+  style={
+    Array [
+      Object {
+        "flexBasis": 0,
+        "flexGrow": 1,
+        "flexShrink": 1,
+        "marginBottom": 0,
+        "marginLeft": 0,
+        "marginRight": 0,
+        "marginTop": 0,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    fontSize={5}
+    m={4}
+    style={
+      Array [
+        Object {
+          "fontFamily": "AGaramondPro-Semibold",
+          "fontSize": 22,
+          "marginBottom": 20,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 20,
+          "textAlign": "center",
+        },
+        undefined,
+      ]
+    }
+    textAlign="center"
+  >
+    Your max bid
+  </Text>
+  <View
+    style={
+      Array [
+        Object {
+          "width": "100%",
+        },
+        undefined,
+      ]
+    }
+  >
+    <RCTPicker
+      items={
+        Array [
+          Object {
+            "label": "$35,000",
+            "textColor": undefined,
+            "value": 0,
+          },
+          Object {
+            "label": "$40,000",
+            "textColor": undefined,
+            "value": 1,
+          },
+          Object {
+            "label": "$45,000",
+            "textColor": undefined,
+            "value": 2,
+          },
+          Object {
+            "label": "$50,000",
+            "textColor": undefined,
+            "value": 3,
+          },
+          Object {
+            "label": "$55,000",
+            "textColor": undefined,
+            "value": 4,
+          },
+        ]
+      }
+      onChange={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      selectedIndex={0}
+      style={
+        Array [
+          Object {
+            "height": 216,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <View
+    m={4}
+    style={
+      Array [
+        Object {
+          "marginBottom": 20,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 20,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      collapsable={undefined}
+      hitSlop={undefined}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "rgba(0, 0, 0, 1)",
+          "borderColor": "rgba(0, 0, 0, 1)",
+          "borderWidth": 1,
+          "height": 46,
+          "justifyContent": "center",
+        }
+      }
+      testID={undefined}
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "fontSize": 12,
+            },
+            Object {
+              "color": "rgba(255, 255, 255, 1)",
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 14,
+              "opacity": 1,
+            },
+            Object {
+              "fontFamily": "AvantGardeGothicITC",
+            },
+          ]
+        }
+      >
+        NEXT
+      </Text>
+    </View>
+  </View>
+</View>
+`;

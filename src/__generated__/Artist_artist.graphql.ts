@@ -8,8 +8,8 @@ export type Artist_artist = {
     readonly counts: ({
         readonly artworks: any | null;
         readonly partner_shows: any | null;
-        readonly related_artists: any | null;
-        readonly articles: any | null;
+        readonly related_artists: number | null;
+        readonly articles: number | null;
     }) | null;
 };
 

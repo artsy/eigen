@@ -30,7 +30,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -58,7 +57,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -79,7 +77,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -109,7 +106,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -137,7 +133,11 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
     }
   >
     <Image
-      source={1}
+      source={
+        Object {
+          "testUri": "../../../images/paddle.png",
+        }
+      }
       style={
         Object {
           "marginRight": 4,
@@ -147,7 +147,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -201,7 +200,6 @@ exports[`in a closed sale renders without any price information 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -229,7 +227,6 @@ exports[`in a closed sale renders without any price information 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -250,7 +247,6 @@ exports[`in a closed sale renders without any price information 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -280,7 +276,6 @@ exports[`in a closed sale renders without any price information 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -303,7 +298,6 @@ exports[`in a closed sale renders without any price information 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -356,7 +350,6 @@ exports[`in an open sale renders with current bid 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -384,7 +377,6 @@ exports[`in an open sale renders with current bid 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -405,7 +397,6 @@ exports[`in an open sale renders with current bid 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -435,7 +426,6 @@ exports[`in an open sale renders with current bid 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -463,7 +453,11 @@ exports[`in an open sale renders with current bid 1`] = `
     }
   >
     <Image
-      source={1}
+      source={
+        Object {
+          "testUri": "../../../images/paddle.png",
+        }
+      }
       style={
         Object {
           "marginRight": 4,
@@ -473,7 +467,6 @@ exports[`in an open sale renders with current bid 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -527,7 +520,6 @@ exports[`in an open sale renders with starting bid 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -555,7 +547,6 @@ exports[`in an open sale renders with starting bid 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -576,7 +567,6 @@ exports[`in an open sale renders with starting bid 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -606,7 +596,6 @@ exports[`in an open sale renders with starting bid 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -634,7 +623,11 @@ exports[`in an open sale renders with starting bid 1`] = `
     }
   >
     <Image
-      source={1}
+      source={
+        Object {
+          "testUri": "../../../images/paddle.png",
+        }
+      }
       style={
         Object {
           "marginRight": 4,
@@ -644,7 +637,6 @@ exports[`in an open sale renders with starting bid 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -698,7 +690,6 @@ exports[`renders properly 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -726,7 +717,6 @@ exports[`renders properly 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -747,7 +737,6 @@ exports[`renders properly 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       numberOfLines={1}
       style={
@@ -777,7 +766,6 @@ exports[`renders properly 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={
@@ -800,7 +788,6 @@ exports[`renders properly 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
-    disabled={false}
     ellipsizeMode="tail"
     numberOfLines={1}
     style={

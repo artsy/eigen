@@ -16,6 +16,9 @@ install! 'cocoapods', :deterministic_uuids => false
 node_modules_path = '../node_modules'
 react_path = File.join(node_modules_path, 'react-native')
 yoga_path = File.join(react_path, 'ReactCommon/yoga')
+folly_spec_path = File.join(react_path, 'third-party-podspecs/Folly.podspec')
+glog_spec_path = File.join(react_path, 'third-party-podspecs/glog.podspec')
+double_conversion_spec_path = File.join(react_path, 'third-party-podspecs/DoubleConversion.podspec')
 sentry_path = File.join(node_modules_path, 'react-native-sentry')
 
 target 'Emission' do
@@ -23,7 +26,10 @@ target 'Emission' do
 
   # As this runs dev, we need the developer web socket
   pod 'React', :path => react_path, :subspecs => %w(DevSupport)
-  pod 'Yoga', :path => yoga_path
+  pod 'yoga', :path => yoga_path
+  pod 'Folly', :podspec => folly_spec_path
+  pod 'DoubleConversion', :podspec => double_conversion_spec_path
+  pod 'glog', :podspec => glog_spec_path
 
   pod 'Sentry', :subspecs => ['Core', 'KSCrash']
   pod 'SentryReactNative', :path => sentry_path
@@ -54,13 +60,7 @@ plugin 'cocoapods-keys', {
   ]
 }
 
-def edit_pod_file(file, old_code, new_code)
-  code = File.read(file)
-  if code.include?(old_code)
-    FileUtils.chmod("+w", file)
-    File.write(file, code.sub(old_code, new_code))
-  end
-end
+plugin 'cocoapods-fix-react-native'
 
 post_install do |installer|
   emission = installer.pods_project.targets.find { |target| target.name == 'Emission' }
@@ -68,14 +68,10 @@ post_install do |installer|
     config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'YES'
     # Work around https://github.com/rs/SDWebImage/issues/2022, because we don’t want to upgrade to SDWebImage 4 atm.
     config.build_settings['CLANG_WARN_STRICT_PROTOTYPES'] = 'NO'
+    # Use dynamic queries by default in development mode.
+    if config.name == 'Debug'
+      query_map = File.expand_path('../src/__generated__/complete.queryMap.json', __dir__)
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = "$(inherited) USE_DYNAMIC_GRAPHQL_MAP='#{query_map}'"
+    end
   end
-
-  # This fixes a bug in our Home tab view; it can probably be removed when we upgrade to RN 0.50+
-  # See https://github.com/artsy/collector-experience/issues/751
-  react_scrollview_file = '../node_modules/react-native/React/Views/RCTScrollView.m'
-  react_scrollview_old_code = 'self.contentOffset = CGPointMake(
-    MAX(0, MIN(originalOffset.x, fullContentSize.width - boundsSize.width)),
-    MAX(0, MIN(originalOffset.y, fullContentSize.height - boundsSize.height)));'
-  react_scrollview_new_code = 'self.contentOffset= originalOffset;'
-  edit_pod_file react_scrollview_file, react_scrollview_old_code, react_scrollview_new_code
 end

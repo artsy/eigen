@@ -63,7 +63,6 @@ exports[`renders correctly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={
@@ -81,7 +80,6 @@ exports[`renders correctly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={
@@ -99,7 +97,6 @@ exports[`renders correctly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
-        disabled={false}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={
@@ -149,26 +146,22 @@ exports[`renders correctly 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Object {
-              "backgroundColor": "transparent",
-            },
-            Object {
-              "alignItems": "center",
-              "backgroundColor": "rgba(0, 0, 0, 1)",
-              "flex": 1,
-              "justifyContent": "center",
-            },
-          ]
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "rgba(0, 0, 0, 1)",
+            "flex": 1,
+            "justifyContent": "center",
+          }
         }
         testID={undefined}
         tvParallaxProperties={undefined}
       >
-        <View>
+        <View
+          style={null}
+        >
           <Text
             accessible={true}
             allowFontScaling={true}
-            disabled={false}
             ellipsizeMode="tail"
             style={
               Array [

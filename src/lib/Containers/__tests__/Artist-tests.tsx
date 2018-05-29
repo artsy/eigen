@@ -39,18 +39,13 @@ describe("availableTabs", () => {
 describe("after rendering", () => {
   it("mounts with Works tab selected if works exist", () => {
     const artist = new Artist(artistProps(false, { artworks: 5 }))
-
     const worksTabIndex = artist.availableTabs().indexOf("WORKS")
-
-    artist.componentWillMount()
-    expect(artist.state).toEqual({ selectedTabIndex: worksTabIndex, selectedTabTitle: "WORKS" })
+    expect(artist.initialTabState()).toEqual({ selectedTabIndex: worksTabIndex, selectedTabTitle: "WORKS" })
   })
 
   it("mounts at the first tab index if artist has no works", () => {
     const artist = new Artist(artistProps(true, { partner_shows: 1 }))
-
-    artist.componentWillMount()
-    expect(artist.state).toEqual({ selectedTabIndex: 0, selectedTabTitle: "ABOUT" })
+    expect(artist.initialTabState()).toEqual({ selectedTabIndex: 0, selectedTabTitle: "ABOUT" })
   })
 })
 

@@ -5,6 +5,7 @@ import { TouchableWithoutFeedback } from "react-native"
 import * as renderer from "react-test-renderer"
 
 jest.unmock("react-tracking")
+
 import Composer from "../Composer"
 
 it("looks correct when rendered", () => {

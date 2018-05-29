@@ -28,6 +28,7 @@ exports[`Sets up the right view hierarchy 1`] = `
     }
   >
     <View
+      enabled={true}
       keyboardVerticalOffset={15}
       onLayout={[Function]}
       style={
@@ -69,7 +70,6 @@ exports[`Sets up the right view hierarchy 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -114,6 +114,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                     accessibilityTraits={undefined}
                     accessible={true}
                     collapsable={undefined}
+                    hasTVPreferredFocus={undefined}
                     hitSlop={undefined}
                     isTVSelectable={true}
                     nativeID={undefined}
@@ -141,7 +142,11 @@ exports[`Sets up the right view hierarchy 1`] = `
                     tvParallaxProperties={undefined}
                   >
                     <Image
-                      source={1}
+                      source={
+                        Object {
+                          "testUri": "../../../images/consignments/camera-black.png",
+                        }
+                      }
                     />
                   </View>
                 </View>
@@ -167,6 +172,7 @@ exports[`Sets up the right view hierarchy 1`] = `
         accessibilityTraits={undefined}
         accessible={true}
         collapsable={undefined}
+        hasTVPreferredFocus={undefined}
         hitSlop={undefined}
         isTVSelectable={true}
         nativeID={undefined}
@@ -192,7 +198,6 @@ exports[`Sets up the right view hierarchy 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
-          disabled={false}
           ellipsizeMode="tail"
           style={
             Array [

@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 import { Animated, Easing, ScrollView, StyleSheet, TextStyle, View, ViewProperties, ViewStyle } from "react-native"
 
@@ -7,7 +7,6 @@ import metaphysics from "../../../metaphysics"
 
 import { Schema, Track, track as _track } from "lib/utils/track"
 
-import { Disposable } from "relay-runtime"
 import Separator from "../../Separator"
 import Spinner from "../../Spinner"
 import SectionTitle from "../SectionTitle"
@@ -25,14 +24,12 @@ const Animation = {
 }
 
 interface Props extends ViewProperties {
-  registerRailModule?: (rail: ArtistRail | null) => void
-  relay: RelayRefetchProp
+  relay: RelayProp
   rail: ArtistRail_rail
 }
 
 interface State {
   artists: any[]
-  loadFailed: boolean
 }
 // FIXME: can remove "trackWithArguments" when the third arguments parameter is added to the typings of react-tracking
 const track: Track<Props, State> = _track
@@ -40,32 +37,10 @@ const trackWithArguments: any = _track
 
 @track()
 export class ArtistRail extends Component<Props, State> {
-  inflightRequest: Disposable
-
-  state = {
-    artists: [],
-    loadFailed: false,
-  }
-
-  componentWillMount() {
-    if (this.props.registerRailModule) {
-      this.props.registerRailModule(this)
-    }
-  }
-
-  async componentDidMount() {
-    await this.refreshData()
-  }
-
-  componentWillUnmount() {
-    if (this.props.registerRailModule) {
-      this.props.registerRailModule(null)
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.rail.results) {
-      const artists = nextProps.rail.results.map(artist =>
+  constructor(props: Props) {
+    super(props)
+    if (props.rail.results) {
+      const artists = props.rail.results.map(artist =>
         Object.assign(
           {
             _animatedValues: {
@@ -76,7 +51,7 @@ export class ArtistRail extends Component<Props, State> {
           artist
         )
       )
-      this.setState({ artists })
+      this.state = { artists }
     }
   }
 
@@ -198,31 +173,8 @@ export class ArtistRail extends Component<Props, State> {
     }
   }
 
-  refreshData = () => {
-    if (this.inflightRequest) {
-      this.inflightRequest.dispose()
-    }
-
-    return new Promise((resolve, reject) => {
-      this.inflightRequest = this.props.relay.refetch({ ...this.props.rail, fetchContent: true }, null, error => {
-        if (error) {
-          console.error("ArtistRail.jsx", error.message)
-
-          this.setState({
-            loadFailed: true,
-          })
-
-          reject(error)
-        } else {
-          this.inflightRequest = null
-          resolve()
-        }
-      })
-    })
-  }
-
   render() {
-    if (this.state.loadFailed || !this.state.artists.length) {
+    if (!this.state.artists.length) {
       return null
     }
 
@@ -296,24 +248,16 @@ function suggestedArtistQuery(artistID: string): string {
   `
 }
 
-export default createRefetchContainer(
+export default createFragmentContainer(
   ArtistRail,
   graphql`
-    fragment ArtistRail_rail on HomePageArtistModule
-      @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: false }) {
+    fragment ArtistRail_rail on HomePageArtistModule {
       __id
       key
-      results @include(if: $fetchContent) {
+      results {
         _id
         __id
         ...ArtistCard_artist
-      }
-    }
-  `,
-  graphql`
-    query ArtistRailRefetchQuery($__id: ID!, $fetchContent: Boolean!) {
-      node(__id: $__id) {
-        ...ArtistRail_rail @arguments(fetchContent: $fetchContent)
       }
     }
   `

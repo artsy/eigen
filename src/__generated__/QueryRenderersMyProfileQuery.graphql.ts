@@ -37,8 +37,8 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersMyProfileQuery",
-  "id": null,
-  "text": "query QueryRenderersMyProfileQuery {\n  me {\n    ...MyProfile_me\n    __id\n  }\n}\n\nfragment MyProfile_me on Me {\n  name\n  initials\n  __id\n}\n",
+  "id": "85b61ef601f4dbaf3081af4877d57680",
+  "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

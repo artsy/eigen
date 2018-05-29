@@ -1,15 +1,16 @@
 import React from "react"
 import { FlatList, RefreshControl, ScrollView, ViewProperties } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
-import ArtistRail, { ArtistRail as ArtistRailType } from "lib/Components/Home/ArtistRails/ArtistRail"
-import ArtworkCarousel, { ArtworkCarousel as ArtworkCarouselType } from "./Components/ArtworkCarousel"
-import FairsRail, { FairsRail as FairsRailType } from "./Components/FairsRail"
+import ArtistRail from "lib/Components/Home/ArtistRails/ArtistRail"
+import ArtworkCarousel from "./Components/ArtworkCarousel"
+import FairsRail from "./Components/FairsRail"
 
 import { ForYou_forYou } from "__generated__/ForYou_forYou.graphql"
 
 interface Props extends ViewProperties {
   forYou: ForYou_forYou
+  relay: RelayRefetchProp
 }
 
 interface State {
@@ -17,15 +18,11 @@ interface State {
     type: "artwork" | "artist" | "fairs"
     data: any
   }>
-  error?: string // TODO: Wire up to UI handler
   isRefreshing: boolean
 }
 
-type RailModule = ArtistRailType | FairsRailType | ArtworkCarouselType | null
-
 export class ForYou extends React.Component<Props, State> {
   currentScrollOffset?: number = 0
-  railModules: RailModule[] = []
 
   state = {
     isRefreshing: false,
@@ -71,28 +68,17 @@ export class ForYou extends React.Component<Props, State> {
   handleRefresh = async () => {
     this.setState({ isRefreshing: true })
 
-    try {
-      await Promise.all(this.railModules.map(railModule => railModule && railModule.refreshData()))
-
-      setTimeout(() => {
-        this.setState({
-          isRefreshing: false,
-        })
-      }, 1000) // For consistent pull-to-refresh UI experience
-    } catch (error) {
-      console.error("ForYou/index.tsx - Error refreshing ForYou rails:", error.message)
-
-      this.setState({
-        error: error.message, // TODO: Display this somehow
-      })
-    }
-  }
-
-  /**
-   * Can be used to register a mounting module or de-register an unmounting module by setting the index to `null`.
-   */
-  registerRailModule(index: number, railModule: RailModule) {
-    this.railModules[index] = railModule
+    this.props.relay.refetch(
+      {},
+      {},
+      error => {
+        if (error) {
+          console.error("ForYou/index.tsx - Error refreshing ForYou rails:", error.message)
+        }
+        this.setState({ isRefreshing: false })
+      },
+      { force: true }
+    )
   }
 
   render() {
@@ -115,17 +101,14 @@ export class ForYou extends React.Component<Props, State> {
             />
           )
         }}
-        renderItem={rowItem => {
-          const { item: { data, type }, index } = rowItem
-          const registerRailModule = this.registerRailModule.bind(this, index)
-
+        renderItem={({ item: { data, type } }) => {
           switch (type) {
             case "artwork":
-              return <ArtworkCarousel key={data.__id} rail={data} registerRailModule={registerRailModule} />
+              return <ArtworkCarousel key={data.__id} rail={data} />
             case "artist":
-              return <ArtistRail key={data.__id} rail={data} registerRailModule={registerRailModule} />
+              return <ArtistRail key={data.__id} rail={data} />
             case "fairs":
-              return <FairsRail key={data.__id} fairs_module={data} registerRailModule={registerRailModule} />
+              return <FairsRail key={data.__id} fairs_module={data} />
           }
         }}
         keyExtractor={(item, index) => item.data.type + String(index)}
@@ -135,7 +118,7 @@ export class ForYou extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(
+export default createRefetchContainer(
   ForYou,
   graphql`
     fragment ForYou_forYou on HomePage {
@@ -144,6 +127,7 @@ export default createFragmentContainer(
         max_followed_gene_rails: -1
         order: [
           ACTIVE_BIDS
+          RECENTLY_VIEWED_WORKS
           RECOMMENDED_WORKS
           FOLLOWED_ARTISTS
           RELATED_ARTISTS
@@ -165,6 +149,13 @@ export default createFragmentContainer(
       }
       fairs_module {
         ...FairsRail_fairs_module
+      }
+    }
+  `,
+  graphql`
+    query ForYouRefetchQuery {
+      forYou: home_page {
+        ...ForYou_forYou
       }
     }
   `

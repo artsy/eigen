@@ -21,6 +21,7 @@ exports[`does not have an activity when searching  1`] = `
     }
   >
     <TextInput
+      allowFontScaling={true}
       autoCorrect={false}
       clearButtonMode="while-editing"
       keyboardAppearance="dark"
@@ -84,6 +85,7 @@ exports[`shows an activity indicator when searching  1`] = `
     }
   >
     <TextInput
+      allowFontScaling={true}
       autoCorrect={false}
       clearButtonMode="while-editing"
       keyboardAppearance="dark"

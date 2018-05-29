@@ -24,6 +24,7 @@ exports[`renders correctly at iPhone size 1`] = `
       accessibilityTraits={undefined}
       accessible={true}
       collapsable={undefined}
+      hasTVPreferredFocus={undefined}
       hitSlop={undefined}
       isTVSelectable={true}
       nativeID={undefined}
@@ -51,7 +52,11 @@ exports[`renders correctly at iPhone size 1`] = `
       tvParallaxProperties={undefined}
     >
       <Image
-        source={1}
+        source={
+          Object {
+            "testUri": "../../../images/consignments/camera-black.png",
+          }
+        }
       />
     </View>
     <View
@@ -82,14 +87,9 @@ exports[`renders correctly at iPhone size 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Object {
-              "backgroundColor": "transparent",
-            },
-            Object {
-              "opacity": 1,
-            },
-          ]
+          Object {
+            "opacity": 1,
+          }
         }
         testID={undefined}
         tvParallaxProperties={undefined}
@@ -137,14 +137,9 @@ exports[`renders correctly at iPhone size 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Object {
-              "backgroundColor": "transparent",
-            },
-            Object {
-              "opacity": 1,
-            },
-          ]
+          Object {
+            "opacity": 1,
+          }
         }
         testID={undefined}
         tvParallaxProperties={undefined}
@@ -192,14 +187,9 @@ exports[`renders correctly at iPhone size 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Array [
-            Object {
-              "backgroundColor": "transparent",
-            },
-            Object {
-              "opacity": 1,
-            },
-          ]
+          Object {
+            "opacity": 1,
+          }
         }
         testID={undefined}
         tvParallaxProperties={undefined}

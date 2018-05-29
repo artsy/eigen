@@ -6,7 +6,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
     <Text
       accessible={true}
       allowFontScaling={true}
-      disabled={false}
       ellipsizeMode="tail"
       style={
         Array [
@@ -103,6 +102,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
     getItemCount={[Function]}
     horizontal={false}
     initialNumToRender={10}
+    invertStickyHeaders={undefined}
     keyExtractor={[Function]}
     maxToRenderPerBatch={10}
     numColumns={1}
@@ -113,11 +113,11 @@ exports[`messaging inbox looks correct when rendered 1`] = `
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
     onScrollEndDrag={[Function]}
-    onViewableItemsChanged={undefined}
     renderItem={[Function]}
     scrollEventThrottle={500}
     stickyHeaderIndices={Array []}
     updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
     windowSize={21}
   >
     <View>
@@ -219,7 +219,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                   style={
                     Array [
@@ -273,7 +272,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                   numberOfLines={1}
                   style={
@@ -293,7 +291,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                   <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                     style={
                       Array [
@@ -311,7 +308,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                   <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                     style={
                       Array [
@@ -334,7 +330,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                   <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                     style={
                       Array [
@@ -354,7 +349,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 numberOfLines={1}
                 style={
@@ -376,7 +370,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -509,7 +502,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                   style={
                     Array [
@@ -563,7 +555,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                   numberOfLines={1}
                   style={
@@ -583,7 +574,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                   <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                     style={
                       Array [
@@ -601,7 +591,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                   <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                     style={
                       Array [
@@ -624,7 +613,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                   <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                     style={
                       Array [
@@ -644,7 +632,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 numberOfLines={1}
                 style={
@@ -666,7 +653,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
                 style={
                   Array [
@@ -716,6 +702,7 @@ exports[`messaging inbox looks correct when rendered without messages 1`] = `
     getItemCount={[Function]}
     horizontal={false}
     initialNumToRender={10}
+    invertStickyHeaders={undefined}
     keyExtractor={[Function]}
     maxToRenderPerBatch={10}
     numColumns={1}
@@ -726,11 +713,11 @@ exports[`messaging inbox looks correct when rendered without messages 1`] = `
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
     onScrollEndDrag={[Function]}
-    onViewableItemsChanged={undefined}
     renderItem={[Function]}
     scrollEventThrottle={500}
     stickyHeaderIndices={Array []}
     updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
     windowSize={21}
   >
     <View />

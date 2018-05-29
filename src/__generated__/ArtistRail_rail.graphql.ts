@@ -4,7 +4,7 @@ import { ConcreteFragment } from "relay-runtime";
 export type ArtistRail_rail = {
     readonly __id: string;
     readonly key: string | null;
-    readonly results?: ReadonlyArray<({
+    readonly results: ReadonlyArray<({
             readonly _id: string;
             readonly __id: string;
         }) | null> | null;
@@ -25,14 +25,7 @@ return {
   "name": "ArtistRail_rail",
   "type": "HomePageArtistModule",
   "metadata": null,
-  "argumentDefinitions": [
-    {
-      "kind": "LocalArgument",
-      "name": "fetchContent",
-      "type": "Boolean!",
-      "defaultValue": false
-    }
-  ],
+  "argumentDefinitions": [],
   "selections": [
     v0,
     {
@@ -43,38 +36,31 @@ return {
       "storageKey": null
     },
     {
-      "kind": "Condition",
-      "passingValue": true,
-      "condition": "fetchContent",
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "results",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Artist",
+      "plural": true,
       "selections": [
         {
-          "kind": "LinkedField",
+          "kind": "ScalarField",
           "alias": null,
-          "name": "results",
-          "storageKey": null,
+          "name": "_id",
           "args": null,
-          "concreteType": "Artist",
-          "plural": true,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "_id",
-              "args": null,
-              "storageKey": null
-            },
-            v0,
-            {
-              "kind": "FragmentSpread",
-              "name": "ArtistCard_artist",
-              "args": null
-            }
-          ]
+          "storageKey": null
+        },
+        v0,
+        {
+          "kind": "FragmentSpread",
+          "name": "ArtistCard_artist",
+          "args": null
         }
       ]
     }
   ]
 };
 })();
-(node as any).hash = '7318209746f30396590ed7fad9d8db09';
+(node as any).hash = '2a2967494647d65d747400f084690b7e';
 export default node;
