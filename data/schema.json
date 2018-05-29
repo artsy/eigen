@@ -4869,7 +4869,18 @@
             {
               "name": "sale_artwork",
               "description": null,
-              "args": [],
+              "args": [
+                {
+                  "name": "sale_id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "null"
+                }
+              ],
               "type": {
                 "kind": "OBJECT",
                 "name": "SaleArtwork",
@@ -9955,7 +9966,7 @@
                 "ofType": null
               },
               "isDeprecated": true,
-              "deprecationReason": "This field no longer exists, this is for backwards compatability"
+              "deprecationReason": "This field no longer exists, this is for backwards compatibility"
             },
             {
               "name": "is_linkable",
@@ -10183,7 +10194,7 @@
         {
           "kind": "OBJECT",
           "name": "Category",
-          "description": null,
+          "description": "Fields of partner category (currently from Gravity).",
           "fields": [
             {
               "name": "id",
@@ -26330,7 +26341,7 @@
             },
             {
               "name": "collector_profile",
-              "description": null,
+              "description": "A collector profile.",
               "args": [],
               "type": {
                 "kind": "OBJECT",
@@ -26878,6 +26889,26 @@
               "deprecationReason": null
             },
             {
+              "name": "recentlyViewedArtworkIds",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "recentlyViewedArtworks",
               "description": "A list of the current user’s recently viewed artworks.",
               "args": [
@@ -27276,7 +27307,7 @@
             },
             {
               "name": "artist_id",
-              "description": null,
+              "description": "The gravity ID for an Artist",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -30140,7 +30171,7 @@
         {
           "kind": "OBJECT",
           "name": "Delivery",
-          "description": null,
+          "description": "Fields of a delivery (currently from Radiation)",
           "fields": [
             {
               "name": "id",
@@ -30355,7 +30386,7 @@
         {
           "kind": "OBJECT",
           "name": "Attachment",
-          "description": null,
+          "description": "Fields of an attachment (currently from Radiation)",
           "fields": [
             {
               "name": "id",
@@ -30430,7 +30461,7 @@
         {
           "kind": "OBJECT",
           "name": "Invoice",
-          "description": null,
+          "description": "Fields of an invoice (currently from Lewitt)",
           "fields": [
             {
               "name": "__id",
@@ -34061,7 +34092,18 @@
             {
               "name": "sale_artwork",
               "description": null,
-              "args": [],
+              "args": [
+                {
+                  "name": "sale_id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "null"
+                }
+              ],
               "type": {
                 "kind": "OBJECT",
                 "name": "SaleArtwork",
@@ -39174,7 +39216,7 @@
             },
             {
               "name": "createCreditCard",
-              "description": null,
+              "description": "Create a credit card",
               "args": [
                 {
                   "name": "input",
@@ -39201,7 +39243,7 @@
             },
             {
               "name": "followArtist",
-              "description": null,
+              "description": "Follow (or unfollow) an artist",
               "args": [
                 {
                   "name": "input",
@@ -39228,7 +39270,7 @@
             },
             {
               "name": "followGene",
-              "description": null,
+              "description": "Follow (or unfollow) an gene",
               "args": [
                 {
                   "name": "input",
@@ -39255,7 +39297,7 @@
             },
             {
               "name": "updateCollectorProfile",
-              "description": null,
+              "description": "Updating a collector profile (loyalty applicant status).",
               "args": [
                 {
                   "name": "input",
@@ -39336,7 +39378,7 @@
             },
             {
               "name": "updateOrder",
-              "description": null,
+              "description": "Update an order",
               "args": [
                 {
                   "name": "input",
@@ -39363,7 +39405,7 @@
             },
             {
               "name": "submitOrder",
-              "description": null,
+              "description": "Submit an order with payment",
               "args": [
                 {
                   "name": "input",
@@ -42388,7 +42430,7 @@
           "inputFields": [
             {
               "name": "artist_id",
-              "description": null,
+              "description": "The gravity ID for an Artist",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
@@ -42662,7 +42704,7 @@
             },
             {
               "name": "artist_id",
-              "description": null,
+              "description": "The gravity ID for an Artist",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,

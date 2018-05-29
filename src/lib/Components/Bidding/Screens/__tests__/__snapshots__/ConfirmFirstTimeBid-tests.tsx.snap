@@ -137,6 +137,7 @@ exports[`renders properly 1`] = `
     <View
       border={1}
       borderBottomWidth={0}
+      borderColor="black10"
       mb={2}
       style={
         Array [
@@ -235,6 +236,7 @@ exports[`renders properly 1`] = `
     <View
       border={1}
       borderBottomWidth={0}
+      borderColor="black10"
       mb={2}
       style={
         Array [
@@ -335,6 +337,7 @@ exports[`renders properly 1`] = `
     <View
       border={1}
       borderBottomWidth={0}
+      borderColor="black10"
       mb={2}
       style={
         Array [
@@ -435,6 +438,7 @@ exports[`renders properly 1`] = `
     <View
       border={1}
       borderBottomWidth={0}
+      borderColor="black10"
       style={
         Array [
           Object {
@@ -455,8 +459,9 @@ exports[`renders properly 1`] = `
       accessibilityLabel={undefined}
       accessibilityTraits={undefined}
       accessible={true}
+      alignItems="center"
       alignSelf="center"
-      flexDirection="column"
+      flexDirection="row"
       hitSlop={undefined}
       m={3}
       nativeID={undefined}
@@ -481,106 +486,76 @@ exports[`renders properly 1`] = `
       testID={undefined}
     >
       <View
-        alignItems="center"
-        flexDirection="row"
-        mb={2}
+        animate={
+          Array [
+            "backgroundColor",
+            "borderColor",
+          ]
+        }
+        collapsable={undefined}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "rgba(255, 255, 255, 1)",
+            "borderColor": "rgba(229, 229, 229, 1)",
+            "borderStyle": "solid",
+            "borderWidth": 2,
+            "display": "flex",
+            "height": 20,
+            "justifyContent": "center",
+            "marginRight": 10,
+            "width": 20,
+          }
+        }
+      />
+      <View
         style={
           Array [
-            Object {
-              "marginBottom": 5,
-            },
+            Object {},
             undefined,
           ]
         }
       >
-        <View
-          alignItems="center"
-          bg={null}
-          border="2px solid"
-          borderColor="black10"
-          height={20}
-          justifyContent="center"
-          mr={3}
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          color="black60"
+          ellipsizeMode="tail"
+          fontSize={3}
+          mt={2}
           style={
             Array [
               Object {
-                "borderColor": "#E5E5E5",
-                "borderStyle": "solid",
-                "borderWidth": 2,
-                "height": 20,
-                "marginRight": 10,
-                "width": 20,
+                "color": "#666",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "marginTop": 5,
+                "textAlign": "center",
               },
               undefined,
             ]
           }
-          width={20}
+          textAlign="center"
         >
-          <View
-            collapsable={undefined}
-            duration={250}
-            show={false}
-            style={
-              Object {
-                "opacity": 0,
-                "transform": Array [
-                  Object {
-                    "scale": 1.1,
-                  },
-                ],
-              }
-            }
-          />
-        </View>
-        <View
-          style={
-            Array [
-              Object {},
-              undefined,
-            ]
-          }
-        >
+          Agree to 
           <Text
             accessible={true}
             allowFontScaling={true}
-            color="black60"
             ellipsizeMode="tail"
-            fontSize={3}
-            mt={2}
+            onPress={[Function]}
             style={
               Array [
                 Object {
-                  "color": "#666",
-                  "fontFamily": "AGaramondPro-Regular",
-                  "fontSize": 16,
-                  "marginTop": 5,
-                  "textAlign": "center",
+                  "textDecorationLine": "underline",
                 },
                 undefined,
               ]
             }
-            textAlign="center"
           >
-            Agree to 
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
-              onPress={[Function]}
-              style={
-                Array [
-                  Object {
-                    "textDecorationLine": "underline",
-                  },
-                  undefined,
-                ]
-              }
-            >
-              Conditions of Sale
-            </Text>
-            .
+            Conditions of Sale
           </Text>
-        </View>
+          .
+        </Text>
       </View>
     </View>
     <View
@@ -598,55 +573,70 @@ exports[`renders properly 1`] = `
       }
     >
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
-        accessible={true}
-        collapsable={undefined}
-        hitSlop={undefined}
-        nativeID={undefined}
-        onLayout={undefined}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+        height={50}
         style={
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "rgba(0, 0, 0, 1)",
-            "borderColor": "rgba(0, 0, 0, 1)",
-            "borderWidth": 1,
-            "height": 46,
-            "justifyContent": "center",
-          }
+          Array [
+            Object {
+              "height": 50,
+            },
+            undefined,
+          ]
         }
-        testID={undefined}
       >
-        <Text
+        <View
+          accessibilityComponentType={undefined}
+          accessibilityLabel={undefined}
+          accessibilityTraits={undefined}
           accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
+          hasTVPreferredFocus={undefined}
+          hitSlop={undefined}
+          isTVSelectable={true}
+          nativeID={undefined}
+          onLayout={undefined}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
-            Array [
-              Object {
-                "fontSize": 12,
-              },
-              Object {
-                "color": "rgba(255, 255, 255, 1)",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 14,
-                "opacity": 1,
-              },
-              Object {
-                "fontFamily": "AvantGardeGothicITC",
-              },
-            ]
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(0, 0, 0, 1)",
+              "flex": 1,
+              "justifyContent": "center",
+            }
           }
+          testID={undefined}
+          tvParallaxProperties={undefined}
         >
-          PLACE BID
-        </Text>
+          <View
+            style={null}
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              style={
+                Array [
+                  Object {
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "color": "white",
+                    "fontSize": 14,
+                    "opacity": 1,
+                  },
+                  Object {
+                    "fontFamily": "AvantGardeGothicITC",
+                  },
+                ]
+              }
+            >
+              PLACE BID
+            </Text>
+          </View>
+        </View>
       </View>
     </View>
   </View>

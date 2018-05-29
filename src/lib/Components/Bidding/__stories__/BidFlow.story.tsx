@@ -7,69 +7,69 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import createEnvironment from "../../../relay/createEnvironment"
 
 import { Flex } from "../Elements/Flex"
-import { Serif16 } from "../Elements/Typography"
+import { Sans12, Serif14, Serif16 } from "../Elements/Typography"
 
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Checkbox } from "../Components/Checkbox"
 
 import BidFlow from "../../../Containers/BidFlow"
-import { BidResult } from "../Screens/BidResult"
-import { ConfirmBidScreen } from "../Screens/ConfirmBid"
+import { Input } from "../Components/Input"
+import { BidResultScreen } from "../Screens/BidResult"
+import { ConfirmBid } from "../Screens/ConfirmBid"
 import { ConfirmFirstTimeBid } from "../Screens/ConfirmFirstTimeBid"
 import { MaxBidScreen } from "../Screens/SelectMaxBid"
 
-const testSaleArtworkID = "5aefc5898b3b814ecdd59561"
+const testSaleArtworkID = "5ae73b417622dd026f0fe473"
+const testArtworkID = "ran-hwang-ephemeral-blossom-pp"
+const testSaleID = "cityarts-benefit-auction-2018"
 
-const SelectMaxBidRenderer: React.SFC<any> = ({ render, saleArtworkID }) => {
-  return (
-    <QueryRenderer
-      environment={createEnvironment()}
-      query={graphql`
-        query BidFlowSelectMaxBidRendererQuery($saleArtworkID: String!) {
-          sale_artwork(id: $saleArtworkID) {
-            ...SelectMaxBid_sale_artwork
-          }
-        }
-      `}
-      variables={{
-        saleArtworkID,
-      }}
-      render={render}
-    />
-  )
-}
+const selectMaxBidQuery = graphql`
+  query BidFlowSelectMaxBidRendererQuery($saleArtworkID: String!) {
+    sale_artwork(id: $saleArtworkID) {
+      ...SelectMaxBid_sale_artwork
+    }
+  }
+`
 
-const ConfirmBidScreenRenderer: React.SFC<any> = ({ render, saleArtworkID }) => {
-  return (
-    <QueryRenderer
-      environment={createEnvironment()}
-      query={graphql`
-        query BidFlowConfirmBidScreenRendererQuery($saleArtworkID: String!) {
-          sale_artwork(id: $saleArtworkID) {
-            ...ConfirmBid_sale_artwork
-          }
-        }
-      `}
-      variables={{ saleArtworkID }}
-      render={render}
-    />
-  )
+const bidResultQuery = graphql`
+  query BidFlowBidResultScreenRendererQuery($saleArtworkID: String!) {
+    sale_artwork(id: $saleArtworkID) {
+      ...BidResult_sale_artwork
+    }
+  }
+`
+
+const BidFlowStoryRenderer: React.SFC<any> = ({ render, query, saleArtworkID }) => {
+  return <QueryRenderer environment={createEnvironment()} query={query} variables={{ saleArtworkID }} render={render} />
 }
 
 storiesOf("Bidding")
   .add("Show bid flow", () => {
-    return <BidFlowRenderer render={renderWithLoadProgress(BidFlow)} saleArtworkID={testSaleArtworkID} />
+    return <BidFlowRenderer render={renderWithLoadProgress(BidFlow)} artworkID={testArtworkID} saleID={testSaleID} />
   })
   .add("Select Max Bid", () => (
-    <SelectMaxBidRenderer render={renderWithLoadProgress(MaxBidScreen)} saleArtworkID={testSaleArtworkID} />
+    <BidFlowStoryRenderer
+      render={renderWithLoadProgress(MaxBidScreen)}
+      query={selectMaxBidQuery}
+      saleArtworkID={testSaleArtworkID}
+    />
   ))
   .add("Confirm Bid", () => {
     return (
-      <ConfirmBidScreenRenderer
-        render={renderWithLoadProgress(ConfirmBidScreen, {
-          bid: { display: "$20,000", cents: 2000000 },
-        })}
-        saleArtworkID={testSaleArtworkID}
+      <ConfirmBid
+        sale_artwork={{
+          sale: {
+            id: "1",
+          },
+          artwork: {
+            id: "1",
+            title: "Morgan Hill (Prototype)",
+            date: "1973",
+            artist_names: "Lewis balts",
+          },
+          lot_label: "1",
+        }}
+        bid={{ display: "$45,000", cents: 4500000 }}
       />
     )
   })
@@ -93,38 +93,106 @@ storiesOf("Bidding")
     )
   })
   .add("Bidding Result (winning)", () => {
-    return <BidResult winning />
+    const status = "SUCCESS"
+    return (
+      <BidFlowStoryRenderer
+        render={renderWithLoadProgress(BidResultScreen, {
+          winning: true,
+          status,
+        })}
+        query={bidResultQuery}
+        saleArtworkID={testSaleArtworkID}
+      />
+    )
   })
   .add("Bidding Result (not highest bid)", () => {
-    return <BidResult winning={false} />
+    const status = "ERROR_BID_LOW"
+    const messageHeader = "Your bid wasn’t high enough"
+    const messageDescriptionMd = `Another bidder placed a higher max bid or the same max bid before you did.  \
+ Bid again to take the lead.`
+    return (
+      <BidFlowStoryRenderer
+        render={renderWithLoadProgress(BidResultScreen, {
+          winning: false,
+          status,
+          message_header: messageHeader,
+          message_description_md: messageDescriptionMd,
+        })}
+        query={bidResultQuery}
+        saleArtworkID={testSaleArtworkID}
+      />
+    )
+  })
+  .add("Bidding Result (live bidding started)", () => {
+    const status = "ERROR_LIVE_BIDDING_STARTED"
+    const messageHeader = "Live bidding has started"
+    const messageDescriptionMd = `Sorry, your bid wasn’t received before live bidding started.\
+ To continue bidding, please [join the live auction](http://live-staging.artsy.net/).`
+    return (
+      <BidFlowStoryRenderer
+        render={renderWithLoadProgress(BidResultScreen, {
+          winning: false,
+          status,
+          message_header: messageHeader,
+          message_description_md: messageDescriptionMd,
+        })}
+        query={bidResultQuery}
+        saleArtworkID={testSaleArtworkID}
+      />
+    )
   })
 
-storiesOf("App Style/Input").add("Check Boxes", () => (
-  <BiddingThemeProvider>
-    <Flex mt={7}>
-      <Checkbox pl={3} pb={1}>
-        <Serif16 mt={2}>Remember me</Serif16>
-      </Checkbox>
+storiesOf("App Style/Input")
+  .add("Text Input", () => (
+    <BiddingThemeProvider>
+      <Flex mt={7} ml={4} mr={4}>
+        <Serif16 mb={2}>Title</Serif16>
+        <Input placeholder="Placeholder" mb={5} />
 
-      <Checkbox pl={3} pb={1} checked>
-        <Serif16 mt={2}>Remember me</Serif16>
-      </Checkbox>
+        <Serif16>Title</Serif16>
+        <Serif14 mb={2} color="black60">
+          Short description
+        </Serif14>
+        <Input placeholder="Placeholder" value="Content" mb={5} />
 
-      <Checkbox pl={3} pb={1} error="Please agree to the terms and conditions">
-        <Serif16 mt={2}>Agree to Terms and Conditions</Serif16>
-      </Checkbox>
+        <Input placeholder="Without Title" mb={5} />
 
-      <Checkbox p={3} checked error="Please agree to the terms and conditions">
-        <Serif16 mt={2}>Agree to Terms and Conditions</Serif16>
-      </Checkbox>
+        <Serif16 mb={2}>Error</Serif16>
+        <Input error placeholder="Placeholder" mb={3} />
+        <Sans12 color="red100">Error message</Sans12>
+      </Flex>
+    </BiddingThemeProvider>
+  ))
+  .add("Check Boxes", () => (
+    <BiddingThemeProvider>
+      <Flex mt={7}>
+        <Checkbox pl={3} pb={1}>
+          <Serif16 mt={2}>Remember me</Serif16>
+        </Checkbox>
 
-      <Checkbox pl={3} pb={1} disabled>
-        <Serif16 mt={2}>Remember me</Serif16>
-      </Checkbox>
+        <Checkbox pl={3} pb={1} checked>
+          <Serif16 mt={2}>Remember me</Serif16>
+        </Checkbox>
 
-      <Checkbox pl={3} pb={1} checked disabled>
-        <Serif16 mt={2}>Remember me</Serif16>
-      </Checkbox>
-    </Flex>
-  </BiddingThemeProvider>
-))
+        <Checkbox pl={3} pb={1} error>
+          <Serif16 mt={2} color="red100">
+            Agree to Terms and Conditions
+          </Serif16>
+        </Checkbox>
+
+        <Checkbox pl={3} pb={1} checked error>
+          <Serif16 mt={2} color="red100">
+            Agree to Terms and Conditions
+          </Serif16>
+        </Checkbox>
+
+        <Checkbox pl={3} pb={1} disabled>
+          <Serif16 mt={2}>Remember me</Serif16>
+        </Checkbox>
+
+        <Checkbox pl={3} pb={1} checked disabled>
+          <Serif16 mt={2}>Remember me</Serif16>
+        </Checkbox>
+      </Flex>
+    </BiddingThemeProvider>
+  ))

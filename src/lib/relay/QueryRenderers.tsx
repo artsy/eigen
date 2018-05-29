@@ -59,24 +59,42 @@ export const ArtistRenderer: React.SFC<ArtistRendererProps> = ({ render, artistI
 }
 
 interface BidFlowRendererProps extends RendererProps {
-  saleArtworkID: string
+  artworkID: string
+  saleID: string
 }
 
-export const BidFlowRenderer: React.SFC<BidFlowRendererProps> = ({ render, saleArtworkID }) => {
+export const BidFlowRenderer: React.SFC<BidFlowRendererProps> = ({ render, artworkID, saleID }) => {
   return (
     <QueryRenderer
       environment={environment}
       query={graphql`
-        query QueryRenderersBidFlowQuery($saleArtworkID: String!) {
-          sale_artwork(id: $saleArtworkID) {
-            ...BidFlow_sale_artwork
+        query QueryRenderersBidFlowQuery($artworkID: String!, $saleID: String!) {
+          artwork(id: $artworkID) {
+            sale_artwork(sale_id: $saleID) {
+              ...BidFlow_sale_artwork
+            }
           }
         }
       `}
       variables={{
-        saleArtworkID,
+        artworkID,
+        saleID,
       }}
-      render={render}
+      render={({ props, error }) => {
+        if (error) {
+          console.error(error)
+        } else if (props) {
+          // Note that we need to flatten the query above before passing into the BidFlow component.
+          // i.e.: the `sale_artwork` is nested within `artwork`, but we want the sale_artwork itself as a prop.
+          return render({
+            props: {
+              sale_artwork: props.artwork.sale_artwork,
+            },
+            error,
+          })
+        }
+        return null
+      }}
     />
   )
 }

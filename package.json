@@ -1,6 +1,6 @@
 {
   "name": "emission",
-  "version": "1.4.9",
+  "version": "1.5.1",
   "native-code-version": 2,
   "description": "Artsy React(Native) components.",
   "engines": {
@@ -37,6 +37,7 @@
       "relay-compiler --src ./src --schema data/schema.graphql --language typescript --artifactDirectory ./src/__generated__ --persist --persistOutput ./src/__generated__/complete.queryMap.json",
     "generate-graphql-query-map":
       "node scripts/generate-graphql-query-map.js > Pod/Classes/GraphQL/ARGraphQLQueryMap.generated.objc",
+    "merge-graphql-query-map": "node scripts/merge-graphql-query-map.js",
     "sync-colors":
       "cd externals/elan && git fetch && git checkout origin/master && cp components/lib/variables/colors.json ../../data",
     "sync-externals": "npm run-script sync-schema && npm run-script sync-colors",
