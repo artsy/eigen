@@ -22,11 +22,6 @@ query BidFlowBidResultScreenRendererQuery(
 }
 
 fragment BidResult_sale_artwork on SaleArtwork {
-  minimum_next_bid {
-    amount
-    cents
-    display
-  }
   sale {
     live_start_at
     end_at
@@ -63,26 +58,12 @@ v2 = {
   "name": "__id",
   "args": null,
   "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "cents",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "display",
-  "args": null,
-  "storageKey": null
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "BidFlowBidResultScreenRendererQuery",
-  "id": "071d49e7e8aeccdece6e204cb9a419c4",
+  "id": "8470dc0d492e9612bfb74445c5822328",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -128,26 +109,6 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "minimum_next_bid",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "SaleArtworkMinimumNextBid",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "amount",
-                "args": null,
-                "storageKey": null
-              },
-              v3,
-              v4
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
             "name": "sale",
             "storageKey": null,
             "args": null,
@@ -180,8 +141,20 @@ return {
             "concreteType": "BidIncrementsFormatted",
             "plural": true,
             "selections": [
-              v4,
-              v3
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "display",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "cents",
+                "args": null,
+                "storageKey": null
+              }
             ]
           },
           v2

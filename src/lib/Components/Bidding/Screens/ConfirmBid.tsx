@@ -29,12 +29,14 @@ import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.g
 import { Checkbox } from "../Components/Checkbox"
 import { Timer } from "../Components/Timer"
 
+interface Bid {
+  display: string
+  cents: number
+}
+
 interface ConfirmBidProps extends ViewProperties {
   sale_artwork: ConfirmBid_sale_artwork
-  bid: {
-    display: string
-    cents: number
-  }
+  bid: Bid
   relay?: RelayPaginationProp
   navigator?: NavigatorIOS
 }
@@ -63,11 +65,7 @@ const bidderPositionMutation = graphql`
 `
 
 export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState> {
-  state = {
-    pollCount: 0,
-    conditionsOfSaleChecked: false,
-    isLoading: false,
-  }
+  state = { pollCount: 0, conditionsOfSaleChecked: false, isLoading: false }
 
   onPressConditionsOfSale = () => {
     SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
@@ -109,6 +107,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
                 id
                 processed_at
                 is_active
+                suggested_next_bid {
+                  cents
+                  display
+                }
               }
             }
           }
@@ -153,12 +155,19 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
         false,
         status,
         result.data.me.bidder_position.message_header,
-        result.data.me.bidder_position.message_description_md
+        result.data.me.bidder_position.message_description_md,
+        result.data.me.bidder_position.position.suggested_next_bid
       )
     }
   }
 
-  showBidResult(winning: boolean, status: string, messageHeader?: string, messageDescriptionMd?: string) {
+  showBidResult(
+    winning: boolean,
+    status: string,
+    messageHeader?: string,
+    messageDescriptionMd?: string,
+    suggestedNextBid?: Bid
+  ) {
     this.props.navigator.push({
       component: BidResultScreen,
       title: "",
@@ -169,6 +178,7 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
         message_description_md: messageDescriptionMd,
         winning,
         bid: this.props.bid,
+        suggested_next_bid: suggestedNextBid,
       },
     })
 
@@ -176,9 +186,7 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
   }
 
   conditionsOfSalePressed() {
-    this.setState({
-      conditionsOfSaleChecked: !this.state.conditionsOfSaleChecked,
-    })
+    this.setState({ conditionsOfSaleChecked: !this.state.conditionsOfSaleChecked })
   }
 
   render() {
