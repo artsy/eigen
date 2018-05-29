@@ -29,12 +29,14 @@ import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.g
 import { Checkbox } from "../Components/Checkbox"
 import { Timer } from "../Components/Timer"
 
+interface Bid {
+  display: string
+  cents: number
+}
+
 interface ConfirmBidProps extends ViewProperties {
   sale_artwork: ConfirmBid_sale_artwork
-  bid: {
-    display: string
-    cents: number
-  }
+  bid: Bid
   relay?: RelayPaginationProp
   navigator?: NavigatorIOS
 }
@@ -63,11 +65,7 @@ const bidderPositionMutation = graphql`
 `
 
 export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState> {
-  state = {
-    pollCount: 0,
-    conditionsOfSaleChecked: false,
-    isLoading: false,
-  }
+  state = { pollCount: 0, conditionsOfSaleChecked: false, isLoading: false }
 
   onPressConditionsOfSale = () => {
     SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
@@ -102,9 +100,18 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
         {
           me {
             bidder_position(id: "${bidderPositionID}") {
-              id
-              processed_at
-              is_active
+              status
+              message_header
+              message_description_md
+              position {
+                id
+                processed_at
+                is_active
+                suggested_next_bid {
+                  cents
+                  display
+                }
+              }
             }
           }
         }
@@ -126,28 +133,41 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   }
 
   checkBidPosition(result) {
-    const bidderPosition = result.data.me.bidder_position
-    if (bidderPosition.processed_at) {
-      if (bidderPosition.is_active) {
-        // wining
-        this.showBidResult(true, "SUCCESS")
-      } else {
-        // outbid
-        this.showBidResult(false, "ERROR_BID_LOW")
-      }
-    } else {
+    const bidderPosition = result.data.me.bidder_position.position
+    const status = result.data.me.bidder_position.status
+    if (status === "WINNING") {
+      this.showBidResult(true, "WINNING")
+    } else if (status === "PENDING") {
       if (this.state.pollCount > MAX_POLL_ATTEMPTS) {
-        // TODO: Present error message to user.
+        const md = `We're receiving a high volume of traffic and your bid is still processing.  \
+If you don’t receive an update soon, please contact [support@artsy.net](mailto:support@artsy.net). `
+
+        this.showBidResult(false, "PROCESSING", "Bid Processing", md)
       } else {
+        // initiating new request here (vs setInterval) to make sure we wait for the previus calls to return before making a new one
         setTimeout(() => {
           this.queryForBidPosition(bidderPosition.id).then(this.checkBidPosition.bind(this))
         }, 1000)
         this.setState({ pollCount: this.state.pollCount + 1 })
       }
+    } else {
+      this.showBidResult(
+        false,
+        status,
+        result.data.me.bidder_position.message_header,
+        result.data.me.bidder_position.message_description_md,
+        result.data.me.bidder_position.position.suggested_next_bid
+      )
     }
   }
 
-  showBidResult(winning: boolean, status: string, messageHeader?: string, messageDescriptionMd?: string) {
+  showBidResult(
+    winning: boolean,
+    status: string,
+    messageHeader?: string,
+    messageDescriptionMd?: string,
+    suggestedNextBid?: Bid
+  ) {
     this.props.navigator.push({
       component: BidResultScreen,
       title: "",
@@ -157,6 +177,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
         message_header: messageHeader,
         message_description_md: messageDescriptionMd,
         winning,
+        bid: this.props.bid,
+        suggested_next_bid: suggestedNextBid,
       },
     })
 
@@ -164,9 +186,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   }
 
   conditionsOfSalePressed() {
-    this.setState({
-      conditionsOfSaleChecked: !this.state.conditionsOfSaleChecked,
-    })
+    this.setState({ conditionsOfSaleChecked: !this.state.conditionsOfSaleChecked })
   }
 
   render() {

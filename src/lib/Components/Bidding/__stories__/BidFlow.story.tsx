@@ -106,7 +106,7 @@ storiesOf("Bidding")
     )
   })
   .add("Bidding Result (not highest bid)", () => {
-    const status = "ERROR_BID_LOW"
+    const status = "OUTBID"
     const messageHeader = "Your bid wasn’t high enough"
     const messageDescriptionMd = `Another bidder placed a higher max bid or the same max bid before you did.  \
  Bid again to take the lead.`
