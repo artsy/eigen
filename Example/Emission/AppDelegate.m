@@ -185,6 +185,8 @@ randomBOOL(void)
     viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                                     target:self
                                                                                                     action:@selector(dismissModalViewController)];
+    // If the source of this dismiss call is itself being dismissed, then present form our own navigation controller.
+    // Otherwise, present from _its_ navigation controller.
     if (fromViewController.isBeingDismissed || fromViewController.navigationController.isBeingDismissed) {
       [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     } else {

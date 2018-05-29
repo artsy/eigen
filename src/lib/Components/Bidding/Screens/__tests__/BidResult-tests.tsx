@@ -46,7 +46,8 @@ describe("BidResult component", () => {
       const bidResult = renderer.create(
         <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
       )
-      ;(SwitchBoard.dismissModalViewController as jest.Mock<any>).mockImplementationOnce(() => Promise.resolve())
+      const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
+      mockDismiss.mockReturnValueOnce(Promise.resolve())
 
       bidResult.root.findByType(BidGhostButton).instance.props.onPress()
       jest.runAllTicks()
@@ -134,12 +135,12 @@ To continue bidding, please [join the live auction](http://live-staging.artsy.ne
           navigator={jest.fn() as any}
         />
       )
-      ;(SwitchBoard.dismissModalViewController as jest.Mock<any>).mockImplementationOnce(() => Promise.resolve())
+      const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
+      mockDismiss.mockReturnValueOnce(Promise.resolve())
 
       bidResult.root.findByType(BidGhostButton).instance.props.onPress()
       jest.runAllTicks()
 
-      expect(SwitchBoard.dismissModalViewController).toHaveBeenCalled()
       expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), "/auction/sale-id")
     })
   })
