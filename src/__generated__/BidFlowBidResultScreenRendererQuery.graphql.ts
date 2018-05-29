@@ -22,14 +22,15 @@ query BidFlowBidResultScreenRendererQuery(
 }
 
 fragment BidResult_sale_artwork on SaleArtwork {
+  minimum_next_bid {
+    amount
+    cents
+    display
+  }
   sale {
     live_start_at
     end_at
     __id
-  }
-  increments {
-    display
-    cents
   }
   __id
 }
@@ -63,7 +64,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "BidFlowBidResultScreenRendererQuery",
-  "id": "8470dc0d492e9612bfb74445c5822328",
+  "id": "328c2282b05e4a3efec9b99c0d29c101",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -109,6 +110,38 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
+            "name": "minimum_next_bid",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "SaleArtworkMinimumNextBid",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "amount",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "cents",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "display",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
             "name": "sale",
             "storageKey": null,
             "args": null,
@@ -130,31 +163,6 @@ return {
                 "storageKey": null
               },
               v2
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "increments",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "BidIncrementsFormatted",
-            "plural": true,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "display",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "cents",
-                "args": null,
-                "storageKey": null
-              }
             ]
           },
           v2

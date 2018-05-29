@@ -439,7 +439,7 @@ exports[`BidResult component renders timer and error message when bid is low 1`]
             ]
           }
         >
-          BID $12,000 OR MORE
+          BID CHF 10,000 OR MORE
         </Text>
       </View>
     </View>

@@ -66,8 +66,8 @@ export class BidResult extends React.Component<BidResultProps> {
         // when bidder position is created and the suggested_next_bid is passed from prev screen
         nextBid = this.props.suggested_next_bid.display
       } else {
-        // otherwise select the next increament
-        nextBid = this.props.sale_artwork.increments.filter(d => d.cents > this.props.bid.cents)[0].display
+        // otherwise (when MP returns OUTBID without creating BP, when it already knows there are higher bids) select minimum_next_bid
+        nextBid = nextBid = this.props.sale_artwork.minimum_next_bid.display
       }
       const buttonMsg = bidAgain ? `Bid ${nextBid} or more` : "Continue"
       return (
@@ -123,13 +123,14 @@ export const BidResultScreen = createFragmentContainer(
   BidResult,
   graphql`
     fragment BidResult_sale_artwork on SaleArtwork {
+      minimum_next_bid {
+        amount
+        cents
+        display
+      }
       sale {
         live_start_at
         end_at
-      }
-      increments {
-        display
-        cents
       }
     }
   `
