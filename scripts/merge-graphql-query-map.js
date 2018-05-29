@@ -17,4 +17,4 @@ for (const key in queryMap) {
 }
 
 fs.writeFileSync(mpQueryMapFilename, JSON.stringify(mpQueryMap, null, 2))
-console.write("IMPORTANT: Changes have been made to your local metaphysics repo, please PR them.")
+console.log("IMPORTANT: Changes have been made to your local metaphysics repo, please PR them.")
