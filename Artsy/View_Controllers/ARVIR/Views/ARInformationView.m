@@ -12,6 +12,7 @@
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic, strong) NSArray<InformationalViewState *> *states;
 @property (nonatomic, weak) ORStackView *stack;
+@property (nonatomic, weak) UILabel *xOfYLabel;
 @end
 
 @implementation ARInformationView
@@ -21,11 +22,19 @@
     _states = states;
     _index = -1;
 
+    UILabel *xofYLabel = [self createXOfYLabel];
+    self.xOfYLabel = xofYLabel;
+    [self addSubview:xofYLabel];
+    [xofYLabel alignTop:@"0" leading:@"0" toView:self];
+    [xofYLabel alignTrailingEdgeWithView:self predicate:@"0"];
+
+
     ORStackView *stack = [[ORStackView alloc] init];
     stack.bottomMarginHeight = 40;
 
     [self addSubview:stack];
-    [stack alignTop:@"0" bottom:@"0" toView:self];
+    [stack alignTopEdgeWithView:xofYLabel predicate:@"0"];
+    [stack alignBottomEdgeWithView:self predicate:@"0"];
     [stack alignLeading:@"20" trailing:@"-20" toView:self];
     _stack = stack;
 
@@ -33,6 +42,16 @@
 
     [self nextAnimated:NO];
 }
+
+- (UILabel *)createXOfYLabel
+{
+    UILabel *xOfYLabel = [[UILabel alloc] init];
+    xOfYLabel.font = [UIFont displayMediumSansSerifFontWithSize:10];
+    xOfYLabel.textAlignment = NSTextAlignmentCenter;
+    xOfYLabel.textColor = [UIColor whiteColor];
+    return xOfYLabel;
+}
+
 
 - (void)next
 {
@@ -56,6 +75,8 @@
     }
 
     InformationalViewState *state = self.states[self.index];
+
+    self.xOfYLabel.text = state.xOutOfYMessage;
 
     UILabel *xOfYLabel = [[UILabel alloc] init];
     xOfYLabel.font = [UIFont displayMediumSansSerifFontWithSize:10];
