@@ -1,22 +1,12 @@
 upcoming:
   version: 4.2.0
   date: TBA
-  emission_version: 1.4.8
-  user_facing:
-    - WIP Buy now works show in an Auction screen - Chris
-    - ARVIR fixes & improvements - orta
-    - Wall positions are not updated after placing a work - orta
-    - Buy now layout adjustments, 3 columns on ipad - maxim
-    - conditionally adding horizontal line to lotstandings view wrt buy now - maxim
-    - Artwork Screen does not get overscrolled after coming back from ARVIR - orta
-    - Fixes crash when submitting consignments from iOS 11 - ash
-    - Redesigned bid status view on artwork page - ash
-    - Adds a method to determine root emission VCs for tabbing - maxim
   emission_version: 1.5.2
   dev:
     - Updates Emission to 1.5.2 - ash
   user_facing:
     - Adds a round corner to all native buttons - orta
+    - Redesigned bid status view on artwork page - ash
 
 releases:
   - version: 4.1.3
