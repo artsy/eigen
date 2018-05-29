@@ -6,7 +6,6 @@
 #import "ARCountdownView.h"
 #import "ARNavigationButtonsViewController.h"
 #import "ARNavigationButton.h"
-#import "ARAuctionBidderStateLabel.h"
 #import "ARBidButton.h"
 #import "ARSpinner.h"
 #import "Partner.h"
@@ -25,13 +24,15 @@
 @property (nonatomic, strong) ARBlackFlatButton *contactGalleryButton;
 @property (nonatomic, strong) ARArtworkPriceView *priceView;
 @property (nonatomic, strong) ARArtworkAuctionPriceView *auctionPriceView;
-@property (nonatomic, strong) ARAuctionBidderStateLabel *bidderStatusLabel;
-@property (nonatomic, strong) ARBidButton *bidButton;
-@property (nonatomic, strong) Artwork *artwork;
-@property (nonatomic, strong) SaleArtwork *saleArtwork;
-@property (nonatomic, strong) ARNavigationButtonsViewController *navigationButtonsVC;
 @property (nonatomic, strong) ARSpinner *spinner;
 @property (nonatomic, strong) UIView *bannerView;
+@property (nonatomic, strong) ARBidButton *bidButton;
+
+@property (nonatomic, strong) ARNavigationButtonsViewController *navigationButtonsVC;
+
+@property (nonatomic, strong) Artwork *artwork;
+@property (nonatomic, strong) SaleArtwork *saleArtwork;
+
 
 @end
 
@@ -131,27 +132,20 @@
     }
 
     if ([self showAuctionControls]) {
-        if ([self showBidStatusLabels]) {
-            self.bidderStatusLabel = [[ARAuctionBidderStateLabel alloc] init];
-            [self.bidderStatusLabel updateWithSaleArtwork:self.saleArtwork];
-            [self addSubview:self.bidderStatusLabel withTopMargin:@"0" sideMargin:@"0"];
-        }
-
         if ([self showAuctionPriceView]) {
             self.auctionPriceView = [[ARArtworkAuctionPriceView alloc] init];
             [self.auctionPriceView updateWithSaleArtwork:self.saleArtwork];
-            [self addSubview:self.auctionPriceView withTopMargin:@"12" sideMargin:@"0"];
+            [self addSubview:self.auctionPriceView withTopMargin:@"26" sideMargin:@"0"];
         }
 
         ARBidButton *bidButton = [[ARBidButton alloc] init];
         bidButton.auctionState = self.saleArtwork.auctionState;
-        [self addSubview:bidButton withTopMargin:@"30" sideMargin:@"0"];
+        [self addSubview:bidButton withTopMargin:@"26" sideMargin:@"0"];
         [bidButton addTarget:self action:@selector(tappedBidButton:) forControlEvents:UIControlEventTouchUpInside];
         self.bidButton = bidButton;
 
         if ([self showBuyersPremium]) {
             ARInquireButton *premium = [[ARInquireButton alloc] init];
-            premium.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
             [premium setUnderlinedTitle:@"This work has a Buyer's Premium" underlineRange:NSMakeRange(16, 15) forState:UIControlStateNormal];
             [premium addTarget:self action:@selector(tappedBuyersPremium:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:premium withTopMargin:@"8" sideMargin:nil];
@@ -325,14 +319,6 @@ return [navigationButtons copy];
 
 #pragma mark - Info Logic
 
-// Show the bid status labels if the sale is ongoing and the user is the highest bidder or is a bidder.
-- (BOOL)showBidStatusLabels
-{
-    BOOL isOngoing = (self.saleArtwork.auctionState & ARAuctionStateStarted);
-    BOOL userIsBidder = self.saleArtwork.auctionState & (ARAuctionStateUserIsHighBidder | ARAuctionStateUserIsBidder);
-    return isOngoing && userIsBidder;
-}
-
 // Show the auction price view if the auction has started (implies not finished) or is showing a preview.
 - (BOOL)showAuctionPriceView
 {
@@ -419,7 +405,6 @@ return [navigationButtons copy];
     if (!self.saleArtwork.auction) {
         [self removeSubview:self.bidButton];
         [self removeSubview:self.countdownView];
-        [self removeSubview:self.bidderStatusLabel];
         [self removeSubview:self.auctionPriceView];
 
     } else if ([now compare:liveStartDate] == NSOrderedAscending) {
