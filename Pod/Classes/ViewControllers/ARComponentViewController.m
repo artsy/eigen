@@ -6,8 +6,7 @@
 @interface ARComponentViewController ()
 @property (nonatomic, strong, readonly) AREmission *emission;
 @property (nonatomic, strong, readonly) NSString *moduleName;
-@property (nonatomic, strong, readonly) NSDictionary *initialProperties;
-@property (nonatomic, strong) RCTRootView *rootView;
+@property (nonatomic, strong) NSDictionary *initialProperties;
 @end
 
 @implementation ARComponentViewController
@@ -102,6 +101,19 @@
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleDefault;
+}
+
+- (void)setProperty:(id)value forKey:(NSString *)key
+{
+    if (self.isViewLoaded) {
+        NSMutableDictionary *appProperties = [self.rootView.appProperties mutableCopy];
+        appProperties[key] = value;
+        self.rootView.appProperties = appProperties;
+    } else {
+        NSMutableDictionary *appProperties = [self.initialProperties mutableCopy];
+        appProperties[key] = value;
+        self.initialProperties = appProperties;
+    }
 }
 
 @end

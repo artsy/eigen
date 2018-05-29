@@ -5,6 +5,11 @@
 
 @implementation ARHomeComponentViewController
 
+- (void)changeHomeTabTo:(ARHomeTabType)tab
+{
+    [self setProperty:@(tab) forKey:(self.isViewLoaded ? @"selectedTab" : @"initialTab")];
+}
+
 + (NSArray<ARGraphQLQuery *> *)preloadQueriesWithSelectedArtist:(nullable NSString *)artistID
                                                             tab:(ARHomeTabType)selectedTab;
 {
@@ -17,7 +22,7 @@
 
 - (instancetype)initWithSelectedArtist:(nullable NSString *)artistID tab:(ARHomeTabType)selectedTab emission:(nullable AREmission*)emission;
 {
-    NSDictionary *initialProperties = artistID ? @{ @"selectedArtist": artistID, @"selectedTab": @(selectedTab) } : @{ @"selectedTab": @(selectedTab) };
+    NSDictionary *initialProperties = artistID ? @{ @"selectedArtist": artistID, @"initialTab": @(selectedTab) } : @{ @"initialTab": @(selectedTab) };
     if ((self = [super initWithEmission:emission
                              moduleName:@"Home"
                       initialProperties:initialProperties])) {

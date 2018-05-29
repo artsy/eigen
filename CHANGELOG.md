@@ -14,7 +14,22 @@
 
 -->
 
-### Master
+### 1.4.9
+
+* Adds setProperty:forKey: to ARComponentViewController - ash&maxim
+* Add support for changing tabs of the home vc - maxim
+* Update home analytics for tab changes and inital tab props - maxim
+* Update switching for home tabs - ash&maxim
+
+### 1.4.8
+
+* Fixing broken previous deploy, no changes - alloy
+
+### 1.4.7
+
+* Fixes crash when following an artist from the ‘related artist’ Home/ForYou rail - alloy
+
+  ### Master
 
 * Adds Recently Viewed Works rail to Home - sarah
 * Upgrade to React Native 0.54.4 - alloy/orta
