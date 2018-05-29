@@ -20,11 +20,12 @@
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
 #import "ARAdminNetworkModel.h"
-
+#import "ARAppNotificationsDelegate.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
+#import <Sentry/SentryClient.h>
 
 #if DEBUG
 #import <VCRURLConnection/VCR.h>
@@ -44,7 +45,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString *gitCommitRevision = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"GITCommitRev"];
-
 
     ARSectionData *userSectionData = [[ARSectionData alloc] init];
     userSectionData.headerTitle = [NSString stringWithFormat:@"%@ v%@, build %@ (%@)", name, version, build, gitCommitRevision];
@@ -254,6 +254,13 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return [self tappableCellDataWithTitle:@"Copy Push Notification Token" selection:^{
         NSString *deviceToken = [[NSUserDefaults standardUserDefaults] valueForKey:ARAPNSDeviceTokenKey];
         [[UIPasteboard generalPasteboard] setValue:deviceToken forPasteboardType:(NSString *)kUTTypePlainText];
+    }];
+}
+
+- (ARCellData *)requestNotificationsAlert;
+{
+    return [self tappableCellDataWithTitle:@"Request Receiving Notifications" selection:^{
+        [[[ARAppNotificationsDelegate alloc] init] registerForDeviceNotificationsWithApple];
     }];
 }
 #endif
@@ -469,10 +476,15 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     ARSectionData *labsSectionData = [[ARSectionData alloc] init];
     labsSectionData.headerTitle = @"Developer";
 
-    [labsSectionData addCellDataFromArray:@[
+    ARCellData *crashCellData = [self tappableCellDataWithTitle:@"Crash App" selection:^{
+        [SentryClient.sharedClient crash];
+    }];
 
+    [labsSectionData addCellDataFromArray:@[
+        crashCellData,
 #if !TARGET_IPHONE_SIMULATOR
         [self generateNotificationTokenPasteboardCopy],
+        [self requestNotificationsAlert],
 #endif
         [self editableTextCellDataWithName:@"Gravity API" defaultKey:ARStagingAPIURLDefault],
         [self editableTextCellDataWithName:@"Web" defaultKey:ARStagingWebURLDefault],

@@ -200,6 +200,7 @@
     self.descriptionLabel.text = self.pages[0][@"copy"];
     
     ARTermsAndConditionsView *label = [[ARTermsAndConditionsView alloc] init];
+    label.hidden = YES;
     
     [self.view addSubview:self.descriptionLabel];
     [self.view addSubview:self.getStartedButton];

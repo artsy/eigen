@@ -36,12 +36,14 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.1.1</string>
+	<string>4.2.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb308278682573501</string>
@@ -66,17 +68,17 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2018.04.06.14</string>
+	<string>2018.04.18.12</string>
 	<key>FacebookAppID</key>
 	<string>308278682573501</string>
 	<key>FacebookDisplayName</key>
 	<string>Artsy</string>
 	<key>GITCommitRev</key>
-	<string>41c8e8cb</string>
+	<string>a16f51fb</string>
 	<key>GITCommitSha</key>
-	<string>41c8e8cbc9e070384a1a55cd120db397f415dd5e</string>
+	<string>a16f51fb28c0250e0413b9c63e29c1c197f77186</string>
 	<key>GITRemoteOriginURL</key>
-	<string>https://github.com/artsy/eigen.git</string>
+	<string>git@github.com:artsy/eigen.git</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -97,6 +99,8 @@
 	<string>Used for beta testers to collect usage information.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera access is needed for this experience.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Camera access is needed to submit consignments.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photos will be used to gauge the quality of the work you are submitting.</string>
 	<key>UIAppFonts</key>

@@ -9,7 +9,6 @@
 
 @interface AROnboardingHeaderView ()
 
-
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) ARSerifLineHeightLabel *helpTextLabel;
 @property (nonatomic, strong) NSLayoutConstraint *searchHeightConstraint;
@@ -72,7 +71,6 @@
     }
     [self.helpTextLabel constrainTopSpaceToView:self.titleLabel predicate:useLargeLayout ? @"-10" : @"0"];
     [self.helpTextLabel constrainHeight:useLargeLayout ? @"80" : @"50"];
-
 }
 
 - (void)enableErrorHelpText

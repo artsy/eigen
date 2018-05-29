@@ -1,13 +1,44 @@
 upcoming:
-  version: 4.1.1
+  version: 4.2.0
   date: TBA
-  emission_version: 1.4.6
+  emission_version: 1.5.2
   user_facing:
-    - WIP Buy now works show in an Auction screen - Chris
-    - ARVIR fixes & improvements - orta
-    - Buy now layout adjustments, 3 columns on ipad - maxim
-  
+    - Adds a round corner to all native buttons - orta
+
 releases:
+  - version: 4.1.3
+    date: May 25, 2018
+    emission_version: 1.4.9
+    user_facing:
+      - Add push notification support for /auctions - maxim
+      - Adds a new ARVIR behind a feature flag - orta
+      - Updates the type on the setup page for AR - orta
+    admin:
+      - Adds an admin button to trigger getting notifications - orta
+      - Adds ability to see admin screen when logged in as non-admins via URL - ash
+
+  - version: 4.1.2
+    date: May 22, 2018
+    emission_version: 1.4.8
+    user_facing:
+      - Adds GDPR compliance screen to sign up flow - luc
+
+  - version: 4.1.1
+    date: May 7, 2018
+    emission_version: 1.4.8
+    user_facing:
+      - WIP Buy now works show in an Auction screen - Chris
+      - ARVIR fixes & improvements - orta
+      - Wall positions are not updated after placing a work - orta
+      - Buy now layout adjustments, 3 columns on ipad - maxim
+      - conditionally adding horizontal line to lotstandings view wrt buy now - maxim
+      - Artwork Screen does not get overscrolled after coming back from ARVIR - orta
+      - Fixes crash when submitting consignments from iOS 11 - ash
+      - Adds a method to determine root emission VCs for tabbing - maxim
+      - Adds GDPR compliance screen to sign up flow - luc
+    dev:
+      - Records artwork views using metaphysics mutation - Sarah
+
   - version: 4.1.0
     date: Apr 6, 2018
     emission_version: 1.4.6
@@ -17,7 +48,7 @@ releases:
     user_facing:
       - Artwork action buttons (fav/map/vir/share) now center horizontally on iPhone - orta
       - ARVIR for 11.3 users - orta
-      - Description change for Ephemera atrwork classification field - oksana
+      - Description change for Ephemera artwork classification field - oksana
     dev:
       - Reduce time spent in dyld at launch by changing Pods from dynamic frameworks to static libraries - alloy
     ARVIR:

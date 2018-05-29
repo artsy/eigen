@@ -85,8 +85,8 @@ target 'Artsy' do
   pod 'React/Core'
 
   # Facebook
-  pod 'FBSDKCoreKit', '~> 4.9'
-  pod 'FBSDKLoginKit', '~> 4.9'
+  pod 'FBSDKCoreKit', '~> 4.33'
+  pod 'FBSDKLoginKit', '~> 4.33'
 
   # Analytics
   pod 'Analytics'

@@ -1,6 +1,10 @@
 @import ARKit;
 @import SceneKit;
 
+// This needs to be a top level UIViewController
+// which will have safeAreaInsets thgat reflect the phone
+#import "ARTopMenuViewController.h"
+
 #import "ARMenuAwareViewController.h"
 #import "ARDispatchManager.h"
 #import "ARFonts.h"
@@ -11,7 +15,7 @@
 
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedVIRViewController.h"
-#import "ARAugmentedVIRInteractionController.h"
+#import "ARVIRVerticalWallInteractionController.h"
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedVIRModalView.h"
 
@@ -44,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     if (@available(iOS 11.0, *)) {
         _sceneView = [[ARSCNView alloc] init];
-        _interactionController = [[ARAugmentedVIRInteractionController alloc] initWithSession:_sceneView.session config:config scene:_sceneView delegate:self];
+        _interactionController = [[ARVIRVerticalWallInteractionController alloc] initWithSession:_sceneView.session config:config scene:_sceneView delegate:self];
     }
 
     return self;
@@ -92,6 +96,11 @@ NS_ASSUME_NONNULL_BEGIN
         [backButton addTarget:self action:@selector(exitARContext) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:backButton];
 
+        backButton.layer.masksToBounds = NO;
+        backButton.layer.shadowColor = [UIColor blackColor].CGColor;
+        backButton.layer.shadowOffset = CGSizeMake(0, 0);
+        backButton.layer.shadowOpacity = 0.4;
+
         // Reset
         ARClearFlatButton *resetButton = [[ARClearFlatButton alloc] init];
         [resetButton setImage:[UIImage imageNamed:@"ARVIRRefresh"] forState:UIControlStateNormal];
@@ -100,6 +109,12 @@ NS_ASSUME_NONNULL_BEGIN
         [resetButton setBorderColor:[UIColor clearColor] forState:UIControlStateNormal];
         [resetButton setBorderColor:[UIColor clearColor] forState:UIControlStateHighlighted];
         [resetButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
+
+        resetButton.layer.masksToBounds = NO;
+        resetButton.layer.shadowColor = [UIColor blackColor].CGColor;
+        resetButton.layer.shadowOffset = CGSizeMake(0, 0);
+        resetButton.layer.shadowOpacity = 0.4;
+
         [self.view addSubview:resetButton];
 
         // A phone image which rotates to indicate how to calibrate
@@ -107,19 +122,31 @@ NS_ASSUME_NONNULL_BEGIN
         phoneImage.translatesAutoresizingMaskIntoConstraints = false;
         [self.view addSubview:phoneImage];
 
+        // A beta button in the top right
+        UIImageView *betaImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRBeta"]];
+        betaImage.translatesAutoresizingMaskIntoConstraints = false;
+        [self.view addSubview:betaImage];
+
+        // Any changes to this will need to be reflected in ARAugmentedVIRModalView also
+        BOOL isEdgeToEdgePhone = !UIEdgeInsetsEqualToEdgeInsets( [ARTopMenuViewController sharedController].view.safeAreaInsets, UIEdgeInsetsZero);
+        CGFloat backTopMargin = isEdgeToEdgePhone ? -17 : 9;
+
         [self.view addConstraints: @[
-            [backButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:20],
-            [backButton.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant: 20.0],
+            [backButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:backTopMargin],
+            [backButton.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant: 4.0],
             [backButton.heightAnchor constraintEqualToConstant:50.0],
             [backButton.widthAnchor constraintEqualToConstant:50.0],
 
-            [resetButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:20],
+            [resetButton.centerYAnchor constraintEqualToAnchor:backButton.centerYAnchor constant:0],
             [resetButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:0],
             [resetButton.heightAnchor constraintEqualToConstant:50.0],
             [resetButton.widthAnchor constraintEqualToConstant:50.0],
 
             [phoneImage.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
-            [phoneImage.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
+            [phoneImage.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
+
+            [betaImage.centerYAnchor constraintEqualToAnchor:backButton.centerYAnchor constant:0],
+            [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20]
         ]];
 
         // Text label for messaging
@@ -176,8 +203,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 // What to show when we first
 
-NSString *ARInitialARVIRSubtitle =  @"Aim at an object on your wall and move your phone in a circle.";
-NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and walk around the room.";
+NSString *ARInitialARVIRSubtitle =  @"Stand a couple feet from your wall. Aim at a prominent object on the wall and move your phone in a circle.";
+NSString *ARFinalARVIRSubtitle =   @"You can now view the work from anywhere in the room.";
 
 - (void)initialState
 {
@@ -217,6 +244,7 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
         CGFloat fadeTime = ARPerformWorkAsynchronously ? 0.3 : 0;
 
         [UIView animateWithDuration:fadeTime animations:^{
+            self.placeArtworkButton.hidden = YES;
             self.textLabel.alpha = 0;
 
         } completion:^(BOOL finished) {
@@ -230,7 +258,7 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
 
 - (void)showModalForError
 {
-    NSString *errorMessage = @"We’re having trouble finding your wall. Make sure the room is well-lit or try focusing on a different object on the wall.";
+    NSString *errorMessage = @"We’re having trouble finding your wall. Make sure the room is well-lit, or try focusing on a different object on the wall.";
     ARAugmentedVIRModalView *modal = [[ARAugmentedVIRModalView alloc] initWithTitle:errorMessage delegate:self];
     [self.view addSubview:modal];
     [modal alignToView:self.view];
@@ -290,6 +318,7 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
 {
     ar_dispatch_main_queue(^{
         self.resetButton.hidden = NO;
+        self.placeArtworkButton.hidden = YES;
         self.phoneImage.hidden = YES;
         self.textLabel.text = ARFinalARVIRSubtitle;
 
@@ -297,6 +326,16 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
             [self startTimerFadingOutFinalText];
         }
     });
+}
+
+- (void)hasPlacedWall
+{
+    // NOOP
+}
+
+- (void)isShowingGhostWall:(BOOL)showing
+{
+    // NOOP
 }
 
 // Rotate the imageview around in a circle
@@ -342,7 +381,7 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
 - (void)resetAR
 {
     [self hasRegisteredPlanes];
-
+    
     [self.interactionController restart];
 }
 
@@ -357,7 +396,7 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
 
 - (IBAction)panMoved:(UIPanGestureRecognizer *)gesture
 {
-//     [self.interactionController pannedOnScreen:gesture];
+    //     [self.interactionController pannedOnScreen:gesture];
 }
 
 // When you leave and come back to this VC, ARKit cannot correctly keep track of the world, need to reset
@@ -371,8 +410,7 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
         ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
 
         // While Xcode 10.3 is in beta, we won't be shipping CI builds with it
-//        configuration.planeDetection = ARPlaneDetectionVertical;
-        configuration.planeDetection = 2;
+        configuration.planeDetection = ARPlaneDetectionVertical;
 
         // Run the view's session
         [self.sceneView.session runWithConfiguration:configuration];
@@ -387,7 +425,7 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+
     // Pause the view's session
     [self.sceneView.session pause];
 }
@@ -446,6 +484,11 @@ NSString *ARFinalARVIRSubtitle =   @"Keep your phone pointed at the work and wal
 }
 
 - (BOOL)hidesStatusBarBackground
+{
+    return YES;
+}
+
+- (BOOL)prefersStatusBarHidden
 {
     return YES;
 }

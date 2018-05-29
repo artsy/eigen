@@ -4,10 +4,10 @@
 #import "ARDefaults.h"
 #import "SCNArtworkNode.h"
 #import "ARAugmentedRealityConfig.h"
-#import "ARAugmentedVIRInteractionController.h"
+#import "ARVIRVerticalWallInteractionController.h"
 
 API_AVAILABLE(ios(11.0))
-@interface ARAugmentedVIRInteractionController()
+@interface ARVIRVerticalWallInteractionController()
 @property (nonatomic, weak) ARSession *session;
 @property (nonatomic, weak) ARSCNView *sceneView;
 @property (nonatomic, weak) id <ARVIRDelegate> delegate;
@@ -22,7 +22,7 @@ API_AVAILABLE(ios(11.0))
 
 NSInteger wallHeightMeters = 5;
 
-@implementation ARAugmentedVIRInteractionController
+@implementation ARVIRVerticalWallInteractionController
 
 - (instancetype)initWithSession:(ARSession *)session config:(ARAugmentedRealityConfig *)config scene:(ARSCNView *)scene delegate:(id <ARVIRDelegate>)delegate
 {
@@ -34,7 +34,7 @@ NSInteger wallHeightMeters = 5;
     _detectedPlanes = @[];
     _delegate = delegate;
     CGRect bounds = [UIScreen mainScreen].bounds;
-    _pointOnScreenForArtworkProjection =CGPointMake(bounds.size.width/2, bounds.size.height/2);
+    _pointOnScreenForArtworkProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
     return self;
 }
 
@@ -90,6 +90,12 @@ NSInteger wallHeightMeters = 5;
     self.artwork = nil;
 }
 
+- (void)placeWall
+{
+
+}
+
+
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0));
 {
     // Bail early if we don't have walls to fire at, or have an artwork already up
@@ -110,7 +116,7 @@ NSInteger wallHeightMeters = 5;
             if (!self.ghostWork) {
                 SCNArtworkNode *ghostBox = [SCNArtworkNode nodeWithConfig:self.config];
                 SCNNode *ghostWork = [SCNNode nodeWithGeometry:ghostBox];
-                ghostWork.opacity = 0.5;
+                ghostWork.opacity = 0.55;
 
                 [result.node addChildNode:ghostWork];
                 self.ghostWork = ghostWork;
@@ -133,8 +139,8 @@ NSInteger wallHeightMeters = 5;
 - (void)renderer:(id<SCNSceneRenderer>)renderer didUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor API_AVAILABLE(ios(11.0))
 {
     // Used to update and re-align vertical planes as ARKit sends new updates for the positioning
-    if(!anchor) { return; }
-    if(![anchor isKindOfClass:ARPlaneAnchor.class]) { return; }
+    if (!anchor) { return; }
+    if (![anchor isKindOfClass:ARPlaneAnchor.class]) { return; }
 
     // Animate instead of jumping positions
     SCNTransaction.animationDuration = 0.1;
@@ -158,11 +164,11 @@ NSInteger wallHeightMeters = 5;
 - (void)renderer:(id <SCNSceneRenderer>)renderer didAddNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor API_AVAILABLE(ios(11.0));
 {
     // Only handle adding plane nodes
-    if(!anchor) { return; }
-    if(![anchor isKindOfClass:ARPlaneAnchor.class]) { return; }
+    if (!anchor) { return; }
+    if (![anchor isKindOfClass:ARPlaneAnchor.class]) { return; }
 
     // Send a callback that we're in a state to attach works
-    if(!self.hasSentRegisteredCallback) {
+    if (!self.hasSentRegisteredCallback) {
         [self.delegate hasRegisteredPlanes];
         self.hasSentRegisteredCallback = YES;
     }
@@ -170,6 +176,9 @@ NSInteger wallHeightMeters = 5;
     // Create an anchor node, which can get moved around as we become more sure of where the
     // plane actually is.
     ARPlaneAnchor *planeAnchor = (id)anchor;
+    if (planeAnchor.alignment == ARPlaneAnchorAlignmentHorizontal) {
+        return;
+    }
 
     SCNNode *planeNode = [self whiteBoxForPlaneAnchor:planeAnchor];
     [node addChildNode:planeNode];

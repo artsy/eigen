@@ -16,6 +16,8 @@
 #import "UIViewController+ARUserActivity.h"
 #import "ARScrollNavigationChief.h"
 
+#import "ArtsyAPI+Artworks.h"
+
 #import "UIDevice-Hardware.h"
 
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
@@ -109,6 +111,12 @@
 - (UIImageView *)imageView
 {
     return self.view.metadataView.imageView;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+  [super viewWillAppear:animated];
+  [ArtsyAPI recordViewingOfArtwork:self.artwork.artworkID success:nil failure:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated

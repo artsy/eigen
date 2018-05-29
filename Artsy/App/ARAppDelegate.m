@@ -145,7 +145,6 @@ static ARAppDelegate *_sharedInstance = nil;
     _landingURLRepresentation = self.landingURLRepresentation ?: @"https://artsy.net";
 
     [[ARLogger sharedLogger] startLogging];
-    [FBSDKSettings setAppID:[ArtsyKeys new].artsyFacebookAppID];
 
     // This has to be checked *before* creating the first Xapp token.
     NSInteger numberOfRuns = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
