@@ -28,12 +28,16 @@
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
   [UIView animateWithDuration:0.15 animations:^{
-    self.backButton.alpha = navigationController.viewControllers.count != 1;
+    self.backButton.alpha = (navigationController.viewControllers.count != 1) || self.showBackButtonOnRoot;
   }];
 }
 
 - (void)pop
 {
+  if (self.presentingViewController) {
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    return;
+  }
   // Support popping inside NavigatorIOS before falling back to our navigation VC
   UINavigationController *targetNav = self;
   for (UIViewController *controller in self.topViewController.childViewControllers) {
@@ -52,7 +56,7 @@
   backButton.adjustsImageWhenDisabled = NO;
   backButton.backgroundColor = UIColor.blackColor;
 
-  backButton.alpha = 0;
+  backButton.alpha = self.showBackButtonOnRoot ? 1 : 0;
 
   backButton.layer.cornerRadius = 20;
   backButton.layer.borderColor = [UIColor whiteColor].CGColor;

@@ -56,6 +56,7 @@ fragment BidResult_sale_artwork on SaleArtwork {
   sale {
     live_start_at
     end_at
+    id
     __id
   }
   __id
@@ -111,7 +112,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "BidFlowSelectMaxBidRendererQuery",
-  "id": "2403e34de83cf912ff1b54c87348230a",
+  "id": "9231dbe77f73f37c2e1f9a3560170802",
   "text": null,
   "metadata": {},
   "fragment": {

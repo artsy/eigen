@@ -2,8 +2,18 @@ import { shallow } from "enzyme"
 import React from "react"
 import "react-native"
 
+jest.mock("lib/NativeModules/SwitchBoard", () => ({
+  dismissModalViewController: jest.fn(),
+  presentModalViewController: jest.fn(),
+}))
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+
 import * as renderer from "react-test-renderer"
+import { BidGhostButton, Button } from "../../Components/Button"
 import { BidResult } from "../BidResult"
+
+const popToTop = jest.fn()
+const mockNavigator = { popToTop }
 
 const saleArtwork = {
   increments: [
@@ -36,6 +46,7 @@ const saleArtwork = {
   sale: {
     live_start_at: "2022-01-01T00:03:00+00:00",
     end_at: "2022-05-01T00:03:00+00:00",
+    id: "sale-id",
   },
 }
 const bid = {
@@ -44,66 +55,125 @@ const bid = {
 }
 describe("BidResult component", () => {
   Date.now = jest.fn(() => 1525983752116)
-  it("renders winning screen properly", () => {
-    jest.useFakeTimers()
+  jest.useFakeTimers()
 
-    const bidResult = (
-      <BidResult winning status={"SUCCESS"} bid={bid} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
-    )
-    const bg = renderer.create(bidResult).toJSON()
+  describe("high bidder", () => {
+    it("renders winning screen properly", () => {
+      const bidResult = (
+        <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} bid={bid} navigator={jest.fn() as any} />
+      )
+      const bg = renderer.create(bidResult).toJSON()
 
-    const component = shallow(bidResult)
-    expect(component.find("TimeLeftToBidDisplay")).toHaveLength(1)
+      const component = shallow(bidResult)
+      expect(component.find("TimeLeftToBidDisplay")).toHaveLength(1)
 
-    expect(bg).toMatchSnapshot()
+      expect(bg).toMatchSnapshot()
+    })
+
+    it("dismisses the controller when the continue button is pressed", () => {
+      const bidResult = renderer.create(
+        <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} bid={bid} navigator={jest.fn() as any} />
+      )
+      const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
+      mockDismiss.mockReturnValueOnce(Promise.resolve())
+
+      bidResult.root.findByType(BidGhostButton).instance.props.onPress()
+      jest.runAllTicks()
+
+      expect(SwitchBoard.dismissModalViewController).toHaveBeenCalled()
+      expect(SwitchBoard.presentModalViewController).not.toHaveBeenCalled()
+    })
   })
 
-  it("renders timer and error message when bid is low", () => {
-    jest.useFakeTimers()
+  describe("low bidder", () => {
     const messageHeader = "Your bid wasn’t high enough"
-    const messageDescriptionMd = `Another bidder placed a higher max bid or the same max bid before you did.  \
- Bid again to take the lead.`
+    const messageDescriptionMd =
+      "Another bidder placed a higher max bid or the same max bid before you did.  \
+ Bid again to take the lead."
 
-    const bidResult = (
-      <BidResult
-        winning={false}
-        sale_artwork={saleArtwork}
-        bid={bid}
-        status="OUTBID"
-        message_header={messageHeader}
-        message_description_md={messageDescriptionMd}
-        navigator={jest.fn() as any}
-      />
-    )
-    const bg = renderer.create(bidResult).toJSON()
-    expect(bg).toMatchSnapshot()
+    it("renders timer and error message", () => {
+      const bidResult = (
+        <BidResult
+          winning={false}
+          sale_artwork={saleArtwork}
+          status="OUTBID"
+          bid={bid}
+          message_header={messageHeader}
+          message_description_md={messageDescriptionMd}
+          navigator={jest.fn() as any}
+        />
+      )
+      const bg = renderer.create(bidResult).toJSON()
+      expect(bg).toMatchSnapshot()
 
-    const component = shallow(bidResult)
-    expect(component.find("TimeLeftToBidDisplay")).toHaveLength(1)
+      const component = shallow(bidResult)
+      expect(component.find("TimeLeftToBidDisplay")).toHaveLength(1)
+    })
+
+    it("pops to root when bid-again button is pressed", () => {
+      const bidResult = renderer.create(
+        <BidResult
+          winning={false}
+          sale_artwork={saleArtwork}
+          status="OUTBID"
+          bid={bid}
+          message_header={messageHeader}
+          message_description_md={messageDescriptionMd}
+          navigator={mockNavigator as any}
+        />
+      )
+
+      bidResult.root.findByType(Button).instance.props.onPress()
+
+      expect(popToTop).toHaveBeenCalled()
+    })
   })
-  it("doesn't render timer when live bidding is started", () => {
-    jest.useFakeTimers()
+
+  describe("live bidding has started", () => {
     const status = "LIVE_BIDDING_STARTED"
     const messageHeader = "Live bidding has started"
-    const messageDescriptionMd = `Sorry, your bid wasn’t received before live bidding started.\
- To continue bidding, please [join the live auction](http://live-staging.artsy.net/).`
+    const messageDescriptionMd = `Sorry, your bid wasn’t received before live bidding started. \
+To continue bidding, please [join the live auction](http://live-staging.artsy.net/).`
 
-    const bidResult = (
-      <BidResult
-        winning={false}
-        sale_artwork={saleArtwork}
-        status={status}
-        bid={bid}
-        message_header={messageHeader}
-        message_description_md={messageDescriptionMd}
-        navigator={jest.fn() as any}
-      />
-    )
-    const bg = renderer.create(bidResult).toJSON()
+    it("doesn't render timer", () => {
+      const bidResult = (
+        <BidResult
+          winning={false}
+          sale_artwork={saleArtwork}
+          status={status}
+          bid={bid}
+          message_header={messageHeader}
+          message_description_md={messageDescriptionMd}
+          navigator={jest.fn() as any}
+        />
+      )
+      const bg = renderer.create(bidResult).toJSON()
 
-    expect(bg).toMatchSnapshot()
+      expect(bg).toMatchSnapshot()
 
-    const component = shallow(bidResult)
-    expect(component.find("TimeLeftToBidDisplay")).toHaveLength(0)
+      const component = shallow(bidResult)
+      expect(component.find("TimeLeftToBidDisplay")).toHaveLength(0)
+    })
+
+    it("dismisses controller and presents live interface when continue button is pressed", () => {
+      const bidResult = renderer.create(
+        <BidResult
+          winning={false}
+          sale_artwork={saleArtwork}
+          status={status}
+          bid={bid}
+          message_header={messageHeader}
+          message_description_md={messageDescriptionMd}
+          navigator={jest.fn() as any}
+        />
+      )
+      const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
+      mockDismiss.mockReturnValueOnce(Promise.resolve())
+
+      bidResult.root.findByType(BidGhostButton).instance.props.onPress()
+      jest.runAllTicks()
+
+      expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), "/auction/sale-id")
+    })
   })
 })
