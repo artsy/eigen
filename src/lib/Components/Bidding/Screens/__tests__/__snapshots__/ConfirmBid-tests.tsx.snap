@@ -242,8 +242,10 @@ exports[`renders properly 1`] = `
         </Text>
       </View>
       <View
-        alignItems="flex-end"
+        alignItems="center"
         flex={1}
+        flexDirection="row"
+        justifyContent="flex-end"
         style={
           Array [
             Object {
@@ -271,6 +273,29 @@ exports[`renders properly 1`] = `
           }
         >
           $45,000
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          color="purple100"
+          ellipsizeMode="tail"
+          fontSize={1}
+          mb={2}
+          ml={3}
+          style={
+            Array [
+              Object {
+                "color": "#6E1EFF",
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "marginBottom": 5,
+                "marginLeft": 10,
+              },
+              undefined,
+            ]
+          }
+        >
+          Edit
         </Text>
       </View>
     </View>
@@ -313,14 +338,9 @@ exports[`renders properly 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      pb={1}
-      pl={3}
       style={
         Array [
-          Object {
-            "paddingBottom": 3,
-            "paddingLeft": 10,
-          },
+          Object {},
           undefined,
         ]
       }

@@ -21,41 +21,80 @@ exports[`renders properly 1`] = `
     ]
   }
 >
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
-    fontSize={5}
-    m={4}
+  <View
+    alignItems="center"
     style={
       Array [
-        Object {
-          "fontFamily": "AGaramondPro-Semibold",
-          "fontSize": 22,
-          "marginBottom": 20,
-          "marginLeft": 20,
-          "marginRight": 20,
-          "marginTop": 20,
-          "textAlign": "center",
-        },
+        Object {},
         undefined,
       ]
     }
-    textAlign="center"
   >
-    Confirm your bid
-  </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      fontSize={5}
+      m={4}
+      mb={3}
+      style={
+        Array [
+          Object {
+            "fontFamily": "AGaramondPro-Semibold",
+            "fontSize": 22,
+            "marginBottom": 10,
+            "marginLeft": 20,
+            "marginRight": 20,
+            "marginTop": 20,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+      textAlign="center"
+    >
+      Confirm your bid
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      fontSize={2}
+      style={
+        Array [
+          Object {
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 14,
+          },
+          undefined,
+        ]
+      }
+    >
+      00
+      d
+        
+      00
+      h
+        
+      20
+      m
+        
+      00
+      s
+    </Text>
+  </View>
   <View>
     <View
       alignItems="center"
       m={4}
+      mt={0}
       style={
         Array [
           Object {
             "marginBottom": 20,
             "marginLeft": 20,
             "marginRight": 20,
-            "marginTop": 20,
+            "marginTop": 0,
           },
           undefined,
         ]
@@ -156,14 +195,14 @@ exports[`renders properly 1`] = `
     <View
       flexDirection="row"
       justifyContent="space-between"
-      m={4}
+      p={4}
       style={
         Array [
           Object {
-            "marginBottom": 20,
-            "marginLeft": 20,
-            "marginRight": 20,
-            "marginTop": 20,
+            "paddingBottom": 20,
+            "paddingLeft": 20,
+            "paddingRight": 20,
+            "paddingTop": 20,
           },
           undefined,
         ]
@@ -201,8 +240,10 @@ exports[`renders properly 1`] = `
         </Text>
       </View>
       <View
-        alignItems="flex-end"
+        alignItems="center"
         flex={1}
+        flexDirection="row"
+        justifyContent="flex-end"
         style={
           Array [
             Object {
@@ -231,6 +272,29 @@ exports[`renders properly 1`] = `
         >
           $45,000
         </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          color="purple100"
+          ellipsizeMode="tail"
+          fontSize={1}
+          mb={1}
+          ml={3}
+          style={
+            Array [
+              Object {
+                "color": "#6E1EFF",
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "marginBottom": 3,
+                "marginLeft": 10,
+              },
+              undefined,
+            ]
+          }
+        >
+          Edit
+        </Text>
       </View>
     </View>
     <View
@@ -253,20 +317,34 @@ exports[`renders properly 1`] = `
       width="100%"
     />
     <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
       flexDirection="row"
+      hitSlop={undefined}
       justifyContent="space-between"
-      m={4}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      p={4}
       style={
         Array [
           Object {
-            "marginBottom": 20,
-            "marginLeft": 20,
-            "marginRight": 20,
-            "marginTop": 20,
+            "paddingBottom": 20,
+            "paddingLeft": 20,
+            "paddingRight": 20,
+            "paddingTop": 20,
           },
           undefined,
         ]
       }
+      testID={undefined}
     >
       <View
         flex={1}
@@ -318,13 +396,17 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           color="purple100"
           ellipsizeMode="tail"
-          fontSize={3}
+          fontSize={1}
+          mb={2}
+          ml={3}
           style={
             Array [
               Object {
                 "color": "#6E1EFF",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 16,
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "marginBottom": 5,
+                "marginLeft": 10,
               },
               undefined,
             ]
@@ -354,20 +436,34 @@ exports[`renders properly 1`] = `
       width="100%"
     />
     <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
       flexDirection="row"
+      hitSlop={undefined}
       justifyContent="space-between"
-      m={4}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      p={4}
       style={
         Array [
           Object {
-            "marginBottom": 20,
-            "marginLeft": 20,
-            "marginRight": 20,
-            "marginTop": 20,
+            "paddingBottom": 20,
+            "paddingLeft": 20,
+            "paddingRight": 20,
+            "paddingTop": 20,
           },
           undefined,
         ]
       }
+      testID={undefined}
     >
       <View
         flex={1}
@@ -413,19 +509,36 @@ exports[`renders properly 1`] = `
             undefined,
           ]
         }
+      />
+      <View
+        alignItems="flex-end"
+        flex={null}
+        flexBasis="auto"
+        flexGrow={0}
+        flexShrink={0}
+        style={
+          Array [
+            Object {},
+            undefined,
+          ]
+        }
       >
         <Text
           accessible={true}
           allowFontScaling={true}
           color="purple100"
           ellipsizeMode="tail"
-          fontSize={3}
+          fontSize={1}
+          mb={2}
+          ml={3}
           style={
             Array [
               Object {
                 "color": "#6E1EFF",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 16,
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "marginBottom": 5,
+                "marginLeft": 10,
               },
               undefined,
             ]
@@ -460,10 +573,9 @@ exports[`renders properly 1`] = `
       accessibilityTraits={undefined}
       accessible={true}
       alignItems="center"
-      alignSelf="center"
       flexDirection="row"
       hitSlop={undefined}
-      m={3}
+      justifyContent="center"
       nativeID={undefined}
       onLayout={undefined}
       onResponderGrant={[Function]}
@@ -474,12 +586,7 @@ exports[`renders properly 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         Array [
-          Object {
-            "marginBottom": 10,
-            "marginLeft": 10,
-            "marginRight": 10,
-            "marginTop": 10,
-          },
+          Object {},
           undefined,
         ]
       }
@@ -521,23 +628,21 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           color="black60"
           ellipsizeMode="tail"
-          fontSize={3}
+          fontSize={2}
           mt={2}
           style={
             Array [
               Object {
                 "color": "#666",
                 "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 16,
+                "fontSize": 14,
                 "marginTop": 5,
-                "textAlign": "center",
               },
               undefined,
             ]
           }
-          textAlign="center"
         >
-          Agree to 
+          You agree to 
           <Text
             accessible={true}
             allowFontScaling={true}
