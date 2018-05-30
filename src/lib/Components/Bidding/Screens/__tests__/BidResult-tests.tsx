@@ -155,7 +155,7 @@ To continue bidding, please [join the live auction](http://live-staging.artsy.ne
       expect(component.find("TimeLeftToBidDisplay")).toHaveLength(0)
     })
 
-    it.only("dismisses controller and presents live interface when continue button is pressed", () => {
+    it("dismisses controller and presents live interface when continue button is pressed", () => {
       const bidResult = renderer.create(
         <BidResult
           winning={false}
