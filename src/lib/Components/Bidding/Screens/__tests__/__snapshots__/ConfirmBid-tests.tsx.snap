@@ -195,83 +195,109 @@ exports[`renders properly 1`] = `
       width="100%"
     />
     <View
-      flexDirection="row"
-      justifyContent="space-between"
-      m={4}
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      collapsable={undefined}
+      hasTVPreferredFocus={undefined}
+      hitSlop={undefined}
+      isTVSelectable={true}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
-        Array [
-          Object {
-            "marginBottom": 20,
-            "marginLeft": 20,
-            "marginRight": 20,
-            "marginTop": 20,
-          },
-          undefined,
-        ]
+        Object {
+          "opacity": 1,
+        }
       }
+      testID={undefined}
+      tvParallaxProperties={undefined}
     >
       <View
-        flex={1}
+        flexDirection="row"
+        justifyContent="space-between"
+        m={4}
         style={
           Array [
             Object {
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
+              "marginBottom": 20,
+              "marginLeft": 20,
+              "marginRight": 20,
+              "marginTop": 20,
             },
             undefined,
           ]
         }
       >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          fontSize={3}
+        <View
+          flex={1}
           style={
             Array [
               Object {
-                "fontFamily": "AGaramondPro-Semibold",
-                "fontSize": 16,
+                "flexBasis": 0,
+                "flexGrow": 1,
+                "flexShrink": 1,
               },
               undefined,
             ]
           }
         >
-          Max bid
-        </Text>
-      </View>
-      <View
-        alignItems="flex-end"
-        flex={1}
-        style={
-          Array [
-            Object {
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          fontSize={3}
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            fontSize={3}
+            style={
+              Array [
+                Object {
+                  "fontFamily": "AGaramondPro-Semibold",
+                  "fontSize": 16,
+                },
+                undefined,
+              ]
+            }
+          >
+            Max bid
+          </Text>
+        </View>
+        <View
+          alignItems="flex-end"
+          flex={1}
           style={
             Array [
               Object {
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 16,
+                "flexBasis": 0,
+                "flexGrow": 1,
+                "flexShrink": 1,
               },
               undefined,
             ]
           }
         >
-          $45,000
-        </Text>
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            fontSize={3}
+            style={
+              Array [
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 16,
+                },
+                undefined,
+              ]
+            }
+          >
+            $45,000
+          </Text>
+        </View>
       </View>
     </View>
     <View
