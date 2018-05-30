@@ -67,12 +67,12 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confor
       passProps: {
         onSubmit: this.onBillingAddressAdded,
         billingAddress: this.state.billingAddress,
+        navigator: this.props.navigator,
       },
     })
   }
 
   onBillingAddressAdded = (values: Address) => {
-    this.props.navigator.pop()
     this.setState({ billingAddress: values })
   }
 

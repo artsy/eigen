@@ -1,5 +1,5 @@
 import React from "react"
-import { ScrollView } from "react-native"
+import { NavigatorIOS, ScrollView } from "react-native"
 
 import { Flex } from "../Elements/Flex"
 import { Sans12, Serif16 } from "../Elements/Typography"
@@ -16,6 +16,7 @@ import { Address } from "./ConfirmFirstTimeBid"
 
 interface BillingAddressProps {
   onSubmit?: (values: Address) => null
+  navigator?: NavigatorIOS
   billingAddress?: Address
 }
 
@@ -66,6 +67,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
       this.setState({ errors })
     } else {
       this.props.onSubmit(this.state.values)
+      this.props.navigator.pop()
     }
   }
 
