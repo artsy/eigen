@@ -18,14 +18,21 @@ import { Title } from "../Components/Title"
 
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 
-const SHOW_TIMER_STATUSES = ["SUCCESS", "ERROR_BID_LOW"]
+const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET", "ERROR_BID_LOW"]
+
+interface Bid {
+  display: string
+  cents: number
+}
 
 interface BidResultProps {
   sale_artwork: BidResult_sale_artwork
+  bid: Bid
   winning: boolean
   status: string
   message_header?: string
   message_description_md?: string
+  suggested_next_bid?: Bid
   navigator: NavigatorIOS
 }
 
@@ -63,7 +70,15 @@ export class BidResult extends React.Component<BidResultProps> {
       )
     } else {
       const bidAgain = SHOW_TIMER_STATUSES.indexOf(this.props.status) > -1
-      const buttonMsg = bidAgain ? `Bid ${this.props.sale_artwork.current_bid.display} or more` : "Continue"
+      let nextBid
+      if (this.props.suggested_next_bid) {
+        // when bidder position is created and the suggested_next_bid is passed from prev screen
+        nextBid = this.props.suggested_next_bid.display
+      } else {
+        // otherwise (when MP returns OUTBID without creating BP, when it already knows there are higher bids) select minimum_next_bid
+        nextBid = nextBid = this.props.sale_artwork.minimum_next_bid.display
+      }
+      const buttonMsg = bidAgain ? `Bid ${nextBid} or more` : "Continue"
       return (
         <BiddingThemeProvider>
           <Container mt={6}>
@@ -117,7 +132,7 @@ export const BidResultScreen = createFragmentContainer(
   BidResult,
   graphql`
     fragment BidResult_sale_artwork on SaleArtwork {
-      current_bid {
+      minimum_next_bid {
         amount
         cents
         display

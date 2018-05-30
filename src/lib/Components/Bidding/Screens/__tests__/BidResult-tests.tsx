@@ -16,7 +16,29 @@ const popToTop = jest.fn()
 const mockNavigator = { popToTop }
 
 const saleArtwork = {
-  current_bid: {
+  increments: [
+    {
+      display: "$10,000",
+      cents: 1000000,
+    },
+    {
+      display: "$11,000",
+      cents: 1100000,
+    },
+    {
+      display: "$12,000",
+      cents: 1200000,
+    },
+    {
+      display: "$13,000",
+      cents: 1300000,
+    },
+    {
+      display: "$14,000",
+      cents: 1400000,
+    },
+  ],
+  minimum_next_bid: {
     amount: "CHF10,000",
     cents: 1000000,
     display: "CHF 10,000",
@@ -27,13 +49,19 @@ const saleArtwork = {
     id: "sale-id",
   },
 }
+const bid = {
+  display: "$11,000",
+  cents: 1100000,
+}
 describe("BidResult component", () => {
   Date.now = jest.fn(() => 1525983752116)
   jest.useFakeTimers()
 
   describe("high bidder", () => {
     it("renders winning screen properly", () => {
-      const bidResult = <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
+      const bidResult = (
+        <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} bid={bid} navigator={jest.fn() as any} />
+      )
       const bg = renderer.create(bidResult).toJSON()
 
       const component = shallow(bidResult)
@@ -44,7 +72,7 @@ describe("BidResult component", () => {
 
     it("dismisses the controller when the continue button is pressed", () => {
       const bidResult = renderer.create(
-        <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
+        <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} bid={bid} navigator={jest.fn() as any} />
       )
       const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
       mockDismiss.mockReturnValueOnce(Promise.resolve())
@@ -69,6 +97,7 @@ describe("BidResult component", () => {
           winning={false}
           sale_artwork={saleArtwork}
           status="ERROR_BID_LOW"
+          bid={bid}
           message_header={messageHeader}
           message_description_md={messageDescriptionMd}
           navigator={jest.fn() as any}
@@ -87,6 +116,7 @@ describe("BidResult component", () => {
           winning={false}
           sale_artwork={saleArtwork}
           status="ERROR_BID_LOW"
+          bid={bid}
           message_header={messageHeader}
           message_description_md={messageDescriptionMd}
           navigator={mockNavigator as any}
@@ -111,6 +141,7 @@ To continue bidding, please [join the live auction](http://live-staging.artsy.ne
           winning={false}
           sale_artwork={saleArtwork}
           status={status}
+          bid={bid}
           message_header={messageHeader}
           message_description_md={messageDescriptionMd}
           navigator={jest.fn() as any}
@@ -130,6 +161,7 @@ To continue bidding, please [join the live auction](http://live-staging.artsy.ne
           winning={false}
           sale_artwork={saleArtwork}
           status={status}
+          bid={bid}
           message_header={messageHeader}
           message_description_md={messageDescriptionMd}
           navigator={jest.fn() as any}
