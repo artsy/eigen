@@ -1,5 +1,5 @@
 import React from "react"
-import { NavigatorIOS, View, ViewProperties } from "react-native"
+import { NavigatorIOS, TouchableOpacity, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -189,6 +189,10 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
     this.setState({ conditionsOfSaleChecked: !this.state.conditionsOfSaleChecked })
   }
 
+  maxBidPressed() {
+    this.props.navigator.pop()
+  }
+
   render() {
     return (
       <BiddingThemeProvider>
@@ -209,15 +213,16 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
             </Flex>
 
             <Divider mb={2} />
-
-            <Row m={4}>
-              <Col>
-                <SerifSemibold16>Max bid</SerifSemibold16>
-              </Col>
-              <Col alignItems="flex-end">
-                <Serif16>{this.props.bid.display}</Serif16>
-              </Col>
-            </Row>
+            <TouchableOpacity onPress={this.maxBidPressed}>
+              <Row m={4}>
+                <Col>
+                  <SerifSemibold16>Max bid</SerifSemibold16>
+                </Col>
+                <Col alignItems="flex-end">
+                  <Serif16>{this.props.bid.display}</Serif16>
+                </Col>
+              </Row>
+            </TouchableOpacity>
 
             <Divider mb={9} />
           </View>
