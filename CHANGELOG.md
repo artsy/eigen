@@ -18,6 +18,7 @@
 
 * `dismissModalViewController` now returns a promise - ash&sarah
 * Continue button now dismisses BidFlow, opens LAI if appropriate - ash&sarah
+* Shows correct message when reserve is not met - sepans
 
 ### 1.5.2
 
@@ -25,7 +26,6 @@
 * Adds the ability to style the text in the inverted button with a spinner - yuki24
 * Now the `<ConfirmBid>` component shows a spinner while loading - yuki24
 * Now the `<Input>` component updates the border color when the parent component updates the `error` prop - yuki24
-* Shows correct message when reserve is not met - sepans
 
 ### 1.5.1
 
