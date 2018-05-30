@@ -19,6 +19,7 @@
 * `dismissModalViewController` now returns a promise - ash&sarah
 * Continue button now dismisses BidFlow, opens LAI if appropriate - ash&sarah
 * Shows correct message when reserve is not met - sepans
+* Corrects problem with AROpaqueImageView showing empty images - ash
 
 ### 1.5.2
 
