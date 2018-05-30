@@ -18,7 +18,7 @@ import { Title } from "../Components/Title"
 
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 
-const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET", "ERROR_BID_LOW"]
+const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 
 interface Bid {
   display: string
@@ -45,7 +45,7 @@ export class BidResult extends React.Component<BidResultProps> {
 
   exitBidFlow = async () => {
     await SwitchBoard.dismissModalViewController(this)
-    if (this.props.status === "ERROR_LIVE_BIDDING_STARTED") {
+    if (this.props.status === "LIVE_BIDDING_STARTED") {
       SwitchBoard.presentModalViewController(this, `/auction/${this.props.sale_artwork.sale.id}`)
     }
   }

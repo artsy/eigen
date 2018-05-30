@@ -96,7 +96,7 @@ describe("BidResult component", () => {
         <BidResult
           winning={false}
           sale_artwork={saleArtwork}
-          status="ERROR_BID_LOW"
+          status="OUTBID"
           bid={bid}
           message_header={messageHeader}
           message_description_md={messageDescriptionMd}
@@ -115,7 +115,7 @@ describe("BidResult component", () => {
         <BidResult
           winning={false}
           sale_artwork={saleArtwork}
-          status="ERROR_BID_LOW"
+          status="OUTBID"
           bid={bid}
           message_header={messageHeader}
           message_description_md={messageDescriptionMd}
@@ -130,7 +130,7 @@ describe("BidResult component", () => {
   })
 
   describe("live bidding has started", () => {
-    const status = "ERROR_LIVE_BIDDING_STARTED"
+    const status = "LIVE_BIDDING_STARTED"
     const messageHeader = "Live bidding has started"
     const messageDescriptionMd = `Sorry, your bid wasn’t received before live bidding started. \
 To continue bidding, please [join the live auction](http://live-staging.artsy.net/).`
@@ -155,7 +155,7 @@ To continue bidding, please [join the live auction](http://live-staging.artsy.ne
       expect(component.find("TimeLeftToBidDisplay")).toHaveLength(0)
     })
 
-    it("dismisses controller and presents live interface when continue button is pressed", () => {
+    it.only("dismisses controller and presents live interface when continue button is pressed", () => {
       const bidResult = renderer.create(
         <BidResult
           winning={false}
