@@ -95,6 +95,8 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 
 You must have [Metaphysics][metaphysics] checked out in a folder adjacent to Emission's code. So there should be `~/code/emission` and `~/code/metaphysics`.
 
+**Note:** Deploys are currently not working, these instructions are _mostly_ valid but take a look at [this issue](https://github.com/artsy/emission/issues/1077) when things break in step 4.
+
 1. Ensure that the React version required by Emission has been published to [our spec-repo][spec-repo].
    Assuming no breaking changes in RN's folder structures, you can run `make update_specs_repos`.
 2. Update the [CHANGELOG](CHANGELOG.md) file to reflect the version that will be released and commit it.
