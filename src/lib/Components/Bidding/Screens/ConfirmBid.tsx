@@ -43,7 +43,6 @@ export interface ConfirmBidProps extends ViewProperties {
 }
 
 interface ConformBidState {
-  pollCount: number
   conditionsOfSaleChecked: boolean
   isLoading: boolean
 }
@@ -66,7 +65,9 @@ const bidderPositionMutation = graphql`
 `
 
 export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState> {
-  state = { pollCount: 0, conditionsOfSaleChecked: false, isLoading: false }
+  state = { conditionsOfSaleChecked: false, isLoading: false }
+
+  private pollCount = 0
 
   onPressConditionsOfSale = () => {
     SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
@@ -139,7 +140,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     if (status === "WINNING") {
       this.showBidResult(true, "WINNING")
     } else if (status === "PENDING") {
-      if (this.state.pollCount > MAX_POLL_ATTEMPTS) {
+      if (this.pollCount > MAX_POLL_ATTEMPTS) {
         const md = `We're receiving a high volume of traffic and your bid is still processing.  \
 If you don’t receive an update soon, please contact [support@artsy.net](mailto:support@artsy.net). `
 
@@ -149,7 +150,7 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
         setTimeout(() => {
           this.queryForBidPosition(bidderPosition.id).then(this.checkBidPosition.bind(this))
         }, 1000)
-        this.setState({ pollCount: this.state.pollCount + 1 })
+        this.pollCount += 1
       }
     } else {
       this.showBidResult(
