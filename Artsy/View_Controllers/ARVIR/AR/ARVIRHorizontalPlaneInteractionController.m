@@ -73,7 +73,7 @@ NSInteger attempt = 0;
             break;
         case ARHorizontalVIRModeDetectedFloor:
             [self fadeOutAndPresentTheLine];
-            [self.delegate hasPlacedWall];
+            [self.delegate hasRegisteredPlanes];
             [self vibrate:UIImpactFeedbackStyleHeavy];
             break;
         case ARHorizontalVIRModeCreatedWall:

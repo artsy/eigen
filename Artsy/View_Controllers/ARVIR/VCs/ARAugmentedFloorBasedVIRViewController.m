@@ -14,6 +14,7 @@
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import <Extraction/ARSpinner.h>
+#import <Extraction/UIView+ARSpinner.h>
 
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
@@ -63,13 +64,17 @@ NS_ASSUME_NONNULL_BEGIN
     InformationalViewState *start = [[InformationalViewState alloc] init];
     start.xOutOfYMessage = @"Step 1 of 3";
     start.bodyString = @"Aim at the floor and slowly move your phone in a circular motion.";
+    UIView *content = [[UIView alloc] init];
+    [content constrainHeight:@"40"];
+
     ARSpinner *spinner = [[ARSpinner alloc] init];
     spinner.spinnerColor = [UIColor whiteColor];
     [spinner constrainHeight:@"40"];
-    start.contents = spinner;
-    start.onStart = ^(UIView *customView) {
-        [spinner startAnimating];
-    };
+    [spinner startAnimating];
+    [content addSubview:spinner];
+    [spinner alignToView:content];
+    start.contents = content;
+
 
     InformationalViewState *positionWallMarker = [[InformationalViewState alloc] init];
     positionWallMarker.xOutOfYMessage = @"Step 2 of 3";
@@ -252,8 +257,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)hasRegisteredPlanes
 {
     ar_dispatch_main_queue(^{
-        // TODO, show tick, then hit next
-        [self.informationView next];
+
+        UIView *spinnerContent = (id)self.informationView.currentState.contents;
+        [spinnerContent remove]
+
+        UIImageView *tick = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRBeta"]];
+        [spinner addSubview:tick];
+        tick.center = spinner.center;
+
+        ar_dispatch_after(3, ^{
+            [self.informationView next];
+        });
     });
 }
 

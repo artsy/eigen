@@ -1,9 +1,11 @@
 #import "ARWhitespaceGobbler.h"
 #import "ARInformationView.h"
+#import "ARAppConstants.h"
 
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
 #import <ORStackView/ORStackView.h>
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 
 @implementation InformationalViewState
 @end
@@ -13,6 +15,7 @@
 @property (nonatomic, strong) NSArray<InformationalViewState *> *states;
 @property (nonatomic, weak) ORStackView *stack;
 @property (nonatomic, weak) UILabel *xOfYLabel;
+@property (nonatomic, strong) NSLayoutConstraint *stackTopConstraint;
 @end
 
 @implementation ARInformationView
@@ -25,17 +28,16 @@
     UILabel *xofYLabel = [self createXOfYLabel];
     self.xOfYLabel = xofYLabel;
     [self addSubview:xofYLabel];
-    [xofYLabel alignTop:@"0" leading:@"0" toView:self];
+    [xofYLabel alignTop:@"10" leading:@"0" toView:self];
     [xofYLabel alignTrailingEdgeWithView:self predicate:@"0"];
-
 
     ORStackView *stack = [[ORStackView alloc] init];
     stack.bottomMarginHeight = 40;
 
     [self addSubview:stack];
-    [stack alignTopEdgeWithView:xofYLabel predicate:@"0"];
-    [stack alignBottomEdgeWithView:self predicate:@"0"];
+    self.stackTopConstraint = [stack alignTopEdgeWithView:xofYLabel predicate:@"10"];
     [stack alignLeading:@"20" trailing:@"-20" toView:self];
+    [stack constrainHeight:@"160"];
     _stack = stack;
 
     self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
@@ -52,7 +54,6 @@
     return xOfYLabel;
 }
 
-
 - (void)next
 {
     [self nextAnimated:YES];
@@ -63,7 +64,7 @@
     return self.states[self.index];
 }
 
-- (void)nextAnimated:(BOOL)animate
+- (void)nextAnimated:(BOOL)animated
 {
     // ignore animated right now
     [self.stack removeAllSubviews];
@@ -78,19 +79,17 @@
 
     self.xOfYLabel.text = state.xOutOfYMessage;
 
-    UILabel *xOfYLabel = [[UILabel alloc] init];
-    xOfYLabel.font = [UIFont displayMediumSansSerifFontWithSize:10];
-    xOfYLabel.text = state.xOutOfYMessage;
-    xOfYLabel.textAlignment = NSTextAlignmentCenter;
-    xOfYLabel.textColor = [UIColor whiteColor];
-    [self.stack addSubview:xOfYLabel withTopMargin:@"10" sideMargin:@"0"];
+    if (animated) {
+        self.stack.alpha = 0;
+        self.stackTopConstraint.constant = 30;
+    }
 
     UILabel *messageLabel = [[UILabel alloc] init];
     messageLabel.font = [UIFont serifFontWithSize:16];
     messageLabel.text = state.bodyString;
     messageLabel.textColor = [UIColor whiteColor];
     messageLabel.numberOfLines = 0;
-    [self.stack addSubview:messageLabel withTopMargin:@"10" sideMargin:@"0"];
+    [self.stack addSubview:messageLabel withTopMargin:@"30" sideMargin:@"0"];
 
     // Basically a flexible space grabber which forces the state.contenst
     // to align with the bottom instead of from the top
@@ -100,6 +99,18 @@
     [self.stack addSubview:state.contents withTopMargin:@"0" sideMargin:@"0"];
     if (state.onStart) {
         state.onStart(state.contents);
+    }
+
+    if (animated) {
+        [self setNeedsLayout];
+        [self layoutIfNeeded];
+
+        [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
+            self.stack.alpha = 1;
+            self.stackTopConstraint.constant = 10;
+            [self setNeedsLayout];
+            [self layoutIfNeeded];
+        }];
     }
 }
 
