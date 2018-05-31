@@ -3,7 +3,7 @@ upcoming:
   date: TBA
   emission_version: 1.5.2
   dev:
-    - Updates Emission to 1.5.2 - ash
+    - Updates Emission to 1.5.3 - ash
   user_facing:
     - Adds a round corner to all native buttons - orta
     - Redesigned bid status view on artwork page - ash
