@@ -4,6 +4,10 @@ import * as renderer from "react-test-renderer"
 
 import { SelectMaxBid } from "../SelectMaxBid"
 
+const Me = {
+  has_qualified_credit_cards: true,
+}
+
 const SaleArtwork = {
   increments: [
     {
@@ -30,6 +34,8 @@ const SaleArtwork = {
 }
 
 it("renders properly", () => {
-  const bg = renderer.create(<SelectMaxBid sale_artwork={SaleArtwork} navigator={jest.fn() as any} />).toJSON()
-  expect(bg).toMatchSnapshot()
+  const component = renderer
+    .create(<SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={jest.fn() as any} />)
+    .toJSON()
+  expect(component).toMatchSnapshot()
 })
