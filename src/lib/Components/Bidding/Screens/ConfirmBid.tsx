@@ -1,26 +1,20 @@
 import React from "react"
-import { NavigatorIOS, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
+import { NavigatorIOS, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
 
 import { Flex } from "../Elements/Flex"
-import { Col, Row } from "../Elements/Grid"
-import {
-  Sans12,
-  Serif14,
-  Serif16,
-  SerifItalic14,
-  SerifSemibold14,
-  SerifSemibold16,
-  SerifSemibold18,
-} from "../Elements/Typography"
+import { Serif14, SerifItalic14, SerifSemibold14, SerifSemibold18 } from "../Elements/Typography"
 
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
+import { BidInfoRow } from "../Components/BidInfoRow"
 import { Button } from "../Components/Button"
+import { Checkbox } from "../Components/Checkbox"
 import { Container } from "../Components/Containers"
 import { Divider } from "../Components/Divider"
+import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -29,8 +23,6 @@ import { metaphysics } from "../../../metaphysics"
 import { BidResultScreen } from "./BidResult"
 
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
-import { Checkbox } from "../Components/Checkbox"
-import { Timer } from "../Components/Timer"
 
 interface Bid {
   display: string
@@ -234,19 +226,7 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
 
             <Divider mb={2} />
 
-            <TouchableWithoutFeedback onPress={() => this.maxBidPressed()}>
-              <Row m={4}>
-                <Col>
-                  <SerifSemibold16>Max bid</SerifSemibold16>
-                </Col>
-                <Col alignItems="center" justifyContent="flex-end" flexDirection="row">
-                  <Serif16>{this.props.bid.display}</Serif16>
-                  <Sans12 color="purple100" ml={3} mb={2}>
-                    Edit
-                  </Sans12>
-                </Col>
-              </Row>
-            </TouchableWithoutFeedback>
+            <BidInfoRow label="Max bid" value={this.props.bid.display} onPress={() => this.maxBidPressed()} />
 
             <Divider mb={9} />
           </View>

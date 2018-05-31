@@ -1,32 +1,24 @@
 import React from "react"
-import { TouchableWithoutFeedback, View } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
 
 import { Flex } from "../Elements/Flex"
-import { Col, Row } from "../Elements/Grid"
-import {
-  Sans12,
-  Serif14,
-  Serif16,
-  SerifItalic14,
-  SerifSemibold14,
-  SerifSemibold16,
-  SerifSemibold18,
-} from "../Elements/Typography"
+import { Serif14, SerifItalic14, SerifSemibold14, SerifSemibold18 } from "../Elements/Typography"
 
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
+import { BidInfoRow } from "../Components/BidInfoRow"
 import { Button } from "../Components/Button"
+import { Checkbox } from "../Components/Checkbox"
 import { Container } from "../Components/Containers"
 import { Divider } from "../Components/Divider"
+import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
-import { Checkbox } from "../Components/Checkbox"
-import { Timer } from "../Components/Timer"
 import { BillingAddress } from "./BillingAddress"
 import { ConfirmBidProps } from "./ConfirmBid"
 
@@ -118,52 +110,19 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confor
 
             <Divider mb={2} />
 
-            <TouchableWithoutFeedback onPress={() => this.maxBidPressed()}>
-              <Row p={4}>
-                <Col>
-                  <SerifSemibold16>Max bid</SerifSemibold16>
-                </Col>
-                <Col alignItems="center" justifyContent="flex-end" flexDirection="row">
-                  <Serif16>{this.props.bid.display}</Serif16>
-                  <Sans12 color="purple100" ml={3} mb={1}>
-                    Edit
-                  </Sans12>
-                </Col>
-              </Row>
-            </TouchableWithoutFeedback>
+            <BidInfoRow label="Max bid" value={this.props.bid.display} onPress={() => this.maxBidPressed()} />
 
             <Divider mb={2} />
 
-            <TouchableWithoutFeedback onPress={() => this.showCreditCardForm()}>
-              <Row p={4}>
-                <Col>
-                  <SerifSemibold16>Credit card</SerifSemibold16>
-                </Col>
-                <Col alignItems="flex-end">
-                  <Sans12 color="purple100" ml={3} mb={2}>
-                    Add
-                  </Sans12>
-                </Col>
-              </Row>
-            </TouchableWithoutFeedback>
+            <BidInfoRow label="Credit card" value={null} onPress={() => this.showCreditCardForm()} />
 
             <Divider mb={2} />
 
-            <TouchableWithoutFeedback onPress={() => this.showBillingAddressForm()}>
-              <Row p={4}>
-                <Col>
-                  <SerifSemibold16>Billing address</SerifSemibold16>
-                </Col>
-                <Col alignItems="flex-end">
-                  {billingAddress && <Serif16 numberOfLines={1}>{`${this.formatAddress(billingAddress)}`}</Serif16>}
-                </Col>
-                <Col alignItems="flex-end" flexGrow={0} flexShrink={0} flexBasis="auto" flex={null}>
-                  <Sans12 color="purple100" ml={3} mb={2}>
-                    {Boolean(billingAddress) ? "Edit" : "Add"}
-                  </Sans12>
-                </Col>
-              </Row>
-            </TouchableWithoutFeedback>
+            <BidInfoRow
+              label="Billing address"
+              value={billingAddress && this.formatAddress(billingAddress)}
+              onPress={() => this.showBillingAddressForm()}
+            />
 
             <Divider />
           </View>

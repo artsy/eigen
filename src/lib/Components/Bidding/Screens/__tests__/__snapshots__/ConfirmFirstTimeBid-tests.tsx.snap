@@ -254,10 +254,8 @@ exports[`renders properly 1`] = `
         </Text>
       </View>
       <View
-        alignItems="center"
+        alignItems="flex-end"
         flex={1}
-        flexDirection="row"
-        justifyContent="flex-end"
         style={
           Array [
             Object {
@@ -274,6 +272,7 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={3}
+          numberOfLines={1}
           style={
             Array [
               Object {
@@ -286,13 +285,27 @@ exports[`renders properly 1`] = `
         >
           $45,000
         </Text>
+      </View>
+      <View
+        alignItems="flex-end"
+        flex={null}
+        flexBasis="auto"
+        flexGrow={0}
+        flexShrink={0}
+        style={
+          Array [
+            Object {},
+            undefined,
+          ]
+        }
+      >
         <Text
           accessible={true}
           allowFontScaling={true}
           color="purple100"
           ellipsizeMode="tail"
           fontSize={1}
-          mb={1}
+          mb={2}
           ml={3}
           style={
             Array [
@@ -300,7 +313,7 @@ exports[`renders properly 1`] = `
                 "color": "#6E1EFF",
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 12,
-                "marginBottom": 3,
+                "marginBottom": 5,
                 "marginLeft": 10,
               },
               undefined,
@@ -401,6 +414,19 @@ exports[`renders properly 1`] = `
               "flexGrow": 1,
               "flexShrink": 1,
             },
+            undefined,
+          ]
+        }
+      />
+      <View
+        alignItems="flex-end"
+        flex={null}
+        flexBasis="auto"
+        flexGrow={0}
+        flexShrink={0}
+        style={
+          Array [
+            Object {},
             undefined,
           ]
         }
