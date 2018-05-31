@@ -22,6 +22,7 @@
 * Corrects problem with AROpaqueImageView showing empty images - ash
 * Adds the ability for first-time bidders to add thier billing address - erikdstock and yuki24
 * Display "Credit card" and "Billing address" to users without qualified credit cards - yuki24
+* Add first round analytics for the bidflow - maxim&erik
 
 ### 1.5.2
 

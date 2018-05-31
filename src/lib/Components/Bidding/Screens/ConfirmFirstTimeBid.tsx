@@ -3,6 +3,8 @@ import { TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
+import { Schema, screenTrack, track } from "../../../utils/track"
+
 import { Flex } from "../Elements/Flex"
 import { Col, Row } from "../Elements/Grid"
 import {
@@ -44,6 +46,10 @@ interface ConformBidState {
   isLoading: boolean
 }
 
+@screenTrack({
+  context_screen: Schema.PageNames.BidFlowConfirmBidPage,
+  context_screen_owner_type: null,
+})
 export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, ConformBidState> {
   state = {
     billingAddress: undefined,
@@ -75,6 +81,14 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confor
 
   onBillingAddressAdded = (values: Address) => {
     this.setState({ billingAddress: values })
+  }
+
+  @track({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.BidFlowPlaceBid,
+  })
+  placeBid() {
+    return null
   }
 
   render() {
@@ -156,7 +170,7 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confor
             </Checkbox>
 
             <Flex m={4}>
-              <Button text="Place Bid" onPress={() => null} />
+              <Button text="Place Bid" onPress={() => this.placeBid()} />
             </Flex>
           </View>
         </Container>
