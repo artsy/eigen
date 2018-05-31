@@ -20,6 +20,7 @@
 * Continue button now dismisses BidFlow, opens LAI if appropriate - ash&sarah
 * Shows correct message when reserve is not met - sepans
 * Adds the ability for first-time bidders to add thier billing address - erikdstock and yuki24
+* Display "Credit card" and "Billing address" to users without qualified credit cards - yuki24
 
 ### 1.5.2
 

@@ -1,5 +1,6 @@
 import React from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import { Flex } from "../Elements/Flex"
@@ -171,3 +172,22 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confor
 const LinkText = styled.Text`
   text-decoration-line: underline;
 `
+
+export const ConfirmFirstTimeBidScreen = createFragmentContainer(
+  ConfirmFirstTimeBid,
+  graphql`
+    fragment ConfirmFirstTimeBid_sale_artwork on SaleArtwork {
+      sale {
+        id
+      }
+      artwork {
+        id
+        title
+        date
+        artist_names
+      }
+      lot_label
+      ...BidResult_sale_artwork
+    }
+  `
+)
