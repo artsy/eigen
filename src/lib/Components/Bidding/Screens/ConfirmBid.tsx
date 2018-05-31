@@ -3,6 +3,8 @@ import { NavigatorIOS, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
+import { Schema, screenTrack, track } from "../../../utils/track"
+
 import { Flex } from "../Elements/Flex"
 import { Col, Row } from "../Elements/Grid"
 import {
@@ -64,7 +66,10 @@ const bidderPositionMutation = graphql`
     }
   }
 `
-
+@screenTrack({
+  context_screen: Schema.PageNames.BidFlowConfirmBidPage,
+  context_screen_owner_type: null,
+})
 export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState> {
   state = { pollCount: 0, conditionsOfSaleChecked: false, isLoading: false }
 
@@ -72,6 +77,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
   }
 
+  @track({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.BidFlowPlaceBid,
+  })
   placeBid() {
     this.setState({ isLoading: true })
 
@@ -122,15 +131,24 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
 
   verifyBidPosition(results, errors) {
     // TODO: Need to handle if the results object is empty, for example if errors occurred and no request was made
+    // TODO: add analytics for errors
     const status = results.createBidderPosition.result.status
     if (!errors && status === "SUCCESS") {
-      const positionId = results.createBidderPosition.result.position.id
-      this.queryForBidPosition(positionId).then(this.checkBidPosition.bind(this))
+      this.bidPlacedSuccessfully(results)
     } else {
       const message_header = results.createBidderPosition.result.message_header
       const message_description_md = results.createBidderPosition.result.message_description_md
       this.showBidResult(false, status, message_header, message_description_md)
     }
+  }
+
+  @track({
+    action_type: Schema.ActionTypes.Success,
+    action_name: Schema.ActionNames.BidFlowPlaceBid,
+  })
+  bidPlacedSuccessfully(results) {
+    const positionId = results.createBidderPosition.result.position.id
+    this.queryForBidPosition(positionId).then(this.checkBidPosition.bind(this))
   }
 
   checkBidPosition(result) {

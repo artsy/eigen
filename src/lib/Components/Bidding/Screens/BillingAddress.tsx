@@ -1,4 +1,7 @@
 import React from "react"
+
+import { Schema, screenTrack, track } from "../../../utils/track"
+
 import { NavigatorIOS, ScrollView } from "react-native"
 
 import { Flex } from "../Elements/Flex"
@@ -32,6 +35,10 @@ interface BillingAddressState {
   }
 }
 
+@screenTrack({
+  context_screen: Schema.PageNames.BidFlowBillingAddressPage,
+  context_screen_owner_type: null,
+})
 export class BillingAddress extends React.Component<BillingAddressProps, BillingAddressState> {
   constructor(props) {
     super(props)
@@ -66,9 +73,16 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     if (Object.keys(errors).filter(key => errors[key]).length > 0) {
       this.setState({ errors })
     } else {
-      this.props.onSubmit(this.state.values)
-      this.props.navigator.pop()
+      this.submitValidAddress()
     }
+  }
+  @track({
+    action_type: Schema.ActionTypes.Success,
+    action_name: Schema.ActionNames.BidFlowSaveBillingAddress,
+  })
+  submitValidAddress() {
+    this.props.onSubmit(this.state.values)
+    this.props.navigator.pop()
   }
 
   render() {

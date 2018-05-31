@@ -15,6 +15,8 @@ import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwo
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { ConfirmFirstTimeBidScreen } from "./ConfirmFirstTimeBid"
 
+import { Schema, screenTrack } from "../../../utils/track"
+
 interface SelectMaxBidProps extends ViewProperties {
   sale_artwork: SelectMaxBid_sale_artwork
   me: SelectMaxBid_me
@@ -25,6 +27,10 @@ interface SelectMaxBidState {
   selectedBidIndex: number
 }
 
+@screenTrack({
+  context_screen: Schema.PageNames.BidFlowMaxBidPage,
+  context_screen_owner_type: null,
+})
 export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBidState> {
   state = {
     selectedBidIndex: 0,
