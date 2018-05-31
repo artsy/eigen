@@ -35,6 +35,7 @@ exports[`renders properly 1`] = `
       allowFontScaling={true}
       ellipsizeMode="tail"
       fontSize={5}
+      lineHeight={9}
       m={4}
       mb={3}
       style={
@@ -42,6 +43,7 @@ exports[`renders properly 1`] = `
           Object {
             "fontFamily": "AGaramondPro-Semibold",
             "fontSize": 22,
+            "lineHeight": 32,
             "marginBottom": 10,
             "marginLeft": 20,
             "marginRight": 20,
@@ -60,11 +62,13 @@ exports[`renders properly 1`] = `
       allowFontScaling={true}
       ellipsizeMode="tail"
       fontSize={2}
+      lineHeight={5}
       style={
         Array [
           Object {
             "fontFamily": "Unica77LL-Medium",
             "fontSize": 14,
+            "lineHeight": 24,
           },
           undefined,
         ]
@@ -105,11 +109,13 @@ exports[`renders properly 1`] = `
         allowFontScaling={true}
         ellipsizeMode="tail"
         fontSize={4}
+        lineHeight={6}
         style={
           Array [
             Object {
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 18,
+              "lineHeight": 26,
             },
             undefined,
           ]
@@ -122,11 +128,13 @@ exports[`renders properly 1`] = `
         allowFontScaling={true}
         ellipsizeMode="tail"
         fontSize={2}
+        lineHeight={2}
         style={
           Array [
             Object {
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 14,
+              "lineHeight": 18,
             },
             undefined,
           ]
@@ -141,12 +149,14 @@ exports[`renders properly 1`] = `
         color="black60"
         ellipsizeMode="tail"
         fontSize={2}
+        lineHeight={2}
         style={
           Array [
             Object {
               "color": "#666",
               "fontFamily": "AGaramondPro-Italic",
               "fontSize": 14,
+              "lineHeight": 18,
             },
             undefined,
           ]
@@ -159,11 +169,13 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={2}
+          lineHeight={2}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Regular",
                 "fontSize": 14,
+                "lineHeight": 18,
               },
               undefined,
             ]
@@ -240,11 +252,13 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={3}
+          lineHeight={3}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Semibold",
                 "fontSize": 16,
+                "lineHeight": 20,
               },
               undefined,
             ]
@@ -272,12 +286,14 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={3}
+          lineHeight={3}
           numberOfLines={1}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Regular",
                 "fontSize": 16,
+                "lineHeight": 20,
               },
               undefined,
             ]
@@ -305,6 +321,7 @@ exports[`renders properly 1`] = `
           color="purple100"
           ellipsizeMode="tail"
           fontSize={1}
+          lineHeight={1}
           mb={2}
           ml={3}
           style={
@@ -313,6 +330,7 @@ exports[`renders properly 1`] = `
                 "color": "#6E1EFF",
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 12,
+                "lineHeight": 16,
                 "marginBottom": 5,
                 "marginLeft": 10,
               },
@@ -391,11 +409,13 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={3}
+          lineHeight={3}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Semibold",
                 "fontSize": 16,
+                "lineHeight": 20,
               },
               undefined,
             ]
@@ -437,6 +457,7 @@ exports[`renders properly 1`] = `
           color="purple100"
           ellipsizeMode="tail"
           fontSize={1}
+          lineHeight={1}
           mb={2}
           ml={3}
           style={
@@ -445,6 +466,7 @@ exports[`renders properly 1`] = `
                 "color": "#6E1EFF",
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 12,
+                "lineHeight": 16,
                 "marginBottom": 5,
                 "marginLeft": 10,
               },
@@ -523,11 +545,13 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={3}
+          lineHeight={3}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Semibold",
                 "fontSize": 16,
+                "lineHeight": 20,
               },
               undefined,
             ]
@@ -569,6 +593,7 @@ exports[`renders properly 1`] = `
           color="purple100"
           ellipsizeMode="tail"
           fontSize={1}
+          lineHeight={1}
           mb={2}
           ml={3}
           style={
@@ -577,6 +602,7 @@ exports[`renders properly 1`] = `
                 "color": "#6E1EFF",
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 12,
+                "lineHeight": 16,
                 "marginBottom": 5,
                 "marginLeft": 10,
               },
@@ -669,6 +695,7 @@ exports[`renders properly 1`] = `
           color="black60"
           ellipsizeMode="tail"
           fontSize={2}
+          lineHeight={2}
           mt={2}
           style={
             Array [
@@ -676,6 +703,7 @@ exports[`renders properly 1`] = `
                 "color": "#666",
                 "fontFamily": "AGaramondPro-Regular",
                 "fontSize": 14,
+                "lineHeight": 18,
                 "marginTop": 5,
               },
               undefined,

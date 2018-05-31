@@ -99,12 +99,14 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={5}
+          lineHeight={9}
           m={4}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Semibold",
                 "fontSize": 22,
+                "lineHeight": 32,
                 "marginBottom": 20,
                 "marginLeft": 20,
                 "marginRight": 20,

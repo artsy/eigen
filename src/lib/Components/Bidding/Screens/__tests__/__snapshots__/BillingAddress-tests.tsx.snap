@@ -28,6 +28,7 @@ exports[`renders properly 1`] = `
         allowFontScaling={true}
         ellipsizeMode="tail"
         fontSize={5}
+        lineHeight={9}
         m={4}
         mb={6}
         mt={0}
@@ -36,6 +37,7 @@ exports[`renders properly 1`] = `
             Object {
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 22,
+              "lineHeight": 32,
               "marginBottom": 40,
               "marginLeft": 20,
               "marginRight": 20,
@@ -65,12 +67,14 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={3}
+          lineHeight={3}
           mb={2}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Regular",
                 "fontSize": 16,
+                "lineHeight": 20,
                 "marginBottom": 5,
               },
               undefined,
@@ -129,12 +133,14 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={3}
+          lineHeight={3}
           mb={2}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Regular",
                 "fontSize": 16,
+                "lineHeight": 20,
                 "marginBottom": 5,
               },
               undefined,
@@ -193,12 +199,14 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={3}
+          lineHeight={3}
           mb={2}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Regular",
                 "fontSize": 16,
+                "lineHeight": 20,
                 "marginBottom": 5,
               },
               undefined,
@@ -257,12 +265,14 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={3}
+          lineHeight={3}
           mb={2}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Regular",
                 "fontSize": 16,
+                "lineHeight": 20,
                 "marginBottom": 5,
               },
               undefined,
@@ -321,12 +331,14 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={3}
+          lineHeight={3}
           mb={2}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Regular",
                 "fontSize": 16,
+                "lineHeight": 20,
                 "marginBottom": 5,
               },
               undefined,
@@ -385,12 +397,14 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={3}
+          lineHeight={3}
           mb={2}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Regular",
                 "fontSize": 16,
+                "lineHeight": 20,
                 "marginBottom": 5,
               },
               undefined,
