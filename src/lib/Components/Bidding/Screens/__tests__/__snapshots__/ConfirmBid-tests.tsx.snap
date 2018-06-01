@@ -254,13 +254,13 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={3}
-          lineHeight={3}
+          lineHeight={5}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Semibold",
                 "fontSize": 16,
-                "lineHeight": 20,
+                "lineHeight": 24,
               },
               undefined,
             ]
@@ -288,14 +288,14 @@ exports[`renders properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={3}
-          lineHeight={3}
+          lineHeight={5}
           numberOfLines={1}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Regular",
                 "fontSize": 16,
-                "lineHeight": 20,
+                "lineHeight": 24,
               },
               undefined,
             ]

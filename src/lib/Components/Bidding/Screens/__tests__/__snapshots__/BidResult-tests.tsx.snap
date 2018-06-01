@@ -274,7 +274,7 @@ exports[`BidResult component live bidding has started doesn't render timer 1`] =
         color="black60"
         ellipsizeMode="tail"
         fontSize={3}
-        lineHeight={3}
+        lineHeight={5}
         maxWidth={280}
         mb={5}
         style={
@@ -283,7 +283,7 @@ exports[`BidResult component live bidding has started doesn't render timer 1`] =
               "color": "#666",
               "fontFamily": "AGaramondPro-Regular",
               "fontSize": 16,
-              "lineHeight": 20,
+              "lineHeight": 24,
               "marginBottom": 30,
               "maxWidth": 280,
               "textAlign": "center",
@@ -462,7 +462,7 @@ exports[`BidResult component low bidder renders timer and error message 1`] = `
         color="black60"
         ellipsizeMode="tail"
         fontSize={3}
-        lineHeight={3}
+        lineHeight={5}
         maxWidth={280}
         mb={5}
         style={
@@ -471,7 +471,7 @@ exports[`BidResult component low bidder renders timer and error message 1`] = `
               "color": "#666",
               "fontFamily": "AGaramondPro-Regular",
               "fontSize": 16,
-              "lineHeight": 20,
+              "lineHeight": 24,
               "marginBottom": 30,
               "maxWidth": 280,
               "textAlign": "center",
@@ -495,7 +495,7 @@ exports[`BidResult component low bidder renders timer and error message 1`] = `
         color="black60"
         ellipsizeMode="tail"
         fontSize={3}
-        lineHeight={3}
+        lineHeight={5}
         maxWidth={280}
         mb={5}
         style={
@@ -504,7 +504,7 @@ exports[`BidResult component low bidder renders timer and error message 1`] = `
               "color": "#666",
               "fontFamily": "AGaramondPro-Regular",
               "fontSize": 16,
-              "lineHeight": 20,
+              "lineHeight": 24,
               "marginBottom": 30,
               "maxWidth": 280,
               "textAlign": "center",
