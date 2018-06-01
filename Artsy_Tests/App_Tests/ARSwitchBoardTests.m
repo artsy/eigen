@@ -101,6 +101,16 @@ describe(@"ARSwitchboard", ^{
                 [switchboard loadURL:internalURL];
                 [switchboardMock verify];
             });
+
+            it(@"routes conditions of sale normally", ^{
+                id viewController = [switchboard loadPath:@"/conditions-of-sale"];
+                expect([viewController isKindOfClass:[ARMutableLinkViewController class]]).to.beTruthy();
+            });
+
+            it(@"routes conditions of sale from Emission in a modal view controller", ^{
+                id viewController = [switchboard loadPath:@"/conditions-of-sale?present_modally=true"];
+                expect([viewController isKindOfClass:[SerifModalWebNavigationController class]]).to.beTruthy();
+            });
         });
 
         describe(@"with non http schemed url", ^{
