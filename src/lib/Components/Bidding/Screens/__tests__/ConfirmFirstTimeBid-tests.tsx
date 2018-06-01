@@ -19,7 +19,7 @@ it("renders properly", () => {
 it("shows the billing address that the user typed in the billing address form", () => {
   const billingAddressRow = renderer
     .create(<ConfirmFirstTimeBid {...initialProps} navigator={mockNavigator} />)
-    .root.findAllByType(TouchableWithoutFeedback)[1]
+    .root.findAllByType(TouchableWithoutFeedback)[2]
 
   billingAddressRow.instance.props.onPress()
 
