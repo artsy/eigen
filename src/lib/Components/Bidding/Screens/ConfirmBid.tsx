@@ -1,5 +1,5 @@
 import React from "react"
-import { NavigatorIOS, View, ViewProperties } from "react-native"
+import { NavigatorIOS, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -209,6 +209,10 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
     this.setState({ conditionsOfSaleChecked: !this.state.conditionsOfSaleChecked })
   }
 
+  maxBidPressed() {
+    this.props.navigator.pop()
+  }
+
   render() {
     return (
       <BiddingThemeProvider>
@@ -230,17 +234,19 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
 
             <Divider mb={2} />
 
-            <Row m={4}>
-              <Col>
-                <SerifSemibold16>Max bid</SerifSemibold16>
-              </Col>
-              <Col alignItems="center" justifyContent="flex-end" flexDirection="row">
-                <Serif16>{this.props.bid.display}</Serif16>
-                <Sans12 color="purple100" ml={3} mb={2}>
-                  Edit
-                </Sans12>
-              </Col>
-            </Row>
+            <TouchableWithoutFeedback onPress={() => this.maxBidPressed()}>
+              <Row m={4}>
+                <Col>
+                  <SerifSemibold16>Max bid</SerifSemibold16>
+                </Col>
+                <Col alignItems="center" justifyContent="flex-end" flexDirection="row">
+                  <Serif16>{this.props.bid.display}</Serif16>
+                  <Sans12 color="purple100" ml={3} mb={2}>
+                    Edit
+                  </Sans12>
+                </Col>
+              </Row>
+            </TouchableWithoutFeedback>
 
             <Divider mb={9} />
           </View>

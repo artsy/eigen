@@ -16,6 +16,8 @@
 
 ### Master
 
+* Adds going back to max bid when selecting edit bid from confirmation screen - maxim
+
 ### 1.5.3
 
 * `dismissModalViewController` now returns a promise - ash&sarah
@@ -32,6 +34,7 @@
 * Adds the ability to style the text in the inverted button with a spinner - yuki24
 * Now the `<ConfirmBid>` component shows a spinner while loading - yuki24
 * Now the `<Input>` component updates the border color when the parent component updates the `error` prop - yuki24
+* Shows correct message when reserve is not met - sepans
 
 ### 1.5.1
 
