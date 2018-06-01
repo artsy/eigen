@@ -37,7 +37,6 @@ static NSMutableDictionary <NSString *, NSNumberFormatter *> *formattersPerCurre
     return @{
              ar_keypath(SaleArtwork.new, saleArtworkID) : @"id",
              ar_keypath(SaleArtwork.new, currencySymbol) : @"symbol",
-             ar_keypath(SaleArtwork.new, saleArtworkID) : @"id",
              ar_keypath(SaleArtwork.new, openingBidCents) : @"opening_bid_cents",
              ar_keypath(SaleArtwork.new, minimumNextBidCents) : @"minimum_next_bid_cents",
              ar_keypath(SaleArtwork.new, saleHighestBid) : @"highest_bid",
