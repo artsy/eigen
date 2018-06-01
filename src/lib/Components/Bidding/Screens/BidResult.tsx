@@ -12,7 +12,7 @@ import { Sans12 } from "../Elements/Typography"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { BidGhostButton, Button } from "../Components/Button"
 import { Container } from "../Components/Containers"
-import { MarkdownRenderer } from "../Components/MarkdownRenderer"
+import { Markdown } from "../Components/Markdown"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
 
@@ -86,7 +86,7 @@ export class BidResult extends React.Component<BidResultProps> {
               <Flex alignItems="center">
                 <Icon20 source={require("../../../../../images/circle-x-red.png")} />
                 <Title m={4}>{this.props.message_header}</Title>
-                <MarkdownRenderer>{this.props.message_description_md}</MarkdownRenderer>
+                <Markdown>{this.props.message_description_md}</Markdown>
                 {bidAgain && <TimeLeftToBidDisplay liveStartsAt={live_start_at} endAt={end_at} />}
               </Flex>
             </View>
