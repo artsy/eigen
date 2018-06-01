@@ -114,7 +114,6 @@
 #import <Extraction/ARSpinner.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import <FXBlurView/FXBlurView.h>
-#import <HockeySDK-Source/HockeySDK.h>
 #import <MARKRangeSlider/MARKRangeSlider.h>
 #import <ORStackView/ORStackView.h>
 #import <ORStackView/ORStackScrollView.h>
