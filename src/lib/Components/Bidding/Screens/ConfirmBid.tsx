@@ -1,5 +1,5 @@
 import React from "react"
-import { NavigatorIOS, TouchableOpacity, View, ViewProperties } from "react-native"
+import { NavigatorIOS, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -234,7 +234,7 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
 
             <Divider mb={2} />
 
-            <TouchableOpacity onPress={this.maxBidPressed}>
+            <TouchableWithoutFeedback onPress={() => this.maxBidPressed()}>
               <Row m={4}>
                 <Col>
                   <SerifSemibold16>Max bid</SerifSemibold16>
@@ -246,7 +246,7 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
                   </Sans12>
                 </Col>
               </Row>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
 
             <Divider mb={9} />
           </View>
