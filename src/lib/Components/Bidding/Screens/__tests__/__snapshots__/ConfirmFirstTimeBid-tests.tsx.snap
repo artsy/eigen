@@ -193,8 +193,21 @@ exports[`renders properly 1`] = `
       width="100%"
     />
     <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
       flexDirection="row"
+      hitSlop={undefined}
       justifyContent="space-between"
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       p={4}
       style={
         Array [
@@ -207,6 +220,7 @@ exports[`renders properly 1`] = `
           undefined,
         ]
       }
+      testID={undefined}
     >
       <View
         flex={1}

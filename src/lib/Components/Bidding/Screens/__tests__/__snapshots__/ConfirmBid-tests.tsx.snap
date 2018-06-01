@@ -72,13 +72,13 @@ exports[`renders properly 1`] = `
     >
       00
       d
-
+        
       00
       h
-
+        
       20
       m
-
+        
       00
       s
     </Text>
@@ -132,7 +132,7 @@ exports[`renders properly 1`] = `
           ]
         }
       >
-        Lot
+        Lot 
         538
       </Text>
       <Text
@@ -155,7 +155,7 @@ exports[`renders properly 1`] = `
         textAlign="center"
       >
         Meteor Shower
-        ,
+        , 
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -199,10 +199,10 @@ exports[`renders properly 1`] = `
       accessibilityLabel={undefined}
       accessibilityTraits={undefined}
       accessible={true}
-      collapsable={undefined}
-      hasTVPreferredFocus={undefined}
+      flexDirection="row"
       hitSlop={undefined}
-      isTVSelectable={true}
+      justifyContent="space-between"
+      m={4}
       nativeID={undefined}
       onLayout={undefined}
       onResponderGrant={[Function]}
@@ -212,37 +212,41 @@ exports[`renders properly 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "opacity": 1,
-        }
+        Array [
+          Object {
+            "marginBottom": 20,
+            "marginLeft": 20,
+            "marginRight": 20,
+            "marginTop": 20,
+          },
+          undefined,
+        ]
       }
       testID={undefined}
-      tvParallaxProperties={undefined}
     >
       <View
-        flexDirection="row"
-        justifyContent="space-between"
-        m={4}
+        flex={1}
         style={
           Array [
             Object {
-              "marginBottom": 20,
-              "marginLeft": 20,
-              "marginRight": 20,
-              "marginTop": 20,
+              "flexBasis": 0,
+              "flexGrow": 1,
+              "flexShrink": 1,
             },
             undefined,
           ]
         }
       >
-        <View
-          flex={1}
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={3}
           style={
             Array [
               Object {
-                "flexBasis": 0,
-                "flexGrow": 1,
-                "flexShrink": 1,
+                "fontFamily": "AGaramondPro-Semibold",
+                "fontSize": 16,
               },
               undefined,
             ]
@@ -275,9 +279,8 @@ exports[`renders properly 1`] = `
           style={
             Array [
               Object {
-                "flexBasis": 0,
-                "flexGrow": 1,
-                "flexShrink": 1,
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
               },
               undefined,
             ]
@@ -407,7 +410,7 @@ exports[`renders properly 1`] = `
             ]
           }
         >
-          You agree to
+          You agree to 
           <Text
             accessible={true}
             allowFontScaling={true}
@@ -511,4 +514,4 @@ exports[`renders properly 1`] = `
     </View>
   </View>
 </View>
-`
+`;
