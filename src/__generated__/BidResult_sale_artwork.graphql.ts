@@ -10,6 +10,7 @@ export type BidResult_sale_artwork = {
     readonly sale: ({
         readonly live_start_at: string | null;
         readonly end_at: string | null;
+        readonly id: string;
     }) | null;
 };
 
@@ -85,6 +86,13 @@ return {
           "args": null,
           "storageKey": null
         },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "id",
+          "args": null,
+          "storageKey": null
+        },
         v0
       ]
     },
@@ -92,5 +100,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1c9bd467a90c8af66cdc008299b5d9b6';
+(node as any).hash = 'bcee765ad2abef8051811a4ad23dae28';
 export default node;

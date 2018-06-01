@@ -74,6 +74,9 @@ export const BidFlowRenderer: React.SFC<BidFlowRendererProps> = ({ render, artwo
               ...BidFlow_sale_artwork
             }
           }
+          me {
+            ...BidFlow_me
+          }
         }
       `}
       variables={{
@@ -89,6 +92,7 @@ export const BidFlowRenderer: React.SFC<BidFlowRendererProps> = ({ render, artwo
           return render({
             props: {
               sale_artwork: props.artwork.sale_artwork,
+              me: props.me,
             },
             error,
           })

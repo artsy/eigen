@@ -27,10 +27,28 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
     cents
   }
   ...ConfirmBid_sale_artwork
+  ...ConfirmFirstTimeBid_sale_artwork
   __id
 }
 
 fragment ConfirmBid_sale_artwork on SaleArtwork {
+  sale {
+    id
+    __id
+  }
+  artwork {
+    id
+    title
+    date
+    artist_names
+    __id
+  }
+  lot_label
+  ...BidResult_sale_artwork
+  __id
+}
+
+fragment ConfirmFirstTimeBid_sale_artwork on SaleArtwork {
   sale {
     id
     __id
@@ -56,6 +74,7 @@ fragment BidResult_sale_artwork on SaleArtwork {
   sale {
     live_start_at
     end_at
+    id
     __id
   }
   __id
@@ -111,7 +130,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "BidFlowSelectMaxBidRendererQuery",
-  "id": "2403e34de83cf912ff1b54c87348230a",
+  "id": "650969540083dc29dd6eddc0efd5d40f",
   "text": null,
   "metadata": {},
   "fragment": {

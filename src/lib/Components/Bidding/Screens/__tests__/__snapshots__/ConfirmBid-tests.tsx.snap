@@ -72,13 +72,13 @@ exports[`renders properly 1`] = `
     >
       00
       d
-        
+
       00
       h
-        
+
       20
       m
-        
+
       00
       s
     </Text>
@@ -132,7 +132,7 @@ exports[`renders properly 1`] = `
           ]
         }
       >
-        Lot 
+        Lot
         538
       </Text>
       <Text
@@ -155,7 +155,7 @@ exports[`renders properly 1`] = `
         textAlign="center"
       >
         Meteor Shower
-        , 
+        ,
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -248,27 +248,30 @@ exports[`renders properly 1`] = `
             ]
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            fontSize={3}
-            style={
-              Array [
-                Object {
-                  "fontFamily": "AGaramondPro-Semibold",
-                  "fontSize": 16,
-                },
-                undefined,
-              ]
-            }
-          >
-            Max bid
-          </Text>
-        </View>
-        <View
-          alignItems="flex-end"
-          flex={1}
+          Max bid
+        </Text>
+      </View>
+      <View
+        alignItems="center"
+        flex={1}
+        flexDirection="row"
+        justifyContent="flex-end"
+        style={
+          Array [
+            Object {
+              "flexBasis": 0,
+              "flexGrow": 1,
+              "flexShrink": 1,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={3}
           style={
             Array [
               Object {
@@ -280,24 +283,31 @@ exports[`renders properly 1`] = `
             ]
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            fontSize={3}
-            style={
-              Array [
-                Object {
-                  "fontFamily": "AGaramondPro-Regular",
-                  "fontSize": 16,
-                },
-                undefined,
-              ]
-            }
-          >
-            $45,000
-          </Text>
-        </View>
+          $45,000
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          color="purple100"
+          ellipsizeMode="tail"
+          fontSize={1}
+          mb={2}
+          ml={3}
+          style={
+            Array [
+              Object {
+                "color": "#6E1EFF",
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "marginBottom": 5,
+                "marginLeft": 10,
+              },
+              undefined,
+            ]
+          }
+        >
+          Edit
+        </Text>
       </View>
     </View>
     <View
@@ -339,14 +349,9 @@ exports[`renders properly 1`] = `
       onResponderTerminate={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
-      pb={1}
-      pl={3}
       style={
         Array [
-          Object {
-            "paddingBottom": 3,
-            "paddingLeft": 10,
-          },
+          Object {},
           undefined,
         ]
       }
@@ -402,7 +407,7 @@ exports[`renders properly 1`] = `
             ]
           }
         >
-          You agree to 
+          You agree to
           <Text
             accessible={true}
             allowFontScaling={true}
@@ -506,4 +511,4 @@ exports[`renders properly 1`] = `
     </View>
   </View>
 </View>
-`;
+`

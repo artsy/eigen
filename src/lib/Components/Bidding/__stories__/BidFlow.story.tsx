@@ -12,9 +12,11 @@ import { Sans12, Serif14, Serif16 } from "../Elements/Typography"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Checkbox } from "../Components/Checkbox"
 
+import { NavigatorIOS } from "react-native"
 import BidFlow from "../../../Containers/BidFlow"
 import { Input } from "../Components/Input"
 import { BidResultScreen } from "../Screens/BidResult"
+import { BillingAddress } from "../Screens/BillingAddress"
 import { ConfirmBid } from "../Screens/ConfirmBid"
 import { ConfirmFirstTimeBid } from "../Screens/ConfirmFirstTimeBid"
 import { MaxBidScreen } from "../Screens/SelectMaxBid"
@@ -75,20 +77,28 @@ storiesOf("Bidding")
   })
   .add("Confirm Bid (first time)", () => {
     return (
-      <ConfirmFirstTimeBid
-        sale_artwork={{
-          sale: {
-            id: "1",
+      <NavigatorIOS
+        navigationBarHidden={true}
+        initialRoute={{
+          component: ConfirmFirstTimeBid,
+          title: "",
+          passProps: {
+            sale_artwork: {
+              sale: {
+                id: "1",
+              },
+              artwork: {
+                id: "1",
+                title: "Morgan Hill (Prototype)",
+                date: "1973",
+                artist_names: "Lewis balts",
+              },
+              lot_label: "1",
+            },
+            bid: { display: "$45,000", cents: 4500000 },
           },
-          artwork: {
-            id: "1",
-            title: "Morgan Hill (Prototype)",
-            date: "1973",
-            artist_names: "Lewis balts",
-          },
-          lot_label: "1",
         }}
-        bid={{ display: "$45,000", cents: 4500000 }}
+        style={{ flex: 1 }}
       />
     )
   })
@@ -122,6 +132,9 @@ storiesOf("Bidding")
         saleArtworkID={testSaleArtworkID}
       />
     )
+  })
+  .add("Billing Address", () => {
+    return <BillingAddress />
   })
   .add("Bidding Result (live bidding started)", () => {
     const status = "ERROR_LIVE_BIDDING_STARTED"

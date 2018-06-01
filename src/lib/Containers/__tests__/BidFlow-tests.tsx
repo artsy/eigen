@@ -4,6 +4,10 @@ import * as renderer from "react-test-renderer"
 
 import BidFlow from "../BidFlow"
 
+const Me = {
+  has_qualified_credit_cards: true,
+}
+
 const SaleArtwork = {
   increments: [
     {
@@ -30,6 +34,6 @@ const SaleArtwork = {
 }
 
 it("renders properly", () => {
-  const bg = renderer.create(<BidFlow sale_artwork={SaleArtwork} />).toJSON()
+  const bg = renderer.create(<BidFlow me={Me} sale_artwork={SaleArtwork} />).toJSON()
   expect(bg).toMatchSnapshot()
 })

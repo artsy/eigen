@@ -10,11 +10,16 @@ import { MaxBidPicker } from "../Components/MaxBidPicker"
 import { Title } from "../Components/Title"
 import { ConfirmBidScreen } from "./ConfirmBid"
 
+import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
+import { ConfirmFirstTimeBidScreen } from "./ConfirmFirstTimeBid"
+
+import { Schema, screenTrack } from "../../../utils/track"
 
 interface SelectMaxBidProps extends ViewProperties {
   sale_artwork: SelectMaxBid_sale_artwork
+  me: SelectMaxBid_me
   navigator: NavigatorIOS
 }
 
@@ -22,6 +27,10 @@ interface SelectMaxBidState {
   selectedBidIndex: number
 }
 
+@screenTrack({
+  context_screen: Schema.PageNames.BidFlowMaxBidPage,
+  context_screen_owner_type: null,
+})
 export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBidState> {
   state = {
     selectedBidIndex: 0,
@@ -29,7 +38,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
 
   onPressNext = () => {
     this.props.navigator.push({
-      component: ConfirmBidScreen,
+      component: this.props.me.has_qualified_credit_cards ? ConfirmBidScreen : ConfirmFirstTimeBidScreen,
       title: "",
       passProps: {
         sale_artwork: this.props.sale_artwork,
@@ -65,15 +74,20 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
   }
 }
 
-export const MaxBidScreen = createFragmentContainer(
-  SelectMaxBid,
-  graphql`
+export const MaxBidScreen = createFragmentContainer(SelectMaxBid, {
+  sale_artwork: graphql`
     fragment SelectMaxBid_sale_artwork on SaleArtwork {
       increments {
         display
         cents
       }
       ...ConfirmBid_sale_artwork
+      ...ConfirmFirstTimeBid_sale_artwork
     }
-  `
-)
+  `,
+  me: graphql`
+    fragment SelectMaxBid_me on Me {
+      has_qualified_credit_cards
+    }
+  `,
+})

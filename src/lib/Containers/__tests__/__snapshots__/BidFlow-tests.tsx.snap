@@ -24,6 +24,9 @@ exports[`renders properly 1`] = `
         Object {
           "component": [Function],
           "passProps": Object {
+            "me": Object {
+              "has_qualified_credit_cards": true,
+            },
             "sale_artwork": Object {
               "increments": Array [
                 Object {

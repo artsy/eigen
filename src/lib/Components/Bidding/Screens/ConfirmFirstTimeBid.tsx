@@ -1,10 +1,14 @@
 import React from "react"
-import { View, ViewProperties } from "react-native"
+import { TouchableWithoutFeedback, View } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
+
+import { Schema, screenTrack, track } from "../../../utils/track"
 
 import { Flex } from "../Elements/Flex"
 import { Col, Row } from "../Elements/Grid"
 import {
+  Sans12,
   Serif14,
   Serif16,
   SerifItalic14,
@@ -21,29 +25,85 @@ import { Title } from "../Components/Title"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
-import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
 import { Checkbox } from "../Components/Checkbox"
+import { Timer } from "../Components/Timer"
+import { BillingAddress } from "./BillingAddress"
+import { ConfirmBidProps } from "./ConfirmBid"
 
-interface ConfirmBidProps extends ViewProperties {
-  sale_artwork: ConfirmBid_sale_artwork
-  bid: {
-    display: string
-    cents: number
-  }
+export interface Address {
+  fullName: string
+  addressLine1: string
+  addressLine2?: string
+  city: string
+  state: string
+  postalCode: string
 }
 
-export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps> {
+interface ConformBidState {
+  billingAddress?: Address
+  creditCardToken?: string // TODO: change this interface accrodingly when adapting stripe
+  conditionsOfSaleChecked: boolean
+  isLoading: boolean
+}
+
+@screenTrack({
+  context_screen: Schema.PageNames.BidFlowConfirmBidPage,
+  context_screen_owner_type: null,
+})
+export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, ConformBidState> {
+  state = {
+    billingAddress: undefined,
+    creditCardToken: null,
+    conditionsOfSaleChecked: false,
+    isLoading: false,
+  }
+
   onPressConditionsOfSale = () => {
     SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
   }
+
+  showCreditCardForm() {
+    // TODO: implement this function: https://artsyproduct.atlassian.net/browse/PURCHASE-89
+    console.warn("The function showCreditCardForm() is not implemented yet.")
+  }
+
+  showBillingAddressForm() {
+    this.props.navigator.push({
+      component: BillingAddress,
+      title: "",
+      passProps: {
+        onSubmit: this.onBillingAddressAdded,
+        billingAddress: this.state.billingAddress,
+        navigator: this.props.navigator,
+      },
+    })
+  }
+
+  onBillingAddressAdded = (values: Address) => {
+    this.setState({ billingAddress: values })
+  }
+
+  @track({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.BidFlowPlaceBid,
+  })
+  placeBid() {
+    return null
+  }
+
   render() {
+    const { billingAddress } = this.state
+
     return (
       <BiddingThemeProvider>
         <Container m={0}>
-          <Title>Confirm your bid</Title>
+          <Flex alignItems="center">
+            <Title mb={3}>Confirm your bid</Title>
+            <Timer timeLeftInMilliseconds={1000 * 60 * 20} />
+          </Flex>
 
           <View>
-            <Flex m={4} alignItems="center">
+            <Flex m={4} mt={0} alignItems="center">
               <SerifSemibold18>{this.props.sale_artwork.artwork.artist_names}</SerifSemibold18>
               <SerifSemibold14>Lot {this.props.sale_artwork.lot_label}</SerifSemibold14>
 
@@ -54,57 +114,94 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps> {
 
             <Divider mb={2} />
 
-            <Row m={4}>
+            <Row p={4}>
               <Col>
                 <SerifSemibold16>Max bid</SerifSemibold16>
               </Col>
-              <Col alignItems="flex-end">
+              <Col alignItems="center" justifyContent="flex-end" flexDirection="row">
                 <Serif16>{this.props.bid.display}</Serif16>
+                <Sans12 color="purple100" ml={3} mb={1}>
+                  Edit
+                </Sans12>
               </Col>
             </Row>
 
             <Divider mb={2} />
 
-            <Row m={4}>
-              <Col>
-                <SerifSemibold16>Credit card</SerifSemibold16>
-              </Col>
-              <Col alignItems="flex-end">
-                <Serif16 color="purple100">Add</Serif16>
-              </Col>
-            </Row>
+            <TouchableWithoutFeedback onPress={() => this.showCreditCardForm()}>
+              <Row p={4}>
+                <Col>
+                  <SerifSemibold16>Credit card</SerifSemibold16>
+                </Col>
+                <Col alignItems="flex-end">
+                  <Sans12 color="purple100" ml={3} mb={2}>
+                    Add
+                  </Sans12>
+                </Col>
+              </Row>
+            </TouchableWithoutFeedback>
 
             <Divider mb={2} />
 
-            <Row m={4}>
-              <Col>
-                <SerifSemibold16>Billing address</SerifSemibold16>
-              </Col>
-              <Col alignItems="flex-end">
-                <Serif16 color="purple100">Add</Serif16>
-              </Col>
-            </Row>
+            <TouchableWithoutFeedback onPress={() => this.showBillingAddressForm()}>
+              <Row p={4}>
+                <Col>
+                  <SerifSemibold16>Billing address</SerifSemibold16>
+                </Col>
+                <Col alignItems="flex-end">
+                  {billingAddress && <Serif16 numberOfLines={1}>{`${this.formatAddress(billingAddress)}`}</Serif16>}
+                </Col>
+                <Col alignItems="flex-end" flexGrow={0} flexShrink={0} flexBasis="auto" flex={null}>
+                  <Sans12 color="purple100" ml={3} mb={2}>
+                    {Boolean(billingAddress) ? "Edit" : "Add"}
+                  </Sans12>
+                </Col>
+              </Row>
+            </TouchableWithoutFeedback>
 
             <Divider />
           </View>
 
           <View>
-            <Checkbox alignSelf="center" m={3}>
-              <Serif16 mt={2} textAlign="center" color="black60">
-                Agree to <LinkText onPress={this.onPressConditionsOfSale}>Conditions of Sale</LinkText>.
-              </Serif16>
+            <Checkbox justifyContent="center">
+              <Serif14 mt={2} color="black60">
+                You agree to <LinkText onPress={this.onPressConditionsOfSale}>Conditions of Sale</LinkText>.
+              </Serif14>
             </Checkbox>
 
             <Flex m={4}>
-              <Button text="Place Bid" onPress={() => null} />
+              <Button text="Place Bid" onPress={() => this.placeBid()} />
             </Flex>
           </View>
         </Container>
       </BiddingThemeProvider>
     )
   }
+
+  private formatAddress(address: Address) {
+    return [address.addressLine1, address.addressLine2, address.city, address.state].filter(el => el).join(" ")
+  }
 }
 
 const LinkText = styled.Text`
   text-decoration-line: underline;
 `
+
+export const ConfirmFirstTimeBidScreen = createFragmentContainer(
+  ConfirmFirstTimeBid,
+  graphql`
+    fragment ConfirmFirstTimeBid_sale_artwork on SaleArtwork {
+      sale {
+        id
+      }
+      artwork {
+        id
+        title
+        date
+        artist_names
+      }
+      lot_label
+      ...BidResult_sale_artwork
+    }
+  `
+)

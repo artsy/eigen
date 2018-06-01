@@ -5,5 +5,6 @@
 @interface EigenLikeNavigationController : UINavigationController
 
 @property (readonly, nonatomic, strong) UIButton *backButton;
+@property (nonatomic, assign) BOOL showBackButtonOnRoot;
 
 @end

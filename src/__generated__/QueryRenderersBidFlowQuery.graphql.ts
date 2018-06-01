@@ -10,6 +10,8 @@ export type QueryRenderersBidFlowQueryResponse = {
         readonly sale_artwork: ({
         }) | null;
     }) | null;
+    readonly me: ({
+    }) | null;
 };
 
 
@@ -26,10 +28,24 @@ query QueryRenderersBidFlowQuery(
     }
     __id
   }
+  me {
+    ...BidFlow_me
+    __id
+  }
 }
 
 fragment BidFlow_sale_artwork on SaleArtwork {
   ...SelectMaxBid_sale_artwork
+  __id
+}
+
+fragment BidFlow_me on Me {
+  ...SelectMaxBid_me
+  __id
+}
+
+fragment SelectMaxBid_me on Me {
+  has_qualified_credit_cards
   __id
 }
 
@@ -39,10 +55,28 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
     cents
   }
   ...ConfirmBid_sale_artwork
+  ...ConfirmFirstTimeBid_sale_artwork
   __id
 }
 
 fragment ConfirmBid_sale_artwork on SaleArtwork {
+  sale {
+    id
+    __id
+  }
+  artwork {
+    id
+    title
+    date
+    artist_names
+    __id
+  }
+  lot_label
+  ...BidResult_sale_artwork
+  __id
+}
+
+fragment ConfirmFirstTimeBid_sale_artwork on SaleArtwork {
   sale {
     id
     __id
@@ -68,6 +102,7 @@ fragment BidResult_sale_artwork on SaleArtwork {
   sale {
     live_start_at
     end_at
+    id
     __id
   }
   __id
@@ -137,7 +172,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersBidFlowQuery",
-  "id": "5c14a367a5313ec091d0c57cd77059b4",
+  "id": "dd27df82da2daf13035d8613ffd6e4f9",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -172,6 +207,23 @@ return {
               },
               v3
             ]
+          },
+          v3
+        ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "BidFlow_me",
+            "args": null
           },
           v3
         ]
@@ -307,10 +359,29 @@ return {
           },
           v3
         ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "has_qualified_credit_cards",
+            "args": null,
+            "storageKey": null
+          },
+          v3
+        ]
       }
     ]
   }
 };
 })();
-(node as any).hash = 'd81a045733ed31854b43fa13be58de0c';
+(node as any).hash = '2d8c3fea75a28bde19b0f42c870bd574';
 export default node;

@@ -18,16 +18,16 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *
                                                  width,
                                                  height,
                                                  8,
-                                                 width * 4,
+                                                 0,
                                                  colourSpace,
                                                  kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Host);
     CGColorSpaceRelease(colourSpace);
-      
+
     // Ensure there's no background fill weirdness for non-rectangular shapes
     CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
     CGContextFillRect(context, CGRectMake(0, 0, width, height));
 
-      
+
     CGContextDrawImage(context, CGRectMake(0, 0, width, height), image.CGImage);
 
     CGImageRef outputImage = CGBitmapContextCreateImage(context);

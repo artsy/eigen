@@ -5,9 +5,11 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { MaxBidScreen } from "../Components/Bidding/Screens/SelectMaxBid"
 
 import { BidFlow_sale_artwork } from "__generated__/BidFlow_sale_artwork.graphql"
+import { BidFlow_me } from "../../__generated__/BidFlow_me.graphql"
 
 interface BidFlowProps extends ViewProperties {
   sale_artwork: BidFlow_sale_artwork
+  me: BidFlow_me
 }
 
 class BidFlow extends React.Component<BidFlowProps> {
@@ -18,9 +20,7 @@ class BidFlow extends React.Component<BidFlowProps> {
         initialRoute={{
           component: MaxBidScreen,
           title: "", // title is required, though we don't use it because our navigation bar is hidden.
-          passProps: {
-            sale_artwork: this.props.sale_artwork,
-          },
+          passProps: this.props,
         }}
         style={{ flex: 1 }}
       />
@@ -28,11 +28,15 @@ class BidFlow extends React.Component<BidFlowProps> {
   }
 }
 
-export default createFragmentContainer(
-  BidFlow,
-  graphql`
+export default createFragmentContainer(BidFlow, {
+  sale_artwork: graphql`
     fragment BidFlow_sale_artwork on SaleArtwork {
       ...SelectMaxBid_sale_artwork
     }
-  `
-)
+  `,
+  me: graphql`
+    fragment BidFlow_me on Me {
+      ...SelectMaxBid_me
+    }
+  `,
+})

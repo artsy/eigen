@@ -184,8 +184,8 @@ jest()
 // Raise when native code changes are made, but the package.json does not
 // have a bump for the native code version
 //
-const hasNativeCodeChanges = modifiedAppFiles.find(p => p.includes("Pod/Classes"))
-const hasPackageJSONChanges = modifiedAppFiles.find(p => p === "package.json")
+const hasNativeCodeChanges = modified.find(p => p.includes("Pod/Classes"))
+const hasPackageJSONChanges = modified.find(p => p === "package.json")
 if (hasNativeCodeChanges && !hasPackageJSONChanges && !acceptedNoNativeChanges) {
   fail(
     `This PR includes changes to the Emission Pod's native code but does not have a \`package.json\`

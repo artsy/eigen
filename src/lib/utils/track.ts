@@ -81,6 +81,9 @@ export namespace Schema {
 
   export enum PageNames {
     ArtistPage = "Artist",
+    BidFlowMaxBidPage = "YourMaxBid",
+    BidFlowConfirmBidPage = "ConfirmYourBid",
+    BidFlowBillingAddressPage = "YourBillingAddress",
     ConversationPage = "Conversation",
     ConsignmentsWelcome = "ConsignmentsWelcome",
     ConsignmentsOverView = "ConsignmentsOverview",
@@ -169,6 +172,13 @@ export namespace Schema {
      */
     ConsignmentDraftCreated = "consignmentDraftCreated",
     ConsignmentSubmitted = "consignmentSubmitted",
+
+    /**
+     * Bid flow
+     */
+    BidFlowAddBillingAddress = "addBillingAddress",
+    BidFlowPlaceBid = "placeBid",
+    BidFlowSaveBillingAddress = "saveBillingAddress",
   }
 }
 

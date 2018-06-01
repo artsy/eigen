@@ -3,9 +3,12 @@ import { NavigatorIOS, TouchableOpacity, View, ViewProperties } from "react-nati
 import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
+import { Schema, screenTrack, track } from "../../../utils/track"
+
 import { Flex } from "../Elements/Flex"
 import { Col, Row } from "../Elements/Grid"
 import {
+  Sans12,
   Serif14,
   Serif16,
   SerifItalic14,
@@ -34,7 +37,7 @@ interface Bid {
   cents: number
 }
 
-interface ConfirmBidProps extends ViewProperties {
+export interface ConfirmBidProps extends ViewProperties {
   sale_artwork: ConfirmBid_sale_artwork
   bid: Bid
   relay?: RelayPaginationProp
@@ -42,7 +45,6 @@ interface ConfirmBidProps extends ViewProperties {
 }
 
 interface ConformBidState {
-  pollCount: number
   conditionsOfSaleChecked: boolean
   isLoading: boolean
 }
@@ -63,14 +65,23 @@ const bidderPositionMutation = graphql`
     }
   }
 `
-
+@screenTrack({
+  context_screen: Schema.PageNames.BidFlowConfirmBidPage,
+  context_screen_owner_type: null,
+})
 export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState> {
-  state = { pollCount: 0, conditionsOfSaleChecked: false, isLoading: false }
+  state = { conditionsOfSaleChecked: false, isLoading: false }
+
+  private pollCount = 0
 
   onPressConditionsOfSale = () => {
     SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
   }
 
+  @track({
+    action_type: Schema.ActionTypes.Tap,
+    action_name: Schema.ActionNames.BidFlowPlaceBid,
+  })
   placeBid() {
     this.setState({ isLoading: true })
 
@@ -121,15 +132,24 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
 
   verifyBidPosition(results, errors) {
     // TODO: Need to handle if the results object is empty, for example if errors occurred and no request was made
+    // TODO: add analytics for errors
     const status = results.createBidderPosition.result.status
     if (!errors && status === "SUCCESS") {
-      const positionId = results.createBidderPosition.result.position.id
-      this.queryForBidPosition(positionId).then(this.checkBidPosition.bind(this))
+      this.bidPlacedSuccessfully(results)
     } else {
       const message_header = results.createBidderPosition.result.message_header
       const message_description_md = results.createBidderPosition.result.message_description_md
       this.showBidResult(false, status, message_header, message_description_md)
     }
+  }
+
+  @track({
+    action_type: Schema.ActionTypes.Success,
+    action_name: Schema.ActionNames.BidFlowPlaceBid,
+  })
+  bidPlacedSuccessfully(results) {
+    const positionId = results.createBidderPosition.result.position.id
+    this.queryForBidPosition(positionId).then(this.checkBidPosition.bind(this))
   }
 
   checkBidPosition(result) {
@@ -138,7 +158,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     if (status === "WINNING") {
       this.showBidResult(true, "WINNING")
     } else if (status === "PENDING") {
-      if (this.state.pollCount > MAX_POLL_ATTEMPTS) {
+      if (this.pollCount > MAX_POLL_ATTEMPTS) {
         const md = `We're receiving a high volume of traffic and your bid is still processing.  \
 If you don’t receive an update soon, please contact [support@artsy.net](mailto:support@artsy.net). `
 
@@ -148,7 +168,7 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
         setTimeout(() => {
           this.queryForBidPosition(bidderPosition.id).then(this.checkBidPosition.bind(this))
         }, 1000)
-        this.setState({ pollCount: this.state.pollCount + 1 })
+        this.pollCount += 1
       }
     } else {
       this.showBidResult(
@@ -213,13 +233,17 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
             </Flex>
 
             <Divider mb={2} />
+
             <TouchableOpacity onPress={this.maxBidPressed}>
               <Row m={4}>
                 <Col>
                   <SerifSemibold16>Max bid</SerifSemibold16>
                 </Col>
-                <Col alignItems="flex-end">
+                <Col alignItems="center" justifyContent="flex-end" flexDirection="row">
                   <Serif16>{this.props.bid.display}</Serif16>
+                  <Sans12 color="purple100" ml={3} mb={2}>
+                    Edit
+                  </Sans12>
                 </Col>
               </Row>
             </TouchableOpacity>
@@ -228,7 +252,7 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
           </View>
 
           <View>
-            <Checkbox pl={3} pb={1} justifyContent="center" onPress={() => this.conditionsOfSalePressed()}>
+            <Checkbox justifyContent="center" onPress={() => this.conditionsOfSalePressed()}>
               <Serif14 mt={2} color="black60">
                 You agree to <LinkText onPress={this.onPressConditionsOfSale}>Conditions of Sale</LinkText>.
               </Serif14>
