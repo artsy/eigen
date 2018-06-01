@@ -29,9 +29,9 @@ Before submitting to the App Store, the binary we submit *must* be tested *on-de
 - [ ] Check that the app opens on the Home feed Works For You tab from a Works For You push notification (in gravity staging console, run `NewWorkPushService.notify_user(User.find_by(email: "YOUR_EMAIL@artsymail.com))`).
   - [ ] When app is running in the background
   - [ ] When app is completely inactive
-- [ ] Check that the app opens with the correct conversation from a messaging push notification (find the "Invoicing Demo Partner" partner on [Vibrations](https://github.com/artsy/volt) staging, publish one one of their artworks, find it in the app, inquire on it as a non-admin, and reply to the conversation from [Volt](https://github.com/artsy/volt) to trigger a push).
+- [ ] Check that the app opens with the correct conversation from a messaging push notification (find the "Invoicing Demo Partner" partner on [Vibrations](https://github.com/artsy/vibrations) staging, publish one one of their artworks, find it in the app, inquire on it as a non-admin, and reply to the conversation from [Volt](https://github.com/artsy/volt) to trigger a push).
   - [ ] When app is running in the background
-  - [ ] When app is completely inactive
+  - [ ] When app is completely inactive (note this isn't working, see [this Jira ticket](https://artsyproduct.atlassian.net/browse/EV-164))
 - [ ] After running the conversation push notification test and the conversation tab is populated, smoke test it.
 - [ ] Check that the app opens on the correct artist page from a Safari (or other web browser) link (artsy.net/artist/someone)
   - [ ] When app is running in the background
@@ -39,7 +39,7 @@ Before submitting to the App Store, the binary we submit *must* be tested *on-de
 - [ ] Check that the app opens on the Home feed Works For You tab from a Works For You email (find one in your inbox) (note this is currently not working, [see this Jira ticket](https://artsyproduct.atlassian.net/browse/BUGS-176)).
   - [ ] When app is running in the background
   - [ ] When app is completely inactive
-- [ ] Check that the app opens on the correct Auctions home tab when opened from a sale-opening push notification (in gravity staging console, run `NewSalePushService.notify_user(User.find_by(email: "YOUR_EMAIL@artsymail.com").id, Artist.sample(3).map(:&), 4)`).
+- [ ] Check that the app opens on the correct Auctions home tab when opened from a sale-opening push notification (in gravity staging console, run `NewSalePushService.notify_user(User.find_by(email: "YOUR_EMAIL@artsymail.com").id, Artist.sample(3).map(&:id), 4)`).
   - [ ] When app is running in the background
   - [ ] When app is completely inactive
 
