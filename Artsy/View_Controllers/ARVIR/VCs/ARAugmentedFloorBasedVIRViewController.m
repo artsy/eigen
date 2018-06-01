@@ -75,7 +75,6 @@ NS_ASSUME_NONNULL_BEGIN
     [spinner alignToView:content];
     start.contents = content;
 
-
     InformationalViewState *positionWallMarker = [[InformationalViewState alloc] init];
     positionWallMarker.xOutOfYMessage = @"Step 2 of 3";
     positionWallMarker.bodyString = @"Position the marker where the floor meets the wall and tap to set.";
@@ -252,20 +251,22 @@ NS_ASSUME_NONNULL_BEGIN
     [self exitARContext];
 }
 
-// Offer the ability to place an artwork
+// We've been told that a floor has been found
+// so show a tick to indicate it's worked, then move on
 
 - (void)hasRegisteredPlanes
 {
     ar_dispatch_main_queue(^{
 
-        UIView *spinnerContent = (id)self.informationView.currentState.contents;
-        [spinnerContent remove]
+        UIView *spinnerContainer = (id)self.informationView.currentState.contents;
+        [spinnerContainer.subviews.firstObject removeFromSuperview];
 
-        UIImageView *tick = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRBeta"]];
-        [spinner addSubview:tick];
-        tick.center = spinner.center;
+        UIImageView *tick = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRTick"]];
+        tick.contentMode = UIViewContentModeCenter;
+        [spinnerContainer addSubview:tick];
+        tick.frame = spinnerContainer.bounds;
 
-        ar_dispatch_after(3, ^{
+        ar_dispatch_after(2, ^{
             [self.informationView next];
         });
     });

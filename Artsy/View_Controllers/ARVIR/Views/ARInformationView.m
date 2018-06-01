@@ -105,7 +105,7 @@
         [self setNeedsLayout];
         [self layoutIfNeeded];
 
-        [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
+        [UIView animateIf:animated duration:ARAnimationDuration :^{
             self.stack.alpha = 1;
             self.stackTopConstraint.constant = 10;
             [self setNeedsLayout];
