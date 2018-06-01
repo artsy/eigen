@@ -91,6 +91,10 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confor
     return null
   }
 
+  maxBidPressed() {
+    this.props.navigator.pop()
+  }
+
   render() {
     const { billingAddress } = this.state
 
@@ -114,17 +118,19 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confor
 
             <Divider mb={2} />
 
-            <Row p={4}>
-              <Col>
-                <SerifSemibold16>Max bid</SerifSemibold16>
-              </Col>
-              <Col alignItems="center" justifyContent="flex-end" flexDirection="row">
-                <Serif16>{this.props.bid.display}</Serif16>
-                <Sans12 color="purple100" ml={3} mb={1}>
-                  Edit
-                </Sans12>
-              </Col>
-            </Row>
+            <TouchableWithoutFeedback onPress={() => this.maxBidPressed()}>
+              <Row p={4}>
+                <Col>
+                  <SerifSemibold16>Max bid</SerifSemibold16>
+                </Col>
+                <Col alignItems="center" justifyContent="flex-end" flexDirection="row">
+                  <Serif16>{this.props.bid.display}</Serif16>
+                  <Sans12 color="purple100" ml={3} mb={1}>
+                    Edit
+                  </Sans12>
+                </Col>
+              </Row>
+            </TouchableWithoutFeedback>
 
             <Divider mb={2} />
 
