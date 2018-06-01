@@ -55,12 +55,14 @@ exports[`BidResult component high bidder renders winning screen properly 1`] = `
         allowFontScaling={true}
         ellipsizeMode="tail"
         fontSize={5}
+        lineHeight={9}
         m={4}
         style={
           Array [
             Object {
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 22,
+              "lineHeight": 32,
               "marginBottom": 20,
               "marginLeft": 20,
               "marginRight": 20,
@@ -88,11 +90,13 @@ exports[`BidResult component high bidder renders winning screen properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={1}
+          lineHeight={1}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 12,
+                "lineHeight": 16,
               },
               undefined,
             ]
@@ -107,11 +111,13 @@ exports[`BidResult component high bidder renders winning screen properly 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={2}
+          lineHeight={5}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 14,
+                "lineHeight": 24,
               },
               undefined,
             ]
@@ -241,12 +247,14 @@ exports[`BidResult component live bidding has started doesn't render timer 1`] =
         allowFontScaling={true}
         ellipsizeMode="tail"
         fontSize={5}
+        lineHeight={9}
         m={4}
         style={
           Array [
             Object {
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 22,
+              "lineHeight": 32,
               "marginBottom": 20,
               "marginLeft": 20,
               "marginRight": 20,
@@ -266,6 +274,7 @@ exports[`BidResult component live bidding has started doesn't render timer 1`] =
         color="black60"
         ellipsizeMode="tail"
         fontSize={3}
+        lineHeight={5}
         maxWidth={280}
         mb={5}
         style={
@@ -274,6 +283,7 @@ exports[`BidResult component live bidding has started doesn't render timer 1`] =
               "color": "#666",
               "fontFamily": "AGaramondPro-Regular",
               "fontSize": 16,
+              "lineHeight": 24,
               "marginBottom": 30,
               "maxWidth": 280,
               "textAlign": "center",
@@ -425,12 +435,14 @@ exports[`BidResult component low bidder renders timer and error message 1`] = `
         allowFontScaling={true}
         ellipsizeMode="tail"
         fontSize={5}
+        lineHeight={9}
         m={4}
         style={
           Array [
             Object {
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 22,
+              "lineHeight": 32,
               "marginBottom": 20,
               "marginLeft": 20,
               "marginRight": 20,
@@ -450,6 +462,7 @@ exports[`BidResult component low bidder renders timer and error message 1`] = `
         color="black60"
         ellipsizeMode="tail"
         fontSize={3}
+        lineHeight={5}
         maxWidth={280}
         mb={5}
         style={
@@ -458,6 +471,7 @@ exports[`BidResult component low bidder renders timer and error message 1`] = `
               "color": "#666",
               "fontFamily": "AGaramondPro-Regular",
               "fontSize": 16,
+              "lineHeight": 24,
               "marginBottom": 30,
               "maxWidth": 280,
               "textAlign": "center",
@@ -481,6 +495,7 @@ exports[`BidResult component low bidder renders timer and error message 1`] = `
         color="black60"
         ellipsizeMode="tail"
         fontSize={3}
+        lineHeight={5}
         maxWidth={280}
         mb={5}
         style={
@@ -489,6 +504,7 @@ exports[`BidResult component low bidder renders timer and error message 1`] = `
               "color": "#666",
               "fontFamily": "AGaramondPro-Regular",
               "fontSize": 16,
+              "lineHeight": 24,
               "marginBottom": 30,
               "maxWidth": 280,
               "textAlign": "center",
@@ -520,11 +536,13 @@ exports[`BidResult component low bidder renders timer and error message 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={1}
+          lineHeight={1}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 12,
+                "lineHeight": 16,
               },
               undefined,
             ]
@@ -539,11 +557,13 @@ exports[`BidResult component low bidder renders timer and error message 1`] = `
           allowFontScaling={true}
           ellipsizeMode="tail"
           fontSize={2}
+          lineHeight={5}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 14,
+                "lineHeight": 24,
               },
               undefined,
             ]

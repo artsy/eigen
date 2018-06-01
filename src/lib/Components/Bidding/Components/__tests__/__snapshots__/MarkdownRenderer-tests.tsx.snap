@@ -7,6 +7,7 @@ exports[`Markdown parser component renders multiple paragraphs matches the snaps
   color="black60"
   ellipsizeMode="tail"
   fontSize={3}
+  lineHeight={5}
   maxWidth={280}
   mb={5}
   style={
@@ -15,6 +16,7 @@ exports[`Markdown parser component renders multiple paragraphs matches the snaps
         "color": "#666",
         "fontFamily": "AGaramondPro-Regular",
         "fontSize": 16,
+        "lineHeight": 24,
         "marginBottom": 30,
         "maxWidth": 280,
         "textAlign": "center",
@@ -43,6 +45,7 @@ exports[`Markdown parser component renders text matches the snapshot 1`] = `
   color="black60"
   ellipsizeMode="tail"
   fontSize={3}
+  lineHeight={5}
   maxWidth={280}
   mb={5}
   style={
@@ -51,6 +54,7 @@ exports[`Markdown parser component renders text matches the snapshot 1`] = `
         "color": "#666",
         "fontFamily": "AGaramondPro-Regular",
         "fontSize": 16,
+        "lineHeight": 24,
         "marginBottom": 30,
         "maxWidth": 280,
         "textAlign": "center",
@@ -77,6 +81,7 @@ exports[`Markdown parser component renders text with link matches the snapshot 1
   color="black60"
   ellipsizeMode="tail"
   fontSize={3}
+  lineHeight={5}
   maxWidth={280}
   mb={5}
   style={
@@ -85,6 +90,7 @@ exports[`Markdown parser component renders text with link matches the snapshot 1
         "color": "#666",
         "fontFamily": "AGaramondPro-Regular",
         "fontSize": 16,
+        "lineHeight": 24,
         "marginBottom": 30,
         "maxWidth": 280,
         "textAlign": "center",
