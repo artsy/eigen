@@ -30,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) ARSCNView *sceneView;
 @property (nonatomic, strong) ARInformationView *informationView;
 @property (nonatomic, strong) NSLayoutConstraint *informationViewBottomConstraint;
+@property (nonatomic, strong) ARClearFlatButton *resetARButton;
 
 @property (nonatomic, strong) id <ARSCNViewDelegate, ARVIRInteractive, ARSessionDelegate> interactionController;
 
@@ -157,6 +158,14 @@ NS_ASSUME_NONNULL_BEGIN
         betaImage.translatesAutoresizingMaskIntoConstraints = false;
         [self.view addSubview:betaImage];
 
+        ARClearFlatButton *resetARButton = [[ARClearFlatButton alloc] init];
+        [resetARButton setTitle:@"Reset" forState:UIControlStateNormal];
+        [resetARButton addTarget:self action:@selector(resetAR) forControlEvents:UIControlEventTouchUpInside];
+        resetARButton.translatesAutoresizingMaskIntoConstraints = false;
+        resetARButton.alpha = 0;
+        [self.view addSubview:resetARButton];
+        self.resetARButton = resetARButton;
+
         // Any changes to this will need to be reflected in ARAugmentedVIRModalView also
         BOOL isEdgeToEdgePhone = !UIEdgeInsetsEqualToEdgeInsets( [ARTopMenuViewController sharedController].view.safeAreaInsets, UIEdgeInsetsZero);
         CGFloat backTopMargin = isEdgeToEdgePhone ? -17 : 9;
@@ -169,6 +178,10 @@ NS_ASSUME_NONNULL_BEGIN
 
             [betaImage.centerYAnchor constraintEqualToAnchor:backButton.centerYAnchor constant:0],
             [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20]
+
+            [resetARButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:0],
+            [resetARButton.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-40],
+            [resetARButton.widthAnchor constraintEqualToConstant:92.0],
         ]];
 
         // Makes it so that the screen doesn't dim
@@ -201,6 +214,7 @@ NS_ASSUME_NONNULL_BEGIN
         // Animate it out
         self.informationViewBottomConstraint.constant = 40;
         informational.alpha = 0;
+        self.resetARButton.alpha = 1;
 
         [informational setNeedsUpdateConstraints];
         [self.view layoutIfNeeded];
@@ -365,7 +379,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     // Create a session configuration
     if (@available(iOS 11.3, *)) {
         ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
@@ -401,7 +415,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+
     // Pause the view's session
     [self.sceneView.session pause];
 }
