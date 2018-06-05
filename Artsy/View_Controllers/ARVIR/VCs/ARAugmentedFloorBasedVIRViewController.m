@@ -356,8 +356,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)resetAR
 {
-
     [self.interactionController restart];
+    [self.informationView reset];
 }
 
 // This is a NOOP with the current interaction controller, but can be used with different a one

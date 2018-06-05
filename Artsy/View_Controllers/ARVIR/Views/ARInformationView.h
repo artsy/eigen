@@ -16,6 +16,8 @@
 
 - (void)setupWithStates:(NSArray<InformationalViewState *> *_Nonnull)states;
 
+- (void)reset;
+
 /** Animates by default */
 - (void)next;
 - (void)nextAnimated:(BOOL)animated;

@@ -23,7 +23,6 @@
 - (void)setupWithStates:(NSArray<InformationalViewState *> *)states
 {
     _states = states;
-    _index = -1;
 
     UILabel *xofYLabel = [self createXOfYLabel];
     self.xOfYLabel = xofYLabel;
@@ -42,6 +41,12 @@
 
     self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
 
+    [self reset];
+}
+
+- (void)reset;
+{
+    self.index = -1;
     [self nextAnimated:NO];
 }
 
