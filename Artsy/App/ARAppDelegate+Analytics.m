@@ -4,7 +4,6 @@
 #import <ARAnalytics/ARAnalytics.h>
 #import <ARAnalytics/ARDSL.h>
 #import "ARAnalyticsConstants.h"
-#import <HockeySDK-Source/BITHockeyManager.h>
 #import <Mantle/NSDictionary+MTLManipulationAdditions.h>
 #import <Adjust/Adjust.h>
 #import <AFNetworking/AFNetworking.h>
@@ -124,14 +123,8 @@
         [ARAnalytics setupProvider:visualizer];
     }
 
-    BITHockeyManager *hockey = [BITHockeyManager sharedHockeyManager];
-    hockey.disableCrashManager = YES;
-    hockey.disableUpdateManager = YES;
-
     [ARAnalytics setupWithAnalytics:
     @{
-        ARHockeyAppBetaID: @"306e66bde3cb91a2043f2606cf335700",
-        ARHockeyAppLiveID: @"d7bceb80c6fa1e83e787b3919c749311",
         ARSegmentioWriteKey: segmentWriteKey,
     } configuration:
     @{

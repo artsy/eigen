@@ -14,7 +14,7 @@
 #import "ARMacros.h"
 #import "ARDispatchManager.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 @interface Fair () {

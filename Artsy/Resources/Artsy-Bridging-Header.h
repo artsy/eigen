@@ -109,12 +109,10 @@
 #import <Artsy-UIButtons/ARButtonSubclasses.h>
 #import <Artsy+UIColors/UIColor+ArtsyColors.h>
 #import <ARAnalytics/ARAnalytics.h>
-#import <ARAnalytics/HockeyAppProvider.h>
 #import <EDColor/EDColor.h>
 #import <Extraction/ARSpinner.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import <FXBlurView/FXBlurView.h>
-#import <HockeySDK-Source/HockeySDK.h>
 #import <MARKRangeSlider/MARKRangeSlider.h>
 #import <ORStackView/ORStackView.h>
 #import <ORStackView/ORStackScrollView.h>

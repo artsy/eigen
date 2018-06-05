@@ -3,7 +3,7 @@
 
 #import "ARMacros.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 
 
 @implementation Partner

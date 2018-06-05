@@ -14,7 +14,7 @@
 #import "ARSystemTime.h"
 
 #import <KSDeferred/KSPromise.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 

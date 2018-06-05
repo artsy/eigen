@@ -1,7 +1,7 @@
 PODS:
-  - Adjust (4.12.1):
-    - Adjust/Core (= 4.12.1)
-  - Adjust/Core (4.12.1)
+  - Adjust (4.13.0):
+    - Adjust/Core (= 4.13.0)
+  - Adjust/Core (4.13.0)
   - Aerodramus (0.3.2):
     - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
@@ -31,17 +31,14 @@ PODS:
   - AFOAuth1Client (0.4.0):
     - AFNetworking (~> 2.5)
   - Analytics (3.6.9)
-  - ARAnalytics/Adjust (4.0.2):
+  - ARAnalytics/Adjust (5.0.1):
     - Adjust
     - ARAnalytics/CoreIOS
-  - ARAnalytics/CoreIOS (4.0.2)
-  - ARAnalytics/DSL (4.0.2):
-    - ReactiveCocoa (~> 2.0)
+  - ARAnalytics/CoreIOS (5.0.1)
+  - ARAnalytics/DSL (5.0.1):
+    - ReactiveObjC (~> 2.0)
     - RSSwizzle (~> 0.1.0)
-  - ARAnalytics/HockeyApp (4.0.2):
-    - ARAnalytics/CoreIOS
-    - HockeySDK-Source
-  - ARAnalytics/Segmentio (4.0.2):
+  - ARAnalytics/Segmentio (5.0.1):
     - Analytics (>= 3)
     - ARAnalytics/CoreIOS
   - ARCollectionViewMasonryLayout (2.3.0)
@@ -141,7 +138,6 @@ PODS:
     - OCMock
   - FXBlurView (1.6.1)
   - glog (0.3.4)
-  - HockeySDK-Source (4.1.5)
   - Interstellar/Core (2.0.0)
   - iRate (1.10.2)
   - ISO8601DateFormatter (0.7.1)
@@ -215,13 +211,7 @@ PODS:
     - React/Core
   - React/RCTText (0.54.4):
     - React/Core
-  - ReactiveCocoa (2.5):
-    - ReactiveCocoa/UI (= 2.5)
-  - ReactiveCocoa/Core (2.5):
-    - ReactiveCocoa/no-arc
-  - ReactiveCocoa/no-arc (2.5)
-  - ReactiveCocoa/UI (2.5):
-    - ReactiveCocoa/Core
+  - ReactiveObjC (2.1.2)
   - RSSwizzle (0.1.0)
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
@@ -256,7 +246,6 @@ DEPENDENCIES:
   - Analytics
   - ARAnalytics/Adjust
   - ARAnalytics/DSL
-  - ARAnalytics/HockeyApp
   - ARAnalytics/Segmentio
   - ARCollectionViewMasonryLayout (from `https://github.com/ashfurrow/ARCollectionViewMasonryLayout`)
   - ARGenericTableViewController (from `https://github.com/orta/ARGenericTableViewController.git`)
@@ -278,7 +267,6 @@ DEPENDENCIES:
   - FLKAutoLayout (from `https://github.com/orta/FLKAutoLayout.git`, branch `v1`)
   - Forgeries/Mocks
   - FXBlurView
-  - HockeySDK-Source (from `https://github.com/bitstadium/HockeySDK-iOS.git`)
   - Interstellar/Core (from `https://github.com/ashfurrow/Interstellar.git`, branch `observable-unsubscribe`)
   - iRate
   - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
@@ -302,7 +290,7 @@ DEPENDENCIES:
   - ORStackView (= 2.0.3)
   - Quick
   - React/Core
-  - ReactiveCocoa (< 3)
+  - ReactiveObjC
   - SDWebImage (>= 3.7.2)
   - Sentry
   - Specta
@@ -365,7 +353,7 @@ SPEC REPOS:
     - ORKeyboardReactingApplication
     - ORStackView
     - Quick
-    - ReactiveCocoa
+    - ReactiveObjC
     - RSSwizzle
     - SDWebImage
     - Sentry
@@ -393,8 +381,6 @@ EXTERNAL SOURCES:
   FLKAutoLayout:
     :branch: v1
     :git: https://github.com/orta/FLKAutoLayout.git
-  HockeySDK-Source:
-    :git: https://github.com/bitstadium/HockeySDK-iOS.git
   Interstellar:
     :branch: observable-unsubscribe
     :git: https://github.com/ashfurrow/Interstellar.git
@@ -431,9 +417,6 @@ CHECKOUT OPTIONS:
   FLKAutoLayout:
     :commit: 4aa27fa1a9aba36d5465e6cd181ba4b78b0691d3
     :git: https://github.com/orta/FLKAutoLayout.git
-  HockeySDK-Source:
-    :commit: 551ca733c29bd35dddb651d9661c8839de4e7985
-    :git: https://github.com/bitstadium/HockeySDK-iOS.git
   Interstellar:
     :commit: ca22646f5a8449795fba3d3436a045da0aeb5949
     :git: https://github.com/ashfurrow/Interstellar.git
@@ -451,13 +434,13 @@ CHECKOUT OPTIONS:
     :git: https://github.com/alloy/SSFadingScrollView.git
 
 SPEC CHECKSUMS:
-  Adjust: 3d11ee5856dd0474d26496f4fa5a110e9f3ec264
+  Adjust: 8f204c1005d6635e7c931c6a2cb2f881965bf478
   Aerodramus: a23208fd4d76a32ee4ca425a8e29319e6c6a9bdc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
   Analytics: 6541ce337e99d9f7a2240a8b3953940a7be5f998
-  ARAnalytics: c00626b8fc45cb7cff0253efc19f20652603b417
+  ARAnalytics: 896e530551168721fbb8852e044b8afb9baffdde
   ARCollectionViewMasonryLayout: 97cb468434b546b79a98c7c0908447ff803eb85e
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
@@ -483,7 +466,6 @@ SPEC CHECKSUMS:
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
   glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
-  HockeySDK-Source: ab4eef2ac5c07c45db5844ae724bf6f06199b214
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
@@ -508,7 +490,7 @@ SPEC CHECKSUMS:
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
   React: e8b3cf60f93a0e64045862a003c1bf9408098cff
-  ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
+  ReactiveObjC: 7b6782ae39f9ac0f57205c3b0c0b69b9dd7048c0
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
@@ -524,6 +506,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: de8782b10b9fdede33554bcad8a2a6653e0ebb30
 
-PODFILE CHECKSUM: a0c79c1dea94ed4796d6385f79a25534da8e84cc
+PODFILE CHECKSUM: 0aeacffa5d8fc1469a480ad19c89a822129467e2
 
 COCOAPODS: 1.5.3

@@ -6,7 +6,7 @@
 #import "ArtsyAPI+Profiles.h"
 #import "Profile.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 
 @implementation User
 

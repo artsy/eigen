@@ -20,7 +20,7 @@
 
 #import "ARMacros.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 const NSInteger ARFairFavoritesNetworkModelMaxRandomExhibitors = 10;
