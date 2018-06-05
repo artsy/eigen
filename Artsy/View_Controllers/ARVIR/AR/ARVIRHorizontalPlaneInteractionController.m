@@ -186,6 +186,8 @@ NSInteger attempt = 0;
     }
 }
 
+// TODO: Figure out in how far this is done yet?
+//       And why does the ARSession need to be re-created?
 - (void)restart
 {
     [self.ghostWallLine removeFromParentNode];

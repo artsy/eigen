@@ -184,6 +184,17 @@ NS_ASSUME_NONNULL_BEGIN
             [resetARButton.widthAnchor constraintEqualToConstant:92.0],
         ]];
 
+        // Create and show the informational interface
+        ARInformationView *informationView = [[ARInformationView alloc] init];
+        [informationView setupWithStates:[self viewStatesForInformationView:informationView]];
+        
+        [self.view addSubview:informationView];
+        [informationView alignLeading:@"0" trailing:@"0" toView:self.view];
+        [informationView constrainHeight:@"180"];
+
+        self.informationViewBottomConstraint = [informationView alignBottomEdgeWithView:self.view predicate:@"0"];
+        self.informationView = informationView;
+
         // Makes it so that the screen doesn't dim
         [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     }
@@ -191,15 +202,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)presentInformationalInterface:(BOOL)animated
 {
-    ARInformationView *informationView = [[ARInformationView alloc] init];
-    [informationView setupWithStates:[self viewStatesForInformationView:informationView]];
-
-    [self.view addSubview:informationView];
-    [informationView alignLeading:@"0" trailing:@"0" toView:self.view];
-    [informationView constrainHeight:@"180"];
-
-    self.informationViewBottomConstraint = [informationView alignBottomEdgeWithView:self.view predicate:@"0"];
-    self.informationView = informationView;
+    UIView *informational = self.informationView;
+    [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
+        // Animate it in
+        self.informationViewBottomConstraint.constant = 0;
+        informational.alpha = 1;
+        self.resetARButton.alpha = 0;
+        
+        [informational setNeedsUpdateConstraints];
+        [self.view layoutIfNeeded];
+        [informational layoutIfNeeded];
+    } completion:nil];
 }
 
 - (void)dismissInformationalViewAnimated
@@ -219,9 +232,7 @@ NS_ASSUME_NONNULL_BEGIN
         [informational setNeedsUpdateConstraints];
         [self.view layoutIfNeeded];
         [informational layoutIfNeeded];
-    } completion:^(BOOL finished) {
-        [informational removeFromSuperview];
-    }];
+    } completion:nil];
 }
 
 - (void)initialState
@@ -358,6 +369,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [self.interactionController restart];
     [self.informationView reset];
+    [self presentInformationalInterface:YES];
 }
 
 // This is a NOOP with the current interaction controller, but can be used with different a one
