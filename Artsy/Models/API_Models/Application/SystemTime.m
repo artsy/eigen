@@ -3,7 +3,7 @@
 #import "ARMacros.h"
 
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 
 @interface SystemTime ()
 @property (nonatomic, readonly, strong) NSString *time;

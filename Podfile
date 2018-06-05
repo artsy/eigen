@@ -52,7 +52,7 @@ target 'Artsy' do
   pod 'Mantle', '~> 1.5.6'
   pod 'MMMarkdown'
   pod 'NPKeyboardLayoutGuide'
-  pod 'ReactiveCocoa', '< 3'
+  pod 'ReactiveObjC'
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
   pod 'EDColor'
@@ -90,9 +90,7 @@ target 'Artsy' do
 
   # Analytics
   pod 'Analytics'
-  pod 'ARAnalytics', :subspecs => ["Segmentio", "HockeyApp", "Adjust", "DSL"]
-  # Required as a workaround for https://github.com/bitstadium/HockeySDK-iOS/pull/421
-  pod 'HockeySDK-Source', git: 'https://github.com/bitstadium/HockeySDK-iOS.git'
+  pod 'ARAnalytics', :subspecs => ["Segmentio", "Adjust", "DSL"]
 
   # Developer Pods
   pod 'DHCShakeNotifier'

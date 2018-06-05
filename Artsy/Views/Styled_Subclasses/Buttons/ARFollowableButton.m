@@ -5,7 +5,7 @@
 
 #import "ARMacros.h"
 
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 
 @interface ARFollowableButton ()
 @property (readwrite, nonatomic, weak) ARFollowableNetworkModel *model;

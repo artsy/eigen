@@ -35,7 +35,7 @@
 
 #import <ORStackView/ORStackScrollView.h>
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 

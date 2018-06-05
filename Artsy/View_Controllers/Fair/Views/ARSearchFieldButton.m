@@ -4,7 +4,7 @@
 
 #import <Artsy+UILabels/Artsy+UILabels.h>
 #import <EDColor/EDColor.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 
