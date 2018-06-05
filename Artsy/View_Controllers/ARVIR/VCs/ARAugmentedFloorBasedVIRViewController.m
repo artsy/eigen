@@ -203,6 +203,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)presentInformationalInterface:(BOOL)animated
 {
     UIView *informational = self.informationView;
+    if (informational.alpha > 0) {
+        return;
+    }
     [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
         // Animate it in
         self.informationViewBottomConstraint.constant = 0;
