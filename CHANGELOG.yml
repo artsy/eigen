@@ -8,6 +8,7 @@ upcoming:
     - Removes deprecated ReactiveCocoa and uses ReactiveObjC library instead - ash
   user_facing:
     - Adds a round corner to all native buttons - orta
+    - ARVIR2 animates - orta
     - Redesigned bid status view on artwork page - ash
     - Conditions-of-sale routing works - ash
     - Integrates new BidFlow component from Emission - ash

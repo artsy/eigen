@@ -14,6 +14,7 @@
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import <Extraction/ARSpinner.h>
+#import <Extraction/UIView+ARSpinner.h>
 
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
@@ -63,13 +64,16 @@ NS_ASSUME_NONNULL_BEGIN
     InformationalViewState *start = [[InformationalViewState alloc] init];
     start.xOutOfYMessage = @"Step 1 of 3";
     start.bodyString = @"Aim at the floor and slowly move your phone in a circular motion.";
+    UIView *content = [[UIView alloc] init];
+    [content constrainHeight:@"40"];
+
     ARSpinner *spinner = [[ARSpinner alloc] init];
     spinner.spinnerColor = [UIColor whiteColor];
     [spinner constrainHeight:@"40"];
-    start.contents = spinner;
-    start.onStart = ^(UIView *customView) {
-        [spinner startAnimating];
-    };
+    [spinner startAnimating];
+    [content addSubview:spinner];
+    [spinner alignToView:content];
+    start.contents = content;
 
     InformationalViewState *positionWallMarker = [[InformationalViewState alloc] init];
     positionWallMarker.xOutOfYMessage = @"Step 2 of 3";
@@ -247,13 +251,24 @@ NS_ASSUME_NONNULL_BEGIN
     [self exitARContext];
 }
 
-// Offer the ability to place an artwork
+// We've been told that a floor has been found
+// so show a tick to indicate it's worked, then move on
 
 - (void)hasRegisteredPlanes
 {
     ar_dispatch_main_queue(^{
-        // TODO, show tick, then hit next
-        [self.informationView next];
+
+        UIView *spinnerContainer = (id)self.informationView.currentState.contents;
+        [spinnerContainer.subviews.firstObject removeFromSuperview];
+
+        UIImageView *tick = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRTick"]];
+        tick.contentMode = UIViewContentModeCenter;
+        [spinnerContainer addSubview:tick];
+        tick.frame = spinnerContainer.bounds;
+
+        ar_dispatch_after(2, ^{
+            [self.informationView next];
+        });
     });
 }
 

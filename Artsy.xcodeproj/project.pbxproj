@@ -601,6 +601,9 @@
 		6099F8FE178DE9400004EF04 /* ARTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 6099F8FD178DE9400004EF04 /* ARTheme.m */; };
 		6099F907178F24750004EF04 /* ARDefaultNavigationTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6099F906178F24750004EF04 /* ARDefaultNavigationTransition.m */; };
 		6099F90A17904F9B0004EF04 /* ARModelCollectionViewModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6099F90917904F9B0004EF04 /* ARModelCollectionViewModule.m */; };
+		609A42BC20C1D3F200B1B933 /* ARVIRTick.png in Resources */ = {isa = PBXBuildFile; fileRef = 609A42B920C1D3F000B1B933 /* ARVIRTick.png */; };
+		609A42BD20C1D3F200B1B933 /* ARVIRTick@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 609A42BA20C1D3F100B1B933 /* ARVIRTick@2x.png */; };
+		609A42BE20C1D3F200B1B933 /* ARVIRTick@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 609A42BB20C1D3F100B1B933 /* ARVIRTick@3x.png */; };
 		609A82F017A10C5C00AFDF13 /* ARNavigationTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 609A82EF17A10C5C00AFDF13 /* ARNavigationTransitionController.m */; };
 		609A82FB17A1147800AFDF13 /* ARNavigationTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 609A82FA17A1147800AFDF13 /* ARNavigationTransition.m */; };
 		609B3C091761F80C00953CB2 /* ARSiteHeroUnitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 609B3C081761F80C00953CB2 /* ARSiteHeroUnitView.m */; };
@@ -1754,6 +1757,9 @@
 		6099F906178F24750004EF04 /* ARDefaultNavigationTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaultNavigationTransition.m; sourceTree = "<group>"; };
 		6099F90817904F9B0004EF04 /* ARModelCollectionViewModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARModelCollectionViewModule.h; sourceTree = "<group>"; };
 		6099F90917904F9B0004EF04 /* ARModelCollectionViewModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARModelCollectionViewModule.m; sourceTree = "<group>"; };
+		609A42B920C1D3F000B1B933 /* ARVIRTick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRTick.png; sourceTree = "<group>"; };
+		609A42BA20C1D3F100B1B933 /* ARVIRTick@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRTick@2x.png"; sourceTree = "<group>"; };
+		609A42BB20C1D3F100B1B933 /* ARVIRTick@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRTick@3x.png"; sourceTree = "<group>"; };
 		609A82EE17A10C5C00AFDF13 /* ARNavigationTransitionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNavigationTransitionController.h; sourceTree = "<group>"; };
 		609A82EF17A10C5C00AFDF13 /* ARNavigationTransitionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTransitionController.m; sourceTree = "<group>"; };
 		609A82F917A1147800AFDF13 /* ARNavigationTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNavigationTransition.h; sourceTree = "<group>"; };
@@ -4276,6 +4282,9 @@
 				6016120820B744A300FD54B0 /* ARVIRBeta.png */,
 				6016120920B744A300FD54B0 /* ARVIRBeta@2x.png */,
 				6016120720B744A300FD54B0 /* ARVIRBeta@3x.png */,
+				609A42B920C1D3F000B1B933 /* ARVIRTick.png */,
+				609A42BA20C1D3F100B1B933 /* ARVIRTick@2x.png */,
+				609A42BB20C1D3F100B1B933 /* ARVIRTick@3x.png */,
 				60A168CE20647965008A086C /* ar_vir_opening_frame.jpg */,
 			);
 			name = Resources;
@@ -5057,6 +5066,8 @@
 				3C4AE99419094F96009C0E8B /* ViewInRoom_Bench@2x.png in Resources */,
 				608B708117D4A1C80088A56C /* MenuHamburger@2x.png in Resources */,
 				3C4AE99219094F96009C0E8B /* ViewInRoom_Base@2x.png in Resources */,
+				609A42BD20C1D3F200B1B933 /* ARVIRTick@2x.png in Resources */,
+				609A42BC20C1D3F200B1B933 /* ARVIRTick.png in Resources */,
 				3C4AE9AC1909C3A5009C0E8B /* MapAnnotationCallout_Arrow@2x.png in Resources */,
 				66A43C691CE470C400FFD6ED /* Hash@3x.png in Resources */,
 				608B708C17D4A1C80088A56C /* SidebarButtonHighlightBG@2x.png in Resources */,
@@ -5153,6 +5164,7 @@
 				5E956E591CD2AD6E005C2332 /* live_auctions_socket.json in Resources */,
 				3C4AE9A619098916009C0E8B /* MapAnnotationCallout_Anchor@2x.png in Resources */,
 				E691020019C9E17B0048149C /* SearchIcon_White@2x.png in Resources */,
+				609A42BE20C1D3F200B1B933 /* ARVIRTick@3x.png in Resources */,
 				E6FFEAAF19C7925600A0D7DE /* onboard_1@2x~ipad.jpg in Resources */,
 				E65BB5231A408A29004C4DB4 /* TextfieldClearButton.png in Resources */,
 				60A168CF20647965008A086C /* ar_vir_opening_frame.jpg in Resources */,
