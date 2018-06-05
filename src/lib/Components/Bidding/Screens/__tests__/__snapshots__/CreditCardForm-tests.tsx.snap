@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<View>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    fontSize={5}
+    lineHeight={9}
+    m={4}
+    style={
+      Array [
+        Object {
+          "fontFamily": "AGaramondPro-Semibold",
+          "fontSize": 22,
+          "lineHeight": 32,
+          "marginBottom": 20,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 20,
+          "textAlign": "center",
+        },
+        undefined,
+      ]
+    }
+    textAlign="center"
+  >
+    Your credit card
+  </Text>
+  <View
+    m={4}
+    style={
+      Array [
+        Object {
+          "marginBottom": 20,
+          "marginLeft": 20,
+          "marginRight": 20,
+          "marginTop": 20,
+        },
+        undefined,
+      ]
+    }
+  >
+    PaymentCardTextField
+  </View>
+  <View
+    height={50}
+    style={
+      Array [
+        Object {
+          "height": 50,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      hasTVPreferredFocus={undefined}
+      hitSlop={undefined}
+      isTVSelectable={true}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "rgba(0, 0, 0, 1)",
+          "flex": 1,
+          "justifyContent": "center",
+        }
+      }
+      testID={undefined}
+      tvParallaxProperties={undefined}
+    >
+      <View
+        style={null}
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "fontSize": 12,
+              },
+              Object {
+                "color": "white",
+                "fontSize": 14,
+                "opacity": 1,
+              },
+              Object {
+                "fontFamily": "AvantGardeGothicITC",
+              },
+            ]
+          }
+        >
+          ADD CREDIT CARD
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

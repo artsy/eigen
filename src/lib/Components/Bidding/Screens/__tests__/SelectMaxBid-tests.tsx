@@ -8,6 +8,8 @@ import { Button } from "../../Components/Button"
 
 import { SelectMaxBid } from "../SelectMaxBid"
 
+jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
+
 const Me = {
   has_qualified_credit_cards: true,
 }

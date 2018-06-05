@@ -13,6 +13,12 @@ jest.mock("../../../metaphysics", () => ({ metaphysics: jest.fn() }))
 import { metaphysics } from "../../../metaphysics"
 import { Title } from "../Components/Title"
 
+jest.mock("tipsi-stripe", () => ({
+  setOptions: jest.fn(),
+  paymentRequestWithCardForm: jest.fn(),
+  createTokenWithCard: jest.fn(),
+}))
+
 const mockphysics = metaphysics as jest.Mock<any>
 let fakeNavigator: FakeNavigator
 let fakeRelay

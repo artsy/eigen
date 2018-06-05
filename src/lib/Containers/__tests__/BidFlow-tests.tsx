@@ -4,6 +4,8 @@ import * as renderer from "react-test-renderer"
 
 import BidFlow from "../BidFlow"
 
+jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
+
 const Me = {
   has_qualified_credit_cards: true,
 }

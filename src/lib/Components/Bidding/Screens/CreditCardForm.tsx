@@ -2,6 +2,7 @@ import { Fonts } from "lib/data/fonts"
 import React, { Component } from "react"
 import { NavigatorIOS, StyleSheet, View } from "react-native"
 import { PaymentCardTextField } from "tipsi-stripe"
+
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Button } from "../Components/Button"
 import { Title } from "../Components/Title"
@@ -47,10 +48,8 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
   }
 
   onSubmit() {
-    if (this.state.valid) {
-      this.props.onSubmit(this.state.params)
-      this.props.navigator.pop()
-    }
+    this.props.onSubmit(this.state.params)
+    this.props.navigator.pop()
   }
 
   render() {
@@ -63,7 +62,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
             <PaymentCardTextField style={styles.field} onParamsChange={this.handleFieldParamsChange} />
           </Flex>
 
-          <Button text="Add credit card" onPress={() => this.onSubmit()} />
+          <Button text="Add credit card" onPress={this.state.valid ? () => this.onSubmit() : null} />
         </View>
       </BiddingThemeProvider>
     )
