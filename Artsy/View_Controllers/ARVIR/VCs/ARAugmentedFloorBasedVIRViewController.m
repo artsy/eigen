@@ -207,12 +207,12 @@ NS_ASSUME_NONNULL_BEGIN
         // Create and show the informational interface
         ARInformationView *informationView = [[ARInformationView alloc] init];
         [informationView setupWithStates:[self viewStatesForInformationView:informationView]];
-
+        informationView.alpha = 0;
         [self.view addSubview:informationView];
         [informationView alignLeading:@"0" trailing:@"0" toView:self.view];
         [informationView constrainHeight:@"180"];
-
         self.informationViewBottomConstraint = [informationView alignBottomEdgeWithView:self.view predicate:@"0"];
+        self.informationViewBottomConstraint.constant = 40;
         self.informationView = informationView;
 
         // Makes it so that the screen doesn't dim
@@ -438,11 +438,14 @@ NS_ASSUME_NONNULL_BEGIN
             });
         }
     }
+}
 
-    // Create the informational view and animate it into view
-    if (!self.informationView) {
-        [self presentInformationalInterface:animated];
-    }
+- (void)viewDidAppear:(BOOL)animated;
+{
+    [super viewDidAppear:animated];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+       [self presentInformationalInterface:animated];
+    });
 }
 
 // If we can't show the screen, pause AR
