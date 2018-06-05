@@ -23,6 +23,8 @@
 #import "ARAugmentedVIRModalView.h"
 #import "ARInformationView.h"
 
+static CGFloat ARInformationalViewDisplayAnimationDuration = 0.45;
+
 API_AVAILABLE(ios(11.0))
 @interface ARAugmentedFloorBasedVIRViewController () <ARSCNViewDelegate, ARSessionDelegate, ARVIRDelegate, ARMenuAwareViewController, VIRModalDelegate>
 NS_ASSUME_NONNULL_BEGIN
@@ -226,7 +228,10 @@ NS_ASSUME_NONNULL_BEGIN
     if (informational.alpha > 0) {
         return;
     }
-    [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
+    [UIView animateIf:animated
+             duration:ARInformationalViewDisplayAnimationDuration
+              options:UIViewAnimationOptionCurveEaseOut
+                     :^{
         // Animate it in
         self.informationViewBottomConstraint.constant = 0;
         informational.alpha = 1;
@@ -235,7 +240,7 @@ NS_ASSUME_NONNULL_BEGIN
         [informational setNeedsUpdateConstraints];
         [self.view layoutIfNeeded];
         [informational layoutIfNeeded];
-    } completion:nil];
+    }];
 }
 
 - (void)dismissInformationalViewAnimated
@@ -246,7 +251,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)dismissInformationalView:(BOOL)animated
 {
     UIView *informational = self.informationView;
-    [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
+    [UIView animateIf:animated
+             duration:ARInformationalViewDisplayAnimationDuration
+              options:UIViewAnimationOptionCurveEaseOut
+                     :^{
         // Animate it out
         self.informationViewBottomConstraint.constant = 40;
         informational.alpha = 0;
@@ -255,7 +263,7 @@ NS_ASSUME_NONNULL_BEGIN
         [informational setNeedsUpdateConstraints];
         [self.view layoutIfNeeded];
         [informational layoutIfNeeded];
-    } completion:nil];
+    }];
 }
 
 - (void)initialState
