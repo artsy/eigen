@@ -25,6 +25,24 @@
 
 static CGFloat ARInformationalViewDisplayAnimationDuration = 0.45;
 
+@interface _ARWhiteFlatButton : ARWhiteFlatButton
+@end
+@implementation _ARWhiteFlatButton
+- (void)setHighlighted:(BOOL)highlighted;
+{
+    // no-op
+}
+@end
+
+@interface _ARClearFlatButton : ARClearFlatButton
+@end
+@implementation _ARClearFlatButton
+- (void)setHighlighted:(BOOL)highlighted;
+{
+    // no-op
+}
+@end
+
 API_AVAILABLE(ios(11.0))
 @interface ARAugmentedFloorBasedVIRViewController () <ARSCNViewDelegate, ARSessionDelegate, ARVIRDelegate, ARMenuAwareViewController, VIRModalDelegate>
 NS_ASSUME_NONNULL_BEGIN
@@ -88,7 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
     InformationalViewState *positionWallMarker = [[InformationalViewState alloc] init];
     positionWallMarker.xOutOfYMessage = @"Step 2 of 3";
     positionWallMarker.bodyString = @"Position the marker where the floor meets the wall and tap to set.";
-    ARWhiteFlatButton *setMarkerButton = [[ARWhiteFlatButton alloc] init];
+    ARWhiteFlatButton *setMarkerButton = [[_ARWhiteFlatButton alloc] init];
     [setMarkerButton setTitle:@"Set Marker" forState:UIControlStateNormal];
 #if TARGET_OS_SIMULATOR
     [setMarkerButton addTarget:self.informationView action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
@@ -101,7 +119,7 @@ NS_ASSUME_NONNULL_BEGIN
     positionArtworkMarker.xOutOfYMessage = @"Step 3 of 3";
     positionArtworkMarker.bodyString = @"Position the work on the wall and tap to place.";
 
-    ARWhiteFlatButton *placeArtworkButton = [[ARWhiteFlatButton alloc] init];
+    ARWhiteFlatButton *placeArtworkButton = [[_ARWhiteFlatButton alloc] init];
     [placeArtworkButton setTitle:@"Place Work" forState:UIControlStateNormal];
 #if TARGET_OS_SIMULATOR
     [placeArtworkButton addTarget:self.informationView action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
@@ -114,7 +132,7 @@ NS_ASSUME_NONNULL_BEGIN
     congratsArtworkMarker.xOutOfYMessage = @" ";
     congratsArtworkMarker.bodyString = @"OK – the work has been placed. Walk around the work to view it in your space.";
 
-    ARClearFlatButton *doneArtworkButton = [[ARClearFlatButton alloc] init];
+    ARClearFlatButton *doneArtworkButton = [[_ARClearFlatButton alloc] init];
     [doneArtworkButton setTitle:@"Done" forState:UIControlStateNormal];
     [doneArtworkButton addTarget:self action:@selector(dismissInformationalViewAnimated) forControlEvents:UIControlEventTouchUpInside];
     congratsArtworkMarker.contents = doneArtworkButton;
@@ -180,7 +198,7 @@ NS_ASSUME_NONNULL_BEGIN
         betaImage.translatesAutoresizingMaskIntoConstraints = false;
         [self.view addSubview:betaImage];
 
-        ARClearFlatButton *resetARButton = [[ARClearFlatButton alloc] init];
+        ARClearFlatButton *resetARButton = [[_ARClearFlatButton alloc] init];
         [resetARButton setTitle:@"Reset" forState:UIControlStateNormal];
         [resetARButton addTarget:self action:@selector(resetAR) forControlEvents:UIControlEventTouchUpInside];
         resetARButton.translatesAutoresizingMaskIntoConstraints = false;
