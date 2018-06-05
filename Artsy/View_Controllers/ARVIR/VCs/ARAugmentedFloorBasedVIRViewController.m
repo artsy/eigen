@@ -75,13 +75,24 @@ NS_ASSUME_NONNULL_BEGIN
     [content addSubview:spinner];
     [spinner alignToView:content];
     start.contents = content;
+#if TARGET_OS_SIMULATOR
+    start.onStart = ^(UIView *customView) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.informationView next];
+        });
+    };
+#endif
 
     InformationalViewState *positionWallMarker = [[InformationalViewState alloc] init];
     positionWallMarker.xOutOfYMessage = @"Step 2 of 3";
     positionWallMarker.bodyString = @"Position the marker where the floor meets the wall and tap to set.";
     ARWhiteFlatButton *setMarkerButton = [[ARWhiteFlatButton alloc] init];
     [setMarkerButton setTitle:@"Set Marker" forState:UIControlStateNormal];
+#if TARGET_OS_SIMULATOR
+    [setMarkerButton addTarget:self.informationView action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
+#else
     [setMarkerButton addTarget:self.interactionController action:@selector(placeWall) forControlEvents:UIControlEventTouchUpInside];
+#endif
     positionWallMarker.contents = setMarkerButton;
 
     InformationalViewState *positionArtworkMarker = [[InformationalViewState alloc] init];
@@ -90,7 +101,11 @@ NS_ASSUME_NONNULL_BEGIN
 
     ARWhiteFlatButton *placeArtworkButton = [[ARWhiteFlatButton alloc] init];
     [placeArtworkButton setTitle:@"Place Work" forState:UIControlStateNormal];
+#if TARGET_OS_SIMULATOR
+    [placeArtworkButton addTarget:self.informationView action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
+#else
     [placeArtworkButton addTarget:self.interactionController action:@selector(placeArtwork) forControlEvents:UIControlEventTouchUpInside];
+#endif
     positionArtworkMarker.contents = placeArtworkButton;
 
     InformationalViewState *congratsArtworkMarker = [[InformationalViewState alloc] init];
@@ -110,8 +125,13 @@ NS_ASSUME_NONNULL_BEGIN
     if (@available(iOS 11.0, *)) {
         _dateOpenedAR = [NSDate date];
 
+#if TARGET_OS_SIMULATOR
+        self.view.backgroundColor = UIColor.artsyPurpleLight;
+        _sceneView.backgroundColor = UIColor.artsyPurpleLight;
+#else
         self.view.backgroundColor = UIColor.blackColor;
         _sceneView.backgroundColor = UIColor.blackColor;
+#endif
 
         [super viewDidLoad];
 
@@ -187,7 +207,7 @@ NS_ASSUME_NONNULL_BEGIN
         // Create and show the informational interface
         ARInformationView *informationView = [[ARInformationView alloc] init];
         [informationView setupWithStates:[self viewStatesForInformationView:informationView]];
-        
+
         [self.view addSubview:informationView];
         [informationView alignLeading:@"0" trailing:@"0" toView:self.view];
         [informationView constrainHeight:@"180"];
@@ -211,7 +231,7 @@ NS_ASSUME_NONNULL_BEGIN
         self.informationViewBottomConstraint.constant = 0;
         informational.alpha = 1;
         self.resetARButton.alpha = 0;
-        
+
         [informational setNeedsUpdateConstraints];
         [self.view layoutIfNeeded];
         [informational layoutIfNeeded];
