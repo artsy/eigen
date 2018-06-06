@@ -53,21 +53,54 @@ NSInteger attempt = 0;
 
 - (instancetype)initWithSession:(ARSession *)session config:(ARAugmentedRealityConfig *)config scene:(ARSCNView *)scene delegate:(id <ARVIRDelegate>)delegate
 {
-    self = [super init];
-    _session = session;
-    _sceneView = scene;
-    _config = config;
+    if ((self = [super init])) {
+        _session = session;
+        _sceneView = scene;
+        _config = config;
 
-    _invisibleFloors = @[];
-    _detectedPlanes = @[];
+        _invisibleFloors = @[];
+        _detectedPlanes = @[];
 
-    _delegate = delegate;
+        _delegate = delegate;
 
-    CGRect bounds = [UIScreen mainScreen].bounds;
-    _pointOnScreenForWallProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
-    // Use a subset of the screen for centering, the 180 comes from the height of the UI in the ARAugmentedVIRVC
-    _pointOnScreenForArtworkProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2  - 180);
+        CGRect bounds = [UIScreen mainScreen].bounds;
+        _pointOnScreenForWallProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
+        // Use a subset of the screen for centering, the 180 comes from the height of the UI in the ARAugmentedVIRVC
+        _pointOnScreenForArtworkProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2  - 180);
+    }
     return self;
+}
+
+- (void)restart API_AVAILABLE(ios(11.0));
+{
+    self.detectedPlanes = @[];
+    self.invisibleFloors = @[];
+    
+    [self.pointCloudNode removeFromParentNode];
+    self.pointCloudNode = nil;
+    
+    [self.ghostWallLine removeFromParentNode];
+    self.ghostWallLine = nil;
+    
+    [self.wall removeFromParentNode];
+    self.wall = nil;
+    
+    [self.artwork removeFromParentNode];
+    self.artwork = nil;
+    
+    [self.ghostArtwork removeFromParentNode];
+    self.ghostArtwork = nil;
+    
+    CGRect bounds = [UIScreen mainScreen].bounds;
+    self.pointOnScreenForWallProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
+    
+    // TODO after rebase
+    //    self.hasShownGhostWallLineOnce = NO;
+    
+    self.state = ARHorizontalVIRModeLaunching;
+    
+    [self.session runWithConfiguration:self.session.configuration
+                               options:ARSessionRunOptionResetTracking | ARSessionRunOptionRemoveExistingAnchors];
 }
 
 - (void)setState:(ARHorizontalVIRMode)state
@@ -184,20 +217,6 @@ NSInteger attempt = 0;
             }
         }
     }
-}
-
-// TODO: Figure out in how far this is done yet?
-//       And why does the ARSession need to be re-created?
-- (void)restart
-{
-    [self.ghostWallLine removeFromParentNode];
-    self.ghostWallLine = nil;
-
-    [self.wall removeFromParentNode];
-    self.wall = nil;
-
-    [self.artwork removeFromParentNode];
-    self.artwork = nil;
 }
 
 - (void)fadeOutAndPresentTheLine
