@@ -217,7 +217,7 @@ NS_ASSUME_NONNULL_BEGIN
             [backButton.widthAnchor constraintEqualToConstant:50.0],
 
             [betaImage.centerYAnchor constraintEqualToAnchor:backButton.centerYAnchor constant:0],
-            [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20]
+            [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20],
 
             [resetARButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:0],
             [resetARButton.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-40],
