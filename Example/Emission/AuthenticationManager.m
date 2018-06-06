@@ -79,6 +79,7 @@
   if(![keys artsyAPIClientKey] || ![keys artsyAPIClientSecret]) {
     @throw @"You need to set up your CocoaPods Keys, you may have to run `bundle exec pod install` in the Example dir.";
   }
+  [keys stripePublishableKey];
 
   ArtsyAuthentication *auth = [[ArtsyAuthentication alloc] initWithClientID:[keys artsyAPIClientKey]
                                                                clientSecret:[keys artsyAPIClientSecret]];

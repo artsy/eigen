@@ -60,6 +60,7 @@ plugin 'cocoapods-keys', {
   :keys => [
     'ArtsyAPIClientSecret',   # Authing to the Artsy API
     'ArtsyAPIClientKey',      #
+    'StripePublishableKey',
   ]
 }
 

@@ -33,7 +33,7 @@ RCT_EXPORT_MODULE(Emission);
     // Empty is falsy in JS, so these are fine too.
     @"googleMapsAPIKey": self.googleMapsAPIKey ?: @"",
     @"sentryDSN": self.sentryDSN ?: @"",
-
+    @"stripePublishableKey": self.stripePublishableKey ?: @"",
     @"userAgent": self.userAgent ?: @"",
   };
 }
@@ -41,6 +41,7 @@ RCT_EXPORT_MODULE(Emission);
 - (instancetype)initWithUserID:(NSString *)userID
            authenticationToken:(NSString *)token
                      sentryDSN:(NSString *)sentryDSN
+          stripePublishableKey:(NSString *)stripePublishableKey
               googleMapsAPIKey:(NSString *)googleAPIKey
                     gravityURL:(NSString *)gravity
                 metaphysicsURL:(NSString *)metaphysics
@@ -50,6 +51,7 @@ RCT_EXPORT_MODULE(Emission);
     _userID = userID.copy;
     _authenticationToken = token.copy;
     _sentryDSN = sentryDSN.copy;
+    _stripePublishableKey = stripePublishableKey.copy;
     _googleMapsAPIKey = googleAPIKey.copy;
     _gravityURL = gravity.copy;
     _metaphysicsURL = metaphysics.copy;

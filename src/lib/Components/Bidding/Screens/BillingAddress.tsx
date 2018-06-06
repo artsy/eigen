@@ -18,7 +18,7 @@ import { Title } from "../Components/Title"
 import { Address } from "./ConfirmFirstTimeBid"
 
 interface BillingAddressProps {
-  onSubmit?: (values: Address) => null
+  onSubmit?: (values: Address) => void
   navigator?: NavigatorIOS
   billingAddress?: Address
 }

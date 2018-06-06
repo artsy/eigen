@@ -1,5 +1,6 @@
 import React from "react"
-import { View } from "react-native"
+import { NativeModules, TouchableWithoutFeedback, View } from "react-native"
+const Emission = NativeModules.Emission || {}
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -24,12 +25,21 @@ import { ConfirmBidProps } from "./ConfirmBid"
 
 import { Colors } from "lib/data/colors"
 import stripe from "tipsi-stripe"
+import { CreditCardForm } from "./CreditCardForm"
 
 stripe.setOptions({
-  publishableKey: "fill me in",
+  publishableKey: Emission.stripePublishableKey,
   // merchantId: "MERCHANT_ID", // Optional
   // androidPayMode: "test", // Android only
 })
+
+// values from the Tipsi PaymentCardTextField component
+export interface PaymentCardTextFieldParams {
+  number: string
+  expMonth: string
+  expYear: string
+  cvc: string
+}
 
 export interface Address {
   fullName: string
@@ -40,8 +50,9 @@ export interface Address {
   postalCode: string
 }
 
-interface ConformBidState {
+interface ConfirmBidState {
   billingAddress?: Address
+  creditCardFormParams?: PaymentCardTextFieldParams
   creditCardToken?: StripeToken // TODO: change this interface accrodingly when adapting stripe
   conditionsOfSaleChecked: boolean
   isLoading: boolean
@@ -69,7 +80,7 @@ const theme = {
   context_screen: Schema.PageNames.BidFlowConfirmBidPage,
   context_screen_owner_type: null,
 })
-export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, ConformBidState> {
+export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, ConfirmBidState> {
   state = {
     billingAddress: undefined,
     creditCardToken: null,
@@ -79,6 +90,17 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confor
 
   onPressConditionsOfSale = () => {
     SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
+  }
+
+  showCreditCardForm() {
+    this.props.navigator.push({
+      component: CreditCardForm,
+      title: "",
+      passProps: {
+        onSubmit: this.onCreditCardAdded,
+        navigator: this.props.navigator,
+      },
+    })
   }
 
   showBillingAddressForm() {
@@ -93,15 +115,14 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confor
     })
   }
 
-  onBillingAddressAdded = (values: Address) => {
-    this.setState({ billingAddress: values })
+  onCreditCardAdded = async (params: PaymentCardTextFieldParams) => {
+    // Get token here or just set state? Getting token gives us card type for free
+    const token = await stripe.createTokenWithCard(params)
+    this.setState({ creditCardToken: token, creditCardFormParams: params })
   }
 
-  // Show stripe's complete card form- this does not use CreditCardForm.tsx at all
-  awaitTokenFromCreditCardForm = async () => {
-    const token = await stripe.paymentRequestWithCardForm({ theme })
-    console.log("GOT TOKEN", token)
-    this.setState({ creditCardToken: token })
+  onBillingAddressAdded = (values: Address) => {
+    this.setState({ billingAddress: values })
   }
 
   @track({
@@ -145,9 +166,9 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confor
             <Divider mb={2} />
 
             <BidInfoRow
-              label="Credit card"
-              value={token && token.tokenId}
-              onPress={() => this.awaitTokenFromCreditCardForm()}
+              label="Credit Card"
+              value={token && this.formatCard(token)}
+              onPress={() => this.showCreditCardForm()}
             />
 
             <Divider mb={2} />
@@ -175,6 +196,10 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confor
         </Container>
       </BiddingThemeProvider>
     )
+  }
+
+  private formatCard(token: StripeToken) {
+    return `${token.card.brand} •••• ${token.card.last4}`
   }
 
   private formatAddress(address: Address) {
