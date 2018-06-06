@@ -73,32 +73,31 @@ NSInteger attempt = 0;
 
 - (void)restart API_AVAILABLE(ios(11.0));
 {
-    self.detectedPlanes = @[];
-    self.invisibleFloors = @[];
-    
-    [self.pointCloudNode removeFromParentNode];
-    self.pointCloudNode = nil;
-    
-    [self.ghostWallLine removeFromParentNode];
-    self.ghostWallLine = nil;
-    
-    [self.wall removeFromParentNode];
-    self.wall = nil;
-    
-    [self.artwork removeFromParentNode];
-    self.artwork = nil;
-    
-    [self.ghostArtwork removeFromParentNode];
-    self.ghostArtwork = nil;
-    
+    self.hasShownGhostWallLineOnce = NO;
+    self.state = ARHorizontalVIRModeLaunching;
+
     CGRect bounds = [UIScreen mainScreen].bounds;
     self.pointOnScreenForWallProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
-    
-    // TODO after rebase
-    //    self.hasShownGhostWallLineOnce = NO;
-    
-    self.state = ARHorizontalVIRModeLaunching;
-    
+    self.pointOnScreenForArtworkProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
+
+    self.detectedPlanes = @[];
+    self.invisibleFloors = @[];
+
+    [self.pointCloudNode removeFromParentNode];
+    self.pointCloudNode = nil;
+
+    [self.ghostWallLine removeFromParentNode];
+    self.ghostWallLine = nil;
+
+    [self.wall removeFromParentNode];
+    self.wall = nil;
+
+    [self.artwork removeFromParentNode];
+    self.artwork = nil;
+
+    [self.ghostArtwork removeFromParentNode];
+    self.ghostArtwork = nil;
+
     [self.session runWithConfiguration:self.session.configuration
                                options:ARSessionRunOptionResetTracking | ARSessionRunOptionRemoveExistingAnchors];
 }

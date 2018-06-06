@@ -9,10 +9,11 @@ upcoming:
   user_facing:
     - Adds a round corner to all native buttons - orta
     - ARVIR2 animates - orta
+    - ARVIR2 resets - alloy
     - Redesigned bid status view on artwork page - ash
     - Conditions-of-sale routing works - ash
     - Integrates new BidFlow component from Emission - ash
-  
+
 releases:
   - version: 4.1.3
     date: May 25, 2018
