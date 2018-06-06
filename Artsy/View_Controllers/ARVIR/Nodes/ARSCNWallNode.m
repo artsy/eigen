@@ -13,7 +13,7 @@
     material.locksAmbientWithDiffuse = YES;
     material.lightingModelName = SCNLightingModelConstant;
 
-    ARSCNWallNode *box = [ARSCNWallNode boxWithWidth:200 height:0.01 length:0.01 chamferRadius:0];
+    ARSCNWallNode *box = [ARSCNWallNode boxWithWidth:10 height:0.01 length:0.01 chamferRadius:0];
     box.materials =  @[material, material, material, material, material, material];
 
     return box;

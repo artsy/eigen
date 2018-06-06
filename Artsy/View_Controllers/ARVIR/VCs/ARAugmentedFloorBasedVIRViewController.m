@@ -137,15 +137,20 @@ NS_ASSUME_NONNULL_BEGIN
         UIGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panMoved:)];
         [self.sceneView addGestureRecognizer:panGesture];
 
-        // Exit
+        // Back button in the top left
         ARClearFlatButton *backButton = [[ARClearFlatButton alloc] init];
         [backButton setBorderColor:[UIColor clearColor] forState:UIControlStateNormal];
         [backButton setBorderColor:[UIColor clearColor] forState:UIControlStateHighlighted];
         [backButton setBackgroundColor:[UIColor clearColor] forState:UIControlStateHighlighted];
-        [backButton setImage:[UIImage imageNamed:@"ARVIRModalClose"] forState:UIControlStateNormal];
+        [backButton setImage:[UIImage imageNamed:@"ARVIRBack"] forState:UIControlStateNormal];
         backButton.translatesAutoresizingMaskIntoConstraints = false;
         [backButton addTarget:self action:@selector(exitARContext) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:backButton];
+
+        backButton.layer.masksToBounds = NO;
+        backButton.layer.shadowColor = [UIColor blackColor].CGColor;
+        backButton.layer.shadowOffset = CGSizeMake(0, 0);
+        backButton.layer.shadowOpacity = 0.4;
 
         // A beta button in the top right
         UIImageView *betaImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRBeta"]];
@@ -158,12 +163,12 @@ NS_ASSUME_NONNULL_BEGIN
 
         [self.view addConstraints: @[
             [backButton.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:backTopMargin],
-            [backButton.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20.0],
+            [backButton.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant: 4.0],
             [backButton.heightAnchor constraintEqualToConstant:50.0],
             [backButton.widthAnchor constraintEqualToConstant:50.0],
 
             [betaImage.centerYAnchor constraintEqualToAnchor:backButton.centerYAnchor constant:0],
-            [betaImage.leftAnchor constraintEqualToAnchor:self.view.leftAnchor constant: 20]
+            [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20]
         ]];
 
         // Makes it so that the screen doesn't dim
