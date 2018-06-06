@@ -6,6 +6,7 @@
 @property (nonatomic, copy, nonnull) NSString *bodyString;
 @property (nonatomic, strong, nonnull) UIView *contents;
 @property (nonatomic, copy, nullable) void (^onStart)(UIView * _Nonnull customView);
+@property (nonatomic, assign) BOOL animate;
 @end
 
 /**

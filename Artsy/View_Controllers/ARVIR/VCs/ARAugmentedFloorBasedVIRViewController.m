@@ -85,24 +85,32 @@ NS_ASSUME_NONNULL_BEGIN
     InformationalViewState *start = [[InformationalViewState alloc] init];
     start.xOutOfYMessage = @"Step 1 of 3";
     start.bodyString = @"Aim at the floor and slowly move your phone in a circular motion.";
-    UIView *content = [[UIView alloc] init];
-    [content constrainHeight:@"40"];
-
     ARSpinner *spinner = [[ARSpinner alloc] init];
     spinner.spinnerColor = [UIColor whiteColor];
     [spinner constrainHeight:@"40"];
-    [spinner startAnimating];
-    [content addSubview:spinner];
-    [spinner alignToView:content];
-    start.contents = content;
-#if TARGET_OS_SIMULATOR
+    start.contents = spinner;
     start.onStart = ^(UIView *customView) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [spinner startAnimating];
+#if TARGET_OS_SIMULATOR
+        ar_dispatch_after(3, ^{
+            [self hasRegisteredPlanes];
+        });
+#endif
+    };
+
+    InformationalViewState *registeredPlanes = [[InformationalViewState alloc] init];
+    registeredPlanes.animate = NO;
+    registeredPlanes.xOutOfYMessage = @"Step 1 of 3";
+    registeredPlanes.bodyString = @"Aim at the floor and slowly move your phone in a circular motion.";
+    UIImageView *tick = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRTick"]];
+    tick.contentMode = UIViewContentModeCenter;
+    registeredPlanes.contents = tick;
+    registeredPlanes.onStart = ^(UIView *customView) {
+        ar_dispatch_after(2, ^{
             [self.informationView next];
         });
     };
-#endif
-
+    
     InformationalViewState *positionWallMarker = [[InformationalViewState alloc] init];
     positionWallMarker.xOutOfYMessage = @"Step 2 of 3";
     positionWallMarker.bodyString = @"Position the marker where the floor meets the wall and tap to set.";
@@ -137,7 +145,7 @@ NS_ASSUME_NONNULL_BEGIN
     [doneArtworkButton addTarget:self action:@selector(dismissInformationalViewAnimated) forControlEvents:UIControlEventTouchUpInside];
     congratsArtworkMarker.contents = doneArtworkButton;
 
-    return @[start, positionWallMarker, positionArtworkMarker, congratsArtworkMarker];
+    return @[start, registeredPlanes, positionWallMarker, positionArtworkMarker, congratsArtworkMarker];
 }
 
 - (void)viewDidLoad
@@ -336,18 +344,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)hasRegisteredPlanes
 {
     ar_dispatch_main_queue(^{
-
-        UIView *spinnerContainer = (id)self.informationView.currentState.contents;
-        [spinnerContainer.subviews.firstObject removeFromSuperview];
-
-        UIImageView *tick = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRTick"]];
-        tick.contentMode = UIViewContentModeCenter;
-        [spinnerContainer addSubview:tick];
-        tick.frame = spinnerContainer.bounds;
-
-        ar_dispatch_after(2, ^{
-            [self.informationView next];
-        });
+        [self.informationView next];
     });
 }
 

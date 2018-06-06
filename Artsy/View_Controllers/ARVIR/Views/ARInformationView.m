@@ -8,6 +8,13 @@
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 
 @implementation InformationalViewState
+- (instancetype)init;
+{
+    if ((self = [super init])) {
+        _animate = YES;
+    }
+    return self;
+}
 @end
 
 @interface ARInformationView()
@@ -81,6 +88,9 @@
     }
 
     InformationalViewState *state = self.states[self.index];
+    
+    // Disable animations if the state specifically demands that.
+    animated = animated && state.animate;
 
     self.xOfYLabel.text = state.xOutOfYMessage;
 
