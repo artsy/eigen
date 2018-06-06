@@ -43,6 +43,7 @@ API_AVAILABLE(ios(11.0))
 @property (nonatomic, strong) SCNNode *ghostArtwork;
 
 @property (nonatomic, assign) CGPoint pointOnScreenForArtworkProjection;
+@property (nonatomic, assign) CGPoint pointOnScreenForWallProjection;
 
 @end
 
@@ -63,7 +64,9 @@ NSInteger attempt = 0;
     _delegate = delegate;
 
     CGRect bounds = [UIScreen mainScreen].bounds;
-    _pointOnScreenForArtworkProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
+    _pointOnScreenForWallProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
+    // Use a subset of the screen for centering, the 180 comes from the height of the UI in the ARAugmentedVIRVC
+    _pointOnScreenForArtworkProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2  - 180);
     return self;
 }
 
@@ -124,7 +127,7 @@ NSInteger attempt = 0;
             SCNHitTestOptionSearchMode: @(SCNHitTestSearchModeAll)
         };
 
-        NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.pointOnScreenForArtworkProjection options: options];
+        NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.pointOnScreenForWallProjection options:options];
         for (SCNHitTestResult *result in results) {
 
             // When you want to place the invisible wall, based on the current ghostWall
@@ -273,7 +276,7 @@ NSInteger attempt = 0;
         SCNHitTestBackFaceCullingKey: @NO
     };
 
-    NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.pointOnScreenForArtworkProjection options: options];
+    NSArray <SCNHitTestResult *> *results = [self.sceneView hitTest:self.pointOnScreenForWallProjection options: options];
     for (SCNHitTestResult *result in results) {
 
         if ([self.invisibleFloors containsObject:result.node]) {
