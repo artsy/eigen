@@ -106,17 +106,16 @@
         state.onStart(state.contents);
     }
 
-    if (animated) {
+    // Always ensure the layout is, regardless of animation, because the information view itself might be animated in.
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
+
+    [UIView animateIf:animated duration:ARAnimationDuration :^{
+        self.stack.alpha = 1;
+        self.stackTopConstraint.constant = 10;
         [self setNeedsLayout];
         [self layoutIfNeeded];
-
-        [UIView animateIf:animated duration:ARAnimationDuration :^{
-            self.stack.alpha = 1;
-            self.stackTopConstraint.constant = 10;
-            [self setNeedsLayout];
-            [self layoutIfNeeded];
-        }];
-    }
+    }];
 }
 
 @end
