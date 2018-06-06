@@ -57,16 +57,8 @@ NSInteger attempt = 0;
         _session = session;
         _sceneView = scene;
         _config = config;
-
-        _invisibleFloors = @[];
-        _detectedPlanes = @[];
-
         _delegate = delegate;
-
-        CGRect bounds = [UIScreen mainScreen].bounds;
-        _pointOnScreenForWallProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
-        // Use a subset of the screen for centering, the 180 comes from the height of the UI in the ARAugmentedVIRVC
-        _pointOnScreenForArtworkProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2  - 180);
+        [self restart];
     }
     return self;
 }
@@ -78,6 +70,7 @@ NSInteger attempt = 0;
 
     CGRect bounds = [UIScreen mainScreen].bounds;
     self.pointOnScreenForWallProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
+    // Use a subset of the screen for centering, the 180 comes from the height of the UI in the ARAugmentedVIRVC
     self.pointOnScreenForArtworkProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
 
     self.detectedPlanes = @[];
