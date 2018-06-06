@@ -61,9 +61,10 @@ export const ArtistRenderer: React.SFC<ArtistRendererProps> = ({ render, artistI
 interface BidFlowRendererProps extends RendererProps {
   artworkID: string
   saleID: string
+  intent: "bid" | "register"
 }
 
-export const BidFlowRenderer: React.SFC<BidFlowRendererProps> = ({ render, artworkID, saleID }) => {
+export const BidFlowRenderer: React.SFC<BidFlowRendererProps> = ({ render, artworkID, saleID, intent }) => {
   return (
     <QueryRenderer
       environment={environment}
@@ -93,6 +94,7 @@ export const BidFlowRenderer: React.SFC<BidFlowRendererProps> = ({ render, artwo
             props: {
               sale_artwork: props.artwork.sale_artwork,
               me: props.me,
+              intent,
             },
             error,
           })

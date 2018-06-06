@@ -47,13 +47,21 @@ const BidFlowStoryRenderer: React.SFC<any> = ({ render, query, saleArtworkID }) 
 
 storiesOf("Bidding")
   .add("Show bid flow", () => {
-    return <BidFlowRenderer render={renderWithLoadProgress(BidFlow)} artworkID={testArtworkID} saleID={testSaleID} />
+    return (
+      <BidFlowRenderer
+        render={renderWithLoadProgress(BidFlow)}
+        artworkID={testArtworkID}
+        saleID={testSaleID}
+        intent="bid"
+      />
+    )
   })
   .add("Select Max Bid", () => (
     <BidFlowStoryRenderer
       render={renderWithLoadProgress(MaxBidScreen)}
       query={selectMaxBidQuery}
       saleArtworkID={testSaleArtworkID}
+      intent="bid"
     />
   ))
   .add("Confirm Bid", () => {
@@ -112,6 +120,7 @@ storiesOf("Bidding")
         })}
         query={bidResultQuery}
         saleArtworkID={testSaleArtworkID}
+        intent="bid"
       />
     )
   })
@@ -130,6 +139,7 @@ storiesOf("Bidding")
         })}
         query={bidResultQuery}
         saleArtworkID={testSaleArtworkID}
+        intent="bid"
       />
     )
   })
@@ -151,6 +161,7 @@ storiesOf("Bidding")
         })}
         query={bidResultQuery}
         saleArtworkID={testSaleArtworkID}
+        intent="bid"
       />
     )
   })

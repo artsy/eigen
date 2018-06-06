@@ -91,6 +91,7 @@ const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoad
 interface BidFlowProps {
   artworkID: string
   saleID: string
+  intent: "bid" | "register"
 }
 const BidFlow: React.SFC<BidFlowProps> = props => (
   <BidFlowRenderer {...props} render={renderWithLoadProgress(Containers.BidFlow)} />
