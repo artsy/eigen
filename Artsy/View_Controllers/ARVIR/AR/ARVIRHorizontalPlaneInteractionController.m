@@ -31,6 +31,9 @@ API_AVAILABLE(ios(11.0))
 
 // The clipped line of the wall while you are setting up
 @property (nonatomic, strong) SCNNode *ghostWallLine;
+// So we can animate it out on the first time
+@property (nonatomic, assign) BOOL hasShownGhostWallLineOnce;
+
 // The full version of the wall which you fire an artwork at
 @property (nonatomic, strong) SCNNode *wall;
 
@@ -40,6 +43,7 @@ API_AVAILABLE(ios(11.0))
 @property (nonatomic, strong) SCNNode *ghostArtwork;
 
 @property (nonatomic, assign) CGPoint pointOnScreenForArtworkProjection;
+
 @end
 
 NSInteger attempt = 0;
@@ -179,7 +183,6 @@ NSInteger attempt = 0;
     }
 }
 
-
 - (void)restart
 {
     [self.ghostWallLine removeFromParentNode];
@@ -200,7 +203,6 @@ NSInteger attempt = 0;
         self.pointCloudNode = nil;
     }];
 }
-
 
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0));
 {
@@ -278,6 +280,7 @@ NSInteger attempt = 0;
             // Create a ghost wall if we don't have one already
             if (!self.ghostWallLine) {
                 ARSCNWallNode *ghostBox = [ARSCNWallNode shortWallNode];
+
                 SCNNode *ghostWall = [SCNNode nodeWithGeometry:ghostBox];
                 ghostWall.opacity = 0.80;
 
@@ -288,6 +291,23 @@ NSInteger attempt = 0;
                 ghostWall.constraints = @[lookAtCamera];
 
                 self.ghostWallLine = ghostWall;
+
+                // Handle a one-off animation
+                if(!self.hasShownGhostWallLineOnce) {
+                    self.hasShownGhostWallLineOnce = true;
+
+                    ghostBox.width = 0.01;
+
+                    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"width"];
+                    animation.fromValue = @0.01;
+                    animation.toValue = @(10);
+                    animation.duration = 5;
+                    animation.autoreverses = NO;
+                    animation.repeatCount = 0;
+                    [ghostBox addAnimation:animation forKey:@"width"];
+
+                    ghostBox.width = 10;
+                }
             }
 
             SCNTransaction.animationDuration = 0.04;
