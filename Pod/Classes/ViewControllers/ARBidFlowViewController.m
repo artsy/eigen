@@ -10,7 +10,7 @@
 - (instancetype)initWithArtworkID:(NSString *)artworkID saleID:(NSString *)saleID intent:(ARBidFlowViewControllerIntent)intent
 {
   NSDictionary *props = @{
-                          @"artworkID": artworkID,
+                          @"artworkID": artworkID ?: [NSNull null],
                           @"saleID": saleID,
                           @"intent": (intent == ARBidFlowViewControllerIntentBid ? @"bid" : @"register")
   };

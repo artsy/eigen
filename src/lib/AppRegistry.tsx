@@ -89,7 +89,7 @@ const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(prop
 const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoadProgress(Containers.MyProfile)} />
 
 interface BidFlowProps {
-  artworkID: string
+  artworkID?: string
   saleID: string
   intent: "bid" | "register"
 }

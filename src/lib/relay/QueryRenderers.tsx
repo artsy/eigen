@@ -59,12 +59,13 @@ export const ArtistRenderer: React.SFC<ArtistRendererProps> = ({ render, artistI
 }
 
 interface BidFlowRendererProps extends RendererProps {
-  artworkID: string
+  artworkID?: string
   saleID: string
   intent: "bid" | "register"
 }
 
 export const BidFlowRenderer: React.SFC<BidFlowRendererProps> = ({ render, artworkID, saleID, intent }) => {
+  // TODO: artworkID can be nil, so omit that part of the query if it is.
   return (
     <QueryRenderer
       environment={environment}

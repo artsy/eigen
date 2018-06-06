@@ -9,8 +9,8 @@ typedef enum : NSUInteger {
 
 @interface ARBidFlowViewController : ARComponentViewController
 
-- (instancetype)initWithArtworkID:(NSString *)artworkID saleID:(NSString *)saleID; /// Defaults to bid.
-- (instancetype)initWithArtworkID:(NSString *)artworkID saleID:(NSString *)saleID intent:(ARBidFlowViewControllerIntent)intent;
+- (instancetype)initWithArtworkID:(nullable NSString *)artworkID saleID:(NSString *)saleID; /// Defaults to bid.
+- (instancetype)initWithArtworkID:(nullable NSString *)artworkID saleID:(NSString *)saleID intent:(ARBidFlowViewControllerIntent)intent;
 
 - (instancetype)initWithEmission:(nullable AREmission *)emission
                       moduleName:(NSString *)moduleName
