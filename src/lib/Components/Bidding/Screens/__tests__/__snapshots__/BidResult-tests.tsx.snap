@@ -268,35 +268,34 @@ exports[`BidResult component live bidding has started doesn't render timer 1`] =
       >
         Live bidding has started
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        color="black60"
-        ellipsizeMode="tail"
-        fontSize={3}
-        lineHeight={5}
-        maxWidth={280}
-        mb={5}
+      <View
         style={
           Array [
-            Object {
-              "color": "#666",
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "lineHeight": 24,
-              "marginBottom": 30,
-              "maxWidth": 280,
-              "textAlign": "center",
-            },
+            Object {},
             undefined,
           ]
         }
-        textAlign="center"
       >
         <Text
           accessible={true}
           allowFontScaling={true}
+          color="black60"
           ellipsizeMode="tail"
+          fontSize={3}
+          lineHeight={5}
+          style={
+            Array [
+              Object {
+                "color": "#666",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "lineHeight": 24,
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+          textAlign="center"
         >
           Sorry, your bid wasn’t received before live bidding started. To continue bidding, please 
           <Text
@@ -315,15 +314,13 @@ exports[`BidResult component live bidding has started doesn't render timer 1`] =
           >
             join the live auction
           </Text>
-        </Text>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-        >
           .
         </Text>
-      </Text>
+        
+
+
+
+      </View>
     </View>
   </View>
   <View
@@ -456,72 +453,42 @@ exports[`BidResult component low bidder renders timer and error message 1`] = `
       >
         Your bid wasn’t high enough
       </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        color="black60"
-        ellipsizeMode="tail"
-        fontSize={3}
-        lineHeight={5}
-        maxWidth={280}
-        mb={5}
+      <View
         style={
           Array [
-            Object {
-              "color": "#666",
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "lineHeight": 24,
-              "marginBottom": 30,
-              "maxWidth": 280,
-              "textAlign": "center",
-            },
+            Object {},
             undefined,
           ]
         }
-        textAlign="center"
       >
         <Text
           accessible={true}
           allowFontScaling={true}
+          color="black60"
           ellipsizeMode="tail"
+          fontSize={3}
+          lineHeight={5}
+          style={
+            Array [
+              Object {
+                "color": "#666",
+                "fontFamily": "AGaramondPro-Regular",
+                "fontSize": 16,
+                "lineHeight": 24,
+                "textAlign": "center",
+              },
+              undefined,
+            ]
+          }
+          textAlign="center"
         >
-          Another bidder placed a higher max bid or the same max bid before you did.
+          Another bidder placed a higher max bid or the same max bid before you did.   Bid again to take the lead.
         </Text>
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        color="black60"
-        ellipsizeMode="tail"
-        fontSize={3}
-        lineHeight={5}
-        maxWidth={280}
-        mb={5}
-        style={
-          Array [
-            Object {
-              "color": "#666",
-              "fontFamily": "AGaramondPro-Regular",
-              "fontSize": 16,
-              "lineHeight": 24,
-              "marginBottom": 30,
-              "maxWidth": 280,
-              "textAlign": "center",
-            },
-            undefined,
-          ]
-        }
-        textAlign="center"
-      >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-        >
-          Bid again to take the lead.
-        </Text>
-      </Text>
+        
+
+
+
+      </View>
       <View
         alignItems="center"
         style={
