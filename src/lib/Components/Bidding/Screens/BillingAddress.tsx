@@ -76,6 +76,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
       this.submitValidAddress()
     }
   }
+
   @track({
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.BidFlowSaveBillingAddress,
