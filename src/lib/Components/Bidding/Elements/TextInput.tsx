@@ -1,3 +1,4 @@
+import { TextInputProperties } from "react-native"
 import styled from "styled-components/native"
 import { borderColor, borders, color, flex, fontSize, height, space, width } from "styled-system"
 import { Fonts } from "../../../data/fonts"
@@ -20,7 +21,8 @@ export interface TextInputProps
     FontSizeProps,
     HeightProps,
     SpaceProps,
-    WidthProps {}
+    WidthProps,
+    TextInputProperties {}
 
 export const TextInput = styled.TextInput.attrs<TextInputProps>({})`
   font-family: "${Fonts.GaramondRegular}";
