@@ -10438,6 +10438,10 @@ timers-browserify@^2.0.4:
   dependencies:
     setimmediate "^1.0.4"
 
+tipsi-stripe@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/tipsi-stripe/-/tipsi-stripe-5.2.1.tgz#5c3a33e678900f975373d3c35d664dfb6154fa6f"
+
 title-case@^2.1.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/title-case/-/title-case-2.1.1.tgz#3e127216da58d2bc5becf137ab91dae3a7cd8faa"

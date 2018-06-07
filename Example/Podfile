@@ -20,6 +20,7 @@ folly_spec_path = File.join(react_path, 'third-party-podspecs/Folly.podspec')
 glog_spec_path = File.join(react_path, 'third-party-podspecs/glog.podspec')
 double_conversion_spec_path = File.join(react_path, 'third-party-podspecs/DoubleConversion.podspec')
 sentry_path = File.join(node_modules_path, 'react-native-sentry')
+tispi_stripe_spec_path = File.join(node_modules_path, 'tipsi-stripe/tipsi-stripe.podspec')
 
 target 'Emission' do
   pod 'Emission', :path => '../', :inhibit_warnings => false
@@ -50,6 +51,8 @@ target 'Emission' do
   pod 'Artsy+Authentication', :subspecs => %w(email),
                               :git => 'https://github.com/artsy/Artsy-Authentication.git',
                               :branch => 'fetch-user-details'
+  # Stripe- tag must match package.json's tipsi-stripe dep
+  pod 'tipsi-stripe', :podspec => tispi_stripe_spec_path
 end
 
 plugin 'cocoapods-keys', {

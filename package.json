@@ -86,7 +86,8 @@
     "remove-markdown": "0.1.0",
     "simple-markdown": "^0.4.0",
     "styled-components": "^3.1.4",
-    "styled-system": "^2.2.4"
+    "styled-system": "^2.2.4",
+    "tipsi-stripe": "^5.2.1"
   },
   "devDependencies": {
     "@playlyfe/gql": "^2.3.2",
