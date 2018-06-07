@@ -23,6 +23,26 @@
 #import "ARAugmentedVIRModalView.h"
 #import "ARInformationView.h"
 
+static CGFloat ARInformationalViewDisplayAnimationDuration = 0.45;
+
+@interface _ARWhiteFlatButton : ARWhiteFlatButton
+@end
+@implementation _ARWhiteFlatButton
+- (void)setHighlighted:(BOOL)highlighted;
+{
+    // no-op
+}
+@end
+
+@interface _ARClearFlatButton : ARClearFlatButton
+@end
+@implementation _ARClearFlatButton
+- (void)setHighlighted:(BOOL)highlighted;
+{
+    // no-op
+}
+@end
+
 API_AVAILABLE(ios(11.0))
 @interface ARAugmentedFloorBasedVIRViewController () <ARSCNViewDelegate, ARSessionDelegate, ARVIRDelegate, ARMenuAwareViewController, VIRModalDelegate>
 NS_ASSUME_NONNULL_BEGIN
@@ -30,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) ARSCNView *sceneView;
 @property (nonatomic, strong) ARInformationView *informationView;
 @property (nonatomic, strong) NSLayoutConstraint *informationViewBottomConstraint;
+@property (nonatomic, strong) ARClearFlatButton *resetARButton;
 
 @property (nonatomic, strong) id <ARSCNViewDelegate, ARVIRInteractive, ARSessionDelegate> interactionController;
 
@@ -64,44 +85,67 @@ NS_ASSUME_NONNULL_BEGIN
     InformationalViewState *start = [[InformationalViewState alloc] init];
     start.xOutOfYMessage = @"Step 1 of 3";
     start.bodyString = @"Aim at the floor and slowly move your phone in a circular motion.";
-    UIView *content = [[UIView alloc] init];
-    [content constrainHeight:@"40"];
-
     ARSpinner *spinner = [[ARSpinner alloc] init];
     spinner.spinnerColor = [UIColor whiteColor];
     [spinner constrainHeight:@"40"];
-    [spinner startAnimating];
-    [content addSubview:spinner];
-    [spinner alignToView:content];
-    start.contents = content;
+    start.contents = spinner;
+    start.onStart = ^(UIView *customView) {
+        [spinner startAnimating];
+#if TARGET_OS_SIMULATOR
+        ar_dispatch_after(3, ^{
+            [self hasRegisteredPlanes];
+        });
+#endif
+    };
 
+    InformationalViewState *registeredPlanes = [[InformationalViewState alloc] init];
+    registeredPlanes.animate = NO;
+    registeredPlanes.xOutOfYMessage = @"Step 1 of 3";
+    registeredPlanes.bodyString = @"Aim at the floor and slowly move your phone in a circular motion.";
+    UIImageView *tick = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRTick"]];
+    tick.contentMode = UIViewContentModeCenter;
+    registeredPlanes.contents = tick;
+    registeredPlanes.onStart = ^(UIView *customView) {
+        ar_dispatch_after(2, ^{
+            [self.informationView next];
+        });
+    };
+    
     InformationalViewState *positionWallMarker = [[InformationalViewState alloc] init];
     positionWallMarker.xOutOfYMessage = @"Step 2 of 3";
     positionWallMarker.bodyString = @"Position the marker where the floor meets the wall and tap to set.";
-    ARWhiteFlatButton *setMarkerButton = [[ARWhiteFlatButton alloc] init];
+    ARWhiteFlatButton *setMarkerButton = [[_ARWhiteFlatButton alloc] init];
     [setMarkerButton setTitle:@"Set Marker" forState:UIControlStateNormal];
+#if TARGET_OS_SIMULATOR
+    [setMarkerButton addTarget:self.informationView action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
+#else
     [setMarkerButton addTarget:self.interactionController action:@selector(placeWall) forControlEvents:UIControlEventTouchUpInside];
+#endif
     positionWallMarker.contents = setMarkerButton;
 
     InformationalViewState *positionArtworkMarker = [[InformationalViewState alloc] init];
     positionArtworkMarker.xOutOfYMessage = @"Step 3 of 3";
     positionArtworkMarker.bodyString = @"Position the work on the wall and tap to place.";
 
-    ARWhiteFlatButton *placeArtworkButton = [[ARWhiteFlatButton alloc] init];
+    ARWhiteFlatButton *placeArtworkButton = [[_ARWhiteFlatButton alloc] init];
     [placeArtworkButton setTitle:@"Place Work" forState:UIControlStateNormal];
+#if TARGET_OS_SIMULATOR
+    [placeArtworkButton addTarget:self.informationView action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
+#else
     [placeArtworkButton addTarget:self.interactionController action:@selector(placeArtwork) forControlEvents:UIControlEventTouchUpInside];
+#endif
     positionArtworkMarker.contents = placeArtworkButton;
 
     InformationalViewState *congratsArtworkMarker = [[InformationalViewState alloc] init];
     congratsArtworkMarker.xOutOfYMessage = @" ";
     congratsArtworkMarker.bodyString = @"OK – the work has been placed. Walk around the work to view it in your space.";
 
-    ARClearFlatButton *doneArtworkButton = [[ARClearFlatButton alloc] init];
+    ARClearFlatButton *doneArtworkButton = [[_ARClearFlatButton alloc] init];
     [doneArtworkButton setTitle:@"Done" forState:UIControlStateNormal];
     [doneArtworkButton addTarget:self action:@selector(dismissInformationalViewAnimated) forControlEvents:UIControlEventTouchUpInside];
     congratsArtworkMarker.contents = doneArtworkButton;
 
-    return @[start, positionWallMarker, positionArtworkMarker, congratsArtworkMarker];
+    return @[start, registeredPlanes, positionWallMarker, positionArtworkMarker, congratsArtworkMarker];
 }
 
 - (void)viewDidLoad
@@ -109,8 +153,13 @@ NS_ASSUME_NONNULL_BEGIN
     if (@available(iOS 11.0, *)) {
         _dateOpenedAR = [NSDate date];
 
+#if TARGET_OS_SIMULATOR
+        self.view.backgroundColor = UIColor.artsyPurpleLight;
+        _sceneView.backgroundColor = UIColor.artsyPurpleLight;
+#else
         self.view.backgroundColor = UIColor.blackColor;
         _sceneView.backgroundColor = UIColor.blackColor;
+#endif
 
         [super viewDidLoad];
 
@@ -157,6 +206,14 @@ NS_ASSUME_NONNULL_BEGIN
         betaImage.translatesAutoresizingMaskIntoConstraints = false;
         [self.view addSubview:betaImage];
 
+        ARClearFlatButton *resetARButton = [[_ARClearFlatButton alloc] init];
+        [resetARButton setTitle:@"Reset" forState:UIControlStateNormal];
+        [resetARButton addTarget:self action:@selector(resetAR) forControlEvents:UIControlEventTouchUpInside];
+        resetARButton.translatesAutoresizingMaskIntoConstraints = false;
+        resetARButton.alpha = 0;
+        [self.view addSubview:resetARButton];
+        self.resetARButton = resetARButton;
+
         // Any changes to this will need to be reflected in ARAugmentedVIRModalView also
         BOOL isEdgeToEdgePhone = !UIEdgeInsetsEqualToEdgeInsets( [ARTopMenuViewController sharedController].view.safeAreaInsets, UIEdgeInsetsZero);
         CGFloat backTopMargin = isEdgeToEdgePhone ? -17 : 9;
@@ -168,8 +225,23 @@ NS_ASSUME_NONNULL_BEGIN
             [backButton.widthAnchor constraintEqualToConstant:50.0],
 
             [betaImage.centerYAnchor constraintEqualToAnchor:backButton.centerYAnchor constant:0],
-            [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20]
+            [betaImage.rightAnchor constraintEqualToAnchor:self.view.rightAnchor constant: -20],
+
+            [resetARButton.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:0],
+            [resetARButton.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-40],
+            [resetARButton.widthAnchor constraintEqualToConstant:92.0],
         ]];
+
+        // Create and show the informational interface
+        ARInformationView *informationView = [[ARInformationView alloc] init];
+        [informationView setupWithStates:[self viewStatesForInformationView:informationView]];
+        informationView.alpha = 0;
+        [self.view addSubview:informationView];
+        [informationView alignLeading:@"0" trailing:@"0" toView:self.view];
+        [informationView constrainHeight:@"180"];
+        self.informationViewBottomConstraint = [informationView alignBottomEdgeWithView:self.view predicate:@"0"];
+        self.informationViewBottomConstraint.constant = 40;
+        self.informationView = informationView;
 
         // Makes it so that the screen doesn't dim
         [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
@@ -178,15 +250,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)presentInformationalInterface:(BOOL)animated
 {
-    ARInformationView *informationView = [[ARInformationView alloc] init];
-    [informationView setupWithStates:[self viewStatesForInformationView:informationView]];
+    UIView *informational = self.informationView;
+    if (informational.alpha > 0) {
+        return;
+    }
+    [UIView animateIf:animated
+             duration:ARInformationalViewDisplayAnimationDuration
+              options:UIViewAnimationOptionCurveEaseOut
+                     :^{
+        // Animate it in
+        self.informationViewBottomConstraint.constant = 0;
+        informational.alpha = 1;
+        self.resetARButton.alpha = 0;
 
-    [self.view addSubview:informationView];
-    [informationView alignLeading:@"0" trailing:@"0" toView:self.view];
-    [informationView constrainHeight:@"180"];
-
-    self.informationViewBottomConstraint = [informationView alignBottomEdgeWithView:self.view predicate:@"0"];
-    self.informationView = informationView;
+        [informational setNeedsUpdateConstraints];
+        [self.view layoutIfNeeded];
+        [informational layoutIfNeeded];
+    }];
 }
 
 - (void)dismissInformationalViewAnimated
@@ -197,16 +277,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)dismissInformationalView:(BOOL)animated
 {
     UIView *informational = self.informationView;
-    [UIView animateIf:animated duration:ARAnimationQuickDuration :^{
+    [UIView animateIf:animated
+             duration:ARInformationalViewDisplayAnimationDuration
+              options:UIViewAnimationOptionCurveEaseOut
+                     :^{
         // Animate it out
         self.informationViewBottomConstraint.constant = 40;
         informational.alpha = 0;
+        self.resetARButton.alpha = 1;
 
         [informational setNeedsUpdateConstraints];
         [self.view layoutIfNeeded];
         [informational layoutIfNeeded];
-    } completion:^(BOOL finished) {
-        [informational removeFromSuperview];
     }];
 }
 
@@ -262,18 +344,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)hasRegisteredPlanes
 {
     ar_dispatch_main_queue(^{
-
-        UIView *spinnerContainer = (id)self.informationView.currentState.contents;
-        [spinnerContainer.subviews.firstObject removeFromSuperview];
-
-        UIImageView *tick = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRTick"]];
-        tick.contentMode = UIViewContentModeCenter;
-        [spinnerContainer addSubview:tick];
-        tick.frame = spinnerContainer.bounds;
-
-        ar_dispatch_after(2, ^{
-            [self.informationView next];
-        });
+        [self.informationView next];
     });
 }
 
@@ -342,8 +413,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)resetAR
 {
-
     [self.interactionController restart];
+    [self.informationView reset];
+    [self presentInformationalInterface:YES];
 }
 
 // This is a NOOP with the current interaction controller, but can be used with different a one
@@ -365,7 +437,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     // Create a session configuration
     if (@available(iOS 11.3, *)) {
         ARWorldTrackingConfiguration *configuration = [ARWorldTrackingConfiguration new];
@@ -389,11 +461,14 @@ NS_ASSUME_NONNULL_BEGIN
             });
         }
     }
+}
 
-    // Create the informational view and animate it into view
-    if (!self.informationView) {
-        [self presentInformationalInterface:animated];
-    }
+- (void)viewDidAppear:(BOOL)animated;
+{
+    [super viewDidAppear:animated];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+       [self presentInformationalInterface:animated];
+    });
 }
 
 // If we can't show the screen, pause AR
@@ -401,7 +476,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+
     // Pause the view's session
     [self.sceneView.session pause];
 }

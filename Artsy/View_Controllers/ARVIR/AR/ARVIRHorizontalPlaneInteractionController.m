@@ -53,21 +53,46 @@ NSInteger attempt = 0;
 
 - (instancetype)initWithSession:(ARSession *)session config:(ARAugmentedRealityConfig *)config scene:(ARSCNView *)scene delegate:(id <ARVIRDelegate>)delegate
 {
-    self = [super init];
-    _session = session;
-    _sceneView = scene;
-    _config = config;
+    if ((self = [super init])) {
+        _session = session;
+        _sceneView = scene;
+        _config = config;
+        _delegate = delegate;
+        [self restart];
+    }
+    return self;
+}
 
-    _invisibleFloors = @[];
-    _detectedPlanes = @[];
-
-    _delegate = delegate;
+- (void)restart API_AVAILABLE(ios(11.0));
+{
+    self.hasShownGhostWallLineOnce = NO;
+    self.state = ARHorizontalVIRModeLaunching;
 
     CGRect bounds = [UIScreen mainScreen].bounds;
-    _pointOnScreenForWallProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
+    self.pointOnScreenForWallProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
     // Use a subset of the screen for centering, the 180 comes from the height of the UI in the ARAugmentedVIRVC
-    _pointOnScreenForArtworkProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2  - 180);
-    return self;
+    self.pointOnScreenForArtworkProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
+
+    self.detectedPlanes = @[];
+    self.invisibleFloors = @[];
+
+    [self.pointCloudNode removeFromParentNode];
+    self.pointCloudNode = nil;
+
+    [self.ghostWallLine removeFromParentNode];
+    self.ghostWallLine = nil;
+
+    [self.wall removeFromParentNode];
+    self.wall = nil;
+
+    [self.artwork removeFromParentNode];
+    self.artwork = nil;
+
+    [self.ghostArtwork removeFromParentNode];
+    self.ghostArtwork = nil;
+
+    [self.session runWithConfiguration:self.session.configuration
+                               options:ARSessionRunOptionResetTracking | ARSessionRunOptionRemoveExistingAnchors];
 }
 
 - (void)setState:(ARHorizontalVIRMode)state
@@ -184,18 +209,6 @@ NSInteger attempt = 0;
             }
         }
     }
-}
-
-- (void)restart
-{
-    [self.ghostWallLine removeFromParentNode];
-    self.ghostWallLine = nil;
-
-    [self.wall removeFromParentNode];
-    self.wall = nil;
-
-    [self.artwork removeFromParentNode];
-    self.artwork = nil;
 }
 
 - (void)fadeOutAndPresentTheLine

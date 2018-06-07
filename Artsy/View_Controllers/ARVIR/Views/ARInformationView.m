@@ -8,6 +8,13 @@
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 
 @implementation InformationalViewState
+- (instancetype)init;
+{
+    if ((self = [super init])) {
+        _animate = YES;
+    }
+    return self;
+}
 @end
 
 @interface ARInformationView()
@@ -23,7 +30,6 @@
 - (void)setupWithStates:(NSArray<InformationalViewState *> *)states
 {
     _states = states;
-    _index = -1;
 
     UILabel *xofYLabel = [self createXOfYLabel];
     self.xOfYLabel = xofYLabel;
@@ -42,6 +48,12 @@
 
     self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
 
+    [self reset];
+}
+
+- (void)reset;
+{
+    self.index = -1;
     [self nextAnimated:NO];
 }
 
@@ -76,6 +88,9 @@
     }
 
     InformationalViewState *state = self.states[self.index];
+    
+    // Disable animations if the state specifically demands that.
+    animated = animated && state.animate;
 
     self.xOfYLabel.text = state.xOutOfYMessage;
 
@@ -101,17 +116,16 @@
         state.onStart(state.contents);
     }
 
-    if (animated) {
+    // Always ensure the layout is, regardless of animation, because the information view itself might be animated in.
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
+
+    [UIView animateIf:animated duration:ARAnimationDuration :^{
+        self.stack.alpha = 1;
+        self.stackTopConstraint.constant = 10;
         [self setNeedsLayout];
         [self layoutIfNeeded];
-
-        [UIView animateIf:animated duration:ARAnimationDuration :^{
-            self.stack.alpha = 1;
-            self.stackTopConstraint.constant = 10;
-            [self setNeedsLayout];
-            [self layoutIfNeeded];
-        }];
-    }
+    }];
 }
 
 @end

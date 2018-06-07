@@ -6,6 +6,7 @@
 @property (nonatomic, copy, nonnull) NSString *bodyString;
 @property (nonatomic, strong, nonnull) UIView *contents;
 @property (nonatomic, copy, nullable) void (^onStart)(UIView * _Nonnull customView);
+@property (nonatomic, assign) BOOL animate;
 @end
 
 /**
@@ -15,6 +16,8 @@
 @interface ARInformationView : UIView
 
 - (void)setupWithStates:(NSArray<InformationalViewState *> *_Nonnull)states;
+
+- (void)reset;
 
 /** Animates by default */
 - (void)next;
