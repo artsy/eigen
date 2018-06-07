@@ -68,17 +68,7 @@ export class BidResult extends React.Component<BidResultProps> {
       )
     } else {
       const bidAgain = SHOW_TIMER_STATUSES.indexOf(this.props.status) > -1
-
-      let nextBid
-      if (this.props.suggested_next_bid) {
-        // when bidder position is created and the suggested_next_bid is passed from prev screen
-        nextBid = this.props.suggested_next_bid.display
-      } else {
-        // otherwise (when MP returns OUTBID without creating BP, when it already knows there are higher bids) select minimum_next_bid
-        nextBid = this.props.sale_artwork.minimum_next_bid.display
-      }
-
-      const buttonMsg = bidAgain ? `Bid ${nextBid} or more` : "Continue"
+      const nextBid = (this.props.suggested_next_bid || this.props.sale_artwork.minimum_next_bid).display
 
       return (
         <BiddingThemeProvider>
@@ -92,12 +82,7 @@ export class BidResult extends React.Component<BidResultProps> {
               </Flex>
             </View>
             {bidAgain ? (
-              <Button
-                text={buttonMsg}
-                onPress={() => {
-                  this.onPressBidAgain()
-                }}
-              />
+              <Button text={`Bid ${nextBid} or more`} onPress={() => this.onPressBidAgain()} />
             ) : (
               <BidGhostButton text="Continue" onPress={this.exitBidFlow} />
             )}
