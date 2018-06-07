@@ -25,7 +25,6 @@ interface Bid {
 
 interface BidResultProps {
   sale_artwork: BidResult_sale_artwork
-  bid: Bid
   winning: boolean
   status: string
   message_header?: string
