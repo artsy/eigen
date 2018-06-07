@@ -6,6 +6,7 @@ export type SelectMaxBid_sale_artwork = {
             readonly display: string | null;
             readonly cents: number | null;
         }) | null> | null;
+    readonly _id: string;
 };
 
 
@@ -43,6 +44,13 @@ const node: ConcreteFragment = {
       ]
     },
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "_id",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "FragmentSpread",
       "name": "ConfirmBid_sale_artwork",
       "args": null
@@ -61,5 +69,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = '0a6f52ef2c8e9d9008178bf3ef49d57e';
+(node as any).hash = 'a5dead710438743c014df836be1d027f';
 export default node;

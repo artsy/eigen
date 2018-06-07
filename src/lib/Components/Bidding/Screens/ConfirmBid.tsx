@@ -34,6 +34,7 @@ export interface ConfirmBidProps extends ViewProperties {
   bid: Bid
   relay?: RelayPaginationProp
   navigator?: NavigatorIOS
+  bidWasProcessed?: () => void
 }
 
 interface ConformBidState {
@@ -180,6 +181,9 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
     messageDescriptionMd?: string,
     suggestedNextBid?: Bid
   ) {
+    if (this.props.bidWasProcessed) {
+      this.props.bidWasProcessed()
+    }
     this.props.navigator.push({
       component: BidResultScreen,
       title: "",
