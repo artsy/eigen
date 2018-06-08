@@ -18,6 +18,7 @@
 
 * Adds going back to max bid when selecting edit bid from confirmation screen - maxim
 * Adds line-height to the type system - sepans
+* Adds `intent` to `ARBidFlowViewController` and `<BidFlow>` component - ash
 
 ### 1.5.3
 

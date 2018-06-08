@@ -2,16 +2,23 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef enum : NSUInteger {
+    ARBidFlowViewControllerIntentBid,
+    ARBidFlowViewControllerIntentRegister,
+} ARBidFlowViewControllerIntent;
+
 @interface ARBidFlowViewController : ARComponentViewController
 
-- (instancetype)initWithArtworkID:(NSString *)artworkID saleID:(NSString *)saleID;
+- (instancetype)initWithArtworkID:(nullable NSString *)artworkID saleID:(NSString *)saleID; /// Defaults to bid.
+- (instancetype)initWithArtworkID:(nullable NSString *)artworkID saleID:(NSString *)saleID intent:(ARBidFlowViewControllerIntent)intent;
 
 - (instancetype)initWithEmission:(nullable AREmission *)emission
                       moduleName:(NSString *)moduleName
                initialProperties:(nullable NSDictionary *)initialProperties NS_UNAVAILABLE;
 
-@property (nonatomic, copy) NSString *artworkID;
-@property (nonatomic, copy) NSString *saleID;
+@property (nonatomic, readonly, copy) NSString *artworkID;
+@property (nonatomic, readonly, copy) NSString *saleID;
+@property (nonatomic, readonly, assign) ARBidFlowViewControllerIntent intent;
 
 @end
 
