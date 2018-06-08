@@ -135,7 +135,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "BidFlowSelectMaxBidRendererQuery",
-  "id": "a843de26ec3ea1394e6edcdf9aace3b9",
+  "id": "6f9a64aef7bc45b535ebe96ac3c5d201",
   "text": null,
   "metadata": {},
   "fragment": {
