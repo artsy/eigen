@@ -135,13 +135,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   verifyBidPosition(results, errors) {
     // TODO: Need to handle if the results object is empty, for example if errors occurred and no request was made
     // TODO: add analytics for errors
-    const status = results.createBidderPosition.result.status
+    const { status, position, message_header, message_description_md } = results.createBidderPosition.result
+
     if (!errors && status === "SUCCESS") {
-      this.bidPlacedSuccessfully(results.createBidderPosition.result.position.id)
+      this.bidPlacedSuccessfully(position.id)
     } else {
-      const message_header = results.createBidderPosition.result.message_header
-      const message_description_md = results.createBidderPosition.result.message_description_md
-      this.showBidResult(false, status, message_header, message_description_md)
+      this.presentBidResult(status, message_header, message_description_md)
     }
   }
 
@@ -154,38 +153,23 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   }
 
   checkBidPosition(result) {
-    const bidderPosition = result.data.me.bidder_position.position
-    const status = result.data.me.bidder_position.status
-    if (status === "WINNING") {
-      this.showBidResult(true, "WINNING")
-    } else if (status === "PENDING") {
+    const { status, position, message_header, message_description_md } = result.data.me.bidder_position
+
+    if (status === "PENDING") {
       if (this.pollCount > MAX_POLL_ATTEMPTS) {
-        this.showBidResult(false, "PROCESSING", "Bid Processing", messageForPollingTimeout)
+        this.presentBidResult("PROCESSING", "Bid Processing", messageForPollingTimeout)
       } else {
-        // initiating new request here (vs setInterval) to make sure we wait for the previus calls to return before making a new one
-        setTimeout(() => {
-          queryForBidPosition(bidderPosition.id).then(this.checkBidPosition.bind(this))
-        }, 1000)
+        // initiating new request here (vs setInterval) to make sure we wait for the previous call to return before making a new one
+        setTimeout(() => queryForBidPosition(position.id).then(this.checkBidPosition.bind(this)), 1000)
+
         this.pollCount += 1
       }
     } else {
-      this.showBidResult(
-        false,
-        status,
-        result.data.me.bidder_position.message_header,
-        result.data.me.bidder_position.message_description_md,
-        result.data.me.bidder_position.position.suggested_next_bid
-      )
+      this.presentBidResult(status, message_header, message_description_md, position.suggested_next_bid)
     }
   }
 
-  showBidResult(
-    winning: boolean,
-    status: string,
-    messageHeader?: string,
-    messageDescriptionMd?: string,
-    suggestedNextBid?: Bid
-  ) {
+  presentBidResult(status: string, messageHeader?: string, messageDescriptionMd?: string, suggestedNextBid?: Bid) {
     this.props.navigator.push({
       component: BidResultScreen,
       title: "",
@@ -194,8 +178,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
         status,
         message_header: messageHeader,
         message_description_md: messageDescriptionMd,
-        winning,
-        bid: this.props.bid,
+        winning: status === "WINNING",
         suggested_next_bid: suggestedNextBid,
       },
     })
