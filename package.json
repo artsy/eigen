@@ -71,6 +71,7 @@
   "dependencies": {
     "lodash": "^4.17.4",
     "moment": "^2.19.4",
+    "moment-timezone": "^0.5.17",
     "prop-types": "^15.5.10",
     "query-string": "^4.1.0",
     "react": "^16.3.0-alpha.1",
@@ -92,6 +93,7 @@
     "@storybook/react-native": "^3.3.11",
     "@types/jest": "^22.1.1",
     "@types/lodash": "^4.14.64",
+    "@types/moment-timezone": "^0.5.4",
     "@types/query-string": "^5.0.0",
     "@types/react": "^16.0.5",
     "@types/react-native": "^0.52.1",

@@ -1,4 +1,3 @@
-import moment from "moment"
 import React from "react"
 import { NavigatorIOS, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -7,7 +6,6 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import { Flex } from "../Elements/Flex"
 import { Icon20 } from "../Elements/Icon"
-import { Sans12 } from "../Elements/Typography"
 
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { BidGhostButton, Button } from "../Components/Button"
@@ -52,6 +50,7 @@ export class BidResult extends React.Component<BidResultProps> {
 
   render() {
     const { live_start_at, end_at } = this.props.sale_artwork.sale
+
     // non-live sale doesn't have live_start_at so bidding is open until end time
     if (this.props.winning) {
       return (
@@ -61,7 +60,7 @@ export class BidResult extends React.Component<BidResultProps> {
               <Flex alignItems="center">
                 <Icon20 source={require("../../../../../images/circle-check-green.png")} />
                 <Title m={4}>You're the highest bidder</Title>
-                <TimeLeftToBidDisplay liveStartsAt={live_start_at} endAt={end_at} />
+                <Timer liveStartsAt={live_start_at} endsAt={end_at} />
               </Flex>
             </View>
             <BidGhostButton text="Continue" onPress={this.exitBidFlow} />
@@ -70,15 +69,18 @@ export class BidResult extends React.Component<BidResultProps> {
       )
     } else {
       const bidAgain = SHOW_TIMER_STATUSES.indexOf(this.props.status) > -1
+
       let nextBid
       if (this.props.suggested_next_bid) {
         // when bidder position is created and the suggested_next_bid is passed from prev screen
         nextBid = this.props.suggested_next_bid.display
       } else {
         // otherwise (when MP returns OUTBID without creating BP, when it already knows there are higher bids) select minimum_next_bid
-        nextBid = nextBid = this.props.sale_artwork.minimum_next_bid.display
+        nextBid = this.props.sale_artwork.minimum_next_bid.display
       }
+
       const buttonMsg = bidAgain ? `Bid ${nextBid} or more` : "Continue"
+
       return (
         <BiddingThemeProvider>
           <Container mt={6}>
@@ -87,7 +89,7 @@ export class BidResult extends React.Component<BidResultProps> {
                 <Icon20 source={require("../../../../../images/circle-x-red.png")} />
                 <Title m={4}>{this.props.message_header}</Title>
                 <Markdown>{this.props.message_description_md}</Markdown>
-                {bidAgain && <TimeLeftToBidDisplay liveStartsAt={live_start_at} endAt={end_at} />}
+                {bidAgain && <Timer liveStartsAt={live_start_at} endsAt={end_at} />}
               </Flex>
             </View>
             {bidAgain ? (
@@ -105,27 +107,6 @@ export class BidResult extends React.Component<BidResultProps> {
       )
     }
   }
-}
-
-interface TimeLeftToBidDisplayProps {
-  liveStartsAt: string
-  endAt: string
-}
-
-const TimeLeftToBidDisplay: React.SFC<TimeLeftToBidDisplayProps> = props => {
-  const { liveStartsAt, endAt } = props
-  const timeLeftToBid = liveStartsAt || endAt
-  const timeLeftToBidMillis = Date.parse(timeLeftToBid) - Date.now()
-  const endOrLive = liveStartsAt ? "Live " : "Ends "
-
-  return (
-    <Flex alignItems="center">
-      <Sans12>
-        {endOrLive} {moment(timeLeftToBid, "YYYY-MM-DDTHH:mm:ss+-HH:mm").format("MMM D, ha")}
-      </Sans12>
-      <Timer timeLeftInMilliseconds={timeLeftToBidMillis} />
-    </Flex>
-  )
 }
 
 export const BidResultScreen = createFragmentContainer(

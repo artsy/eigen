@@ -35,6 +35,8 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
 fragment ConfirmBid_sale_artwork on SaleArtwork {
   sale {
     id
+    live_start_at
+    end_at
     __id
   }
   artwork {
@@ -52,6 +54,8 @@ fragment ConfirmBid_sale_artwork on SaleArtwork {
 fragment ConfirmFirstTimeBid_sale_artwork on SaleArtwork {
   sale {
     id
+    live_start_at
+    end_at
     __id
   }
   artwork {
@@ -204,7 +208,6 @@ return {
             "plural": false,
             "selections": [
               v5,
-              v2,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -218,7 +221,8 @@ return {
                 "name": "end_at",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              v2
             ]
           },
           {

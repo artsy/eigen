@@ -1,25 +1,27 @@
-import moment from "moment"
+import moment from "moment-timezone"
 import React from "react"
-import { Sans14 } from "../Elements/Typography"
+import { Flex } from "../Elements/Flex"
+import { Sans12, Sans14 } from "../Elements/Typography"
 
-interface BidResultProps {
-  // TODO: Change ths to endsAt or until that is formatted in ISO8601
+interface TimerProps {
+  liveStartsAt?: string
+  endsAt?: string
+}
+
+interface TimerState {
   timeLeftInMilliseconds: number
 }
 
-interface BidResultState {
-  timeLeftInMilliseconds: number
-}
-
-export class Timer extends React.Component<BidResultProps, BidResultState> {
+export class Timer extends React.Component<TimerProps, TimerState> {
   private intervalId: number
 
   constructor(props) {
     super(props)
 
-    this.state = {
-      timeLeftInMilliseconds: this.props.timeLeftInMilliseconds,
-    }
+    const { liveStartsAt, endsAt } = props
+    const timeLeftInMilliseconds = Date.parse(liveStartsAt || endsAt) - Date.now()
+
+    this.state = { timeLeftInMilliseconds }
   }
 
   componentDidMount() {
@@ -37,15 +39,24 @@ export class Timer extends React.Component<BidResultProps, BidResultState> {
   }
 
   render() {
+    const { liveStartsAt, endsAt } = this.props
     const duration = moment.duration(this.state.timeLeftInMilliseconds)
 
     return (
-      <Sans14>
-        {this.padWithZero(duration.days())}d{"  "}
-        {this.padWithZero(duration.hours())}h{"  "}
-        {this.padWithZero(duration.minutes())}m{"  "}
-        {this.padWithZero(duration.seconds())}s
-      </Sans14>
+      <Flex alignItems="center">
+        <Sans12>
+          {liveStartsAt ? "Live " : "Ends "}
+          {moment(liveStartsAt || endsAt, moment.ISO_8601)
+            .tz(moment.tz.guess(true))
+            .format("MMM D, ha")}
+        </Sans12>
+        <Sans14>
+          {this.padWithZero(duration.days())}d{"  "}
+          {this.padWithZero(duration.hours())}h{"  "}
+          {this.padWithZero(duration.minutes())}m{"  "}
+          {this.padWithZero(duration.seconds())}s
+        </Sans14>
+      </Flex>
     )
   }
 

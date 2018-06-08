@@ -58,6 +58,40 @@ const bidderPositionMutation = graphql`
     }
   }
 `
+
+const queryForBidPosition = (bidderPositionID: string) => {
+  return metaphysics({
+    query: `
+      {
+        me {
+          bidder_position(id: "${bidderPositionID}") {
+            status
+            message_header
+            message_description_md
+            position {
+              id
+              processed_at
+              is_active
+              suggested_next_bid {
+                cents
+                display
+              }
+            }
+          }
+        }
+      }
+    `,
+  })
+}
+
+const messageForPollingTimeout = `
+  We’re receiving a high volume of traffic
+  and your bid is still processing.
+
+  If you don’t receive an update soon,
+  please contact [support@artsy.net](mailto:support@artsy.net).
+`
+
 @screenTrack({
   context_screen: Schema.PageNames.BidFlowConfirmBidPage,
   context_screen_owner_type: null,
@@ -99,36 +133,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     })
   }
 
-  queryForBidPosition(bidderPositionID: string) {
-    const query = `
-        {
-          me {
-            bidder_position(id: "${bidderPositionID}") {
-              status
-              message_header
-              message_description_md
-              position {
-                id
-                processed_at
-                is_active
-                suggested_next_bid {
-                  cents
-                  display
-                }
-              }
-            }
-          }
-        }
-      `
-    return metaphysics({ query })
-  }
-
   verifyBidPosition(results, errors) {
     // TODO: Need to handle if the results object is empty, for example if errors occurred and no request was made
     // TODO: add analytics for errors
     const status = results.createBidderPosition.result.status
     if (!errors && status === "SUCCESS") {
-      this.bidPlacedSuccessfully(results)
+      this.bidPlacedSuccessfully(results.createBidderPosition.result.position.id)
     } else {
       const message_header = results.createBidderPosition.result.message_header
       const message_description_md = results.createBidderPosition.result.message_description_md
@@ -140,9 +150,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.BidFlowPlaceBid,
   })
-  bidPlacedSuccessfully(results) {
-    const positionId = results.createBidderPosition.result.position.id
-    this.queryForBidPosition(positionId).then(this.checkBidPosition.bind(this))
+  bidPlacedSuccessfully(positionId) {
+    queryForBidPosition(positionId).then(this.checkBidPosition.bind(this))
   }
 
   checkBidPosition(result) {
@@ -152,14 +161,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
       this.showBidResult(true, "WINNING")
     } else if (status === "PENDING") {
       if (this.pollCount > MAX_POLL_ATTEMPTS) {
-        const md = `We're receiving a high volume of traffic and your bid is still processing.  \
-If you don’t receive an update soon, please contact [support@artsy.net](mailto:support@artsy.net). `
-
-        this.showBidResult(false, "PROCESSING", "Bid Processing", md)
+        this.showBidResult(false, "PROCESSING", "Bid Processing", messageForPollingTimeout)
       } else {
         // initiating new request here (vs setInterval) to make sure we wait for the previus calls to return before making a new one
         setTimeout(() => {
-          this.queryForBidPosition(bidderPosition.id).then(this.checkBidPosition.bind(this))
+          queryForBidPosition(bidderPosition.id).then(this.checkBidPosition.bind(this))
         }, 1000)
         this.pollCount += 1
       }
@@ -210,12 +216,14 @@ If you don’t receive an update soon, please contact [support@artsy.net](mailto
   }
 
   render() {
+    const { live_start_at, end_at } = this.props.sale_artwork.sale
+
     return (
       <BiddingThemeProvider>
         <Container m={0}>
           <Flex alignItems="center">
             <Title mb={3}>Confirm your bid</Title>
-            <Timer timeLeftInMilliseconds={1000 * 60 * 20} />
+            <Timer liveStartsAt={live_start_at} endsAt={end_at} />
           </Flex>
 
           <View>
@@ -267,6 +275,8 @@ export const ConfirmBidScreen = createFragmentContainer(
     fragment ConfirmBid_sale_artwork on SaleArtwork {
       sale {
         id
+        live_start_at
+        end_at
       }
       artwork {
         id

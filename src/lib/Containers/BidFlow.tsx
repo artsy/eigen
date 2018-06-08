@@ -10,6 +10,7 @@ import { BidFlow_me } from "../../__generated__/BidFlow_me.graphql"
 interface BidFlowProps extends ViewProperties {
   sale_artwork: BidFlow_sale_artwork
   me: BidFlow_me
+  intent: "bid" | "register"
 }
 
 class BidFlow extends React.Component<BidFlowProps> {

@@ -53,21 +53,27 @@ const bid = {
   display: "$11,000",
   cents: 1100000,
 }
+
 describe("BidResult component", () => {
   Date.now = jest.fn(() => 1525983752116)
   jest.useFakeTimers()
 
   describe("high bidder", () => {
-    it("renders winning screen properly", () => {
-      const bidResult = (
+    // marking this as pending since this component depends on the Timer component that depends on local timezone
+    xit("renders winning screen properly", () => {
+      const component = renderer.create(
         <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} bid={bid} navigator={jest.fn() as any} />
       )
-      const bg = renderer.create(bidResult).toJSON()
 
-      const component = shallow(bidResult)
-      expect(component.find("TimeLeftToBidDisplay")).toHaveLength(1)
+      expect(component.toJSON()).toMatchSnapshot()
+    })
 
-      expect(bg).toMatchSnapshot()
+    it("renders a timer", () => {
+      const component = shallow(
+        <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} bid={bid} navigator={jest.fn() as any} />
+      )
+
+      expect(component.find("Timer")).toHaveLength(1)
     })
 
     it("dismisses the controller when the continue button is pressed", () => {
@@ -91,8 +97,9 @@ describe("BidResult component", () => {
       "Another bidder placed a higher max bid or the same max bid before you did.  \
  Bid again to take the lead."
 
-    it("renders timer and error message", () => {
-      const bidResult = (
+    // marking this as pending since this component depends on the Timer component that depends on local timezone
+    xit("renders properly", () => {
+      const component = renderer.create(
         <BidResult
           winning={false}
           sale_artwork={saleArtwork}
@@ -103,11 +110,24 @@ describe("BidResult component", () => {
           navigator={jest.fn() as any}
         />
       )
-      const bg = renderer.create(bidResult).toJSON()
-      expect(bg).toMatchSnapshot()
 
-      const component = shallow(bidResult)
-      expect(component.find("TimeLeftToBidDisplay")).toHaveLength(1)
+      expect(component.toJSON()).toMatchSnapshot()
+    })
+
+    it("renders timer and error message", () => {
+      const component = shallow(
+        <BidResult
+          winning={false}
+          sale_artwork={saleArtwork}
+          status="OUTBID"
+          bid={bid}
+          message_header={messageHeader}
+          message_description_md={messageDescriptionMd}
+          navigator={jest.fn() as any}
+        />
+      )
+
+      expect(component.find("Timer")).toHaveLength(1)
     })
 
     it("pops to root when bid-again button is pressed", () => {
@@ -135,8 +155,9 @@ describe("BidResult component", () => {
     const messageDescriptionMd = `Sorry, your bid wasn’t received before live bidding started. \
 To continue bidding, please [join the live auction](http://live-staging.artsy.net/).`
 
-    it("doesn't render timer", () => {
-      const bidResult = (
+    // marking this as pending since this component depends on the Timer component that depends on local timezone
+    xit("renders properly", () => {
+      const component = renderer.create(
         <BidResult
           winning={false}
           sale_artwork={saleArtwork}
@@ -147,12 +168,24 @@ To continue bidding, please [join the live auction](http://live-staging.artsy.ne
           navigator={jest.fn() as any}
         />
       )
-      const bg = renderer.create(bidResult).toJSON()
 
-      expect(bg).toMatchSnapshot()
+      expect(component.toJSON()).toMatchSnapshot()
+    })
 
-      const component = shallow(bidResult)
-      expect(component.find("TimeLeftToBidDisplay")).toHaveLength(0)
+    it("doesn't render timer", () => {
+      const component = shallow(
+        <BidResult
+          winning={false}
+          sale_artwork={saleArtwork}
+          status={status}
+          bid={bid}
+          message_header={messageHeader}
+          message_description_md={messageDescriptionMd}
+          navigator={jest.fn() as any}
+        />
+      )
+
+      expect(component.find("Timer")).toHaveLength(0)
     })
 
     it("dismisses controller and presents live interface when continue button is pressed", () => {

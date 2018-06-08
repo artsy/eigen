@@ -1,34 +1,88 @@
-import { shallow } from "enzyme"
 import React from "react"
+import "react-native"
+import * as renderer from "react-test-renderer"
 
+import { Sans12, Sans14 } from "../../Elements/Typography"
 import { Timer } from "../Timer"
 
 const SECONDS = 1000
 const MINUTES = 60 * SECONDS
-const HOURS = 60 * MINUTES
-const DAYS = 24 * HOURS
 
-const getTimerText = timerComponent =>
-  timerComponent
-    .find("Sans14")
-    .first()
-    .props()
-    .children.join("")
+const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
+
+const getTimerLabel = timerComponent => timerComponent.root.findByType(Sans12).props.children.join("")
+
+const getTimerText = timerComponent => timerComponent.root.findByType(Sans14).props.children.join("")
+
+beforeEach(() => {
+  jest.useFakeTimers()
+
+  // Thursday, May 10, 2018 8:22:32.000 PM UTC
+  Date.now = () => dateNow
+})
+
+const orgDateTimeFormat: any = Intl.DateTimeFormat
+
+afterEach(() => {
+  Intl.DateTimeFormat = orgDateTimeFormat
+})
 
 it("formats the remaining time in '00d  00h  00m  00s'", () => {
-  jest.useFakeTimers()
   let timer
 
-  timer = shallow(<Timer timeLeftInMilliseconds={3 * DAYS + 14 * HOURS + 1 * MINUTES + 59 * SECONDS} />)
+  // Thursday, May 14, 2018 10:24:31.000 AM UTC
+  timer = renderer.create(<Timer endsAt="2018-05-14T10:24:31+00:00" />)
 
   expect(getTimerText(timer)).toEqual("03d  14h  01m  59s")
 
-  timer = shallow(<Timer timeLeftInMilliseconds={20 * MINUTES} />)
+  // Thursday, May 10, 2018 8:42:32.000 PM UTC
+  timer = renderer.create(<Timer endsAt="2018-05-10T20:42:32+00:00" />)
 
   expect(getTimerText(timer)).toEqual("00d  00h  20m  00s")
 
-  timer = shallow(<Timer timeLeftInMilliseconds={10 * SECONDS} />)
+  // Thursday, May 10, 2018 8:22:42.000 PM UTC
+  timer = renderer.create(<Timer endsAt="2018-05-10T20:22:42+00:00" />)
 
   expect(getTimerText(timer)).toEqual("00d  00h  00m  10s")
-  expect(setInterval).toHaveBeenCalled()
+})
+
+it("shows 'Ends' when the endsAt prop is given", () => {
+  const timer = renderer.create(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
+
+  expect(getTimerLabel(timer)).toContain("Ends")
+})
+
+it("shows 'Live' when the liveStartsAt prop is given", () => {
+  const timer = renderer.create(<Timer liveStartsAt="2018-05-14T20:00:00+00:00" />)
+
+  expect(getTimerLabel(timer)).toContain("Live")
+})
+
+it("counts down to zero", () => {
+  const timer = renderer.create(<Timer endsAt="2018-05-14T10:24:31+00:00" />)
+
+  expect(getTimerText(timer)).toEqual("03d  14h  01m  59s")
+
+  jest.advanceTimersByTime(2 * SECONDS)
+
+  expect(getTimerText(timer)).toEqual("03d  14h  01m  57s")
+
+  jest.advanceTimersByTime(20 * MINUTES)
+
+  expect(getTimerText(timer)).toEqual("03d  13h  41m  57s")
+})
+
+it("shows month, date, and hour adjusted for the timezone where the user is", () => {
+  const mutatedResolvedOptions: any = Intl.DateTimeFormat().resolvedOptions()
+  const mutatedDateTimeFormat: any = Intl.DateTimeFormat()
+
+  mutatedResolvedOptions.timeZone = "America/Los_Angeles"
+  mutatedDateTimeFormat.resolvedOptions = () => mutatedResolvedOptions
+  Intl.DateTimeFormat = (() => mutatedDateTimeFormat) as any
+
+  // Thursday, May 14, 2018 8:00:00.000 PM UTC
+  // Thursday, May 14, 2018 1:00:00.000 PM PDT in LA
+  const timer = renderer.create(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
+
+  expect(getTimerLabel(timer)).toEqual("Ends May 14, 1pm")
 })
