@@ -6,17 +6,8 @@ import { BidFlowRenderer } from "lib/relay/QueryRenderers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import createEnvironment from "../../../relay/createEnvironment"
 
-import { Flex } from "../Elements/Flex"
-import { Sans12, Serif14, Serif16 } from "../Elements/Typography"
-
-import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { Checkbox } from "../Components/Checkbox"
-
-import { NavigatorIOS, ScrollView } from "react-native"
+import { NavigatorIOS } from "react-native"
 import BidFlow from "../../../Containers/BidFlow"
-import { Divider } from "../Components/Divider"
-import { Input } from "../Components/Input"
-import { Markdown } from "../Components/Markdown"
 import { BidResultScreen } from "../Screens/BidResult"
 import { BillingAddress } from "../Screens/BillingAddress"
 import { ConfirmBid } from "../Screens/ConfirmBid"
@@ -124,8 +115,11 @@ storiesOf("Bidding")
   .add("Bidding Result (not highest bid)", () => {
     const status = "OUTBID"
     const messageHeader = "Your bid wasn’t high enough"
-    const messageDescriptionMd = `Another bidder placed a higher max bid or the same max bid before you did.  \
- Bid again to take the lead.`
+    const messageDescriptionMd = `
+      Another bidder placed a higher max bid or the same max bid before you did.
+      Bid again to take the lead.
+    `
+
     return (
       <BidFlowStoryRenderer
         render={renderWithLoadProgress(BidResultScreen, {
@@ -145,8 +139,11 @@ storiesOf("Bidding")
   .add("Bidding Result (live bidding started)", () => {
     const status = "ERROR_LIVE_BIDDING_STARTED"
     const messageHeader = "Live bidding has started"
-    const messageDescriptionMd = `Sorry, your bid wasn’t received before live bidding started.\
- To continue bidding, please [join the live auction](http://live-staging.artsy.net/).`
+    const messageDescriptionMd = `
+      Sorry, your bid wasn’t received before live bidding started.
+      To continue bidding, please [join the live auction](http://live-staging.artsy.net/).
+    `
+
     return (
       <BidFlowStoryRenderer
         render={renderWithLoadProgress(BidResultScreen, {
@@ -160,121 +157,3 @@ storiesOf("Bidding")
       />
     )
   })
-
-storiesOf("App Style/Utils").add("Markdown", () => (
-  <BiddingThemeProvider>
-    <ScrollView>
-      <Markdown m={4} alignItems="center">
-        Another bidder placed a higher max bid{"\n"}
-        or the same max bid before you did.{"\n"}
-        {"\n"}
-        Bid again to take the lead.
-      </Markdown>
-
-      <Divider />
-
-      <Markdown m={4} alignItems="center">
-        Your bid didn’t meet the reserve price{"\n"}
-        for this work.{"\n"}
-        {"\n"}
-        Bid again to take the lead.
-      </Markdown>
-
-      <Divider />
-
-      <Markdown m={4} alignItems="center">
-        Sorry, your bid wasn’t received{"\n"}
-        before the lot closed.
-      </Markdown>
-
-      <Divider />
-
-      <Markdown m={4} alignItems="center">
-        Sorry, your bid wasn’t received before{"\n"}
-        live bidding started. To continue{"\n"}
-        bidding, please [join the live auction](http://www.artsy.net).
-      </Markdown>
-
-      <Divider />
-
-      <Markdown m={4} alignItems="center">
-        Your bid couldn’t be placed. Please{"\n"}
-        check your internet connection{"\n"}
-        and try again.
-      </Markdown>
-
-      <Divider />
-
-      <Markdown m={4} alignItems="center">
-        Your bid can’t be placed at this time.{"\n"}
-        Please contact [support@artsy.net](mailto:support@artsy.net) for{"\n"}
-        more information.
-      </Markdown>
-
-      <Divider />
-
-      <Markdown m={4} alignItems="center">
-        We’re receiving a high volume of traffic{"\n"}
-        and your bid is still processing.{"\n"}
-        {"\n"}
-        If you don’t receive an update soon,{"\n"}
-         please contact [support@artsy.net](mailto:support@artsy.net).
-      </Markdown>
-    </ScrollView>
-  </BiddingThemeProvider>
-))
-
-storiesOf("App Style/Input")
-  .add("Text Input", () => (
-    <BiddingThemeProvider>
-      <Flex mt={7} ml={4} mr={4}>
-        <Serif16 mb={2}>Title</Serif16>
-        <Input placeholder="Placeholder" mb={5} />
-
-        <Serif16>Title</Serif16>
-        <Serif14 mb={2} color="black60">
-          Short description
-        </Serif14>
-        <Input placeholder="Placeholder" value="Content" mb={5} />
-
-        <Input placeholder="Without Title" mb={5} />
-
-        <Serif16 mb={2}>Error</Serif16>
-        <Input error placeholder="Placeholder" mb={3} />
-        <Sans12 color="red100">Error message</Sans12>
-      </Flex>
-    </BiddingThemeProvider>
-  ))
-  .add("Check Boxes", () => (
-    <BiddingThemeProvider>
-      <Flex mt={7}>
-        <Checkbox pl={3} pb={1}>
-          <Serif16 mt={2}>Remember me</Serif16>
-        </Checkbox>
-
-        <Checkbox pl={3} pb={1} checked>
-          <Serif16 mt={2}>Remember me</Serif16>
-        </Checkbox>
-
-        <Checkbox pl={3} pb={1} error>
-          <Serif16 mt={2} color="red100">
-            Agree to Terms and Conditions
-          </Serif16>
-        </Checkbox>
-
-        <Checkbox pl={3} pb={1} checked error>
-          <Serif16 mt={2} color="red100">
-            Agree to Terms and Conditions
-          </Serif16>
-        </Checkbox>
-
-        <Checkbox pl={3} pb={1} disabled>
-          <Serif16 mt={2}>Remember me</Serif16>
-        </Checkbox>
-
-        <Checkbox pl={3} pb={1} checked disabled>
-          <Serif16 mt={2}>Remember me</Serif16>
-        </Checkbox>
-      </Flex>
-    </BiddingThemeProvider>
-  ))
