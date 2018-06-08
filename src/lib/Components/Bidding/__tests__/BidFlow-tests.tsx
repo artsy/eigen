@@ -6,7 +6,7 @@ import relay from "react-relay"
 import { Button } from "../Components/Button"
 import { Checkbox } from "../Components/Checkbox"
 import { MaxBidPicker } from "../Components/MaxBidPicker"
-import { MaxBidScreen } from "../Screens/SelectMaxBid"
+import { SelectMaxBid } from "../Screens/SelectMaxBid"
 import { FakeNavigator } from "./Helpers/FakeNavigator"
 
 jest.mock("../../../metaphysics", () => ({ metaphysics: jest.fn() }))
@@ -14,15 +14,28 @@ import { metaphysics } from "../../../metaphysics"
 import { Title } from "../Components/Title"
 
 const mockphysics = metaphysics as jest.Mock<any>
-const fakeNavigator = new FakeNavigator()
+let fakeNavigator: FakeNavigator
+let fakeRelay
 
 jest.useFakeTimers()
 
 const getTitleText = component => component.root.findByType(Title).props.children
 
+beforeEach(() => {
+  fakeNavigator = new FakeNavigator()
+  fakeRelay = {
+    refetch: jest.fn(),
+  }
+})
+
 it("allows bidders with a qualified credit card to bid", () => {
   let screen = renderer.create(
-    <MaxBidScreen me={Me.qualifiedUser} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} />
+    <SelectMaxBid
+      me={Me.qualifiedUser}
+      sale_artwork={SaleArtwork}
+      navigator={fakeNavigator as any}
+      relay={fakeRelay as any}
+    />
   )
 
   screen.root.findByType(MaxBidPicker).instance.props.onValueChange(null, 2)
@@ -47,7 +60,12 @@ it("allows bidders with a qualified credit card to bid", () => {
 
 it("allows bidders without a qualified credit card to register a card and bid", () => {
   let screen = renderer.create(
-    <MaxBidScreen me={Me.unqualifiedUser} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} />
+    <SelectMaxBid
+      me={Me.unqualifiedUser}
+      sale_artwork={SaleArtwork}
+      navigator={fakeNavigator as any}
+      relay={fakeRelay as any}
+    />
   )
 
   screen.root.findByType(MaxBidPicker).instance.props.onValueChange(null, 2)
@@ -81,6 +99,7 @@ const Me = {
 }
 
 const SaleArtwork = {
+  _id: "sale-artwork-id",
   artwork: {
     id: "meteor shower",
     title: "Meteor Shower",

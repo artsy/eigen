@@ -37,7 +37,7 @@ interface SelectMaxBidState {
 export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBidState> {
   state = {
     selectedBidIndex: 0,
-    isRefreshingSaleArtwork: true,
+    isRefreshingSaleArtwork: false,
   }
 
   refreshSaleArtwork = () => {
