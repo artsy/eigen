@@ -52,7 +52,10 @@ target 'Emission' do
                               :git => 'https://github.com/artsy/Artsy-Authentication.git',
                               :branch => 'fetch-user-details'
   # Stripe- tag must match package.json's tipsi-stripe dep
-  pod 'tipsi-stripe', :podspec => tispi_stripe_spec_path
+  pod 'tipsi-stripe',
+    :git => "https://github.com/erikdstock/tipsi-stripe.git",
+    :branch => 'fix-podspec-requires-packagejson'
+    #:podspec => tispi_stripe_spec_path
 end
 
 plugin 'cocoapods-keys', {

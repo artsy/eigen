@@ -151,7 +151,7 @@ DEPENDENCIES:
   - Sentry/Core
   - Sentry/KSCrash
   - SentryReactNative (from `../node_modules/react-native-sentry`)
-  - tipsi-stripe (from `../node_modules/tipsi-stripe/tipsi-stripe.podspec`)
+  - tipsi-stripe (from `https://github.com/erikdstock/tipsi-stripe.git`, branch `fix-podspec-requires-packagejson`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 EXTERNAL SOURCES:
@@ -173,7 +173,8 @@ EXTERNAL SOURCES:
   SentryReactNative:
     :path: ../node_modules/react-native-sentry
   tipsi-stripe:
-    :podspec: ../node_modules/tipsi-stripe/tipsi-stripe.podspec
+    :branch: fix-podspec-requires-packagejson
+    :git: https://github.com/erikdstock/tipsi-stripe.git
   yoga:
     :path: ../node_modules/react-native/ReactCommon/yoga
 
@@ -182,8 +183,8 @@ CHECKOUT OPTIONS:
     :commit: 1b582675598c999726d9edacd3b8559e01cf7c48
     :git: https://github.com/artsy/Artsy-Authentication.git
   tipsi-stripe:
-    :git: https://github.com/tipsi/tipsi-stripe.git
-    :tag: 5.2.1
+    :commit: efcbc49dc7cf472099d8aa8c3fb2b64441fc5ea1
+    :git: https://github.com/erikdstock/tipsi-stripe.git
 
 SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
@@ -209,10 +210,10 @@ SPEC CHECKSUMS:
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
   SentryReactNative: a292506edfa707119e3aa155892cdb07e453a93a
   Stripe: 898f83a95d72180c6eb4acd65b2ae6158fc6a8bd
-  tipsi-stripe: a926e75d7eeea6628886ea898ea8bbc6c99f6ae0
+  tipsi-stripe: 7cb9ec05e2b76170f9eec68227fca11aec49863f
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: 2f34094d440552e47625024325a9da6b92f96b43
+PODFILE CHECKSUM: 60486003ce75b6a03780e612c343e9822738baa6
 
 COCOAPODS: 1.4.0
