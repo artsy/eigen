@@ -151,7 +151,7 @@ DEPENDENCIES:
   - Sentry/Core
   - Sentry/KSCrash
   - SentryReactNative (from `../node_modules/react-native-sentry`)
-  - tipsi-stripe (from `https://github.com/erikdstock/tipsi-stripe.git`, branch `fix-podspec-requires-packagejson`)
+  - tipsi-stripe (from `../node_modules/tipsi-stripe/tipsi-stripe.podspec`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 EXTERNAL SOURCES:
@@ -173,8 +173,7 @@ EXTERNAL SOURCES:
   SentryReactNative:
     :path: ../node_modules/react-native-sentry
   tipsi-stripe:
-    :branch: fix-podspec-requires-packagejson
-    :git: https://github.com/erikdstock/tipsi-stripe.git
+    :podspec: ../node_modules/tipsi-stripe/tipsi-stripe.podspec
   yoga:
     :path: ../node_modules/react-native/ReactCommon/yoga
 
@@ -214,6 +213,6 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: 60486003ce75b6a03780e612c343e9822738baa6
+PODFILE CHECKSUM: f04b62d4f9308b0734e1da3c5b453122eac5c131
 
 COCOAPODS: 1.4.0
