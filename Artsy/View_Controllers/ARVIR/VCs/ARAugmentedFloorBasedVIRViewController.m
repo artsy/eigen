@@ -23,8 +23,6 @@
 #import "ARAugmentedVIRModalView.h"
 #import "ARInformationView.h"
 
-static CGFloat ARInformationalViewDisplayAnimationDuration = 0.45;
-
 @interface _ARWhiteFlatButton : ARWhiteFlatButton
 @end
 @implementation _ARWhiteFlatButton
@@ -102,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
     InformationalViewState *registeredPlanes = [[InformationalViewState alloc] init];
     registeredPlanes.animate = NO;
     registeredPlanes.xOutOfYMessage = @"Step 1 of 3";
-    registeredPlanes.bodyString = @"Aim at the floor and slowly move your phone in a circular motion.";
+    registeredPlanes.bodyString = @"";
     UIImageView *tick = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRTick"]];
     tick.contentMode = UIViewContentModeCenter;
     registeredPlanes.contents = tick;
@@ -116,6 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
     positionWallMarker.xOutOfYMessage = @"Step 2 of 3";
     positionWallMarker.bodyString = @"Position the marker where the floor meets the wall and tap to set.";
     ARWhiteFlatButton *setMarkerButton = [[_ARWhiteFlatButton alloc] init];
+    [setMarkerButton constrainHeight:@"50"];
     [setMarkerButton setTitle:@"Set Marker" forState:UIControlStateNormal];
 #if TARGET_OS_SIMULATOR
     [setMarkerButton addTarget:self.informationView action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
@@ -130,6 +129,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     ARWhiteFlatButton *placeArtworkButton = [[_ARWhiteFlatButton alloc] init];
     [placeArtworkButton setTitle:@"Place Work" forState:UIControlStateNormal];
+    [placeArtworkButton constrainHeight:@"50"];
 #if TARGET_OS_SIMULATOR
     [placeArtworkButton addTarget:self.informationView action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
 #else
@@ -143,6 +143,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     ARClearFlatButton *doneArtworkButton = [[_ARClearFlatButton alloc] init];
     [doneArtworkButton setTitle:@"Done" forState:UIControlStateNormal];
+    [doneArtworkButton constrainHeight:@"50"];
     [doneArtworkButton addTarget:self action:@selector(dismissInformationalViewAnimated) forControlEvents:UIControlEventTouchUpInside];
     congratsArtworkMarker.contents = doneArtworkButton;
 
@@ -239,7 +240,7 @@ NS_ASSUME_NONNULL_BEGIN
         informationView.alpha = 0;
         [self.view addSubview:informationView];
         [informationView alignLeading:@"0" trailing:@"0" toView:self.view];
-        [informationView constrainHeight:@"180"];
+        [informationView constrainHeight:@"221"];
         self.informationViewBottomConstraint = [informationView alignBottomEdgeWithView:self.view predicate:@"0"];
         self.informationViewBottomConstraint.constant = 40;
         self.informationView = informationView;
@@ -256,7 +257,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
     [UIView animateIf:animated
-             duration:ARInformationalViewDisplayAnimationDuration
+             duration:ARAnimationDuration
               options:UIViewAnimationOptionCurveEaseOut
                      :^{
         // Animate it in
@@ -279,7 +280,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     UIView *informational = self.informationView;
     [UIView animateIf:animated
-             duration:ARInformationalViewDisplayAnimationDuration
+             duration:ARAnimationQuickDuration
               options:UIViewAnimationOptionCurveEaseOut
                      :^{
         // Animate it out

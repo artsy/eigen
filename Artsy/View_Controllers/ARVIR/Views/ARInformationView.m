@@ -34,16 +34,16 @@
     UILabel *xofYLabel = [self createXOfYLabel];
     self.xOfYLabel = xofYLabel;
     [self addSubview:xofYLabel];
-    [xofYLabel alignTop:@"10" leading:@"0" toView:self];
+    [xofYLabel alignTop:@"20" leading:@"0" toView:self];
     [xofYLabel alignTrailingEdgeWithView:self predicate:@"0"];
 
     ORStackView *stack = [[ORStackView alloc] init];
     stack.bottomMarginHeight = 40;
 
     [self addSubview:stack];
-    self.stackTopConstraint = [stack alignTopEdgeWithView:xofYLabel predicate:@"10"];
+    self.stackTopConstraint = [stack alignTopEdgeWithView:xofYLabel predicate:@"20"];
     [stack alignLeading:@"20" trailing:@"-20" toView:self];
-    [stack constrainHeight:@"160"];
+    [stack constrainHeight:@"180"];
     _stack = stack;
 
     self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
@@ -100,11 +100,11 @@
     }
 
     UILabel *messageLabel = [[UILabel alloc] init];
-    messageLabel.font = [UIFont serifFontWithSize:16];
+    messageLabel.font = [UIFont serifFontWithSize:18];
     messageLabel.text = state.bodyString;
     messageLabel.textColor = [UIColor whiteColor];
     messageLabel.numberOfLines = 0;
-    [self.stack addSubview:messageLabel withTopMargin:@"30" sideMargin:@"0"];
+    [self.stack addSubview:messageLabel withTopMargin:@"20" sideMargin:@"0"];
 
     // Basically a flexible space grabber which forces the state.contenst
     // to align with the bottom instead of from the top

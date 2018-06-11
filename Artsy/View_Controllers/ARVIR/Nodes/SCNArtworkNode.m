@@ -20,19 +20,19 @@
                        measurementByConvertingToUnit:NSUnitLength.meters]
                       doubleValue];
 
-    // Sides
+    // Sides / Back
     SCNMaterial *blackMaterial = [SCNMaterial material];
     blackMaterial.diffuse.contents = [UIColor blackColor];
     blackMaterial.locksAmbientWithDiffuse = YES;
 
-    // Back / Front
+    // Front
     SCNMaterial *imageMaterial = [[SCNMaterial alloc] init];
     imageMaterial.diffuse.contents = config.image;
     imageMaterial.locksAmbientWithDiffuse = YES;
     imageMaterial.lightingModelName = SCNLightingModelPhysicallyBased;
 
     SCNArtworkNode *box = [SCNArtworkNode boxWithWidth:width height:height length:length chamferRadius:0];
-    box.materials =  @[imageMaterial, blackMaterial, imageMaterial, blackMaterial, blackMaterial, blackMaterial];
+    box.materials =  @[blackMaterial, blackMaterial, imageMaterial, blackMaterial, blackMaterial, blackMaterial];
     box.name = @"Artwork";
 
     return box;
