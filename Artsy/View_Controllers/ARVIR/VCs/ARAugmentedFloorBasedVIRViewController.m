@@ -98,6 +98,7 @@ NS_ASSUME_NONNULL_BEGIN
 #endif
     };
 
+    // A temporary state when we've found the floor, but are waiting to show the tick first
     InformationalViewState *registeredPlanes = [[InformationalViewState alloc] init];
     registeredPlanes.animate = NO;
     registeredPlanes.xOutOfYMessage = @"Step 1 of 3";
