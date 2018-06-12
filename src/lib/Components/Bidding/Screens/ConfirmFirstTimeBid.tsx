@@ -36,6 +36,12 @@ export interface PaymentCardTextFieldParams {
   expMonth: string
   expYear: string
   cvc: string
+  name?: string
+  addressLine1?: string
+  addressLine2?: string
+  addressCity?: string
+  addressState?: string
+  addressZip?: string
 }
 
 export interface Address {
@@ -87,8 +93,9 @@ const creditCardMutation = graphql`
 })
 export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, ConfirmBidState> {
   state = {
-    billingAddress: undefined,
+    billingAddress: null,
     creditCardToken: null,
+    creditCardFormParams: null,
     conditionsOfSaleChecked: false,
     isLoading: false,
   }
@@ -135,8 +142,19 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confir
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.BidFlowPlaceBid,
   })
-  registerAndPlaceBid() {
+  async registerAndPlaceBid() {
     this.setState({ isLoading: true })
+
+    const { billingAddress, creditCardFormParams } = this.state
+    const token = await stripe.createTokenWithCard({
+      ...creditCardFormParams,
+      name: billingAddress.fullName,
+      addressLine1: billingAddress.addressLine1,
+      addressLine2: null,
+      addressCity: billingAddress.city,
+      addressState: billingAddress.state,
+      addressZip: billingAddress.postalCode,
+    })
 
     commitMutation(this.props.relay.environment, {
       onCompleted: () => this.createBidderPosition(),
@@ -144,7 +162,7 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confir
       mutation: creditCardMutation,
       variables: {
         input: {
-          token: this.state.creditCardToken.tokenId,
+          token: token.tokenId,
         },
       },
     })

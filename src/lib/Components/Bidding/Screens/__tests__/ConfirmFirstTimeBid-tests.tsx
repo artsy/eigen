@@ -22,6 +22,7 @@ jest.mock("tipsi-stripe", () => ({
   paymentRequestWithCardForm: jest.fn(),
   createTokenWithCard: jest.fn(),
 }))
+import stripe from "tipsi-stripe"
 
 let nextStep
 const mockNavigator = { push: route => (nextStep = route), pop: () => null }
@@ -45,6 +46,7 @@ it("shows the billing address that the user typed in the billing address form", 
 
 describe("successful bid", () => {
   beforeEach(() => {
+    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
     relay.commitMutation = jest
       .fn()
       .mockImplementationOnce((_, { onCompleted }) => onCompleted())
@@ -56,9 +58,13 @@ describe("successful bid", () => {
 
     const component = renderer.create(<ConfirmFirstTimeBid {...initialProps} />)
 
+    // manually setting state to avoid dplicating tests for skipping UI interation, but practically better not to do this.
+    component.root.instance.setState({ billingAddress })
     component.root.instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findByType(Button).instance.props.onPress()
+
+    jest.runAllTicks()
 
     expect(relay.commitMutation).toHaveBeenCalledWith(
       any(Object),
@@ -91,6 +97,7 @@ describe("successful bid", () => {
 
     const component = renderer.create(<ConfirmFirstTimeBid {...initialProps} />)
 
+    component.root.instance.setState({ billingAddress })
     component.root.instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findByType(Button).instance.props.onPress()
@@ -109,6 +116,7 @@ describe("successful bid", () => {
 
     const component = renderer.create(<ConfirmFirstTimeBid {...initialProps} />)
 
+    component.root.instance.setState({ billingAddress })
     component.root.instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
     component.root.findByType(Button).instance.props.onPress()
