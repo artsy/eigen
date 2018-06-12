@@ -20,7 +20,7 @@ import { Title } from "../Components/Title"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { metaphysics } from "../../../metaphysics"
 
-import { BidResultScreen } from "./BidResult"
+import { BidderPositionResult, BidResultScreen } from "./BidResult"
 
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
 
@@ -48,18 +48,22 @@ export const bidderPositionMutation = graphql`
   mutation ConfirmBidMutation($input: BidderPositionInput!) {
     createBidderPosition(input: $input) {
       result {
-        position {
-          id
-        }
         status
         message_header
         message_description_md
+        position {
+          id
+          suggested_next_bid {
+            cents
+            display
+          }
+        }
       }
     }
   }
 `
 
-const queryForBidPosition = (bidderPositionID: string) => {
+export const queryForBidPosition = (bidderPositionID: string) => {
   return metaphysics({
     query: `
       {
@@ -70,8 +74,6 @@ const queryForBidPosition = (bidderPositionID: string) => {
             message_description_md
             position {
               id
-              processed_at
-              is_active
               suggested_next_bid {
                 cents
                 display
@@ -83,14 +85,6 @@ const queryForBidPosition = (bidderPositionID: string) => {
     `,
   })
 }
-
-const messageForPollingTimeout = `
-  We’re receiving a high volume of traffic
-  and your bid is still processing.
-
-  If you don’t receive an update soon,
-  please contact [support@artsy.net](mailto:support@artsy.net).
-`
 
 @screenTrack({
   context_screen: Schema.PageNames.BidFlowConfirmBidPage,
@@ -136,12 +130,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   verifyBidPosition(results, errors) {
     // TODO: Need to handle if the results object is empty, for example if errors occurred and no request was made
     // TODO: add analytics for errors
-    const { status, position, message_header, message_description_md } = results.createBidderPosition.result
+    const { result } = results.createBidderPosition
 
-    if (!errors && status === "SUCCESS") {
-      this.bidPlacedSuccessfully(position.id)
+    if (!errors && result.status === "SUCCESS") {
+      this.bidPlacedSuccessfully(result.position.id)
     } else {
-      this.presentBidResult(status, message_header, message_description_md)
+      this.presentBidResult(result)
     }
   }
 
@@ -154,23 +148,19 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   checkBidPosition(result) {
-    const { status, position, message_header, message_description_md } = result.data.me.bidder_position
+    const { bidder_position } = result.data.me
 
-    if (status === "PENDING") {
-      if (this.pollCount > MAX_POLL_ATTEMPTS) {
-        this.presentBidResult("PROCESSING", "Bid Processing", messageForPollingTimeout)
-      } else {
-        // initiating new request here (vs setInterval) to make sure we wait for the previous call to return before making a new one
-        setTimeout(() => queryForBidPosition(position.id).then(this.checkBidPosition.bind(this)), 1000)
+    if (bidder_position.status === "PENDING" && this.pollCount < MAX_POLL_ATTEMPTS) {
+      // initiating new request here (vs setInterval) to make sure we wait for the previous call to return before making a new one
+      setTimeout(() => queryForBidPosition(bidder_position.position.id).then(this.checkBidPosition.bind(this)), 1000)
 
-        this.pollCount += 1
-      }
+      this.pollCount += 1
     } else {
-      this.presentBidResult(status, message_header, message_description_md, position.suggested_next_bid)
+      this.presentBidResult(bidder_position)
     }
   }
 
-  presentBidResult(status: string, messageHeader?: string, messageDescriptionMd?: string, suggestedNextBid?: Bid) {
+  presentBidResult(bidderPositionResult: BidderPositionResult) {
     if (this.props.refreshSaleArtwork) {
       this.props.refreshSaleArtwork()
     }
@@ -179,11 +169,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       title: "",
       passProps: {
         sale_artwork: this.props.sale_artwork,
-        status,
-        message_header: messageHeader,
-        message_description_md: messageDescriptionMd,
-        winning: status === "WINNING",
-        suggested_next_bid: suggestedNextBid,
+        bidderPositionResult,
       },
     })
 
