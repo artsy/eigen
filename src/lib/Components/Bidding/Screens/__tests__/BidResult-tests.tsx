@@ -49,10 +49,6 @@ const saleArtwork = {
     id: "sale-id",
   },
 }
-const bid = {
-  display: "$11,000",
-  cents: 1100000,
-}
 
 describe("BidResult component", () => {
   Date.now = jest.fn(() => 1525983752116)
@@ -62,7 +58,7 @@ describe("BidResult component", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
     xit("renders winning screen properly", () => {
       const component = renderer.create(
-        <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} bid={bid} navigator={jest.fn() as any} />
+        <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
       )
 
       expect(component.toJSON()).toMatchSnapshot()
@@ -70,7 +66,7 @@ describe("BidResult component", () => {
 
     it("renders a timer", () => {
       const component = shallow(
-        <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} bid={bid} navigator={jest.fn() as any} />
+        <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
       )
 
       expect(component.find("Timer")).toHaveLength(1)
@@ -78,7 +74,7 @@ describe("BidResult component", () => {
 
     it("dismisses the controller when the continue button is pressed", () => {
       const bidResult = renderer.create(
-        <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} bid={bid} navigator={jest.fn() as any} />
+        <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
       )
       const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
       mockDismiss.mockReturnValueOnce(Promise.resolve())
@@ -104,7 +100,6 @@ describe("BidResult component", () => {
           winning={false}
           sale_artwork={saleArtwork}
           status="OUTBID"
-          bid={bid}
           message_header={messageHeader}
           message_description_md={messageDescriptionMd}
           navigator={jest.fn() as any}
@@ -120,7 +115,6 @@ describe("BidResult component", () => {
           winning={false}
           sale_artwork={saleArtwork}
           status="OUTBID"
-          bid={bid}
           message_header={messageHeader}
           message_description_md={messageDescriptionMd}
           navigator={jest.fn() as any}
@@ -136,7 +130,6 @@ describe("BidResult component", () => {
           winning={false}
           sale_artwork={saleArtwork}
           status="OUTBID"
-          bid={bid}
           message_header={messageHeader}
           message_description_md={messageDescriptionMd}
           navigator={mockNavigator as any}
@@ -162,7 +155,6 @@ To continue bidding, please [join the live auction](http://live-staging.artsy.ne
           winning={false}
           sale_artwork={saleArtwork}
           status={status}
-          bid={bid}
           message_header={messageHeader}
           message_description_md={messageDescriptionMd}
           navigator={jest.fn() as any}
@@ -178,7 +170,6 @@ To continue bidding, please [join the live auction](http://live-staging.artsy.ne
           winning={false}
           sale_artwork={saleArtwork}
           status={status}
-          bid={bid}
           message_header={messageHeader}
           message_description_md={messageDescriptionMd}
           navigator={jest.fn() as any}
@@ -194,7 +185,6 @@ To continue bidding, please [join the live auction](http://live-staging.artsy.ne
           winning={false}
           sale_artwork={saleArtwork}
           status={status}
-          bid={bid}
           message_header={messageHeader}
           message_description_md={messageDescriptionMd}
           navigator={jest.fn() as any}
