@@ -81,14 +81,14 @@ it("shows a spinner while fetching new bid increments", () => {
   expect(component.root.findByType(Spinner)).toBeDefined()
 })
 
-it("refetches in next component's bidWasProcessed", () => {
+it("refetches in next component's refreshSaleArtwork", () => {
   const component = renderer.create(
     <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
   )
   component.root.findByType(Button).instance.props.onPress()
   const nextScreen = fakeNavigator.nextStep()
 
-  nextScreen.root.instance.props.bidWasProcessed()
+  nextScreen.root.instance.props.refreshSaleArtwork()
 
   expect(fakeRelay.refetch).toHaveBeenCalledWith({ saleArtworkID: "sale-artwork-id" }, null, expect.anything(), {
     force: true,
@@ -106,7 +106,7 @@ it("removes the spinner once the refetch is complete", () => {
     callback()
   })
 
-  nextScreen.root.instance.props.bidWasProcessed()
+  nextScreen.root.instance.props.refreshSaleArtwork()
 
   expect(component.root.findAllByType(Spinner).length).toEqual(0)
 })

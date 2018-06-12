@@ -59,7 +59,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
       passProps: {
         sale_artwork: this.props.sale_artwork,
         bid: this.props.sale_artwork.increments[this.state.selectedBidIndex],
-        bidWasProcessed: this.refreshSaleArtwork,
+        refreshSaleArtwork: this.refreshSaleArtwork,
       },
     })
   }
