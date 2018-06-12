@@ -54,6 +54,7 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
     display
     cents
   }
+  _id
   ...ConfirmBid_sale_artwork
   ...ConfirmFirstTimeBid_sale_artwork
   __id
@@ -176,7 +177,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersBidFlowQuery",
-  "id": "870d3adf6c2c5f8454b5f7feeb13287b",
+  "id": "ef69d1b919649c68d40cbaf4f0e4744e",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -269,6 +270,13 @@ return {
                   v4,
                   v5
                 ]
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "_id",
+                "args": null,
+                "storageKey": null
               },
               {
                 "kind": "LinkedField",

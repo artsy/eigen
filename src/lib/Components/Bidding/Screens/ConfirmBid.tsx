@@ -34,6 +34,7 @@ export interface ConfirmBidProps extends ViewProperties {
   bid: Bid
   relay?: RelayPaginationProp
   navigator?: NavigatorIOS
+  refreshSaleArtwork?: () => void
 }
 
 interface ConformBidState {
@@ -170,6 +171,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
   }
 
   presentBidResult(status: string, messageHeader?: string, messageDescriptionMd?: string, suggestedNextBid?: Bid) {
+    if (this.props.refreshSaleArtwork) {
+      this.props.refreshSaleArtwork()
+    }
     this.props.navigator.push({
       component: BidResultScreen,
       title: "",
