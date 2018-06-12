@@ -41,16 +41,15 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
   }
 
   refreshSaleArtwork = () => {
-    this.setState({ isRefreshingSaleArtwork: true }, () => {
-      this.props.relay.refetch(
-        { saleArtworkID: this.props.sale_artwork._id },
-        null,
-        () => {
-          this.setState({ isRefreshingSaleArtwork: false })
-        },
-        { force: true }
-      )
-    })
+    this.setState({ isRefreshingSaleArtwork: true })
+    this.props.relay.refetch(
+      { saleArtworkID: this.props.sale_artwork._id },
+      null,
+      () => {
+        this.setState({ isRefreshingSaleArtwork: false })
+      },
+      { force: true }
+    )
   }
 
   onPressNext = () => {
