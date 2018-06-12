@@ -5,4 +5,6 @@
 
 + (instancetype)nodeWithConfig:(ARAugmentedRealityConfig *)config;
 
++ (instancetype)shadowNodeWithConfig:(ARAugmentedRealityConfig *)config;
+
 @end

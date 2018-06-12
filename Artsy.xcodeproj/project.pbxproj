@@ -486,6 +486,7 @@
 		6036B1DE20337EC700763E10 /* ARAugmentedVIRSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B1DD20337EC700763E10 /* ARAugmentedVIRSetupViewController.m */; };
 		6036B1E1203384DD00763E10 /* ARAugmentRealitySetupViewControllerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B1E0203384DC00763E10 /* ARAugmentRealitySetupViewControllerSpec.m */; };
 		6036B5651760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6036B5641760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.m */; };
+		6037340420CF1BFF0017A4D9 /* ARVIRShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6037340320CF1BFF0017A4D9 /* ARVIRShadow.png */; };
 		6037442516D4227500AE7788 /* ARSwitchBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 6037442416D4227500AE7788 /* ARSwitchBoard.m */; };
 		60388703189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 60388702189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.m */; };
 		60388706189C103F00D3EEAA /* ARFairMapZoomManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60388705189C103F00D3EEAA /* ARFairMapZoomManager.m */; };
@@ -1580,6 +1581,7 @@
 		6036B1E0203384DC00763E10 /* ARAugmentRealitySetupViewControllerSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentRealitySetupViewControllerSpec.m; sourceTree = "<group>"; };
 		6036B5631760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+SiteFunctions.h"; sourceTree = "<group>"; };
 		6036B5641760E22E00F1DD01 /* ArtsyAPI+SiteFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+SiteFunctions.m"; sourceTree = "<group>"; };
+		6037340320CF1BFF0017A4D9 /* ARVIRShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRShadow.png; sourceTree = "<group>"; };
 		6037442316D4227500AE7788 /* ARSwitchBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSwitchBoard.h; sourceTree = "<group>"; };
 		6037442416D4227500AE7788 /* ARSwitchBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSwitchBoard.m; sourceTree = "<group>"; };
 		60388701189C0F0B00D3EEAA /* ARTiledImageDataSourceWithImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTiledImageDataSourceWithImage.h; sourceTree = "<group>"; };
@@ -4276,6 +4278,7 @@
 		60A168CD20647951008A086C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6037340320CF1BFF0017A4D9 /* ARVIRShadow.png */,
 				6016120120B7446700FD54B0 /* ARVIRModalClose.png */,
 				6016120220B7446800FD54B0 /* ARVIRModalClose@2x.png */,
 				6016120320B7446800FD54B0 /* ARVIRModalClose@3x.png */,
@@ -5146,6 +5149,7 @@
 				66A43C6B1CE48FA800FFD6ED /* SearchButtonWhite@2x.png in Resources */,
 				7FB8852920A3704700DE5E82 /* checkbox_unselected.png in Resources */,
 				3C4AE99619094F96009C0E8B /* ViewInRoom_Wall_Right@2x.png in Resources */,
+				6037340420CF1BFF0017A4D9 /* ARVIRShadow.png in Resources */,
 				5E17B1941C59645E00CE6E98 /* Range@2x.png in Resources */,
 				1CC9EBA31CC76CDD00A74E3C /* followButton@3x.png in Resources */,
 				608C6DCF1FAA11630044E235 /* nav_profile@2x.png in Resources */,
