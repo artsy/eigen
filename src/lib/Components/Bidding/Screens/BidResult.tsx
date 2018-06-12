@@ -58,6 +58,7 @@ const messageForPollingTimeout = `
 
 const Icons = {
   WINNING: require("../../../../../images/circle-check-green.png"),
+  PENDING: require("../../../../../images/circle-exclamation.png"),
 }
 
 export class BidResult extends React.Component<BidResultProps> {
