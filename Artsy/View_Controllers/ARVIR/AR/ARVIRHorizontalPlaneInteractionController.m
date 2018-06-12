@@ -3,6 +3,7 @@
 @import SceneKit;
 
 #import "ARDefaults.h"
+#import "ARAppConstants.h"
 #import "ARSCNWallNode.h"
 #import "SCNArtworkNode.h"
 #import "ARAugmentedRealityConfig.h"
@@ -12,6 +13,7 @@
 typedef NS_ENUM(NSInteger, ARHorizontalVIRMode) {
     ARHorizontalVIRModeLaunching,
     ARHorizontalVIRModeDetectedFloor,
+    ARHorizontalVIRModeDetectedFloorPostTransition,
     ARHorizontalVIRModeCreatedWall,
     ARHorizontalVIRModePlacedOnWall
 };
@@ -103,10 +105,16 @@ NSInteger attempt = 0;
     switch (state) {
         case ARHorizontalVIRModeLaunching:
             break;
-        case ARHorizontalVIRModeDetectedFloor:
-            [self fadeOutAndPresentTheLine];
+        case ARHorizontalVIRModeDetectedFloor: {
             [self.delegate hasRegisteredPlanes];
             [self vibrate:UIImpactFeedbackStyleHeavy];
+            ar_dispatch_after(2, ^{
+                  self.state = ARHorizontalVIRModeDetectedFloorPostTransition;
+            });
+            break;
+        }
+        case ARHorizontalVIRModeDetectedFloorPostTransition:
+            [self fadeOutPointCloud];
             break;
         case ARHorizontalVIRModeCreatedWall:
             [self.delegate hasPlacedWall];
@@ -169,7 +177,7 @@ NSInteger attempt = 0;
                 SCNVector3 bottomPosition = SCNVector3Make(userPosition.x, result.worldCoordinates.y, userPosition.z);
                 [userWall lookAt:bottomPosition];
 
-                userWall.position = SCNVector3Make(userWall.position.x, userWall.position.y, userWall.position.z +  + [ARSCNWallNode wallHeight] / 2);
+                userWall.position = SCNVector3Make(userWall.position.x, userWall.position.y, userWall.position.z + [ARSCNWallNode wallHeight] / 2);
 
                 self.wall = userWall;
 
@@ -211,9 +219,9 @@ NSInteger attempt = 0;
     }
 }
 
-- (void)fadeOutAndPresentTheLine
+- (void)fadeOutPointCloud
 {
-    SCNAction *fade = [SCNAction fadeOutWithDuration:0.3];
+    SCNAction *fade = [SCNAction fadeOutWithDuration: ARAnimationDuration * 2];
     [self.pointCloudNode runAction:fade completionHandler:^{
         [self.pointCloudNode removeFromParentNode];
         self.pointCloudNode = nil;
@@ -223,12 +231,13 @@ NSInteger attempt = 0;
 - (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0));
 {
     switch (self.state) {
-        case ARHorizontalVIRModeLaunching: {
+        case ARHorizontalVIRModeLaunching:
+        case ARHorizontalVIRModeDetectedFloor: {
             [self renderWhileFindingFloor:frame];
             break;
         }
 
-        case ARHorizontalVIRModeDetectedFloor: {
+        case ARHorizontalVIRModeDetectedFloorPostTransition: {
             [self renderWhenPlacingWall:frame];
             break;
         }
@@ -413,7 +422,7 @@ NSInteger attempt = 0;
     if (![anchor isKindOfClass:ARPlaneAnchor.class]) { return; }
     if (self.invisibleFloors.count) { return; }
 
-    if (self.state == ARHorizontalVIRModeLaunching){
+    if (self.state == ARHorizontalVIRModeLaunching) {
         self.state = ARHorizontalVIRModeDetectedFloor;
     }
 
