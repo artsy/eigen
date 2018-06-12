@@ -3,7 +3,7 @@
 
 @implementation SCNArtworkNode
 
-+ (instancetype)nodeWithConfig:(ARAugmentedRealityConfig *)config
++ (instancetype)boxWithConfig:(ARAugmentedRealityConfig *)config
 {
     CGFloat width = [[[[NSMeasurement alloc] initWithDoubleValue:config.size.width
                                                             unit:NSUnitLength.inches]
@@ -19,6 +19,11 @@
                                                              unit:NSUnitLength.inches]
                        measurementByConvertingToUnit:NSUnitLength.meters]
                       doubleValue];
+    return [SCNArtworkNode boxWithWidth:width height:height length:length chamferRadius:0];
+}
+
++ (instancetype)nodeWithConfig:(ARAugmentedRealityConfig *)config
+{
 
     // Sides / Back
     SCNMaterial *blackMaterial = [SCNMaterial material];
@@ -31,7 +36,7 @@
     imageMaterial.locksAmbientWithDiffuse = YES;
     imageMaterial.lightingModelName = SCNLightingModelPhysicallyBased;
 
-    SCNArtworkNode *box = [SCNArtworkNode boxWithWidth:width height:height length:length chamferRadius:0];
+    SCNArtworkNode *box = [self boxWithConfig:config];
     box.materials =  @[blackMaterial, blackMaterial, imageMaterial, blackMaterial, blackMaterial, blackMaterial];
     box.name = @"Artwork";
 
@@ -40,18 +45,57 @@
 
 
 
++ (SCNNode *)ghostOutlineNodeWithConfig:(ARAugmentedRealityConfig *)config
+{
+    SCNMaterial *whiteMaterial = [SCNMaterial material];
+    whiteMaterial.diffuse.contents = [UIColor whiteColor];
+    whiteMaterial.locksAmbientWithDiffuse = YES;
+
+    NSArray *materials =  @[whiteMaterial, whiteMaterial, whiteMaterial, whiteMaterial, whiteMaterial, whiteMaterial];
+
+    CGFloat width = [[[[NSMeasurement alloc] initWithDoubleValue:config.size.width
+                                                            unit:NSUnitLength.inches]
+                                   measurementByConvertingToUnit:NSUnitLength.meters] doubleValue];
+
+    CGFloat height = [[[[NSMeasurement alloc] initWithDoubleValue:config.size.height
+                                                             unit:NSUnitLength.inches]
+                                    measurementByConvertingToUnit:NSUnitLength.meters] doubleValue];
+
+    CGFloat distance = 0.001;
+    CGFloat nonOrdinalLength = 0.01; // e.g. the sides
+
+    SCNBox *top = [SCNBox boxWithWidth:width + nonOrdinalLength height:nonOrdinalLength length:nonOrdinalLength chamferRadius:0];
+    top.materials = materials;
+    SCNNode *topNode = [SCNNode nodeWithGeometry:top];
+    topNode.position =  SCNVector3Make(0, -(height/2) - distance, 0);
+
+    SCNBox *bottom = [SCNBox boxWithWidth:width + nonOrdinalLength height:nonOrdinalLength length:nonOrdinalLength chamferRadius:0];
+    bottom.materials = materials;
+    SCNNode *bottomNode = [SCNNode nodeWithGeometry:bottom];
+    bottomNode.position =  SCNVector3Make(0, (height/2) + distance, 0);
+
+    SCNBox *left = [SCNBox boxWithWidth:nonOrdinalLength height:height + nonOrdinalLength length:nonOrdinalLength chamferRadius:0];
+    left.materials = materials;
+    SCNNode *leftNode = [SCNNode nodeWithGeometry:left];
+    leftNode.position =  SCNVector3Make(width/2 + distance, 0, 0);
+
+    SCNBox *right = [SCNBox boxWithWidth:nonOrdinalLength height:height  + nonOrdinalLength length:nonOrdinalLength chamferRadius:0];
+    right.materials = materials;
+    SCNNode *rightNode = [SCNNode nodeWithGeometry:right];
+    rightNode.position =  SCNVector3Make(-width/2 - distance, 0, 0);
+
+    SCNNode *hostNode = [SCNNode node];
+    [hostNode addChildNode:topNode];
+    [hostNode addChildNode:bottomNode];
+    [hostNode addChildNode:leftNode];
+    [hostNode addChildNode:rightNode];
+
+    return hostNode;
+}
+
+
 + (instancetype)shadowNodeWithConfig:(ARAugmentedRealityConfig *)config
 {
-    CGFloat width = [[[[NSMeasurement alloc] initWithDoubleValue:config.size.width + 10
-                                                            unit:NSUnitLength.inches]
-                      measurementByConvertingToUnit:NSUnitLength.meters]
-                     doubleValue];
-
-    CGFloat height = [[[[NSMeasurement alloc] initWithDoubleValue:config.size.height + 10
-                                                             unit:NSUnitLength.inches]
-                       measurementByConvertingToUnit:NSUnitLength.meters]
-                      doubleValue];
-
     // Sides / Back
     SCNMaterial *clearMaterial = [SCNMaterial material];
     clearMaterial.diffuse.contents = [UIColor clearColor];
@@ -62,7 +106,8 @@
     imageMaterial.locksAmbientWithDiffuse = YES;
     imageMaterial.lightingModelName = SCNLightingModelConstant;
 
-    SCNArtworkNode *box = [SCNArtworkNode boxWithWidth:width height:height length:0.1 chamferRadius:0];
+    SCNArtworkNode *box = [SCNArtworkNode boxWithConfig:config];
+    box.length = 0.1;
     box.materials =  @[clearMaterial, clearMaterial, imageMaterial, clearMaterial, clearMaterial, clearMaterial];
     box.name = @"Artwork Shadow";
 

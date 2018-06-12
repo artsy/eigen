@@ -72,8 +72,8 @@ NSInteger attempt = 0;
 
     CGRect bounds = [UIScreen mainScreen].bounds;
     self.pointOnScreenForWallProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2);
-    // Use a subset of the screen for centering, the 220 comes from the height of the UI in the ARAugmentedVIRVC
-    self.pointOnScreenForArtworkProjection = CGPointMake(bounds.size.width/2, bounds.size.height/2 - 220);
+    // Use a subset of the screen for centering, the 221 comes from the height of the UI in the ARAugmentedVIRVC
+    self.pointOnScreenForArtworkProjection = CGPointMake(bounds.size.width/2, (bounds.size.height - 221) /2 );
 
     self.detectedPlanes = @[];
     self.invisibleFloors = @[];
@@ -220,6 +220,7 @@ NSInteger attempt = 0;
 
                 self.artwork = artwork;
                 [self.ghostWallLine removeFromParentNode];
+                [self.ghostArtwork removeFromParentNode];
 
                 self.state = ARHorizontalVIRModePlacedOnWall;
                 return;
@@ -232,8 +233,12 @@ NSInteger attempt = 0;
 {
     SCNAction *fade = [SCNAction fadeOutWithDuration: ARAnimationDuration * 2];
     [self.pointCloudNode runAction:fade completionHandler:^{
-        [self.pointCloudNode removeFromParentNode];
-        self.pointCloudNode = nil;
+        ar_dispatch_main_queue(^{
+            if (self.pointCloudNode) {
+                [self.pointCloudNode removeFromParentNode];
+                self.pointCloudNode = nil;
+            }
+        });
     }];
 }
 
@@ -374,15 +379,22 @@ NSInteger attempt = 0;
         if ([self.wall isEqual:result.node]) {
             // Create a ghost artwork
             if (!self.ghostArtwork) {
+                // Artwork + Outline live inside this node
+                SCNNode *rootNode = [SCNNode node];
+                rootNode.position = result.localCoordinates;
+                rootNode.eulerAngles = SCNVector3Make(0, 0, -M_PI);
+
                 SCNBox *box = [SCNArtworkNode nodeWithConfig:self.config];
                 SCNNode *artwork = [SCNNode nodeWithGeometry:box];
-                artwork.position = result.localCoordinates;
-
                 artwork.opacity = 0.5;
-                artwork.eulerAngles = SCNVector3Make(0, 0, -M_PI);
 
-                [result.node addChildNode:artwork];
-                self.ghostArtwork = artwork;
+                SCNNode *outline = [SCNArtworkNode ghostOutlineNodeWithConfig:self.config];
+
+                [rootNode addChildNode:outline];
+                [rootNode addChildNode:artwork];
+                [result.node addChildNode:rootNode];
+
+                self.ghostArtwork = rootNode;
             }
 
             self.ghostArtwork.position = result.localCoordinates;
