@@ -139,7 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     InformationalViewState *congratsArtworkMarker = [[InformationalViewState alloc] init];
     congratsArtworkMarker.xOutOfYMessage = @" ";
-    congratsArtworkMarker.bodyString = @"OK – the work has been placed. Walk around the work to view it in your space.";
+    congratsArtworkMarker.bodyString = @"The work has been placed. Walk around the work to view it in your space.";
 
     ARClearFlatButton *doneArtworkButton = [[_ARClearFlatButton alloc] init];
     [doneArtworkButton setTitle:@"Done" forState:UIControlStateNormal];
