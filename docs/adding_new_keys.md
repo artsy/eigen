@@ -2,7 +2,7 @@
 
 Emission uses [`cocoapods-keys`](https://github.com/orta/cocoapods-keys) to store secrets (similar to a `.env` file). In order to expose these keys to our react-native components we must do a fair bit of setup.
 
-Links to examples below come from [this commit](https://github.com/artsy/emission/pull/1086/commits/4a2a3e9260e97d791536cf38376a06b0ad0946a8) adds a key for the Stripe API.
+Links to examples below come from [this commit](https://github.com/artsy/emission/pull/1086/commits/4a2a3e9260e97d791536cf38376a06b0ad0946a8) which adds a key for the Stripe API.
 
 ## Steps
 
@@ -11,13 +11,13 @@ Links to examples below come from [this commit](https://github.com/artsy/emissio
 This is the extent of `cocoapods-keys` official setup, and after this you **could** set the key via `pod keys set <NAME>` or `pod install`... but we have more to do.
 [Example/Podfile](https://github.com/artsy/emission/blob/4a2a3e9260e97d791536cf38376a06b0ad0946a8/Example/Podfile#L63)
 
-```ruby
+```diff
 plugin 'cocoapods-keys', {
   :target => 'Emission',
   :keys => [
     'ArtsyAPIClientSecret',   # Authing to the Artsy API
     'ArtsyAPIClientKey',      #
-    'StripePublishableKey',   # A new key!
++    'StripePublishableKey',
   ]
 }
 ```
@@ -30,16 +30,16 @@ We'll need to update the `initWithUserId...` function, expose the new key as a p
 
 [AREmission.h](https://github.com/artsy/emission/blob/4a2a3e9260e97d791536cf38376a06b0ad0946a8/Pod/Classes/Core/AREmission.h#L17-L34):
 
-```objc
+```diff
 // ENV Variables
-@property (nonatomic, copy, readonly, nullable) NSString *stripePublishableKey; # Add this line
++ @property (nonatomic, copy, readonly, nullable) NSString *stripePublishableKey;
 
 # ...
 
-- (instancetype)initWithUserID:(NSString *)userID
+ - (instancetype)initWithUserID:(NSString *)userID
            authenticationToken:(NSString *)token
                      sentryDSN:(nullable NSString *)sentryDSN
-          stripePublishableKey:(NSString *)stripePublishableKey # Add this line
++         stripePublishableKey:(NSString *)stripePublishableKey
               googleMapsAPIKey:(nullable NSString *)googleAPIKey
                     gravityURL:(NSString *)gravity
                 metaphysicsURL:(NSString *)metaphysics
@@ -48,32 +48,31 @@ We'll need to update the `initWithUserId...` function, expose the new key as a p
 
 [AREmission.m](https://github.com/artsy/emission/blob/4a2a3e9260e97d791536cf38376a06b0ad0946a8/Pod/Classes/Core/AREmission.m#L24-L60):
 
-```objc
-- (NSDictionary *)constantsToExport
-{
-  return @{
-    # Add this line...
-    @"stripePublishableKey": self.stripePublishableKey ?: @"",
-    # ...
-  };
-}
+```diff
+ - (NSDictionary *)constantsToExport
+ {
+   return @{
+     # Add this line...
++    @"stripePublishableKey": self.stripePublishableKey ?: @"",
+     # ...
+   };
+ }
 
-- (instancetype)initWithUserID:(NSString *)userID
-           authenticationToken:(NSString *)token
-                     sentryDSN:(NSString *)sentryDSN
-          stripePublishableKey:(NSString *)stripePublishableKey # Add this line
-              googleMapsAPIKey:(NSString *)googleAPIKey
-                    gravityURL:(NSString *)gravity
-                metaphysicsURL:(NSString *)metaphysics
-                     userAgent:(nonnull NSString *)userAgent
-{
-    self = [super init];
-    _userID = userID.copy;
-    # ... More copies...
-    _stripePublishableKey = stripePublishableKey.copy;   # And this line
-    # ... Even more copies...
-    return self;
-}
+ - (instancetype)initWithUserID:(NSString *)userID
+            authenticationToken:(NSString *)token
+                      sentryDSN:(NSString *)sentryDSN
++          stripePublishableKey:(NSString *)stripePublishableKey
+               googleMapsAPIKey:(NSString *)googleAPIKey
+                     gravityURL:(NSString *)gravity
+                 metaphysicsURL:(NSString *)metaphysics
+                      userAgent:(nonnull NSString *)userAgent
+ {
+     self = [super init];
+     _userID = userID.copy;
+     # ... More copies...
++    _stripePublishableKey = stripePublishableKey.copy;
+     return self;
+ }
 ```
 
 ---
