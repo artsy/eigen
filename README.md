@@ -80,7 +80,7 @@ There is a comprehensive document covering [the various options](docs/debugging.
 
 ### Understanding Relay
 
-We have some debugging tip [when using Relay](docs/relay.md).
+We have some debugging tips [when using Relay](docs/relay.md).
 
 ---
 
