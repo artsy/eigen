@@ -59,17 +59,17 @@ it("shows 'Live' when the liveStartsAt prop is given", () => {
 })
 
 it("counts down to zero", () => {
-  const timer = renderer.create(<Timer endsAt="2018-05-14T10:24:31+00:00" />)
+  const timer = renderer.create(<Timer endsAt="2018-05-14T10:23:10+00:00" />)
 
-  expect(getTimerText(timer)).toEqual("03d  14h  01m  59s")
+  expect(getTimerText(timer)).toEqual("03d  14h  00m  38s")
 
   jest.advanceTimersByTime(2 * SECONDS)
 
-  expect(getTimerText(timer)).toEqual("03d  14h  01m  57s")
+  expect(getTimerText(timer)).toEqual("03d  14h  00m  36s")
 
-  jest.advanceTimersByTime(20 * MINUTES)
+  jest.advanceTimersByTime(1 * MINUTES)
 
-  expect(getTimerText(timer)).toEqual("03d  13h  41m  57s")
+  expect(getTimerText(timer)).toEqual("03d  13h  59m  36s")
 })
 
 it("shows month, date, and hour adjusted for the timezone where the user is", () => {
