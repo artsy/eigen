@@ -70,7 +70,7 @@ We'll need to update the `initWithUserId...` function, expose the new key as a p
     self = [super init];
     _userID = userID.copy;
     # ... More copies...
-    _stripePublishableKey = stripePublishableKey.copy;
+    _stripePublishableKey = stripePublishableKey.copy;   # And this line
     # ... Even more copies...
     return self;
 }
@@ -78,26 +78,46 @@ We'll need to update the `initWithUserId...` function, expose the new key as a p
 
 ---
 
-#### 3. Consume that key in the /Example app.
+#### 3. Configure that exposed key in the /Example app.
+
+Make sure we have imported they keys (this should already be done) and initialize the new configuration with the signature we defined above.
 
 [Example/Emission/AppDelegate.m](https://github.com/artsy/emission/blob/4a2a3e9260e97d791536cf38376a06b0ad0946a8/Example/Emission/AppDelegate.m#L109)
 
 ```objc
-# Make sure we have imported they keys (this should already be done)
 #import <Keys/EmissionKeys.h>
 
 # Add the key to our initWith...  call, following the signature we defined in the previous step
 - (void)setupEmissionWithUserID:(NSString *)userID accessToken:(NSString *)accessToken keychainService:(NSString *)service;
 {
   # ...
+
   # stripePublishableKey is somewhere down there...
+
   AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID authenticationToken:accessToken sentryDSN:nil stripePublishableKey:[keys stripePublishableKey] googleMapsAPIKey:nil gravityURL:setup.gravityURL metaphysicsURL:setup.metaphysicsURL userAgent:@"Emission Example"];
   # ...
 ```
 
 ---
 
-#### 4. Add any default setup to the Makefile
+#### 4. Use that configured key in a `react-native` component.
+
+`Emission` is now exposed along with its configured keys via `react-native`'s `NativeModules`.
+
+```tsx
+import { NativeModules } from "react-native"
+const Emission = NativeModules.Emission || {}
+
+// ... other setup ...
+
+stripe.setOptions({
+  publishableKey: Emission.stripePublishableKey,
+})
+```
+
+---
+
+#### 5. Add any default setup to the Makefile
 
 [Makefile](https://github.com/artsy/emission/blob/4a2a3e9260e97d791536cf38376a06b0ad0946a8/Makefile#L56)
 
