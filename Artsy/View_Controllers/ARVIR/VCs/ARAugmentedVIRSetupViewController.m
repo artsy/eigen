@@ -15,7 +15,6 @@
 #import "ARAugmentedRealityConfig.h"
 #import "UIViewController+SimpleChildren.h"
 #import "ARAugmentedVIRSetupViewController.h"
-#import "ARAugmentedVIRViewController.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
 
 @interface ARAugmentedVIRSetupViewController () <ARMenuAwareViewController>
@@ -237,8 +236,7 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
         if (allowedAccess) {
             [self.defaults setBool:YES forKey:ARAugmentedRealityHasTriedToSetup];
 
-            Class Controller = [AROptions boolForOption:AROptionsFloorBasedARVIR] ? ARAugmentedFloorBasedVIRViewController.class : ARAugmentedVIRViewController.class;
-            id vc = [[Controller alloc] initWithConfig:self.config];
+            id vc = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:self.config];
             [self.navigationController pushViewController:vc animated:YES];
         } else {
             [self requestDenied];

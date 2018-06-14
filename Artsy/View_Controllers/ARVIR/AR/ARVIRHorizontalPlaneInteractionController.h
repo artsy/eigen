@@ -1,5 +1,6 @@
-#import "ARVIRVerticalWallInteractionController.h"
 #import <Foundation/Foundation.h>
+#import "ARVIRHorizontalPlaneInteractionController.h"
+#import "ARAugmentedFloorBasedVIRViewController.h"
 
 @interface ARVIRHorizontalPlaneInteractionController : NSObject  <ARSCNViewDelegate, ARVIRInteractive, ARSessionDelegate>
 
