@@ -62,17 +62,17 @@ storiesOf("Bidding")
       <ConfirmBid
         sale_artwork={{
           sale: {
-            id: "1",
+            id: "sale-id",
             live_start_at: "2018-06-11T01:00:00+00:00",
             end_at: null,
           },
           artwork: {
-            id: "1",
+            id: "artwork-id",
             title: "Morgan Hill (Prototype)",
             date: "1973",
             artist_names: "Lewis balts",
           },
-          lot_label: "1",
+          lot_label: "2",
         }}
         bid={{ display: "$45,000", cents: 4500000 }}
       />
