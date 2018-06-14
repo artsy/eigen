@@ -13,6 +13,13 @@ jest.mock("../../../metaphysics", () => ({ metaphysics: jest.fn() }))
 import { metaphysics } from "../../../metaphysics"
 import { Title } from "../Components/Title"
 
+jest.mock("tipsi-stripe", () => ({
+  setOptions: jest.fn(),
+  paymentRequestWithCardForm: jest.fn(),
+  createTokenWithCard: jest.fn(),
+}))
+import stripe from "tipsi-stripe"
+
 const mockphysics = metaphysics as jest.Mock<any>
 let fakeNavigator: FakeNavigator
 let fakeRelay
@@ -75,19 +82,66 @@ it("allows bidders without a qualified credit card to register a card and bid", 
 
   expect(getTitleText(screen)).toEqual("Confirm your bid")
 
-  mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestedBidder))
+  stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
   relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted(mockRequestResponses.placeingBid.bidAccepted))
+  mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestedBidder))
 
-  // TODO: Add billing address
-  // TODO: Add credit card
-  // screen.root.findByType(Checkbox).instance.props.onPress()
-  // screen.root.findByType(Button).instance.props.onPress()
-  // jest.runAllTicks()
+  // manually setting state to avoid dplicating tests for skipping UI interation, but practically better not to do this.
+  screen.root.instance.setState({
+    billingAddress,
+    creditCardFormParams,
+    creditCardToken: {
+      card: {
+        brand: "visa",
+        last4: "4242",
+      },
+    },
+  })
 
-  // screen = fakeNavigator.nextStep()
+  screen.root.findByType(Checkbox).instance.props.onPress()
+  screen.root.findByType(Button).instance.props.onPress()
+  jest.runAllTicks()
 
-  // expect(getTitleText(screen)).toEqual("You're the highest bidder")
+  expect(stripe.createTokenWithCard).toHaveBeenCalledWith({
+    ...creditCardFormParams,
+    name: billingAddress.fullName,
+    addressLine1: billingAddress.addressLine1,
+    addressLine2: null,
+    addressCity: billingAddress.city,
+    addressState: billingAddress.state,
+    addressZip: billingAddress.postalCode,
+  })
+
+  screen = fakeNavigator.nextStep()
+
+  expect(getTitleText(screen)).toEqual("You're the highest bidder")
 })
+
+const stripeToken = {
+  tokenId: "token-id",
+  created: 1528817746,
+  livemode: 10,
+  card: {
+    brand: "VISA",
+    last4: "4242",
+  },
+}
+
+const billingAddress = {
+  fullName: "Yuki Stockmeier",
+  addressLine1: "401 Broadway",
+  addressLine2: "25th floor",
+  city: "New York",
+  state: "NY",
+  postalCode: "10013",
+}
+
+const creditCardFormParams = {
+  number: "4242424242424242",
+  expMonth: "12",
+  expYear: "2020",
+  cvc: "314",
+}
 
 const Me = {
   qualifiedUser: {

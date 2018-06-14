@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *authenticationToken;
 
 // ENV Variables
+@property (nonatomic, copy, readonly, nullable) NSString *stripePublishableKey;
 @property (nonatomic, copy, readonly, nullable) NSString *sentryDSN;
 @property (nonatomic, copy, readonly, nullable) NSString *googleMapsAPIKey;
 
@@ -30,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithUserID:(NSString *)userID
            authenticationToken:(NSString *)token
                      sentryDSN:(nullable NSString *)sentryDSN
+          stripePublishableKey:(NSString *)stripePublishableKey
               googleMapsAPIKey:(nullable NSString *)googleAPIKey
                     gravityURL:(NSString *)gravity
                 metaphysicsURL:(NSString *)metaphysics

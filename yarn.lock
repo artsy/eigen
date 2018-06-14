@@ -10438,6 +10438,10 @@ timers-browserify@^2.0.4:
   dependencies:
     setimmediate "^1.0.4"
 
+tipsi-stripe@erikdstock/tipsi-stripe#fix-podspec-requires-packagejson:
+  version "5.2.1"
+  resolved "https://codeload.github.com/erikdstock/tipsi-stripe/tar.gz/efcbc49dc7cf472099d8aa8c3fb2b64441fc5ea1"
+
 title-case@^2.1.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/title-case/-/title-case-2.1.1.tgz#3e127216da58d2bc5becf137ab91dae3a7cd8faa"

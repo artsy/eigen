@@ -18,7 +18,7 @@ import { Title } from "../Components/Title"
 import { Address } from "./ConfirmFirstTimeBid"
 
 interface BillingAddressProps {
-  onSubmit?: (values: Address) => null
+  onSubmit?: (values: Address) => void
   navigator?: NavigatorIOS
   billingAddress?: Address
 }
@@ -76,6 +76,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
       this.submitValidAddress()
     }
   }
+
   @track({
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.BidFlowSaveBillingAddress,

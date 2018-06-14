@@ -1,0 +1,3 @@
+{
+  "43ff1d1d7ed85929c8ecf26a8fdcaf9c": "mutation ConfirmFirstTimeBidMutation(\n  $input: CreditCardInput!\n) {\n  createCreditCard(input: $input) {\n    credit_card {\n      id\n      brand\n      name\n      last_digits\n      expiration_month\n      expiration_year\n      __id\n    }\n  }\n}\n"
+}

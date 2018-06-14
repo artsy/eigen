@@ -20,6 +20,7 @@
 * Adds line-height to the type system - sepans
 * Refectches bid increments once a bid has been processed - ash&sepans
 * Adds `intent` to `ARBidFlowViewController` and `<BidFlow>` component - ash
+* Adds the ability for first-time users to register and place bid simultaneously - yuki24
 
 ### 1.5.3
 
