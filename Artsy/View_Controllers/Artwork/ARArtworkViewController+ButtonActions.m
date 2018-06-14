@@ -33,7 +33,6 @@
 #import "Artsy-Swift.h"
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedRealityConfig.h"
-#import "ARAugmentedVIRViewController.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
 #import "ARTopMenuViewController.h"
 #import <Emission/ARInquiryComponentViewController.h>
@@ -108,13 +107,11 @@
             ARAugmentedRealityConfig *config = [[ARAugmentedRealityConfig alloc] initWithImage:self.imageView.image size:size];
             config.artworkID = self.artwork.artworkUUID;
             config.artworkSlug = self.artwork.artworkID;
-            config.floorBasedVIR = [AROptions boolForOption:AROptionsFloorBasedARVIR];
+            config.floorBasedVIR = YES;
             config.debugMode =  [AROptions boolForOption:AROptionsDebugARVIR];
 
             if (shouldSkipSetup) {
-                Class Controller = [AROptions boolForOption:AROptionsFloorBasedARVIR] ? ARAugmentedFloorBasedVIRViewController.class : ARAugmentedVIRViewController.class;
-
-                id viewInRoomVC = [[Controller alloc] initWithConfig:config];
+                id viewInRoomVC = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:config];
                 [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
             } else {
                 // Currently an empty string, which is interpreted as nil
