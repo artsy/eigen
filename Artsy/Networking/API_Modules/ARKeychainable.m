@@ -1,5 +1,6 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
-
+#import "ARDefaults.h"
+#import "AROptions.h"
 #import "ARKeychainable.h"
 
 
@@ -9,6 +10,18 @@
 {
     NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
     return [NSString stringWithFormat:@"%@%@.keychain-group", info[@"AppIdentifierPrefix"], info[@"CFBundleIdentifier"]];
+}
+
+- (NSString *)keyForEnvironment:(NSString *)key
+{
+    BOOL useStaging = [AROptions boolForOption:ARUseStagingDefault];
+    // For prod, keep backawards compatabilty by re-using existing key
+    if (!useStaging) {
+        return key;
+    }
+    // For staging use a postfixed key so they cannot share with
+    // production data at all.
+    return [key stringByAppendingString:@"-staging"];
 }
 
 - (void)removeKeychainStringForKey:(NSString *)key
