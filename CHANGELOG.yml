@@ -6,6 +6,7 @@ upcoming:
     - Updates Emission to 1.5.3 - ash
     - Removes Hockey feedback prompt when taking screenshot, screen recording - ash
     - Removes deprecated ReactiveCocoa and uses ReactiveObjC library instead - ash
+    - Changes background of internal webvc to white - maxim
   user_facing:
     - Adds a round corner to all native buttons - orta
     - ARVIR2 animates - orta
