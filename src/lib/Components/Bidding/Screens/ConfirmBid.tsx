@@ -37,7 +37,7 @@ export interface ConfirmBidProps extends ViewProperties {
   refreshSaleArtwork?: () => void
 }
 
-interface ConformBidState {
+interface ConfirmBidState {
   conditionsOfSaleChecked: boolean
   isLoading: boolean
 }
@@ -96,7 +96,7 @@ const messageForPollingTimeout = `
   context_screen: Schema.PageNames.BidFlowConfirmBidPage,
   context_screen_owner_type: null,
 })
-export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState> {
+export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState> {
   state = { conditionsOfSaleChecked: false, isLoading: false }
 
   private pollCount = 0

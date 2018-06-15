@@ -5,7 +5,7 @@ PODS:
     - NSURL+QueryDictionary
   - Artsy+UIColors (3.1.0)
   - Artsy+UIFonts (3.2.0)
-  - Artsy-UIButtons (2.2.1):
+  - Artsy-UIButtons (2.2.2):
     - Artsy+UIColors (~> 3.0)
     - Artsy+UIFonts
     - UIView+BooleanAnimations
@@ -190,7 +190,7 @@ SPEC CHECKSUMS:
   Artsy+Authentication: 3bf11ceca61c52e9e31490535bf5798f625406fa
   Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   Artsy+UIFonts: d29579aa105e3709032651fb3145d24f8339e905
-  Artsy-UIButtons: a945b08aef7589e2ec2068d2d3e90d30b5ed140e
+  Artsy-UIButtons: 42261a51f0437d2fbb8cf5b9da937ac493d38d54
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: ebb6747c5b66026ad4f97b789c3ceac6f18e57a6
   Emission: f76136f6eaab1ba0f7c692b17727dbcceebfa856
@@ -213,6 +213,6 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: f04b62d4f9308b0734e1da3c5b453122eac5c131
+PODFILE CHECKSUM: 2f34094d440552e47625024325a9da6b92f96b43
 
 COCOAPODS: 1.4.0
