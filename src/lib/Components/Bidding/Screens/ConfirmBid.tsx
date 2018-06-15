@@ -1,6 +1,5 @@
 import React from "react"
 import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
-const { ARNotificationsManager } = NativeModules
 import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -175,7 +174,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConformBidState
     if (this.props.refreshSaleArtwork) {
       this.props.refreshSaleArtwork()
     }
-    ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
+    NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
       ARAuctionID: this.props.sale_artwork.sale.id,
       ARAuctionArtworkID: this.props.sale_artwork.artwork.id,
     })

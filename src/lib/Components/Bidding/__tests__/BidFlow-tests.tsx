@@ -1,5 +1,6 @@
 import React from "react"
 import "react-native"
+import { NativeModules } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import relay from "react-relay"
@@ -29,6 +30,7 @@ jest.useFakeTimers()
 const getTitleText = component => component.root.findByType(Title).props.children
 
 beforeEach(() => {
+  NativeModules.ARNotificationsManager = { postNotificationName: jest.fn() }
   fakeNavigator = new FakeNavigator()
   fakeRelay = {
     refetch: jest.fn(),

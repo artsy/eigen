@@ -1,5 +1,6 @@
 import { times } from "lodash"
 import React from "react"
+import { NativeModules } from "react-native"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
@@ -11,7 +12,7 @@ import { Button } from "../../Components/Button"
 import { BidResultScreen } from "../BidResult"
 import { ConfirmBid } from "../ConfirmBid"
 
-// This let's us import the actual react-relay module, and replace specific functions within it with mocks.
+// This lets us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
 import relay from "react-relay"
 import Spinner from "../../../Spinner"
@@ -23,6 +24,7 @@ jest.useFakeTimers()
 beforeEach(() => {
   // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
   mockphysics.mockReset()
+  NativeModules.ARNotificationsManager = { postNotificationName: jest.fn() }
 })
 
 it("renders properly", () => {
