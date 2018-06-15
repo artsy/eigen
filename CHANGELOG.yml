@@ -7,8 +7,11 @@ upcoming:
     - Removes Hockey feedback prompt when taking screenshot, screen recording - ash
     - Removes deprecated ReactiveCocoa and uses ReactiveObjC library instead - ash
     - Changes background of internal webvc to white - maxim
+    - Separates access to keychain items between staging/prod - orta
+
   user_facing:
     - Adds a round corner to all native buttons - orta
+    - ARVIR2 is the default VIR if it's supported - orta
     - ARVIR2 animates - orta
     - ARVIR2 resets - alloy
     - Redesigned bid status view on artwork page - ash
