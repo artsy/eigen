@@ -2,7 +2,7 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import { Sans12, Sans14 } from "../../Elements/Typography"
+import { SansMedium12, SansMedium14 } from "../../Elements/Typography"
 import { Timer } from "../Timer"
 
 const SECONDS = 1000
@@ -10,9 +10,9 @@ const MINUTES = 60 * SECONDS
 
 const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 
-const getTimerLabel = timerComponent => timerComponent.root.findByType(Sans12).props.children.join("")
+const getTimerLabel = timerComponent => timerComponent.root.findByType(SansMedium12).props.children.join("")
 
-const getTimerText = timerComponent => timerComponent.root.findByType(Sans14).props.children.join("")
+const getTimerText = timerComponent => timerComponent.root.findByType(SansMedium14).props.children.join("")
 
 beforeEach(() => {
   jest.useFakeTimers()

@@ -1,7 +1,7 @@
 import moment from "moment-timezone"
 import React from "react"
 import { Flex } from "../Elements/Flex"
-import { Sans12, Sans14 } from "../Elements/Typography"
+import { SansMedium12, SansMedium14 } from "../Elements/Typography"
 
 interface TimerProps {
   liveStartsAt?: string
@@ -44,18 +44,18 @@ export class Timer extends React.Component<TimerProps, TimerState> {
 
     return (
       <Flex alignItems="center">
-        <Sans12>
+        <SansMedium12>
           {liveStartsAt ? "Live " : "Ends "}
           {moment(liveStartsAt || endsAt, moment.ISO_8601)
             .tz(moment.tz.guess(true))
             .format("MMM D, ha")}
-        </Sans12>
-        <Sans14>
+        </SansMedium12>
+        <SansMedium14>
           {this.padWithZero(duration.days())}d{"  "}
           {this.padWithZero(duration.hours())}h{"  "}
           {this.padWithZero(duration.minutes())}m{"  "}
           {this.padWithZero(duration.seconds())}s
-        </Sans14>
+        </SansMedium14>
       </Flex>
     )
   }
