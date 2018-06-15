@@ -8,7 +8,7 @@
 #define DLog(...) /* */
 #endif
 
-const NSTimeInterval ARGraphQLQueryCacheDefaultTTL = 86400;
+const NSTimeInterval ARGraphQLQueryCacheDefaultTTL = 3600;
 
 typedef NSMutableArray<NSDictionary *> PromiseQueue;
 
