@@ -16,6 +16,7 @@
 
 ### Master
 
+* Updates bid status when returning to the [sale] artwork screen- erik
 * Adds going back to max bid when selecting edit bid from confirmation screen - maxim
 * Adds line-height to the type system - sepans
 * Refectches bid increments once a bid has been processed - ash&sepans
