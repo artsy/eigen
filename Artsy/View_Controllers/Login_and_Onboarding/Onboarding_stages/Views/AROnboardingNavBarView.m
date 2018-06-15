@@ -51,7 +51,6 @@
         [self.forward alignTrailingEdgeWithView:self predicate:[UIDevice isPad] ? @"-22" : @"0"];
         [self.forward constrainLeadingSpaceToView:self.title predicate:@">=0"];
 
-//        [self.back constrainHeight:@"50"];
         [self.forward constrainHeightToView:self.back predicate:@"0"];
         [self constrainHeightToView:self.back predicate:[UIDevice isPad] ? @"*2" : @"0"];
     }
