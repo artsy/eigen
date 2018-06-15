@@ -107,7 +107,7 @@ static CGFloat ARHeroUnitDescriptionFont;
     descriptionLabel.preferredMaxLayoutWidth = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 728 : 280;
 
     if ([UIDevice isPad]) {
-        ARHeroUnitButton *button = [self createButtonWithColor:unit.buttonColor inverseColor:unit.inverseButtonColor andText:unit.linkText];
+        ARFlatButton *button = [self createButtonWithColor:unit.buttonColor inverseColor:unit.inverseButtonColor andText:unit.linkText];
         [textViewsContainer addSubview:button withTopMargin:NSStringWithFormat(@"%f", ARHeroUnitDescriptionButtonMargin)];
         if (self.alignment == ARHeroUnitAlignmentRight) {
             [button alignTrailingEdgeWithView:textViewsContainer predicate:@"0"];
@@ -227,11 +227,9 @@ static CGFloat ARHeroUnitDescriptionFont;
     label.layer.shouldRasterize = YES;
 }
 
-- (ARHeroUnitButton *)createButtonWithColor:(UIColor *)color inverseColor:(UIColor *)inverseColor andText:(NSString *)text
+- (ARFlatButton *)createButtonWithColor:(UIColor *)color inverseColor:(UIColor *)inverseColor andText:(NSString *)text
 {
-    ARHeroUnitButton *button = [[ARHeroUnitButton alloc] init];
-    [button setColor:color];
-    [button setInverseColor:inverseColor];
+    ARFlatButton *button = [[ARFlatButton alloc] init];
     [button setTitle:text forState:UIControlStateNormal];
     return button;
 }

@@ -12,7 +12,7 @@
 @interface ARLoginFieldsView ()
 
 @property (nonatomic, strong) NSLayoutConstraint *nameFieldHeightConstraint;
-@property (nonatomic, strong) ARUppercaseButton *showPasswordButton;
+@property (nonatomic, strong) ARSentenceCaseButton *showPasswordButton;
 
 @end
 
@@ -26,7 +26,7 @@
         _nameField = [[ARTextFieldWithPlaceholder alloc] init];
         _emailField = [[ARTextFieldWithPlaceholder alloc] init];
         _passwordField = [[ARSecureTextFieldWithPlaceholder alloc] init];
-        _showPasswordButton = [[ARUppercaseButton alloc] init];
+        _showPasswordButton = [[ARSentenceCaseButton alloc] init];
     }
     return self;
 }

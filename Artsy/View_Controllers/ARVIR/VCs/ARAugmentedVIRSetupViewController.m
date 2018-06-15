@@ -36,7 +36,7 @@ NSString *const needsAccessButtonTitle = @"Allow camera access";
 NSString *const hasDeniedAccessButtonTitle = @"Update Camera Access";
 NSString *const hasAccessButtonTitle = @"Get Started";
 
-NSString *const needsAccessSubtitle = @"To view works in your room, we'll need access to your camera.";
+NSString *const needsAccessSubtitle = @"To view works in your room, weʼll need access to your camera.";
 NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll need access to your camera. \n\nPlease update camera access permissions in the iOS settings.";
 
 @implementation ARAugmentedVIRSetupViewController

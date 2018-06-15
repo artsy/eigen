@@ -51,8 +51,8 @@ beforeEach(^{
 it(@"gives the right messages for the right setup",^{
     ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
 
-    expect([vc subtitleWithDefaults:(id)untouchedDefaults hasPermission:NO]).to.equal(@"To view works in your room, we'll need access to your camera.");
-    expect([vc subtitleWithDefaults:(id)untouchedDefaults hasPermission:YES]).to.equal(@"To view works in your room, we'll need access to your camera.");
+    expect([vc subtitleWithDefaults:(id)untouchedDefaults hasPermission:NO]).to.equal(@"To view works in your room, weʼll need access to your camera.");
+    expect([vc subtitleWithDefaults:(id)untouchedDefaults hasPermission:YES]).to.equal(@"To view works in your room, weʼll need access to your camera.");
 
     expect([vc subtitleWithDefaults:(id)deniedDefaults hasPermission:NO]).to.equal(@"To view works in your room, we'll need access to your camera. \n\nPlease update camera access permissions in the iOS settings.");
     // Should never happen

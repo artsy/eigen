@@ -96,6 +96,17 @@
 
 + (instancetype)shadowNodeWithConfig:(ARAugmentedRealityConfig *)config
 {
+
+    CGFloat width = [[[[NSMeasurement alloc] initWithDoubleValue:config.size.width
+                                                            unit:NSUnitLength.inches]
+                      measurementByConvertingToUnit:NSUnitLength.meters]
+                     doubleValue];
+
+    CGFloat height = [[[[NSMeasurement alloc] initWithDoubleValue:config.size.height
+                                                             unit:NSUnitLength.inches]
+                       measurementByConvertingToUnit:NSUnitLength.meters]
+                      doubleValue];
+
     // Sides / Back
     SCNMaterial *clearMaterial = [SCNMaterial material];
     clearMaterial.diffuse.contents = [UIColor clearColor];
@@ -106,8 +117,7 @@
     imageMaterial.locksAmbientWithDiffuse = YES;
     imageMaterial.lightingModelName = SCNLightingModelConstant;
 
-    SCNArtworkNode *box = [SCNArtworkNode boxWithConfig:config];
-    box.length = 0.1;
+    SCNArtworkNode *box = [SCNArtworkNode boxWithWidth:width + 0.05 height:height + 0.04 length:0.01 chamferRadius:0];
     box.materials =  @[clearMaterial, clearMaterial, imageMaterial, clearMaterial, clearMaterial, clearMaterial];
     box.name = @"Artwork Shadow";
 

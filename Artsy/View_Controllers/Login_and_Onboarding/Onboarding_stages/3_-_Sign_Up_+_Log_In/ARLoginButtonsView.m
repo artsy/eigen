@@ -111,7 +111,7 @@
     self.actionButton.titleLabel.font = [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0];
     
     [self.actionButton constrainWidthToView:self predicate:@"0"];
-    [self.actionButton constrainHeight:@"40"];
+    [self.actionButton constrainHeight:@"50"];
     [self.actionButton alignLeadingEdgeWithView:self predicate:@"0"];
     [self.actionButton alignTopEdgeWithView:self predicate:@"0"];
 }

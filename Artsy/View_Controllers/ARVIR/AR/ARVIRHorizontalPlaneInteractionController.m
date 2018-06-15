@@ -207,7 +207,8 @@ NSInteger attempt = 0;
                 SCNNode *shadow = [SCNNode nodeWithGeometry:shadowBox];
                 // Offset the shadow back a bit (behind the work)
                 // and down a bit to imply a higher light source
-                shadow.position =  SCNVector3Make(result.localCoordinates.x, result.localCoordinates.y + 0.1, result.localCoordinates.z + shadowBox.length / 2);
+                shadow.position =  SCNVector3Make(result.localCoordinates.x, result.localCoordinates.y, result.localCoordinates.z + shadowBox.length / 2);
+                shadow.opacity = 0.4;
                 shadow.eulerAngles = SCNVector3Make(0, 0, -M_PI);
                 [result.node addChildNode:shadow];
 
@@ -216,7 +217,6 @@ NSInteger attempt = 0;
                 artwork.position = result.localCoordinates;
                 artwork.eulerAngles = SCNVector3Make(0, 0, -M_PI);
                 [result.node addChildNode:artwork];
-
 
                 self.artwork = artwork;
                 [self.ghostWallLine removeFromParentNode];
