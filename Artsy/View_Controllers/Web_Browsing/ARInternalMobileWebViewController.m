@@ -133,7 +133,7 @@ static void *ARProgressContext = &ARProgressContext;
 {
     /// If we do this initially there's a chance of seeing a black screen
     /// instead of our default white
-    self.webView.scrollView.backgroundColor = [UIColor blackColor];
+    self.webView.scrollView.backgroundColor = [UIColor whiteColor];
 
     self.loaded = YES;
 
