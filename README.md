@@ -78,10 +78,6 @@ There is a comprehensive document covering [the various options](docs/debugging.
    * The GraphQL schema of metaphysics that Relay uses to generate queries from: `$ yarn run sync-schema`
    * The colors defined in Artsy’s style-guide: `$ yarn run sync-colors`
 
-### Understanding Relay
-
-We have some debugging tips [when using Relay](docs/relay.md).
-
 ---
 
 Try quitting and restarting your node instance if you change something Relay-related and you run into this error:
