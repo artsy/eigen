@@ -4,8 +4,8 @@
   "native-code-version": 3,
   "description": "Artsy React(Native) components.",
   "engines": {
-    "node": "8.4.x",
-    "npm": "5.4.x",
+    "node": "10.4.x",
+    "npm": "6.1.x",
     "yarn": "1.x"
   },
   "main": "index.ios.js",
