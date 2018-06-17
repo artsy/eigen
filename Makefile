@@ -1,16 +1,23 @@
 BREW := $(shell command -v brew 2> /dev/null)
+NVM := $(shell command -v nvm 2> /dev/null)
 YARN := $(shell command -v yarn 2> /dev/null)
 WATCHMAN := $(shell command -v watchman 2> /dev/null)
 CODE := $(shell command -v code 2> /dev/null)
 
 setup:
 ifndef BREW
-    $(error "Please install homebrew before running `make oss`: https://brew.sh")
+	$(error "Please install homebrew before running `make oss`: https://brew.sh")
+endif
+
+ifndef NVM
+	@echo "Installing NVM"
+	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+	nvm install 8.4
 endif
 
 ifndef YARN
 	@echo "Installing Yarn"
-	brew install yarn
+	npm install -g yarn
 endif
 
 ifndef WATCHMAN
@@ -28,10 +35,6 @@ endif
 	@echo "Installing Node Dependencies"
 	yarn install
 
-	@echo "Installing Hooks for Styling and Compile-checks"
-	echo "#!/bin/sh\nexport PATH=\$$PATH:/usr/local/bin\nyarn run lint-staged\n" > .git/hooks/pre-commit; chmod +x .git/hooks/pre-commit
-	echo "#!/bin/sh\nexport PATH=\$$PATH:/usr/local/bin\nyarn run type-check\n" > .git/hooks/pre-push; chmod +x .git/hooks/pre-push
-
 	@echo "";
 	@echo "";
 	@echo "That is all of the dependencies for Emission set up, to run the app:";
@@ -44,7 +47,6 @@ endif
 	@echo "Any other details can be found in the README."
 	@echo "Enjoy!"
 	@echo ""
-
 
 artsy:
 	cd Example && bundle && bundle exec pod install
