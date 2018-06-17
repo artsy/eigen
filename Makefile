@@ -29,8 +29,8 @@ endif
 	yarn install
 
 	@echo "Installing Hooks for Styling and Compile-checks"
-	echo "#!/bin/sh\nyarn run lint-staged\n" > .git/hooks/pre-commit; chmod +x .git/hooks/pre-commit
-	echo "#!/bin/sh\nyarn run type-check\n" > .git/hooks/pre-push; chmod +x .git/hooks/pre-push
+	echo "#!/bin/sh\nexport PATH=\$$PATH:/usr/local/bin\nyarn run lint-staged\n" > .git/hooks/pre-commit; chmod +x .git/hooks/pre-commit
+	echo "#!/bin/sh\nexport PATH=\$$PATH:/usr/local/bin\nyarn run type-check\n" > .git/hooks/pre-push; chmod +x .git/hooks/pre-push
 
 	@echo "";
 	@echo "";
