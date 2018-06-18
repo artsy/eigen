@@ -25,13 +25,16 @@ interface BidResultProps {
   navigator: NavigatorIOS
 }
 
-const messageForPollingTimeout = `
-  We’re receiving a high volume of traffic
-  and your bid is still processing.
+const messageForPollingTimeout = {
+  title: "Bid processing",
+  description: `
+    We’re receiving a high volume of traffic
+    and your bid is still processing.
 
-  If you don’t receive an update soon,
-  please contact [support@artsy.net](mailto:support@artsy.net).
-`
+    If you don’t receive an update soon,
+    please contact [support@artsy.net](mailto:support@artsy.net).
+  `,
+}
 
 const Icons = {
   WINNING: require("../../../../../images/circle-check-green.png"),
@@ -68,10 +71,12 @@ export class BidResult extends React.Component<BidResultProps> {
               <Icon20 source={Icons[status] || require("../../../../../images/circle-x-red.png")} />
 
               <Title m={4}>
-                {status === "PENDING" ? "Bid processing" : message_header || "You’re the highest bidder"}
+                {status === "PENDING" ? messageForPollingTimeout.title : message_header || "You’re the highest bidder"}
               </Title>
 
-              <Markdown>{status === "PENDING" ? messageForPollingTimeout : message_description_md || ""}</Markdown>
+              <Markdown>
+                {status === "PENDING" ? messageForPollingTimeout.description : message_description_md || ""}
+              </Markdown>
 
               {this.shouldDisplayTimer(status) && <Timer liveStartsAt={live_start_at} endsAt={end_at} />}
             </Flex>

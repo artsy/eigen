@@ -1,22 +1,25 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-export type SelectMaxBid_me = {
+export type ConfirmBid_me = {
+    readonly has_qualified_credit_cards: boolean | null;
 };
 
 
 
 const node: ConcreteFragment = {
   "kind": "Fragment",
-  "name": "SelectMaxBid_me",
+  "name": "ConfirmBid_me",
   "type": "Me",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "FragmentSpread",
-      "name": "ConfirmBid_me",
-      "args": null
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "has_qualified_credit_cards",
+      "args": null,
+      "storageKey": null
     },
     {
       "kind": "ScalarField",
@@ -27,5 +30,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = 'a89deffbe0bc2e15f42b67f98064cfda';
+(node as any).hash = '455acce8913497a2e138528a5d7d1fac';
 export default node;

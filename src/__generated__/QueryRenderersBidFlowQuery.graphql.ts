@@ -45,6 +45,11 @@ fragment BidFlow_me on Me {
 }
 
 fragment SelectMaxBid_me on Me {
+  ...ConfirmBid_me
+  __id
+}
+
+fragment ConfirmBid_me on Me {
   has_qualified_credit_cards
   __id
 }
@@ -56,30 +61,10 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
   }
   _id
   ...ConfirmBid_sale_artwork
-  ...ConfirmFirstTimeBid_sale_artwork
   __id
 }
 
 fragment ConfirmBid_sale_artwork on SaleArtwork {
-  sale {
-    id
-    live_start_at
-    end_at
-    __id
-  }
-  artwork {
-    id
-    title
-    date
-    artist_names
-    __id
-  }
-  lot_label
-  ...BidResult_sale_artwork
-  __id
-}
-
-fragment ConfirmFirstTimeBid_sale_artwork on SaleArtwork {
   sale {
     id
     live_start_at
@@ -177,7 +162,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersBidFlowQuery",
-  "id": "ef69d1b919649c68d40cbaf4f0e4744e",
+  "id": "dae97da1b3ce97cb498ed0aa99102a32",
   "text": null,
   "metadata": {},
   "fragment": {

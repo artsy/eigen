@@ -470,7 +470,8 @@ exports[`renders properly 1`] = `
             ]
           }
         >
-          You agree to 
+          You agree to
+           
           <Text
             accessible={true}
             allowFontScaling={true}

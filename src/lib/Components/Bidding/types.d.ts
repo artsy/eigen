@@ -41,6 +41,8 @@ export interface BidderPositionResult {
     | "BIDDER_NOT_QUALIFIED"
     // general error status for e.g. Gravity not available, no internet in the device
     | "ERROR"
+    // the createBidderPosition mutation may return 'SUCCESS' when it successfully placed a bid
+    | "SUCCESS"
 
   message_header: string
   message_description_md: string

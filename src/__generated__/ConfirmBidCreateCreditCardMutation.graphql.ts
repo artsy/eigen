@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type ConfirmFirstTimeBidMutationVariables = {
+export type ConfirmBidCreateCreditCardMutationVariables = {
     readonly input: {
         readonly token?: string;
         readonly clientMutationId: string | null;
     };
 };
-export type ConfirmFirstTimeBidMutationResponse = {
+export type ConfirmBidCreateCreditCardMutationResponse = {
     readonly createCreditCard: ({
         readonly credit_card: ({
             readonly id: string;
@@ -23,7 +23,7 @@ export type ConfirmFirstTimeBidMutationResponse = {
 
 
 /*
-mutation ConfirmFirstTimeBidMutation(
+mutation ConfirmBidCreateCreditCardMutation(
   $input: CreditCardInput!
 ) {
   createCreditCard(input: $input) {
@@ -132,13 +132,13 @@ v1 = [
 return {
   "kind": "Request",
   "operationKind": "mutation",
-  "name": "ConfirmFirstTimeBidMutation",
-  "id": "43ff1d1d7ed85929c8ecf26a8fdcaf9c",
+  "name": "ConfirmBidCreateCreditCardMutation",
+  "id": "7a0d0926e61f1bd3df1684614dcd3d58",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "ConfirmFirstTimeBidMutation",
+    "name": "ConfirmBidCreateCreditCardMutation",
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -146,11 +146,11 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ConfirmFirstTimeBidMutation",
+    "name": "ConfirmBidCreateCreditCardMutation",
     "argumentDefinitions": v0,
     "selections": v1
   }
 };
 })();
-(node as any).hash = '0e9093433e3aaab7d326b75851fd90e2';
+(node as any).hash = 'f7729e10c5e0d724d11212b8f64967d1';
 export default node;

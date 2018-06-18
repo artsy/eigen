@@ -10,7 +10,6 @@ import { NavigatorIOS } from "react-native"
 import BidFlow from "../../../Containers/BidFlow"
 import { BillingAddress } from "../Screens/BillingAddress"
 import { ConfirmBid } from "../Screens/ConfirmBid"
-import { ConfirmFirstTimeBid } from "../Screens/ConfirmFirstTimeBid"
 import { Registration } from "../Screens/Registration"
 import { MaxBidScreen } from "../Screens/SelectMaxBid"
 
@@ -66,6 +65,9 @@ storiesOf("Bidding")
           },
           lot_label: "2",
         }}
+        me={{
+          has_qualified_credit_cards: false,
+        }}
         bid={{ display: "$45,000", cents: 4500000 }}
       />
     )
@@ -75,7 +77,7 @@ storiesOf("Bidding")
       <NavigatorIOS
         navigationBarHidden={true}
         initialRoute={{
-          component: ConfirmFirstTimeBid,
+          component: ConfirmBid,
           title: "",
           passProps: {
             sale_artwork: {
@@ -91,6 +93,9 @@ storiesOf("Bidding")
                 artist_names: "Lewis balts",
               },
               lot_label: "1",
+            },
+            me: {
+              has_qualified_credit_cards: false,
             },
             bid: { display: "$45,000", cents: 4500000 },
           },
