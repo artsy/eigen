@@ -108,7 +108,11 @@ describe("successful bid", () => {
     jest.runAllTicks()
 
     expect(nextStep.component).toEqual(BidResultScreen)
-    expect((nextStep.passProps as any).winning).toBeTruthy()
+    expect(nextStep.passProps).toEqual(
+      objectContaining({
+        bidderPositionResult: mockRequestResponses.pollingForBid.highestBid.data.me.bidder_position,
+      })
+    )
   })
 
   it("shows a spinner", () => {

@@ -62,7 +62,7 @@ it("allows bidders with a qualified credit card to bid", () => {
 
   screen = fakeNavigator.nextStep()
 
-  expect(getTitleText(screen)).toEqual("You're the highest bidder")
+  expect(getTitleText(screen)).toEqual("You’re the highest bidder")
 })
 
 it("allows bidders without a qualified credit card to register a card and bid", () => {
@@ -114,7 +114,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
 
   screen = fakeNavigator.nextStep()
 
-  expect(getTitleText(screen)).toEqual("You're the highest bidder")
+  expect(getTitleText(screen)).toEqual("You’re the highest bidder")
 })
 
 const stripeToken = {
