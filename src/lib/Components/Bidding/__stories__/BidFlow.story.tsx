@@ -11,6 +11,7 @@ import BidFlow from "../../../Containers/BidFlow"
 import { BillingAddress } from "../Screens/BillingAddress"
 import { ConfirmBid } from "../Screens/ConfirmBid"
 import { ConfirmFirstTimeBid } from "../Screens/ConfirmFirstTimeBid"
+import { Registration } from "../Screens/Registration"
 import { MaxBidScreen } from "../Screens/SelectMaxBid"
 
 const testSaleArtworkID = "5ae73b417622dd026f0fe473"
@@ -100,4 +101,25 @@ storiesOf("Bidding")
   })
   .add("Billing Address", () => {
     return <BillingAddress />
+  })
+  .add("Registration (no qualified cc on file), live sale starting in future", () => {
+    return (
+      <NavigatorIOS
+        navigationBarHidden={true}
+        initialRoute={{
+          component: Registration,
+          title: "",
+          passProps: {
+            sale: {
+              id: "1",
+              live_start_at: "2029-06-11T01:00:00+00:00",
+              end_at: null,
+              name: "Phillips New Now",
+              start_at: "2018-06-11T01:00:00+00:00",
+            },
+          },
+        }}
+        style={{ flex: 1 }}
+      />
+    )
   })
