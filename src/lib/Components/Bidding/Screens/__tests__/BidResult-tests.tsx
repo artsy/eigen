@@ -10,7 +10,8 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import * as renderer from "react-test-renderer"
 import { BidGhostButton, Button } from "../../Components/Button"
-import { BidderPositionResult, BidResult } from "../BidResult"
+import { BidderPositionResult } from "../../types"
+import { BidResult } from "../BidResult"
 
 const popToTop = jest.fn()
 const mockNavigator = { popToTop }

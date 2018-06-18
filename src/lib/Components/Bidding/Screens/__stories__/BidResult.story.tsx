@@ -1,7 +1,8 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
 
-import { BidderPositionResult, BidResult } from "../BidResult"
+import { BidderPositionResult } from "../../types"
+import { BidResult } from "../BidResult"
 
 storiesOf("Bidding")
   .add("Bid Result (winning)", () => {

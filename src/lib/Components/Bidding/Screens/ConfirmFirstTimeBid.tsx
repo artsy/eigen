@@ -18,8 +18,9 @@ import { Container } from "../Components/Containers"
 import { Divider } from "../Components/Divider"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
+import { Address, BidderPositionResult, PaymentCardTextFieldParams, StripeToken } from "../types"
 
-import { BidderPositionResult, BidResultScreen } from "./BidResult"
+import { BidResultScreen } from "./BidResult"
 import { BillingAddress } from "./BillingAddress"
 import { bidderPositionMutation, ConfirmBidProps, queryForBidPosition } from "./ConfirmBid"
 import { CreditCardForm } from "./CreditCardForm"
@@ -27,38 +28,6 @@ import { CreditCardForm } from "./CreditCardForm"
 const Emission = NativeModules.Emission || {}
 
 stripe.setOptions({ publishableKey: Emission.stripePublishableKey })
-
-// values from the Tipsi PaymentCardTextField component
-export interface PaymentCardTextFieldParams {
-  number: string
-  expMonth: string
-  expYear: string
-  cvc: string
-  name?: string
-  addressLine1?: string
-  addressLine2?: string
-  addressCity?: string
-  addressState?: string
-  addressZip?: string
-}
-
-export interface Address {
-  fullName: string
-  addressLine1: string
-  addressLine2?: string
-  city: string
-  state: string
-  postalCode: string
-}
-
-interface StripeToken {
-  tokenId: string
-  created: number
-  livemode: 1 | 0
-  card: any
-  bankAccount: any
-  extra: any
-}
 
 interface ConfirmBidState {
   billingAddress?: Address

@@ -16,18 +16,14 @@ import { Container } from "../Components/Containers"
 import { Divider } from "../Components/Divider"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
+import { Bid, BidderPositionResult } from "../types"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { metaphysics } from "../../../metaphysics"
 
-import { BidderPositionResult, BidResultScreen } from "./BidResult"
+import { BidResultScreen } from "./BidResult"
 
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
-
-export interface Bid {
-  display: string
-  cents: number
-}
 
 export interface ConfirmBidProps extends ViewProperties {
   sale_artwork: ConfirmBid_sale_artwork
