@@ -8,7 +8,6 @@ import createEnvironment from "../../../relay/createEnvironment"
 
 import { NavigatorIOS } from "react-native"
 import BidFlow from "../../../Containers/BidFlow"
-import { BidResultScreen } from "../Screens/BidResult"
 import { BillingAddress } from "../Screens/BillingAddress"
 import { ConfirmBid } from "../Screens/ConfirmBid"
 import { ConfirmFirstTimeBid } from "../Screens/ConfirmFirstTimeBid"
@@ -23,14 +22,6 @@ const selectMaxBidQuery = graphql`
   query BidFlowSelectMaxBidRendererQuery($saleArtworkID: String!) {
     sale_artwork(id: $saleArtworkID) {
       ...SelectMaxBid_sale_artwork
-    }
-  }
-`
-
-const bidResultQuery = graphql`
-  query BidFlowBidResultScreenRendererQuery($saleArtworkID: String!) {
-    sale_artwork(id: $saleArtworkID) {
-      ...BidResult_sale_artwork
     }
   }
 `
@@ -108,66 +99,8 @@ storiesOf("Bidding")
       />
     )
   })
-  .add("Bidding Result (winning)", () => {
-    const status = "SUCCESS"
-    return (
-      <BidFlowStoryRenderer
-        render={renderWithLoadProgress(BidResultScreen, {
-          winning: true,
-          status,
-        })}
-        query={bidResultQuery}
-        saleArtworkID={testSaleArtworkID}
-        intent="bid"
-      />
-    )
-  })
-  .add("Bidding Result (not highest bid)", () => {
-    const status = "OUTBID"
-    const messageHeader = "Your bid wasn’t high enough"
-    const messageDescriptionMd = `
-      Another bidder placed a higher max bid or the same max bid before you did.
-      Bid again to take the lead.
-    `
-
-    return (
-      <BidFlowStoryRenderer
-        render={renderWithLoadProgress(BidResultScreen, {
-          winning: false,
-          status,
-          message_header: messageHeader,
-          message_description_md: messageDescriptionMd,
-        })}
-        query={bidResultQuery}
-        saleArtworkID={testSaleArtworkID}
-        intent="bid"
-      />
-    )
-  })
   .add("Billing Address", () => {
     return <BillingAddress />
-  })
-  .add("Bidding Result (live bidding started)", () => {
-    const status = "ERROR_LIVE_BIDDING_STARTED"
-    const messageHeader = "Live bidding has started"
-    const messageDescriptionMd = `
-      Sorry, your bid wasn’t received before live bidding started.
-      To continue bidding, please [join the live auction](http://live-staging.artsy.net/).
-    `
-
-    return (
-      <BidFlowStoryRenderer
-        render={renderWithLoadProgress(BidResultScreen, {
-          winning: false,
-          status,
-          message_header: messageHeader,
-          message_description_md: messageDescriptionMd,
-        })}
-        query={bidResultQuery}
-        saleArtworkID={testSaleArtworkID}
-        intent="bid"
-      />
-    )
   })
   .add("Registration (no qualified cc on file), live sale starting in future", () => {
     return (
