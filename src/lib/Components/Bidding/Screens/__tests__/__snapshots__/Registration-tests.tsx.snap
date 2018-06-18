@@ -259,7 +259,7 @@ exports[`renders properly 1`] = `
             Array [
               Object {
                 "color": "#6E1EFF",
-                "fontFamily": "Unica77LL-Medium",
+                "fontFamily": "Unica77LL-Regular",
                 "fontSize": 12,
                 "lineHeight": 16,
                 "marginBottom": 5,
@@ -395,7 +395,7 @@ exports[`renders properly 1`] = `
             Array [
               Object {
                 "color": "#6E1EFF",
-                "fontFamily": "Unica77LL-Medium",
+                "fontFamily": "Unica77LL-Regular",
                 "fontSize": 12,
                 "lineHeight": 16,
                 "marginBottom": 5,
