@@ -27,14 +27,20 @@ export class Timer extends React.Component<TimerProps, TimerState> {
     let upcomingLabel
 
     if (isPreview) {
+      if (!startsAt) {
+        console.error("startsAt is required when isPreview is true")
+      }
+
       relevantDate = startsAt
       upcomingLabel = `Starts ${this.formatDate(startsAt)}`
     } else if (liveStartsAt) {
       relevantDate = liveStartsAt
       upcomingLabel = `Live ${this.formatDate(liveStartsAt)}`
-    } else {
+    } else if (endsAt) {
       relevantDate = endsAt
       upcomingLabel = `Ends ${this.formatDate(endsAt)}`
+    } else {
+      console.error("liveStartsAt or endsAt is required when isPreview is false")
     }
 
     this.state = { timeLeftInMilliseconds: Date.parse(relevantDate) - Date.now(), upcomingLabel }
