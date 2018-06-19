@@ -68,11 +68,6 @@ const SmallHeadline = BaseHeadline`
   margin-right: 0;
   margin-bottom: 0;
   text-align: left;
-  /* This is not 44, as per the design, because RN currently clips text regardless of overflow setting. In our case it
-     would clip the descender part of the font. */
-  height: 47;
-  /* height: 44; */
-  /* overflow: visible; */
 `
 
 const Icon = styled(Image)`
