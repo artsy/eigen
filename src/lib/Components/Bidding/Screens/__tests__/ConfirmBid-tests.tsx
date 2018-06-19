@@ -238,6 +238,7 @@ const saleArtwork = {
   },
   sale: {
     id: "best-art-sale-in-town",
+    endsAt: "2018-05-10T20:22:42+00:00",
   },
   lot_label: "538",
 }

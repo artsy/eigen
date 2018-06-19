@@ -10,7 +10,7 @@ const MINUTES = 60 * SECONDS
 
 const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 
-const getTimerLabel = timerComponent => timerComponent.root.findByType(SansMedium12).props.children.join("")
+const getTimerLabel = timerComponent => timerComponent.root.findByType(SansMedium12).props.children
 
 const getTimerText = timerComponent => timerComponent.root.findByType(SansMedium14).props.children.join("")
 
@@ -56,6 +56,14 @@ it("shows 'Live' when the liveStartsAt prop is given", () => {
   const timer = renderer.create(<Timer liveStartsAt="2018-05-14T20:00:00+00:00" />)
 
   expect(getTimerLabel(timer)).toContain("Live")
+})
+
+it("shows 'Starts' when the startsAt and isPreview props are given", () => {
+  const timer = renderer.create(
+    <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview={true} liveStartsAt="2018-05-14T20:00:00+00:00" />
+  )
+
+  expect(getTimerLabel(timer)).toContain("Starts")
 })
 
 it("counts down to zero", () => {

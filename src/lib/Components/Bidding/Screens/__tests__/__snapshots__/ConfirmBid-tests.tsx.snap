@@ -83,8 +83,7 @@ exports[`renders properly 1`] = `
           ]
         }
       >
-        Ends 
-        Invalid date
+        Ends Invalid date
       </Text>
       <Text
         accessible={true}

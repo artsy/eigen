@@ -49,6 +49,7 @@ const sale = {
     end_at: null,
     name: "Phillips New Now",
     start_at: "2018-06-11T01:00:00+00:00",
+    is_preview: true,
   },
 }
 
