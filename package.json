@@ -1,11 +1,11 @@
 {
   "name": "emission",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "native-code-version": 3,
   "description": "Artsy React(Native) components.",
   "engines": {
     "node": "8.4.x",
-    "npm": "5.4.x",
+    "npm": "6.1.x",
     "yarn": "1.x"
   },
   "main": "index.ios.js",
@@ -115,6 +115,7 @@
     "danger-plugin-jest": "^1.1.0",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
+    "husky": "^0.14.3",
     "jest": "^22.4.2",
     "jest-styled-components": "^4.10.0",
     "lint-staged": "^6.0.0",

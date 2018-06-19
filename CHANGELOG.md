@@ -17,12 +17,16 @@
 ### Master
 
 * Removes some of the height hacks we used in the Zero state for inbox/consignments which aren't needed in new RN - orta
+
+### 1.5.4
+
 * Adds going back to max bid when selecting edit bid from confirmation screen - maxim
 * Adds line-height to the type system - sepans
 * Refetches bid increments once a bid has been processed - ash&sepans
 * Adds `intent` to `ARBidFlowViewController` and `<BidFlow>` component - ash
 * Adds the ability for first-time users to register and place bid simultaneously - yuki24
 * Updates definition of Unica font default weight - sweir27
+* Adds registration screen - sweir27
 
 ### 1.5.3
 

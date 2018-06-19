@@ -1,12 +1,10 @@
 import React from "react"
 import { NativeModules, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql } from "react-relay"
-import { PayloadError } from "relay-runtime"
 import styled from "styled-components/native"
 import stripe from "tipsi-stripe"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { metaphysics } from "../../../metaphysics"
 import { Schema, screenTrack, track } from "../../../utils/track"
 
 import { Flex } from "../Elements/Flex"
@@ -21,9 +19,9 @@ import { Divider } from "../Components/Divider"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
 
-import { BidResultScreen } from "./BidResult"
+import { BidderPositionResult, BidResultScreen } from "./BidResult"
 import { BillingAddress } from "./BillingAddress"
-import { Bid, bidderPositionMutation, ConfirmBidProps } from "./ConfirmBid"
+import { bidderPositionMutation, ConfirmBidProps, queryForBidPosition } from "./ConfirmBid"
 import { CreditCardForm } from "./CreditCardForm"
 
 const Emission = NativeModules.Emission || {}
@@ -183,15 +181,15 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confir
     })
   }
 
-  verifyBidPosition(results: any, errors: PayloadError[] | null | undefined) {
-    const status = results.createBidderPosition.result.status
+  verifyBidPosition(results, errors) {
+    // TODO: Need to handle if the results object is empty, for example if errors occurred and no request was made
+    // TODO: add analytics for errors
+    const { result } = results.createBidderPosition
 
-    if (!errors && status === "SUCCESS") {
-      this.bidPlacedSuccessfully(results)
+    if (!errors && result.status === "SUCCESS") {
+      this.bidPlacedSuccessfully(result.position.id)
     } else {
-      const message_header = results.createBidderPosition.result.message_header
-      const message_description_md = results.createBidderPosition.result.message_description_md
-      this.showBidResult(false, status, message_header, message_description_md)
+      this.presentBidResult(result)
     }
   }
 
@@ -199,82 +197,33 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confir
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.BidFlowPlaceBid,
   })
-  bidPlacedSuccessfully(results) {
-    const positionId = results.createBidderPosition.result.position.id
-    this.queryForBidPosition(positionId).then(this.checkBidPosition.bind(this))
-  }
-
-  queryForBidPosition(bidderPositionID: string) {
-    const query = `
-        {
-          me {
-            bidder_position(id: "${bidderPositionID}") {
-              status
-              message_header
-              message_description_md
-              position {
-                id
-                processed_at
-                is_active
-                suggested_next_bid {
-                  cents
-                  display
-                }
-              }
-            }
-          }
-        }
-      `
-    return metaphysics({ query })
+  bidPlacedSuccessfully(positionId) {
+    queryForBidPosition(positionId).then(this.checkBidPosition.bind(this))
   }
 
   checkBidPosition(result) {
-    const bidderPosition = result.data.me.bidder_position.position
-    const status = result.data.me.bidder_position.status
-    if (status === "WINNING") {
-      this.showBidResult(true, "WINNING")
-    } else if (status === "PENDING") {
-      if (this.pollCount > MAX_POLL_ATTEMPTS) {
-        const md = `We're receiving a high volume of traffic and your bid is still processing.  \
-If you don’t receive an update soon, please contact [support@artsy.net](mailto:support@artsy.net). `
+    const { bidder_position } = result.data.me
 
-        this.showBidResult(false, "PROCESSING", "Bid Processing", md)
-      } else {
-        // initiating new request here (vs setInterval) to make sure we wait for the previus calls to return before making a new one
-        setTimeout(() => {
-          this.queryForBidPosition(bidderPosition.id).then(this.checkBidPosition.bind(this))
-        }, 1000)
-        this.pollCount += 1
-      }
+    if (bidder_position.status === "PENDING" && this.pollCount < MAX_POLL_ATTEMPTS) {
+      // initiating new request here (vs setInterval) to make sure we wait for the previous call to return before making a new one
+      setTimeout(() => queryForBidPosition(bidder_position.position.id).then(this.checkBidPosition.bind(this)), 1000)
+
+      this.pollCount += 1
     } else {
-      this.showBidResult(
-        false,
-        status,
-        result.data.me.bidder_position.message_header,
-        result.data.me.bidder_position.message_description_md,
-        result.data.me.bidder_position.position.suggested_next_bid
-      )
+      this.presentBidResult(bidder_position)
     }
   }
 
-  showBidResult(
-    winning: boolean,
-    status: string,
-    messageHeader?: string,
-    messageDescriptionMd?: string,
-    suggestedNextBid?: Bid
-  ) {
+  presentBidResult(bidderPositionResult: BidderPositionResult) {
+    if (this.props.refreshSaleArtwork) {
+      this.props.refreshSaleArtwork()
+    }
     this.props.navigator.push({
       component: BidResultScreen,
       title: "",
       passProps: {
         sale_artwork: this.props.sale_artwork,
-        status,
-        message_header: messageHeader,
-        message_description_md: messageDescriptionMd,
-        winning,
-        bid: this.props.bid,
-        suggested_next_bid: suggestedNextBid,
+        bidderPositionResult,
       },
     })
 

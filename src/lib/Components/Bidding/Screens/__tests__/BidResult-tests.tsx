@@ -10,7 +10,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import * as renderer from "react-test-renderer"
 import { BidGhostButton, Button } from "../../Components/Button"
-import { BidResult } from "../BidResult"
+import { BidderPositionResult, BidResult } from "../BidResult"
 
 const popToTop = jest.fn()
 const mockNavigator = { popToTop }
@@ -58,7 +58,7 @@ describe("BidResult component", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
     xit("renders winning screen properly", () => {
       const component = renderer.create(
-        <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
+        <BidResult bidderPositionResult={Statuses.winning} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
       )
 
       expect(component.toJSON()).toMatchSnapshot()
@@ -66,7 +66,7 @@ describe("BidResult component", () => {
 
     it("renders a timer", () => {
       const component = shallow(
-        <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
+        <BidResult bidderPositionResult={Statuses.winning} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
       )
 
       expect(component.find("Timer")).toHaveLength(1)
@@ -74,7 +74,7 @@ describe("BidResult component", () => {
 
     it("dismisses the controller when the continue button is pressed", () => {
       const bidResult = renderer.create(
-        <BidResult winning status={"SUCCESS"} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
+        <BidResult bidderPositionResult={Statuses.winning} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
       )
       const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
       mockDismiss.mockReturnValueOnce(Promise.resolve())
@@ -88,22 +88,10 @@ describe("BidResult component", () => {
   })
 
   describe("low bidder", () => {
-    const messageHeader = "Your bid wasn’t high enough"
-    const messageDescriptionMd =
-      "Another bidder placed a higher max bid or the same max bid before you did.  \
- Bid again to take the lead."
-
     // marking this as pending since this component depends on the Timer component that depends on local timezone
     xit("renders properly", () => {
       const component = renderer.create(
-        <BidResult
-          winning={false}
-          sale_artwork={saleArtwork}
-          status="OUTBID"
-          message_header={messageHeader}
-          message_description_md={messageDescriptionMd}
-          navigator={jest.fn() as any}
-        />
+        <BidResult bidderPositionResult={Statuses.outbid} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
       )
 
       expect(component.toJSON()).toMatchSnapshot()
@@ -111,14 +99,7 @@ describe("BidResult component", () => {
 
     it("renders timer and error message", () => {
       const component = shallow(
-        <BidResult
-          winning={false}
-          sale_artwork={saleArtwork}
-          status="OUTBID"
-          message_header={messageHeader}
-          message_description_md={messageDescriptionMd}
-          navigator={jest.fn() as any}
-        />
+        <BidResult bidderPositionResult={Statuses.outbid} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
       )
 
       expect(component.find("Timer")).toHaveLength(1)
@@ -126,14 +107,7 @@ describe("BidResult component", () => {
 
     it("pops to root when bid-again button is pressed", () => {
       const bidResult = renderer.create(
-        <BidResult
-          winning={false}
-          sale_artwork={saleArtwork}
-          status="OUTBID"
-          message_header={messageHeader}
-          message_description_md={messageDescriptionMd}
-          navigator={mockNavigator as any}
-        />
+        <BidResult bidderPositionResult={Statuses.outbid} sale_artwork={saleArtwork} navigator={mockNavigator as any} />
       )
 
       bidResult.root.findByType(Button).instance.props.onPress()
@@ -143,20 +117,12 @@ describe("BidResult component", () => {
   })
 
   describe("live bidding has started", () => {
-    const status = "LIVE_BIDDING_STARTED"
-    const messageHeader = "Live bidding has started"
-    const messageDescriptionMd = `Sorry, your bid wasn’t received before live bidding started. \
-To continue bidding, please [join the live auction](http://live-staging.artsy.net/).`
-
     // marking this as pending since this component depends on the Timer component that depends on local timezone
     xit("renders properly", () => {
       const component = renderer.create(
         <BidResult
-          winning={false}
+          bidderPositionResult={Statuses.live_bidding_started}
           sale_artwork={saleArtwork}
-          status={status}
-          message_header={messageHeader}
-          message_description_md={messageDescriptionMd}
           navigator={jest.fn() as any}
         />
       )
@@ -167,11 +133,8 @@ To continue bidding, please [join the live auction](http://live-staging.artsy.ne
     it("doesn't render timer", () => {
       const component = shallow(
         <BidResult
-          winning={false}
+          bidderPositionResult={Statuses.live_bidding_started}
           sale_artwork={saleArtwork}
-          status={status}
-          message_header={messageHeader}
-          message_description_md={messageDescriptionMd}
           navigator={jest.fn() as any}
         />
       )
@@ -182,11 +145,8 @@ To continue bidding, please [join the live auction](http://live-staging.artsy.ne
     it("dismisses controller and presents live interface when continue button is pressed", () => {
       const bidResult = renderer.create(
         <BidResult
-          winning={false}
+          bidderPositionResult={Statuses.live_bidding_started}
           sale_artwork={saleArtwork}
-          status={status}
-          message_header={messageHeader}
-          message_description_md={messageDescriptionMd}
           navigator={jest.fn() as any}
         />
       )
@@ -200,3 +160,30 @@ To continue bidding, please [join the live auction](http://live-staging.artsy.ne
     })
   })
 })
+
+const Statuses = {
+  winning: {
+    status: "WINNING",
+    message_header: null,
+    message_description_md: null,
+    position: null,
+  } as BidderPositionResult,
+  outbid: {
+    status: "OUTBID",
+    message_header: "Your bid wasn’t high enough",
+    message_description_md: `
+      Another bidder placed a higher max bid or the same max bid before you did.
+      Bid again to take the lead.
+    `,
+    position: null,
+  } as BidderPositionResult,
+  live_bidding_started: {
+    status: "LIVE_BIDDING_STARTED",
+    message_header: "Live bidding has started",
+    message_description_md: `
+      Sorry, your bid wasn’t received before live bidding started.
+      To continue bidding, please [join the live auction](http://live-staging.artsy.net/).
+    `,
+    position: null,
+  } as BidderPositionResult,
+}
