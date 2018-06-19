@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.5.4
+
 * Adds going back to max bid when selecting edit bid from confirmation screen - maxim
 * Adds line-height to the type system - sepans
 * Refectches bid increments once a bid has been processed - ash&sepans
