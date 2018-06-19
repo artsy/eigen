@@ -82,10 +82,7 @@ exports[`renders properly 1`] = `
             undefined,
           ]
         }
-      >
-        Ends 
-        Invalid date
-      </Text>
+      />
       <Text
         accessible={true}
         allowFontScaling={true}

@@ -92,7 +92,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 
   render() {
-    const { live_start_at, end_at } = this.props.sale
+    const { live_start_at, end_at, is_preview, start_at } = this.props.sale
     const { billingAddress, creditCardToken: token } = this.state
 
     return (
@@ -100,7 +100,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         <Container m={0}>
           <Flex alignItems="center">
             <Title mb={3}>Register to bid</Title>
-            <Timer liveStartsAt={live_start_at} endsAt={end_at} />
+            <Timer liveStartsAt={live_start_at} endsAt={end_at} isPreview={is_preview} startsAt={start_at} />
             <SerifSemibold18 mt={5} mb={5}>
               {this.props.sale.name}
             </SerifSemibold18>
@@ -164,6 +164,7 @@ export const RegistrationScreen = createFragmentContainer(
     fragment Registration_sale on Sale {
       id
       end_at
+      is_preview
       live_start_at
       name
       start_at

@@ -4,6 +4,7 @@ import { ConcreteFragment } from "relay-runtime";
 export type Registration_sale = {
     readonly id: string;
     readonly end_at: string | null;
+    readonly is_preview: boolean | null;
     readonly live_start_at: string | null;
     readonly name: string | null;
     readonly start_at: string | null;
@@ -29,6 +30,13 @@ const node: ConcreteFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "end_at",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_preview",
       "args": null,
       "storageKey": null
     },
@@ -62,5 +70,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = 'db1333661a54cbda65e02632bb203c84';
+(node as any).hash = '18cecaddf8fc0acc4e528ede1b2c5c69';
 export default node;

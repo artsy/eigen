@@ -27,6 +27,7 @@
 * Adds the ability for first-time users to register and place bid simultaneously - yuki24
 * Updates definition of Unica font default weight - sweir27
 * Adds registration screen - sweir27
+* Adds support for startAt in the auction timer - sweir27
 
 ### 1.5.3
 
