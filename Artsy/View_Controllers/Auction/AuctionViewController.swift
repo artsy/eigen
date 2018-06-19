@@ -379,7 +379,7 @@ extension TitleCallbacks: AuctionTitleViewDelegate {
         let showRegister = {
             let registrationPath = "/auction-registration/\(self.saleID)"
             let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
-            self.navigationController?.pushViewController(viewController, animated: true)
+            self.ar_TopMenuViewController()?.push(viewController, animated: true)
         }
         if let _ = presentedViewController {
             dismiss(animated: true, completion: showRegister)

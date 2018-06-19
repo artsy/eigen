@@ -11,7 +11,6 @@
     ARAuctionArtworkResultsViewController,
     ARFairMapViewController,
     ARUserSettingsViewController,
-    ARAuctionWebViewController,
     ARFairGuideContainerViewController,
     AuctionViewController,
     ARMutableLinkViewController;
@@ -59,7 +58,7 @@
 
 - (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID;
 
-- (ARAuctionWebViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;
+- (UIViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;
 
 /// Load a Partner Page in Martsy
 - (UIViewController *)loadPartnerWithID:(NSString *)partnerID;
