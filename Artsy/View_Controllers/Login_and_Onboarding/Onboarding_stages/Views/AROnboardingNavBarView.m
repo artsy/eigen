@@ -36,7 +36,7 @@
         [self.title alignCenterWithView:self];
 
         // forward
-        _forward = [[ARUppercaseButton alloc] initWithFrame:CGRectZero];
+        _forward = [[ARSentenceCaseButton alloc] initWithFrame:CGRectZero];
         [self.forward setEnabled:NO animated:NO];
         self.forward.titleLabel.font = [UIFont sansSerifFontWithSize:14];
         self.forward.titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -51,7 +51,6 @@
         [self.forward alignTrailingEdgeWithView:self predicate:[UIDevice isPad] ? @"-22" : @"0"];
         [self.forward constrainLeadingSpaceToView:self.title predicate:@">=0"];
 
-        [self.back constrainHeight:@"44"];
         [self.forward constrainHeightToView:self.back predicate:@"0"];
         [self constrainHeightToView:self.back predicate:[UIDevice isPad] ? @"*2" : @"0"];
     }

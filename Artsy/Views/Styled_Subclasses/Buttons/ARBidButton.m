@@ -18,7 +18,7 @@ NSString *const ARBidButtonRegistionClosedStateTitle = @"REGISTRATION CLOSED";
 {
     [super setup];
 
-    self.titleLabel.font = [UIFont sansSerifFontWithSize:15];
+    self.titleLabel.font = [UIFont displayMediumSansSerifFontWithSize:14];
     [self setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 

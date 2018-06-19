@@ -210,7 +210,7 @@ self.actionButtonsView.actionButtonDescriptions = descriptions;
         [containerView addSubview:partnerLabel];
         [containerView addSubview:followButton];
 
-        [containerView constrainHeight:@"40"];
+        [containerView constrainHeight:@"50"];
         [partnerLabel alignTop:@"0" bottom:@"0" toView:containerView];
         if (followButton) {
             [partnerLabel alignLeadingEdgeWithView:containerView predicate:@"0"];
