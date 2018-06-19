@@ -72,7 +72,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.5)
   - EDColor (1.0.0)
-  - Emission (1.5.3):
+  - Emission (1.5.4):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.5)
@@ -454,7 +454,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 5a7051081e063c05653252ad121772e5478292bc
+  Emission: da8cd72a61a391b39cf58ada7409f8f311d67543
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 612cf0866f74d4c0dd616677ff24146efa200958
@@ -506,6 +506,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: de8782b10b9fdede33554bcad8a2a6653e0ebb30
 
-PODFILE CHECKSUM: 0aeacffa5d8fc1469a480ad19c89a822129467e2
+PODFILE CHECKSUM: 46d2a70ef1ae99a0fd03591f071272b7311ae00c
 
 COCOAPODS: 1.5.3

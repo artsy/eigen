@@ -95,10 +95,17 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     NSString *gravity = [[ARRouter baseApiURL] absoluteString];
     NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
 
+    NSString *stripePublishableKey;
+    if ([AROptions boolForOption:ARUseStagingDefault]) {
+        stripePublishableKey = keys.stripeStagingPublishableKey;
+    } else {
+        stripePublishableKey = keys.stripeProductionPublishableKey;
+    }
 
     AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
                                                                       authenticationToken:authenticationToken
                                                                                 sentryDSN:sentryDSN
+                                                                     stripePublishableKey:stripePublishableKey
                                                                          googleMapsAPIKey:[keys googleMapsAPIKey]
                                                                                gravityURL:gravity
                                                                            metaphysicsURL:metaphysics
