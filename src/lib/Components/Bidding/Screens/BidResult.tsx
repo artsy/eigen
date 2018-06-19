@@ -13,34 +13,11 @@ import { Container } from "../Components/Containers"
 import { Markdown } from "../Components/Markdown"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
+import { BidderPositionResult } from "../types"
 
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
-
-export interface BidderPositionResult {
-  status:  // bidder position status
-    | "OUTBID"
-    | "PENDING"
-    | "RESERVE_NOT_MET"
-    | "WINNING"
-    // mutation status
-    | "SALE_CLOSED"
-    | "LIVE_BIDDING_STARTED"
-    | "BIDDER_NOT_QUALIFIED"
-    // general error status for e.g. Gravity not available, no internet in the device
-    | "ERROR"
-
-  message_header: string
-  message_description_md: string
-  position: {
-    id: string
-    suggested_next_bid: {
-      cents: string
-      display: string
-    }
-  }
-}
 
 interface BidResultProps {
   sale_artwork: BidResult_sale_artwork

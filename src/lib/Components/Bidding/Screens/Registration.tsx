@@ -17,6 +17,7 @@ import { Container } from "../Components/Containers"
 import { Divider } from "../Components/Divider"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
+import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 
 import { BillingAddress } from "./BillingAddress"
 import { CreditCardForm } from "./CreditCardForm"
@@ -26,38 +27,6 @@ import { Registration_sale } from "__generated__/Registration_sale.graphql"
 const Emission = NativeModules.Emission || {}
 
 stripe.setOptions({ publishableKey: Emission.stripePublishableKey })
-
-// values from the Tipsi PaymentCardTextField component
-export interface PaymentCardTextFieldParams {
-  number: string
-  expMonth: string
-  expYear: string
-  cvc: string
-  name?: string
-  addressLine1?: string
-  addressLine2?: string
-  addressCity?: string
-  addressState?: string
-  addressZip?: string
-}
-
-export interface Address {
-  fullName: string
-  addressLine1: string
-  addressLine2?: string
-  city: string
-  state: string
-  postalCode: string
-}
-
-interface StripeToken {
-  tokenId: string
-  created: number
-  livemode: 1 | 0
-  card: any
-  bankAccount: any
-  extra: any
-}
 
 export interface RegistrationProps extends ViewProperties {
   sale: Registration_sale

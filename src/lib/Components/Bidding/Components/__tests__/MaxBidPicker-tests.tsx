@@ -6,12 +6,12 @@ import { MaxBidPicker } from "../MaxBidPicker"
 
 const Bids = [
   {
-    label: "$35,000 USD",
-    value: 3500000,
+    display: "$35,000 USD",
+    cents: 3500000,
   },
   {
-    label: "$40,000 USD",
-    value: 4000000,
+    display: "$40,000 USD",
+    cents: 4000000,
   },
 ]
 

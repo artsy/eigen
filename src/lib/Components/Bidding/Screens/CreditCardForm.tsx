@@ -8,7 +8,7 @@ import { Button } from "../Components/Button"
 import { Title } from "../Components/Title"
 import { Flex } from "../Elements/Flex"
 import { theme } from "../Elements/Theme"
-import { PaymentCardTextFieldParams } from "./ConfirmFirstTimeBid"
+import { PaymentCardTextFieldParams } from "../types"
 
 interface CreditCardFormProps {
   navigator?: NavigatorIOS
