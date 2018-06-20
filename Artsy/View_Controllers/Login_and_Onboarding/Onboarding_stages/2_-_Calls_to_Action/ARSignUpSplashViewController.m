@@ -212,7 +212,7 @@
     
     [self.getStartedButton alignBottomEdgeWithView:label predicate:self.useLargeLayout ? @"-170" : @"-80"];
     [self.getStartedButton alignCenterXWithView:self.view predicate:@"0"];
-    [self.getStartedButton constrainWidth:self.useLargeLayout ? @"340" : @"300" height:@"40"];
+    [self.getStartedButton constrainWidth:self.useLargeLayout ? @"340" : @"300" height:@"50"];
     
     [label constrainWidth:@"280" height:@"40"];
     [label alignCenterXWithView:self.view predicate:@"0"];
