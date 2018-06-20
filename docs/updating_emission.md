@@ -3,7 +3,8 @@
 ## Get Emission's code in the App
 
 * Ship a [new Emission release](https://github.com/artsy/emission#deployment)
-* Update Eigen's `Podfile.lock` via `bundle exec pod update Emission Yoga React/Core`
+* Update Eigen's `Podfile.lock` via `bundle exec pod update Emission yoga React/Core`
+( _note the lower-cased `yoga`: this is necessary due to Mac filesystem case-insensitivity. Additionally, the yoga and React/Core updates may not be necessary depending on your release._ )
 
 ## Get Emission's to compile
 
