@@ -13,24 +13,29 @@ import { Container } from "../Components/Containers"
 import { Markdown } from "../Components/Markdown"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
+import { BidderPositionResult } from "../types"
 
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 
-interface Bid {
-  display: string
-  cents: number
-}
-
 interface BidResultProps {
   sale_artwork: BidResult_sale_artwork
-  winning: boolean
-  status: string
-  message_header?: string
-  message_description_md?: string
-  suggested_next_bid?: Bid
+  bidderPositionResult: BidderPositionResult
   navigator: NavigatorIOS
+}
+
+const messageForPollingTimeout = `
+  We’re receiving a high volume of traffic
+  and your bid is still processing.
+
+  If you don’t receive an update soon,
+  please contact [support@artsy.net](mailto:support@artsy.net).
+`
+
+const Icons = {
+  WINNING: require("../../../../../images/circle-check-green.png"),
+  PENDING: require("../../../../../images/circle-exclamation.png"),
 }
 
 export class BidResult extends React.Component<BidResultProps> {
@@ -42,54 +47,51 @@ export class BidResult extends React.Component<BidResultProps> {
 
   exitBidFlow = async () => {
     await SwitchBoard.dismissModalViewController(this)
-    if (this.props.status === "LIVE_BIDDING_STARTED") {
+
+    if (this.props.bidderPositionResult.status === "LIVE_BIDDING_STARTED") {
       SwitchBoard.presentModalViewController(this, `/auction/${this.props.sale_artwork.sale.id}`)
     }
   }
 
   render() {
-    const { live_start_at, end_at } = this.props.sale_artwork.sale
+    const { sale_artwork, bidderPositionResult } = this.props
+    const { live_start_at, end_at } = sale_artwork.sale
+    const { status, message_header, message_description_md, position } = bidderPositionResult
 
-    // non-live sale doesn't have live_start_at so bidding is open until end time
-    if (this.props.winning) {
-      return (
-        <BiddingThemeProvider>
-          <Container mt={6}>
-            <View>
-              <Flex alignItems="center">
-                <Icon20 source={require("../../../../../images/circle-check-green.png")} />
-                <Title m={4}>You're the highest bidder</Title>
-                <Timer liveStartsAt={live_start_at} endsAt={end_at} />
-              </Flex>
-            </View>
+    const nextBid = ((position && position.suggested_next_bid) || sale_artwork.minimum_next_bid || ({} as any)).display
+
+    return (
+      <BiddingThemeProvider>
+        <Container mt={6}>
+          <View>
+            <Flex alignItems="center">
+              <Icon20 source={Icons[status] || require("../../../../../images/circle-x-red.png")} />
+
+              <Title m={4}>
+                {status === "PENDING" ? "Bid processing" : message_header || "You’re the highest bidder"}
+              </Title>
+
+              <Markdown>{status === "PENDING" ? messageForPollingTimeout : message_description_md || ""}</Markdown>
+
+              {this.shouldDisplayTimer(status) && <Timer liveStartsAt={live_start_at} endsAt={end_at} />}
+            </Flex>
+          </View>
+          {this.canBidAgain(status) ? (
+            <Button text={`Bid ${nextBid} or more`} onPress={() => this.onPressBidAgain()} />
+          ) : (
             <BidGhostButton text="Continue" onPress={this.exitBidFlow} />
-          </Container>
-        </BiddingThemeProvider>
-      )
-    } else {
-      const bidAgain = SHOW_TIMER_STATUSES.indexOf(this.props.status) > -1
-      const nextBid = (this.props.suggested_next_bid || this.props.sale_artwork.minimum_next_bid).display
+          )}
+        </Container>
+      </BiddingThemeProvider>
+    )
+  }
 
-      return (
-        <BiddingThemeProvider>
-          <Container mt={6}>
-            <View>
-              <Flex alignItems="center">
-                <Icon20 source={require("../../../../../images/circle-x-red.png")} />
-                <Title m={4}>{this.props.message_header}</Title>
-                <Markdown>{this.props.message_description_md}</Markdown>
-                {bidAgain && <Timer liveStartsAt={live_start_at} endsAt={end_at} />}
-              </Flex>
-            </View>
-            {bidAgain ? (
-              <Button text={`Bid ${nextBid} or more`} onPress={() => this.onPressBidAgain()} />
-            ) : (
-              <BidGhostButton text="Continue" onPress={this.exitBidFlow} />
-            )}
-          </Container>
-        </BiddingThemeProvider>
-      )
-    }
+  private shouldDisplayTimer(status: string) {
+    return SHOW_TIMER_STATUSES.indexOf(status) > -1
+  }
+
+  private canBidAgain(status: string) {
+    return status === "OUTBID" || status === "RESERVE_NOT_MET"
   }
 }
 

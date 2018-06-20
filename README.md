@@ -11,7 +11,7 @@ Inside Emission you will find:
 ### Meta
 
 * **State:** production
-* **Point People:** [@sarahscott](https://github.com/sarahscott), [@alloy](https://github.com/alloy)
+* **Point People:** [@alloy](https://github.com/alloy)
 * **CI:** [![Build Status](https://travis-ci.org/artsy/emission.svg?branch=master)](https://travis-ci.org/artsy/emission)
 
 This is a core [Artsy Mobile](https://github.com/artsy/mobile) OSS project, along with [Energy](https://github.com/artsy/energy), [Eidolon](https://github.com/artsy/eidolon), [Eigen](https://github.com/artsy/eigen) and [Emergence](https://github.com/artsy/emergence).
@@ -38,7 +38,7 @@ _Manual install_
 1. Install NPM modules: `$ yarn install`
 1. Install Pods: `$ cd Example && bundle && bundle exec pod install`
 
-### Running the project:
+   ### Running the project:
 
 1. Run `$ yarn start` from the top directory, which will:
 
@@ -46,7 +46,7 @@ _Manual install_
    * Start the example app’s React Native packager.
    * Start the React Storybooks environment.
 
-2. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
+1. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
 
 * If you already have the app installed, you can run `open -a Simulator` to open the last sim, and then `xcrun simctl launch booted net.artsy.Emission` to open the app.
 
@@ -77,10 +77,6 @@ There is a comprehensive document covering [the various options](docs/debugging.
    with `$ yarn run sync-externals` or individually:
    * The GraphQL schema of metaphysics that Relay uses to generate queries from: `$ yarn run sync-schema`
    * The colors defined in Artsy’s style-guide: `$ yarn run sync-colors`
-
-### Understanding Relay
-
-We have some debugging tips [when using Relay](docs/relay.md).
 
 ---
 

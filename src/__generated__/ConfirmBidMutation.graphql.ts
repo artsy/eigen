@@ -12,12 +12,16 @@ export type ConfirmBidMutationVariables = {
 export type ConfirmBidMutationResponse = {
     readonly createBidderPosition: ({
         readonly result: ({
-            readonly position: ({
-                readonly id: string;
-            }) | null;
             readonly status: string;
             readonly message_header: string | null;
             readonly message_description_md: string | null;
+            readonly position: ({
+                readonly id: string;
+                readonly suggested_next_bid: ({
+                    readonly cents: number | null;
+                    readonly display: string | null;
+                }) | null;
+            }) | null;
         }) | null;
     }) | null;
 };
@@ -30,13 +34,17 @@ mutation ConfirmBidMutation(
 ) {
   createBidderPosition(input: $input) {
     result {
-      position {
-        id
-        __id
-      }
       status
       message_header
       message_description_md
+      position {
+        id
+        suggested_next_bid {
+          cents
+          display
+        }
+        __id
+      }
     }
   }
 }
@@ -78,31 +86,6 @@ v1 = [
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "position",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "BidderPosition",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "id",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "__id",
-                "args": null,
-                "storageKey": null
-              }
-            ]
-          },
-          {
             "kind": "ScalarField",
             "alias": null,
             "name": "status",
@@ -122,6 +105,56 @@ v1 = [
             "name": "message_description_md",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "position",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "BidderPosition",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "suggested_next_bid",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "BidderPositionSuggestedNextBid",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "cents",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "display",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "__id",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           }
         ]
       }
@@ -132,7 +165,7 @@ return {
   "kind": "Request",
   "operationKind": "mutation",
   "name": "ConfirmBidMutation",
-  "id": "9cf3c122310f21fb4a09d56a43533837",
+  "id": "c47e7e55e759e79bfd93ede1c0457b1e",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -151,5 +184,5 @@ return {
   }
 };
 })();
-(node as any).hash = '26d40f7613c91a0fe6bce9cf70932f3d';
+(node as any).hash = 'e0fe522d90c0aa543a6b3d34da4d7f82';
 export default node;

@@ -65,11 +65,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
   }
 
   render() {
-    const bids =
-      (this.props.sale_artwork &&
-        this.props.sale_artwork.increments &&
-        this.props.sale_artwork.increments.map(i => ({ label: i.display, value: i.cents }))) ||
-      []
+    const bids = (this.props.sale_artwork && this.props.sale_artwork.increments) || []
 
     return (
       <BiddingThemeProvider>

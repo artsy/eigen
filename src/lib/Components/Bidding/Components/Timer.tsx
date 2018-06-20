@@ -1,15 +1,18 @@
 import moment from "moment-timezone"
 import React from "react"
 import { Flex } from "../Elements/Flex"
-import { Sans12, Sans14 } from "../Elements/Typography"
+import { SansMedium12, SansMedium14 } from "../Elements/Typography"
 
 interface TimerProps {
   liveStartsAt?: string
   endsAt?: string
+  isPreview?: boolean
+  startsAt?: string
 }
 
 interface TimerState {
   timeLeftInMilliseconds: number
+  upcomingLabel: string
 }
 
 export class Timer extends React.Component<TimerProps, TimerState> {
@@ -18,10 +21,29 @@ export class Timer extends React.Component<TimerProps, TimerState> {
   constructor(props) {
     super(props)
 
-    const { liveStartsAt, endsAt } = props
-    const timeLeftInMilliseconds = Date.parse(liveStartsAt || endsAt) - Date.now()
+    const { liveStartsAt, endsAt, isPreview, startsAt } = props
 
-    this.state = { timeLeftInMilliseconds }
+    let relevantDate
+    let upcomingLabel
+
+    if (isPreview) {
+      if (!startsAt) {
+        console.error("startsAt is required when isPreview is true")
+      }
+
+      relevantDate = startsAt
+      upcomingLabel = `Starts ${this.formatDate(startsAt)}`
+    } else if (liveStartsAt) {
+      relevantDate = liveStartsAt
+      upcomingLabel = `Live ${this.formatDate(liveStartsAt)}`
+    } else if (endsAt) {
+      relevantDate = endsAt
+      upcomingLabel = `Ends ${this.formatDate(endsAt)}`
+    } else {
+      console.error("liveStartsAt or endsAt is required when isPreview is false")
+    }
+
+    this.state = { timeLeftInMilliseconds: Date.parse(relevantDate) - Date.now(), upcomingLabel }
   }
 
   componentDidMount() {
@@ -33,29 +55,27 @@ export class Timer extends React.Component<TimerProps, TimerState> {
   }
 
   timer = () => {
-    this.setState({
-      timeLeftInMilliseconds: this.state.timeLeftInMilliseconds - 1000,
-    })
+    this.setState({ timeLeftInMilliseconds: this.state.timeLeftInMilliseconds - 1000 })
+  }
+
+  formatDate(date: string) {
+    return moment(date, moment.ISO_8601)
+      .tz(moment.tz.guess(true))
+      .format("MMM D, ha")
   }
 
   render() {
-    const { liveStartsAt, endsAt } = this.props
     const duration = moment.duration(this.state.timeLeftInMilliseconds)
 
     return (
       <Flex alignItems="center">
-        <Sans12>
-          {liveStartsAt ? "Live " : "Ends "}
-          {moment(liveStartsAt || endsAt, moment.ISO_8601)
-            .tz(moment.tz.guess(true))
-            .format("MMM D, ha")}
-        </Sans12>
-        <Sans14>
+        <SansMedium12>{this.state.upcomingLabel}</SansMedium12>
+        <SansMedium14>
           {this.padWithZero(duration.days())}d{"  "}
           {this.padWithZero(duration.hours())}h{"  "}
           {this.padWithZero(duration.minutes())}m{"  "}
           {this.padWithZero(duration.seconds())}s
-        </Sans14>
+        </SansMedium14>
       </Flex>
     )
   }

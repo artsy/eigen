@@ -16,6 +16,7 @@ import { ConfirmBid } from "../ConfirmBid"
 jest.unmock("react-relay")
 import relay from "react-relay"
 import Spinner from "../../../Spinner"
+import objectContaining = jasmine.objectContaining
 
 let nextStep
 const mockNavigator = { push: route => (nextStep = route) }
@@ -117,8 +118,13 @@ describe("polling to verify bid position", () => {
         jest.runOnlyPendingTimers()
         jest.runAllTicks()
       })
+
       expect(nextStep.component).toEqual(BidResultScreen)
-      expect(nextStep.passProps.winning).toBeTruthy()
+      expect(nextStep.passProps).toEqual(
+        objectContaining({
+          bidderPositionResult: mockRequestResponses.pollingForBid.highestedBidder.data.me.bidder_position,
+        })
+      )
     })
 
     it("shows error when polling attempts exceed max", () => {
@@ -137,8 +143,11 @@ describe("polling to verify bid position", () => {
       })
 
       expect(nextStep.component).toEqual(BidResultScreen)
-      expect(nextStep.passProps.winning).toBeFalsy()
-      expect(nextStep.passProps.message_header).toMatch("Bid Processing")
+      expect(nextStep.passProps).toEqual(
+        objectContaining({
+          bidderPositionResult: mockRequestResponses.pollingForBid.pending.data.me.bidder_position,
+        })
+      )
     })
 
     it("shows successful bid result when highest bidder", () => {
@@ -153,7 +162,11 @@ describe("polling to verify bid position", () => {
       jest.runAllTicks() // Required as metaphysics async call defers execution to next invocation of Node event loop.
 
       expect(nextStep.component).toEqual(BidResultScreen)
-      expect(nextStep.passProps.winning).toBeTruthy()
+      expect(nextStep.passProps).toEqual(
+        objectContaining({
+          bidderPositionResult: mockRequestResponses.pollingForBid.highestedBidder.data.me.bidder_position,
+        })
+      )
     })
 
     it("shows outbid bidSuccessResult when outbid", () => {
@@ -168,7 +181,11 @@ describe("polling to verify bid position", () => {
       jest.runAllTicks()
 
       expect(nextStep.component).toEqual(BidResultScreen)
-      expect(nextStep.passProps.winning).toBeFalsy()
+      expect(nextStep.passProps).toEqual(
+        objectContaining({
+          bidderPositionResult: mockRequestResponses.pollingForBid.outbid.data.me.bidder_position,
+        })
+      )
     })
 
     it("shows reserve not met when reserve is not met", () => {
@@ -183,7 +200,11 @@ describe("polling to verify bid position", () => {
       jest.runAllTicks()
 
       expect(nextStep.component).toEqual(BidResultScreen)
-      expect(nextStep.passProps.winning).toBeFalsy()
+      expect(nextStep.passProps).toEqual(
+        objectContaining({
+          bidderPositionResult: mockRequestResponses.pollingForBid.reserveNotMet.data.me.bidder_position,
+        })
+      )
     })
   })
 
@@ -198,9 +219,10 @@ describe("polling to verify bid position", () => {
       component.root.findByType(Button).instance.props.onPress()
       jest.runAllTicks()
 
+      expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
-        expect.objectContaining({
-          message_header: "An error occurred",
+        objectContaining({
+          bidderPositionResult: mockRequestResponses.placeingBid.bidRejected.createBidderPosition.result,
         })
       )
     })
@@ -218,6 +240,7 @@ const saleArtwork = {
   },
   sale: {
     id: "best-art-sale-in-town",
+    endsAt: "2018-05-10T20:22:42+00:00",
   },
   lot_label: "538",
 }
