@@ -1,4 +1,5 @@
 #import "ARNotificationsManager.h"
+#import <React/RCTBridgeModule.h>
 
 @implementation ARNotificationsManager
 
@@ -23,6 +24,11 @@ RCT_EXPORT_MODULE();
 {
     NSURL *URL = notification.userInfo[@"ARPaymentRequestURL"];
     [self sendEventWithName:@"PaymentRequestPaid" body:@{ @"url": URL.absoluteString }];
+}
+
+RCT_EXPORT_METHOD(postNotificationName:(nonnull NSString *)notificationName userInfo:(NSDictionary *)userInfo)
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil userInfo:userInfo];
 }
 
 @end

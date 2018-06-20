@@ -16,6 +16,8 @@
 
 ### Master
 
+* Updates bid status when returning to the [sale] artwork screen- erik
+
 ### 1.5.5
 
 * Removes some of the height hacks we used in the Zero state for inbox/consignments which aren't needed in new RN - orta

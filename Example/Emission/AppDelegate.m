@@ -106,7 +106,12 @@ randomBOOL(void)
 
   EmissionKeys *keys = [[EmissionKeys alloc] init];
 
-  AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID authenticationToken:accessToken sentryDSN:nil stripePublishableKey:[keys stripePublishableKey] googleMapsAPIKey:nil gravityURL:setup.gravityURL metaphysicsURL:setup.metaphysicsURL userAgent:@"Emission Example"];
+  AREmissionConfiguration *config = [[AREmissionConfiguration alloc]
+                                     initWithUserID:userID
+                                     authenticationToken:accessToken
+                                     sentryDSN:nil
+                                     stripePublishableKey:[keys stripePublishableKey]
+                                     googleMapsAPIKey:nil gravityURL:setup.gravityURL metaphysicsURL:setup.metaphysicsURL userAgent:@"Emission Example"];
 
   emission = [[AREmission alloc] initWithConfiguration:config packagerURL:setup.jsCodeLocation];
   [AREmission setSharedInstance:emission];

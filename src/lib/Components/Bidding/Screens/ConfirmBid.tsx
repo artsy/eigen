@@ -1,5 +1,5 @@
 import React from "react"
-import { NavigatorIOS, View, ViewProperties } from "react-native"
+import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -160,6 +160,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     if (this.props.refreshSaleArtwork) {
       this.props.refreshSaleArtwork()
     }
+    NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
+      ARAuctionID: this.props.sale_artwork.sale.id,
+      ARAuctionArtworkID: this.props.sale_artwork.artwork.id,
+    })
     this.props.navigator.push({
       component: BidResultScreen,
       title: "",
