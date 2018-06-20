@@ -96,8 +96,12 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confir
     })
   }
 
-  onCreditCardAdded = async (params: PaymentCardTextFieldParams) => {
-    const token = await stripe.createTokenWithCard(params)
+  canPlaceBid() {
+    const { billingAddress, creditCardToken, conditionsOfSaleChecked } = this.state
+    return billingAddress && creditCardToken && conditionsOfSaleChecked
+  }
+
+  onCreditCardAdded = async (token: StripeToken, params: PaymentCardTextFieldParams) => {
     this.setState({ creditCardToken: token, creditCardFormParams: params })
   }
 
@@ -264,7 +268,7 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confir
                 text="Place Bid"
                 inProgress={this.state.isLoading}
                 selected={this.state.isLoading}
-                onPress={this.state.conditionsOfSaleChecked ? () => this.registerAndPlaceBid() : null}
+                onPress={this.canPlaceBid() ? () => this.registerAndPlaceBid() : null}
               />
             </Flex>
           </View>
