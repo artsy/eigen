@@ -58,7 +58,7 @@ describe("successful bid", () => {
 
     const component = renderer.create(<ConfirmFirstTimeBid {...initialProps} />)
 
-    // manually setting state to avoid dplicating tests for skipping UI interation, but practically better not to do this.
+    // manually setting state to avoid duplicating tests for skipping UI interation, but practically better not to do this.
     component.root.instance.setState({ billingAddress })
     component.root.instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
