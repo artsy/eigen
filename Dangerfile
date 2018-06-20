@@ -1,16 +1,10 @@
 # This one runs on Travis CI runnning on a linux box
 # There is another in Dangerfile.circle.rb
 
-# Sometimes its a README fix, or something like that - which isn't relevant for
-# including in a CHANGELOG for example
-declared_trivial = github.pr_title.include?("#trivial") || github.pr_body.include?("#trivial")
 declared_known_dev_tools = github.pr_body.include?("#known")
 
 # Just to let people know
 warn("PR is classed as Work in Progress") if github.pr_title.include? "[WIP]"
-
-# Oi, CHANGELOGs please
-fail("No CHANGELOG changes made") if git.lines_of_code > 50 && !git.modified_files.include?("CHANGELOG.yml") && !declared_trivial
 
 # Stop skipping some manual testing
 warn("Needs testing on a Phone if change is non-trivial") if git.lines_of_code > 50 && !github.pr_title.include?("📱")
