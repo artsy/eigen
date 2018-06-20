@@ -37,6 +37,11 @@ const touchedComponents = touchedFiles.filter(p => includes(p, "src/lib/componen
 
 // Rules
 
+// If it's not a branch PR
+if (pr.base.repo.full_name !== pr.head.repo.full_name) {
+  warn("This PR comes from a fork, and won't get JS generated for QA testing this PR inside the Emission Example app.")
+}
+
 // When there are app-changes and it's not a PR marked as trivial, expect
 // there to be CHANGELOG changes.
 const changelogChanges = includes(modified, "CHANGELOG.md")

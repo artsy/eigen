@@ -1,26 +1,23 @@
 cache: yarn
 language: node_js
-
-before_install:
-- curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.2.1
-- export PATH=$HOME/.yarn/bin:$PATH
+node_js: '8.4'
 
 matrix:
   include:
-  - node_js: '8.4'
-    script:
-      - yarn ci
-      - yarn danger ci --verbose
+    - env: NAME="CI"
+      script:
+        - yarn ci
+        - yarn danger ci --verbose
 
-  # Deployment related tasks
-  - node_js: "8.4.0"
-    script: ""  # NOOP as we don't need to run tests etc
-    after_success: # This can never fail the build
-      - yarn relay
-      # Upload latest PR commit to S3
-      - test ! $TRAVIS_PULL_REQUEST == "false" && scripts/deploy_commit.sh
-      # Upload merges to master to apphub
-      - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then scripts/deploy_master.sh; fi
+    # Deployment related tasks
+    - env: NAME="Deployment"
+      script: ""  # NOOP as we don't need to run tests etc
+      after_success: # This can never fail the build
+        - yarn relay
+        # Upload latest PR commit to S3
+        - test ! $TRAVIS_PULL_REQUEST == "false" && scripts/deploy_commit.sh
+        # Upload merges to master to apphub
+        - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" -z $APP_HUB_SECRET ]; then scripts/deploy_master.sh; fi
 
 cache:
   yarn: true
