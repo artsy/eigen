@@ -1,9 +1,9 @@
 upcoming:
   version: 4.2.0
   date: TBA
-  emission_version: 1.5.3
+  emission_version: 1.5.6
   dev:
-    - Updates Emission to 1.5.3 (updating RN also) - ash
+    - Updates Emission to 1.5.6 (updating RN also) - ash/orta/erik
     - Removes Hockey feedback prompt when taking screenshot, screen recording - ash
     - Removes deprecated ReactiveCocoa and uses ReactiveObjC library instead - ash
     - Changes background of internal webvc to white - maxim
@@ -16,6 +16,7 @@ upcoming:
     - Redesigned bid status view on artwork page - ash
     - Conditions-of-sale routing works - ash
     - Integrates new BidFlow component from Emission - ash
+    - Adds a lab option for running the react native Bid flow  - ash/erik
 
 releases:
   - version: 4.1.3

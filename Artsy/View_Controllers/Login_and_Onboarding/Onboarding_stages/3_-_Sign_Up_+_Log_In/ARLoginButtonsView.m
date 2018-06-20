@@ -31,13 +31,13 @@
     [self commonSetupWithLargeLayout:useLargeLayout];
     
     NSString *titleString = @"You can also ";
-    NSString *facebookLink = @"CONNECT WITH FACEBOOK";
+    NSString *facebookLink = @"Connect with Facebook";
     
     UIColor *facebookBlue = [UIColor colorWithRed:60.0 / 225.0 green:89.0 / 225.0 blue:155.0 / 255.0 alpha:1.0];
     
     NSMutableAttributedString *attributedTitle = [[NSMutableAttributedString alloc] initWithString:titleString attributes: @{NSForegroundColorAttributeName : [UIColor artsyGraySemibold], NSFontAttributeName : [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0]}];
     
-    NSAttributedString *facebookPart = [[NSAttributedString alloc] initWithString:facebookLink attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor], NSFontAttributeName : [UIFont sansSerifFontWithSize:useLargeLayout ? 16.0 : 12.0]}];
+    NSAttributedString *facebookPart = [[NSAttributedString alloc] initWithString:facebookLink attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor], NSFontAttributeName : [UIFont displayMediumSansSerifFontWithSize: 14.0]}];
 
     UIView *tempView = [[UIView alloc] init];
     
@@ -111,7 +111,7 @@
     self.actionButton.titleLabel.font = [UIFont serifFontWithSize:useLargeLayout ? 26.0 : 20.0];
     
     [self.actionButton constrainWidthToView:self predicate:@"0"];
-    [self.actionButton constrainHeight:@"50"];
+    [self.actionButton constrainHeight:@"40"];
     [self.actionButton alignLeadingEdgeWithView:self predicate:@"0"];
     [self.actionButton alignTopEdgeWithView:self predicate:@"0"];
 }
