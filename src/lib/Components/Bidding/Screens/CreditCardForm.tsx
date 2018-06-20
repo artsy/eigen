@@ -5,6 +5,7 @@ import { PaymentCardTextField } from "tipsi-stripe"
 
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Button } from "../Components/Button"
+import { Container } from "../Components/Containers"
 import { Title } from "../Components/Title"
 import { Flex } from "../Elements/Flex"
 import { theme } from "../Elements/Theme"
@@ -55,15 +56,21 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
   render() {
     return (
       <BiddingThemeProvider>
-        <View>
-          <Title>Your credit card</Title>
+        <Container m={0}>
+          <View>
+            <Title>Your credit card</Title>
 
-          <Flex m={4}>
-            <PaymentCardTextField style={styles.field} onParamsChange={this.handleFieldParamsChange} />
-          </Flex>
+            <Flex m={4}>
+              <PaymentCardTextField style={styles.field} onParamsChange={this.handleFieldParamsChange} />
+            </Flex>
+          </View>
 
-          <Button text="Add credit card" onPress={this.state.valid ? () => this.onSubmit() : null} />
-        </View>
+          <View>
+            <Flex m={4}>
+              <Button text="Add credit card" onPress={this.state.valid ? () => this.onSubmit() : null} />
+            </Flex>
+          </View>
+        </Container>
       </BiddingThemeProvider>
     )
   }
