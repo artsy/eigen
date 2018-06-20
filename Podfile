@@ -28,6 +28,8 @@ plugin 'cocoapods-keys', {
     "ArtsyEchoProductionToken",  # Runtime behavior changes
     "SentryProductionDSN",       # Crash Logging
     "SentryStagingDSN",          #
+    "StripeProductionPublishableKey", # Necessary for Stripe integration
+    "StripeStagingPublishableKey",
     "GoogleMapsAPIKey",          # Consignment Location Lookup
   ]
 }
@@ -57,6 +59,8 @@ target 'Artsy' do
   pod 'MARKRangeSlider'
   pod 'EDColor'
   pod 'SSFadingScrollView', :git => 'https://github.com/alloy/SSFadingScrollView.git', :branch => 'add-axial-support'
+  # For Stripe integration with Emission
+  pod 'tipsi-stripe', :git => "https://github.com/erikdstock/tipsi-stripe.git", :branch => 'fix-podspec-requires-packagejson'
 
   # Core owned by Artsy
   pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView'

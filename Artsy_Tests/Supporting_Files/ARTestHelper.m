@@ -63,6 +63,7 @@
     AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:@""
                                                                   authenticationToken:@""
                                                                             sentryDSN:@""
+                                                                 stripePublishableKey:@""
                                                                      googleMapsAPIKey:@""
                                                                            gravityURL:gravity
                                                                        metaphysicsURL:metaphysics
