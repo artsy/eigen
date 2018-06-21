@@ -6,6 +6,7 @@ upcoming:
     - Clear Relay response cache on logout/switch env - alloy
 
   user_facing:
+    - Nothing yet
 
 releases:
   - version: 4.2.0
