@@ -1,5 +1,5 @@
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import Spinner from "../../../Spinner"
@@ -27,8 +27,14 @@ import stripe from "tipsi-stripe"
 let nextStep
 const mockNavigator = { push: route => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
+const mockPostNotificationName = jest.fn()
 
 const { any, objectContaining } = jasmine
+
+beforeEach(() => {
+  mockPostNotificationName.mockReset()
+  NativeModules.ARNotificationsManager = { postNotificationName: mockPostNotificationName }
+})
 
 it("shows the billing address that the user typed in the billing address form", () => {
   const billingAddressRow = renderer
@@ -51,6 +57,27 @@ describe("successful bid", () => {
       .fn()
       .mockImplementationOnce((_, { onCompleted }) => onCompleted())
       .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.placeingBid.bidAccepted))
+  })
+
+  it("refreshes sale registration and bid state", () => {
+    mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBid))
+
+    const component = renderer.create(<ConfirmFirstTimeBid {...initialProps} />)
+
+    // manually setting state to avoid duplicating tests for skipping UI interation, but practically better not to do this.
+    component.root.instance.setState({ billingAddress })
+    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
+
+    jest.runAllTicks()
+    expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdatedNotification", {
+      ARAuctionID: "best-art-sale-in-town",
+    })
+    expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkBidUpdated", {
+      ARAuctionID: "best-art-sale-in-town",
+      ARAuctionArtworkID: "meteor shower",
+    })
   })
 
   it("commits two mutations, one for createCreditCard followed by createBidderPosition", () => {

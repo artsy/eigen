@@ -21,11 +21,13 @@ import objectContaining = jasmine.objectContaining
 let nextStep
 const mockNavigator = { push: route => (nextStep = route) }
 jest.useFakeTimers()
+const mockPostNotificationName = jest.fn()
 
 beforeEach(() => {
   // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
   mockphysics.mockReset()
-  NativeModules.ARNotificationsManager = { postNotificationName: jest.fn() }
+  mockPostNotificationName.mockReset()
+  NativeModules.ARNotificationsManager = { postNotificationName: mockPostNotificationName }
 })
 
 it("renders properly", () => {
@@ -205,6 +207,25 @@ describe("polling to verify bid position", () => {
           bidderPositionResult: mockRequestResponses.pollingForBid.reserveNotMet.data.me.bidder_position,
         })
       )
+    })
+    it("updates the main auction screen", () => {
+      const component = renderer.create(<ConfirmBid {...initialProps} navigator={mockNavigator} />)
+      component.root.instance.setState({ conditionsOfSaleChecked: true })
+      mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
+      relay.commitMutation = jest.fn((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.placeingBid.bidAccepted)
+      })
+
+      component.root.findByType(Button).instance.props.onPress()
+      jest.runAllTicks()
+
+      expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdatedNotification", {
+        ARAuctionID: "best-art-sale-in-town",
+      })
+      expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkBidUpdated", {
+        ARAuctionID: "best-art-sale-in-town",
+        ARAuctionArtworkID: "meteor shower",
+      })
     })
   })
 

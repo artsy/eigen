@@ -164,6 +164,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       ARAuctionID: this.props.sale_artwork.sale.id,
       ARAuctionArtworkID: this.props.sale_artwork.artwork.id,
     })
+    NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdatedNotification", {
+      ARAuctionID: this.props.sale_artwork.sale.id,
+    })
     this.props.navigator.push({
       component: BidResultScreen,
       title: "",
