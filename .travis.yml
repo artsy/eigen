@@ -17,7 +17,7 @@ matrix:
         # Upload latest PR commit to S3
         - test ! $TRAVIS_PULL_REQUEST == "false" && scripts/deploy_commit.sh
         # Upload merges to master to apphub
-        - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" -z $APP_HUB_SECRET ]; then scripts/deploy_master.sh; fi
+        - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then scripts/deploy_master.sh; fi
 
 cache:
   yarn: true
