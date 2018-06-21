@@ -19,9 +19,9 @@ import Spinner from "../../../Spinner"
 import objectContaining = jasmine.objectContaining
 
 let nextStep
-const mockPostNotificationName = jest.fn()
 const mockNavigator = { push: route => (nextStep = route) }
 jest.useFakeTimers()
+const mockPostNotificationName = jest.fn()
 
 beforeEach(() => {
   // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
@@ -219,7 +219,13 @@ describe("polling to verify bid position", () => {
       component.root.findByType(Button).instance.props.onPress()
       jest.runAllTicks()
 
-      expect(mockPostNotificationName).toHaveBeenCalledTimes(2)
+      expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdatedNotification", {
+        ARAuctionID: "best-art-sale-in-town",
+      })
+      expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkBidUpdated", {
+        ARAuctionID: "best-art-sale-in-town",
+        ARAuctionArtworkID: "meteor shower",
+      })
     })
   })
 

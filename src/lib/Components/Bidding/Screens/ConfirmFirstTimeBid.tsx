@@ -191,6 +191,13 @@ export class ConfirmFirstTimeBid extends React.Component<ConfirmBidProps, Confir
     if (this.props.refreshSaleArtwork) {
       this.props.refreshSaleArtwork()
     }
+    NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
+      ARAuctionID: this.props.sale_artwork.sale.id,
+      ARAuctionArtworkID: this.props.sale_artwork.artwork.id,
+    })
+    NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdatedNotification", {
+      ARAuctionID: this.props.sale_artwork.sale.id,
+    })
     this.props.navigator.push({
       component: BidResultScreen,
       title: "",
