@@ -94,17 +94,24 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
               Your billing address
             </Title>
 
-            <StyledInput label="Full name" placeholder="Enter your full name" {...this.propsForInput("fullName")} />
+            <StyledInput
+              label="Full name"
+              placeholder="Enter your full name"
+              autoCapitalize="words"
+              {...this.propsForInput("fullName")}
+            />
 
             <StyledInput
               label="Address line 1"
               placeholder="Enter your street address"
+              autoCapitalize="words"
               {...this.propsForInput("addressLine1")}
             />
 
             <StyledInput
               label="Address line 2 (optional)"
               placeholder="Enter your apt, floor, suite, etc."
+              autoCapitalize="words"
               {...this.propsForInput("addressLine2")}
             />
 
@@ -113,12 +120,14 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
             <StyledInput
               label="State, Province, or Region"
               placeholder="Enter state, province, or region"
+              autoCapitalize="words"
               {...this.propsForInput("state")}
             />
 
             <StyledInput
               label="Postal code"
               placeholder="Enter your postal code"
+              autoCapitalize="words"
               {...this.propsForInput("postalCode")}
             />
 

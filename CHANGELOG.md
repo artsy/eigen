@@ -19,6 +19,7 @@
 ### 1.5.6
 
 * Updates bid status when returning to the [sale] artwork screen- erik
+* Autocapitalizes words on billing address inputs - ash
 
 ### 1.5.5
 
