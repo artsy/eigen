@@ -21,6 +21,8 @@
 #import "AFHTTPRequestOperation+JSON.h"
 
 #import <ARAnalytics/ARAnalytics.h>
+#import <Emission/AREmission.h>
+#import <Emission/ARGraphQLQueryCache.h>
 
 
 NSString *const ARUserSessionStartedNotification = @"ARUserSessionStarted";
@@ -444,6 +446,8 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [manager deleteHTTPCookies];
     [ARRouter setAuthToken:nil];
     manager.currentUser = nil;
+    
+    [[[AREmission sharedInstance] graphQLQueryCacheModule] clearAll];
 
     if (useStaging != nil) {
         [[NSUserDefaults standardUserDefaults] setValue:useStaging forKey:ARUseStagingDefault];
