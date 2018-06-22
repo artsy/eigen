@@ -6,7 +6,7 @@ upcoming:
     - Clear Relay response cache on logout/switch env - alloy
 
   user_facing:
-    - Nothing yet
+    - Admins can get the shake gesture when they log in to the app for the first time - orta
 
 releases:
   - version: 4.2.0
