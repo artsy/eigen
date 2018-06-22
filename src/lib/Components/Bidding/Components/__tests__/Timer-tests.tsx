@@ -103,11 +103,11 @@ describe("timer methods", () => {
   let timer
 
   beforeEach(() => {
-    futureTime = moment()
+    futureTime = moment(dateNow)
       .add(1, "hour")
       .toISOString()
 
-    pastTime = moment()
+    pastTime = moment(dateNow)
       .subtract(1, "hour")
       .toISOString()
 
