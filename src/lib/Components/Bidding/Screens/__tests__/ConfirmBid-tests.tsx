@@ -7,6 +7,7 @@ import * as renderer from "react-test-renderer"
 import Spinner from "../../../Spinner"
 import { Serif16 } from "../../Elements/Typography"
 
+import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Button } from "../../Components/Button"
 import { Checkbox } from "../../Components/Checkbox"
 
@@ -50,7 +51,7 @@ it("renders properly", () => {
   expect(component).toMatchSnapshot()
 })
 
-it("enables the bit button when checkbox is ticked", () => {
+it("enables the bid button when checkbox is ticked", () => {
   const component = renderer.create(<ConfirmBid {...initialProps} />)
 
   expect(component.root.findByType(Button).instance.props.onPress).toBeFalsy()
@@ -60,14 +61,43 @@ it("enables the bit button when checkbox is ticked", () => {
   expect(component.root.findByType(Button).instance.props.onPress).toBeDefined()
 })
 
+it("enables the bid button by default if the user is registered", () => {
+  const component = renderer.create(<ConfirmBid {...initialPropsForRegisteredUser} />)
+
+  expect(component.root.findByType(Button).instance.props.onPress).toBeDefined()
+})
+
+describe("checkbox and payment info display", () => {
+  it("shows no checkbox or payment info if the user is registered", () => {
+    const component = renderer.create(<ConfirmBid {...initialPropsForRegisteredUser} />)
+
+    expect(component.root.findAllByType(Checkbox).length).toEqual(0)
+    expect(component.root.findAllByType(BidInfoRow).length).toEqual(1)
+  })
+
+  it("shows a checkbox but no payment info if the user is not registered and has cc on file", () => {
+    const component = renderer.create(<ConfirmBid {...initialProps} />)
+
+    expect(component.root.findAllByType(Checkbox).length).toEqual(1)
+    expect(component.root.findAllByType(BidInfoRow).length).toEqual(1)
+  })
+
+  it("shows a checkbox and payment info if the user is not registered and has no cc on file", () => {
+    const component = renderer.create(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
+
+    expect(component.root.findAllByType(Checkbox).length).toEqual(1)
+    expect(component.root.findAllByType(BidInfoRow).length).toEqual(3)
+  })
+})
+
 describe("when pressing bid button", () => {
   it("commits mutation", () => {
     const component = renderer.create(<ConfirmBid {...initialProps} />)
     component.root.instance.setState({ conditionsOfSaleChecked: true })
+
     relay.commitMutation = jest.fn()
 
     component.root.findByType(Button).instance.props.onPress()
-
     expect(relay.commitMutation).toHaveBeenCalled()
   })
 
@@ -451,6 +481,7 @@ const initialProps = {
   },
   me: {
     has_qualified_credit_cards: true,
+    bidders: null,
   },
   navigator: mockNavigator,
 } as any
@@ -459,5 +490,12 @@ const initialPropsForUnqualifiedUser = {
   ...initialProps,
   me: {
     has_qualified_credit_cards: false,
+  },
+} as any
+
+const initialPropsForRegisteredUser = {
+  ...initialProps,
+  me: {
+    bidders: [{ qualified_for_bidding: true }],
   },
 } as any

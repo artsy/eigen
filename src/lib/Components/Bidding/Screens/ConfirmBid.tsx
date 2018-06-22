@@ -47,6 +47,8 @@ interface ConfirmBidState {
   creditCardToken?: StripeToken
   conditionsOfSaleChecked: boolean
   isLoading: boolean
+  requiresCheckbox: boolean
+  requiresPaymentInformation: boolean
 }
 
 const MAX_POLL_ATTEMPTS = 20
@@ -113,23 +115,36 @@ const queryForBidPosition = (bidderPositionID: string) => {
   context_screen_owner_type: null,
 })
 export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState> {
-  state = {
-    billingAddress: null,
-    creditCardToken: null,
-    creditCardFormParams: null,
-    conditionsOfSaleChecked: false,
-    isLoading: false,
-  }
-
   private pollCount = 0
+
+  constructor(props) {
+    super(props)
+
+    const { bidders, has_qualified_credit_cards } = this.props.me
+    const isRegistered = bidders && bidders.length > 0
+    const requiresCheckbox = !isRegistered
+    const requiresPaymentInformation = !(isRegistered || has_qualified_credit_cards)
+
+    this.state = {
+      billingAddress: null,
+      creditCardToken: null,
+      creditCardFormParams: null,
+      conditionsOfSaleChecked: false,
+      isLoading: false,
+      requiresCheckbox,
+      requiresPaymentInformation,
+    }
+  }
 
   canPlaceBid() {
     const { billingAddress, creditCardToken, conditionsOfSaleChecked } = this.state
 
-    if (this.props.me.has_qualified_credit_cards) {
+    if (this.state.requiresPaymentInformation) {
+      return billingAddress && creditCardToken && conditionsOfSaleChecked
+    } else if (this.state.requiresCheckbox) {
       return conditionsOfSaleChecked
     } else {
-      return billingAddress && creditCardToken && conditionsOfSaleChecked
+      return true
     }
   }
 
@@ -140,7 +155,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   placeBid() {
     this.setState({ isLoading: true })
 
-    this.props.me.has_qualified_credit_cards ? this.createBidderPosition() : this.createCreditCardAndBidderPosition()
+    this.state.requiresPaymentInformation ? this.createCreditCardAndBidderPosition() : this.createBidderPosition()
   }
 
   async createCreditCardAndBidderPosition() {
@@ -282,7 +297,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   render() {
     const { artwork, lot_label, sale } = this.props.sale_artwork
-    const { billingAddress, creditCardToken: token } = this.state
+    const { billingAddress, creditCardToken: token, requiresPaymentInformation, requiresCheckbox } = this.state
 
     return (
       <BiddingThemeProvider>
@@ -306,7 +321,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
             <BidInfoRow label="Max bid" value={this.props.bid.display} onPress={() => this.goBackToSelectMaxBid()} />
 
-            {!this.props.me.has_qualified_credit_cards ? (
+            {requiresPaymentInformation ? (
               <View>
                 <Divider mb={2} />
                 <BidInfoRow
@@ -320,6 +335,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                   value={billingAddress && this.formatAddress(billingAddress)}
                   onPress={() => this.presentBillingAddressForm()}
                 />
+                <Divider mb={2} />
               </View>
             ) : (
               <Divider mb={9} />
@@ -327,13 +343,15 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
           </View>
 
           <View>
-            <Checkbox justifyContent="center" onPress={() => this.onConditionsOfSaleCheckboxPressed()}>
-              <Serif14 mt={2} color="black60">
-                You agree to{" "}
-                <LinkText onPress={() => this.onConditionsOfSaleLinkPressed()}>Conditions of Sale</LinkText>
-                .
-              </Serif14>
-            </Checkbox>
+            {requiresCheckbox && (
+              <Checkbox justifyContent="center" onPress={() => this.onConditionsOfSaleCheckboxPressed()}>
+                <Serif14 mt={2} color="black60">
+                  You agree to{" "}
+                  <LinkText onPress={() => this.onConditionsOfSaleLinkPressed()}>Conditions of Sale</LinkText>
+                  .
+                </Serif14>
+              </Checkbox>
+            )}
 
             <Flex m={4}>
               <Button
@@ -383,6 +401,9 @@ export const ConfirmBidScreen = createFragmentContainer(ConfirmBid, {
   me: graphql`
     fragment ConfirmBid_me on Me {
       has_qualified_credit_cards
+      bidders(sale_id: $saleID) {
+        qualified_for_bidding
+      }
     }
   `,
 })
