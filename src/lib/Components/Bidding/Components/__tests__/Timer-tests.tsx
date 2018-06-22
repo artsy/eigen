@@ -1,9 +1,11 @@
+import { shallow } from "enzyme"
+import moment from "moment"
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
 import { SansMedium12, SansMedium14 } from "../../Elements/Typography"
-import { Timer } from "../Timer"
+import { AuctionTimerState, Timer } from "../Timer"
 
 const SECONDS = 1000
 const MINUTES = 60 * SECONDS
@@ -93,4 +95,168 @@ it("shows month, date, and hour adjusted for the timezone where the user is", ()
   const timer = renderer.create(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
 
   expect(getTimerLabel(timer)).toEqual("Ends May 14, 1pm")
+})
+
+describe("timer methods", () => {
+  let futureTime
+  let pastTime
+  let timer
+
+  beforeEach(() => {
+    futureTime = moment()
+      .add(1, "hour")
+      .toISOString()
+
+    pastTime = moment()
+      .subtract(1, "hour")
+      .toISOString()
+
+    timer = shallow(<Timer />).instance()
+  })
+
+  describe("timer", () => {
+    it("transitions state from preview --> closing when the timer ends", () => {
+      const statefulTimer = renderer.create(<Timer isPreview={true} startsAt={futureTime} endsAt={futureTime} />)
+      statefulTimer.root.instance.setState({
+        timeLeftInMilliseconds: 1000,
+        label: "label",
+        timerState: AuctionTimerState.PREVIEW,
+      })
+      statefulTimer.root.instance.timer()
+      expect(statefulTimer.root.instance.state.label).toEqual("Ends May 10, 5pm")
+      expect(statefulTimer.root.instance.state.timerState).toEqual(AuctionTimerState.CLOSING)
+    })
+
+    it("transitions state from preview --> live upcoming when the timer ends", () => {
+      const statefulTimer = renderer.create(<Timer isPreview={true} startsAt={futureTime} liveStartsAt={futureTime} />)
+      statefulTimer.root.instance.setState({
+        timeLeftInMilliseconds: 1000,
+        label: "label",
+        timerState: AuctionTimerState.PREVIEW,
+      })
+      statefulTimer.root.instance.timer()
+      expect(statefulTimer.root.instance.state.label).toEqual("Live May 10, 5pm")
+      expect(statefulTimer.root.instance.state.timerState).toEqual(AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+    })
+
+    it("transitions state from live upcoming --> live ongoing when the timer ends", () => {
+      const statefulTimer = renderer.create(<Timer isPreview={false} startsAt={pastTime} liveStartsAt={pastTime} />)
+      statefulTimer.root.instance.setState({
+        timeLeftInMilliseconds: 1000,
+        label: "label",
+        timerState: AuctionTimerState.LIVE_INTEGRATION_UPCOMING,
+      })
+      statefulTimer.root.instance.timer()
+      expect(statefulTimer.root.instance.state.label).toEqual("In progress")
+      expect(statefulTimer.root.instance.state.timerState).toEqual(AuctionTimerState.LIVE_INTEGRATION_ONGOING)
+    })
+
+    it("transitions state from closing --> closed when the timer ends", () => {
+      const statefulTimer = renderer.create(<Timer isPreview={false} startsAt={futureTime} endsAt={futureTime} />)
+      statefulTimer.root.instance.setState({
+        timeLeftInMilliseconds: 1000,
+        label: "label",
+        timerState: AuctionTimerState.CLOSING,
+      })
+      statefulTimer.root.instance.timer()
+      expect(statefulTimer.root.instance.state.label).toEqual("Bidding closed")
+      expect(statefulTimer.root.instance.state.timerState).toEqual(AuctionTimerState.CLOSED)
+    })
+  })
+
+  describe("currentState", () => {
+    it("gives the correct state for a sale in preview", () => {
+      expect(timer.currentState(true, false, null)).toEqual(AuctionTimerState.PREVIEW)
+    })
+
+    it("gives the correct state for a timed sale that will close", () => {
+      expect(timer.currentState(false, false, null)).toEqual(AuctionTimerState.CLOSING)
+    })
+
+    it("gives the correct state for a sale that will open live", () => {
+      expect(timer.currentState(false, false, futureTime)).toEqual(AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+    })
+
+    it("gives the correct state for a sale that is already live", () => {
+      expect(timer.currentState(false, false, pastTime)).toEqual(AuctionTimerState.LIVE_INTEGRATION_ONGOING)
+    })
+
+    it("gives the correct state for a sale that is closed", () => {
+      expect(timer.currentState(false, true, pastTime)).toEqual(AuctionTimerState.CLOSED)
+    })
+  })
+
+  describe("nextState", () => {
+    it("gives the correct next state for a sale in preview that is timed", () => {
+      expect(timer.nextState(AuctionTimerState.PREVIEW, null)).toEqual(AuctionTimerState.CLOSING)
+    })
+
+    it("gives the correct next state for a sale in preview that will go live", () => {
+      expect(timer.nextState(AuctionTimerState.PREVIEW, futureTime)).toEqual(
+        AuctionTimerState.LIVE_INTEGRATION_UPCOMING
+      )
+    })
+
+    it("gives the correct next state for a sale that has closed", () => {
+      expect(timer.nextState(AuctionTimerState.CLOSED, null)).toEqual(AuctionTimerState.CLOSED)
+    })
+
+    it("gives the correct next state for a sale that is about to close", () => {
+      expect(timer.nextState(AuctionTimerState.CLOSING, null)).toEqual(AuctionTimerState.CLOSED)
+    })
+
+    it("gives the correct next state for a sale that is about to go live", () => {
+      expect(timer.nextState(AuctionTimerState.LIVE_INTEGRATION_UPCOMING, futureTime)).toEqual(
+        AuctionTimerState.LIVE_INTEGRATION_ONGOING
+      )
+    })
+
+    it("gives the correct next state for a sale that is currently live", () => {
+      expect(timer.nextState(AuctionTimerState.LIVE_INTEGRATION_ONGOING, pastTime)).toEqual(
+        AuctionTimerState.LIVE_INTEGRATION_ONGOING
+      )
+    })
+  })
+
+  describe("upcomingLabel", () => {
+    it("shows the correct label for a sale in preview", () => {
+      const { label, relevantDate } = timer.upcomingLabel(AuctionTimerState.PREVIEW, null, futureTime, null)
+      expect(label).toEqual("Starts May 10, 5pm")
+      expect(relevantDate).toEqual(futureTime)
+    })
+
+    it("shows the correct label for a sale that is going to end", () => {
+      const { label, relevantDate } = timer.upcomingLabel(AuctionTimerState.CLOSING, null, pastTime, futureTime)
+      expect(label).toEqual("Ends May 10, 5pm")
+      expect(relevantDate).toEqual(futureTime)
+    })
+
+    it("shows the correct label for a sale that is going to go live", () => {
+      const { label, relevantDate } = timer.upcomingLabel(
+        AuctionTimerState.LIVE_INTEGRATION_UPCOMING,
+        futureTime,
+        pastTime,
+        null
+      )
+      expect(label).toEqual("Live May 10, 5pm")
+      expect(relevantDate).toEqual(futureTime)
+    })
+
+    it("shows the correct label for a sale that is already live", () => {
+      const { label, relevantDate } = timer.upcomingLabel(
+        AuctionTimerState.LIVE_INTEGRATION_ONGOING,
+        pastTime,
+        pastTime,
+        null
+      )
+      expect(label).toEqual("In progress")
+      expect(relevantDate).toEqual(null)
+    })
+
+    it("shows the correct label for a sale that has closed", () => {
+      const { label, relevantDate } = timer.upcomingLabel(AuctionTimerState.CLOSED, pastTime, pastTime, pastTime)
+      expect(label).toEqual("Bidding closed")
+      expect(relevantDate).toEqual(null)
+    })
+  })
 })
