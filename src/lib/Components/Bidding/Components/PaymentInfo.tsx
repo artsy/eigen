@@ -7,6 +7,7 @@ import { CreditCardForm } from "../Screens/CreditCardForm"
 import { BidInfoRow } from "./BidInfoRow"
 import { Divider } from "./Divider"
 
+import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { FlexProps } from "../Elements/Flex"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 
@@ -60,21 +61,23 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
     const { billingAddress, creditCardToken: token } = this.props
 
     return (
-      <View>
-        <Divider mb={2} />
-        <BidInfoRow
-          label="Credit Card"
-          value={token && this.formatCard(token)}
-          onPress={() => this.presentCreditCardForm()}
-        />
-        <Divider mb={2} />
-        <BidInfoRow
-          label="Billing address"
-          value={billingAddress && this.formatAddress(billingAddress)}
-          onPress={() => this.presentBillingAddressForm()}
-        />
-        <Divider mb={2} />
-      </View>
+      <BiddingThemeProvider>
+        <View>
+          <Divider mb={2} />
+          <BidInfoRow
+            label="Credit Card"
+            value={token && this.formatCard(token)}
+            onPress={() => this.presentCreditCardForm()}
+          />
+          <Divider mb={2} />
+          <BidInfoRow
+            label="Billing address"
+            value={billingAddress && this.formatAddress(billingAddress)}
+            onPress={() => this.presentBillingAddressForm()}
+          />
+          <Divider mb={2} />
+        </View>
+      </BiddingThemeProvider>
     )
   }
 
