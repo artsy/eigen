@@ -238,6 +238,7 @@ exports[`renders properly 1`] = `
       accessibilityLabel={undefined}
       accessibilityTraits={undefined}
       accessible={true}
+      alignItems="center"
       flexDirection="row"
       hitSlop={undefined}
       justifyContent="space-between"

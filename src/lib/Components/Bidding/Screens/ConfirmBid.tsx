@@ -235,6 +235,14 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
   }
 
+  onCreditCardAdded(token: StripeToken, params: PaymentCardTextFieldParams) {
+    this.setState({ creditCardToken: token, creditCardFormParams: params })
+  }
+
+  onBillingAddressAdded(values: Address) {
+    this.setState({ billingAddress: values })
+  }
+
   goBackToSelectMaxBid() {
     this.props.navigator.pop()
   }
@@ -265,7 +273,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   render() {
     const { artwork, lot_label, sale } = this.props.sale_artwork
-    const { billingAddress, creditCardToken: token, requiresPaymentInformation, requiresCheckbox } = this.state
+    const { requiresPaymentInformation, requiresCheckbox } = this.state
 
     return (
       <BiddingThemeProvider>
@@ -289,7 +297,18 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
             <BidInfoRow label="Max bid" value={this.props.bid.display} onPress={() => this.goBackToSelectMaxBid()} />
 
-            {requiresPaymentInformation ? <PaymentInfo navigator={this.props.navigator} /> : <Divider mb={9} />}
+            {requiresPaymentInformation ? (
+              <PaymentInfo
+                navigator={this.props.navigator}
+                onCreditCardAdded={this.onCreditCardAdded.bind(this)}
+                onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
+                billingAddress={this.state.billingAddress}
+                creditCardFormParams={this.state.creditCardFormParams}
+                creditCardToken={this.state.creditCardToken}
+              />
+            ) : (
+              <Divider mb={9} />
+            )}
           </View>
 
           <View>

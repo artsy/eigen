@@ -12,19 +12,16 @@ import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 
 interface PaymentInfoProps extends FlexProps {
   navigator?: NavigatorIOS
-}
-
-interface PaymentInfoState {
+  onCreditCardAdded: (t: StripeToken, p: PaymentCardTextFieldParams) => void
+  onBillingAddressAdded: (values: Address) => void
   billingAddress?: Address
   creditCardFormParams?: PaymentCardTextFieldParams
   creditCardToken?: StripeToken
 }
 
-export class PaymentInfo extends React.Component<PaymentInfoProps, PaymentInfoState> {
+export class PaymentInfo extends React.Component<PaymentInfoProps> {
   constructor(props) {
     super(props)
-
-    this.state = { billingAddress: null, creditCardFormParams: null, creditCardToken: null }
   }
 
   presentCreditCardForm() {
@@ -33,7 +30,7 @@ export class PaymentInfo extends React.Component<PaymentInfoProps, PaymentInfoSt
       title: "",
       passProps: {
         onSubmit: (token, params) => this.onCreditCardAdded(token, params),
-        params: this.state.creditCardFormParams,
+        params: this.props.creditCardFormParams,
         navigator: this.props.navigator,
       },
     })
@@ -45,22 +42,22 @@ export class PaymentInfo extends React.Component<PaymentInfoProps, PaymentInfoSt
       title: "",
       passProps: {
         onSubmit: address => this.onBillingAddressAdded(address),
-        billingAddress: this.state.billingAddress,
+        billingAddress: this.props.billingAddress,
         navigator: this.props.navigator,
       },
     })
   }
 
   onCreditCardAdded(token: StripeToken, params: PaymentCardTextFieldParams) {
-    this.setState({ creditCardToken: token, creditCardFormParams: params })
+    this.props.onCreditCardAdded(token, params)
   }
 
   onBillingAddressAdded(values: Address) {
-    this.setState({ billingAddress: values })
+    this.props.onBillingAddressAdded(values)
   }
 
   render() {
-    const { billingAddress, creditCardToken: token } = this.state
+    const { billingAddress, creditCardToken: token } = this.props
 
     return (
       <View>
