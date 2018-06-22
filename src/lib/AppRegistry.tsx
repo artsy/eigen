@@ -5,12 +5,14 @@ import Consignments from "./Components/Consignments"
 import Containers from "./Containers/index"
 import {
   ArtistRenderer,
+  BidderFlowRendererProps,
   BidFlowRenderer,
   ConversationRenderer,
   GeneRenderer,
   InboxRenderer,
   InquiryRenderer,
   MyProfileRenderer,
+  RegistrationFlowRenderer,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
 import FavoritesScene from "./Scenes/Favorites"
@@ -88,14 +90,33 @@ const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(prop
 
 const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoadProgress(Containers.MyProfile)} />
 
-interface BidFlowProps {
+type BidderFlowIntent = "bid" | "register"
+interface BidderFlowProps {
   artworkID?: string
   saleID: string
-  intent: "bid" | "register"
+  intent: BidderFlowIntent
 }
-const BidFlow: React.SFC<BidFlowProps> = props => (
-  <BidFlowRenderer {...props} render={renderWithLoadProgress(Containers.BidFlow)} />
-)
+
+interface BidderFlow {
+  queryRenderer: React.ComponentType<BidderFlowRendererProps>
+  container: React.ReactType<any>
+}
+
+const BidderFlows: { [BidderFlowIntent: string]: BidderFlow } = {
+  bid: {
+    queryRenderer: BidFlowRenderer,
+    container: Containers.BidFlow,
+  },
+  register: {
+    queryRenderer: RegistrationFlowRenderer,
+    container: Containers.RegistrationFlow,
+  },
+}
+
+const BidderFlow: React.SFC<BidderFlowProps> = ({ intent, ...restProps }) => {
+  const { queryRenderer: Renderer, container: Container } = BidderFlows[intent]
+  return <Renderer {...restProps} render={renderWithLoadProgress(Container)} />
+}
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
@@ -109,4 +130,5 @@ AppRegistry.registerComponent("Inbox", () => Inbox)
 AppRegistry.registerComponent("Conversation", () => Conversation)
 AppRegistry.registerComponent("Inquiry", () => Inquiry)
 AppRegistry.registerComponent("Favorites", () => FavoritesScene)
-AppRegistry.registerComponent("BidFlow", () => BidFlow)
+// TODO: Change everything to BidderFlow? AuctionAction?
+AppRegistry.registerComponent("BidderFlow", () => BidderFlow)

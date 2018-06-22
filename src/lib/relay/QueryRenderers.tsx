@@ -8,6 +8,9 @@ Artist
 import BidFlow from "../Containers/BidFlow"
 BidFlow
 
+import RegistrationFlow from "../Containers/RegistrationFlow"
+RegistrationFlow
+
 import Conversation from "../Containers/Conversation"
 Conversation
 
@@ -58,13 +61,45 @@ export const ArtistRenderer: React.SFC<ArtistRendererProps> = ({ render, artistI
   )
 }
 
-interface BidFlowRendererProps extends RendererProps {
+export interface BidderFlowRendererProps extends RendererProps {
   artworkID?: string
   saleID: string
-  intent: "bid" | "register"
 }
 
-export const BidFlowRenderer: React.SFC<BidFlowRendererProps> = ({ render, artworkID, saleID, intent }) => {
+export const RegistrationFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ render, saleID }) => {
+  return (
+    <QueryRenderer
+      environment={environment}
+      query={graphql`
+        query QueryRenderersRegistrationFlowQuery($saleID: String!) {
+          sale(id: $saleID) {
+            name
+            ...RegistrationFlow_sale
+          }
+        }
+      `}
+      variables={{
+        saleID,
+      }}
+      render={({ props, error }) => {
+        if (error) {
+          console.error(error)
+        } else if (props) {
+          return render({
+            props: {
+              sale: props.sale,
+              //   // me: props.me,
+            },
+            error,
+          })
+        }
+        return null
+      }}
+    />
+  )
+}
+
+export const BidFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ render, artworkID, saleID }) => {
   // TODO: artworkID can be nil, so omit that part of the query if it is.
   return (
     <QueryRenderer
@@ -95,7 +130,6 @@ export const BidFlowRenderer: React.SFC<BidFlowRendererProps> = ({ render, artwo
             props: {
               sale_artwork: props.artwork.sale_artwork,
               me: props.me,
-              intent,
             },
             error,
           })

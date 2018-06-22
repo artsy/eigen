@@ -6,6 +6,7 @@ import Conversation from "./Conversation"
 import Gene from "./Gene"
 import Inbox from "./Inbox"
 import Inquiry from "./Inquiry"
+import RegistrationFlow from "./RegistrationFlow"
 import Sale from "./Sale"
 import WorksForYou from "./WorksForYou"
 
@@ -16,6 +17,7 @@ export default {
   Home,
   Gene,
   Sale,
+  RegistrationFlow,
   WorksForYou,
   MyProfile,
   Inbox,

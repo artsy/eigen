@@ -15,7 +15,7 @@
                           @"intent": (intent == ARBidFlowViewControllerIntentBid ? @"bid" : @"register")
   };
   if ((self = [super initWithEmission:nil
-                           moduleName:@"BidFlow"
+                           moduleName:@"BidderFlow"
                     initialProperties:props])) {
     _artworkID = artworkID;
     _saleID = saleID;
