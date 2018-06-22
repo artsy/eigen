@@ -1,3 +1,0 @@
-{
-  "c47e7e55e759e79bfd93ede1c0457b1e": "mutation ConfirmBidMutation(\n  $input: BidderPositionInput!\n) {\n  createBidderPosition(input: $input) {\n    result {\n      status\n      message_header\n      message_description_md\n      position {\n        id\n        suggested_next_bid {\n          cents\n          display\n        }\n        __id\n      }\n    }\n  }\n}\n"
-}

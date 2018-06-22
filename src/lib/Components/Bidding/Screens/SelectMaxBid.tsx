@@ -2,21 +2,21 @@ import React from "react"
 import { NavigatorIOS, ViewProperties } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
+import Spinner from "../../../Components/Spinner"
+import { Schema, screenTrack } from "../../../utils/track"
+
 import { Flex } from "../Elements/Flex"
 
-import Spinner from "../../../Components/Spinner"
+import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Button } from "../Components/Button"
 import { Container } from "../Components/Containers"
 import { MaxBidPicker } from "../Components/MaxBidPicker"
 import { Title } from "../Components/Title"
+
 import { ConfirmBidScreen } from "./ConfirmBid"
 
 import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
-import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { ConfirmFirstTimeBidScreen } from "./ConfirmFirstTimeBid"
-
-import { Schema, screenTrack } from "../../../utils/track"
 
 interface SelectMaxBidProps extends ViewProperties {
   sale_artwork: SelectMaxBid_sale_artwork
@@ -54,10 +54,10 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
 
   onPressNext = () => {
     this.props.navigator.push({
-      component: this.props.me.has_qualified_credit_cards ? ConfirmBidScreen : ConfirmFirstTimeBidScreen,
+      component: ConfirmBidScreen,
       title: "",
       passProps: {
-        sale_artwork: this.props.sale_artwork,
+        ...this.props,
         bid: this.props.sale_artwork.increments[this.state.selectedBidIndex],
         refreshSaleArtwork: this.refreshSaleArtwork,
       },
@@ -102,12 +102,11 @@ export const MaxBidScreen = createRefetchContainer(
         }
         _id
         ...ConfirmBid_sale_artwork
-        ...ConfirmFirstTimeBid_sale_artwork
       }
     `,
     me: graphql`
       fragment SelectMaxBid_me on Me {
-        has_qualified_credit_cards
+        ...ConfirmBid_me
       }
     `,
   },

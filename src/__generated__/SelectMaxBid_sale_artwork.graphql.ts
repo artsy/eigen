@@ -56,11 +56,6 @@ const node: ConcreteFragment = {
       "args": null
     },
     {
-      "kind": "FragmentSpread",
-      "name": "ConfirmFirstTimeBid_sale_artwork",
-      "args": null
-    },
-    {
       "kind": "ScalarField",
       "alias": null,
       "name": "__id",
@@ -69,5 +64,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = 'a5dead710438743c014df836be1d027f';
+(node as any).hash = 'c29e5912aecd7095b4fe9057ffe8c5d2';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type ConfirmBidMutationVariables = {
+export type ConfirmBidCreateBidderPositionMutationVariables = {
     readonly input: {
         readonly sale_id?: string;
         readonly artwork_id?: string;
@@ -9,7 +9,7 @@ export type ConfirmBidMutationVariables = {
         readonly clientMutationId: string | null;
     };
 };
-export type ConfirmBidMutationResponse = {
+export type ConfirmBidCreateBidderPositionMutationResponse = {
     readonly createBidderPosition: ({
         readonly result: ({
             readonly status: string;
@@ -29,7 +29,7 @@ export type ConfirmBidMutationResponse = {
 
 
 /*
-mutation ConfirmBidMutation(
+mutation ConfirmBidCreateBidderPositionMutation(
   $input: BidderPositionInput!
 ) {
   createBidderPosition(input: $input) {
@@ -164,13 +164,13 @@ v1 = [
 return {
   "kind": "Request",
   "operationKind": "mutation",
-  "name": "ConfirmBidMutation",
-  "id": "c47e7e55e759e79bfd93ede1c0457b1e",
+  "name": "ConfirmBidCreateBidderPositionMutation",
+  "id": "6dc901d7cf30a2e5778b669b04fe3d35",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "ConfirmBidMutation",
+    "name": "ConfirmBidCreateBidderPositionMutation",
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -178,11 +178,11 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ConfirmBidMutation",
+    "name": "ConfirmBidCreateBidderPositionMutation",
     "argumentDefinitions": v0,
     "selections": v1
   }
 };
 })();
-(node as any).hash = 'e0fe522d90c0aa543a6b3d34da4d7f82';
+(node as any).hash = '90b2051c0e404dbb3d3b528a9dbca3ff';
 export default node;
