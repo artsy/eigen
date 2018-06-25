@@ -23,6 +23,8 @@ interface BidResultProps {
   sale_artwork: BidResult_sale_artwork
   bidderPositionResult: BidderPositionResult
   navigator: NavigatorIOS
+  refreshBidderInfo?: () => void
+  refreshSaleArtwork?: () => void
 }
 
 const messageForPollingTimeout = {
@@ -43,8 +45,16 @@ const Icons = {
 
 export class BidResult extends React.Component<BidResultProps> {
   onPressBidAgain = () => {
+    // refetch bidder information so your registration status is up to date
+    if (this.props.refreshBidderInfo) {
+      this.props.refreshBidderInfo()
+    }
+    if (this.props.refreshSaleArtwork()) {
+      this.props.refreshSaleArtwork()
+    }
+
     // pushing to MaxBidScreen creates a circular relay reference but this works
-    // TODO: correct the screen transision animation
+    // TODO: correct the screen transition animation
     this.props.navigator.popToTop()
   }
 

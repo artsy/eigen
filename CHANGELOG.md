@@ -35,6 +35,7 @@
 * Updates definition of Unica font default weight - sweir27
 * Adds registration screen - sweir27
 * Adds support for startAt in the auction timer - sweir27
+* Refetches bidder info when returning to ConfirmBid screen - sweir27
 
 ### 1.5.3
 
