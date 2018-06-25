@@ -34,7 +34,7 @@ function _fetchQuery(queryID: string, variables: object, isQuery: boolean) {
     .then(response => response.text())
     .then(responseBody => {
       const json: { errors: any[] } = JSON.parse(responseBody)
-      if (json.errors) {
+      if (isQuery && json.errors) {
         // Unmark as in-flight
         cache.clear(queryID, variables)
         // Log to console/Sentry
