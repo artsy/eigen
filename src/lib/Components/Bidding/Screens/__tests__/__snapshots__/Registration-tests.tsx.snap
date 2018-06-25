@@ -105,13 +105,13 @@ exports[`renders properly 1`] = `
         >
           NaN
           d
-
+            
           NaN
           h
-
+            
           NaN
           m
-
+            
           NaN
           s
         </Text>
@@ -513,7 +513,7 @@ exports[`renders properly 1`] = `
             ]
           }
         >
-          Agree to
+          Agree to 
           <Text
             accessible={true}
             allowFontScaling={true}
@@ -617,4 +617,4 @@ exports[`renders properly 1`] = `
     </View>
   </View>
 </View>
-`
+`;
