@@ -10,17 +10,13 @@ import { Flex } from "../Elements/Flex"
 import { Serif14, SerifSemibold18 } from "../Elements/Typography"
 
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
-import { BidInfoRow } from "../Components/BidInfoRow"
 import { Button } from "../Components/Button"
 import { Checkbox } from "../Components/Checkbox"
 import { Container } from "../Components/Containers"
-import { Divider } from "../Components/Divider"
+import { PaymentInfo } from "../Components/PaymentInfo"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
-
-import { BillingAddress } from "./BillingAddress"
-import { CreditCardForm } from "./CreditCardForm"
 
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 
@@ -55,35 +51,11 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
   }
 
-  showCreditCardForm() {
-    this.props.navigator.push({
-      component: CreditCardForm,
-      title: "",
-      passProps: {
-        onSubmit: this.onCreditCardAdded,
-        navigator: this.props.navigator,
-      },
-    })
-  }
-
-  showBillingAddressForm() {
-    this.props.navigator.push({
-      component: BillingAddress,
-      title: "",
-      passProps: {
-        onSubmit: this.onBillingAddressAdded,
-        billingAddress: this.state.billingAddress,
-        navigator: this.props.navigator,
-      },
-    })
-  }
-
-  onCreditCardAdded = async (params: PaymentCardTextFieldParams) => {
-    const token = await stripe.createTokenWithCard(params)
+  onCreditCardAdded(token: StripeToken, params: PaymentCardTextFieldParams) {
     this.setState({ creditCardToken: token, creditCardFormParams: params })
   }
 
-  onBillingAddressAdded = (values: Address) => {
+  onBillingAddressAdded(values: Address) {
     this.setState({ billingAddress: values })
   }
 
@@ -93,36 +65,28 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
   render() {
     const { live_start_at, end_at, is_preview, start_at } = this.props.sale
-    const { billingAddress, creditCardToken: token } = this.state
 
     return (
       <BiddingThemeProvider>
         <Container m={0}>
-          <Flex alignItems="center">
-            <Title mb={3}>Register to bid</Title>
-            <Timer liveStartsAt={live_start_at} endsAt={end_at} isPreview={is_preview} startsAt={start_at} />
-            <SerifSemibold18 mt={5} mb={5}>
-              {this.props.sale.name}
-            </SerifSemibold18>
+          <View>
+            <Flex alignItems="center">
+              <Title mb={3}>Register to bid</Title>
+              <Timer liveStartsAt={live_start_at} endsAt={end_at} isPreview={is_preview} startsAt={start_at} />
+              <SerifSemibold18 mt={5} mb={5}>
+                {this.props.sale.name}
+              </SerifSemibold18>
+            </Flex>
 
-            <Divider mb={2} />
-
-            <BidInfoRow
-              label="Credit Card"
-              value={token && this.formatCard(token)}
-              onPress={() => this.showCreditCardForm()}
+            <PaymentInfo
+              navigator={this.props.navigator}
+              onCreditCardAdded={this.onCreditCardAdded.bind(this)}
+              onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
+              billingAddress={this.state.billingAddress}
+              creditCardFormParams={this.state.creditCardFormParams}
+              creditCardToken={this.state.creditCardToken}
             />
-
-            <Divider mb={2} />
-
-            <BidInfoRow
-              label="Billing address"
-              value={billingAddress && this.formatAddress(billingAddress)}
-              onPress={() => this.showBillingAddressForm()}
-            />
-
-            <Divider />
-          </Flex>
+          </View>
 
           <View>
             <Checkbox justifyContent="center" onPress={() => this.conditionsOfSalePressed()}>
@@ -143,14 +107,6 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         </Container>
       </BiddingThemeProvider>
     )
-  }
-
-  private formatCard(token: StripeToken) {
-    return `${token.card.brand} •••• ${token.card.last4}`
-  }
-
-  private formatAddress(address: Address) {
-    return [address.addressLine1, address.addressLine2, address.city, address.state].filter(el => el).join(" ")
   }
 }
 

@@ -1,0 +1,341 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly 1`] = `
+<View>
+  <View
+    border={1}
+    borderBottomWidth={0}
+    borderColor="black10"
+    mb={2}
+    style={
+      Array [
+        Object {
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "marginBottom": 5,
+          "width": "100%",
+        },
+        undefined,
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    alignItems="center"
+    flexDirection="row"
+    hitSlop={undefined}
+    justifyContent="space-between"
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    p={4}
+    style={
+      Array [
+        Object {
+          "paddingBottom": 20,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 20,
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+  >
+    <View
+      flex={1}
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        fontSize={3}
+        lineHeight={5}
+        style={
+          Array [
+            Object {
+              "fontFamily": "AGaramondPro-Semibold",
+              "fontSize": 16,
+              "lineHeight": 24,
+            },
+            undefined,
+          ]
+        }
+      >
+        Credit Card
+      </Text>
+    </View>
+    <View
+      alignItems="flex-end"
+      flex={1}
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        fontSize={3}
+        lineHeight={5}
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "lineHeight": 24,
+            },
+            undefined,
+          ]
+        }
+      >
+        VISA •••• 4242
+      </Text>
+    </View>
+    <View
+      alignItems="flex-end"
+      flex={null}
+      flexBasis="auto"
+      flexGrow={0}
+      flexShrink={0}
+      style={
+        Array [
+          Object {},
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        color="purple100"
+        ellipsizeMode="tail"
+        fontSize={1}
+        lineHeight={1}
+        mb={2}
+        ml={3}
+        style={
+          Array [
+            Object {
+              "color": "#6E1EFF",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 12,
+              "lineHeight": 16,
+              "marginBottom": 5,
+              "marginLeft": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        Edit
+      </Text>
+    </View>
+  </View>
+  <View
+    border={1}
+    borderBottomWidth={0}
+    borderColor="black10"
+    mb={2}
+    style={
+      Array [
+        Object {
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "marginBottom": 5,
+          "width": "100%",
+        },
+        undefined,
+      ]
+    }
+    width="100%"
+  />
+  <View
+    accessibilityComponentType={undefined}
+    accessibilityLabel={undefined}
+    accessibilityTraits={undefined}
+    accessible={true}
+    alignItems="center"
+    flexDirection="row"
+    hitSlop={undefined}
+    justifyContent="space-between"
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    p={4}
+    style={
+      Array [
+        Object {
+          "paddingBottom": 20,
+          "paddingLeft": 20,
+          "paddingRight": 20,
+          "paddingTop": 20,
+        },
+        undefined,
+      ]
+    }
+    testID={undefined}
+  >
+    <View
+      flex={1}
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        fontSize={3}
+        lineHeight={5}
+        style={
+          Array [
+            Object {
+              "fontFamily": "AGaramondPro-Semibold",
+              "fontSize": 16,
+              "lineHeight": 24,
+            },
+            undefined,
+          ]
+        }
+      >
+        Billing address
+      </Text>
+    </View>
+    <View
+      alignItems="flex-end"
+      flex={1}
+      style={
+        Array [
+          Object {
+            "flexBasis": 0,
+            "flexGrow": 1,
+            "flexShrink": 1,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        fontSize={3}
+        lineHeight={5}
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "lineHeight": 24,
+            },
+            undefined,
+          ]
+        }
+      >
+        401 Broadway 25th floor New York NY
+      </Text>
+    </View>
+    <View
+      alignItems="flex-end"
+      flex={null}
+      flexBasis="auto"
+      flexGrow={0}
+      flexShrink={0}
+      style={
+        Array [
+          Object {},
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        color="purple100"
+        ellipsizeMode="tail"
+        fontSize={1}
+        lineHeight={1}
+        mb={2}
+        ml={3}
+        style={
+          Array [
+            Object {
+              "color": "#6E1EFF",
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 12,
+              "lineHeight": 16,
+              "marginBottom": 5,
+              "marginLeft": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        Edit
+      </Text>
+    </View>
+  </View>
+  <View
+    border={1}
+    borderBottomWidth={0}
+    borderColor="black10"
+    mb={2}
+    style={
+      Array [
+        Object {
+          "borderColor": "#E5E5E5",
+          "borderStyle": "solid",
+          "borderWidth": 1,
+          "marginBottom": 5,
+          "width": "100%",
+        },
+        undefined,
+      ]
+    }
+    width="100%"
+  />
+</View>
+`;
