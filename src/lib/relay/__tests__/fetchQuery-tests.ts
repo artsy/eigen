@@ -69,4 +69,28 @@ describe("fetchQuery", () => {
       expect(cache.clearAll).toHaveBeenCalled()
     })
   })
+
+  describe("when fetching mutation", () => {
+    const mutation = {
+      id: "SomeQueryID",
+      operationKind: "mutation",
+    }
+
+    const errorResponse = {
+      errors: [
+        {
+          message: "You need to be signed in to perform this action",
+        },
+      ],
+    }
+
+    beforeEach(() => {
+      cache.get.mockImplementation(() => Promise.resolve(null))
+      metaphysicsMock.mockImplementation(() => Promise.resolve({ text: () => JSON.stringify(errorResponse) }))
+    })
+
+    it("resolves a promise when an error is present in the mutation response", async () => {
+      expect(await fetchQuery(mutation, variables, cacheConfig)).toEqual(errorResponse)
+    })
+  })
 })
