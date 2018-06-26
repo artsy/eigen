@@ -1,3 +1,4 @@
+import moment from "moment"
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
@@ -14,11 +15,21 @@ const getTimerLabel = timerComponent => timerComponent.root.findByType(SansMediu
 
 const getTimerText = timerComponent => timerComponent.root.findByType(SansMedium14).props.children.join("")
 
+let pastTime
+let futureTime
+
 beforeEach(() => {
   jest.useFakeTimers()
 
   // Thursday, May 10, 2018 8:22:32.000 PM UTC
   Date.now = () => dateNow
+  futureTime = moment(dateNow)
+    .add(1, "second")
+    .toISOString()
+
+  pastTime = moment(dateNow)
+    .subtract(1, "second")
+    .toISOString()
 })
 
 const orgDateTimeFormat: any = Intl.DateTimeFormat
@@ -46,7 +57,7 @@ it("formats the remaining time in '00d  00h  00m  00s'", () => {
   expect(getTimerText(timer)).toEqual("00d  00h  00m  10s")
 })
 
-it("shows 'Ends' when the endsAt prop is given", () => {
+it("shows 'Ends' when it's an online-only sale with an ending time", () => {
   const timer = renderer.create(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
 
   expect(getTimerLabel(timer)).toContain("Ends")
@@ -58,12 +69,33 @@ it("shows 'Live' when the liveStartsAt prop is given", () => {
   expect(getTimerLabel(timer)).toContain("Live")
 })
 
-it("shows 'Starts' when the startsAt and isPreview props are given", () => {
+it("shows 'Starts' the sale has not started yet", () => {
   const timer = renderer.create(
     <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview={true} liveStartsAt="2018-05-14T20:00:00+00:00" />
   )
 
   expect(getTimerLabel(timer)).toContain("Starts")
+})
+
+it("shows 'Bidding closed' when the auction is closed", () => {
+  const timer = renderer.create(
+    <Timer
+      startsAt="2018-04-14T20:00:00+00:00"
+      isPreview={false}
+      liveStartsAt="2018-05-14T20:00:00+00:00"
+      isClosed={true}
+    />
+  )
+
+  expect(getTimerLabel(timer)).toContain("Bidding closed")
+})
+
+it("shows 'In progress' when the auction is in live auction integration mode", () => {
+  const timer = renderer.create(
+    <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview={false} liveStartsAt={pastTime} isClosed={false} />
+  )
+
+  expect(getTimerLabel(timer)).toContain("In progress")
 })
 
 it("counts down to zero", () => {
@@ -93,4 +125,54 @@ it("shows month, date, and hour adjusted for the timezone where the user is", ()
   const timer = renderer.create(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
 
   expect(getTimerLabel(timer)).toEqual("Ends May 14, 1pm")
+})
+
+describe("timer transitions", () => {
+  it("transitions state from preview --> closing when the timer ends", () => {
+    const timer = renderer.create(<Timer isPreview={true} startsAt={futureTime} endsAt={futureTime} />)
+
+    expect(getTimerLabel(timer)).toContain("Starts")
+    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
+
+    jest.advanceTimersByTime(1 * SECONDS)
+
+    expect(getTimerLabel(timer)).toContain("Ends")
+    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
+  })
+
+  it("transitions state from preview --> live upcoming when the timer ends", () => {
+    const timer = renderer.create(<Timer isPreview={true} startsAt={futureTime} liveStartsAt={futureTime} />)
+
+    expect(getTimerLabel(timer)).toContain("Starts")
+    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
+
+    jest.advanceTimersByTime(1 * SECONDS)
+
+    expect(getTimerLabel(timer)).toContain("Live")
+    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
+  })
+
+  it("transitions state from live upcoming --> live ongoing when the timer ends", () => {
+    const timer = renderer.create(<Timer isPreview={false} startsAt={pastTime} liveStartsAt={futureTime} />)
+
+    expect(getTimerLabel(timer)).toContain("Live")
+    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
+
+    jest.advanceTimersByTime(1 * SECONDS)
+
+    expect(getTimerLabel(timer)).toContain("In progress")
+    expect(getTimerText(timer)).toContain("00d  00h  00m")
+  })
+
+  it("transitions state from closing --> closed when the timer ends", () => {
+    const timer = renderer.create(<Timer isPreview={false} startsAt={pastTime} endsAt={futureTime} />)
+
+    expect(getTimerLabel(timer)).toContain("Ends")
+    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
+
+    jest.advanceTimersByTime(1 * SECONDS)
+
+    expect(getTimerLabel(timer)).toContain("Bidding closed")
+    expect(getTimerText(timer)).toContain("00d  00h  00m")
+  })
 })
