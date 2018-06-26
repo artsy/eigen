@@ -134,6 +134,32 @@ storiesOf("Bidding")
               name: "Phillips New Now",
               start_at: "2018-06-11T01:00:00+00:00",
             },
+            me: { bidders: [], has_credit_cards: false },
+          },
+        }}
+        style={{ flex: 1 }}
+      />
+    )
+  })
+  .add("Registration (qualified cc on file), live sale starting in future", () => {
+    return (
+      <NavigatorIOS
+        navigationBarHidden={true}
+        initialRoute={{
+          component: Registration,
+          title: "",
+          passProps: {
+            sale: {
+              id: "1",
+              live_start_at: "2029-06-11T01:00:00+00:00",
+              end_at: null,
+              name: "Phillips New Now",
+              start_at: "2018-06-11T01:00:00+00:00",
+            },
+            me: {
+              bidders: [],
+              has_credit_cards: true,
+            },
           },
         }}
         style={{ flex: 1 }}
