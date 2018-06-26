@@ -13,6 +13,7 @@ import { PaymentCardTextFieldParams } from "../types"
 
 interface CreditCardFormProps {
   navigator?: NavigatorIOS
+  params?: PaymentCardTextFieldParams
   onSubmit: (t: StripeToken, p: PaymentCardTextFieldParams) => void
 }
 
@@ -35,15 +36,19 @@ const styles = StyleSheet.create({
 })
 
 export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFormState> {
-  state = {
-    valid: false,
-    params: {
-      number: null,
-      expMonth: null,
-      expYear: null,
-      cvc: null,
-    },
-    isLoading: false,
+  private paymentInfo: PaymentCardTextField
+
+  constructor(props) {
+    super(props)
+
+    this.paymentInfo = (React as any).createRef()
+    this.state = { valid: null, params: { ...this.props.params }, isLoading: false }
+  }
+
+  componentDidMount() {
+    if (this.paymentInfo.value) {
+      this.paymentInfo.value.setParams(this.state.params)
+    }
   }
 
   handleFieldParamsChange = (valid, params: PaymentCardTextFieldParams) => {
@@ -55,9 +60,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
 
     const { params } = this.state
 
-    const token = await stripe.createTokenWithCard({
-      ...params,
-    })
+    const token = await stripe.createTokenWithCard({ ...params })
 
     this.props.onSubmit(token, this.state.params)
     this.props.navigator.pop()
@@ -71,7 +74,11 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
             <Title>Your credit card</Title>
 
             <Flex m={4}>
-              <PaymentCardTextField style={styles.field} onParamsChange={this.handleFieldParamsChange} />
+              <PaymentCardTextField
+                ref={this.paymentInfo}
+                style={styles.field}
+                onParamsChange={this.handleFieldParamsChange}
+              />
             </Flex>
           </View>
 
