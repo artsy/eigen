@@ -17,6 +17,7 @@
 ### Master
 
 * Fixes the `commitMutation` compatibility by not throwing errors - yuki24
+* Update button style in bidflow to latest spec - maxim
 
 ### 1.5.6
 
