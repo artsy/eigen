@@ -69,11 +69,16 @@ export const Serif14 = props => <Serif fontSize={2} lineHeight={2} {...props} />
 export const Serif16 = props => <Serif fontSize={3} lineHeight={5} {...props} />
 export const Serif18 = props => <Serif fontSize={4} lineHeight={6} {...props} />
 
+export const Serif16t = props => <Serif fontSize={3} lineHeight={3} {...props} />
+export const Serif18t = props => <Serif fontSize={4} lineHeight={4} {...props} />
+
 export const SerifSemibold12 = props => <SerifSemibold fontSize={1} lineHeight={1} {...props} />
 export const SerifSemibold14 = props => <SerifSemibold fontSize={2} lineHeight={2} {...props} />
 export const SerifSemibold16 = props => <SerifSemibold fontSize={3} lineHeight={5} {...props} />
 export const SerifSemibold18 = props => <SerifSemibold fontSize={4} lineHeight={6} {...props} />
 export const SerifSemibold22 = props => <SerifSemibold fontSize={5} lineHeight={9} {...props} />
+
+export const SerifSemibold22t = props => <SerifSemibold fontSize={5} lineHeight={7} {...props} />
 
 export const SerifItalic12 = props => <SerifItalic fontSize={1} lineHeight={1} {...props} />
 export const SerifItalic14 = props => <SerifItalic fontSize={2} lineHeight={2} {...props} />
