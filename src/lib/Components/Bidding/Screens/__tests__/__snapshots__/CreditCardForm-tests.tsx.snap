@@ -111,6 +111,7 @@ exports[`renders properly 1`] = `
             Object {
               "alignItems": "center",
               "backgroundColor": "rgba(0, 0, 0, 1)",
+              "borderRadius": 2,
               "flex": 1,
               "justifyContent": "center",
             }
@@ -128,20 +129,19 @@ exports[`renders properly 1`] = `
               style={
                 Array [
                   Object {
-                    "fontSize": 12,
+                    "fontSize": 14,
                   },
                   Object {
                     "color": "white",
-                    "fontSize": 14,
                     "opacity": 1,
                   },
                   Object {
-                    "fontFamily": "AvantGardeGothicITC",
+                    "fontFamily": "Unica77LL-Medium",
                   },
                 ]
               }
             >
-              ADD CREDIT CARD
+              Add credit card
             </Text>
           </View>
         </View>
