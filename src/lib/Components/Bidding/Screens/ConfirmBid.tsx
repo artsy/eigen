@@ -1,6 +1,6 @@
 import React from "react"
 import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
+import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 import stripe from "tipsi-stripe"
 
@@ -35,7 +35,7 @@ export interface ConfirmBidProps extends ViewProperties {
   sale_artwork: ConfirmBid_sale_artwork
   me: ConfirmBid_me
   bid: Bid
-  relay?: RelayPaginationProp
+  relay?: RelayRefetchProp
   navigator?: NavigatorIOS
   refreshSaleArtwork?: () => void
 }
@@ -120,9 +120,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     super(props)
 
     const { bidders, has_qualified_credit_cards } = this.props.me
-    const isRegistered = bidders && bidders.length > 0
-    const requiresCheckbox = !isRegistered
-    const requiresPaymentInformation = !(isRegistered || has_qualified_credit_cards)
+    const { requiresCheckbox, requiresPaymentInformation } = this.determineDisplayRequirements(
+      bidders,
+      has_qualified_credit_cards
+    )
 
     this.state = {
       billingAddress: null,
@@ -235,6 +236,25 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
   }
 
+  refreshBidderInfo = () => {
+    this.props.relay.refetch(
+      { saleID: this.props.sale_artwork.sale.id },
+      null,
+      error => {
+        if (error) {
+          console.error("ConfirmBid.tsx", error.message)
+        }
+        const { bidders, has_qualified_credit_cards } = this.props.me
+        const { requiresCheckbox, requiresPaymentInformation } = this.determineDisplayRequirements(
+          bidders,
+          has_qualified_credit_cards
+        )
+        this.setState({ requiresCheckbox, requiresPaymentInformation })
+      },
+      { force: true }
+    )
+  }
+
   onCreditCardAdded(token: StripeToken, params: PaymentCardTextFieldParams) {
     this.setState({ creditCardToken: token, creditCardFormParams: params })
   }
@@ -265,6 +285,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       passProps: {
         sale_artwork: this.props.sale_artwork,
         bidderPositionResult,
+        refreshBidderInfo: this.refreshBidderInfo,
+        refreshSaleArtwork: this.props.refreshSaleArtwork,
       },
     })
 
@@ -312,7 +334,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
           </View>
 
           <View>
-            {requiresCheckbox && (
+            {requiresCheckbox ? (
               <Checkbox justifyContent="center" onPress={() => this.onConditionsOfSaleCheckboxPressed()}>
                 <Serif14 mt={2} color="black60">
                   You agree to{" "}
@@ -320,6 +342,14 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                   .
                 </Serif14>
               </Checkbox>
+            ) : (
+              <Flex alignItems="center">
+                <Serif14 mt={2} color="black60">
+                  You agree to{" "}
+                  <LinkText onPress={() => this.onConditionsOfSaleLinkPressed()}>Conditions of Sale</LinkText>
+                  .
+                </Serif14>
+              </Flex>
             )}
 
             <Flex m={4}>
@@ -335,36 +365,57 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       </BiddingThemeProvider>
     )
   }
+
+  private determineDisplayRequirements(bidders: ReadonlyArray<any>, hasQualifiedCreditCards: boolean) {
+    const isRegistered = bidders && bidders.length > 0
+    const requiresCheckbox = !isRegistered
+    const requiresPaymentInformation = !(isRegistered || hasQualifiedCreditCards)
+    return { requiresCheckbox, requiresPaymentInformation }
+  }
 }
 
 const LinkText = styled.Text`
   text-decoration-line: underline;
 `
 
-export const ConfirmBidScreen = createFragmentContainer(ConfirmBid, {
-  sale_artwork: graphql`
-    fragment ConfirmBid_sale_artwork on SaleArtwork {
-      sale {
-        id
-        live_start_at
-        end_at
+export const ConfirmBidScreen = createRefetchContainer(
+  ConfirmBid,
+  {
+    sale_artwork: graphql`
+      fragment ConfirmBid_sale_artwork on SaleArtwork {
+        _id
+        sale {
+          id
+          live_start_at
+          end_at
+        }
+        artwork {
+          id
+          title
+          date
+          artist_names
+        }
+        lot_label
+        ...BidResult_sale_artwork
       }
-      artwork {
-        id
-        title
-        date
-        artist_names
+    `,
+    me: graphql`
+      fragment ConfirmBid_me on Me {
+        has_qualified_credit_cards
+        bidders(sale_id: $saleID) {
+          qualified_for_bidding
+        }
       }
-      lot_label
-      ...BidResult_sale_artwork
+    `,
+  },
+  graphql`
+    query ConfirmBidRefetchQuery($saleID: String!) {
+      me {
+        has_qualified_credit_cards
+        bidders(sale_id: $saleID) {
+          qualified_for_bidding
+        }
+      }
     }
-  `,
-  me: graphql`
-    fragment ConfirmBid_me on Me {
-      has_qualified_credit_cards
-      bidders(sale_id: $saleID) {
-        qualified_for_bidding
-      }
-    }
-  `,
-})
+  `
+)
