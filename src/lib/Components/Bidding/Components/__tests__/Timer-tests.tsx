@@ -24,11 +24,11 @@ beforeEach(() => {
   // Thursday, May 10, 2018 8:22:32.000 PM UTC
   Date.now = () => dateNow
   futureTime = moment(dateNow)
-    .add(1, "hour")
+    .add(1, "second")
     .toISOString()
 
   pastTime = moment(dateNow)
-    .subtract(1, "hour")
+    .subtract(1, "second")
     .toISOString()
 })
 
@@ -132,33 +132,33 @@ describe("timer transitions", () => {
     const timer = renderer.create(<Timer isPreview={true} startsAt={futureTime} endsAt={futureTime} />)
 
     expect(getTimerLabel(timer)).toContain("Starts")
-    expect(getTimerText(timer)).toEqual("00d  01h  00m  00s")
+    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
 
-    jest.advanceTimersByTime(60 * MINUTES)
+    jest.advanceTimersByTime(1 * SECONDS)
 
     expect(getTimerLabel(timer)).toContain("Ends")
-    expect(getTimerText(timer)).toEqual("00d  01h  00m  00s")
+    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
   })
 
   it("transitions state from preview --> live upcoming when the timer ends", () => {
     const timer = renderer.create(<Timer isPreview={true} startsAt={futureTime} liveStartsAt={futureTime} />)
 
     expect(getTimerLabel(timer)).toContain("Starts")
-    expect(getTimerText(timer)).toEqual("00d  01h  00m  00s")
+    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
 
-    jest.advanceTimersByTime(60 * MINUTES)
+    jest.advanceTimersByTime(1 * SECONDS)
 
     expect(getTimerLabel(timer)).toContain("Live")
-    expect(getTimerText(timer)).toEqual("00d  01h  00m  00s")
+    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
   })
 
   it("transitions state from live upcoming --> live ongoing when the timer ends", () => {
     const timer = renderer.create(<Timer isPreview={false} startsAt={pastTime} liveStartsAt={futureTime} />)
 
     expect(getTimerLabel(timer)).toContain("Live")
-    expect(getTimerText(timer)).toEqual("00d  01h  00m  00s")
+    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
 
-    jest.advanceTimersByTime(60 * MINUTES)
+    jest.advanceTimersByTime(1 * SECONDS)
 
     expect(getTimerLabel(timer)).toContain("In progress")
     expect(getTimerText(timer)).toContain("00d  00h  00m")
@@ -168,9 +168,9 @@ describe("timer transitions", () => {
     const timer = renderer.create(<Timer isPreview={false} startsAt={pastTime} endsAt={futureTime} />)
 
     expect(getTimerLabel(timer)).toContain("Ends")
-    expect(getTimerText(timer)).toEqual("00d  01h  00m  00s")
+    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
 
-    jest.advanceTimersByTime(60 * MINUTES)
+    jest.advanceTimersByTime(1 * SECONDS)
 
     expect(getTimerLabel(timer)).toContain("Bidding closed")
     expect(getTimerText(timer)).toContain("00d  00h  00m")
