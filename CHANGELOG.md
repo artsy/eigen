@@ -18,6 +18,7 @@
 
 * Fixes the `commitMutation` compatibility by not throwing errors - yuki24
 * Update button style in bidflow to latest spec - maxim
+* Add disabled state to new button type, primary black - maxim
 
 ### 1.5.6
 
