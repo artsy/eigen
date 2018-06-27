@@ -9,7 +9,7 @@ import { metaphysics } from "../../../metaphysics"
 import { Schema, screenTrack, track } from "../../../utils/track"
 
 import { Flex } from "../Elements/Flex"
-import { Serif14, SerifItalic14, SerifSemibold14, SerifSemibold18 } from "../Elements/Typography"
+import { Serif14, SerifItalic14, SerifSemibold14, SerifSemibold18t } from "../Elements/Typography"
 
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { BidInfoRow } from "../Components/BidInfoRow"
@@ -327,7 +327,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
           <View>
             <Flex m={4} mt={0} alignItems="center">
-              <SerifSemibold18>{artwork.artist_names}</SerifSemibold18>
+              <SerifSemibold18t>{artwork.artist_names}</SerifSemibold18t>
               <SerifSemibold14>Lot {lot_label}</SerifSemibold14>
 
               <SerifItalic14 color="black60" textAlign="center">
@@ -335,7 +335,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               </SerifItalic14>
             </Flex>
 
-            <Divider mb={2} />
+            <Divider />
 
             <BidInfoRow label="Max bid" value={this.props.bid.display} onPress={() => this.goBackToSelectMaxBid()} />
 
@@ -355,7 +355,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
           <View>
             {requiresCheckbox ? (
-              <Checkbox justifyContent="center" onPress={() => this.onConditionsOfSaleCheckboxPressed()}>
+              <Checkbox mb={4} justifyContent="center" onPress={() => this.onConditionsOfSaleCheckboxPressed()}>
                 <Serif14 mt={2} color="black60">
                   You agree to{" "}
                   <LinkText onPress={() => this.onConditionsOfSaleLinkPressed()}>Conditions of Sale</LinkText>

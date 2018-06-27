@@ -467,14 +467,12 @@ exports[`renders properly for a user without a credit card 1`] = `
         border={1}
         borderBottomWidth={0}
         borderColor="black10"
-        mb={2}
         style={
           Array [
             Object {
               "borderColor": "#E5E5E5",
               "borderStyle": "solid",
               "borderWidth": 1,
-              "marginBottom": 5,
               "width": "100%",
             },
             undefined,
@@ -491,6 +489,7 @@ exports[`renders properly for a user without a credit card 1`] = `
         flexDirection="row"
         hitSlop={undefined}
         justifyContent="space-between"
+        mb={1}
         nativeID={undefined}
         onLayout={undefined}
         onResponderGrant={[Function]}
@@ -500,10 +499,12 @@ exports[`renders properly for a user without a credit card 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         p={4}
+        pb={3}
         style={
           Array [
             Object {
-              "paddingBottom": 20,
+              "marginBottom": 3,
+              "paddingBottom": 10,
               "paddingLeft": 20,
               "paddingRight": 20,
               "paddingTop": 20,
@@ -543,7 +544,7 @@ exports[`renders properly for a user without a credit card 1`] = `
               ]
             }
           >
-            Credit Card
+            Credit card
           </Text>
         </View>
         <View
@@ -580,7 +581,7 @@ exports[`renders properly for a user without a credit card 1`] = `
             ellipsizeMode="tail"
             fontSize={1}
             lineHeight={1}
-            mb={2}
+            mb={1}
             ml={3}
             style={
               Array [
@@ -589,7 +590,7 @@ exports[`renders properly for a user without a credit card 1`] = `
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 12,
                   "lineHeight": 16,
-                  "marginBottom": 5,
+                  "marginBottom": 3,
                   "marginLeft": 10,
                 },
                 undefined,
@@ -604,14 +605,12 @@ exports[`renders properly for a user without a credit card 1`] = `
         border={1}
         borderBottomWidth={0}
         borderColor="black10"
-        mb={2}
         style={
           Array [
             Object {
               "borderColor": "#E5E5E5",
               "borderStyle": "solid",
               "borderWidth": 1,
-              "marginBottom": 5,
               "width": "100%",
             },
             undefined,
@@ -628,6 +627,7 @@ exports[`renders properly for a user without a credit card 1`] = `
         flexDirection="row"
         hitSlop={undefined}
         justifyContent="space-between"
+        mb={1}
         nativeID={undefined}
         onLayout={undefined}
         onResponderGrant={[Function]}
@@ -637,10 +637,12 @@ exports[`renders properly for a user without a credit card 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         p={4}
+        pb={3}
         style={
           Array [
             Object {
-              "paddingBottom": 20,
+              "marginBottom": 3,
+              "paddingBottom": 10,
               "paddingLeft": 20,
               "paddingRight": 20,
               "paddingTop": 20,
@@ -717,7 +719,7 @@ exports[`renders properly for a user without a credit card 1`] = `
             ellipsizeMode="tail"
             fontSize={1}
             lineHeight={1}
-            mb={2}
+            mb={1}
             ml={3}
             style={
               Array [
@@ -726,7 +728,7 @@ exports[`renders properly for a user without a credit card 1`] = `
                   "fontFamily": "Unica77LL-Regular",
                   "fontSize": 12,
                   "lineHeight": 16,
-                  "marginBottom": 5,
+                  "marginBottom": 3,
                   "marginLeft": 10,
                 },
                 undefined,
@@ -741,14 +743,12 @@ exports[`renders properly for a user without a credit card 1`] = `
         border={1}
         borderBottomWidth={0}
         borderColor="black10"
-        mb={2}
         style={
           Array [
             Object {
               "borderColor": "#E5E5E5",
               "borderStyle": "solid",
               "borderWidth": 1,
-              "marginBottom": 5,
               "width": "100%",
             },
             undefined,

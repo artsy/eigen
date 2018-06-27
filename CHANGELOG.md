@@ -16,6 +16,8 @@
 
 ### Master
 
+* There should be more space visually between conditions of sale checkbox and place bid button - yuki24
+
 ### 1.5.7
 
 * Fixes the `commitMutation` compatibility by not throwing errors - yuki24
