@@ -140,6 +140,28 @@ describe("when pressing bid button", () => {
         expect(relay.commitMutation).toHaveBeenCalled()
         expect(mockphysics).not.toHaveBeenCalled()
       })
+
+      it("displays an error message", () => {
+        const component = renderer.create(<ConfirmBid {...initialProps} />)
+        component.root.instance.setState({ conditionsOfSaleChecked: true })
+        console.error = jest.fn() // Silences component logging.
+
+        // A TypeError is raised when the device has no internet connection.
+        relay.commitMutation = jest.fn((_, { onError }) => onError(new TypeError("Network request failed")))
+
+        component.root.findByType(Button).instance.props.onPress()
+
+        expect(nextStep.component).toEqual(BidResultScreen)
+        expect(nextStep.passProps).toEqual(
+          objectContaining({
+            bidderPositionResult: {
+              message_header: "An error occurred",
+              message_description_md:
+                "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
+            },
+          })
+        )
+      })
     })
   })
 })

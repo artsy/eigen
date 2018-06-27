@@ -109,6 +109,11 @@ const queryForBidPosition = (bidderPositionID: string) => {
   })
 }
 
+const resultForNetworkError = {
+  message_header: "An error occurred",
+  message_description_md: "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
+}
+
 @screenTrack({
   context_screen: Schema.PageNames.BidFlowConfirmBidPage,
   context_screen_owner_type: null,
@@ -172,7 +177,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
     commitMutation(this.props.relay.environment, {
       onCompleted: () => this.createBidderPosition(),
-      onError: errors => console.error("An error occurred in creditCardMutation: ", errors),
+      onError: this.presentErrorResult.bind(this),
       mutation: creditCardMutation,
       variables: {
         input: {
@@ -185,7 +190,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   createBidderPosition() {
     commitMutation(this.props.relay.environment, {
       onCompleted: (results, errors) => this.verifyBidPosition(results, errors),
-      onError: errors => console.error("An error occurred in createBidderPosition: ", errors),
+      onError: this.presentErrorResult.bind(this),
       mutation: bidderPositionMutation,
       variables: {
         input: {
@@ -265,6 +270,21 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   goBackToSelectMaxBid() {
     this.props.navigator.pop()
+  }
+
+  presentErrorResult(error) {
+    console.error(error)
+
+    this.props.navigator.push({
+      component: BidResultScreen,
+      title: "",
+      passProps: {
+        sale_artwork: this.props.sale_artwork,
+        bidderPositionResult: resultForNetworkError,
+      },
+    })
+
+    this.setState({ isLoading: false })
   }
 
   presentBidResult(bidderPositionResult: BidderPositionResult) {
