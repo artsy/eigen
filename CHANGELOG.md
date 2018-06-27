@@ -17,6 +17,10 @@
 ### Master
 
 * Fixes the `commitMutation` compatibility by not throwing errors - yuki24
+* Refetches bidder info when returning to ConfirmBid screen - sweir27
+* Refactors auction timer to support state changes - sweir27
+* Now User sees an error message when a request to MP did not go through due to the device's network condition - yuki24
+* Fixes a style issue where the spacing of the messages looks weird on “Outbid” payoff screen - yuki24
 * Update button style in bidflow to latest spec - maxim
 
 ### 1.5.6

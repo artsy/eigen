@@ -1,5 +1,5 @@
 import React from "react"
 
-import { SerifSemibold22 } from "../Elements/Typography"
+import { SerifSemibold22t } from "../Elements/Typography"
 
-export const Title = props => <SerifSemibold22 m={4} textAlign="center" {...props} />
+export const Title = props => <SerifSemibold22t m={4} textAlign="center" {...props} />

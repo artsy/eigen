@@ -35,7 +35,7 @@ exports[`renders properly 1`] = `
       allowFontScaling={true}
       ellipsizeMode="tail"
       fontSize={5}
-      lineHeight={9}
+      lineHeight={7}
       m={4}
       mb={3}
       style={
@@ -43,7 +43,7 @@ exports[`renders properly 1`] = `
           Object {
             "fontFamily": "AGaramondPro-Semibold",
             "fontSize": 22,
-            "lineHeight": 32,
+            "lineHeight": 28,
             "marginBottom": 10,
             "marginLeft": 20,
             "marginRight": 20,
@@ -82,7 +82,9 @@ exports[`renders properly 1`] = `
             undefined,
           ]
         }
-      />
+      >
+        Ends Invalid date
+      </Text>
       <Text
         accessible={true}
         allowFontScaling={true}

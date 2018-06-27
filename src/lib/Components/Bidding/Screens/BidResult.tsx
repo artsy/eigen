@@ -23,6 +23,8 @@ interface BidResultProps {
   sale_artwork: BidResult_sale_artwork
   bidderPositionResult: BidderPositionResult
   navigator: NavigatorIOS
+  refreshBidderInfo?: () => void
+  refreshSaleArtwork?: () => void
 }
 
 const messageForPollingTimeout = {
@@ -43,8 +45,16 @@ const Icons = {
 
 export class BidResult extends React.Component<BidResultProps> {
   onPressBidAgain = () => {
+    // refetch bidder information so your registration status is up to date
+    if (this.props.refreshBidderInfo) {
+      this.props.refreshBidderInfo()
+    }
+    if (this.props.refreshSaleArtwork()) {
+      this.props.refreshSaleArtwork()
+    }
+
     // pushing to MaxBidScreen creates a circular relay reference but this works
-    // TODO: correct the screen transision animation
+    // TODO: correct the screen transition animation
     this.props.navigator.popToTop()
   }
 
@@ -70,13 +80,15 @@ export class BidResult extends React.Component<BidResultProps> {
             <Flex alignItems="center">
               <Icon20 source={Icons[status] || require("../../../../../images/circle-x-red.png")} />
 
-              <Title m={4}>
+              <Title mt={0} mb={5}>
                 {status === "PENDING" ? messageForPollingTimeout.title : message_header || "You’re the highest bidder"}
               </Title>
 
-              <Markdown>
-                {status === "PENDING" ? messageForPollingTimeout.description : message_description_md || ""}
-              </Markdown>
+              {status !== "WINNING" && (
+                <Markdown mb={5}>
+                  {status === "PENDING" ? messageForPollingTimeout.description : message_description_md}
+                </Markdown>
+              )}
 
               {this.shouldDisplayTimer(status) && <Timer liveStartsAt={live_start_at} endsAt={end_at} />}
             </Flex>

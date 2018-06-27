@@ -6,7 +6,7 @@ import styled from "styled-components/native"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Flex, FlexProps } from "../Elements/Flex"
-import { Serif16 } from "../Elements/Typography"
+import { Serif16t } from "../Elements/Typography"
 
 // Rules for rendering parsed markdown. Currently only handles links and text. Add rules similar to
 // https://github.com/CharlesMangwa/react-native-simple-markdown/blob/next/src/rules.js for new functionalities.
@@ -44,9 +44,9 @@ const rules = {
     match: SimpleMarkdown.blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
     react: (node, output, state) => {
       return (
-        <Serif16 color="black60" key={state.key} textAlign="center">
+        <Serif16t color="black60" key={state.key} textAlign="center">
           {output(node.content, state)}
-        </Serif16>
+        </Serif16t>
       )
     },
   },
