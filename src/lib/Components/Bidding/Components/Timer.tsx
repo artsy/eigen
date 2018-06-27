@@ -1,7 +1,7 @@
 import moment from "moment-timezone"
 import React from "react"
 import { Flex } from "../Elements/Flex"
-import { SansMedium12, SansMedium14 } from "../Elements/Typography"
+import { SansMedium12, SansMedium16t } from "../Elements/Typography"
 
 interface TimerProps {
   liveStartsAt?: string
@@ -68,7 +68,7 @@ export class Timer extends React.Component<TimerProps, TimerState> {
   formatDate(date: string) {
     return moment(date, moment.ISO_8601)
       .tz(moment.tz.guess(true))
-      .format("MMM D, ha")
+      .format("MMM D, h A")
   }
 
   upcomingLabel(currentState: AuctionTimerState, liveStartsAt: string, startsAt: string, endsAt: string) {
@@ -143,13 +143,13 @@ export class Timer extends React.Component<TimerProps, TimerState> {
 
     return (
       <Flex alignItems="center">
-        <SansMedium12>{this.state.label}</SansMedium12>
-        <SansMedium14>
+        <SansMedium16t>
           {this.padWithZero(duration.days())}d{"  "}
           {this.padWithZero(duration.hours())}h{"  "}
           {this.padWithZero(duration.minutes())}m{"  "}
           {this.padWithZero(duration.seconds())}s
-        </SansMedium14>
+        </SansMedium16t>
+        <SansMedium12>{this.state.label}</SansMedium12>
       </Flex>
     )
   }
