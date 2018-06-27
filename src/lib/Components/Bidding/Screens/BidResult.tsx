@@ -29,13 +29,11 @@ interface BidResultProps {
 
 const messageForPollingTimeout = {
   title: "Bid processing",
-  description: `
-    We’re receiving a high volume of traffic
-    and your bid is still processing.
-
-    If you don’t receive an update soon,
-    please contact [support@artsy.net](mailto:support@artsy.net).
-  `,
+  description:
+    "We’re receiving a high volume of traffic\n" +
+    "and your bid is still processing.\n\n" +
+    "If you don’t receive an update soon,\n" +
+    "please contact [support@artsy.net](mailto:support@artsy.net).",
 }
 
 const Icons = {
