@@ -18,6 +18,7 @@ import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 
+import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 
 const Emission = NativeModules.Emission || {}
@@ -26,6 +27,7 @@ stripe.setOptions({ publishableKey: Emission.stripePublishableKey })
 
 export interface RegistrationProps extends ViewProperties {
   sale: Registration_sale
+  me: Registration_me
   relay?: RelayPaginationProp
   navigator?: NavigatorIOS
 }
@@ -36,15 +38,24 @@ interface RegistrationState {
   creditCardToken?: StripeToken
   conditionsOfSaleChecked: boolean
   isLoading: boolean
+  requiresPaymentInformation: boolean
 }
 
 export class Registration extends React.Component<RegistrationProps, RegistrationState> {
-  state = {
-    billingAddress: null,
-    creditCardToken: null,
-    creditCardFormParams: null,
-    conditionsOfSaleChecked: false,
-    isLoading: false,
+  constructor(props) {
+    super(props)
+
+    const { has_credit_cards } = this.props.me
+    const requiresPaymentInformation = !has_credit_cards
+
+    this.state = {
+      billingAddress: null,
+      creditCardToken: null,
+      creditCardFormParams: null,
+      conditionsOfSaleChecked: false,
+      requiresPaymentInformation,
+      isLoading: false,
+    }
   }
 
   onPressConditionsOfSale = () => {
@@ -78,14 +89,16 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               </SerifSemibold18>
             </Flex>
 
-            <PaymentInfo
-              navigator={this.props.navigator}
-              onCreditCardAdded={this.onCreditCardAdded.bind(this)}
-              onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
-              billingAddress={this.state.billingAddress}
-              creditCardFormParams={this.state.creditCardFormParams}
-              creditCardToken={this.state.creditCardToken}
-            />
+            {this.state.requiresPaymentInformation && (
+              <PaymentInfo
+                navigator={this.props.navigator}
+                onCreditCardAdded={this.onCreditCardAdded.bind(this)}
+                onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
+                billingAddress={this.state.billingAddress}
+                creditCardFormParams={this.state.creditCardFormParams}
+                creditCardToken={this.state.creditCardToken}
+              />
+            )}
           </View>
 
           <View>
@@ -114,9 +127,8 @@ const LinkText = styled.Text`
   text-decoration-line: underline;
 `
 
-export const RegistrationScreen = createFragmentContainer(
-  Registration,
-  graphql`
+export const RegistrationScreen = createFragmentContainer(Registration, {
+  sale: graphql`
     fragment Registration_sale on Sale {
       id
       end_at
@@ -125,5 +137,10 @@ export const RegistrationScreen = createFragmentContainer(
       name
       start_at
     }
-  `
-)
+  `,
+  me: graphql`
+    fragment Registration_me on Me {
+      has_credit_cards
+    }
+  `,
+})

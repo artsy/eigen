@@ -1,6 +1,7 @@
 import React from "react"
 import * as renderer from "react-test-renderer"
 
+import { Checkbox } from "../../Components/Checkbox"
 import { Serif16 } from "../../Elements/Typography"
 import { BillingAddress } from "../BillingAddress"
 import { Registration } from "../Registration"
@@ -18,19 +19,40 @@ let nextStep
 const mockNavigator = { push: route => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
 
-it("renders properly", () => {
-  const component = renderer.create(<Registration {...initialProps} />).toJSON()
+it("renders properly for a user without a credit card", () => {
+  const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />).toJSON()
+  expect(component).toMatchSnapshot()
+})
+
+it("renders properly for a user with a credit card", () => {
+  const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />).toJSON()
   expect(component).toMatchSnapshot()
 })
 
 it("shows the billing address that the user typed in the billing address form", () => {
-  const billingAddressRow = renderer.create(<Registration {...initialProps} />).root.findAllByType(BidInfoRow)[1]
+  const billingAddressRow = renderer
+    .create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+    .root.findAllByType(BidInfoRow)[1]
   billingAddressRow.instance.props.onPress()
   expect(nextStep.component).toEqual(BillingAddress)
 
   nextStep.passProps.onSubmit(billingAddress)
 
   expect(billingAddressRow.findByType(Serif16).props.children).toEqual("401 Broadway 25th floor New York NY")
+})
+
+it("shows the option for entering payment information if the user does not have a credit card on file", () => {
+  const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+
+  expect(component.root.findAllByType(Checkbox).length).toEqual(1)
+  expect(component.root.findAllByType(BidInfoRow).length).toEqual(2)
+})
+
+it("shows no option for entering payment information if the user has a credit card on file", () => {
+  const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
+
+  expect(component.root.findAllByType(Checkbox).length).toEqual(1)
+  expect(component.root.findAllByType(BidInfoRow).length).toEqual(0)
 })
 
 const billingAddress = {
@@ -57,4 +79,18 @@ const initialProps = {
   sale,
   relay: { environment: null },
   navigator: mockNavigator,
+} as any
+
+const initialPropsForUserWithCreditCard = {
+  ...initialProps,
+  me: {
+    has_credit_cards: true,
+  },
+} as any
+
+const initialPropsForUserWithoutCreditCard = {
+  ...initialProps,
+  me: {
+    has_credit_cards: false,
+  },
 } as any

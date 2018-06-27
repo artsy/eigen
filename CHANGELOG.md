@@ -23,6 +23,7 @@
 * Fixes a style issue where the spacing of the messages looks weird on “Outbid” payoff screen - yuki24
 * Update button style in bidflow to latest spec - maxim
 * Add disabled state to new button type, primary black - maxim
+* Registration screen handles when a user already has a credit card on file - sweir27
 
 ### 1.5.6
 

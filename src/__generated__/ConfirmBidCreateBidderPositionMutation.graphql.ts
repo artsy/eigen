@@ -82,7 +82,7 @@ v1 = [
         "name": "result",
         "storageKey": null,
         "args": null,
-        "concreteType": "BidderPositionMutationResult",
+        "concreteType": "BidderPositionResult",
         "plural": false,
         "selections": [
           {
