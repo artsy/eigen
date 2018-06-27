@@ -36,7 +36,7 @@ exports[`renders properly for a user with a credit card 1`] = `
         allowFontScaling={true}
         ellipsizeMode="tail"
         fontSize={5}
-        lineHeight={9}
+        lineHeight={7}
         m={4}
         mb={3}
         style={
@@ -44,7 +44,7 @@ exports[`renders properly for a user with a credit card 1`] = `
             Object {
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 22,
-              "lineHeight": 32,
+              "lineHeight": 28,
               "marginBottom": 10,
               "marginLeft": 20,
               "marginRight": 20,
@@ -83,7 +83,9 @@ exports[`renders properly for a user with a credit card 1`] = `
               undefined,
             ]
           }
-        />
+        >
+          Ends Invalid date
+        </Text>
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -282,6 +284,7 @@ exports[`renders properly for a user with a credit card 1`] = `
             Object {
               "alignItems": "center",
               "backgroundColor": "rgba(0, 0, 0, 1)",
+              "borderRadius": 2,
               "flex": 1,
               "justifyContent": "center",
             }
@@ -299,20 +302,19 @@ exports[`renders properly for a user with a credit card 1`] = `
               style={
                 Array [
                   Object {
-                    "fontSize": 12,
+                    "fontSize": 14,
                   },
                   Object {
                     "color": "white",
-                    "fontSize": 14,
                     "opacity": 1,
                   },
                   Object {
-                    "fontFamily": "AvantGardeGothicITC",
+                    "fontFamily": "Unica77LL-Medium",
                   },
                 ]
               }
             >
-              COMPLETE REGISTRATION
+              Complete Registration
             </Text>
           </View>
         </View>
