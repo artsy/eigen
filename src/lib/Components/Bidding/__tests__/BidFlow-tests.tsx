@@ -54,8 +54,8 @@ it("allows bidders with a qualified credit card to bid", () => {
 
   expect(getTitleText(screen)).toEqual("Confirm your bid")
 
-  mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestedBidder))
-  relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted(mockRequestResponses.placeingBid.bidAccepted))
+  mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
+  relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted(mockRequestResponses.placingBid.bidAccepted))
 
   screen.root.findByType(Checkbox).instance.props.onPress()
   screen.root.findByType(Button).instance.props.onPress()
@@ -85,10 +85,10 @@ it("allows bidders without a qualified credit card to register a card and bid", 
   expect(getTitleText(screen)).toEqual("Confirm your bid")
 
   stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-  relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted(mockRequestResponses.placeingBid.bidAccepted))
-  mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestedBidder))
+  relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted(mockRequestResponses.placingBid.bidAccepted))
+  mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
 
-  // manually setting state to avoid dplicating tests for skipping UI interation, but practically better not to do this.
+  // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.
   screen.root.instance.setState({
     billingAddress,
     creditCardFormParams,
@@ -183,7 +183,7 @@ const SaleArtwork = {
 }
 
 const mockRequestResponses = {
-  placeingBid: {
+  placingBid: {
     bidAccepted: {
       createBidderPosition: {
         result: {
@@ -194,7 +194,7 @@ const mockRequestResponses = {
     },
   },
   pollingForBid: {
-    highestedBidder: {
+    highestBidder: {
       data: {
         me: {
           bidder_position: {

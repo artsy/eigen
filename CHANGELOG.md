@@ -17,6 +17,8 @@
 ### Master
 
 * Fixes the `commitMutation` compatibility by not throwing errors - yuki24
+* Refetches bidder info when returning to ConfirmBid screen - sweir27
+* Refactors auction timer to support state changes - sweir27
 
 ### 1.5.6
 

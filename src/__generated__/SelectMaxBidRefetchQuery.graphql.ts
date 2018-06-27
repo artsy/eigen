@@ -32,6 +32,7 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
 }
 
 fragment ConfirmBid_sale_artwork on SaleArtwork {
+  _id
   sale {
     id
     live_start_at
@@ -115,7 +116,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "SelectMaxBidRefetchQuery",
-  "id": "d720762d16e70bdd3f54770e25081025",
+  "id": "16019204e77d9cc45fb2961443df41e3",
   "text": null,
   "metadata": {},
   "fragment": {

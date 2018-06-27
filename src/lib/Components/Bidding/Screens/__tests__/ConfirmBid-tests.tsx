@@ -5,7 +5,7 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 
 import Spinner from "../../../Spinner"
-import { Serif16 } from "../../Elements/Typography"
+import { Serif14, Serif16 } from "../../Elements/Typography"
 
 import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Button } from "../../Components/Button"
@@ -73,6 +73,8 @@ describe("checkbox and payment info display", () => {
 
     expect(component.root.findAllByType(Checkbox).length).toEqual(0)
     expect(component.root.findAllByType(BidInfoRow).length).toEqual(1)
+    // still includes "You agree to..." text and link
+    expect(component.root.findAllByType(Serif14)[1].props.children.join("")).toContain("You agree to")
   })
 
   it("shows a checkbox but no payment info if the user is not registered and has cc on file", () => {
@@ -115,7 +117,7 @@ describe("when pressing bid button", () => {
     it("commits the mutation", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} />)
       component.root.instance.setState({ conditionsOfSaleChecked: true })
-      mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestedBidder))
+      mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
       relay.commitMutation = jest.fn()
 
       component.root.findByType(Button).instance.props.onPress()
@@ -148,13 +150,13 @@ describe("polling to verify bid position", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} />)
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       relay.commitMutation = jest.fn((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.placeingBid.bidAccepted)
+        onCompleted(mockRequestResponses.placingBid.bidAccepted)
       })
       let requestCounter = 0 // On the fifth attempt, return highestBidder
       mockphysics.mockImplementation(() => {
         requestCounter++
         if (requestCounter > 5) {
-          return Promise.resolve(mockRequestResponses.pollingForBid.highestedBidder)
+          return Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
         } else {
           return Promise.resolve(mockRequestResponses.pollingForBid.pending)
         }
@@ -169,7 +171,7 @@ describe("polling to verify bid position", () => {
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
         objectContaining({
-          bidderPositionResult: mockRequestResponses.pollingForBid.highestedBidder.data.me.bidder_position,
+          bidderPositionResult: mockRequestResponses.pollingForBid.highestBidder.data.me.bidder_position,
         })
       )
     })
@@ -179,7 +181,7 @@ describe("polling to verify bid position", () => {
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValue(Promise.resolve(mockRequestResponses.pollingForBid.pending))
       relay.commitMutation = jest.fn((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.placeingBid.bidAccepted)
+        onCompleted(mockRequestResponses.placingBid.bidAccepted)
       })
 
       component.root.findByType(Button).instance.props.onPress()
@@ -200,9 +202,9 @@ describe("polling to verify bid position", () => {
     it("shows successful bid result when highest bidder", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} />)
       component.root.instance.setState({ conditionsOfSaleChecked: true })
-      mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestedBidder))
+      mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
       relay.commitMutation = jest.fn((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.placeingBid.bidAccepted)
+        onCompleted(mockRequestResponses.placingBid.bidAccepted)
       })
 
       component.root.findByType(Button).instance.props.onPress()
@@ -211,7 +213,7 @@ describe("polling to verify bid position", () => {
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
         objectContaining({
-          bidderPositionResult: mockRequestResponses.pollingForBid.highestedBidder.data.me.bidder_position,
+          bidderPositionResult: mockRequestResponses.pollingForBid.highestBidder.data.me.bidder_position,
         })
       )
     })
@@ -221,7 +223,7 @@ describe("polling to verify bid position", () => {
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.outbid))
       relay.commitMutation = jest.fn((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.placeingBid.bidAccepted)
+        onCompleted(mockRequestResponses.placingBid.bidAccepted)
       })
 
       component.root.findByType(Button).instance.props.onPress()
@@ -240,7 +242,7 @@ describe("polling to verify bid position", () => {
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
       relay.commitMutation = jest.fn((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.placeingBid.bidAccepted)
+        onCompleted(mockRequestResponses.placingBid.bidAccepted)
       })
 
       component.root.findByType(Button).instance.props.onPress()
@@ -253,12 +255,16 @@ describe("polling to verify bid position", () => {
         })
       )
     })
+
     it("updates the main auction screen", () => {
-      const component = renderer.create(<ConfirmBid {...initialProps} navigator={mockNavigator} />)
+      const mockedMockNavigator = { push: jest.fn() }
+      const component = renderer.create(
+        <ConfirmBid {...initialProps} navigator={mockedMockNavigator as any} refreshSaleArtwork={jest.fn()} />
+      )
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
       relay.commitMutation = jest.fn((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.placeingBid.bidAccepted)
+        onCompleted(mockRequestResponses.placingBid.bidAccepted)
       })
 
       component.root.findByType(Button).instance.props.onPress()
@@ -271,6 +277,22 @@ describe("polling to verify bid position", () => {
         ARAuctionID: "best-art-sale-in-town",
         ARAuctionArtworkID: "meteor shower",
       })
+
+      // navigates to bid result screen
+      expect(mockedMockNavigator.push).toHaveBeenCalledWith({
+        component: BidResultScreen,
+        passProps: {
+          bidderPositionResult: { position: {}, status: "RESERVE_NOT_MET" },
+          refreshBidderInfo: expect.anything(),
+          refreshSaleArtwork: expect.anything(),
+          sale_artwork: {
+            artwork: { artist_names: "Makiko Kudo", date: "2015", id: "meteor shower", title: "Meteor Shower" },
+            lot_label: "538",
+            sale: { endsAt: "2018-05-10T20:22:42+00:00", id: "best-art-sale-in-town" },
+          },
+        },
+        title: "",
+      })
     })
   })
 
@@ -279,7 +301,7 @@ describe("polling to verify bid position", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} />)
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       relay.commitMutation = jest.fn((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.placeingBid.bidRejected)
+        onCompleted(mockRequestResponses.placingBid.bidRejected)
       })
 
       component.root.findByType(Button).instance.props.onPress()
@@ -288,7 +310,7 @@ describe("polling to verify bid position", () => {
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
         objectContaining({
-          bidderPositionResult: mockRequestResponses.placeingBid.bidRejected.createBidderPosition.result,
+          bidderPositionResult: mockRequestResponses.placingBid.bidRejected.createBidderPosition.result,
         })
       )
     })
@@ -328,15 +350,15 @@ describe("ConfirmBid for unqualified user", () => {
       relay.commitMutation = jest
         .fn()
         .mockImplementationOnce((_, { onCompleted }) => onCompleted())
-        .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.placeingBid.bidAccepted))
+        .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.placingBid.bidAccepted))
     })
 
     it("commits two mutations, createCreditCard followed by createBidderPosition", () => {
-      mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestedBidder))
+      mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
 
       const component = renderer.create(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
 
-      // manually setting state to avoid dplicating tests for skipping UI interation, but practically better not to do this.
+      // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.
       component.root.instance.setState({ billingAddress })
       component.root.instance.setState({ creditCardToken: stripeToken })
       component.root.findByType(Checkbox).instance.props.onPress()
@@ -386,7 +408,7 @@ const saleArtwork = {
 }
 
 const mockRequestResponses = {
-  placeingBid: {
+  placingBid: {
     bidAccepted: {
       createBidderPosition: {
         result: {
@@ -406,7 +428,7 @@ const mockRequestResponses = {
     },
   },
   pollingForBid: {
-    highestedBidder: {
+    highestBidder: {
       data: {
         me: {
           bidder_position: {

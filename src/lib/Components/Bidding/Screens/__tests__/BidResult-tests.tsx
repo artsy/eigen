@@ -16,6 +16,9 @@ import { BidResult } from "../BidResult"
 const popToTop = jest.fn()
 const mockNavigator = { popToTop }
 
+const refreshBidderInfoMock = jest.fn()
+const refreshSaleArtworkInfoMock = jest.fn()
+
 const saleArtwork = {
   increments: [
     {
@@ -59,7 +62,13 @@ describe("BidResult component", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
     xit("renders winning screen properly", () => {
       const component = renderer.create(
-        <BidResult bidderPositionResult={Statuses.winning} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
+        <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
+          bidderPositionResult={Statuses.winning}
+          sale_artwork={saleArtwork}
+          navigator={jest.fn() as any}
+        />
       )
 
       expect(component.toJSON()).toMatchSnapshot()
@@ -67,7 +76,13 @@ describe("BidResult component", () => {
 
     it("renders a timer", () => {
       const component = shallow(
-        <BidResult bidderPositionResult={Statuses.winning} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
+        <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
+          bidderPositionResult={Statuses.winning}
+          sale_artwork={saleArtwork}
+          navigator={jest.fn() as any}
+        />
       )
 
       expect(component.find("Timer")).toHaveLength(1)
@@ -75,7 +90,13 @@ describe("BidResult component", () => {
 
     it("dismisses the controller when the continue button is pressed", () => {
       const bidResult = renderer.create(
-        <BidResult bidderPositionResult={Statuses.winning} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
+        <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
+          bidderPositionResult={Statuses.winning}
+          sale_artwork={saleArtwork}
+          navigator={jest.fn() as any}
+        />
       )
       const mockDismiss = SwitchBoard.dismissModalViewController as jest.Mock<any>
       mockDismiss.mockReturnValueOnce(Promise.resolve())
@@ -92,7 +113,13 @@ describe("BidResult component", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
     xit("renders properly", () => {
       const component = renderer.create(
-        <BidResult bidderPositionResult={Statuses.outbid} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
+        <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
+          bidderPositionResult={Statuses.outbid}
+          sale_artwork={saleArtwork}
+          navigator={jest.fn() as any}
+        />
       )
 
       expect(component.toJSON()).toMatchSnapshot()
@@ -100,7 +127,13 @@ describe("BidResult component", () => {
 
     it("renders timer and error message", () => {
       const component = shallow(
-        <BidResult bidderPositionResult={Statuses.outbid} sale_artwork={saleArtwork} navigator={jest.fn() as any} />
+        <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
+          bidderPositionResult={Statuses.outbid}
+          sale_artwork={saleArtwork}
+          navigator={jest.fn() as any}
+        />
       )
 
       expect(component.find("Timer")).toHaveLength(1)
@@ -108,10 +141,18 @@ describe("BidResult component", () => {
 
     it("pops to root when bid-again button is pressed", () => {
       const bidResult = renderer.create(
-        <BidResult bidderPositionResult={Statuses.outbid} sale_artwork={saleArtwork} navigator={mockNavigator as any} />
+        <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
+          bidderPositionResult={Statuses.outbid}
+          sale_artwork={saleArtwork}
+          navigator={mockNavigator as any}
+        />
       )
 
       bidResult.root.findByType(Button).instance.props.onPress()
+      expect(refreshBidderInfoMock).toHaveBeenCalled()
+      expect(refreshSaleArtworkInfoMock).toHaveBeenCalled()
 
       expect(popToTop).toHaveBeenCalled()
     })
@@ -122,6 +163,8 @@ describe("BidResult component", () => {
     xit("renders properly", () => {
       const component = renderer.create(
         <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
           bidderPositionResult={Statuses.live_bidding_started}
           sale_artwork={saleArtwork}
           navigator={jest.fn() as any}
@@ -134,6 +177,8 @@ describe("BidResult component", () => {
     it("doesn't render timer", () => {
       const component = shallow(
         <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
           bidderPositionResult={Statuses.live_bidding_started}
           sale_artwork={saleArtwork}
           navigator={jest.fn() as any}
@@ -146,6 +191,8 @@ describe("BidResult component", () => {
     it("dismisses controller and presents live interface when continue button is pressed", () => {
       const bidResult = renderer.create(
         <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
           bidderPositionResult={Statuses.live_bidding_started}
           sale_artwork={saleArtwork}
           navigator={jest.fn() as any}
