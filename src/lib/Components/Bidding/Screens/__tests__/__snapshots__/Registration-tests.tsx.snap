@@ -283,7 +283,7 @@ exports[`renders properly for a user with a credit card 1`] = `
           style={
             Object {
               "alignItems": "center",
-              "backgroundColor": "rgba(0, 0, 0, 1)",
+              "backgroundColor": "rgba(229, 229, 229, 1)",
               "borderRadius": 2,
               "flex": 1,
               "justifyContent": "center",
@@ -902,7 +902,7 @@ exports[`renders properly for a user without a credit card 1`] = `
           style={
             Object {
               "alignItems": "center",
-              "backgroundColor": "rgba(0, 0, 0, 1)",
+              "backgroundColor": "rgba(229, 229, 229, 1)",
               "borderRadius": 2,
               "flex": 1,
               "justifyContent": "center",

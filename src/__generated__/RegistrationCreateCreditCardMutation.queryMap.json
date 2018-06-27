@@ -1,0 +1,3 @@
+{
+  "b3e540bc0741b8423a1200b7cacdc55c": "mutation RegistrationCreateCreditCardMutation(\n  $input: CreditCardInput!\n) {\n  createCreditCard(input: $input) {\n    credit_card {\n      id\n      brand\n      name\n      last_digits\n      expiration_month\n      expiration_year\n      __id\n    }\n  }\n}\n"
+}
