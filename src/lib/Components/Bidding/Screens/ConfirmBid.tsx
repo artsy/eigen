@@ -378,6 +378,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 inProgress={this.state.isLoading}
                 selected={this.state.isLoading}
                 onPress={this.canPlaceBid() ? () => this.placeBid() : null}
+                disabled={!this.canPlaceBid()}
               />
             </Flex>
           </View>
