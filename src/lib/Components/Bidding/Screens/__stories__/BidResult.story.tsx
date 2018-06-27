@@ -57,7 +57,7 @@ const Statuses = {
   live_bidding_started: {
     status: "LIVE_BIDDING_STARTED",
     message_header: "Live bidding has started",
-    message_description_md: `Sorry, your bid wasn’t received before live bidding started.\nTo continue bidding, please [join the live auction](http://live-staging.artsy.net/).`,
+    message_description_md: `Sorry, your bid wasn’t received before\nlive bidding started. To continue\nbidding, please [join the live auction](http://live-staging.artsy.net/).`,
   } as BidderPositionResult,
   pending: {
     status: "PENDING",

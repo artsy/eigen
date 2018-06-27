@@ -80,13 +80,15 @@ export class BidResult extends React.Component<BidResultProps> {
             <Flex alignItems="center">
               <Icon20 source={Icons[status] || require("../../../../../images/circle-x-red.png")} />
 
-              <Title m={4}>
+              <Title mt={0} mb={5}>
                 {status === "PENDING" ? messageForPollingTimeout.title : message_header || "You’re the highest bidder"}
               </Title>
 
-              <Markdown>
-                {status === "PENDING" ? messageForPollingTimeout.description : message_description_md || ""}
-              </Markdown>
+              {status !== "WINNING" && (
+                <Markdown mb={5}>
+                  {status === "PENDING" ? messageForPollingTimeout.description : message_description_md}
+                </Markdown>
+              )}
 
               {this.shouldDisplayTimer(status) && <Timer liveStartsAt={live_start_at} endsAt={end_at} />}
             </Flex>
