@@ -131,4 +131,4 @@ AppRegistry.registerComponent("Conversation", () => Conversation)
 AppRegistry.registerComponent("Inquiry", () => Inquiry)
 AppRegistry.registerComponent("Favorites", () => FavoritesScene)
 // TODO: Change everything to BidderFlow? AuctionAction?
-AppRegistry.registerComponent("BidderFlow", () => BidderFlow)
+AppRegistry.registerComponent("BidFlow", () => BidderFlow)
