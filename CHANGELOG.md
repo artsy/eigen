@@ -17,6 +17,7 @@
 ### Master
 
 * There should be more space visually between conditions of sale checkbox and place bid button - yuki24
+* Add placeholders to credit card form - erikdstock
 
 ### 1.5.7
 
