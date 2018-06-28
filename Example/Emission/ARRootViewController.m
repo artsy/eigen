@@ -258,7 +258,7 @@
 - (ARCellData *)jumpToInquiry
 {
   return [self tappableCellDataWithTitle:@"Inquiry" selection: ^{
-id viewController = [[ARInquiryComponentViewController alloc] initWithArtworkID:@"damien-hirst-analgesics"];
+    id viewController = [[ARInquiryComponentViewController alloc] initWithArtworkID:@"damien-hirst-analgesics"];
     [self.navigationController presentViewController:viewController animated:YES completion:nil];
   }];
 }

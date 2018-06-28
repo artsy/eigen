@@ -2,12 +2,13 @@ import React from "react"
 import { NavigatorIOS, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
+import { RegistrationFlow_me } from "__generated__/RegistrationFlow_me.graphql"
 import { RegistrationFlow_sale } from "__generated__/RegistrationFlow_sale.graphql"
 import { RegistrationScreen } from "../Components/Bidding/Screens/Registration"
 
 interface RegistrationFlowProps extends ViewProperties {
   sale: RegistrationFlow_sale
-  // me: RegistrationFlow_me
+  me: RegistrationFlow_me
 }
 
 class RegistrationFlow extends React.Component<RegistrationFlowProps> {
@@ -26,7 +27,6 @@ class RegistrationFlow extends React.Component<RegistrationFlowProps> {
   }
 }
 
-// TODO: UPDATE ME
 export default createFragmentContainer(RegistrationFlow, {
   sale: graphql`
     fragment RegistrationFlow_sale on Sale {

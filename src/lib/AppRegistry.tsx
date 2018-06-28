@@ -90,6 +90,10 @@ const Conversation: React.SFC<ConversationProps> = track<ConversationProps>(prop
 
 const MyProfile: React.SFC<{}> = () => <MyProfileRenderer render={renderWithLoadProgress(Containers.MyProfile)} />
 
+/*
+ * Route bid/register requests coming from the Emission pod to either a BidFlow
+ * or RegisterFlow component with an appropriate query renderer
+ */
 type BidderFlowIntent = "bid" | "register"
 interface BidderFlowProps {
   artworkID?: string
