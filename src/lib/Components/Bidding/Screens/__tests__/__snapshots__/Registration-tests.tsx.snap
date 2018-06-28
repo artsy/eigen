@@ -71,32 +71,13 @@ exports[`renders properly for a user with a credit card 1`] = `
           accessible={true}
           allowFontScaling={true}
           ellipsizeMode="tail"
-          fontSize={1}
-          lineHeight={1}
-          style={
-            Array [
-              Object {
-                "fontFamily": "Unica77LL-Medium",
-                "fontSize": 12,
-                "lineHeight": 16,
-              },
-              undefined,
-            ]
-          }
-        >
-          Ends Invalid date
-        </Text>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          fontSize={2}
+          fontSize={3}
           lineHeight={5}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
-                "fontSize": 14,
+                "fontSize": 16,
                 "lineHeight": 24,
               },
               undefined,
@@ -114,6 +95,25 @@ exports[`renders properly for a user with a credit card 1`] = `
             
           NaN
           s
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={1}
+          lineHeight={1}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+          Ends Invalid date
         </Text>
       </View>
       <Text
@@ -395,32 +395,13 @@ exports[`renders properly for a user without a credit card 1`] = `
           accessible={true}
           allowFontScaling={true}
           ellipsizeMode="tail"
-          fontSize={1}
-          lineHeight={1}
-          style={
-            Array [
-              Object {
-                "fontFamily": "Unica77LL-Medium",
-                "fontSize": 12,
-                "lineHeight": 16,
-              },
-              undefined,
-            ]
-          }
-        >
-          Ends Invalid date
-        </Text>
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          fontSize={2}
+          fontSize={3}
           lineHeight={5}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
-                "fontSize": 14,
+                "fontSize": 16,
                 "lineHeight": 24,
               },
               undefined,
@@ -438,6 +419,25 @@ exports[`renders properly for a user without a credit card 1`] = `
             
           NaN
           s
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          fontSize={1}
+          lineHeight={1}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+          Ends Invalid date
         </Text>
       </View>
       <Text

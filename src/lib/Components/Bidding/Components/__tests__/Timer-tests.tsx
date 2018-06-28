@@ -3,7 +3,7 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import { SansMedium12, SansMedium14 } from "../../Elements/Typography"
+import { SansMedium12, SansMedium16t } from "../../Elements/Typography"
 import { Timer } from "../Timer"
 
 const SECONDS = 1000
@@ -13,7 +13,7 @@ const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in mi
 
 const getTimerLabel = timerComponent => timerComponent.root.findByType(SansMedium12).props.children
 
-const getTimerText = timerComponent => timerComponent.root.findByType(SansMedium14).props.children.join("")
+const getTimerText = timerComponent => timerComponent.root.findByType(SansMedium16t).props.children.join("")
 
 let pastTime
 let futureTime
@@ -124,7 +124,7 @@ it("shows month, date, and hour adjusted for the timezone where the user is", ()
   // Thursday, May 14, 2018 1:00:00.000 PM PDT in LA
   const timer = renderer.create(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
 
-  expect(getTimerLabel(timer)).toEqual("Ends May 14, 1pm")
+  expect(getTimerLabel(timer)).toEqual("Ends May 14, 1 PM")
 })
 
 describe("timer transitions", () => {

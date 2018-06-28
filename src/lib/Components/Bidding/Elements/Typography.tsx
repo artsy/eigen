@@ -64,6 +64,8 @@ export const SansMedium14 = props => <SansMedium fontSize={2} lineHeight={5} {..
 export const SansMedium16 = props => <SansMedium fontSize={3} lineHeight={6} {...props} />
 export const SansMedium18 = props => <SansMedium fontSize={4} lineHeight={8} {...props} />
 
+export const SansMedium16t = props => <SansMedium fontSize={3} lineHeight={5} {...props} />
+
 export const Serif12 = props => <Serif fontSize={1} lineHeight={1} {...props} />
 export const Serif14 = props => <Serif fontSize={2} lineHeight={2} {...props} />
 export const Serif16 = props => <Serif fontSize={3} lineHeight={5} {...props} />
