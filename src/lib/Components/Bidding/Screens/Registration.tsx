@@ -1,6 +1,6 @@
 import React from "react"
 import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
-import { createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
+import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import stripe from "tipsi-stripe"
 
@@ -41,6 +41,31 @@ interface RegistrationState {
   requiresPaymentInformation: boolean
 }
 
+const creditCardMutation = graphql`
+  mutation RegistrationCreateCreditCardMutation($input: CreditCardInput!) {
+    createCreditCard(input: $input) {
+      credit_card {
+        id
+        brand
+        name
+        last_digits
+        expiration_month
+        expiration_year
+      }
+    }
+  }
+`
+const bidderMutation = graphql`
+  mutation RegistrationCreateBidderMutation($input: CreateBidderInput!) {
+    createBidder(input: $input) {
+      bidder {
+        id
+        qualified_for_bidding
+      }
+    }
+  }
+`
+
 export class Registration extends React.Component<RegistrationProps, RegistrationState> {
   constructor(props) {
     super(props)
@@ -58,6 +83,16 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     }
   }
 
+  canCreateBidder() {
+    const { billingAddress, creditCardToken, conditionsOfSaleChecked } = this.state
+
+    if (this.state.requiresPaymentInformation) {
+      return billingAddress && creditCardToken && conditionsOfSaleChecked
+    } else {
+      return conditionsOfSaleChecked
+    }
+  }
+
   onPressConditionsOfSale = () => {
     SwitchBoard.presentModalViewController(this, "/conditions-of-sale?present_modally=true")
   }
@@ -72,6 +107,51 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
   conditionsOfSalePressed() {
     this.setState({ conditionsOfSaleChecked: !this.state.conditionsOfSaleChecked })
+  }
+
+  register() {
+    this.setState({ isLoading: true })
+
+    this.state.requiresPaymentInformation ? this.createCreditCardAndBidder() : this.createBidder()
+  }
+
+  async createCreditCardAndBidder() {
+    const { billingAddress, creditCardFormParams } = this.state
+    const token = await stripe.createTokenWithCard({
+      ...creditCardFormParams,
+      name: billingAddress.fullName,
+      addressLine1: billingAddress.addressLine1,
+      addressLine2: billingAddress.addressLine2,
+      addressCity: billingAddress.city,
+      addressState: billingAddress.state,
+      addressZip: billingAddress.postalCode,
+    })
+
+    commitMutation(this.props.relay.environment, {
+      onCompleted: () => this.createBidder(),
+      onError: () => {
+        console.log("ERROR!")
+      },
+      mutation: creditCardMutation,
+      variables: {
+        input: {
+          token: token.tokenId,
+        },
+      },
+    })
+  }
+
+  createBidder() {
+    commitMutation(this.props.relay.environment, {
+      onCompleted: () => {
+        console.log("COMPLETED!")
+      },
+      onError: () => {
+        console.log("ERROR!")
+      },
+      mutation: bidderMutation,
+      variables: { input: { sale_id: this.props.sale.id } },
+    })
   }
 
   render() {
@@ -113,7 +193,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                 text="Complete Registration"
                 inProgress={this.state.isLoading}
                 selected={this.state.isLoading}
-                onPress={() => null}
+                onPress={this.canCreateBidder() ? () => this.register() : null}
+                disabled={!this.canCreateBidder()}
               />
             </Flex>
           </View>

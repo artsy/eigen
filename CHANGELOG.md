@@ -26,6 +26,7 @@
 * Registration screen handles when a user already has a credit card on file - sweir27
 * Removes unnecessary white spaces in the bid result screen - yuki24
 * Updates the text style and order for the auction timer - yuki24
+* Registration screen sends mutation for creating a bidder/credit card - sweir27
 
 ### 1.5.6
 
