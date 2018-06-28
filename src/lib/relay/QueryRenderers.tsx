@@ -76,6 +76,9 @@ export const RegistrationFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ r
             name
             ...RegistrationFlow_sale
           }
+          me {
+            ...RegistrationFlow_me
+          }
         }
       `}
       variables={{
@@ -88,7 +91,7 @@ export const RegistrationFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ r
           return render({
             props: {
               sale: props.sale,
-              //   // me: props.me,
+              me: props.me,
             },
             error,
           })

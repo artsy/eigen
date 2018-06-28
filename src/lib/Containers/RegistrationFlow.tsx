@@ -33,9 +33,9 @@ export default createFragmentContainer(RegistrationFlow, {
       ...Registration_sale
     }
   `,
-  // me: graphql`
-  //   fragment RegistrationFlow_me on Me {
-  //     ...Registration_me
-  //   }
-  // `,
+  me: graphql`
+    fragment RegistrationFlow_me on Me {
+      ...Registration_me
+    }
+  `,
 })

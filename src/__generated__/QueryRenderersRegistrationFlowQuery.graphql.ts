@@ -8,6 +8,8 @@ export type QueryRenderersRegistrationFlowQueryResponse = {
     readonly sale: ({
         readonly name: string | null;
     }) | null;
+    readonly me: ({
+    }) | null;
 };
 
 
@@ -21,10 +23,24 @@ query QueryRenderersRegistrationFlowQuery(
     ...RegistrationFlow_sale
     __id
   }
+  me {
+    ...RegistrationFlow_me
+    __id
+  }
 }
 
 fragment RegistrationFlow_sale on Sale {
   ...Registration_sale
+  __id
+}
+
+fragment RegistrationFlow_me on Me {
+  ...Registration_me
+  __id
+}
+
+fragment Registration_me on Me {
+  has_credit_cards
   __id
 }
 
@@ -74,7 +90,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersRegistrationFlowQuery",
-  "id": "334f48217a351a029a4e20f27e8148ae",
+  "id": "eae7174e3cddc451acab97c6294292ce",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -97,6 +113,23 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "RegistrationFlow_sale",
+            "args": null
+          },
+          v3
+        ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "FragmentSpread",
+            "name": "RegistrationFlow_me",
             "args": null
           },
           v3
@@ -156,10 +189,29 @@ return {
           },
           v3
         ]
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "has_credit_cards",
+            "args": null,
+            "storageKey": null
+          },
+          v3
+        ]
       }
     ]
   }
 };
 })();
-(node as any).hash = '8b6bf40ec3c30f0a745563dc0e058ad3';
+(node as any).hash = 'bce11602f08e3a5b15eae2a068725187';
 export default node;
