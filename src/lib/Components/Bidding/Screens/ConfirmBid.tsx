@@ -169,7 +169,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       ...creditCardFormParams,
       name: billingAddress.fullName,
       addressLine1: billingAddress.addressLine1,
-      addressLine2: null,
+      addressLine2: billingAddress.addressLine2,
       addressCity: billingAddress.city,
       addressState: billingAddress.state,
       addressZip: billingAddress.postalCode,
