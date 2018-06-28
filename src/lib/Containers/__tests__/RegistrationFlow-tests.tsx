@@ -6,8 +6,20 @@ import Moment from "moment-timezone"
 import RegistrationFlow from "../RegistrationFlow"
 
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
-Moment.prototype.format = jest.fn(() => "03d  14h  01m  59s")
-Date.now = jest.fn(() => 1528243200)
+const mockNow = jest.fn(() => 1528243200)
+const realNow = Date.now
+
+const mockFormat = jest.fn(() => "03d  14h  01m  59s")
+const realFormat = Moment.prototype.format
+
+beforeEach(() => {
+  Moment.prototype.format = mockFormat
+  Date.now = mockNow
+})
+afterEach(() => {
+  Moment.prototype.format = realFormat
+  Date.now = realNow
+})
 
 const Sale = {
   id: "david-lynch-foundation-benefit-auction-2018",
