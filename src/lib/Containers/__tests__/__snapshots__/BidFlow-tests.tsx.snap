@@ -24,7 +24,6 @@ exports[`renders properly 1`] = `
         Object {
           "component": [Function],
           "passProps": Object {
-            "intent": "bid",
             "me": Object {
               "has_qualified_credit_cards": true,
             },

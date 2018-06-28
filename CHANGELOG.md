@@ -29,6 +29,7 @@
 * Removes unnecessary white spaces in the bid result screen - yuki24
 * Updates the text style and order for the auction timer - yuki24
 * Registration screen sends mutation for creating a bidder/credit card - sweir27
+* Route between bid/register flows based on user intent - erikdstock
 
 ### 1.5.6
 
