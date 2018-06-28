@@ -142,16 +142,16 @@ exports[`renders properly with credit card 1`] = `
                   ]
                 }
               >
-                10
+                07
                 d
                   
-                06
+                02
                 h
                   
-                38
+                59
                 m
                   
-                12
+                16
                 s
               </Text>
               <Text
@@ -343,7 +343,7 @@ exports[`renders properly with credit card 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "backgroundColor": "rgba(0, 0, 0, 1)",
+                    "backgroundColor": "rgba(229, 229, 229, 1)",
                     "borderRadius": 2,
                     "flex": 1,
                     "justifyContent": "center",
@@ -529,16 +529,16 @@ exports[`renders properly without credit card 1`] = `
                   ]
                 }
               >
-                10
+                07
                 d
                   
-                06
+                02
                 h
                   
-                38
+                59
                 m
                   
-                12
+                16
                 s
               </Text>
               <Text
@@ -1025,7 +1025,7 @@ exports[`renders properly without credit card 1`] = `
                 style={
                   Object {
                     "alignItems": "center",
-                    "backgroundColor": "rgba(0, 0, 0, 1)",
+                    "backgroundColor": "rgba(229, 229, 229, 1)",
                     "borderRadius": 2,
                     "flex": 1,
                     "justifyContent": "center",
