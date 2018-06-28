@@ -78,6 +78,9 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                 ref={this.paymentInfo}
                 style={styles.field}
                 onParamsChange={this.handleFieldParamsChange}
+                numberPlaceholder="Card number"
+                expirationPlaceholder="MM/YY"
+                cvcPlaceholde="CVC"
               />
             </Flex>
           </View>

@@ -16,6 +16,8 @@
 
 ### Master
 
+* Add placeholders to credit card form - erikdstock
+
 ### 1.5.7
 
 * Fixes the `commitMutation` compatibility by not throwing errors - yuki24
