@@ -171,7 +171,7 @@ exports[`renders properly with credit card 1`] = `
                   ]
                 }
               >
-                Ends Jun 26, 3 PM
+                Ends 03d  14h  01m  59s
               </Text>
             </View>
             <Text
@@ -558,7 +558,7 @@ exports[`renders properly without credit card 1`] = `
                   ]
                 }
               >
-                Ends Jun 26, 3 PM
+                Ends 03d  14h  01m  59s
               </Text>
             </View>
             <Text

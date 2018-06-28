@@ -2,9 +2,12 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
+import Moment from "moment-timezone"
 import RegistrationFlow from "../RegistrationFlow"
 
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
+Moment.prototype.format = jest.fn(() => "03d  14h  01m  59s")
+Date.now = jest.fn(() => 1528243200)
 
 const Sale = {
   id: "david-lynch-foundation-benefit-auction-2018",
@@ -15,8 +18,6 @@ const Sale = {
   start_at: "2018-06-12T08:10:00+00:00",
   __id: "U2FsZTpkYXZpZC1seW5jaC1mb3VuZGF0aW9uLWJlbmVmaXQtYXVjdGlvbi0yMDE4",
 }
-
-Date.now = jest.fn(() => 1528243200)
 
 // beforeEach(() => jest.useFakeTimers())
 it("renders properly with credit card", () => {
