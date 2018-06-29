@@ -131,6 +131,26 @@ it("shows month, date, and hour adjusted for the timezone where the user is", ()
   expect(getTimerLabel(timer)).toEqual("Ends May 14, 1 PM")
 })
 
+it("displays the minutes when the sale does not end on the hour", () => {
+  mockTimezone("America/New_York")
+
+  let timer = renderer.create(<Timer endsAt="2018-05-14T20:01:00+00:00" />)
+
+  expect(getTimerLabel(timer)).toEqual("Ends May 14, 4:01 PM")
+
+  timer = renderer.create(<Timer endsAt="2018-05-14T20:30:00+00:00" />)
+
+  expect(getTimerLabel(timer)).toEqual("Ends May 14, 4:30 PM")
+})
+
+it("omits the minutes when the sale ends on the hour", () => {
+  mockTimezone("America/New_York")
+
+  const timer = renderer.create(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
+
+  expect(getTimerLabel(timer)).toEqual("Ends May 14, 4 PM")
+})
+
 describe("timer transitions", () => {
   it("transitions state from preview --> closing when the timer ends", () => {
     const timer = renderer.create(<Timer isPreview={true} startsAt={futureTime} endsAt={futureTime} />)
