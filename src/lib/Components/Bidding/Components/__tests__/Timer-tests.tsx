@@ -15,6 +15,15 @@ const getTimerLabel = timerComponent => timerComponent.root.findByType(SansMediu
 
 const getTimerText = timerComponent => timerComponent.root.findByType(SansMedium16t).props.children.join("")
 
+const mockTimezone = timezone => {
+  const mutatedResolvedOptions: any = Intl.DateTimeFormat().resolvedOptions()
+  const mutatedDateTimeFormat: any = Intl.DateTimeFormat()
+
+  mutatedResolvedOptions.timeZone = timezone
+  mutatedDateTimeFormat.resolvedOptions = () => mutatedResolvedOptions
+  Intl.DateTimeFormat = (() => mutatedDateTimeFormat) as any
+}
+
 let pastTime
 let futureTime
 
@@ -113,12 +122,7 @@ it("counts down to zero", () => {
 })
 
 it("shows month, date, and hour adjusted for the timezone where the user is", () => {
-  const mutatedResolvedOptions: any = Intl.DateTimeFormat().resolvedOptions()
-  const mutatedDateTimeFormat: any = Intl.DateTimeFormat()
-
-  mutatedResolvedOptions.timeZone = "America/Los_Angeles"
-  mutatedDateTimeFormat.resolvedOptions = () => mutatedResolvedOptions
-  Intl.DateTimeFormat = (() => mutatedDateTimeFormat) as any
+  mockTimezone("America/Los_Angeles")
 
   // Thursday, May 14, 2018 8:00:00.000 PM UTC
   // Thursday, May 14, 2018 1:00:00.000 PM PDT in LA
