@@ -17,7 +17,7 @@ export class BidInfoRow extends React.Component<BidInfoRowProps> {
 
     return (
       <TouchableWithoutFeedback onPress={onPress}>
-        <Row p={4} {...props}>
+        <Row p={4} pb={3} mb={1} {...props}>
           <Col>
             <SerifSemibold16>{label}</SerifSemibold16>
           </Col>
@@ -25,7 +25,7 @@ export class BidInfoRow extends React.Component<BidInfoRowProps> {
           <Col alignItems="flex-end">{value && <Serif16 numberOfLines={1}>{value}</Serif16>}</Col>
 
           <Col alignItems="flex-end" flexGrow={0} flexShrink={0} flexBasis="auto" flex={null}>
-            <Sans12 color="purple100" ml={3} mb={2}>
+            <Sans12 color="purple100" ml={3} mb={1}>
               {Boolean(value) ? "Edit" : "Add"}
             </Sans12>
           </Col>
