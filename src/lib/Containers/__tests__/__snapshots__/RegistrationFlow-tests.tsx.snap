@@ -1,0 +1,954 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders properly with credit card 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <RCTNavigator
+    interactivePopGestureEnabled={undefined}
+    onNavigationComplete={[Function]}
+    requestedTopOfStack={0}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+    vertical={undefined}
+  >
+    <RCTNavItem
+      initialRoute={
+        Object {
+          "component": [Function],
+          "passProps": Object {
+            "me": Object {
+              "has_credit_cards": true,
+            },
+            "sale": Object {
+              "__id": "U2FsZTpkYXZpZC1seW5jaC1mb3VuZGF0aW9uLWJlbmVmaXQtYXVjdGlvbi0yMDE4",
+              "end_at": "2018-06-26T19:30:00+00:00",
+              "id": "david-lynch-foundation-benefit-auction-2018",
+              "is_preview": false,
+              "live_start_at": null,
+              "name": "David Lynch Foundation: Benefit Auction 2018",
+              "start_at": "2018-06-12T08:10:00+00:00",
+            },
+          },
+          "title": "",
+        }
+      }
+      navigationBarHidden={true}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "white",
+            "bottom": 0,
+            "left": 0,
+            "overflow": "hidden",
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          undefined,
+          undefined,
+        ]
+      }
+      title=""
+      translucent={true}
+    >
+      <View
+        flex={1}
+        flexDirection="column"
+        justifyContent="space-between"
+        m={0}
+        style={
+          Array [
+            Object {
+              "flexBasis": 0,
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "marginBottom": 0,
+              "marginLeft": 0,
+              "marginRight": 0,
+              "marginTop": 0,
+            },
+            undefined,
+          ]
+        }
+      >
+        <View>
+          <View
+            alignItems="center"
+            style={
+              Array [
+                Object {},
+                undefined,
+              ]
+            }
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              fontSize={5}
+              lineHeight={7}
+              m={4}
+              mb={3}
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "AGaramondPro-Semibold",
+                    "fontSize": 22,
+                    "lineHeight": 28,
+                    "marginBottom": 10,
+                    "marginLeft": 20,
+                    "marginRight": 20,
+                    "marginTop": 20,
+                    "textAlign": "center",
+                  },
+                  undefined,
+                ]
+              }
+              textAlign="center"
+            >
+              Register to bid
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              fontSize={4}
+              lineHeight={6}
+              mb={5}
+              mt={5}
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "AGaramondPro-Semibold",
+                    "fontSize": 18,
+                    "lineHeight": 26,
+                    "marginBottom": 30,
+                    "marginTop": 30,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              David Lynch Foundation: Benefit Auction 2018
+            </Text>
+          </View>
+        </View>
+        <View>
+          <View
+            accessibilityComponentType={undefined}
+            accessibilityLabel={undefined}
+            accessibilityTraits={undefined}
+            accessible={true}
+            alignItems="center"
+            flexDirection="row"
+            hitSlop={undefined}
+            justifyContent="center"
+            nativeID={undefined}
+            onLayout={undefined}
+            onPress={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Array [
+                Object {},
+                undefined,
+              ]
+            }
+            testID={undefined}
+          >
+            <View
+              animate={
+                Array [
+                  "backgroundColor",
+                  "borderColor",
+                ]
+              }
+              collapsable={undefined}
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "rgba(255, 255, 255, 1)",
+                  "borderColor": "rgba(229, 229, 229, 1)",
+                  "borderStyle": "solid",
+                  "borderWidth": 2,
+                  "display": "flex",
+                  "height": 20,
+                  "justifyContent": "center",
+                  "marginRight": 10,
+                  "width": 20,
+                }
+              }
+            />
+            <View
+              style={
+                Array [
+                  Object {},
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                color="black60"
+                ellipsizeMode="tail"
+                fontSize={2}
+                lineHeight={2}
+                mt={2}
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "AGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                      "marginTop": 5,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                Agree to 
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  ellipsizeMode="tail"
+                  onPress={[Function]}
+                  style={
+                    Array [
+                      Object {
+                        "textDecorationLine": "underline",
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  Conditions of Sale
+                </Text>
+                .
+              </Text>
+            </View>
+          </View>
+          <View
+            m={4}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 20,
+                  "marginLeft": 20,
+                  "marginRight": 20,
+                  "marginTop": 20,
+                },
+                undefined,
+              ]
+            }
+          >
+            <View
+              height={50}
+              style={
+                Array [
+                  Object {
+                    "height": 50,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <View
+                accessibilityComponentType={undefined}
+                accessibilityLabel={undefined}
+                accessibilityTraits={undefined}
+                accessible={true}
+                hasTVPreferredFocus={undefined}
+                hitSlop={undefined}
+                isTVSelectable={true}
+                nativeID={undefined}
+                onLayout={undefined}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "rgba(229, 229, 229, 1)",
+                    "borderRadius": 2,
+                    "flex": 1,
+                    "justifyContent": "center",
+                  }
+                }
+                testID={undefined}
+                tvParallaxProperties={undefined}
+              >
+                <View
+                  style={null}
+                >
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 14,
+                        },
+                        Object {
+                          "color": "white",
+                          "opacity": 1,
+                        },
+                        Object {
+                          "fontFamily": "Unica77LL-Medium",
+                        },
+                      ]
+                    }
+                  >
+                    Complete Registration
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </RCTNavItem>
+  </RCTNavigator>
+</View>
+`;
+
+exports[`renders properly without credit card 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <RCTNavigator
+    interactivePopGestureEnabled={undefined}
+    onNavigationComplete={[Function]}
+    requestedTopOfStack={0}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+    vertical={undefined}
+  >
+    <RCTNavItem
+      initialRoute={
+        Object {
+          "component": [Function],
+          "passProps": Object {
+            "me": Object {
+              "has_credit_cards": false,
+            },
+            "sale": Object {
+              "__id": "U2FsZTpkYXZpZC1seW5jaC1mb3VuZGF0aW9uLWJlbmVmaXQtYXVjdGlvbi0yMDE4",
+              "end_at": "2018-06-26T19:30:00+00:00",
+              "id": "david-lynch-foundation-benefit-auction-2018",
+              "is_preview": false,
+              "live_start_at": null,
+              "name": "David Lynch Foundation: Benefit Auction 2018",
+              "start_at": "2018-06-12T08:10:00+00:00",
+            },
+          },
+          "title": "",
+        }
+      }
+      navigationBarHidden={true}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "white",
+            "bottom": 0,
+            "left": 0,
+            "overflow": "hidden",
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          undefined,
+          undefined,
+        ]
+      }
+      title=""
+      translucent={true}
+    >
+      <View
+        flex={1}
+        flexDirection="column"
+        justifyContent="space-between"
+        m={0}
+        style={
+          Array [
+            Object {
+              "flexBasis": 0,
+              "flexGrow": 1,
+              "flexShrink": 1,
+              "marginBottom": 0,
+              "marginLeft": 0,
+              "marginRight": 0,
+              "marginTop": 0,
+            },
+            undefined,
+          ]
+        }
+      >
+        <View>
+          <View
+            alignItems="center"
+            style={
+              Array [
+                Object {},
+                undefined,
+              ]
+            }
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              fontSize={5}
+              lineHeight={7}
+              m={4}
+              mb={3}
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "AGaramondPro-Semibold",
+                    "fontSize": 22,
+                    "lineHeight": 28,
+                    "marginBottom": 10,
+                    "marginLeft": 20,
+                    "marginRight": 20,
+                    "marginTop": 20,
+                    "textAlign": "center",
+                  },
+                  undefined,
+                ]
+              }
+              textAlign="center"
+            >
+              Register to bid
+            </Text>
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              fontSize={4}
+              lineHeight={6}
+              mb={5}
+              mt={5}
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "AGaramondPro-Semibold",
+                    "fontSize": 18,
+                    "lineHeight": 26,
+                    "marginBottom": 30,
+                    "marginTop": 30,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              David Lynch Foundation: Benefit Auction 2018
+            </Text>
+          </View>
+          <View>
+            <View
+              border={1}
+              borderBottomWidth={0}
+              borderColor="black10"
+              mb={2}
+              style={
+                Array [
+                  Object {
+                    "borderColor": "#E5E5E5",
+                    "borderStyle": "solid",
+                    "borderWidth": 1,
+                    "marginBottom": 5,
+                    "width": "100%",
+                  },
+                  undefined,
+                ]
+              }
+              width="100%"
+            />
+            <View
+              accessibilityComponentType={undefined}
+              accessibilityLabel={undefined}
+              accessibilityTraits={undefined}
+              accessible={true}
+              alignItems="center"
+              flexDirection="row"
+              hitSlop={undefined}
+              justifyContent="space-between"
+              nativeID={undefined}
+              onLayout={undefined}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              p={4}
+              style={
+                Array [
+                  Object {
+                    "paddingBottom": 20,
+                    "paddingLeft": 20,
+                    "paddingRight": 20,
+                    "paddingTop": 20,
+                  },
+                  undefined,
+                ]
+              }
+              testID={undefined}
+            >
+              <View
+                flex={1}
+                style={
+                  Array [
+                    Object {
+                      "flexBasis": 0,
+                      "flexGrow": 1,
+                      "flexShrink": 1,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  ellipsizeMode="tail"
+                  fontSize={3}
+                  lineHeight={5}
+                  style={
+                    Array [
+                      Object {
+                        "fontFamily": "AGaramondPro-Semibold",
+                        "fontSize": 16,
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  Credit Card
+                </Text>
+              </View>
+              <View
+                alignItems="flex-end"
+                flex={1}
+                style={
+                  Array [
+                    Object {
+                      "flexBasis": 0,
+                      "flexGrow": 1,
+                      "flexShrink": 1,
+                    },
+                    undefined,
+                  ]
+                }
+              />
+              <View
+                alignItems="flex-end"
+                flex={null}
+                flexBasis="auto"
+                flexGrow={0}
+                flexShrink={0}
+                style={
+                  Array [
+                    Object {},
+                    undefined,
+                  ]
+                }
+              >
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  color="purple100"
+                  ellipsizeMode="tail"
+                  fontSize={1}
+                  lineHeight={1}
+                  mb={2}
+                  ml={3}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#6E1EFF",
+                        "fontFamily": "Unica77LL-Regular",
+                        "fontSize": 12,
+                        "lineHeight": 16,
+                        "marginBottom": 5,
+                        "marginLeft": 10,
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  Add
+                </Text>
+              </View>
+            </View>
+            <View
+              border={1}
+              borderBottomWidth={0}
+              borderColor="black10"
+              mb={2}
+              style={
+                Array [
+                  Object {
+                    "borderColor": "#E5E5E5",
+                    "borderStyle": "solid",
+                    "borderWidth": 1,
+                    "marginBottom": 5,
+                    "width": "100%",
+                  },
+                  undefined,
+                ]
+              }
+              width="100%"
+            />
+            <View
+              accessibilityComponentType={undefined}
+              accessibilityLabel={undefined}
+              accessibilityTraits={undefined}
+              accessible={true}
+              alignItems="center"
+              flexDirection="row"
+              hitSlop={undefined}
+              justifyContent="space-between"
+              nativeID={undefined}
+              onLayout={undefined}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              p={4}
+              style={
+                Array [
+                  Object {
+                    "paddingBottom": 20,
+                    "paddingLeft": 20,
+                    "paddingRight": 20,
+                    "paddingTop": 20,
+                  },
+                  undefined,
+                ]
+              }
+              testID={undefined}
+            >
+              <View
+                flex={1}
+                style={
+                  Array [
+                    Object {
+                      "flexBasis": 0,
+                      "flexGrow": 1,
+                      "flexShrink": 1,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  ellipsizeMode="tail"
+                  fontSize={3}
+                  lineHeight={5}
+                  style={
+                    Array [
+                      Object {
+                        "fontFamily": "AGaramondPro-Semibold",
+                        "fontSize": 16,
+                        "lineHeight": 24,
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  Billing address
+                </Text>
+              </View>
+              <View
+                alignItems="flex-end"
+                flex={1}
+                style={
+                  Array [
+                    Object {
+                      "flexBasis": 0,
+                      "flexGrow": 1,
+                      "flexShrink": 1,
+                    },
+                    undefined,
+                  ]
+                }
+              />
+              <View
+                alignItems="flex-end"
+                flex={null}
+                flexBasis="auto"
+                flexGrow={0}
+                flexShrink={0}
+                style={
+                  Array [
+                    Object {},
+                    undefined,
+                  ]
+                }
+              >
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  color="purple100"
+                  ellipsizeMode="tail"
+                  fontSize={1}
+                  lineHeight={1}
+                  mb={2}
+                  ml={3}
+                  style={
+                    Array [
+                      Object {
+                        "color": "#6E1EFF",
+                        "fontFamily": "Unica77LL-Regular",
+                        "fontSize": 12,
+                        "lineHeight": 16,
+                        "marginBottom": 5,
+                        "marginLeft": 10,
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  Add
+                </Text>
+              </View>
+            </View>
+            <View
+              border={1}
+              borderBottomWidth={0}
+              borderColor="black10"
+              mb={2}
+              style={
+                Array [
+                  Object {
+                    "borderColor": "#E5E5E5",
+                    "borderStyle": "solid",
+                    "borderWidth": 1,
+                    "marginBottom": 5,
+                    "width": "100%",
+                  },
+                  undefined,
+                ]
+              }
+              width="100%"
+            />
+          </View>
+        </View>
+        <View>
+          <View
+            accessibilityComponentType={undefined}
+            accessibilityLabel={undefined}
+            accessibilityTraits={undefined}
+            accessible={true}
+            alignItems="center"
+            flexDirection="row"
+            hitSlop={undefined}
+            justifyContent="center"
+            nativeID={undefined}
+            onLayout={undefined}
+            onPress={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Array [
+                Object {},
+                undefined,
+              ]
+            }
+            testID={undefined}
+          >
+            <View
+              animate={
+                Array [
+                  "backgroundColor",
+                  "borderColor",
+                ]
+              }
+              collapsable={undefined}
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "rgba(255, 255, 255, 1)",
+                  "borderColor": "rgba(229, 229, 229, 1)",
+                  "borderStyle": "solid",
+                  "borderWidth": 2,
+                  "display": "flex",
+                  "height": 20,
+                  "justifyContent": "center",
+                  "marginRight": 10,
+                  "width": 20,
+                }
+              }
+            />
+            <View
+              style={
+                Array [
+                  Object {},
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                color="black60"
+                ellipsizeMode="tail"
+                fontSize={2}
+                lineHeight={2}
+                mt={2}
+                style={
+                  Array [
+                    Object {
+                      "color": "#666",
+                      "fontFamily": "AGaramondPro-Regular",
+                      "fontSize": 14,
+                      "lineHeight": 18,
+                      "marginTop": 5,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                Agree to 
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  ellipsizeMode="tail"
+                  onPress={[Function]}
+                  style={
+                    Array [
+                      Object {
+                        "textDecorationLine": "underline",
+                      },
+                      undefined,
+                    ]
+                  }
+                >
+                  Conditions of Sale
+                </Text>
+                .
+              </Text>
+            </View>
+          </View>
+          <View
+            m={4}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 20,
+                  "marginLeft": 20,
+                  "marginRight": 20,
+                  "marginTop": 20,
+                },
+                undefined,
+              ]
+            }
+          >
+            <View
+              height={50}
+              style={
+                Array [
+                  Object {
+                    "height": 50,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <View
+                accessibilityComponentType={undefined}
+                accessibilityLabel={undefined}
+                accessibilityTraits={undefined}
+                accessible={true}
+                hasTVPreferredFocus={undefined}
+                hitSlop={undefined}
+                isTVSelectable={true}
+                nativeID={undefined}
+                onLayout={undefined}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "alignItems": "center",
+                    "backgroundColor": "rgba(229, 229, 229, 1)",
+                    "borderRadius": 2,
+                    "flex": 1,
+                    "justifyContent": "center",
+                  }
+                }
+                testID={undefined}
+                tvParallaxProperties={undefined}
+              >
+                <View
+                  style={null}
+                >
+                  <Text
+                    accessible={true}
+                    allowFontScaling={true}
+                    ellipsizeMode="tail"
+                    style={
+                      Array [
+                        Object {
+                          "fontSize": 14,
+                        },
+                        Object {
+                          "color": "white",
+                          "opacity": 1,
+                        },
+                        Object {
+                          "fontFamily": "Unica77LL-Medium",
+                        },
+                      ]
+                    }
+                  >
+                    Complete Registration
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </RCTNavItem>
+  </RCTNavigator>
+</View>
+`;

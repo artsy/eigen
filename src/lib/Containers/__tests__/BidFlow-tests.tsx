@@ -36,6 +36,6 @@ const SaleArtwork = {
 }
 
 it("renders properly", () => {
-  const bg = renderer.create(<BidFlow me={Me} sale_artwork={SaleArtwork} intent="bid" />).toJSON()
+  const bg = renderer.create(<BidFlow me={Me} sale_artwork={SaleArtwork} />).toJSON()
   expect(bg).toMatchSnapshot()
 })
