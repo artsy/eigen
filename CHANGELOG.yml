@@ -5,8 +5,11 @@ upcoming:
   dev:
     - Clear Relay response cache on logout/switch env - alloy
 
+
   user_facing:
     - Admins can get the shake gesture when they log in to the app for the first time - orta
+    - iPhone X fix for the zoomed image screen - orta
+    - Adds an lab option to have the back button hide after a delay on a zoomed image - orta
 
 releases:
   - version: 4.2.0

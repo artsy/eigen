@@ -4,6 +4,7 @@
 
 @protocol ARZoomViewDelegate
 - (void)zoomViewFinished:(ARZoomView *)zoomView;
+- (void)zoomViewDidMove:(ARZoomView *)zoomView;
 @end
 
 
