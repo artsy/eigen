@@ -1,6 +1,7 @@
 #import "ARZoomArtworkImageViewController.h"
-
+#import "ARTopMenuViewController.h"
 #import "UIDevice-Hardware.h"
+#import "AROptions.h"
 
 #import <ReactiveObjC/ReactiveObjC.h>
 
@@ -8,6 +9,7 @@
 @interface ARZoomArtworkImageViewController () <ARZoomViewDelegate>
 
 @property (nonatomic, assign) BOOL popped;
+@property (readwrite, nonatomic, assign) BOOL hidesBackButton;
 
 @end
 
@@ -28,11 +30,6 @@
 
 #pragma mark - ARMenuAwareViewController
 
-- (BOOL)hidesBackButton
-{
-    return NO;
-}
-
 - (BOOL)hidesToolbarMenu
 {
     return YES;
@@ -50,12 +47,12 @@
     return YES;
 }
 
-- (void)loadView
+- (void)viewDidLoad
 {
-    UIView *clearView = [[UIView alloc] init];
-    clearView.backgroundColor = [UIColor whiteColor];
-    clearView.opaque = NO;
-    self.view = clearView;
+    [super viewDidLoad];
+
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.opaque = NO;
 }
 
 - (void)setZoomView:(ARZoomView *)zoomView
@@ -90,6 +87,7 @@
         [zoomView performBlockWhileIgnoringContentOffsetChanges:^{
             [zoomView setZoomScale:zoomScale animated:YES];
         }];
+
         [zoomView setContentOffset:targetContentOffset animated:YES];
     }];
 }
@@ -108,6 +106,25 @@
     [self.zoomView finish];
     self.popped = YES;
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)zoomViewDidMove:(ARZoomView *)zoomView
+{
+    if ([AROptions boolForOption:AROptionsHideBackButtonOnScroll]) {
+        [self showBackButton];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideBackButton) object:nil];
+        [self performSelector:@selector(hideBackButton) withObject:nil afterDelay:3];
+    }
+}
+
+- (void)hideBackButton
+{
+   self.hidesBackButton = YES;
+}
+
+- (void)showBackButton
+{
+    self.hidesBackButton = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated

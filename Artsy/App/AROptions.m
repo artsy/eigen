@@ -11,6 +11,7 @@ NSString *const AROptionsStagingReactEnv = @"Use Staging React ENV";
 NSString *const AROptionsDevReactEnv = @"Use Dev React ENV";
 NSString *const AROptionsDebugARVIR = @"Debug AR View in Room";
 NSString *const AROptionsUseNewBidFlow = @"Use new Bid Flow";
+NSString *const AROptionsHideBackButtonOnScroll = @"Hide the Back Button in Zoom image";
 
 @implementation AROptions
 
@@ -23,7 +24,8 @@ NSString *const AROptionsUseNewBidFlow = @"Use new Bid Flow";
         AROptionsDisableNativeLiveAuctions,
         
         AROptionsDebugARVIR,
-        AROptionsUseNewBidFlow
+        AROptionsUseNewBidFlow,
+        AROptionsHideBackButtonOnScroll
     ];
 }
 
