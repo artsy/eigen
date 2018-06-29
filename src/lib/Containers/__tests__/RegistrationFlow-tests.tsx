@@ -2,24 +2,10 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
-import Moment from "moment-timezone"
 import RegistrationFlow from "../RegistrationFlow"
 
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
-const mockNow = jest.fn(() => 1528243200)
-const realNow = Date.now
-
-const mockFormat = jest.fn(() => "03d  14h  01m  59s")
-const realFormat = Moment.prototype.format
-
-beforeEach(() => {
-  Moment.prototype.format = mockFormat
-  Date.now = mockNow
-})
-afterEach(() => {
-  Moment.prototype.format = realFormat
-  Date.now = realNow
-})
+jest.mock("../../Components/Bidding/Components/Timer")
 
 const Sale = {
   id: "david-lynch-foundation-benefit-auction-2018",
@@ -31,7 +17,6 @@ const Sale = {
   __id: "U2FsZTpkYXZpZC1seW5jaC1mb3VuZGF0aW9uLWJlbmVmaXQtYXVjdGlvbi0yMDE4",
 }
 
-// beforeEach(() => jest.useFakeTimers())
 it("renders properly with credit card", () => {
   const bg = renderer.create(<RegistrationFlow me={{ has_credit_cards: true }} sale={Sale} />).toJSON()
   expect(bg).toMatchSnapshot()
