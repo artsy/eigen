@@ -35,7 +35,7 @@ exports[`renders properly 1`] = `
       allowFontScaling={true}
       ellipsizeMode="tail"
       fontSize={5}
-      lineHeight={9}
+      lineHeight={7}
       m={4}
       mb={3}
       style={
@@ -43,7 +43,7 @@ exports[`renders properly 1`] = `
           Object {
             "fontFamily": "AGaramondPro-Semibold",
             "fontSize": 22,
-            "lineHeight": 32,
+            "lineHeight": 28,
             "marginBottom": 10,
             "marginLeft": 20,
             "marginRight": 20,
@@ -70,32 +70,13 @@ exports[`renders properly 1`] = `
         accessible={true}
         allowFontScaling={true}
         ellipsizeMode="tail"
-        fontSize={1}
-        lineHeight={1}
-        style={
-          Array [
-            Object {
-              "fontFamily": "Unica77LL-Medium",
-              "fontSize": 12,
-              "lineHeight": 16,
-            },
-            undefined,
-          ]
-        }
-      >
-        Ends Invalid date
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-        fontSize={2}
+        fontSize={3}
         lineHeight={5}
         style={
           Array [
             Object {
               "fontFamily": "Unica77LL-Medium",
-              "fontSize": 14,
+              "fontSize": 16,
               "lineHeight": 24,
             },
             undefined,
@@ -113,6 +94,25 @@ exports[`renders properly 1`] = `
           
         NaN
         s
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        fontSize={1}
+        lineHeight={1}
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Medium",
+              "fontSize": 12,
+              "lineHeight": 16,
+            },
+            undefined,
+          ]
+        }
+      >
+        Ends Invalid date
       </Text>
     </View>
   </View>
@@ -539,7 +539,7 @@ exports[`renders properly 1`] = `
           style={
             Object {
               "alignItems": "center",
-              "backgroundColor": "rgba(0, 0, 0, 1)",
+              "backgroundColor": "rgba(229, 229, 229, 1)",
               "borderRadius": 2,
               "flex": 1,
               "justifyContent": "center",

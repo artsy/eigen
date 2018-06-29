@@ -91,7 +91,7 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 
 You must have [Metaphysics][metaphysics] checked out in a folder adjacent to Emission's code. So there should be `~/code/emission` and `~/code/metaphysics`.
 
-**Note:** Deploys are currently not working, these instructions are _mostly_ valid but take a look at [this issue](https://github.com/artsy/emission/issues/1077) when things break in step 4.
+**Note:** Deploys are currently not working, these instructions are _mostly_ valid but take a look at [this issue](https://github.com/artsy/emission/issues/1077#issuecomment-401128949) when things break in step 4.
 
 1. Ensure that the React version required by Emission has been published to [our spec-repo][spec-repo].
    Assuming no breaking changes in RN's folder structures, you can run `make update_specs_repos`.
@@ -99,7 +99,7 @@ You must have [Metaphysics][metaphysics] checked out in a folder adjacent to Emi
 3. Don't change the `package.json` version.
 4. For non-beta releases, use either `npm version patch`, `npm version minor`, or `npm version major`. For
    beta releases use `npm version prerelease`.
-5. If integrating in Eigen consult the docs [on updating Emission](/artsy/eigen/blob/master/docs/updating_emission.md)
+5. If integrating in Eigen consult the docs [on updating Emission](https://github.com/artsy/eigen/blob/master/docs/updating_emission.md)
 
 ### Automated Emission App Deploys
 

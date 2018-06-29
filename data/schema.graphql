@@ -60,6 +60,26 @@ type Article implements Node {
   ): String
 }
 
+# A connection to a list of items.
+type ArticleConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ArticleEdge]
+  pageCursors: PageCursors
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ArticleEdge {
+  # The item at the end of the edge
+  node: Article
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
 enum ArticleSorts {
   PUBLISHED_AT_ASC
   PUBLISHED_AT_DESC
@@ -76,6 +96,7 @@ type Artist implements Node {
   _id: String!
   cached: Int
   alternate_names: [String]
+  articlesConnection(sort: ArticleSorts, limit: Int, in_editorial_feed: Boolean, after: String, first: Int, before: String, last: Int): ArticleConnection
   articles(sort: ArticleSorts, limit: Int, in_editorial_feed: Boolean): [Article]
   artists(
     # The number of Artists to return
@@ -131,6 +152,39 @@ type Artist implements Node {
     size: Int = 5
   ): [Show]
 
+  # Artworks Elastic Search results
+  filtered_artworks(
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    artist_ids: [String]
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    include_medium_filter_in_aggregation: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    page: Int
+    sale_id: ID
+    size: Int
+    sort: String
+    tag_id: String
+    keyword: String
+  ): FilterArtworks
+
   # A string showing the total number of works and those for sale
   formatted_artworks_count: String
 
@@ -175,7 +229,7 @@ type Artist implements Node {
     sort: PartnerShowSorts
   ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
   public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
-  related: RelatedArtists
+  related: ArtistRelatedData
   sales(
     live: Boolean
     is_auction: Boolean
@@ -197,6 +251,23 @@ type Artist implements Node {
     visible_to_public: Boolean
     sort: PartnerShowSorts
   ): [Show]
+  showsConnection(
+    active: Boolean
+    at_a_fair: Boolean
+    is_reference: Boolean
+
+    # The number of PartnerShows to return
+    size: Int
+    solo_show: Boolean
+    status: String
+    top_tier: Boolean
+    visible_to_public: Boolean
+    sort: PartnerShowSorts
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
 
   # Use this attribute to sort by when sorting a collection of Artists
   sortable_id: String
@@ -229,6 +300,8 @@ type ArtistConnection {
 
   # A list of edges.
   edges: [ArtistEdge]
+  pageCursors: PageCursors
+  totalCount: Int
 }
 
 type ArtistCounts {
@@ -280,6 +353,7 @@ type ArtistItem implements Node {
   _id: String!
   cached: Int
   alternate_names: [String]
+  articlesConnection(sort: ArticleSorts, limit: Int, in_editorial_feed: Boolean, after: String, first: Int, before: String, last: Int): ArticleConnection
   articles(sort: ArticleSorts, limit: Int, in_editorial_feed: Boolean): [Article]
   artists(
     # The number of Artists to return
@@ -335,6 +409,39 @@ type ArtistItem implements Node {
     size: Int = 5
   ): [Show]
 
+  # Artworks Elastic Search results
+  filtered_artworks(
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    artist_ids: [String]
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    include_medium_filter_in_aggregation: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    page: Int
+    sale_id: ID
+    size: Int
+    sort: String
+    tag_id: String
+    keyword: String
+  ): FilterArtworks
+
   # A string showing the total number of works and those for sale
   formatted_artworks_count: String
 
@@ -379,7 +486,7 @@ type ArtistItem implements Node {
     sort: PartnerShowSorts
   ): [PartnerShow] @deprecated(reason: "Prefer to use shows attribute")
   public: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
-  related: RelatedArtists
+  related: ArtistRelatedData
   sales(
     live: Boolean
     is_auction: Boolean
@@ -401,6 +508,23 @@ type ArtistItem implements Node {
     visible_to_public: Boolean
     sort: PartnerShowSorts
   ): [Show]
+  showsConnection(
+    active: Boolean
+    at_a_fair: Boolean
+    is_reference: Boolean
+
+    # The number of PartnerShows to return
+    size: Int
+    solo_show: Boolean
+    status: String
+    top_tier: Boolean
+    visible_to_public: Boolean
+    sort: PartnerShowSorts
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
 
   # Use this attribute to sort by when sorting a collection of Artists
   sortable_id: String
@@ -412,6 +536,39 @@ type ArtistItem implements Node {
 type ArtistMeta {
   description: String
   title: String
+}
+
+type ArtistRelatedData {
+  genes(after: String, first: Int, before: String, last: Int): GeneConnection
+  artists(exclude_artists_without_artworks: Boolean = true, kind: RelatedArtistsKind, after: String, first: Int, before: String, last: Int): ArtistConnection
+
+  # A list of the current user’s suggested artists, based on a single artist
+  suggested(
+    # The slug or ID of an artist
+    artist_id: String
+
+    # Exclude artists without for sale works
+    exclude_artists_without_forsale_artworks: Boolean
+
+    # Exclude artists without any artworks
+    exclude_artists_without_artworks: Boolean
+
+    # Exclude artists the user already follows
+    exclude_followed_artists: Boolean
+
+    # Exclude these ids from results, may result in all artists being excluded.
+    exclude_artist_ids: [String]
+
+    # Pagination, need I say more?
+    page: Int
+
+    # Amount of artists to return
+    size: Int
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtistConnection
 }
 
 enum ArtistSorts {
@@ -574,6 +731,8 @@ type ArtworkConnection {
 
   # A list of edges.
   edges: [ArtworkEdge]
+  pageCursors: PageCursors
+  totalCount: Int
 }
 
 union ArtworkContext = ArtworkContextAuction | ArtworkContextFair | ArtworkContextPartnerShow | ArtworkContextSale
@@ -650,6 +809,7 @@ type ArtworkContextAuction implements Node {
 
   # Returns a live auctions url if the sale is open and start time is after now
   live_url_if_open: String
+  partner: Partner
   profile: Profile
   promoted_sale: Sale
   registration_ends_at(
@@ -890,6 +1050,7 @@ type ArtworkContextSale implements Node {
 
   # Returns a live auctions url if the sale is open and start time is after now
   live_url_if_open: String
+  partner: Partner
   profile: Profile
   promoted_sale: Sale
   registration_ends_at(
@@ -1273,6 +1434,12 @@ type AuctionLotDimensions {
   depth: Float
 }
 
+type AuctionLotEstimate {
+  low: Float
+  high: Float
+  display: String
+}
+
 type AuctionLotImages {
   larger: Image
   thumbnail: Image
@@ -1312,6 +1479,7 @@ type AuctionResult implements Node {
   description: String
   external_url: String
   images: AuctionLotImages
+  estimate: AuctionLotEstimate
   price_realized: AuctionResultPriceRealized
 }
 
@@ -1322,6 +1490,8 @@ type AuctionResultConnection {
 
   # A list of edges.
   edges: [AuctionResultEdge]
+  pageCursors: PageCursors
+  totalCount: Int
 }
 
 # An edge in a connection.
@@ -1334,8 +1504,8 @@ type AuctionResultEdge {
 }
 
 type AuctionResultPriceRealized {
-  cents: Int
-  cents_usd: Int
+  cents: Float
+  cents_usd: Float
   display(
     # Passes in to numeral, such as `'0.00'`
     format: String = ""
@@ -1343,7 +1513,9 @@ type AuctionResultPriceRealized {
 }
 
 enum AuctionResultSorts {
+  DATE_DESC
   PRICE_AND_DATE_DESC
+  ESTIMATE_AND_DATE_DESC
 }
 
 type Author {
@@ -1442,16 +1614,16 @@ type BidderPositionMaxBid {
   display: String
 }
 
-type BidderPositionMutationResult {
+type BidderPositionPayload {
+  result: BidderPositionResult
+  clientMutationId: String
+}
+
+type BidderPositionResult {
   status: String!
   message_header: String
   message_description_md: String
   position: BidderPosition
-}
-
-type BidderPositionPayload {
-  result: BidderPositionMutationResult
-  clientMutationId: String
 }
 
 type BidderPositionSuggestedNextBid {
@@ -1806,6 +1978,16 @@ type ConversationResponder {
 type coordinates {
   lat: Float
   lng: Float
+}
+
+input CreateBidderInput {
+  sale_id: String!
+  clientMutationId: String
+}
+
+type CreateBidderPayload {
+  bidder: Bidder
+  clientMutationId: String
 }
 
 input CreateGeminiEntryForAssetInput {
@@ -2888,6 +3070,8 @@ enum HomePageArtworkModuleTypes {
   RELATED_ARTISTS
   SAVED_WORKS
   RECENTLY_VIEWED_WORKS
+  SIMILAR_TO_RECENTLY_VIEWED
+  SIMILAR_TO_SAVED_WORKS
 }
 
 type HomePageFairsModule {
@@ -3181,6 +3365,7 @@ type HomePageModuleContextSale implements Node {
 
   # Returns a live auctions url if the sale is open and start time is after now
   live_url_if_open: String
+  partner: Partner
   profile: Profile
   promoted_sale: Sale
   registration_ends_at(
@@ -3373,7 +3558,7 @@ type Me implements Node {
   ): [BidderPosition]
 
   # Returns a single bidder position
-  bidder_position(id: String!): BidderPosition
+  bidder_position(id: String!): BidderPositionResult
 
   # A collector profile.
   collector_profile: CollectorProfileType
@@ -3404,6 +3589,7 @@ type Me implements Node {
   # A list of the current user’s inquiry requests
   followed_genes(after: String, first: Int, before: String, last: Int): FollowGeneConnection
   followsAndSaves: FollowsAndSaves
+  has_credit_cards: Boolean
   has_qualified_credit_cards: Boolean
 
   # An invoice
@@ -3549,6 +3735,9 @@ type MessageInitiator {
 }
 
 type Mutation {
+  # Create a bidder
+  createBidder(input: CreateBidderInput!): CreateBidderPayload
+
   # Creates a bidder position
   createBidderPosition(input: BidderPositionInput!): BidderPositionPayload
 
@@ -3779,6 +3968,24 @@ type OrderLineItem {
 type organizer {
   profile_id: ID
   profile: Profile
+}
+
+type PageCursor {
+  cursor: String!
+  page: Int!
+  isCurrent: Boolean!
+}
+
+type PageCursors {
+  # Optional, may be included in `around` (if current page is near the beginning).
+  first: PageCursor
+
+  # Optional, may be included in `around` (if current page is near the end).
+  last: PageCursor
+
+  # Always includes current page
+  around: [PageCursor!]!
+  previous: PageCursor
 }
 
 # Information about pagination in a connection.
@@ -4434,6 +4641,9 @@ type Query {
     __id: ID!
   ): Node
 
+  # Returns a single Order
+  order(id: String!): Order
+
   # An OrderedSet
   ordered_set(
     # The ID of the OrderedSet
@@ -4631,34 +4841,9 @@ type RecordArtworkViewPayload {
   clientMutationId: String
 }
 
-type RelatedArtists {
-  # A list of the current user’s suggested artists, based on a single artist
-  suggested(
-    # The slug or ID of an artist
-    artist_id: String
-
-    # Exclude artists without for sale works
-    exclude_artists_without_forsale_artworks: Boolean
-
-    # Exclude artists without any artworks
-    exclude_artists_without_artworks: Boolean
-
-    # Exclude artists the user already follows
-    exclude_followed_artists: Boolean
-
-    # Exclude these ids from results, may result in all artists being excluded.
-    exclude_artist_ids: [String]
-
-    # Pagination, need I say more?
-    page: Int
-
-    # Amount of artists to return
-    size: Int
-    after: String
-    first: Int
-    before: String
-    last: Int
-  ): ArtistConnection
+enum RelatedArtistsKind {
+  MAIN
+  CONTEMPORARY
 }
 
 input RequestCredentialsForAssetUploadInput {
@@ -4783,6 +4968,7 @@ type Sale implements Node {
 
   # Returns a live auctions url if the sale is open and start time is after now
   live_url_if_open: String
+  partner: Partner
   profile: Profile
   promoted_sale: Sale
   registration_ends_at(
@@ -5231,6 +5417,8 @@ type ShowConnection {
 
   # A list of edges.
   edges: [ShowEdge]
+  pageCursors: PageCursors
+  totalCount: Int
 }
 
 type ShowCounts {
@@ -5849,6 +6037,9 @@ type Viewer {
     # The ID of the object
     __id: ID!
   ): Node
+
+  # Returns a single Order
+  order(id: String!): Order
 
   # An OrderedSet
   ordered_set(

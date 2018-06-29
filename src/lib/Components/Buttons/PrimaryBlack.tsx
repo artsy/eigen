@@ -13,6 +13,7 @@ export interface PrimaryBlackProps extends React.Props<PrimaryBlack> {
   text: string
   textStyle?: StyleProp<TextStyle>
   selected?: boolean
+  disabled?: boolean
   inProgress?: boolean
   onPress?: React.TouchEventHandler<PrimaryBlack>
   onSelectionAnimationFinished?: Animated.EndCallback
@@ -49,9 +50,10 @@ export default class PrimaryBlack extends React.Component<PrimaryBlackProps, Pri
   }
 
   render() {
+    const disabledBackgroundColor = "#E5E5E5" // 10 percent black, on white bg
     const backgroundColor = this.state.backgroundColor.interpolate({
       inputRange: [0, 1],
-      outputRange: ["black", colors["purple-regular"]],
+      outputRange: [this.props.disabled ? disabledBackgroundColor : "black", colors["purple-regular"]],
     })
     const styling = {
       underlayColor: this.props.selected ? "black" : colors["purple-regular"],
@@ -66,7 +68,12 @@ export default class PrimaryBlack extends React.Component<PrimaryBlackProps, Pri
       content = <AnimatedHeadline style={headlineStyles}>{this.props.text}</AnimatedHeadline>
     }
     return (
-      <AnimatedTouchable onPress={this.props.onPress} activeOpacity={1} disabled={this.props.inProgress} {...styling}>
+      <AnimatedTouchable
+        onPress={this.props.onPress}
+        activeOpacity={1}
+        disabled={this.props.disabled || this.props.inProgress}
+        {...styling}
+      >
         <View>{content}</View>
       </AnimatedTouchable>
     )

@@ -16,9 +16,21 @@
 
 ### Master
 
+* Add placeholders to credit card form - erikdstock
+
+### 1.5.7
+
 * Fixes the `commitMutation` compatibility by not throwing errors - yuki24
 * Refetches bidder info when returning to ConfirmBid screen - sweir27
 * Refactors auction timer to support state changes - sweir27
+* Now User sees an error message when a request to MP did not go through due to the device's network condition - yuki24
+* Fixes a style issue where the spacing of the messages looks weird on “Outbid” payoff screen - yuki24
+* Update button style in bidflow to latest spec - maxim
+* Add disabled state to new button type, primary black - maxim
+* Registration screen handles when a user already has a credit card on file - sweir27
+* Removes unnecessary white spaces in the bid result screen - yuki24
+* Updates the text style and order for the auction timer - yuki24
+* Registration screen sends mutation for creating a bidder/credit card - sweir27
 
 ### 1.5.6
 
