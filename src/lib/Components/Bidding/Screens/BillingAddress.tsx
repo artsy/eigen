@@ -2,7 +2,7 @@ import React from "react"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
 
-import { Dimensions, KeyboardAvoidingView, NavigatorIOS, ScrollView, View } from "react-native"
+import { Dimensions, KeyboardAvoidingView, NavigatorIOS, ScrollView, TextInputProperties, View } from "react-native"
 
 import { Flex } from "../Elements/Flex"
 import { Sans12, Serif16 } from "../Elements/Typography"
