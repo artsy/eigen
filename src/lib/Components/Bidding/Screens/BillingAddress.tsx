@@ -2,7 +2,7 @@ import React from "react"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
 
-import { NavigatorIOS, ScrollView, View } from "react-native"
+import { Dimensions, KeyboardAvoidingView, NavigatorIOS, ScrollView, TextInputProperties, View } from "react-native"
 
 import { Flex } from "../Elements/Flex"
 import { Sans12, Serif16 } from "../Elements/Typography"
@@ -87,11 +87,16 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
   }
 
   render() {
+    // TODO: Remove this once React Native has been updated
+    const isPhoneX = Dimensions.get("window").height === 812 && Dimensions.get("window").width === 375
+    const defaultVerticalOffset = isPhoneX ? 30 : 15
+
     return (
       <BiddingThemeProvider>
         <View>
           <BackButton navigator={this.props.navigator} />
 
+<<<<<<< HEAD
           <ScrollView>
             <Container>
               <Title mt={0} mb={6}>
@@ -138,6 +143,61 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
               <Button text="Add billing address" onPress={() => this.onSubmit()} />
             </Container>
           </ScrollView>
+=======
+          <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={defaultVerticalOffset} style={{ flex: 1 }}>
+            <ScrollView>
+              <Container>
+                <Title mt={0} mb={6}>
+                  Your billing address
+                </Title>
+
+                <StyledInput
+                  label="Full name"
+                  placeholder="Enter your full name"
+                  autoCapitalize="words"
+                  autoFocus={true}
+                  returnKeyType="next"
+                  {...this.propsForInput("fullName")}
+                />
+
+                <StyledInput
+                  label="Address line 1"
+                  placeholder="Enter your street address"
+                  autoCapitalize="words"
+                  returnKeyType="next"
+                  {...this.propsForInput("addressLine1")}
+                />
+
+                <StyledInput
+                  label="Address line 2 (optional)"
+                  placeholder="Enter your apt, floor, suite, etc."
+                  autoCapitalize="words"
+                  returnKeyType="next"
+                  {...this.propsForInput("addressLine2")}
+                />
+
+                <StyledInput label="City" placeholder="Enter city" {...this.propsForInput("city")} />
+
+                <StyledInput
+                  label="State, Province, or Region"
+                  placeholder="Enter state, province, or region"
+                  autoCapitalize="words"
+                  returnKeyType="next"
+                  {...this.propsForInput("state")}
+                />
+
+                <StyledInput
+                  label="Postal code"
+                  placeholder="Enter your postal code"
+                  autoCapitalize="words"
+                  {...this.propsForInput("postalCode")}
+                />
+
+                <Button text="Add billing address" onPress={() => this.onSubmit()} />
+              </Container>
+            </ScrollView>
+          </KeyboardAvoidingView>
+>>>>>>> adds scroll view to billing address and moves button above keyboard
         </View>
       </BiddingThemeProvider>
     )
@@ -152,8 +212,8 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     }
   }
 }
-
-const StyledInput = ({ label, error, ...props }) => (
+type StyledInputProps = { label: string; error: string } & TextInputProperties
+const StyledInput: (input: StyledInputProps) => JSX.Element = ({ label, error, ...props }) => (
   <Flex mb={4}>
     <Serif16 mb={2}>{label}</Serif16>
     <Input mb={3} error={Boolean(error)} {...props} />

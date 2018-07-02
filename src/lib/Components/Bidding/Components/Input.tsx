@@ -32,6 +32,7 @@ export class Input extends Component<InputProps, InputState> {
   }
 
   onFocus() {
+    // this fails right now
     this.setState({ borderColor: "purple100" })
   }
 

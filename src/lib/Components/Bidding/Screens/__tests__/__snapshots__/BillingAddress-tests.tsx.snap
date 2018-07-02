@@ -1,41 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders properly 1`] = `
-<View>
-  <Image
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
-    accessible={true}
-    hitSlop={undefined}
-    left={10}
-    nativeID={undefined}
-    onLayout={undefined}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    position="absolute"
-    source={
+<View
+  enabled={true}
+  keyboardVerticalOffset={15}
+  onLayout={[Function]}
+  style={
+    Array [
       Object {
-        "testUri": "../../../images/angle-left.png",
-      }
-    }
-    style={
-      Array [
-        Object {
-          "position": "absolute",
-        },
-        Object {
-          "zIndex": 10,
-        },
-      ]
-    }
-    testID={undefined}
-    top={10}
-  />
+        "flex": 1,
+      },
+      Object {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
   <RCTScrollView>
     <View>
       <View
@@ -121,6 +101,7 @@ exports[`renders properly 1`] = `
           <TextInput
             allowFontScaling={true}
             autoCapitalize="words"
+            autoFocus={true}
             border={1}
             borderColor="black10"
             error={false}
@@ -131,7 +112,12 @@ exports[`renders properly 1`] = `
             onFocus={[Function]}
             p={3}
             pb={2}
+<<<<<<< HEAD
             placeholder="Add your full name"
+=======
+            placeholder="Enter your full name"
+            returnKeyType="next"
+>>>>>>> adds scroll view to billing address and moves button above keyboard
             style={
               Array [
                 Object {
@@ -198,7 +184,12 @@ exports[`renders properly 1`] = `
             onFocus={[Function]}
             p={3}
             pb={2}
+<<<<<<< HEAD
             placeholder="Add your street address"
+=======
+            placeholder="Enter your street address"
+            returnKeyType="next"
+>>>>>>> adds scroll view to billing address and moves button above keyboard
             style={
               Array [
                 Object {
@@ -265,7 +256,12 @@ exports[`renders properly 1`] = `
             onFocus={[Function]}
             p={3}
             pb={2}
+<<<<<<< HEAD
             placeholder="Add your apt, floor, suite, etc."
+=======
+            placeholder="Enter your apt, floor, suite, etc."
+            returnKeyType="next"
+>>>>>>> adds scroll view to billing address and moves button above keyboard
             style={
               Array [
                 Object {
@@ -398,7 +394,12 @@ exports[`renders properly 1`] = `
             onFocus={[Function]}
             p={3}
             pb={2}
+<<<<<<< HEAD
             placeholder="Add your state, province, or region"
+=======
+            placeholder="Enter state, province, or region"
+            returnKeyType="next"
+>>>>>>> adds scroll view to billing address and moves button above keyboard
             style={
               Array [
                 Object {
@@ -557,4 +558,4 @@ exports[`renders properly 1`] = `
     </View>
   </RCTScrollView>
 </View>
-`;
+`
