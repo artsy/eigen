@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -17,6 +18,8 @@ import { PaymentInfo } from "../Components/PaymentInfo"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
+
+import { BidResultScreen } from "./BidResult"
 
 import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
@@ -65,6 +68,16 @@ const bidderMutation = graphql`
     }
   }
 `
+
+const msgForNetworkError = {
+  message_header: "An error occurred",
+  message_description_md: "Please\ncheck your internet connection\nand try again.",
+}
+
+const msgForGraphQLError = {
+  message_header: "An error occurred",
+  message_description_md: "Please contact support@artsy.net with any questions.",
+}
 
 export class Registration extends React.Component<RegistrationProps, RegistrationState> {
   constructor(props) {
@@ -128,10 +141,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     })
 
     commitMutation(this.props.relay.environment, {
-      onCompleted: () => this.createBidder(),
-      onError: () => {
-        console.log("ERROR!")
-      },
+      onCompleted: (_, errors) =>
+        isEmpty(errors) ? this.createBidder() : this.presentErrorResult(errors, msgForGraphQLError),
+      onError: this.presentErrorResult.bind(this),
       mutation: creditCardMutation,
       variables: {
         input: {
@@ -143,15 +155,32 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
   createBidder() {
     commitMutation(this.props.relay.environment, {
-      onCompleted: () => {
-        console.log("COMPLETED!")
-      },
-      onError: () => {
-        console.log("ERROR!")
-      },
+      onCompleted: (results, errors) =>
+        isEmpty(errors) ? console.log("COMPLETED!", results) : this.presentErrorResult(errors, msgForGraphQLError),
+      onError: error => this.presentErrorResult(error, msgForNetworkError),
       mutation: bidderMutation,
       variables: { input: { sale_id: this.props.sale.id } },
     })
+  }
+
+  presentErrorResult(error, message) {
+    console.error(error)
+
+    this.props.navigator.push({
+      component: BidResultScreen,
+      title: "",
+      passProps: {
+        // TODO: BidResultScreen requires `sale_artwork` and `sale`. Switch to the RegistrationResult component once
+        //       https://artsyproduct.atlassian.net/browse/PURCHASE-202 is done so we do not have to pass in
+        //       `sale_artwork`.
+        sale_artwork: {
+          sale: {},
+        },
+        bidderPositionResult: message,
+      },
+    })
+
+    this.setState({ isLoading: false })
   }
 
   render() {
