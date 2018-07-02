@@ -4,8 +4,8 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
+import { Icon20 } from "../Components/Icon"
 import { Flex } from "../Elements/Flex"
-import { Icon20 } from "../Elements/Icon"
 
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { BidGhostButton, Button } from "../Components/Button"
