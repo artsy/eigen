@@ -15,6 +15,7 @@ const DoneButton: React.SFC<DoneButtonProps> = props => {
     paddingTop: 18,
     height: 56,
   }
+  // This uses an outdated version of the BottomAlignedButton
   return (
     <BottomAlignedButton
       onPress={props.onPress}

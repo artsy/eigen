@@ -31,6 +31,24 @@ it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is
   expect(onSubmitMock).toHaveBeenCalledWith(stripeToken, creditCard)
 })
 
+it("is disabled while the form is invalid", () => {
+  stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+  jest.useFakeTimers()
+  const component = renderer.create(<CreditCardForm onSubmit={onSubmitMock} navigator={{ pop: () => null } as any} />)
+
+  component.root.instance.setState({ valid: false, params: creditCard })
+  expect(component.root.findByType(Button).props.disabled).toEqual(true)
+})
+
+it("is enabled while the form is valid", () => {
+  stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+  jest.useFakeTimers()
+  const component = renderer.create(<CreditCardForm onSubmit={onSubmitMock} navigator={{ pop: () => null } as any} />)
+
+  component.root.instance.setState({ valid: true, params: creditCard })
+  expect(component.root.findByType(Button).props.disabled).toEqual(false)
+})
+
 const creditCard = {
   number: "4242424242424242",
   expMonth: "04",
