@@ -96,54 +96,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
         <View>
           <BackButton navigator={this.props.navigator} />
 
-<<<<<<< HEAD
-          <ScrollView>
-            <Container>
-              <Title mt={0} mb={6}>
-                Your billing address
-              </Title>
-
-              <StyledInput
-                label="Full name"
-                placeholder="Add your full name"
-                autoCapitalize="words"
-                {...this.propsForInput("fullName")}
-              />
-
-              <StyledInput
-                label="Address line 1"
-                placeholder="Add your street address"
-                autoCapitalize="words"
-                {...this.propsForInput("addressLine1")}
-              />
-
-              <StyledInput
-                label="Address line 2 (optional)"
-                placeholder="Add your apt, floor, suite, etc."
-                autoCapitalize="words"
-                {...this.propsForInput("addressLine2")}
-              />
-
-              <StyledInput label="City" placeholder="Add your city" {...this.propsForInput("city")} />
-
-              <StyledInput
-                label="State, Province, or Region"
-                placeholder="Add your state, province, or region"
-                autoCapitalize="words"
-                {...this.propsForInput("state")}
-              />
-
-              <StyledInput
-                label="Postal code"
-                placeholder="Add your postal code"
-                autoCapitalize="words"
-                {...this.propsForInput("postalCode")}
-              />
-
-              <Button text="Add billing address" onPress={() => this.onSubmit()} />
-            </Container>
-          </ScrollView>
-=======
           <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={defaultVerticalOffset} style={{ flex: 1 }}>
             <ScrollView>
               <Container>
@@ -197,7 +149,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
               </Container>
             </ScrollView>
           </KeyboardAvoidingView>
->>>>>>> adds scroll view to billing address and moves button above keyboard
         </View>
       </BiddingThemeProvider>
     )
