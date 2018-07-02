@@ -18,6 +18,7 @@
 
 * There should be more space visually between conditions of sale checkbox and place bid button - yuki24
 * Add placeholders to credit card form - erikdstock
+* Now users see the minutes in the auction timer when the sale does not on the hour - yuki24
 
 ### 1.5.7
 
