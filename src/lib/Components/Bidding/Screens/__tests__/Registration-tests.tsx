@@ -1,6 +1,8 @@
 import React from "react"
 import * as renderer from "react-test-renderer"
 
+import objectContaining = jasmine.objectContaining
+
 import Spinner from "../../../Spinner"
 import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Button } from "../../Components/Button"
@@ -17,12 +19,14 @@ const mockphysics = metaphysics as jest.Mock<any>
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
 import relay from "react-relay"
+import { BidResultScreen } from "../BidResult"
 
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),
   createTokenWithCard: jest.fn(),
 }))
+import stripe from "tipsi-stripe"
 
 let nextStep
 const mockNavigator = { push: route => (nextStep = route), pop: () => null }
@@ -107,6 +111,88 @@ describe("when pressing register button", () => {
     component.root.findByType(Button).instance.props.onPress()
 
     expect(component.root.findAllByType(Spinner).length).toEqual(1)
+  })
+
+  xit("displays an error message on a stripe failure", () => {
+    // TODO: https://artsyproduct.atlassian.net/browse/PURCHASE-195
+  })
+
+  it("displays an error message on a creditCardMutation failure", () => {
+    const error = {
+      message: 'GraphQL Timeout Error: Mutation.createCreditCard has timed out after waiting for 5000ms"}',
+    }
+
+    console.error = jest.fn() // Silences component logging.
+    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted({}, [error]))
+
+    const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+
+    component.root.instance.setState({ billingAddress })
+    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
+
+    jest.runAllTicks()
+
+    expect(nextStep.component).toEqual(BidResultScreen)
+    expect(nextStep.passProps).toEqual(
+      objectContaining({
+        bidderPositionResult: {
+          message_header: "An error occurred",
+          message_description_md: "Please contact support@artsy.net with any questions.",
+        },
+      })
+    )
+  })
+
+  it("displays an error message on a bidderMutation failure", () => {
+    const error = {
+      message:
+        'https://stagingapi.artsy.net/api/v1/bidder?sale_id=leclere-impressionist-and-modern-art - {"error":"Invalid Sale"}',
+    }
+
+    console.error = jest.fn() // Silences component logging.
+    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted({}, [error]))
+
+    const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
+
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
+
+    jest.runAllTicks()
+
+    expect(nextStep.component).toEqual(BidResultScreen)
+    expect(nextStep.passProps).toEqual(
+      objectContaining({
+        bidderPositionResult: {
+          message_header: "An error occurred",
+          message_description_md: "Please contact support@artsy.net with any questions.",
+        },
+      })
+    )
+  })
+
+  it("displays an error message on a network failure", () => {
+    console.error = jest.fn() // Silences component logging.
+    relay.commitMutation = jest.fn((_, { onError }) => onError(new TypeError("Network request failed")))
+
+    const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
+
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
+
+    jest.runAllTicks()
+
+    expect(nextStep.component).toEqual(BidResultScreen)
+    expect(nextStep.passProps).toEqual(
+      objectContaining({
+        bidderPositionResult: {
+          message_header: "An error occurred",
+          message_description_md: "Please\ncheck your internet connection\nand try again.",
+        },
+      })
+    )
   })
 })
 
