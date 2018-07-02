@@ -24,6 +24,7 @@
 * Now users see an error message when MP returns an error on the Registration and Confirm bid screens - yuki24
 * Update credit card form to have more sophisticated keyboard behavior - sweir27
 * Add registration result screens - maxim
+* Add a back button to the Billing address form screen and the Credit card form screen - yuki24
 
 ### 1.5.7
 

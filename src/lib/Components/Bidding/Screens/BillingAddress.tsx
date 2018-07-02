@@ -2,13 +2,14 @@ import React from "react"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
 
-import { NavigatorIOS, ScrollView } from "react-native"
+import { NavigatorIOS, ScrollView, View } from "react-native"
 
 import { Flex } from "../Elements/Flex"
 import { Sans12, Serif16 } from "../Elements/Typography"
 
 import { validatePresence } from "../Validators"
 
+import { BackButton } from "../Components/BackButton"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Button } from "../Components/Button"
 import { Container } from "../Components/Containers"
@@ -88,52 +89,56 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
   render() {
     return (
       <BiddingThemeProvider>
-        <ScrollView>
-          <Container>
-            <Title mt={0} mb={6}>
-              Your billing address
-            </Title>
+        <View>
+          <BackButton navigator={this.props.navigator} />
 
-            <StyledInput
-              label="Full name"
-              placeholder="Enter your full name"
-              autoCapitalize="words"
-              {...this.propsForInput("fullName")}
-            />
+          <ScrollView>
+            <Container>
+              <Title mt={0} mb={6}>
+                Your billing address
+              </Title>
 
-            <StyledInput
-              label="Address line 1"
-              placeholder="Enter your street address"
-              autoCapitalize="words"
-              {...this.propsForInput("addressLine1")}
-            />
+              <StyledInput
+                label="Full name"
+                placeholder="Enter your full name"
+                autoCapitalize="words"
+                {...this.propsForInput("fullName")}
+              />
 
-            <StyledInput
-              label="Address line 2 (optional)"
-              placeholder="Enter your apt, floor, suite, etc."
-              autoCapitalize="words"
-              {...this.propsForInput("addressLine2")}
-            />
+              <StyledInput
+                label="Address line 1"
+                placeholder="Enter your street address"
+                autoCapitalize="words"
+                {...this.propsForInput("addressLine1")}
+              />
 
-            <StyledInput label="City" placeholder="Enter city" {...this.propsForInput("city")} />
+              <StyledInput
+                label="Address line 2 (optional)"
+                placeholder="Enter your apt, floor, suite, etc."
+                autoCapitalize="words"
+                {...this.propsForInput("addressLine2")}
+              />
 
-            <StyledInput
-              label="State, Province, or Region"
-              placeholder="Enter state, province, or region"
-              autoCapitalize="words"
-              {...this.propsForInput("state")}
-            />
+              <StyledInput label="City" placeholder="Enter city" {...this.propsForInput("city")} />
 
-            <StyledInput
-              label="Postal code"
-              placeholder="Enter your postal code"
-              autoCapitalize="words"
-              {...this.propsForInput("postalCode")}
-            />
+              <StyledInput
+                label="State, Province, or Region"
+                placeholder="Enter state, province, or region"
+                autoCapitalize="words"
+                {...this.propsForInput("state")}
+              />
 
-            <Button text="Add billing address" onPress={() => this.onSubmit()} />
-          </Container>
-        </ScrollView>
+              <StyledInput
+                label="Postal code"
+                placeholder="Enter your postal code"
+                autoCapitalize="words"
+                {...this.propsForInput("postalCode")}
+              />
+
+              <Button text="Add billing address" onPress={() => this.onSubmit()} />
+            </Container>
+          </ScrollView>
+        </View>
       </BiddingThemeProvider>
     )
   }

@@ -4,6 +4,7 @@ import { NavigatorIOS, ScrollView, StyleSheet, View } from "react-native"
 import stripe, { PaymentCardTextField, StripeToken } from "tipsi-stripe"
 
 import BottomAlignedButtonWrapper from "lib/Components/Buttons/BottomAlignedButtonWrapper"
+import { BackButton } from "../Components/BackButton"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Button } from "../Components/Button"
 import { Container } from "../Components/Containers"
@@ -84,6 +85,8 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
           onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : null}
           buttonComponent={buttonComponent}
         >
+          <BackButton navigator={this.props.navigator} />
+
           <ScrollView scrollEnabled={false}>
             <Container m={0}>
               <View>
