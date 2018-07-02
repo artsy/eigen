@@ -66,9 +66,10 @@ export class Timer extends React.Component<TimerProps, TimerState> {
   }
 
   formatDate(date: string) {
-    return moment(date, moment.ISO_8601)
-      .tz(moment.tz.guess(true))
-      .format("MMM D, h A")
+    const dateInMoment = moment(date, moment.ISO_8601).tz(moment.tz.guess(true))
+    const format = dateInMoment.minutes() === 0 ? "MMM D, h A" : "MMM D, h:mm A"
+
+    return dateInMoment.format(format)
   }
 
   upcomingLabel(currentState: AuctionTimerState, liveStartsAt: string, startsAt: string, endsAt: string) {

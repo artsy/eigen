@@ -15,6 +15,15 @@ const getTimerLabel = timerComponent => timerComponent.root.findByType(SansMediu
 
 const getTimerText = timerComponent => timerComponent.root.findByType(SansMedium16t).props.children.join("")
 
+const mockTimezone = timezone => {
+  const mutatedResolvedOptions: any = Intl.DateTimeFormat().resolvedOptions()
+  const mutatedDateTimeFormat: any = Intl.DateTimeFormat()
+
+  mutatedResolvedOptions.timeZone = timezone
+  mutatedDateTimeFormat.resolvedOptions = () => mutatedResolvedOptions
+  Intl.DateTimeFormat = (() => mutatedDateTimeFormat) as any
+}
+
 let pastTime
 let futureTime
 
@@ -113,18 +122,33 @@ it("counts down to zero", () => {
 })
 
 it("shows month, date, and hour adjusted for the timezone where the user is", () => {
-  const mutatedResolvedOptions: any = Intl.DateTimeFormat().resolvedOptions()
-  const mutatedDateTimeFormat: any = Intl.DateTimeFormat()
-
-  mutatedResolvedOptions.timeZone = "America/Los_Angeles"
-  mutatedDateTimeFormat.resolvedOptions = () => mutatedResolvedOptions
-  Intl.DateTimeFormat = (() => mutatedDateTimeFormat) as any
+  mockTimezone("America/Los_Angeles")
 
   // Thursday, May 14, 2018 8:00:00.000 PM UTC
   // Thursday, May 14, 2018 1:00:00.000 PM PDT in LA
   const timer = renderer.create(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
 
   expect(getTimerLabel(timer)).toEqual("Ends May 14, 1 PM")
+})
+
+it("displays the minutes when the sale does not end on the hour", () => {
+  mockTimezone("America/New_York")
+
+  let timer = renderer.create(<Timer endsAt="2018-05-14T20:01:00+00:00" />)
+
+  expect(getTimerLabel(timer)).toEqual("Ends May 14, 4:01 PM")
+
+  timer = renderer.create(<Timer endsAt="2018-05-14T20:30:00+00:00" />)
+
+  expect(getTimerLabel(timer)).toEqual("Ends May 14, 4:30 PM")
+})
+
+it("omits the minutes when the sale ends on the hour", () => {
+  mockTimezone("America/New_York")
+
+  const timer = renderer.create(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
+
+  expect(getTimerLabel(timer)).toEqual("Ends May 14, 4 PM")
 })
 
 describe("timer transitions", () => {
