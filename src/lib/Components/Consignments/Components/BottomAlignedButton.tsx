@@ -33,7 +33,7 @@ export interface BottomAlignedProps extends React.Props<JSX.Element> {
   verticalOffset?: number
 }
 
-// TODO: Remove this once React Native has beem updated
+// TODO: Remove this once React Native has been updated
 const isPhoneX = Dimensions.get("window").height === 812 && Dimensions.get("window").width === 375
 const defaultVerticalOffset = isPhoneX ? 30 : 15
 

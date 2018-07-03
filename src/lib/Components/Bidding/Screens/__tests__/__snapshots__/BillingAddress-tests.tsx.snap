@@ -1,97 +1,73 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders properly 1`] = `
-<View>
-  <Image
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
-    accessible={true}
-    hitSlop={undefined}
-    left={10}
-    nativeID={undefined}
-    onLayout={undefined}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    position="absolute"
-    source={
+<View
+  enabled={true}
+  keyboardVerticalOffset={15}
+  onLayout={[Function]}
+  style={
+    Array [
       Object {
-        "testUri": "../../../images/angle-left.png",
-      }
-    }
-    style={
-      Array [
+        "flex": 1,
+      },
+      Object {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  <View>
+    <Image
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      hitSlop={undefined}
+      left={10}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      position="absolute"
+      source={
         Object {
-          "position": "absolute",
-        },
-        Object {
-          "zIndex": 10,
-        },
-      ]
-    }
-    testID={undefined}
-    top={10}
-  />
-  <RCTScrollView>
-    <View>
-      <View
-        flex={1}
-        flexDirection="column"
-        justifyContent="space-between"
-        m={4}
-        style={
-          Array [
-            Object {
-              "flexBasis": 0,
-              "flexGrow": 1,
-              "flexShrink": 1,
-              "marginBottom": 20,
-              "marginLeft": 20,
-              "marginRight": 20,
-              "marginTop": 20,
-            },
-            undefined,
-          ]
+          "testUri": "../../../images/angle-left.png",
         }
-      >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-          fontSize={5}
-          lineHeight={7}
+      }
+      style={
+        Array [
+          Object {
+            "position": "absolute",
+          },
+          Object {
+            "zIndex": 10,
+          },
+        ]
+      }
+      testID={undefined}
+      top={10}
+    />
+    <RCTScrollView>
+      <View>
+        <View
+          flex={1}
+          flexDirection="column"
+          justifyContent="space-between"
           m={4}
-          mb={6}
-          mt={0}
           style={
             Array [
               Object {
-                "fontFamily": "AGaramondPro-Semibold",
-                "fontSize": 22,
-                "lineHeight": 28,
-                "marginBottom": 40,
+                "flexBasis": 0,
+                "flexGrow": 1,
+                "flexShrink": 1,
+                "marginBottom": 20,
                 "marginLeft": 20,
                 "marginRight": 20,
-                "marginTop": 0,
-                "textAlign": "center",
-              },
-              undefined,
-            ]
-          }
-          textAlign="center"
-        >
-          Your billing address
-        </Text>
-        <View
-          mb={4}
-          style={
-            Array [
-              Object {
-                "marginBottom": 20,
+                "marginTop": 20,
               },
               undefined,
             ]
@@ -101,460 +77,529 @@ exports[`renders properly 1`] = `
             accessible={true}
             allowFontScaling={true}
             ellipsizeMode="tail"
-            fontSize={3}
-            lineHeight={5}
-            mb={2}
+            fontSize={5}
+            lineHeight={7}
+            m={4}
+            mb={6}
+            mt={0}
             style={
               Array [
                 Object {
-                  "fontFamily": "AGaramondPro-Regular",
-                  "fontSize": 16,
-                  "lineHeight": 24,
-                  "marginBottom": 5,
+                  "fontFamily": "AGaramondPro-Semibold",
+                  "fontSize": 22,
+                  "lineHeight": 28,
+                  "marginBottom": 40,
+                  "marginLeft": 20,
+                  "marginRight": 20,
+                  "marginTop": 0,
+                  "textAlign": "center",
                 },
                 undefined,
               ]
             }
+            textAlign="center"
           >
-            Full name
+            Your billing address
           </Text>
-          <TextInput
-            allowFontScaling={true}
-            autoCapitalize="words"
-            border={1}
-            borderColor="black10"
-            error={false}
-            fontSize={3}
-            mb={3}
-            onBlur={[Function]}
-            onChangeText={[Function]}
-            onFocus={[Function]}
-            p={3}
-            pb={2}
-            placeholder="Add your full name"
-            style={
-              Array [
-                Object {
-                  "borderColor": "#E5E5E5",
-                  "borderStyle": "solid",
-                  "borderWidth": 1,
-                  "fontFamily": "AGaramondPro-Regular",
-                  "fontSize": 16,
-                  "height": 40,
-                  "marginBottom": 10,
-                  "paddingBottom": 5,
-                  "paddingLeft": 10,
-                  "paddingRight": 10,
-                  "paddingTop": 10,
-                },
-                undefined,
-              ]
-            }
-            value={undefined}
-          />
-        </View>
-        <View
-          mb={4}
-          style={
-            Array [
-              Object {
-                "marginBottom": 20,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            fontSize={3}
-            lineHeight={5}
-            mb={2}
-            style={
-              Array [
-                Object {
-                  "fontFamily": "AGaramondPro-Regular",
-                  "fontSize": 16,
-                  "lineHeight": 24,
-                  "marginBottom": 5,
-                },
-                undefined,
-              ]
-            }
-          >
-            Address line 1
-          </Text>
-          <TextInput
-            allowFontScaling={true}
-            autoCapitalize="words"
-            border={1}
-            borderColor="black10"
-            error={false}
-            fontSize={3}
-            mb={3}
-            onBlur={[Function]}
-            onChangeText={[Function]}
-            onFocus={[Function]}
-            p={3}
-            pb={2}
-            placeholder="Add your street address"
-            style={
-              Array [
-                Object {
-                  "borderColor": "#E5E5E5",
-                  "borderStyle": "solid",
-                  "borderWidth": 1,
-                  "fontFamily": "AGaramondPro-Regular",
-                  "fontSize": 16,
-                  "height": 40,
-                  "marginBottom": 10,
-                  "paddingBottom": 5,
-                  "paddingLeft": 10,
-                  "paddingRight": 10,
-                  "paddingTop": 10,
-                },
-                undefined,
-              ]
-            }
-            value={undefined}
-          />
-        </View>
-        <View
-          mb={4}
-          style={
-            Array [
-              Object {
-                "marginBottom": 20,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            fontSize={3}
-            lineHeight={5}
-            mb={2}
-            style={
-              Array [
-                Object {
-                  "fontFamily": "AGaramondPro-Regular",
-                  "fontSize": 16,
-                  "lineHeight": 24,
-                  "marginBottom": 5,
-                },
-                undefined,
-              ]
-            }
-          >
-            Address line 2 (optional)
-          </Text>
-          <TextInput
-            allowFontScaling={true}
-            autoCapitalize="words"
-            border={1}
-            borderColor="black10"
-            error={false}
-            fontSize={3}
-            mb={3}
-            onBlur={[Function]}
-            onChangeText={[Function]}
-            onFocus={[Function]}
-            p={3}
-            pb={2}
-            placeholder="Add your apt, floor, suite, etc."
-            style={
-              Array [
-                Object {
-                  "borderColor": "#E5E5E5",
-                  "borderStyle": "solid",
-                  "borderWidth": 1,
-                  "fontFamily": "AGaramondPro-Regular",
-                  "fontSize": 16,
-                  "height": 40,
-                  "marginBottom": 10,
-                  "paddingBottom": 5,
-                  "paddingLeft": 10,
-                  "paddingRight": 10,
-                  "paddingTop": 10,
-                },
-                undefined,
-              ]
-            }
-            value={undefined}
-          />
-        </View>
-        <View
-          mb={4}
-          style={
-            Array [
-              Object {
-                "marginBottom": 20,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            fontSize={3}
-            lineHeight={5}
-            mb={2}
-            style={
-              Array [
-                Object {
-                  "fontFamily": "AGaramondPro-Regular",
-                  "fontSize": 16,
-                  "lineHeight": 24,
-                  "marginBottom": 5,
-                },
-                undefined,
-              ]
-            }
-          >
-            City
-          </Text>
-          <TextInput
-            allowFontScaling={true}
-            border={1}
-            borderColor="black10"
-            error={false}
-            fontSize={3}
-            mb={3}
-            onBlur={[Function]}
-            onChangeText={[Function]}
-            onFocus={[Function]}
-            p={3}
-            pb={2}
-            placeholder="Add your city"
-            style={
-              Array [
-                Object {
-                  "borderColor": "#E5E5E5",
-                  "borderStyle": "solid",
-                  "borderWidth": 1,
-                  "fontFamily": "AGaramondPro-Regular",
-                  "fontSize": 16,
-                  "height": 40,
-                  "marginBottom": 10,
-                  "paddingBottom": 5,
-                  "paddingLeft": 10,
-                  "paddingRight": 10,
-                  "paddingTop": 10,
-                },
-                undefined,
-              ]
-            }
-            value={undefined}
-          />
-        </View>
-        <View
-          mb={4}
-          style={
-            Array [
-              Object {
-                "marginBottom": 20,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            fontSize={3}
-            lineHeight={5}
-            mb={2}
-            style={
-              Array [
-                Object {
-                  "fontFamily": "AGaramondPro-Regular",
-                  "fontSize": 16,
-                  "lineHeight": 24,
-                  "marginBottom": 5,
-                },
-                undefined,
-              ]
-            }
-          >
-            State, Province, or Region
-          </Text>
-          <TextInput
-            allowFontScaling={true}
-            autoCapitalize="words"
-            border={1}
-            borderColor="black10"
-            error={false}
-            fontSize={3}
-            mb={3}
-            onBlur={[Function]}
-            onChangeText={[Function]}
-            onFocus={[Function]}
-            p={3}
-            pb={2}
-            placeholder="Add your state, province, or region"
-            style={
-              Array [
-                Object {
-                  "borderColor": "#E5E5E5",
-                  "borderStyle": "solid",
-                  "borderWidth": 1,
-                  "fontFamily": "AGaramondPro-Regular",
-                  "fontSize": 16,
-                  "height": 40,
-                  "marginBottom": 10,
-                  "paddingBottom": 5,
-                  "paddingLeft": 10,
-                  "paddingRight": 10,
-                  "paddingTop": 10,
-                },
-                undefined,
-              ]
-            }
-            value={undefined}
-          />
-        </View>
-        <View
-          mb={4}
-          style={
-            Array [
-              Object {
-                "marginBottom": 20,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
-            fontSize={3}
-            lineHeight={5}
-            mb={2}
-            style={
-              Array [
-                Object {
-                  "fontFamily": "AGaramondPro-Regular",
-                  "fontSize": 16,
-                  "lineHeight": 24,
-                  "marginBottom": 5,
-                },
-                undefined,
-              ]
-            }
-          >
-            Postal code
-          </Text>
-          <TextInput
-            allowFontScaling={true}
-            autoCapitalize="words"
-            border={1}
-            borderColor="black10"
-            error={false}
-            fontSize={3}
-            mb={3}
-            onBlur={[Function]}
-            onChangeText={[Function]}
-            onFocus={[Function]}
-            p={3}
-            pb={2}
-            placeholder="Add your postal code"
-            style={
-              Array [
-                Object {
-                  "borderColor": "#E5E5E5",
-                  "borderStyle": "solid",
-                  "borderWidth": 1,
-                  "fontFamily": "AGaramondPro-Regular",
-                  "fontSize": 16,
-                  "height": 40,
-                  "marginBottom": 10,
-                  "paddingBottom": 5,
-                  "paddingLeft": 10,
-                  "paddingRight": 10,
-                  "paddingTop": 10,
-                },
-                undefined,
-              ]
-            }
-            value={undefined}
-          />
-        </View>
-        <View
-          height={50}
-          style={
-            Array [
-              Object {
-                "height": 50,
-              },
-              undefined,
-            ]
-          }
-        >
           <View
-            accessibilityComponentType={undefined}
-            accessibilityLabel={undefined}
-            accessibilityTraits={undefined}
-            accessible={true}
-            hasTVPreferredFocus={undefined}
-            hitSlop={undefined}
-            isTVSelectable={true}
-            nativeID={undefined}
-            onLayout={undefined}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
+            mb={4}
             style={
-              Object {
-                "alignItems": "center",
-                "backgroundColor": "rgba(0, 0, 0, 1)",
-                "borderRadius": 2,
-                "flex": 1,
-                "justifyContent": "center",
-              }
+              Array [
+                Object {
+                  "marginBottom": 20,
+                },
+                undefined,
+              ]
             }
-            testID={undefined}
-            tvParallaxProperties={undefined}
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              fontSize={3}
+              lineHeight={5}
+              mb={2}
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 16,
+                    "lineHeight": 24,
+                    "marginBottom": 5,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Full name
+            </Text>
+            <TextInput
+              allowFontScaling={true}
+              autoCapitalize="words"
+              autoFocus={true}
+              border={1}
+              borderColor="black10"
+              createCustomRef={[Function]}
+              customOnBlur={[Function]}
+              error={false}
+              fontSize={3}
+              mb={3}
+              onBlur={[Function]}
+              onChangeText={[Function]}
+              onFocus={[Function]}
+              onSubmitEditing={[Function]}
+              p={3}
+              pb={2}
+              placeholder="Add your full name"
+              refName="fullName"
+              returnKeyType="next"
+              style={
+                Array [
+                  Object {
+                    "borderColor": "#E5E5E5",
+                    "borderStyle": "solid",
+                    "borderWidth": 1,
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 16,
+                    "height": 40,
+                    "marginBottom": 10,
+                    "paddingBottom": 5,
+                    "paddingLeft": 10,
+                    "paddingRight": 10,
+                    "paddingTop": 10,
+                  },
+                  undefined,
+                ]
+              }
+              value={undefined}
+            />
+          </View>
+          <View
+            mb={4}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 20,
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              fontSize={3}
+              lineHeight={5}
+              mb={2}
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 16,
+                    "lineHeight": 24,
+                    "marginBottom": 5,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Address line 1
+            </Text>
+            <TextInput
+              allowFontScaling={true}
+              autoCapitalize="words"
+              border={1}
+              borderColor="black10"
+              createCustomRef={[Function]}
+              customOnBlur={[Function]}
+              error={false}
+              fontSize={3}
+              mb={3}
+              onBlur={[Function]}
+              onChangeText={[Function]}
+              onFocus={[Function]}
+              onSubmitEditing={[Function]}
+              p={3}
+              pb={2}
+              placeholder="Add your street address"
+              refName="addressLine1"
+              returnKeyType="next"
+              style={
+                Array [
+                  Object {
+                    "borderColor": "#E5E5E5",
+                    "borderStyle": "solid",
+                    "borderWidth": 1,
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 16,
+                    "height": 40,
+                    "marginBottom": 10,
+                    "paddingBottom": 5,
+                    "paddingLeft": 10,
+                    "paddingRight": 10,
+                    "paddingTop": 10,
+                  },
+                  undefined,
+                ]
+              }
+              value={undefined}
+            />
+          </View>
+          <View
+            mb={4}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 20,
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              fontSize={3}
+              lineHeight={5}
+              mb={2}
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 16,
+                    "lineHeight": 24,
+                    "marginBottom": 5,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Address line 2 (optional)
+            </Text>
+            <TextInput
+              allowFontScaling={true}
+              autoCapitalize="words"
+              border={1}
+              borderColor="black10"
+              createCustomRef={[Function]}
+              customOnBlur={[Function]}
+              error={false}
+              fontSize={3}
+              mb={3}
+              onBlur={[Function]}
+              onChangeText={[Function]}
+              onFocus={[Function]}
+              onSubmitEditing={[Function]}
+              p={3}
+              pb={2}
+              placeholder="Add your apt, floor, suite, etc."
+              refName="addressLine2"
+              returnKeyType="next"
+              style={
+                Array [
+                  Object {
+                    "borderColor": "#E5E5E5",
+                    "borderStyle": "solid",
+                    "borderWidth": 1,
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 16,
+                    "height": 40,
+                    "marginBottom": 10,
+                    "paddingBottom": 5,
+                    "paddingLeft": 10,
+                    "paddingRight": 10,
+                    "paddingTop": 10,
+                  },
+                  undefined,
+                ]
+              }
+              value={undefined}
+            />
+          </View>
+          <View
+            mb={4}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 20,
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              fontSize={3}
+              lineHeight={5}
+              mb={2}
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 16,
+                    "lineHeight": 24,
+                    "marginBottom": 5,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              City
+            </Text>
+            <TextInput
+              allowFontScaling={true}
+              border={1}
+              borderColor="black10"
+              createCustomRef={[Function]}
+              customOnBlur={[Function]}
+              error={false}
+              fontSize={3}
+              mb={3}
+              onBlur={[Function]}
+              onChangeText={[Function]}
+              onFocus={[Function]}
+              onSubmitEditing={[Function]}
+              p={3}
+              pb={2}
+              placeholder="Add your city"
+              refName="city"
+              returnKeyType="next"
+              style={
+                Array [
+                  Object {
+                    "borderColor": "#E5E5E5",
+                    "borderStyle": "solid",
+                    "borderWidth": 1,
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 16,
+                    "height": 40,
+                    "marginBottom": 10,
+                    "paddingBottom": 5,
+                    "paddingLeft": 10,
+                    "paddingRight": 10,
+                    "paddingTop": 10,
+                  },
+                  undefined,
+                ]
+              }
+              value={undefined}
+            />
+          </View>
+          <View
+            mb={4}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 20,
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              fontSize={3}
+              lineHeight={5}
+              mb={2}
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 16,
+                    "lineHeight": 24,
+                    "marginBottom": 5,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              State, Province, or Region
+            </Text>
+            <TextInput
+              allowFontScaling={true}
+              autoCapitalize="words"
+              border={1}
+              borderColor="black10"
+              createCustomRef={[Function]}
+              customOnBlur={[Function]}
+              error={false}
+              fontSize={3}
+              mb={3}
+              onBlur={[Function]}
+              onChangeText={[Function]}
+              onFocus={[Function]}
+              onSubmitEditing={[Function]}
+              p={3}
+              pb={2}
+              placeholder="Add your state, province, or region"
+              refName="stateProvinceRegion"
+              returnKeyType="next"
+              style={
+                Array [
+                  Object {
+                    "borderColor": "#E5E5E5",
+                    "borderStyle": "solid",
+                    "borderWidth": 1,
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 16,
+                    "height": 40,
+                    "marginBottom": 10,
+                    "paddingBottom": 5,
+                    "paddingLeft": 10,
+                    "paddingRight": 10,
+                    "paddingTop": 10,
+                  },
+                  undefined,
+                ]
+              }
+              value={undefined}
+            />
+          </View>
+          <View
+            mb={4}
+            style={
+              Array [
+                Object {
+                  "marginBottom": 20,
+                },
+                undefined,
+              ]
+            }
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              ellipsizeMode="tail"
+              fontSize={3}
+              lineHeight={5}
+              mb={2}
+              style={
+                Array [
+                  Object {
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 16,
+                    "lineHeight": 24,
+                    "marginBottom": 5,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Postal code
+            </Text>
+            <TextInput
+              allowFontScaling={true}
+              autoCapitalize="words"
+              border={1}
+              borderColor="black10"
+              createCustomRef={[Function]}
+              customOnBlur={[Function]}
+              error={false}
+              fontSize={3}
+              mb={3}
+              onBlur={[Function]}
+              onChangeText={[Function]}
+              onFocus={[Function]}
+              p={3}
+              pb={2}
+              placeholder="Add your postal code"
+              refName="postalCode"
+              style={
+                Array [
+                  Object {
+                    "borderColor": "#E5E5E5",
+                    "borderStyle": "solid",
+                    "borderWidth": 1,
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 16,
+                    "height": 40,
+                    "marginBottom": 10,
+                    "paddingBottom": 5,
+                    "paddingLeft": 10,
+                    "paddingRight": 10,
+                    "paddingTop": 10,
+                  },
+                  undefined,
+                ]
+              }
+              value={undefined}
+            />
+          </View>
+          <View
+            height={50}
+            style={
+              Array [
+                Object {
+                  "height": 50,
+                },
+                undefined,
+              ]
+            }
           >
             <View
-              style={null}
-            >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
-                style={
-                  Array [
-                    Object {
-                      "fontSize": 14,
-                    },
-                    Object {
-                      "color": "white",
-                      "opacity": 1,
-                    },
-                    Object {
-                      "fontFamily": "Unica77LL-Medium",
-                    },
-                  ]
+              accessibilityComponentType={undefined}
+              accessibilityLabel={undefined}
+              accessibilityTraits={undefined}
+              accessible={true}
+              hasTVPreferredFocus={undefined}
+              hitSlop={undefined}
+              isTVSelectable={true}
+              nativeID={undefined}
+              onLayout={undefined}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "rgba(0, 0, 0, 1)",
+                  "borderRadius": 2,
+                  "flex": 1,
+                  "justifyContent": "center",
                 }
+              }
+              testID={undefined}
+              tvParallaxProperties={undefined}
+            >
+              <View
+                style={null}
               >
-                Add billing address
-              </Text>
+                <Text
+                  accessible={true}
+                  allowFontScaling={true}
+                  ellipsizeMode="tail"
+                  style={
+                    Array [
+                      Object {
+                        "fontSize": 14,
+                      },
+                      Object {
+                        "color": "white",
+                        "opacity": 1,
+                      },
+                      Object {
+                        "fontFamily": "Unica77LL-Medium",
+                      },
+                    ]
+                  }
+                >
+                  Add billing address
+                </Text>
+              </View>
             </View>
           </View>
         </View>
       </View>
-    </View>
-  </RCTScrollView>
+    </RCTScrollView>
+  </View>
 </View>
 `;
