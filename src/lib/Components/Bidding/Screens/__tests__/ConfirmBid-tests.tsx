@@ -319,7 +319,7 @@ describe("polling to verify bid position", () => {
       component.root.findByType(Button).instance.props.onPress()
       jest.runAllTicks()
 
-      expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdatedNotification", {
+      expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdated", {
         ARAuctionID: "best-art-sale-in-town",
       })
       expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkBidUpdated", {

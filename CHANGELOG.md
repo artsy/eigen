@@ -16,6 +16,8 @@
 
 ### Master
 
+* Fix incorrect NSNotification name for sale registration - erikdstock
+
 ### 1.5.8
 
 * There should be more space visually between conditions of sale checkbox and place bid button - yuki24
