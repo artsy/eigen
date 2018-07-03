@@ -20,6 +20,7 @@
 * Add placeholders to credit card form - erikdstock
 * Now users see the minutes in the auction timer when the sale does not on the hour - yuki24
 * Now users see an error message when MP returns an error on the Registration and Confirm bid screens - yuki24
+* Update credit card form to have more sophisticated keyboard behavior - sweir27
 
 ### 1.5.7
 
