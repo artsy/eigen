@@ -2,7 +2,7 @@ import React from "react"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
 
-import { Dimensions, KeyboardAvoidingView, NavigatorIOS, ScrollView, TextInputProperties, View } from "react-native"
+import { Dimensions, KeyboardAvoidingView, NavigatorIOS, ScrollView, View } from "react-native"
 
 import { Flex } from "../Elements/Flex"
 import { Sans12, Serif16 } from "../Elements/Typography"
@@ -16,6 +16,22 @@ import { Container } from "../Components/Containers"
 import { Input } from "../Components/Input"
 import { Title } from "../Components/Title"
 import { Address } from "../types"
+
+interface StyledInputInterface {
+  /** The object which styled components wraps */
+  root?: {
+    focus?: () => void
+    blur?: () => void
+  }
+}
+
+const StyledInput = ({ label, error, refName, createCustomRef, ...props }) => (
+  <Flex mb={4}>
+    <Serif16 mb={2}>{label}</Serif16>
+    <Input mb={3} error={Boolean(error)} refName={refName} createCustomRef={createCustomRef} {...props} />
+    {error && <Sans12 color="red100">{error}</Sans12>}
+  </Flex>
+)
 
 interface BillingAddressProps {
   onSubmit?: (values: Address) => void
@@ -40,8 +56,17 @@ interface BillingAddressState {
   context_screen_owner_type: null,
 })
 export class BillingAddress extends React.Component<BillingAddressProps, BillingAddressState> {
+  private fullName: StyledInputInterface
+  private addressLine1: StyledInputInterface
+  private addressLine2: StyledInputInterface
+  private city: StyledInputInterface
+  private stateProvinceRegion: StyledInputInterface
+  private postalCode: StyledInputInterface
+
   constructor(props) {
     super(props)
+
+    this.selectNextInput = this.selectNextInput.bind(this)
 
     this.state = {
       values: { ...this.props.billingAddress },
@@ -86,6 +111,31 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     this.props.navigator.pop()
   }
 
+  selectNextInput = nextComponent => {
+    const inputs = [
+      this.fullName,
+      this.addressLine1,
+      this.addressLine2,
+      this.city,
+      this.stateProvinceRegion,
+      this.postalCode,
+    ]
+
+    for (const input of inputs) {
+      if (input === nextComponent) {
+        input.root.focus()
+      } else {
+        input.root.blur()
+      }
+    }
+  }
+
+  createCustomRef(refName: string, component: any) {
+    if (component) {
+      return (this[refName] = component)
+    }
+  }
+
   render() {
     // TODO: Remove this once React Native has been updated
     const isPhoneX = Dimensions.get("window").height === 812 && Dimensions.get("window").width === 375
@@ -109,6 +159,9 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                   autoCapitalize="words"
                   autoFocus={true}
                   returnKeyType="next"
+                  refName="fullName"
+                  createCustomRef={this.createCustomRef.bind(this)}
+                  onSubmitEditing={() => this.selectNextInput(this.addressLine1)}
                   {...this.propsForInput("fullName")}
                 />
 
@@ -117,6 +170,9 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                   placeholder="Enter your street address"
                   autoCapitalize="words"
                   returnKeyType="next"
+                  refName="addressLine1"
+                  createCustomRef={this.createCustomRef.bind(this)}
+                  onSubmitEditing={() => this.selectNextInput(this.addressLine2)}
                   {...this.propsForInput("addressLine1")}
                 />
 
@@ -125,16 +181,30 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                   placeholder="Enter your apt, floor, suite, etc."
                   autoCapitalize="words"
                   returnKeyType="next"
+                  refName="addressLine2"
+                  createCustomRef={this.createCustomRef.bind(this)}
+                  onSubmitEditing={() => this.selectNextInput(this.city)}
                   {...this.propsForInput("addressLine2")}
                 />
 
-                <StyledInput label="City" placeholder="Enter city" {...this.propsForInput("city")} />
+                <StyledInput
+                  label="City"
+                  placeholder="Enter city"
+                  returnKeyType="next"
+                  refName="city"
+                  createCustomRef={this.createCustomRef.bind(this)}
+                  onSubmitEditing={() => this.selectNextInput(this.stateProvinceRegion)}
+                  {...this.propsForInput("city")}
+                />
 
                 <StyledInput
                   label="State, Province, or Region"
                   placeholder="Enter state, province, or region"
                   autoCapitalize="words"
                   returnKeyType="next"
+                  refName="stateProvinceRegion"
+                  createCustomRef={this.createCustomRef.bind(this)}
+                  onSubmitEditing={() => this.selectNextInput(this.postalCode)}
                   {...this.propsForInput("state")}
                 />
 
@@ -142,6 +212,8 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                   label="Postal code"
                   placeholder="Enter your postal code"
                   autoCapitalize="words"
+                  refName="postalCode"
+                  createCustomRef={this.createCustomRef.bind(this)}
                   {...this.propsForInput("postalCode")}
                 />
 
@@ -158,16 +230,8 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     return {
       error: this.state.errors[field],
       onChangeText: value => this.setState({ values: { ...this.state.values, [field]: value } }),
-      onBlur: () => this.validateField(field),
+      customOnBlur: () => this.validateField(field),
       value: this.state.values[field],
     }
   }
 }
-type StyledInputProps = { label: string; error: string } & TextInputProperties
-const StyledInput: (input: StyledInputProps) => JSX.Element = ({ label, error, ...props }) => (
-  <Flex mb={4}>
-    <Serif16 mb={2}>{label}</Serif16>
-    <Input mb={3} error={Boolean(error)} {...props} />
-    {error && <Sans12 color="red100">{error}</Sans12>}
-  </Flex>
-)

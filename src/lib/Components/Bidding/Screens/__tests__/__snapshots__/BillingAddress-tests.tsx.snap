@@ -104,18 +104,22 @@ exports[`renders properly 1`] = `
             autoFocus={true}
             border={1}
             borderColor="black10"
+            createCustomRef={[Function]}
+            customOnBlur={[Function]}
             error={false}
             fontSize={3}
             mb={3}
             onBlur={[Function]}
             onChangeText={[Function]}
             onFocus={[Function]}
+            onSubmitEditing={[Function]}
             p={3}
             pb={2}
 <<<<<<< HEAD
             placeholder="Add your full name"
 =======
             placeholder="Enter your full name"
+            refName="fullName"
             returnKeyType="next"
 >>>>>>> adds scroll view to billing address and moves button above keyboard
             style={
@@ -176,18 +180,22 @@ exports[`renders properly 1`] = `
             autoCapitalize="words"
             border={1}
             borderColor="black10"
+            createCustomRef={[Function]}
+            customOnBlur={[Function]}
             error={false}
             fontSize={3}
             mb={3}
             onBlur={[Function]}
             onChangeText={[Function]}
             onFocus={[Function]}
+            onSubmitEditing={[Function]}
             p={3}
             pb={2}
 <<<<<<< HEAD
             placeholder="Add your street address"
 =======
             placeholder="Enter your street address"
+            refName="addressLine1"
             returnKeyType="next"
 >>>>>>> adds scroll view to billing address and moves button above keyboard
             style={
@@ -248,18 +256,22 @@ exports[`renders properly 1`] = `
             autoCapitalize="words"
             border={1}
             borderColor="black10"
+            createCustomRef={[Function]}
+            customOnBlur={[Function]}
             error={false}
             fontSize={3}
             mb={3}
             onBlur={[Function]}
             onChangeText={[Function]}
             onFocus={[Function]}
+            onSubmitEditing={[Function]}
             p={3}
             pb={2}
 <<<<<<< HEAD
             placeholder="Add your apt, floor, suite, etc."
 =======
             placeholder="Enter your apt, floor, suite, etc."
+            refName="addressLine2"
             returnKeyType="next"
 >>>>>>> adds scroll view to billing address and moves button above keyboard
             style={
@@ -319,15 +331,24 @@ exports[`renders properly 1`] = `
             allowFontScaling={true}
             border={1}
             borderColor="black10"
+            createCustomRef={[Function]}
+            customOnBlur={[Function]}
             error={false}
             fontSize={3}
             mb={3}
             onBlur={[Function]}
             onChangeText={[Function]}
             onFocus={[Function]}
+            onSubmitEditing={[Function]}
             p={3}
             pb={2}
+<<<<<<< HEAD
             placeholder="Add your city"
+=======
+            placeholder="Enter city"
+            refName="city"
+            returnKeyType="next"
+>>>>>>> fixes scroll behavior
             style={
               Array [
                 Object {
@@ -386,18 +407,22 @@ exports[`renders properly 1`] = `
             autoCapitalize="words"
             border={1}
             borderColor="black10"
+            createCustomRef={[Function]}
+            customOnBlur={[Function]}
             error={false}
             fontSize={3}
             mb={3}
             onBlur={[Function]}
             onChangeText={[Function]}
             onFocus={[Function]}
+            onSubmitEditing={[Function]}
             p={3}
             pb={2}
 <<<<<<< HEAD
             placeholder="Add your state, province, or region"
 =======
             placeholder="Enter state, province, or region"
+            refName="stateProvinceRegion"
             returnKeyType="next"
 >>>>>>> adds scroll view to billing address and moves button above keyboard
             style={
@@ -458,6 +483,8 @@ exports[`renders properly 1`] = `
             autoCapitalize="words"
             border={1}
             borderColor="black10"
+            createCustomRef={[Function]}
+            customOnBlur={[Function]}
             error={false}
             fontSize={3}
             mb={3}
@@ -466,7 +493,12 @@ exports[`renders properly 1`] = `
             onFocus={[Function]}
             p={3}
             pb={2}
+<<<<<<< HEAD
             placeholder="Add your postal code"
+=======
+            placeholder="Enter your postal code"
+            refName="postalCode"
+>>>>>>> fixes scroll behavior
             style={
               Array [
                 Object {
