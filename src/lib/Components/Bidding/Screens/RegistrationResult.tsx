@@ -46,7 +46,7 @@ const registrationErrorMessage = {
 
 export class RegistrationResult extends React.Component<RegistrationResultProps, null> {
   render() {
-    status = this.props.status
+    const status = this.props.status
     let title: string
     let msg: string
 
@@ -71,11 +71,9 @@ export class RegistrationResult extends React.Component<RegistrationResultProps,
           <View>
             <Flex alignItems="center">
               <Icon20 source={Icons[status]} />
-
               <Title mt={1} mb={4}>
                 {title}
               </Title>
-
               <Markdown mb={5}>{msg}</Markdown>
             </Flex>
           </View>
