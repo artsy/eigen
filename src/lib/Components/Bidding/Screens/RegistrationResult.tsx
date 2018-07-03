@@ -18,6 +18,7 @@ export enum RegistrationStatus {
   RegistrationStatusComplete = "RegistrationStatusComplete",
   RegistrationStatusPending = "RegistrationStatusPending",
   RegistrationStatusError = "RegistrationStatusError",
+  RegistrationStatusNetworkError = "RegistrationStatusNetworkError",
 }
 
 const Icons = {
@@ -44,6 +45,11 @@ const registrationErrorMessage = {
   description: "Please contact [support@artsy.net](mailto:support@artsy.net)\n" + "with any questions.",
 }
 
+const registrationNetworkErrorMessage = {
+  title: "An error occurred",
+  description: "Please\ncheck your internet connection\nand try again.",
+}
+
 export class RegistrationResult extends React.Component<RegistrationResultProps, null> {
   render() {
     const status = this.props.status
@@ -59,6 +65,9 @@ export class RegistrationResult extends React.Component<RegistrationResultProps,
         title = registrationPendingMessage.title
         msg = registrationPendingMessage.description
         break
+      case RegistrationStatus.RegistrationStatusNetworkError:
+        title = registrationNetworkErrorMessage.title
+        msg = registrationNetworkErrorMessage.description
       default:
         title = registrationErrorMessage.title
         msg = registrationErrorMessage.description

@@ -17,7 +17,7 @@ import { MaxBidScreen } from "../Screens/SelectMaxBid"
 
 const testSaleArtworkID = "5b1e4d29275b2446aa139f37"
 const testArtworkID = "david-lynch-hand"
-const testSaleID = "david-lynch-foundation-benefit-auction-2018"
+const testSaleID = "shared-live-mocktion-k8s"
 
 const selectMaxBidQuery = graphql`
   query BidFlowSelectMaxBidRendererQuery($saleArtworkID: String!) {
