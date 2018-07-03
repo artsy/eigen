@@ -138,13 +138,13 @@ exports[`renders properly 1`] = `
         allowFontScaling={true}
         ellipsizeMode="tail"
         fontSize={4}
-        lineHeight={6}
+        lineHeight={4}
         style={
           Array [
             Object {
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 18,
-              "lineHeight": 26,
+              "lineHeight": 22,
             },
             undefined,
           ]
@@ -220,14 +220,12 @@ exports[`renders properly 1`] = `
       border={1}
       borderBottomWidth={0}
       borderColor="black10"
-      mb={2}
       style={
         Array [
           Object {
             "borderColor": "#E5E5E5",
             "borderStyle": "solid",
             "borderWidth": 1,
-            "marginBottom": 5,
             "width": "100%",
           },
           undefined,
@@ -244,6 +242,7 @@ exports[`renders properly 1`] = `
       flexDirection="row"
       hitSlop={undefined}
       justifyContent="space-between"
+      mb={1}
       nativeID={undefined}
       onLayout={undefined}
       onResponderGrant={[Function]}
@@ -253,10 +252,12 @@ exports[`renders properly 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       p={4}
+      pb={3}
       style={
         Array [
           Object {
-            "paddingBottom": 20,
+            "marginBottom": 3,
+            "paddingBottom": 10,
             "paddingLeft": 20,
             "paddingRight": 20,
             "paddingTop": 20,
@@ -354,7 +355,7 @@ exports[`renders properly 1`] = `
           ellipsizeMode="tail"
           fontSize={1}
           lineHeight={1}
-          mb={2}
+          mb={1}
           ml={3}
           style={
             Array [
@@ -363,7 +364,7 @@ exports[`renders properly 1`] = `
                 "fontFamily": "Unica77LL-Regular",
                 "fontSize": 12,
                 "lineHeight": 16,
-                "marginBottom": 5,
+                "marginBottom": 3,
                 "marginLeft": 10,
               },
               undefined,
@@ -404,6 +405,7 @@ exports[`renders properly 1`] = `
       flexDirection="row"
       hitSlop={undefined}
       justifyContent="center"
+      mb={4}
       nativeID={undefined}
       onLayout={undefined}
       onPress={[Function]}
@@ -415,7 +417,9 @@ exports[`renders properly 1`] = `
       onStartShouldSetResponder={[Function]}
       style={
         Array [
-          Object {},
+          Object {
+            "marginBottom": 20,
+          },
           undefined,
         ]
       }

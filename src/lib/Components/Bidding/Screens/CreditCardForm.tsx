@@ -1,8 +1,9 @@
 import { Fonts } from "lib/data/fonts"
 import React, { Component } from "react"
-import { NavigatorIOS, StyleSheet, View } from "react-native"
+import { NavigatorIOS, ScrollView, StyleSheet, View } from "react-native"
 import stripe, { PaymentCardTextField, StripeToken } from "tipsi-stripe"
 
+import BottomAlignedButtonWrapper from "lib/Components/Buttons/BottomAlignedButtonWrapper"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Button } from "../Components/Button"
 import { Container } from "../Components/Containers"
@@ -48,6 +49,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
   componentDidMount() {
     if (this.paymentInfo.value) {
       this.paymentInfo.value.setParams(this.state.params)
+      this.paymentInfo.value.focus()
     }
   }
 
@@ -67,30 +69,40 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
   }
 
   render() {
+    const buttonComponent = (
+      <Flex m={4}>
+        <Button
+          text="Add credit card"
+          disabled={!this.state.valid}
+          onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : null}
+        />
+      </Flex>
+    )
     return (
       <BiddingThemeProvider>
-        <Container m={0}>
-          <View>
-            <Title>Your credit card</Title>
+        <BottomAlignedButtonWrapper
+          onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : null}
+          buttonComponent={buttonComponent}
+        >
+          <ScrollView scrollEnabled={false}>
+            <Container m={0}>
+              <View>
+                <Title>Your credit card</Title>
 
-            <Flex m={4}>
-              <PaymentCardTextField
-                ref={this.paymentInfo}
-                style={styles.field}
-                onParamsChange={this.handleFieldParamsChange}
-                numberPlaceholder="Card number"
-                expirationPlaceholder="MM/YY"
-                cvcPlaceholde="CVC"
-              />
-            </Flex>
-          </View>
-
-          <View>
-            <Flex m={4}>
-              <Button text="Add credit card" onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : null} />
-            </Flex>
-          </View>
-        </Container>
+                <Flex m={4}>
+                  <PaymentCardTextField
+                    ref={this.paymentInfo}
+                    style={styles.field}
+                    onParamsChange={this.handleFieldParamsChange}
+                    numberPlaceholder="Card number"
+                    expirationPlaceholder="MM/YY"
+                    cvcPlaceholde="CVC"
+                  />
+                </Flex>
+              </View>
+            </Container>
+          </ScrollView>
+        </BottomAlignedButtonWrapper>
       </BiddingThemeProvider>
     )
   }

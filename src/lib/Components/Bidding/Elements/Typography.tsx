@@ -80,6 +80,7 @@ export const SerifSemibold16 = props => <SerifSemibold fontSize={3} lineHeight={
 export const SerifSemibold18 = props => <SerifSemibold fontSize={4} lineHeight={6} {...props} />
 export const SerifSemibold22 = props => <SerifSemibold fontSize={5} lineHeight={9} {...props} />
 
+export const SerifSemibold18t = props => <SerifSemibold fontSize={4} lineHeight={4} {...props} />
 export const SerifSemibold22t = props => <SerifSemibold fontSize={5} lineHeight={7} {...props} />
 
 export const SerifItalic12 = props => <SerifItalic fontSize={1} lineHeight={1} {...props} />

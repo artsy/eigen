@@ -16,7 +16,11 @@
 
 ### Master
 
+* There should be more space visually between conditions of sale checkbox and place bid button - yuki24
 * Add placeholders to credit card form - erikdstock
+* Now users see the minutes in the auction timer when the sale does not on the hour - yuki24
+* Now users see an error message when MP returns an error on the Registration and Confirm bid screens - yuki24
+* Update credit card form to have more sophisticated keyboard behavior - sweir27
 
 ### 1.5.7
 
@@ -31,6 +35,7 @@
 * Removes unnecessary white spaces in the bid result screen - yuki24
 * Updates the text style and order for the auction timer - yuki24
 * Registration screen sends mutation for creating a bidder/credit card - sweir27
+* Route between bid/register flows based on user intent - erikdstock
 
 ### 1.5.6
 

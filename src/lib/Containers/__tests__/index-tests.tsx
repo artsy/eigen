@@ -10,6 +10,7 @@ it("should export all components", () => {
     "Home",
     "Gene",
     "Sale",
+    "RegistrationFlow",
     "WorksForYou",
     "MyProfile",
     "Inbox",

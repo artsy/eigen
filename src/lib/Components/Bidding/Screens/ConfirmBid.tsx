@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -9,7 +10,7 @@ import { metaphysics } from "../../../metaphysics"
 import { Schema, screenTrack, track } from "../../../utils/track"
 
 import { Flex } from "../Elements/Flex"
-import { Serif14, SerifItalic14, SerifSemibold14, SerifSemibold18 } from "../Elements/Typography"
+import { Serif14, SerifItalic14, SerifSemibold14, SerifSemibold18t } from "../Elements/Typography"
 
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { BidInfoRow } from "../Components/BidInfoRow"
@@ -176,7 +177,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     })
 
     commitMutation(this.props.relay.environment, {
-      onCompleted: () => this.createBidderPosition(),
+      onCompleted: (_, errors) => (isEmpty(errors) ? this.createBidderPosition() : this.presentErrorResult(errors)),
       onError: this.presentErrorResult.bind(this),
       mutation: creditCardMutation,
       variables: {
@@ -189,7 +190,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   createBidderPosition() {
     commitMutation(this.props.relay.environment, {
-      onCompleted: (results, errors) => this.verifyBidPosition(results, errors),
+      onCompleted: (results, errors) =>
+        isEmpty(errors) ? this.verifyBidPosition(results) : this.presentErrorResult(errors),
       onError: this.presentErrorResult.bind(this),
       mutation: bidderPositionMutation,
       variables: {
@@ -202,10 +204,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     })
   }
 
-  verifyBidPosition(results, errors) {
+  verifyBidPosition(results) {
     const { result } = results.createBidderPosition
 
-    if (!errors && result.status === "SUCCESS") {
+    if (result.status === "SUCCESS") {
       this.bidPlacedSuccessfully(result.position.id)
     } else {
       this.presentBidResult(result)
@@ -327,7 +329,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
           <View>
             <Flex m={4} mt={0} alignItems="center">
-              <SerifSemibold18>{artwork.artist_names}</SerifSemibold18>
+              <SerifSemibold18t>{artwork.artist_names}</SerifSemibold18t>
               <SerifSemibold14>Lot {lot_label}</SerifSemibold14>
 
               <SerifItalic14 color="black60" textAlign="center">
@@ -335,7 +337,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               </SerifItalic14>
             </Flex>
 
-            <Divider mb={2} />
+            <Divider />
 
             <BidInfoRow label="Max bid" value={this.props.bid.display} onPress={() => this.goBackToSelectMaxBid()} />
 
@@ -355,7 +357,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
           <View>
             {requiresCheckbox ? (
-              <Checkbox justifyContent="center" onPress={() => this.onConditionsOfSaleCheckboxPressed()}>
+              <Checkbox mb={4} justifyContent="center" onPress={() => this.onConditionsOfSaleCheckboxPressed()}>
                 <Serif14 mt={2} color="black60">
                   You agree to{" "}
                   <LinkText onPress={() => this.onConditionsOfSaleLinkPressed()}>Conditions of Sale</LinkText>

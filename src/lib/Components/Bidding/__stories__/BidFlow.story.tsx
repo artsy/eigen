@@ -2,12 +2,13 @@ import { storiesOf } from "@storybook/react-native"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 
-import { BidFlowRenderer } from "lib/relay/QueryRenderers"
+import { BidFlowRenderer, RegistrationFlowRenderer } from "lib/relay/QueryRenderers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import createEnvironment from "../../../relay/createEnvironment"
 
 import { NavigatorIOS } from "react-native"
 import BidFlow from "../../../Containers/BidFlow"
+import RegistrationFlow from "../../../Containers/RegistrationFlow"
 import { BillingAddress } from "../Screens/BillingAddress"
 import { ConfirmBid } from "../Screens/ConfirmBid"
 import { Registration } from "../Screens/Registration"
@@ -31,21 +32,13 @@ const BidFlowStoryRenderer: React.SFC<any> = ({ render, query, saleArtworkID }) 
 
 storiesOf("Bidding")
   .add("Show bid flow", () => {
-    return (
-      <BidFlowRenderer
-        render={renderWithLoadProgress(BidFlow)}
-        artworkID={testArtworkID}
-        saleID={testSaleID}
-        intent="bid"
-      />
-    )
+    return <BidFlowRenderer render={renderWithLoadProgress(BidFlow)} artworkID={testArtworkID} saleID={testSaleID} />
   })
   .add("Select Max Bid", () => (
     <BidFlowStoryRenderer
       render={renderWithLoadProgress(MaxBidScreen)}
       query={selectMaxBidQuery}
       saleArtworkID={testSaleArtworkID}
-      intent="bid"
     />
   ))
   .add("Confirm Bid (registered)", () => {
@@ -118,6 +111,9 @@ storiesOf("Bidding")
   })
   .add("Billing Address", () => {
     return <BillingAddress />
+  })
+  .add("Show Registration flow", () => {
+    return <RegistrationFlowRenderer render={renderWithLoadProgress(RegistrationFlow)} saleID={testSaleID} />
   })
   .add("Registration (no qualified cc on file), live sale starting in future", () => {
     return (

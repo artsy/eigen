@@ -63,19 +63,23 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
     return (
       <BiddingThemeProvider>
         <View>
-          <Divider mb={2} />
+          <Divider />
+
           <BidInfoRow
-            label="Credit Card"
+            label="Credit card"
             value={token && this.formatCard(token)}
             onPress={() => this.presentCreditCardForm()}
           />
-          <Divider mb={2} />
+
+          <Divider />
+
           <BidInfoRow
             label="Billing address"
             value={billingAddress && this.formatAddress(billingAddress)}
             onPress={() => this.presentBillingAddressForm()}
           />
-          <Divider mb={2} />
+
+          <Divider />
         </View>
       </BiddingThemeProvider>
     )
