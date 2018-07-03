@@ -12,6 +12,7 @@ import RegistrationFlow from "../../../Containers/RegistrationFlow"
 import { BillingAddress } from "../Screens/BillingAddress"
 import { ConfirmBid } from "../Screens/ConfirmBid"
 import { Registration } from "../Screens/Registration"
+import { RegistrationResult, RegistrationStatus } from "../Screens/RegistrationResult"
 import { MaxBidScreen } from "../Screens/SelectMaxBid"
 
 const testSaleArtworkID = "5b1e4d29275b2446aa139f37"
@@ -161,4 +162,13 @@ storiesOf("Bidding")
         style={{ flex: 1 }}
       />
     )
+  })
+  .add("Registration Result (pending)", () => {
+    return <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} />
+  })
+  .add("Registration Result (complete)", () => {
+    return <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
+  })
+  .add("Registration Result (error)", () => {
+    return <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
   })
