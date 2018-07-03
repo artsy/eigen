@@ -19,10 +19,10 @@ import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 
-import { BidResultScreen } from "./BidResult"
-
 import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
+
+import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
 const Emission = NativeModules.Emission || {}
 
@@ -68,16 +68,6 @@ const bidderMutation = graphql`
     }
   }
 `
-
-const msgForNetworkError = {
-  message_header: "An error occurred",
-  message_description_md: "Please\ncheck your internet connection\nand try again.",
-}
-
-const msgForGraphQLError = {
-  message_header: "An error occurred",
-  message_description_md: "Please contact support@artsy.net with any questions.",
-}
 
 export class Registration extends React.Component<RegistrationProps, RegistrationState> {
   constructor(props) {
@@ -142,8 +132,12 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
     commitMutation(this.props.relay.environment, {
       onCompleted: (_, errors) =>
-        isEmpty(errors) ? this.createBidder() : this.presentErrorResult(errors, msgForGraphQLError),
-      onError: this.presentErrorResult.bind(this),
+        isEmpty(errors)
+          ? this.createBidder()
+          : this.presentRegistrationResult(RegistrationStatus.RegistrationStatusError),
+      onError: error => {
+        this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusError)
+      },
       mutation: creditCardMutation,
       variables: {
         input: {
@@ -156,27 +150,37 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   createBidder() {
     commitMutation(this.props.relay.environment, {
       onCompleted: (results, errors) =>
-        isEmpty(errors) ? console.log("COMPLETED!", results) : this.presentErrorResult(errors, msgForGraphQLError),
-      onError: error => this.presentErrorResult(error, msgForNetworkError),
+        isEmpty(errors)
+          ? this.presentRegistrationSuccess(results)
+          : this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusError),
+      onError: error => {
+        this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
+      },
       mutation: bidderMutation,
       variables: { input: { sale_id: this.props.sale.id } },
     })
   }
 
-  presentErrorResult(error, message) {
-    console.error(error)
+  presentRegistrationSuccess({ createBidder }) {
+    const qualifiedForBidding = createBidder.bidder.qualified_for_bidding
+    if (qualifiedForBidding === true) {
+      this.presentRegistrationResult(RegistrationStatus.RegistrationStatusComplete)
+    } else {
+      this.presentRegistrationResult(RegistrationStatus.RegistrationStatusPending)
+    }
+  }
 
+  presentRegistrationError(error, status) {
+    console.error("Registration.tsx", error)
+    this.presentRegistrationResult(status)
+  }
+
+  presentRegistrationResult(status: RegistrationStatus) {
     this.props.navigator.push({
-      component: BidResultScreen,
+      component: RegistrationResult,
       title: "",
       passProps: {
-        // TODO: BidResultScreen requires `sale_artwork` and `sale`. Switch to the RegistrationResult component once
-        //       https://artsyproduct.atlassian.net/browse/PURCHASE-202 is done so we do not have to pass in
-        //       `sale_artwork`.
-        sale_artwork: {
-          sale: {},
-        },
-        bidderPositionResult: message,
+        status,
       },
     })
 

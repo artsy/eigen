@@ -1,8 +1,6 @@
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import objectContaining = jasmine.objectContaining
-
 import Spinner from "../../../Spinner"
 import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Button } from "../../Components/Button"
@@ -19,13 +17,13 @@ const mockphysics = metaphysics as jest.Mock<any>
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
 import relay from "react-relay"
-import { BidResultScreen } from "../BidResult"
 
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),
   createTokenWithCard: jest.fn(),
 }))
+import { RegistrationResult, RegistrationStatus } from "lib/Components/Bidding/Screens/RegistrationResult"
 import stripe from "tipsi-stripe"
 
 let nextStep
@@ -135,15 +133,8 @@ describe("when pressing register button", () => {
 
     jest.runAllTicks()
 
-    expect(nextStep.component).toEqual(BidResultScreen)
-    expect(nextStep.passProps).toEqual(
-      objectContaining({
-        bidderPositionResult: {
-          message_header: "An error occurred",
-          message_description_md: "Please contact support@artsy.net with any questions.",
-        },
-      })
-    )
+    expect(nextStep.component).toEqual(RegistrationResult)
+    expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusError })
   })
 
   it("displays an error message on a bidderMutation failure", () => {
@@ -162,15 +153,8 @@ describe("when pressing register button", () => {
 
     jest.runAllTicks()
 
-    expect(nextStep.component).toEqual(BidResultScreen)
-    expect(nextStep.passProps).toEqual(
-      objectContaining({
-        bidderPositionResult: {
-          message_header: "An error occurred",
-          message_description_md: "Please contact support@artsy.net with any questions.",
-        },
-      })
-    )
+    expect(nextStep.component).toEqual(RegistrationResult)
+    expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusError })
   })
 
   it("displays an error message on a network failure", () => {
@@ -184,15 +168,40 @@ describe("when pressing register button", () => {
 
     jest.runAllTicks()
 
-    expect(nextStep.component).toEqual(BidResultScreen)
-    expect(nextStep.passProps).toEqual(
-      objectContaining({
-        bidderPositionResult: {
-          message_header: "An error occurred",
-          message_description_md: "Please\ncheck your internet connection\nand try again.",
-        },
-      })
+    expect(nextStep.component).toEqual(RegistrationResult)
+    expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusNetworkError })
+  })
+
+  it("displays the pending result when the bidder is not qualified_for_bidding", () => {
+    relay.commitMutation = jest.fn((_, { onCompleted }) =>
+      onCompleted({ createBidder: { bidder: { qualified_for_bidding: false } } })
     )
+
+    const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
+
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
+
+    jest.runAllTicks()
+
+    expect(nextStep.component).toEqual(RegistrationResult)
+    expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusPending })
+  })
+
+  it("displays the completed result when the bidder is qualified_for_bidding", () => {
+    relay.commitMutation = jest.fn((_, { onCompleted }) =>
+      onCompleted({ createBidder: { bidder: { qualified_for_bidding: true } } })
+    )
+
+    const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
+
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
+
+    jest.runAllTicks()
+
+    expect(nextStep.component).toEqual(RegistrationResult)
+    expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusComplete })
   })
 })
 
