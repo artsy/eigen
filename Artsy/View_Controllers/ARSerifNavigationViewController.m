@@ -52,6 +52,7 @@
     ARSerifToolbarButtonItem *exit = [[ARSerifToolbarButtonItem alloc] initWithImage:image];
 
     [exit.button addTarget:self action:@selector(closeModal) forControlEvents:UIControlEventTouchUpInside];
+    [exit.button ar_extendHitTestSizeByWidth:10 andHeight:10];
     self.exitButton = exit;
 
     UIButton *back = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 40)];
