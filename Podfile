@@ -60,7 +60,7 @@ target 'Artsy' do
   pod 'EDColor'
   pod 'SSFadingScrollView', :git => 'https://github.com/alloy/SSFadingScrollView.git', :branch => 'add-axial-support'
   # For Stripe integration with Emission
-  pod 'tipsi-stripe', :git => "https://github.com/erikdstock/tipsi-stripe.git", :branch => 'fix-podspec-requires-packagejson'
+  pod 'tipsi-stripe', :git => "https://github.com/tipsi/tipsi-stripe.git"
 
   # Core owned by Artsy
   pod 'ARTiledImageView', :git => 'https://github.com/dblock/ARTiledImageView'

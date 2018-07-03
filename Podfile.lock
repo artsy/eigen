@@ -232,7 +232,7 @@ PODS:
   - Stripe (11.2.0)
   - SwiftyJSON (4.0.0)
   - Then (2.3.0)
-  - tipsi-stripe (5.2.1):
+  - tipsi-stripe (5.2.4):
     - React
     - Stripe (~> 11.2.0)
   - UICKeyChainStore (1.0.5)
@@ -302,7 +302,7 @@ DEPENDENCIES:
   - Starscream
   - SwiftyJSON
   - Then
-  - tipsi-stripe (from `https://github.com/erikdstock/tipsi-stripe.git`, branch `fix-podspec-requires-packagejson`)
+  - tipsi-stripe (from `https://github.com/tipsi/tipsi-stripe.git`)
   - UICKeyChainStore
   - "UIView+BooleanAnimations"
   - VCRURLConnection
@@ -402,8 +402,7 @@ EXTERNAL SOURCES:
     :branch: add-axial-support
     :git: https://github.com/alloy/SSFadingScrollView.git
   tipsi-stripe:
-    :branch: fix-podspec-requires-packagejson
-    :git: https://github.com/erikdstock/tipsi-stripe.git
+    :git: https://github.com/tipsi/tipsi-stripe.git
   yoga:
     :podspec: https://raw.githubusercontent.com/artsy/emission/v1.5.2/externals/yoga/yoga.podspec.json
 
@@ -442,8 +441,8 @@ CHECKOUT OPTIONS:
     :commit: 3920e3582e46c9fe23b0d1200e28614ebd66d801
     :git: https://github.com/alloy/SSFadingScrollView.git
   tipsi-stripe:
-    :commit: efcbc49dc7cf472099d8aa8c3fb2b64441fc5ea1
-    :git: https://github.com/erikdstock/tipsi-stripe.git
+    :commit: 5e72b07485ecc3f13d5639848d24082166b54e2a
+    :git: https://github.com/tipsi/tipsi-stripe.git
 
 SPEC CHECKSUMS:
   Adjust: 8f204c1005d6635e7c931c6a2cb2f881965bf478
@@ -513,13 +512,13 @@ SPEC CHECKSUMS:
   Stripe: 898f83a95d72180c6eb4acd65b2ae6158fc6a8bd
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
-  tipsi-stripe: 7cb9ec05e2b76170f9eec68227fca11aec49863f
+  tipsi-stripe: 25a3f6ba746e9a27f7b21e928c9974d016efcd77
   UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: de8782b10b9fdede33554bcad8a2a6653e0ebb30
 
-PODFILE CHECKSUM: 58a81928796b6281bf56e44820e13e475318f06c
+PODFILE CHECKSUM: 39d5804f58ce2880baa73b760bafd252b01b0248
 
 COCOAPODS: 1.5.3
