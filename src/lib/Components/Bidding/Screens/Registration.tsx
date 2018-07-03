@@ -197,7 +197,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             <Flex alignItems="center">
               <Title mb={3}>Register to bid</Title>
               <Timer liveStartsAt={live_start_at} endsAt={end_at} isPreview={is_preview} startsAt={start_at} />
-              <SerifSemibold18 mt={5} mb={5}>
+              <SerifSemibold18 mt={5} mb={5} ml={40} mr={40} textAlign="center">
                 {this.props.sale.name}
               </SerifSemibold18>
             </Flex>

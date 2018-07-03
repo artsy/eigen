@@ -150,7 +150,7 @@ storiesOf("Bidding")
               id: "1",
               live_start_at: "2029-06-11T01:00:00+00:00",
               end_at: null,
-              name: "Phillips New Now",
+              name: "Phillips New Now: Prints & Multiples from the estate of the esteemed Yuki Stockmeier",
               start_at: "2018-06-11T01:00:00+00:00",
             },
             me: {
