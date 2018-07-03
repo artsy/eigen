@@ -2,7 +2,7 @@ import React from "react"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
 
-import { Dimensions, KeyboardAvoidingView, NavigatorIOS, ScrollView, TextInputProperties, View } from "react-native"
+import { Dimensions, KeyboardAvoidingView, NavigatorIOS, ScrollView, View } from "react-native"
 
 import { Flex } from "../Elements/Flex"
 import { Sans12, Serif16 } from "../Elements/Typography"
@@ -143,10 +143,10 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
     return (
       <BiddingThemeProvider>
-        <View>
-          <BackButton navigator={this.props.navigator} />
+        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={defaultVerticalOffset} style={{ flex: 1 }}>
+          <View>
+            <BackButton navigator={this.props.navigator} />
 
-          <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={defaultVerticalOffset} style={{ flex: 1 }}>
             <ScrollView>
               <Container>
                 <Title mt={0} mb={6}>
@@ -155,7 +155,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
                 <StyledInput
                   label="Full name"
-                  placeholder="Enter your full name"
+                  placeholder="Add your full name"
                   autoCapitalize="words"
                   autoFocus={true}
                   returnKeyType="next"
@@ -167,7 +167,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
                 <StyledInput
                   label="Address line 1"
-                  placeholder="Enter your street address"
+                  placeholder="Add your street address"
                   autoCapitalize="words"
                   returnKeyType="next"
                   refName="addressLine1"
@@ -178,7 +178,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
                 <StyledInput
                   label="Address line 2 (optional)"
-                  placeholder="Enter your apt, floor, suite, etc."
+                  placeholder="Add your apt, floor, suite, etc."
                   autoCapitalize="words"
                   returnKeyType="next"
                   refName="addressLine2"
@@ -189,7 +189,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
                 <StyledInput
                   label="City"
-                  placeholder="Enter city"
+                  placeholder="Add your city"
                   returnKeyType="next"
                   refName="city"
                   createCustomRef={this.createCustomRef.bind(this)}
@@ -199,7 +199,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
                 <StyledInput
                   label="State, Province, or Region"
-                  placeholder="Enter state, province, or region"
+                  placeholder="Add your state, province, or region"
                   autoCapitalize="words"
                   returnKeyType="next"
                   refName="stateProvinceRegion"
@@ -210,7 +210,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
                 <StyledInput
                   label="Postal code"
-                  placeholder="Enter your postal code"
+                  placeholder="Add your postal code"
                   autoCapitalize="words"
                   refName="postalCode"
                   createCustomRef={this.createCustomRef.bind(this)}
@@ -220,8 +220,8 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 <Button text="Add billing address" onPress={() => this.onSubmit()} />
               </Container>
             </ScrollView>
-          </KeyboardAvoidingView>
-        </View>
+          </View>
+        </KeyboardAvoidingView>
       </BiddingThemeProvider>
     )
   }
