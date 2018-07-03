@@ -131,7 +131,7 @@ exports[`renders properly 1`] = `
             onFocus={[Function]}
             p={3}
             pb={2}
-            placeholder="Enter your full name"
+            placeholder="Add your full name"
             style={
               Array [
                 Object {
@@ -198,7 +198,7 @@ exports[`renders properly 1`] = `
             onFocus={[Function]}
             p={3}
             pb={2}
-            placeholder="Enter your street address"
+            placeholder="Add your street address"
             style={
               Array [
                 Object {
@@ -265,7 +265,7 @@ exports[`renders properly 1`] = `
             onFocus={[Function]}
             p={3}
             pb={2}
-            placeholder="Enter your apt, floor, suite, etc."
+            placeholder="Add your apt, floor, suite, etc."
             style={
               Array [
                 Object {
@@ -331,7 +331,7 @@ exports[`renders properly 1`] = `
             onFocus={[Function]}
             p={3}
             pb={2}
-            placeholder="Enter city"
+            placeholder="Add your city"
             style={
               Array [
                 Object {
@@ -398,7 +398,7 @@ exports[`renders properly 1`] = `
             onFocus={[Function]}
             p={3}
             pb={2}
-            placeholder="Enter state, province, or region"
+            placeholder="Add your state, province, or region"
             style={
               Array [
                 Object {
@@ -465,7 +465,7 @@ exports[`renders properly 1`] = `
             onFocus={[Function]}
             p={3}
             pb={2}
-            placeholder="Enter your postal code"
+            placeholder="Add your postal code"
             style={
               Array [
                 Object {

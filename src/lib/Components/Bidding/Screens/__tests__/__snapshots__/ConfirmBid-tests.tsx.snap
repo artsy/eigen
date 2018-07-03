@@ -574,7 +574,7 @@ exports[`renders properly 1`] = `
                 ]
               }
             >
-              Place Bid
+              Place bid
             </Text>
           </View>
         </View>

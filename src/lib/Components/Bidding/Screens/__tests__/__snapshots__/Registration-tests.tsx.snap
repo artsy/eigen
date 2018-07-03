@@ -123,6 +123,8 @@ exports[`renders properly for a user with a credit card 1`] = `
         fontSize={4}
         lineHeight={6}
         mb={5}
+        ml={40}
+        mr={40}
         mt={5}
         style={
           Array [
@@ -131,11 +133,15 @@ exports[`renders properly for a user with a credit card 1`] = `
               "fontSize": 18,
               "lineHeight": 26,
               "marginBottom": 30,
+              "marginLeft": 40,
+              "marginRight": 40,
               "marginTop": 30,
+              "textAlign": "center",
             },
             undefined,
           ]
         }
+        textAlign="center"
       />
     </View>
   </View>
@@ -447,6 +453,8 @@ exports[`renders properly for a user without a credit card 1`] = `
         fontSize={4}
         lineHeight={6}
         mb={5}
+        ml={40}
+        mr={40}
         mt={5}
         style={
           Array [
@@ -455,11 +463,15 @@ exports[`renders properly for a user without a credit card 1`] = `
               "fontSize": 18,
               "lineHeight": 26,
               "marginBottom": 30,
+              "marginLeft": 40,
+              "marginRight": 40,
               "marginTop": 30,
+              "textAlign": "center",
             },
             undefined,
           ]
         }
+        textAlign="center"
       />
     </View>
     <View>
