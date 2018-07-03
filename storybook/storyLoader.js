@@ -12,6 +12,7 @@ function loadStories() {
   require('../src/lib/Components/Bidding/Components/__stories__/Markdown.story.tsx');
   require('../src/lib/Components/Bidding/Components/__stories__/Timer.story.tsx');
   require('../src/lib/Components/Bidding/Screens/__stories__/BidResult.story.tsx');
+  require('../src/lib/Components/Bidding/Screens/__stories__/RegistrationResult.story.tsx');
   require('../src/lib/Components/Bidding/__stories__/BidFlow.story.tsx');
   require('../src/lib/Components/Buttons/__stories__/Buttons.story.tsx');
   require('../src/lib/Components/Consignments/__stories__/BottomAligned.story.tsx');
@@ -51,6 +52,7 @@ const stories = [
   '../src/lib/Components/Bidding/Components/__stories__/Markdown.story.tsx',
   '../src/lib/Components/Bidding/Components/__stories__/Timer.story.tsx',
   '../src/lib/Components/Bidding/Screens/__stories__/BidResult.story.tsx',
+  '../src/lib/Components/Bidding/Screens/__stories__/RegistrationResult.story.tsx',
   '../src/lib/Components/Bidding/__stories__/BidFlow.story.tsx',
   '../src/lib/Components/Buttons/__stories__/Buttons.story.tsx',
   '../src/lib/Components/Consignments/__stories__/BottomAligned.story.tsx',
