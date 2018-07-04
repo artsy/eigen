@@ -17,6 +17,7 @@
 ### Master
 
 * Fix incorrect NSNotification name for sale registration - erikdstock
+* Adds `inputRef` to the styled `<Input>` component - yuki24
 
 ### 1.5.8
 
