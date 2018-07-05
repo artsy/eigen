@@ -4,11 +4,7 @@ import { TextInput, TextInputProps } from "../Elements/TextInput"
 
 interface InputProps extends TextInputProps, TextInputProperties {
   error?: boolean
-  // In order to create a ref to a lower-level input component from a higher-level parent,
-  // we pass in a function defined on the parent and call it with a pointer to the current Input.
-  refName?: any
-  createCustomRef?: any
-  customOnBlur?: any
+  inputRef?: (component: any) => void
 }
 
 class InputState {
@@ -31,8 +27,8 @@ export class Input extends Component<InputProps, InputState> {
   }
 
   onBlur() {
-    if (this.props.customOnBlur) {
-      this.props.customOnBlur()
+    if (this.props.onBlur) {
+      this.props.onBlur()
     }
 
     this.setState({
@@ -41,7 +37,10 @@ export class Input extends Component<InputProps, InputState> {
   }
 
   onFocus() {
-    // this fails right now
+    if (this.props.onFocus) {
+      this.props.onFocus()
+    }
+
     this.setState({ borderColor: "purple100" })
   }
 
@@ -51,12 +50,13 @@ export class Input extends Component<InputProps, InputState> {
         border={1}
         borderColor={this.state.borderColor}
         fontSize={3}
-        onBlur={() => this.onBlur()}
-        onFocus={() => this.onFocus()}
-        ref={component => this.props.createCustomRef && this.props.createCustomRef(this.props.refName, component)}
         p={3}
         pb={2}
         {...this.props}
+        // These props should not be overridden so they are declared after `{...this.props}`
+        ref={this.props.inputRef}
+        onBlur={() => this.onBlur()}
+        onFocus={() => this.onFocus()}
       />
     )
   }
