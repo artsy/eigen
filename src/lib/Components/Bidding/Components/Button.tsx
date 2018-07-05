@@ -2,7 +2,7 @@ import React from "react"
 import { StyleSheet } from "react-native"
 
 import PrimaryBlack, { PrimaryBlackProps } from "lib/Components/Buttons/PrimaryBlack"
-import { ButtonProps, GhostButton } from "../../Buttons"
+import { ButtonProps, SecondaryOutlineButton } from "../../Buttons"
 import { Flex } from "../Elements/Flex"
 
 export class Button extends React.Component<PrimaryBlackProps> {
@@ -21,7 +21,7 @@ export class BidGhostButton extends React.Component<ButtonProps> {
   render() {
     const { style, textStyle, ...props } = this.props
 
-    return <GhostButton style={[styles.default, style]} textStyle={[textStyle]} {...props} />
+    return <SecondaryOutlineButton style={[styles.default, style]} textStyle={[textStyle]} {...props} />
   }
 }
 

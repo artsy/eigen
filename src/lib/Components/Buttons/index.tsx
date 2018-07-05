@@ -2,6 +2,9 @@ import React from "react"
 import { Animated, StyleProp, TextStyle, ViewProperties } from "react-native"
 
 import { Colors } from "lib/data/colors"
+import { Fonts } from "lib/data/fonts"
+
+import { StyleSheet } from "react-native"
 
 import Button from "./Button"
 
@@ -95,6 +98,30 @@ const whiteTheme = {
   },
 }
 
+const secondaryOutlineTheme = {
+  enabled: {
+    foreground: Colors.Black,
+    background: Colors.White,
+    border: Colors.GrayRegular,
+  },
+  disabled: {
+    foreground: Colors.Black,
+    background: Colors.White,
+    border: Colors.GrayRegular,
+  },
+  highlighted: {
+    foreground: Colors.Black,
+    background: Colors.White,
+    border: Colors.Black,
+  },
+}
+const secondaryOutlineTextStyles = StyleSheet.create({
+  default: {
+    fontSize: 14,
+    fontFamily: Fonts.Unica77LLMedium,
+  },
+})
+
 export interface ButtonProps extends ViewProperties {
   /** The text value on the string */
   text: string
@@ -104,6 +131,7 @@ export interface ButtonProps extends ViewProperties {
   onSelectionAnimationFinished?: Animated.EndCallback
   /** CSS properties applied to the text of the button */
   textStyle?: StyleProp<TextStyle>
+  disabled?: boolean
 }
 
 export const InvertedButton = (props: ButtonProps) => <Button {...props} stateColors={flatBlackTheme} />
@@ -115,3 +143,7 @@ export const GhostButton = (props: ButtonProps) => <Button {...props} stateColor
 export const GrayActionButton = (props: ButtonProps) => <Button {...props} stateColors={greyTheme} />
 
 export const WhiteButton = (props: ButtonProps) => <Button {...props} stateColors={whiteTheme} />
+
+export const SecondaryOutlineButton = (props: ButtonProps) => (
+  <Button {...props} stateColors={secondaryOutlineTheme} textStyle={[secondaryOutlineTextStyles.default]} />
+)
