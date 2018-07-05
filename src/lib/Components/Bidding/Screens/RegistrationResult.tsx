@@ -10,6 +10,8 @@ import { Container } from "../Components/Containers"
 import { Markdown } from "../Components/Markdown"
 import { Title } from "../Components/Title"
 
+import { Schema, screenTrack } from "../../../utils/track"
+
 interface RegistrationResultProps {
   status: RegistrationStatus
 }
@@ -50,6 +52,24 @@ const registrationNetworkErrorMessage = {
   description: "Please\ncheck your internet connection\nand try again.",
 }
 
+const resultEnumToPageName = (result: RegistrationStatus) => {
+  let pageName: Schema.PageNames
+  switch (result) {
+    case RegistrationStatus.RegistrationStatusComplete:
+      pageName = Schema.PageNames.BidFlowRegistrationResultConfirmed
+      break
+    case RegistrationStatus.RegistrationStatusPending:
+      pageName = Schema.PageNames.BidFlowRegistrationResultPending
+    default:
+      pageName = Schema.PageNames.BidFlowRegistrationResultError
+  }
+  return pageName
+}
+
+@screenTrack((props: RegistrationResultProps) => ({
+  context_screen: resultEnumToPageName(props.status),
+  context_screen_owner_type: null,
+}))
 export class RegistrationResult extends React.Component<RegistrationResultProps, null> {
   render() {
     const status = this.props.status
