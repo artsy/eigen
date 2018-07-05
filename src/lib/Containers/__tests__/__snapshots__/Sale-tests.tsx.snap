@@ -234,6 +234,7 @@ exports[`state looks okay by default 1`] = `
                   "borderWidth": 1,
                   "height": 26,
                   "justifyContent": "center",
+                  "opacity": 1,
                   "width": 80,
                 }
               }
@@ -249,12 +250,11 @@ exports[`state looks okay by default 1`] = `
                       "fontSize": 12,
                     },
                     Object {
-                      "color": "rgba(0, 0, 0, 1)",
-                      "fontFamily": "AGaramondPro-Regular",
-                      "opacity": 1,
+                      "fontFamily": "AvantGardeGothicITC",
                     },
                     Object {
-                      "fontFamily": "AvantGardeGothicITC",
+                      "color": "rgba(0, 0, 0, 1)",
+                      "opacity": 1,
                     },
                   ]
                 }

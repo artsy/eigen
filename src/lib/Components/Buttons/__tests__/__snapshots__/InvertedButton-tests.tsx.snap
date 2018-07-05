@@ -24,6 +24,7 @@ exports[`InvertedButton accepts textStyle prop 1`] = `
       "borderWidth": 1,
       "height": 36,
       "justifyContent": "center",
+      "opacity": 1,
     }
   }
   testID={undefined}
@@ -38,13 +39,12 @@ exports[`InvertedButton accepts textStyle prop 1`] = `
           "fontSize": 12,
         },
         Object {
-          "color": "rgba(204, 204, 204, 1)",
-          "fontFamily": "AGaramondPro-Regular",
-          "fontSize": 20,
-          "opacity": 1,
+          "fontFamily": "AvantGardeGothicITC",
         },
         Object {
-          "fontFamily": "AvantGardeGothicITC",
+          "color": "rgba(204, 204, 204, 1)",
+          "fontSize": 20,
+          "opacity": 1,
         },
       ]
     }
@@ -78,6 +78,7 @@ exports[`InvertedButton renders properly 1`] = `
       "borderWidth": 1,
       "height": 36,
       "justifyContent": "center",
+      "opacity": 1,
     }
   }
   testID={undefined}
@@ -92,12 +93,11 @@ exports[`InvertedButton renders properly 1`] = `
           "fontSize": 12,
         },
         Object {
-          "color": "rgba(204, 204, 204, 1)",
-          "fontFamily": "AGaramondPro-Regular",
-          "opacity": 1,
+          "fontFamily": "AvantGardeGothicITC",
         },
         Object {
-          "fontFamily": "AvantGardeGothicITC",
+          "color": "rgba(204, 204, 204, 1)",
+          "opacity": 1,
         },
       ]
     }
@@ -148,12 +148,12 @@ exports[`InvertedButtonWithSpinner accepts textStyle prop 1`] = `
             "fontSize": 12,
           },
           Object {
+            "fontFamily": "AvantGardeGothicITC",
+          },
+          Object {
             "color": "white",
             "fontSize": 20,
             "opacity": 1,
-          },
-          Object {
-            "fontFamily": "AvantGardeGothicITC",
           },
         ]
       }
@@ -205,11 +205,11 @@ exports[`InvertedButtonWithSpinner renders properly 1`] = `
             "fontSize": 12,
           },
           Object {
-            "color": "white",
-            "opacity": 1,
+            "fontFamily": "AvantGardeGothicITC",
           },
           Object {
-            "fontFamily": "AvantGardeGothicITC",
+            "color": "white",
+            "opacity": 1,
           },
         ]
       }
