@@ -17,6 +17,7 @@
 ### Master
 
 * Fix incorrect NSNotification name for sale registration - erikdstock
+* Add secondary outline button style - maxim
 
 ### 1.5.8
 
