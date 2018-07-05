@@ -278,7 +278,7 @@
 - (ARCellData *)jumpToBidFlow
 {
   return [self tappableCellDataWithTitle:@"Bid Flow" selection: ^{
-    ARBidFlowViewController *bidFlowController = [[ARBidFlowViewController alloc] initWithArtworkID:@"eason-tsang-ka-wai-surrealism" saleID:@"purchase-team-online-sale"];
+    ARBidFlowViewController *bidFlowController = [[ARBidFlowViewController alloc] initWithArtworkID:@"david-hockney-pool-made-with-paper-and-blue-ink-for-book-from-paper-pools-2" saleID:@"phillips-summer-school-1"];
     EigenLikeNavigationController *navigationController = [[EigenLikeNavigationController alloc] initWithRootViewController:bidFlowController];
     navigationController.showBackButtonOnRoot = YES;
     [self presentViewController:navigationController animated:YES completion:nil];
