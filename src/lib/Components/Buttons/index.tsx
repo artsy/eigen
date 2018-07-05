@@ -131,6 +131,7 @@ export interface ButtonProps extends ViewProperties {
   onSelectionAnimationFinished?: Animated.EndCallback
   /** CSS properties applied to the text of the button */
   textStyle?: StyleProp<TextStyle>
+  /** Disables the button from executing onPress and shows in distable styling */
   disabled?: boolean
 }
 
