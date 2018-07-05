@@ -17,6 +17,7 @@
 ### Master
 
 * Fix incorrect NSNotification name for sale registration - erikdstock
+* Add analytics to registration screens - maxim
 
 ### 1.5.8
 
