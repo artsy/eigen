@@ -10,6 +10,7 @@ import { Container } from "../Components/Containers"
 import { Markdown } from "../Components/Markdown"
 import { Title } from "../Components/Title"
 
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack } from "../../../utils/track"
 
 interface RegistrationResultProps {
@@ -71,6 +72,10 @@ const resultEnumToPageName = (result: RegistrationStatus) => {
   context_screen_owner_type: null,
 }))
 export class RegistrationResult extends React.Component<RegistrationResultProps, null> {
+  exitBidFlow = async () => {
+    await SwitchBoard.dismissModalViewController(this)
+  }
+
   render() {
     const status = this.props.status
     let title: string
@@ -106,7 +111,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps,
               <Markdown mb={5}>{msg}</Markdown>
             </Flex>
           </View>
-          <BidGhostButton text="Continue" onPress={null} />
+          <BidGhostButton text="Continue" onPress={this.exitBidFlow} />
         </Container>
       </BiddingThemeProvider>
     )
