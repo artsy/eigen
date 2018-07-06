@@ -1,7 +1,7 @@
 upcoming:
   version: 4.2.1
   date: TBA
-  emission_version: 1.5.6
+  emission_version: 1.5.9
   dev:
     - Clear Relay response cache on logout/switch env - alloy
 
