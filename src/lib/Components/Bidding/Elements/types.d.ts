@@ -166,7 +166,7 @@ export interface FlexDirectionProps {
 
 export function flexDirection(...args: any[]): any
 
-export type FlexValue = string
+export type FlexValue = number
 export type ResponsiveFlexValue = ResponsiveValue<FlexValue>
 
 export interface FlexProps {
