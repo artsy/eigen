@@ -168,7 +168,6 @@ describe("when pressing bid button", () => {
           message: 'GraphQL Timeout Error: Mutation.createBidderPosition has timed out after waiting for 5000ms"}',
         }
 
-        stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
         relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted({}, [error]))
 
         const component = renderer.create(<ConfirmBid {...initialProps} />)
@@ -391,6 +390,31 @@ describe("ConfirmBid for unqualified user", () => {
     creditcardRow.instance.props.onPress()
 
     expect(nextStep.component).toEqual(CreditCardForm)
+  })
+  it("shows the error screen when stripe's API returns an error", () => {
+    stripe.createTokenWithCard.mockImplementationOnce(() => {
+      throw new Error("Error tokenizing card")
+    })
+
+    jest.useFakeTimers()
+    const component = renderer.create(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
+
+    // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
+    component.root.instance.setState({ billingAddress })
+    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
+
+    jest.runAllTicks()
+    expect(nextStep.component).toEqual(BidResultScreen)
+    expect(nextStep.passProps).toEqual(
+      objectContaining({
+        bidderPositionResult: {
+          message_header: "An error occurred",
+          message_description_md: "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
+        },
+      })
+    )
   })
 
   it("shows the error screen with a createCreditCard mutation failure", () => {

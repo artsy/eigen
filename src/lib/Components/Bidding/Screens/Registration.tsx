@@ -126,31 +126,35 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
   async createCreditCardAndBidder() {
     const { billingAddress, creditCardFormParams } = this.state
-    const token = await stripe.createTokenWithCard({
-      ...creditCardFormParams,
-      name: billingAddress.fullName,
-      addressLine1: billingAddress.addressLine1,
-      addressLine2: billingAddress.addressLine2,
-      addressCity: billingAddress.city,
-      addressState: billingAddress.state,
-      addressZip: billingAddress.postalCode,
-    })
+    try {
+      const token = await stripe.createTokenWithCard({
+        ...creditCardFormParams,
+        name: billingAddress.fullName,
+        addressLine1: billingAddress.addressLine1,
+        addressLine2: billingAddress.addressLine2,
+        addressCity: billingAddress.city,
+        addressState: billingAddress.state,
+        addressZip: billingAddress.postalCode,
+      })
 
-    commitMutation(this.props.relay.environment, {
-      onCompleted: (_, errors) =>
-        isEmpty(errors)
-          ? this.createBidder()
-          : this.presentRegistrationResult(RegistrationStatus.RegistrationStatusError),
-      onError: error => {
-        this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusError)
-      },
-      mutation: creditCardMutation,
-      variables: {
-        input: {
-          token: token.tokenId,
+      commitMutation(this.props.relay.environment, {
+        onCompleted: (_, errors) =>
+          isEmpty(errors)
+            ? this.createBidder()
+            : this.presentRegistrationResult(RegistrationStatus.RegistrationStatusError),
+        onError: error => {
+          this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusError)
         },
-      },
-    })
+        mutation: creditCardMutation,
+        variables: {
+          input: {
+            token: token.tokenId,
+          },
+        },
+      })
+    } catch (error) {
+      this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusError)
+    }
   }
 
   createBidder() {

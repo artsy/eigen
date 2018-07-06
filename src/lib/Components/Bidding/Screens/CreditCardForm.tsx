@@ -3,6 +3,7 @@ import React, { Component } from "react"
 import { NavigatorIOS, ScrollView, StyleSheet, View } from "react-native"
 import stripe, { PaymentCardTextField, StripeToken } from "tipsi-stripe"
 
+import { Sans12 } from "lib/Components/Bidding/Elements/Typography"
 import BottomAlignedButtonWrapper from "lib/Components/Buttons/BottomAlignedButtonWrapper"
 import { BackButton } from "../Components/BackButton"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
@@ -23,19 +24,8 @@ interface CreditCardFormState {
   valid: boolean
   params: PaymentCardTextFieldParams
   isLoading: boolean
+  isError: boolean
 }
-
-const styles = StyleSheet.create({
-  field: {
-    fontFamily: Fonts.GaramondRegular,
-    height: 40,
-    fontSize: theme.fontSizes[3],
-    width: "100%",
-    borderColor: theme.colors.purple100,
-    borderWidth: 1,
-    borderRadius: 0,
-  },
-})
 
 export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFormState> {
   private paymentInfo: PaymentCardTextField
@@ -44,7 +34,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
     super(props)
 
     this.paymentInfo = (React as any).createRef()
-    this.state = { valid: null, params: { ...this.props.params }, isLoading: false }
+    this.state = { valid: null, params: { ...this.props.params }, isLoading: false, isError: false }
   }
 
   componentDidMount() {
@@ -59,14 +49,19 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
   }
 
   tokenizeCardAndSubmit = async () => {
-    this.setState({ isLoading: true })
+    this.setState({ isLoading: true, isError: false })
 
     const { params } = this.state
 
-    const token = await stripe.createTokenWithCard({ ...params })
-
-    this.props.onSubmit(token, this.state.params)
-    this.props.navigator.pop()
+    try {
+      const token = await stripe.createTokenWithCard({ ...params })
+      this.props.onSubmit(token, this.state.params)
+      this.setState({ isLoading: false })
+      this.props.navigator.pop()
+    } catch (error) {
+      console.log("CreditCardForm.tsx", error)
+      this.setState({ isError: true, isLoading: false })
+    }
   }
 
   render() {
@@ -75,10 +70,26 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
         <Button
           text="Add credit card"
           disabled={!this.state.valid}
+          inProgress={this.state.isLoading}
           onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : null}
         />
       </Flex>
     )
+
+    const styles = StyleSheet.create({
+      field: {
+        fontFamily: Fonts.GaramondRegular,
+        height: 40,
+        fontSize: theme.fontSizes[3],
+        width: "100%",
+        borderColor: this.state.isError ? theme.colors.red100 : theme.colors.purple100,
+        borderWidth: 1,
+        borderRadius: 0,
+      },
+    })
+
+    const errorText = "There was an error. Please try again."
+
     return (
       <BiddingThemeProvider>
         <BottomAlignedButtonWrapper
@@ -101,6 +112,11 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                     expirationPlaceholder="MM/YY"
                     cvcPlaceholde="CVC"
                   />
+                  {this.state.isError && (
+                    <Sans12 mt={3} color="red100">
+                      {errorText}
+                    </Sans12>
+                  )}
                 </Flex>
               </View>
             </Container>

@@ -9,6 +9,7 @@ jest.mock("tipsi-stripe", () => ({
   PaymentCardTextField: () => "PaymentCardTextField",
   createTokenWithCard: jest.fn(),
 }))
+import { Sans12 } from "lib/Components/Bidding/Elements/Typography"
 import stripe from "tipsi-stripe"
 
 const onSubmitMock = jest.fn()
@@ -47,6 +48,21 @@ it("is enabled while the form is valid", () => {
 
   component.root.instance.setState({ valid: true, params: creditCard })
   expect(component.root.findByType(Button).props.disabled).toEqual(false)
+})
+
+it("shows an error when stripe's API returns an error", () => {
+  stripe.createTokenWithCard = jest.fn()
+  stripe.createTokenWithCard.mockImplementationOnce(() => {
+    throw new Error("Error tokenizing card")
+  })
+  jest.useFakeTimers()
+  const component = renderer.create(<CreditCardForm onSubmit={onSubmitMock} navigator={{ pop: () => null } as any} />)
+
+  component.root.instance.setState({ valid: true, params: creditCard })
+  component.root.findByType(Button).instance.props.onPress()
+
+  jest.runAllTicks()
+  expect(component.root.findByType(Sans12).props.children).toEqual("There was an error. Please try again.")
 })
 
 const creditCard = {
