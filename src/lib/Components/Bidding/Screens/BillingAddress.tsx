@@ -25,10 +25,10 @@ interface StyledInputInterface {
   }
 }
 
-const StyledInput = ({ label, error, refName, createCustomRef, ...props }) => (
+const StyledInput = ({ label, error, ...props }) => (
   <Flex mb={4}>
     <Serif16 mb={2}>{label}</Serif16>
-    <Input mb={3} error={Boolean(error)} refName={refName} createCustomRef={createCustomRef} {...props} />
+    <Input mb={3} error={Boolean(error)} {...props} />
     {error && <Sans12 color="red100">{error}</Sans12>}
   </Flex>
 )
@@ -56,7 +56,6 @@ interface BillingAddressState {
   context_screen_owner_type: null,
 })
 export class BillingAddress extends React.Component<BillingAddressProps, BillingAddressState> {
-  private fullName: StyledInputInterface
   private addressLine1: StyledInputInterface
   private addressLine2: StyledInputInterface
   private city: StyledInputInterface
@@ -65,8 +64,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
   constructor(props) {
     super(props)
-
-    this.selectNextInput = this.selectNextInput.bind(this)
 
     this.state = {
       values: { ...this.props.billingAddress },
@@ -111,31 +108,6 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     this.props.navigator.pop()
   }
 
-  selectNextInput = nextComponent => {
-    const inputs = [
-      this.fullName,
-      this.addressLine1,
-      this.addressLine2,
-      this.city,
-      this.stateProvinceRegion,
-      this.postalCode,
-    ]
-
-    for (const input of inputs) {
-      if (input === nextComponent) {
-        input.root.focus()
-      } else {
-        input.root.blur()
-      }
-    }
-  }
-
-  createCustomRef(refName: string, component: any) {
-    if (component) {
-      return (this[refName] = component)
-    }
-  }
-
   render() {
     // TODO: Remove this once React Native has been updated
     const isPhoneX = Dimensions.get("window").height === 812 && Dimensions.get("window").width === 375
@@ -154,67 +126,47 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 </Title>
 
                 <StyledInput
+                  {...this.defaultPropsForInput("fullName")}
                   label="Full name"
                   placeholder="Add your full name"
-                  autoCapitalize="words"
                   autoFocus={true}
-                  returnKeyType="next"
-                  refName="fullName"
-                  createCustomRef={this.createCustomRef.bind(this)}
-                  onSubmitEditing={() => this.selectNextInput(this.addressLine1)}
-                  {...this.propsForInput("fullName")}
+                  onSubmitEditing={() => this.addressLine1.root.focus()}
                 />
 
                 <StyledInput
+                  {...this.defaultPropsForInput("addressLine1")}
                   label="Address line 1"
                   placeholder="Add your street address"
-                  autoCapitalize="words"
-                  returnKeyType="next"
-                  refName="addressLine1"
-                  createCustomRef={this.createCustomRef.bind(this)}
-                  onSubmitEditing={() => this.selectNextInput(this.addressLine2)}
-                  {...this.propsForInput("addressLine1")}
+                  onSubmitEditing={() => this.addressLine2.root.focus()}
                 />
 
                 <StyledInput
+                  {...this.defaultPropsForInput("addressLine2")}
                   label="Address line 2 (optional)"
                   placeholder="Add your apt, floor, suite, etc."
-                  autoCapitalize="words"
-                  returnKeyType="next"
-                  refName="addressLine2"
-                  createCustomRef={this.createCustomRef.bind(this)}
-                  onSubmitEditing={() => this.selectNextInput(this.city)}
-                  {...this.propsForInput("addressLine2")}
+                  onSubmitEditing={() => this.city.root.focus()}
                 />
 
                 <StyledInput
+                  {...this.defaultPropsForInput("city")}
                   label="City"
                   placeholder="Add your city"
-                  returnKeyType="next"
-                  refName="city"
-                  createCustomRef={this.createCustomRef.bind(this)}
-                  onSubmitEditing={() => this.selectNextInput(this.stateProvinceRegion)}
-                  {...this.propsForInput("city")}
+                  onSubmitEditing={() => this.stateProvinceRegion.root.focus()}
                 />
 
                 <StyledInput
+                  {...this.defaultPropsForInput("state")}
                   label="State, Province, or Region"
-                  placeholder="Add your state, province, or region"
-                  autoCapitalize="words"
-                  returnKeyType="next"
-                  refName="stateProvinceRegion"
-                  createCustomRef={this.createCustomRef.bind(this)}
-                  onSubmitEditing={() => this.selectNextInput(this.postalCode)}
-                  {...this.propsForInput("state")}
+                  placeholder="Add state, province, or region"
+                  onSubmitEditing={() => this.postalCode.root.focus()}
+                  inputRef={el => (this.stateProvinceRegion = el)}
                 />
 
                 <StyledInput
+                  {...this.defaultPropsForInput("postalCode")}
                   label="Postal code"
                   placeholder="Add your postal code"
-                  autoCapitalize="words"
-                  refName="postalCode"
-                  createCustomRef={this.createCustomRef.bind(this)}
-                  {...this.propsForInput("postalCode")}
+                  returnKeyType="default"
                 />
 
                 <Button text="Add billing address" onPress={() => this.onSubmit()} />
@@ -226,11 +178,14 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     )
   }
 
-  private propsForInput(field: string) {
+  private defaultPropsForInput(field: string) {
     return {
+      autoCapitalize: "words",
       error: this.state.errors[field],
+      inputRef: el => (this[field] = el),
+      onBlur: () => this.validateField(field),
       onChangeText: value => this.setState({ values: { ...this.state.values, [field]: value } }),
-      customOnBlur: () => this.validateField(field),
+      returnKeyType: "next",
       value: this.state.values[field],
     }
   }
