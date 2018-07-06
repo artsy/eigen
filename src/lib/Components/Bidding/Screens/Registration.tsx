@@ -5,6 +5,8 @@ import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp }
 import styled from "styled-components/native"
 import stripe from "tipsi-stripe"
 
+import { Schema, screenTrack } from "../../../utils/track"
+
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import { Flex } from "../Elements/Flex"
@@ -69,6 +71,10 @@ const bidderMutation = graphql`
   }
 `
 
+@screenTrack({
+  context_screen: Schema.PageNames.BidFlowRegistration,
+  context_screen_owner_type: null,
+})
 export class Registration extends React.Component<RegistrationProps, RegistrationState> {
   constructor(props) {
     super(props)

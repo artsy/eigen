@@ -18,6 +18,7 @@
 
 * Fix incorrect NSNotification name for sale registration - erikdstock
 * Adds `inputRef` to the styled `<Input>` component - yuki24
+* Add analytics to registration screens - maxim
 
 ### 1.5.8
 
