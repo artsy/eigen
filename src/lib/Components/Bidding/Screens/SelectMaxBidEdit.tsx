@@ -1,10 +1,11 @@
 import React from "react"
-import { NavigatorIOS, ViewProperties } from "react-native"
+import { NavigatorIOS, View, ViewProperties } from "react-native"
 
 import { Schema, screenTrack } from "../../../utils/track"
 
 import { Flex } from "../Elements/Flex"
 
+import { BackButton } from "lib/Components/Bidding/Components/BackButton"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Button } from "../Components/Button"
 import { Container } from "../Components/Containers"
@@ -42,7 +43,10 @@ export class SelectMaxBidEdit extends React.Component<SelectMaxBidProps, SelectM
     return (
       <BiddingThemeProvider>
         <Container m={0}>
-          <Title>Your max bid</Title>
+          <View>
+            <BackButton navigator={this.props.navigator} />
+            <Title>Your max bid</Title>
+          </View>
 
           <MaxBidPicker
             bids={bids}
