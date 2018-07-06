@@ -143,6 +143,7 @@ to bid on works in this sale.
         "borderWidth": 1,
         "height": 50,
         "justifyContent": "center",
+        "opacity": 1,
       }
     }
     testID={undefined}
@@ -157,17 +158,18 @@ to bid on works in this sale.
             "fontSize": 12,
           },
           Object {
-            "color": "rgba(204, 204, 204, 1)",
-            "fontFamily": "AGaramondPro-Regular",
-            "opacity": 1,
+            "fontFamily": "AvantGardeGothicITC",
           },
           Object {
-            "fontFamily": "AvantGardeGothicITC",
+            "color": "rgba(0, 0, 0, 1)",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 14,
+            "opacity": 1,
           },
         ]
       }
     >
-      CONTINUE
+      Continue
     </Text>
   </View>
 </View>
@@ -333,6 +335,7 @@ with any questions.
         "borderWidth": 1,
         "height": 50,
         "justifyContent": "center",
+        "opacity": 1,
       }
     }
     testID={undefined}
@@ -347,17 +350,18 @@ with any questions.
             "fontSize": 12,
           },
           Object {
-            "color": "rgba(204, 204, 204, 1)",
-            "fontFamily": "AGaramondPro-Regular",
-            "opacity": 1,
+            "fontFamily": "AvantGardeGothicITC",
           },
           Object {
-            "fontFamily": "AvantGardeGothicITC",
+            "color": "rgba(0, 0, 0, 1)",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 14,
+            "opacity": 1,
           },
         ]
       }
     >
-      CONTINUE
+      Continue
     </Text>
   </View>
 </View>
@@ -524,6 +528,7 @@ more information.
         "borderWidth": 1,
         "height": 50,
         "justifyContent": "center",
+        "opacity": 1,
       }
     }
     testID={undefined}
@@ -538,17 +543,18 @@ more information.
             "fontSize": 12,
           },
           Object {
-            "color": "rgba(204, 204, 204, 1)",
-            "fontFamily": "AGaramondPro-Regular",
-            "opacity": 1,
+            "fontFamily": "AvantGardeGothicITC",
           },
           Object {
-            "fontFamily": "AvantGardeGothicITC",
+            "color": "rgba(0, 0, 0, 1)",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 14,
+            "opacity": 1,
           },
         ]
       }
     >
-      CONTINUE
+      Continue
     </Text>
   </View>
 </View>

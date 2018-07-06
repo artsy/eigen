@@ -1,13 +1,19 @@
 import React from "react"
-import { StyleSheet, Text, TextProperties } from "react-native"
+import { StyleSheet, Text, TextProperties, TextStyle } from "react-native"
 
-import fonts from "lib/data/fonts"
+import { Fonts } from "lib/data/fonts"
 
 export default class Headline extends React.Component<TextProperties, any> {
   render() {
-    const content = (this.props.children || "") as string
+    let content = (this.props.children || "") as string
+    const style = this.props.style! as TextStyle
 
-    return <Text style={[styles.default, this.props.style, styles.required]}>{content.toUpperCase()}</Text>
+    // For all the old buttons still using afvat garde, we want to uppercase here
+    if (this.props.style && style.fontFamily !== Fonts.Unica77LLMedium) {
+      content = content.toUpperCase()
+    }
+
+    return <Text style={[styles.default, styles.required, this.props.style]}>{content}</Text>
   }
 }
 
@@ -16,6 +22,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   required: {
-    fontFamily: fonts["avant-garde-regular"],
+    fontFamily: Fonts.AvantGardeRegular,
   },
 })

@@ -143,8 +143,10 @@ export default class Button extends React.Component<Props, State> {
       ],
     })
 
+    const opacity = this.props.disabled ? 0.1 : 1.0
+
     const styling = {
-      style: [styles.button, { backgroundColor, borderColor }, this.props.style],
+      style: [styles.button, { backgroundColor, borderColor, opacity }, this.props.style],
     }
 
     const textStyle = this.props.textStyle || {}
@@ -152,7 +154,12 @@ export default class Button extends React.Component<Props, State> {
     const headlineStyles = [styles.text, textStyle, { opacity: this.state.textOpacity, color }]
 
     return (
-      <TouchableWithoutFeedback onPress={this.onPress} onPressIn={this.startHighlight} onPressOut={this.endHighlight}>
+      <TouchableWithoutFeedback
+        onPress={this.onPress}
+        onPressIn={this.startHighlight}
+        onPressOut={this.endHighlight}
+        disabled={this.props.disabled}
+      >
         <AnimatedView {...styling}>
           <AnimatedHeadline style={headlineStyles}>{this.props.text}</AnimatedHeadline>
         </AnimatedView>
@@ -169,7 +176,6 @@ const styles = StyleSheet.create({
     height: 36,
   },
   text: {
-    fontFamily: "AGaramondPro-Regular",
     color: "black",
   },
 })

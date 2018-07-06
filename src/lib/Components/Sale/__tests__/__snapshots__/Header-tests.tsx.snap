@@ -24,11 +24,11 @@ exports[`renders properly 1`] = `
             "fontSize": 12,
           },
           Object {
-            "fontSize": 20,
-            "textAlign": "center",
+            "fontFamily": "AvantGardeGothicITC",
           },
           Object {
-            "fontFamily": "AvantGardeGothicITC",
+            "fontSize": 20,
+            "textAlign": "center",
           },
         ]
       }

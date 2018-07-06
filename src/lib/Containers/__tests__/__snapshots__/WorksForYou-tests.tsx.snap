@@ -98,10 +98,10 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "fontSize": 12,
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       Object {
-                        "fontFamily": "AvantGardeGothicITC",
+                        "fontSize": 12,
                       },
                     ]
                   }
@@ -220,10 +220,10 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "fontSize": 12,
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       Object {
-                        "fontFamily": "AvantGardeGothicITC",
+                        "fontSize": 12,
                       },
                     ]
                   }
@@ -382,10 +382,10 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "fontSize": 12,
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       Object {
-                        "fontFamily": "AvantGardeGothicITC",
+                        "fontSize": 12,
                       },
                     ]
                   }
@@ -504,10 +504,10 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "fontSize": 12,
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       Object {
-                        "fontFamily": "AvantGardeGothicITC",
+                        "fontSize": 12,
                       },
                     ]
                   }

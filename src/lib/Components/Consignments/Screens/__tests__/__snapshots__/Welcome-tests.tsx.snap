@@ -435,6 +435,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                     "height": 43,
                     "justifyContent": "center",
                     "marginTop": 0,
+                    "opacity": 1,
                     "width": 174,
                   }
                 }
@@ -450,12 +451,11 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "color": "rgba(0, 0, 0, 1)",
-                        "fontFamily": "AGaramondPro-Regular",
-                        "opacity": 1,
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       Object {
-                        "fontFamily": "AvantGardeGothicITC",
+                        "color": "rgba(0, 0, 0, 1)",
+                        "opacity": 1,
                       },
                     ]
                   }
@@ -487,6 +487,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                     "height": 43,
                     "justifyContent": "center",
                     "marginTop": 4,
+                    "opacity": 1,
                     "width": 174,
                   }
                 }
@@ -502,12 +503,11 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "color": "rgba(255, 255, 255, 1)",
-                        "fontFamily": "AGaramondPro-Regular",
-                        "opacity": 1,
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       Object {
-                        "fontFamily": "AvantGardeGothicITC",
+                        "color": "rgba(255, 255, 255, 1)",
+                        "opacity": 1,
                       },
                     ]
                   }
@@ -959,6 +959,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                     "height": 43,
                     "justifyContent": "center",
                     "marginTop": 0,
+                    "opacity": 1,
                     "width": 174,
                   }
                 }
@@ -974,12 +975,11 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "color": "rgba(0, 0, 0, 1)",
-                        "fontFamily": "AGaramondPro-Regular",
-                        "opacity": 1,
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       Object {
-                        "fontFamily": "AvantGardeGothicITC",
+                        "color": "rgba(0, 0, 0, 1)",
+                        "opacity": 1,
                       },
                     ]
                   }
@@ -1011,6 +1011,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                     "height": 43,
                     "justifyContent": "center",
                     "marginTop": 4,
+                    "opacity": 1,
                     "width": 174,
                   }
                 }
@@ -1026,12 +1027,11 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "color": "rgba(255, 255, 255, 1)",
-                        "fontFamily": "AGaramondPro-Regular",
-                        "opacity": 1,
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       Object {
-                        "fontFamily": "AvantGardeGothicITC",
+                        "color": "rgba(255, 255, 255, 1)",
+                        "opacity": 1,
                       },
                     ]
                   }
@@ -1483,6 +1483,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                     "height": 43,
                     "justifyContent": "center",
                     "marginTop": 0,
+                    "opacity": 1,
                     "width": 174,
                   }
                 }
@@ -1498,12 +1499,11 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "color": "rgba(0, 0, 0, 1)",
-                        "fontFamily": "AGaramondPro-Regular",
-                        "opacity": 1,
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       Object {
-                        "fontFamily": "AvantGardeGothicITC",
+                        "color": "rgba(0, 0, 0, 1)",
+                        "opacity": 1,
                       },
                     ]
                   }
@@ -1535,6 +1535,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                     "height": 43,
                     "justifyContent": "center",
                     "marginTop": 4,
+                    "opacity": 1,
                     "width": 174,
                   }
                 }
@@ -1550,12 +1551,11 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "color": "rgba(255, 255, 255, 1)",
-                        "fontFamily": "AGaramondPro-Regular",
-                        "opacity": 1,
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       Object {
-                        "fontFamily": "AvantGardeGothicITC",
+                        "color": "rgba(255, 255, 255, 1)",
+                        "opacity": 1,
                       },
                     ]
                   }
@@ -2007,6 +2007,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                     "height": 43,
                     "justifyContent": "center",
                     "marginTop": 0,
+                    "opacity": 1,
                     "width": 174,
                   }
                 }
@@ -2022,12 +2023,11 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "color": "rgba(0, 0, 0, 1)",
-                        "fontFamily": "AGaramondPro-Regular",
-                        "opacity": 1,
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       Object {
-                        "fontFamily": "AvantGardeGothicITC",
+                        "color": "rgba(0, 0, 0, 1)",
+                        "opacity": 1,
                       },
                     ]
                   }
@@ -2059,6 +2059,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                     "height": 43,
                     "justifyContent": "center",
                     "marginTop": 4,
+                    "opacity": 1,
                     "width": 174,
                   }
                 }
@@ -2074,12 +2075,11 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "color": "rgba(255, 255, 255, 1)",
-                        "fontFamily": "AGaramondPro-Regular",
-                        "opacity": 1,
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       Object {
-                        "fontFamily": "AvantGardeGothicITC",
+                        "color": "rgba(255, 255, 255, 1)",
+                        "opacity": 1,
                       },
                     ]
                   }
@@ -2531,6 +2531,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                     "height": 43,
                     "justifyContent": "center",
                     "marginTop": 0,
+                    "opacity": 1,
                     "width": 174,
                   }
                 }
@@ -2546,12 +2547,11 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "color": "rgba(0, 0, 0, 1)",
-                        "fontFamily": "AGaramondPro-Regular",
-                        "opacity": 1,
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       Object {
-                        "fontFamily": "AvantGardeGothicITC",
+                        "color": "rgba(0, 0, 0, 1)",
+                        "opacity": 1,
                       },
                     ]
                   }
@@ -2583,6 +2583,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                     "height": 43,
                     "justifyContent": "center",
                     "marginTop": 4,
+                    "opacity": 1,
                     "width": 174,
                   }
                 }
@@ -2598,12 +2599,11 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                         "fontSize": 12,
                       },
                       Object {
-                        "color": "rgba(255, 255, 255, 1)",
-                        "fontFamily": "AGaramondPro-Regular",
-                        "opacity": 1,
+                        "fontFamily": "AvantGardeGothicITC",
                       },
                       Object {
-                        "fontFamily": "AvantGardeGothicITC",
+                        "color": "rgba(255, 255, 255, 1)",
+                        "opacity": 1,
                       },
                     ]
                   }
