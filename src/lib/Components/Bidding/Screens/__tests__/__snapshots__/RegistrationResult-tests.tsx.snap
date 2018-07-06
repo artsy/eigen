@@ -58,7 +58,7 @@ exports[`Registration result component renders registration complete properly 1`
         lineHeight={7}
         m={4}
         mb={4}
-        mt={1}
+        mt={2}
         style={
           Array [
             Object {
@@ -68,7 +68,7 @@ exports[`Registration result component renders registration complete properly 1`
               "marginBottom": 20,
               "marginLeft": 20,
               "marginRight": 20,
-              "marginTop": 3,
+              "marginTop": 5,
               "textAlign": "center",
             },
             undefined,
@@ -233,7 +233,7 @@ exports[`Registration result component renders registration error properly 1`] =
         lineHeight={7}
         m={4}
         mb={4}
-        mt={1}
+        mt={2}
         style={
           Array [
             Object {
@@ -243,7 +243,7 @@ exports[`Registration result component renders registration error properly 1`] =
               "marginBottom": 20,
               "marginLeft": 20,
               "marginRight": 20,
-              "marginTop": 3,
+              "marginTop": 5,
               "textAlign": "center",
             },
             undefined,
@@ -425,7 +425,7 @@ exports[`Registration result component renders registration pending properly 1`]
         lineHeight={7}
         m={4}
         mb={4}
-        mt={1}
+        mt={2}
         style={
           Array [
             Object {
@@ -435,7 +435,7 @@ exports[`Registration result component renders registration pending properly 1`]
               "marginBottom": 20,
               "marginLeft": 20,
               "marginRight": 20,
-              "marginTop": 3,
+              "marginTop": 5,
               "textAlign": "center",
             },
             undefined,
