@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.5.9
+
 * Fix incorrect NSNotification name for sale registration - erikdstock
 * Add secondary outline button style - maxim
 * Adds `inputRef` to the styled `<Input>` component - yuki24
