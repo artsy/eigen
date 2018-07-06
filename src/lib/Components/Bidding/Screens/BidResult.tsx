@@ -78,7 +78,7 @@ export class BidResult extends React.Component<BidResultProps> {
             <Flex alignItems="center">
               <Icon20 source={Icons[status] || require("../../../../../images/circle-x-red.png")} />
 
-              <Title mt={0} mb={5}>
+              <Title mt={2} mb={5}>
                 {status === "PENDING" ? messageForPollingTimeout.title : message_header || "You’re the highest bidder"}
               </Title>
 

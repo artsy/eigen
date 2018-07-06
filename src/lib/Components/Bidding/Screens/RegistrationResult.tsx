@@ -100,7 +100,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps,
           <View>
             <Flex alignItems="center">
               <Icon20 source={Icons[status]} />
-              <Title mt={1} mb={4}>
+              <Title mt={2} mb={4}>
                 {title}
               </Title>
               <Markdown mb={5}>{msg}</Markdown>
