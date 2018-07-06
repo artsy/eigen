@@ -2,7 +2,7 @@ import React from "react"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
 
-import { Dimensions, KeyboardAvoidingView, NavigatorIOS, ScrollView, View } from "react-native"
+import { Dimensions, KeyboardAvoidingView, NavigatorIOS, ScrollView } from "react-native"
 
 import { Flex } from "../Elements/Flex"
 import { Sans12, Serif16 } from "../Elements/Typography"
@@ -116,63 +116,61 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     return (
       <BiddingThemeProvider>
         <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={defaultVerticalOffset} style={{ flex: 1 }}>
-          <View>
-            <BackButton navigator={this.props.navigator} />
+          <BackButton navigator={this.props.navigator} />
 
-            <ScrollView>
-              <Container>
-                <Title mt={0} mb={6}>
-                  Your billing address
-                </Title>
+          <ScrollView>
+            <Container>
+              <Title mt={0} mb={6}>
+                Your billing address
+              </Title>
 
-                <StyledInput
-                  {...this.defaultPropsForInput("fullName")}
-                  label="Full name"
-                  placeholder="Add your full name"
-                  autoFocus={true}
-                  onSubmitEditing={() => this.addressLine1.root.focus()}
-                />
+              <StyledInput
+                {...this.defaultPropsForInput("fullName")}
+                label="Full name"
+                placeholder="Add your full name"
+                autoFocus={true}
+                onSubmitEditing={() => this.addressLine1.root.focus()}
+              />
 
-                <StyledInput
-                  {...this.defaultPropsForInput("addressLine1")}
-                  label="Address line 1"
-                  placeholder="Add your street address"
-                  onSubmitEditing={() => this.addressLine2.root.focus()}
-                />
+              <StyledInput
+                {...this.defaultPropsForInput("addressLine1")}
+                label="Address line 1"
+                placeholder="Add your street address"
+                onSubmitEditing={() => this.addressLine2.root.focus()}
+              />
 
-                <StyledInput
-                  {...this.defaultPropsForInput("addressLine2")}
-                  label="Address line 2 (optional)"
-                  placeholder="Add your apt, floor, suite, etc."
-                  onSubmitEditing={() => this.city.root.focus()}
-                />
+              <StyledInput
+                {...this.defaultPropsForInput("addressLine2")}
+                label="Address line 2 (optional)"
+                placeholder="Add your apt, floor, suite, etc."
+                onSubmitEditing={() => this.city.root.focus()}
+              />
 
-                <StyledInput
-                  {...this.defaultPropsForInput("city")}
-                  label="City"
-                  placeholder="Add your city"
-                  onSubmitEditing={() => this.stateProvinceRegion.root.focus()}
-                />
+              <StyledInput
+                {...this.defaultPropsForInput("city")}
+                label="City"
+                placeholder="Add your city"
+                onSubmitEditing={() => this.stateProvinceRegion.root.focus()}
+              />
 
-                <StyledInput
-                  {...this.defaultPropsForInput("state")}
-                  label="State, Province, or Region"
-                  placeholder="Add state, province, or region"
-                  onSubmitEditing={() => this.postalCode.root.focus()}
-                  inputRef={el => (this.stateProvinceRegion = el)}
-                />
+              <StyledInput
+                {...this.defaultPropsForInput("state")}
+                label="State, Province, or Region"
+                placeholder="Add state, province, or region"
+                onSubmitEditing={() => this.postalCode.root.focus()}
+                inputRef={el => (this.stateProvinceRegion = el)}
+              />
 
-                <StyledInput
-                  {...this.defaultPropsForInput("postalCode")}
-                  label="Postal code"
-                  placeholder="Add your postal code"
-                  returnKeyType="default"
-                />
+              <StyledInput
+                {...this.defaultPropsForInput("postalCode")}
+                label="Postal code"
+                placeholder="Add your postal code"
+                returnKeyType="default"
+              />
 
-                <Button text="Add billing address" onPress={() => this.onSubmit()} />
-              </Container>
-            </ScrollView>
-          </View>
+              <Button text="Add billing address" onPress={() => this.onSubmit()} />
+            </Container>
+          </ScrollView>
         </KeyboardAvoidingView>
       </BiddingThemeProvider>
     )
