@@ -15,9 +15,9 @@ import { Registration } from "../Screens/Registration"
 import { RegistrationResult, RegistrationStatus } from "../Screens/RegistrationResult"
 import { MaxBidScreen } from "../Screens/SelectMaxBid"
 
-const testSaleArtworkID = "5b1e4d29275b2446aa139f37"
-const testArtworkID = "david-lynch-hand"
-const testSaleID = "shared-live-mocktion-k8s"
+const testSaleArtworkID = "5b329f757622dd41e6670006"
+const testArtworkID = "john-aldridge-evergreens"
+const testSaleID = "sworders-modern-british-and-20th-century-art"
 
 const selectMaxBidQuery = graphql`
   query BidFlowSelectMaxBidRendererQuery($saleArtworkID: String!) {
@@ -52,7 +52,8 @@ storiesOf("Bidding")
           lot_label: "2",
         }}
         me={{ has_qualified_credit_cards: false, bidders: [{ qualified_for_bidding: true }] }}
-        bid={{ display: "$45,000", cents: 4500000 }}
+        increments={[{ display: "$45,000", cents: 4500000 }]}
+        selectedBidIndex={0}
       />
     )
   })
@@ -70,7 +71,8 @@ storiesOf("Bidding")
               lot_label: "1",
             },
             me: { has_qualified_credit_cards: false, bidders: [] },
-            bid: { display: "$45,000", cents: 4500000 },
+            increments: [{ display: "$45,000", cents: 4500000 }],
+            selectedBidIndex: 0,
           },
         }}
         style={{ flex: 1 }}
@@ -103,7 +105,8 @@ storiesOf("Bidding")
               has_qualified_credit_cards: true,
               bidders: [],
             },
-            bid: { display: "$45,000", cents: 4500000 },
+            increments: [{ display: "$45,000", cents: 4500000 }],
+            selectedBidIndex: 0,
           },
         }}
         style={{ flex: 1 }}
