@@ -69,9 +69,11 @@ exports[`renders properly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
         ellipsizeMode="tail"
-        fontSize={3}
-        lineHeight={5}
+        fontFamily="AGaramondPro-Semibold"
+        fontSize={16}
+        lineHeight={24}
         style={
           Array [
             Object {
@@ -103,9 +105,11 @@ exports[`renders properly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
         ellipsizeMode="tail"
-        fontSize={3}
-        lineHeight={5}
+        fontFamily="AGaramondPro-Regular"
+        fontSize={16}
+        lineHeight={24}
         numberOfLines={1}
         style={
           Array [
@@ -137,10 +141,12 @@ exports[`renders properly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bdVaJa bDWFJH"
         color="purple100"
         ellipsizeMode="tail"
-        fontSize={1}
-        lineHeight={1}
+        fontFamily="Unica77LL-Regular"
+        fontSize={12}
+        lineHeight={16}
         mb={1}
         ml={3}
         style={
@@ -228,9 +234,11 @@ exports[`renders properly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
         ellipsizeMode="tail"
-        fontSize={3}
-        lineHeight={5}
+        fontFamily="AGaramondPro-Semibold"
+        fontSize={16}
+        lineHeight={24}
         style={
           Array [
             Object {
@@ -262,9 +270,11 @@ exports[`renders properly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
         ellipsizeMode="tail"
-        fontSize={3}
-        lineHeight={5}
+        fontFamily="AGaramondPro-Regular"
+        fontSize={16}
+        lineHeight={24}
         numberOfLines={1}
         style={
           Array [
@@ -296,10 +306,12 @@ exports[`renders properly 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bdVaJa bDWFJH"
         color="purple100"
         ellipsizeMode="tail"
-        fontSize={1}
-        lineHeight={1}
+        fontFamily="Unica77LL-Regular"
+        fontSize={12}
+        lineHeight={16}
         mb={1}
         ml={3}
         style={

@@ -1,3 +1,4 @@
+import { Sans, Serif } from "@artsy/palette"
 import React from "react"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
@@ -14,7 +15,6 @@ import {
 } from "react-native"
 
 import { Flex } from "../Elements/Flex"
-import { Sans12, Serif16 } from "../Elements/Typography"
 
 import { validatePresence } from "../Validators"
 
@@ -38,9 +38,11 @@ interface StyledInputInterface {
 
 const StyledInput = ({ label, error, onLayout, ...props }) => (
   <Flex mb={4} onLayout={onLayout}>
-    <Serif16 mb={2}>{label}</Serif16>
+    <Serif size="3" mb={2}>
+      {label}
+    </Serif>
     <Input mb={3} error={Boolean(error)} {...props} />
-    {error && <Sans12 color="red100">{error}</Sans12>}
+    {error && (<Sans size="2" color="red100">{error}</Sans>)}
   </Flex>
 )
 
@@ -246,19 +248,19 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
               />
 
               <Flex mb={4}>
-                <Serif16 mb={2}>Country</Serif16>
+                <Serif size="3" mb={2}>Country</Serif>
 
                 <TouchableWithoutFeedback onPress={() => this.presentSelectCountry()}>
                   <Flex mb={3} p={3} pb={2} border={1} borderColor={errorForCountry ? "red100" : "black10"}>
                     {this.state.values.country ? (
-                      <Serif16>{this.state.values.country.longName}</Serif16>
+                      <Serif size="3">{this.state.values.country.longName}</Serif>
                     ) : (
-                      <Serif16 color="black30">Select your country</Serif16>
+                      <Serif size="3" color="black30">Select your country</Serif>
                     )}
                   </Flex>
                 </TouchableWithoutFeedback>
 
-                {errorForCountry && <Sans12 color="red100">{errorForCountry}</Sans12>}
+                {errorForCountry && <Sans size="2" color="red100">{errorForCountry}</Sans>}
               </Flex>
 
               <Button text="Add billing address" onPress={() => this.onSubmit()} />

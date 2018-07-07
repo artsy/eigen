@@ -1,3 +1,4 @@
+import { Serif } from "@artsy/palette"
 import React from "react"
 import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import * as renderer from "react-test-renderer"
@@ -6,7 +7,6 @@ import Spinner from "../../../Spinner"
 import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Button } from "../../Components/Button"
 import { Checkbox } from "../../Components/Checkbox"
-import { Serif16 } from "../../Elements/Typography"
 import { BillingAddress } from "../BillingAddress"
 import { CreditCardForm } from "../CreditCardForm"
 import { Registration } from "../Registration"
@@ -68,7 +68,7 @@ it("shows the billing address that the user typed in the billing address form", 
 
   nextStep.passProps.onSubmit(billingAddress)
 
-  expect(billingAddressRow.findByType(Serif16).props.children).toEqual("401 Broadway 25th floor New York NY")
+  expect(billingAddressRow.findAllByType(Serif)[1].props.children).toEqual("401 Broadway 25th floor New York NY")
 })
 
 it("shows the credit card form when the user tap the edit text in the credit card row", () => {

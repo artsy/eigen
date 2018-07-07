@@ -53,9 +53,11 @@ exports[`Registration result component renders registration complete properly 1`
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
         ellipsizeMode="tail"
-        fontSize={5}
-        lineHeight={7}
+        fontFamily="AGaramondPro-Semibold"
+        fontSize={22}
+        lineHeight={28}
         m={4}
         mb={4}
         mt={2}
@@ -92,10 +94,12 @@ exports[`Registration result component renders registration complete properly 1`
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bwzfXH uTxCW"
           color="black60"
           ellipsizeMode="tail"
-          fontSize={3}
-          lineHeight={3}
+          fontFamily="AGaramondPro-Regular"
+          fontSize={16}
+          lineHeight={20}
           style={
             Array [
               Object {
@@ -229,9 +233,11 @@ exports[`Registration result component renders registration error properly 1`] =
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
         ellipsizeMode="tail"
-        fontSize={5}
-        lineHeight={7}
+        fontFamily="AGaramondPro-Semibold"
+        fontSize={22}
+        lineHeight={28}
         m={4}
         mb={4}
         mt={2}
@@ -268,10 +274,12 @@ exports[`Registration result component renders registration error properly 1`] =
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bwzfXH uTxCW"
           color="black60"
           ellipsizeMode="tail"
-          fontSize={3}
-          lineHeight={3}
+          fontFamily="AGaramondPro-Regular"
+          fontSize={16}
+          lineHeight={20}
           style={
             Array [
               Object {
@@ -422,9 +430,11 @@ exports[`Registration result component renders registration pending properly 1`]
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
         ellipsizeMode="tail"
-        fontSize={5}
-        lineHeight={7}
+        fontFamily="AGaramondPro-Semibold"
+        fontSize={22}
+        lineHeight={28}
         m={4}
         mb={4}
         mt={2}
@@ -461,10 +471,12 @@ exports[`Registration result component renders registration pending properly 1`]
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bwzfXH uTxCW"
           color="black60"
           ellipsizeMode="tail"
-          fontSize={3}
-          lineHeight={3}
+          fontFamily="AGaramondPro-Regular"
+          fontSize={16}
+          lineHeight={20}
           style={
             Array [
               Object {

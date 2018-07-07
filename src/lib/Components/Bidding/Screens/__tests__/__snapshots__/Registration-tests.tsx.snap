@@ -34,9 +34,11 @@ exports[`renders properly for a user with a credit card 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
         ellipsizeMode="tail"
-        fontSize={5}
-        lineHeight={7}
+        fontFamily="AGaramondPro-Semibold"
+        fontSize={22}
+        lineHeight={28}
         m={4}
         mb={3}
         style={
@@ -70,15 +72,17 @@ exports[`renders properly for a user with a credit card 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
-          fontSize={3}
-          lineHeight={5}
+          fontFamily="Unica77LL-Medium"
+          fontSize={16}
+          lineHeight={22}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 16,
-                "lineHeight": 24,
+                "lineHeight": 22,
               },
               undefined,
             ]
@@ -99,9 +103,11 @@ exports[`renders properly for a user with a credit card 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
-          fontSize={1}
-          lineHeight={1}
+          fontFamily="Unica77LL-Medium"
+          fontSize={12}
+          lineHeight={16}
           style={
             Array [
               Object {
@@ -119,19 +125,19 @@ exports[`renders properly for a user with a credit card 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
         ellipsizeMode="tail"
-        fontSize={4}
-        lineHeight={6}
-        mb={5}
-        ml={40}
-        mr={40}
-        mt={5}
+        fontFamily="AGaramondPro-Semibold"
+        fontSize={18}
+        lineHeight={22}
+        mx={6}
+        my={5}
         style={
           Array [
             Object {
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 18,
-              "lineHeight": 26,
+              "lineHeight": 22,
               "marginBottom": 30,
               "marginLeft": 40,
               "marginRight": 40,
@@ -230,9 +236,11 @@ exports[`renders properly for a user with a credit card 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
+                className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
-                fontSize={2}
-                lineHeight={5}
+                fontFamily="Unica77LL-Medium"
+                fontSize={14}
+                lineHeight={24}
                 style={
                   Array [
                     Object {
@@ -257,10 +265,12 @@ exports[`renders properly for a user with a credit card 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
+                className="sc-bdVaJa bDWFJH"
                 color="#666"
                 ellipsizeMode="tail"
-                fontSize={2}
-                lineHeight={5}
+                fontFamily="Unica77LL-Regular"
+                fontSize={14}
+                lineHeight={24}
                 style={
                   Array [
                     Object {
@@ -398,10 +408,12 @@ exports[`renders properly for a user with a credit card 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bwzfXH uTxCW"
           color="black60"
           ellipsizeMode="tail"
-          fontSize={2}
-          lineHeight={2}
+          fontFamily="AGaramondPro-Regular"
+          fontSize={14}
+          lineHeight={18}
           mt={2}
           style={
             Array [
@@ -556,9 +568,11 @@ exports[`renders properly for a user without a credit card 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
         ellipsizeMode="tail"
-        fontSize={5}
-        lineHeight={7}
+        fontFamily="AGaramondPro-Semibold"
+        fontSize={22}
+        lineHeight={28}
         m={4}
         mb={3}
         style={
@@ -592,15 +606,17 @@ exports[`renders properly for a user without a credit card 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
-          fontSize={3}
-          lineHeight={5}
+          fontFamily="Unica77LL-Medium"
+          fontSize={16}
+          lineHeight={22}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 16,
-                "lineHeight": 24,
+                "lineHeight": 22,
               },
               undefined,
             ]
@@ -621,9 +637,11 @@ exports[`renders properly for a user without a credit card 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
-          fontSize={1}
-          lineHeight={1}
+          fontFamily="Unica77LL-Medium"
+          fontSize={12}
+          lineHeight={16}
           style={
             Array [
               Object {
@@ -641,19 +659,19 @@ exports[`renders properly for a user without a credit card 1`] = `
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
         ellipsizeMode="tail"
-        fontSize={4}
-        lineHeight={6}
-        mb={5}
-        ml={40}
-        mr={40}
-        mt={5}
+        fontFamily="AGaramondPro-Semibold"
+        fontSize={18}
+        lineHeight={22}
+        mx={6}
+        my={5}
         style={
           Array [
             Object {
               "fontFamily": "AGaramondPro-Semibold",
               "fontSize": 18,
-              "lineHeight": 26,
+              "lineHeight": 22,
               "marginBottom": 30,
               "marginLeft": 40,
               "marginRight": 40,
@@ -736,9 +754,11 @@ exports[`renders properly for a user without a credit card 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bwzfXH uTxCW"
             ellipsizeMode="tail"
-            fontSize={3}
-            lineHeight={5}
+            fontFamily="AGaramondPro-Semibold"
+            fontSize={16}
+            lineHeight={24}
             style={
               Array [
                 Object {
@@ -783,10 +803,12 @@ exports[`renders properly for a user without a credit card 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
             color="purple100"
             ellipsizeMode="tail"
-            fontSize={1}
-            lineHeight={1}
+            fontFamily="Unica77LL-Regular"
+            fontSize={12}
+            lineHeight={16}
             mb={1}
             ml={3}
             style={
@@ -874,9 +896,11 @@ exports[`renders properly for a user without a credit card 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bwzfXH uTxCW"
             ellipsizeMode="tail"
-            fontSize={3}
-            lineHeight={5}
+            fontFamily="AGaramondPro-Semibold"
+            fontSize={16}
+            lineHeight={24}
             style={
               Array [
                 Object {
@@ -921,10 +945,12 @@ exports[`renders properly for a user without a credit card 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
             color="purple100"
             ellipsizeMode="tail"
-            fontSize={1}
-            lineHeight={1}
+            fontFamily="Unica77LL-Regular"
+            fontSize={12}
+            lineHeight={16}
             mb={1}
             ml={3}
             style={
@@ -1047,9 +1073,11 @@ exports[`renders properly for a user without a credit card 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
+                className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
-                fontSize={2}
-                lineHeight={5}
+                fontFamily="Unica77LL-Medium"
+                fontSize={14}
+                lineHeight={24}
                 style={
                   Array [
                     Object {
@@ -1074,10 +1102,12 @@ exports[`renders properly for a user without a credit card 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
+                className="sc-bdVaJa bDWFJH"
                 color="#666"
                 ellipsizeMode="tail"
-                fontSize={2}
-                lineHeight={5}
+                fontFamily="Unica77LL-Regular"
+                fontSize={14}
+                lineHeight={24}
                 style={
                   Array [
                     Object {
@@ -1215,10 +1245,12 @@ exports[`renders properly for a user without a credit card 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bwzfXH uTxCW"
           color="black60"
           ellipsizeMode="tail"
-          fontSize={2}
-          lineHeight={2}
+          fontFamily="AGaramondPro-Regular"
+          fontSize={14}
+          lineHeight={18}
           mt={2}
           style={
             Array [

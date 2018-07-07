@@ -1,4 +1,5 @@
 import { stringify } from "qs"
+import { Serif } from "@artsy/palette"
 import React from "react"
 import { ActivityIndicator, NativeModules, NavigatorIOS, ScrollView, TouchableWithoutFeedback } from "react-native"
 
@@ -9,7 +10,6 @@ import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
 import { Input } from "../Components/Input"
 import { Title } from "../Components/Title"
-import { Serif18, SerifItalic18 } from "../Elements/Typography"
 import { Country, SearchResult } from "../types"
 
 const { Emission } = NativeModules
@@ -112,16 +112,16 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
               {results.length > 0 && !isLoading
                 ? results.map(result => (
                     <TouchableWithoutFeedback key={result.id} onPress={() => this.locationSelected(result)}>
-                      <Serif18 ml={3} mb={3}>
+                      <Serif size="4" ml={3} mb={3}>
                         {result.name}
-                      </Serif18>
+                      </Serif>
                     </TouchableWithoutFeedback>
                   ))
                 : query &&
                   !isLoading && (
-                    <Serif18 ml={3} color="black30">
-                      Could not find <SerifItalic18>{query}</SerifItalic18>
-                    </Serif18>
+                    <Serif size="4" ml={3} color="black30">
+                      Could not find <Serif italic size="4">{query}</Serif>
+                    </Serif>
                   )}
             </ScrollView>
           </Container>

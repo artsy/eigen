@@ -1,9 +1,9 @@
+import { Sans, Serif } from "@artsy/palette"
 import React from "react"
 import { TextInput, TouchableWithoutFeedback } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import { Button } from "../../Components/Button"
-import { Sans12, Serif16 } from "../../Elements/Typography"
 import { BillingAddress } from "../BillingAddress"
 
 import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
@@ -65,12 +65,12 @@ it("updates the validation for country when coming back from the select country 
 
   component.root.findByType(Button).instance.props.onPress()
 
-  expect(component.root.findByType(Sans12).props.children).toEqual("This field is required")
+  expect(component.root.findByType(Sans).props.children).toEqual("This field is required")
 
   selectCountry(component, fakeNavigator, billingAddress.country)
 
   // The <Sans12> instances in the BillingAddress screen display error messages
-  expect(component.root.findAllByType(Sans12).length).toEqual(0)
+  expect(component.root.findAllByType(Sans).length).toEqual(0)
 })
 
 it("pre-fills the fields if initial billing address is provided", () => {
@@ -83,12 +83,12 @@ it("pre-fills the fields if initial billing address is provided", () => {
   expect(textInputComponent(component, "State, Province, or Region").props.value).toEqual("NY")
   expect(textInputComponent(component, "Postal code").props.value).toEqual("10013")
 
-  const countryField = component.root.findAllByType(Serif16)[7]
+  const countryField = component.root.findAllByType(Serif)[7]
 
   expect(countryField.props.children).toEqual("United States")
 })
 
-const errorTextComponent = (component, label) => findFieldForInput(component, { label }).findByType(Sans12)
+const errorTextComponent = (component, label) => findFieldForInput(component, { label }).findByType(Sans)
 
 const textInputComponent = (component, label) => findFieldForInput(component, { label }).findByType(TextInput)
 

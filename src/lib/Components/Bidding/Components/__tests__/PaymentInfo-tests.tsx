@@ -1,7 +1,7 @@
+import { Serif } from "@artsy/palette"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import { Serif16 } from "../../Elements/Typography"
 import { BillingAddress } from "../../Screens/BillingAddress"
 import { CreditCardForm } from "../../Screens/CreditCardForm"
 import { PaymentInfo } from "../PaymentInfo"
@@ -28,7 +28,7 @@ it("shows the billing address that the user typed in the billing address form", 
   billingAddressRow.instance.props.onPress()
   expect(nextStep.component).toEqual(BillingAddress)
 
-  expect(billingAddressRow.findByType(Serif16).props.children).toEqual("401 Broadway 25th floor New York NY")
+  expect(billingAddressRow.findAllByType(Serif)[1].props.children).toEqual("401 Broadway 25th floor New York NY")
 })
 
 it("shows the cc info that the user had typed into the form", () => {
@@ -36,7 +36,7 @@ it("shows the cc info that the user had typed into the form", () => {
   creditCardRow.instance.props.onPress()
   expect(nextStep.component).toEqual(CreditCardForm)
 
-  expect(creditCardRow.findByType(Serif16).props.children).toEqual("VISA •••• 4242")
+  expect(creditCardRow.findAllByType(Serif)[1].props.children).toEqual("VISA •••• 4242")
 })
 
 const billingAddress = {

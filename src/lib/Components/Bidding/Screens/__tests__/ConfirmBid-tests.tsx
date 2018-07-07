@@ -1,3 +1,4 @@
+import { Serif } from "@artsy/palette"
 import { merge, times } from "lodash"
 import React from "react"
 import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
@@ -5,7 +6,6 @@ import "react-native"
 import * as renderer from "react-test-renderer"
 
 import Spinner from "../../../Spinner"
-import { Serif14, Serif16 } from "../../Elements/Typography"
 
 import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Button } from "../../Components/Button"
@@ -92,7 +92,7 @@ describe("checkbox and payment info display", () => {
     expect(component.root.findAllByType(Checkbox).length).toEqual(0)
     expect(component.root.findAllByType(BidInfoRow).length).toEqual(1)
     // still includes "You agree to..." text and link
-    expect(component.root.findAllByType(Serif14)[1].props.children.join("")).toContain("You agree to")
+    expect(component.root.findAllByType(Serif)[3].props.children.join("")).toContain("You agree to")
   })
 
   it("shows a checkbox but no payment info if the user is not registered and has cc on file", () => {
@@ -253,7 +253,7 @@ describe("editing bid amount", () => {
     const component = renderer.create(<ConfirmBid {...initialPropsForRegisteredUser} navigator={fakeNavigator} />)
 
     const selectMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
-    expect(selectMaxBidRow.findByType(Serif16).props.children).toEqual("$45,000")
+    expect(selectMaxBidRow.findByType(Serif).props.children).toEqual("$45,000")
     selectMaxBidRow.instance.props.onPress()
 
     const editScreen = fakeNavigator.nextStep()
@@ -264,7 +264,7 @@ describe("editing bid amount", () => {
     editScreen.root.findByType(Button).instance.props.onPress()
 
     const updatedBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
-    expect(updatedBidRow.findByType(Serif16).props.children).toEqual("$46,000")
+    expect(updatedBidRow.findByType(Serif).props.children).toEqual("$46,000")
   })
 })
 
@@ -455,7 +455,7 @@ describe("ConfirmBid for unqualified user", () => {
 
     nextStep.passProps.onSubmit(billingAddress)
 
-    expect(billingAddressRow.findByType(Serif16).props.children).toEqual("401 Broadway 25th floor New York NY")
+    expect(billingAddressRow.findAllByType(Serif)[1].props.children).toEqual("401 Broadway 25th floor New York NY")
   })
 
   it("shows the credit card form when the user tap the edit text in the credit card row", () => {
@@ -653,7 +653,7 @@ describe("ConfirmBid for unqualified user", () => {
 
 const serif14Children = comp =>
   comp.root
-    .findAllByType(Serif14)
+    .findAllByType(Serif)
     .map(c => c.props.children.join(""))
     .join(" ")
 

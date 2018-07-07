@@ -1,5 +1,4 @@
+import { Serif } from "@artsy/palette"
 import React from "react"
 
-import { SerifSemibold22t } from "../Elements/Typography"
-
-export const Title = props => <SerifSemibold22t m={4} textAlign="center" {...props} />
+export const Title = props => <Serif size="5t" weight="semibold" m={4} textAlign="center" {...props} />
