@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@artsy/palette@^2.6.3":
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-2.6.3.tgz#dc2efcd875ab1aaba5bf361d9e305451f4c76b9b"
+  dependencies:
+    react "^16.3.2"
+    styled-system "^2.2.5"
+
 "@babel/code-frame@7.0.0-beta.40":
   version "7.0.0-beta.40"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.0.0-beta.40.tgz#37e2b0cf7c56026b4b21d3927cadf81adec32ac6"
@@ -9055,6 +9062,15 @@ react@^16.3.0-alpha.1:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
+react@^16.3.2:
+  version "16.4.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.4.1.tgz#de51ba5764b5dbcd1f9079037b862bd26b82fe32"
+  dependencies:
+    fbjs "^0.8.16"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
+
 read-pkg-up@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-1.0.1.tgz#9d63c13276c065918d57f002a57f40a1b643fb02"
@@ -10293,6 +10309,12 @@ styled-components@^3.1.4:
 styled-system@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/styled-system/-/styled-system-2.2.4.tgz#9dbdca131c9ad75364dc8917e1df0eb0b92eb38e"
+  dependencies:
+    prop-types "^15.6.0"
+
+styled-system@^2.2.5:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/styled-system/-/styled-system-2.3.3.tgz#c503c7d3f2ca58548bdd7f92457d7d12f591087c"
   dependencies:
     prop-types "^15.6.0"
 
