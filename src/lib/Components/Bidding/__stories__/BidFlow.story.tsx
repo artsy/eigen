@@ -57,6 +57,20 @@ storiesOf("Bidding")
       />
     )
   })
+  .add("Confirm Bid (no artwork date)", () => {
+    return (
+      <ConfirmBid
+        sale_artwork={{
+          _id: "saleartwork12345",
+          sale: { id: "sale-id", live_start_at: "2018-08-11T01:00:00+00:00", end_at: null },
+          artwork: { id: "artwork-id", title: "Morgan Hill (Prototype)", date: null, artist_names: "Lewis balts" },
+          lot_label: "2",
+        }}
+        me={{ has_qualified_credit_cards: false, bidders: [{ qualified_for_bidding: true }] }}
+        bid={{ display: "$45,000", cents: 4500000 }}
+      />
+    )
+  })
   .add("Confirm Bid (not registered, no qualified cc)", () => {
     return (
       <NavigatorIOS
