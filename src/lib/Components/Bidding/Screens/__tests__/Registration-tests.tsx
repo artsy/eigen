@@ -111,8 +111,22 @@ describe("when pressing register button", () => {
     expect(component.root.findAllByType(Spinner).length).toEqual(1)
   })
 
-  xit("displays an error message on a stripe failure", () => {
-    // TODO: https://artsyproduct.atlassian.net/browse/PURCHASE-195
+  it("displays an error message on a stripe failure", () => {
+    stripe.createTokenWithCard.mockImplementation(() => {
+      throw new Error("Error tokenizing card")
+    })
+    console.error = jest.fn() // Silences component logging.
+    const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+
+    component.root.instance.setState({ billingAddress })
+    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
+
+    jest.runAllTicks()
+
+    expect(nextStep.component).toEqual(RegistrationResult)
+    expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusError })
   })
 
   it("displays an error message on a creditCardMutation failure", () => {

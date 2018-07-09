@@ -166,26 +166,31 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   async createCreditCardAndBidderPosition() {
     const { billingAddress, creditCardFormParams } = this.state
-    const token = await stripe.createTokenWithCard({
-      ...creditCardFormParams,
-      name: billingAddress.fullName,
-      addressLine1: billingAddress.addressLine1,
-      addressLine2: billingAddress.addressLine2,
-      addressCity: billingAddress.city,
-      addressState: billingAddress.state,
-      addressZip: billingAddress.postalCode,
-    })
 
-    commitMutation(this.props.relay.environment, {
-      onCompleted: (_, errors) => (isEmpty(errors) ? this.createBidderPosition() : this.presentErrorResult(errors)),
-      onError: this.presentErrorResult.bind(this),
-      mutation: creditCardMutation,
-      variables: {
-        input: {
-          token: token.tokenId,
+    try {
+      const token = await stripe.createTokenWithCard({
+        ...creditCardFormParams,
+        name: billingAddress.fullName,
+        addressLine1: billingAddress.addressLine1,
+        addressLine2: billingAddress.addressLine2,
+        addressCity: billingAddress.city,
+        addressState: billingAddress.state,
+        addressZip: billingAddress.postalCode,
+      })
+
+      commitMutation(this.props.relay.environment, {
+        onCompleted: (_, errors) => (isEmpty(errors) ? this.createBidderPosition() : this.presentErrorResult(errors)),
+        onError: this.presentErrorResult.bind(this),
+        mutation: creditCardMutation,
+        variables: {
+          input: {
+            token: token.tokenId,
+          },
         },
-      },
-    })
+      })
+    } catch (error) {
+      this.presentErrorResult(error)
+    }
   }
 
   createBidderPosition() {
