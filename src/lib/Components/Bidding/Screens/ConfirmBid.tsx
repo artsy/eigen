@@ -24,6 +24,7 @@ import { Title } from "../Components/Title"
 import { Address, Bid, BidderPositionResult, PaymentCardTextFieldParams, StripeToken } from "../types"
 
 import { BidResultScreen } from "./BidResult"
+import { SelectMaxBidEdit } from "./SelectMaxBidEdit"
 
 import { ConfirmBid_me } from "__generated__/ConfirmBid_me.graphql"
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
@@ -35,10 +36,11 @@ stripe.setOptions({ publishableKey: Emission.stripePublishableKey })
 export interface ConfirmBidProps extends ViewProperties {
   sale_artwork: ConfirmBid_sale_artwork
   me: ConfirmBid_me
-  bid: Bid
   relay?: RelayRefetchProp
   navigator?: NavigatorIOS
   refreshSaleArtwork?: () => void
+  increments: any
+  selectedBidIndex: number
 }
 
 interface ConfirmBidState {
@@ -49,6 +51,7 @@ interface ConfirmBidState {
   isLoading: boolean
   requiresCheckbox: boolean
   requiresPaymentInformation: boolean
+  selectedBidIndex: number
 }
 
 const MAX_POLL_ATTEMPTS = 20
@@ -139,6 +142,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       isLoading: false,
       requiresCheckbox,
       requiresPaymentInformation,
+      selectedBidIndex: this.props.selectedBidIndex,
     }
   }
 
@@ -203,7 +207,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         input: {
           sale_id: this.props.sale_artwork.sale.id,
           artwork_id: this.props.sale_artwork.artwork.id,
-          max_bid_amount_cents: this.props.bid.cents,
+          max_bid_amount_cents: this.selectedBid().cents,
         },
       },
     })
@@ -276,7 +280,15 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   goBackToSelectMaxBid() {
-    this.props.navigator.pop()
+    this.props.navigator.push({
+      component: SelectMaxBidEdit,
+      title: "",
+      passProps: {
+        increments: this.props.increments,
+        selectedBidIndex: this.state.selectedBidIndex,
+        updateSelectedBid: this.updateSelectedBid.bind(this),
+      },
+    })
   }
 
   presentErrorResult(error) {
@@ -317,6 +329,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     this.setState({ isLoading: false })
   }
 
+  updateSelectedBid(newBidIndex: number) {
+    this.setState({ selectedBidIndex: newBidIndex })
+  }
+
   render() {
     const { artwork, lot_label, sale } = this.props.sale_artwork
     const { requiresPaymentInformation, requiresCheckbox } = this.state
@@ -341,7 +357,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
             <Divider />
 
-            <BidInfoRow label="Max bid" value={this.props.bid.display} onPress={() => this.goBackToSelectMaxBid()} />
+            <BidInfoRow
+              label="Max bid"
+              value={this.selectedBid().display}
+              onPress={() => this.goBackToSelectMaxBid()}
+            />
 
             {requiresPaymentInformation ? (
               <PaymentInfo
@@ -389,6 +409,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         </Container>
       </BiddingThemeProvider>
     )
+  }
+
+  private selectedBid(): Bid {
+    return this.props.increments[this.state.selectedBidIndex]
   }
 
   private determineDisplayRequirements(bidders: ReadonlyArray<any>, hasQualifiedCreditCards: boolean) {

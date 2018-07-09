@@ -33,6 +33,8 @@ import stripe from "tipsi-stripe"
 
 import objectContaining = jasmine.objectContaining
 import any = jasmine.any
+import { FakeNavigator } from "lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
+import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
 
 let nextStep
 const mockNavigator = { push: route => (nextStep = route) }
@@ -189,6 +191,33 @@ describe("when pressing bid button", () => {
         )
       })
     })
+  })
+})
+
+describe("editing bid amount", () => {
+  it("allows you to go to the max bid edit screen and select a new max bid", () => {
+    const fakeNavigator = new FakeNavigator()
+    const fakeNavigatorProps = {
+      ...initialPropsForRegisteredUser,
+      navigator: fakeNavigator,
+    }
+    fakeNavigator.push({ component: ConfirmBid, id: "", title: "", passProps: fakeNavigatorProps })
+
+    const component = renderer.create(<ConfirmBid {...initialPropsForRegisteredUser} navigator={fakeNavigator} />)
+
+    const selectMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
+    expect(selectMaxBidRow.findByType(Serif16).props.children).toEqual("$45,000")
+    selectMaxBidRow.instance.props.onPress()
+
+    const editScreen = fakeNavigator.nextStep()
+    expect(editScreen.root.type).toEqual(SelectMaxBidEdit)
+    expect(editScreen.root.props.selectedBidIndex).toEqual(0)
+    editScreen.root.instance.setState({ selectedBidIndex: 1 })
+
+    editScreen.root.findByType(Button).instance.props.onPress()
+
+    const updatedBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
+    expect(updatedBidRow.findByType(Serif16).props.children).toEqual("$46,000")
   })
 })
 
@@ -597,10 +626,17 @@ const stripeToken = {
 
 const initialProps = {
   sale_artwork: saleArtwork,
-  bid: {
-    cents: 450000,
-    display: "$45,000",
-  },
+  increments: [
+    {
+      cents: 450000,
+      display: "$45,000",
+    },
+    {
+      cents: 460000,
+      display: "$46,000",
+    },
+  ],
+  selectedBidIndex: 0,
   relay: {
     environment: null,
   },
