@@ -16,6 +16,8 @@
 
 ### Master
 
+* Fix trailing comma on confirm bid screen when artwork does not have a date
+
 ### 1.5.9
 
 * Fix incorrect NSNotification name for sale registration - erikdstock
