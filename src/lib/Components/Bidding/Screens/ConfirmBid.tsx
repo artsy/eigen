@@ -290,9 +290,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   presentBidResult(bidderPositionResult: BidderPositionResult) {
-    if (this.props.refreshSaleArtwork) {
-      this.props.refreshSaleArtwork()
-    }
     NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
       ARAuctionID: this.props.sale_artwork.sale.id,
       ARAuctionArtworkID: this.props.sale_artwork.artwork.id,
@@ -376,7 +373,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
             <Flex m={4}>
               <Button
-                text="Place bid"
+                text="Bid"
                 inProgress={this.state.isLoading}
                 selected={this.state.isLoading}
                 onPress={this.canPlaceBid() ? () => this.placeBid() : null}
