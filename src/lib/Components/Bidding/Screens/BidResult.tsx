@@ -47,6 +47,8 @@ export class BidResult extends React.Component<BidResultProps> {
     if (this.props.refreshBidderInfo) {
       this.props.refreshBidderInfo()
     }
+
+    // fetch the latest increments for the select max bid screen
     if (this.props.refreshSaleArtwork()) {
       this.props.refreshSaleArtwork()
     }
@@ -67,9 +69,7 @@ export class BidResult extends React.Component<BidResultProps> {
   render() {
     const { sale_artwork, bidderPositionResult } = this.props
     const { live_start_at, end_at } = sale_artwork.sale
-    const { status, message_header, message_description_md, position } = bidderPositionResult
-
-    const nextBid = ((position && position.suggested_next_bid) || sale_artwork.minimum_next_bid || ({} as any)).display
+    const { status, message_header, message_description_md } = bidderPositionResult
 
     return (
       <BiddingThemeProvider>
@@ -92,7 +92,7 @@ export class BidResult extends React.Component<BidResultProps> {
             </Flex>
           </View>
           {this.canBidAgain(status) ? (
-            <Button text={`Bid ${nextBid} or more`} onPress={() => this.onPressBidAgain()} />
+            <Button text="Bid again" onPress={() => this.onPressBidAgain()} />
           ) : (
             <BidGhostButton text="Continue" onPress={this.exitBidFlow} />
           )}
