@@ -55,7 +55,7 @@ export class SelectMaxBidEdit extends React.Component<SelectMaxBidProps, SelectM
           />
 
           <Flex m={4}>
-            <Button text="Select bid" onPress={this.onPressNext} />
+            <Button text="Next" onPress={this.onPressNext} />
           </Flex>
         </Container>
       </BiddingThemeProvider>

@@ -217,8 +217,8 @@ describe("editing bid amount", () => {
 
     editScreen.root.findByType(Button).instance.props.onPress()
 
-    const confirmScreen = fakeNavigator.nextStep()
-    expect(confirmScreen.root.type).toEqual(ConfirmBid)
+    const updatedBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
+    expect(updatedBidRow.findByType(Serif16).props.children).toEqual("$46,000")
   })
 })
 
