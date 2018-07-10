@@ -38,6 +38,7 @@ class JWT {
 class BiddingCredentials {
     let bidders: [Bidder]
     let paddleNumber: String?
+    let userID: String?
 
     var canBid: Bool {
         return bidders.isNotEmpty
@@ -47,9 +48,10 @@ class BiddingCredentials {
         return bidders.bestBidder?.bidderID
     }
 
-    init(bidders: [Bidder], paddleNumber: String?) {
+    init(bidders: [Bidder], paddleNumber: String?, userID: String?) {
         self.bidders = bidders
         self.paddleNumber = paddleNumber
+        self.userID = userID
     }
 }
 
@@ -112,10 +114,11 @@ extension LiveAuctionStaticDataFetcherType {
 
     func parseBidderCredentials(_ json: JSON) -> BiddingCredentials {
         let paddleNumber = json["data"]["me"]["paddle_number"].string
+        let userID = json["data"]["me"]["id"].string
         let bidders = json["data"]["me"]["bidders"].arrayValue.compactMap { bidder in
             return Bidder(json: bidder.dictionaryObject)
         }
-        return BiddingCredentials(bidders: bidders, paddleNumber: paddleNumber)
+        return BiddingCredentials(bidders: bidders, paddleNumber: paddleNumber, userID: userID)
     }
 
 }

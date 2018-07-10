@@ -17,7 +17,7 @@ class LiveAuctionStateManagerSpec: QuickSpec {
 
             sale = testLiveSale()
 
-            let creds = BiddingCredentials(bidders: [], paddleNumber: "")
+            let creds = BiddingCredentials(bidders: [], paddleNumber: "", userID: "")
             subject = LiveAuctionStateManager(host: "http://localhost", sale: sale, saleArtworks: [], jwt: stubbedJWT, bidderCredentials: creds, socketCommunicatorCreator: test_socketCommunicatorCreator(), stateReconcilerCreator: test_stateReconcilerCreator())
         }
 

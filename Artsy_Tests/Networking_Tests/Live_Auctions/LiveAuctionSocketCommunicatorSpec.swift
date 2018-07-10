@@ -70,7 +70,7 @@ class LiveAuctionSocketCommunicatorSpec: QuickSpec {
 
         describe("connected") {
             var subject: LiveAuctionSocketCommunicatorType!
-            let bidderCredentials = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: "123456")
+            let bidderCredentials = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: "123456", userID: "abcd")
 
             beforeEach {
                 subject = LiveAuctionSocketCommunicator(host: host, causalitySaleID: saleID, jwt: jwt, socketCreator: test_SocketCreator())

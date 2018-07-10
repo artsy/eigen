@@ -16,7 +16,7 @@ class LiveSalesPersonSpecs: QuickSpec {
                     ["from": 0, "amount": 25] // Intentional out of order.
                 ]], error: Void())
 
-            let subject = LiveAuctionsSalesPerson(sale: sale, jwt: StubbedCredentials.registered.jwt, biddingCredentials: BiddingCredentials(bidders: [], paddleNumber: nil))
+            let subject = LiveAuctionsSalesPerson(sale: sale, jwt: StubbedCredentials.registered.jwt, biddingCredentials: BiddingCredentials(bidders: [], paddleNumber: nil, userID: nil))
 
             expect(subject.bidIncrements) == subject.bidIncrements.sorted()
         }

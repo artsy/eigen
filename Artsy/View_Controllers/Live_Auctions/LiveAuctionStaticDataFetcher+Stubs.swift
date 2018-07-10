@@ -9,6 +9,7 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
     var bidders: [Bidder] = []
     var paddleNumber: String = "123456"
+    var userID: String = "abcd"
 
     init() {
         if let bidder = try? Bidder(dictionary: ["qualifiedForBidding": true, "bidderID": "123456"], error: Void()) {
@@ -21,7 +22,7 @@ class Stubbed_StaticDataFetcher: LiveAuctionStaticDataFetcherType {
 
         let json = loadJSON("live_auctions_static")
         let sale = self.parseSale(JSON(json))!
-        let bidderCredentials = BiddingCredentials(bidders: bidders, paddleNumber: paddleNumber)
+        let bidderCredentials = BiddingCredentials(bidders: bidders, paddleNumber: paddleNumber, userID: userID)
 
         let stubbedJWT = JWT(jwtString: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWN0aW9ucyIsInJvbGUiOiJvYnNlcnZlciIsInVzZXJJZCI6bnVsbCwic2FsZUlkIjoiNTRjN2U4ZmE3MjYxNjkyYjVhY2QwNjAwIiwiYmlkZGVySWQiOm51bGwsImlhdCI6MTQ2NTIzNDI2NDI2N30.2q3bh1E897walHdSXIocGKElbxOhCGmCCsL8Bf-UWNA")!
         let s = (sale: sale, jwt: stubbedJWT, bidderCredentials: bidderCredentials)

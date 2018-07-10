@@ -1,6 +1,7 @@
 {
   %@
   me {
+    id
     paddle_number
     bidders(sale_id: "%@") {
       id

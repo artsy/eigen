@@ -7,7 +7,7 @@ func stub_auctionSale() -> LiveSale {
     return stateFetcher.fetchStaticData().peek()!.sale
 }
 
-func stub_auctionSalesPerson(_ auctionViewModel: LiveAuctionViewModelType? = nil, creds: BiddingCredentials = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: "123456")) -> Stub_LiveAuctionsSalesPerson {
+func stub_auctionSalesPerson(_ auctionViewModel: LiveAuctionViewModelType? = nil, creds: BiddingCredentials = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: "123456", userID: "abcd")) -> Stub_LiveAuctionsSalesPerson {
     let sale = stub_auctionSale()
 
     let auctionViewModelCreator: LiveAuctionsSalesPerson.AuctionViewModelCreator

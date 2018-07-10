@@ -177,7 +177,7 @@ private extension SocketSetup {
 private typealias PublicFunctions = LiveAuctionSocketCommunicator
 extension PublicFunctions {
     func bidOnLot(_ lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {
-        guard let bidderID = bidderCredentials.bidderID, let paddleNumber = bidderCredentials.paddleNumber else { return }
+        guard let bidderID = bidderCredentials.bidderID, let paddleNumber = bidderCredentials.paddleNumber, let userID = bidderCredentials.userID else { return }
         writeJSON([
             "key": bidUUID,
             "type": "PostEvent",
@@ -185,14 +185,14 @@ extension PublicFunctions {
                 "type": "FirstPriceBidPlaced",
                 "lotId": lotID,
                 "amountCents": NSNumber(value: amountCents as UInt64),
-                "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID, "paddleNumber": paddleNumber],
+                "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID, "paddleNumber": paddleNumber, "userId": userID],
                 "clientMetadata": clientMetadata()
             ]
         ] as NSDictionary)
     }
 
     func leaveMaxBidOnLot(_ lotID: String, amountCents: UInt64, bidderCredentials: BiddingCredentials, bidUUID: String) {
-        guard let bidderID = bidderCredentials.bidderID, let paddleNumber = bidderCredentials.paddleNumber else { return }
+        guard let bidderID = bidderCredentials.bidderID, let paddleNumber = bidderCredentials.paddleNumber, let userID = bidderCredentials.userID else { return }
 
         writeJSON([
             "key": bidUUID,
@@ -201,7 +201,7 @@ extension PublicFunctions {
                 "type": "SecondPriceBidPlaced",
                 "lotId": lotID,
                 "amountCents": NSNumber(value: amountCents as UInt64),
-                "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID, "paddleNumber": paddleNumber],
+                "bidder": [ "type": "ArtsyBidder", "bidderId": bidderID, "paddleNumber": paddleNumber, "userId": userID],
                 "clientMetadata": clientMetadata()
             ]
         ] as NSDictionary)
