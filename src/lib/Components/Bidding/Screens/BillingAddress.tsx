@@ -104,7 +104,12 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
   }
 
   onCountrySelected(country: Country) {
-    this.setState({ values: { ...this.state.values, country } })
+    const values = { ...this.state.values, country }
+
+    this.setState({
+      values,
+      errors: this.validateAddress(values),
+    })
   }
 
   @track({

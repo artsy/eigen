@@ -8,6 +8,13 @@ import { BillingAddress } from "../BillingAddress"
 
 import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
 
+const selectCountry = (component, navigator, country) => {
+  // The second `<TouchableWithoutFeedback>` is a button that pushes a new `<SelectCountry>` instance.
+  component.root.findAllByType(TouchableWithoutFeedback)[1].instance.props.onPress()
+
+  navigator.nextStep().root.instance.props.onCountrySelected(country)
+}
+
 it("renders properly", () => {
   const component = renderer.create(<BillingAddress />).toJSON()
   expect(component).toMatchSnapshot()
@@ -37,15 +44,33 @@ it("calls the onSubmit() callback with billing address when ADD BILLING ADDRESS 
   textInputComponent(component, "City").props.onChangeText("New York")
   textInputComponent(component, "State, Province, or Region").props.onChangeText("NY")
   textInputComponent(component, "Postal code").props.onChangeText("10013")
+  selectCountry(component, fakeNavigator, billingAddress.country)
 
-  // The second `<TouchableWithoutFeedback>` is a button that pushes a new `<SelectCountry>` instance.
-  component.root.findAllByType(TouchableWithoutFeedback)[1].instance.props.onPress()
-
-  const selectCountry = fakeNavigator.nextStep()
-  selectCountry.root.instance.props.onCountrySelected(billingAddress.country)
   component.root.findByType(Button).instance.props.onPress()
 
   expect(onSubmitMock).toHaveBeenCalledWith(billingAddress)
+})
+
+it("updates the validation for country when coming back from the select country screen", () => {
+  const fakeNavigator = new FakeNavigator()
+
+  const component = renderer.create(<BillingAddress onSubmit={() => null} navigator={fakeNavigator as any} />)
+
+  textInputComponent(component, "Full name").props.onChangeText("Yuki Stockmeier")
+  textInputComponent(component, "Address line 1").props.onChangeText("401 Broadway")
+  textInputComponent(component, "Address line 2 (optional)").props.onChangeText("25th floor")
+  textInputComponent(component, "City").props.onChangeText("New York")
+  textInputComponent(component, "State, Province, or Region").props.onChangeText("NY")
+  textInputComponent(component, "Postal code").props.onChangeText("10013")
+
+  component.root.findByType(Button).instance.props.onPress()
+
+  expect(component.root.findByType(Sans12).props.children).toEqual("This field is required")
+
+  selectCountry(component, fakeNavigator, billingAddress.country)
+
+  // The <Sans12> instances in the BillingAddress screen display error messages
+  expect(component.root.findAllByType(Sans12).length).toEqual(0)
 })
 
 it("pre-fills the fields if initial billing address is provided", () => {
