@@ -72,24 +72,14 @@ it("enables the bid button by default if the user is registered", () => {
 it("displays the artwork title correctly with date", () => {
   const component = renderer.create(<ConfirmBid {...initialProps} />)
 
-  expect(
-    component.root
-      .findAllByType(Serif14)
-      .map(c => c.props.children.join(""))
-      .join(" ")
-  ).toContain(", 2015")
+  expect(serif14Children(component)).toContain(", 2015")
 })
 
 it("displays the artwork title correctly without date", () => {
   const datelessProps = merge({}, initialProps, { sale_artwork: { artwork: { date: null } } })
   const component = renderer.create(<ConfirmBid {...datelessProps} />)
 
-  expect(
-    component.root
-      .findAllByType(Serif14)
-      .map(c => c.props.children.join(""))
-      .join(" ")
-  ).not.toContain(",")
+  expect(serif14Children(component)).not.toContain(",")
 })
 
 describe("checkbox and payment info display", () => {
@@ -547,6 +537,12 @@ describe("ConfirmBid for unqualified user", () => {
     })
   })
 })
+
+const serif14Children = comp =>
+  comp.root
+    .findAllByType(Serif14)
+    .map(c => c.props.children.join(""))
+    .join(" ")
 
 const saleArtwork = {
   artwork: {
