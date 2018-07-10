@@ -352,7 +352,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               <SerifSemibold14>Lot {lot_label}</SerifSemibold14>
 
               <SerifItalic14 color="black60" textAlign="center">
-                {artwork.title}, <Serif14>{artwork.date}</Serif14>
+                {artwork.title}
+                {artwork.date && <Serif14>, {artwork.date}</Serif14>}
               </SerifItalic14>
             </Flex>
 

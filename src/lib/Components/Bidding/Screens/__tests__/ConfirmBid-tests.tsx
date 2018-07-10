@@ -1,4 +1,4 @@
-import { times } from "lodash"
+import { merge, times } from "lodash"
 import React from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import "react-native"
@@ -67,6 +67,19 @@ it("enables the bid button by default if the user is registered", () => {
   const component = renderer.create(<ConfirmBid {...initialPropsForRegisteredUser} />)
 
   expect(component.root.findByType(Button).instance.props.onPress).toBeDefined()
+})
+
+it("displays the artwork title correctly with date", () => {
+  const component = renderer.create(<ConfirmBid {...initialProps} />)
+
+  expect(serif14Children(component)).toContain(", 2015")
+})
+
+it("displays the artwork title correctly without date", () => {
+  const datelessProps = merge({}, initialProps, { sale_artwork: { artwork: { date: null } } })
+  const component = renderer.create(<ConfirmBid {...datelessProps} />)
+
+  expect(serif14Children(component)).not.toContain(",")
 })
 
 describe("checkbox and payment info display", () => {
@@ -524,6 +537,12 @@ describe("ConfirmBid for unqualified user", () => {
     })
   })
 })
+
+const serif14Children = comp =>
+  comp.root
+    .findAllByType(Serif14)
+    .map(c => c.props.children.join(""))
+    .join(" ")
 
 const saleArtwork = {
   artwork: {
