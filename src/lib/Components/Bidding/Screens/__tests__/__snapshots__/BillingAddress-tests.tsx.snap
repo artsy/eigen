@@ -521,6 +521,97 @@ exports[`renders properly 1`] = `
           />
         </View>
         <View
+          mb={4}
+          style={
+            Array [
+              Object {
+                "marginBottom": 20,
+              },
+              undefined,
+            ]
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            fontSize={3}
+            lineHeight={5}
+            mb={2}
+            style={
+              Array [
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 16,
+                  "lineHeight": 24,
+                  "marginBottom": 5,
+                },
+                undefined,
+              ]
+            }
+          >
+            Country
+          </Text>
+          <View
+            accessibilityComponentType={undefined}
+            accessibilityLabel={undefined}
+            accessibilityTraits={undefined}
+            accessible={true}
+            border={1}
+            borderColor="black10"
+            hitSlop={undefined}
+            mb={3}
+            nativeID={undefined}
+            onLayout={undefined}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            p={3}
+            pb={2}
+            style={
+              Array [
+                Object {
+                  "borderColor": "#E5E5E5",
+                  "borderStyle": "solid",
+                  "borderWidth": 1,
+                  "marginBottom": 10,
+                  "paddingBottom": 5,
+                  "paddingLeft": 10,
+                  "paddingRight": 10,
+                  "paddingTop": 10,
+                },
+                undefined,
+              ]
+            }
+            testID={undefined}
+          >
+            <Text
+              accessible={true}
+              allowFontScaling={true}
+              color="black30"
+              ellipsizeMode="tail"
+              fontSize={3}
+              lineHeight={5}
+              style={
+                Array [
+                  Object {
+                    "color": "#C2C2C2",
+                    "fontFamily": "AGaramondPro-Regular",
+                    "fontSize": 16,
+                    "lineHeight": 24,
+                  },
+                  undefined,
+                ]
+              }
+            >
+              Select your country
+            </Text>
+          </View>
+        </View>
+        <View
           height={50}
           style={
             Array [

@@ -1,10 +1,12 @@
 import React from "react"
-import { TextInput } from "react-native"
+import { TextInput, TouchableWithoutFeedback } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import { Button } from "../../Components/Button"
-import { Sans12 } from "../../Elements/Typography"
+import { Sans12, Serif16 } from "../../Elements/Typography"
 import { BillingAddress } from "../BillingAddress"
+
+import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
 
 it("renders properly", () => {
   const component = renderer.create(<BillingAddress />).toJSON()
@@ -24,8 +26,10 @@ it("shows an error message for each field", () => {
 })
 
 it("calls the onSubmit() callback with billing address when ADD BILLING ADDRESS is tapped", () => {
+  const fakeNavigator = new FakeNavigator()
   const onSubmitMock = jest.fn()
-  const component = renderer.create(<BillingAddress onSubmit={onSubmitMock} navigator={{ pop: () => null } as any} />)
+
+  const component = renderer.create(<BillingAddress onSubmit={onSubmitMock} navigator={fakeNavigator as any} />)
 
   textInputComponent(component, "Full name").props.onChangeText("Yuki Stockmeier")
   textInputComponent(component, "Address line 1").props.onChangeText("401 Broadway")
@@ -33,6 +37,12 @@ it("calls the onSubmit() callback with billing address when ADD BILLING ADDRESS 
   textInputComponent(component, "City").props.onChangeText("New York")
   textInputComponent(component, "State, Province, or Region").props.onChangeText("NY")
   textInputComponent(component, "Postal code").props.onChangeText("10013")
+
+  // The second `<TouchableWithoutFeedback>` is a button that pushes a new `<SelectCountry>` instance.
+  component.root.findAllByType(TouchableWithoutFeedback)[1].instance.props.onPress()
+
+  const selectCountry = fakeNavigator.nextStep()
+  selectCountry.root.instance.props.onCountrySelected(billingAddress.country)
   component.root.findByType(Button).instance.props.onPress()
 
   expect(onSubmitMock).toHaveBeenCalledWith(billingAddress)
@@ -47,6 +57,10 @@ it("pre-fills the fields if initial billing address is provided", () => {
   expect(textInputComponent(component, "City").props.value).toEqual("New York")
   expect(textInputComponent(component, "State, Province, or Region").props.value).toEqual("NY")
   expect(textInputComponent(component, "Postal code").props.value).toEqual("10013")
+
+  const countryField = component.root.findAllByType(Serif16)[7]
+
+  expect(countryField.props.children).toEqual("United States")
 })
 
 const errorTextComponent = (component, label) => findFieldForInput(component, { label }).findByType(Sans12)
@@ -62,4 +76,8 @@ const billingAddress = {
   city: "New York",
   state: "NY",
   postalCode: "10013",
+  country: {
+    longName: "United States",
+    shortName: "US",
+  },
 }

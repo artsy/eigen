@@ -112,6 +112,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
     addressCity: billingAddress.city,
     addressState: billingAddress.state,
     addressZip: billingAddress.postalCode,
+    addressCountry: billingAddress.country.shortName,
   })
 
   screen = fakeNavigator.nextStep()
@@ -136,6 +137,10 @@ const billingAddress = {
   city: "New York",
   state: "NY",
   postalCode: "10013",
+  country: {
+    longName: "United States",
+    shortName: "US",
+  },
 }
 
 const creditCardFormParams = {

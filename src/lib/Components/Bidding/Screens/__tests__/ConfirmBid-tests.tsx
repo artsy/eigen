@@ -610,6 +610,10 @@ const billingAddress = {
   city: "New York",
   state: "NY",
   postalCode: "10013",
+  country: {
+    longName: "United States",
+    shortName: "US",
+  },
 }
 
 const stripeToken = {

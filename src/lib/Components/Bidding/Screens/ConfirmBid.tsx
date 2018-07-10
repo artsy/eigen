@@ -180,6 +180,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         addressCity: billingAddress.city,
         addressState: billingAddress.state,
         addressZip: billingAddress.postalCode,
+        addressCountry: billingAddress.country.shortName,
       })
 
       commitMutation(this.props.relay.environment, {

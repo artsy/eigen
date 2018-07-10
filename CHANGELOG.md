@@ -22,6 +22,7 @@
 * Add secondary outline button style - maxim
 * Adds `inputRef` to the styled `<Input>` component - yuki24
 * Add analytics to registration screens - maxim
+* Now users can add thier country = yuki24
 
 ### 1.5.8
 
