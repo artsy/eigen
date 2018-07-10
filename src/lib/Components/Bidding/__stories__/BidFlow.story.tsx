@@ -57,6 +57,7 @@ storiesOf("Bidding")
       />
     )
   })
+
   .add("Confirm Bid (no artwork date)", () => {
     return (
       <ConfirmBid
@@ -67,7 +68,8 @@ storiesOf("Bidding")
           lot_label: "2",
         }}
         me={{ has_qualified_credit_cards: false, bidders: [{ qualified_for_bidding: true }] }}
-        bid={{ display: "$45,000", cents: 4500000 }}
+        increments={[{ display: "$45,000", cents: 4500000 }]}
+        selectedBidIndex={0}
       />
     )
   })
