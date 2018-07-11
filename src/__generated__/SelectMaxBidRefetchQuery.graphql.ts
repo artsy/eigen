@@ -22,7 +22,7 @@ query SelectMaxBidRefetchQuery(
 }
 
 fragment SelectMaxBid_sale_artwork on SaleArtwork {
-  increments {
+  increments(useMyMaxBid: true) {
     display
     cents
   }
@@ -116,7 +116,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "SelectMaxBidRefetchQuery",
-  "id": "16019204e77d9cc45fb2961443df41e3",
+  "id": "add71fb5f4b666877f2e0b1415b2fb23",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -163,8 +163,15 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "increments",
-            "storageKey": null,
-            "args": null,
+            "storageKey": "increments(useMyMaxBid:true)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "useMyMaxBid",
+                "value": true,
+                "type": "Boolean"
+              }
+            ],
             "concreteType": "BidIncrementsFormatted",
             "plural": true,
             "selections": [

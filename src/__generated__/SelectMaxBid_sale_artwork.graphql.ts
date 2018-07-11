@@ -22,8 +22,15 @@ const node: ConcreteFragment = {
       "kind": "LinkedField",
       "alias": null,
       "name": "increments",
-      "storageKey": null,
-      "args": null,
+      "storageKey": "increments(useMyMaxBid:true)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "useMyMaxBid",
+          "value": true,
+          "type": "Boolean"
+        }
+      ],
       "concreteType": "BidIncrementsFormatted",
       "plural": true,
       "selections": [
@@ -64,5 +71,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = 'c29e5912aecd7095b4fe9057ffe8c5d2';
+(node as any).hash = 'ad3a7a7befb20c45091b0152c206ad80';
 export default node;
