@@ -15,9 +15,9 @@ import { Registration } from "../Screens/Registration"
 import { RegistrationResult, RegistrationStatus } from "../Screens/RegistrationResult"
 import { MaxBidScreen } from "../Screens/SelectMaxBid"
 
-const testSaleArtworkID = "5b329f757622dd41e6670006"
-const testArtworkID = "john-aldridge-evergreens"
-const testSaleID = "sworders-modern-british-and-20th-century-art"
+const testSaleArtworkID = "5b450d834c8c650001c283df"
+const testArtworkID = "richard-schur-insects"
+const testSaleID = "purchase-team"
 
 const selectMaxBidQuery = graphql`
   query BidFlowSelectMaxBidRendererQuery($saleArtworkID: String!) {
