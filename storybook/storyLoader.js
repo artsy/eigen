@@ -32,6 +32,7 @@ function loadStories() {
   require('../src/lib/Components/Inbox/Conversations/__stories__/ZeroStateInbox.story.tsx');
   require('../src/lib/Components/States/__stories__/ZeroState.story.tsx');
   require('../src/lib/Components/Text/__stories__/Typography.story.tsx');
+  require('../src/lib/Components/__stories__/CustomModal.story.tsx');
   require('../src/lib/Components/__stories__/DottedLine.story.tsx');
   require('../src/lib/Containers/__stories__/Artist.story.tsx');
   require('../src/lib/Containers/__stories__/Gene.story.tsx');
@@ -72,6 +73,7 @@ const stories = [
   '../src/lib/Components/Inbox/Conversations/__stories__/ZeroStateInbox.story.tsx',
   '../src/lib/Components/States/__stories__/ZeroState.story.tsx',
   '../src/lib/Components/Text/__stories__/Typography.story.tsx',
+  '../src/lib/Components/__stories__/CustomModal.story.tsx',
   '../src/lib/Components/__stories__/DottedLine.story.tsx',
   '../src/lib/Containers/__stories__/Artist.story.tsx',
   '../src/lib/Containers/__stories__/Gene.story.tsx',

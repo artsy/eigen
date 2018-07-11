@@ -108,13 +108,13 @@ const styles = StyleSheet.create({
   },
 })
 
-interface CheckMarkPropss {
+interface CheckMarkProps {
   size: number
 }
 
 // This component represents the √ mark in CSS. We are not using styled-system since it's easier to specify raw CSS
 // properties with styled-component.
-export const CheckMark = styled.View.attrs<CheckMarkPropss>({})`
+export const CheckMark = styled.View.attrs<CheckMarkProps>({})`
   transform: rotate(-45deg);
   top: -12%;
   width: ${props => props.size * 0.625};

@@ -1,6 +1,6 @@
 import { times } from "lodash"
 import React from "react"
-import { NativeModules, TouchableWithoutFeedback } from "react-native"
+import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
@@ -34,6 +34,8 @@ import stripe from "tipsi-stripe"
 import objectContaining = jasmine.objectContaining
 import any = jasmine.any
 import { FakeNavigator } from "lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
+import { SecondaryOutlineButton } from "lib/Components/Buttons"
+import { CustomModal } from "lib/Components/CustomModal"
 import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
 
 let nextStep
@@ -42,6 +44,7 @@ jest.useFakeTimers()
 const mockPostNotificationName = jest.fn()
 
 beforeEach(() => {
+  nextStep = null // reset nextStep between tests
   // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
   mockphysics.mockReset()
   mockPostNotificationName.mockReset()
@@ -446,14 +449,71 @@ describe("ConfirmBid for unqualified user", () => {
     )
   })
 
-  it("shows the error screen with a createCreditCard mutation failure", () => {
-    const error = {
-      message: 'GraphQL Timeout Error: Mutation.createCreditCard has timed out after waiting for 5000ms"}',
-    }
+  xit("shows the error screen with the correct error message on a createCreditCard mutation failure", () => {
+    const errors = [
+      {
+        message: `https://stagingapi.artsy.net/api/v1/me/credit_cards?provider=stripe&token=tok_1CmTwUGK3Gnpfa3OqFgqZf8V - {"type":"other_error","message":"No such customer: cus_CrZeblahblah; a similar object exists in live mode, but a test mode key was used to make this request."}`,
+      },
+    ]
 
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted({}, [error]))
+    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted({}, errors))
+
+    const component = renderer.create(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
+
+    // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
+    component.root.instance.setState({ billingAddress })
+    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
+
+    jest.runAllTicks()
+
+    expect(component.root.findByType(CustomModal).findAllByType(Text)[1].props.children).toEqual(
+      "No such customer: cus_CrZeblahblah; a similar object exists in live mode, but a test mode key was used to make this request."
+    )
+    component.root
+      .findByType(CustomModal)
+      .findByType(SecondaryOutlineButton)
+      .props.onPress()
+
+    expect(component.root.findByType(CustomModal).props.visible).toEqual(false)
+  })
+
+  it("shows the error screen with the default error message if there is no message present on a createCreditCard mutation failure", () => {
+    const errors = ["malformed error"]
+
+    console.error = jest.fn() // Silences component logging.
+    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted({}, errors))
+
+    const component = renderer.create(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
+
+    // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
+    component.root.instance.setState({ billingAddress })
+    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
+
+    jest.runAllTicks()
+
+    expect(component.root.findByType(CustomModal).findAllByType(Text)[1].props.children).toEqual(
+      "There was a problem processing your information. Check your payment details and try again."
+    )
+    component.root
+      .findByType(CustomModal)
+      .findByType(SecondaryOutlineButton)
+      .props.onPress()
+
+    // it dismisses the modal
+    expect(component.root.findByType(CustomModal).props.visible).toEqual(false)
+  })
+
+  it("shows the generic error screen on a createCreditCard mutation network failure", () => {
+    console.error = jest.fn() // Silences component logging.
+    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+    relay.commitMutation = jest.fn((_, { onError }) => onError(new TypeError("Network request failed")))
 
     const component = renderer.create(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
 
