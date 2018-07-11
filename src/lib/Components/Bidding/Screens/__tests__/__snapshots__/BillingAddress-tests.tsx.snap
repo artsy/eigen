@@ -495,10 +495,11 @@ exports[`renders properly 1`] = `
             onBlur={[Function]}
             onChangeText={[Function]}
             onFocus={[Function]}
+            onSubmitEditing={[Function]}
             p={3}
             pb={2}
             placeholder="Add your postal code"
-            returnKeyType="default"
+            returnKeyType="next"
             style={
               Array [
                 Object {

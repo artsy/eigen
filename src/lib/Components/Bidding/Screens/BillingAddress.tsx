@@ -190,7 +190,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 {...this.defaultPropsForInput("postalCode")}
                 label="Postal code"
                 placeholder="Add your postal code"
-                returnKeyType="default"
+                onSubmitEditing={() => this.presentSelectCountry()}
               />
 
               <Flex mb={4}>
