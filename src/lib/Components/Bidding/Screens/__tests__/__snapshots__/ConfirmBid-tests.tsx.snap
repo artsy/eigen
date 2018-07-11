@@ -194,7 +194,6 @@ exports[`renders properly 1`] = `
         textAlign="center"
       >
         Meteor Shower
-        , 
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -212,6 +211,7 @@ exports[`renders properly 1`] = `
             ]
           }
         >
+          , 
           2015
         </Text>
       </Text>

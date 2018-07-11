@@ -2,7 +2,7 @@ import React from "react"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
 
-import { Dimensions, KeyboardAvoidingView, NavigatorIOS, ScrollView } from "react-native"
+import { Dimensions, KeyboardAvoidingView, NavigatorIOS, ScrollView, TouchableWithoutFeedback } from "react-native"
 
 import { Flex } from "../Elements/Flex"
 import { Sans12, Serif16 } from "../Elements/Typography"
@@ -15,7 +15,9 @@ import { Button } from "../Components/Button"
 import { Container } from "../Components/Containers"
 import { Input } from "../Components/Input"
 import { Title } from "../Components/Title"
-import { Address } from "../types"
+import { Address, Country } from "../types"
+
+import { SelectCountry } from "./SelectCountry"
 
 interface StyledInputInterface {
   /** The object which styled components wraps */
@@ -47,6 +49,7 @@ interface BillingAddressState {
     addressLine2?: string
     city?: string
     state?: string
+    country?: string
     postalCode?: string
   }
 }
@@ -72,13 +75,14 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
   }
 
   validateAddress(address: Address) {
-    const { fullName, addressLine1, city, state, postalCode } = address
+    const { fullName, addressLine1, city, state, country, postalCode } = address
 
     return {
       fullName: validatePresence(fullName),
       addressLine1: validatePresence(addressLine1),
       city: validatePresence(city),
       state: validatePresence(state),
+      country: validatePresence(country && country.shortName),
       postalCode: validatePresence(postalCode),
     }
   }
@@ -99,6 +103,15 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     }
   }
 
+  onCountrySelected(country: Country) {
+    const values = { ...this.state.values, country }
+
+    this.setState({
+      values,
+      errors: this.validateAddress(values),
+    })
+  }
+
   @track({
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.BidFlowSaveBillingAddress,
@@ -108,7 +121,19 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     this.props.navigator.pop()
   }
 
+  presentSelectCountry() {
+    this.props.navigator.push({
+      component: SelectCountry,
+      title: "",
+      passProps: {
+        onCountrySelected: this.onCountrySelected.bind(this),
+      },
+    })
+  }
+
   render() {
+    const errorForCountry = this.state.errors.country
+
     // TODO: Remove this once React Native has been updated
     const isPhoneX = Dimensions.get("window").height === 812 && Dimensions.get("window").width === 375
     const defaultVerticalOffset = isPhoneX ? 30 : 15
@@ -167,6 +192,22 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 placeholder="Add your postal code"
                 returnKeyType="default"
               />
+
+              <Flex mb={4}>
+                <Serif16 mb={2}>Country</Serif16>
+
+                <TouchableWithoutFeedback onPress={() => this.presentSelectCountry()}>
+                  <Flex mb={3} p={3} pb={2} border={1} borderColor={errorForCountry ? "red100" : "black10"}>
+                    {this.state.values.country ? (
+                      <Serif16>{this.state.values.country.longName}</Serif16>
+                    ) : (
+                      <Serif16 color="black30">Select your country</Serif16>
+                    )}
+                  </Flex>
+                </TouchableWithoutFeedback>
+
+                {errorForCountry && <Sans12 color="red100">{errorForCountry}</Sans12>}
+              </Flex>
 
               <Button text="Add billing address" onPress={() => this.onSubmit()} />
             </Container>

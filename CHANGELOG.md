@@ -16,7 +16,13 @@
 
 ### Master
 
+* Fixes a bug where the error message for the country field remains even after selecting country - yuki24
 * Adds an error modal to the bid flow - sweir27
+
+### 1.5.10
+
+* Fix trailing comma on confirm bid screen when artwork does not have a date - erikdstock
+* More improvements/bug fixes for Bid/Registration flow
 
 ### 1.5.9
 
@@ -24,6 +30,7 @@
 * Add secondary outline button style - maxim
 * Adds `inputRef` to the styled `<Input>` component - yuki24
 * Add analytics to registration screens - maxim
+* Now users can add their country = yuki24
 
 ### 1.5.8
 
