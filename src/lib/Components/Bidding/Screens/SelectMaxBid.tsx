@@ -97,7 +97,7 @@ export const MaxBidScreen = createRefetchContainer(
   {
     sale_artwork: graphql`
       fragment SelectMaxBid_sale_artwork on SaleArtwork {
-        increments {
+        increments(useMyMaxBid: true) {
           display
           cents
         }
