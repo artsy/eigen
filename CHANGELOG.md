@@ -16,6 +16,8 @@
 
 ### Master
 
+* Fixes a bug where the error message for the country field remains even after selecting country - yuki24
+
 ### 1.5.10
 
 * Fix trailing comma on confirm bid screen when artwork does not have a date - erikdstock
