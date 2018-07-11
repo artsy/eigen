@@ -233,7 +233,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
             <Flex m={4}>
               <Button
-                text="Complete Registration"
+                text="Complete registration"
                 inProgress={this.state.isLoading}
                 selected={this.state.isLoading}
                 onPress={this.canCreateBidder() ? () => this.register() : null}
