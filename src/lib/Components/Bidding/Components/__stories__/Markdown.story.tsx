@@ -11,18 +11,14 @@ storiesOf("App Style/Utils").add("Markdown", () => (
     <ScrollView>
       <Markdown m={4} alignItems="center">
         Another bidder placed a higher max bid{"\n"}
-        or the same max bid before you did.{"\n"}
-        {"\n"}
-        Bid again to take the lead.
+        or the same max bid before you did.
       </Markdown>
 
       <Divider />
 
       <Markdown m={4} alignItems="center">
         Your bid didn’t meet the reserve price{"\n"}
-        for this work.{"\n"}
-        {"\n"}
-        Bid again to take the lead.
+        for this work.
       </Markdown>
 
       <Divider />

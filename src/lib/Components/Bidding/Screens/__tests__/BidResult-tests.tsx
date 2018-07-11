@@ -221,7 +221,6 @@ const Statuses = {
     message_header: "Your bid wasn’t high enough",
     message_description_md: `
       Another bidder placed a higher max bid or the same max bid before you did.
-      Bid again to take the lead.
     `,
     position: null,
   } as BidderPositionResult,
