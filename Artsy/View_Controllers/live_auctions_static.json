@@ -1,6 +1,7 @@
 {
   "data": {
     "me": {
+      "id": "abcd",
       "paddle_number": "123456",
       "bidders": [
         {

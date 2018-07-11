@@ -12,7 +12,7 @@ class LiveAuctionLotViewModelSpec: QuickSpec {
 
         beforeEach {
             let lot = LiveAuctionLot(json: [:])
-            let creds = BiddingCredentials(bidders: [], paddleNumber: "")
+            let creds = BiddingCredentials(bidders: [], paddleNumber: "", userID: "")
             subject = LiveAuctionLotViewModel(lot: lot!, bidderCredentials: creds)
         }
 
@@ -51,7 +51,7 @@ class LiveAuctionLotViewModelSpec: QuickSpec {
         }
 
         context("estimates") {
-            let creds = BiddingCredentials(bidders: [], paddleNumber: "")
+            let creds = BiddingCredentials(bidders: [], paddleNumber: "", userID: "")
 
             it("calculates highEstimateOrEstimateCents with only a highEstimate") {
                 let lot = LiveAuctionLot(json: ["high_estimate_cents": 20000])

@@ -11,7 +11,7 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
 
     func setupCellWithEvent(_ event: LiveEvent) -> LiveAuctionHistoryCell {
         let lot = LiveAuctionLot(json: ["id": "", "symbol": "$" ])
-        let creds = BiddingCredentials(bidders: [], paddleNumber: "123213")
+        let creds = BiddingCredentials(bidders: [], paddleNumber: "123213", userID: "abcd")
 
         let lotVM = LiveAuctionLotViewModel(lot: lot!, bidderCredentials: creds)
         lotVM.addEvents([event])
@@ -164,10 +164,11 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
             // e12  Confirmed
 
             let myBidderID = "123456"
+            let myUserID = "abcd"
             let lotID = NSUUID().uuidString
 
             let lot = LiveAuctionLot(json: ["id": lotID])
-            let creds = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: myBidderID)
+            let creds = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: myBidderID, userID: myUserID)
             let lotVM = LiveAuctionLotViewModel(lot: lot!, bidderCredentials: creds)
 
             let e1 = LiveEvent(json: ["type" : "BiddingOpened", "id" : lotID])
@@ -202,10 +203,11 @@ class LiveAuctionBidHistoryViewControllerTests: QuickSpec {
             // Online bid should show at the top
 
             let myBidderID = "123456"
+            let myUserID = "abcd"
             let lotID = NSUUID().uuidString
 
             let lot = LiveAuctionLot(json: ["id": lotID])
-            let creds = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: myBidderID)
+            let creds = BiddingCredentials(bidders: [qualifiedBidder], paddleNumber: myBidderID, userID: myUserID)
             let lotVM = LiveAuctionLotViewModel(lot: lot!, bidderCredentials: creds)
 
             let e1 = LiveEvent(json: ["type" : "BiddingOpened", "id" : lotID])
