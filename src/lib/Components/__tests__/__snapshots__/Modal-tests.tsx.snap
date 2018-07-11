@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks like expected 1`] = `
+<View
+  style={
+    Object {
+      "marginTop": 22,
+    }
+  }
+>
+  <Modal
+    animationType="fade"
+    hardwareAccelerated={false}
+    transparent={true}
+    visible={false}
+  >
+    <View
+      accessibilityComponentType={undefined}
+      accessibilityLabel={undefined}
+      accessibilityTraits={undefined}
+      accessible={true}
+      hitSlop={undefined}
+      nativeID={undefined}
+      onLayout={undefined}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Array [
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#00000099",
+            "flexBasis": 0,
+            "flexDirection": "column",
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "justifyContent": "center",
+          },
+          undefined,
+        ]
+      }
+      testID={undefined}
+    >
+      <View
+        accessibilityComponentType={undefined}
+        accessibilityLabel={undefined}
+        accessibilityTraits={undefined}
+        accessible={true}
+        hitSlop={undefined}
+        nativeID={undefined}
+        onLayout={undefined}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "opacity": 1,
+              "paddingBottom": 20,
+              "paddingLeft": 20,
+              "paddingRight": 20,
+              "paddingTop": 20,
+              "width": 300,
+            },
+            undefined,
+          ]
+        }
+        testID={undefined}
+      >
+        <View
+          style={
+            Object {
+              "paddingBottom": 10,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            fontSize={2}
+            lineHeight={5}
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 16,
+                  "lineHeight": 5,
+                },
+                undefined,
+              ]
+            }
+          >
+            An error occurred
+          </Text>
+        </View>
+        <View
+          style={
+            Object {
+              "paddingBottom": 30,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            color="#666"
+            ellipsizeMode="tail"
+            fontSize={2}
+            lineHeight={5}
+            style={
+              Array [
+                Object {
+                  "color": "#666",
+                  "fontFamily": "Unica77LL-Regular",
+                  "fontSize": 16,
+                  "lineHeight": 5,
+                },
+                undefined,
+              ]
+            }
+          >
+            This is an error moop.
+          </Text>
+        </View>
+        <View
+          accessibilityComponentType={undefined}
+          accessibilityLabel={undefined}
+          accessibilityTraits={undefined}
+          accessible={true}
+          collapsable={undefined}
+          hitSlop={undefined}
+          nativeID={undefined}
+          onLayout={undefined}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(229, 229, 229, 1)",
+              "borderRadius": 2,
+              "borderWidth": 2,
+              "height": 40,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+          testID={undefined}
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            Ok
+          </Text>
+        </View>
+      </View>
+    </View>
+  </Modal>
+</View>
+`;
