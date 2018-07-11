@@ -58,7 +58,7 @@ export class CustomModal extends React.Component<CustomModalProps, any> {
             <ModalBackgroundView>
               <TouchableWithoutFeedback onPress={null}>
                 <ModalInnerView>
-                  <View style={{ paddingBottom: 20 }}>
+                  <View style={{ paddingBottom: 10 }}>
                     <SansMedium14>{headerText}</SansMedium14>
                   </View>
                   <View style={{ paddingBottom: 30 }}>

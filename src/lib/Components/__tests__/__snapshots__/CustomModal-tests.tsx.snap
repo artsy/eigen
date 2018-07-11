@@ -78,7 +78,7 @@ exports[`looks like expected 1`] = `
         <View
           style={
             Object {
-              "paddingBottom": 20,
+              "paddingBottom": 10,
             }
           }
         >

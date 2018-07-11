@@ -471,7 +471,7 @@ exports[`renders properly 1`] = `
             <View
               style={
                 Object {
-                  "paddingBottom": 20,
+                  "paddingBottom": 10,
                 }
               }
             >
