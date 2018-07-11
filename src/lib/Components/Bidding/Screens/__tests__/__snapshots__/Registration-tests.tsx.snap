@@ -320,7 +320,7 @@ exports[`renders properly for a user with a credit card 1`] = `
                 ]
               }
             >
-              Complete Registration
+              Complete registration
             </Text>
           </View>
         </View>
@@ -945,7 +945,7 @@ exports[`renders properly for a user without a credit card 1`] = `
                 ]
               }
             >
-              Complete Registration
+              Complete registration
             </Text>
           </View>
         </View>
