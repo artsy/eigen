@@ -109,29 +109,30 @@
         [navBar hideNavigationBarShadow:false];
 
     } else {
-        // On the root view, we want a left aligned title.
-        UILabel *label = [ARSerifLabel new];
-        label.font = [UIFont serifFontWithSize:20];
-        label.text = nav.title;
-        label.numberOfLines = 1;
-        // Only make it as wide as necessary, otherwise it might cover the right bar button item.
-        [label sizeToFit];
+        if (nav.title && nav.title.length > 0) {
+            // On the root view, we want a left aligned title.
+            UILabel *label = [ARSerifLabel new];
+            label.font = [UIFont serifFontWithSize:20];
+            label.text = nav.title;
+            label.numberOfLines = 1;
+            // Only make it as wide as necessary, otherwise it might cover the right bar button item.
+            [label sizeToFit];
 
-        // At the time of writing, 4 is the additional x offset that a UILabel in a left bar button needs
-        // to align to the content of e.g. AuctionInformationViewController.
-        NSInteger rightButtonsCount = nav.rightBarButtonItems.count;
-        static CGFloat xOffset = 4;
+            // At the time of writing, 4 is the additional x offset that a UILabel in a left bar button needs
+            // to align to the content of e.g. AuctionInformationViewController.
+            NSInteger rightButtonsCount = nav.rightBarButtonItems.count;
+            static CGFloat xOffset = 4;
 
-        CGRect labelFrame = label.bounds;
-        CGFloat idealWidth = CGRectGetWidth(labelFrame) + xOffset;
-        CGFloat max = CGRectGetWidth(navigationController.view.bounds) - (rightButtonsCount * 48) - ((rightButtonsCount - 1) * 10) - 20;
+            CGRect labelFrame = label.bounds;
+            CGFloat idealWidth = CGRectGetWidth(labelFrame) + xOffset;
+            CGFloat max = CGRectGetWidth(navigationController.view.bounds) - (rightButtonsCount * 48) - ((rightButtonsCount - 1) * 10) - 20;
 
-        label.frame = CGRectMake(xOffset, 0, MIN(idealWidth, max), 20);
-        UIView *titleMarginWrapper = [[UIView alloc] initWithFrame:(CGRect){CGPointZero, {MIN(idealWidth, max), CGRectGetHeight(labelFrame)}}];
-        [titleMarginWrapper addSubview:label];
+            label.frame = CGRectMake(xOffset, 0, MIN(idealWidth, max), 20);
+            UIView *titleMarginWrapper = [[UIView alloc] initWithFrame:(CGRect){CGPointZero, {MIN(idealWidth, max), CGRectGetHeight(labelFrame)}}];
+            [titleMarginWrapper addSubview:label];
 
-        nav.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:titleMarginWrapper];
-
+            nav.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:titleMarginWrapper];
+        }
         // Just a dummy view to ensure that the navigation bar doesn’t create a new title view.
         nav.titleView = [UIView new];
 
