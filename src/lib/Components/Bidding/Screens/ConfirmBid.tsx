@@ -188,7 +188,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       })
 
       commitMutation(this.props.relay.environment, {
-        onCompleted: (_, errors) => (isEmpty(errors) ? this.createBidderPosition() : this.presentErrorModal()),
+        onCompleted: (_, errors) => (isEmpty(errors) ? this.createBidderPosition() : this.presentErrorModal(errors)),
         onError: errors => this.presentErrorResult(errors),
         mutation: creditCardMutation,
         variables: {
@@ -334,7 +334,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     this.setState({ isLoading: false })
   }
 
-  presentErrorModal() {
+  presentErrorModal(errors) {
+    console.error("ConfirmBid.tsx", errors)
     // TODO: Update to return actual errors
     const errorMessage = "There was a problem processing your information. Check your payment details and try again."
     this.setState({ errorModalVisible: true, errorModalDetailText: errorMessage, isLoading: false })
