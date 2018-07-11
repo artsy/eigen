@@ -1,6 +1,7 @@
 import { theme } from "lib/Components/Bidding/Elements/Theme"
 import React from "react"
 import { Modal, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
+import styled from "styled-components/native"
 import { Sans14, SansMedium14 } from "./Bidding/Elements/Typography"
 import { SecondaryOutlineButton } from "./Buttons"
 
@@ -10,6 +11,22 @@ interface CustomModalProps extends ViewProperties {
   visible?: boolean
   closeModal?: () => void
 }
+
+const ModalBackgroundView = styled.View`
+  background-color: #00000099;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+const ModalInnerView = styled.View`
+  width: 300;
+  background-color: white;
+  padding: 20px;
+  opacity: 1;
+  border-radius: 2px;
+`
 
 export class CustomModal extends React.Component<CustomModalProps, any> {
   constructor(props) {
@@ -38,17 +55,9 @@ export class CustomModal extends React.Component<CustomModalProps, any> {
       <View style={{ marginTop: 22 }}>
         <Modal animationType="fade" transparent={true} visible={this.state.modalVisible}>
           <TouchableWithoutFeedback onPress={() => this.closeModal()}>
-            <View
-              style={{
-                backgroundColor: "#00000099",
-                flex: 1,
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+            <ModalBackgroundView>
               <TouchableWithoutFeedback onPress={null}>
-                <View style={{ width: 300, backgroundColor: "white", padding: 20, opacity: 1, borderRadius: 2 }}>
+                <ModalInnerView>
                   <View style={{ paddingBottom: 20 }}>
                     <SansMedium14>{headerText}</SansMedium14>
                   </View>
@@ -62,9 +71,9 @@ export class CustomModal extends React.Component<CustomModalProps, any> {
                       this.closeModal()
                     }}
                   />
-                </View>
+                </ModalInnerView>
               </TouchableWithoutFeedback>
-            </View>
+            </ModalBackgroundView>
           </TouchableWithoutFeedback>
         </Modal>
       </View>

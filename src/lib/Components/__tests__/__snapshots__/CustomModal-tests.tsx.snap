@@ -29,13 +29,18 @@ exports[`looks like expected 1`] = `
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
       style={
-        Object {
-          "alignItems": "center",
-          "backgroundColor": "#00000099",
-          "flex": 1,
-          "flexDirection": "column",
-          "justifyContent": "center",
-        }
+        Array [
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#00000099",
+            "flexBasis": 0,
+            "flexDirection": "column",
+            "flexGrow": 1,
+            "flexShrink": 1,
+            "justifyContent": "center",
+          },
+          undefined,
+        ]
       }
       testID={undefined}
     >
@@ -54,13 +59,19 @@ exports[`looks like expected 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
         style={
-          Object {
-            "backgroundColor": "white",
-            "borderRadius": 2,
-            "opacity": 1,
-            "padding": 20,
-            "width": 300,
-          }
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "opacity": 1,
+              "paddingBottom": 20,
+              "paddingLeft": 20,
+              "paddingRight": 20,
+              "paddingTop": 20,
+              "width": 300,
+            },
+            undefined,
+          ]
         }
         testID={undefined}
       >

@@ -16,6 +16,8 @@
 
 ### Master
 
+* Adds an error modal to the bid flow - sweir27
+
 ### 1.5.9
 
 * Fix incorrect NSNotification name for sale registration - erikdstock
