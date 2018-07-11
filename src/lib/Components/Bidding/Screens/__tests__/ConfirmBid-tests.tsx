@@ -35,7 +35,7 @@ import objectContaining = jasmine.objectContaining
 import any = jasmine.any
 import { FakeNavigator } from "lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { SecondaryOutlineButton } from "lib/Components/Buttons"
-import { CustomModal } from "lib/Components/CustomModal"
+import { Modal } from "lib/Components/Modal"
 import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
 
 let nextStep
@@ -470,15 +470,15 @@ describe("ConfirmBid for unqualified user", () => {
 
     jest.runAllTicks()
 
-    expect(component.root.findByType(CustomModal).findAllByType(Text)[1].props.children).toEqual(
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
       "No such customer: cus_CrZeblahblah; a similar object exists in live mode, but a test mode key was used to make this request."
     )
     component.root
-      .findByType(CustomModal)
+      .findByType(Modal)
       .findByType(SecondaryOutlineButton)
       .props.onPress()
 
-    expect(component.root.findByType(CustomModal).props.visible).toEqual(false)
+    expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
   it("shows the error screen with the default error message if there is no message present on a createCreditCard mutation failure", () => {
@@ -498,16 +498,16 @@ describe("ConfirmBid for unqualified user", () => {
 
     jest.runAllTicks()
 
-    expect(component.root.findByType(CustomModal).findAllByType(Text)[1].props.children).toEqual(
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
       "There was a problem processing your information. Check your payment details and try again."
     )
     component.root
-      .findByType(CustomModal)
+      .findByType(Modal)
       .findByType(SecondaryOutlineButton)
       .props.onPress()
 
     // it dismisses the modal
-    expect(component.root.findByType(CustomModal).props.visible).toEqual(false)
+    expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
   it("shows the generic error screen on a createCreditCard mutation network failure", () => {

@@ -28,7 +28,7 @@ import { SelectMaxBidEdit } from "./SelectMaxBidEdit"
 
 import { ConfirmBid_me } from "__generated__/ConfirmBid_me.graphql"
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
-import { CustomModal } from "lib/Components/CustomModal"
+import { Modal } from "lib/Components/Modal"
 
 const Emission = NativeModules.Emission || {}
 
@@ -391,7 +391,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               <Divider mb={9} />
             )}
 
-            <CustomModal
+            <Modal
               visible={this.state.errorModalVisible}
               headerText="An error occurred"
               detailText={this.state.errorModalDetailText}

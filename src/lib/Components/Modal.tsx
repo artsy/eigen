@@ -1,11 +1,11 @@
 import { theme } from "lib/Components/Bidding/Elements/Theme"
 import React from "react"
-import { Modal, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
+import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
 import styled from "styled-components/native"
 import { Sans14, SansMedium14 } from "./Bidding/Elements/Typography"
 import { SecondaryOutlineButton } from "./Buttons"
 
-interface CustomModalProps extends ViewProperties {
+interface ModalProps extends ViewProperties {
   headerText: string
   detailText: string
   visible?: boolean
@@ -28,7 +28,7 @@ const ModalInnerView = styled.View`
   border-radius: 2px;
 `
 
-export class CustomModal extends React.Component<CustomModalProps, any> {
+export class Modal extends React.Component<ModalProps, any> {
   constructor(props) {
     super(props)
 
@@ -53,7 +53,7 @@ export class CustomModal extends React.Component<CustomModalProps, any> {
 
     return (
       <View style={{ marginTop: 22 }}>
-        <Modal animationType="fade" transparent={true} visible={this.state.modalVisible}>
+        <RNModal animationType="fade" transparent={true} visible={this.state.modalVisible}>
           <TouchableWithoutFeedback onPress={() => this.closeModal()}>
             <ModalBackgroundView>
               <TouchableWithoutFeedback onPress={null}>
@@ -75,7 +75,7 @@ export class CustomModal extends React.Component<CustomModalProps, any> {
               </TouchableWithoutFeedback>
             </ModalBackgroundView>
           </TouchableWithoutFeedback>
-        </Modal>
+        </RNModal>
       </View>
     )
   }

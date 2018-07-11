@@ -3,12 +3,12 @@ import React from "react"
 
 import { BiddingThemeProvider } from "lib/Components/Bidding/Components/BiddingThemeProvider"
 import { Flex } from "lib/Components/Bidding/Elements/Flex"
-import { CustomModal } from "../CustomModal"
+import { Modal } from "../Modal"
 
-storiesOf("App Style/CustomModal").add("Modal", () => (
+storiesOf("App Style/Modal").add("Modal", () => (
   <BiddingThemeProvider>
     <Flex mt={7} ml={4} mr={4}>
-      <CustomModal visible={true} headerText="An error occurred" detailText="Your card's security code is incorrect" />
+      <Modal visible={true} headerText="An error occurred" detailText="Your card's security code is incorrect" />
     </Flex>
   </BiddingThemeProvider>
 ))
