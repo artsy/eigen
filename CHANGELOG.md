@@ -17,6 +17,7 @@
 ### Master
 
 * Fixes a bug where the error message for the country field remains even after selecting country - yuki24
+* The country select form should pre-populate if user have already selected a country - yuki2
 
 ### 1.5.10
 

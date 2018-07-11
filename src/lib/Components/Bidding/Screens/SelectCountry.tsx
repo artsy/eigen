@@ -15,8 +15,9 @@ import { Country, SearchResult } from "../types"
 const { Emission } = NativeModules
 
 interface SelectCountryProps {
+  country?: Country
   navigator: NavigatorIOS
-  onCountrySelected?: (country: any) => void
+  onCountrySelected?: (country: Country) => void
 }
 
 interface SelectCountryState {
@@ -41,7 +42,7 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
     super(props)
 
     this.state = {
-      query: null,
+      query: props.country && props.country.longName,
       isLoading: false,
       results: [],
     }
@@ -75,6 +76,12 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
       results: predictions,
       isLoading: false,
     })
+  }
+
+  componentDidMount() {
+    if (this.state.query) {
+      this.textChanged(this.state.query)
+    }
   }
 
   render() {
