@@ -17,6 +17,7 @@
 ### Master
 
 * Fixes a bug where the error message for the country field remains even after selecting country - yuki24
+* Adds an error modal to the bid flow - sweir27
 * Update graphql + use new argument to fetch increments - sweir27
 
 ### 1.5.10

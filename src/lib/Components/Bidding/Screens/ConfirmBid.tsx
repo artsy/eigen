@@ -28,6 +28,7 @@ import { SelectMaxBidEdit } from "./SelectMaxBidEdit"
 
 import { ConfirmBid_me } from "__generated__/ConfirmBid_me.graphql"
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
+import { Modal } from "lib/Components/Modal"
 
 const Emission = NativeModules.Emission || {}
 
@@ -52,6 +53,8 @@ interface ConfirmBidState {
   requiresCheckbox: boolean
   requiresPaymentInformation: boolean
   selectedBidIndex: number
+  errorModalVisible: boolean
+  errorModalDetailText: string
 }
 
 const MAX_POLL_ATTEMPTS = 20
@@ -143,6 +146,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       requiresCheckbox,
       requiresPaymentInformation,
       selectedBidIndex: this.props.selectedBidIndex,
+      errorModalVisible: false,
+      errorModalDetailText: "Your card's security code is incorrect",
     }
   }
 
@@ -184,8 +189,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       })
 
       commitMutation(this.props.relay.environment, {
-        onCompleted: (_, errors) => (isEmpty(errors) ? this.createBidderPosition() : this.presentErrorResult(errors)),
-        onError: this.presentErrorResult.bind(this),
+        onCompleted: (_, errors) => (isEmpty(errors) ? this.createBidderPosition() : this.presentErrorModal(errors)),
+        onError: errors => this.presentErrorResult(errors),
         mutation: creditCardMutation,
         variables: {
           input: {
@@ -330,8 +335,19 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     this.setState({ isLoading: false })
   }
 
+  presentErrorModal(errors) {
+    console.error("ConfirmBid.tsx", errors)
+    // TODO: Update to return actual errors
+    const errorMessage = "There was a problem processing your information. Check your payment details and try again."
+    this.setState({ errorModalVisible: true, errorModalDetailText: errorMessage, isLoading: false })
+  }
+
   updateSelectedBid(newBidIndex: number) {
     this.setState({ selectedBidIndex: newBidIndex })
+  }
+
+  closeModal() {
+    this.setState({ errorModalVisible: false })
   }
 
   render() {
@@ -377,6 +393,13 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
             ) : (
               <Divider mb={9} />
             )}
+
+            <Modal
+              visible={this.state.errorModalVisible}
+              headerText="An error occurred"
+              detailText={this.state.errorModalDetailText}
+              closeModal={this.closeModal.bind(this)}
+            />
           </View>
 
           <View>

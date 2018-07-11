@@ -21,12 +21,22 @@ export class BidGhostButton extends React.Component<ButtonProps> {
   render() {
     const { style, textStyle, ...props } = this.props
 
-    return <SecondaryOutlineButton style={[styles.default, style]} textStyle={[textStyle]} {...props} />
+    return (
+      <SecondaryOutlineButton
+        style={[styles.default, styles.secondaryOutlineStyles, style]}
+        textStyle={[textStyle]}
+        {...props}
+      />
+    )
   }
 }
 
 const styles = StyleSheet.create({
   default: {
     height: 50,
+  },
+  secondaryOutlineStyles: {
+    borderRadius: 2,
+    borderWidth: 2,
   },
 })
