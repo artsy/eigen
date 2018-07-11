@@ -108,7 +108,10 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
     this.setState({
       values,
-      errors: this.validateAddress(values),
+      errors: {
+        ...this.state.errors,
+        country: this.validateAddress(values).country,
+      },
     })
   }
 
@@ -126,6 +129,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
       component: SelectCountry,
       title: "",
       passProps: {
+        country: this.state.values.country,
         onCountrySelected: this.onCountrySelected.bind(this),
       },
     })
