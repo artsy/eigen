@@ -3,6 +3,7 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
+import { mockTimezone } from "lib/tests/mockTimezone"
 import { SansMedium12, SansMedium16t } from "../../Elements/Typography"
 import { Timer } from "../Timer"
 
@@ -14,15 +15,6 @@ const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in mi
 const getTimerLabel = timerComponent => timerComponent.root.findByType(SansMedium12).props.children
 
 const getTimerText = timerComponent => timerComponent.root.findByType(SansMedium16t).props.children.join("")
-
-const mockTimezone = timezone => {
-  const mutatedResolvedOptions: any = Intl.DateTimeFormat().resolvedOptions()
-  const mutatedDateTimeFormat: any = Intl.DateTimeFormat()
-
-  mutatedResolvedOptions.timeZone = timezone
-  mutatedDateTimeFormat.resolvedOptions = () => mutatedResolvedOptions
-  Intl.DateTimeFormat = (() => mutatedDateTimeFormat) as any
-}
 
 let pastTime
 let futureTime
