@@ -130,7 +130,7 @@ exports[`Sets up the right view hierarchy 1`] = `
           undefined,
         ]
       }
-      value={null}
+      value={undefined}
     />
     <RCTScrollView
       keyboardShouldPersistTaps="always"
