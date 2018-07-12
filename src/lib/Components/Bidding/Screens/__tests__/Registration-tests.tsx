@@ -11,6 +11,8 @@ import { BillingAddress } from "../BillingAddress"
 import { CreditCardForm } from "../CreditCardForm"
 import { Registration } from "../Registration"
 
+import { mockTimezone } from "lib/tests/mockTimezone"
+
 jest.mock("../../../../metaphysics", () => ({ metaphysics: jest.fn() }))
 import { metaphysics } from "../../../../metaphysics"
 const mockphysics = metaphysics as jest.Mock<any>
@@ -34,6 +36,8 @@ const mockPostNotificationName = jest.fn()
 
 beforeEach(() => {
   Date.now = jest.fn(() => 1525983752116)
+  mockTimezone("America/New_York")
+
   // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
   mockphysics.mockReset()
   mockPostNotificationName.mockReset()
