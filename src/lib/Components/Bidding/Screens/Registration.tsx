@@ -172,6 +172,10 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 
   presentRegistrationSuccess({ createBidder }) {
+    NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
+      ARAuctionID: this.props.sale.id,
+    })
+
     const qualifiedForBidding = createBidder.bidder.qualified_for_bidding
     if (qualifiedForBidding === true) {
       this.presentRegistrationResult(RegistrationStatus.RegistrationStatusComplete)

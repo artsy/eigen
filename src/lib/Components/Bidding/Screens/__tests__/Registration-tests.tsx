@@ -1,4 +1,5 @@
 import React from "react"
+import { NativeModules } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import Spinner from "../../../Spinner"
@@ -29,10 +30,15 @@ import stripe from "tipsi-stripe"
 let nextStep
 const mockNavigator = { push: route => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
+const mockPostNotificationName = jest.fn()
 
 beforeEach(() => {
+  Date.now = jest.fn(() => 1525983752116)
   // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
   mockphysics.mockReset()
+  mockPostNotificationName.mockReset()
+
+  NativeModules.ARNotificationsManager = { postNotificationName: mockPostNotificationName }
 })
 
 it("renders properly for a user without a credit card", () => {
@@ -198,6 +204,10 @@ describe("when pressing register button", () => {
 
     jest.runAllTicks()
 
+    expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdated", {
+      ARAuctionID: "sale-id",
+    })
+
     expect(nextStep.component).toEqual(RegistrationResult)
     expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusPending })
   })
@@ -213,6 +223,10 @@ describe("when pressing register button", () => {
     component.root.findByType(Button).instance.props.onPress()
 
     jest.runAllTicks()
+
+    expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdated", {
+      ARAuctionID: "sale-id",
+    })
 
     expect(nextStep.component).toEqual(RegistrationResult)
     expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusComplete })
@@ -241,14 +255,12 @@ const stripeToken = {
 }
 
 const sale = {
-  sale: {
-    id: "1",
-    live_start_at: "2029-06-11T01:00:00+00:00",
-    end_at: null,
-    name: "Phillips New Now",
-    start_at: "2018-06-11T01:00:00+00:00",
-    is_preview: true,
-  },
+  id: "sale-id",
+  live_start_at: "2029-06-11T01:00:00+00:00",
+  end_at: null,
+  name: "Phillips New Now",
+  start_at: "2018-06-11T01:00:00+00:00",
+  is_preview: true,
 }
 
 const mockRequestResponses = {

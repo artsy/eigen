@@ -84,16 +84,16 @@ exports[`renders properly for a user with a credit card 1`] = `
             ]
           }
         >
-          NaN
+          00
           d
             
-          NaN
+          04
           h
             
-          NaN
+          37
           m
             
-          NaN
+          27
           s
         </Text>
         <Text
@@ -113,7 +113,7 @@ exports[`renders properly for a user with a credit card 1`] = `
             ]
           }
         >
-          Ends Invalid date
+          Starts Jun 10, 9 PM
         </Text>
       </View>
       <Text
@@ -142,7 +142,9 @@ exports[`renders properly for a user with a credit card 1`] = `
           ]
         }
         textAlign="center"
-      />
+      >
+        Phillips New Now
+      </Text>
     </View>
   </View>
   <View>
@@ -414,16 +416,16 @@ exports[`renders properly for a user without a credit card 1`] = `
             ]
           }
         >
-          NaN
+          00
           d
             
-          NaN
+          04
           h
             
-          NaN
+          37
           m
             
-          NaN
+          27
           s
         </Text>
         <Text
@@ -443,7 +445,7 @@ exports[`renders properly for a user without a credit card 1`] = `
             ]
           }
         >
-          Ends Invalid date
+          Starts Jun 10, 9 PM
         </Text>
       </View>
       <Text
@@ -472,7 +474,9 @@ exports[`renders properly for a user without a credit card 1`] = `
           ]
         }
         textAlign="center"
-      />
+      >
+        Phillips New Now
+      </Text>
     </View>
     <View>
       <View
