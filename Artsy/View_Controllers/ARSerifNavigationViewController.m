@@ -7,7 +7,11 @@
 #import "ARTopMenuViewController.h"
 #import <Artsy+UILabels/Artsy+UILabels.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
+#import <FLKAutoLayout/FLKAutoLayout.h>
 
+#define controllersRequiringHiddenNavBar @[@"ARBidFlowViewController", @"ARSerifTestNavigationController"]
+
+static CGFloat exitButtonDimension = 40;
 
 @interface ARSerifNavigationBar : UINavigationBar
 /// Show/hides the underline from a navigation bar
@@ -48,21 +52,20 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     _hideCloseButton = NO;
 
-    UIImage *image = [[UIImage imageNamed:@"serif_modal_close"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    ARSerifToolbarButtonItem *exit = [[ARSerifToolbarButtonItem alloc] initWithImage:image];
-
-    [exit.button addTarget:self action:@selector(closeModal) forControlEvents:UIControlEventTouchUpInside];
-    [exit.button ar_extendHitTestSizeByWidth:10 andHeight:10];
-    self.exitButton = exit;
+    self.exitButton = [self generateExitButton];
 
     UIButton *back = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 40)];
-    image = [[UIImage imageNamed:@"BackArrow_Highlighted"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImage *image = [[UIImage imageNamed:@"BackArrow_Highlighted"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [back setImage:image forState:UIControlStateNormal];
     [back addTarget:self action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
     self.backButton = [[UIBarButtonItem alloc] initWithCustomView:back];
 
     [self setViewControllers:@[ rootViewController ]];
     [self.navigationBar.topItem setRightBarButtonItem:self.exitButton];
+
+    if ([controllersRequiringHiddenNavBar containsObject:NSStringFromClass(rootViewController.class)]) {
+        self.navigationBarHidden = YES;
+    }
 
     self.delegate = self;
     return self;
@@ -74,6 +77,30 @@
 
     self.view.layer.cornerRadius = 0;
     self.view.superview.layer.cornerRadius = 0;
+
+    if (self.navigationBarHidden) {
+        // No nav bar means we need to show something under the status bar manually. Might as well be our own view with a white background.
+        self.view.backgroundColor = [UIColor whiteColor];
+
+        // The exit button normally sits within the nav bar. Without it, we need to add it to our own view hierarchy.
+        UIButton *exitButton = [self generateExitButton].button;
+        exitButton.tintColor = UIColor.blackColor;
+        NSString *dimensionString = [NSString stringWithFormat:@"%@", @(exitButtonDimension)];
+        [exitButton constrainWidth:dimensionString height:dimensionString];
+
+        // Add button to hierarchy and constrain layout.
+        [self.view addSubview:exitButton];
+        // Top and trailing constraint constants were determined experimentally.
+        // Constraints differ on iPad, but we can't rely on our own view's trait collection because, when presented modally on iPad,
+        // its horizontalSizeClass will always be compact.
+        if (UIApplication.sharedApplication.keyWindow.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
+            [exitButton alignTopEdgeWithView:self.view predicate:@"23"];
+            [exitButton alignTrailingEdgeWithView:self.view predicate:@"-6"];
+        } else {
+            [exitButton alignTopEdgeWithView:self.view predicate:@"12"];
+            [exitButton alignTrailingEdgeWithView:self.view predicate:@"-19"];
+        }
+    }
 }
 
 - (void)setHideCloseButton:(BOOL)hideCloseButton
@@ -157,6 +184,16 @@
 - (BOOL)shouldAutorotate
 {
     return [self traitDependentAutorotateSupport];
+}
+
+- (ARSerifToolbarButtonItem *)generateExitButton
+{
+    UIImage *image = [[UIImage imageNamed:@"serif_modal_close"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    ARSerifToolbarButtonItem *exit = [[ARSerifToolbarButtonItem alloc] initWithImage:image];
+
+    [exit.button addTarget:self action:@selector(closeModal) forControlEvents:UIControlEventTouchUpInside];
+    [exit.button ar_extendHitTestSizeByWidth:10 andHeight:10];
+    return exit;
 }
 
 @end
@@ -247,14 +284,13 @@
 
 - (instancetype)initWithImage:(UIImage *)image
 {
-    CGFloat dimension = 40;
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, dimension, dimension)];
-    button.layer.cornerRadius = dimension * .5;
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, exitButtonDimension, exitButtonDimension)];
+    button.layer.cornerRadius = exitButtonDimension * .5;
 
     CALayer *buttonLayer = button.layer;
     buttonLayer.borderColor = [UIColor artsyGrayRegular].CGColor;
     buttonLayer.borderWidth = 1;
-    buttonLayer.cornerRadius = dimension * .5;
+    buttonLayer.cornerRadius = exitButtonDimension * .5;
 
     [button setImage:image forState:UIControlStateNormal];
 

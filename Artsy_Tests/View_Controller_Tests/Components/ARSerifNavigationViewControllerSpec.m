@@ -7,6 +7,9 @@
 @property (nonatomic, strong) UIApplication *sharedApplication;
 @end
 
+@interface ARSerifTestNavigationController: UIViewController
+@end
+
 SpecBegin(ARSerifNavigationViewController);
 
 __block ARSerifNavigationViewController *subject;
@@ -76,6 +79,17 @@ describe(@"", ^{
 
         expect(subject).to.haveValidSnapshot();
     });
+
+    it(@"handles the fake navigation close button correctly", ^{
+        UIViewController *rootViewController = [[ARSerifTestNavigationController alloc] init];
+
+        subject = [[ARSerifNavigationViewController alloc] initWithRootViewController:rootViewController];
+
+        expect(subject).to.haveValidSnapshot();
+    });
 });
 
 SpecEnd
+
+@implementation ARSerifTestNavigationController
+@end
