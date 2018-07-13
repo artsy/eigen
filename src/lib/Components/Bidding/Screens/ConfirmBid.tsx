@@ -364,10 +364,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
           <View>
             <Flex m={4} mt={0} alignItems="center">
-              <SerifSemibold18t>{artwork.artist_names}</SerifSemibold18t>
+              <SerifSemibold18t numberOfLines={1} ellipsizeMode={"tail"}>
+                {artwork.artist_names}
+              </SerifSemibold18t>
               <SerifSemibold14>Lot {lot_label}</SerifSemibold14>
 
-              <SerifItalic14 color="black60" textAlign="center">
+              <SerifItalic14 color="black60" textAlign="center" numberOfLines={1} ellipsizeMode={"tail"}>
                 {artwork.title}
                 {artwork.date && <Serif14>, {artwork.date}</Serif14>}
               </SerifItalic14>
