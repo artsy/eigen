@@ -59,7 +59,7 @@ fragment ConfirmBid_me on Me {
 }
 
 fragment SelectMaxBid_sale_artwork on SaleArtwork {
-  increments {
+  increments(useMyMaxBid: true) {
     display
     cents
   }
@@ -167,7 +167,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersBidFlowQuery",
-  "id": "2dbcd357c588cb69c222f7330f9ca3de",
+  "id": "79c707a33aa8c1d75ad950162468be2b",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -252,8 +252,15 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "increments",
-                "storageKey": null,
-                "args": null,
+                "storageKey": "increments(useMyMaxBid:true)",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "useMyMaxBid",
+                    "value": true,
+                    "type": "Boolean"
+                  }
+                ],
                 "concreteType": "BidIncrementsFormatted",
                 "plural": true,
                 "selections": [
