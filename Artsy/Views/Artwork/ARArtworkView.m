@@ -87,6 +87,8 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
         [self setUpCallbacks];
         [self createHeightConstraints];
+    } else {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:ARAuctionArtworkBidUpdatedNotification object:nil];
     }
 }
 
@@ -112,7 +114,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
 - (void)setUpCallbacks
 {
-    __weak typeof (self) wself = self;
+    __weak typeof(self) wself = self;
 
     void (^completion)(void) = ^{
         __strong typeof (wself) sself = wself;
@@ -133,6 +135,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
         __strong typeof (wself) sself = wself;
         if (!sself || !fair) return;
 
+        
         [sself.metadataView updateWithFair:fair];
         [sself.stackView layoutIfNeeded];
     } failure:nil];
@@ -148,6 +151,22 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
             }];
         }
     } failure:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(artworkBidUpdated:)
+                                                 name:ARAuctionArtworkBidUpdatedNotification
+                                               object:nil];
+}
+
+- (void)artworkBidUpdated:(NSNotification *)notification;
+{
+    if ([notification.userInfo[ARAuctionArtworkIDKey] isEqualToString:self.artwork.artworkID]) {
+        // keep this?
+        [self.artwork updateSaleArtwork];
+
+        // 1. Call self.metadataview.ctionView.showSpinner()
+        // 2. Make a call to onSaleArtworkUpdate with allowCachedno
+        // 3. In callback from 2., update our self.banner.auctionState and also call self.matadataview.actionVIew.updateSaleArtwork(saleASrtwork)
+    }
 }
 
 - (void)createHeightConstraints
