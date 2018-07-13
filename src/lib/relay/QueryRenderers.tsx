@@ -87,6 +87,8 @@ export const RegistrationFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ r
       render={({ props, error }) => {
         if (error) {
           console.error(error)
+        } else if (!props) {
+          return render({ props, error }) // So that we show the spinner
         } else if (props) {
           return render({
             props: {
@@ -126,6 +128,8 @@ export const BidFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ render, ar
       render={({ props, error }) => {
         if (error) {
           console.error(error)
+        } else if (!props) {
+          return render({ props, error }) // So that we show the spinner
         } else if (props) {
           // Note that we need to flatten the query above before passing into the BidFlow component.
           // i.e.: the `sale_artwork` is nested within `artwork`, but we want the sale_artwork itself as a prop.
@@ -137,7 +141,6 @@ export const BidFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ render, ar
             error,
           })
         }
-        return null
       }}
     />
   )
