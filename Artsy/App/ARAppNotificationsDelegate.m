@@ -16,6 +16,7 @@
 #import "ARDispatchManager.h"
 
 #import <Emission/ARConversationComponentViewController.h>
+#import <Emission/ARBidFlowViewController.h>
 #import <ARAnalytics/ARAnalytics.h>
 
 
@@ -210,10 +211,20 @@
             // A notification was received while the app was already active, so we show our own notification view.
             [self receivedNotification:notificationInfo];
             
-            ARConversationComponentViewController * controller = [[[[ARTopMenuViewController sharedController] rootNavigationController] viewControllers] lastObject];
+            UIViewController *controller = [self getGlobalTopViewController];
+
             NSString *conversationID = [notificationInfo[@"conversation_id"] stringValue];
-            if ([controller isKindOfClass:ARConversationComponentViewController.class] && [controller.conversationID isEqualToString:conversationID]) {
+            NSString *saleID = notificationInfo[@"sale_id"];
+            NSString *artworkID = notificationInfo[@"artwork_id"];
+            NSString *action = notificationInfo[@"action"];
+
+            ARConversationComponentViewController *conversationVC = (id)controller;
+            ARBidFlowViewController *bidFlowVC = (id)controller;
+
+            if ([controller isKindOfClass:ARConversationComponentViewController.class] && [conversationVC.conversationID isEqualToString:conversationID]) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"notification_received" object:notificationInfo];
+            } else if ([controller isKindOfClass:ARBidFlowViewController.class] && [action isEqualToString:@"outbid"] && [bidFlowVC.artworkID isEqualToString:artworkID] && [bidFlowVC.saleID isEqualToString:saleID]) {
+                // NO-OP, so that we don't show notifications about bidding activity currently on screen
             } else {
                 NSString *title = [message isKindOfClass:[NSString class]] ? message : message[@"title"];
                 [ARNotificationView showNoticeInView:[self findVisibleWindow]
@@ -228,6 +239,11 @@
             [self tappedNotification:notificationInfo viewController:viewController];
         }
     }
+}
+
+- (UIViewController *)getGlobalTopViewController
+{
+    return [[[[ARTopMenuViewController sharedController] rootNavigationController] viewControllers] lastObject];
 }
 
 - (void)receivedNotification:(NSDictionary *)notificationInfo;

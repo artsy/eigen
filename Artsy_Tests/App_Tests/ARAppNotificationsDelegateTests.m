@@ -7,7 +7,7 @@
 #import "ARTopMenuViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "UIApplicationStateEnum.h"
-
+#import <Emission/ARBidFlowViewController.h>
 
 static NSDictionary *
 DictionaryWithAppState(NSDictionary *input, UIApplicationState appState)
@@ -17,6 +17,9 @@ DictionaryWithAppState(NSDictionary *input, UIApplicationState appState)
     return [dictionary copy];
 }
 
+@interface ARAppNotificationsDelegate()
+- (UIViewController *)getGlobalTopViewController;
+@end
 
 SpecBegin(ARAppNotificationsDelegate);
 
@@ -161,6 +164,40 @@ describe(@"receiveRemoteNotification", ^{
 
             [mock verify];
             [mock stopMocking];
+        });
+
+
+
+        it(@"suppresses showing the notification view when a notification about outbidding ", ^{
+            ARBidFlowViewController *bidController = [[ARBidFlowViewController alloc] initWithArtworkID:@"asd1432asda" saleID:@"123ffg3edfsd"];
+
+            id mockedNotificationsDelegate = [OCMockObject partialMockForObject:delegate];
+            [[[mockedNotificationsDelegate stub] andReturn:bidController] getGlobalTopViewController];
+
+            id mock = [OCMockObject mockForClass:[ARNotificationView class]];
+            [[mock reject] showNoticeInView:OCMOCK_ANY title:OCMOCK_ANY response:OCMOCK_ANY];
+
+            [delegate applicationDidReceiveRemoteNotification:@{ @"sale_id" : @"123ffg3edfsd", @"artwork_id": @"asd1432asda", @"action": @"outbid" } inApplicationState:appState];
+
+            [mock verify];
+            [mock stopMocking];
+            [mockedNotificationsDelegate stopMocking];
+        });
+
+        it(@"shows the notification view when a notification about bidding stuff but not the action outbid ", ^{
+            ARBidFlowViewController *bidController = [[ARBidFlowViewController alloc] initWithArtworkID:@"asd1432asda" saleID:@"123ffg3edfsd"];
+
+            id mockedNotificationsDelegate = [OCMockObject partialMockForObject:delegate];
+            [[[mockedNotificationsDelegate stub] andReturn:bidController] getGlobalTopViewController];
+
+            id mock = [OCMockObject mockForClass:[ARNotificationView class]];
+            [[mock expect] showNoticeInView:OCMOCK_ANY title:OCMOCK_ANY response:OCMOCK_ANY];
+
+            [delegate applicationDidReceiveRemoteNotification:@{ @"sale_id" : @"123ffg3edfsd", @"artwork_id": @"asd1432asda", @"action": @"winning" } inApplicationState:appState];
+
+            [mock verify];
+            [mock stopMocking];
+            [mockedNotificationsDelegate stopMocking];
         });
     });
 });

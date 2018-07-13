@@ -2,7 +2,7 @@
 
 @class ARZoomView, Image;
 
-@protocol ARZoomViewDelegate
+@protocol  ARZoomViewDelegate
 - (void)zoomViewFinished:(ARZoomView *)zoomView;
 - (void)zoomViewDidMove:(ARZoomView *)zoomView;
 @end

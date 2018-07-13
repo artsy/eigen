@@ -7,6 +7,7 @@ upcoming:
 
 
   user_facing:
+    - Outbid push notifications are supressed when you're on the bid wizard  - orta/sweir
     - Admins can get the shake gesture when they log in to the app for the first time - orta
     - iPhone X fix for the zoomed image screen - orta
     - Adds an lab option to have the back button hide after a delay on a zoomed image - orta
