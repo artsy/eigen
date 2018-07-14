@@ -344,6 +344,7 @@ exports[`renders properly with credit card 1`] = `
             flexDirection="row"
             hitSlop={undefined}
             justifyContent="center"
+            mb={4}
             nativeID={undefined}
             onLayout={undefined}
             onPress={[Function]}
@@ -355,7 +356,9 @@ exports[`renders properly with credit card 1`] = `
             onStartShouldSetResponder={[Function]}
             style={
               Array [
-                Object {},
+                Object {
+                  "marginBottom": 20,
+                },
                 undefined,
               ]
             }
@@ -1161,6 +1164,7 @@ exports[`renders properly without credit card 1`] = `
             flexDirection="row"
             hitSlop={undefined}
             justifyContent="center"
+            mb={4}
             nativeID={undefined}
             onLayout={undefined}
             onPress={[Function]}
@@ -1172,7 +1176,9 @@ exports[`renders properly without credit card 1`] = `
             onStartShouldSetResponder={[Function]}
             style={
               Array [
-                Object {},
+                Object {
+                  "marginBottom": 20,
+                },
                 undefined,
               ]
             }
