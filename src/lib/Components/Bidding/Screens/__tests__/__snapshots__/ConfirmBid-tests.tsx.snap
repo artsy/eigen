@@ -139,6 +139,7 @@ exports[`renders properly 1`] = `
         ellipsizeMode="tail"
         fontSize={4}
         lineHeight={4}
+        numberOfLines={1}
         style={
           Array [
             Object {
@@ -179,6 +180,7 @@ exports[`renders properly 1`] = `
         ellipsizeMode="tail"
         fontSize={2}
         lineHeight={2}
+        numberOfLines={1}
         style={
           Array [
             Object {
