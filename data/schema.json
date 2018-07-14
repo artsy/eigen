@@ -8817,8 +8817,8 @@
               "deprecationReason": null
             },
             {
-              "name": "headline",
-              "description": null,
+              "name": "status",
+              "description": "The state of the event",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -8829,8 +8829,20 @@
               "deprecationReason": null
             },
             {
-              "name": "subHeadline",
-              "description": null,
+              "name": "partner",
+              "description": "Name of the partner associated to the event",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "details",
+              "description": "Location and date of the event if available",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -8842,7 +8854,19 @@
             },
             {
               "name": "name",
-              "description": null,
+              "description": "Name of the event",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "href",
+              "description": "Link to the event",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -33583,6 +33607,132 @@
               "deprecationReason": null
             },
             {
+              "name": "subtotalCents",
+              "description": "A formatted price with various currency formatting options.",
+              "args": [
+                {
+                  "name": "decimal",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\".\""
+                },
+                {
+                  "name": "format",
+                  "description": "Allows control of symbol position (%v = value, %s = symbol)",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\"%s%v\""
+                },
+                {
+                  "name": "precision",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": "0"
+                },
+                {
+                  "name": "symbol",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "thousand",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\",\""
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "totalCents",
+              "description": "A formatted price with various currency formatting options.",
+              "args": [
+                {
+                  "name": "decimal",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\".\""
+                },
+                {
+                  "name": "format",
+                  "description": "Allows control of symbol position (%v = value, %s = symbol)",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\"%s%v\""
+                },
+                {
+                  "name": "precision",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  },
+                  "defaultValue": "0"
+                },
+                {
+                  "name": "symbol",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                },
+                {
+                  "name": "thousand",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": "\",\""
+                }
+              ],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "lineItems",
               "description": "List of order line items",
               "args": [],
@@ -43134,7 +43284,7 @@
             },
             {
               "name": "updateConsignmentSubmission",
-              "description": "Update a consigment using Convection",
+              "description": "Update a consignment using Convection",
               "args": [
                 {
                   "name": "input",
@@ -43436,6 +43586,18 @@
                 "name": "CreditCard",
                 "ofType": null
               },
+              "isDeprecated": true,
+              "deprecationReason": "Favor `creditCardOrError`"
+            },
+            {
+              "name": "creditCardOrError",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "UNION",
+                "name": "CreditCardMutationType",
+                "ofType": null
+              },
               "isDeprecated": false,
               "deprecationReason": null
             },
@@ -43565,6 +43727,132 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "UNION",
+          "name": "CreditCardMutationType",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": [
+            {
+              "kind": "OBJECT",
+              "name": "CreditCardMutationSuccess",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
+              "name": "CreditCardMutationFailure",
+              "ofType": null
+            }
+          ]
+        },
+        {
+          "kind": "OBJECT",
+          "name": "CreditCardMutationSuccess",
+          "description": null,
+          "fields": [
+            {
+              "name": "creditCard",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "CreditCard",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "CreditCardMutationFailure",
+          "description": null,
+          "fields": [
+            {
+              "name": "mutationError",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "GravityMutationError",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "GravityMutationError",
+          "description": null,
+          "fields": [
+            {
+              "name": "type",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "message",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "detail",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "error",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,

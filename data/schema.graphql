@@ -2171,8 +2171,19 @@ input CreditCardInput {
   clientMutationId: String
 }
 
+type CreditCardMutationFailure {
+  mutationError: GravityMutationError
+}
+
+type CreditCardMutationSuccess {
+  creditCard: CreditCard
+}
+
+union CreditCardMutationType = CreditCardMutationSuccess | CreditCardMutationFailure
+
 type CreditCardPayload {
-  credit_card: CreditCard
+  credit_card: CreditCard @deprecated(reason: "Favor `creditCardOrError`")
+  creditCardOrError: CreditCardMutationType
   clientMutationId: String
 }
 
@@ -2184,9 +2195,21 @@ type CroppedImageUrl {
 
 type CurrentEvent {
   image: Image
-  headline: String
-  subHeadline: String
+
+  # The state of the event
+  status: String
+
+  # Name of the partner associated to the event
+  partner: String
+
+  # Location and date of the event if available
+  details: String
+
+  # Name of the event
   name: String
+
+  # Link to the event
+  href: String
 }
 
 type DaySchedule {
@@ -2885,6 +2908,13 @@ type GeneItem implements Node {
     last: Int
   ): GeneConnection
   trending_artists(sample: Int): [Artist]
+}
+
+type GravityMutationError {
+  type: String
+  message: String
+  detail: String
+  error: String
 }
 
 type HighestBid {
@@ -3862,7 +3892,7 @@ type Mutation {
   # Create a new consignment submission using Convection
   createConsignmentSubmission(input: CreateSubmissionMutationInput!): CreateSubmissionMutationPayload
 
-  # Update a consigment using Convection
+  # Update a consignment using Convection
   updateConsignmentSubmission(input: UpdateSubmissionMutationInput!): UpdateSubmissionMutationPayload
 
   # Attach an gemini asset to a consignment submission
@@ -3985,6 +4015,28 @@ type Order {
 
   # A formatted price with various currency formatting options.
   commissionFeeCents(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # A formatted price with various currency formatting options.
+  subtotalCents(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # A formatted price with various currency formatting options.
+  totalCents(
     decimal: String = "."
 
     # Allows control of symbol position (%v = value, %s = symbol)

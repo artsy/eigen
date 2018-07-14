@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash"
+import { get, isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -62,13 +62,24 @@ const MAX_POLL_ATTEMPTS = 20
 const creditCardMutation = graphql`
   mutation ConfirmBidCreateCreditCardMutation($input: CreditCardInput!) {
     createCreditCard(input: $input) {
-      credit_card {
-        id
-        brand
-        name
-        last_digits
-        expiration_month
-        expiration_year
+      creditCardOrError {
+        ... on CreditCardMutationSuccess {
+          creditCard {
+            id
+            brand
+            name
+            last_digits
+            expiration_month
+            expiration_year
+          }
+        }
+        ... on CreditCardMutationFailure {
+          mutationError {
+            type
+            message
+            detail
+          }
+        }
       }
     }
   }
@@ -147,7 +158,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       requiresPaymentInformation,
       selectedBidIndex: this.props.selectedBidIndex,
       errorModalVisible: false,
-      errorModalDetailText: "Your card's security code is incorrect",
+      errorModalDetailText: "",
     }
   }
 
@@ -189,14 +200,21 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       })
 
       commitMutation(this.props.relay.environment, {
-        onCompleted: (_, errors) => (isEmpty(errors) ? this.createBidderPosition() : this.presentErrorModal(errors)),
+        onCompleted: (data, errors) => {
+          if (data && get(data, "createCreditCard.creditCardOrError.creditCard")) {
+            this.createBidderPosition()
+          } else {
+            if (isEmpty(errors)) {
+              const mutationError = data && get(data, "createCreditCard.creditCardOrError.mutationError")
+              this.presentErrorModal(mutationError, mutationError.detail)
+            } else {
+              this.presentErrorModal(errors, null)
+            }
+          }
+        },
         onError: errors => this.presentErrorResult(errors),
         mutation: creditCardMutation,
-        variables: {
-          input: {
-            token: token.tokenId,
-          },
-        },
+        variables: { input: { token: token.tokenId } },
       })
     } catch (error) {
       this.presentErrorResult(error)
@@ -335,10 +353,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     this.setState({ isLoading: false })
   }
 
-  presentErrorModal(errors) {
+  presentErrorModal(errors, mutationMessage) {
     console.error("ConfirmBid.tsx", errors)
-    // TODO: Update to return actual errors
-    const errorMessage = "There was a problem processing your information. Check your payment details and try again."
+
+    const errorMessage =
+      mutationMessage || "There was a problem processing your information. Check your payment details and try again."
     this.setState({ errorModalVisible: true, errorModalDetailText: errorMessage, isLoading: false })
   }
 

@@ -462,16 +462,10 @@ describe("ConfirmBid for unqualified user", () => {
     )
   })
 
-  xit("shows the error screen with the correct error message on a createCreditCard mutation failure", () => {
-    const errors = [
-      {
-        message: `https://stagingapi.artsy.net/api/v1/me/credit_cards?provider=stripe&token=tok_1CmTwUGK3Gnpfa3OqFgqZf8V - {"type":"other_error","message":"No such customer: cus_CrZeblahblah; a similar object exists in live mode, but a test mode key was used to make this request."}`,
-      },
-    ]
-
+  it("shows the error screen with the correct error message on a createCreditCard mutation failure", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted({}, errors))
+    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardError))
 
     const component = renderer.create(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
 
@@ -484,7 +478,7 @@ describe("ConfirmBid for unqualified user", () => {
     jest.runAllTicks()
 
     expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
-      "No such customer: cus_CrZeblahblah; a similar object exists in live mode, but a test mode key was used to make this request."
+      "Your card's security code is incorrect."
     )
     component.root
       .findByType(Modal)
@@ -494,7 +488,7 @@ describe("ConfirmBid for unqualified user", () => {
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
-  it("shows the error screen with the default error message if there is no message present on a createCreditCard mutation failure", () => {
+  it("shows the error screen with the default error message if there are unhandled errors from the createCreditCard mutation", () => {
     const errors = ["malformed error"]
 
     console.error = jest.fn() // Silences component logging.
@@ -520,6 +514,34 @@ describe("ConfirmBid for unqualified user", () => {
       .props.onPress()
 
     // it dismisses the modal
+    expect(component.root.findByType(Modal).props.visible).toEqual(false)
+  })
+
+  it("shows the error screen with the default error message if the creditCardMutation error message is empty", () => {
+    console.error = jest.fn() // Silences component logging.
+    stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
+    relay.commitMutation = jest.fn((_, { onCompleted }) =>
+      onCompleted(mockRequestResponses.creatingCreditCardEmptyError)
+    )
+
+    const component = renderer.create(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
+
+    // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
+    component.root.instance.setState({ billingAddress })
+    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
+
+    jest.runAllTicks()
+
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
+      "There was a problem processing your information. Check your payment details and try again."
+    )
+    component.root
+      .findByType(Modal)
+      .findByType(SecondaryOutlineButton)
+      .props.onPress()
+
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
   })
 
@@ -554,7 +576,7 @@ describe("ConfirmBid for unqualified user", () => {
       stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
       relay.commitMutation = jest
         .fn()
-        .mockImplementationOnce((_, { onCompleted }) => onCompleted())
+        .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardSuccess))
         .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.placingBid.bidAccepted))
     })
 
@@ -619,6 +641,37 @@ const saleArtwork = {
 }
 
 const mockRequestResponses = {
+  creatingCreditCardSuccess: {
+    createCreditCard: {
+      creditCardOrError: {
+        creditCard: {
+          id: "new-credit-card",
+        },
+      },
+    },
+  },
+  creatingCreditCardEmptyError: {
+    createCreditCard: {
+      creditCardOrError: {
+        mutationError: {
+          detail: "",
+          message: "Payment information could not be processed.",
+          type: "payment_error",
+        },
+      },
+    },
+  },
+  creatingCreditCardError: {
+    createCreditCard: {
+      creditCardOrError: {
+        mutationError: {
+          detail: "Your card's security code is incorrect.",
+          message: "Payment information could not be processed.",
+          type: "payment_error",
+        },
+      },
+    },
+  },
   placingBid: {
     bidAccepted: {
       createBidderPosition: {

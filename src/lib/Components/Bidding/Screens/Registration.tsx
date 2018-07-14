@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash"
+import { get, isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -12,6 +12,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Flex } from "../Elements/Flex"
 import { Serif14, SerifSemibold18 } from "../Elements/Typography"
 
+import { Modal } from "lib/Components/Modal"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Button } from "../Components/Button"
 import { Checkbox } from "../Components/Checkbox"
@@ -44,22 +45,36 @@ interface RegistrationState {
   conditionsOfSaleChecked: boolean
   isLoading: boolean
   requiresPaymentInformation: boolean
+  errorModalVisible: boolean
+  errorModalDetailText: string
 }
 
 const creditCardMutation = graphql`
   mutation RegistrationCreateCreditCardMutation($input: CreditCardInput!) {
     createCreditCard(input: $input) {
-      credit_card {
-        id
-        brand
-        name
-        last_digits
-        expiration_month
-        expiration_year
+      creditCardOrError {
+        ... on CreditCardMutationSuccess {
+          creditCard {
+            id
+            brand
+            name
+            last_digits
+            expiration_month
+            expiration_year
+          }
+        }
+        ... on CreditCardMutationFailure {
+          mutationError {
+            type
+            message
+            detail
+          }
+        }
       }
     }
   }
 `
+
 const bidderMutation = graphql`
   mutation RegistrationCreateBidderMutation($input: CreateBidderInput!) {
     createBidder(input: $input) {
@@ -89,6 +104,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       conditionsOfSaleChecked: false,
       requiresPaymentInformation,
       isLoading: false,
+      errorModalVisible: false,
+      errorModalDetailText: "",
     }
   }
 
@@ -138,12 +155,20 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       })
 
       commitMutation(this.props.relay.environment, {
-        onCompleted: (_, errors) =>
-          isEmpty(errors)
-            ? this.createBidder()
-            : this.presentRegistrationResult(RegistrationStatus.RegistrationStatusError),
+        onCompleted: (data, errors) => {
+          if (data && get(data, "createCreditCard.creditCardOrError.creditCard")) {
+            this.createBidder()
+          } else {
+            if (isEmpty(errors)) {
+              const mutationError = data && get(data, "createCreditCard.creditCardOrError.mutationError")
+              this.presentErrorModal(mutationError, mutationError.detail)
+            } else {
+              this.presentErrorModal(errors, null)
+            }
+          }
+        },
         onError: error => {
-          this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusError)
+          this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
         },
         mutation: creditCardMutation,
         variables: {
@@ -201,6 +226,18 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     this.setState({ isLoading: false })
   }
 
+  presentErrorModal(errors, mutationMessage) {
+    console.error("Registration.tsx", errors)
+
+    const errorMessage =
+      mutationMessage || "There was a problem processing your information. Check your payment details and try again."
+    this.setState({ errorModalVisible: true, errorModalDetailText: errorMessage, isLoading: false })
+  }
+
+  closeModal() {
+    this.setState({ errorModalVisible: false })
+  }
+
   render() {
     const { live_start_at, end_at, is_preview, start_at } = this.props.sale
 
@@ -226,6 +263,13 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                 creditCardToken={this.state.creditCardToken}
               />
             )}
+
+            <Modal
+              visible={this.state.errorModalVisible}
+              headerText="An error occurred"
+              detailText={this.state.errorModalDetailText}
+              closeModal={this.closeModal.bind(this)}
+            />
           </View>
 
           <View>
