@@ -111,7 +111,11 @@ randomBOOL(void)
                                      authenticationToken:accessToken
                                      sentryDSN:nil
                                      stripePublishableKey:[keys stripePublishableKey]
-                                     googleMapsAPIKey:nil gravityURL:setup.gravityURL metaphysicsURL:setup.metaphysicsURL userAgent:@"Emission Example"];
+                                     googleMapsAPIKey:nil
+                                     gravityURL:setup.gravityURL
+                                     metaphysicsURL:setup.metaphysicsURL
+                                     predictionURL:setup.predictionURL
+                                     userAgent:@"Emission Example"];
 
   emission = [[AREmission alloc] initWithConfiguration:config packagerURL:setup.jsCodeLocation];
   [AREmission setSharedInstance:emission];

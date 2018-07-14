@@ -29,6 +29,7 @@ RCT_EXPORT_MODULE(Emission);
 
     @"gravityURL": self.gravityURL,
     @"metaphysicsURL": self.metaphysicsURL,
+    @"predictionURL": self.predictionURL,
 
     // Empty is falsy in JS, so these are fine too.
     @"googleMapsAPIKey": self.googleMapsAPIKey ?: @"",
@@ -45,6 +46,7 @@ RCT_EXPORT_MODULE(Emission);
               googleMapsAPIKey:(NSString *)googleAPIKey
                     gravityURL:(NSString *)gravity
                 metaphysicsURL:(NSString *)metaphysics
+                 predictionURL:(NSString *)prediction
                      userAgent:(nonnull NSString *)userAgent
 {
     self = [super init];
@@ -55,6 +57,7 @@ RCT_EXPORT_MODULE(Emission);
     _googleMapsAPIKey = googleAPIKey.copy;
     _gravityURL = gravity.copy;
     _metaphysicsURL = metaphysics.copy;
+    _predictionURL = prediction.copy;
     _userAgent = userAgent.copy;
     return self;
 }
@@ -118,7 +121,7 @@ static AREmission *_sharedInstance = nil;
     _bridge = [[RCTBridge alloc] initWithBundleURL:(packagerURL ?: self.releaseBundleURL)
                                     moduleProvider:^{ return modules; }
                                      launchOptions:nil];
-    
+
     if (config.sentryDSN) {
       [RNSentry installWithBridge:_bridge];
     }

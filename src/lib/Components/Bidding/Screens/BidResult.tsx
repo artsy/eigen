@@ -1,5 +1,5 @@
 import React from "react"
-import { NavigatorIOS, View } from "react-native"
+import { NativeModules, NavigatorIOS, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -62,7 +62,10 @@ export class BidResult extends React.Component<BidResultProps> {
     await SwitchBoard.dismissModalViewController(this)
 
     if (this.props.bidderPositionResult.status === "LIVE_BIDDING_STARTED") {
-      SwitchBoard.presentModalViewController(this, `/auction/${this.props.sale_artwork.sale.id}`)
+      const Emission = NativeModules.Emission || {}
+      const saleID = this.props.sale_artwork.sale.id
+      const url = `${Emission.predictionURL}/${saleID}`
+      SwitchBoard.presentModalViewController(this, url)
     }
   }
 
