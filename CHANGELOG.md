@@ -23,6 +23,7 @@
 * Sets artwork and artist name labels on ConfirmBid component to use only one line, and truncate the tail - ash
 * Show error message when your credit card can't be added - sweir27
 * Now Emission uses metaphysics system time to consider offset for auction timer - yuki24
+* ARBidFlowViewController now exposes preloading queries - ash
 
 ### 1.5.10
 

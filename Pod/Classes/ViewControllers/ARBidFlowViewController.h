@@ -1,5 +1,7 @@
 #import <Emission/ARComponentViewController.h>
 
+@class ARGraphQLQuery;
+
 NS_ASSUME_NONNULL_BEGIN
 
 typedef enum : NSUInteger {
@@ -8,6 +10,8 @@ typedef enum : NSUInteger {
 } ARBidFlowViewControllerIntent;
 
 @interface ARBidFlowViewController : ARComponentViewController
+
++ (NSArray<ARGraphQLQuery *> *)preloadQueriesWithArtworkID:(NSString *)artworkID saleID:(NSString *)saleID intent:(ARBidFlowViewControllerIntent)intent;
 
 - (instancetype)initWithArtworkID:(nullable NSString *)artworkID saleID:(NSString *)saleID; /// Defaults to bid.
 - (instancetype)initWithArtworkID:(nullable NSString *)artworkID saleID:(NSString *)saleID intent:(ARBidFlowViewControllerIntent)intent;
