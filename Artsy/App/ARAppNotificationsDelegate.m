@@ -218,12 +218,15 @@
             NSString *artworkID = notificationInfo[@"artwork_id"];
             NSString *action = notificationInfo[@"action"];
 
+            // We check whether a notification coming through has this as its action
+            NSString *outbidNotificationLabel = @"bid outbid";
+
             ARConversationComponentViewController *conversationVC = (id)controller;
             ARBidFlowViewController *bidFlowVC = (id)controller;
 
             if ([controller isKindOfClass:ARConversationComponentViewController.class] && [conversationVC.conversationID isEqualToString:conversationID]) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"notification_received" object:notificationInfo];
-            } else if ([controller isKindOfClass:ARBidFlowViewController.class] && [action isEqualToString:@"outbid"] && [bidFlowVC.artworkID isEqualToString:artworkID] && [bidFlowVC.saleID isEqualToString:saleID]) {
+            } else if ([controller isKindOfClass:ARBidFlowViewController.class] && [action isEqualToString:outbidNotificationLabel] && [bidFlowVC.artworkID isEqualToString:artworkID] && [bidFlowVC.saleID isEqualToString:saleID]) {
                 // NO-OP, so that we don't show notifications about bidding activity currently on screen
             } else {
                 NSString *title = [message isKindOfClass:[NSString class]] ? message : message[@"title"];
