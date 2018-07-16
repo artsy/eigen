@@ -114,7 +114,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
 - (void)setUpCallbacks
 {
-    __weak typeof(self) wself = self;
+    __weak typeof (self) wself = self;
 
     void (^completion)(void) = ^{
         __strong typeof (wself) sself = wself;
@@ -157,15 +157,34 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
                                                object:nil];
 }
 
+// 1. Call self.metadataview.ctionView.showSpinner()
+// 2. Make a call to onSaleArtworkUpdate with allowCachedno
+// 3. In callback from 2., update our self.banner.auctionState and also call self.matadataview.actionVIew.updateSaleArtwork(saleASrtwork)
 - (void)artworkBidUpdated:(NSNotification *)notification;
 {
     if ([notification.userInfo[ARAuctionArtworkIDKey] isEqualToString:self.artwork.artworkID]) {
-        // keep this?
+        __weak typeof (self) wself = self;
+        // Pt 1: Goes here
+        // self.metadataview.actionView.showSpinner() change notificationcenter bits into a fn
+        [self.artwork onSaleArtworkUpdate:^(SaleArtwork * _Nonnull saleArtwork) { // this is the pt 2
+            __strong typeof (wself) sself = wself;
+            if (!sself) { return; }
+            if (saleArtwork.auctionState & ARAuctionStateUserIsBidder) {
+                [ARAnalytics setUserProperty:@"has_placed_bid" toValue:@"true"];
+                sself.banner.auctionState = saleArtwork.auctionState; // this is also part of pt 3
+                [UIView animateIf:ARPerformWorkAsynchronously duration:ARAnimationDuration :^{
+                    [sself.banner updateHeightConstraint];
+                    [sself.stackView layoutIfNeeded];
+                }];
+                [sself.metadataView updateUI];  // test whether this uses the new data- maybe it doesn't yet (this is pt 3)
+            }
+        }
+      failure:nil
+        allowCached:NO];
         [self.artwork updateSaleArtwork];
+        //
+        
 
-        // 1. Call self.metadataview.ctionView.showSpinner()
-        // 2. Make a call to onSaleArtworkUpdate with allowCachedno
-        // 3. In callback from 2., update our self.banner.auctionState and also call self.matadataview.actionVIew.updateSaleArtwork(saleASrtwork)
     }
 }
 

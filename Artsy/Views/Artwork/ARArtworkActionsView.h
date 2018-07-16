@@ -22,6 +22,7 @@
 
 @interface ARArtworkActionsView : ORStackView
 - (instancetype)initWithArtwork:(Artwork *)artwork;
+- (void)updateUI;
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, weak) id<ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate> delegate;
 @end

@@ -166,6 +166,11 @@
     }
 }
 
+-(void)updateUI
+{
+    [self.actionsView updateUI];
+}
+
 - (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate, ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate, ARArtworkPreviewImageViewDelegate, ARArtworkPreviewActionsViewDelegate>)delegate
 {
     self.artworkPreview.delegate = delegate;

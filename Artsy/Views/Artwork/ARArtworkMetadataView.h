@@ -22,6 +22,8 @@
 
 - (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate, ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate, ARArtworkPreviewImageViewDelegate, ARArtworkPreviewActionsViewDelegate>)delegate;
 
+- (void)updateUI;
+
 @property (nonatomic, strong, readonly) UIView *left;
 @property (nonatomic, strong, readonly) UIView *right;
 
