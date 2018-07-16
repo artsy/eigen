@@ -27,8 +27,8 @@ interface StyledInputInterface {
   }
 }
 
-const StyledInput = ({ label, error, ...props }) => (
-  <Flex mb={4}>
+const StyledInput = ({ label, error, onLayout, ...props }) => (
+  <Flex mb={4} onLayout={onLayout}>
     <Serif16 mb={2}>{label}</Serif16>
     <Input mb={3} error={Boolean(error)} {...props} />
     {error && <Sans12 color="red100">{error}</Sans12>}
@@ -59,11 +59,19 @@ interface BillingAddressState {
   context_screen_owner_type: null,
 })
 export class BillingAddress extends React.Component<BillingAddressProps, BillingAddressState> {
+  private scrollView: any
+
   private addressLine1: StyledInputInterface
   private addressLine2: StyledInputInterface
   private city: StyledInputInterface
   private stateProvinceRegion: StyledInputInterface
   private postalCode: StyledInputInterface
+
+  private titleLayout: any
+  private addressLine2Layout: any
+  private cityLayout: any
+  private stateLayout: any
+  private postalCodeLayout: any
 
   constructor(props) {
     super(props)
@@ -147,9 +155,9 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
         <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={defaultVerticalOffset} style={{ flex: 1 }}>
           <BackButton navigator={this.props.navigator} />
 
-          <ScrollView>
+          <ScrollView ref={scrollView => (this.scrollView = scrollView)}>
             <Container>
-              <Title mt={0} mb={6}>
+              <Title mt={0} mb={0} pb={6} onLayout={({ nativeEvent }) => (this.titleLayout = nativeEvent.layout)}>
                 Your billing address
               </Title>
 
@@ -173,6 +181,12 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="Address line 2 (optional)"
                 placeholder="Add your apt, floor, suite, etc."
                 onSubmitEditing={() => this.city.root.focus()}
+                onFocus={() =>
+                  this.scrollView.scrollTo({
+                    x: 0,
+                    y: this.addressLine2Layout.y - this.addressLine2Layout.height - this.titleLayout.height,
+                  })
+                }
               />
 
               <StyledInput
@@ -180,6 +194,12 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="City"
                 placeholder="Add your city"
                 onSubmitEditing={() => this.stateProvinceRegion.root.focus()}
+                onFocus={() =>
+                  this.scrollView.scrollTo({
+                    x: 0,
+                    y: this.cityLayout.y - this.cityLayout.height - this.titleLayout.height,
+                  })
+                }
               />
 
               <StyledInput
@@ -188,6 +208,12 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 placeholder="Add state, province, or region"
                 onSubmitEditing={() => this.postalCode.root.focus()}
                 inputRef={el => (this.stateProvinceRegion = el)}
+                onFocus={() =>
+                  this.scrollView.scrollTo({
+                    x: 0,
+                    y: this.stateLayout.y - this.stateLayout.height - this.titleLayout.height,
+                  })
+                }
               />
 
               <StyledInput
@@ -195,6 +221,12 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="Postal code"
                 placeholder="Add your postal code"
                 onSubmitEditing={() => this.presentSelectCountry()}
+                onFocus={() =>
+                  this.scrollView.scrollTo({
+                    x: 0,
+                    y: this.postalCodeLayout.y - this.postalCodeLayout.height - this.titleLayout.height,
+                  })
+                }
               />
 
               <Flex mb={4}>
@@ -228,6 +260,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
       inputRef: el => (this[field] = el),
       onBlur: () => this.validateField(field),
       onChangeText: value => this.setState({ values: { ...this.state.values, [field]: value } }),
+      onLayout: ({ nativeEvent }) => (this[`${field}Layout`] = nativeEvent.layout),
       returnKeyType: "next",
       value: this.state.values[field],
     }
