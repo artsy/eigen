@@ -18,10 +18,11 @@
 
 * Fixes a bug where the error message for the country field remains even after selecting country - yuki24
 * Adds an error modal to the bid flow - sweir27
-* The country select form should pre-populate if user have already selected a country - yuki2
+* The country select form should pre-populate if user have already selected a country - yuki24
 * Update graphql + use new argument to fetch increments - sweir27
 * Sets artwork and artist name labels on ConfirmBid component to use only one line, and truncate the tail - ash
 * Show error message when your credit card can't be added - sweir27
+* Now Emission uses metaphysics system time to consider offset for auction timer - yuki24
 
 ### 1.5.10
 

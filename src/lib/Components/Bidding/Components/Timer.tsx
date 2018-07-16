@@ -1,5 +1,7 @@
 import moment from "moment-timezone"
+import * as PropTypes from "prop-types"
 import React from "react"
+
 import { Flex } from "../Elements/Flex"
 import { SansMedium12, SansMedium16t } from "../Elements/Typography"
 
@@ -9,6 +11,7 @@ interface TimerProps {
   isPreview?: boolean
   isClosed?: boolean
   startsAt?: string
+  timeOffsetInMilliSeconds?: number
 }
 
 interface TimerState {
@@ -25,7 +28,7 @@ export enum AuctionTimerState {
   CLOSED = "CLOSED",
 }
 
-export class Timer extends React.Component<TimerProps, TimerState> {
+class LocalTimer extends React.Component<TimerProps, TimerState> {
   private intervalId: number
 
   constructor(props) {
@@ -140,7 +143,7 @@ export class Timer extends React.Component<TimerProps, TimerState> {
   }
 
   render() {
-    const duration = moment.duration(this.state.timeLeftInMilliseconds)
+    const duration = moment.duration(this.state.timeLeftInMilliseconds + (this.props.timeOffsetInMilliSeconds || 0))
 
     return (
       <Flex alignItems="center">
@@ -157,5 +160,15 @@ export class Timer extends React.Component<TimerProps, TimerState> {
 
   private padWithZero(number: number) {
     return (number.toString() as any).padStart(2, "0")
+  }
+}
+
+export class Timer extends React.Component<TimerProps> {
+  static contextTypes = {
+    timeOffsetInMilliSeconds: PropTypes.number,
+  }
+
+  render() {
+    return <LocalTimer {...this.props} {...this.context} />
   }
 }

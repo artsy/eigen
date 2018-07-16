@@ -4,6 +4,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { RegistrationFlow_me } from "__generated__/RegistrationFlow_me.graphql"
 import { RegistrationFlow_sale } from "__generated__/RegistrationFlow_sale.graphql"
+import { TimeOffsetProvider } from "../Components/Bidding/Context/TimeOffsetProvider"
 import { RegistrationScreen } from "../Components/Bidding/Screens/Registration"
 
 interface RegistrationFlowProps extends ViewProperties {
@@ -14,15 +15,17 @@ interface RegistrationFlowProps extends ViewProperties {
 class RegistrationFlow extends React.Component<RegistrationFlowProps> {
   render() {
     return (
-      <NavigatorIOS
-        navigationBarHidden={true}
-        initialRoute={{
-          component: RegistrationScreen,
-          title: "", // title is required, though we don't use it because our navigation bar is hidden.
-          passProps: this.props,
-        }}
-        style={{ flex: 1 }}
-      />
+      <TimeOffsetProvider>
+        <NavigatorIOS
+          navigationBarHidden={true}
+          initialRoute={{
+            component: RegistrationScreen,
+            title: "", // title is required, though we don't use it because our navigation bar is hidden.
+            passProps: this.props,
+          }}
+          style={{ flex: 1 }}
+        />
+      </TimeOffsetProvider>
     )
   }
 }
