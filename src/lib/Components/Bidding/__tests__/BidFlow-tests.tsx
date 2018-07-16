@@ -85,7 +85,10 @@ it("allows bidders without a qualified credit card to register a card and bid", 
   expect(getTitleText(screen)).toEqual("Confirm your bid")
 
   stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-  relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted(mockRequestResponses.placingBid.bidAccepted))
+  relay.commitMutation = jest
+    .fn()
+    .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardSuccess))
+    .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.placingBid.bidAccepted))
   mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
 
   // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.
@@ -188,6 +191,15 @@ const SaleArtwork = {
 }
 
 const mockRequestResponses = {
+  creatingCreditCardSuccess: {
+    createCreditCard: {
+      creditCardOrError: {
+        creditCard: {
+          id: "new-credit-card",
+        },
+      },
+    },
+  },
   placingBid: {
     bidAccepted: {
       createBidderPosition: {
