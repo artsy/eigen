@@ -15,9 +15,9 @@ import { Registration } from "../Screens/Registration"
 import { RegistrationResult, RegistrationStatus } from "../Screens/RegistrationResult"
 import { MaxBidScreen } from "../Screens/SelectMaxBid"
 
-const testSaleArtworkID = "5b450d834c8c650001c283df"
-const testArtworkID = "richard-schur-insects"
-const testSaleID = "purchase-team"
+const testSaleArtworkID = "5b48ed80360bca000104d057"
+const testArtworkID = "5b48ed80360bca000104d050"
+const testSaleID = "erik-reserves-moction"
 
 const selectMaxBidQuery = graphql`
   query BidFlowSelectMaxBidRendererQuery($saleArtworkID: String!) {
@@ -47,7 +47,7 @@ storiesOf("Bidding")
       <ConfirmBid
         sale_artwork={{
           _id: "saleartwork12345",
-          sale: { id: "sale-id", live_start_at: "2018-06-11T01:00:00+00:00", end_at: null },
+          sale: { id: "sale-id", live_start_at: "2018-08-13T18:00:00+00:00", end_at: null },
           artwork: { id: "artwork-id", title: "Morgan Hill (Prototype)", date: "1973", artist_names: "Lewis balts" },
           lot_label: "2",
         }}

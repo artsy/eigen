@@ -523,7 +523,7 @@ exports[`renders properly 1`] = `
                   ]
                 }
               >
-                Your card's security code is incorrect
+                
               </Text>
             </View>
             <View
