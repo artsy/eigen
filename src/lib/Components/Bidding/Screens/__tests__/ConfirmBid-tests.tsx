@@ -131,6 +131,37 @@ describe("when pressing bid button", () => {
     expect(component.root.findAllByType(Spinner).length).toEqual(1)
   })
 
+  it("disables tap events while a spinner is being shown", () => {
+    const navigator = { push: jest.fn() } as any
+    relay.commitMutation = jest.fn()
+
+    const component = renderer.create(<ConfirmBid {...initialPropsForUnqualifiedUser} navigator={navigator} />)
+
+    component.root.instance.setState({
+      conditionsOfSaleChecked: true,
+      creditCardToken: stripeToken,
+      billingAddress,
+    })
+
+    component.root.findByType(Button).instance.props.onPress()
+
+    const yourMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
+    const creditCardRow = component.root.findAllByType(TouchableWithoutFeedback)[1]
+    const billingAddressRow = component.root.findAllByType(TouchableWithoutFeedback)[2]
+
+    yourMaxBidRow.instance.props.onPress()
+
+    expect(navigator.push).not.toHaveBeenCalled()
+
+    creditCardRow.instance.props.onPress()
+
+    expect(navigator.push).not.toHaveBeenCalled()
+
+    billingAddressRow.instance.props.onPress()
+
+    expect(navigator.push).not.toHaveBeenCalled()
+  })
+
   describe("when pressing bid", () => {
     it("commits the mutation", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} />)
