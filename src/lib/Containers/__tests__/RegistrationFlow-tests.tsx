@@ -18,10 +18,15 @@ const Sale = {
 }
 
 it("renders properly with credit card", () => {
+  console.error = jest.fn() // Silences component logging.
+
   const bg = renderer.create(<RegistrationFlow me={{ has_credit_cards: true }} sale={Sale} />).toJSON()
   expect(bg).toMatchSnapshot()
 })
+
 it("renders properly without credit card", () => {
+  console.error = jest.fn() // Silences component logging.
+
   const bg = renderer.create(<RegistrationFlow me={{ has_credit_cards: false }} sale={Sale} />).toJSON()
   expect(bg).toMatchSnapshot()
 })
