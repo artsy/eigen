@@ -12,6 +12,7 @@ upcoming:
     - iPhone X fix for the zoomed image screen - orta
     - Adds an lab option to have the back button hide after a delay on a zoomed image - orta
     - Removes duplicate navigation bar on BidFlow - ash
+    - Users now prompted to bid on artworks in a sale, instead of just registering to bid - ash
 
 releases:
   - version: 4.2.0

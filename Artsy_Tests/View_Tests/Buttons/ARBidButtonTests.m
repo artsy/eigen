@@ -14,6 +14,12 @@ it(@"register", ^{
     expect(_button).to.haveValidSnapshotNamed(@"testRegisterState");
 });
 
+it(@"intent to bid", ^{
+    [_button setAuctionState:ARAuctionStateDefault animated:NO intent:ARBidButtonIntentBid];
+
+    expect(_button).to.haveValidSnapshotNamed(@"testRegisterForceBidState");
+});
+
 it(@"registered", ^{
     [_button setAuctionState:ARAuctionStateUserIsRegistered animated:NO];
     expect(_button).to.haveValidSnapshotNamed(@"testRegisteredState");
