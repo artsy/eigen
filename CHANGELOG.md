@@ -21,6 +21,7 @@
 * The country select form should pre-populate if user have already selected a country - yuki2
 * Update graphql + use new argument to fetch increments - sweir27
 * Sets artwork and artist name labels on ConfirmBid component to use only one line, and truncate the tail - ash
+* Adds predictionURL and updates 'Live bidding has started' screen to link to live sale - sweir27
 
 ### 1.5.10
 
