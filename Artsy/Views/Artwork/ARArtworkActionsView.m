@@ -139,7 +139,7 @@
         }
 
         ARBidButton *bidButton = [[ARBidButton alloc] init];
-        bidButton.auctionState = self.saleArtwork.auctionState;
+        [bidButton setAuctionState:self.saleArtwork.auctionState animated:NO intent:ARBidButtonIntentBid];
         [self addSubview:bidButton withTopMargin:@"26" sideMargin:@"0"];
         [bidButton addTarget:self action:@selector(tappedBidButton:) forControlEvents:UIControlEventTouchUpInside];
         self.bidButton = bidButton;
@@ -400,7 +400,7 @@ return [navigationButtons copy];
     NSDate *liveStartDate = self.saleArtwork.auction.liveAuctionStartDate;
     NSDate *endDate = self.saleArtwork.auction.endDate;
 
-    self.bidButton.auctionState = self.saleArtwork.auctionState;
+    [self.bidButton setAuctionState:self.saleArtwork.auctionState animated:YES intent:ARBidButtonIntentBid];
 
     if (!self.saleArtwork.auction) {
         [self removeSubview:self.bidButton];

@@ -6,7 +6,8 @@
 
 NSString *const ARBidButtonRegisterStateTitle = @"REGISTER TO BID";
 NSString *const ARBidButtonRegisteredStateTitle = @"YOU ARE REGISTERED TO BID";
-NSString *const ARBidButtonBiddingOpenStateTitle = @"BID";
+NSString *const ARBidBUttonBidStateTitle = @"BID";
+NSString *const ARBidButtonBiddingOpenStateTitle = ARBidBUttonBidStateTitle;
 NSString *const ARBidButtonBiddingClosedStateTitle = @"BIDDING CLOSED";
 NSString *const ARBidButtonRegistionPendingStateTitle = @"REGISTRATION PENDING";
 NSString *const ARBidButtonRegistionClosedStateTitle = @"REGISTRATION CLOSED";
@@ -34,6 +35,11 @@ NSString *const ARBidButtonRegistionClosedStateTitle = @"REGISTRATION CLOSED";
 
 - (void)setAuctionState:(ARAuctionState)state animated:(BOOL)animated
 {
+    [self setAuctionState:state animated:animated intent:ARBidButtonIntentRegister];
+}
+
+- (void)setAuctionState:(ARAuctionState)state animated:(BOOL)animated intent:(ARBidButtonIntent)intent
+{
     NSString *title = nil;
     UIColor *backgroundColor = [UIColor blackColor];
     BOOL enabled = YES;
@@ -59,7 +65,12 @@ NSString *const ARBidButtonRegistionClosedStateTitle = @"REGISTRATION CLOSED";
         interactionEnabled = NO;
 
     } else {
-        title = ARBidButtonRegisterStateTitle;
+        // We've gotten to the end, this is the default button configuration. It depends on our intent.
+        if (intent == ARBidButtonIntentRegister) {
+            title = ARBidButtonRegisterStateTitle;
+        } else if (intent == ARBidButtonIntentBid) {
+            title = ARBidBUttonBidStateTitle;
+        }
     }
 
     [self setTitle:title forState:UIControlStateNormal];
