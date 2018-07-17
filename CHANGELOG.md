@@ -29,6 +29,7 @@
 * Now Emission uses metaphysics system time to consider offset for auction timer - yuki24
 * ARBidFlowViewController now exposes preloading queries - ash
 * Now users are not allowed to click into the billing address/cc/max bid edit forms while your bid is being placed - yuki24
+* Adds predictionURL and updates 'Live bidding has started' screen to link to live sale - sweir27
 
 ### 1.5.10
 

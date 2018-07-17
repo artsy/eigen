@@ -10,6 +10,7 @@ NSString *const ARPREmissionIDDefault = @"ARPREmissionIDDefault";
 NSString *const ARStagingAPIURLDefault = @"ARStagingAPIURLDefault";
 NSString *const ARStagingWebURLDefault = @"ARStagingWebURLDefault";
 NSString *const ARStagingMetaphysicsURLDefault = @"ARStagingMetaphysicsURLDefault";
+NSString *const ARStagingPredictionURLDefault = @"ARStagingPredictionURLDefault";
 NSString *const ARRNPackagerHostDefault = @"ARStagingRNPackagerHostDefault";
 
 
@@ -34,6 +35,7 @@ NSString *const ARRNPackagerHostDefault = @"ARStagingRNPackagerHostDefault";
     ARStagingAPIURLDefault : @"https://stagingapi.artsy.net",
     ARStagingWebURLDefault : @"https://staging.artsy.net",
     ARStagingMetaphysicsURLDefault : @"https://metaphysics-staging.artsy.net",
+    ARStagingPredictionURLDefault : @"https://live-staging.artsy.net",
     ARRNPackagerHostDefault : host,
   }];
 }

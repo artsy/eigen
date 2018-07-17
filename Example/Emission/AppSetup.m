@@ -22,11 +22,13 @@
     NSString *packagerURL = [defaults stringForKey:ARRNPackagerHostDefault];;
     _gravityURL = @"https://api.artsy.net";
     _metaphysicsURL = @"https://metaphysics-production.artsy.net";
+    _predictionURL = @"https://live.artsy.net";
 
     BOOL useStaging = [defaults boolForKey:ARUseStagingDefault];
     if (useStaging) {
       _gravityURL = [defaults stringForKey:ARStagingAPIURLDefault];
       _metaphysicsURL = [defaults stringForKey:ARStagingMetaphysicsURLDefault];
+      _predictionURL = [defaults stringForKey:ARStagingPredictionURLDefault];
     }
 
     BOOL useMaster = ![[KSCrash sharedInstance] crashedLastLaunch];

@@ -396,6 +396,7 @@
     [sectionData addCellDataFromArray:@[
       [self editableTextCellDataWithName:@"Gravity API" defaultKey:ARStagingAPIURLDefault],
       [self editableTextCellDataWithName:@"Metaphysics API" defaultKey:ARStagingMetaphysicsURLDefault],
+      [self editableTextCellDataWithName:@"Prediction URL" defaultKey:ARStagingPredictionURLDefault],
       [self editableTextCellDataWithName:@"RN Packager" defaultKey:ARRNPackagerHostDefault],
     ]];
 

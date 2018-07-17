@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *gravityURL;
 @property (nonatomic, copy, readonly) NSString *metaphysicsURL;
 @property (nonatomic, copy, readonly) NSString *userAgent;
+@property (nonatomic, copy, readonly, nullable) NSString *predictionURL;
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
@@ -35,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
               googleMapsAPIKey:(nullable NSString *)googleAPIKey
                     gravityURL:(NSString *)gravity
                 metaphysicsURL:(NSString *)metaphysics
+                 predictionURL:(NSString *)prediction
                      userAgent:(NSString *)userAgent;
 @end
 

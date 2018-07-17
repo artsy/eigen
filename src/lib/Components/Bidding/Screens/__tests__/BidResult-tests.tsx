@@ -1,6 +1,7 @@
 import { shallow } from "enzyme"
 import React from "react"
-import "react-native"
+
+import { NativeModules } from "react-native"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   dismissModalViewController: jest.fn(),
@@ -189,6 +190,7 @@ describe("BidResult component", () => {
     })
 
     it("dismisses controller and presents live interface when continue button is pressed", () => {
+      NativeModules.Emission = { predictionURL: "https://live-staging.artsy.net" }
       const bidResult = renderer.create(
         <BidResult
           refreshBidderInfo={refreshBidderInfoMock}
@@ -204,7 +206,10 @@ describe("BidResult component", () => {
       bidResult.root.findByType(BidGhostButton).instance.props.onPress()
       jest.runAllTicks()
 
-      expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), "/auction/sale-id")
+      expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(
+        expect.anything(),
+        "https://live-staging.artsy.net/sale-id"
+      )
     })
   })
 })
