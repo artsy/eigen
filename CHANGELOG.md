@@ -16,6 +16,8 @@
 
 ### Master
 
+* Fixes an issue related to posting NSNotificationCenter notifications on not-main threads - erikdstock
+
 ### 1.5.11
 
 * Fixes a bug where the error message for the country field remains even after selecting country - yuki24

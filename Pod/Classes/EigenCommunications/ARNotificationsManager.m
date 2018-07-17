@@ -28,7 +28,9 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(postNotificationName:(nonnull NSString *)notificationName userInfo:(NSDictionary *)userInfo)
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil userInfo:userInfo];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil userInfo:userInfo];
+    });
 }
 
 @end
