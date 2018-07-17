@@ -10,7 +10,7 @@
 @interface ARArtworkMetadataView ()
 @property (nonatomic, strong) ARArtworkPreviewActionsView *artworkPreviewActions;
 @property (nonatomic, strong) ARArtworkPreviewImageView *artworkPreview;
-@property (nonatomic, strong) ARArtworkActionsView *actionsView;
+//@property (nonatomic, strong) ARArtworkActionsView *actionsView;
 @property (nonatomic, strong) ARArtworkDetailView *artworkDetailView;
 @property (nonatomic, strong, readonly) NSArray *verticalConstraints;
 @property (nonatomic, strong, readonly) NSArray *horizontalConstraints;

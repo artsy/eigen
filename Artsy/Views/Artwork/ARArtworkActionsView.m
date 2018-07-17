@@ -90,11 +90,8 @@
         for (UIView *subview in self.subviews) {
             [self removeSubview:subview];
         }
-        ARSpinner *spinner = [[ARSpinner alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-        self.spinner = spinner;
-        [self.spinner constrainHeight:@"100"];
-        [self.spinner fadeInAnimated:ARPerformWorkAsynchronously];
-        [self addSubview:self.spinner withTopMargin:@"0" sideMargin:@"0"];
+
+        [self showSpinner];
 
         // Then fetch the up-to-date data.
         __weak typeof(self) wself = self;
@@ -105,6 +102,15 @@
             sself.spinner = nil;
         } failure:nil allowCached:NO];
     }
+}
+
+- (void)showSpinner
+{
+    ARSpinner *spinner = [[ARSpinner alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    self.spinner = spinner;
+    [self.spinner constrainHeight:@"100"];
+    [self.spinner fadeInAnimated:ARPerformWorkAsynchronously];
+    [self addSubview:self.spinner withTopMargin:@"0" sideMargin:@"0"];
 }
 
 // The central state for a lot of this logic is in:

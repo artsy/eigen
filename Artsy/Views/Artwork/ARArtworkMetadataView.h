@@ -26,6 +26,7 @@
 
 @property (nonatomic, strong, readonly) UIView *left;
 @property (nonatomic, strong, readonly) UIView *right;
+@property (nonatomic, strong) ARArtworkActionsView *actionsView;
 
 /// TODO: Make this a view controller so that we can negate doing this.
 /// Let subviews know that we're in a fair context

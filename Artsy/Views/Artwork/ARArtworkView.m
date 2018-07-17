@@ -162,10 +162,11 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 // 3. In callback from 2., update our self.banner.auctionState and also call self.matadataview.actionVIew.updateSaleArtwork(saleASrtwork)
 - (void)artworkBidUpdated:(NSNotification *)notification;
 {
+    
     if ([notification.userInfo[ARAuctionArtworkIDKey] isEqualToString:self.artwork.artworkID]) {
         __weak typeof (self) wself = self;
         // Pt 1: Goes here
-        // self.metadataview.actionView.showSpinner() change notificationcenter bits into a fn
+        [self.metadataView.actionsView showSpinner];
         [self.artwork onSaleArtworkUpdate:^(SaleArtwork * _Nonnull saleArtwork) { // this is the pt 2
             __strong typeof (wself) sself = wself;
             if (!sself) { return; }
@@ -182,9 +183,6 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
       failure:nil
         allowCached:NO];
         [self.artwork updateSaleArtwork];
-        //
-        
-
     }
 }
 
