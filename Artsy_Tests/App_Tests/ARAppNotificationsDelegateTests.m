@@ -166,8 +166,6 @@ describe(@"receiveRemoteNotification", ^{
             [mock stopMocking];
         });
 
-
-
         it(@"suppresses showing the notification view when a notification about outbidding ", ^{
             ARBidFlowViewController *bidController = [[ARBidFlowViewController alloc] initWithArtworkID:@"asd1432asda" saleID:@"123ffg3edfsd"];
 
@@ -177,7 +175,7 @@ describe(@"receiveRemoteNotification", ^{
             id mock = [OCMockObject mockForClass:[ARNotificationView class]];
             [[mock reject] showNoticeInView:OCMOCK_ANY title:OCMOCK_ANY response:OCMOCK_ANY];
 
-            [delegate applicationDidReceiveRemoteNotification:@{ @"sale_id" : @"123ffg3edfsd", @"artwork_id": @"asd1432asda", @"action": @"outbid" } inApplicationState:appState];
+            [delegate applicationDidReceiveRemoteNotification:@{ @"sale_id" : @"123ffg3edfsd", @"artwork_id": @"asd1432asda", @"action": @"bid outbid" } inApplicationState:appState];
 
             [mock verify];
             [mock stopMocking];
