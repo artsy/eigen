@@ -103,7 +103,7 @@
 
 - (UIViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;
 {
-    if ([AROptions boolForOption:AROptionsUseNewBidFlow]) {
+    if (self.echo.features[@"ARDisableReactNativeBidFlow"].state == NO) {
         ARBidFlowViewController *viewController = [[ARBidFlowViewController alloc] initWithArtworkID:@"" saleID:auctionID intent:ARBidFlowViewControllerIntentRegister];
         return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
     } else {
@@ -116,7 +116,7 @@
 
 - (UIViewController *)loadBidUIForArtwork:(NSString *)artworkID inSale:(NSString *)saleID
 {
-    if ([AROptions boolForOption:AROptionsUseNewBidFlow]) {
+    if (self.echo.features[@"ARDisableReactNativeBidFlow"].state == NO) {
         ARBidFlowViewController *viewController = [[ARBidFlowViewController alloc] initWithArtworkID:artworkID saleID:saleID];
         return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
     } else {
