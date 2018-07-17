@@ -1,5 +1,5 @@
 import React from "react"
-import { NativeModules, Text } from "react-native"
+import { NativeModules, Text, TouchableWithoutFeedback } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import Spinner from "../../../Spinner"
@@ -155,6 +155,37 @@ describe("when pressing register button", () => {
     component.root.findByType(Button).instance.props.onPress()
 
     expect(component.root.findAllByType(Spinner).length).toEqual(1)
+  })
+
+  it("disables tap events while a spinner is being shown", () => {
+    const navigator = { push: jest.fn() } as any
+    relay.commitMutation = jest.fn()
+
+    const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} navigator={navigator} />)
+
+    component.root.instance.setState({
+      conditionsOfSaleChecked: true,
+      creditCardToken: stripeToken,
+      billingAddress,
+    })
+
+    component.root.findByType(Button).instance.props.onPress()
+
+    const yourMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
+    const creditCardRow = component.root.findAllByType(TouchableWithoutFeedback)[1]
+    const billingAddressRow = component.root.findAllByType(TouchableWithoutFeedback)[2]
+
+    yourMaxBidRow.instance.props.onPress()
+
+    expect(navigator.push).not.toHaveBeenCalled()
+
+    creditCardRow.instance.props.onPress()
+
+    expect(navigator.push).not.toHaveBeenCalled()
+
+    billingAddressRow.instance.props.onPress()
+
+    expect(navigator.push).not.toHaveBeenCalled()
   })
 
   it("displays an error message on a stripe failure", () => {

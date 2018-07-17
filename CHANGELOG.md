@@ -24,6 +24,7 @@
 * Show error message when your credit card can't be added - sweir27
 * Now Emission uses metaphysics system time to consider offset for auction timer - yuki24
 * ARBidFlowViewController now exposes preloading queries - ash
+* Now users are not allowed to click into the billing address/cc/max bid edit forms while your bid is being placed - yuki24
 
 ### 1.5.10
 
