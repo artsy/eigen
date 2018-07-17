@@ -371,7 +371,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   render() {
     const { artwork, lot_label, sale } = this.props.sale_artwork
-    const { requiresPaymentInformation, requiresCheckbox } = this.state
+    const { requiresPaymentInformation, requiresCheckbox, isLoading } = this.state
 
     return (
       <BiddingThemeProvider>
@@ -399,12 +399,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
             <BidInfoRow
               label="Max bid"
               value={this.selectedBid().display}
-              onPress={() => this.goBackToSelectMaxBid()}
+              onPress={isLoading ? () => null : () => this.goBackToSelectMaxBid()}
             />
 
             {requiresPaymentInformation ? (
               <PaymentInfo
-                navigator={this.props.navigator}
+                navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
                 onCreditCardAdded={this.onCreditCardAdded.bind(this)}
                 onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
                 billingAddress={this.state.billingAddress}
