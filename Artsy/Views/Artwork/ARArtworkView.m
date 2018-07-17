@@ -161,7 +161,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 {
     if ([notification.userInfo[ARAuctionArtworkIDKey] isEqualToString:self.artwork.artworkID]) {
         __weak typeof (self) wself = self;
-        [self.metadataView.actionsView showSpinner];
+        [self.metadataView showActionsViewSpinner];
         [self.artwork onSaleArtworkUpdate:^(SaleArtwork * _Nonnull saleArtwork) {
             __strong typeof (wself) sself = wself;
             if (saleArtwork.auctionState & ARAuctionStateUserIsBidder) {
