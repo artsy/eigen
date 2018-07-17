@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.5.11
+
 * Fixes a bug where the error message for the country field remains even after selecting country - yuki24
 * Adds an error modal to the bid flow - sweir27
 * The country select form should pre-populate if user have already selected a country - yuki24
@@ -23,6 +25,8 @@
 * Sets artwork and artist name labels on ConfirmBid component to use only one line, and truncate the tail - ash
 * Show error message when your credit card can't be added - sweir27
 * Now Emission uses metaphysics system time to consider offset for auction timer - yuki24
+* ARBidFlowViewController now exposes preloading queries - ash
+* Now users are not allowed to click into the billing address/cc/max bid edit forms while your bid is being placed - yuki24
 * Adds predictionURL and updates 'Live bidding has started' screen to link to live sale - sweir27
 
 ### 1.5.10

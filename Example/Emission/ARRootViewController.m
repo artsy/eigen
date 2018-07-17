@@ -277,11 +277,15 @@
 
 - (ARCellData *)jumpToBidFlow
 {
-  return [self tappableCellDataWithTitle:@"Bid Flow" selection: ^{
-    ARBidFlowViewController *bidFlowController = [[ARBidFlowViewController alloc] initWithArtworkID:@"david-hockney-pool-made-with-paper-and-blue-ink-for-book-from-paper-pools-2" saleID:@"phillips-summer-school-1"];
+  NSString *artworkID = @"david-hockney-pool-made-with-paper-and-blue-ink-for-book-from-paper-pools-2";
+  NSString *saleID = @"phillips-summer-school-1";
+  return [self viewControllerCellDataWithTitle:@"Bid Flow" selection: ^{
+    ARBidFlowViewController *bidFlowController = [[ARBidFlowViewController alloc] initWithArtworkID:artworkID saleID:saleID];
     EigenLikeNavigationController *navigationController = [[EigenLikeNavigationController alloc] initWithRootViewController:bidFlowController];
     navigationController.showBackButtonOnRoot = YES;
     [self presentViewController:navigationController animated:YES completion:nil];
+  } preload:^NSArray<ARGraphQLQuery *> *{
+    return [ARBidFlowViewController preloadQueriesWithArtworkID:artworkID saleID:saleID intent:ARBidFlowViewControllerIntentBid];
   }];
 }
 
