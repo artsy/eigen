@@ -30,6 +30,7 @@
 * ARBidFlowViewController now exposes preloading queries - ash
 * Now users are not allowed to click into the billing address/cc/max bid edit forms while your bid is being placed - yuki24
 * Adds predictionURL and updates 'Live bidding has started' screen to link to live sale - sweir27
+* Automatically scroll to the text input that has the focus - yuki24
 
 ### 1.5.10
 

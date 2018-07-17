@@ -102,6 +102,7 @@ exports[`renders properly 1`] = `
         </Text>
         <View
           mb={4}
+          onLayout={[Function]}
           style={
             Array [
               Object {
@@ -173,6 +174,7 @@ exports[`renders properly 1`] = `
         </View>
         <View
           mb={4}
+          onLayout={[Function]}
           style={
             Array [
               Object {
@@ -243,6 +245,7 @@ exports[`renders properly 1`] = `
         </View>
         <View
           mb={4}
+          onLayout={[Function]}
           style={
             Array [
               Object {
@@ -313,6 +316,7 @@ exports[`renders properly 1`] = `
         </View>
         <View
           mb={4}
+          onLayout={[Function]}
           style={
             Array [
               Object {
@@ -383,6 +387,7 @@ exports[`renders properly 1`] = `
         </View>
         <View
           mb={4}
+          onLayout={[Function]}
           style={
             Array [
               Object {
@@ -453,6 +458,7 @@ exports[`renders properly 1`] = `
         </View>
         <View
           mb={4}
+          onLayout={[Function]}
           style={
             Array [
               Object {
