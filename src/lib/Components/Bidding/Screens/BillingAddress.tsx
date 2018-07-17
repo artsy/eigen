@@ -2,7 +2,16 @@ import React from "react"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
 
-import { Dimensions, KeyboardAvoidingView, NavigatorIOS, ScrollView, TouchableWithoutFeedback } from "react-native"
+import {
+  Dimensions,
+  EmitterSubscription,
+  Keyboard,
+  KeyboardAvoidingView,
+  LayoutRectangle,
+  NavigatorIOS,
+  ScrollView,
+  TouchableWithoutFeedback,
+} from "react-native"
 
 import { Flex } from "../Elements/Flex"
 import { Sans12, Serif16 } from "../Elements/Typography"
@@ -35,6 +44,8 @@ const StyledInput = ({ label, error, onLayout, ...props }) => (
   </Flex>
 )
 
+const iOSAccessoryViewHeight = 60
+
 interface BillingAddressProps {
   onSubmit?: (values: Address) => void
   navigator?: NavigatorIOS
@@ -59,19 +70,24 @@ interface BillingAddressState {
   context_screen_owner_type: null,
 })
 export class BillingAddress extends React.Component<BillingAddressProps, BillingAddressState> {
-  private scrollView: any
-
   private addressLine1: StyledInputInterface
   private addressLine2: StyledInputInterface
   private city: StyledInputInterface
   private stateProvinceRegion: StyledInputInterface
   private postalCode: StyledInputInterface
 
-  private titleLayout: any
-  private addressLine2Layout: any
-  private cityLayout: any
-  private stateLayout: any
-  private postalCodeLayout: any
+  private fullNameLayout: LayoutRectangle
+  private addressLine1Layout: LayoutRectangle
+  private addressLine2Layout: LayoutRectangle
+  private cityLayout: LayoutRectangle
+  private stateProvinceRegionLayout: LayoutRectangle
+  private postalCodeLayout: LayoutRectangle
+
+  private keyboardDidShowListener: EmitterSubscription
+
+  private keyboardHeight: number
+
+  private scrollView: ScrollView
 
   constructor(props) {
     super(props)
@@ -143,21 +159,28 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     })
   }
 
+  componentWillMount() {
+    this.keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      ({ endCoordinates }) => (this.keyboardHeight = endCoordinates.height)
+    )
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove()
+  }
+
   render() {
     const errorForCountry = this.state.errors.country
 
-    // TODO: Remove this once React Native has been updated
-    const isPhoneX = Dimensions.get("window").height === 812 && Dimensions.get("window").width === 375
-    const defaultVerticalOffset = isPhoneX ? 30 : 15
-
     return (
       <BiddingThemeProvider>
-        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={defaultVerticalOffset} style={{ flex: 1 }}>
+        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={this.verticalOffset} style={{ flex: 1 }}>
           <BackButton navigator={this.props.navigator} />
 
-          <ScrollView ref={scrollView => (this.scrollView = scrollView)}>
+          <ScrollView ref={scrollView => (this.scrollView = scrollView as any)}>
             <Container>
-              <Title mt={0} mb={0} pb={6} onLayout={({ nativeEvent }) => (this.titleLayout = nativeEvent.layout)}>
+              <Title mt={0} mb={6}>
                 Your billing address
               </Title>
 
@@ -167,6 +190,8 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 placeholder="Add your full name"
                 autoFocus={true}
                 onSubmitEditing={() => this.addressLine1.root.focus()}
+                onLayout={({ nativeEvent }) => (this.fullNameLayout = nativeEvent.layout)}
+                onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.fullNameLayout) })}
               />
 
               <StyledInput
@@ -174,6 +199,8 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="Address line 1"
                 placeholder="Add your street address"
                 onSubmitEditing={() => this.addressLine2.root.focus()}
+                onLayout={({ nativeEvent }) => (this.addressLine1Layout = nativeEvent.layout)}
+                onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.addressLine1Layout) })}
               />
 
               <StyledInput
@@ -181,12 +208,8 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="Address line 2 (optional)"
                 placeholder="Add your apt, floor, suite, etc."
                 onSubmitEditing={() => this.city.root.focus()}
-                onFocus={() =>
-                  this.scrollView.scrollTo({
-                    x: 0,
-                    y: this.addressLine2Layout.y - this.addressLine2Layout.height - this.titleLayout.height,
-                  })
-                }
+                onLayout={({ nativeEvent }) => (this.addressLine2Layout = nativeEvent.layout)}
+                onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.addressLine2Layout) })}
               />
 
               <StyledInput
@@ -194,12 +217,8 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="City"
                 placeholder="Add your city"
                 onSubmitEditing={() => this.stateProvinceRegion.root.focus()}
-                onFocus={() =>
-                  this.scrollView.scrollTo({
-                    x: 0,
-                    y: this.cityLayout.y - this.cityLayout.height - this.titleLayout.height,
-                  })
-                }
+                onLayout={({ nativeEvent }) => (this.cityLayout = nativeEvent.layout)}
+                onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.cityLayout) })}
               />
 
               <StyledInput
@@ -208,10 +227,11 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 placeholder="Add state, province, or region"
                 onSubmitEditing={() => this.postalCode.root.focus()}
                 inputRef={el => (this.stateProvinceRegion = el)}
+                onLayout={({ nativeEvent }) => (this.stateProvinceRegionLayout = nativeEvent.layout)}
                 onFocus={() =>
                   this.scrollView.scrollTo({
                     x: 0,
-                    y: this.stateLayout.y - this.stateLayout.height - this.titleLayout.height,
+                    y: this.yPosition(this.stateProvinceRegionLayout),
                   })
                 }
               />
@@ -221,12 +241,8 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 label="Postal code"
                 placeholder="Add your postal code"
                 onSubmitEditing={() => this.presentSelectCountry()}
-                onFocus={() =>
-                  this.scrollView.scrollTo({
-                    x: 0,
-                    y: this.postalCodeLayout.y - this.postalCodeLayout.height - this.titleLayout.height,
-                  })
-                }
+                onLayout={({ nativeEvent }) => (this.postalCodeLayout = nativeEvent.layout)}
+                onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.postalCodeLayout) })}
               />
 
               <Flex mb={4}>
@@ -260,9 +276,25 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
       inputRef: el => (this[field] = el),
       onBlur: () => this.validateField(field),
       onChangeText: value => this.setState({ values: { ...this.state.values, [field]: value } }),
-      onLayout: ({ nativeEvent }) => (this[`${field}Layout`] = nativeEvent.layout),
       returnKeyType: "next",
       value: this.state.values[field],
     }
+  }
+
+  private yPosition({ y, height }) {
+    const windowHeight = Dimensions.get("window").height
+
+    return Math.max(0, y - windowHeight + height + iOSAccessoryViewHeight + this.keyboardHeight + this.iPhoneXOffset)
+  }
+
+  private get verticalOffset() {
+    return this.iPhoneXOffset + 15
+  }
+
+  // TODO: Remove this once React Native has been updated
+  private get iPhoneXOffset() {
+    const isPhoneX = Dimensions.get("window").height === 812 && Dimensions.get("window").width === 375
+
+    return isPhoneX ? 15 : 0
   }
 }

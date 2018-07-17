@@ -79,21 +79,18 @@ exports[`renders properly 1`] = `
           fontSize={5}
           lineHeight={7}
           m={4}
-          mb={0}
+          mb={6}
           mt={0}
-          onLayout={[Function]}
-          pb={6}
           style={
             Array [
               Object {
                 "fontFamily": "AGaramondPro-Semibold",
                 "fontSize": 22,
                 "lineHeight": 28,
-                "marginBottom": 0,
+                "marginBottom": 40,
                 "marginLeft": 20,
                 "marginRight": 20,
                 "marginTop": 0,
-                "paddingBottom": 40,
                 "textAlign": "center",
               },
               undefined,
