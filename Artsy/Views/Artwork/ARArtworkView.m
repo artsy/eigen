@@ -87,6 +87,8 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
         [self setUpCallbacks];
         [self createHeightConstraints];
+    } else {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:ARAuctionArtworkBidUpdatedNotification object:nil];
     }
 }
 
@@ -133,6 +135,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
         __strong typeof (wself) sself = wself;
         if (!sself || !fair) return;
 
+        
         [sself.metadataView updateWithFair:fair];
         [sself.stackView layoutIfNeeded];
     } failure:nil];
@@ -148,6 +151,33 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
             }];
         }
     } failure:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(artworkBidUpdated:)
+                                                 name:ARAuctionArtworkBidUpdatedNotification
+                                               object:nil];
+}
+
+- (void)artworkBidUpdated:(NSNotification *)notification;
+{
+    if ([notification.userInfo[ARAuctionArtworkIDKey] isEqualToString:self.artwork.artworkID]) {
+        __weak typeof (self) wself = self;
+        [self.metadataView showActionsViewSpinner];
+        [self.artwork onSaleArtworkUpdate:^(SaleArtwork * _Nonnull saleArtwork) {
+            __strong typeof (wself) sself = wself;
+            if (saleArtwork.auctionState & ARAuctionStateUserIsBidder) {
+                [ARAnalytics setUserProperty:@"has_placed_bid" toValue:@"true"];
+                sself.banner.auctionState = saleArtwork.auctionState;
+                [UIView animateIf:ARPerformWorkAsynchronously duration:ARAnimationDuration :^{
+                    [sself.banner updateHeightConstraint];
+                    [sself.stackView layoutIfNeeded];
+                }];
+                [sself.metadataView updateUI];
+            }
+        }
+      failure:nil
+        allowCached:NO];
+        [self.artwork updateSaleArtwork];
+    }
 }
 
 - (void)createHeightConstraints

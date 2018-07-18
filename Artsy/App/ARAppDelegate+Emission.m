@@ -41,6 +41,7 @@
 #import "ARAdminNetworkModel.h"
 #import "Artsy-Swift.h"
 
+
 static void
 FollowRequestSuccess(RCTResponseSenderBlock block, BOOL following)
 {
@@ -94,6 +95,8 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
     NSString *gravity = [[ARRouter baseApiURL] absoluteString];
     NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
+    
+    NSString *liveAuctionsURL = [[[ARSwitchBoard sharedInstance] liveAuctionsURL] absoluteString];
 
     NSString *stripePublishableKey;
     if ([AROptions boolForOption:ARUseStagingDefault]) {
@@ -109,6 +112,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                                                                          googleMapsAPIKey:[keys googleMapsAPIKey]
                                                                                gravityURL:gravity
                                                                            metaphysicsURL:metaphysics
+                                                                            predictionURL:liveAuctionsURL
                                                                                 userAgent:ARRouter.userAgent];
 
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:packagerURL];

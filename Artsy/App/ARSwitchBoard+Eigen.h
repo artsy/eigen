@@ -22,6 +22,8 @@
 
 @interface ARSwitchBoard (Eigen)
 
+@property (nonatomic, strong, readonly) NSURL *liveAuctionsURL;
+
 #pragma mark - Dev
 
 - (UIViewController *)loadAdminMenu;

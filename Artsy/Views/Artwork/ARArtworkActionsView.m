@@ -39,11 +39,6 @@
 
 @implementation ARArtworkActionsView
 
-- (void)dealloc;
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (instancetype)initWithArtwork:(Artwork *)artwork
 {
     self = [super init];
@@ -75,36 +70,18 @@
         return returnable;
     } error:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(artworkBidUpdated:)
-                                                 name:ARAuctionArtworkBidUpdatedNotification
-                                               object:nil];
 }
 
-- (void)artworkBidUpdated:(NSNotification *)notification;
+- (void)showSpinner
 {
-    if ([notification.userInfo[ARAuctionArtworkIDKey] isEqualToString:self.artwork.artworkID]) {
-        // First clear the old status so the user is not confronted with out-of-date data, which could be worrisome to
-        // the user if they have just made a bid.
-        self.saleArtwork = nil;
-        for (UIView *subview in self.subviews) {
-            [self removeSubview:subview];
-        }
-        ARSpinner *spinner = [[ARSpinner alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-        self.spinner = spinner;
-        [self.spinner constrainHeight:@"100"];
-        [self.spinner fadeInAnimated:ARPerformWorkAsynchronously];
-        [self addSubview:self.spinner withTopMargin:@"0" sideMargin:@"0"];
-
-        // Then fetch the up-to-date data.
-        __weak typeof(self) wself = self;
-        [self.artwork onSaleArtworkUpdate:^(SaleArtwork *saleArtwork) {
-            __strong typeof (wself) sself = wself;
-            sself.saleArtwork = saleArtwork;
-            [sself updateUI];
-            sself.spinner = nil;
-        } failure:nil allowCached:NO];
+    for (UIView *subview in self.subviews) {
+        [self removeSubview:subview];
     }
+    ARSpinner *spinner = [[ARSpinner alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    self.spinner = spinner;
+    [self.spinner constrainHeight:@"100"];
+    [self.spinner fadeInAnimated:ARPerformWorkAsynchronously];
+    [self addSubview:self.spinner withTopMargin:@"0" sideMargin:@"0"];
 }
 
 // The central state for a lot of this logic is in:

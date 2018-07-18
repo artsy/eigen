@@ -67,6 +67,7 @@
                                                                      googleMapsAPIKey:@""
                                                                            gravityURL:gravity
                                                                        metaphysicsURL:metaphysics
+                                                                        predictionURL:@""
                                                                             userAgent:@"Eigen Tests"];
 
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:nil];

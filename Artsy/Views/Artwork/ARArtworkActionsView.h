@@ -22,6 +22,9 @@
 
 @interface ARArtworkActionsView : ORStackView
 - (instancetype)initWithArtwork:(Artwork *)artwork;
+- (void)updateUI;
+- (void)showSpinner;
+
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, weak) id<ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate> delegate;
 @end
