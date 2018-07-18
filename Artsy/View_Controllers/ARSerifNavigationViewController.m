@@ -95,6 +95,7 @@ static CGFloat exitButtonDimension = 40;
         // Constraints differ on iPad, but we can't rely on our own view's trait collection because, when presented modally on iPad,
         // its horizontalSizeClass will always be compact.
         if (UIApplication.sharedApplication.keyWindow.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
+            // iPhone X support
             if (UIScreen.mainScreen.bounds.size.height == 812) {
                 [exitButton alignTopEdgeWithView:self.view predicate:@"54"];
             } else {
