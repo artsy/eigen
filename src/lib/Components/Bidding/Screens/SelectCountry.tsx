@@ -9,7 +9,7 @@ import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
 import { Input } from "../Components/Input"
 import { Title } from "../Components/Title"
-import { Serif18, SerifItalic18 } from "../Elements/Typography"
+import { Serif18 } from "../Elements/Typography"
 import { Country, SearchResult } from "../types"
 
 const { Emission } = NativeModules
@@ -120,7 +120,7 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
                 : query &&
                   !isLoading && (
                     <Serif18 ml={3} color="black30">
-                      Could not find <SerifItalic18>{query}</SerifItalic18>
+                      Could not find “{query}.”
                     </Serif18>
                   )}
             </ScrollView>
