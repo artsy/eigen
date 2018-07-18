@@ -36,6 +36,15 @@
 
 @implementation ARSwitchBoard (Eigen)
 
+
+-(NSURL *)liveAuctionsURL
+{
+    BOOL useStaging = [AROptions boolForOption:ARUseStagingDefault];
+    NSString *echoDomainKey = useStaging ? @"ARLiveAuctionsStagingURLDomain" : @"ARLiveAuctionsURLDomain";
+    NSString *domain = self.echo.routes[echoDomainKey].path;
+    return [NSURL URLWithString:[@"https://" stringByAppendingString:domain]];
+}
+
 #pragma mark - Dev
 
 - (UIViewController *)loadAdminMenu;
@@ -90,15 +99,7 @@
 
 - (UIViewController *)loadLiveAuction:(NSString *)auctionID
 {
-    /// In order for others to use Live Auctions inside the app, there
-    /// has to be some palce where the knowledge of what the official routes are
-    /// rather than let VCs know about it, this lets it stay inside the switchboard.
-
-    BOOL useStaging = [AROptions boolForOption:ARUseStagingDefault];
-    NSString *echoDomainKey = useStaging ? @"ARLiveAuctionsStagingURLDomain" : @"ARLiveAuctionsURLDomain";
-    NSString *domain = self.echo.routes[echoDomainKey].path;
-    NSURL *liveAuctionsURL = [NSURL URLWithString:[@"https://" stringByAppendingString:domain]];
-    return [self loadURL:[liveAuctionsURL URLByAppendingPathComponent:auctionID]];
+    return [self loadURL:[self.liveAuctionsURL URLByAppendingPathComponent:auctionID]];
 }
 
 - (UIViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;

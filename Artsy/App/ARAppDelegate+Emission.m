@@ -96,10 +96,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     NSString *gravity = [[ARRouter baseApiURL] absoluteString];
     NSString *metaphysics = [ARRouter baseMetaphysicsApiURLString];
     
-    BOOL useStaging = [AROptions boolForOption:ARUseStagingDefault];
-    NSString *echoDomainKey = useStaging ? @"ARLiveAuctionsStagingURLDomain" : @"ARLiveAuctionsURLDomain";
-    NSString *domain = [[[ARSwitchBoard sharedInstance] echo] routes][echoDomainKey].path;
-    NSString *liveAuctionsURL = [[NSURL URLWithString:[@"https://" stringByAppendingString:domain]] absoluteString];
+    NSString *liveAuctionsURL = [[[ARSwitchBoard sharedInstance] liveAuctionsURL] absoluteString];
 
     NSString *stripePublishableKey;
     if ([AROptions boolForOption:ARUseStagingDefault]) {
