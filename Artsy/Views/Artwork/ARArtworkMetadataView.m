@@ -171,9 +171,9 @@
     [self.actionsView showSpinner];
 }
 
--(void)updateUI
+- (void)updateUIForSaleArtwork:(SaleArtwork *)saleArtwork
 {
-    [self.actionsView updateUI];
+    [self.actionsView updateUIForSaleArtwork:saleArtwork];
 }
 
 - (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate, ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate, ARArtworkPreviewImageViewDelegate, ARArtworkPreviewActionsViewDelegate>)delegate

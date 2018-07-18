@@ -22,7 +22,7 @@
 
 - (void)setDelegate:(id<ARArtworkDetailViewDelegate, ARArtworkDetailViewButtonDelegate, ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate, ARArtworkPreviewImageViewDelegate, ARArtworkPreviewActionsViewDelegate>)delegate;
 
-- (void)updateUI;
+- (void)updateUIForSaleArtwork:(SaleArtwork *)saleArtwork;
 - (void)showActionsViewSpinner;
 
 @property (nonatomic, strong, readonly) UIView *left;
