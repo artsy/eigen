@@ -85,6 +85,7 @@ static CGFloat exitButtonDimension = 40;
         // The exit button normally sits within the nav bar. Without it, we need to add it to our own view hierarchy.
         UIButton *exitButton = [self generateExitButton].button;
         exitButton.tintColor = UIColor.blackColor;
+        exitButton.backgroundColor = UIColor.whiteColor;
         NSString *dimensionString = [NSString stringWithFormat:@"%@", @(exitButtonDimension)];
         [exitButton constrainWidth:dimensionString height:dimensionString];
 
@@ -94,7 +95,12 @@ static CGFloat exitButtonDimension = 40;
         // Constraints differ on iPad, but we can't rely on our own view's trait collection because, when presented modally on iPad,
         // its horizontalSizeClass will always be compact.
         if (UIApplication.sharedApplication.keyWindow.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
-            [exitButton alignTopEdgeWithView:self.view predicate:@"23"];
+            // iPhone X support
+            if (UIScreen.mainScreen.bounds.size.height == 812) {
+                [exitButton alignTopEdgeWithView:self.view predicate:@"54"];
+            } else {
+                [exitButton alignTopEdgeWithView:self.view predicate:@"31"];
+            }
             [exitButton alignTrailingEdgeWithView:self.view predicate:@"-6"];
         } else {
             [exitButton alignTopEdgeWithView:self.view predicate:@"12"];
