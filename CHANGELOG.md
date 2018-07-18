@@ -16,7 +16,11 @@
 
 ### Master
 
+### 1.5.12
+
 * Fixes an issue related to posting NSNotificationCenter notifications on not-main threads - erikdstock
+* Improvements to form behavior when advancing through inputs - yuki24
+* Loading enhancements - ashfurrow
 
 ### 1.5.11
 
