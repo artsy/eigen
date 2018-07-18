@@ -13,7 +13,7 @@ import { Checkbox } from "../../Components/Checkbox"
 
 import { BidResultScreen } from "../BidResult"
 import { BillingAddress } from "../BillingAddress"
-import { ConfirmBid } from "../ConfirmBid"
+import { ConfirmBid, LinkText } from "../ConfirmBid"
 import { CreditCardForm } from "../CreditCardForm"
 
 jest.mock("../../../../metaphysics", () => ({ metaphysics: jest.fn() }))
@@ -148,6 +148,8 @@ describe("when pressing bid button", () => {
     const yourMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
     const creditCardRow = component.root.findAllByType(TouchableWithoutFeedback)[1]
     const billingAddressRow = component.root.findAllByType(TouchableWithoutFeedback)[2]
+    const conditionsOfSaleLink = component.root.findByType(LinkText)
+    const conditionsOfSaleCheckbox = component.root.findByType(Checkbox)
 
     yourMaxBidRow.instance.props.onPress()
 
@@ -160,6 +162,8 @@ describe("when pressing bid button", () => {
     billingAddressRow.instance.props.onPress()
 
     expect(navigator.push).not.toHaveBeenCalled()
+    expect(conditionsOfSaleLink.instance.props.onPress).toBeNull()
+    expect(conditionsOfSaleCheckbox.instance.props.disabled).toBeTruthy()
   })
 
   describe("when pressing bid", () => {

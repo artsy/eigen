@@ -9,7 +9,7 @@ import { Checkbox } from "../../Components/Checkbox"
 import { Serif16 } from "../../Elements/Typography"
 import { BillingAddress } from "../BillingAddress"
 import { CreditCardForm } from "../CreditCardForm"
-import { Registration } from "../Registration"
+import { LinkText, Registration } from "../Registration"
 
 import { mockTimezone } from "lib/tests/mockTimezone"
 
@@ -174,6 +174,8 @@ describe("when pressing register button", () => {
     const yourMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
     const creditCardRow = component.root.findAllByType(TouchableWithoutFeedback)[1]
     const billingAddressRow = component.root.findAllByType(TouchableWithoutFeedback)[2]
+    const conditionsOfSaleLink = component.root.findByType(LinkText)
+    const conditionsOfSaleCheckbox = component.root.findByType(Checkbox)
 
     yourMaxBidRow.instance.props.onPress()
 
@@ -186,6 +188,8 @@ describe("when pressing register button", () => {
     billingAddressRow.instance.props.onPress()
 
     expect(navigator.push).not.toHaveBeenCalled()
+    expect(conditionsOfSaleLink.instance.props.onPress).toBeNull()
+    expect(conditionsOfSaleCheckbox.instance.props.disabled).toBeTruthy()
   })
 
   it("displays an error message on a stripe failure", () => {

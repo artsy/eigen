@@ -425,10 +425,17 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
           <View>
             {requiresCheckbox ? (
-              <Checkbox mb={4} justifyContent="center" onPress={() => this.onConditionsOfSaleCheckboxPressed()}>
+              <Checkbox
+                mb={4}
+                justifyContent="center"
+                onPress={() => this.onConditionsOfSaleCheckboxPressed()}
+                disabled={isLoading}
+              >
                 <Serif14 mt={2} color="black60">
                   You agree to{" "}
-                  <LinkText onPress={() => this.onConditionsOfSaleLinkPressed()}>Conditions of Sale</LinkText>
+                  <LinkText onPress={isLoading ? null : () => this.onConditionsOfSaleLinkPressed()}>
+                    Conditions of Sale
+                  </LinkText>
                   .
                 </Serif14>
               </Checkbox>
@@ -469,7 +476,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 }
 
-const LinkText = styled.Text`
+export const LinkText = styled.Text`
   text-decoration-line: underline;
 `
 
