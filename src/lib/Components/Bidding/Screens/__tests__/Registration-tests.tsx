@@ -6,10 +6,11 @@ import Spinner from "../../../Spinner"
 import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Button } from "../../Components/Button"
 import { Checkbox } from "../../Components/Checkbox"
+import { LinkText } from "../../Components/LinkText"
 import { Serif16 } from "../../Elements/Typography"
 import { BillingAddress } from "../BillingAddress"
 import { CreditCardForm } from "../CreditCardForm"
-import { LinkText, Registration } from "../Registration"
+import { Registration } from "../Registration"
 
 import { mockTimezone } from "lib/tests/mockTimezone"
 

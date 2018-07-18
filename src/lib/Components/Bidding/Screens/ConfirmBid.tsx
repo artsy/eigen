@@ -2,7 +2,6 @@ import { get, isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
-import styled from "styled-components/native"
 import stripe from "tipsi-stripe"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -18,6 +17,7 @@ import { Button } from "../Components/Button"
 import { Checkbox } from "../Components/Checkbox"
 import { Container } from "../Components/Containers"
 import { Divider } from "../Components/Divider"
+import { LinkText } from "../Components/LinkText"
 import { PaymentInfo } from "../Components/PaymentInfo"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
@@ -475,10 +475,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     return { requiresCheckbox, requiresPaymentInformation }
   }
 }
-
-export const LinkText = styled.Text`
-  text-decoration-line: underline;
-`
 
 export const ConfirmBidScreen = createRefetchContainer(
   ConfirmBid,

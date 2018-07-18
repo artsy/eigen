@@ -10,10 +10,11 @@ import { Serif14, Serif16 } from "../../Elements/Typography"
 import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Button } from "../../Components/Button"
 import { Checkbox } from "../../Components/Checkbox"
+import { LinkText } from "../../Components/LinkText"
 
 import { BidResultScreen } from "../BidResult"
 import { BillingAddress } from "../BillingAddress"
-import { ConfirmBid, LinkText } from "../ConfirmBid"
+import { ConfirmBid } from "../ConfirmBid"
 import { CreditCardForm } from "../CreditCardForm"
 
 jest.mock("../../../../metaphysics", () => ({ metaphysics: jest.fn() }))

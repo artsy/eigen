@@ -2,7 +2,6 @@ import { get, isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
-import styled from "styled-components/native"
 import stripe from "tipsi-stripe"
 
 import { Schema, screenTrack } from "../../../utils/track"
@@ -17,6 +16,7 @@ import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Button } from "../Components/Button"
 import { Checkbox } from "../Components/Checkbox"
 import { Container } from "../Components/Containers"
+import { LinkText } from "../Components/LinkText"
 import { PaymentInfo } from "../Components/PaymentInfo"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
@@ -302,10 +302,6 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     )
   }
 }
-
-export const LinkText = styled.Text`
-  text-decoration-line: underline;
-`
 
 export const RegistrationScreen = createFragmentContainer(Registration, {
   sale: graphql`
