@@ -9,6 +9,7 @@
 #import "ARBidButton.h"
 #import "ARSpinner.h"
 #import "Partner.h"
+#import "UIDevice-Hardware.h"
 
 #import "ARMacros.h"
 #import "ARSystemTime.h"
@@ -63,13 +64,31 @@
         sself.saleArtwork = saleArtwork;
     } failure:nil];
 
+    // On iPhone, all views are stacked vertically and the bottom row of related artworks has a spinner; we don't want
+    // to show two spinners on top of one another. But on iPad, the spinners are in different parts of the screen, so we
+    // do want to show both. We're using isPad because we're not in a view hierarchy when this method is called and
+    // can't rely on self.traitCollection to return accurate results. It's not ideal but it works.
+    if ([UIDevice isPad]) {
+        [self showSpinner];
+    }
+
     [[KSPromise when:@[ artworkPromise, saleArtworkPromise ]] then:^id(id value) {
         __strong typeof (wself) sself = wself;
         id returnable = nil;
         [sself updateUI];
         return returnable;
     } error:nil];
+}
 
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+
+    // New ARArtworkViews are instantiated and loaded while not in a view hierarchy. The call to fadeInAnimated: in
+    // `showSpinner` will have no effect until the view is in a hierarchy, so we check below.
+    if (self.superview) {
+        [self.spinner fadeInAnimated:ARPerformWorkAsynchronously];
+    }
 }
 
 - (void)showSpinner
