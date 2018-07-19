@@ -2,7 +2,6 @@ import { get, isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
-import styled from "styled-components/native"
 import stripe from "tipsi-stripe"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -18,6 +17,7 @@ import { Button } from "../Components/Button"
 import { Checkbox } from "../Components/Checkbox"
 import { Container } from "../Components/Containers"
 import { Divider } from "../Components/Divider"
+import { LinkText } from "../Components/LinkText"
 import { PaymentInfo } from "../Components/PaymentInfo"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
@@ -425,10 +425,17 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
           <View>
             {requiresCheckbox ? (
-              <Checkbox mb={4} justifyContent="center" onPress={() => this.onConditionsOfSaleCheckboxPressed()}>
+              <Checkbox
+                mb={4}
+                justifyContent="center"
+                onPress={() => this.onConditionsOfSaleCheckboxPressed()}
+                disabled={isLoading}
+              >
                 <Serif14 mt={2} color="black60">
                   You agree to{" "}
-                  <LinkText onPress={() => this.onConditionsOfSaleLinkPressed()}>Conditions of Sale</LinkText>
+                  <LinkText onPress={isLoading ? null : () => this.onConditionsOfSaleLinkPressed()}>
+                    Conditions of Sale
+                  </LinkText>
                   .
                 </Serif14>
               </Checkbox>
@@ -468,10 +475,6 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     return { requiresCheckbox, requiresPaymentInformation }
   }
 }
-
-const LinkText = styled.Text`
-  text-decoration-line: underline;
-`
 
 export const ConfirmBidScreen = createRefetchContainer(
   ConfirmBid,

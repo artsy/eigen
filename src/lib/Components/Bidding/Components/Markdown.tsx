@@ -2,11 +2,11 @@ import _ from "lodash"
 import React from "react"
 import { Text, ViewProperties } from "react-native"
 import SimpleMarkdown from "simple-markdown"
-import styled from "styled-components/native"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Flex, FlexProps } from "../Elements/Flex"
 import { Serif16t } from "../Elements/Typography"
+import { LinkText } from "./LinkText"
 
 // Rules for rendering parsed markdown. Currently only handles links and text. Add rules similar to
 // https://github.com/CharlesMangwa/react-native-simple-markdown/blob/next/src/rules.js for new functionalities.
@@ -73,7 +73,3 @@ export class Markdown extends React.Component<ViewProperties & FlexProps> {
     return this.rawBuiltParser(source + "\n\n", { inline: false })
   }
 }
-
-export const LinkText = styled.Text`
-  text-decoration-line: underline;
-`

@@ -2,7 +2,6 @@ import { get, isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
-import styled from "styled-components/native"
 import stripe from "tipsi-stripe"
 
 import { Schema, screenTrack } from "../../../utils/track"
@@ -17,6 +16,7 @@ import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Button } from "../Components/Button"
 import { Checkbox } from "../Components/Checkbox"
 import { Container } from "../Components/Containers"
+import { LinkText } from "../Components/LinkText"
 import { PaymentInfo } from "../Components/PaymentInfo"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
@@ -240,6 +240,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
   render() {
     const { live_start_at, end_at, is_preview, start_at } = this.props.sale
+    const { isLoading } = this.state
 
     return (
       <BiddingThemeProvider>
@@ -255,7 +256,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
             {this.state.requiresPaymentInformation && (
               <PaymentInfo
-                navigator={this.state.isLoading ? ({ push: () => null } as any) : this.props.navigator}
+                navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
                 onCreditCardAdded={this.onCreditCardAdded.bind(this)}
                 onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
                 billingAddress={this.state.billingAddress}
@@ -273,17 +274,24 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           </View>
 
           <View>
-            <Checkbox mb={4} justifyContent="center" onPress={() => this.conditionsOfSalePressed()}>
+            <Checkbox
+              mb={4}
+              justifyContent="center"
+              onPress={() => this.conditionsOfSalePressed()}
+              disabled={isLoading}
+            >
               <Serif14 mt={2} color="black60">
-                Agree to <LinkText onPress={this.onPressConditionsOfSale}>Conditions of Sale</LinkText>.
+                Agree to[" "}
+                <LinkText onPress={isLoading ? null : this.onPressConditionsOfSale}>Conditions of Sale</LinkText>
+                .
               </Serif14>
             </Checkbox>
 
             <Flex m={4}>
               <Button
                 text="Complete registration"
-                inProgress={this.state.isLoading}
-                selected={this.state.isLoading}
+                inProgress={isLoading}
+                selected={isLoading}
                 onPress={this.canCreateBidder() ? () => this.register() : null}
                 disabled={!this.canCreateBidder()}
               />
@@ -294,10 +302,6 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     )
   }
 }
-
-const LinkText = styled.Text`
-  text-decoration-line: underline;
-`
 
 export const RegistrationScreen = createFragmentContainer(Registration, {
   sale: graphql`

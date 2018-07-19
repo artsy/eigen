@@ -16,6 +16,8 @@
 
 ### Master
 
+* Conditions of sale link and checkbox are now disabled while bid is processing - yuki24
+
 ### 1.5.12
 
 * Fixes an issue related to posting NSNotificationCenter notifications on not-main threads - erikdstock

@@ -416,7 +416,7 @@ exports[`renders properly for a user with a credit card 1`] = `
             ]
           }
         >
-          Agree to 
+          Agree to[" "}
           <Text
             accessible={true}
             allowFontScaling={true}
@@ -1233,7 +1233,7 @@ exports[`renders properly for a user without a credit card 1`] = `
             ]
           }
         >
-          Agree to 
+          Agree to[" "}
           <Text
             accessible={true}
             allowFontScaling={true}
