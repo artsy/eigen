@@ -17,6 +17,7 @@
 ### Master
 
 * Conditions of sale link and checkbox are now disabled while bid is processing - yuki24
+* Ignores cache when loading BidFlow query - ash
 
 ### 1.5.12
 
