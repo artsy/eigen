@@ -43,9 +43,10 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSString *gitCommitRevision = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"GITCommitRev"];
+    NSString *userEmail = [[[ARUserManager sharedManager] currentUser] email];
 
     ARSectionData *userSectionData = [[ARSectionData alloc] init];
-    userSectionData.headerTitle = [NSString stringWithFormat:@"%@ v%@, build %@ (%@)", name, version, build, gitCommitRevision];
+    userSectionData.headerTitle = [NSString stringWithFormat:@"%@ v%@, build %@ (%@), %@", name, version, build, gitCommitRevision, userEmail];
 
     [userSectionData addCellDataFromArray:@[
         [self generateStagingSwitch],
