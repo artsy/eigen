@@ -81,6 +81,7 @@ export const RegistrationFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ r
           }
         }
       `}
+      cacheConfig={{ force: true }} // We want to always fetch latest sale registration status, CC info, etc.
       variables={{
         saleID,
       }}
@@ -121,6 +122,7 @@ export const BidFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ render, ar
           }
         }
       `}
+      cacheConfig={{ force: true }} // We want to always fetch latest bid increments.
       variables={{
         artworkID,
         saleID,
