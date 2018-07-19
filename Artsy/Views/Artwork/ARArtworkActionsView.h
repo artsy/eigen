@@ -2,7 +2,7 @@
 
 #import <ORStackView/ORStackView.h>
 
-@class Artwork, ARArtworkActionsView;
+@class Artwork, SaleArtwork, ARArtworkActionsView;
 
 @protocol ARArtworkActionsViewDelegate <NSObject>
 - (void)didUpdateArtworkActionsView:(ARArtworkActionsView *)actionsView;
@@ -21,10 +21,13 @@
 
 
 @interface ARArtworkActionsView : ORStackView
+
 - (instancetype)initWithArtwork:(Artwork *)artwork;
-- (void)updateUI;
+
+- (void)updateUIForSaleArtwork:(SaleArtwork *)saleArtwork;
 - (void)showSpinner;
 
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, weak) id<ARArtworkActionsViewDelegate, ARArtworkActionsViewButtonDelegate> delegate;
+
 @end
