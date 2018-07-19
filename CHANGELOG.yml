@@ -15,6 +15,7 @@ upcoming:
     - Users now prompted to bid on artworks in a sale, instead of just registering to bid - ash
     - Users now have access to Echo-gated BidFlow - ash
     - Users see a spinner while we load necessary data for artwork actions view (eg: bid button) - ash
+    - Fixes problem where users didn't see updated bid status after placing a bid - ash
 
 releases:
   - version: 4.2.0

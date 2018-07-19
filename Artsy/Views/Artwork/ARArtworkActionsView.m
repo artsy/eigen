@@ -103,10 +103,15 @@
     [self addSubview:self.spinner withTopMargin:@"0" sideMargin:@"0"];
 }
 
+- (void)updateUIForSaleArtwork:(SaleArtwork *)saleArtwork
+{
+    self.saleArtwork = saleArtwork;
+    [self updateUI];
+}
+
 // The central state for a lot of this logic is in:
 // https://docs.google.com/document/d/1kQSHhCiFWxfVkSeql3GQA7UbBbhpNe-UyQ-c6q95Uq0/
 //
-
 - (void)updateUI
 {
     for (UIView *subview in self.subviews) {

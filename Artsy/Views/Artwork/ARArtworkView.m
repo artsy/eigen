@@ -171,7 +171,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
                     [sself.banner updateHeightConstraint];
                     [sself.stackView layoutIfNeeded];
                 }];
-                [sself.metadataView updateUI];
+                [sself.metadataView updateUIForSaleArtwork:saleArtwork];
             }
         }
       failure:nil
