@@ -17,6 +17,7 @@
 ### Master
 
 * Fixes back button asset for BidFlow - ash
+* Disables condition of sale link if the user has previously accepted them - ash
 
 ### 1.5.14
 
