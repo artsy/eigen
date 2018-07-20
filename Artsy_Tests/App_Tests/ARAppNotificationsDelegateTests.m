@@ -5,6 +5,7 @@
 #import "ARAnalyticsConstants.h"
 #import "ARNotificationView.h"
 #import "ARTopMenuViewController.h"
+#import "ARSerifNavigationViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "UIApplicationStateEnum.h"
 #import <Emission/ARBidFlowViewController.h>
@@ -167,10 +168,15 @@ describe(@"receiveRemoteNotification", ^{
         });
 
         it(@"suppresses showing the notification view when a notification about outbidding ", ^{
+            UIViewController *globalRootController = [UIViewController new];
             ARBidFlowViewController *bidController = [[ARBidFlowViewController alloc] initWithArtworkID:@"asd1432asda" saleID:@"123ffg3edfsd"];
+            ARSerifNavigationViewController *navigationController = [[ARSerifNavigationViewController alloc] initWithRootViewController:bidController];
+
+            id mockGlbalRootController = [OCMockObject partialMockForObject:globalRootController];
+            [[[mockGlbalRootController stub] andReturn:navigationController] presentedViewController];
 
             id mockedNotificationsDelegate = [OCMockObject partialMockForObject:delegate];
-            [[[mockedNotificationsDelegate stub] andReturn:bidController] getGlobalTopViewController];
+            [[[mockedNotificationsDelegate stub] andReturn:mockGlbalRootController] getGlobalTopViewController];
 
             id mock = [OCMockObject mockForClass:[ARNotificationView class]];
             [[mock reject] showNoticeInView:OCMOCK_ANY title:OCMOCK_ANY response:OCMOCK_ANY];
