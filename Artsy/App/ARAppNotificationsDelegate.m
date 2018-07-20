@@ -10,6 +10,7 @@
 #import "ARNotificationView.h"
 #import "ARSwitchBoard.h"
 #import "ARTopMenuViewController.h"
+#import "ARSerifNavigationViewController.h"
 #import "ARLogger.h"
 #import "ARDefaults.h"
 #import "AROptions.h"
@@ -222,11 +223,15 @@
             NSString *outbidNotificationLabel = @"bid outbid";
 
             ARConversationComponentViewController *conversationVC = (id)controller;
-            ARBidFlowViewController *bidFlowVC = (id)controller;
+            ARBidFlowViewController *bidFlowVC;
+            ARSerifNavigationViewController *serifNavigationController = (id)[controller presentedViewController];
+            if ([serifNavigationController isKindOfClass:[ARSerifNavigationViewController class]]) {
+                bidFlowVC = [[serifNavigationController viewControllers] firstObject];
+            }
 
             if ([controller isKindOfClass:ARConversationComponentViewController.class] && [conversationVC.conversationID isEqualToString:conversationID]) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"notification_received" object:notificationInfo];
-            } else if ([controller isKindOfClass:ARBidFlowViewController.class] && [action isEqualToString:outbidNotificationLabel] && [bidFlowVC.artworkID isEqualToString:artworkID] && [bidFlowVC.saleID isEqualToString:saleID]) {
+            } else if ([bidFlowVC isKindOfClass:ARBidFlowViewController.class] && [action isEqualToString:outbidNotificationLabel] && [bidFlowVC.artworkID isEqualToString:artworkID] && [bidFlowVC.saleID isEqualToString:saleID]) {
                 // NO-OP, so that we don't show notifications about bidding activity currently on screen
             } else {
                 NSString *title = [message isKindOfClass:[NSString class]] ? message : message[@"title"];
