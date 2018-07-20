@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.5.14
+
 * Fixes typo in JSX of Registration flow - ash
 
 ### 1.5.13
