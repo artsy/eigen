@@ -215,8 +215,8 @@
             UIViewController *controller = [self getGlobalTopViewController];
 
             NSString *conversationID = [notificationInfo[@"conversation_id"] stringValue];
-            NSString *saleID = notificationInfo[@"sale_id"];
-            NSString *artworkID = notificationInfo[@"artwork_id"];
+            NSString *saleID = notificationInfo[@"sale_slug"];
+            NSString *artworkID = notificationInfo[@"artwork_slug"];
             NSString *action = notificationInfo[@"action"];
 
             // We check whether a notification coming through has this as its action

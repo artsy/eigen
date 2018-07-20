@@ -18,6 +18,7 @@ upcoming:
     - Users see a spinner while we load necessary data for artwork actions view (eg: bid button) - ash
     - Fixes problem where users didn't see updated bid status after placing a bid - ash
     - Fixed outbid push notification suppresion - ash
+    - Updates outbid notification payload parsing (new keys). - ash
 
 releases:
   - version: 4.2.0
