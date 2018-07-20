@@ -16,6 +16,8 @@
 
 ### Master
 
+* Fixes typo in JSX of Registration flow - ash
+
 ### 1.5.13
 
 * Conditions of sale link and checkbox are now disabled while bid is processing - yuki24

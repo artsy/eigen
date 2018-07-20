@@ -281,7 +281,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               disabled={isLoading}
             >
               <Serif14 mt={2} color="black60">
-                Agree to[" "}
+                Agree to{" "}
                 <LinkText onPress={isLoading ? null : this.onPressConditionsOfSale}>Conditions of Sale</LinkText>
                 .
               </Serif14>
