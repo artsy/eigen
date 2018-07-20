@@ -16,6 +16,8 @@
 
 ### Master
 
+* Fixes back button asset for BidFlow - ash
+
 ### 1.5.14
 
 * Fixes typo in JSX of Registration flow - ash
