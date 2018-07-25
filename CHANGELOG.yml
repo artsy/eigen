@@ -1,26 +1,35 @@
 upcoming:
-  version: 4.2.1
+  version: 4.2.2
   date: TBA
   emission_version: 1.5.15
   dev:
-    - Clear Relay response cache on logout/switch env - alloy
-    - Logged-in user email is displayed in admin menu - ash
-
+    -
 
   user_facing:
-    - Outbid push notifications are supressed when you're on the bid wizard  - orta/sweir
-    - Admins can get the shake gesture when they log in to the app for the first time - orta
-    - iPhone X fix for the zoomed image screen - orta
-    - Adds an lab option to have the back button hide after a delay on a zoomed image - orta
-    - Removes duplicate navigation bar on BidFlow - ash
-    - Users now prompted to bid on artworks in a sale, instead of just registering to bid - ash
-    - Users now have access to Echo-gated BidFlow - ash
-    - Users see a spinner while we load necessary data for artwork actions view (eg: bid button) - ash
-    - Fixes problem where users didn't see updated bid status after placing a bid - ash
-    - Fixed outbid push notification suppresion - ash
-    - Updates outbid notification payload parsing (new keys). - ash
+    -
 
 releases:
+  - version: 4.2.1
+    date: July 23, 2018
+    emission_version: 1.5.15
+    dev:
+      - Clear Relay response cache on logout/switch env - alloy
+      - Logged-in user email is displayed in admin menu - ash
+
+
+    user_facing:
+      - Outbid push notifications are supressed when you're on the bid wizard  - orta/sweir
+      - Admins can get the shake gesture when they log in to the app for the first time - orta
+      - iPhone X fix for the zoomed image screen - orta
+      - Adds an lab option to have the back button hide after a delay on a zoomed image - orta
+      - Removes duplicate navigation bar on BidFlow - ash
+      - Users now prompted to bid on artworks in a sale, instead of just registering to bid - ash
+      - Users now have access to Echo-gated BidFlow - ash
+      - Users see a spinner while we load necessary data for artwork actions view (eg: bid button) - ash
+      - Fixes problem where users didn't see updated bid status after placing a bid - ash
+      - Fixed outbid push notification suppresion - ash
+      - Updates outbid notification payload parsing (new keys). - ash
+
   - version: 4.2.0
     date: June 21st, 2018
     emission_version: 1.5.6
