@@ -1,5 +1,5 @@
-import { stringify } from "qs"
 import { Serif } from "@artsy/palette"
+import { stringify } from "qs"
 import React from "react"
 import { ActivityIndicator, NativeModules, NavigatorIOS, ScrollView, TouchableWithoutFeedback } from "react-native"
 
@@ -10,6 +10,7 @@ import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
 import { Input } from "../Components/Input"
 import { Title } from "../Components/Title"
+
 import { Country, SearchResult } from "../types"
 
 const { Emission } = NativeModules
@@ -120,7 +121,7 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
                 : query &&
                   !isLoading && (
                     <Serif size="4" ml={3} color="black30">
-                      Could not find <Serif italic size="4">{query}</Serif>
+                      Could not find “{query}.”
                     </Serif>
                   )}
             </ScrollView>

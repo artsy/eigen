@@ -16,6 +16,20 @@
 
 ### Master
 
+### 1.5.15
+
+* Fixes back button asset for BidFlow - ash
+* Disables condition of sale link if the user has previously accepted them - ash
+
+### 1.5.14
+
+* Fixes typo in JSX of Registration flow - ash
+
+### 1.5.13
+
+* Conditions of sale link and checkbox are now disabled while bid is processing - yuki24
+* Ignores cache when loading BidFlow query - ash
+
 ### 1.5.12
 
 * Fixes an issue related to posting NSNotificationCenter notifications on not-main threads - erikdstock

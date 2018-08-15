@@ -3,7 +3,8 @@ import { Text } from "react-native"
 import * as renderer from "react-test-renderer"
 
 import { BiddingThemeProvider } from "../BiddingThemeProvider"
-import { LinkText, Markdown } from "../Markdown"
+import { LinkText } from "../LinkText"
+import { Markdown } from "../Markdown"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentModalViewController: jest.fn() }))
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
