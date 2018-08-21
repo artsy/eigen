@@ -76,24 +76,25 @@ it("enables the bid button by default if the user is registered", () => {
 it("displays the artwork title correctly with date", () => {
   const component = renderer.create(<ConfirmBid {...initialProps} />)
 
-  expect(serif14Children(component)).toContain(", 2015")
+  expect(serifChildren(component)).toContain(", 2015")
 })
 
 it("displays the artwork title correctly without date", () => {
   const datelessProps = merge({}, initialProps, { sale_artwork: { artwork: { date: null } } })
   const component = renderer.create(<ConfirmBid {...datelessProps} />)
 
-  expect(serif14Children(component)).not.toContain(",")
+  expect(serifChildren(component)).not.toContain(`${saleArtwork.artwork.title},`)
 })
 
-describe("checkbox and payment info display", () => {
+describe.only("checkbox and payment info display", () => {
   it("shows no checkbox or payment info if the user is registered", () => {
     const component = renderer.create(<ConfirmBid {...initialPropsForRegisteredUser} />)
 
     expect(component.root.findAllByType(Checkbox).length).toEqual(0)
     expect(component.root.findAllByType(BidInfoRow).length).toEqual(1)
-    // still includes "You agree to..." text and link
-    expect(component.root.findAllByType(Serif)[3].props.children.join("")).toContain("You agree to")
+
+    const serifs = component.root.findAllByType(Serif)
+    expect(serifs.find(s => s.props.children.join && s.props.children.join("").includes("You agree to"))).toBeTruthy()
   })
 
   it("shows a checkbox but no payment info if the user is not registered and has cc on file", () => {
@@ -656,10 +657,10 @@ describe("ConfirmBid for unqualified user", () => {
   })
 })
 
-const serif14Children = comp =>
+const serifChildren = comp =>
   comp.root
     .findAllByType(Serif)
-    .map(c => c.props.children.join(""))
+    .map(c => (c.props.children.join ? c.props.children.join("") : c.props.children))
     .join(" ")
 
 const saleArtwork = {

@@ -442,7 +442,6 @@ exports[`renders properly with credit card 1`] = `
                 >
                   Conditions of Sale
                 </Text>
-                .
               </Text>
             </View>
           </View>
@@ -1279,7 +1278,6 @@ exports[`renders properly without credit card 1`] = `
                 >
                   Conditions of Sale
                 </Text>
-                .
               </Text>
             </View>
           </View>
