@@ -6,6 +6,8 @@ export type Artwork_artwork = {
     readonly date: string | null;
     readonly sale_message: string | null;
     readonly is_in_auction: boolean | null;
+    readonly is_biddable: boolean | null;
+    readonly is_acquireable: boolean | null;
     readonly id: string;
     readonly sale_artwork: ({
         readonly opening_bid: ({
@@ -69,6 +71,55 @@ return {
   "argumentDefinitions": [],
   "selections": [
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "title",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "sale_message",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_in_auction",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_biddable",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_acquireable",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "date",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "LinkedField",
       "alias": null,
       "name": "sale_artwork",
@@ -125,41 +176,6 @@ return {
         },
         v1
       ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "title",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "sale_message",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "is_in_auction",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "id",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "date",
-      "args": null,
-      "storageKey": null
     },
     {
       "kind": "LinkedField",
@@ -231,5 +247,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b2a7307ba488c5d9504c820688368a97';
+(node as any).hash = '909f55fc612d969af0e228488065b601';
 export default node;

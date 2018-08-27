@@ -1,14 +1,33 @@
+import colors from "lib/data/colors"
+import { Fonts } from "lib/data/fonts"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { map } from "lodash"
 import React from "react"
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
-import colors from "lib/data/colors"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import styled from "styled-components/native"
 import ImageView from "../OpaqueImageView"
 import SerifText from "../Text/Serif"
 
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
+
+const Badges = styled.View`
+  position: absolute;
+  bottom: 16px;
+  left: 1px;
+  display: flex;
+  flex-direction: row;
+`
+const Badge = styled.View`
+  border-radius: 2px;
+  padding: 3px 5px 1px 5px;
+  background-color: white;
+  margin-left: 5px;
+`
+const BadgeText = styled.Text`
+  font-family: "${Fonts.Unica77LLMedium}";
+  font-size: 10;
+`
 
 interface Props {
   artwork: Artwork_artwork
@@ -34,13 +53,34 @@ class Artwork extends React.Component<Props, any> {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View>
-          <ImageView style={styles.image} aspectRatio={artwork.image.aspect_ratio} imageURL={artwork.image.url} />
+          <View>
+            <ImageView style={styles.image} aspectRatio={artwork.image.aspect_ratio} imageURL={artwork.image.url} />
+            {this.badges()}
+          </View>
           {this.artists()}
           {this.artworkTitle()}
           {partnerName && <SerifText style={styles.text}>{partnerName}</SerifText>}
           {this.saleMessage()}
         </View>
       </TouchableWithoutFeedback>
+    )
+  }
+
+  badges() {
+    const { is_acquireable, is_biddable } = this.props.artwork
+    return (
+      <Badges>
+        {is_acquireable && (
+          <Badge>
+            <BadgeText>BUY NOW</BadgeText>
+          </Badge>
+        )}
+        {is_biddable && (
+          <Badge>
+            <BadgeText>BID</BadgeText>
+          </Badge>
+        )}
+      </Badges>
     )
   }
 
@@ -100,6 +140,9 @@ class Artwork extends React.Component<Props, any> {
 const styles = StyleSheet.create({
   image: {
     marginBottom: 10,
+    alignItems: "flex-start",
+    justifyContent: "center",
+    flexGrow: 1,
   },
   text: {
     fontSize: 12,
@@ -121,6 +164,8 @@ export default createFragmentContainer(
       date
       sale_message
       is_in_auction
+      is_biddable
+      is_acquireable
       id
       sale_artwork {
         opening_bid {

@@ -106,6 +106,8 @@ fragment Artwork_artwork on Artwork {
   date
   sale_message
   is_in_auction
+  is_biddable
+  is_acquireable
   id
   sale_artwork {
     opening_bid {
@@ -222,7 +224,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtworkRailRefetchQuery",
-  "id": "e91e109e110c82fe249bcd3d70615b27",
+  "id": "fbaacbb2a676335567050f12d355cf8b",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -412,7 +414,7 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "sale_message",
+                        "name": "is_in_auction",
                         "args": null,
                         "storageKey": null
                       },
@@ -457,11 +459,25 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "sale_message",
+                        "args": null,
+                        "storageKey": null
+                      },
                       v7,
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "is_in_auction",
+                        "name": "is_biddable",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "is_acquireable",
                         "args": null,
                         "storageKey": null
                       },

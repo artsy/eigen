@@ -88,5 +88,7 @@ const artworkProps = (saleArtwork = null) => {
     },
     id: "mikael-olson-some-kind-of-dinosaur",
     href: "/artwork/mikael-olson-some-kind-of-dinosaur",
+    is_biddable: true,
+    is_acquireable: true,
   }
 }

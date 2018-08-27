@@ -43,15 +43,34 @@ exports[`renders properly 1`] = `
         style={undefined}
         testID={undefined}
       >
-        <AROpaqueImageView
-          aspectRatio={2.18}
-          imageURL="artsy.net/image-url"
-          style={
-            Object {
-              "marginBottom": 10,
+        <View>
+          <AROpaqueImageView
+            aspectRatio={2.18}
+            imageURL="artsy.net/image-url"
+            style={
+              Object {
+                "alignItems": "flex-start",
+                "flexGrow": 1,
+                "justifyContent": "center",
+                "marginBottom": 10,
+              }
             }
-          }
-        />
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "bottom": 16,
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "left": 1,
+                  "position": "absolute",
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -183,15 +202,34 @@ exports[`renders properly 1`] = `
         style={undefined}
         testID={undefined}
       >
-        <AROpaqueImageView
-          aspectRatio={2.18}
-          imageURL="artsy.net/image-url"
-          style={
-            Object {
-              "marginBottom": 10,
+        <View>
+          <AROpaqueImageView
+            aspectRatio={2.18}
+            imageURL="artsy.net/image-url"
+            style={
+              Object {
+                "alignItems": "flex-start",
+                "flexGrow": 1,
+                "justifyContent": "center",
+                "marginBottom": 10,
+              }
             }
-          }
-        />
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "bottom": 16,
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "left": 1,
+                  "position": "absolute",
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -323,15 +361,34 @@ exports[`renders properly 1`] = `
         style={undefined}
         testID={undefined}
       >
-        <AROpaqueImageView
-          aspectRatio={2.18}
-          imageURL="artsy.net/image-url"
-          style={
-            Object {
-              "marginBottom": 10,
+        <View>
+          <AROpaqueImageView
+            aspectRatio={2.18}
+            imageURL="artsy.net/image-url"
+            style={
+              Object {
+                "alignItems": "flex-start",
+                "flexGrow": 1,
+                "justifyContent": "center",
+                "marginBottom": 10,
+              }
             }
-          }
-        />
+          />
+          <View
+            style={
+              Array [
+                Object {
+                  "bottom": 16,
+                  "display": "flex",
+                  "flexDirection": "row",
+                  "left": 1,
+                  "position": "absolute",
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
         <Text
           accessible={true}
           allowFontScaling={true}

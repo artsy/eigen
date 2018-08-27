@@ -16,6 +16,8 @@
 
 ### Master
 
+* Adding artwork badges to brick - matt
+
 ### 1.5.15
 
 * Fixes back button asset for BidFlow - ash
