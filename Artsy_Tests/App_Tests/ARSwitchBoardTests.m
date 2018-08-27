@@ -25,6 +25,7 @@
 
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
+#import <Emission/ARBidFlowViewController.h>
 
 #import "Artsy-Swift.h"
 
@@ -421,6 +422,24 @@ describe(@"ARSwitchboard", ^{
             expect(classString).to.contain(@"ARArtistViewController");
         });
 
+        it(@"defaults to the new bid flow", ^{
+            switchboard = [[ARSwitchBoard alloc] init];
+            [switchboard updateRoutes];
+
+            ARSerifNavigationViewController *subjectNav = (id)[switchboard loadPath:@"/auction-registration/the-sale"];
+            ARBidFlowViewController *subject = (id)subjectNav.topViewController;
+
+            expect(subject.saleID).to.equal(@"the-sale");
+        });
+
+        it(@"falls back to force bid registration when skip_bid_flow=true", ^{
+            switchboard = [[ARSwitchBoard alloc] init];
+            [switchboard updateRoutes];
+
+            id subject = [switchboard loadPath:@"/auction-registration/the-sale?skip_bid_flow=true"];
+
+            expect(NSStringFromClass([subject class])).to.equal(@"ARAuctionWebViewController");
+        });
     });
 
     describe(@"loadProfileWithIDileWithID", ^{

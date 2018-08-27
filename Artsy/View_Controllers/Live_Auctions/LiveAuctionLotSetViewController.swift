@@ -348,7 +348,7 @@ extension LiveAuctionLotSetViewController: AuctionTitleViewDelegate {
     }
 
     func userDidPressRegister(_ titleView: AuctionTitleView) {
-        let registrationPath = "/auction-registration/\(self.salesPerson.liveSaleID)"
+        let registrationPath = "/auction-registration/\(self.salesPerson.liveSaleID)?skip_bid_flow=true"
         let viewController = ARSwitchBoard.sharedInstance().loadPath(registrationPath)
         self.present(viewController, animated: true) {}
     }

@@ -3,7 +3,7 @@ upcoming:
   date: TBA
   emission_version: 1.5.15
   dev:
-    -
+    - Fixes a bug where LAI's register button would invoke the BidFlow UI, which caused a crash - ash
 
   user_facing:
     -
