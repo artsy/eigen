@@ -163,7 +163,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 
     [self registerEchoRouteForKey:@"ARAuctionRegistrationRoute" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
-        return [sself loadAuctionRegistrationWithID:parameters[@"id"]];
+        return [sself loadAuctionRegistrationWithID:parameters[@"id"] skipBidFlow:parameters[@"skip_bid_flow"]];
     }];
 
     [self registerEchoRouteForKey:@"ARAuctionRoute" handler:JLRouteParams {

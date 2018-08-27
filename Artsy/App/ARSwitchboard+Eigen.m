@@ -102,9 +102,9 @@
     return [self loadURL:[self.liveAuctionsURL URLByAppendingPathComponent:auctionID]];
 }
 
-- (UIViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID;
+- (UIViewController *)loadAuctionRegistrationWithID:(NSString *)auctionID skipBidFlow:(BOOL)skipBidFlow
 {
-    if (self.echo.features[@"ARDisableReactNativeBidFlow"].state == NO) {
+    if (self.echo.features[@"ARDisableReactNativeBidFlow"].state == NO && skipBidFlow == NO) {
         ARBidFlowViewController *viewController = [[ARBidFlowViewController alloc] initWithArtworkID:@"" saleID:auctionID intent:ARBidFlowViewControllerIntentRegister];
         return [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
     } else {
