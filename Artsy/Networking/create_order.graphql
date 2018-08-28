@@ -1,0 +1,20 @@
+mutation createOrder(
+  $input: CreateOrderWithArtworkInput!
+) {
+  createOrderWithArtwork(
+    input: $input
+  ) {
+    orderOrError {
+      ... on OrderWithMutationSuccess {
+        order {
+          id
+        }
+      }
+      ... on OrderWithMutationFailure {
+        error {
+          description
+        }
+      }
+    }
+  }
+}

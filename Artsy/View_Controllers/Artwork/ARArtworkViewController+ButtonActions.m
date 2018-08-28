@@ -231,21 +231,31 @@
         return;
     }
 
-    // If the artwork has only 1 edition, use that edition id. Otherwise our POST request will fail.
-    NSString *editionSetID = nil;
-    if (self.artwork.editionSets.count > 0) {
-        editionSetID = [[self.artwork.editionSets objectAtIndex:0] valueForKey:@"id"];
-    }
-
-    if (echo.features[@"AREnableBuyNowFlow"].state) {
-        /*
-         TODO: Metaphysics mutation etc: https://artsyproduct.atlassian.net/browse/PURCHASE-389
-
-         1. Make metaphysics mutation.
-         2. After success, route to echo.routes[@"ARBuyNowRoute"].whatever with order ID.
-         3. After failure, show an error dialogue (check Force, talk to Joanna/Brian?).
-         */
+    if (echo.features[@"AREnableBuyNowFlow"].state || YES) { // TODO: admin flag
+        [ArtsyAPI createBuyNowOrderWithArtworkID:self.artwork.artworkID success:^(id results) {
+            NSString *orderID = results[@"data"][@"createOrderWithArtwork"][@"orderOrError"][@"order"][@"id"];
+            if (!orderID) {
+                // TODO: Error-handling
+                return;
+            }
+            NSString *path = echo.routes[@"ARBuyNowRoute"].path;
+            if (!path) {
+                // path should never be nil, but I'd rather not crash the app if it is.
+                path = @"/order/:id";
+            }
+            path = [path stringByReplacingOccurrencesOfString:@":id" withString:orderID];
+            UIViewController *controller = [ARSwitchBoard.sharedInstance loadPath:path];
+            [self.navigationController pushViewController:controller animated:YES];
+        } failure:^(NSError *error) {
+            // TODO: Error-handling
+        }];
     } else {
+        // If the artwork has only 1 edition, use that edition id. Otherwise our POST request will fail.
+        NSString *editionSetID = nil;
+        if (self.artwork.editionSets.count > 0) {
+            editionSetID = [[self.artwork.editionSets objectAtIndex:0] valueForKey:@"id"];
+        }
+
         __weak typeof(self) wself = self;
         [ArtsyAPI createPendingOrderWithArtworkID:self.artwork.artworkID editionSetID:editionSetID success:^(id JSON) {
 
