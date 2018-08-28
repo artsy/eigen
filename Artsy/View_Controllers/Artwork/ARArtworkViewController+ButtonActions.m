@@ -221,6 +221,9 @@
 
 - (void)tappedBuyButton
 {
+    ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+    [echo setup];
+
     // We currently don't have a UI for a user to select from multiple editions. Instead, send the user
     // to the inquiry form.
     if (self.artwork.hasMultipleEditions) {
@@ -234,21 +237,31 @@
         editionSetID = [[self.artwork.editionSets objectAtIndex:0] valueForKey:@"id"];
     }
 
-    __weak typeof(self) wself = self;
-    [ArtsyAPI createPendingOrderWithArtworkID:self.artwork.artworkID editionSetID:editionSetID success:^(id JSON) {
+    if (echo.features[@"AREnableBuyNowFlow"].state) {
+        /*
+         TODO: Metaphysics mutation etc: https://artsyproduct.atlassian.net/browse/PURCHASE-389
 
-        NSString *orderID = [JSON valueForKey:@"id"];
-        NSString *resumeToken = [JSON valueForKey:@"token"];
-        ARErrorLog(@"Created order %@", orderID);
-        UIViewController *controller = [ARSwitchBoard.sharedInstance loadOrderUIForID:orderID resumeToken:resumeToken];
-        [self.navigationController pushViewController:controller animated:YES];
+         1. Make metaphysics mutation.
+         2. After success, route to echo.routes[@"ARBuyNowRoute"].whatever with order ID.
+         3. After failure, show an error dialogue (check Force, talk to Joanna/Brian?).
+         */
+    } else {
+        __weak typeof(self) wself = self;
+        [ArtsyAPI createPendingOrderWithArtworkID:self.artwork.artworkID editionSetID:editionSetID success:^(id JSON) {
 
+            NSString *orderID = [JSON valueForKey:@"id"];
+            NSString *resumeToken = [JSON valueForKey:@"token"];
+            ARErrorLog(@"Created order %@", orderID);
+            UIViewController *controller = [ARSwitchBoard.sharedInstance loadOrderUIForID:orderID resumeToken:resumeToken];
+            [self.navigationController pushViewController:controller animated:YES];
+
+        }
+            failure:^(NSError *error) {
+            __strong typeof (wself) sself = wself;
+            ARErrorLog(@"Creating a new order failed. Error: %@,\n", error.localizedDescription);
+            [sself tappedContactGallery];
+            }];
     }
-        failure:^(NSError *error) {
-        __strong typeof (wself) sself = wself;
-        ARErrorLog(@"Creating a new order failed. Error: %@,\n", error.localizedDescription);
-        [sself tappedContactGallery];
-        }];
 }
 
 - (void)tappedMoreInfo
