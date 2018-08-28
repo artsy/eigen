@@ -231,7 +231,7 @@
         return;
     }
 
-    if (echo.features[@"AREnableBuyNowFlow"].state || YES) { // TODO: admin flag
+    if (echo.features[@"AREnableBuyNowFlow"].state || [AROptions boolForOption:AROptionsForceBuyNow]) {
         [ArtsyAPI createBuyNowOrderWithArtworkID:self.artwork.artworkID success:^(id results) {
             NSString *orderID = results[@"data"][@"createOrderWithArtwork"][@"orderOrError"][@"order"][@"id"];
             if (!orderID) {
