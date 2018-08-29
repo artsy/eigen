@@ -75,9 +75,11 @@ exports[`renders properly 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bwzfXH uTxCW"
           ellipsizeMode="tail"
-          fontSize={5}
-          lineHeight={7}
+          fontFamily="AGaramondPro-Semibold"
+          fontSize={22}
+          lineHeight={28}
           m={4}
           mb={6}
           mt={0}
@@ -115,9 +117,11 @@ exports[`renders properly 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bwzfXH uTxCW"
             ellipsizeMode="tail"
-            fontSize={3}
-            lineHeight={5}
+            fontFamily="AGaramondPro-Regular"
+            fontSize={16}
+            lineHeight={24}
             mb={2}
             style={
               Array [
@@ -187,9 +191,11 @@ exports[`renders properly 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bwzfXH uTxCW"
             ellipsizeMode="tail"
-            fontSize={3}
-            lineHeight={5}
+            fontFamily="AGaramondPro-Regular"
+            fontSize={16}
+            lineHeight={24}
             mb={2}
             style={
               Array [
@@ -258,9 +264,11 @@ exports[`renders properly 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bwzfXH uTxCW"
             ellipsizeMode="tail"
-            fontSize={3}
-            lineHeight={5}
+            fontFamily="AGaramondPro-Regular"
+            fontSize={16}
+            lineHeight={24}
             mb={2}
             style={
               Array [
@@ -329,9 +337,11 @@ exports[`renders properly 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bwzfXH uTxCW"
             ellipsizeMode="tail"
-            fontSize={3}
-            lineHeight={5}
+            fontFamily="AGaramondPro-Regular"
+            fontSize={16}
+            lineHeight={24}
             mb={2}
             style={
               Array [
@@ -400,9 +410,11 @@ exports[`renders properly 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bwzfXH uTxCW"
             ellipsizeMode="tail"
-            fontSize={3}
-            lineHeight={5}
+            fontFamily="AGaramondPro-Regular"
+            fontSize={16}
+            lineHeight={24}
             mb={2}
             style={
               Array [
@@ -471,9 +483,11 @@ exports[`renders properly 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bwzfXH uTxCW"
             ellipsizeMode="tail"
-            fontSize={3}
-            lineHeight={5}
+            fontFamily="AGaramondPro-Regular"
+            fontSize={16}
+            lineHeight={24}
             mb={2}
             style={
               Array [
@@ -541,9 +555,11 @@ exports[`renders properly 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bwzfXH uTxCW"
             ellipsizeMode="tail"
-            fontSize={3}
-            lineHeight={5}
+            fontFamily="AGaramondPro-Regular"
+            fontSize={16}
+            lineHeight={24}
             mb={2}
             style={
               Array [
@@ -598,10 +614,12 @@ exports[`renders properly 1`] = `
             <Text
               accessible={true}
               allowFontScaling={true}
+              className="sc-bwzfXH uTxCW"
               color="black30"
               ellipsizeMode="tail"
-              fontSize={3}
-              lineHeight={5}
+              fontFamily="AGaramondPro-Regular"
+              fontSize={16}
+              lineHeight={24}
               style={
                 Array [
                   Object {

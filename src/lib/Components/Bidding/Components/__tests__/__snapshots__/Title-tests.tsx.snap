@@ -4,16 +4,18 @@ exports[`renders properly 1`] = `
 <Text
   accessible={true}
   allowFontScaling={true}
+  className="sc-bwzfXH uTxCW"
   ellipsizeMode="tail"
-  fontSize={5}
-  lineHeight={7}
+  fontFamily="AGaramondPro-Semibold"
+  fontSize={22}
+  lineHeight={28}
   m={4}
   style={
     Array [
       Object {
         "fontFamily": "AGaramondPro-Semibold",
-        "fontSize": 32,
-        "lineHeight": 7,
+        "fontSize": 22,
+        "lineHeight": 28,
         "marginBottom": 32,
         "marginLeft": 32,
         "marginRight": 32,

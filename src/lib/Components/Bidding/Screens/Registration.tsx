@@ -1,3 +1,4 @@
+import { Serif } from "@artsy/palette"
 import { get, isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
@@ -9,7 +10,6 @@ import { Schema, screenTrack } from "../../../utils/track"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import { Flex } from "../Elements/Flex"
-import { Serif14, SerifSemibold18 } from "../Elements/Typography"
 
 import { Modal } from "lib/Components/Modal"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
@@ -249,9 +249,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             <Flex alignItems="center">
               <Title mb={3}>Register to bid</Title>
               <Timer liveStartsAt={live_start_at} endsAt={end_at} isPreview={is_preview} startsAt={start_at} />
-              <SerifSemibold18 mt={5} mb={5} ml={40} mr={40} textAlign="center">
+              <Serif size="4t" weight="semibold" my={5} mx={6} textAlign="center">
                 {this.props.sale.name}
-              </SerifSemibold18>
+              </Serif>
             </Flex>
 
             {this.state.requiresPaymentInformation && (
@@ -280,11 +280,10 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               onPress={() => this.conditionsOfSalePressed()}
               disabled={isLoading}
             >
-              <Serif14 mt={2} color="black60">
+              <Serif size="2" mt={2} color="black60">
                 Agree to{" "}
                 <LinkText onPress={isLoading ? null : this.onPressConditionsOfSale}>Conditions of Sale</LinkText>
-                .
-              </Serif14>
+              </Serif>
             </Checkbox>
 
             <Flex m={4}>

@@ -1,10 +1,10 @@
+import { Sans } from "@artsy/palette"
 import moment from "moment"
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
 import { mockTimezone } from "lib/tests/mockTimezone"
-import { SansMedium12, SansMedium16t } from "../../Elements/Typography"
 import { Timer } from "../Timer"
 
 const SECONDS = 1000
@@ -12,9 +12,9 @@ const MINUTES = 60 * SECONDS
 
 const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 
-const getTimerLabel = timerComponent => timerComponent.root.findByType(SansMedium12).props.children
+const getTimerLabel = timerComponent => timerComponent.root.findAllByType(Sans)[1].props.children
 
-const getTimerText = timerComponent => timerComponent.root.findByType(SansMedium16t).props.children.join("")
+const getTimerText = timerComponent => timerComponent.root.findAllByType(Sans)[0].props.children.join("")
 
 let pastTime
 let futureTime

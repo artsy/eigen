@@ -1,9 +1,9 @@
+import { Serif } from "@artsy/palette"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
 import { TouchableWithoutFeedback } from "react-native"
 import { theme } from "../../Elements/Theme"
-import { Serif16 } from "../../Elements/Typography"
 import { CssTransition } from "../Animation/CssTransition"
 import { BiddingThemeProvider } from "../BiddingThemeProvider"
 import { Checkbox, CheckMark, DisabledMark } from "../Checkbox"
@@ -12,12 +12,12 @@ it("shows children within the checkbox", () => {
   const component = renderer.create(
     <BiddingThemeProvider>
       <Checkbox>
-        <Serif16>Remember me</Serif16>
+        <Serif size="2">Remember me</Serif>
       </Checkbox>
     </BiddingThemeProvider>
   )
 
-  expect(component.root.findAllByType(Serif16).length).toEqual(1)
+  expect(component.root.findAllByType(Serif).length).toEqual(1)
 })
 
 it("calls onPress when tapped", done => {

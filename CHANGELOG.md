@@ -16,6 +16,10 @@
 
 ### Master
 
+### 1.6.0
+
+* Add @artsy/palette - yuki/orta/chris
+
 ### 1.5.15
 
 * Fixes back button asset for BidFlow - ash
