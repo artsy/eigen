@@ -12,6 +12,7 @@
 #import "ARArtworkMetadataView.h"
 #import "ARPostsViewController.h"
 #import "ARArtworkView.h"
+#import "ArtsyEcho.h"
 #import "ARArtworkViewController+ButtonActions.h"
 #import "UIViewController+ARUserActivity.h"
 #import "ARScrollNavigationChief.h"
@@ -28,6 +29,7 @@
 @property (nonatomic, strong) ARArtworkView *view;
 @property (nonatomic, strong, readonly) ARPostsViewController *postsVC;
 @property (nonatomic, strong) NSTimer *updateInterfaceWhenAuctionChangesTimer;
+@property (nonatomic, strong, readwrite) ArtsyEcho *echo;
 
 @end
 
@@ -65,6 +67,8 @@
 
     _artwork = artwork;
     _fair = fair;
+    _echo = [[ArtsyEcho alloc] init];
+    [_echo setup];
 
     return self;
 }

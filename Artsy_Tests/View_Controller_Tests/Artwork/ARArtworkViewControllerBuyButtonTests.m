@@ -1,5 +1,6 @@
 #import "ARArtworkViewController.h"
 #import "ARRouter.h"
+#import "ArtsyEcho.h"
 #import "ARUserManager+Stubs.h"
 #import "ARNetworkConstants.h"
 
@@ -7,6 +8,8 @@
 @interface ARArtworkViewController (Tests)
 - (void)tappedBuyButton;
 - (void)tappedContactGallery;
+- (void)presentErrorMessage:(NSString *)errorMessage;
+@property (nonatomic, strong, readwrite) ArtsyEcho *echo;
 @end
 
 SpecBegin(ARArtworkViewControllerBuyButton);
@@ -31,94 +34,194 @@ describe(@"buy button", ^{
 
     afterEach(^{
         [ARUserManager clearUserData];
+        [OHHTTPStubs removeAllStubs];
     });
 
+    describe(@"buy now flow", ^{
+        it(@"calls mutation and directs to force on success", ^{
+            [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:
+             @{ @"data":
+                    @{ @"createOrderWithArtwork":
+                           @{ @"orderOrError":
+                                  @{ @"order":
+                                         @{ @"id": @"order-id" }
+                                     }
+                              }
+                       }
+                }];
 
-    it(@"posts order if artwork has no edition sets", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/order/pending/items" withResponse:@{}];
+            Artwork *artwork = [Artwork modelWithJSON:@{
+                                                        @"id" : @"artwork-id",
+                                                        @"title" : @"Artwork Title",
+                                                        @"availability" : @"for sale",
+                                                        @"acquireable" : @YES
+                                                        }];
+            vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+            echo.features = @{ @"AREnableBuyNowFlow" : [[Feature alloc] initWithName:@"" state:@1] };
+            echo.routes = @{ @"ARBuyNowRoute": [[Route alloc] initWithName:@"" path:@"/order/:id"] };
+            vc.echo = echo;
+            vcMock = [OCMockObject partialMockForObject:vc];
+            [[vcMock reject] tappedContactGallery];
+            id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
+            [[switchboardMock expect] loadPath:@"/order/order-id"];
 
-        Artwork *artwork = [Artwork modelWithJSON:@{
-            @"id" : @"artwork-id",
-            @"title" : @"Artwork Title",
-            @"availability" : @"for sale",
-            @"acquireable" : @YES
-        }];
-        vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
-        vcMock = [OCMockObject partialMockForObject:vc];
-        [[vcMock reject] tappedContactGallery];
+            [[[[routerMock expect] andForwardToRealObject] classMethod] newBuyNowRequestWithArtworkID:@"artwork-id"];
 
-        [[[[routerMock expect] andForwardToRealObject] classMethod] newPendingOrderWithArtworkID:@"artwork-id" editionSetID:[OCMArg isNil]];
+            [vc tappedBuyButton];
 
-        [vc tappedBuyButton];
-        [routerMock verify];
-        [vcMock verify];
+            [routerMock verify];
+            [vcMock verify];
+            [switchboardMock verify];
+            [switchboardMock stopMocking];
+        });
+
+        it(@"presents error when mutation network request itself fails", ^{
+            [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+                return [request.URL.host containsString:@"metaphysics"];
+            } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+                return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:nil]];
+            }];
+
+            Artwork *artwork = [Artwork modelWithJSON:@{
+                                                        @"id" : @"artwork-id",
+                                                        @"title" : @"Artwork Title",
+                                                        @"availability" : @"for sale",
+                                                        @"acquireable" : @YES
+                                                        }];
+            vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+            echo.features = @{ @"AREnableBuyNowFlow" : [[Feature alloc] initWithName:@"" state:@1] };
+            vc.echo = echo;
+            vcMock = [OCMockObject partialMockForObject:vc];
+            [[vcMock expect] presentErrorMessage:OCMOCK_ANY];
+
+            [[[[routerMock expect] andForwardToRealObject] classMethod] newBuyNowRequestWithArtworkID:@"artwork-id"];
+
+            [vc tappedBuyButton];
+
+            [routerMock verify];
+            [vcMock verify];
+        });
+
+        it(@"presents error when mutation fails on metaphysics", ^{
+            [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:
+             @{ @"data":
+                    @{ @"createOrderWithArtwork":
+                           @{ @"orderOrError": @{} // no order data in response
+                              }
+                       }
+                }];
+
+            Artwork *artwork = [Artwork modelWithJSON:@{
+                                                        @"id" : @"artwork-id",
+                                                        @"title" : @"Artwork Title",
+                                                        @"availability" : @"for sale",
+                                                        @"acquireable" : @YES
+                                                        }];
+            vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
+            echo.features = @{ @"AREnableBuyNowFlow" : [[Feature alloc] initWithName:@"" state:@1] };
+            vc.echo = echo;
+            vcMock = [OCMockObject partialMockForObject:vc];
+            [[vcMock expect] presentErrorMessage:OCMOCK_ANY];
+
+            [[[[routerMock expect] andForwardToRealObject] classMethod] newBuyNowRequestWithArtworkID:@"artwork-id"];
+
+            [vc tappedBuyButton];
+
+            [routerMock verify];
+            [vcMock verify];
+        });
     });
 
-    it(@"posts order if artwork has 1 edition set", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/order/pending/items" withResponse:@{}];
-        Artwork *artwork = [Artwork modelWithJSON:@{
-            @"id" : @"artwork-id",
-            @"title" : @"Artwork Title",
-            @"availability" : @"for sale",
-            @"acquireable" : @YES,
-            @"edition_sets" : @[
-                @{ @"id": @"set-1"}
-            ]
-        }];
+    describe(@"old ecommerce flow", ^{
+        it(@"posts order if artwork has no edition sets", ^{
+            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/order/pending/items" withResponse:@{}];
 
-        vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
-        vcMock = [OCMockObject partialMockForObject:vc];
-        [[vcMock reject] tappedContactGallery];
+            Artwork *artwork = [Artwork modelWithJSON:@{
+                @"id" : @"artwork-id",
+                @"title" : @"Artwork Title",
+                @"availability" : @"for sale",
+                @"acquireable" : @YES
+            }];
+            vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+            vcMock = [OCMockObject partialMockForObject:vc];
+            [[vcMock reject] tappedContactGallery];
 
-        [[[[routerMock expect] andForwardToRealObject] classMethod] newPendingOrderWithArtworkID:@"artwork-id" editionSetID:@"set-1"];
+            [[[[routerMock expect] andForwardToRealObject] classMethod] newPendingOrderWithArtworkID:@"artwork-id" editionSetID:[OCMArg isNil]];
 
-        [vc tappedBuyButton];
-        [routerMock verify];
-        [vcMock verify];
-    });
+            [vc tappedBuyButton];
+            [routerMock verify];
+            [vcMock verify];
+        });
 
-    it(@"displays inquiry form if artwork has multiple sets", ^{
-        Artwork *artwork = [Artwork modelWithJSON:@{
-            @"id" : @"artwork-id",
-            @"title" : @"Artwork Title",
-            @"availability" : @"for sale",
-            @"acquireable" : @YES,
-            @"edition_sets" : @[
-                @{ @"id": @"set-1"},
-                @{ @"id": @"set-2"}
-            ]
-        }];
+        it(@"posts order if artwork has 1 edition set", ^{
+            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/order/pending/items" withResponse:@{}];
+            Artwork *artwork = [Artwork modelWithJSON:@{
+                @"id" : @"artwork-id",
+                @"title" : @"Artwork Title",
+                @"availability" : @"for sale",
+                @"acquireable" : @YES,
+                @"edition_sets" : @[
+                    @{ @"id": @"set-1"}
+                ]
+            }];
 
-        vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
-        vcMock = [OCMockObject partialMockForObject:vc];
-        [[vcMock expect] tappedContactGallery];
+            vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+            vcMock = [OCMockObject partialMockForObject:vc];
+            [[vcMock reject] tappedContactGallery];
 
-        [[[routerMock reject] classMethod] newPendingOrderWithArtworkID:OCMOCK_ANY editionSetID:OCMOCK_ANY];
+            [[[[routerMock expect] andForwardToRealObject] classMethod] newPendingOrderWithArtworkID:@"artwork-id" editionSetID:@"set-1"];
 
-        [vc tappedBuyButton];
-        [routerMock verify];
-        [vcMock verify];
-    });
-    
-    it(@"displays inquiry form if request fails", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:ARCreatePendingOrderURL withResponse:@[] andStatusCode:400];
+            [vc tappedBuyButton];
+            [routerMock verify];
+            [vcMock verify];
+        });
 
-        Artwork *artwork = [Artwork modelWithJSON:@{
-            @"id" : @"artwork-id",
-            @"title" : @"Artwork Title",
-            @"availability" : @"for sale",
-            @"acquireable" : @YES,
-        }];
+        it(@"displays inquiry form if artwork has multiple sets", ^{
+            Artwork *artwork = [Artwork modelWithJSON:@{
+                @"id" : @"artwork-id",
+                @"title" : @"Artwork Title",
+                @"availability" : @"for sale",
+                @"acquireable" : @YES,
+                @"edition_sets" : @[
+                    @{ @"id": @"set-1"},
+                    @{ @"id": @"set-2"}
+                ]
+            }];
 
-        vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
-        vcMock = [OCMockObject partialMockForObject:vc];
-        [[vcMock expect] tappedContactGallery];
-        
-        [[[[routerMock expect] andForwardToRealObject] classMethod] newPendingOrderWithArtworkID:OCMOCK_ANY editionSetID:OCMOCK_ANY];
+            vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+            vcMock = [OCMockObject partialMockForObject:vc];
+            [[vcMock expect] tappedContactGallery];
 
-        [vc tappedBuyButton];
-        [routerMock verify];
-        [vcMock verify];
+            [[[routerMock reject] classMethod] newPendingOrderWithArtworkID:OCMOCK_ANY editionSetID:OCMOCK_ANY];
+
+            [vc tappedBuyButton];
+            [routerMock verify];
+            [vcMock verify];
+        });
+
+        it(@"displays inquiry form if request fails", ^{
+            [OHHTTPStubs stubJSONResponseAtPath:ARCreatePendingOrderURL withResponse:@[] andStatusCode:400];
+
+            Artwork *artwork = [Artwork modelWithJSON:@{
+                @"id" : @"artwork-id",
+                @"title" : @"Artwork Title",
+                @"availability" : @"for sale",
+                @"acquireable" : @YES,
+            }];
+
+            vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+            vcMock = [OCMockObject partialMockForObject:vc];
+            [[vcMock expect] tappedContactGallery];
+
+            [[[[routerMock expect] andForwardToRealObject] classMethod] newPendingOrderWithArtworkID:OCMOCK_ANY editionSetID:OCMOCK_ANY];
+
+            [vc tappedBuyButton];
+            [routerMock verify];
+            [vcMock verify];
+        });
     });
 });
 
