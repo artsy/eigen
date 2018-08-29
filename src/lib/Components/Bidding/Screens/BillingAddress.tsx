@@ -42,7 +42,11 @@ const StyledInput = ({ label, error, onLayout, ...props }) => (
       {label}
     </Serif>
     <Input mb={3} error={Boolean(error)} {...props} />
-    {error && (<Sans size="2" color="red100">{error}</Sans>)}
+    {error && (
+      <Sans size="2" color="red100">
+        {error}
+      </Sans>
+    )}
   </Flex>
 )
 
@@ -248,19 +252,27 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
               />
 
               <Flex mb={4}>
-                <Serif size="3" mb={2}>Country</Serif>
+                <Serif size="3" mb={2}>
+                  Country
+                </Serif>
 
                 <TouchableWithoutFeedback onPress={() => this.presentSelectCountry()}>
                   <Flex mb={3} p={3} pb={2} border={1} borderColor={errorForCountry ? "red100" : "black10"}>
                     {this.state.values.country ? (
                       <Serif size="3">{this.state.values.country.longName}</Serif>
                     ) : (
-                      <Serif size="3" color="black30">Select your country</Serif>
+                      <Serif size="3" color="black30">
+                        Select your country
+                      </Serif>
                     )}
                   </Flex>
                 </TouchableWithoutFeedback>
 
-                {errorForCountry && <Sans size="2" color="red100">{errorForCountry}</Sans>}
+                {errorForCountry && (
+                  <Sans size="2" color="red100">
+                    {errorForCountry}
+                  </Sans>
+                )}
               </Flex>
 
               <Button text="Add billing address" onPress={() => this.onSubmit()} />

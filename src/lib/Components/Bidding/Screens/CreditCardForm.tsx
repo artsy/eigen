@@ -1,5 +1,5 @@
-import { Fonts } from "lib/data/fonts"
 import { Sans } from "@artsy/palette"
+import { Fonts } from "lib/data/fonts"
 import React, { Component } from "react"
 import { NavigatorIOS, ScrollView, StyleSheet, View } from "react-native"
 import stripe, { PaymentCardTextField, StripeToken } from "tipsi-stripe"
