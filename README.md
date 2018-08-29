@@ -49,6 +49,7 @@ _Manual install_
 1. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
 
 * If you already have the app installed, you can run `open -a Simulator` to open the last sim, and then `xcrun simctl launch booted net.artsy.Emission` to open the app.
+* If you run into any issues with the above commands oftentimes a full clean can help. Run `rm -rf node_modules; rm -rf Example/Pods; yarn install; cd Example; bundle exec pod install` and then repeat the steps above.
 
 ### Daily Development
 
