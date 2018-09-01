@@ -1,6 +1,7 @@
 #import "ARArtworkDetailView.h"
 #import "ARArtworkActionsView.h"
 
+@class ArtsyEcho;
 
 @interface ARArtworkViewController : UIViewController <ARArtworkActionsViewDelegate, ARArtworkDetailViewDelegate>
 
@@ -14,6 +15,9 @@
 
 /// The index in the current set of artworks
 @property (nonatomic, assign) NSInteger index;
+
+/// Echo config. Useful for unit testing.
+@property (nonatomic, strong, readonly) ArtsyEcho *echo;
 
 /// The imageview for the artwork preview, used in transitions
 - (UIImageView *)imageView;

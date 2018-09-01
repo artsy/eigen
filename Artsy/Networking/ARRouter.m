@@ -1254,6 +1254,11 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"POST" path:ARCreatePendingOrderURL parameters:params];
 }
 
++ (NSURLRequest *)newBuyNowRequestWithArtworkID:(NSString *)artworkID
+{
+    return [self graphQLRequestForQuery:[self graphQueryToCreateBuyNowOrderForArtwork:artworkID] variables:@{ @"input" : @{ @"artworkId": artworkID, @"quantity": @(1) } }];
+}
+
 + (NSURLRequest *)newRequestOutbidNotificationRequest
 {
     NSAssert(FALSE, @"STUB");

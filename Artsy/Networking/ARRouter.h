@@ -89,6 +89,7 @@
 + (NSURLRequest *)newFairsRequestForArtwork:(Artwork *)artwork;
 + (NSURLRequest *)newShowsRequestForArtworkID:(NSString *)artworkID andFairID:(NSString *)fairID;
 + (NSURLRequest *)newPendingOrderWithArtworkID:(NSString *)artworkID editionSetID:(NSString *)editionSetID;
++ (NSURLRequest *)newBuyNowRequestWithArtworkID:(NSString *)artworkID;
 
 #pragma mark - Artist
 

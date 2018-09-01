@@ -228,33 +228,63 @@
         return;
     }
 
-    // If the artwork has only 1 edition, use that edition id. Otherwise our POST request will fail.
-    NSString *editionSetID = nil;
-    if (self.artwork.editionSets.count > 0) {
-        editionSetID = [[self.artwork.editionSets objectAtIndex:0] valueForKey:@"id"];
-    }
-
-    __weak typeof(self) wself = self;
-    [ArtsyAPI createPendingOrderWithArtworkID:self.artwork.artworkID editionSetID:editionSetID success:^(id JSON) {
-
-        NSString *orderID = [JSON valueForKey:@"id"];
-        NSString *resumeToken = [JSON valueForKey:@"token"];
-        ARErrorLog(@"Created order %@", orderID);
-        UIViewController *controller = [ARSwitchBoard.sharedInstance loadOrderUIForID:orderID resumeToken:resumeToken];
-        [self.navigationController pushViewController:controller animated:YES];
-
-    }
-        failure:^(NSError *error) {
-        __strong typeof (wself) sself = wself;
-        ARErrorLog(@"Creating a new order failed. Error: %@,\n", error.localizedDescription);
-        [sself tappedContactGallery];
+    if (self.echo.features[@"AREnableBuyNowFlow"].state || [AROptions boolForOption:AROptionsForceBuyNow]) {
+        [ArtsyAPI createBuyNowOrderWithArtworkID:self.artwork.artworkID success:^(id results) {
+            NSString *orderID = results[@"data"][@"createOrderWithArtwork"][@"orderOrError"][@"order"][@"id"];
+            if (!orderID) {
+                [self presentErrorMessage:@"Could not create order."];
+                return;
+            }
+            NSString *path = self.echo.routes[@"ARBuyNowRoute"].path;
+            if (!path) {
+                // path should never be nil, but I'd rather not crash the app if it is.
+                path = @"/order/:id";
+            }
+            path = [path stringByReplacingOccurrencesOfString:@":id" withString:orderID];
+            UIViewController *controller = [ARSwitchBoard.sharedInstance loadPath:path];
+            [self.navigationController pushViewController:controller animated:YES];
+        } failure:^(NSError *error) {
+            [self presentErrorMessage:@"Could not create order."];
         }];
+    } else {
+        // If the artwork has only 1 edition, use that edition id. Otherwise our POST request will fail.
+        NSString *editionSetID = nil;
+        if (self.artwork.editionSets.count > 0) {
+            editionSetID = [[self.artwork.editionSets objectAtIndex:0] valueForKey:@"id"];
+        }
+
+        __weak typeof(self) wself = self;
+        [ArtsyAPI createPendingOrderWithArtworkID:self.artwork.artworkID editionSetID:editionSetID success:^(id JSON) {
+
+            NSString *orderID = [JSON valueForKey:@"id"];
+            NSString *resumeToken = [JSON valueForKey:@"token"];
+            ARErrorLog(@"Created order %@", orderID);
+            UIViewController *controller = [ARSwitchBoard.sharedInstance loadOrderUIForID:orderID resumeToken:resumeToken];
+            [self.navigationController pushViewController:controller animated:YES];
+
+        }
+            failure:^(NSError *error) {
+            __strong typeof (wself) sself = wself;
+            ARErrorLog(@"Creating a new order failed. Error: %@,\n", error.localizedDescription);
+            [sself tappedContactGallery];
+            }];
+    }
 }
 
 - (void)tappedMoreInfo
 {
     UIViewController *viewController = [ARSwitchBoard.sharedInstance loadMoreInfoForArtwork:self.artwork];
     [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)presentErrorMessage:(NSString *)errorMessage
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"An error occurred" message:errorMessage preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okay = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }];
+    [alert addAction:okay];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - ARArtworkDetailViewDelegate
