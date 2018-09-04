@@ -85,9 +85,11 @@ exports[`renders properly 1`] = `
             <Text
               accessible={true}
               allowFontScaling={true}
+              className="sc-bwzfXH uTxCW"
               ellipsizeMode="tail"
-              fontSize={5}
-              lineHeight={7}
+              fontFamily="AGaramondPro-Semibold"
+              fontSize={22}
+              lineHeight={28}
               m={4}
               style={
                 Array [

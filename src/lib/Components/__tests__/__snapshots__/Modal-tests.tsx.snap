@@ -85,15 +85,17 @@ exports[`looks like expected 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
             ellipsizeMode="tail"
-            fontSize={2}
-            lineHeight={5}
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
                   "fontFamily": "Unica77LL-Medium",
-                  "fontSize": 16,
-                  "lineHeight": 5,
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
                 undefined,
               ]
@@ -112,17 +114,19 @@ exports[`looks like expected 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
             color="#666"
             ellipsizeMode="tail"
-            fontSize={2}
-            lineHeight={5}
+            fontFamily="Unica77LL-Regular"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
                   "color": "#666",
                   "fontFamily": "Unica77LL-Regular",
-                  "fontSize": 16,
-                  "lineHeight": 5,
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
                 undefined,
               ]

@@ -1,9 +1,9 @@
+import { Sans } from "@artsy/palette"
 import { Fonts } from "lib/data/fonts"
 import React, { Component } from "react"
 import { NavigatorIOS, ScrollView, StyleSheet, View } from "react-native"
 import stripe, { PaymentCardTextField, StripeToken } from "tipsi-stripe"
 
-import { Sans12 } from "lib/Components/Bidding/Elements/Typography"
 import BottomAlignedButtonWrapper from "lib/Components/Buttons/BottomAlignedButtonWrapper"
 import { BackButton } from "../Components/BackButton"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
@@ -113,9 +113,9 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                     cvcPlaceholde="CVC"
                   />
                   {this.state.isError && (
-                    <Sans12 mt={3} color="red100">
+                    <Sans size="2" mt={3} color="red100">
                       {errorText}
-                    </Sans12>
+                    </Sans>
                   )}
                 </Flex>
               </View>

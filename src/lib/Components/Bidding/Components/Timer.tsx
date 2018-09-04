@@ -1,9 +1,9 @@
+import { Sans } from "@artsy/palette"
 import moment from "moment-timezone"
 import * as PropTypes from "prop-types"
 import React from "react"
 
 import { Flex } from "../Elements/Flex"
-import { SansMedium12, SansMedium16t } from "../Elements/Typography"
 
 interface TimerProps {
   liveStartsAt?: string
@@ -147,13 +147,15 @@ class LocalTimer extends React.Component<TimerProps, TimerState> {
 
     return (
       <Flex alignItems="center">
-        <SansMedium16t>
+        <Sans size="4t" weight="medium">
           {this.padWithZero(duration.days())}d{"  "}
           {this.padWithZero(duration.hours())}h{"  "}
           {this.padWithZero(duration.minutes())}m{"  "}
           {this.padWithZero(duration.seconds())}s
-        </SansMedium16t>
-        <SansMedium12>{this.state.label}</SansMedium12>
+        </Sans>
+        <Sans size="2" weight="medium">
+          {this.state.label}
+        </Sans>
       </Flex>
     )
   }

@@ -17,6 +17,9 @@
 ### Master
 
 * Adding artwork badges to brick - matt
+### 1.6.0
+
+* Add @artsy/palette - yuki/orta/chris
 
 ### 1.5.15
 

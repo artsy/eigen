@@ -1,8 +1,8 @@
+import { Sans } from "@artsy/palette"
 import { theme } from "lib/Components/Bidding/Elements/Theme"
 import React from "react"
 import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProperties } from "react-native"
 import styled from "styled-components/native"
-import { Sans14, SansMedium14 } from "./Bidding/Elements/Typography"
 import { SecondaryOutlineButton } from "./Buttons"
 
 interface ModalProps extends ViewProperties {
@@ -59,10 +59,14 @@ export class Modal extends React.Component<ModalProps, any> {
               <TouchableWithoutFeedback onPress={null}>
                 <ModalInnerView>
                   <View style={{ paddingBottom: 10 }}>
-                    <SansMedium14>{headerText}</SansMedium14>
+                    <Sans size="3" weight="medium">
+                      {headerText}
+                    </Sans>
                   </View>
                   <View style={{ paddingBottom: 30 }}>
-                    <Sans14 color={theme.colors.black60}>{detailText}</Sans14>
+                    <Sans size="3" color={theme.colors.black60}>
+                      {detailText}
+                    </Sans>
                   </View>
                   <SecondaryOutlineButton
                     text="Ok"

@@ -1,3 +1,4 @@
+import { Serif } from "@artsy/palette"
 import { get, isEmpty } from "lodash"
 import React from "react"
 import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
@@ -9,7 +10,6 @@ import { metaphysics } from "../../../metaphysics"
 import { Schema, screenTrack, track } from "../../../utils/track"
 
 import { Flex } from "../Elements/Flex"
-import { Serif14, SerifItalic14, SerifSemibold14, SerifSemibold18t } from "../Elements/Typography"
 
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { BidInfoRow } from "../Components/BidInfoRow"
@@ -383,15 +383,17 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
           <View>
             <Flex m={4} mt={0} alignItems="center">
-              <SerifSemibold18t numberOfLines={1} ellipsizeMode={"tail"}>
+              <Serif size="4t" weight="semibold" numberOfLines={1} ellipsizeMode={"tail"}>
                 {artwork.artist_names}
-              </SerifSemibold18t>
-              <SerifSemibold14>Lot {lot_label}</SerifSemibold14>
+              </Serif>
+              <Serif size="2" weight="semibold">
+                Lot {lot_label}
+              </Serif>
 
-              <SerifItalic14 color="black60" textAlign="center" numberOfLines={1} ellipsizeMode={"tail"}>
+              <Serif italic size="2" color="black60" textAlign="center" numberOfLines={1} ellipsizeMode={"tail"}>
                 {artwork.title}
-                {artwork.date && <Serif14>, {artwork.date}</Serif14>}
-              </SerifItalic14>
+                {artwork.date && <Serif size="2">, {artwork.date}</Serif>}
+              </Serif>
             </Flex>
 
             <Divider />
@@ -431,23 +433,23 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                 onPress={() => this.onConditionsOfSaleCheckboxPressed()}
                 disabled={isLoading}
               >
-                <Serif14 mt={2} color="black60">
+                <Serif size="2" mt={2} color="black60">
                   You agree to{" "}
                   <LinkText onPress={isLoading ? null : () => this.onConditionsOfSaleLinkPressed()}>
                     Conditions of Sale
                   </LinkText>
                   .
-                </Serif14>
+                </Serif>
               </Checkbox>
             ) : (
               <Flex alignItems="center">
-                <Serif14 mt={2} color="black60">
+                <Serif size="2" mt={2} color="black60">
                   You agree to{" "}
                   <LinkText onPress={isLoading ? null : () => this.onConditionsOfSaleLinkPressed()}>
                     Conditions of Sale
                   </LinkText>
                   .
-                </Serif14>
+                </Serif>
               </Flex>
             )}
 

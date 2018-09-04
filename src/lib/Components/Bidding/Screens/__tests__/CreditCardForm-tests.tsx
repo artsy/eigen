@@ -1,3 +1,4 @@
+import { Sans } from "@artsy/palette"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
@@ -9,7 +10,6 @@ jest.mock("tipsi-stripe", () => ({
   PaymentCardTextField: () => "PaymentCardTextField",
   createTokenWithCard: jest.fn(),
 }))
-import { Sans12 } from "lib/Components/Bidding/Elements/Typography"
 import stripe from "tipsi-stripe"
 
 const onSubmitMock = jest.fn()
@@ -62,7 +62,7 @@ it("shows an error when stripe's API returns an error", () => {
   component.root.findByType(Button).instance.props.onPress()
 
   jest.runAllTicks()
-  expect(component.root.findByType(Sans12).props.children).toEqual("There was an error. Please try again.")
+  expect(component.root.findByType(Sans).props.children).toEqual("There was an error. Please try again.")
 })
 
 const creditCard = {
