@@ -10,6 +10,7 @@
 #import "ARDefaults.h"
 #import "AppSetup.h"
 #import "CommitNetworkModel.h"
+#import "ARLabOptions.h"
 
 #import "ARRootViewController+PRs.h"
 
@@ -44,6 +45,7 @@
 
   ARTableViewData *tableViewData = [[ARTableViewData alloc] init];
   [self registerClass:ARTickedTableViewCell.class forCellReuseIdentifier:ARLabOptionCell];
+  [self registerClass:ARTickedTableViewCell.class forCellReuseIdentifier:ARSubtitledLabOptionCell];
   [self registerClass:ARAdminTableViewCell.class forCellReuseIdentifier:AROptionCell];
   [self registerClass:ARAdminPreloadTableViewCell.class forCellReuseIdentifier:ARPreloadOptionCell];
 
@@ -67,6 +69,9 @@
   ARSectionData *userSection = [self userSection];
   [tableViewData addSectionData:userSection];
 
+  ARSectionData *labsSection = [self labsSection];
+  [tableViewData addSectionData:labsSection];
+  
   // TODO: Deprecate
   // These were nice quick for getting bootstrapped, but they should be storybooks
   // so that they can be controlled in JS and deployed with PRs.
@@ -111,8 +116,41 @@
   return sectionData;
 }
 
-
-/// Cell Data
+- (ARSectionData *)labsSection
+{
+  ARSectionData *labsSectionData = [[ARSectionData alloc] init];
+  labsSectionData.headerTitle = @"Labs";
+  
+  NSArray *options = [ARLabOptions labsOptions];
+  for (NSInteger index = 0; index < options.count; index++) {
+    NSString *title = options[index];
+    BOOL requiresRestart = [[ARLabOptions labsOptionsThatRequireRestart] indexOfObject:title] != NSNotFound;
+    
+    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
+    [cellData setCellConfigurationBlock:^(UITableViewCell *cell) {
+      cell.textLabel.text = requiresRestart ? [title stringByAppendingString:@" (restarts)"] : title;
+      cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:[ARLabOptions boolForOption:title]];
+    }];
+    
+    [cellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+      BOOL currentSelection = [ARLabOptions boolForOption:title];
+      [ARLabOptions setBool:!currentSelection forOption:title];
+      
+      if (requiresRestart) {
+        // Show checkmark.
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+          exit(0);
+        });
+      }
+      
+      UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+      [(ARAnimatedTickView *)cell.accessoryView setSelected:!currentSelection animated:YES];
+    }];
+    
+    [labsSectionData addCellData:cellData];
+  }
+  return labsSectionData;
+}
 
 - (ARCellData *)jumpToStorybooks
 {

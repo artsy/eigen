@@ -8,6 +8,7 @@
 
 NSString *const AROptionCell = @"OptionCell";
 NSString *const ARLabOptionCell = @"LabOptionCell";
+NSString *const ARSubtitledLabOptionCell = @"SubtitledLabOptionCell";
 NSString *const ARPreloadOptionCell = @"PreloadOptionCell";
 
 @implementation EigenLikeAdminViewController
@@ -104,7 +105,7 @@ NSString *const ARPreloadOptionCell = @"PreloadOptionCell";
 
 - (ARCellData *)editableTextCellDataWithName:(NSString *)name defaultKey:(NSString *)key
 {
-  ARCellData *cell = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
+  ARCellData *cell = [[ARCellData alloc] initWithIdentifier:ARSubtitledLabOptionCell];
   cell.height = 60;
   
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
