@@ -24,9 +24,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
       imageURL="artsy.net/image-url"
       style={
         Object {
-          "alignItems": "flex-start",
-          "flexGrow": 1,
-          "justifyContent": "center",
           "marginBottom": 10,
         }
       }
@@ -64,12 +61,17 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 10,
+                "lineHeight": 14,
               },
               undefined,
             ]
@@ -97,12 +99,17 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 10,
+                "lineHeight": 14,
               },
               undefined,
             ]
@@ -280,9 +287,6 @@ exports[`in a closed sale renders without any price information 1`] = `
       imageURL="artsy.net/image-url"
       style={
         Object {
-          "alignItems": "flex-start",
-          "flexGrow": 1,
-          "justifyContent": "center",
           "marginBottom": 10,
         }
       }
@@ -320,12 +324,17 @@ exports[`in a closed sale renders without any price information 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 10,
+                "lineHeight": 14,
               },
               undefined,
             ]
@@ -353,12 +362,17 @@ exports[`in a closed sale renders without any price information 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 10,
+                "lineHeight": 14,
               },
               undefined,
             ]
@@ -516,9 +530,6 @@ exports[`in an open sale renders with current bid 1`] = `
       imageURL="artsy.net/image-url"
       style={
         Object {
-          "alignItems": "flex-start",
-          "flexGrow": 1,
-          "justifyContent": "center",
           "marginBottom": 10,
         }
       }
@@ -556,12 +567,17 @@ exports[`in an open sale renders with current bid 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 10,
+                "lineHeight": 14,
               },
               undefined,
             ]
@@ -589,12 +605,17 @@ exports[`in an open sale renders with current bid 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 10,
+                "lineHeight": 14,
               },
               undefined,
             ]
@@ -772,9 +793,6 @@ exports[`in an open sale renders with starting bid 1`] = `
       imageURL="artsy.net/image-url"
       style={
         Object {
-          "alignItems": "flex-start",
-          "flexGrow": 1,
-          "justifyContent": "center",
           "marginBottom": 10,
         }
       }
@@ -812,12 +830,17 @@ exports[`in an open sale renders with starting bid 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 10,
+                "lineHeight": 14,
               },
               undefined,
             ]
@@ -845,12 +868,17 @@ exports[`in an open sale renders with starting bid 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 10,
+                "lineHeight": 14,
               },
               undefined,
             ]
@@ -1028,9 +1056,6 @@ exports[`renders properly 1`] = `
       imageURL="artsy.net/image-url"
       style={
         Object {
-          "alignItems": "flex-start",
-          "flexGrow": 1,
-          "justifyContent": "center",
           "marginBottom": 10,
         }
       }
@@ -1068,12 +1093,17 @@ exports[`renders properly 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 10,
+                "lineHeight": 14,
               },
               undefined,
             ]
@@ -1101,12 +1131,17 @@ exports[`renders properly 1`] = `
         <Text
           accessible={true}
           allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
                 "fontSize": 10,
+                "lineHeight": 14,
               },
               undefined,
             ]

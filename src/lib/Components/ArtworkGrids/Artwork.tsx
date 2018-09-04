@@ -1,5 +1,5 @@
+import { Sans } from "@artsy/palette"
 import colors from "lib/data/colors"
-import { Fonts } from "lib/data/fonts"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { map } from "lodash"
 import React from "react"
@@ -23,10 +23,6 @@ const Badge = styled.View`
   padding: 3px 5px 1px 5px;
   background-color: white;
   margin-left: 5px;
-`
-const BadgeText = styled.Text`
-  font-family: "${Fonts.Unica77LLMedium}";
-  font-size: 10;
 `
 
 interface Props {
@@ -66,21 +62,33 @@ class Artwork extends React.Component<Props, any> {
     )
   }
 
+  hasBadges() {
+    const { is_acquireable, is_biddable } = this.props.artwork
+    return is_acquireable || is_biddable
+  }
+
   badges() {
     const { is_acquireable, is_biddable } = this.props.artwork
+
     return (
-      <Badges>
-        {is_acquireable && (
-          <Badge>
-            <BadgeText>BUY NOW</BadgeText>
-          </Badge>
-        )}
-        {is_biddable && (
-          <Badge>
-            <BadgeText>BID</BadgeText>
-          </Badge>
-        )}
-      </Badges>
+      this.hasBadges() && (
+        <Badges>
+          {is_acquireable && (
+            <Badge>
+              <Sans weight="medium" size="1">
+                BUY NOW
+              </Sans>
+            </Badge>
+          )}
+          {is_biddable && (
+            <Badge>
+              <Sans weight="medium" size="1">
+                BID
+              </Sans>
+            </Badge>
+          )}
+        </Badges>
+      )
     )
   }
 
@@ -140,9 +148,6 @@ class Artwork extends React.Component<Props, any> {
 const styles = StyleSheet.create({
   image: {
     marginBottom: 10,
-    alignItems: "flex-start",
-    justifyContent: "center",
-    flexGrow: 1,
   },
   text: {
     fontSize: 12,
