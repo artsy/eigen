@@ -30,24 +30,26 @@ RCT_EXPORT_MODULE(Emission);
     @"gravityURL": self.gravityURL,
     @"metaphysicsURL": self.metaphysicsURL,
     @"predictionURL": self.predictionURL,
-
+    @"userAgent": self.userAgent,
+    @"options": self.options,
+    
     // Empty is falsy in JS, so these are fine too.
     @"googleMapsAPIKey": self.googleMapsAPIKey ?: @"",
     @"sentryDSN": self.sentryDSN ?: @"",
     @"stripePublishableKey": self.stripePublishableKey ?: @"",
-    @"userAgent": self.userAgent ?: @"",
   };
 }
 
 - (instancetype)initWithUserID:(NSString *)userID
            authenticationToken:(NSString *)token
-                     sentryDSN:(NSString *)sentryDSN
-          stripePublishableKey:(NSString *)stripePublishableKey
-              googleMapsAPIKey:(NSString *)googleAPIKey
+                     sentryDSN:(nullable NSString *)sentryDSN
+          stripePublishableKey:(nullable NSString *)stripePublishableKey
+              googleMapsAPIKey:(nullable NSString *)googleAPIKey
                     gravityURL:(NSString *)gravity
                 metaphysicsURL:(NSString *)metaphysics
                  predictionURL:(NSString *)prediction
-                     userAgent:(nonnull NSString *)userAgent
+                     userAgent:(NSString *)userAgent
+                       options:(NSDictionary *)options
 {
     self = [super init];
     _userID = userID.copy;
@@ -59,6 +61,7 @@ RCT_EXPORT_MODULE(Emission);
     _metaphysicsURL = metaphysics.copy;
     _predictionURL = prediction.copy;
     _userAgent = userAgent.copy;
+    _options = options.copy;
     return self;
 }
 @end
@@ -87,6 +90,8 @@ static AREmission *_sharedInstance = nil;
   NSParameterAssert(config.authenticationToken);
   NSParameterAssert(config.gravityURL);
   NSParameterAssert(config.metaphysicsURL);
+  NSParameterAssert(config.predictionURL);
+  NSParameterAssert(config.options);
 
   if ((self = [super init])) {
     // When adding a new native module, remember to add it

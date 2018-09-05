@@ -23,5 +23,7 @@
 @property (nonatomic, strong, readonly) NSString *emissionLoadedFromString;
 @property (nonatomic, strong, readonly) NSURL *jsCodeLocation;
 
+@property (nonatomic, strong, readonly) NSDictionary *options;
+
 @end
 

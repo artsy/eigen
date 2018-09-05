@@ -45,7 +45,7 @@
 
   ARTableViewData *tableViewData = [[ARTableViewData alloc] init];
   [self registerClass:ARTickedTableViewCell.class forCellReuseIdentifier:ARLabOptionCell];
-  [self registerClass:ARTickedTableViewCell.class forCellReuseIdentifier:ARSubtitledLabOptionCell];
+  [self registerClass:ARAdminTableViewCell.class forCellReuseIdentifier:ARSubtitledLabOptionCell];
   [self registerClass:ARAdminTableViewCell.class forCellReuseIdentifier:AROptionCell];
   [self registerClass:ARAdminPreloadTableViewCell.class forCellReuseIdentifier:ARPreloadOptionCell];
 
@@ -123,24 +123,28 @@
   
   NSArray *options = [ARLabOptions labsOptions];
   for (NSInteger index = 0; index < options.count; index++) {
-    NSString *title = options[index];
+    NSString *key = options[index];
+    NSString *title = [ARLabOptions descriptionForOption:key];
     BOOL requiresRestart = [[ARLabOptions labsOptionsThatRequireRestart] indexOfObject:title] != NSNotFound;
     
     ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
     [cellData setCellConfigurationBlock:^(UITableViewCell *cell) {
       cell.textLabel.text = requiresRestart ? [title stringByAppendingString:@" (restarts)"] : title;
-      cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:[ARLabOptions boolForOption:title]];
+      cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:[ARLabOptions boolForOption:key]];
     }];
     
     [cellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
-      BOOL currentSelection = [ARLabOptions boolForOption:title];
-      [ARLabOptions setBool:!currentSelection forOption:title];
+      BOOL currentSelection = [ARLabOptions boolForOption:key];
+      [ARLabOptions setBool:!currentSelection forOption:key];
       
       if (requiresRestart) {
         // Show checkmark.
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
           exit(0);
         });
+      } else {
+        AppDelegate *appDelegate = (id)[UIApplication sharedApplication].delegate;
+        [appDelegate reloadEmission];
       }
       
       UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];

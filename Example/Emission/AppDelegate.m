@@ -33,6 +33,7 @@
 
 // If you have the ID of a user and an access token for them, you can impersonate them by hardcoding those here.
 // Obviously you should *never* check these in!
+
 static NSString *UserID = nil;
 static NSString *UserAccessToken = nil;
 
@@ -55,7 +56,7 @@ randomBOOL(void)
   [ARDefaults setup];
 
   AppSetup *setup = [AppSetup ambientSetup];
-  NSString *service = setup.inStaging? @"Emission-Staging" : @"Emission-Production";
+  NSString *service = setup.inStaging ? @"Emission-Staging" : @"Emission-Production";
 
   BOOL isImpersonating = UserID && UserAccessToken;
   AuthenticationManager *auth = isImpersonating ? nil : [[AuthenticationManager alloc] initWithService:service];
@@ -98,6 +99,19 @@ randomBOOL(void)
 
 #pragma mark - Emission
 
+- (void)reloadEmission
+{
+  AppSetup *setup = [AppSetup ambientSetup];
+  NSString *service = setup.inStaging ? @"Emission-Staging" : @"Emission-Production";
+
+  BOOL isImpersonating = UserID && UserAccessToken;
+  AuthenticationManager *auth = isImpersonating ? nil : [[AuthenticationManager alloc] initWithService:service];
+
+  NSString *userID = isImpersonating ? UserID : auth.userID;
+  NSString *accessToken = isImpersonating ? UserAccessToken : auth.token;
+  [self setupEmissionWithUserID:userID accessToken:accessToken keychainService:service];
+}
+
 - (void)setupEmissionWithUserID:(NSString *)userID accessToken:(NSString *)accessToken keychainService:(NSString *)service;
 {
   AREmission *emission = nil;
@@ -105,20 +119,21 @@ randomBOOL(void)
   AppSetup *setup = [AppSetup ambientSetup];
 
   EmissionKeys *keys = [[EmissionKeys alloc] init];
-
-  AREmissionConfiguration *config = [[AREmissionConfiguration alloc]
-                                     initWithUserID:userID
-                                     authenticationToken:accessToken
-                                     sentryDSN:nil
-                                     stripePublishableKey:[keys stripePublishableKey]
-                                     googleMapsAPIKey:nil
-                                     gravityURL:setup.gravityURL
-                                     metaphysicsURL:setup.metaphysicsURL
-                                     predictionURL:setup.predictionURL
-                                     userAgent:@"Emission Example"];
-
+  
+  AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
+                                                                authenticationToken:accessToken
+                                                                          sentryDSN:nil
+                                                               stripePublishableKey:[keys stripePublishableKey]
+                                                                   googleMapsAPIKey:nil
+                                                                         gravityURL:setup.gravityURL
+                                                                     metaphysicsURL:setup.metaphysicsURL
+                                                                      predictionURL:setup.predictionURL
+                                                                          userAgent:@"Emission Example"
+                                                                            options:setup.options];
+  
   emission = [[AREmission alloc] initWithConfiguration:config packagerURL:setup.jsCodeLocation];
   [AREmission setSharedInstance:emission];
+  [emission.bridge reload];
 
   ARRootViewController *controller = (id)self.navigationController.topViewController;
   [controller.tableView reloadData];

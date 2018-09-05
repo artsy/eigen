@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 // Pre-requisites for Emission to work
 @property (nonatomic, copy, readonly) NSString *userID;
 @property (nonatomic, copy, readonly) NSString *authenticationToken;
+@property (nonatomic, copy, readonly) NSDictionary *options;
 
 // ENV Variables
 @property (nonatomic, copy, readonly, nullable) NSString *stripePublishableKey;
@@ -22,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *gravityURL;
 @property (nonatomic, copy, readonly) NSString *metaphysicsURL;
 @property (nonatomic, copy, readonly) NSString *userAgent;
-@property (nonatomic, copy, readonly, nullable) NSString *predictionURL;
+@property (nonatomic, copy, readonly) NSString *predictionURL;
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
@@ -32,12 +33,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithUserID:(NSString *)userID
            authenticationToken:(NSString *)token
                      sentryDSN:(nullable NSString *)sentryDSN
-          stripePublishableKey:(NSString *)stripePublishableKey
+          stripePublishableKey:(nullable NSString *)stripePublishableKey
               googleMapsAPIKey:(nullable NSString *)googleAPIKey
                     gravityURL:(NSString *)gravity
                 metaphysicsURL:(NSString *)metaphysics
                  predictionURL:(NSString *)prediction
-                     userAgent:(NSString *)userAgent;
+                     userAgent:(NSString *)userAgent
+                       options:(NSDictionary *)options;
 @end
 
 

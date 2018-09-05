@@ -5,6 +5,7 @@
 #import "PRNetworkModel.h"
 #import "CommitNetworkModel.h"
 #import <Emission/AREmission.h>
+#import "ARLabOptions.h"
 
 @implementation AppSetup
 
@@ -79,6 +80,8 @@
     _usingMaster = useMaster;
     _usingRNP = useRNP;
     _usingPRBuild = usePRBuild;
+    
+    _options = [ARLabOptions labOptionsMap];
   }
 
   return self;
