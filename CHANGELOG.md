@@ -16,6 +16,9 @@
 
 ### Master
 
+### 1.6.0
+
+* Adding artwork badges to brick - matt
 * Add @artsy/palette - yuki/orta/chris
 * Adds a Labs setting UI to the example app - orta
 

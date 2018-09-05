@@ -43,15 +43,17 @@ exports[`renders properly 1`] = `
         style={undefined}
         testID={undefined}
       >
-        <AROpaqueImageView
-          aspectRatio={2.18}
-          imageURL="artsy.net/image-url"
-          style={
-            Object {
-              "marginBottom": 10,
+        <View>
+          <AROpaqueImageView
+            aspectRatio={2.18}
+            imageURL="artsy.net/image-url"
+            style={
+              Object {
+                "marginBottom": 10,
+              }
             }
-          }
-        />
+          />
+        </View>
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -183,15 +185,17 @@ exports[`renders properly 1`] = `
         style={undefined}
         testID={undefined}
       >
-        <AROpaqueImageView
-          aspectRatio={2.18}
-          imageURL="artsy.net/image-url"
-          style={
-            Object {
-              "marginBottom": 10,
+        <View>
+          <AROpaqueImageView
+            aspectRatio={2.18}
+            imageURL="artsy.net/image-url"
+            style={
+              Object {
+                "marginBottom": 10,
+              }
             }
-          }
-        />
+          />
+        </View>
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -323,15 +327,17 @@ exports[`renders properly 1`] = `
         style={undefined}
         testID={undefined}
       >
-        <AROpaqueImageView
-          aspectRatio={2.18}
-          imageURL="artsy.net/image-url"
-          style={
-            Object {
-              "marginBottom": 10,
+        <View>
+          <AROpaqueImageView
+            aspectRatio={2.18}
+            imageURL="artsy.net/image-url"
+            style={
+              Object {
+                "marginBottom": 10,
+              }
             }
-          }
-        />
+          />
+        </View>
         <Text
           accessible={true}
           allowFontScaling={true}
