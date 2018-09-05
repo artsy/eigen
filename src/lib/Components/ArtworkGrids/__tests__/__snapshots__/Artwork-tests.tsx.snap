@@ -18,15 +18,108 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
   style={undefined}
   testID={undefined}
 >
-  <AROpaqueImageView
-    aspectRatio={0.74}
-    imageURL="artsy.net/image-url"
-    style={
-      Object {
-        "marginBottom": 10,
+  <View>
+    <AROpaqueImageView
+      aspectRatio={0.74}
+      imageURL="artsy.net/image-url"
+      style={
+        Object {
+          "marginBottom": 10,
+        }
       }
-    }
-  />
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "bottom": 16,
+            "display": "flex",
+            "flexDirection": "row",
+            "left": 1,
+            "position": "absolute",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 5,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 10,
+                "lineHeight": 14,
+              },
+              undefined,
+            ]
+          }
+        >
+          BUY NOW
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 5,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 10,
+                "lineHeight": 14,
+              },
+              undefined,
+            ]
+          }
+        >
+          BID
+        </Text>
+      </View>
+    </View>
+  </View>
   <Text
     accessible={true}
     allowFontScaling={true}
@@ -188,15 +281,108 @@ exports[`in a closed sale renders without any price information 1`] = `
   style={undefined}
   testID={undefined}
 >
-  <AROpaqueImageView
-    aspectRatio={0.74}
-    imageURL="artsy.net/image-url"
-    style={
-      Object {
-        "marginBottom": 10,
+  <View>
+    <AROpaqueImageView
+      aspectRatio={0.74}
+      imageURL="artsy.net/image-url"
+      style={
+        Object {
+          "marginBottom": 10,
+        }
       }
-    }
-  />
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "bottom": 16,
+            "display": "flex",
+            "flexDirection": "row",
+            "left": 1,
+            "position": "absolute",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 5,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 10,
+                "lineHeight": 14,
+              },
+              undefined,
+            ]
+          }
+        >
+          BUY NOW
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 5,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 10,
+                "lineHeight": 14,
+              },
+              undefined,
+            ]
+          }
+        >
+          BID
+        </Text>
+      </View>
+    </View>
+  </View>
   <Text
     accessible={true}
     allowFontScaling={true}
@@ -338,15 +524,108 @@ exports[`in an open sale renders with current bid 1`] = `
   style={undefined}
   testID={undefined}
 >
-  <AROpaqueImageView
-    aspectRatio={0.74}
-    imageURL="artsy.net/image-url"
-    style={
-      Object {
-        "marginBottom": 10,
+  <View>
+    <AROpaqueImageView
+      aspectRatio={0.74}
+      imageURL="artsy.net/image-url"
+      style={
+        Object {
+          "marginBottom": 10,
+        }
       }
-    }
-  />
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "bottom": 16,
+            "display": "flex",
+            "flexDirection": "row",
+            "left": 1,
+            "position": "absolute",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 5,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 10,
+                "lineHeight": 14,
+              },
+              undefined,
+            ]
+          }
+        >
+          BUY NOW
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 5,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 10,
+                "lineHeight": 14,
+              },
+              undefined,
+            ]
+          }
+        >
+          BID
+        </Text>
+      </View>
+    </View>
+  </View>
   <Text
     accessible={true}
     allowFontScaling={true}
@@ -508,15 +787,108 @@ exports[`in an open sale renders with starting bid 1`] = `
   style={undefined}
   testID={undefined}
 >
-  <AROpaqueImageView
-    aspectRatio={0.74}
-    imageURL="artsy.net/image-url"
-    style={
-      Object {
-        "marginBottom": 10,
+  <View>
+    <AROpaqueImageView
+      aspectRatio={0.74}
+      imageURL="artsy.net/image-url"
+      style={
+        Object {
+          "marginBottom": 10,
+        }
       }
-    }
-  />
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "bottom": 16,
+            "display": "flex",
+            "flexDirection": "row",
+            "left": 1,
+            "position": "absolute",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 5,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 10,
+                "lineHeight": 14,
+              },
+              undefined,
+            ]
+          }
+        >
+          BUY NOW
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 5,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 10,
+                "lineHeight": 14,
+              },
+              undefined,
+            ]
+          }
+        >
+          BID
+        </Text>
+      </View>
+    </View>
+  </View>
   <Text
     accessible={true}
     allowFontScaling={true}
@@ -678,15 +1050,108 @@ exports[`renders properly 1`] = `
   style={undefined}
   testID={undefined}
 >
-  <AROpaqueImageView
-    aspectRatio={0.74}
-    imageURL="artsy.net/image-url"
-    style={
-      Object {
-        "marginBottom": 10,
+  <View>
+    <AROpaqueImageView
+      aspectRatio={0.74}
+      imageURL="artsy.net/image-url"
+      style={
+        Object {
+          "marginBottom": 10,
+        }
       }
-    }
-  />
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "bottom": 16,
+            "display": "flex",
+            "flexDirection": "row",
+            "left": 1,
+            "position": "absolute",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 5,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 10,
+                "lineHeight": 14,
+              },
+              undefined,
+            ]
+          }
+        >
+          BUY NOW
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "backgroundColor": "white",
+              "borderRadius": 2,
+              "marginLeft": 5,
+              "paddingBottom": 1,
+              "paddingLeft": 5,
+              "paddingRight": 5,
+              "paddingTop": 3,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={10}
+          lineHeight={14}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 10,
+                "lineHeight": 14,
+              },
+              undefined,
+            ]
+          }
+        >
+          BID
+        </Text>
+      </View>
+    </View>
+  </View>
   <Text
     accessible={true}
     allowFontScaling={true}

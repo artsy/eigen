@@ -56,6 +56,8 @@ fragment Artwork_artwork on Artwork {
   date
   sale_message
   is_in_auction
+  is_biddable
+  is_acquireable
   id
   sale_artwork {
     opening_bid {
@@ -133,7 +135,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "LotsByFollowedArtistsQuery",
-  "id": "e9b5df59deea03c09af65212cd87ac9f",
+  "id": "cae374390a17da407223c37ef8282ea0",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -290,7 +292,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "sale_message",
+                            "name": "is_in_auction",
                             "args": null,
                             "storageKey": null
                           },
@@ -344,6 +346,13 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
+                            "name": "sale_message",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
                             "name": "id",
                             "args": null,
                             "storageKey": null
@@ -351,7 +360,14 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "is_in_auction",
+                            "name": "is_biddable",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_acquireable",
                             "args": null,
                             "storageKey": null
                           },

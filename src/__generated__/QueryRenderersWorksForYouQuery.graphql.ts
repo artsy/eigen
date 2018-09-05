@@ -90,6 +90,8 @@ fragment Artwork_artwork on Artwork {
   date
   sale_message
   is_in_auction
+  is_biddable
+  is_acquireable
   id
   sale_artwork {
     opening_bid {
@@ -141,7 +143,7 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "date",
+  "name": "sale_message",
   "args": null,
   "storageKey": null
 },
@@ -216,7 +218,7 @@ v8 = {
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "sale_message",
+  "name": "date",
   "args": null,
   "storageKey": null
 },
@@ -227,7 +229,21 @@ v10 = {
   "args": null,
   "storageKey": null
 },
-v11 = [
+v11 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_biddable",
+  "args": null,
+  "storageKey": null
+},
+v12 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_acquireable",
+  "args": null,
+  "storageKey": null
+},
+v13 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -236,7 +252,7 @@ v11 = [
     "storageKey": null
   }
 ],
-v12 = {
+v14 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "sale_artwork",
@@ -253,7 +269,7 @@ v12 = {
       "args": null,
       "concreteType": "SaleArtworkOpeningBid",
       "plural": false,
-      "selections": v11
+      "selections": v13
     },
     {
       "kind": "LinkedField",
@@ -263,7 +279,7 @@ v12 = {
       "args": null,
       "concreteType": "SaleArtworkCurrentBid",
       "plural": false,
-      "selections": v11
+      "selections": v13
     },
     {
       "kind": "ScalarField",
@@ -294,11 +310,11 @@ v12 = {
     v1
   ]
 },
-v13 = [
+v15 = [
   v5,
   v1
 ],
-v14 = {
+v16 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "partner",
@@ -306,9 +322,9 @@ v14 = {
   "args": null,
   "concreteType": "Partner",
   "plural": false,
-  "selections": v13
+  "selections": v15
 },
-v15 = {
+v17 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -354,7 +370,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersWorksForYouQuery",
-  "id": "ab2f1c2a40df7163fd8f3f363efdf0da",
+  "id": "19df55069e53b411c17424bc0ba46855",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -528,15 +544,17 @@ return {
                                   v6,
                                   v7,
                                   v8,
-                                  v1,
                                   v9,
+                                  v1,
                                   v10,
+                                  v11,
                                   v12,
                                   v14,
+                                  v16,
                                   v4
                                 ]
                               },
-                              v15,
+                              v17,
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -605,7 +623,7 @@ return {
               v6,
               v4,
               v5,
-              v15,
+              v17,
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -628,14 +646,16 @@ return {
                 "concreteType": "Artwork",
                 "plural": true,
                 "selections": [
-                  v9,
+                  v10,
                   v1,
                   v7,
                   v8,
+                  v9,
                   v2,
                   v6,
-                  v10,
+                  v11,
                   v12,
+                  v14,
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -644,9 +664,9 @@ return {
                     "args": v3,
                     "concreteType": "Artist",
                     "plural": true,
-                    "selections": v13
+                    "selections": v15
                   },
-                  v14,
+                  v16,
                   v4
                 ]
               },
