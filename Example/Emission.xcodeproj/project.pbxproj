@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A7D41FE213F3CAD009618F5 /* ARLabOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7D41FC213F3CAC009618F5 /* ARLabOptions.m */; };
 		402D55D24FAA1BC36FB4ED85 /* libPods-Emission.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B53B6F10A80F64A976B9F221 /* libPods-Emission.a */; };
 		510DCB121CCA69EC0075E8CB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB111CCA69EC0075E8CB /* main.m */; };
 		510DCB151CCA69EC0075E8CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB141CCA69EC0075E8CB /* AppDelegate.m */; };
@@ -63,6 +64,8 @@
 /* Begin PBXFileReference section */
 		02E9860078C8122DA3D55F0F /* Pods-Emission.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.debug.xcconfig"; sourceTree = "<group>"; };
 		163341760E6AD3C2BD2501B6 /* Pods-Emission.deploy.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.deploy.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.deploy.xcconfig"; sourceTree = "<group>"; };
+		3A7D41FC213F3CAC009618F5 /* ARLabOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLabOptions.m; sourceTree = "<group>"; };
+		3A7D41FD213F3CAD009618F5 /* ARLabOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLabOptions.h; sourceTree = "<group>"; };
 		3CA8129D4B3357E4EDA54CF0 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		510DCB0E1CCA69EC0075E8CB /* Emission.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Emission.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		510DCB111CCA69EC0075E8CB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -345,15 +348,17 @@
 				608A60D51F75614700B6EF83 /* AppSetup.m */,
 				6011C2491DAF63C000CE54E5 /* ARDefaults.h */,
 				6011C24A1DAF63C000CE54E5 /* ARDefaults.m */,
+				3A7D41FD213F3CAD009618F5 /* ARLabOptions.h */,
+				3A7D41FC213F3CAC009618F5 /* ARLabOptions.m */,
 				60A1A7841DA3A879005E3357 /* ARMacros.h */,
 				60F61A891DAF982A00A72101 /* AuthenticationManager.h */,
 				60F61A8A1DAF982B00A72101 /* AuthenticationManager.m */,
+				608C6DB91FA263290044E235 /* CommitNetworkModel.h */,
+				608C6DBA1FA263290044E235 /* CommitNetworkModel.m */,
 				60E4ABF51EE7D85000E8C3B1 /* LoadingSpinner.h */,
 				60E4ABF61EE7D85000E8C3B1 /* LoadingSpinner.m */,
 				60AE1D7E1EE7DF9C00FC800A /* PRNetworkModel.h */,
 				60AE1D7F1EE7DF9C00FC800A /* PRNetworkModel.m */,
-				608C6DB91FA263290044E235 /* CommitNetworkModel.h */,
-				608C6DBA1FA263290044E235 /* CommitNetworkModel.m */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -656,6 +661,7 @@
 			files = (
 				6011C2511DAF7B6D00CE54E5 /* UnroutedViewController.m in Sources */,
 				6011C2451DAF61AF00CE54E5 /* ARAdminTableViewCell.m in Sources */,
+				3A7D41FE213F3CAD009618F5 /* ARLabOptions.m in Sources */,
 				608C6DBB1FA263290044E235 /* CommitNetworkModel.m in Sources */,
 				60B743B71D3EB12600E6B2A3 /* ARStorybookComponentViewController.m in Sources */,
 				51F3E9A41CF3B8A4004A2013 /* EigenLikeNavigationController.m in Sources */,
