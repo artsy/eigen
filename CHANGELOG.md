@@ -16,9 +16,8 @@
 
 ### Master
 
-### 1.6.0
-
 * Add @artsy/palette - yuki/orta/chris
+* Adds a Labs setting UI to the example app - orta
 
 ### 1.5.15
 
