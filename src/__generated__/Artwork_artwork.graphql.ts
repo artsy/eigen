@@ -26,8 +26,8 @@ export type Artwork_artwork = {
         readonly aspect_ratio: number | null;
     }) | null;
     readonly artists: ReadonlyArray<({
-            readonly name: string | null;
-        }) | null> | null;
+        readonly name: string | null;
+    }) | null> | null;
     readonly partner: ({
         readonly name: string | null;
     }) | null;

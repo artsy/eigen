@@ -3,13 +3,12 @@
 import { ConcreteFragment } from "relay-runtime";
 export type ForYou_forYou = {
     readonly artwork_modules: ReadonlyArray<({
-            readonly __id: string;
-        }) | null> | null;
+        readonly __id: string;
+    }) | null> | null;
     readonly artist_modules: ReadonlyArray<({
-            readonly __id: string;
-        }) | null> | null;
-    readonly fairs_module: ({
-    }) | null;
+        readonly __id: string;
+    }) | null> | null;
+    readonly fairs_module: ({}) | null;
 };
 
 

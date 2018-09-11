@@ -5,8 +5,7 @@ export type SaleRefetchQueryVariables = {
     readonly saleID: string;
 };
 export type SaleRefetchQueryResponse = {
-    readonly sale: ({
-    }) | null;
+    readonly sale: ({}) | null;
 };
 
 

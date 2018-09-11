@@ -5,8 +5,7 @@ export type BidFlowSelectMaxBidRendererQueryVariables = {
     readonly saleArtworkID: string;
 };
 export type BidFlowSelectMaxBidRendererQueryResponse = {
-    readonly sale_artwork: ({
-    }) | null;
+    readonly sale_artwork: ({}) | null;
 };
 
 

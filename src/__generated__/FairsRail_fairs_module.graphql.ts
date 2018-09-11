@@ -3,16 +3,16 @@
 import { ConcreteFragment } from "relay-runtime";
 export type FairsRail_fairs_module = {
     readonly results: ReadonlyArray<({
-            readonly id: string;
-            readonly name: string | null;
-            readonly profile: ({
-                readonly href: string | null;
-            }) | null;
-            readonly mobile_image: ({
-                readonly id: string | null;
-                readonly url: string | null;
-            }) | null;
-        }) | null>;
+        readonly id: string;
+        readonly name: string | null;
+        readonly profile: ({
+            readonly href: string | null;
+        }) | null;
+        readonly mobile_image: ({
+            readonly id: string | null;
+            readonly url: string | null;
+        }) | null;
+    }) | null>;
 };
 
 

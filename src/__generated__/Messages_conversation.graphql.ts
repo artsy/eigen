@@ -22,26 +22,26 @@ export type Messages_conversation = {
             readonly hasNextPage: boolean;
         };
         readonly edges: ReadonlyArray<({
-                readonly cursor: string;
-                readonly node: ({
-                    readonly __id: string;
-                    readonly impulse_id: string;
-                    readonly is_from_user: boolean | null;
-                    readonly body: string | null;
-                    readonly attachments: ReadonlyArray<({
-                            readonly id: string;
-                        }) | null> | null;
-                }) | null;
-            }) | null> | null;
-    }) | null;
-    readonly items: ReadonlyArray<({
-            readonly artwork: ({
-                readonly href?: string | null;
-            }) | null;
-            readonly show: ({
-                readonly href?: string | null;
+            readonly cursor: string;
+            readonly node: ({
+                readonly __id: string;
+                readonly impulse_id: string;
+                readonly is_from_user: boolean | null;
+                readonly body: string | null;
+                readonly attachments: ReadonlyArray<({
+                    readonly id: string;
+                }) | null> | null;
             }) | null;
         }) | null> | null;
+    }) | null;
+    readonly items: ReadonlyArray<({
+        readonly artwork: ({
+            readonly href?: string | null;
+        }) | null;
+        readonly show: ({
+            readonly href?: string | null;
+        }) | null;
+    }) | null> | null;
 };
 
 

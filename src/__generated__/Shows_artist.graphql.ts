@@ -2,14 +2,10 @@
 
 import { ConcreteFragment } from "relay-runtime";
 export type Shows_artist = {
-    readonly current_shows: ReadonlyArray<({
-        }) | null> | null;
-    readonly upcoming_shows: ReadonlyArray<({
-        }) | null> | null;
-    readonly past_small_shows?: ReadonlyArray<({
-        }) | null> | null;
-    readonly past_large_shows?: ReadonlyArray<({
-        }) | null> | null;
+    readonly current_shows: ReadonlyArray<({}) | null> | null;
+    readonly upcoming_shows: ReadonlyArray<({}) | null> | null;
+    readonly past_small_shows?: ReadonlyArray<({}) | null> | null;
+    readonly past_large_shows?: ReadonlyArray<({}) | null> | null;
 };
 
 

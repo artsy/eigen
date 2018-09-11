@@ -8,8 +8,7 @@ export type GeneRefetchQueryVariables = {
     readonly price_range?: string | null;
 };
 export type GeneRefetchQueryResponse = {
-    readonly gene: ({
-    }) | null;
+    readonly gene: ({}) | null;
 };
 
 

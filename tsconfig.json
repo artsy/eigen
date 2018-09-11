@@ -5,6 +5,7 @@
     "baseUrl": "src",
     "experimentalDecorators": true,
     "jsx": "react",
+    "keyofStringsOnly": true,
     "module": "es2015",
     "moduleResolution": "node",
     "noUnusedLocals": true,

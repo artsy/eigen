@@ -1,8 +1,7 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-export type SmallList_shows = ReadonlyArray<{
-    }>;
+export type SmallList_shows = ReadonlyArray<{}>;
 
 
 

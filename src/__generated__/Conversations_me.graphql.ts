@@ -8,11 +8,11 @@ export type Conversations_me = {
             readonly hasNextPage: boolean;
         };
         readonly edges: ReadonlyArray<({
-                readonly node: ({
-                    readonly id: string | null;
-                    readonly last_message: string | null;
-                }) | null;
-            }) | null> | null;
+            readonly node: ({
+                readonly id: string | null;
+                readonly last_message: string | null;
+            }) | null;
+        }) | null> | null;
     }) | null;
 };
 

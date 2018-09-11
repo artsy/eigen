@@ -5,8 +5,7 @@ export type SaleQueryVariables = {
     readonly saleID: string;
 };
 export type SaleQueryResponse = {
-    readonly sale: ({
-    }) | null;
+    readonly sale: ({}) | null;
 };
 
 

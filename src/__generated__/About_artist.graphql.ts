@@ -5,10 +5,8 @@ export type About_artist = {
     readonly has_metadata: boolean | null;
     readonly is_display_auction_link: boolean | null;
     readonly id: string;
-    readonly related_artists: ReadonlyArray<({
-        }) | null> | null;
-    readonly articles: ReadonlyArray<({
-        }) | null> | null;
+    readonly related_artists: ReadonlyArray<({}) | null> | null;
+    readonly articles: ReadonlyArray<({}) | null> | null;
 };
 
 

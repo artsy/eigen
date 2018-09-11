@@ -5,8 +5,7 @@ export type ArtistQueryVariables = {
     readonly artistID: string;
 };
 export type ArtistQueryResponse = {
-    readonly artist: ({
-    }) | null;
+    readonly artist: ({}) | null;
 };
 
 

@@ -19,6 +19,7 @@
 * Adding artwork badges to brick - matt
 * Add @artsy/palette - yuki/orta/chris
 * Adds a Labs setting UI to the example app - orta
+* Updates Typescript version to 3.0.3
 
 ### 1.5.15
 
