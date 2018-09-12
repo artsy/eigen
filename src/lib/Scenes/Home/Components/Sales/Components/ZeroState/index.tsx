@@ -3,7 +3,7 @@ import { WebView, WebViewIOSLoadRequestEvent } from "react-native"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
-export class ZeroState extends React.Component<null> {
+export class ZeroState extends React.Component {
   shouldLoadRequest(e: WebViewIOSLoadRequestEvent) {
     if (e.navigationType === "click") {
       SwitchBoard.presentNavigationViewController(this, e.url)

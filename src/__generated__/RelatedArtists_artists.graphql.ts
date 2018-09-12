@@ -2,8 +2,8 @@
 
 import { ConcreteFragment } from "relay-runtime";
 export type RelatedArtists_artists = ReadonlyArray<{
-        readonly __id: string;
-    }>;
+    readonly __id: string;
+}>;
 
 
 

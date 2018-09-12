@@ -5,8 +5,7 @@ export type QueryRenderersSaleQueryVariables = {
     readonly saleID: string;
 };
 export type QueryRenderersSaleQueryResponse = {
-    readonly sale: ({
-    }) | null;
+    readonly sale: ({}) | null;
 };
 
 

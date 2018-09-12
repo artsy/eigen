@@ -1,11 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type FavoriteCategoriesQueryVariables = {
-};
+export type FavoriteCategoriesQueryVariables = {};
 export type FavoriteCategoriesQueryResponse = {
-    readonly me: ({
-    }) | null;
+    readonly me: ({}) | null;
 };
 
 
