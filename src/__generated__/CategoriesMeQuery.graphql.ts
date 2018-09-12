@@ -6,8 +6,7 @@ export type CategoriesMeQueryVariables = {
     readonly cursor?: string | null;
 };
 export type CategoriesMeQueryResponse = {
-    readonly me: ({
-    }) | null;
+    readonly me: ({}) | null;
 };
 
 

@@ -5,8 +5,7 @@ export type SelectMaxBidRefetchQueryVariables = {
     readonly saleArtworkID: string;
 };
 export type SelectMaxBidRefetchQueryResponse = {
-    readonly sale_artwork: ({
-    }) | null;
+    readonly sale_artwork: ({}) | null;
 };
 
 

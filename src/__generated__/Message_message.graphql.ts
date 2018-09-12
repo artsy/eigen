@@ -13,11 +13,11 @@ export type Message_message = {
         readonly payment_url: string | null;
     }) | null;
     readonly attachments: ReadonlyArray<({
-            readonly id: string;
-            readonly content_type: string;
-            readonly download_url: string;
-            readonly file_name: string;
-        }) | null> | null;
+        readonly id: string;
+        readonly content_type: string;
+        readonly download_url: string;
+        readonly file_name: string;
+    }) | null> | null;
 };
 
 

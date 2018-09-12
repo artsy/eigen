@@ -5,10 +5,10 @@ export type Notification_notification = {
     readonly summary: string | null;
     readonly artists: string | null;
     readonly artworks: ReadonlyArray<({
-            readonly artists: ReadonlyArray<({
-                    readonly href: string | null;
-                }) | null> | null;
+        readonly artists: ReadonlyArray<({
+            readonly href: string | null;
         }) | null> | null;
+    }) | null> | null;
     readonly image: ({
         readonly resized: ({
             readonly url: string | null;

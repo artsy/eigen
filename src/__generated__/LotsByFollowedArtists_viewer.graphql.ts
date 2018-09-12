@@ -8,12 +8,11 @@ export type LotsByFollowedArtists_viewer = {
             readonly hasNextPage: boolean;
         };
         readonly edges: ReadonlyArray<({
-                readonly cursor: string;
-                readonly node: ({
-                    readonly artwork: ({
-                    }) | null;
-                }) | null;
-            }) | null> | null;
+            readonly cursor: string;
+            readonly node: ({
+                readonly artwork: ({}) | null;
+            }) | null;
+        }) | null> | null;
     }) | null;
 };
 

@@ -5,8 +5,7 @@ export type QueryRenderersConversationQueryVariables = {
     readonly conversationID: string;
 };
 export type QueryRenderersConversationQueryResponse = {
-    readonly me: ({
-    }) | null;
+    readonly me: ({}) | null;
 };
 
 

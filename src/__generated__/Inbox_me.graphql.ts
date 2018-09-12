@@ -3,16 +3,16 @@
 import { ConcreteFragment } from "relay-runtime";
 export type Inbox_me = {
     readonly lot_standings: ReadonlyArray<({
-            readonly most_recent_bid: ({
-                readonly __id: string;
-            }) | null;
-        }) | null> | null;
+        readonly most_recent_bid: ({
+            readonly __id: string;
+        }) | null;
+    }) | null> | null;
     readonly conversations_existence_check: ({
         readonly edges: ReadonlyArray<({
-                readonly node: ({
-                    readonly id: string | null;
-                }) | null;
-            }) | null> | null;
+            readonly node: ({
+                readonly id: string | null;
+            }) | null;
+        }) | null> | null;
     }) | null;
 };
 

@@ -3,9 +3,9 @@
 import { ConcreteFragment } from "relay-runtime";
 export type SelectMaxBid_sale_artwork = {
     readonly increments: ReadonlyArray<({
-            readonly display: string | null;
-            readonly cents: number | null;
-        }) | null> | null;
+        readonly display: string | null;
+        readonly cents: number | null;
+    }) | null> | null;
     readonly _id: string;
 };
 

@@ -10,29 +10,29 @@ export type ConversationSnippet_conversation = {
     readonly last_message_at: string | null;
     readonly unread: boolean | null;
     readonly items: ReadonlyArray<({
-            readonly item: ({
-                readonly __typename: "Artwork";
-                readonly date: string | null;
-                readonly title: string | null;
-                readonly artist_names: string | null;
-                readonly image: ({
-                    readonly url: string | null;
-                }) | null;
-            } | {
-                readonly __typename: "Show";
-                readonly fair: ({
-                    readonly name: string | null;
-                }) | null;
-                readonly name: string | null;
-                readonly cover_image: ({
-                    readonly url: string | null;
-                }) | null;
-            } | {
-                /*This will never be '% other', but we need some
-                value in case none of the concrete values match.*/
-                readonly __typename: "%other";
+        readonly item: ({
+            readonly __typename: "Artwork";
+            readonly date: string | null;
+            readonly title: string | null;
+            readonly artist_names: string | null;
+            readonly image: ({
+                readonly url: string | null;
             }) | null;
-        }) | null> | null;
+        } | {
+            readonly __typename: "Show";
+            readonly fair: ({
+                readonly name: string | null;
+            }) | null;
+            readonly name: string | null;
+            readonly cover_image: ({
+                readonly url: string | null;
+            }) | null;
+        } | {
+            /*This will never be '% other', but we need some
+            value in case none of the concrete values match.*/
+            readonly __typename: "%other";
+        }) | null;
+    }) | null> | null;
 };
 
 

@@ -1,11 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type ActiveBidsQueryVariables = {
-};
+export type ActiveBidsQueryVariables = {};
 export type ActiveBidsQueryResponse = {
-    readonly me: ({
-    }) | null;
+    readonly me: ({}) | null;
 };
 
 
