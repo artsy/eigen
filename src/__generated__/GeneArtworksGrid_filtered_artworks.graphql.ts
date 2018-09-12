@@ -10,14 +10,14 @@ export type GeneArtworksGrid_filtered_artworks = {
             readonly endCursor: string | null;
         };
         readonly edges: ReadonlyArray<({
-            readonly node: ({
-                readonly id: string;
-                readonly __id: string;
-                readonly image: ({
-                    readonly aspect_ratio: number | null;
+                readonly node: ({
+                    readonly id: string;
+                    readonly __id: string;
+                    readonly image: ({
+                        readonly aspect_ratio: number | null;
+                    }) | null;
                 }) | null;
-            }) | null;
-        }) | null> | null;
+            }) | null> | null;
     }) | null;
 };
 

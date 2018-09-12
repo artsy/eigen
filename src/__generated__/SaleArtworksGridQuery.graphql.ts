@@ -7,7 +7,8 @@ export type SaleArtworksGridQueryVariables = {
     readonly cursor?: string | null;
 };
 export type SaleArtworksGridQueryResponse = {
-    readonly node: ({}) | null;
+    readonly node: ({
+    }) | null;
 };
 
 

@@ -5,7 +5,8 @@ export type QueryRenderersWorksForYouQueryVariables = {
     readonly selectedArtist: string;
 };
 export type QueryRenderersWorksForYouQueryResponse = {
-    readonly viewer: ({}) | null;
+    readonly viewer: ({
+    }) | null;
 };
 
 

@@ -1,9 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type FavoriteArtworksQueryVariables = {};
+export type FavoriteArtworksQueryVariables = {
+};
 export type FavoriteArtworksQueryResponse = {
-    readonly me: ({}) | null;
+    readonly me: ({
+    }) | null;
 };
 
 

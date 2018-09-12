@@ -2,7 +2,8 @@
 
 import { ConcreteFragment } from "relay-runtime";
 export type About_gene = {
-    readonly trending_artists: ReadonlyArray<({}) | null> | null;
+    readonly trending_artists: ReadonlyArray<({
+        }) | null> | null;
 };
 
 

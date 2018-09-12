@@ -8,7 +8,8 @@ export type MessagesQueryVariables = {
 };
 export type MessagesQueryResponse = {
     readonly me: ({
-        readonly conversation: ({}) | null;
+        readonly conversation: ({
+        }) | null;
     }) | null;
 };
 

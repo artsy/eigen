@@ -1,7 +1,8 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-export type SelectMaxBid_me = {};
+export type SelectMaxBid_me = {
+};
 
 
 

@@ -3,9 +3,9 @@
 import { ConcreteFragment } from "relay-runtime";
 export type Sales_viewer = {
     readonly sales: ReadonlyArray<({
-        readonly href: string | null;
-        readonly live_start_at: string | null;
-    }) | null> | null;
+            readonly href: string | null;
+            readonly live_start_at: string | null;
+        }) | null> | null;
 };
 
 

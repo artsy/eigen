@@ -6,7 +6,8 @@ export type ArtistsMeQueryVariables = {
     readonly cursor?: string | null;
 };
 export type ArtistsMeQueryResponse = {
-    readonly me: ({}) | null;
+    readonly me: ({
+    }) | null;
 };
 
 

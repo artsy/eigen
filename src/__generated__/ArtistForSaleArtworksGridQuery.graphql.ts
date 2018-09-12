@@ -9,7 +9,8 @@ export type ArtistForSaleArtworksGridQueryVariables = {
     readonly filter?: ReadonlyArray<ArtistArtworksFilters | null> | null;
 };
 export type ArtistForSaleArtworksGridQueryResponse = {
-    readonly node: ({}) | null;
+    readonly node: ({
+    }) | null;
 };
 
 

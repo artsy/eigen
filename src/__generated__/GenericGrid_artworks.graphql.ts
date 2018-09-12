@@ -2,12 +2,12 @@
 
 import { ConcreteFragment } from "relay-runtime";
 export type GenericGrid_artworks = ReadonlyArray<{
-    readonly __id: string;
-    readonly id: string;
-    readonly image: ({
-        readonly aspect_ratio: number | null;
-    }) | null;
-}>;
+        readonly __id: string;
+        readonly id: string;
+        readonly image: ({
+            readonly aspect_ratio: number | null;
+        }) | null;
+    }>;
 
 
 

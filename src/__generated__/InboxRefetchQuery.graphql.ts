@@ -1,9 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type InboxRefetchQueryVariables = {};
+export type InboxRefetchQueryVariables = {
+};
 export type InboxRefetchQueryResponse = {
-    readonly me: ({}) | null;
+    readonly me: ({
+    }) | null;
 };
 
 

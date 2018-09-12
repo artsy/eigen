@@ -4,8 +4,8 @@ import { ConcreteFragment } from "relay-runtime";
 export type ConfirmBid_me = {
     readonly has_qualified_credit_cards: boolean | null;
     readonly bidders: ReadonlyArray<({
-        readonly qualified_for_bidding: boolean | null;
-    }) | null> | null;
+            readonly qualified_for_bidding: boolean | null;
+        }) | null> | null;
 };
 
 

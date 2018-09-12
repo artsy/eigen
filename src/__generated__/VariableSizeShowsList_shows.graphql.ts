@@ -2,8 +2,8 @@
 
 import { ConcreteFragment } from "relay-runtime";
 export type VariableSizeShowsList_shows = ReadonlyArray<{
-    readonly __id: string;
-}>;
+        readonly __id: string;
+    }>;
 
 
 

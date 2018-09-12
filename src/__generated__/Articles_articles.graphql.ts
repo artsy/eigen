@@ -2,8 +2,8 @@
 
 import { ConcreteFragment } from "relay-runtime";
 export type Articles_articles = ReadonlyArray<{
-    readonly __id: string;
-}>;
+        readonly __id: string;
+    }>;
 
 
 

@@ -7,7 +7,8 @@ export type QueryRenderersGeneQueryVariables = {
     readonly price_range?: string | null;
 };
 export type QueryRenderersGeneQueryResponse = {
-    readonly gene: ({}) | null;
+    readonly gene: ({
+    }) | null;
 };
 
 

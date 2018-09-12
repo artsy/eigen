@@ -7,9 +7,11 @@ export type QueryRenderersBidFlowQueryVariables = {
 };
 export type QueryRenderersBidFlowQueryResponse = {
     readonly artwork: ({
-        readonly sale_artwork: ({}) | null;
+        readonly sale_artwork: ({
+        }) | null;
     }) | null;
-    readonly me: ({}) | null;
+    readonly me: ({
+    }) | null;
 };
 
 

@@ -6,7 +6,8 @@ export type QueryRenderersArtistQueryVariables = {
     readonly isPad: boolean;
 };
 export type QueryRenderersArtistQueryResponse = {
-    readonly artist: ({}) | null;
+    readonly artist: ({
+    }) | null;
 };
 
 

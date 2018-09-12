@@ -3,10 +3,10 @@
 import { ConcreteFragment } from "relay-runtime";
 export type ActiveBids_me = {
     readonly lot_standings: ReadonlyArray<({
-        readonly most_recent_bid: ({
-            readonly __id: string;
-        }) | null;
-    }) | null> | null;
+            readonly most_recent_bid: ({
+                readonly __id: string;
+            }) | null;
+        }) | null> | null;
 };
 
 

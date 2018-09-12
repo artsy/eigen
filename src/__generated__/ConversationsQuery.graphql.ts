@@ -6,7 +6,8 @@ export type ConversationsQueryVariables = {
     readonly cursor?: string | null;
 };
 export type ConversationsQueryResponse = {
-    readonly me: ({}) | null;
+    readonly me: ({
+    }) | null;
 };
 
 

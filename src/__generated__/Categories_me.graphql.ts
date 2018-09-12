@@ -8,18 +8,18 @@ export type Categories_me = {
             readonly hasNextPage: boolean;
         };
         readonly edges: ReadonlyArray<({
-            readonly node: ({
-                readonly gene: ({
-                    readonly id: string;
-                    readonly __id: string;
-                    readonly name: string | null;
-                    readonly href: string | null;
-                    readonly image: ({
-                        readonly url: string | null;
+                readonly node: ({
+                    readonly gene: ({
+                        readonly id: string;
+                        readonly __id: string;
+                        readonly name: string | null;
+                        readonly href: string | null;
+                        readonly image: ({
+                            readonly url: string | null;
+                        }) | null;
                     }) | null;
                 }) | null;
-            }) | null;
-        }) | null> | null;
+            }) | null> | null;
     }) | null;
 };
 

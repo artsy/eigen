@@ -8,7 +8,8 @@ export type QueryRenderersRegistrationFlowQueryResponse = {
     readonly sale: ({
         readonly name: string | null;
     }) | null;
-    readonly me: ({}) | null;
+    readonly me: ({
+    }) | null;
 };
 
 

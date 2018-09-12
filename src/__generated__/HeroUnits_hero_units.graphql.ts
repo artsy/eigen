@@ -2,13 +2,13 @@
 
 import { ConcreteFragment } from "relay-runtime";
 export type HeroUnits_hero_units = ReadonlyArray<{
-    readonly __id: string;
-    readonly href: string | null;
-    readonly title: string | null;
-    readonly heading: string | null;
-    readonly narrow_image_url: string | null;
-    readonly wide_image_url: string | null;
-}>;
+        readonly __id: string;
+        readonly href: string | null;
+        readonly title: string | null;
+        readonly heading: string | null;
+        readonly narrow_image_url: string | null;
+        readonly wide_image_url: string | null;
+    }>;
 
 
 

@@ -14,7 +14,8 @@ export type ArtworkCarousel_rail = {
         }) | null;
         readonly href?: string | null;
     }) | null;
-    readonly results: ReadonlyArray<({}) | null> | null;
+    readonly results: ReadonlyArray<({
+        }) | null> | null;
 };
 
 

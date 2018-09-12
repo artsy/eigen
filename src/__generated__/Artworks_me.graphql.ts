@@ -9,8 +9,9 @@ export type Artworks_me = {
                 readonly hasNextPage: boolean;
             };
             readonly edges: ReadonlyArray<({
-                readonly node: ({}) | null;
-            }) | null> | null;
+                    readonly node: ({
+                    }) | null;
+                }) | null> | null;
         }) | null;
     }) | null;
 };

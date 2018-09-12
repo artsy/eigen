@@ -6,7 +6,8 @@ export type ArtworksQueryVariables = {
     readonly cursor?: string | null;
 };
 export type ArtworksQueryResponse = {
-    readonly me: ({}) | null;
+    readonly me: ({
+    }) | null;
 };
 
 

@@ -8,7 +8,8 @@ export type GeneArtworksGridQueryVariables = {
     readonly sort?: string | null;
 };
 export type GeneArtworksGridQueryResponse = {
-    readonly node: ({}) | null;
+    readonly node: ({
+    }) | null;
 };
 
 

@@ -1,7 +1,8 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-export type BidFlow_me = {};
+export type BidFlow_me = {
+};
 
 
 

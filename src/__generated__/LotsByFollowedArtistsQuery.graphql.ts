@@ -6,7 +6,8 @@ export type LotsByFollowedArtistsQueryVariables = {
     readonly cursor?: string | null;
 };
 export type LotsByFollowedArtistsQueryResponse = {
-    readonly viewer: ({}) | null;
+    readonly viewer: ({
+    }) | null;
 };
 
 

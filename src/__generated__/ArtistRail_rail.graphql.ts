@@ -5,9 +5,9 @@ export type ArtistRail_rail = {
     readonly __id: string;
     readonly key: string | null;
     readonly results: ReadonlyArray<({
-        readonly _id: string;
-        readonly __id: string;
-    }) | null> | null;
+            readonly _id: string;
+            readonly __id: string;
+        }) | null> | null;
 };
 
 

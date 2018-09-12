@@ -10,10 +10,10 @@ export type WorksForYou_viewer = {
                     readonly endCursor: string | null;
                 };
                 readonly edges: ReadonlyArray<({
-                    readonly node: ({
-                        readonly __id: string;
-                    }) | null;
-                }) | null> | null;
+                        readonly node: ({
+                            readonly __id: string;
+                        }) | null;
+                    }) | null> | null;
             }) | null;
         }) | null;
     }) | null;
@@ -26,7 +26,8 @@ export type WorksForYou_viewer = {
                 readonly url: string | null;
             }) | null;
         }) | null;
-        readonly artworks: ReadonlyArray<({}) | null> | null;
+        readonly artworks: ReadonlyArray<({
+            }) | null> | null;
     }) | null;
 };
 

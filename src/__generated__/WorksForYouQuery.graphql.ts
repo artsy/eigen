@@ -6,7 +6,8 @@ export type WorksForYouQueryVariables = {
     readonly cursor?: string | null;
 };
 export type WorksForYouQueryResponse = {
-    readonly viewer: ({}) | null;
+    readonly viewer: ({
+    }) | null;
 };
 
 

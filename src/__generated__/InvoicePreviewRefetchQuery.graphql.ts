@@ -7,7 +7,8 @@ export type InvoicePreviewRefetchQueryVariables = {
 };
 export type InvoicePreviewRefetchQueryResponse = {
     readonly me: ({
-        readonly invoice: ({}) | null;
+        readonly invoice: ({
+        }) | null;
     }) | null;
 };
 

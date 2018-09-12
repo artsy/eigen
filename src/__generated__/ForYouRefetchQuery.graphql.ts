@@ -1,9 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type ForYouRefetchQueryVariables = {};
+export type ForYouRefetchQueryVariables = {
+};
 export type ForYouRefetchQueryResponse = {
-    readonly forYou: ({}) | null;
+    readonly forYou: ({
+    }) | null;
 };
 
 

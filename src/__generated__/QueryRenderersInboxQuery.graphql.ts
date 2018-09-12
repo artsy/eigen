@@ -1,9 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type QueryRenderersInboxQueryVariables = {};
+export type QueryRenderersInboxQueryVariables = {
+};
 export type QueryRenderersInboxQueryResponse = {
-    readonly me: ({}) | null;
+    readonly me: ({
+    }) | null;
 };
 
 

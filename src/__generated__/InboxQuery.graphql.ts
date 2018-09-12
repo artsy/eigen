@@ -5,7 +5,8 @@ export type InboxQueryVariables = {
     readonly cursor?: string | null;
 };
 export type InboxQueryResponse = {
-    readonly me: ({}) | null;
+    readonly me: ({
+    }) | null;
 };
 
 

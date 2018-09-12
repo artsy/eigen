@@ -6,7 +6,8 @@ export type ArtworkRailRefetchQueryVariables = {
     readonly fetchContent: boolean;
 };
 export type ArtworkRailRefetchQueryResponse = {
-    readonly node: ({}) | null;
+    readonly node: ({
+    }) | null;
 };
 
 
