@@ -12,7 +12,9 @@ mutation createOrder(
       }
       ... on OrderWithMutationFailure {
         error {
-          description
+          type
+          code
+          data
         }
       }
     }
