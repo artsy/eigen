@@ -41,7 +41,7 @@ describe(@"buy button", ^{
         it(@"calls mutation and directs to force on success", ^{
             [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:
              @{ @"data":
-                    @{ @"createOrderWithArtwork":
+                    @{ @"ecommerceCreateOrderWithArtwork":
                            @{ @"orderOrError":
                                   @{ @"order":
                                          @{ @"id": @"order-id" }
@@ -107,7 +107,7 @@ describe(@"buy button", ^{
         it(@"presents error when mutation fails on metaphysics", ^{
             [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:
              @{ @"data":
-                    @{ @"createOrderWithArtwork":
+                    @{ @"ecommerceCreateOrderWithArtwork":
                            @{ @"orderOrError": @{} // no order data in response
                               }
                        }

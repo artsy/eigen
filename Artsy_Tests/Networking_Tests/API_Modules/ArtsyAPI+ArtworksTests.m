@@ -63,7 +63,7 @@ describe(@"buy now", ^{
     it(@"it works in the success case", ^{
         [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:
          @{ @"data":
-                @{ @"createOrderWithArtwork":
+                @{ @"ecommerceCreateOrderWithArtwork":
                        @{ @"orderOrError":
                               @{ @"order":
                                      @{ @"id": @"order-id" }
@@ -74,7 +74,7 @@ describe(@"buy now", ^{
 
         waitUntil(^(DoneCallback done) {
             [ArtsyAPI createBuyNowOrderWithArtworkID:@"some-artwork-id" success:^(id results) {
-                expect(results[@"data"][@"createOrderWithArtwork"][@"orderOrError"][@"order"][@"id"]).to.equal(@"order-id");
+                expect(results[@"data"][@"ecommerceCreateOrderWithArtwork"][@"orderOrError"][@"order"][@"id"]).to.equal(@"order-id");
                 invoked = YES;
                 done();
             } failure:^(NSError *error) {
