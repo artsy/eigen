@@ -1,5 +1,6 @@
 import { BorderBox, Box, color, Sans, Separator } from "@artsy/palette"
 import { InvertedButton } from "lib/Components/Buttons"
+import { Video } from "lib/Components/Video"
 import { Fonts } from "lib/data/fonts"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 import React, { Component } from "react"
@@ -11,14 +12,15 @@ const Container = styled.View`
 
 export class MarketingHeader extends Component {
   handleTap = () => {
-    const url = "http://www.artsy.net"
-    Switchboard.presentNavigationViewController(this, url)
+    Switchboard.presentNavigationViewController(this, "http://www.artsy.net/collect2")
   }
 
   render() {
     return (
       <Container>
-        <BorderBox width="100%" height="220px" background={color("black5")} />
+        <BorderBox p={0} width="100%" height="220px" background={color("black5")} style={{ overflow: "hidden" }}>
+          <Video />
+        </BorderBox>
 
         <Box my={2}>
           <Sans size="3">Introducing a new way to buy on Artsy</Sans>

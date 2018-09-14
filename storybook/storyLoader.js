@@ -34,6 +34,7 @@ function loadStories() {
   require('../src/lib/Components/Text/__stories__/Typography.story.tsx');
   require('../src/lib/Components/__stories__/DottedLine.story.tsx');
   require('../src/lib/Components/__stories__/Modal.story.tsx');
+  require('../src/lib/Components/__stories__/Video.story.tsx');
   require('../src/lib/Containers/__stories__/Artist.story.tsx');
   require('../src/lib/Containers/__stories__/Gene.story.tsx');
   require('../src/lib/Containers/__stories__/Inquiry.story.tsx');
@@ -76,6 +77,7 @@ const stories = [
   '../src/lib/Components/Text/__stories__/Typography.story.tsx',
   '../src/lib/Components/__stories__/DottedLine.story.tsx',
   '../src/lib/Components/__stories__/Modal.story.tsx',
+  '../src/lib/Components/__stories__/Video.story.tsx',
   '../src/lib/Containers/__stories__/Artist.story.tsx',
   '../src/lib/Containers/__stories__/Gene.story.tsx',
   '../src/lib/Containers/__stories__/Inquiry.story.tsx',
