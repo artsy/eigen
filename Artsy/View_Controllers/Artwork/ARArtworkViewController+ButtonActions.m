@@ -230,7 +230,7 @@
 
     if (self.echo.features[@"AREnableBuyNowFlow"].state || [AROptions boolForOption:AROptionsForceBuyNow]) {
         [ArtsyAPI createBuyNowOrderWithArtworkID:self.artwork.artworkID success:^(id results) {
-            NSString *orderID = results[@"data"][@"createOrderWithArtwork"][@"orderOrError"][@"order"][@"id"];
+            NSString *orderID = results[@"data"][@"ecommerceCreateOrderWithArtwork"][@"orderOrError"][@"order"][@"id"];
             if (!orderID) {
                 [self presentErrorMessage:@"Something went wrong. Please try again or contact support@artsy.net."];
                 return;
