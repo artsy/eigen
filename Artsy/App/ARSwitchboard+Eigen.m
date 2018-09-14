@@ -21,7 +21,6 @@
 #import <Emission/ARConversationComponentViewController.h>
 #import <Emission/ARBidFlowViewController.h>
 
-#import "ARArtistViewController.h"
 // TODO This does not use the new React based VC yet.
 #import "ARFairArtistViewController.h"
 
@@ -183,14 +182,8 @@
 
 - (UIViewController<ARFairAwareObject> *)loadArtistWithID:(NSString *)artistID inFair:(Fair *)fair
 {
-    BOOL blacklistUsingReactArtists = self.echo.features[@"DisableReactArtists"] != nil;
-
     if (fair) {
         return [[ARFairArtistViewController alloc] initWithArtistID:artistID fair:fair];
-
-    } else if (blacklistUsingReactArtists) {
-        return [[ARArtistViewController alloc] initWithArtistID:artistID];
-
     } else {
         return (UIViewController<ARFairAwareObject> *)[[ARArtistComponentViewController alloc] initWithArtistID:artistID];
     }
@@ -210,9 +203,9 @@
     return viewController;
 }
 
-- (ARArtistViewController *)loadArtistWithID:(NSString *)artistID
+- (UIViewController *)loadArtistWithID:(NSString *)artistID
 {
-    return (ARArtistViewController *)[self loadArtistWithID:artistID inFair:nil];
+    return [self loadArtistWithID:artistID inFair:nil];
 }
 
 - (ARFairArtistViewController *)loadArtistInFairWithID:(NSString *)artistID fair:(Fair *)fair

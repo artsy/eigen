@@ -9,7 +9,7 @@
 
 /// Imports for the VC/Views
 
-#import "ARArtistViewController.h"
+// #import "ARArtistViewController.h"
 
 /// ZZ to make it go last, thanks to XCTest implmentation details
 SpecBegin(ZZAppAnalytics);

@@ -40,7 +40,6 @@
 #import "AROnboardingPersonalizeTableViewController.h"
 #import "ARPriceRangeViewController.h"
 #import "ARViewInRoomViewController.h"
-#import "ARArtistViewController.h"
 #import "ARFairViewController.h"
 #import "ARFairSearchViewController.h"
 #import "ARSharingController.h"
@@ -676,66 +675,6 @@
                             },
                         },
                     ],
-                },
-                @{
-                    ARAnalyticsClass: ARArtistViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtistView,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtistViewController *controller, NSArray *_){
-                                return @{
-                                    @"artist_id" : controller.artist.artistID ?: @"",
-                                    @"fair_id" : controller.fair.fairID ?: @"",
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtistFollow,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowingArtist:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARArtistViewController *controller, NSArray *parameters){
-                                ARHeartButton *sender = parameters.firstObject;
-                                return sender.isHearted == YES;
-                            },
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtistViewController *controller, NSArray *parameters){
-                                NSString *sourcePage = @"";
-                                if (controller.fair) {
-                                    sourcePage = @"artist fair page";
-                                } else {
-                                    sourcePage = @"artist page";
-                                }
-                                return @{
-                                         @"artist_slug" : controller.artist.artistID ?: @"",
-                                         @"artist_id" : controller.artist.artistID ?: @"",
-                                         @"source_screen" : sourcePage
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtistUnfollow,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowingArtist:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARArtistViewController *controller, NSArray *parameters){
-                                ARHeartButton *sender = parameters.firstObject;
-                                return sender.isHearted == NO;
-                            },
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtistViewController *controller, NSArray *parameters){
-                                return @{
-                                    @"artist_slug" : controller.artist.artistID ?: @"",
-                                    @"source_screen" : @"Artist"
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsArtistTappedForSale,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(forSaleOnlyArtworksTapped)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARArtistViewController *controller, NSArray *_){
-                                return @{
-                                    @"artist_id" : controller.artist.artistID ?: @"",
-                                    @"fair_id" : controller.fair.fairID ?: @""
-                                };
-                            },
-                        }
-                    ]
                 },
                 @{
                     ARAnalyticsClass: ARFairViewController.class,

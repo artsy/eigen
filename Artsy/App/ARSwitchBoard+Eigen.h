@@ -6,7 +6,6 @@
 @class ARArtworkSetViewController,
     ARShowViewController,
     ARFairArtistViewController,
-    ARArtistViewController,
     ARArtworkInfoViewController,
     ARAuctionArtworkResultsViewController,
     ARFairMapViewController,
@@ -48,7 +47,7 @@
 - (ARFairMapViewController *)loadMapInFair:(Fair *)fair;
 - (ARFairMapViewController *)loadMapInFair:(Fair *)fair title:(NSString *)title selectedPartnerShows:(NSArray *)selectedPartnerShows;
 
-- (ARArtistViewController *)loadArtistWithID:(NSString *)artistID;
+- (UIViewController *)loadArtistWithID:(NSString *)artistID;
 - (UIViewController<ARFairAwareObject> *)loadArtistWithID:(NSString *)artistID inFair:(Fair *)fair;
 
 - (ARFairGuideContainerViewController *)loadFairGuideWithFair:(Fair *)fair;
