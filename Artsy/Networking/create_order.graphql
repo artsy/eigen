@@ -1,7 +1,7 @@
 mutation createOrder(
   $input: CreateOrderWithArtworkInput!
 ) {
-  createOrderWithArtwork(
+  ecommerceCreateOrderWithArtwork(
     input: $input
   ) {
     orderOrError {
