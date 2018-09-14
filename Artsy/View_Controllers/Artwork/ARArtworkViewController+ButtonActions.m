@@ -232,7 +232,7 @@
         [ArtsyAPI createBuyNowOrderWithArtworkID:self.artwork.artworkID success:^(id results) {
             NSString *orderID = results[@"data"][@"createOrderWithArtwork"][@"orderOrError"][@"order"][@"id"];
             if (!orderID) {
-                [self presentErrorMessage:@"Could not create order."];
+                [self presentErrorMessage:@"Something went wrong. Please try again or contact support@artsy.net."];
                 return;
             }
             NSString *path = self.echo.routes[@"ARBuyNowRoute"].path;
@@ -244,7 +244,7 @@
             UIViewController *controller = [ARSwitchBoard.sharedInstance loadPath:path];
             [self.navigationController pushViewController:controller animated:YES];
         } failure:^(NSError *error) {
-            [self presentErrorMessage:@"Could not create order."];
+            [self presentErrorMessage:@"Something went wrong. Please try again or contact support@artsy.net."];
         }];
     } else {
         // If the artwork has only 1 edition, use that edition id. Otherwise our POST request will fail.
@@ -280,7 +280,7 @@
 - (void)presentErrorMessage:(NSString *)errorMessage
 {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"An error occurred" message:errorMessage preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okay = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okay = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self dismissViewControllerAnimated:YES completion:nil];
     }];
     [alert addAction:okay];

@@ -7,7 +7,7 @@ upcoming:
     - Updated echo configuration, checks for AREnableBuyNowFlow feature - ash
 
   user_facing:
-    -
+    - Updates error messaging for Buy Now mutation failures. - ash
 
 releases:
   - version: 4.2.1
