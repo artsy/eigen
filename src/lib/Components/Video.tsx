@@ -29,7 +29,7 @@ export class Video extends React.Component<Props> {
   render() {
     return (
       <NativeVideo
-        source={{ uri: "http://techslides.com/demos/sample-videos/small.mp4" }}
+        source={{ uri: "https://s3.amazonaws.com/artsy-vanity-files-staging/BN-Banner_XS_compressed.mp4" }}
         size={{
           width,
           height: 220,

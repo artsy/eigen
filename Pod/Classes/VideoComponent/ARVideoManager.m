@@ -15,6 +15,11 @@
     self.playerLayer.frame = self.bounds;
 }
 
+- (void)playerDidReactEnd:(NSNotification *)notification {
+    AVPlayerItem *player = [notification object];
+    [player seekToTime:kCMTimeZero];
+}
+
 @end
 
 
@@ -27,8 +32,17 @@ RCT_CUSTOM_VIEW_PROPERTY(source, NSDictionary, ARVideo)
     view.playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
     view.playerLayer.frame = view.bounds;
     [view.layer addSublayer:view.playerLayer];
+
     [player setMuted:true];
     [player play];
+
+    // TODO: Assign to RN prop loop={true}
+    // Loop on end
+    player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+    [[NSNotificationCenter defaultCenter] addObserver:view
+                                             selector:@selector(playerDidReactEnd:)
+                                                 name:AVPlayerItemDidPlayToEndTimeNotification
+                                               object:[player currentItem]];
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(size, NSDictionary, ARVideo)

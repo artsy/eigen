@@ -23,7 +23,10 @@ export class MarketingHeader extends Component {
         </BorderBox>
 
         <Box my={2}>
-          <Sans size="3">Introducing a new way to buy on Artsy</Sans>
+          <Sans size="3">
+            Buying art on Artsy is easier than ever before. Our most in-demand works are now available for instant
+            purchase, with simple checkout and hassle-free shipping.
+          </Sans>
         </Box>
 
         {/* TODO: Port Reaction <Button variant='...' /> API over */}
