@@ -94,6 +94,7 @@
 		342F9F5789AD65AD09205030 /* MapFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F93E38025E2D2DA90C6DA /* MapFeature.m */; };
 		342F9FBB86D02FABC8AA9339 /* ARNavigationButtonsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F965F76AA25C6C700FE1C /* ARNavigationButtonsViewControllerTests.m */; };
 		34B1151A2069AA7C0025D925 /* AuctionBuyNowTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B115192069AA7C0025D925 /* AuctionBuyNowTitleView.swift */; };
+		3A860AD4214C5DD600C7F555 /* artwork.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 3A860AD3214C5DD600C7F555 /* artwork.graphql */; };
 		3C11CD28189B07810060B26B /* ARAspectRatioImageViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C11CD27189B07810060B26B /* ARAspectRatioImageViewTests.m */; };
 		3C1266F118BE6CC700B5AE72 /* ARFairGuideViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C1266F018BE6CC700B5AE72 /* ARFairGuideViewControllerTests.m */; };
 		3C205ACD1908041700B3C2B4 /* ARSearchResultsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C205ACC1908041700B3C2B4 /* ARSearchResultsDataSource.m */; };
@@ -989,6 +990,7 @@
 		342F9FD434A78C36B76A85B6 /* ARFairViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairViewControllerTests.m; sourceTree = "<group>"; };
 		342F9FEFF4A1B56EE307467B /* ARFileUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFileUtils.m; sourceTree = "<group>"; };
 		34B115192069AA7C0025D925 /* AuctionBuyNowTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuctionBuyNowTitleView.swift; path = ../View_Controllers/AuctionBuyNowTitleView.swift; sourceTree = "<group>"; };
+		3A860AD3214C5DD600C7F555 /* artwork.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = artwork.graphql; sourceTree = "<group>"; };
 		3C11CD27189B07810060B26B /* ARAspectRatioImageViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAspectRatioImageViewTests.m; sourceTree = "<group>"; };
 		3C1266F018BE6CC700B5AE72 /* ARFairGuideViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairGuideViewControllerTests.m; sourceTree = "<group>"; };
 		3C205ACB1908041700B3C2B4 /* ARSearchResultsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSearchResultsDataSource.h; sourceTree = "<group>"; };
@@ -3187,6 +3189,7 @@
 				5EFB45731F22830F00328A6B /* static_sale_data.graphql */,
 				5EFABE221F26934900662FEC /* artworks_in_sale.graphql */,
 				7F45A1672003C7100063D6B5 /* conversations.graphql */,
+				3A860AD3214C5DD600C7F555 /* artwork.graphql */,
 			);
 			name = Queries;
 			sourceTree = "<group>";
@@ -5037,6 +5040,7 @@
 				3C4AE96819094969009C0E8B /* SearchIcon_LightGrey@2x.png in Resources */,
 				608B706C17D4A1C80088A56C /* Artwork_Icon_Share.png in Resources */,
 				608C6DC71FAA11630044E235 /* nav_messaging@2x.png in Resources */,
+				3A860AD4214C5DD600C7F555 /* artwork.graphql in Resources */,
 				5E80CA832093C29500BCFD82 /* CircleXRed.png in Resources */,
 				E66A0A8319C2125400ECEB1A /* full_logo_white_large@2x.png in Resources */,
 				60E719FE1B4C6032008948FA /* Launch Screen.xib in Resources */,

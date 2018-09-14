@@ -1,0 +1,80 @@
+query OldArtworkQuery($artworkID: String!) {
+  artwork(id: $artworkID) {
+    artist {
+      id
+      _id
+      name
+      years
+      birthday
+      nationality
+      blurb
+
+      image {
+        url
+      }
+      sortable_id
+    }
+
+    partner {
+      name
+
+      id
+      default_profile_id
+      is_default_profile_public
+      type
+      href
+    }
+
+    id
+    _id
+    date
+    title
+
+    can_share_image
+    collecting_institution
+    images {
+      id
+      image_versions
+      image_url
+
+    }
+    additional_information
+    dimensions {
+      cm
+      in
+    }
+    attribution_class {
+      id
+      name
+      long_description
+      short_description
+    	info
+    }
+    edition_sets {
+      id
+      sale_message
+      is_sold
+      is_for_sale
+      dimensions {
+        in
+        cm
+      }
+    }
+    medium
+    literature
+    provenance
+    series
+    signature
+    price
+
+    category
+    exhibition_history
+    is_for_sale
+    image_rights
+    published
+    sale_message
+    is_sold
+    is_price_hidden
+  }
+}
+

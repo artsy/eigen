@@ -28,8 +28,6 @@
         @"birthday" : @"birthday",
         @"nationality" : @"nationality",
         @"blurb" : @"blurb",
-        @"publishedArtworksCount" : @"published_artworks_count",
-        @"forSaleArtworksCount" : @"forsale_artworks_count",
         @"imageURLs" : @"image_urls",
         @"sortableID" : @"sortable_id"
     };

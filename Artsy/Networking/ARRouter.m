@@ -484,7 +484,7 @@ static NSString *hostFromString(NSString *string)
 + (NSURLRequest *)newArtworkInfoRequestForArtworkID:(NSString *)artworkID
 {
     NSString *address = [NSString stringWithFormat:ARNewArtworkInfoURLFormat, artworkID];
-    return [self requestWithMethod:@"GET" path:address parameters:nil];
+    return [self graphQLRequestForQuery:[self graphQueryForArtwork] variables:@{ @"artworkID": artworkID }];
 }
 
 + (NSURLRequest *)newArtworksRelatedToArtworkRequest:(Artwork *)artwork

@@ -55,7 +55,6 @@
     return @{
         ar_keypath(Artwork.new, artworkID) : @"id",
         ar_keypath(Artwork.new, artworkUUID) : @"_id",
-        ar_keypath(Artwork.new, auctionResultCount) : @"comparables_count",
         ar_keypath(Artwork.new, canShareImage) : @"can_share_image",
         ar_keypath(Artwork.new, collectingInstitution) : @"collecting_institution",
         ar_keypath(Artwork.new, defaultImage) : @"images",
@@ -63,16 +62,15 @@
         ar_keypath(Artwork.new, dimensionsCM) : @"dimensions.cm",
         ar_keypath(Artwork.new, dimensionsInches) : @"dimensions.in",
         ar_keypath(Artwork.new, attributionClass) : @"attribution_class",
-        ar_keypath(Artwork.new, displayTitle) : @"display",
         ar_keypath(Artwork.new, editionSets) : @"edition_sets",
         ar_keypath(Artwork.new, exhibitionHistory) : @"exhibition_history",
         ar_keypath(Artwork.new, forSale) : @"forsale",
         ar_keypath(Artwork.new, imageRights) : @"image_rights",
-        ar_keypath(Artwork.new, published) : @"published",
+        ar_keypath(Artwork.new, published) : @"is_published",
         ar_keypath(Artwork.new, saleMessage) : @"sale_message",
-        ar_keypath(Artwork.new, sold) : @"sold",
-        ar_keypath(Artwork.new, slug) : @"slug",
-        ar_keypath(Artwork.new, isPriceHidden) : @"price_hidden",
+        ar_keypath(Artwork.new, sold) : @"is_sold",
+        ar_keypath(Artwork.new, slug) : @"id",
+        ar_keypath(Artwork.new, isPriceHidden) : @"is_price_hidden",
         ar_keypath(Artwork.new, publishedAt) : @"published_at"
     };
 }
