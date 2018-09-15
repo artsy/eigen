@@ -43,13 +43,11 @@ query OldArtworkQuery($artworkID: String!) {
       cm
       in
     }
+
     attribution_class {
-      id
       name
-      long_description
-      short_description
-    	info
     }
+
     edition_sets {
       id
       sale_message
