@@ -253,7 +253,7 @@
         controller = [[ARArtworkSetViewController alloc] initWithArtworkID:result.modelID];
 
     } else if (result.model == [Artist class]) {
-        controller = [[ARArtistViewController alloc] initWithArtistID:result.modelID];
+        controller = [ARSwitchBoard.sharedInstance loadArtistWithID:result.modelID];
 
     } else if (result.model == [Gene class]) {
         controller = [ARSwitchBoard.sharedInstance loadGeneWithID:result.modelID];

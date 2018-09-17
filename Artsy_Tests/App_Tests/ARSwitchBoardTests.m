@@ -9,7 +9,6 @@
 #import "ARSerifNavigationViewController.h"
 
 #import "ARProfileViewController.h"
-#import "ARArtistViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARArtworkSetViewController.h"
 #import "ARExternalWebBrowserViewController.h"
@@ -408,18 +407,6 @@ describe(@"ARSwitchboard", ^{
             id subject = [switchboard loadPath:@"/auction/myauctionthing"];
             NSString *classString = NSStringFromClass([subject class]);
             expect(classString).toNot.contain(@"AuctionViewController");
-        });
-
-        it(@"can not route to react artists when echo has a feature called 'DisableReactArtists'", ^{
-            switchboard = [[ARSwitchBoard alloc] init];
-            [switchboard updateRoutes];
-            ArtsyEcho *echo = [[ArtsyEcho alloc] init];
-            echo.features = @{ @"DisableReactArtists" : [[Feature alloc] initWithName:@"" state:@1] };
-            switchboard.echo = echo;
-
-            id subject = [switchboard loadPath:@"/artist/myauctionthing"];
-            NSString *classString = NSStringFromClass([subject class]);
-            expect(classString).to.contain(@"ARArtistViewController");
         });
 
         it(@"defaults to the new bid flow", ^{

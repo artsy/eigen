@@ -14,7 +14,6 @@
 @class ARArtworkSetViewController;
 @class ARShowViewController;
 @class ARFairArtistViewController;
-@class ARArtistViewController;
 @class ARArtworkInfoViewController;
 @class ARAuctionArtworkResultsViewController;
 @class ARFairMapViewController; 
