@@ -8,6 +8,7 @@ upcoming:
     - Remove the native Artist ViewController - orta
     - Updates the mutation name to use the ecommerce prefix - orta
     - Updates mutation result reference to use new prefix - ash
+    - Fixes a problem with order creation input - ash
 
   user_facing:
     - Updates error messaging for Buy Now mutation failures. - ash
