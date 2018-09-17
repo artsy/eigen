@@ -52,6 +52,7 @@ describe(@"buy button", ^{
 
             Artwork *artwork = [Artwork modelWithJSON:@{
                                                         @"id" : @"artwork-id",
+                                                        @"_id": @"0123456789abcdef",
                                                         @"title" : @"Artwork Title",
                                                         @"availability" : @"for sale",
                                                         @"acquireable" : @YES
@@ -66,7 +67,7 @@ describe(@"buy button", ^{
             id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
             [[switchboardMock expect] loadPath:@"/order/order-id"];
 
-            [[[[routerMock expect] andForwardToRealObject] classMethod] newBuyNowRequestWithArtworkID:@"artwork-id"];
+            [[[[routerMock expect] andForwardToRealObject] classMethod] newBuyNowRequestWithArtworkID:@"0123456789abcdef"];
 
             [vc tappedBuyButton];
 
@@ -85,6 +86,7 @@ describe(@"buy button", ^{
 
             Artwork *artwork = [Artwork modelWithJSON:@{
                                                         @"id" : @"artwork-id",
+                                                        @"_id": @"0123456789abcdef",
                                                         @"title" : @"Artwork Title",
                                                         @"availability" : @"for sale",
                                                         @"acquireable" : @YES
@@ -96,7 +98,7 @@ describe(@"buy button", ^{
             vcMock = [OCMockObject partialMockForObject:vc];
             [[vcMock expect] presentErrorMessage:OCMOCK_ANY];
 
-            [[[[routerMock expect] andForwardToRealObject] classMethod] newBuyNowRequestWithArtworkID:@"artwork-id"];
+            [[[[routerMock expect] andForwardToRealObject] classMethod] newBuyNowRequestWithArtworkID:@"0123456789abcdef"];
 
             [vc tappedBuyButton];
 
@@ -115,6 +117,7 @@ describe(@"buy button", ^{
 
             Artwork *artwork = [Artwork modelWithJSON:@{
                                                         @"id" : @"artwork-id",
+                                                        @"_id": @"0123456789abcdef",
                                                         @"title" : @"Artwork Title",
                                                         @"availability" : @"for sale",
                                                         @"acquireable" : @YES
@@ -126,7 +129,7 @@ describe(@"buy button", ^{
             vcMock = [OCMockObject partialMockForObject:vc];
             [[vcMock expect] presentErrorMessage:OCMOCK_ANY];
 
-            [[[[routerMock expect] andForwardToRealObject] classMethod] newBuyNowRequestWithArtworkID:@"artwork-id"];
+            [[[[routerMock expect] andForwardToRealObject] classMethod] newBuyNowRequestWithArtworkID:@"0123456789abcdef"];
 
             [vc tappedBuyButton];
 
@@ -207,6 +210,7 @@ describe(@"buy button", ^{
 
             Artwork *artwork = [Artwork modelWithJSON:@{
                 @"id" : @"artwork-id",
+                @"_id": @"0123456789abcdef",
                 @"title" : @"Artwork Title",
                 @"availability" : @"for sale",
                 @"acquireable" : @YES,
