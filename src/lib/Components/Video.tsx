@@ -10,6 +10,7 @@ interface VideoProps {
     width: number
     height: number
   }
+  loop?: boolean
   style?: StyleProp<FlexStyle>
 }
 
@@ -22,7 +23,12 @@ export class Video extends React.Component<VideoProps> {
       width: PropTypes.number,
       height: PropTypes.number,
     }).isRequired,
+    loop: PropTypes.bool,
     style: PropTypes.object,
+  }
+
+  static defaultProps = {
+    loop: true,
   }
 
   render() {
