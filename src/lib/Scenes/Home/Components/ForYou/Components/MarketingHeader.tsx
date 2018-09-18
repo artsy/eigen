@@ -18,8 +18,16 @@ export class MarketingHeader extends Component {
   render() {
     return (
       <Container>
-        <BorderBox p={0} width="100%" height="220px" background={color("black5")} style={{ overflow: "hidden" }}>
-          <Video />
+        <BorderBox p={0} width="100%" height="160px" background={color("black5")} style={{ overflow: "hidden" }}>
+          <Video
+            source={{
+              uri: "https://d3vpvtm3t56z1n.cloudfront.net/videos/9172018-bn-banner-xl.mp4",
+            }}
+            size={{
+              width: 515,
+              height: 160,
+            }}
+          />
         </BorderBox>
 
         <Box my={2}>
@@ -29,7 +37,6 @@ export class MarketingHeader extends Component {
           </Sans>
         </Box>
 
-        {/* TODO: Port Reaction <Button variant='...' /> API over */}
         <InvertedButton
           text="Browse works"
           onPress={this.handleTap}
@@ -47,7 +54,7 @@ export class MarketingHeader extends Component {
           key="1"
         />
 
-        <Box mt={4}>
+        <Box mt={4} mb={-3}>
           <Separator />
         </Box>
       </Container>
