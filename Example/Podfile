@@ -21,6 +21,7 @@ glog_spec_path = File.join(react_path, 'third-party-podspecs/glog.podspec')
 double_conversion_spec_path = File.join(react_path, 'third-party-podspecs/DoubleConversion.podspec')
 sentry_path = File.join(node_modules_path, 'react-native-sentry')
 tispi_stripe_spec_path = File.join(node_modules_path, 'tipsi-stripe/tipsi-stripe.podspec')
+react_native_video_path = File.join(node_modules_path, 'react-native-video/react-native-video.podspec')
 
 target 'Emission' do
   pod 'Emission', :path => '../', :inhibit_warnings => false
@@ -34,6 +35,8 @@ target 'Emission' do
 
   pod 'Sentry', :subspecs => ['Core', 'KSCrash']
   pod 'SentryReactNative', :path => sentry_path
+
+  pod 'react-native-video', :path => react_native_video_path
 
   # Got to make it look right
   pod 'Artsy+UIFonts'
@@ -53,6 +56,7 @@ target 'Emission' do
                               :branch => 'fetch-user-details'
   # Stripe- tag must match package.json's tipsi-stripe dep
   pod 'tipsi-stripe', :podspec => tispi_stripe_spec_path
+
 end
 
 plugin 'cocoapods-keys', {

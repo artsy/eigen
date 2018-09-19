@@ -26,13 +26,35 @@
 
 
 @implementation ARVideoManager
+
 RCT_CUSTOM_VIEW_PROPERTY(source, NSDictionary, ARVideo)
 {
     NSDictionary *source = [RCTConvert NSDictionary:json];
-    id uri = [source objectForKey:@"uri"];
-    view.player = [AVPlayer playerWithURL:[NSURL URLWithString:uri]];
+    bool isNetwork = [RCTConvert BOOL:[source objectForKey:@"isNetwork"]];
+    bool isAsset = [RCTConvert BOOL:[source objectForKey:@"isAsset"]];
+    NSString *uri = [source objectForKey:@"uri"];
+    NSString *type = [source objectForKey:@"type"];
+    NSString *resizeMode = [source objectForKey:@"resizeMode"];
+
+    NSString *videoGravity;
+    if ([resizeMode isEqualToString:@"stretch"]) {
+        videoGravity = AVLayerVideoGravityResize;
+    } else if ([resizeMode isEqualToString:@"contain"]) {
+        videoGravity = AVLayerVideoGravityResizeAspect;
+    } else if ([resizeMode isEqualToString:@"cover"]) {
+        videoGravity = AVLayerVideoGravityResizeAspectFill;
+    } else {
+        videoGravity = AVLayerVideoGravityResizeAspect;
+    }
+
+    NSURL *url = isNetwork || isAsset
+        ? [NSURL URLWithString:uri]
+        : [[NSURL alloc] initFileURLWithPath:[[NSBundle mainBundle] pathForResource:uri ofType:type]];
+
+    view.player = [AVPlayer playerWithURL:url];
     view.playerLayer = [AVPlayerLayer playerLayerWithPlayer:view.player];
     view.playerLayer.frame = view.bounds;
+    view.playerLayer.videoGravity = videoGravity;
     [view.layer addSublayer:view.playerLayer];
     [view.player setMuted:true];
     [view.player play];
@@ -56,7 +78,7 @@ RCT_CUSTOM_VIEW_PROPERTY(loop, BOOL, ARVideo)
 }
 
 
-RCT_EXPORT_MODULE();
+RCT_EXPORT_MODULE(ARVideo);
 
 - (UIView *)view
 {

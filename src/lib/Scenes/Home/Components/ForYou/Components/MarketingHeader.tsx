@@ -4,11 +4,11 @@ import { Video } from "lib/Components/Video"
 import { Fonts } from "lib/data/fonts"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 import React, { Component } from "react"
+import { Dimensions } from "react-native"
 import styled from "styled-components/native"
 
-const Container = styled.View`
-  padding: 20px;
-`
+// TODO: Give this a try
+// import Video from "react-native-video"
 
 export class MarketingHeader extends Component {
   handleTap = () => {
@@ -16,17 +16,15 @@ export class MarketingHeader extends Component {
   }
 
   render() {
+    const { width } = Dimensions.get("window")
+
     return (
       <Container>
-        <BorderBox p={0} width="100%" height="160px" background={color("black5")} style={{ overflow: "hidden" }}>
+        <BorderBox p={0} width="100%" height="220px" background={color("black5")} style={{ overflow: "hidden" }}>
           <Video
-            source={{
-              uri: "https://d3vpvtm3t56z1n.cloudfront.net/videos/9172018-bn-banner-xl.mp4",
-            }}
-            size={{
-              width: 515,
-              height: 160,
-            }}
+            source={require("../videos/9172018-bn-banner-xs.mp4")}
+            resizeMode="cover"
+            size={{ width, height: 220 }}
           />
         </BorderBox>
 
@@ -61,3 +59,7 @@ export class MarketingHeader extends Component {
     )
   }
 }
+
+const Container = styled.View`
+  padding: 20px;
+`
