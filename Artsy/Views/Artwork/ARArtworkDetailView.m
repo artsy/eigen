@@ -213,7 +213,6 @@ typedef NS_ENUM(NSInteger, ARDetailSubViewOrder) {
         [self addSubview:dimensionCMLabel withTopMargin:@"4" sideMargin:@"0"];
     }
 
-    // TODO: This is the crasher
     if (artwork.attributionClass.length) {
         UIView *view = [self viewFor:ARDetailAttributionClass];
 

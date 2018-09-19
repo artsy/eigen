@@ -247,7 +247,7 @@ describe(@"concerning layout", ^{
     __block ARArtworkRelatedArtworksContentView *section = nil;
 
     before(^{
-        section = [relatedView addSectionWithTag:0 artworks:@[[Artwork modelFromDictionary:@{@"title": @"Title"}]] heading:@"Related Heading"];
+        section = [relatedView addSectionWithTag:0 artworks:@[[Artwork modelWithJSON:@{@"title": @"Title"}]] heading:@"Related Heading"];
     });
 
     describe(@"iPhone", ^{

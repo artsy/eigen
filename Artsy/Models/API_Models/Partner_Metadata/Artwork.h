@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *_Nullable title;
 @property (nonatomic, copy) NSString *exhibitionHistory;
 @property (nonatomic, copy) NSString *additionalInfo;
-@property (nonatomic, strong) NSNumber *isPriceHidden;
+- (NSNumber *)isPriceHidden;
 @property (nonatomic, strong, getter=isPublished) NSNumber *published;
 @property (nonatomic, copy) NSString *imageRights;
 @property (nonatomic, copy) NSString *medium;
@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSNumber *acquireable;
 @property (nonatomic, strong) NSNumber *inquireable;
-@property (nonatomic, strong) NSNumber *sold;
+- (NSNumber *)sold;
 @property (nonatomic, strong) NSNumber *forSale;
 @property (nonatomic, strong) NSNumber *canShareImage;
 @property (nonatomic, strong) Sale *auction;

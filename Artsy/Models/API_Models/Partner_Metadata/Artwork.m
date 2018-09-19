@@ -23,6 +23,18 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFNetworking.h>
 
+// We ahve to support two different shaped pieces of data
+// for the same fields, so these properites are used in
+// JSONKeyPathsByPropertyKey to get both fields
+// then a method switches between them depending on the data
+// weird huh?
+@interface Artwork()
+@property (nonatomic, strong) NSNumber *gravSold;
+@property (nonatomic, strong) NSNumber *mpSold;
+
+@property (nonatomic, strong) NSNumber *gravIsPriceHidden;
+@property (nonatomic, strong) NSNumber *mpIsPriceHidden;
+@end
 
 @implementation Artwork {
     // If we give these as properties they can cause
@@ -35,6 +47,7 @@
     KSDeferred *_partnerShowDeferred;
     enum ARHeartStatus _heartStatus;
     Fair *_fair;
+
 }
 
 - (instancetype)initWithArtworkID:(NSString *)artworkID
@@ -69,9 +82,11 @@
         ar_keypath(Artwork.new, imageRights) : @"image_rights",
         ar_keypath(Artwork.new, published) : @"published",
         ar_keypath(Artwork.new, saleMessage) : @"sale_message",
-        ar_keypath(Artwork.new, sold) : @"is_sold",
+        ar_keypath(Artwork.new, gravSold) : @"is_sold",
+        ar_keypath(Artwork.new, mpSold) : @"sold",
         ar_keypath(Artwork.new, slug) : @"id",
-        ar_keypath(Artwork.new, isPriceHidden) : @"is_price_hidden",
+        ar_keypath(Artwork.new, gravIsPriceHidden) : @"price_hidden",
+        ar_keypath(Artwork.new, mpIsPriceHidden) : @"is_price_hidden",
         ar_keypath(Artwork.new, publishedAt) : @"published_at"
     };
 }
@@ -116,6 +131,7 @@
         return @[image];
         }];
 }
+
 
 + (NSValueTransformer *)acquireableJSONTransformer
 {
@@ -237,6 +253,18 @@
                                   failure:^(NSError *error) {
             success(@[]);
                                   }];
+}
+
+// See the comments up in the Artwork category extension at the top
+
+- (NSNumber *)sold
+{
+    return self.gravSold.boolValue ? self.gravSold : self.mpSold;
+}
+
+- (NSNumber *)isPriceHidden
+{
+    return self.gravIsPriceHidden.boolValue ? self.gravIsPriceHidden : self.mpIsPriceHidden;
 }
 
 - (BOOL)hasWidth
