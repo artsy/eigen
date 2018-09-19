@@ -4,7 +4,7 @@ SpecBegin(ArtworkAttributionClass);
 
 describe(@"shortDescriptionForAttributionClass", ^{
     it(@"returns the correct short description for a given attribution class", ^{
-        Artwork *artwork = [Artwork modelWithJSON:@{ @"id" : @"artwork-id", @"attribution_class" : @"ephemera" }];
+        Artwork *artwork = [Artwork modelWithJSON:@{ @"id" : @"artwork-id", @"attribution_class" : @{ @"name": @"ephemera" } }];
         expect(artwork.shortDescriptionForAttributionClass).to.equal(@"This is ephemera, an artifact related to the artist.");
     });
 

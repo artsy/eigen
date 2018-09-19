@@ -51,7 +51,7 @@ class AuctionViewControllerTests: QuickSpec {
             beforeEach {
                 let now = NSDate()
                 let endTime = now.addingTimeInterval(3600.9) // 0.9 is to cover the possibility a clock tick happens between this line and the next.
-                dateMock = ARTestContext.freezeTime(now as Date!)
+                dateMock = ARTestContext.freezeTime(now as Date)
 
                 sale = try! Sale(dictionary: ["saleID": "the-tada-sale", "name": "The 🎉 Sale", "endDate": endTime], error: Void())
                 saleViewModel = Test_SaleViewModel(sale: sale, saleArtworks: [], promotedSaleArtworks: [], bidders: [], lotStandings: [])

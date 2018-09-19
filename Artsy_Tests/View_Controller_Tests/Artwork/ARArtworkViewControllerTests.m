@@ -24,8 +24,7 @@ beforeEach(^{
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows" withResponse:@[]];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/some-artwork" withResponse:@{ @"id": @"some-artwork", @"title": @"Some Title" }];
-    [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:@{}];
+    [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:@{ @"data": @{ @"artwork" : @{ @"id": @"some-artwork", @"title": @"Some Title" } } }];
 });
 
 describe(@"no related data", ^{
@@ -126,14 +125,15 @@ describe(@"with related artworks", ^{
 });
 
 it(@"shows an upublished banner", ^{
+
     NSDictionary *artworkDict = @{
         @"id" : @"artwork-id",
         @"title" : @"Artwork Title",
         @"published" : @NO,
     };
-    Artwork *artwork = [Artwork modelWithJSON:artworkDict];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/artwork-id" withResponse:artworkDict];
+    [OHHTTPStubs stubJSONResponseAtPath:@"metaphysics-staging.artsy.net" withResponse:@{ @"data": @{ @"artwork" : artworkDict } }];
 
+    Artwork *artwork = [Artwork modelWithJSON:artworkDict];
     CGRect frame = [[UIScreen mainScreen] bounds];
     vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
     [vc ar_presentWithFrame:frame];

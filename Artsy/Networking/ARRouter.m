@@ -483,7 +483,6 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newArtworkInfoRequestForArtworkID:(NSString *)artworkID
 {
-    NSString *address = [NSString stringWithFormat:ARNewArtworkInfoURLFormat, artworkID];
     return [self graphQLRequestForQuery:[self graphQueryForArtwork] variables:@{ @"artworkID": artworkID }];
 }
 

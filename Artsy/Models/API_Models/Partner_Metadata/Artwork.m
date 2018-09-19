@@ -66,7 +66,7 @@
         ar_keypath(Artwork.new, exhibitionHistory) : @"exhibition_history",
         ar_keypath(Artwork.new, forSale) : @"forsale",
         ar_keypath(Artwork.new, imageRights) : @"image_rights",
-        ar_keypath(Artwork.new, published) : @"is_published",
+        ar_keypath(Artwork.new, published) : @"published",
         ar_keypath(Artwork.new, saleMessage) : @"sale_message",
         ar_keypath(Artwork.new, sold) : @"is_sold",
         ar_keypath(Artwork.new, slug) : @"id",
