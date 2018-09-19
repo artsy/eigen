@@ -24,6 +24,11 @@ beforeEach(^{
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows" withResponse:@[]];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
+    
+    // This is the mutation to say "we have seen this artwork"
+    [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:@{ }];
+
+    // This is the artwork request
     [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:@{ @"data": @{ @"artwork" : @{ @"id": @"some-artwork", @"title": @"Some Title" } } }];
 });
 
@@ -131,7 +136,8 @@ it(@"shows an upublished banner", ^{
         @"title" : @"Artwork Title",
         @"published" : @NO,
     };
-    [OHHTTPStubs stubJSONResponseAtPath:@"metaphysics-staging.artsy.net" withResponse:@{ @"data": @{ @"artwork" : artworkDict } }];
+
+    [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:@{ @"data": @{ @"artwork" : artworkDict } }];
 
     Artwork *artwork = [Artwork modelWithJSON:artworkDict];
     CGRect frame = [[UIScreen mainScreen] bounds];
@@ -150,8 +156,7 @@ it(@"shows an upublished banner", ^{
 
 describe(@"at a closed auction", ^{
     before(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[
-@{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[@{
             @"id": @"some-auction",
             @"name": @"Some Auction",
             @"is_auction": @YES,
@@ -208,8 +213,7 @@ describe(@"at a closed auction", ^{
 
 describe(@"at an auction requireing registration", ^{
     before(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[
-            @{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[@{
             @"id": @"some-auction",
             @"name": @"Some Auction",
             @"is_auction": @YES,
@@ -218,7 +222,9 @@ describe(@"at an auction requireing registration", ^{
             @"auction_state": @"open",
             @"published": @YES,
         }]];
+        
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
+        
         stubEmptyBidderPositions();
         stubBidder(YES);
         stubEmptySaleArtworks();
@@ -265,7 +271,6 @@ describe(@"before a live auction", ^{
 });
 
 it(@"creates an NSUserActivity", ^{
-    
     vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
     [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
     [vc setHasFinishedScrolling];
@@ -292,7 +297,7 @@ pending(@"at a fair");
 SpecEnd;
 
 void stubEmptySaleArtworks() {
-    [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:@{}];
+//    [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:@{}];
 }
 
 void stubEmptyBidderPositions() {
