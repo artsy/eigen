@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 
 extern NSString *const ARForceUseRNPDefault;
+extern NSString *const ARJumpStraightIntoStorybooks;
 
 extern NSString *const ARUseStagingDefault;
 extern NSString *const ARUsePREmissionDefault;

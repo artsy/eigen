@@ -2,6 +2,7 @@
 #import <Foundation/Foundation.h>
 
 NSString *const ARForceUseRNPDefault = @"ARForceUseRNPDefault";
+NSString *const ARJumpStraightIntoStorybooks = @"ARJumpStraightIntoStorybooks";
 
 NSString *const ARUseStagingDefault = @"ARUseStagingDefault";
 NSString *const ARUsePREmissionDefault = @"ARUsePREmissionDefault";
