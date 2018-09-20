@@ -139,8 +139,7 @@ export class WorksForYou extends React.Component<Props, State> {
         refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
       >
         <View style={{ flex: 1 }}>
-          <MarketingHeader />
-
+          {hasNotifications && <MarketingHeader />}
           {hasNotifications ? this.renderNotifications() : this.renderEmptyState()}
         </View>
       </ScrollView>

@@ -17,9 +17,13 @@
 ### Master
 
 * Adding artwork badges to brick - matt
-* Add MarketingHeader to Home/WorksForYou - chris
+* Add MarketingHeader to Home/WorksForYou - chris/orta
 * Add @artsy/palette - yuki/orta/chris
+
+##### Tooling
+
 * Adds a Labs setting UI to the example app - orta
+* Added an option to the storybooks support to auto-launch into storybooks in the example app - orta
 * Updates Typescript version to 3.0.3
 
 ### 1.5.15
