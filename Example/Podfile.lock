@@ -75,8 +75,6 @@ PODS:
     - FLKAutoLayout
   - React (0.54.4):
     - React/Core (= 0.54.4)
-  - react-native-video (3.2.1):
-    - React
   - React/Core (0.54.4):
     - yoga (= 0.54.4.React)
   - React/CxxBridge (0.54.4):
@@ -148,7 +146,6 @@ DEPENDENCIES:
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Keys (from `Pods/CocoaPodsKeys`)
-  - react-native-video (from `../node_modules/react-native-video/react-native-video.podspec`)
   - React/DevSupport (from `../node_modules/react-native`)
   - SAMKeychain
   - Sentry/Core
@@ -173,8 +170,6 @@ EXTERNAL SOURCES:
     :path: Pods/CocoaPodsKeys
   React:
     :path: ../node_modules/react-native
-  react-native-video:
-    :path: ../node_modules/react-native-video/react-native-video.podspec
   SentryReactNative:
     :path: ../node_modules/react-native-sentry
   tipsi-stripe:
@@ -209,7 +204,6 @@ SPEC CHECKSUMS:
   NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   React: c237e42de9c70e5cac6eeb52b4cfd3a0910c1f00
-  react-native-video: 6db316323366025251a815c49ca0e2edabe30a2a
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
@@ -219,6 +213,6 @@ SPEC CHECKSUMS:
   UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: f66015fcb5d4e95205bab6d6e5467ad871497ee5
+PODFILE CHECKSUM: eb3798a1b20a532cddd29d0c368339450e54db82
 
 COCOAPODS: 1.4.0

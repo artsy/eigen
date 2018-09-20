@@ -7,12 +7,9 @@ import React, { Component } from "react"
 import { Dimensions } from "react-native"
 import styled from "styled-components/native"
 
-// TODO: Give this a try
-// import Video from "react-native-video"
-
 export class MarketingHeader extends Component {
   handleTap = () => {
-    Switchboard.presentNavigationViewController(this, "http://www.artsy.net/collect2")
+    Switchboard.presentNavigationViewController(this, "https://www.artsy.net/collect2")
   }
 
   render() {
