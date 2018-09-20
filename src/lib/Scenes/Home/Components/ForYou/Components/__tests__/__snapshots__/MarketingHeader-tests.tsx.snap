@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getSubjectArtist looks correct when rendered 1`] = `
+exports[`MarketingHeader looks correct when rendered 1`] = `
 <View
   style={
     Array [
@@ -17,11 +17,16 @@ exports[`getSubjectArtist looks correct when rendered 1`] = `
   <View
     background="#F8F8F8"
     height="220px"
+    p={0}
     style={
       Array [
         Object {
           "display": "flex",
           "height": 220,
+          "paddingBottom": 0,
+          "paddingLeft": 0,
+          "paddingRight": 0,
+          "paddingTop": 0,
           "width": "100%",
         },
         Array [
@@ -32,18 +37,40 @@ exports[`getSubjectArtist looks correct when rendered 1`] = `
             "borderStyle": "solid",
             "borderWidth": 1,
             "height": 220,
-            "paddingBottom": 20,
-            "paddingLeft": 20,
-            "paddingRight": 20,
-            "paddingTop": 20,
+            "paddingBottom": 0,
+            "paddingLeft": 0,
+            "paddingRight": 0,
+            "paddingTop": 0,
             "width": "100%",
           },
-          undefined,
+          Object {
+            "overflow": "hidden",
+          },
         ],
       ]
     }
     width="100%"
-  />
+  >
+    <ARVideo
+      loop={true}
+      resizeMode="cover"
+      size={
+        Object {
+          "height": 220,
+          "width": 750,
+        }
+      }
+      source={
+        Object {
+          "isAsset": false,
+          "isNetwork": false,
+          "resizeMode": "cover",
+          "type": "mp4",
+          "uri": undefined,
+        }
+      }
+    />
+  </View>
   <View
     my={2}
     style={
@@ -75,7 +102,7 @@ exports[`getSubjectArtist looks correct when rendered 1`] = `
         ]
       }
     >
-      Introducing a new way to buy on Artsy
+      Buying art on Artsy is easier than ever before. Our most in-demand works are now available for instant purchase, with simple checkout and hassle-free shipping.
     </Text>
   </View>
   <View
@@ -96,7 +123,7 @@ exports[`getSubjectArtist looks correct when rendered 1`] = `
     style={
       Object {
         "alignItems": "center",
-        "backgroundColor": "rgba(51, 51, 51, 1)",
+        "backgroundColor": "rgba(0, 0, 0, 1)",
         "borderColor": "transparent",
         "borderRadius": 2,
         "borderWidth": 1,
@@ -121,7 +148,7 @@ exports[`getSubjectArtist looks correct when rendered 1`] = `
             "fontFamily": "AvantGardeGothicITC",
           },
           Object {
-            "color": "rgba(204, 204, 204, 1)",
+            "color": "rgba(255, 255, 255, 1)",
             "fontFamily": "Unica77LL-Medium",
             "fontSize": 14,
             "opacity": 1,
@@ -134,10 +161,12 @@ exports[`getSubjectArtist looks correct when rendered 1`] = `
     </Text>
   </View>
   <View
+    mb={-3}
     mt={4}
     style={
       Array [
         Object {
+          "marginBottom": -16,
           "marginTop": 32,
         },
         undefined,
