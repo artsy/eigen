@@ -10,7 +10,7 @@ When writing a component that refers to a local media asset
 
 note that
 
-1. React Native's compiler will see the require path and copy the file to `pods/Assets/path/to/location/` automatically; and
+1. React Native's compiler will see the require path and copy the file to `Pod/Assets/path/to/location/` automatically; and
 2. `require` will return an opaque reference to the file location (an integer), not the fully-resolved path. To get the fully-resolved path `resolveAssetSource` must be used:
 
 ```tsx
