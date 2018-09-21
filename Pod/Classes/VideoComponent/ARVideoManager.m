@@ -59,10 +59,9 @@
     // Figure our how it would fit un-cropped in aspect fill
     CGFloat aspectRatio = naturalVideoSize.width / naturalVideoSize.height;
     CGRect playerBounds = CGRectMake(0, 0, self.superview.bounds.size.height * aspectRatio, self.superview.bounds.size.height);
-    
-    // Don't animate setting the positioning of the video
+
     [CATransaction begin];
-    [CATransaction setAnimationDuration:0];
+    [CATransaction setDisableActions:YES];
     self.playerLayer.frame = playerBounds;
     [CATransaction commit];
 }
@@ -71,7 +70,7 @@
 
 - (void)dealloc
 {
-    [self.playerLayer removeObserver:self forKeyPath:@"readyForDisplay"];
+    [_playerLayer removeObserver:self forKeyPath:@"readyForDisplay"];
 }
 
 @end
@@ -82,11 +81,11 @@
 RCT_CUSTOM_VIEW_PROPERTY(source, NSDictionary, ARVideo)
 {
     NSDictionary *source = [RCTConvert NSDictionary:json];
-    bool isNetwork = [RCTConvert BOOL:[source objectForKey:@"isNetwork"]];
-    bool isAsset = [RCTConvert BOOL:[source objectForKey:@"isAsset"]];
-    NSString *uri = [source objectForKey:@"uri"];
-    NSString *type = [source objectForKey:@"type"];
-    NSString *resizeMode = [source objectForKey:@"resizeMode"];
+    BOOL isNetwork = [RCTConvert BOOL:source[@"isNetwork"]];
+    BOOL isAsset = [RCTConvert BOOL:source[@"isAsset"]];
+    NSString *uri = [RCTConvert NSString:source[@"uri"]];
+    NSString *type = [RCTConvert NSString:source[@"type"]];
+    NSString *resizeMode = [RCTConvert NSString:source[@"resizeMode"]];
 
     NSString *videoGravity;
     if ([resizeMode isEqualToString:@"stretch"]) {

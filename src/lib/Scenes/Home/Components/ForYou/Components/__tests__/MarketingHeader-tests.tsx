@@ -1,5 +1,4 @@
 import React from "react"
-import "react-native"
 import * as renderer from "react-test-renderer"
 import { MarketingHeader } from "../MarketingHeader"
 

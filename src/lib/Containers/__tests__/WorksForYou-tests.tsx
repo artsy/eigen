@@ -7,6 +7,7 @@ import { WorksForYou } from "../WorksForYou"
 
 beforeAll(() => {
   NativeModules.ARTemporaryAPIModule = { markNotificationsRead: jest.fn() }
+  NativeModules.Emission = { options: { enableBuyNowMakeOffer: true } }
   WorksForYou.prototype.componentDidUpdate = () => {
     return null
   }

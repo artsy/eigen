@@ -127,7 +127,10 @@ export class WorksForYou extends React.Component<Props, State> {
   render() {
     const hasNotifications = this.state.dataSource
 
-    /* if showing the empty state, the ScrollView should have a {flex: 1} style so it can expand to fit the screen.
+    // TODO: After /collect2 reaches 100% redirect in A/B remove
+    const showMarketingHeader = NativeModules.Emission.options.enableBuyNowMakeOffer
+
+    /* If showing the empty state, the ScrollView should have a {flex: 1} style so it can expand to fit the screen.
        otherwise, it should not use any flex growth.
     */
     return (
@@ -139,7 +142,7 @@ export class WorksForYou extends React.Component<Props, State> {
         refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
       >
         <View style={{ flex: 1 }}>
-          {hasNotifications && <MarketingHeader />}
+          {showMarketingHeader && <MarketingHeader />}
           {hasNotifications ? this.renderNotifications() : this.renderEmptyState()}
         </View>
       </ScrollView>

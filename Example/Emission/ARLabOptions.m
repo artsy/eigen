@@ -17,9 +17,9 @@ static NSDictionary *options = nil;
     //
     // if (Emission.options.example) {
     //   [something]
-    
+
     options = @{
-       @"example": @"An example Lab Option"
+       @"enableBuyNowMakeOffer": @"Enable BNMO features"
     };
   });
 
@@ -39,7 +39,7 @@ static NSDictionary *options = nil;
 {
   NSArray *options = [self labsOptions];
   NSMutableDictionary *mutableOptions = [NSMutableDictionary dictionary];
-  
+
   for (NSString *option in options) {
     [mutableOptions setObject:@([self boolForOption:option]) forKey:option];
   }
