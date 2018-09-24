@@ -2,3 +2,4 @@ src/__generated__/*.ts
 src/__generated__/*.json
 src/__generated__/*.graphql.ts
 node_modules
+package.json

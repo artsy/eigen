@@ -1,7 +1,0 @@
-[submodule "metaphysics"]
-	path = externals/metaphysics
-	url = https://github.com/artsy/metaphysics.git
-	branch = master
-[submodule "externals/elan"]
-	path = externals/elan
-	url = https://github.com/artsy/elan.git

@@ -4,16 +4,16 @@ Emission is a collection of [React Native] Components which are consumed by [Eig
 
 Inside Emission you will find:
 
-* An example app for building and running Emission's components with an Eigen-like API.
-* An NPM module that relies on React Native and manages the components.
-* A Podspec that wraps it all together for easy external usage in Eigen.
+- An example app for building and running Emission's components with an Eigen-like API.
+- An NPM module that relies on React Native and manages the components.
+- A Podspec that wraps it all together for easy external usage in Eigen.
 
 ### Meta
 
-* **State:** production
-* **Point People:** [@alloy](https://github.com/alloy), [@ashfurrow](https://github.com/ashfurrow)
-* **CI:** [![Build Status](https://travis-ci.org/artsy/emission.svg?branch=master)](https://travis-ci.org/artsy/emission)
-* **[Troubleshooting](https://github.com/artsy/emission/blob/master/docs/troubleshooting.md)**
+- **State:** production
+- **Point People:** [@alloy](https://github.com/alloy), [@ashfurrow](https://github.com/ashfurrow)
+- **CI:** [![Build Status](https://travis-ci.org/artsy/emission.svg?branch=master)](https://travis-ci.org/artsy/emission)
+- **[Troubleshooting](https://github.com/artsy/emission/blob/master/docs/troubleshooting.md)**
 
 This is a core [Artsy Mobile](https://github.com/artsy/mobile) OSS project, along with [Energy](https://github.com/artsy/energy), [Eidolon](https://github.com/artsy/eidolon), [Eigen](https://github.com/artsy/eigen) and [Emergence](https://github.com/artsy/emergence).
 
@@ -25,17 +25,17 @@ Want to know more about Emission? Read the [mobile](http://artsy.github.io/blog/
 
 _Automated install_:
 
-* **OSS**: `git clone https://github.com/artsy/emission.git && cd emission && make setup && make oss`
-* **Artsy**: `git clone https://github.com/artsy/emission.git && cd emission && make setup && make artsy`. Then look in 1password for the Eigen keys.
+- **OSS**: `git clone https://github.com/artsy/emission.git && cd emission && make setup && make oss`
+- **Artsy**: `git clone https://github.com/artsy/emission.git && cd emission && make setup && make artsy`. Then look in 1password for the Eigen keys.
 
 _Manual install_
 
 1. Make sure to check out submodules with `git submodule update --init`
 1. Install [Node.js][node], and [Yarn][yarn]: `$ brew install node yarn`
 1. Install file watcher used by React Native:
-   * `$ brew install pcre`
-   * `$ brew link pcre`
-   * `$ brew install watchman --HEAD`
+   - `$ brew install pcre`
+   - `$ brew link pcre`
+   - `$ brew install watchman --HEAD`
 1. Install NPM modules: `$ yarn install`
 1. Install Pods: `$ cd Example && bundle && bundle exec pod install`
 
@@ -43,14 +43,14 @@ _Manual install_
 
 1. Run `$ yarn start` from the top directory, which will:
 
-   * Clean the example app’s Xcode build dir.
-   * Start the example app’s React Native packager.
-   * Start the React Storybooks environment.
+   - Clean the example app’s Xcode build dir.
+   - Start the example app’s React Native packager.
+   - Start the React Storybooks environment.
 
 1. Now from Xcode you can run the app in `Example/Emission.xcworkspace`.
 
-* If you already have the app installed, you can run `open -a Simulator` to open the last sim, and then `xcrun simctl launch booted net.artsy.Emission` to open the app.
-* If you run into any issues with the above commands oftentimes a full clean can help. Run `rm -rf node_modules; rm -rf Example/Pods; yarn install; cd Example; bundle exec pod install` and then repeat the steps above.
+- If you already have the app installed, you can run `open -a Simulator` to open the last sim, and then `xcrun simctl launch booted net.artsy.Emission` to open the app.
+- If you run into any issues with the above commands oftentimes a full clean can help. Run `rm -rf node_modules; rm -rf Example/Pods; yarn install; cd Example; bundle exec pod install` and then repeat the steps above.
 
 ### Daily Development
 
@@ -70,8 +70,8 @@ There is a comprehensive document covering [the various options](docs/debugging.
 
 1. We vendor some data from other repositories that you will sometimes need to update. You can either update all of them
    with `$ yarn run sync-externals` or individually:
-   * The GraphQL schema of metaphysics that Relay uses to generate queries from: `$ yarn run sync-schema`
-   * The colors defined in Artsy’s style-guide: `$ yarn run sync-colors`
+   - The GraphQL schema of metaphysics that Relay uses to generate queries from: `$ yarn run sync-schema`
+   - The colors defined in Artsy’s style-guide: `$ yarn run sync-colors`
 
 ---
 
@@ -86,15 +86,13 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 
 You must have [Metaphysics][metaphysics] checked out in a folder adjacent to Emission's code. So there should be `~/code/emission` and `~/code/metaphysics`.
 
-**Note:** Deploys are currently not entirely automated, these instructions are _mostly_ valid but take a look at [this issue](https://github.com/artsy/emission/issues/1077#issuecomment-401128949) when things break in step 4.
+**Note:** Deploys are mostly automated, these instructions should be valid but take a look at [this issue](https://github.com/artsy/emission/issues/1077#issuecomment-401128949) if things break.
 
-1. Ensure that the React version required by Emission has been published to [our spec-repo][spec-repo].
-   Assuming no breaking changes in RN's folder structures, you can run `make update_specs_repos`.
-2. Update the [CHANGELOG](CHANGELOG.md) file to reflect the version that will be released and commit it.
-3. Don't change the `package.json` version.
-4. For non-beta releases, use either `npm version patch`, `npm version minor`, or `npm version major`. For
-   beta releases use `npm version prerelease`.
-5. If integrating in Eigen consult the docs [on updating Emission](https://github.com/artsy/eigen/blob/master/docs/updating_emission.md)
+1. Update the [CHANGELOG](CHANGELOG.md) file to reflect the version that will be released and commit it.
+1. Don't change the `package.json` version.
+1. For non-beta releases, use either `yarn release patch`, `yarn release minor`, or `yarn release major`. For
+   beta releases use `yarn release prerelease`.
+1. If integrating in Eigen consult the docs [on updating Emission](https://github.com/artsy/eigen/blob/master/docs/updating_emission.md)
 
 ### Automated Emission App Deploys
 
@@ -102,43 +100,43 @@ The Emission app (in `Example/`) is deployed automatically to TestFlight once a 
 
 ### Resources
 
-* React Native:
+- React Native:
 
-  * http://makeitopen.com
-  * https://github.com/fbsamples/f8app/
-  * http://facebook.github.io/react-native/docs/getting-started.html
-  * http://beginning-mobile-app-development-with-react-native.com/book-preview.html
+  - http://makeitopen.com
+  - https://github.com/fbsamples/f8app/
+  - http://facebook.github.io/react-native/docs/getting-started.html
+  - http://beginning-mobile-app-development-with-react-native.com/book-preview.html
 
-* Relay:
+- Relay:
 
-  * https://facebook.github.io/relay/docs/getting-started.html
-  * https://github.com/facebook/relay/tree/master/examples
-  * https://github.com/fbsamples/f8app/
+  - https://facebook.github.io/relay/docs/getting-started.html
+  - https://github.com/facebook/relay/tree/master/examples
+  - https://github.com/fbsamples/f8app/
 
-* TypeScript:
+- TypeScript:
 
-  * https://www.typescriptlang.org
-  * https://github.com/basarat/typescript-book
+  - https://www.typescriptlang.org
+  - https://github.com/basarat/typescript-book
 
-* Testing:
+- Testing:
 
-  * https://facebook.github.io/jest/
-  * https://facebook.github.io/jest/docs/api.html#content
-  * https://facebook.github.io/jest/blog/2016/07/27/jest-14.html
+  - https://facebook.github.io/jest/
+  - https://facebook.github.io/jest/docs/api.html#content
+  - https://facebook.github.io/jest/blog/2016/07/27/jest-14.html
 
-* Flexbox:
+- Flexbox:
 
-  * https://css-tricks.com/snippets/css/a-guide-to-flexbox/
-  * http://blog.krawaller.se/posts/a-react-app-demonstrating-css3-flexbox/
-  * https://egghead.io/courses/flexbox-fundamentals
+  - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
+  - http://blog.krawaller.se/posts/a-react-app-demonstrating-css3-flexbox/
+  - https://egghead.io/courses/flexbox-fundamentals
 
-* React Native Storybooks:
+- React Native Storybooks:
 
-  * https://github.com/storybooks/storybook/
-  * https://github.com/storybooks/storybook/tree/master/app/react-native
+  - https://github.com/storybooks/storybook/
+  - https://github.com/storybooks/storybook/tree/master/app/react-native
 
-* React Native Debugger:
-  * https://github.com/jhen0409/react-native-debugger
+- React Native Debugger:
+  - https://github.com/jhen0409/react-native-debugger
 
 [react native]: http://facebook.github.io/react-native/
 [eigen]: https://github.com/artsy/eigen
