@@ -23,8 +23,8 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFNetworking.h>
 
-// We ahve to support two different shaped pieces of data
-// for the same fields, so these properites are used in
+// We have to support two different shaped pieces of data
+// for the same fields, so these properties are used in
 // JSONKeyPathsByPropertyKey to get both fields
 // then a method switches between them depending on the data
 // weird huh?

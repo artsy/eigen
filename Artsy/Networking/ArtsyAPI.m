@@ -261,7 +261,7 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
 
         NSDictionary *jsonDictionary = JSON;
         id object = nil;
-        if (key) {
+        if (key && [jsonDictionary valueForKeyPath:key]) {
             object = [klass modelWithJSON:[jsonDictionary valueForKeyPath:key] error:nil];
             
         } else {
@@ -334,7 +334,7 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
                 continue;
             }
 
-            if (key) {
+            if (key && [dictionary valueForKeyPath:key]) {
                 object = [klass modelWithJSON:[dictionary valueForKeyPath:key] error:nil];
                 
             } else {

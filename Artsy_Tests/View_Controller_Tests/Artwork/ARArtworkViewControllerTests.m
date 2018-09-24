@@ -3,7 +3,6 @@
 #import "ArtsyAPI+Artworks.h"
 
 void stubEmptyBidderPositions(void);
-void stubEmptySaleArtworks(void);
 void stubSaleArtwork(void);
 void stubBidder(BOOL requiresApproval);
 
@@ -168,9 +167,7 @@ describe(@"at a closed auction", ^{
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/bidders" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
         stubEmptyBidderPositions();
-        stubEmptySaleArtworks();
         stubSaleArtwork();
-        stubEmptySaleArtworks();
     });
 
     it(@"displays artwork on iPhone", ^{
@@ -227,7 +224,6 @@ describe(@"at an auction requireing registration", ^{
         
         stubEmptyBidderPositions();
         stubBidder(YES);
-        stubEmptySaleArtworks();
         stubSaleArtwork();
     });
 
@@ -258,7 +254,6 @@ describe(@"before a live auction", ^{
         stubEmptyBidderPositions();
         stubBidder(NO);
         stubSaleArtwork();
-        stubEmptySaleArtworks();
     });
     
     it(@"sets up an internal timer", ^{
@@ -295,10 +290,6 @@ it(@"calls recordViewingOfArtwork within viewDidLoad", ^{
 pending(@"at a fair");
 
 SpecEnd;
-
-void stubEmptySaleArtworks() {
-//    [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:@{}];
-}
 
 void stubEmptyBidderPositions() {
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/bidder_positions" withParams:@{
