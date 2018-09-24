@@ -88,6 +88,8 @@ You must have [Metaphysics][metaphysics] checked out in a folder adjacent to Emi
 
 **Note:** Deploys are mostly automated, these instructions should be valid but take a look at [this issue](https://github.com/artsy/emission/issues/1077#issuecomment-401128949) if things break.
 
+**Note 2:** If you're updating React Native, you're gonna have to do a lot of this stuff manually. See the makefile/alloy/orta for more info.
+
 1. Update the [CHANGELOG](CHANGELOG.md) file to reflect the version that will be released and commit it.
 1. Don't change the `package.json` version.
 1. For non-beta releases, use either `yarn release patch`, `yarn release minor`, or `yarn release major`. For
