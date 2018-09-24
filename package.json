@@ -1,7 +1,7 @@
 {
   "name": "emission",
   "version": "1.5.15",
-  "native-code-version": 7,
+  "native-code-version": 8,
   "description": "Artsy React(Native) components.",
   "engines": {
     "node": "8.4.x",
@@ -70,7 +70,7 @@
     "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/relay-runtime-1.5.0-artsy.5.tgz"
   },
   "dependencies": {
-    "@artsy/palette": "^2.10.0",
+    "@artsy/palette": "^2.11.0",
     "lodash": "^4.17.4",
     "moment": "^2.19.4",
     "moment-timezone": "^0.5.17",

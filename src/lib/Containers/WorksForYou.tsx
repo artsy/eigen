@@ -23,6 +23,7 @@ import colors from "lib/data/colors"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 import { WorksForYou_viewer } from "__generated__/WorksForYou_viewer.graphql"
+import { MarketingHeader } from "../Scenes/Home/Components/ForYou/Components/MarketingHeader"
 
 interface Props {
   relay: RelayPaginationProp
@@ -126,7 +127,10 @@ export class WorksForYou extends React.Component<Props, State> {
   render() {
     const hasNotifications = this.state.dataSource
 
-    /* if showing the empty state, the ScrollView should have a {flex: 1} style so it can expand to fit the screen.
+    // TODO: After /collect2 reaches 100% redirect in A/B remove
+    const showMarketingHeader = NativeModules.Emission.options.enableBuyNowMakeOffer
+
+    /* If showing the empty state, the ScrollView should have a {flex: 1} style so it can expand to fit the screen.
        otherwise, it should not use any flex growth.
     */
     return (
@@ -137,7 +141,10 @@ export class WorksForYou extends React.Component<Props, State> {
         ref={scrollView => (this.scrollView = scrollView)}
         refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
       >
-        <View style={{ flex: 1 }}>{hasNotifications ? this.renderNotifications() : this.renderEmptyState()}</View>
+        <View style={{ flex: 1 }}>
+          {showMarketingHeader && <MarketingHeader />}
+          {hasNotifications ? this.renderNotifications() : this.renderEmptyState()}
+        </View>
       </ScrollView>
     )
   }

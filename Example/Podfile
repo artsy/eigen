@@ -53,6 +53,7 @@ target 'Emission' do
                               :branch => 'fetch-user-details'
   # Stripe- tag must match package.json's tipsi-stripe dep
   pod 'tipsi-stripe', :podspec => tispi_stripe_spec_path
+
 end
 
 plugin 'cocoapods-keys', {

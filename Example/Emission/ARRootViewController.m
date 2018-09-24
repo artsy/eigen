@@ -84,6 +84,20 @@
   self.tableViewData = tableViewData;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+  [super viewDidAppear:animated];
+  
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    BOOL autoJump = [[NSUserDefaults standardUserDefaults] boolForKey:ARJumpStraightIntoStorybooks];
+    if (autoJump) {
+      id viewController = [ARStorybookComponentViewController new];
+      [self.navigationController pushViewController:viewController animated:YES];
+    }
+  });
+}
+
 /// Sections
 
 - (ARSectionData *)jumpToViewControllersSection
@@ -112,6 +126,7 @@
   [self setupSection:sectionData withTitle:@"Developer"];
 
   [sectionData addCellData:self.jumpToStorybooks];
+  [sectionData addCellData:self.autoOpenStorybooksOnLaunch];
 
   return sectionData;
 }
@@ -163,6 +178,32 @@
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
+
+- (ARCellData *)autoOpenStorybooksOnLaunch
+{
+  BOOL autoJump = [[NSUserDefaults standardUserDefaults] boolForKey:ARJumpStraightIntoStorybooks];
+  NSString *title = autoJump ? @"Stop auto-jumping into Storybooks" : @"Jump into Storybooks on launch";
+  
+  ARCellData *autoSwitchCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+  [autoSwitchCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
+    cell.textLabel.text = title;
+    cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:autoJump];
+  }];
+  
+  [autoSwitchCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:!autoJump];
+    
+    [self showAlertViewWithTitle:@"Confirm Switch" message:@"Switching auto-storybooks." actionTitle:@"Do it" actionHandler:^{
+      [[NSUserDefaults standardUserDefaults] setBool:!autoJump forKey:ARJumpStraightIntoStorybooks];
+      [[NSUserDefaults standardUserDefaults] synchronize];
+      exit(0);
+    }];
+  }];
+  return autoSwitchCellData;
+
+}
+
 
 - (ARCellData *)jumpToEndUserStorybooks
 {
