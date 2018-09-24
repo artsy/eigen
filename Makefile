@@ -65,6 +65,7 @@ YOGA_SRC_BEFORE=yoga\/\*\*\/\*.{c,h}
 YOGA_SRC_AFTER=ReactCommon\/yoga\/yoga\/\*\*\/\*.\{c,h\}
 YOGA_MASTER_PODSPEC_URL = "https://raw.githubusercontent.com/facebook/react-native/master/ReactCommon/yoga/yoga.podspec"
 
+# This is only needed if you're updating React Native
 update_specs_repos:
 ifndef JQ
 		$(error "Please install jq before running `brew install jq`")
