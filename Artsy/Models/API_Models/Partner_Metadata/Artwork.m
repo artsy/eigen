@@ -23,6 +23,18 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFNetworking.h>
 
+// We have to support two different shaped pieces of data
+// for the same fields, so these properties are used in
+// JSONKeyPathsByPropertyKey to get both fields
+// then a method switches between them depending on the data
+// weird huh?
+@interface Artwork()
+@property (nonatomic, strong) NSNumber *gravSold;
+@property (nonatomic, strong) NSNumber *mpSold;
+
+@property (nonatomic, strong) NSNumber *gravIsPriceHidden;
+@property (nonatomic, strong) NSNumber *mpIsPriceHidden;
+@end
 
 @implementation Artwork {
     // If we give these as properties they can cause
@@ -35,6 +47,7 @@
     KSDeferred *_partnerShowDeferred;
     enum ARHeartStatus _heartStatus;
     Fair *_fair;
+
 }
 
 - (instancetype)initWithArtworkID:(NSString *)artworkID
@@ -55,24 +68,25 @@
     return @{
         ar_keypath(Artwork.new, artworkID) : @"id",
         ar_keypath(Artwork.new, artworkUUID) : @"_id",
-        ar_keypath(Artwork.new, auctionResultCount) : @"comparables_count",
         ar_keypath(Artwork.new, canShareImage) : @"can_share_image",
         ar_keypath(Artwork.new, collectingInstitution) : @"collecting_institution",
         ar_keypath(Artwork.new, defaultImage) : @"images",
         ar_keypath(Artwork.new, additionalInfo) : @"additional_information",
         ar_keypath(Artwork.new, dimensionsCM) : @"dimensions.cm",
         ar_keypath(Artwork.new, dimensionsInches) : @"dimensions.in",
-        ar_keypath(Artwork.new, attributionClass) : @"attribution_class",
-        ar_keypath(Artwork.new, displayTitle) : @"display",
+        ar_keypath(Artwork.new, attributionClass) : @"attribution_class.name",
         ar_keypath(Artwork.new, editionSets) : @"edition_sets",
         ar_keypath(Artwork.new, exhibitionHistory) : @"exhibition_history",
         ar_keypath(Artwork.new, forSale) : @"forsale",
+        ar_keypath(Artwork.new, title) : @"title",
         ar_keypath(Artwork.new, imageRights) : @"image_rights",
         ar_keypath(Artwork.new, published) : @"published",
         ar_keypath(Artwork.new, saleMessage) : @"sale_message",
-        ar_keypath(Artwork.new, sold) : @"sold",
-        ar_keypath(Artwork.new, slug) : @"slug",
-        ar_keypath(Artwork.new, isPriceHidden) : @"price_hidden",
+        ar_keypath(Artwork.new, gravSold) : @"is_sold",
+        ar_keypath(Artwork.new, mpSold) : @"sold",
+        ar_keypath(Artwork.new, slug) : @"id",
+        ar_keypath(Artwork.new, gravIsPriceHidden) : @"price_hidden",
+        ar_keypath(Artwork.new, mpIsPriceHidden) : @"is_price_hidden",
         ar_keypath(Artwork.new, publishedAt) : @"published_at"
     };
 }
@@ -117,6 +131,7 @@
         return @[image];
         }];
 }
+
 
 + (NSValueTransformer *)acquireableJSONTransformer
 {
@@ -238,6 +253,18 @@
                                   failure:^(NSError *error) {
             success(@[]);
                                   }];
+}
+
+// See the comments up in the Artwork category extension at the top
+
+- (NSNumber *)sold
+{
+    return self.gravSold.boolValue ? self.gravSold : self.mpSold;
+}
+
+- (NSNumber *)isPriceHidden
+{
+    return self.gravIsPriceHidden.boolValue ? self.gravIsPriceHidden : self.mpIsPriceHidden;
 }
 
 - (BOOL)hasWidth

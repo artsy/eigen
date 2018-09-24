@@ -261,10 +261,9 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
 
         NSDictionary *jsonDictionary = JSON;
         id object = nil;
-        if (key) {
-            if (jsonDictionary[key]) {
-                object = [klass modelWithJSON:jsonDictionary[key] error:nil];
-            }
+        if (key && [jsonDictionary valueForKeyPath:key]) {
+            object = [klass modelWithJSON:[jsonDictionary valueForKeyPath:key] error:nil];
+            
         } else {
             object = [klass modelWithJSON:jsonDictionary error:nil];
         }
@@ -308,14 +307,14 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
             });
         }
     }
-        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         [ArtsyAPI handleXappTokenError:error];
         ar_dispatch_main_queue(^{
             if (failure) {
                 failure(error);
             }
         });
-        }];
+    }];
     getOperation.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     [getOperation start];
     return getOperation;
@@ -335,10 +334,9 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
                 continue;
             }
 
-            if (key) {
-                if ([dictionary.allKeys containsObject:key]) {
-                    object = [klass modelWithJSON:dictionary[key] error:nil];
-                }
+            if (key && [dictionary valueForKeyPath:key]) {
+                object = [klass modelWithJSON:[dictionary valueForKeyPath:key] error:nil];
+                
             } else {
                 object = [klass modelWithJSON:dictionary error:nil];
             }

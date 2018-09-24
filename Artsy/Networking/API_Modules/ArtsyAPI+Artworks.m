@@ -23,7 +23,7 @@
 + (void)getArtworkInfo:(NSString *)artworkID success:(void (^)(Artwork *artwork))success failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newArtworkInfoRequestForArtworkID:artworkID];
-    [self getRequest:request parseIntoAClass:Artwork.class success:success failure:failure];
+    [self getRequest:request parseIntoAClass:Artwork.class withKey:@"data.artwork" success:success failure:failure];
 }
 
 + (AFHTTPRequestOperation *)getArtistArtworks:(Artist *)artist andPage:(NSInteger)page withParams:(NSDictionary *)params success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure

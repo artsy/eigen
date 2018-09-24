@@ -57,6 +57,12 @@
     return [self graphQLFileNamed:@"conversations"];
 }
 
++ (NSString *)graphQueryForArtwork
+{
+    return [self graphQLFileNamed:@"artwork"];
+}
+
+
 @end
 
 #pragma clang dianostic pop

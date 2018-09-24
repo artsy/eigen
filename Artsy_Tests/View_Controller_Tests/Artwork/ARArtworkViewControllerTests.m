@@ -3,7 +3,6 @@
 #import "ArtsyAPI+Artworks.h"
 
 void stubEmptyBidderPositions(void);
-void stubEmptySaleArtworks(void);
 void stubSaleArtwork(void);
 void stubBidder(BOOL requiresApproval);
 
@@ -24,8 +23,12 @@ beforeEach(^{
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/shows" withResponse:@[]];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@[]];
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/some-artwork" withResponse:@{ @"id": @"some-artwork", @"title": @"Some Title" }];
-    [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:@{}];
+    
+    // This is the mutation to say "we have seen this artwork"
+    [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:@{ }];
+
+    // This is the artwork request
+    [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:@{ @"data": @{ @"artwork" : @{ @"id": @"some-artwork", @"title": @"Some Title" } } }];
 });
 
 describe(@"no related data", ^{
@@ -126,14 +129,16 @@ describe(@"with related artworks", ^{
 });
 
 it(@"shows an upublished banner", ^{
+
     NSDictionary *artworkDict = @{
         @"id" : @"artwork-id",
         @"title" : @"Artwork Title",
         @"published" : @NO,
     };
-    Artwork *artwork = [Artwork modelWithJSON:artworkDict];
-    [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/artwork/artwork-id" withResponse:artworkDict];
 
+    [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:@{ @"data": @{ @"artwork" : artworkDict } }];
+
+    Artwork *artwork = [Artwork modelWithJSON:artworkDict];
     CGRect frame = [[UIScreen mainScreen] bounds];
     vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
     [vc ar_presentWithFrame:frame];
@@ -150,8 +155,7 @@ it(@"shows an upublished banner", ^{
 
 describe(@"at a closed auction", ^{
     before(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[
-@{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[@{
             @"id": @"some-auction",
             @"name": @"Some Auction",
             @"is_auction": @YES,
@@ -163,9 +167,7 @@ describe(@"at a closed auction", ^{
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/bidders" withResponse:@[]];
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
         stubEmptyBidderPositions();
-        stubEmptySaleArtworks();
         stubSaleArtwork();
-        stubEmptySaleArtworks();
     });
 
     it(@"displays artwork on iPhone", ^{
@@ -208,8 +210,7 @@ describe(@"at a closed auction", ^{
 
 describe(@"at an auction requireing registration", ^{
     before(^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[
-            @{
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/sales" withResponse:@[@{
             @"id": @"some-auction",
             @"name": @"Some Auction",
             @"is_auction": @YES,
@@ -218,10 +219,11 @@ describe(@"at an auction requireing registration", ^{
             @"auction_state": @"open",
             @"published": @YES,
         }]];
+        
         [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/related/layer/synthetic/main/artworks" withResponse:@[]];
+        
         stubEmptyBidderPositions();
         stubBidder(YES);
-        stubEmptySaleArtworks();
         stubSaleArtwork();
     });
 
@@ -252,7 +254,6 @@ describe(@"before a live auction", ^{
         stubEmptyBidderPositions();
         stubBidder(NO);
         stubSaleArtwork();
-        stubEmptySaleArtworks();
     });
     
     it(@"sets up an internal timer", ^{
@@ -265,7 +266,6 @@ describe(@"before a live auction", ^{
 });
 
 it(@"creates an NSUserActivity", ^{
-    
     vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
     [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
     [vc setHasFinishedScrolling];
@@ -290,10 +290,6 @@ it(@"calls recordViewingOfArtwork within viewDidLoad", ^{
 pending(@"at a fair");
 
 SpecEnd;
-
-void stubEmptySaleArtworks() {
-    [OHHTTPStubs stubJSONResponseAtPath:@"" withResponse:@{}];
-}
 
 void stubEmptyBidderPositions() {
     [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/me/bidder_positions" withParams:@{

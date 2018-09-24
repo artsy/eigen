@@ -64,10 +64,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *date;
 @property (nonatomic, copy) NSString *_Nullable title;
-@property (nonatomic, copy) NSString *displayTitle;
 @property (nonatomic, copy) NSString *exhibitionHistory;
 @property (nonatomic, copy) NSString *additionalInfo;
-@property (nonatomic, strong) NSNumber *isPriceHidden;
+@property (nonatomic, copy, readonly) NSNumber *isPriceHidden;
 @property (nonatomic, strong, getter=isPublished) NSNumber *published;
 @property (nonatomic, copy) NSString *imageRights;
 @property (nonatomic, copy) NSString *medium;
@@ -82,10 +81,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSNumber *acquireable;
 @property (nonatomic, strong) NSNumber *inquireable;
-@property (nonatomic, strong) NSNumber *sold;
+@property (nonatomic, copy, readonly) NSNumber *sold;
 @property (nonatomic, strong) NSNumber *forSale;
 @property (nonatomic, strong) NSNumber *canShareImage;
-@property (nonatomic, strong) NSNumber *auctionResultCount;
 @property (nonatomic, strong) Sale *auction;
 @property (readonly, nonatomic, assign) BOOL isFollowed;
 

@@ -271,7 +271,7 @@ context(@"price view", ^{
         });
 
         it(@"sold", ^{
-            view.artwork = [Artwork modelFromDictionary:@{ @"price" : @"$30,000", @"sold" : @(true) }];
+            view.artwork = [Artwork modelWithJSON:@{ @"price" : @"$30,000", @"sold" : @(true) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -282,7 +282,7 @@ context(@"price view", ^{
         // As show price label would fail on the first check of `self.artwork.price.length`
 
         pending(@"sold but inquireable", ^{
-            view.artwork = [Artwork modelFromDictionary:@{ @"availability" : @(ARArtworkAvailabilitySold), @"sold" : @(true), @"inquireable": @(true), @"forSale": @(false) }];
+            view.artwork = [Artwork modelWithJSON:@{ @"availability" : @(ARArtworkAvailabilitySold), @"sold" : @(true), @"inquireable": @(true), @"forSale": @(false) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -290,7 +290,7 @@ context(@"price view", ^{
         });
 
         it(@"contact for price", ^{
-            view.artwork = [Artwork modelFromDictionary:@{ @"price" : @"$30,000", @"inquireable" : @(true), @"availability" : @(ARArtworkAvailabilityForSale), @"isPriceHidden" : @(true) }];
+            view.artwork = [Artwork modelFromDictionary:@{ @"price" : @"$30,000", @"inquireable" : @(true), @"availability" : @(ARArtworkAvailabilityForSale), @"mpIsPriceHidden" : @(true) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -298,7 +298,7 @@ context(@"price view", ^{
         });
 
         it(@"contact for price with no price", ^{
-            view.artwork = [Artwork modelFromDictionary:@{ @"inquireable" : @(true), @"availability" : @(ARArtworkAvailabilityForSale), @"isPriceHidden" : @(true) }];
+            view.artwork = [Artwork modelFromDictionary:@{ @"inquireable" : @(true), @"availability" : @(ARArtworkAvailabilityForSale), @"gravIsPriceHidden" : @(true) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -306,7 +306,7 @@ context(@"price view", ^{
         });
 
         it(@"not for sale", ^{
-            view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false), @"inquireable": @(true), @"forSale": @(false)}];
+            view.artwork = [Artwork modelWithJSON:@{ @"sold" : @(false), @"inquireable": @(true), @"forSale": @(false)}];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -314,7 +314,7 @@ context(@"price view", ^{
         });
 
         it(@"not for sale, but has a price to show", ^{
-            view.artwork = [Artwork modelFromDictionary:@{ @"price" : @"$30,000", @"isPriceHidden" : @(false), @"sold" : @(false), @"inquireable": @(true), @"forSale": @(false)}];
+            view.artwork = [Artwork modelWithJSON:@{ @"price" : @"$30,000", @"is_price_hidden" : @(false), @"sold" : @(false), @"inquireable": @(true), @"forSale": @(false)}];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -327,7 +327,7 @@ context(@"price view", ^{
             it(@"is sold", ^{
                 view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000), @"symbol" : @"$" }];
                 view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"auction_state" : @"closed" }];
-                view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
+                view.artwork = [Artwork modelWithJSON:@{ @"sold" : @(false) }];
                 [view updateUI];
                 [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
                 [view layoutIfNeeded];
@@ -338,7 +338,7 @@ context(@"price view", ^{
         it(@"no bids", ^{
             view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000), @"symbol" : @"$" }];
             view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
-            view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
+            view.artwork = [Artwork modelWithJSON:@{ @"sold" : @(false) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -352,7 +352,7 @@ context(@"price view", ^{
             view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
 
             expect(view.saleArtwork.saleHighestBid.cents).to.equal(10000000);
-            view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
+            view.artwork = [Artwork modelWithJSON:@{ @"sold" : @(false) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -364,7 +364,7 @@ context(@"price view", ^{
             view.saleArtwork = [SaleArtwork saleArtworkWithHighBid:highBid AndReserveStatus:ARReserveStatusReserveMet];
             view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
 
-            view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
+            view.artwork = [Artwork modelWithJSON:@{ @"sold" : @(false) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -375,7 +375,7 @@ context(@"price view", ^{
             Bid *highBid = [Bid modelWithJSON:@{ @"id" : @"abc", @"amount_cents" : @(10000000), @"symbol" : @"$" }];
             view.saleArtwork = [SaleArtwork saleArtworkWithHighBid:highBid AndReserveStatus:ARReserveStatusReserveNotMet];
             view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
-            view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
+            view.artwork = [Artwork modelWithJSON:@{ @"sold" : @(false) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -385,7 +385,7 @@ context(@"price view", ^{
         it(@"reserve not met and has no bids", ^{
             view.saleArtwork = [SaleArtwork modelWithJSON:@{ @"opening_bid_cents" : @(1000000), @"reserve_status" : @"reserve_not_met", @"symbol" : @"$" }];
             view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
-            view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
+            view.artwork = [Artwork modelWithJSON:@{ @"sold" : @(false) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -413,7 +413,7 @@ context(@"price view", ^{
                 view.saleArtwork = saleArtwork;
                 view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
 
-                view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
+                view.artwork = [Artwork modelWithJSON:@{ @"sold" : @(false) }];
                 [view updateUI];
                 [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
                 [view layoutIfNeeded];
@@ -440,7 +440,7 @@ context(@"price view", ^{
                 view.saleArtwork = saleArtwork;
                 view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
 
-                view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
+                view.artwork = [Artwork modelWithJSON:@{ @"sold" : @(false) }];
                 [view updateUI];
                 [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
                 [view layoutIfNeeded];
@@ -467,7 +467,7 @@ context(@"price view", ^{
                 view.saleArtwork = saleArtwork;
                 view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
 
-                view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
+                view.artwork = [Artwork modelWithJSON:@{ @"sold" : @(false) }];
                 [view updateUI];
                 [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
                 [view layoutIfNeeded];
@@ -494,7 +494,7 @@ context(@"price view", ^{
                 view.saleArtwork = saleArtwork;
                 view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
 
-                view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
+                view.artwork = [Artwork modelWithJSON:@{ @"sold" : @(false) }];
                 [view updateUI];
                 [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
                 [view layoutIfNeeded];
@@ -521,7 +521,7 @@ context(@"price view", ^{
                 view.saleArtwork = saleArtwork;
                 view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
 
-                view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
+                view.artwork = [Artwork modelWithJSON:@{ @"sold" : @(false) }];
                 [view updateUI];
                 [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
                 [view layoutIfNeeded];
@@ -548,7 +548,7 @@ context(@"price view", ^{
                 view.saleArtwork = saleArtwork;
                 view.saleArtwork.auction = [Sale modelWithJSON:@{ @"start_at" : @"1976-01-30T15:00:00+00:00", @"end_at" : @"2045-01-30T15:00:00+00:00" }];
 
-                view.artwork = [Artwork modelFromDictionary:@{ @"sold" : @(false) }];
+                view.artwork = [Artwork modelWithJSON:@{ @"sold" : @(false) }];
                 [view updateUI];
                 [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
                 [view layoutIfNeeded];

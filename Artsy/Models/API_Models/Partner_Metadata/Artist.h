@@ -18,9 +18,6 @@
 @property (readonly, nonatomic, copy) NSString *birthday;
 @property (readonly, nonatomic, copy) NSString *nationality;
 @property (readonly, nonatomic, copy) NSString *blurb;
-@property (readonly, nonatomic, copy) NSNumber *publishedArtworksCount;
-@property (readonly, nonatomic, copy) NSNumber *forSaleArtworksCount;
-
 
 - (instancetype)initWithArtistID:(NSString *)artistID;
 
