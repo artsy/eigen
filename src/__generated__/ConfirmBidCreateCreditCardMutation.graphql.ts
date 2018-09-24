@@ -12,11 +12,11 @@ export type ConfirmBidCreateCreditCardMutationResponse = {
         readonly creditCardOrError: ({
             readonly creditCard?: ({
                 readonly id: string;
-                readonly brand: string | null;
+                readonly brand: string;
                 readonly name: string | null;
-                readonly last_digits: string | null;
-                readonly expiration_month: number | null;
-                readonly expiration_year: number | null;
+                readonly last_digits: string;
+                readonly expiration_month: number;
+                readonly expiration_year: number;
             }) | null;
             readonly mutationError?: ({
                 readonly type: string | null;
