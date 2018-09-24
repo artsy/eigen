@@ -54,13 +54,6 @@ _Manual install_
 
 ### Daily Development
 
-If you like git hooks, you could setup the following:
-
-* Lint and auto-fix new changes on commit:
-  `$ echo -e "#!/bin/sh\nyarn run lint-staged\n" > .git/hooks/pre-commit; chmod +x .git/hooks/pre-commit`
-* Run type-checker before push:
-  `$ echo -e "#!/bin/sh\nyarn run type-check\n" > .git/hooks/pre-push; chmod +x .git/hooks/pre-push`
-
 To use [Storybooks](https://github.com/storybooks/storybook), select "Open Storybook" from the "Developer" section of the root view in the app. You can also use the [VSCode Storybooks plugin](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-react-native-storybooks).
 
 ---
@@ -93,7 +86,7 @@ failed to identify this call site. Make sure it is being used verbatim as `Relay
 
 You must have [Metaphysics][metaphysics] checked out in a folder adjacent to Emission's code. So there should be `~/code/emission` and `~/code/metaphysics`.
 
-**Note:** Deploys are currently not working, these instructions are _mostly_ valid but take a look at [this issue](https://github.com/artsy/emission/issues/1077#issuecomment-401128949) when things break in step 4.
+**Note:** Deploys are currently not entirely automated, these instructions are _mostly_ valid but take a look at [this issue](https://github.com/artsy/emission/issues/1077#issuecomment-401128949) when things break in step 4.
 
 1. Ensure that the React version required by Emission has been published to [our spec-repo][spec-repo].
    Assuming no breaking changes in RN's folder structures, you can run `make update_specs_repos`.

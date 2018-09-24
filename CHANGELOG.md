@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.6.0
+
 * Adding artwork badges to brick - matt
 * Add MarketingHeader to Home/WorksForYou - chris/orta
 * Add @artsy/palette - yuki/orta/chris
