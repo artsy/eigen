@@ -12,7 +12,9 @@ export class MaxBidPicker extends React.Component<MaxBidPickerProps> {
   render() {
     return (
       <StyledPicker {...this.props} onValueChange={this.props.onValueChange} selectedValue={this.props.selectedValue}>
-        {this.props.bids.map((bid, index) => <Picker.Item key={index} value={index} label={bid.display} />)}
+        {this.props.bids.map((bid, index) => (
+          <Picker.Item key={index} value={index} label={bid.display} />
+        ))}
       </StyledPicker>
     )
   }

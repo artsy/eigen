@@ -29,7 +29,9 @@ export function isCloseToBottom(onScrollEnd: CallBack, pageEndThreshold: number 
   }
 
   return (props: ScrollEventProps) => {
-    const { nativeEvent: { contentOffset, contentSize, layoutMeasurement } } = props
+    const {
+      nativeEvent: { contentOffset, contentSize, layoutMeasurement },
+    } = props
     const contentLength = contentSize.height
     const isEnabled = contentLength !== state.sentEndForContentLength
 

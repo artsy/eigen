@@ -29,7 +29,11 @@ class HeroUnits extends React.Component<Props, State> {
   }
 
   handleLayout = (event: LayoutChangeEvent) => {
-    const { nativeEvent: { layout: { width } } } = event
+    const {
+      nativeEvent: {
+        layout: { width },
+      },
+    } = event
     const margin = width > 700 ? 40 : 20
     const height = width > 700 ? 300 : 160
     const fontSize = width > 700 ? 30 : 20

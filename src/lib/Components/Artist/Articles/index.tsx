@@ -23,7 +23,9 @@ class Articles extends Component<Props> {
           scrollsToTop={false}
           style={{ overflow: "visible", marginBottom: 40 }}
         >
-          {articles.map(article => <Article key={article.__id} article={article as any} style={styles.article} />)}
+          {articles.map(article => (
+            <Article key={article.__id} article={article as any} style={styles.article} />
+          ))}
         </ScrollView>
       </View>
     )

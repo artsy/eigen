@@ -121,7 +121,8 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
                 : query &&
                   !isLoading && (
                     <Serif size="4" ml={3} color="black30">
-                      Could not find “{query}.”
+                      Could not find “{query}
+                      .”
                     </Serif>
                   )}
             </ScrollView>

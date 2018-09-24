@@ -111,7 +111,11 @@ const Contents: React.SFC<{ deviceProps: DeviceProps; onPress: () => void }> = (
           </HorizontalLayout>
           <HorizontalLayout {...deviceProps}>
             <Icon source={require("../../../../../images/money.png")} />
-            <SmallHeadline {...deviceProps}>Receive payment once the{"\n"}work sells</SmallHeadline>
+            <SmallHeadline {...deviceProps}>
+              Receive payment once the
+              {"\n"}
+              work sells
+            </SmallHeadline>
           </HorizontalLayout>
           <ButtonsView {...deviceProps}>
             <Button text="GET STARTED" onPress={onPress} style={{ marginTop: 0 }} />

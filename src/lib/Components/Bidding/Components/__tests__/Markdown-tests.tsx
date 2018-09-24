@@ -19,7 +19,8 @@ it("renders multiple paragraphs as Text elements", () => {
   const markdown = renderer.create(
     <BiddingThemeProvider>
       <Markdown>
-        paragraph 1 has some text.{"\n"}
+        paragraph 1 has some text.
+        {"\n"}
         {"\n"}
         paragraph 2 also has text.
       </Markdown>
@@ -35,8 +36,10 @@ it("renders links as LinkText", () => {
   const markdown = renderer.create(
     <BiddingThemeProvider>
       <Markdown>
-        Sorry, your bid wasn’t received before{"\n"}
-        live bidding started. To continue{"\n"}
+        Sorry, your bid wasn’t received before
+        {"\n"}
+        live bidding started. To continue
+        {"\n"}
         bidding, please [join the live auction](http://www.artsy.net).
       </Markdown>
     </BiddingThemeProvider>
@@ -54,8 +57,10 @@ it("renders mailto links as LinkText", () => {
   const markdown = renderer.create(
     <BiddingThemeProvider>
       <Markdown>
-        Your bid can’t be placed at this time.{"\n"}
-        Please contact [support@artsy.net](mailto:support@artsy.net) for{"\n"}
+        Your bid can’t be placed at this time.
+        {"\n"}
+        Please contact [support@artsy.net](mailto:support@artsy.net) for
+        {"\n"}
         more information.
       </Markdown>
     </BiddingThemeProvider>
