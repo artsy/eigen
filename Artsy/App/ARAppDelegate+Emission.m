@@ -105,6 +105,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         stripePublishableKey = keys.stripeProductionPublishableKey;
     }
 
+    NSDictionary *labOptions = [AROptions labOptionsMap];
     AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
                                                                       authenticationToken:authenticationToken
                                                                                 sentryDSN:sentryDSN
@@ -113,7 +114,8 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                                                                                gravityURL:gravity
                                                                            metaphysicsURL:metaphysics
                                                                             predictionURL:liveAuctionsURL
-                                                                                userAgent:ARRouter.userAgent];
+                                                                                userAgent:ARRouter.userAgent
+                                                                                  options:labOptions];
 
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:packagerURL];
     [AREmission setSharedInstance:emission];
