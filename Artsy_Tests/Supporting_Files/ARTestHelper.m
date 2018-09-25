@@ -68,7 +68,8 @@
                                                                            gravityURL:gravity
                                                                        metaphysicsURL:metaphysics
                                                                         predictionURL:@""
-                                                                            userAgent:@"Eigen Tests"];
+                                                                            userAgent:@"Eigen Tests"
+                                                                              options:@{}];
 
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:nil];
     [AREmission setSharedInstance:emission];
