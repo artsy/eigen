@@ -4,7 +4,6 @@
 // All the options as consts
 extern NSString *const AROptionsLoadingScreenAlpha;
 extern NSString *const AROptionsUseVCR;
-extern NSString *const AROptionsSettingsMenu;
 extern NSString *const AROptionsTappingPartnerSendsToPartner;
 extern NSString *const AROptionsShowAnalyticsOnScreen;
 extern NSString *const AROptionsShowMartsyOnScreen;

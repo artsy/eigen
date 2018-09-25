@@ -2,6 +2,7 @@
 
 static NSDictionary *options = nil;
 
+// Up here is the NSUserDefault set, and sent into Emission
 
 // UI Tweaks
 NSString *const AROptionsLoadingScreenAlpha = @"Loading screens are transparent";
@@ -19,32 +20,29 @@ NSString *const AROptionsDevReactEnv = @"Use Dev React ENV";
 
 // Dev
 NSString *const AROptionsUseVCR = @"Use offline recording";
-NSString *const AROptionsSettingsMenu = @"Enable user settings";
 
-// Replicating the options in Emission
+// These variables may need to replicate the options in Emission
 // See: https://github.com/artsy/emission/blob/master/Example/Emission/ARLabOptions.m
-NSString *const AROptionsForceBuyNow = @"enableBuyNowMakeOffer";
-
-// The case change
+NSString *const AROptionsForceBuyNow = @"Enable Buy Now Flow via Force";
+NSString *const AROptionsBuyNow = @"enableBuyNowMakeOffer";
 
 @implementation AROptions
+
+// Down here is the user-facing description
 
 + (void)initialize
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         options = @{
-         AROptionsSettingsMenu: @"Enable user settings",
-         AROptionsShowAnalyticsOnScreen: @"Show on-screen analytics",
-         AROptionsShowMartsyOnScreen: @"Show when on a Martsy page",
          AROptionsDisableNativeLiveAuctions: @"Disable Native Live Auctions",
          AROptionsDebugARVIR: @"Debug AR View in Room",
-         AROptionsForceBuyNow: @"Enable Buy Now Flow",
+         
+         AROptionsBuyNow: @"Enable Eigen/Emission Buy Now integration",
+         AROptionsForceBuyNow: @"Enable Buy Now purchase flow via Force",
          AROptionsHideBackButtonOnScroll: @"Hide the Back Button in Zoom image",
-         AROptionsStagingReactEnv: @"Use Staging React ENV",
-         AROptionsDevReactEnv: @"Use Dev React ENV",
+         
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
-         AROptionsUseVCR: @"Use offline recording",
         };
     });
 }

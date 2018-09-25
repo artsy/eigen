@@ -6,7 +6,8 @@
 
 @implementation ArtsyEcho
 
-- (instancetype)init {
+- (instancetype)init
+{
     ArtsyKeys *keys = [ArtsyKeys new];
     NSURL *url = [[NSURL alloc] initWithString:@"https://echo-api-production.herokuapp.com/"];
     self = [self initWithServerURL:url accountID:1 APIKey:[keys artsyEchoProductionToken] localFilename:@"Echo"];
@@ -24,6 +25,15 @@
             [super checkForUpdates:updateCheckCompleted];
         }
     }
+}
+
+- (NSDictionary *)featuresMap
+{
+    NSMutableDictionary *mutableOptions = [NSMutableDictionary dictionary];
+    for (NSString *key in self.features) {
+        [mutableOptions setObject:@(self.features[key].state) forKey:key];
+    }
+    return [mutableOptions copy];
 }
 
 @end
