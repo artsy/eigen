@@ -78,7 +78,9 @@ interface Props {
 
 export class SaleListItem extends React.Component<Props> {
   handleTap = () => {
-    const { sale: { live_url_if_open, href } } = this.props
+    const {
+      sale: { live_url_if_open, href },
+    } = this.props
     const url = (live_url_if_open || href) as string
     Switchboard.presentNavigationViewController(this, url)
   }

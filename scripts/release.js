@@ -1,6 +1,9 @@
+// @ts-check
+
 const fs = require("fs")
 const path = require("path")
 const spawnSync = require("child_process").spawnSync
+const chalk = require("chalk")
 
 const versionChange = process.argv[2]
 if (!versionChange) {
@@ -46,16 +49,17 @@ function publishPodspec(podspec) {
   }
 }
 
-console.log("=> Creating release bundle.")
+console.log(chalk.green("=> Creating release bundle."))
 sh("npm run bundle")
 sh('git add Pod/Assets && git commit -m "[Pod] Update JS bundle."')
 
-console.log("=> Creating version bump commit and tag.")
+console.log(chalk.green("=> Creating version bump commit and tag."))
 sh("npm version " + versionChange)
 sh("git push")
 sh("git push --tags")
 
+console.log(chalk.green("=> Pushing Podspec"))
 publishPodspec("Emission.podspec")
-publishPodspec("node_modules/react-native/React.podspec")
 
+console.log(chalk.green("=> Updating Metaphysics"))
 sh("npm run merge-graphql-query-map")
