@@ -54,6 +54,14 @@ fragment Artwork_artwork on Artwork {
   is_biddable
   is_acquireable
   id
+  sale {
+    is_auction
+    is_live_open
+    is_open
+    is_closed
+    display_timely_at
+    __id
+  }
   sale_artwork {
     opening_bid {
       display
@@ -93,7 +101,14 @@ var v0 = {
   "args": null,
   "storageKey": null
 },
-v1 = [
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_closed",
+  "args": null,
+  "storageKey": null
+},
+v2 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -102,7 +117,7 @@ v1 = [
     "storageKey": null
   }
 ],
-v2 = [
+v3 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -116,7 +131,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FavoriteArtworksQuery",
-  "id": "eefaa5b70c161137fe6743e872f60986",
+  "id": "ff178ed1459def1d7ad65169f5b419f0",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -324,6 +339,47 @@ return {
                           {
                             "kind": "LinkedField",
                             "alias": null,
+                            "name": "sale",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Sale",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "is_auction",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "is_live_open",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "is_open",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              v1,
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "display_timely_at",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              v0
+                            ]
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
                             "name": "sale_artwork",
                             "storageKey": null,
                             "args": null,
@@ -338,7 +394,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkOpeningBid",
                                 "plural": false,
-                                "selections": v1
+                                "selections": v2
                               },
                               {
                                 "kind": "LinkedField",
@@ -348,7 +404,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkCurrentBid",
                                 "plural": false,
-                                "selections": v1
+                                "selections": v2
                               },
                               {
                                 "kind": "ScalarField",
@@ -366,13 +422,7 @@ return {
                                 "concreteType": "Sale",
                                 "plural": false,
                                 "selections": [
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "is_closed",
-                                    "args": null,
-                                    "storageKey": null
-                                  },
+                                  v1,
                                   v0
                                 ]
                               },
@@ -394,7 +444,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": v2
+                            "selections": v3
                           },
                           {
                             "kind": "LinkedField",
@@ -404,7 +454,7 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": v2
+                            "selections": v3
                           },
                           {
                             "kind": "ScalarField",

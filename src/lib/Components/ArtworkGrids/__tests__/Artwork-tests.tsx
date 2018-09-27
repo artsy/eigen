@@ -72,7 +72,14 @@ const artworkProps = (saleArtwork = null) => {
     title: "Some Kind of Dinosaur",
     date: "2015",
     is_in_auction: saleArtwork !== null,
-    sale_message: "Contact Gallery",
+    sale_message: "Contact For Price",
+    sale: {
+      is_auction: true,
+      is_live_open: false,
+      is_open: true,
+      is_closed: saleArtwork == null,
+      display_timely_at: "ends in 6d",
+    },
     sale_artwork: saleArtwork,
     image: {
       url: "artsy.net/image-url",

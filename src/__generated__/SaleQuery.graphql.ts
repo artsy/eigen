@@ -70,6 +70,14 @@ fragment Artwork_artwork on Artwork {
   is_biddable
   is_acquireable
   id
+  sale {
+    is_auction
+    is_live_open
+    is_open
+    is_closed
+    display_timely_at
+    __id
+  }
   sale_artwork {
     opening_bid {
       display
@@ -146,7 +154,14 @@ v5 = {
   "args": null,
   "storageKey": null
 },
-v6 = [
+v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_closed",
+  "args": null,
+  "storageKey": null
+},
+v7 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -155,7 +170,7 @@ v6 = [
     "storageKey": null
   }
 ],
-v7 = [
+v8 = [
   v4,
   v2
 ];
@@ -163,7 +178,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "SaleQuery",
-  "id": "3f1b806103b7227032721cb2da58b419",
+  "id": "5dd5cfbcd7b596cd663ceb78f93a6959",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -299,7 +314,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "is_in_auction",
+                            "name": "is_biddable",
                             "args": null,
                             "storageKey": null
                           },
@@ -357,20 +372,61 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v2,
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "is_biddable",
+                            "name": "is_in_auction",
                             "args": null,
                             "storageKey": null
                           },
+                          v2,
                           {
                             "kind": "ScalarField",
                             "alias": null,
                             "name": "is_acquireable",
                             "args": null,
                             "storageKey": null
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "sale",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Sale",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "is_auction",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "is_live_open",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "is_open",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              v6,
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "display_timely_at",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              v2
+                            ]
                           },
                           {
                             "kind": "LinkedField",
@@ -389,7 +445,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkOpeningBid",
                                 "plural": false,
-                                "selections": v6
+                                "selections": v7
                               },
                               {
                                 "kind": "LinkedField",
@@ -399,7 +455,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkCurrentBid",
                                 "plural": false,
-                                "selections": v6
+                                "selections": v7
                               },
                               {
                                 "kind": "ScalarField",
@@ -417,13 +473,7 @@ return {
                                 "concreteType": "Sale",
                                 "plural": false,
                                 "selections": [
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "is_closed",
-                                    "args": null,
-                                    "storageKey": null
-                                  },
+                                  v6,
                                   v2
                                 ]
                               },
@@ -445,7 +495,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": v7
+                            "selections": v8
                           },
                           {
                             "kind": "LinkedField",
@@ -455,7 +505,7 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": v7
+                            "selections": v8
                           },
                           v5
                         ]

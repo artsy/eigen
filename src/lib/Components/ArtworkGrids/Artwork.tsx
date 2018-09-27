@@ -1,9 +1,9 @@
-import { Sans } from "@artsy/palette"
+import { color, Flex, Sans } from "@artsy/palette"
 import colors from "lib/data/colors"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { map } from "lodash"
 import React from "react"
-import { Image, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
+import { StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import ImageView from "../OpaqueImageView"
@@ -53,10 +53,10 @@ class Artwork extends React.Component<Props, any> {
             <ImageView style={styles.image} aspectRatio={artwork.image.aspect_ratio} imageURL={artwork.image.url} />
             {this.badges()}
           </View>
+          {this.saleInfoLine()}
           {this.artists()}
           {this.artworkTitle()}
           {partnerName && <SerifText style={styles.text}>{partnerName}</SerifText>}
-          {this.saleMessage()}
         </View>
       </TouchableWithoutFeedback>
     )
@@ -115,32 +115,49 @@ class Artwork extends React.Component<Props, any> {
     }
   }
 
-  saleMessage() {
-    const artwork = this.props.artwork
-    if (artwork.is_in_auction && artwork.sale_artwork) {
-      if (!artwork.sale_artwork.sale.is_closed) {
-        let numberOfBids = null
-        try {
-          numberOfBids = artwork.sale_artwork.bidder_positions_count
-        } catch (e) {
-          console.error(`Sentry issue #274707594 triggered with props: ${JSON.stringify(this.props)}`)
-          return null
-        }
-        let text = artwork.sale_artwork.opening_bid.display
-        if (numberOfBids > 0) {
-          text = `${artwork.sale_artwork.current_bid.display} (${numberOfBids} bid${numberOfBids === 1 ? "" : "s"})`
-        }
-        return (
-          <View style={{ flexDirection: "row" }}>
-            <Image style={{ marginRight: 4 }} source={require("../../../../images/paddle.png")} />
-            <SerifText style={styles.text}>{text}</SerifText>
-          </View>
-        )
-      } else {
-        return <SerifText style={styles.text}>Auction Closed</SerifText>
-      }
-    } else {
-      return artwork.sale_message && <SerifText style={styles.text}>{artwork.sale_message}</SerifText>
+  saleInfoLine() {
+    const { artwork } = this.props
+    const { sale } = artwork
+    const inClosedAuction = sale && sale.is_auction && sale.is_closed
+
+    // TODO: Look into wrapping in <Theme> component to remove `color` util functions
+    return (
+      <Flex flexDirection="row" mb={2}>
+        <Sans color={color("black100")} weight="medium" size="2">
+          {inClosedAuction ? "Bidding closed" : this.saleMessageOrBidInfo()}{" "}
+        </Sans>
+        <Sans size="2" color={color("black60")}>
+          {!inClosedAuction && this.auctionInfo()}
+        </Sans>
+      </Flex>
+    )
+  }
+
+  saleMessageOrBidInfo() {
+    const { artwork } = this.props
+    const { sale } = artwork
+    const inRunningAuction = sale && sale.is_auction && !sale.is_closed
+
+    if (inRunningAuction) {
+      const sa = artwork.sale_artwork
+      const currentBid = sa.current_bid
+      return currentBid && currentBid.display
+    }
+
+    // TODO: Extract this sentence-cased version and apply everywhere.
+    if (artwork.sale_message === "Contact For Price") {
+      return "Contact for price"
+    }
+
+    return artwork.sale_message
+  }
+
+  auctionInfo() {
+    const { artwork } = this.props
+    const { sale } = artwork
+
+    if (sale) {
+      return `(${sale.display_timely_at})`
     }
   }
 }
@@ -172,6 +189,13 @@ export default createFragmentContainer(
       is_biddable
       is_acquireable
       id
+      sale {
+        is_auction
+        is_live_open
+        is_open
+        is_closed
+        display_timely_at
+      }
       sale_artwork {
         opening_bid {
           display
