@@ -4,7 +4,6 @@
 // All the options as consts
 extern NSString *const AROptionsLoadingScreenAlpha;
 extern NSString *const AROptionsUseVCR;
-extern NSString *const AROptionsSettingsMenu;
 extern NSString *const AROptionsTappingPartnerSendsToPartner;
 extern NSString *const AROptionsShowAnalyticsOnScreen;
 extern NSString *const AROptionsShowMartsyOnScreen;
@@ -19,7 +18,12 @@ extern NSString *const AROptionsHideBackButtonOnScroll;
 
 /// Returns all the current options
 + (NSArray *)labsOptions;
+// Special cases
 + (NSArray *)labsOptionsThatRequireRestart;
+// For UIs
++ (NSString *)descriptionForOption:(NSString *)option;
+/// A dictionary of lab options to true/false as NSNumbers for Emission basically
++ (NSDictionary *)labOptionsMap;
 
 /// Get and set individual options
 + (BOOL)boolForOption:(NSString *)option;

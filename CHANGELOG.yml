@@ -1,19 +1,28 @@
 upcoming:
-  version: 4.2.2
+  version: 4.3.0
   date: TBA
-  emission_version: 1.5.15
+  emission_version: 1.6.x
   dev:
-    - Fixes a bug where LAI's register button would invoke the BidFlow UI, which caused a crash - ash
-    - Updated echo configuration, checks for AREnableBuyNowFlow feature - ash
-    - Remove the native Artist ViewController - orta
-    - Updates the mutation name to use the ecommerce prefix - orta
-    - Updates mutation result reference to use new prefix - ash
-    - Fixes a problem with order creation input - ash
+    - Updates Emission - ash
 
   user_facing:
-    - Updates error messaging for Buy Now mutation failures. - ash
+    - None yet
 
 releases:
+  - version: 4.2.2
+    date: Sep 17, 2018
+    emission_version: 1.5.15
+    dev:
+      - Fixes a bug where LAI's register button would invoke the BidFlow UI, which caused a crash - ash
+      - Updated echo configuration, checks for AREnableBuyNowFlow feature - ash
+      - Remove the native Artist ViewController - orta
+      - Updates the mutation name to use the ecommerce prefix - orta
+      - Updates mutation result reference to use new prefix - ash
+      - Fixes a problem with order creation input - ash
+
+    user_facing:
+      - Updates error messaging for Buy Now mutation failur
+
   - version: 4.2.1
     date: July 23, 2018
     emission_version: 1.5.15

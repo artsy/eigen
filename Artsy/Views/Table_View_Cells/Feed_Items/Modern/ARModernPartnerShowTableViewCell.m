@@ -205,13 +205,7 @@ static CGFloat ARPartnerShowCellSideMargin;
 
 - (void)openPartner:(UITapGestureRecognizer *)gesture
 {
-    if ([AROptions boolForOption:AROptionsTappingPartnerSendsToPartner]) {
-        UIViewController *viewController = [ARSwitchBoard.sharedInstance loadPartnerWithID:self.show.partner.partnerID];
-        [self.delegate modernPartnerShowTableViewCell:self shouldShowViewController:(id)viewController];
-
-    } else {
-        [self openShow:gesture];
-    }
+    [self openShow:gesture];
 }
 
 #pragma mark - AREmbeddedModelsViewControllerDelegate

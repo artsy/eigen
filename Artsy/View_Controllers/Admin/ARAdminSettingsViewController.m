@@ -55,7 +55,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     ]];
     [tableViewData addSectionData:userSectionData];
 
-
     ARSectionData *launcherSections = [[ARSectionData alloc] initWithCellDataArray:@[
         [self generateOnboarding],
         [self generateShowAllLiveAuctions],
@@ -63,7 +62,8 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [self showSentryBreadcrumbs],
         [self generateQuicksilver],
         [self generateEchoContents],
-   ]];
+    ]];
+
     launcherSections.headerTitle = @"Launcher";
     [tableViewData addSectionData:launcherSections];
 
@@ -387,38 +387,38 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return cellData;
 }
 
-
 - (ARSectionData *)createLabsSection
 {
     ARSectionData *labsSectionData = [[ARSectionData alloc] init];
     labsSectionData.headerTitle = @"Labs";
-
+    
     NSArray *options = [AROptions labsOptions];
     for (NSInteger index = 0; index < options.count; index++) {
-        NSString *title = options[index];
+        NSString *key = options[index];
+        NSString *title = [AROptions descriptionForOption:key];
         BOOL requiresRestart = [[AROptions labsOptionsThatRequireRestart] indexOfObject:title] != NSNotFound;
-
+        
         ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
         [cellData setCellConfigurationBlock:^(UITableViewCell *cell) {
             cell.textLabel.text = requiresRestart ? [title stringByAppendingString:@" (restarts)"] : title;
-            cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:[AROptions boolForOption:title]];
+            cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:[AROptions boolForOption:key]];
         }];
-
+        
         [cellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
-            BOOL currentSelection = [AROptions boolForOption:title];
-            [AROptions setBool:!currentSelection forOption:title];
-
+            BOOL currentSelection = [AROptions boolForOption:key];
+            [AROptions setBool:!currentSelection forOption:key];
+            
             if (requiresRestart) {
                 // Show checkmark.
-                ar_dispatch_after(1, ^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     exit(0);
                 });
             }
-
+            
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             [(ARAnimatedTickView *)cell.accessoryView setSelected:!currentSelection animated:YES];
         }];
-
+        
         [labsSectionData addCellData:cellData];
     }
     return labsSectionData;

@@ -19,8 +19,8 @@
 #import "ARRootViewController.h"
 #import "ARAppStatus.h"
 #import "ARRouter.h"
+#import "ArtsyEcho.h"
 
-#import <Aerodramus/Aerodramus.h>
 #import <Keys/ArtsyKeys.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARTemporaryAPIModule.h>
@@ -105,6 +105,15 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         stripePublishableKey = keys.stripeProductionPublishableKey;
     }
 
+    // Pass lab options into Emission
+    NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    [options addEntriesFromDictionary:[AROptions labOptionsMap]];
+    
+    // Also pass echo features
+    ArtsyEcho *aero = [[ArtsyEcho alloc] init];
+    [aero setup];
+    [options addEntriesFromDictionary:[aero featuresMap]];
+
     AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
                                                                       authenticationToken:authenticationToken
                                                                                 sentryDSN:sentryDSN
@@ -113,7 +122,8 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                                                                                gravityURL:gravity
                                                                            metaphysicsURL:metaphysics
                                                                             predictionURL:liveAuctionsURL
-                                                                                userAgent:ARRouter.userAgent];
+                                                                                userAgent:ARRouter.userAgent
+                                                                                  options:options];
 
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:packagerURL];
     [AREmission setSharedInstance:emission];
