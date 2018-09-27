@@ -4,6 +4,7 @@ upcoming:
   emission_version: 1.6.x
   dev:
     - Updates Emission - ash
+    - Uses metaphysics for the ArtworkVC's Artwork update API - orta
 
   user_facing:
     - None yet

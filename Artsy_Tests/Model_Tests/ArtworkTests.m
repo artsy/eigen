@@ -98,6 +98,40 @@ describe(@"defaultImage", ^{
         Artwork *deserializedArtwork = [NSKeyedUnarchiver unarchiveObjectWithFile:artworkData_v1];
         expect(deserializedArtwork.additionalInfo).to.equal(@"In the collection of European Painting and Sculpture at LACMA.\n\nPaul Rodman Mabury Collection (39.12.3)");
     });
+    
+    describe(@"funky mp / grav compatibility", ^{
+    
+        it(@"deals with mp style results for the is_* things", ^{
+            Artwork *artwork = [Artwork modelWithJSON:@{
+                @"id":@"artwork_id",
+                @"is_sold": @(YES),
+                @"is_acquireable": @(YES),
+                @"is_inquireable": @(YES),
+                @"is_price_hidden": @(YES)
+            }];
+
+            expect(artwork.sold).to.beTruthy();
+            expect(artwork.isAcquireable).to.beTruthy();
+            expect(artwork.isInquireable).to.beTruthy();
+            expect(artwork.isPriceHidden).to.beTruthy();
+        });
+        
+        it(@"deals with gravity style results for the is_* things", ^{
+            Artwork *artwork = [Artwork modelWithJSON:@{
+                @"id":@"artwork_id",
+                @"sold": @(YES),
+                @"acquireable": @(YES),
+                @"inquireable": @(YES),
+                @"price_hidden": @(YES)
+            }];
+            
+            expect(artwork.sold).to.beTruthy();
+            expect(artwork.isAcquireable).to.beTruthy();
+            expect(artwork.isInquireable).to.beTruthy();
+            expect(artwork.isPriceHidden).to.beTruthy();
+        });
+        
+    });
 });
 
 

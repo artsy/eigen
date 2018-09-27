@@ -263,7 +263,7 @@ it(@"displays sold when artwork is in auction and has been acquired", ^{
 context(@"price view", ^{
     context(@"not at auction", ^{
         it(@"price", ^{
-            view.artwork = [Artwork modelFromDictionary:@{ @"availability" : @(ARArtworkAvailabilityForSale), @"price" : @"$30,000", @"inquireable" : @(true)}];
+            view.artwork = [Artwork modelWithJSON:@{ @"availability" : @(ARArtworkAvailabilityForSale), @"price" : @"$30,000", @"inquireable" : @(true)}];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -290,7 +290,7 @@ context(@"price view", ^{
         });
 
         it(@"contact for price", ^{
-            view.artwork = [Artwork modelFromDictionary:@{ @"price" : @"$30,000", @"inquireable" : @(true), @"availability" : @(ARArtworkAvailabilityForSale), @"mpIsPriceHidden" : @(true) }];
+            view.artwork = [Artwork modelWithJSON:@{ @"price" : @"$30,000", @"inquireable" : @(true), @"availability" : @(ARArtworkAvailabilityForSale), @"mpIsPriceHidden" : @(true) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -298,7 +298,7 @@ context(@"price view", ^{
         });
 
         it(@"contact for price with no price", ^{
-            view.artwork = [Artwork modelFromDictionary:@{ @"inquireable" : @(true), @"availability" : @(ARArtworkAvailabilityForSale), @"gravIsPriceHidden" : @(true) }];
+            view.artwork = [Artwork modelWithJSON:@{ @"inquireable" : @(true), @"availability" : @(ARArtworkAvailabilityForSale), @"gravIsPriceHidden" : @(true) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];

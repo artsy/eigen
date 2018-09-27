@@ -158,7 +158,7 @@
             [self addSubview:self.priceView withTopMargin:@"4" sideMargin:@"0"];
 
             ARBlackFlatButton *buy = [[ARBlackFlatButton alloc] init];
-            [buy setTitle:@"Buy Now" forState:UIControlStateNormal];
+            [buy setTitle:@"Buy now" forState:UIControlStateNormal];
             [buy addTarget:self action:@selector(tappedBuyButton:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:buy withTopMargin:@"8" sideMargin:nil];
         }
@@ -187,7 +187,7 @@
 
         if ([self showBuyButton]) {
             ARBlackFlatButton *buy = [[ARBlackFlatButton alloc] init];
-            [buy setTitle:@"Buy" forState:UIControlStateNormal];
+            [buy setTitle:@"Buy now" forState:UIControlStateNormal];
             [buy addTarget:self action:@selector(tappedBuyButton:) forControlEvents:UIControlEventTouchUpInside];
 
             [buttonsWhoseMarginCanChange addObject:buy];
@@ -329,13 +329,13 @@ return [navigationButtons copy];
 // Show if inquireable but not sold and not for sale
 - (BOOL)showNotForSaleLabel
 {
-    return self.artwork.inquireable.boolValue && !self.artwork.sold.boolValue && !self.artwork.forSale.boolValue;
+    return self.artwork.isInquireable.boolValue && !self.artwork.sold.boolValue && !self.artwork.forSale.boolValue;
 }
 
 // Show if artwork has a price (but not multiple editions) and inquireable or sold
 - (BOOL)showPriceLabel
 {
-    return self.artwork.price.length && !self.artwork.hasMultipleEditions && (self.artwork.inquireable.boolValue || self.artwork.sold.boolValue);
+    return self.artwork.price.length && !self.artwork.hasMultipleEditions && (self.artwork.isInquireable.boolValue || self.artwork.sold.boolValue);
 }
 
 // Show if artwork is for sale but its price is hidden
@@ -347,13 +347,13 @@ return [navigationButtons copy];
 // Show if artwork is for sale and inquireable, but not acquireable and not in an auction
 - (BOOL)showContactButton
 {
-    return self.artwork.forSale.boolValue && self.artwork.inquireable.boolValue && !self.artwork.acquireable.boolValue && !([self showAuctionControls] || [self liveAuctionIsOngoing]);
+    return self.artwork.forSale.boolValue && self.artwork.isInquireable.boolValue && !self.artwork.isAcquireable.boolValue && !([self showAuctionControls] || [self liveAuctionIsOngoing]);
 }
 
 // Show if acquireable
 - (BOOL)showBuyButton
 {
-    return self.artwork.acquireable.boolValue;
+    return self.artwork.isAcquireable.boolValue;
 }
 
 - (BOOL)showAuctionControls

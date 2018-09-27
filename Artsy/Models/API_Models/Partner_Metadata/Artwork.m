@@ -34,6 +34,13 @@
 
 @property (nonatomic, strong) NSNumber *gravIsPriceHidden;
 @property (nonatomic, strong) NSNumber *mpIsPriceHidden;
+
+@property (nonatomic, strong) NSNumber *gravIsAcquirable;
+@property (nonatomic, strong) NSNumber *mpIsAcquirable;
+
+@property (nonatomic, strong) NSNumber *gravIsInquireable;
+@property (nonatomic, strong) NSNumber *mpIsInquirable;
+
 @end
 
 @implementation Artwork {
@@ -75,6 +82,7 @@
         ar_keypath(Artwork.new, dimensionsCM) : @"dimensions.cm",
         ar_keypath(Artwork.new, dimensionsInches) : @"dimensions.in",
         ar_keypath(Artwork.new, attributionClass) : @"attribution_class.name",
+        
         ar_keypath(Artwork.new, editionSets) : @"edition_sets",
         ar_keypath(Artwork.new, exhibitionHistory) : @"exhibition_history",
         ar_keypath(Artwork.new, forSale) : @"forsale",
@@ -82,12 +90,18 @@
         ar_keypath(Artwork.new, imageRights) : @"image_rights",
         ar_keypath(Artwork.new, published) : @"published",
         ar_keypath(Artwork.new, saleMessage) : @"sale_message",
-        ar_keypath(Artwork.new, gravSold) : @"is_sold",
-        ar_keypath(Artwork.new, mpSold) : @"sold",
         ar_keypath(Artwork.new, slug) : @"id",
+        ar_keypath(Artwork.new, publishedAt) : @"published_at",
+        
+        ar_keypath(Artwork.new, gravSold) : @"sold",
+        ar_keypath(Artwork.new, gravIsAcquirable) : @"acquireable",
+        ar_keypath(Artwork.new, gravIsInquireable) : @"inquireable",
         ar_keypath(Artwork.new, gravIsPriceHidden) : @"price_hidden",
+        
+        ar_keypath(Artwork.new, mpSold) : @"is_sold",
+        ar_keypath(Artwork.new, mpIsAcquirable) : @"is_acquireable",
+        ar_keypath(Artwork.new, mpIsInquirable) : @"is_inquireable",
         ar_keypath(Artwork.new, mpIsPriceHidden) : @"is_price_hidden",
-        ar_keypath(Artwork.new, publishedAt) : @"published_at"
     };
 }
 
@@ -132,26 +146,6 @@
         }];
 }
 
-
-+ (NSValueTransformer *)acquireableJSONTransformer
-{
-    return [NSValueTransformer valueTransformerForName:MTLBooleanValueTransformerName];
-}
-
-+ (NSValueTransformer *)inquireableJSONTransformer
-{
-    return [NSValueTransformer valueTransformerForName:MTLBooleanValueTransformerName];
-}
-
-+ (NSValueTransformer *)forSaleJSONTransformer
-{
-    return [NSValueTransformer valueTransformerForName:MTLBooleanValueTransformerName];
-}
-
-+ (NSValueTransformer *)soldJSONTransformer
-{
-    return [NSValueTransformer valueTransformerForName:MTLBooleanValueTransformerName];
-}
 
 + (NSValueTransformer *)provenanceJSONTransformer
 {
@@ -265,6 +259,16 @@
 - (NSNumber *)isPriceHidden
 {
     return self.gravIsPriceHidden.boolValue ? self.gravIsPriceHidden : self.mpIsPriceHidden;
+}
+
+- (NSNumber *)isInquireable
+{
+    return self.gravIsInquireable.boolValue ? self.gravIsInquireable : self.mpIsInquirable;
+}
+
+- (NSNumber *)isAcquireable
+{
+    return self.gravIsAcquirable.boolValue ? self.gravIsAcquirable : self.mpIsAcquirable;
 }
 
 - (BOOL)hasWidth

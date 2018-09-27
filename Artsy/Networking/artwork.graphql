@@ -71,6 +71,8 @@ query OldArtworkQuery($artworkID: String!) {
     is_for_sale
     is_price_hidden
     is_sold
+    is_inquireable
+    is_acquireable
     literature
     medium
     price
