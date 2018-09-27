@@ -225,7 +225,7 @@
 
 - (ARCellData *)jumpToArtist
 {
-  NSString *artistID = @"marina-abramovic-1";
+  NSString *artistID = @"james-rosenquist";
   return [self viewControllerCellDataWithTitle:@"Artist"
                                      selection:^{
     id viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];

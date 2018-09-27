@@ -120,6 +120,68 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
       </View>
     </View>
   </View>
+  <View
+    flexDirection="row"
+    mb={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "marginBottom": 8,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="#000"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Medium"
+      fontSize={12}
+      lineHeight={16}
+      style={
+        Array [
+          Object {
+            "color": "#000",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          undefined,
+        ]
+      }
+    >
+      $200
+       
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="#666"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Regular"
+      fontSize={12}
+      lineHeight={16}
+      style={
+        Array [
+          Object {
+            "color": "#666",
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          undefined,
+        ]
+      }
+    >
+      (ends in 6d)
+    </Text>
+  </View>
   <Text
     accessible={true}
     allowFontScaling={true}
@@ -218,48 +280,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
   >
     Gallery 1261
   </Text>
-  <View
-    style={
-      Object {
-        "flexDirection": "row",
-      }
-    }
-  >
-    <Image
-      source={
-        Object {
-          "testUri": "../../../images/paddle.png",
-        }
-      }
-      style={
-        Object {
-          "marginRight": 4,
-        }
-      }
-    />
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
-      numberOfLines={1}
-      style={
-        Array [
-          Object {
-            "fontSize": 17,
-          },
-          Object {
-            "color": "#666666",
-            "fontSize": 12,
-          },
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
-        ]
-      }
-    >
-      $200 (1 bid)
-    </Text>
-  </View>
 </View>
 `;
 
@@ -383,6 +403,68 @@ exports[`in a closed sale renders without any price information 1`] = `
       </View>
     </View>
   </View>
+  <View
+    flexDirection="row"
+    mb={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "marginBottom": 8,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="#000"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Medium"
+      fontSize={12}
+      lineHeight={16}
+      style={
+        Array [
+          Object {
+            "color": "#000",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          undefined,
+        ]
+      }
+    >
+      $200
+       
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="#666"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Regular"
+      fontSize={12}
+      lineHeight={16}
+      style={
+        Array [
+          Object {
+            "color": "#666",
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          undefined,
+        ]
+      }
+    >
+      (ends in 6d)
+    </Text>
+  </View>
   <Text
     accessible={true}
     allowFontScaling={true}
@@ -480,28 +562,6 @@ exports[`in a closed sale renders without any price information 1`] = `
     }
   >
     Gallery 1261
-  </Text>
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
-    numberOfLines={1}
-    style={
-      Array [
-        Object {
-          "fontSize": 17,
-        },
-        Object {
-          "color": "#666666",
-          "fontSize": 12,
-        },
-        Object {
-          "fontFamily": "AGaramondPro-Regular",
-        },
-      ]
-    }
-  >
-    Auction Closed
   </Text>
 </View>
 `;
@@ -626,6 +686,68 @@ exports[`in an open sale renders with current bid 1`] = `
       </View>
     </View>
   </View>
+  <View
+    flexDirection="row"
+    mb={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "marginBottom": 8,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="#000"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Medium"
+      fontSize={12}
+      lineHeight={16}
+      style={
+        Array [
+          Object {
+            "color": "#000",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          undefined,
+        ]
+      }
+    >
+      $200
+       
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="#666"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Regular"
+      fontSize={12}
+      lineHeight={16}
+      style={
+        Array [
+          Object {
+            "color": "#666",
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          undefined,
+        ]
+      }
+    >
+      (ends in 6d)
+    </Text>
+  </View>
   <Text
     accessible={true}
     allowFontScaling={true}
@@ -724,48 +846,6 @@ exports[`in an open sale renders with current bid 1`] = `
   >
     Gallery 1261
   </Text>
-  <View
-    style={
-      Object {
-        "flexDirection": "row",
-      }
-    }
-  >
-    <Image
-      source={
-        Object {
-          "testUri": "../../../images/paddle.png",
-        }
-      }
-      style={
-        Object {
-          "marginRight": 4,
-        }
-      }
-    />
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
-      numberOfLines={1}
-      style={
-        Array [
-          Object {
-            "fontSize": 17,
-          },
-          Object {
-            "color": "#666666",
-            "fontSize": 12,
-          },
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
-        ]
-      }
-    >
-      $200 (1 bid)
-    </Text>
-  </View>
 </View>
 `;
 
@@ -889,6 +969,67 @@ exports[`in an open sale renders with starting bid 1`] = `
       </View>
     </View>
   </View>
+  <View
+    flexDirection="row"
+    mb={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "marginBottom": 8,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="#000"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Medium"
+      fontSize={12}
+      lineHeight={16}
+      style={
+        Array [
+          Object {
+            "color": "#000",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          undefined,
+        ]
+      }
+    >
+       
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="#666"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Regular"
+      fontSize={12}
+      lineHeight={16}
+      style={
+        Array [
+          Object {
+            "color": "#666",
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          undefined,
+        ]
+      }
+    >
+      (ends in 6d)
+    </Text>
+  </View>
   <Text
     accessible={true}
     allowFontScaling={true}
@@ -987,48 +1128,6 @@ exports[`in an open sale renders with starting bid 1`] = `
   >
     Gallery 1261
   </Text>
-  <View
-    style={
-      Object {
-        "flexDirection": "row",
-      }
-    }
-  >
-    <Image
-      source={
-        Object {
-          "testUri": "../../../images/paddle.png",
-        }
-      }
-      style={
-        Object {
-          "marginRight": 4,
-        }
-      }
-    />
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
-      numberOfLines={1}
-      style={
-        Array [
-          Object {
-            "fontSize": 17,
-          },
-          Object {
-            "color": "#666666",
-            "fontSize": 12,
-          },
-          Object {
-            "fontFamily": "AGaramondPro-Regular",
-          },
-        ]
-      }
-    >
-      $100
-    </Text>
-  </View>
 </View>
 `;
 
@@ -1152,6 +1251,66 @@ exports[`renders properly 1`] = `
       </View>
     </View>
   </View>
+  <View
+    flexDirection="row"
+    mb={2}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+          "marginBottom": 8,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="#000"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Medium"
+      fontSize={12}
+      lineHeight={16}
+      style={
+        Array [
+          Object {
+            "color": "#000",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          undefined,
+        ]
+      }
+    >
+      Bidding closed
+       
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="#666"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Regular"
+      fontSize={12}
+      lineHeight={16}
+      style={
+        Array [
+          Object {
+            "color": "#666",
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
   <Text
     accessible={true}
     allowFontScaling={true}
@@ -1249,28 +1408,6 @@ exports[`renders properly 1`] = `
     }
   >
     Gallery 1261
-  </Text>
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
-    numberOfLines={1}
-    style={
-      Array [
-        Object {
-          "fontSize": 17,
-        },
-        Object {
-          "color": "#666666",
-          "fontSize": 12,
-        },
-        Object {
-          "fontFamily": "AGaramondPro-Regular",
-        },
-      ]
-    }
-  >
-    Contact Gallery
   </Text>
 </View>
 `;

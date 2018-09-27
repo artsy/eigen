@@ -9,6 +9,13 @@ export type Artwork_artwork = {
     readonly is_biddable: boolean | null;
     readonly is_acquireable: boolean | null;
     readonly id: string;
+    readonly sale: ({
+        readonly is_auction: boolean | null;
+        readonly is_live_open: boolean | null;
+        readonly is_open: boolean | null;
+        readonly is_closed: boolean | null;
+        readonly display_timely_at: string | null;
+    }) | null;
     readonly sale_artwork: ({
         readonly opening_bid: ({
             readonly display: string | null;
@@ -37,15 +44,13 @@ export type Artwork_artwork = {
 
 
 const node: ConcreteFragment = (function(){
-var v0 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "display",
-    "args": null,
-    "storageKey": null
-  }
-],
+var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_closed",
+  "args": null,
+  "storageKey": null
+},
 v1 = {
   "kind": "ScalarField",
   "alias": null,
@@ -54,6 +59,15 @@ v1 = {
   "storageKey": null
 },
 v2 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "display",
+    "args": null,
+    "storageKey": null
+  }
+],
+v3 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -71,11 +85,45 @@ return {
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "ScalarField",
+      "kind": "LinkedField",
       "alias": null,
-      "name": "id",
+      "name": "sale",
+      "storageKey": null,
       "args": null,
-      "storageKey": null
+      "concreteType": "Sale",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "is_auction",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "is_live_open",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "is_open",
+          "args": null,
+          "storageKey": null
+        },
+        v0,
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "display_timely_at",
+          "args": null,
+          "storageKey": null
+        },
+        v1
+      ]
     },
     {
       "kind": "ScalarField",
@@ -115,6 +163,13 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "date",
       "args": null,
       "storageKey": null
@@ -136,7 +191,7 @@ return {
           "args": null,
           "concreteType": "SaleArtworkOpeningBid",
           "plural": false,
-          "selections": v0
+          "selections": v2
         },
         {
           "kind": "LinkedField",
@@ -146,7 +201,7 @@ return {
           "args": null,
           "concreteType": "SaleArtworkCurrentBid",
           "plural": false,
-          "selections": v0
+          "selections": v2
         },
         {
           "kind": "ScalarField",
@@ -164,13 +219,7 @@ return {
           "concreteType": "Sale",
           "plural": false,
           "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "is_closed",
-              "args": null,
-              "storageKey": null
-            },
+            v0,
             v1
           ]
         },
@@ -224,7 +273,7 @@ return {
       ],
       "concreteType": "Artist",
       "plural": true,
-      "selections": v2
+      "selections": v3
     },
     {
       "kind": "LinkedField",
@@ -234,7 +283,7 @@ return {
       "args": null,
       "concreteType": "Partner",
       "plural": false,
-      "selections": v2
+      "selections": v3
     },
     {
       "kind": "ScalarField",
@@ -247,5 +296,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '909f55fc612d969af0e228488065b601';
+(node as any).hash = '04c9b3fbe7b5dab12285d6bb35038a96';
 export default node;

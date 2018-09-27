@@ -151,6 +151,14 @@ fragment Artwork_artwork on Artwork {
   is_biddable
   is_acquireable
   id
+  sale {
+    is_auction
+    is_live_open
+    is_open
+    is_closed
+    display_timely_at
+    __id
+  }
   sale_artwork {
     opening_bid {
       display
@@ -437,7 +445,14 @@ v20 = {
   "value": "partner_updated_at_desc",
   "type": "ArtworkSorts"
 },
-v21 = [
+v21 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_closed",
+  "args": null,
+  "storageKey": null
+},
+v22 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -446,7 +461,7 @@ v21 = [
     "storageKey": null
   }
 ],
-v22 = [
+v23 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -563,6 +578,47 @@ v22 = [
           {
             "kind": "LinkedField",
             "alias": null,
+            "name": "sale",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Sale",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "is_auction",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "is_live_open",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "is_open",
+                "args": null,
+                "storageKey": null
+              },
+              v21,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "display_timely_at",
+                "args": null,
+                "storageKey": null
+              },
+              v2
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
             "name": "sale_artwork",
             "storageKey": null,
             "args": null,
@@ -577,7 +633,7 @@ v22 = [
                 "args": null,
                 "concreteType": "SaleArtworkOpeningBid",
                 "plural": false,
-                "selections": v21
+                "selections": v22
               },
               {
                 "kind": "LinkedField",
@@ -587,7 +643,7 @@ v22 = [
                 "args": null,
                 "concreteType": "SaleArtworkCurrentBid",
                 "plural": false,
-                "selections": v21
+                "selections": v22
               },
               {
                 "kind": "ScalarField",
@@ -605,13 +661,7 @@ v22 = [
                 "concreteType": "Sale",
                 "plural": false,
                 "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "is_closed",
-                    "args": null,
-                    "storageKey": null
-                  },
+                  v21,
                   v2
                 ]
               },
@@ -656,11 +706,11 @@ v22 = [
     ]
   }
 ],
-v23 = [
+v24 = [
   "filter",
   "sort"
 ],
-v24 = [
+v25 = [
   {
     "kind": "Literal",
     "name": "size",
@@ -678,7 +728,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersArtistQuery",
-  "id": "cbd86025936f4415c4632557c23f6bc8",
+  "id": "b2587c5ba760fb778d392f0873963f82",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -951,7 +1001,7 @@ return {
             ],
             "concreteType": "ArtworkConnection",
             "plural": false,
-            "selections": v22
+            "selections": v23
           },
           {
             "kind": "LinkedHandle",
@@ -971,7 +1021,7 @@ return {
             ],
             "handle": "connection",
             "key": "ArtistForSaleArtworksGrid_forSaleArtworks",
-            "filters": v23
+            "filters": v24
           },
           {
             "kind": "LinkedField",
@@ -992,7 +1042,7 @@ return {
             ],
             "concreteType": "ArtworkConnection",
             "plural": false,
-            "selections": v22
+            "selections": v23
           },
           {
             "kind": "LinkedHandle",
@@ -1012,7 +1062,7 @@ return {
             ],
             "handle": "connection",
             "key": "ArtistNotForSaleArtworksGrid_notForSaleArtworks",
-            "filters": v23
+            "filters": v24
           },
           {
             "kind": "Condition",
@@ -1024,7 +1074,7 @@ return {
                 "alias": "past_small_shows",
                 "name": "partner_shows",
                 "storageKey": "partner_shows(size:20,status:\"closed\")",
-                "args": v24,
+                "args": v25,
                 "concreteType": "PartnerShow",
                 "plural": true,
                 "selections": [
@@ -1052,7 +1102,7 @@ return {
                 "alias": "past_large_shows",
                 "name": "partner_shows",
                 "storageKey": "partner_shows(size:20,status:\"closed\")",
-                "args": v24,
+                "args": v25,
                 "concreteType": "PartnerShow",
                 "plural": true,
                 "selections": v18

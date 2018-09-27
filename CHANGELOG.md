@@ -16,6 +16,7 @@
 
 ### Master
 
+- New artwork brick style - matt
 - Deployment improvements to hopefully automate everything again - orta
 
 ### 1.6.0
