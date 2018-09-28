@@ -4,6 +4,7 @@ upcoming:
   emission_version: 1.6.x
   dev:
     - Updates Emission - ash
+    - Uses metaphysics for the ArtworkVC's Artwork update API - orta
 
   user_facing:
     - None yet
@@ -21,7 +22,7 @@ releases:
       - Fixes a problem with order creation input - ash
 
     user_facing:
-      - Updates error messaging for Buy Now mutation failur
+      - Updates error messaging for Buy Now mutation failures. - ash
 
   - version: 4.2.1
     date: July 23, 2018

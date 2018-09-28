@@ -79,10 +79,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *saleMessage;
 
 
-@property (nonatomic, strong) NSNumber *acquireable;
-@property (nonatomic, strong) NSNumber *inquireable;
+@property (nonatomic, copy, readonly) NSNumber *isAcquireable;
+@property (nonatomic, copy, readonly) NSNumber *isInquireable;
 @property (nonatomic, copy, readonly) NSNumber *sold;
-@property (nonatomic, strong) NSNumber *forSale;
+@property (nonatomic, copy) NSNumber *forSale;
+
 @property (nonatomic, strong) NSNumber *canShareImage;
 @property (nonatomic, strong) Sale *auction;
 @property (readonly, nonatomic, assign) BOOL isFollowed;
