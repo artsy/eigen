@@ -78,7 +78,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *saleMessage;
 
-
 @property (nonatomic, copy, readonly) NSNumber *isAcquireable;
 @property (nonatomic, copy, readonly) NSNumber *isInquireable;
 @property (nonatomic, copy, readonly) NSNumber *sold;

@@ -263,7 +263,8 @@ it(@"displays sold when artwork is in auction and has been acquired", ^{
 context(@"price view", ^{
     context(@"not at auction", ^{
         it(@"price", ^{
-            view.artwork = [Artwork modelWithJSON:@{ @"availability" : @(ARArtworkAvailabilityForSale), @"price" : @"$30,000", @"inquireable" : @(true)}];
+            view.artwork = [Artwork modelWithJSON:@{ @"price" : @"$30,000", @"inquireable" : @(true)}];
+            view.artwork.availability = ARArtworkAvailabilityForSale;
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -282,7 +283,8 @@ context(@"price view", ^{
         // As show price label would fail on the first check of `self.artwork.price.length`
 
         pending(@"sold but inquireable", ^{
-            view.artwork = [Artwork modelWithJSON:@{ @"availability" : @(ARArtworkAvailabilitySold), @"sold" : @(true), @"inquireable": @(true), @"forSale": @(false) }];
+            view.artwork = [Artwork modelWithJSON:@{ @"sold" : @(true), @"inquireable": @(true), @"forSale": @(false) }];
+            view.artwork.availability = ARArtworkAvailabilitySold;
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -290,7 +292,7 @@ context(@"price view", ^{
         });
 
         it(@"contact for price", ^{
-            view.artwork = [Artwork modelWithJSON:@{ @"price" : @"$30,000", @"inquireable" : @(true), @"availability" : @(ARArtworkAvailabilityForSale), @"mpIsPriceHidden" : @(true) }];
+            view.artwork = [Artwork modelWithJSON:@{ @"price" : @"$30,000", @"inquireable" : @(true), @"availability" : @(ARArtworkAvailabilityForSale), @"price_hidden" : @(true) }];
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
@@ -298,7 +300,8 @@ context(@"price view", ^{
         });
 
         it(@"contact for price with no price", ^{
-            view.artwork = [Artwork modelWithJSON:@{ @"inquireable" : @(true), @"availability" : @(ARArtworkAvailabilityForSale), @"gravIsPriceHidden" : @(true) }];
+            view.artwork = [Artwork modelWithJSON:@{ @"inquireable" : @(true), @"price_hidden" : @(true) }];
+            view.artwork.availability = ARArtworkAvailabilityForSale;
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
