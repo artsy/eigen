@@ -127,7 +127,7 @@ export class WorksForYou extends React.Component<Props, State> {
   render() {
     const hasNotifications = this.state.dataSource
 
-    // TODO: After /collect2 reaches 100% redirect in A/B remove
+    // FIXME: BNMO - Update with Echo setting and remove once BNMO has launched
     const showMarketingHeader = NativeModules.Emission.options.enableBuyNowMakeOffer
 
     /* If showing the empty state, the ScrollView should have a {flex: 1} style so it can expand to fit the screen.
