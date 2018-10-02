@@ -19,6 +19,7 @@
 - New artwork brick style - matt
 - Deployment improvements to hopefully automate everything again - orta
 - Silence consignments sash on home for BNMO - chris
+- Update copy on WorksForYou marketing header - chris
 
 ### 1.6.0
 

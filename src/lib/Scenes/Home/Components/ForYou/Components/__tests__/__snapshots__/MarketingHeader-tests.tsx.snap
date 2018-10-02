@@ -102,7 +102,7 @@ exports[`MarketingHeader looks correct when rendered 1`] = `
         ]
       }
     >
-      Buying art on Artsy is easier than ever before. Our most in-demand works are now available for instant purchase, with simple checkout and hassle-free shipping.
+      In-demand artworks, available to buy now
     </Text>
   </View>
   <View
