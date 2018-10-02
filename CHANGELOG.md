@@ -16,6 +16,7 @@
 
 ### Master
 
+- Tweaks to artwork badges - matt
 - New artwork brick style - matt
 - Deployment improvements to hopefully automate everything again - orta
 - Silence consignments sash on home for BNMO - chris
