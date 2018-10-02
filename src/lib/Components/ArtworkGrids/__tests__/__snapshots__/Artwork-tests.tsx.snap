@@ -50,7 +50,7 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
               "borderRadius": 2,
               "marginLeft": 5,
               "paddingBottom": 1,
-              "paddingLeft": 5,
+              "paddingLeft": 6,
               "paddingRight": 5,
               "paddingTop": 3,
             },
@@ -64,16 +64,18 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={10}
-          lineHeight={14}
+          fontSize={8}
+          lineHeight={8}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
-                "fontSize": 10,
-                "lineHeight": 14,
+                "fontSize": 8,
+                "lineHeight": 8,
               },
-              undefined,
+              Object {
+                "paddingTop": 1,
+              },
             ]
           }
         >
@@ -88,7 +90,7 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
               "borderRadius": 2,
               "marginLeft": 5,
               "paddingBottom": 1,
-              "paddingLeft": 5,
+              "paddingLeft": 6,
               "paddingRight": 5,
               "paddingTop": 3,
             },
@@ -102,16 +104,18 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={10}
-          lineHeight={14}
+          fontSize={8}
+          lineHeight={8}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
-                "fontSize": 10,
-                "lineHeight": 14,
+                "fontSize": 8,
+                "lineHeight": 8,
               },
-              undefined,
+              Object {
+                "paddingTop": 1,
+              },
             ]
           }
         >
@@ -333,7 +337,7 @@ exports[`in a closed sale renders without any price information 1`] = `
               "borderRadius": 2,
               "marginLeft": 5,
               "paddingBottom": 1,
-              "paddingLeft": 5,
+              "paddingLeft": 6,
               "paddingRight": 5,
               "paddingTop": 3,
             },
@@ -347,16 +351,18 @@ exports[`in a closed sale renders without any price information 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={10}
-          lineHeight={14}
+          fontSize={8}
+          lineHeight={8}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
-                "fontSize": 10,
-                "lineHeight": 14,
+                "fontSize": 8,
+                "lineHeight": 8,
               },
-              undefined,
+              Object {
+                "paddingTop": 1,
+              },
             ]
           }
         >
@@ -371,7 +377,7 @@ exports[`in a closed sale renders without any price information 1`] = `
               "borderRadius": 2,
               "marginLeft": 5,
               "paddingBottom": 1,
-              "paddingLeft": 5,
+              "paddingLeft": 6,
               "paddingRight": 5,
               "paddingTop": 3,
             },
@@ -385,16 +391,18 @@ exports[`in a closed sale renders without any price information 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={10}
-          lineHeight={14}
+          fontSize={8}
+          lineHeight={8}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
-                "fontSize": 10,
-                "lineHeight": 14,
+                "fontSize": 8,
+                "lineHeight": 8,
               },
-              undefined,
+              Object {
+                "paddingTop": 1,
+              },
             ]
           }
         >
@@ -616,7 +624,7 @@ exports[`in an open sale renders with current bid 1`] = `
               "borderRadius": 2,
               "marginLeft": 5,
               "paddingBottom": 1,
-              "paddingLeft": 5,
+              "paddingLeft": 6,
               "paddingRight": 5,
               "paddingTop": 3,
             },
@@ -630,16 +638,18 @@ exports[`in an open sale renders with current bid 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={10}
-          lineHeight={14}
+          fontSize={8}
+          lineHeight={8}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
-                "fontSize": 10,
-                "lineHeight": 14,
+                "fontSize": 8,
+                "lineHeight": 8,
               },
-              undefined,
+              Object {
+                "paddingTop": 1,
+              },
             ]
           }
         >
@@ -654,7 +664,7 @@ exports[`in an open sale renders with current bid 1`] = `
               "borderRadius": 2,
               "marginLeft": 5,
               "paddingBottom": 1,
-              "paddingLeft": 5,
+              "paddingLeft": 6,
               "paddingRight": 5,
               "paddingTop": 3,
             },
@@ -668,16 +678,18 @@ exports[`in an open sale renders with current bid 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={10}
-          lineHeight={14}
+          fontSize={8}
+          lineHeight={8}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
-                "fontSize": 10,
-                "lineHeight": 14,
+                "fontSize": 8,
+                "lineHeight": 8,
               },
-              undefined,
+              Object {
+                "paddingTop": 1,
+              },
             ]
           }
         >
@@ -899,7 +911,7 @@ exports[`in an open sale renders with starting bid 1`] = `
               "borderRadius": 2,
               "marginLeft": 5,
               "paddingBottom": 1,
-              "paddingLeft": 5,
+              "paddingLeft": 6,
               "paddingRight": 5,
               "paddingTop": 3,
             },
@@ -913,16 +925,18 @@ exports[`in an open sale renders with starting bid 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={10}
-          lineHeight={14}
+          fontSize={8}
+          lineHeight={8}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
-                "fontSize": 10,
-                "lineHeight": 14,
+                "fontSize": 8,
+                "lineHeight": 8,
               },
-              undefined,
+              Object {
+                "paddingTop": 1,
+              },
             ]
           }
         >
@@ -937,7 +951,7 @@ exports[`in an open sale renders with starting bid 1`] = `
               "borderRadius": 2,
               "marginLeft": 5,
               "paddingBottom": 1,
-              "paddingLeft": 5,
+              "paddingLeft": 6,
               "paddingRight": 5,
               "paddingTop": 3,
             },
@@ -951,16 +965,18 @@ exports[`in an open sale renders with starting bid 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={10}
-          lineHeight={14}
+          fontSize={8}
+          lineHeight={8}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
-                "fontSize": 10,
-                "lineHeight": 14,
+                "fontSize": 8,
+                "lineHeight": 8,
               },
-              undefined,
+              Object {
+                "paddingTop": 1,
+              },
             ]
           }
         >
@@ -1181,7 +1197,7 @@ exports[`renders properly 1`] = `
               "borderRadius": 2,
               "marginLeft": 5,
               "paddingBottom": 1,
-              "paddingLeft": 5,
+              "paddingLeft": 6,
               "paddingRight": 5,
               "paddingTop": 3,
             },
@@ -1195,16 +1211,18 @@ exports[`renders properly 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={10}
-          lineHeight={14}
+          fontSize={8}
+          lineHeight={8}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
-                "fontSize": 10,
-                "lineHeight": 14,
+                "fontSize": 8,
+                "lineHeight": 8,
               },
-              undefined,
+              Object {
+                "paddingTop": 1,
+              },
             ]
           }
         >
@@ -1219,7 +1237,7 @@ exports[`renders properly 1`] = `
               "borderRadius": 2,
               "marginLeft": 5,
               "paddingBottom": 1,
-              "paddingLeft": 5,
+              "paddingLeft": 6,
               "paddingRight": 5,
               "paddingTop": 3,
             },
@@ -1233,16 +1251,18 @@ exports[`renders properly 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={10}
-          lineHeight={14}
+          fontSize={8}
+          lineHeight={8}
           style={
             Array [
               Object {
                 "fontFamily": "Unica77LL-Medium",
-                "fontSize": 10,
-                "lineHeight": 14,
+                "fontSize": 8,
+                "lineHeight": 8,
               },
-              undefined,
+              Object {
+                "paddingTop": 1,
+              },
             ]
           }
         >
