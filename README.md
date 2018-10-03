@@ -30,12 +30,9 @@ _Automated install_:
 
 _Manual install_
 
-1. Make sure to check out submodules with `git submodule update --init`
 1. Install [Node.js][node], and [Yarn][yarn]: `$ brew install node yarn`
 1. Install file watcher used by React Native:
-   - `$ brew install pcre`
-   - `$ brew link pcre`
-   - `$ brew install watchman --HEAD`
+   - `$ brew install watchman`
 1. Install NPM modules: `$ yarn install`
 1. Install Pods: `$ cd Example && bundle && bundle exec pod install`
 
@@ -68,19 +65,7 @@ There is a comprehensive document covering [the various options](docs/debugging.
 
 ### Updating Dependencies
 
-1. We vendor some data from other repositories that you will sometimes need to update. You can either update all of them
-   with `$ yarn run sync-externals` or individually:
-   - The GraphQL schema of metaphysics that Relay uses to generate queries from: `$ yarn run sync-schema`
-   - The colors defined in Artsy’s style-guide: `$ yarn run sync-colors`
-
----
-
-Try quitting and restarting your node instance if you change something Relay-related and you run into this error:
-
-```
-Unhandled JS Exception: RelayQL: Unexpected invocation at runtime. Either the Babel transform was not set up, or it
-failed to identify this call site. Make sure it is being used verbatim as `Relay.QL`
-```
+We vendor some data from other repositories that you will sometimes need to update. Notably the GraphQL schema of metaphysics that Relay uses to generate queries from: `$ yarnsync-schema`
 
 ### Deploying Emission
 

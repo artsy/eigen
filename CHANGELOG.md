@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.6.1
+
 - Tweaks to artwork badges - matt
 - New artwork brick style - matt
 - Deployment improvements to hopefully automate everything again - orta
