@@ -11,10 +11,12 @@ if (!versionChange) {
   process.exit(1)
 }
 
-function sh(command) {
+function sh(command, canFail = false) {
   console.log("$ " + command)
   const task = spawnSync(command, { shell: true })
-  if (task.status != 0) {
+  if (!canFail && task.status != 0) {
+    console.log(String(task.stdout))
+    console.error(chalk.red(String(task.stderr)))
     throw new Error("[!] " + command)
   }
 }
@@ -51,7 +53,7 @@ function publishPodspec(podspec) {
 
 console.log(chalk.green("=> Creating release bundle."))
 sh("npm run bundle")
-sh('git add Pod/Assets && git commit -m "[Pod] Update JS bundle."')
+sh('git add . && git commit -m "[Pod] Update JS bundle."', true)
 
 console.log(chalk.green("=> Creating version bump commit and tag."))
 sh("npm version " + versionChange)
