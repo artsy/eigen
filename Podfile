@@ -147,6 +147,17 @@ post_install do |installer|
     end
   end
 
+  # Forces the minimum to be 8.0 as that's our last deployment targer, and new xcode build tools
+  # give an error in Xcode 10
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 8.0
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '8.0'
+      end
+    end
+  end
+
+
   # CI was having trouble shipping signed builds
   # https://github.com/CocoaPods/CocoaPods/issues/4011
   installer.pods_project.targets.each do |target|
