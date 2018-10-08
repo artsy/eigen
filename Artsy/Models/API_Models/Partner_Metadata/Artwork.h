@@ -76,6 +76,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *signature;
 @property (nonatomic, copy) NSString *category;
 
+/** A generated string with all shipping info generated on MP */
+@property (nonatomic, copy, readonly) NSString *shippingInfo;
+/** Where does a BN work come from? */
+@property (nonatomic, copy, readonly) NSString *shippingOrigin;
+
 @property (nonatomic, copy) NSString *saleMessage;
 
 @property (nonatomic, copy, readonly) NSNumber *isAcquireable;

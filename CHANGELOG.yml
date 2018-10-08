@@ -5,6 +5,7 @@ upcoming:
   dev:
     - Updates Emission - ash
     - Uses metaphysics for the ArtworkVC's Artwork update API - orta
+    - Updates Artwork page for Buy Now - orta
 
   user_facing:
     - None yet

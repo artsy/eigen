@@ -25,21 +25,34 @@
 - (void)addContactForPrice
 {
     ARArtworkPriceRowView *row = [[ARArtworkPriceRowView alloc] initWithFrame:CGRectZero];
-    row.priceLabel.font = [UIFont serifItalicFontWithSize:row.priceLabel.font.pointSize];
-    row.messageLabel.text = @"Price:";
-    row.priceLabel.text = @"Contact for Price";
+    row.messageLabel.font = [UIFont serifBoldFontWithSize:22];
+    row.messageLabel.text = @"Contact for Price";
     row.margin = 16;
     [self addSubview:row withTopMargin:@"0" sideMargin:@"0"];
     [row alignLeadingEdgeWithView:self predicate:@"0"];
 }
 
-- (void)addNotForSaleLabel
+
+- (void)addShippingDetails:(Artwork *)artwork
 {
-    ARArtworkPriceRowView *row = [[ARArtworkPriceRowView alloc] initWithFrame:CGRectZero];
-    row.messageLabel.text = @"Work is Not for Sale";
-    row.margin = 16;
-    [self addSubview:row withTopMargin:@"0" sideMargin:@"0"];
-    [row alignLeadingEdgeWithView:self predicate:@"0"];
+    if (artwork.shippingInfo) {
+        ARArtworkPriceRowView *row = [[ARArtworkPriceRowView alloc] initWithFrame:CGRectZero];
+        row.messageLabel.text = artwork.shippingInfo;
+        row.messageLabel.font = [UIFont displaySansSerifFontWithSize:12];
+        row.messageLabel.textColor = [UIColor artsyGraySemibold];
+        [self addSubview:row withTopMargin:@"8" sideMargin:@"0"];
+        [row alignLeadingEdgeWithView:self predicate:@"0"];
+    }
+
+    if (artwork.shippingOrigin) {
+        ARArtworkPriceRowView *row = [[ARArtworkPriceRowView alloc] initWithFrame:CGRectZero];
+        row.messageLabel.text = [NSString stringWithFormat:@"Ships from %@", artwork.shippingOrigin];
+        row.messageLabel.font = [UIFont displaySansSerifFontWithSize:12];
+        row.messageLabel.textColor = [UIColor artsyGraySemibold];
+        NSString *topMargin = artwork.shippingInfo ? @"0" : @"8";
+        [self addSubview:row withTopMargin:topMargin sideMargin:@"0"];
+        [row alignLeadingEdgeWithView:self predicate:@"0"];
+    }
 }
 
 - (void)updatePriceWithArtwork:(Artwork *)artwork andSaleArtwork:(SaleArtwork *)saleArtwork
@@ -47,25 +60,13 @@
     ARArtworkPriceRowView *row = [[ARArtworkPriceRowView alloc] initWithFrame:CGRectZero];
 
     if (artwork.sold.boolValue) {
-        row.messageLabel.textColor = [UIColor artsyRedRegular];
-        row.messageLabel.font = [UIFont sansSerifFontWithSize:row.messageLabel.font.pointSize];
-        row.messageLabel.text = @"SOLD";
+        row.messageLabel.text = @"Sold";
     } else {
-        if (saleArtwork != nil) {
-            row.messageLabel.text = @"Buy Now Price:";
-        } else {
-            row.messageLabel.text = @"Price:";
-        }
+        row.messageLabel.text = artwork.price;
     }
 
-    if (saleArtwork != nil) {
-        row.priceLabel.font = [UIFont sansSerifFontWithSize:24];
-    }
-
-    row.priceLabel.text = artwork.price;
-
-    row.margin = artwork.sold.boolValue ? 10 : 16;
-    [self addSubview:row withTopMargin:@"0" sideMargin:@"0"];
+    row.messageLabel.font = [UIFont serifBoldFontWithSize:22];
+    [self addSubview:row withTopMargin:@"16" sideMargin:@"0"];
     [row alignLeadingEdgeWithView:self predicate:@"0"];
 }
 
