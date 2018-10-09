@@ -60,7 +60,7 @@ describe(@"buy button", ^{
             vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
             ArtsyEcho *echo = [[ArtsyEcho alloc] init];
             echo.features = @{ @"AREnableBuyNowFlow" : [[Feature alloc] initWithName:@"" state:@1] };
-            echo.routes = @{ @"ARBuyNowRoute": [[Route alloc] initWithName:@"" path:@"/order/:id"] };
+            echo.routes = @{ @"ARBuyNowRoute": [[Route alloc] initWithName:@"" path:@"/orders/:id"] };
             vc.echo = echo;
             vcMock = [OCMockObject partialMockForObject:vc];
             [[vcMock reject] tappedContactGallery];
