@@ -100,7 +100,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    return self.statusBarStyle;
 }
 
 - (void)viewWillLayoutSubviews
@@ -108,11 +108,6 @@
     [self.webView constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];
     [self.webView alignLeading:@"0" trailing:@"0" toView:self.view];
     [self.webView alignBottomEdgeWithView:self.view predicate:@"0"];
-}
-
-- (UIStatusBarStyle)statusBarStyle
-{
-    return self.statusBarStyle;
 }
 
 - (void)viewDidAppear:(BOOL)animated
