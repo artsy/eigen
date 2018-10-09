@@ -230,11 +230,11 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     func setupToolbar() {
-        let close = ARSerifToolbarButtonItem(image: UIImage(named: "serif_modal_close"))!
+        let close = ARSerifToolbarButtonItem(image: UIImage(named: "serif_modal_close"))
         close.accessibilityLabel = "Exit Live Bidding"
         close.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.dismissModal), for: .touchUpInside)
 
-        let info = ARSerifToolbarButtonItem(image: UIImage(asset: .Info_icon))!
+        let info = ARSerifToolbarButtonItem(image: UIImage(asset: .Info_icon))
         info.accessibilityLabel = "More Information"
         info.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.moreInfo), for: .touchUpInside)
         info.isEnabled = false
@@ -242,7 +242,7 @@ class LiveAuctionLotSetViewController: UIViewController {
             .merge(biddersNetworkModel.fetchBiddersForSale(salesPerson.liveSaleID))
             .subscribe { _ in info.isEnabled = true }
 
-        let lots = ARSerifToolbarButtonItem(image: UIImage(asset: .Lots_icon))!
+        let lots = ARSerifToolbarButtonItem(image: UIImage(asset: .Lots_icon))
         lots.accessibilityLabel = "Show all Lots"
         lots.button.addTarget(self, action: #selector(LiveAuctionLotSetViewController.showLots), for: .touchUpInside)
 
