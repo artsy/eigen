@@ -44,6 +44,11 @@ static CGFloat exitButtonDimension = 40;
 
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController
 {
+    return [self initWithRootViewController:rootViewController hideNavigationBar:NO];
+}
+
+- (instancetype)initWithRootViewController:(UIViewController *)rootViewController hideNavigationBar:(BOOL)hideNavigationBar
+{
     self = [super initWithNavigationBarClass:ARSerifNavigationBar.class toolbarClass:nil];
     if (!self) {
         return nil;
@@ -63,7 +68,7 @@ static CGFloat exitButtonDimension = 40;
     [self setViewControllers:@[ rootViewController ]];
     [self.navigationBar.topItem setRightBarButtonItem:self.exitButton];
 
-    if ([controllersRequiringHiddenNavBar containsObject:NSStringFromClass(rootViewController.class)]) {
+    if (hideNavigationBar || [controllersRequiringHiddenNavBar containsObject:NSStringFromClass(rootViewController.class)]) {
         self.navigationBarHidden = YES;
     }
 

@@ -7,6 +7,7 @@ upcoming:
     - The Echo config for buy now also triggers buy now code in Emission - orta
     - Uses metaphysics for the ArtworkVC's Artwork update API - orta
     - Updates Artwork page for Buy Now - orta
+    - Buy Now flow opens a modal - ash
 
   user_facing:
     - None yet

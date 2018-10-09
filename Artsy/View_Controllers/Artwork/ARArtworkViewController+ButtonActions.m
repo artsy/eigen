@@ -9,6 +9,7 @@
 #import "ArtsyAPI+Artworks.h"
 #import "ARArtworkViewController+ButtonActions.h"
 #import "ARZoomArtworkImageViewController.h"
+#import "ARSerifNavigationViewController.h"
 #import "ARArtworkInfoViewController.h"
 #import "ARViewInRoomViewController.h"
 #import "ARSharingController.h"
@@ -238,11 +239,12 @@
             NSString *path = self.echo.routes[@"ARBuyNowRoute"].path;
             if (!path) {
                 // path should never be nil, but I'd rather not crash the app if it is.
-                path = @"/order/:id";
+                path = @"/orders/:id";
             }
             path = [path stringByReplacingOccurrencesOfString:@":id" withString:orderID];
             UIViewController *controller = [ARSwitchBoard.sharedInstance loadPath:path];
-            [self.navigationController pushViewController:controller animated:YES];
+            ARSerifNavigationViewController *navigationController = [[ARSerifNavigationViewController alloc] initWithRootViewController:controller hideNavigationBar:YES];
+            [self presentViewController:navigationController animated:YES completion:nil];
         } failure:^(NSError *error) {
             [self presentErrorMessage:@"Something went wrong. Please try again or contact support@artsy.net."];
         }];
