@@ -179,6 +179,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         NSString *expiryDateString = JSON[AROExpiryDateKey];
 
         [ARRouter setAuthToken:token];
+        [self storeUsername:username password:password];
 
         // Create an Expiration Date
         ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
@@ -273,10 +274,9 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
                 authenticationFailure(error);
             }
         }];
-    [userOp start];
-        }
-
-        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        [userOp start];
+    }
+    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (JSON) {
             if (authenticationFailure) {
                 authenticationFailure(error);
@@ -286,8 +286,8 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
                 networkFailure(error);
             }
         }
+    }];
 
-        }];
     [op start];
 }
 
@@ -344,7 +344,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
              ARActionLog(@"Creating a new user account failed. Error: %@,\nJSON: %@", error.localizedDescription, JSON);
              failure(error, JSON);
-                          }];
+        }];
 
         [op start];
 
@@ -442,6 +442,8 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
     [manager.keychain removeKeychainStringForKey:AROAuthTokenDefault];
     [manager.keychain removeKeychainStringForKey:ARXAppTokenKeychainKey];
+    [manager.keychain removeKeychainStringForKey:ARUsernameKeychainKey];
+    [manager.keychain removeKeychainStringForKey:ARPasswordKeychainKey];
 
     [manager deleteHTTPCookies];
     [ARRouter setAuthToken:nil];
@@ -563,6 +565,33 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 #endif
         }
     });
+}
+
+- (void)storeUsername:(NSString *)username password:(NSString *)password
+{
+    [self.keychain setKeychainStringForKey:ARUsernameKeychainKey value:username];
+    [self.keychain setKeychainStringForKey:ARPasswordKeychainKey value:password];
+}
+
+- (void)tryReLoginWithKeychainCredentials:(void (^)(User *currentUser))success
+{
+    NSString *email = [self.keychain keychainStringForKey:ARUsernameKeychainKey];
+    NSString *password = [self.keychain keychainStringForKey:ARPasswordKeychainKey];
+
+    if (!email || !password) {
+        NSLog(@"Could not re-auth because there is not a username/password combo in the keychain");
+        return;
+    }
+
+    [self loginWithUsername:email password:password successWithCredentials:^(NSString *accessToken, NSDate *expirationDate) {
+        // NOOP
+    }
+    gotUser:success
+    authenticationFailure:^(NSError *error) {
+        // NOOP
+    } networkFailure:^(NSError *error) {
+        // NOOP
+    }];
 }
 
 - (void)tryLoginWithSharedWebCredentials:(void (^)(NSError *error))completion;

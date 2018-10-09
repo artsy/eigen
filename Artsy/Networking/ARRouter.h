@@ -49,6 +49,7 @@
 
 #pragma mark - User
 
++ (NSURLRequest *)newMeHEADRequest;
 + (NSURLRequest *)newUserInfoRequest;
 + (NSURLRequest *)newUserEditRequestWithParams:(NSDictionary *)params;
 + (NSURLRequest *)newCheckFollowingProfileHeadRequest:(NSString *)profileID;

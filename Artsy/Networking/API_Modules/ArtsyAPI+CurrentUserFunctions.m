@@ -8,6 +8,16 @@
 
 @implementation ArtsyAPI (CurrentUserFunctions)
 
++ (void)getMeHEADWithSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure;
+{
+    NSURLRequest *request = [ARRouter newMeHEADRequest];
+    [self performRequest:request success:^(id thing) {
+        success();
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        failure(error);
+    }];
+}
+
 + (void)updateCurrentUserProperty:(NSString *)property toValue:(id)value success:(void (^)(User *user))success failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(value);

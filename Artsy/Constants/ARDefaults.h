@@ -1,3 +1,6 @@
+extern NSString *const ARUsernameKeychainKey;
+extern NSString *const ARPasswordKeychainKey;
+
 extern NSString *const ARUserIdentifierDefault;
 extern NSString *const ARUseStagingDefault;
 

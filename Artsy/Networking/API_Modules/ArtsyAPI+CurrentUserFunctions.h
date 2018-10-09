@@ -6,6 +6,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ArtsyAPI (CurrentUserFunctions)
 
++ (void)getMeHEADWithSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure;
+
 + (void)updateCurrentUserProperty:(NSString *)property toValue:(id)value success:(void (^)(User *user))success failure:(void (^)(NSError *error))failure;
 
 /// If the user is logged in, performs a request for their bidder model(s) for the corresponding sale.

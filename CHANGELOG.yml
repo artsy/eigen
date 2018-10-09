@@ -4,6 +4,7 @@ upcoming:
   emission_version: 1.6.x
   dev:
     - Updates Emission - ash
+    - Tries to re-authenticates if there's a username/password in the keychain - orta
     - Uses metaphysics for the ArtworkVC's Artwork update API - orta
 
   user_facing:
