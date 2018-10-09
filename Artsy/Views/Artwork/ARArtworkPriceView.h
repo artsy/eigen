@@ -5,7 +5,7 @@
 @interface ARArtworkPriceView : ORStackView
 
 - (void)addContactForPrice;
-- (void)addNotForSaleLabel;
+- (void)addShippingDetails:(Artwork *)artwork;
 - (void)updatePriceWithArtwork:(Artwork *)artwork andSaleArtwork:(SaleArtwork *)saleArtwork;
 
 @end

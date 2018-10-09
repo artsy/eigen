@@ -85,14 +85,17 @@
         
         ar_keypath(Artwork.new, editionSets) : @"edition_sets",
         ar_keypath(Artwork.new, exhibitionHistory) : @"exhibition_history",
-        ar_keypath(Artwork.new, forSale) : @"forsale",
+        ar_keypath(Artwork.new, shippingInfo) : @"shippingInfo",
         ar_keypath(Artwork.new, title) : @"title",
         ar_keypath(Artwork.new, imageRights) : @"image_rights",
         ar_keypath(Artwork.new, published) : @"published",
         ar_keypath(Artwork.new, saleMessage) : @"sale_message",
         ar_keypath(Artwork.new, slug) : @"id",
         ar_keypath(Artwork.new, publishedAt) : @"published_at",
-        
+
+        // TODO: Maybe never do though
+        // the artwork query can alias basck to the grav artworks
+
         ar_keypath(Artwork.new, gravSold) : @"sold",
         ar_keypath(Artwork.new, gravIsAcquirable) : @"acquireable",
         ar_keypath(Artwork.new, gravIsInquireable) : @"inquireable",
