@@ -573,13 +573,14 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [self.keychain setKeychainStringForKey:ARPasswordKeychainKey value:password];
 }
 
-- (void)tryReLoginWithKeychainCredentials:(void (^)(User *currentUser))success
+- (void)tryReLoginWithKeychainCredentials:(void (^)(User *currentUser))success authenticationFailure:(void (^)(NSError *error))authError
 {
     NSString *email = [self.keychain keychainStringForKey:ARUsernameKeychainKey];
     NSString *password = [self.keychain keychainStringForKey:ARPasswordKeychainKey];
 
     if (!email || !password) {
         NSLog(@"Could not re-auth because there is not a username/password combo in the keychain");
+        authError(nil);
         return;
     }
 
@@ -587,9 +588,8 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         // NOOP
     }
     gotUser:success
-    authenticationFailure:^(NSError *error) {
-        // NOOP
-    } networkFailure:^(NSError *error) {
+    authenticationFailure:authError
+    networkFailure:^(NSError *error) {
         // NOOP
     }];
 }
