@@ -239,7 +239,7 @@
             NSString *path = self.echo.routes[@"ARBuyNowRoute"].path;
             if (!path) {
                 // path should never be nil, but I'd rather not crash the app if it is.
-                path = @"/orders/:id";
+                path = @"/order/:id";
             }
             path = [path stringByReplacingOccurrencesOfString:@":id" withString:orderID];
             UIViewController *controller = [ARSwitchBoard.sharedInstance loadPath:path];
