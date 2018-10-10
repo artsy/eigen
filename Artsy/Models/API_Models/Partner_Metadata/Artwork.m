@@ -84,6 +84,7 @@
         ar_keypath(Artwork.new, attributionClass) : @"attribution_class.name",
         
         ar_keypath(Artwork.new, editionSets) : @"edition_sets",
+        ar_keypath(Artwork.new, editionOf) : @"edition_of",
         ar_keypath(Artwork.new, exhibitionHistory) : @"exhibition_history",
         ar_keypath(Artwork.new, shippingInfo) : @"shippingInfo",
         ar_keypath(Artwork.new, title) : @"title",

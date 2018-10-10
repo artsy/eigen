@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, ARDetailSubViewOrder) {
     ARDetailArtworkMedium,
     ARDetailDimensionInches,
     ARDetailDimensionCM,
+    ARDetailEditionOf,
     ARDetailAttributionClass,
     ARDetailCollectionInstitution,
     ARDetailImageRights,
@@ -104,6 +105,11 @@ typedef NS_ENUM(NSInteger, ARDetailSubViewOrder) {
         }
 
         case ARDetailDimensionCM: {
+            view = [[ARSerifLabel alloc] init];
+            break;
+        }
+
+        case ARDetailEditionOf: {
             view = [[ARSerifLabel alloc] init];
             break;
         }
@@ -211,6 +217,13 @@ typedef NS_ENUM(NSInteger, ARDetailSubViewOrder) {
         dimensionCMLabel.text = artwork.dimensionsCM;
 
         [self addSubview:dimensionCMLabel withTopMargin:@"4" sideMargin:@"0"];
+    }
+
+    if (artwork.editionOf.length) {
+        ARSerifLabel *editionOfLabel = [self viewFor:ARDetailEditionOf];
+        editionOfLabel.text = artwork.editionOf;
+
+        [self addSubview:editionOfLabel withTopMargin:@"4" sideMargin:@"0"];
     }
 
     if (artwork.attributionClass.length) {
