@@ -17,7 +17,7 @@
 #import <KSDeferred/KSPromise.h>
 #import <ReactiveObjC/ReactiveObjC.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-
+#import <Artsy+UILabels/Artsy+UILabels.h>
 
 @interface ARArtworkActionsView () <ARCountdownViewDelegate>
 
@@ -33,7 +33,6 @@
 
 @property (nonatomic, strong) Artwork *artwork;
 @property (nonatomic, strong) SaleArtwork *saleArtwork;
-
 
 @end
 
@@ -120,7 +119,7 @@
         }
     }
 
-    NSMutableArray *buttonsWhoseMarginCanChange = [NSMutableArray array];
+     NSMutableArray *buttonsWhoseMarginCanChange = [NSMutableArray array];
 
     if ([self liveAuctionIsOngoing]) {
         ARBlackFlatButton *openLiveSale = [[ARBlackFlatButton alloc] init];
@@ -157,6 +156,10 @@
             [self.priceView updatePriceWithArtwork:self.artwork andSaleArtwork:self.saleArtwork];
             [self addSubview:self.priceView withTopMargin:@"4" sideMargin:@"0"];
 
+            if ([self showShippingInfo]) {
+                [self.priceView addShippingDetails:self.artwork];
+            }
+
             ARBlackFlatButton *buy = [[ARBlackFlatButton alloc] init];
             [buy setTitle:@"Buy now" forState:UIControlStateNormal];
             [buy addTarget:self action:@selector(tappedBuyButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -168,12 +171,8 @@
     } else {
         // No auction controls
 
-        if ([self showPriceLabel] || [self showNotForSaleLabel] || [self showContactForPrice]) {
+        if ([self showPriceLabel] || [self showContactForPrice]) {
             self.priceView = [[ARArtworkPriceView alloc] initWithFrame:CGRectZero];
-
-            if ([self showNotForSaleLabel]) {
-                [self.priceView addNotForSaleLabel];
-            }
 
             if ([self showContactForPrice]) {
                 [self.priceView addContactForPrice];
@@ -182,8 +181,13 @@
                 [self.priceView updatePriceWithArtwork:self.artwork andSaleArtwork:self.saleArtwork];
             }
 
+            if ([self showShippingInfo]) {
+                [self.priceView addShippingDetails:self.artwork];
+            }
+
             [self addSubview:self.priceView withTopMargin:@"4" sideMargin:@"0"];
         }
+
 
         if ([self showBuyButton]) {
             ARBlackFlatButton *buy = [[ARBlackFlatButton alloc] init];
@@ -326,12 +330,6 @@ return [navigationButtons copy];
     return self.saleArtwork.auctionState & (ARAuctionStateStarted | ARAuctionStateShowingPreview);
 }
 
-// Show if inquireable but not sold and not for sale
-- (BOOL)showNotForSaleLabel
-{
-    return self.artwork.isInquireable.boolValue && !self.artwork.sold.boolValue && !self.artwork.forSale.boolValue;
-}
-
 // Show if artwork has a price (but not multiple editions) and inquireable or sold
 - (BOOL)showPriceLabel
 {
@@ -339,15 +337,22 @@ return [navigationButtons copy];
 }
 
 // Show if artwork is for sale but its price is hidden
+
 - (BOOL)showContactForPrice
 {
-    return self.artwork.availability == ARArtworkAvailabilityForSale && self.artwork.isPriceHidden.boolValue;
+    return (self.artwork.availability == ARArtworkAvailabilityForSale || self.artwork.availability == ARArtworkAvailabilityNotForSale) && self.artwork.isPriceHidden.boolValue;
 }
 
-// Show if artwork is for sale and inquireable, but not acquireable and not in an auction
+// Show if we allow contacting, or the artwork is for sale and inquireable, but not acquireable and not in an auction
+
 - (BOOL)showContactButton
 {
-    return self.artwork.forSale.boolValue && self.artwork.isInquireable.boolValue && !self.artwork.isAcquireable.boolValue && !([self showAuctionControls] || [self liveAuctionIsOngoing]);
+    return ([self showContactForPrice]
+
+//      self.artwork.forSale.boolValue ( I found an Artwork in force that was not for sale, but was contactable )
+    || (self.artwork.isInquireable.boolValue && !self.artwork.isAcquireable.boolValue))
+    && !([self showAuctionControls] || [self liveAuctionIsOngoing]);
+
 }
 
 // Show if acquireable
@@ -380,6 +385,11 @@ return [navigationButtons copy];
 - (BOOL)showBuyersPremium
 {
     return self.saleArtwork.auction.hasBuyersPremium;
+}
+
+- (BOOL)showShippingInfo
+{
+    return !self.artwork.sold.boolValue && (self.artwork.shippingInfo.length || self.artwork.shippingOrigin.length);
 }
 
 #pragma mark ARContactViewDelegate
