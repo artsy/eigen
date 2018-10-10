@@ -40,8 +40,8 @@
           in
           cm
         }
+        artist_names
         artist {
-          name
           blurb
         }
         image {

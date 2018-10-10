@@ -10,6 +10,7 @@ upcoming:
 
   user_facing:
     - Fixes to the status bar in an inquiry - orta
+    - Auction lots show multiple artistsin live - orta
 
 releases:
   - version: 4.2.2
