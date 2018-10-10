@@ -39,6 +39,7 @@
 #import "FeaturedLink.h"
 #import "OrderedSet.h"
 #import "ArtsyAPI+OrderedSets.h"
+#import "ARAuthValidator.h"
 
 #import "UIDevice-Hardware.h"
 
@@ -195,6 +196,7 @@ static ARAppDelegate *_sharedInstance = nil;
         [self startupApp];
 
         if ([User currentUser]) {
+            [ARAuthValidator validateAuthCredentialsAreCorrect];
             [ARSpotlight indexAllUsersFavorites];
         };
     }

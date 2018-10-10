@@ -399,6 +399,11 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARMyInfoURL parameters:nil];
 }
 
++ (NSURLRequest *)newMeHEADRequest
+{
+    return [self requestWithMethod:@"HEAD" path:ARMyInfoURL parameters:nil];
+}
+
 + (NSURLRequest *)newUserEditRequestWithParams:(NSDictionary *)params
 {
     return [self requestWithMethod:@"PUT" path:ARMyInfoURL parameters:params];

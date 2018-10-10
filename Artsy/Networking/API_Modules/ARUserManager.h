@@ -29,6 +29,9 @@ extern NSString *const ARUserSessionStartedNotification;
 - (BOOL)hasValidAuthenticationToken;
 - (BOOL)hasValidXAppToken;
 
+/// Gets a new auth token by using the user/pass from keychain
+- (void)tryReLoginWithKeychainCredentials:(void (^)(User *currentUser))success authenticationFailure:(void (^)(NSError *error))authError;
+
 - (void)disableSharedWebCredentials;
 - (void)tryLoginWithSharedWebCredentials:(void (^)(NSError *error))completion;
 

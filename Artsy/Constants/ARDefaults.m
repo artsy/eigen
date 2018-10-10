@@ -9,6 +9,8 @@ NSString *const ARStagingWebURLDefault = @"ARStagingWebURLDefault";
 NSString *const ARStagingMetaphysicsURLDefault = @"ARStagingMetaphysicsURLDefault";
 NSString *const ARStagingLiveAuctionSocketURLDefault = @"ARStagingLiveAuctionSocketURLDefault";
 
+NSString *const ARUsernameKeychainKey = @"ARUsernameKeychainKey";
+NSString *const ARPasswordKeychainKey = @"ARPasswordKeychainKey";
 NSString *const AROAuthTokenDefault = @"AROAuthToken";
 NSString *const AROAuthTokenExpiryDateDefault = @"AROAuthTokenExpiryDate";
 
