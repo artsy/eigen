@@ -7,7 +7,7 @@ upcoming:
     - Uses metaphysics for the ArtworkVC's Artwork update API - orta
 
   user_facing:
-    - Fxies to the status bar in an inquiry - orta
+    - Fixes to the status bar in an inquiry - orta
 
 releases:
   - version: 4.2.2
