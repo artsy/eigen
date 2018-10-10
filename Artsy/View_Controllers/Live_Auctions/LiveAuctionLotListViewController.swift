@@ -108,12 +108,12 @@ class LiveAuctionLotListViewController: UICollectionViewController {
 
         let image = UIImage(named: "MapAnnotation_Artsy")
         let button = ARSerifToolbarButtonItem(image: image)
-        button?.button.addTarget(self, action: #selector(showAdminMenu), for: .touchUpInside)
+        button.button.addTarget(self, action: #selector(showAdminMenu), for: .touchUpInside)
 
         if isCompact {
-            self.navigationItem.rightBarButtonItems = [button!, button!]
+            self.navigationItem.rightBarButtonItems = [button, button]
         } else {
-            self.navigationItem.rightBarButtonItems = [button!]
+            self.navigationItem.rightBarButtonItems = [button]
         }
     }
 

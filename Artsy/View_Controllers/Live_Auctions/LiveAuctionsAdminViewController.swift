@@ -32,8 +32,8 @@ class LiveAuctionsAdminViewController: UIViewController {
 
         let image = UIImage(named: "navigation_more_arrow_vertical@2x")
         let button = ARSerifToolbarButtonItem(image: image)
-        button?.button.addTarget(self, action: #selector(scrolltoBottom), for: .touchUpInside)
-        self.navigationItem.rightBarButtonItems = [button!]
+        button.button.addTarget(self, action: #selector(scrolltoBottom), for: .touchUpInside)
+        self.navigationItem.rightBarButtonItems = [button]
 
         salesPerson.debugAllEventsSignal.subscribe { events in
             self.rawEvents.append(contentsOf: events.reversed())

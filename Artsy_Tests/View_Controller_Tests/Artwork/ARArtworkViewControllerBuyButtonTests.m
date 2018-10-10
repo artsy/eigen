@@ -60,12 +60,13 @@ describe(@"buy button", ^{
             vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
             ArtsyEcho *echo = [[ArtsyEcho alloc] init];
             echo.features = @{ @"AREnableBuyNowFlow" : [[Feature alloc] initWithName:@"" state:@1] };
-            echo.routes = @{ @"ARBuyNowRoute": [[Route alloc] initWithName:@"" path:@"/order/:id"] };
+            echo.routes = @{ @"ARBuyNowRoute": [[Route alloc] initWithName:@"" path:@"/orders/:id"] };
             vc.echo = echo;
             vcMock = [OCMockObject partialMockForObject:vc];
             [[vcMock reject] tappedContactGallery];
+            [[vcMock expect] presentViewController:OCMOCK_ANY animated:YES completion:nil];
             id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
-            [[switchboardMock expect] loadPath:@"/order/order-id"];
+            [[[switchboardMock expect] andReturn:[UIViewController new]] loadPath:@"/orders/order-id"];
 
             [[[[routerMock expect] andForwardToRealObject] classMethod] newBuyNowRequestWithArtworkID:@"0123456789abcdef"];
 
