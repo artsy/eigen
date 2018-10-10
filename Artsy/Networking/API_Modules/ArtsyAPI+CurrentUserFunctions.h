@@ -6,7 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ArtsyAPI (CurrentUserFunctions)
 
-+ (void)getMeHEADWithSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure;
++ (void)getMeHEADWithSuccess:(void (^)(void))success failure:(void (^)(NSHTTPURLResponse *response, NSError *error))failure;
 
 + (void)updateCurrentUserProperty:(NSString *)property toValue:(id)value success:(void (^)(User *user))success failure:(void (^)(NSError *error))failure;
 

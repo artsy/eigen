@@ -8,13 +8,13 @@
 
 @implementation ArtsyAPI (CurrentUserFunctions)
 
-+ (void)getMeHEADWithSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure;
++ (void)getMeHEADWithSuccess:(void (^)(void))success failure:(void (^)(NSHTTPURLResponse *response, NSError *error))failure;
 {
     NSURLRequest *request = [ARRouter newMeHEADRequest];
     [self performRequest:request success:^(id thing) {
         success();
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        failure(error);
+        failure(response, error);
     }];
 }
 
