@@ -155,12 +155,6 @@ static const CGFloat ARZoomMultiplierForDoubleTap = 1.5;
     //so the background view doesnt show over the edges
     _backgroundView.frame = _zoomableView.frame;
     [self.zoomDelegate zoomViewDidMove:self];
-
-    //close if the zoom goes below minimumZoomScale
-    CGFloat fullScreenScale = [self scaleForFullScreenZoomInSize:self.frame.size];
-    if (self.zoomScale < (fullScreenScale * .95)) {
-        [self.zoomDelegate zoomViewFinished:self];
-    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
