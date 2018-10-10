@@ -78,12 +78,28 @@ it(@"displays buy now for an acquireable work with pricing", ^{
     expect(view).to.haveValidSnapshotNamed(@"buy");
 });
 
+
+it(@"displays buy now for an acquireable work with pricing", ^{
+    view.artwork = [Artwork modelWithJSON:@{
+        @"id" : @"artwork-id",
+        @"title" : @"Artwork Title",
+        @"availability" : @"for sale",
+        @"acquireable" : @YES
+    }];
+    [view updateUI];
+    [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+    expect(view).to.haveValidSnapshotNamed(@"buy-with-shipping");
+});
+
+
 it(@"hides contact button if inquirable but artwork is not for sale ", ^{
     view.artwork = [Artwork modelWithJSON:@{
         @"id" : @"artwork-id",
         @"title" : @"Artwork Title",
         @"availability" : @"sold",
-        @"inquireable" : @YES
+        @"inquireable" : @YES,
+        @"shippingInfo": @"Some shipping info",
+        @"shippingOrigin": @"Origin info for Artwork"
     }];
     [view updateUI];
     [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
@@ -313,7 +329,7 @@ context(@"price view", ^{
             [view updateUI];
             [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
             [view layoutIfNeeded];
-            expect(view.priceView).to.haveValidSnapshot();
+            expect(view).to.haveValidSnapshot();
         });
 
         it(@"not for sale, but has a price to show", ^{

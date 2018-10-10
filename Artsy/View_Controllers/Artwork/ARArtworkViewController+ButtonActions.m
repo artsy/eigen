@@ -35,7 +35,7 @@
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
 #import "ARTopMenuViewController.h"
-#import <Emission/ARInquiryComponentViewController.h>
+#import "AREigenInquiryComponentViewController.h"
 #import <Emission/ARBidFlowViewController.h>
 #import "ARFullWidthCalloutLabelView.h"
 
@@ -165,7 +165,7 @@
         return;
     }
 
-    ARInquiryComponentViewController *inquireVC = [[ARInquiryComponentViewController alloc] initWithArtworkID:self.artwork.artworkID];
+    AREigenInquiryComponentViewController *inquireVC = [[AREigenInquiryComponentViewController alloc] initWithArtworkID:self.artwork.artworkID];
     ARNavigationController* wrapperNav = [[ARNavigationController alloc] initWithRootViewController:inquireVC];
     [[ARTopMenuViewController sharedController] presentViewController:wrapperNav animated:YES completion:nil];
 }

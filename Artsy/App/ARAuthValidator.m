@@ -18,6 +18,7 @@
                 [[ARAppDelegate sharedInstance] setupEmission];
 
             } authenticationFailure:^(NSError *error) {
+                // At this point we can't do anythign automatically - so log out entirely.
                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Session expired" message:@"Please log in to continue" preferredStyle:UIAlertControllerStyleAlert];
 
                 UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
