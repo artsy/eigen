@@ -13,6 +13,7 @@ upcoming:
   user_facing:
     - Fixes to the status bar in an inquiry - orta
     - The zoomed in artwork image won't accidentally close - orta
+    - Auction lots show multiple artistsin live - orta
 
 releases:
   - version: 4.2.2
