@@ -33,6 +33,7 @@ extern NSString *const ARUserSessionStartedNotification;
 - (void)tryReLoginWithKeychainCredentials:(void (^)(User *currentUser))success authenticationFailure:(void (^)(NSError *error))authError;
 
 - (void)disableSharedWebCredentials;
+- (void)tryStoreSavedCredentialsToWebKeychain;
 - (void)tryLoginWithSharedWebCredentials:(void (^)(NSError *error))completion;
 
 - (void)loginWithUsername:(NSString *)username
