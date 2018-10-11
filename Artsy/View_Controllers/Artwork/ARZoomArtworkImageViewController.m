@@ -110,11 +110,9 @@
 
 - (void)zoomViewDidMove:(ARZoomView *)zoomView
 {
-    if ([AROptions boolForOption:AROptionsHideBackButtonOnScroll]) {
-        [self showBackButton];
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideBackButton) object:nil];
-        [self performSelector:@selector(hideBackButton) withObject:nil afterDelay:3];
-    }
+    [self showBackButton];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideBackButton) object:nil];
+    [self performSelector:@selector(hideBackButton) withObject:nil afterDelay:2.5];
 }
 
 - (void)hideBackButton
