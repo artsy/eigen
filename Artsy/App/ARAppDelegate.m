@@ -346,7 +346,7 @@ static ARAppDelegate *_sharedInstance = nil;
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation
 {
-    return [self application:application openURL:url options:@{
+    return [self application:application openURL:url options: @{
         UIApplicationOpenURLOptionsSourceApplicationKey: sourceApplication ?: @"",
         UIApplicationOpenURLOptionsAnnotationKey: annotation  ?: @""
     }];
@@ -469,6 +469,10 @@ static ARAppDelegate *_sharedInstance = nil;
     if (numberOfRuns == 1) {
         [ARAnalytics event:ARAnalyticsFreshInstall];
         [Adjust trackEvent:[ADJEvent eventWithEventToken:ARAdjustFirstUserInstall]];
+    }
+
+    if (numberOfRuns == 3) {
+        [[ARUserManager sharedManager] tryStoreSavedCredentialsToWebKeychain];
     }
 
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfRuns forKey:ARAnalyticsAppUsageCountProperty];

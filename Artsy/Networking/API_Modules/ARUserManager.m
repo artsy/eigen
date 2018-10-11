@@ -548,6 +548,19 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     ARUserManagerDisableSharedWebCredentials = YES;
 }
 
+- (void)tryStoreSavedCredentialsToWebKeychain
+{
+    NSString *email = [self.keychain keychainStringForKey:ARUsernameKeychainKey];
+    NSString *password = [self.keychain keychainStringForKey:ARPasswordKeychainKey];
+
+    if (!email || !password) {
+        NSLog(@"Skipping saving credentials to safari keychain because username or password is missing");
+        return;
+    }
+
+    [self saveSharedWebCredentialsWithEmail:email password:password];
+}
+
 - (void)saveSharedWebCredentialsWithEmail:(NSString *)email
                                  password:(NSString *)password;
 {
