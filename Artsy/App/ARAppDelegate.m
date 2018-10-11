@@ -218,6 +218,9 @@ static ARAppDelegate *_sharedInstance = nil;
 {
     /// Make sure we set up here so there is an ARTopMenuViewController for routing when launching from a universal link
     [self setupForAppLaunch];
+
+    FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
+    [fbAppDelegate application:application didFinishLaunchingWithOptions:launchOptions];
     return YES;
 }
 
@@ -378,7 +381,22 @@ static ARAppDelegate *_sharedInstance = nil;
     if ([[url scheme] isEqualToString:fbScheme]) {
         // Call FBAppCall's handleOpenURL:sourceApplication to handle Facebook app responses
         FBSDKApplicationDelegate *fbAppDelegate = [FBSDKApplicationDelegate sharedInstance];
-        return [fbAppDelegate application:app openURL:url sourceApplication:sourceApplication annotation:annotation];
+
+        // If they this returns true it means Facebook handled the URL
+        if ([fbAppDelegate application:app openURL:url sourceApplication:sourceApplication annotation:annotation]) {
+            return YES;
+        }
+
+        // OK, so it could be a link from the app, which looks like:
+        // fb308278682573501://authorize?target_url=https%3A%2F%2Fwww.artsy.net%2Farticle%2Fartsy-editorial-peruvian-artists-mansion-idyllic-art-filled-hotel
+        NSURLComponents *components = [NSURLComponents componentsWithString:url.absoluteString];
+        NSURLQueryItem *target = [components.queryItems find:^BOOL(NSURLQueryItem *object) {
+            return [object.name isEqualToString:@"target_url"];
+        }];
+
+        if (target) {
+            url = [NSURL URLWithString: target.value];
+        }
     }
 
     if ([url isFileURL]) {
