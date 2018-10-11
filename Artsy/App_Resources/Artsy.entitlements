@@ -19,6 +19,7 @@
 		<string>webcredentials:www.artsy.net</string>
 		<string>webcredentials:staging.artsy.net</string>
 		<string>webcredentials:m.artsy.net</string>
+		<string>applinks:kqwq.adj.st</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
