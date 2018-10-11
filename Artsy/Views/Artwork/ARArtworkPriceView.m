@@ -27,8 +27,7 @@
     ARArtworkPriceRowView *row = [[ARArtworkPriceRowView alloc] initWithFrame:CGRectZero];
     row.messageLabel.font = [UIFont serifBoldFontWithSize:22];
     row.messageLabel.text = @"Contact for Price";
-    row.margin = 16;
-    [self addSubview:row withTopMargin:@"0" sideMargin:@"0"];
+    [self addSubview:row withTopMargin:@"16" sideMargin:@"0"];
     [row alignLeadingEdgeWithView:self predicate:@"0"];
 }
 
