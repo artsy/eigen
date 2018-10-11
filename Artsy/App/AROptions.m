@@ -12,7 +12,6 @@ NSString *const AROptionsShowMartsyOnScreen = @"AROptionsShowMartsyOnScreen";
 // UX changes
 NSString *const AROptionsDisableNativeLiveAuctions = @"Disable Native Live Auctions";
 NSString *const AROptionsDebugARVIR = @"Debug AR View in Room";
-NSString *const AROptionsHideBackButtonOnScroll = @"Hide the Back Button in Zoom image";
 
 // RN
 NSString *const AROptionsStagingReactEnv = @"Use Staging React ENV";
@@ -40,7 +39,6 @@ NSString *const AROptionsBuyNow = @"enableBuyNowMakeOffer";
          
          AROptionsBuyNow: @"Enable Eigen/Emission Buy Now integration",
          AROptionsForceBuyNow: @"Enable Buy Now purchase flow via Force",
-         AROptionsHideBackButtonOnScroll: @"Hide the Back Button in Zoom image",
          
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
         };
