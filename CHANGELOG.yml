@@ -143,6 +143,7 @@ releases:
     emission_version: 1.4.6
     date: Feb 23, 2018
     dev:
+      - Removes redundant call to notifications delegate in ARAppDelegate - sarah
       - Fixes universal links in iOS 11 - sarah
 
       - ARVIR:

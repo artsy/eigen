@@ -202,13 +202,6 @@ static ARAppDelegate *_sharedInstance = nil;
     }
     [self.window makeKeyAndVisible];
 
-    NSDictionary *remoteNotification = self.initialLaunchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
-    if (remoteNotification) {
-        // The app was not running, so considering it to be in the UIApplicationStateInactive state.
-        [self.remoteNotificationsDelegate applicationDidReceiveRemoteNotification:remoteNotification
-                                                               inApplicationState:UIApplicationStateInactive];
-    }
-
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
 }
