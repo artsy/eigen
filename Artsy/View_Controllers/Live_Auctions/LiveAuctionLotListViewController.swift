@@ -18,7 +18,7 @@ class LiveAuctionLotListViewController: UICollectionViewController {
         didSet {
             if let selectedIndex = selectedIndex {
                 let path = IndexPath(row: selectedIndex, section: 0)
-                collectionView?.selectItem(at: path, animated: false, scrollPosition: UICollectionViewScrollPosition())
+                collectionView?.selectItem(at: path, animated: false, scrollPosition: UICollectionView.ScrollPosition())
             }
         }
     }

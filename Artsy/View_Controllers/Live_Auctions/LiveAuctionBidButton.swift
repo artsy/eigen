@@ -127,7 +127,7 @@ class LiveAuctionBidButton: ARFlatButton {
     }
 
     fileprivate func setupUI(_ title: String, background: UIColor = .black, border: UIColor? = nil, textColor: UIColor = UIColor.white, applySpinAnimation: Bool = false) {
-        [UIControlState.normal, .disabled].forEach { state in
+        [UIControl.State.normal, .disabled].forEach { state in
             setTitle(title.uppercased(), for: state)
             setTitleColor(textColor, for: state)
 

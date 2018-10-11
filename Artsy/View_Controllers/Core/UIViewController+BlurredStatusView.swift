@@ -57,10 +57,10 @@ extension UIViewController {
                 if case .show(let target, let selector) = buttonState {
                     let dimension = 40
                     let closeButton = ARMenuButton()
-                    closeButton.setBorderColor(.white, for: UIControlState(), animated: false)
-                    closeButton.setBackgroundColor(.clear, for: UIControlState(), animated: false)
+                    closeButton.setBorderColor(.white, for: UIControl.State(), animated: false)
+                    closeButton.setBackgroundColor(.clear, for: UIControl.State(), animated: false)
                     let cross = UIImage(named:"serif_modal_close")?.withRenderingMode(.alwaysTemplate)
-                    closeButton.setImage(cross, for: UIControlState())
+                    closeButton.setImage(cross, for: UIControl.State())
                     closeButton.alpha = 0.5
                     closeButton.tintColor = .white
                     closeButton.addTarget(target, action: selector, for: .touchUpInside)
