@@ -15,6 +15,7 @@ upcoming:
     - Shows the edition info on an artwork screen - orta
     - The zoomed in artwork image won't accidentally close - orta
     - Auction lots show multiple artistsin live - orta
+    - Fixes to loading Facebook links coming from the FB app - orta
 
 releases:
   - version: 4.2.2
