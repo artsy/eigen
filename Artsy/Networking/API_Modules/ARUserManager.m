@@ -19,6 +19,7 @@
 
 #import "MTLModel+JSON.h"
 #import "AFHTTPRequestOperation+JSON.h"
+#import "ARDispatchManager.h"
 
 #import <ARAnalytics/ARAnalytics.h>
 #import <Emission/AREmission.h>
@@ -602,7 +603,26 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         return;
     }
 
+    __block BOOL hasTimedOut = NO;
+    __block BOOL hasGotCredentials = NO;
+
+    ar_dispatch_after(5, ^{
+        if (hasGotCredentials) {
+            return;
+        }
+
+        hasTimedOut = YES;
+        NSDictionary *info = @{NSLocalizedDescriptionKey : @"Could not connect to iCloud in a resonable time."};
+        completion([NSError errorWithDomain:@"net.artsy.artsy.authentication" code:-1 userInfo:info]);
+    });
+
     SecRequestSharedWebCredential(NULL, NULL, ^(CFArrayRef credentials, CFErrorRef error) {
+        if (hasTimedOut) {
+            return;
+        }
+
+        hasGotCredentials = YES;
+
         if (error) {
             // An error might be as simple as there not being any credentials available.
             ARErrorLog(@"Unable to fetch Shared Web Credentials: %@", (__bridge NSError *)error);

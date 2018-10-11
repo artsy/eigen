@@ -18,6 +18,7 @@ upcoming:
     - Fixes to loading Facebook links coming from the FB app - orta
     - If you wait on an Artwork zoom view, the back button is hidden - orta
     - When zooming into an artwork you can wait 2 seconds and the back button will disappear - orta
+    - Adds a 5s timeout to the shared web credentials - orta
 
 releases:
   - version: 4.2.2
