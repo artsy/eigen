@@ -17,6 +17,18 @@ it(@"displays both cm and in dimensions", ^{
     expect(view).to.haveValidSnapshotNamed(@"bothDimensions");
 });
 
+it(@"shows edition information", ^{
+    Artwork *artwork = [Artwork modelWithJSON:@{
+        @"title": @"An example Artwork",
+        @"edition_of": @"Edition 1/23",
+    }];
+
+    ARArtworkDetailView *view = [[ARArtworkDetailView alloc] initWithArtwork:nil andFair:nil];
+    view.frame = (CGRect){ 0, 0, 320, 80 };
+    [view updateWithArtwork:artwork];
+
+    expect(view).to.haveValidSnapshot();
+});
 
 it(@"shows auction data", ^{
     Artwork *artwork = [Artwork modelWithJSON:@{

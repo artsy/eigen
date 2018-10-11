@@ -67,6 +67,7 @@ query OldArtworkQuery($artworkID: String!) {
     collecting_institution
     date
     exhibition_history
+    edition_of
     image_rights
     is_for_sale
     is_price_hidden
