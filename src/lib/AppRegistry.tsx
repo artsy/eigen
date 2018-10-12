@@ -2,7 +2,9 @@ import React from "react"
 import { AppRegistry, View } from "react-native"
 
 import Consignments from "./Components/Consignments"
+import BidFlow from "./Containers/BidFlow"
 import * as Containers from "./Containers/index"
+import RegistrationFlow from "./Containers/RegistrationFlow"
 import {
   ArtistRenderer,
   BidderFlowRendererProps,
@@ -110,11 +112,11 @@ interface BidderFlow {
 const BidderFlows: { [BidderFlowIntent: string]: BidderFlow } = {
   bid: {
     queryRenderer: BidFlowRenderer,
-    container: Containers.BidFlow,
+    container: BidFlow,
   },
   register: {
     queryRenderer: RegistrationFlowRenderer,
-    container: Containers.RegistrationFlow,
+    container: RegistrationFlow,
   },
 }
 
