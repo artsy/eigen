@@ -3,7 +3,7 @@ import Interstellar
 
 class LiveAuctionHistoryCell: UITableViewCell {
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
         backgroundColor = .white
 
@@ -101,7 +101,7 @@ class LiveAuctionBidHistoryViewController: UITableViewController {
 
     func provideHapticFeedbackForEvents(events: [LiveAuctionEventViewModel]) {
         if #available(iOS 10.0, *) {
-            var feedbackWeight: UIImpactFeedbackStyle? = nil
+            var feedbackWeight: UIImpactFeedbackGenerator.FeedbackStyle? = nil
             events.forEach { event in
                 if event.isBid && feedbackWeight == nil {
                     feedbackWeight = .light

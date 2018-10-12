@@ -84,13 +84,13 @@ private extension RefinementOptionsViewController {
 
         // A footer view ( either a separator or price range view )
         let bottomView = priceRangeView() ?? ARSeparatorView()
-        let bottomHeight = bottomView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        let bottomHeight = bottomView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
 
 
         let tableView = UITableView().then {
             $0.register(RefinementOptionsTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
             $0.separatorColor = .artsyGrayRegular()
-            $0.separatorInset = UIEdgeInsetsMake(0, 20, 0, 20)
+            $0.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
             $0.dataSource = tableViewHandler
             $0.delegate = tableViewHandler
 

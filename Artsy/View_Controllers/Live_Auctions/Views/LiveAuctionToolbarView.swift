@@ -24,7 +24,7 @@ class LiveAuctionToolbarView: UIView {
     }
 
     func attributify(_ string: String, color: UIColor = .black) -> NSAttributedString {
-        return NSAttributedString(string: string.uppercased(), attributes: [NSAttributedStringKey.foregroundColor: color])
+        return NSAttributedString(string: string.uppercased(), attributes: [NSAttributedString.Key.foregroundColor: color])
     }
 
     func setupViews() {

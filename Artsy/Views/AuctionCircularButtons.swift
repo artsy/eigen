@@ -20,7 +20,7 @@ extension UIButton {
     /// Returns one of a set of circular buttons used throughout the app.
     static func circularButton(_ type: CircularButtonType) -> UIButton {
         let button = UIButton(type: .custom)
-        button.setImage(type.image, for: UIControlState())
+        button.setImage(type.image, for: UIControl.State())
         button.imageView?.contentMode = .scaleAspectFit
         button.ar_extendHitTestSize(byWidth: 4, andHeight: 4) // To expand to required 44pt hit area (images are 40x40).
         return button

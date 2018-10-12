@@ -162,9 +162,9 @@ class LiveAuctionViewController: UIViewController {
 
         let dimension = 40
         let closeButton = ARMenuButton()
-        closeButton.setBorderColor(.artsyGrayRegular(), for: UIControlState(), animated: false)
-        closeButton.setBackgroundColor(.white, for: UIControlState(), animated: false)
-        closeButton.setImage(UIImage(named:"serif_modal_close"), for: UIControlState())
+        closeButton.setBorderColor(.artsyGrayRegular(), for: UIControl.State(), animated: false)
+        closeButton.setBackgroundColor(.white, for: UIControl.State(), animated: false)
+        closeButton.setImage(UIImage(named:"serif_modal_close"), for: UIControl.State())
         closeButton.addTarget(self, action: #selector(dismissLiveAuctionsModal), for: .touchUpInside)
 
         offlineView.addSubview(closeButton)
@@ -266,7 +266,7 @@ extension PrivateFunctions {
             // If we're loading (we probably are) then continue to show the loading view until things complete.
             // We'll dismiss the loading view based on initialStateLoadedSignal.
             if let loadingView = loadingView {
-                view.bringSubview(toFront: loadingView)
+                view.bringSubviewToFront(loadingView)
             }
         }
 
