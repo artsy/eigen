@@ -318,3 +318,24 @@ export const MyProfileRenderer: React.SFC<RendererProps> = ({ render }) => {
     />
   )
 }
+
+interface FairRendererProps extends RendererProps {
+  fairID: string
+}
+
+export const FairRenderer: React.SFC<FairRendererProps> = ({ render, fairID }) => {
+  return (
+    <QueryRenderer
+      environment={environment}
+      query={graphql`
+        query QueryRenderersFairQuery($fairID: String!) {
+          fair(id: $fairID) {
+            ...Fair_fair
+          }
+        }
+      `}
+      variables={{ fairID }}
+      render={render}
+    />
+  )
+}

@@ -28,6 +28,7 @@
 #import <Emission/ARMyProfileViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARBidFlowViewController.h>
+#import <Emission/ARFairComponentViewController.h>
 
 #import "ARStorybookComponentViewController.h"
 
@@ -105,6 +106,7 @@
   ARSectionData *sectionData = [[ARSectionData alloc] init];
   [self setupSection:sectionData withTitle:@"View Controllers"];
 
+  [sectionData addCellData:self.jumpToFair];
   [sectionData addCellData:self.jumpToArtist];
   [sectionData addCellData:self.jumpToRandomArtist];
   [sectionData addCellData:self.jumpToHomepage];
@@ -355,6 +357,14 @@
   }
                                        preload:^NSArray<ARGraphQLQuery *> *{
     return [ARFavoritesComponentViewController preloadQueries];
+  }];
+}
+
+- (ARCellData *)jumpToFair
+{
+  return [self tappableCellDataWithTitle:@"Fair" selection:^{
+    id viewController = [[ARFairComponentViewController alloc] initWithFairID:@"the-armory-show-2014"];
+    [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
 
