@@ -38,6 +38,7 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"QueryRenderersArtistQuery": @"b2587c5ba760fb778d392f0873963f82",
       @"QueryRenderersBidFlowQuery": @"79c707a33aa8c1d75ad950162468be2b",
       @"QueryRenderersConversationQuery": @"e497726ea96581d8a9f121a7c97823c8",
+      @"QueryRenderersFairQuery": @"be7a98bae37d1dea9e7c6388ee57dd5f",
       @"QueryRenderersForYouQuery": @"94f115ac967e9864eb9ff97d2d355ae5",
       @"QueryRenderersGeneQuery": @"3e87733930ed99148d4327fc3c3cb5eb",
       @"QueryRenderersInboxQuery": @"927e7fd3e0d34488bc507ebd9d77bfa2",
