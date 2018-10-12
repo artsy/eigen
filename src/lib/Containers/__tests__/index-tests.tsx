@@ -1,17 +1,20 @@
-import * as exportsFromIndex from "../"
+import exportsFromIndex from "../"
 
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
 it("should export all components", () => {
   expect(Object.keys(exportsFromIndex)).toEqual([
-    "Fair",
-    "MyProfile",
     "Artist",
+    "BidFlow",
     "Conversation",
+    "Home",
     "Gene",
+    "Fair",
+    "Sale",
+    "RegistrationFlow",
+    "WorksForYou",
+    "MyProfile",
     "Inbox",
     "Inquiry",
-    "Sale",
-    "WorksForYou",
   ])
 })

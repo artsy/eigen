@@ -2,8 +2,8 @@ import React from "react"
 import { AppRegistry, View } from "react-native"
 
 import Consignments from "./Components/Consignments"
+import Containers from "./Containers/"
 import BidFlow from "./Containers/BidFlow"
-import * as Containers from "./Containers/index"
 import RegistrationFlow from "./Containers/RegistrationFlow"
 import {
   ArtistRenderer,
