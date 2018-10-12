@@ -1,15 +1,3 @@
 {
-  "recommendations": [
-    "jpoissonnier.vscode-styled-components",
-    "Orta.vscode-danger",
-    "christian-kohler.npm-intellisense",
-    "eg2.tslint",
-    "vsmobile.vscode-react-native",
-    "Orta.vscode-react-native-storybooks",
-    "esbenp.prettier-vscode",
-    "mrmlnc.vscode-stylefmt",
-    "shinnn.stylelint",
-    "wayou.vscode-todo-highlight",
-    "kumar-harsh.graphql-for-vscode"
-  ]
+  "recommendations": ["artsy.artsy-studio-extension-pack"]
 }

@@ -13,7 +13,6 @@
   "editor.formatOnSave": true,
   "prettier.singleQuote": false,
   "prettier.trailingComma": "es5",
-  "prettier.typescriptEnable": ["typescript", "typescriptreact"],
   "prettier.semi": false,
   "prettier.printWidth": 120,
   "files.trimTrailingWhitespace": true,
@@ -40,9 +39,7 @@
     "Pod/Assets/Emission.*": true,
     ".vscode/.react/*": true
   },
-  "clang.compilationDatabase": "${workspaceRoot}/Example/compile_commands.json",
-  "typescript.tsdk": "./node_modules/typescript/lib",
-  "spellchecker.ignoreWordsList": [
+  "cSpell.ignoreWords": [
     "orta",
     "sarah",
     "luc",
@@ -63,7 +60,9 @@
     "Inbox",
     "matt"
   ],
-  "stylelint.additionalDocumentSelectors": ["typescript", "typescriptreact"],
+  "cSpell.diagnosticLevel": "Hint",
+  "clang.compilationDatabase": "${workspaceRoot}/Example/compile_commands.json",
+  "typescript.tsdk": "./node_modules/typescript/lib",
   "todohighlight.exclude": ["node_modules/**", ".vscode/**", "externals/**"],
   "tslint.autoFixOnSave": true,
   "typescript.format.enable": false,
