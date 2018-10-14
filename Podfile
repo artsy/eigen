@@ -168,6 +168,16 @@ post_install do |installer|
     end
   end
 
+  # For now Nimble Snapshots needs to stay at Swift 4.0
+  swift4 = ['Nimble-Snapshots']
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      if swift4.include?(target.name)
+        config.build_settings['SWIFT_VERSION'] = '4.0'
+      end
+    end
+  end
+
   react = installer.pods_project.targets.find { |target| target.name == 'React' }
   react.build_configurations.each do |config|
     config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = "$(inherited) RCT_DEV=0"
