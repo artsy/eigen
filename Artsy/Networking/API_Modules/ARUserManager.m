@@ -616,51 +616,28 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         return;
     }
 
-    __block BOOL hasTimedOut = NO;
-    __block BOOL hasGotCredentials = NO;
-
-    // This automatically runs on the main queue
-    ar_dispatch_after(5, ^{
-        if (hasGotCredentials) {
-            return;
-        }
-
-        hasTimedOut = YES;
-        NSDictionary *info = @{NSLocalizedDescriptionKey : @"Could not connect to iCloud in a resonable time."};
-        completion([NSError errorWithDomain:@"net.artsy.artsy.authentication" code:-1 userInfo:info]);
-    });
-
     SecRequestSharedWebCredential(NULL, NULL, ^(CFArrayRef credentials, CFErrorRef error) {
-        // Run on the main queue to ensure that the two control flow bools get atomically changed
-        ar_dispatch_main_queue(^{
-            if (hasTimedOut) {
-                return;
-            }
+        if (error) {
+            // An error might be as simple as there not being any credentials available.
+            ARErrorLog(@"Unable to fetch Shared Web Credentials: %@", (__bridge NSError *)error);
+            completion((__bridge NSError *)error);
+        } else {
+            NSDictionary *account = [(__bridge NSArray *)credentials firstObject];
+            if (account) {
+                [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"safari keychain"}];
 
-            hasGotCredentials = YES;
-
-            if (error) {
-                // An error might be as simple as there not being any credentials available.
-                ARErrorLog(@"Unable to fetch Shared Web Credentials: %@", (__bridge NSError *)error);
-                completion((__bridge NSError *)error);
+                [[ARUserManager sharedManager] loginWithUsername:account[(__bridge NSString *)kSecAttrAccount]
+                                                        password:account[(__bridge NSString *)kSecSharedPassword]
+                                          successWithCredentials:nil
+                                                         gotUser:^(User *currentUser) { completion(nil); }
+                                           authenticationFailure:^(NSError *e) { completion(e); }
+                                                  networkFailure:^(NSError *e) { completion(e); }
+                                        saveSharedWebCredentials:NO];
             } else {
-                NSDictionary *account = [(__bridge NSArray *)credentials firstObject];
-                if (account) {
-                    [ARAnalytics event:ARAnalyticsLoggedIn withProperties:@{@"context_type" : @"safari keychain"}];
-
-                    [[ARUserManager sharedManager] loginWithUsername:account[(__bridge NSString *)kSecAttrAccount]
-                                                            password:account[(__bridge NSString *)kSecSharedPassword]
-                                              successWithCredentials:nil
-                                                             gotUser:^(User *currentUser) { completion(nil); }
-                                               authenticationFailure:^(NSError *e) { completion(e); }
-                                                      networkFailure:^(NSError *e) { completion(e); }
-                                            saveSharedWebCredentials:NO];
-                } else {
-                    NSDictionary *info = @{ NSLocalizedDescriptionKey: @"User chose to not use Shared Web Credentials." };
-                    completion([NSError errorWithDomain:@"net.artsy.artsy.authentication" code:-1 userInfo:info]);
-                }
+                NSDictionary *info = @{ NSLocalizedDescriptionKey: @"User chose to not use Shared Web Credentials." };
+                completion([NSError errorWithDomain:@"net.artsy.artsy.authentication" code:-1 userInfo:info]);
             }
-        });
+        }
     });
 }
 

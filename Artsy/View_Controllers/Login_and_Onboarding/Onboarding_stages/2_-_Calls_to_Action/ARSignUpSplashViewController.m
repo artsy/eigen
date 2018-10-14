@@ -79,15 +79,31 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    void(^removeSpinners)(void) = ^ {
+        if (!self.spinnerView) {
+            return;
+        }
+        [UIView animateWithDuration:ARAnimationDuration animations:^{
+            [self.spinnerView removeFromSuperview];
+            self.spinnerView = nil;
+            [self showControls];
+        }];
+    };
+
+    // Always remove the spinners after 5 seconds.
+    // If you're choosing a a login, this would remove the
+    // spinners in the BG.
+    ar_dispatch_after(5, ^{
+        removeSpinners();
+    });
+
     [[ARUserManager sharedManager] tryLoginWithSharedWebCredentials:^(NSError *error) {
         ar_dispatch_main_queue(^{
             if (error) {
-                [UIView animateWithDuration:ARAnimationDuration animations:^{
-                    [self.spinnerView removeFromSuperview];
-                    self.spinnerView = nil;
-                    [self showControls];
-                }];
+                // If it fails then remove the spinners
+                removeSpinners();
             } else {
+                // Successfully logged in
                 [self loggedInWithSharedCredentials];
                 [self.delegate dismissOnboardingWithVoidAnimation:YES];
             }
