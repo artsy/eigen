@@ -6,7 +6,6 @@
 #import "ARTopMenuViewController.h"
 #import "ArtsyAPI.h"
 #import "ArtsyAPI+Sailthru.h"
-#import <Adjust/Adjust.h>
 
 #import <CoreSpotlight/CoreSpotlight.h>
 
@@ -35,8 +34,6 @@ static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
     if ([[ARUserManager sharedManager] hasExistingAccount]) {
         DecodeURL(URL, ^(NSURL *decodedURL) {
-//            [Adjust appWillOpenUrl:decodedURL];
-
             [[ARAppDelegate sharedInstance] lookAtURLForAnalytics:decodedURL];
             UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:decodedURL];
             if (viewController) {

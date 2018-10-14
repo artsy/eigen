@@ -30,9 +30,9 @@ class SerifModalWebNavigationController: UINavigationController, UINavigationCon
 
         let dimension = 40
         let closeButton = ARMenuButton()
-        closeButton.setBorderColor(.artsyGrayRegular(), for: UIControlState(), animated: false)
-        closeButton.setBackgroundColor(.white, for: UIControlState(), animated: false)
-        closeButton.setImage(UIImage(named:"serif_modal_close"), for: UIControlState())
+        closeButton.setBorderColor(.artsyGrayRegular(), for: UIControl.State(), animated: false)
+        closeButton.setBackgroundColor(.white, for: UIControl.State(), animated: false)
+        closeButton.setImage(UIImage(named:"serif_modal_close"), for: UIControl.State())
         closeButton.addTarget(self, action: #selector(dismissMe), for: .touchUpInside)
 
         view.addSubview(closeButton)

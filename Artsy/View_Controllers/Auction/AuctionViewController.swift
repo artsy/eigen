@@ -213,7 +213,7 @@ extension AuctionViewController {
 
         // Needs to dispatch because of UIKit ¯\_(ツ)_/¯
         DispatchQueue.main.async {
-            buyNowView.setup(isCompact: self.isCompactSize, promotedSaleArtworks: promotedSaleArtworks, viewController: self.saleArtworksViewController.childViewControllers.first!, delegate:self)
+            buyNowView.setup(isCompact: self.isCompactSize, promotedSaleArtworks: promotedSaleArtworks, viewController: self.saleArtworksViewController.children.first!, delegate:self)
 
             buyNowView.setNeedsUpdateConstraints()
             self.headerStack?.setNeedsUpdateConstraints()

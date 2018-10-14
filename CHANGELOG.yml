@@ -4,11 +4,12 @@ upcoming:
   emission_version: 1.6.x
   dev:
     - Updates Emission - ash
+    - Buy Now flow opens a modal - ash
     - Tries to re-authenticates if there's a username/password in the keychain - orta
     - The Echo config for buy now also triggers buy now code in Emission - orta
     - Uses metaphysics for the ArtworkVC's Artwork update API - orta
     - Updates Artwork page for Buy Now - orta
-    - Buy Now flow opens a modal - ash
+    - Another attempt at fixing adjust - orta
 
   user_facing:
     - Fixes to the status bar in an inquiry - orta
@@ -18,6 +19,8 @@ upcoming:
     - Fixes to loading Facebook links coming from the FB app - orta
     - If you wait on an Artwork zoom view, the back button is hidden - orta
     - When zooming into an artwork you can wait 2 seconds and the back button will disappear - orta
+    - Adds a 5s timeout to the shared web credentials - orta
+    - Re-enables saving email/pass to safari's keychain on the 3rd app launch - orta
 
 releases:
   - version: 4.2.2

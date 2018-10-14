@@ -129,8 +129,8 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
     func showFullMetadata(_ animated: Bool) {
         isScrollEnabled = true
 
-        toggle.setTitle("HIDE INFO", for: UIControlState())
-        toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleDown), for: UIControlState())
+        toggle.setTitle("HIDE INFO", for: UIControl.State())
+        toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleDown), for: UIControl.State())
 
         toggle.titleEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         toggle.imageTopConstraint?.constant = 15
@@ -147,8 +147,8 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
     func hideFullMetadata(_ animated: Bool) {
         isScrollEnabled = false
 
-        toggle.setTitle("LOT INFO", for: UIControlState())
-        toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleUp), for: UIControlState())
+        toggle.setTitle("LOT INFO", for: UIControl.State())
+        toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleUp), for: UIControl.State())
 
         toggle.titleEdgeInsets = UIEdgeInsets.zero
         toggle.imageTopConstraint?.constant = 4
@@ -172,12 +172,12 @@ class AuctionLotMetadataStackScrollView: ORStackScrollView {
         // Adjusts where the text will be placed
         toggle.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 30, right: 17)
         toggle.titleLabel?.font = .sansSerifFont(withSize: 12)
-        toggle.setTitle("LOT INFO", for: UIControlState())
-        toggle.setTitleColor(.black, for: UIControlState())
+        toggle.setTitle("LOT INFO", for: UIControl.State())
+        toggle.setTitleColor(.black, for: UIControl.State())
         toggle.setTitleColor(.artsyGrayMedium(), for: .disabled)
 
         // Constrain the image to the left edge
-        toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleUp), for: UIControlState())
+        toggle.setImage(UIImage(asset: .LiveAuctionsDisclosureTriangleUp), for: UIControl.State())
         toggle.imageView?.alignTrailingEdge(withView: toggle, predicate: "0")
         toggle.imageTopConstraint =  toggle.imageView?.alignTopEdge(withView: toggle, predicate: "4")
         toggle.setContentHuggingPriority(UILayoutPriority(rawValue: 1000), for: .horizontal)
