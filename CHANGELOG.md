@@ -16,6 +16,10 @@
 
 ### Master
 
+### 1.7.0
+
+- Adds a new ARComponentVC and root React Component for Fairs - orta
+
 ### 1.6.1
 
 - Tweaks to artwork badges - matt

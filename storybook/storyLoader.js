@@ -39,6 +39,7 @@ function loadStories() {
   require('../src/lib/Containers/__stories__/Gene.story.tsx');
   require('../src/lib/Containers/__stories__/Inquiry.story.tsx');
   require('../src/lib/Containers/__stories__/Sale.story.tsx');
+  require('../src/lib/Scenes/Fair/__stories__/Fair.story.tsx');
   require('../src/lib/Scenes/Favorites/__stories__/Favorites.story.tsx');
   require('../src/lib/Scenes/Home/Components/ForYou/Components/__stories__/MarketingHeader.story.tsx');
   require('../src/lib/Scenes/Home/Components/Sales/Components/__stories__/LotsByFollowedArtists.story.tsx');
@@ -82,6 +83,7 @@ const stories = [
   '../src/lib/Containers/__stories__/Gene.story.tsx',
   '../src/lib/Containers/__stories__/Inquiry.story.tsx',
   '../src/lib/Containers/__stories__/Sale.story.tsx',
+  '../src/lib/Scenes/Fair/__stories__/Fair.story.tsx',
   '../src/lib/Scenes/Favorites/__stories__/Favorites.story.tsx',
   '../src/lib/Scenes/Home/Components/ForYou/Components/__stories__/MarketingHeader.story.tsx',
   '../src/lib/Scenes/Home/Components/Sales/Components/__stories__/LotsByFollowedArtists.story.tsx',

@@ -2,12 +2,15 @@ import React from "react"
 import { AppRegistry, View } from "react-native"
 
 import Consignments from "./Components/Consignments"
-import Containers from "./Containers/index"
+import Containers from "./Containers/"
+import BidFlow from "./Containers/BidFlow"
+import RegistrationFlow from "./Containers/RegistrationFlow"
 import {
   ArtistRenderer,
   BidderFlowRendererProps,
   BidFlowRenderer,
   ConversationRenderer,
+  FairRenderer,
   GeneRenderer,
   InboxRenderer,
   InquiryRenderer,
@@ -109,11 +112,11 @@ interface BidderFlow {
 const BidderFlows: { [BidderFlowIntent: string]: BidderFlow } = {
   bid: {
     queryRenderer: BidFlowRenderer,
-    container: Containers.BidFlow,
+    container: BidFlow,
   },
   register: {
     queryRenderer: RegistrationFlowRenderer,
-    container: Containers.RegistrationFlow,
+    container: RegistrationFlow,
   },
 }
 
@@ -121,6 +124,20 @@ const BidderFlow: React.SFC<BidderFlowProps> = ({ intent, ...restProps }) => {
   const { queryRenderer: Renderer, container: Container } = BidderFlows[intent]
   return <Renderer {...restProps} render={renderWithLoadProgress(Container)} />
 }
+
+interface FairProps {
+  fairID: string
+}
+
+const Fair: React.SFC<FairProps> = track<FairProps>(props => {
+  return {
+    context_screen: Schema.PageNames.FairPage,
+    context_screen_owner_slug: props.fairID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+  }
+})(({ fairID }) => {
+  return <FairRenderer fairID={fairID} render={renderWithLoadProgress(Containers.Fair, { fairID })} />
+})
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
@@ -136,3 +153,4 @@ AppRegistry.registerComponent("Inquiry", () => Inquiry)
 AppRegistry.registerComponent("Favorites", () => FavoritesScene)
 // TODO: Change everything to BidderFlow? AuctionAction?
 AppRegistry.registerComponent("BidFlow", () => BidderFlow)
+AppRegistry.registerComponent("Fair", () => Fair)

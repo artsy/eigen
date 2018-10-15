@@ -1,3 +1,4 @@
+import Fair from "../Scenes/Fair"
 import Home from "../Scenes/Home"
 import MyProfile from "../Scenes/Settings/MyProfile"
 import Artist from "./Artist"
@@ -14,12 +15,13 @@ export default {
   Artist,
   BidFlow,
   Conversation,
-  Home,
   Gene,
-  Sale,
-  RegistrationFlow,
-  WorksForYou,
-  MyProfile,
+  Fair,
+  Home,
   Inbox,
   Inquiry,
+  MyProfile,
+  RegistrationFlow,
+  Sale,
+  WorksForYou,
 }
