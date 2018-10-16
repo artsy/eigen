@@ -7,12 +7,9 @@ import React, { Component } from "react"
 import { Dimensions } from "react-native"
 import styled from "styled-components/native"
 
-// TODO: After /collect2 reaches 100% redirect in A/B replace with: https://artsy.net/collect?acquireable=true
-const CollectUrl = "https://artsy.net/collect?split_test[new_collect_page]=new&acquireable=true"
-
 export class MarketingHeader extends Component {
   handleTap = () => {
-    Switchboard.presentNavigationViewController(this, CollectUrl)
+    Switchboard.presentNavigationViewController(this, "https://www.artsy.net/collect?acquireable=true")
   }
 
   render() {
