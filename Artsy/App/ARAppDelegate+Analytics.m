@@ -598,8 +598,8 @@
                                     sourceScreen = @"onboarding recommended";
                                 }
                                 return @{
-                                         @"artist_slug" : artist.artistID,
-                                         @"artist_id" : artist.artistID,
+                                         @"artist_slug" : artist.artistID ?: @"",
+                                         @"artist_id" : artist.artistID ?: @"",
                                          @"source_screen" : sourceScreen
                                         };
                             },
@@ -621,7 +621,7 @@
                                     sourceScreen = @"onboarding recommended";
                                 }
                                 return @{
-                                         @"gene_id" : gene.geneID,
+                                         @"gene_id" : gene.geneID ?: @"",
                                          @"source_screen" : sourceScreen
                                         };
                             },
@@ -1062,8 +1062,8 @@
                             ARAnalyticsProperties:^NSDictionary *(ARShowViewController *controller, NSArray *_) {
                                 NSDictionary *basics =  @{
                                       @"owner_type": @"partner_show",
-                                      @"owner_id": controller.show.showUUID,
-                                      @"owner_slug": controller.show.showID,
+                                      @"owner_id": controller.show.showUUID ?: @"",
+                                      @"owner_slug": controller.show.showID ?: @"",
                                 };
 
                                 if (controller.show.fair.fairID) {
@@ -1115,7 +1115,7 @@
                             ARAnalyticsSelectorName: @"fairDidLoad",
                             ARAnalyticsProperties: ^NSDictionary *(ARFairViewController *controller, NSArray *_) {
                                 return @{ @"owner_type": @"fair",
-                                          @"owner_id" : controller.fair.fairUUID,
+                                          @"owner_id" : controller.fair.fairUUID ?: @"",
                                           @"owner_slug": controller.fair.fairID ?: @"",
                                     };
                             }
@@ -1129,7 +1129,7 @@
                             ARAnalyticsPageName: @"Fair Search",
                             ARAnalyticsProperties: ^NSDictionary *(ARFairSearchViewController *controller, NSArray *_) {
                                 return @{ @"owner_type": @"fair",
-                                          @"owner_id" : controller.fair.fairUUID,
+                                          @"owner_id" : controller.fair.fairUUID ?: @"",
                                           @"owner_slug": controller.fair.fairID ?: @"",
                                     };
                             }
@@ -1144,7 +1144,7 @@
                             ARAnalyticsSelectorName: @"viewDidAppear:",
                             ARAnalyticsProperties: ^NSDictionary *(ARFairGuideViewController *controller, NSArray *_) {
                                     return @{ @"owner_type": @"fair",
-                                          @"owner_id" : controller.fair.fairUUID,
+                                          @"owner_id" : controller.fair.fairUUID ?: @"",
                                           @"owner_slug": controller.fair.fairID ?: @"",
                                     };
                             }
