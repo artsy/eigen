@@ -1100,7 +1100,7 @@
                             ARAnalyticsSelectorName: @"artistDidLoad",
                             ARAnalyticsProperties: ^NSDictionary *(ARFairArtistViewController *controller, NSArray *_) {
                                 return @{ @"owner_type": @"fair",
-                                          @"owner_id" : controller.fair.fairUUID,
+                                          @"owner_id" : controller.fair.fairUUID ?: @"",
                                           @"owner_slug": controller.fair.fairID ?: @"",
                                     };
                             }
