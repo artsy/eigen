@@ -1,6 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { ArtworkPreview_artwork$ref } from "./ArtworkPreview_artwork.graphql";
+import { Message_message$ref } from "./Message_message.graphql";
+import { ShowPreview_show$ref } from "./ShowPreview_show.graphql";
+declare const _Messages_conversation$ref: unique symbol;
+export type Messages_conversation$ref = typeof _Messages_conversation$ref;
 export type Messages_conversation = {
     readonly __id: string;
     readonly id: string | null;
@@ -31,17 +36,21 @@ export type Messages_conversation = {
                 readonly attachments: ReadonlyArray<({
                     readonly id: string;
                 }) | null> | null;
+                readonly " $fragmentRefs": Message_message$ref;
             }) | null;
         }) | null> | null;
     }) | null;
     readonly items: ReadonlyArray<({
         readonly artwork: ({
             readonly href?: string | null;
+            readonly " $fragmentRefs": ArtworkPreview_artwork$ref;
         }) | null;
         readonly show: ({
             readonly href?: string | null;
+            readonly " $fragmentRefs": ShowPreview_show$ref;
         }) | null;
     }) | null> | null;
+    readonly " $refType": Messages_conversation$ref;
 };
 
 

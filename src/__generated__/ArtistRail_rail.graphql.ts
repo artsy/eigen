@@ -1,13 +1,18 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { ArtistCard_artist$ref } from "./ArtistCard_artist.graphql";
+declare const _ArtistRail_rail$ref: unique symbol;
+export type ArtistRail_rail$ref = typeof _ArtistRail_rail$ref;
 export type ArtistRail_rail = {
     readonly __id: string;
     readonly key: string | null;
     readonly results: ReadonlyArray<({
         readonly _id: string;
         readonly __id: string;
+        readonly " $fragmentRefs": ArtistCard_artist$ref;
     }) | null> | null;
+    readonly " $refType": ArtistRail_rail$ref;
 };
 
 

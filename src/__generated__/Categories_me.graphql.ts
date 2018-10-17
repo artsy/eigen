@@ -1,6 +1,8 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _Categories_me$ref: unique symbol;
+export type Categories_me$ref = typeof _Categories_me$ref;
 export type Categories_me = {
     readonly followed_genes: ({
         readonly pageInfo: {
@@ -21,6 +23,7 @@ export type Categories_me = {
             }) | null;
         }) | null> | null;
     }) | null;
+    readonly " $refType": Categories_me$ref;
 };
 
 

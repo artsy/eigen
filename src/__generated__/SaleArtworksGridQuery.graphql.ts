@@ -1,13 +1,20 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { SaleArtworksGrid_sale$ref } from "./SaleArtworksGrid_sale.graphql";
 export type SaleArtworksGridQueryVariables = {
     readonly __id: string;
     readonly count: number;
     readonly cursor?: string | null;
 };
 export type SaleArtworksGridQueryResponse = {
-    readonly node: ({}) | null;
+    readonly node: ({
+        readonly " $fragmentRefs": SaleArtworksGrid_sale$ref;
+    }) | null;
+};
+export type SaleArtworksGridQuery = {
+    readonly response: SaleArtworksGridQueryResponse;
+    readonly variables: SaleArtworksGridQueryVariables;
 };
 
 

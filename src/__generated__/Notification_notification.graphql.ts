@@ -1,6 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
+declare const _Notification_notification$ref: unique symbol;
+export type Notification_notification$ref = typeof _Notification_notification$ref;
 export type Notification_notification = {
     readonly summary: string | null;
     readonly artists: string | null;
@@ -8,12 +11,14 @@ export type Notification_notification = {
         readonly artists: ReadonlyArray<({
             readonly href: string | null;
         }) | null> | null;
+        readonly " $fragmentRefs": GenericGrid_artworks$ref;
     }) | null> | null;
     readonly image: ({
         readonly resized: ({
             readonly url: string | null;
         }) | null;
     }) | null;
+    readonly " $refType": Notification_notification$ref;
 };
 
 

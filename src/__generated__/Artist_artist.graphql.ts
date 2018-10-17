@@ -1,6 +1,12 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { About_artist$ref } from "./About_artist.graphql";
+import { Artworks_artist$ref } from "./Artworks_artist.graphql";
+import { Header_artist$ref } from "./Header_artist.graphql";
+import { Shows_artist$ref } from "./Shows_artist.graphql";
+declare const _Artist_artist$ref: unique symbol;
+export type Artist_artist$ref = typeof _Artist_artist$ref;
 export type Artist_artist = {
     readonly _id: string;
     readonly id: string;
@@ -11,6 +17,8 @@ export type Artist_artist = {
         readonly related_artists: number | null;
         readonly articles: number | null;
     }) | null;
+    readonly " $fragmentRefs": Header_artist$ref & About_artist$ref & Shows_artist$ref & Artworks_artist$ref;
+    readonly " $refType": Artist_artist$ref;
 };
 
 

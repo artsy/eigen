@@ -1,8 +1,16 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { Biography_gene$ref } from "./Biography_gene.graphql";
+import { RelatedArtists_artists$ref } from "./RelatedArtists_artists.graphql";
+declare const _About_gene$ref: unique symbol;
+export type About_gene$ref = typeof _About_gene$ref;
 export type About_gene = {
-    readonly trending_artists: ReadonlyArray<({}) | null> | null;
+    readonly trending_artists: ReadonlyArray<({
+        readonly " $fragmentRefs": RelatedArtists_artists$ref;
+    }) | null> | null;
+    readonly " $fragmentRefs": Biography_gene$ref;
+    readonly " $refType": About_gene$ref;
 };
 
 

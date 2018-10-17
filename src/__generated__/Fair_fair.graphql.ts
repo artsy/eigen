@@ -1,8 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _Fair_fair$ref: unique symbol;
+export type Fair_fair$ref = typeof _Fair_fair$ref;
 export type Fair_fair = {
     readonly name: string | null;
+    readonly " $refType": Fair_fair$ref;
 };
 
 

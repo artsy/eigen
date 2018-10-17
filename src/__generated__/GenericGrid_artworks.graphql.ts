@@ -1,12 +1,17 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { Artwork_artwork$ref } from "./Artwork_artwork.graphql";
+declare const _GenericGrid_artworks$ref: unique symbol;
+export type GenericGrid_artworks$ref = typeof _GenericGrid_artworks$ref;
 export type GenericGrid_artworks = ReadonlyArray<{
     readonly __id: string;
     readonly id: string;
     readonly image: ({
         readonly aspect_ratio: number | null;
     }) | null;
+    readonly " $fragmentRefs": Artwork_artwork$ref;
+    readonly " $refType": GenericGrid_artworks$ref;
 }>;
 
 

@@ -1,6 +1,8 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _ConversationSnippet_conversation$ref: unique symbol;
+export type ConversationSnippet_conversation$ref = typeof _ConversationSnippet_conversation$ref;
 export type ConversationSnippet_conversation = {
     readonly id: string | null;
     readonly to: {
@@ -33,6 +35,7 @@ export type ConversationSnippet_conversation = {
             readonly __typename: "%other";
         }) | null;
     }) | null> | null;
+    readonly " $refType": ConversationSnippet_conversation$ref;
 };
 
 

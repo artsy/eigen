@@ -1,6 +1,7 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { GeneArtworksGrid_filtered_artworks$ref } from "./GeneArtworksGrid_filtered_artworks.graphql";
 export type GeneArtworksGridQueryVariables = {
     readonly __id: string;
     readonly count: number;
@@ -8,7 +9,13 @@ export type GeneArtworksGridQueryVariables = {
     readonly sort?: string | null;
 };
 export type GeneArtworksGridQueryResponse = {
-    readonly node: ({}) | null;
+    readonly node: ({
+        readonly " $fragmentRefs": GeneArtworksGrid_filtered_artworks$ref;
+    }) | null;
+};
+export type GeneArtworksGridQuery = {
+    readonly response: GeneArtworksGridQueryResponse;
+    readonly variables: GeneArtworksGridQueryVariables;
 };
 
 

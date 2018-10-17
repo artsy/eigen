@@ -1,6 +1,8 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _SaleListItem_sale$ref: unique symbol;
+export type SaleListItem_sale$ref = typeof _SaleListItem_sale$ref;
 export type SaleListItem_sale = {
     readonly id: string;
     readonly name: string | null;
@@ -17,6 +19,7 @@ export type SaleListItem_sale = {
         readonly url: string | null;
         readonly aspect_ratio: number | null;
     }) | null;
+    readonly " $refType": SaleListItem_sale$ref;
 };
 
 

@@ -1,9 +1,16 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { Inbox_me$ref } from "./Inbox_me.graphql";
 export type InboxRefetchQueryVariables = {};
 export type InboxRefetchQueryResponse = {
-    readonly me: ({}) | null;
+    readonly me: ({
+        readonly " $fragmentRefs": Inbox_me$ref;
+    }) | null;
+};
+export type InboxRefetchQuery = {
+    readonly response: InboxRefetchQueryResponse;
+    readonly variables: InboxRefetchQueryVariables;
 };
 
 

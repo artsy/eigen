@@ -1,12 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+export type UpdateConversationMutationInput = {
+    readonly conversationId: string;
+    readonly fromLastViewedMessageId: string;
+    readonly clientMutationId?: string | null;
+};
 export type UpdateConversationMutationVariables = {
-    readonly input: {
-        readonly conversationId?: string;
-        readonly fromLastViewedMessageId?: string;
-        readonly clientMutationId: string | null;
-    };
+    readonly input: UpdateConversationMutationInput;
 };
 export type UpdateConversationMutationResponse = {
     readonly updateConversation: ({
@@ -15,6 +16,10 @@ export type UpdateConversationMutationResponse = {
             readonly from_last_viewed_message_id: string | null;
         }) | null;
     }) | null;
+};
+export type UpdateConversationMutation = {
+    readonly response: UpdateConversationMutationResponse;
+    readonly variables: UpdateConversationMutationVariables;
 };
 
 

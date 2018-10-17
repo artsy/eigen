@@ -1,6 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { ArtworkPreview_artwork$ref } from "./ArtworkPreview_artwork.graphql";
+declare const _Inquiry_artwork$ref: unique symbol;
+export type Inquiry_artwork$ref = typeof _Inquiry_artwork$ref;
 export type Inquiry_artwork = {
     readonly _id: string;
     readonly id: string;
@@ -8,6 +11,8 @@ export type Inquiry_artwork = {
     readonly partner: ({
         readonly name: string | null;
     }) | null;
+    readonly " $fragmentRefs": ArtworkPreview_artwork$ref;
+    readonly " $refType": Inquiry_artwork$ref;
 };
 
 

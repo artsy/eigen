@@ -1,6 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { Artwork_artwork$ref } from "./Artwork_artwork.graphql";
+declare const _SaleArtworksGrid_sale$ref: unique symbol;
+export type SaleArtworksGrid_sale$ref = typeof _SaleArtworksGrid_sale$ref;
 export type SaleArtworksGrid_sale = {
     readonly __id: string;
     readonly saleArtworks: ({
@@ -17,10 +20,12 @@ export type SaleArtworksGrid_sale = {
                     readonly image: ({
                         readonly aspect_ratio: number | null;
                     }) | null;
+                    readonly " $fragmentRefs": Artwork_artwork$ref;
                 }) | null;
             }) | null;
         }) | null> | null;
     }) | null;
+    readonly " $refType": SaleArtworksGrid_sale$ref;
 };
 
 

@@ -1,11 +1,18 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { LotsByFollowedArtists_viewer$ref } from "./LotsByFollowedArtists_viewer.graphql";
+import { SaleListItem_sale$ref } from "./SaleListItem_sale.graphql";
+declare const _Sales_viewer$ref: unique symbol;
+export type Sales_viewer$ref = typeof _Sales_viewer$ref;
 export type Sales_viewer = {
     readonly sales: ReadonlyArray<({
         readonly href: string | null;
         readonly live_start_at: string | null;
+        readonly " $fragmentRefs": SaleListItem_sale$ref;
     }) | null> | null;
+    readonly " $fragmentRefs": LotsByFollowedArtists_viewer$ref;
+    readonly " $refType": Sales_viewer$ref;
 };
 
 

@@ -1,12 +1,19 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { Artworks_me$ref } from "./Artworks_me.graphql";
 export type ArtworksQueryVariables = {
     readonly count: number;
     readonly cursor?: string | null;
 };
 export type ArtworksQueryResponse = {
-    readonly me: ({}) | null;
+    readonly me: ({
+        readonly " $fragmentRefs": Artworks_me$ref;
+    }) | null;
+};
+export type ArtworksQuery = {
+    readonly response: ArtworksQueryResponse;
+    readonly variables: ArtworksQueryVariables;
 };
 
 

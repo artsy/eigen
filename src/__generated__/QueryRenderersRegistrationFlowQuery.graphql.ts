@@ -1,14 +1,23 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { RegistrationFlow_me$ref } from "./RegistrationFlow_me.graphql";
+import { RegistrationFlow_sale$ref } from "./RegistrationFlow_sale.graphql";
 export type QueryRenderersRegistrationFlowQueryVariables = {
     readonly saleID: string;
 };
 export type QueryRenderersRegistrationFlowQueryResponse = {
     readonly sale: ({
         readonly name: string | null;
+        readonly " $fragmentRefs": RegistrationFlow_sale$ref;
     }) | null;
-    readonly me: ({}) | null;
+    readonly me: ({
+        readonly " $fragmentRefs": RegistrationFlow_me$ref;
+    }) | null;
+};
+export type QueryRenderersRegistrationFlowQuery = {
+    readonly response: QueryRenderersRegistrationFlowQueryResponse;
+    readonly variables: QueryRenderersRegistrationFlowQueryVariables;
 };
 
 

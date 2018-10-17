@@ -1,11 +1,18 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { Header_artist$ref } from "./Header_artist.graphql";
 export type ArtistHeaderQueryVariables = {
     readonly artistID: string;
 };
 export type ArtistHeaderQueryResponse = {
-    readonly artist: ({}) | null;
+    readonly artist: ({
+        readonly " $fragmentRefs": Header_artist$ref;
+    }) | null;
+};
+export type ArtistHeaderQuery = {
+    readonly response: ArtistHeaderQueryResponse;
+    readonly variables: ArtistHeaderQueryVariables;
 };
 
 

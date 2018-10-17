@@ -1,6 +1,8 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _ActiveBid_bid$ref: unique symbol;
+export type ActiveBid_bid$ref = typeof _ActiveBid_bid$ref;
 export type ActiveBid_bid = {
     readonly is_leading_bidder: boolean | null;
     readonly sale: ({
@@ -30,6 +32,7 @@ export type ActiveBid_bid = {
             readonly reserve_status: string | null;
         }) | null;
     }) | null;
+    readonly " $refType": ActiveBid_bid$ref;
 };
 
 

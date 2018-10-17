@@ -1,12 +1,19 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { ArtworkRail_rail$ref } from "./ArtworkRail_rail.graphql";
 export type ArtworkRailRefetchQueryVariables = {
     readonly __id: string;
     readonly fetchContent: boolean;
 };
 export type ArtworkRailRefetchQueryResponse = {
-    readonly node: ({}) | null;
+    readonly node: ({
+        readonly " $fragmentRefs": ArtworkRail_rail$ref;
+    }) | null;
+};
+export type ArtworkRailRefetchQuery = {
+    readonly response: ArtworkRailRefetchQueryResponse;
+    readonly variables: ArtworkRailRefetchQueryVariables;
 };
 
 

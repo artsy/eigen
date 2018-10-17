@@ -1,7 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-export type SmallList_shows = ReadonlyArray<{}>;
+import { Show_show$ref } from "./Show_show.graphql";
+declare const _SmallList_shows$ref: unique symbol;
+export type SmallList_shows$ref = typeof _SmallList_shows$ref;
+export type SmallList_shows = ReadonlyArray<{
+    readonly " $fragmentRefs": Show_show$ref;
+    readonly " $refType": SmallList_shows$ref;
+}>;
 
 
 

@@ -1,6 +1,7 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { ArtistNotForSaleArtworksGrid_artist$ref } from "./ArtistNotForSaleArtworksGrid_artist.graphql";
 export type ArtistArtworksFilters = "IS_FOR_SALE" | "IS_NOT_FOR_SALE" | "%future added value";
 export type ArtistNotForSaleArtworksGridQueryVariables = {
     readonly __id: string;
@@ -9,7 +10,13 @@ export type ArtistNotForSaleArtworksGridQueryVariables = {
     readonly filter?: ReadonlyArray<ArtistArtworksFilters | null> | null;
 };
 export type ArtistNotForSaleArtworksGridQueryResponse = {
-    readonly node: ({}) | null;
+    readonly node: ({
+        readonly " $fragmentRefs": ArtistNotForSaleArtworksGrid_artist$ref;
+    }) | null;
+};
+export type ArtistNotForSaleArtworksGridQuery = {
+    readonly response: ArtistNotForSaleArtworksGridQueryResponse;
+    readonly variables: ArtistNotForSaleArtworksGridQueryVariables;
 };
 
 

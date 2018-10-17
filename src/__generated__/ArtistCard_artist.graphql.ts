@@ -1,6 +1,8 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _ArtistCard_artist$ref: unique symbol;
+export type ArtistCard_artist$ref = typeof _ArtistCard_artist$ref;
 export type ArtistCard_artist = {
     readonly id: string;
     readonly _id: string;
@@ -11,6 +13,7 @@ export type ArtistCard_artist = {
     readonly image: ({
         readonly url: string | null;
     }) | null;
+    readonly " $refType": ArtistCard_artist$ref;
 };
 
 

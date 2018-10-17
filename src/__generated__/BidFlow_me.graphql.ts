@@ -1,7 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-export type BidFlow_me = {};
+import { SelectMaxBid_me$ref } from "./SelectMaxBid_me.graphql";
+declare const _BidFlow_me$ref: unique symbol;
+export type BidFlow_me$ref = typeof _BidFlow_me$ref;
+export type BidFlow_me = {
+    readonly " $fragmentRefs": SelectMaxBid_me$ref;
+    readonly " $refType": BidFlow_me$ref;
+};
 
 
 

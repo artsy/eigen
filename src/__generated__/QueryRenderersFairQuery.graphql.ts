@@ -1,11 +1,18 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { Fair_fair$ref } from "./Fair_fair.graphql";
 export type QueryRenderersFairQueryVariables = {
     readonly fairID: string;
 };
 export type QueryRenderersFairQueryResponse = {
-    readonly fair: ({}) | null;
+    readonly fair: ({
+        readonly " $fragmentRefs": Fair_fair$ref;
+    }) | null;
+};
+export type QueryRenderersFairQuery = {
+    readonly response: QueryRenderersFairQueryResponse;
+    readonly variables: QueryRenderersFairQueryVariables;
 };
 
 

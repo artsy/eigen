@@ -1,8 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _AttachmentPreview_attachment$ref: unique symbol;
+export type AttachmentPreview_attachment$ref = typeof _AttachmentPreview_attachment$ref;
 export type AttachmentPreview_attachment = {
     readonly id: string;
+    readonly " $refType": AttachmentPreview_attachment$ref;
 };
 
 

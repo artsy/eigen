@@ -1,11 +1,17 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { ArtistForSaleArtworksGrid_artist$ref } from "./ArtistForSaleArtworksGrid_artist.graphql";
+import { ArtistNotForSaleArtworksGrid_artist$ref } from "./ArtistNotForSaleArtworksGrid_artist.graphql";
+declare const _Artworks_artist$ref: unique symbol;
+export type Artworks_artist$ref = typeof _Artworks_artist$ref;
 export type Artworks_artist = {
     readonly counts: ({
         readonly artworks: any | null;
         readonly for_sale_artworks: any | null;
     }) | null;
+    readonly " $fragmentRefs": ArtistForSaleArtworksGrid_artist$ref & ArtistNotForSaleArtworksGrid_artist$ref;
+    readonly " $refType": Artworks_artist$ref;
 };
 
 

@@ -1,6 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { Artwork_artwork$ref } from "./Artwork_artwork.graphql";
+declare const _GeneArtworksGrid_filtered_artworks$ref: unique symbol;
+export type GeneArtworksGrid_filtered_artworks$ref = typeof _GeneArtworksGrid_filtered_artworks$ref;
 export type GeneArtworksGrid_filtered_artworks = {
     readonly __id: string;
     readonly artworks: ({
@@ -16,9 +19,11 @@ export type GeneArtworksGrid_filtered_artworks = {
                 readonly image: ({
                     readonly aspect_ratio: number | null;
                 }) | null;
+                readonly " $fragmentRefs": Artwork_artwork$ref;
             }) | null;
         }) | null> | null;
     }) | null;
+    readonly " $refType": GeneArtworksGrid_filtered_artworks$ref;
 };
 
 

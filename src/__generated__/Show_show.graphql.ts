@@ -1,11 +1,16 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { Metadata_show$ref } from "./Metadata_show.graphql";
+declare const _Show_show$ref: unique symbol;
+export type Show_show$ref = typeof _Show_show$ref;
 export type Show_show = {
     readonly href: string | null;
     readonly cover_image: ({
         readonly url: string | null;
     }) | null;
+    readonly " $fragmentRefs": Metadata_show$ref;
+    readonly " $refType": Show_show$ref;
 };
 
 

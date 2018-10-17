@@ -1,11 +1,12 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+export type CreateBidderInput = {
+    readonly sale_id: string;
+    readonly clientMutationId?: string | null;
+};
 export type RegistrationCreateBidderMutationVariables = {
-    readonly input: {
-        readonly sale_id?: string;
-        readonly clientMutationId: string | null;
-    };
+    readonly input: CreateBidderInput;
 };
 export type RegistrationCreateBidderMutationResponse = {
     readonly createBidder: ({
@@ -14,6 +15,10 @@ export type RegistrationCreateBidderMutationResponse = {
             readonly qualified_for_bidding: boolean | null;
         }) | null;
     }) | null;
+};
+export type RegistrationCreateBidderMutation = {
+    readonly response: RegistrationCreateBidderMutationResponse;
+    readonly variables: RegistrationCreateBidderMutationVariables;
 };
 
 

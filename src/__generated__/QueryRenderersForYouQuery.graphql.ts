@@ -1,9 +1,16 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { ForYou_forYou$ref } from "./ForYou_forYou.graphql";
 export type QueryRenderersForYouQueryVariables = {};
 export type QueryRenderersForYouQueryResponse = {
-    readonly forYou: ({}) | null;
+    readonly forYou: ({
+        readonly " $fragmentRefs": ForYou_forYou$ref;
+    }) | null;
+};
+export type QueryRenderersForYouQuery = {
+    readonly response: QueryRenderersForYouQueryResponse;
+    readonly variables: QueryRenderersForYouQueryVariables;
 };
 
 

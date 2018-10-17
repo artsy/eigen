@@ -1,6 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
+declare const _Artworks_me$ref: unique symbol;
+export type Artworks_me$ref = typeof _Artworks_me$ref;
 export type Artworks_me = {
     readonly saved_artworks: ({
         readonly artworks_connection: ({
@@ -9,10 +12,13 @@ export type Artworks_me = {
                 readonly hasNextPage: boolean;
             };
             readonly edges: ReadonlyArray<({
-                readonly node: ({}) | null;
+                readonly node: ({
+                    readonly " $fragmentRefs": GenericGrid_artworks$ref;
+                }) | null;
             }) | null> | null;
         }) | null;
     }) | null;
+    readonly " $refType": Artworks_me$ref;
 };
 
 

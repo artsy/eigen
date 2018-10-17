@@ -1,8 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _Biography_gene$ref: unique symbol;
+export type Biography_gene$ref = typeof _Biography_gene$ref;
 export type Biography_gene = {
     readonly description: string | null;
+    readonly " $refType": Biography_gene$ref;
 };
 
 

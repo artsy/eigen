@@ -1,11 +1,14 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _ConfirmBid_me$ref: unique symbol;
+export type ConfirmBid_me$ref = typeof _ConfirmBid_me$ref;
 export type ConfirmBid_me = {
     readonly has_qualified_credit_cards: boolean | null;
     readonly bidders: ReadonlyArray<({
         readonly qualified_for_bidding: boolean | null;
     }) | null> | null;
+    readonly " $refType": ConfirmBid_me$ref;
 };
 
 
