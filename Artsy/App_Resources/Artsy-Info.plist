@@ -36,7 +36,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.3.0</string>
+	<string>4.3.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -68,17 +68,17 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2018.04.18.12</string>
+	<string>2018.10.17.10</string>
 	<key>FacebookAppID</key>
 	<string>308278682573501</string>
 	<key>FacebookDisplayName</key>
 	<string>Artsy</string>
 	<key>GITCommitRev</key>
-	<string>a16f51fb</string>
+	<string>3821db61</string>
 	<key>GITCommitSha</key>
-	<string>a16f51fb28c0250e0413b9c63e29c1c197f77186</string>
+	<string>3821db6130f5eaa45a4e930053f16d400bb1973b</string>
 	<key>GITRemoteOriginURL</key>
-	<string>git@github.com:artsy/eigen.git</string>
+	<string>https://github.com/artsy/eigen.git</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
