@@ -148,6 +148,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGFloat)heightInches;
 - (CGFloat)diameterInches;
 
+- (NSString *)availablityString;
+
 - (instancetype)initWithArtworkID:(NSString *)artworkID;
 
 @end

@@ -1004,12 +1004,16 @@
                     ARAnalyticsDetails: @[
                         @{
                             ARAnalyticsPageName: @"Artwork",
+                            ARAnalyticsSelectorName: ARAnalyticsSelector(artworkHasLoaded),
                             ARAnalyticsProperties: ^NSDictionary *(ARArtworkViewController *vc, NSArray *_) {
                                 ARArtworkView *view = (ARArtworkView *)vc.view;
                                 NSDictionary *basics =  @{
                                     @"owner_type": @"artwork",
                                     @"owner_id": view.artwork.artworkUUID ?: @"",
-                                    @"owner_slug": view.artwork.artworkID ?: @""
+                                    @"owner_slug": view.artwork.artworkID ?: @"",
+                                    @"acquireable": view.artwork.isAcquireable ?: @(NO),
+                                    @"availability": view.artwork.availablityString ?: @"",
+                                    @"price_listed": @(view.artwork.price.length != 0) ?: @(NO)
                                 };
 
                                 if (view.artwork.fair.fairID) {

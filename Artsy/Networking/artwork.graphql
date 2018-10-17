@@ -61,6 +61,7 @@ query OldArtworkQuery($artworkID: String!) {
       }
     }
 
+    availability
     additional_information
     can_share_image
     category

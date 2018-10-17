@@ -690,4 +690,9 @@
     return self.urlForThumbnail;
 }
 
+- (NSString *)availablityString
+{
+    return [[self.class availabilityJSONTransformer] reverseTransformedValue:@(self.availability)];
+}
+
 @end

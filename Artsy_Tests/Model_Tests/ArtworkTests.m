@@ -98,7 +98,13 @@ describe(@"defaultImage", ^{
         Artwork *deserializedArtwork = [NSKeyedUnarchiver unarchiveObjectWithFile:artworkData_v1];
         expect(deserializedArtwork.additionalInfo).to.equal(@"In the collection of European Painting and Sculpture at LACMA.\n\nPaul Rodman Mabury Collection (39.12.3)");
     });
-    
+
+
+    it(@"availablityString returns the string version of availablilty", ^{
+       Artwork *artwork = [Artwork modelWithJSON:@{ @"id" : @"artwork-id", @"availability" : @"on hold" }];
+       expect(artwork.availablityString).to.equal(@"on hold");
+    });
+
     describe(@"funky mp / grav compatibility", ^{
     
         it(@"deals with mp style results for the is_* things", ^{
