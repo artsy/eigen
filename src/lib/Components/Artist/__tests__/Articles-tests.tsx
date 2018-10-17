@@ -22,5 +22,5 @@ const article = n => {
     thumbnail_image: {
       url: "artsy.net/image-url",
     },
-  }
+  } as any
 }

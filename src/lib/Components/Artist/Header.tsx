@@ -1,4 +1,3 @@
-import * as PropTypes from "prop-types"
 import React from "react"
 import { Schema, Track, track as _track } from "../../utils/track"
 
@@ -29,17 +28,6 @@ const track: Track<Props, State> = _track
 
 @track()
 class Header extends React.Component<Props, State> {
-  static propTypes = {
-    artist: PropTypes.shape({
-      name: PropTypes.string,
-      nationality: PropTypes.string,
-      birthday: PropTypes.string,
-      counts: PropTypes.shape({
-        follows: PropTypes.number,
-      }),
-    }),
-  }
-
   constructor(props: Props) {
     super(props)
     this.state = {

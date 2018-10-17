@@ -179,7 +179,6 @@ export const ConversationRenderer: React.SFC<ConversationRendererProps> = ({ ren
       `}
       variables={{
         conversationID,
-        count: 10,
       }}
       render={render}
     />

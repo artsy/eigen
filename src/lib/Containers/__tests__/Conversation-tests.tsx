@@ -21,7 +21,7 @@ jest.mock("NetInfo", () => {
 })
 
 it("looks correct when rendered", () => {
-  const conversation = shallow(<Conversation me={props} />).dive()
+  const conversation = shallow(<Conversation me={props as any} />).dive()
   const instance = conversation.instance()
 
   // Assumes decent connectivity
@@ -31,7 +31,7 @@ it("looks correct when rendered", () => {
 })
 
 it("displays a connectivity banner when network is down", () => {
-  const conversation = shallow(<Conversation me={props} />).dive()
+  const conversation = shallow(<Conversation me={props as any} />).dive()
   const instance = conversation.instance()
 
   // Assumes decent connectivity

@@ -17,6 +17,6 @@ it("renders properly", () => {
     name: "Deep Time",
   }
 
-  const header = renderer.create(<Header gene={gene} shortForm={false} />).toJSON()
+  const header = renderer.create(<Header gene={gene as any} shortForm={false} />).toJSON()
   expect(header).toMatchSnapshot()
 })

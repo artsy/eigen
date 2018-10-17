@@ -40,8 +40,8 @@ beforeEach(() => {
 it("allows bidders with a qualified credit card to bid", () => {
   let screen = renderer.create(
     <SelectMaxBid
-      me={Me.qualifiedUser}
-      sale_artwork={SaleArtwork}
+      me={Me.qualifiedUser as any}
+      sale_artwork={SaleArtwork as any}
       navigator={fakeNavigator as any}
       relay={fakeRelay as any}
     />
@@ -70,8 +70,8 @@ it("allows bidders with a qualified credit card to bid", () => {
 it("allows bidders without a qualified credit card to register a card and bid", () => {
   let screen = renderer.create(
     <SelectMaxBid
-      me={Me.unqualifiedUser}
-      sale_artwork={SaleArtwork}
+      me={Me.unqualifiedUser as any}
+      sale_artwork={SaleArtwork as any}
       navigator={fakeNavigator as any}
       relay={fakeRelay as any}
     />

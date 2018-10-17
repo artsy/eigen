@@ -2,6 +2,7 @@ import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
+import { Artist_artist } from "__generated__/Artist_artist.graphql"
 import { Artist } from "../Artist"
 
 describe("availableTabs", () => {
@@ -71,7 +72,7 @@ const artistProps = (hasMetadata: boolean, counts?: any) => {
     counts = { articles: 0, partner_shows: 0, artworks: 0 }
   }
   return {
-    artist: {
+    artist: ({
       _id: null,
       id: null,
       has_metadata: hasMetadata,
@@ -83,6 +84,6 @@ const artistProps = (hasMetadata: boolean, counts?: any) => {
       upcoming_shows: null,
       past_small_shows: null,
       past_large_shows: null,
-    },
+    } as any) as Artist_artist,
   }
 }

@@ -1,6 +1,7 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
 
+import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 import { BidderPositionResult } from "../../types"
 import { BidResult } from "../BidResult"
 
@@ -24,7 +25,7 @@ storiesOf("Bidding")
     return <BidResult sale_artwork={saleArtwork} bidderPositionResult={Statuses.pending} navigator={{} as any} />
   })
 
-const saleArtwork = {
+const saleArtwork = ({
   increments: [
     {
       display: "$10,000",
@@ -41,7 +42,7 @@ const saleArtwork = {
     end_at: "2022-05-01T00:03:00+00:00",
     id: "sale-id",
   },
-}
+} as any) as BidResult_sale_artwork
 
 const Statuses = {
   winning: {

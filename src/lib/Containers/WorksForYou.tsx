@@ -43,7 +43,7 @@ export class WorksForYou extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    const notifications = this.props.viewer.me.followsAndSaves.notifications.edges.map(edge => edge.node)
+    const notifications: object[] = this.props.viewer.me.followsAndSaves.notifications.edges.map(edge => edge.node)
     if (this.props.viewer.selectedArtist) {
       notifications.unshift(this.formattedSpecialNotification())
     }
@@ -100,7 +100,7 @@ export class WorksForYou extends React.Component<Props, State> {
         console.error("WorksForYou.tsx", error.message)
       }
 
-      const notifications = this.props.viewer.me.followsAndSaves.notifications.edges.map(edge => edge.node)
+      const notifications: object[] = this.props.viewer.me.followsAndSaves.notifications.edges.map(edge => edge.node)
 
       // Make sure we maintain the special notification if it exists
       if (this.props.viewer.selectedArtist) {

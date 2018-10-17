@@ -15,7 +15,7 @@ function createProps(state: Props["invoice"]["state"]): Props {
       lewitt_invoice_id: "42",
       payment_url: "http://example.com/invoice/42",
       total: "$4200.00",
-    },
+    } as any,
   }
 }
 

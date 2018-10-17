@@ -19,15 +19,17 @@ Object.keys(devices).forEach(device => {
     const tree = renderWithLayout(
       <Conversations
         relay={{ hasMore: jest.fn() } as any}
-        me={{
-          conversations: {
-            pageInfo: {
-              hasNextPage: false,
-              endCursor: null,
+        me={
+          {
+            conversations: {
+              pageInfo: {
+                hasNextPage: false,
+                endCursor: null,
+              },
+              edges: [],
             },
-            edges: [],
-          },
-        }}
+          } as any
+        }
       />,
       dimensions
     )

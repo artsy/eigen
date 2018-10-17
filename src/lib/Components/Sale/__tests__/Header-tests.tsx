@@ -10,6 +10,6 @@ it("renders properly", () => {
       href: "http://example.com/some/image.jpg",
     },
   }
-  const header = renderer.create(<Header sale={sale} showImage={false} />).toJSON()
+  const header = renderer.create(<Header sale={sale as any} showImage={false} />).toJSON()
   expect(header).toMatchSnapshot()
 })

@@ -60,5 +60,5 @@ const bid = (_isLive?: boolean, isOpen?: boolean) => {
         },
       },
     },
-  }
+  } as any
 }

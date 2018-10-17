@@ -5,7 +5,7 @@ import * as renderer from "react-test-renderer"
 import PDFPreview from "../PDFPreview"
 
 it("renders correctly", () => {
-  const tree = renderer.create(<PDFPreview attachment={attachment} />)
+  const tree = renderer.create(<PDFPreview attachment={attachment as any} />)
   expect(tree).toMatchSnapshot()
 })
 

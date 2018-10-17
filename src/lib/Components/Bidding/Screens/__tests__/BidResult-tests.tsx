@@ -9,6 +9,7 @@ jest.mock("lib/NativeModules/SwitchBoard", () => ({
 }))
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
+import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 import * as renderer from "react-test-renderer"
 import { BidGhostButton, Button } from "../../Components/Button"
 import { BidderPositionResult } from "../../types"
@@ -20,7 +21,7 @@ const mockNavigator = { popToTop }
 const refreshBidderInfoMock = jest.fn()
 const refreshSaleArtworkInfoMock = jest.fn()
 
-const saleArtwork = {
+const saleArtwork = ({
   increments: [
     {
       display: "$10,000",
@@ -53,7 +54,7 @@ const saleArtwork = {
     end_at: "2022-05-01T00:03:00+00:00",
     id: "sale-id",
   },
-}
+} as any) as BidResult_sale_artwork
 
 describe("BidResult component", () => {
   Date.now = jest.fn(() => 1525983752116)

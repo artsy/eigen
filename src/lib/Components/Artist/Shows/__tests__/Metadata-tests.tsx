@@ -19,6 +19,6 @@ it("renders properly", () => {
       city: "Berlin",
     },
   }
-  const metadata = renderer.create(<Metadata show={show} />).toJSON()
+  const metadata = renderer.create(<Metadata show={show as any} />).toJSON()
   expect(metadata).toMatchSnapshot()
 })

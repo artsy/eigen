@@ -93,7 +93,7 @@ export function sendConversationMessage(
             is_from_user: true,
             created_at: null, // Intentionally left blank so Message can recognize this as an optimistic response.
             attachments: [],
-          },
+          } as any,
         },
       },
     },

@@ -20,6 +20,6 @@ it("renders properly", () => {
       follows: 22,
     },
   }
-  const header = renderer.create(<Header artist={artist} />).toJSON()
+  const header = renderer.create(<Header artist={artist as any} />).toJSON()
   expect(header).toMatchSnapshot()
 })

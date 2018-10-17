@@ -9,7 +9,7 @@ it("renders properly", () => {
 
   const layout = { width: 768 }
 
-  const grid = renderWithLayout(<GenericArtworksGrid artworks={artworks} />, layout)
+  const grid = renderWithLayout(<GenericArtworksGrid artworks={artworks as any} />, layout)
   expect(grid).toMatchSnapshot()
 })
 

@@ -5,13 +5,13 @@ import * as renderer from "react-test-renderer"
 import { ArtistCard } from "../ArtistCard"
 
 it("renders correctly", () => {
-  const tree = renderer.create(<ArtistCard artist={artistProps(true).artist} />).toJSON()
+  const tree = renderer.create(<ArtistCard artist={artistProps(true).artist as any} />).toJSON()
   expect(tree).toMatchSnapshot()
 })
 
 it("only shows name and artwork count when bio is omitted", () => {
   const props = artistProps(false)
-  const artistComponent = new ArtistCard(props)
+  const artistComponent = new ArtistCard(props as any)
   const metadata = artistComponent.renderMetadata()
 
   expect(metadata).toHaveLength(2)
