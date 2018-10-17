@@ -4,7 +4,7 @@ upcoming:
   emission_version: 1.6.x
   dev:
     - Crash fixes for fairs - ashfurrow
-    - Nothin Yet
+    - Improvements to BNMO analytics - orta
 
   user_facing:
     - Nothing yet

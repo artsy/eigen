@@ -70,7 +70,18 @@
     _echo = [[ArtsyEcho alloc] init];
     [_echo setup];
 
+    [artwork onArtworkUpdate:^{
+        [self artworkHasLoaded];
+    } failure:^(NSError * _Nonnull error) {
+        // NOOP as the above is only used for analytics purposes
+    }];
+
     return self;
+}
+
+- (void)artworkHasLoaded
+{
+    // NOOP, used to hook analytics to work after the artwork has enough data to send BNMO info
 }
 
 - (void)loadView
@@ -175,7 +186,8 @@
 
 /// Reloads the artwork set view controller to fetch fresh content from the server.
 /// Useful for artworks that are lots in auctions, to reload when the auction event begins or ends.
-- (void)reloadUI {
+- (void)reloadUI
+{
     ARArtworkSetViewController *newViewController = [[ARSwitchBoard sharedInstance] loadArtwork:self.artwork inFair:self.artwork.fair];
     // We need to fetch this upfront and cache in a local variable, since `self.navigationController` will be nil once we pop.
     UINavigationController *navigationController = self.navigationController;
