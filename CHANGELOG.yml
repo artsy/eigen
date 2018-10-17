@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   emission_version: 1.6.x
   dev:
+    - Crash fixes for fairs - ashfurrow
     - Nothin Yet
 
   user_facing:
