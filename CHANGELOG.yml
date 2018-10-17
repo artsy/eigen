@@ -3,6 +3,7 @@ upcoming:
   date: TBD
   emission_version: 1.6.x
   dev:
+    - Crash fixes for fairs - ashfurrow
     - Improvements to BNMO analytics - orta
 
   user_facing:
