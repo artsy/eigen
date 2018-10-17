@@ -25,6 +25,8 @@ import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 
+import { RegistrationCreateBidderMutation } from "__generated__/RegistrationCreateBidderMutation.graphql"
+import { RegistrationCreateCreditCardMutation } from "__generated__/RegistrationCreateCreditCardMutation.graphql"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
 const Emission = NativeModules.Emission || {}
@@ -48,43 +50,6 @@ interface RegistrationState {
   errorModalVisible: boolean
   errorModalDetailText: string
 }
-
-const creditCardMutation = graphql`
-  mutation RegistrationCreateCreditCardMutation($input: CreditCardInput!) {
-    createCreditCard(input: $input) {
-      creditCardOrError {
-        ... on CreditCardMutationSuccess {
-          creditCard {
-            id
-            brand
-            name
-            last_digits
-            expiration_month
-            expiration_year
-          }
-        }
-        ... on CreditCardMutationFailure {
-          mutationError {
-            type
-            message
-            detail
-          }
-        }
-      }
-    }
-  }
-`
-
-const bidderMutation = graphql`
-  mutation RegistrationCreateBidderMutation($input: CreateBidderInput!) {
-    createBidder(input: $input) {
-      bidder {
-        id
-        qualified_for_bidding
-      }
-    }
-  }
-`
 
 @screenTrack({
   context_screen: Schema.PageNames.BidFlowRegistration,
@@ -154,7 +119,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         addressZip: billingAddress.postalCode,
       })
 
-      commitMutation(this.props.relay.environment, {
+      commitMutation<RegistrationCreateCreditCardMutation>(this.props.relay.environment, {
         onCompleted: (data, errors) => {
           if (data && get(data, "createCreditCard.creditCardOrError.creditCard")) {
             this.createBidder()
@@ -170,7 +135,31 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         onError: error => {
           this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
         },
-        mutation: creditCardMutation,
+        mutation: graphql`
+          mutation RegistrationCreateCreditCardMutation($input: CreditCardInput!) {
+            createCreditCard(input: $input) {
+              creditCardOrError {
+                ... on CreditCardMutationSuccess {
+                  creditCard {
+                    id
+                    brand
+                    name
+                    last_digits
+                    expiration_month
+                    expiration_year
+                  }
+                }
+                ... on CreditCardMutationFailure {
+                  mutationError {
+                    type
+                    message
+                    detail
+                  }
+                }
+              }
+            }
+          }
+        `,
         variables: {
           input: {
             token: token.tokenId,
@@ -183,7 +172,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 
   createBidder() {
-    commitMutation(this.props.relay.environment, {
+    commitMutation<RegistrationCreateBidderMutation>(this.props.relay.environment, {
       onCompleted: (results, errors) =>
         isEmpty(errors)
           ? this.presentRegistrationSuccess(results)
@@ -191,7 +180,16 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       onError: error => {
         this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
       },
-      mutation: bidderMutation,
+      mutation: graphql`
+        mutation RegistrationCreateBidderMutation($input: CreateBidderInput!) {
+          createBidder(input: $input) {
+            bidder {
+              id
+              qualified_for_bidding
+            }
+          }
+        }
+      `,
       variables: { input: { sale_id: this.props.sale.id } },
     })
   }
