@@ -1,10 +1,11 @@
+import { SalesRendererQuery } from "__generated__/SalesRendererQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 
 export function SalesRenderer({ render }) {
   return (
-    <QueryRenderer
+    <QueryRenderer<SalesRendererQuery>
       environment={defaultEnvironment}
       query={graphql`
         query SalesRendererQuery {

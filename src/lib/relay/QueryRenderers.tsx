@@ -30,6 +30,18 @@ import Inbox from "../Containers/Inbox"
 Inbox
 // tslint:enable:no-unused-expression
 
+import { QueryRenderersArtistQuery } from "__generated__/QueryRenderersArtistQuery.graphql"
+import { QueryRenderersBidFlowQuery } from "__generated__/QueryRenderersBidFlowQuery.graphql"
+import { QueryRenderersConversationQuery } from "__generated__/QueryRenderersConversationQuery.graphql"
+import { QueryRenderersFairQuery } from "__generated__/QueryRenderersFairQuery.graphql"
+import { QueryRenderersForYouQuery } from "__generated__/QueryRenderersForYouQuery.graphql"
+import { QueryRenderersGeneQuery } from "__generated__/QueryRenderersGeneQuery.graphql"
+import { QueryRenderersInboxQuery } from "__generated__/QueryRenderersInboxQuery.graphql"
+import { QueryRenderersInquiryQuery } from "__generated__/QueryRenderersInquiryQuery.graphql"
+import { QueryRenderersMyProfileQuery } from "__generated__/QueryRenderersMyProfileQuery.graphql"
+import { QueryRenderersRegistrationFlowQuery } from "__generated__/QueryRenderersRegistrationFlowQuery.graphql"
+import { QueryRenderersSaleQuery } from "__generated__/QueryRenderersSaleQuery.graphql"
+import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
 import createEnvironment from "./createEnvironment"
 const environment = createEnvironment()
 
@@ -46,7 +58,7 @@ interface ArtistRendererProps extends RendererProps {
 
 export const ArtistRenderer: React.SFC<ArtistRendererProps> = ({ render, artistID, isPad }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<QueryRenderersArtistQuery>
       environment={environment}
       query={graphql`
         query QueryRenderersArtistQuery($artistID: String!, $isPad: Boolean!) {
@@ -68,7 +80,7 @@ export interface BidderFlowRendererProps extends RendererProps {
 
 export const RegistrationFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ render, saleID }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<QueryRenderersRegistrationFlowQuery>
       environment={environment}
       query={graphql`
         query QueryRenderersRegistrationFlowQuery($saleID: String!) {
@@ -108,7 +120,7 @@ export const RegistrationFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ r
 export const BidFlowRenderer: React.SFC<BidderFlowRendererProps> = ({ render, artworkID, saleID }) => {
   // TODO: artworkID can be nil, so omit that part of the query if it is.
   return (
-    <QueryRenderer
+    <QueryRenderer<QueryRenderersBidFlowQuery>
       environment={environment}
       query={graphql`
         query QueryRenderersBidFlowQuery($artworkID: String!, $saleID: String!) {
@@ -156,7 +168,7 @@ interface ConversationRendererProps extends RendererProps {
 
 export const ConversationRenderer: React.SFC<ConversationRendererProps> = ({ render, conversationID }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<QueryRenderersConversationQuery>
       environment={environment}
       query={graphql`
         query QueryRenderersConversationQuery($conversationID: String!) {
@@ -176,7 +188,7 @@ export const ConversationRenderer: React.SFC<ConversationRendererProps> = ({ ren
 
 export const ForYouRenderer: React.SFC<RendererProps> = ({ render }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<QueryRenderersForYouQuery>
       environment={environment}
       query={graphql`
         query QueryRenderersForYouQuery {
@@ -199,7 +211,7 @@ interface GeneRendererProps extends RendererProps {
 
 export const GeneRenderer: React.SFC<GeneRendererProps> = ({ render, geneID, medium, price_range }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<QueryRenderersGeneQuery>
       environment={environment}
       query={graphql`
         query QueryRenderersGeneQuery($geneID: String!, $medium: String, $price_range: String) {
@@ -224,7 +236,7 @@ interface SaleRendererProps extends RendererProps {
 
 export const SaleRenderer: React.SFC<SaleRendererProps> = ({ render, saleID }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<QueryRenderersSaleQuery>
       environment={environment}
       query={graphql`
         query QueryRenderersSaleQuery($saleID: String!) {
@@ -245,7 +257,7 @@ interface WorksForYouRendererProps extends RendererProps {
 
 export const WorksForYouRenderer: React.SFC<WorksForYouRendererProps> = ({ render, selectedArtist }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<QueryRenderersWorksForYouQuery>
       environment={environment}
       query={graphql`
         query QueryRenderersWorksForYouQuery($selectedArtist: String!) {
@@ -268,7 +280,7 @@ interface InquiryRendererProps extends RendererProps {
 
 export const InquiryRenderer: React.SFC<InquiryRendererProps> = ({ render, artworkID }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<QueryRenderersInquiryQuery>
       environment={environment}
       query={graphql`
         query QueryRenderersInquiryQuery($artworkID: String!) {
@@ -287,7 +299,7 @@ export const InquiryRenderer: React.SFC<InquiryRendererProps> = ({ render, artwo
 
 export const InboxRenderer: React.SFC<RendererProps> = ({ render }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<QueryRenderersInboxQuery>
       environment={environment}
       query={graphql`
         query QueryRenderersInboxQuery {
@@ -304,7 +316,7 @@ export const InboxRenderer: React.SFC<RendererProps> = ({ render }) => {
 
 export const MyProfileRenderer: React.SFC<RendererProps> = ({ render }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<QueryRenderersMyProfileQuery>
       environment={environment}
       query={graphql`
         query QueryRenderersMyProfileQuery {
@@ -325,7 +337,7 @@ interface FairRendererProps extends RendererProps {
 
 export const FairRenderer: React.SFC<FairRendererProps> = ({ render, fairID }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<QueryRenderersFairQuery>
       environment={environment}
       query={graphql`
         query QueryRenderersFairQuery($fairID: String!) {

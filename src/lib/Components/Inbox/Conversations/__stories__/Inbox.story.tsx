@@ -6,6 +6,7 @@ import "react-native"
 import Inbox from "../index"
 
 // TODO: Move to metametaphysics after Relay Modern migration
+import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { graphql, QueryRenderer } from "react-relay"
 import createEnvironment from "../../../../relay/createEnvironment"
 // TODO: This fails due to Relay trying to request `id` for the Node interface. Probably because we need to switch from
@@ -14,7 +15,7 @@ import createEnvironment from "../../../../relay/createEnvironment"
 // Question: Why do we need to define a `after` variable, but don’t need to specify anything for it?
 const RootContainer: React.SFC<any> = ({ Component }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<InboxQuery>
       environment={createEnvironment()}
       query={graphql`
         query InboxQuery($cursor: String) {

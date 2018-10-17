@@ -4,11 +4,12 @@ import React from "react"
 import Artist from "../Artist"
 
 // TODO: Move to metametaphysics after Relay Modern migration
+import { ArtistQuery } from "__generated__/ArtistQuery.graphql"
 import { graphql, QueryRenderer } from "react-relay"
 import createEnvironment from "../../relay/createEnvironment"
 const RootContainer: React.SFC<any> = ({ Component, artistID }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<ArtistQuery>
       environment={createEnvironment()}
       query={graphql`
         query ArtistQuery($artistID: String!) {
