@@ -7,7 +7,7 @@ upcoming:
     - Improvements to BNMO analytics - orta
 
   user_facing:
-    - Nothing yet
+    - Fixes missing artworks in auction views - ash
 
 releases:
   - version: 4.3.0

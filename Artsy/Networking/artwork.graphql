@@ -46,7 +46,7 @@ query OldArtworkQuery($artworkID: String!) {
       in
     }
 
-    attribution_class {
+    mp_attribution_class {
       name
     }
     
