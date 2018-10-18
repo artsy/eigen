@@ -41,6 +41,9 @@
 @property (nonatomic, strong) NSNumber *gravIsInquireable;
 @property (nonatomic, strong) NSNumber *mpIsInquirable;
 
+@property (nonatomic, strong) NSString *gravAttributionClass;
+@property (nonatomic, strong) NSString *mpAttributionClass;
+
 @end
 
 @implementation Artwork {
@@ -81,7 +84,8 @@
         ar_keypath(Artwork.new, additionalInfo) : @"additional_information",
         ar_keypath(Artwork.new, dimensionsCM) : @"dimensions.cm",
         ar_keypath(Artwork.new, dimensionsInches) : @"dimensions.in",
-        ar_keypath(Artwork.new, attributionClass) : @"attribution_class.name",
+        ar_keypath(Artwork.new, mpAttributionClass) : @"mp_attribution_class.name",
+        ar_keypath(Artwork.new, gravAttributionClass) : @"attribution_class",
         
         ar_keypath(Artwork.new, editionSets) : @"edition_sets",
         ar_keypath(Artwork.new, editionOf) : @"edition_of",
@@ -273,6 +277,11 @@
 - (NSNumber *)isAcquireable
 {
     return self.gravIsAcquirable.boolValue ? self.gravIsAcquirable : self.mpIsAcquirable;
+}
+
+- (NSString *)attributionClass
+{
+    return self.gravAttributionClass ?: self.mpAttributionClass;
 }
 
 - (BOOL)hasWidth
