@@ -16,6 +16,8 @@
 
 ### Master
 
+- Updates BNMO /collect url to remove a/b test ref - chris
+
 ### 1.7.0
 
 - Adds a new ARComponentVC and root React Component for Fairs - orta
