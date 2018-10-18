@@ -8,6 +8,11 @@ describe(@"shortDescriptionForAttributionClass", ^{
         expect(artwork.shortDescriptionForAttributionClass).to.equal(@"This is ephemera, an artifact related to the artist.");
     });
 
+    it(@"ignores case", ^{
+        Artwork *artwork = [Artwork modelWithJSON:@{ @"id" : @"artwork-id", @"mp_attribution_class" : @{ @"name": @"Ephemera" } }];
+        expect(artwork.shortDescriptionForAttributionClass).to.equal(@"This is ephemera, an artifact related to the artist.");
+    });
+
     it(@"ignores missing attribution class", ^{
         Artwork *artwork = [Artwork modelWithJSON:@{ @"id" : @"artwork-id" }];
         expect(artwork.shortDescriptionForAttributionClass).to.beNil();

@@ -8,6 +8,7 @@ upcoming:
 
   user_facing:
     - Fixes missing artworks in auction views - ash
+    - Fixes a problem with attribution classes not displaying - ash
 
 releases:
   - version: 4.3.0
