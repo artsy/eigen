@@ -23,7 +23,7 @@ Want to know more about Emission? Read the [mobile](http://artsy.github.io/blog/
 
 ### Prerequisites
 
-* Xcode
+- Xcode
 
 ### Installation
 
@@ -72,8 +72,6 @@ There is a comprehensive document covering [the various options](docs/debugging.
 We vendor some data from other repositories that you will sometimes need to update. Notably the GraphQL schema of metaphysics that Relay uses to generate queries from: `$ yarnsync-schema`
 
 ### Deploying Emission
-
-You must have [Metaphysics][metaphysics] checked out in a folder adjacent to Emission's code. So there should be `~/code/emission` and `~/code/metaphysics`.
 
 **Note:** Deploys are mostly automated, these instructions should be valid but take a look at [this issue](https://github.com/artsy/emission/issues/1077#issuecomment-401128949) if things break.
 
