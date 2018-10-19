@@ -1,5 +1,6 @@
 #import "ARFairComponentViewController.h"
 #import "AREmission.h"
+#import "ARGraphQLQueryPreloader.h"
 
 @interface ARFairComponentViewController ()
 
@@ -8,7 +9,7 @@
 
 @implementation ARFairComponentViewController
 
-+ (NSArray<ARGraphQLQuery *> *)preloadQueriesWithFairID:(NSString *)geneID;
++ (NSArray<ARGraphQLQuery *> *)preloadQueriesWithFairID:(NSString *)fairID;
 {
    NSDictionary *variables = @{
        @"fairID": fairID,
