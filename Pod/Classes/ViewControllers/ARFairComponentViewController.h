@@ -1,5 +1,7 @@
 #import "ARComponentViewController.h"
 
+@class ARGraphQLQuery;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ARFairComponentViewController : ARComponentViewController
