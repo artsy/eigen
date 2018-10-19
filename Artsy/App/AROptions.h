@@ -28,5 +28,8 @@ extern NSString *const AROptionsBuyNow;
 /// Get and set individual options
 + (BOOL)boolForOption:(NSString *)option;
 + (void)setBool:(BOOL)value forOption:(NSString *)option;
+/// Gives you the ability to verify something exists
++ (BOOL)optionExists:(NSString *)option;
+
 
 @end

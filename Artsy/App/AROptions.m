@@ -61,7 +61,9 @@ NSString *const AROptionsBuyNow = @"enableBuyNowMakeOffer";
     NSMutableDictionary *mutableOptions = [NSMutableDictionary dictionary];
     
     for (NSString *option in options) {
-        [mutableOptions setObject:@([self boolForOption:option]) forKey:option];
+        if ([self optionExists:option]) {
+            [mutableOptions setObject:@([self boolForOption:option]) forKey:option];
+        }
     }
     return [mutableOptions copy];
 }
@@ -72,6 +74,11 @@ NSString *const AROptionsBuyNow = @"enableBuyNowMakeOffer";
         AROptionsDisableNativeLiveAuctions,
         AROptionsForceBuyNow
     ];
+}
+
++ (BOOL)optionExists:(NSString *)option
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:option];
 }
 
 + (BOOL)boolForOption:(NSString *)option

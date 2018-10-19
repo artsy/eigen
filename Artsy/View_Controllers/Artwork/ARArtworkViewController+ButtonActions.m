@@ -229,48 +229,26 @@
         return;
     }
 
-    if (self.echo.features[@"AREnableBuyNowFlow"].state || [AROptions boolForOption:AROptionsForceBuyNow]) {
-        [ArtsyAPI createBuyNowOrderWithArtworkID:self.artwork.artworkUUID success:^(id results) {
-            NSString *orderID = results[@"data"][@"ecommerceCreateOrderWithArtwork"][@"orderOrError"][@"order"][@"id"];
-            if (!orderID) {
-                [self presentErrorMessage:@"Something went wrong. Please try again or contact support@artsy.net."];
-                return;
-            }
-            NSString *path = self.echo.routes[@"ARBuyNowRoute"].path;
-            if (!path) {
-                // path should never be nil, but I'd rather not crash the app if it is.
-                path = @"/order/:id";
-            }
-            path = [path stringByReplacingOccurrencesOfString:@":id" withString:orderID];
-            UIViewController *controller = [ARSwitchBoard.sharedInstance loadPath:path];
-            ARSerifNavigationViewController *navigationController = [[ARSerifNavigationViewController alloc] initWithRootViewController:controller hideNavigationBar:YES];
-            [self presentViewController:navigationController animated:YES completion:nil];
-        } failure:^(NSError *error) {
+    // Buy now
+    [ArtsyAPI createBuyNowOrderWithArtworkID:self.artwork.artworkUUID success:^(id results) {
+        NSString *orderID = results[@"data"][@"ecommerceCreateOrderWithArtwork"][@"orderOrError"][@"order"][@"id"];
+        if (!orderID) {
             [self presentErrorMessage:@"Something went wrong. Please try again or contact support@artsy.net."];
-        }];
-    } else {
-        // If the artwork has only 1 edition, use that edition id. Otherwise our POST request will fail.
-        NSString *editionSetID = nil;
-        if (self.artwork.editionSets.count > 0) {
-            editionSetID = [[self.artwork.editionSets objectAtIndex:0] valueForKey:@"id"];
+            return;
         }
-
-        __weak typeof(self) wself = self;
-        [ArtsyAPI createPendingOrderWithArtworkID:self.artwork.artworkID editionSetID:editionSetID success:^(id JSON) {
-
-            NSString *orderID = [JSON valueForKey:@"id"];
-            NSString *resumeToken = [JSON valueForKey:@"token"];
-            ARErrorLog(@"Created order %@", orderID);
-            UIViewController *controller = [ARSwitchBoard.sharedInstance loadOrderUIForID:orderID resumeToken:resumeToken];
-            [self.navigationController pushViewController:controller animated:YES];
-
+        NSString *path = self.echo.routes[@"ARBuyNowRoute"].path;
+        if (!path) {
+            // path should never be nil, but I'd rather not crash the app if it is.
+            path = @"/order/:id";
         }
-            failure:^(NSError *error) {
-            __strong typeof (wself) sself = wself;
-            ARErrorLog(@"Creating a new order failed. Error: %@,\n", error.localizedDescription);
-            [sself tappedContactGallery];
-            }];
-    }
+        path = [path stringByReplacingOccurrencesOfString:@":id" withString:orderID];
+        UIViewController *controller = [ARSwitchBoard.sharedInstance loadPath:path];
+        ARSerifNavigationViewController *navigationController = [[ARSerifNavigationViewController alloc] initWithRootViewController:controller hideNavigationBar:YES];
+        [self presentViewController:navigationController animated:YES completion:nil];
+    } failure:^(NSError *error) {
+        [self presentErrorMessage:@"Something went wrong. Please try again or contact support@artsy.net."];
+    }];
+
 }
 
 - (void)tappedMoreInfo
