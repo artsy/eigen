@@ -1,16 +1,25 @@
 upcoming:
-  version: 4.3.1
+  version: 4.3.2
   date: TBD
   emission_version: 1.6.x
   dev:
-    - Crash fixes for fairs - ashfurrow
-    - Improvements to BNMO analytics - orta
+    - 
 
   user_facing:
-    - Fixes missing artworks in auction views - ash
-    - Fixes a problem with attribution classes not displaying - ash
+    - 
 
 releases:
+  - version: 4.3.1
+    date: Oct 19, 2018
+    emission_version: 1.6.x
+    dev:
+      - Crash fixes for fairs - ashfurrow
+      - Improvements to BNMO analytics - orta
+
+    user_facing:
+      - Fixes missing artworks in auction views - ash
+      - Fixes a problem with attribution classes not displaying - ash
+
   - version: 4.3.0
     date: Oct 14, 2018
     emission_version: 1.6.x
