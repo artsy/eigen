@@ -127,9 +127,6 @@ export class WorksForYou extends React.Component<Props, State> {
   render() {
     const hasNotifications = this.state.dataSource
 
-    // FIXME: BNMO - Update with Echo setting and remove once BNMO has launched
-    const showMarketingHeader = NativeModules.Emission.options.enableBuyNowMakeOffer
-
     /* If showing the empty state, the ScrollView should have a {flex: 1} style so it can expand to fit the screen.
        otherwise, it should not use any flex growth.
     */
@@ -142,7 +139,7 @@ export class WorksForYou extends React.Component<Props, State> {
         refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
       >
         <View style={{ flex: 1 }}>
-          {showMarketingHeader && <MarketingHeader />}
+          <MarketingHeader />
           {hasNotifications ? this.renderNotifications() : this.renderEmptyState()}
         </View>
       </ScrollView>

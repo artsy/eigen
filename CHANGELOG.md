@@ -17,6 +17,7 @@
 ### Master
 
 - Updates BNMO /collect url to remove a/b test ref - chris
+- Removes the BNMO feature flags - orta
 
 ### 1.7.0
 

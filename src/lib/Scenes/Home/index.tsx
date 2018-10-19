@@ -1,5 +1,5 @@
 import React from "react"
-import { AppState, NativeModules, View } from "react-native"
+import { AppState, View } from "react-native"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import styled from "styled-components/native"
 
@@ -102,9 +102,10 @@ export default class Home extends React.Component<Props, State> {
   }
 
   render() {
-    // FIXME: BNMO - Update with Echo setting and remove once BNMO has launched
-    const showConsignmentsSash = !NativeModules.Emission.options.enableBuyNowMakeOffer
-
+    // TODO: Get confirmation on whether we're completey removing this
+    // https://github.com/artsy/emission/pull/1203/files/9ed3eb23a08080601876b50bef4c04468312bb2c#r226737902
+    //
+    const showConsignmentsSash = false
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView
@@ -133,7 +134,6 @@ export default class Home extends React.Component<Props, State> {
             <SalesRenderer render={renderWithLoadProgress(Sales)} />
           </Tab>
         </ScrollableTabView>
-
         {showConsignmentsSash && (
           <DarkNavigationButton
             title="Sell works from your collection through Artsy"

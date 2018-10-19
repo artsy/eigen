@@ -7,8 +7,6 @@ import { WorksForYou } from "../WorksForYou"
 
 beforeAll(() => {
   NativeModules.ARTemporaryAPIModule = { markNotificationsRead: jest.fn() }
-  // FIXME: BNMO - Update with Echo setting and remove once BNMO has launched
-  NativeModules.Emission = { options: { enableBuyNowMakeOffer: true } }
   WorksForYou.prototype.componentDidUpdate = () => {
     return null
   }
