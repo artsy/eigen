@@ -16,6 +16,7 @@ import { ForYouRenderer, WorksForYouRenderer } from "lib/relay/QueryRenderers"
 import { SalesRenderer } from "lib/Scenes/Home/Components/Sales/Relay/SalesRenderer"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
+import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import TabBar, { Tab } from "lib/Components/TabBar"
 
 const TabBarContainer = styled.View``
@@ -101,6 +102,10 @@ export default class Home extends React.Component<Props, State> {
   }
 
   render() {
+    // TODO: Get confirmation on whether we're completey removing this
+    // https://github.com/artsy/emission/pull/1203/files/9ed3eb23a08080601876b50bef4c04468312bb2c#r226737902
+    //
+    const showConsignmentsSash = false
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView
@@ -129,6 +134,12 @@ export default class Home extends React.Component<Props, State> {
             <SalesRenderer render={renderWithLoadProgress(Sales)} />
           </Tab>
         </ScrollableTabView>
+        {showConsignmentsSash && (
+          <DarkNavigationButton
+            title="Sell works from your collection through Artsy"
+            onPress={this.openLink.bind(this)}
+          />
+        )}
       </View>
     )
   }
