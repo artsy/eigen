@@ -1,5 +1,5 @@
 import React from "react"
-import { AppState, NativeModules, View } from "react-native"
+import { AppState, View } from "react-native"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 import styled from "styled-components/native"
 
@@ -16,7 +16,6 @@ import { ForYouRenderer, WorksForYouRenderer } from "lib/relay/QueryRenderers"
 import { SalesRenderer } from "lib/Scenes/Home/Components/Sales/Relay/SalesRenderer"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
-import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 import TabBar, { Tab } from "lib/Components/TabBar"
 
 const TabBarContainer = styled.View``
@@ -102,9 +101,6 @@ export default class Home extends React.Component<Props, State> {
   }
 
   render() {
-    // FIXME: BNMO - Update with Echo setting and remove once BNMO has launched
-    const showConsignmentsSash = !NativeModules.Emission.options.enableBuyNowMakeOffer
-
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView
@@ -133,13 +129,6 @@ export default class Home extends React.Component<Props, State> {
             <SalesRenderer render={renderWithLoadProgress(Sales)} />
           </Tab>
         </ScrollableTabView>
-
-        {showConsignmentsSash && (
-          <DarkNavigationButton
-            title="Sell works from your collection through Artsy"
-            onPress={this.openLink.bind(this)}
-          />
-        )}
       </View>
     )
   }

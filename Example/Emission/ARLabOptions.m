@@ -19,7 +19,7 @@ static NSDictionary *options = nil;
     //   [something]
 
     options = @{
-       @"enableBuyNowMakeOffer": @"Enable BNMO features"
+       @"nothingYet": @"No feature flags available"
     };
   });
 
