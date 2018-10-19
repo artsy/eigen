@@ -36,7 +36,6 @@
     "merge-graphql-query-map": "node scripts/merge-graphql-query-map.js",
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/_schema.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
     "version": "yarn install && yarn bundle && pushd Example && bundle install && bundle exec pod update Emission --no-repo-update && popd && git add Pod/Assets Example/Podfile.lock",
-    "postversion": "git push --follow-tags && env EMISSION_ROOT=\"$(pwd)\" pod repo push artsy --allow-warnings --use-json --skip-import-validation",
     "postinstall": "prettier --write package.json",
     "prestorybook": "rnstl",
     "prepare": "patch-package"
