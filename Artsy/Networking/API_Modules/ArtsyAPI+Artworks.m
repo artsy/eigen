@@ -93,14 +93,6 @@
     return [self getRequest:request parseIntoAnArrayOfClass:AuctionLot.class success:success failure:failure];
 }
 
-+ (AFHTTPRequestOperation *)createPendingOrderWithArtworkID:(NSString *)artworkID editionSetID:(NSString *)editionSetID success:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
-{
-    NSURLRequest *request = [ARRouter newPendingOrderWithArtworkID:artworkID editionSetID:editionSetID];
-    return [self performRequest:request success:success failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        failure(error);
-    }];
-}
-
 + (AFHTTPRequestOperation *)createBuyNowOrderWithArtworkID:(NSString *)artworkID success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
     NSURLRequest *request = [ARRouter newBuyNowRequestWithArtworkID:artworkID];
