@@ -16,6 +16,9 @@
 
 ### Master
 
+- Updates to relay-compiler and relay-runtime - ash
+- Adds tslint-plugin-relay lint rule (from Reaction) - ash
+
 ### 1.7.1
 
 - Updates BNMO /collect url to remove a/b test ref - chris
