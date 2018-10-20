@@ -86,6 +86,7 @@ query OldArtworkQuery($artworkID: String!) {
     series
     signature
     title
+    blurb: description(format: PLAIN)
   }
 }
 
