@@ -1244,20 +1244,6 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARSystemTimeURL parameters:nil];
 }
 
-+ (NSURLRequest *)newPendingOrderWithArtworkID:(NSString *)artworkID editionSetID:(NSString *)editionSetID
-{
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{
-        @"artwork_id" : artworkID,
-        @"replace_order" : @YES,
-        @"session_id" : [[NSUUID UUID] UUIDString] // TODO: preserve across session?
-    }];
-    if (editionSetID != nil) {
-        [params addEntriesFromDictionary:@{ @"edition_set_id" : editionSetID }];
-    }
-
-    return [self requestWithMethod:@"POST" path:ARCreatePendingOrderURL parameters:params];
-}
-
 + (NSURLRequest *)newBuyNowRequestWithArtworkID:(NSString *)artworkID
 {
     return [self graphQLRequestForQuery:[self graphQueryToCreateBuyNowOrderForArtwork:artworkID] variables:@{ @"input" : @{ @"artworkId": artworkID, @"quantity": @(1) } }];

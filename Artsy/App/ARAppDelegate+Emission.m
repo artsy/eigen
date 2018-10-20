@@ -105,22 +105,11 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         stripePublishableKey = keys.stripeProductionPublishableKey;
     }
 
-    // Set up all the difference places we get settings to merge into one place
-    NSMutableDictionary *options = [NSMutableDictionary dictionary];
-
     // Grab echo features and make that the base of all options
     ArtsyEcho *aero = [[ArtsyEcho alloc] init];
     [aero setup];
-    NSDictionary *features = [aero featuresMap];
-    [options addEntriesFromDictionary:features];
 
-    // Handle the fact that it's "AREnableBuyNowFlow" in iOS world - and echo, then "enableBuyNowMakeOffer" in Emission world
-    options[AROptionsBuyNow] = features[@"AREnableBuyNowFlow"];
-
-    // Lab options come last (as they are admin/dev controlled, giving them a chance to override)
-    [options addEntriesFromDictionary:[AROptions labOptionsMap]];
-
-
+    NSDictionary *options = [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]];
     AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
                                                                       authenticationToken:authenticationToken
                                                                                 sentryDSN:sentryDSN
@@ -263,6 +252,21 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 #pragma mark - Native Module: WorksForYou
 
+}
+
+- (NSDictionary *)getOptionsForEmission:(NSDictionary *)echoFeatures labOptions:(NSDictionary *)labOptions
+{
+    // Set up all the difference places we get settings to merge into one place
+    NSMutableDictionary *options = [NSMutableDictionary dictionary];
+
+    [options addEntriesFromDictionary:echoFeatures];
+
+    // Handle the fact that it's "AREnableBuyNowFlow" in iOS world - and echo, then "enableBuyNowMakeOffer" in Emission world
+    options[AROptionsBuyNow] = echoFeatures[@"AREnableBuyNowFlow"];
+
+    // Lab options come last (as they are admin/dev controlled, giving them a chance to override)
+    [options addEntriesFromDictionary:labOptions];
+    return options;
 }
 
 @end
