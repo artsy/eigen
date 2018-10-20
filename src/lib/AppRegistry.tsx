@@ -1,5 +1,6 @@
 import React from "react"
 import { AppRegistry, View } from "react-native"
+import { RelayContainer } from "react-relay"
 
 import Consignments from "./Components/Consignments"
 import Containers from "./Containers/"
@@ -106,7 +107,7 @@ interface BidderFlowProps {
 
 interface BidderFlow {
   queryRenderer: React.ComponentType<BidderFlowRendererProps>
-  container: React.ReactType<any>
+  container: RelayContainer<any>
 }
 
 const BidderFlows: { [BidderFlowIntent: string]: BidderFlow } = {
