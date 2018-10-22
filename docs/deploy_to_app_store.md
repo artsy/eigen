@@ -26,6 +26,7 @@ Before submitting to the App Store, the binary we submit *must* be tested *on-de
 - [ ] Open an artwork view.
   - [ ] for an artwork with an attribute class (aka classification: unique, limited edition, etc). Does it display the classification?
   - [ ] for an artwork with a description (`blurb` in Gravity). Does it display?
+  - [ ] for an artwork with view-in-room enabled. Does view-in-room work? Does AR view-in-room work?
 - [ ] Open a React Native view, then open a modal view controller (LAI interface, inquiry modal), and navigate back to the RN view. Make sure that [the screen isn't blank](https://github.com/artsy/eigen/issues/2439).
 - [ ] Check that the app opens with the correct conversation from a messaging push notification (find the "Invoicing Demo Partner" partner on [Vibrations](https://github.com/artsy/vibrations) staging, publish one one of their artworks, find it in the app, inquire on it as a non-admin, and reply to the conversation from [Volt](https://github.com/artsy/volt) to trigger a push).
   - [ ] When app is running in the background
