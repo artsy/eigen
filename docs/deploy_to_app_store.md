@@ -74,7 +74,8 @@ It is *critical* that we catch bugs before we submit to the App Store. If a bug 
   * Have you added or made changes to encryption features since your last submission of this app?: *NO*
   * Does your app contain, display, or access third-party content?: *YES*
   * Do you have all necessary rights to that content […]?: *YES*
-  * Does this app use the Advertising Identifier (IDFA)?: *NO*
+  * Does this app use the Advertising Identifier (IDFA)?: *YES*
+    - When asked for the use case of the IDFA, select the second option: "Attribute this app installation to a previously served advertisement"
 
 ## Release to App Store
 
