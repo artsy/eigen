@@ -1,6 +1,6 @@
-## Deploy to App Store
+# Deploy to App Store
 
-### Pre-deploy Checklist
+## Pre-deploy Checklist
 
 1. Check out Eigen Artsy master.
 1. Ensure all required/expected analytics events are in `CHANGELOG.yml`.
@@ -11,7 +11,7 @@
 
 It takes about 45 minutes for [Circle CI](https://circleci.com/gh/artsy/eigen) to build and submit a binary (and for iTunesConnect to process it). You'll be notified via email (and push notification, if you have the [iTunesConnect iOS app](https://itunes.apple.com/us/app/itunes-connect/id376771144?mt=8) installed.
 
-### Test the Beta
+## Test the Beta
 
 Before submitting to the App Store, the binary we submit *must* be tested *on-device*. Install the beta through Testflight and run through the following two groups of scenarios.
 
@@ -61,7 +61,7 @@ These are tests that currently don't work. Each item here should have a correspo
 
 It is *critical* that we catch bugs before we submit to the App Store. If a bug gets out, it can take days or weeks for Apple to review any fix. As the submitter, you are the last line of defence – the whole team is counting on you.
 
-### Prepare in iTunesConnect
+## Prepare in iTunesConnect
 
 1. You need to have copy for the next release, for minor releases this is just a list of notable changes.
 1. Log in to [iTunesConnect](https://itunesconnect.apple.com) as it@artsymail.com (team _Art.sy Inc_).
@@ -75,7 +75,7 @@ It is *critical* that we catch bugs before we submit to the App Store. If a bug 
   * Do you have all necessary rights to that content […]?: *YES*
   * Does this app use the Advertising Identifier (IDFA)?: *NO*
 
-### Release to App Store
+## Release to App Store
 
 Our App Store releases are done manually, instead of automatically once Apple approves the app. Don't release unless you are available over the next few hours to monitor Sentry for errors.
 
@@ -85,7 +85,7 @@ Our App Store releases are done manually, instead of automatically once Apple ap
 1. Hit "Release this Version" button.
 1. Monitor [Sentry](https://sentry.io/artsynet/eigen/) in the #front-end channel on Slack for any errors (all production errors are sent to Slack when they first occur).
 
-### Prepare for the Next Release
+## Prepare for the Next Release
 
 1. Run `make next`. This runs `pod install` and prompts for the next version number.
 1. Create a new version of the app in iTunesConnect (if you don't do this, beta deployments will fail).
