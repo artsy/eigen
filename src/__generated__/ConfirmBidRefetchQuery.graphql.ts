@@ -12,6 +12,10 @@ export type ConfirmBidRefetchQueryResponse = {
         }) | null> | null;
     }) | null;
 };
+export type ConfirmBidRefetchQuery = {
+    readonly response: ConfirmBidRefetchQueryResponse;
+    readonly variables: ConfirmBidRefetchQueryVariables;
+};
 
 
 

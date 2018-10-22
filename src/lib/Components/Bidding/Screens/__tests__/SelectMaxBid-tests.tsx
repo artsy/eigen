@@ -6,15 +6,17 @@ import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
 import Spinner from "../../../../Components/Spinner"
 import { Button } from "../../Components/Button"
 
+import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
+import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
 import { SelectMaxBid } from "../SelectMaxBid"
 
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
-const Me = {
+const Me = ({
   has_qualified_credit_cards: true,
-}
+} as any) as SelectMaxBid_me
 
-const SaleArtwork = {
+const SaleArtwork = ({
   _id: "sale-artwork-id",
   artwork: {
     id: "meteor shower",
@@ -48,7 +50,7 @@ const SaleArtwork = {
       cents: 5500000,
     },
   ],
-}
+} as any) as SelectMaxBid_sale_artwork
 
 let fakeNavigator: FakeNavigator
 let fakeRelay: {

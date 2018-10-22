@@ -23,7 +23,7 @@ describe("getSubjectArtist", () => {
       },
       relatedArtistContext: {},
     })
-    expect(getSubjectArtist(props)).toEqual(props.rail.followedArtistContext.artist)
+    expect(getSubjectArtist(props as any)).toEqual(props.rail.followedArtistContext.artist)
   })
 
   it("fetches the related artist", () => {
@@ -36,6 +36,6 @@ describe("getSubjectArtist", () => {
       },
       followedArtistContext: {},
     })
-    expect(getSubjectArtist(props)).toEqual(props.rail.relatedArtistContext.artist)
+    expect(getSubjectArtist(props as any)).toEqual(props.rail.relatedArtistContext.artist)
   })
 })

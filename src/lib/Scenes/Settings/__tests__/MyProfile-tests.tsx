@@ -10,6 +10,6 @@ it("looks like expected", () => {
       initials: "DM",
     },
   }
-  const tree = renderer.create(<MyProfile me={props.me} />).toJSON()
+  const tree = renderer.create(<MyProfile me={props.me as any} />).toJSON()
   expect(tree).toMatchSnapshot()
 })

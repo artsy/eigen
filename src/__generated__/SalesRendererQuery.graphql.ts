@@ -1,9 +1,16 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { Sales_viewer$ref } from "./Sales_viewer.graphql";
 export type SalesRendererQueryVariables = {};
 export type SalesRendererQueryResponse = {
-    readonly viewer: ({}) | null;
+    readonly viewer: ({
+        readonly " $fragmentRefs": Sales_viewer$ref;
+    }) | null;
+};
+export type SalesRendererQuery = {
+    readonly response: SalesRendererQueryResponse;
+    readonly variables: SalesRendererQueryVariables;
 };
 
 

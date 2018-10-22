@@ -1,10 +1,13 @@
 import React from "react"
+import { ReadyState, RelayContainer } from "react-relay"
 
 import LoadFailureView from "lib/Components/LoadFailureView"
 import Spinner from "lib/Components/Spinner"
-import { RenderCallback } from "lib/relay/QueryRenderers"
 
-export default (Component: React.ReactType, initialProps: object = {}): RenderCallback => {
+export default function<P>(
+  Container: RelayContainer<P>,
+  initialProps: object = {}
+): (readyState: ReadyState<P>) => React.ReactElement<RelayContainer<P>> | null {
   let retrying = false
   return ({ error, props, retry }) => {
     if (error) {
@@ -31,7 +34,7 @@ export default (Component: React.ReactType, initialProps: object = {}): RenderCa
         return <LoadFailureView onRetry={retry} style={{ flex: 1 }} />
       }
     } else if (props) {
-      return <Component {...initialProps} {...props as any} />
+      return <Container {...initialProps} {...props as any} />
     } else {
       return <Spinner style={{ flex: 1 }} />
     }

@@ -5,11 +5,12 @@ import { View } from "react-native"
 import Header from "../Header"
 
 // TODO: Move to metametaphysics after Relay Modern migration
+import { ArtistHeaderQuery } from "__generated__/ArtistHeaderQuery.graphql"
 import { graphql, QueryRenderer } from "react-relay"
 import createEnvironment from "../../../relay/createEnvironment"
 const RootContainer: React.SFC<any> = ({ Component, artistID }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<ArtistHeaderQuery>
       environment={createEnvironment()}
       query={graphql`
         query ArtistHeaderQuery($artistID: String!) {

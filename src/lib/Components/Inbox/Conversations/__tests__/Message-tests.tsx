@@ -41,7 +41,7 @@ it("looks correct when rendered", () => {
         firstMessage={false}
         index={0}
         senderName={senderName}
-        message={props}
+        message={props as any}
       />
     )
     .toJSON()

@@ -1,14 +1,16 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { Message_message$ref } from "./Message_message.graphql";
+export type SendConversationMessageMutationInput = {
+    readonly id: string;
+    readonly from: string;
+    readonly body_text: string;
+    readonly reply_to_message_id: string;
+    readonly clientMutationId?: string | null;
+};
 export type SendConversationMessageMutationVariables = {
-    readonly input: {
-        readonly id?: string;
-        readonly from?: string;
-        readonly body_text?: string;
-        readonly reply_to_message_id?: string;
-        readonly clientMutationId: string | null;
-    };
+    readonly input: SendConversationMessageMutationInput;
 };
 export type SendConversationMessageMutationResponse = {
     readonly sendConversationMessage: ({
@@ -18,9 +20,14 @@ export type SendConversationMessageMutationResponse = {
                 readonly is_from_user: boolean | null;
                 readonly body: string | null;
                 readonly __id: string;
+                readonly " $fragmentRefs": Message_message$ref;
             }) | null;
         }) | null;
     }) | null;
+};
+export type SendConversationMessageMutation = {
+    readonly response: SendConversationMessageMutationResponse;
+    readonly variables: SendConversationMessageMutationVariables;
 };
 
 

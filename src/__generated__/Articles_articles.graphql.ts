@@ -1,8 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { Article_article$ref } from "./Article_article.graphql";
+declare const _Articles_articles$ref: unique symbol;
+export type Articles_articles$ref = typeof _Articles_articles$ref;
 export type Articles_articles = ReadonlyArray<{
     readonly __id: string;
+    readonly " $fragmentRefs": Article_article$ref;
+    readonly " $refType": Articles_articles$ref;
 }>;
 
 

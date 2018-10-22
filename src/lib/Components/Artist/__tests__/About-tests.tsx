@@ -13,6 +13,6 @@ it("renders properly", () => {
     articles: [],
     related_artists: [],
   }
-  const about = renderer.create(<About artist={artist} />).toJSON()
+  const about = renderer.create(<About artist={artist as any} />).toJSON()
   expect(about).toMatchSnapshot()
 })

@@ -1,15 +1,25 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { BidFlow_me$ref } from "./BidFlow_me.graphql";
+import { BidFlow_sale_artwork$ref } from "./BidFlow_sale_artwork.graphql";
 export type QueryRenderersBidFlowQueryVariables = {
     readonly artworkID: string;
     readonly saleID: string;
 };
 export type QueryRenderersBidFlowQueryResponse = {
     readonly artwork: ({
-        readonly sale_artwork: ({}) | null;
+        readonly sale_artwork: ({
+            readonly " $fragmentRefs": BidFlow_sale_artwork$ref;
+        }) | null;
     }) | null;
-    readonly me: ({}) | null;
+    readonly me: ({
+        readonly " $fragmentRefs": BidFlow_me$ref;
+    }) | null;
+};
+export type QueryRenderersBidFlowQuery = {
+    readonly response: QueryRenderersBidFlowQueryResponse;
+    readonly variables: QueryRenderersBidFlowQueryVariables;
 };
 
 

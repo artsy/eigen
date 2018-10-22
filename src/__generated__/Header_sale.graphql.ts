@@ -1,11 +1,14 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _Header_sale$ref: unique symbol;
+export type Header_sale$ref = typeof _Header_sale$ref;
 export type Header_sale = {
     readonly name: string | null;
     readonly cover_image: ({
         readonly href: string | null;
     }) | null;
+    readonly " $refType": Header_sale$ref;
 };
 
 

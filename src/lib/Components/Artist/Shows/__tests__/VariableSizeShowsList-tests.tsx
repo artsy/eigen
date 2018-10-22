@@ -11,7 +11,7 @@ it("renders properly", () => {
   show2.location.city = "London"
 
   const shows = [show1, show2]
-  const list = renderer.create(<ShowsList shows={shows} showSize={"medium"} />).toJSON()
+  const list = renderer.create(<ShowsList shows={shows as any} showSize={"medium"} />).toJSON()
   expect(list).toMatchSnapshot()
 })
 

@@ -1,4 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
+import { ActiveBidsQuery } from "__generated__/ActiveBidsQuery.graphql"
 import createEnvironment from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
@@ -7,7 +8,7 @@ import ActiveBids from "../index"
 
 function ActiveBidsRenderer({ render }) {
   return (
-    <QueryRenderer
+    <QueryRenderer<ActiveBidsQuery>
       environment={createEnvironment()}
       query={graphql`
         query ActiveBidsQuery {

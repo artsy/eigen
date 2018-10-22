@@ -1,6 +1,10 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
+import { Notification_notification$ref } from "./Notification_notification.graphql";
+declare const _WorksForYou_viewer$ref: unique symbol;
+export type WorksForYou_viewer$ref = typeof _WorksForYou_viewer$ref;
 export type WorksForYou_viewer = {
     readonly me: ({
         readonly followsAndSaves: ({
@@ -12,6 +16,7 @@ export type WorksForYou_viewer = {
                 readonly edges: ReadonlyArray<({
                     readonly node: ({
                         readonly __id: string;
+                        readonly " $fragmentRefs": Notification_notification$ref;
                     }) | null;
                 }) | null> | null;
             }) | null;
@@ -26,8 +31,11 @@ export type WorksForYou_viewer = {
                 readonly url: string | null;
             }) | null;
         }) | null;
-        readonly artworks: ReadonlyArray<({}) | null> | null;
+        readonly artworks: ReadonlyArray<({
+            readonly " $fragmentRefs": GenericGrid_artworks$ref;
+        }) | null> | null;
     }) | null;
+    readonly " $refType": WorksForYou_viewer$ref;
 };
 
 

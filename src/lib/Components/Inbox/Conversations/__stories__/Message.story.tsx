@@ -42,8 +42,8 @@ const messageWithFromNameProps = {
 }
 storiesOf("Conversations/Message")
   .add("without fromName and not from user", () => {
-    return <Message {...messageWithoutFromNameProps} />
+    return <Message {...messageWithoutFromNameProps as any} />
   })
   .add("With fromName and not from user", () => {
-    return <Message {...messageWithFromNameProps} />
+    return <Message {...messageWithFromNameProps as any} />
   })

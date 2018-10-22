@@ -1,6 +1,8 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _Header_artist$ref: unique symbol;
+export type Header_artist$ref = typeof _Header_artist$ref;
 export type Header_artist = {
     readonly _id: string;
     readonly id: string;
@@ -10,6 +12,7 @@ export type Header_artist = {
     readonly counts: ({
         readonly follows: any | null;
     }) | null;
+    readonly " $refType": Header_artist$ref;
 };
 
 

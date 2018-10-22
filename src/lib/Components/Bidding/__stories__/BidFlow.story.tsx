@@ -6,6 +6,7 @@ import { BidFlowRenderer, RegistrationFlowRenderer } from "lib/relay/QueryRender
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import createEnvironment from "../../../relay/createEnvironment"
 
+import { BidFlowSelectMaxBidRendererQuery } from "__generated__/BidFlowSelectMaxBidRendererQuery.graphql"
 import { NavigatorIOS } from "react-native"
 import BidFlow from "../../../Containers/BidFlow"
 import RegistrationFlow from "../../../Containers/RegistrationFlow"
@@ -19,39 +20,38 @@ const testSaleArtworkID = "5b48ed80360bca000104d057"
 const testArtworkID = "5b48ed80360bca000104d050"
 const testSaleID = "erik-reserves-moction"
 
-const selectMaxBidQuery = graphql`
-  query BidFlowSelectMaxBidRendererQuery($saleArtworkID: String!) {
-    sale_artwork(id: $saleArtworkID) {
-      ...SelectMaxBid_sale_artwork
-    }
-  }
-`
-
-const BidFlowStoryRenderer: React.SFC<any> = ({ render, query, saleArtworkID }) => {
-  return <QueryRenderer environment={createEnvironment()} query={query} variables={{ saleArtworkID }} render={render} />
-}
+const BidFlowMaxBidStoryRenderer: React.SFC<any> = ({ saleArtworkID }) => (
+  <QueryRenderer<BidFlowSelectMaxBidRendererQuery>
+    environment={createEnvironment() as any}
+    query={graphql`
+      query BidFlowSelectMaxBidRendererQuery($saleArtworkID: String!) {
+        sale_artwork(id: $saleArtworkID) {
+          ...SelectMaxBid_sale_artwork
+        }
+      }
+    `}
+    variables={{ saleArtworkID }}
+    render={renderWithLoadProgress(MaxBidScreen)}
+  />
+)
 
 storiesOf("Bidding")
   .add("Show bid flow", () => {
     return <BidFlowRenderer render={renderWithLoadProgress(BidFlow)} artworkID={testArtworkID} saleID={testSaleID} />
   })
-  .add("Select Max Bid", () => (
-    <BidFlowStoryRenderer
-      render={renderWithLoadProgress(MaxBidScreen)}
-      query={selectMaxBidQuery}
-      saleArtworkID={testSaleArtworkID}
-    />
-  ))
+  .add("Select Max Bid", () => <BidFlowMaxBidStoryRenderer saleArtworkID={testSaleArtworkID} />)
   .add("Confirm Bid (registered)", () => {
     return (
       <ConfirmBid
-        sale_artwork={{
-          _id: "saleartwork12345",
-          sale: { id: "sale-id", live_start_at: "2018-08-13T18:00:00+00:00", end_at: null },
-          artwork: { id: "artwork-id", title: "Morgan Hill (Prototype)", date: "1973", artist_names: "Lewis balts" },
-          lot_label: "2",
-        }}
-        me={{ has_qualified_credit_cards: false, bidders: [{ qualified_for_bidding: true }] }}
+        sale_artwork={
+          {
+            _id: "saleartwork12345",
+            sale: { id: "sale-id", live_start_at: "2018-08-13T18:00:00+00:00", end_at: null },
+            artwork: { id: "artwork-id", title: "Morgan Hill (Prototype)", date: "1973", artist_names: "Lewis balts" },
+            lot_label: "2",
+          } as any
+        }
+        me={{ has_qualified_credit_cards: false, bidders: [{ qualified_for_bidding: true }] } as any}
         increments={[{ display: "$45,000", cents: 4500000 }]}
         selectedBidIndex={0}
       />
@@ -61,13 +61,15 @@ storiesOf("Bidding")
   .add("Confirm Bid (no artwork date)", () => {
     return (
       <ConfirmBid
-        sale_artwork={{
-          _id: "saleartwork12345",
-          sale: { id: "sale-id", live_start_at: "2018-08-11T01:00:00+00:00", end_at: null },
-          artwork: { id: "artwork-id", title: "Morgan Hill (Prototype)", date: null, artist_names: "Lewis balts" },
-          lot_label: "2",
-        }}
-        me={{ has_qualified_credit_cards: false, bidders: [{ qualified_for_bidding: true }] }}
+        sale_artwork={
+          {
+            _id: "saleartwork12345",
+            sale: { id: "sale-id", live_start_at: "2018-08-11T01:00:00+00:00", end_at: null },
+            artwork: { id: "artwork-id", title: "Morgan Hill (Prototype)", date: null, artist_names: "Lewis balts" },
+            lot_label: "2",
+          } as any
+        }
+        me={{ has_qualified_credit_cards: false, bidders: [{ qualified_for_bidding: true }] } as any}
         increments={[{ display: "$45,000", cents: 4500000 }]}
         selectedBidIndex={0}
       />

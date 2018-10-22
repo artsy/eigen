@@ -16,6 +16,6 @@ it("renders properly", () => {
       url: "artsy.net/image-url",
     },
   }
-  const articleComponent = renderer.create(<Article article={article} />).toJSON()
+  const articleComponent = renderer.create(<Article article={article as any} />).toJSON()
   expect(articleComponent).toMatchSnapshot()
 })

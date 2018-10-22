@@ -5,7 +5,7 @@ import * as renderer from "react-test-renderer"
 import { ImagePreview } from "../ImagePreview"
 
 it("renders correctly", () => {
-  const tree = renderer.create(<ImagePreview attachment={attachment} />)
+  const tree = renderer.create(<ImagePreview attachment={attachment as any} />)
   expect(tree).toMatchSnapshot()
 })
 

@@ -1,9 +1,16 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { ActiveBids_me$ref } from "./ActiveBids_me.graphql";
 export type ActiveBidsQueryVariables = {};
 export type ActiveBidsQueryResponse = {
-    readonly me: ({}) | null;
+    readonly me: ({
+        readonly " $fragmentRefs": ActiveBids_me$ref;
+    }) | null;
+};
+export type ActiveBidsQuery = {
+    readonly response: ActiveBidsQueryResponse;
+    readonly variables: ActiveBidsQueryVariables;
 };
 
 

@@ -1,8 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _Registration_me$ref: unique symbol;
+export type Registration_me$ref = typeof _Registration_me$ref;
 export type Registration_me = {
     readonly has_credit_cards: boolean | null;
+    readonly " $refType": Registration_me$ref;
 };
 
 

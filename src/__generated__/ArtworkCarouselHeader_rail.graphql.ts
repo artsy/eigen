@@ -1,6 +1,8 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _ArtworkCarouselHeader_rail$ref: unique symbol;
+export type ArtworkCarouselHeader_rail$ref = typeof _ArtworkCarouselHeader_rail$ref;
 export type ArtworkCarouselHeader_rail = {
     readonly title: string | null;
     readonly key: string | null;
@@ -19,6 +21,7 @@ export type ArtworkCarouselHeader_rail = {
             readonly name: string | null;
         }) | null;
     }) | null;
+    readonly " $refType": ArtworkCarouselHeader_rail$ref;
 };
 
 

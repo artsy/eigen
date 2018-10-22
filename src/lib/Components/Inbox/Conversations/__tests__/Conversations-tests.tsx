@@ -5,6 +5,7 @@ import * as renderer from "react-test-renderer"
 
 import { getTextTree } from "lib/utils/getTestWrapper"
 
+import { Conversations_me } from "__generated__/Conversations_me.graphql"
 import { Conversations } from "../"
 
 describe("messaging inbox", () => {
@@ -24,7 +25,7 @@ describe("messaging inbox", () => {
     expect(inboxText).not.toContain(expected)
   })
 
-  const meProps = {
+  const meProps = ({
     conversations: {
       pageInfo: {
         hasNextPage: false,
@@ -89,9 +90,9 @@ describe("messaging inbox", () => {
         },
       ],
     },
-  }
+  } as any) as Conversations_me
 
-  const mePropsEmpty = {
+  const mePropsEmpty = ({
     conversations: {
       pageInfo: {
         hasNextPage: false,
@@ -99,5 +100,5 @@ describe("messaging inbox", () => {
       },
       edges: [],
     },
-  }
+  } as any) as Conversations_me
 })

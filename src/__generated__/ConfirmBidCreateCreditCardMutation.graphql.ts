@@ -1,11 +1,12 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+export type CreditCardInput = {
+    readonly token: string;
+    readonly clientMutationId?: string | null;
+};
 export type ConfirmBidCreateCreditCardMutationVariables = {
-    readonly input: {
-        readonly token?: string;
-        readonly clientMutationId: string | null;
-    };
+    readonly input: CreditCardInput;
 };
 export type ConfirmBidCreateCreditCardMutationResponse = {
     readonly createCreditCard: ({
@@ -25,6 +26,10 @@ export type ConfirmBidCreateCreditCardMutationResponse = {
             }) | null;
         }) | null;
     }) | null;
+};
+export type ConfirmBidCreateCreditCardMutation = {
+    readonly response: ConfirmBidCreateCreditCardMutationResponse;
+    readonly variables: ConfirmBidCreateCreditCardMutationVariables;
 };
 
 

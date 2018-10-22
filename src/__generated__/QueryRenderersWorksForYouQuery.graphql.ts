@@ -1,11 +1,18 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { WorksForYou_viewer$ref } from "./WorksForYou_viewer.graphql";
 export type QueryRenderersWorksForYouQueryVariables = {
     readonly selectedArtist: string;
 };
 export type QueryRenderersWorksForYouQueryResponse = {
-    readonly viewer: ({}) | null;
+    readonly viewer: ({
+        readonly " $fragmentRefs": WorksForYou_viewer$ref;
+    }) | null;
+};
+export type QueryRenderersWorksForYouQuery = {
+    readonly response: QueryRenderersWorksForYouQueryResponse;
+    readonly variables: QueryRenderersWorksForYouQueryVariables;
 };
 
 

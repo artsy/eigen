@@ -6,7 +6,7 @@ import * as renderer from "react-test-renderer"
 import Artwork from "../Artwork"
 
 it("renders properly", () => {
-  const artwork = renderer.create(<Artwork artwork={artworkProps()} />).toJSON()
+  const artwork = renderer.create(<Artwork artwork={artworkProps() as any} />).toJSON()
   expect(artwork).toMatchSnapshot()
 })
 
@@ -20,7 +20,7 @@ describe("in an open sale", () => {
         is_closed: false,
       },
     }
-    const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork)} />).toJSON()
+    const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork) as any} />).toJSON()
     expect(artwork).toMatchSnapshot()
   })
 
@@ -33,7 +33,7 @@ describe("in an open sale", () => {
         is_closed: false,
       },
     }
-    const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork)} />).toJSON()
+    const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork) as any} />).toJSON()
     expect(artwork).toMatchSnapshot()
   })
 })
@@ -48,7 +48,7 @@ describe("in a closed sale", () => {
         is_closed: true,
       },
     }
-    const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork)} />).toJSON()
+    const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork) as any} />).toJSON()
     expect(artwork).toMatchSnapshot()
   })
 
@@ -62,7 +62,7 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork)} />).toJSON()
+    const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork) as any} />).toJSON()
     expect(artwork).toMatchSnapshot()
   })
 })

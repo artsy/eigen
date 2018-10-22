@@ -1,6 +1,8 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _BidResult_sale_artwork$ref: unique symbol;
+export type BidResult_sale_artwork$ref = typeof _BidResult_sale_artwork$ref;
 export type BidResult_sale_artwork = {
     readonly minimum_next_bid: ({
         readonly amount: string | null;
@@ -12,6 +14,7 @@ export type BidResult_sale_artwork = {
         readonly end_at: string | null;
         readonly id: string;
     }) | null;
+    readonly " $refType": BidResult_sale_artwork$ref;
 };
 
 

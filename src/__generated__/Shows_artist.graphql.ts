@@ -1,11 +1,24 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { SmallList_shows$ref } from "./SmallList_shows.graphql";
+import { VariableSizeShowsList_shows$ref } from "./VariableSizeShowsList_shows.graphql";
+declare const _Shows_artist$ref: unique symbol;
+export type Shows_artist$ref = typeof _Shows_artist$ref;
 export type Shows_artist = {
-    readonly current_shows: ReadonlyArray<({}) | null> | null;
-    readonly upcoming_shows: ReadonlyArray<({}) | null> | null;
-    readonly past_small_shows?: ReadonlyArray<({}) | null> | null;
-    readonly past_large_shows?: ReadonlyArray<({}) | null> | null;
+    readonly current_shows: ReadonlyArray<({
+        readonly " $fragmentRefs": VariableSizeShowsList_shows$ref;
+    }) | null> | null;
+    readonly upcoming_shows: ReadonlyArray<({
+        readonly " $fragmentRefs": VariableSizeShowsList_shows$ref;
+    }) | null> | null;
+    readonly past_small_shows?: ReadonlyArray<({
+        readonly " $fragmentRefs": SmallList_shows$ref;
+    }) | null> | null;
+    readonly past_large_shows?: ReadonlyArray<({
+        readonly " $fragmentRefs": VariableSizeShowsList_shows$ref;
+    }) | null> | null;
+    readonly " $refType": Shows_artist$ref;
 };
 
 

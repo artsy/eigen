@@ -1,3 +1,4 @@
+import { SendConversationMessageMutation } from "__generated__/SendConversationMessageMutation.graphql"
 import { commitMutation, graphql } from "react-relay"
 import { ConnectionHandler, Environment, MutationConfig, RecordSourceSelectorProxy } from "relay-runtime"
 
@@ -24,7 +25,7 @@ export function sendConversationMessage(
     const connection = ConnectionHandler.getConnection(conversationStore, "Messages_messages")
     ConnectionHandler.insertEdgeBefore(connection, newMessageEdge)
   }
-  return commitMutation(environment, {
+  return commitMutation<SendConversationMessageMutation>(environment, {
     onCompleted,
     onError,
     optimisticUpdater: storeUpdater,
@@ -92,7 +93,7 @@ export function sendConversationMessage(
             is_from_user: true,
             created_at: null, // Intentionally left blank so Message can recognize this as an optimistic response.
             attachments: [],
-          },
+          } as any,
         },
       },
     },

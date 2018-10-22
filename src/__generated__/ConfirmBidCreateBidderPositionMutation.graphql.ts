@@ -1,13 +1,14 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+export type BidderPositionInput = {
+    readonly sale_id: string;
+    readonly artwork_id: string;
+    readonly max_bid_amount_cents: number;
+    readonly clientMutationId?: string | null;
+};
 export type ConfirmBidCreateBidderPositionMutationVariables = {
-    readonly input: {
-        readonly sale_id?: string;
-        readonly artwork_id?: string;
-        readonly max_bid_amount_cents?: number;
-        readonly clientMutationId: string | null;
-    };
+    readonly input: BidderPositionInput;
 };
 export type ConfirmBidCreateBidderPositionMutationResponse = {
     readonly createBidderPosition: ({
@@ -24,6 +25,10 @@ export type ConfirmBidCreateBidderPositionMutationResponse = {
             }) | null;
         }) | null;
     }) | null;
+};
+export type ConfirmBidCreateBidderPositionMutation = {
+    readonly response: ConfirmBidCreateBidderPositionMutationResponse;
+    readonly variables: ConfirmBidCreateBidderPositionMutationVariables;
 };
 
 

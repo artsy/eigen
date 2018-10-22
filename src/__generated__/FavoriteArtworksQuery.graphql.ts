@@ -1,9 +1,16 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { Artworks_me$ref } from "./Artworks_me.graphql";
 export type FavoriteArtworksQueryVariables = {};
 export type FavoriteArtworksQueryResponse = {
-    readonly me: ({}) | null;
+    readonly me: ({
+        readonly " $fragmentRefs": Artworks_me$ref;
+    }) | null;
+};
+export type FavoriteArtworksQuery = {
+    readonly response: FavoriteArtworksQueryResponse;
+    readonly variables: FavoriteArtworksQueryVariables;
 };
 
 

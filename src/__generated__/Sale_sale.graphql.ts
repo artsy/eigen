@@ -1,9 +1,15 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { Header_sale$ref } from "./Header_sale.graphql";
+import { SaleArtworksGrid_sale$ref } from "./SaleArtworksGrid_sale.graphql";
+declare const _Sale_sale$ref: unique symbol;
+export type Sale_sale$ref = typeof _Sale_sale$ref;
 export type Sale_sale = {
     readonly id: string;
     readonly name: string | null;
+    readonly " $fragmentRefs": Header_sale$ref & SaleArtworksGrid_sale$ref;
+    readonly " $refType": Sale_sale$ref;
 };
 
 

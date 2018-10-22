@@ -5,12 +5,12 @@ import * as renderer from "react-test-renderer"
 import ShowPreview from "../ShowPreview"
 
 it("renders correctly for a regular show", () => {
-  const tree = renderer.create(<ShowPreview show={show} />)
+  const tree = renderer.create(<ShowPreview show={show as any} />)
   expect(tree).toMatchSnapshot()
 })
 
 it("renders correctly for a fair booth", () => {
-  const tree = renderer.create(<ShowPreview show={show} />)
+  const tree = renderer.create(<ShowPreview show={show as any} />)
   expect(tree).toMatchSnapshot()
 })
 

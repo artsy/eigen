@@ -1,6 +1,8 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _Artists_me$ref: unique symbol;
+export type Artists_me$ref = typeof _Artists_me$ref;
 export type Artists_me = {
     readonly followed_artists_connection: ({
         readonly pageInfo: {
@@ -21,6 +23,7 @@ export type Artists_me = {
             }) | null;
         }) | null> | null;
     }) | null;
+    readonly " $refType": Artists_me$ref;
 };
 
 

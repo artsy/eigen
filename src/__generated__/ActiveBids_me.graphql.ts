@@ -1,12 +1,17 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { ActiveBid_bid$ref } from "./ActiveBid_bid.graphql";
+declare const _ActiveBids_me$ref: unique symbol;
+export type ActiveBids_me$ref = typeof _ActiveBids_me$ref;
 export type ActiveBids_me = {
     readonly lot_standings: ReadonlyArray<({
         readonly most_recent_bid: ({
             readonly __id: string;
         }) | null;
+        readonly " $fragmentRefs": ActiveBid_bid$ref;
     }) | null> | null;
+    readonly " $refType": ActiveBids_me$ref;
 };
 
 

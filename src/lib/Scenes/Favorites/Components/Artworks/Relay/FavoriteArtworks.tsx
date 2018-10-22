@@ -1,12 +1,13 @@
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 
+import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import createEnvironment from "lib/relay/createEnvironment"
 const environment = createEnvironment()
 
 export default ({ render }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<FavoriteArtworksQuery>
       environment={environment}
       query={graphql`
         query FavoriteArtworksQuery {

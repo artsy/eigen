@@ -1,10 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _Header_gene$ref: unique symbol;
+export type Header_gene$ref = typeof _Header_gene$ref;
 export type Header_gene = {
     readonly _id: string;
     readonly id: string;
     readonly name: string | null;
+    readonly " $refType": Header_gene$ref;
 };
 
 

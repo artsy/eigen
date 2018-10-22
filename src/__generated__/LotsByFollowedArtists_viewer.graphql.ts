@@ -1,6 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
+declare const _LotsByFollowedArtists_viewer$ref: unique symbol;
+export type LotsByFollowedArtists_viewer$ref = typeof _LotsByFollowedArtists_viewer$ref;
 export type LotsByFollowedArtists_viewer = {
     readonly sale_artworks: ({
         readonly pageInfo: {
@@ -10,10 +13,13 @@ export type LotsByFollowedArtists_viewer = {
         readonly edges: ReadonlyArray<({
             readonly cursor: string;
             readonly node: ({
-                readonly artwork: ({}) | null;
+                readonly artwork: ({
+                    readonly " $fragmentRefs": GenericGrid_artworks$ref;
+                }) | null;
             }) | null;
         }) | null> | null;
     }) | null;
+    readonly " $refType": LotsByFollowedArtists_viewer$ref;
 };
 
 

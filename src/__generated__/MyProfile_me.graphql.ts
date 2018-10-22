@@ -1,9 +1,12 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _MyProfile_me$ref: unique symbol;
+export type MyProfile_me$ref = typeof _MyProfile_me$ref;
 export type MyProfile_me = {
     readonly name: string | null;
     readonly initials: string | null;
+    readonly " $refType": MyProfile_me$ref;
 };
 
 

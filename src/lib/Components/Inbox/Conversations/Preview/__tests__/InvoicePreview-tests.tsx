@@ -12,7 +12,9 @@ describe("InvoicePreview", () => {
       lewitt_invoice_id: "420",
     }
 
-    const tree = renderer.create(<InvoicePreview invoice={invoice} conversationId="420" onSelected={() => null} />)
+    const tree = renderer.create(
+      <InvoicePreview invoice={invoice as any} conversationId="420" onSelected={() => null} />
+    )
     expect(tree).toMatchSnapshot()
   })
 })

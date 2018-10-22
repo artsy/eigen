@@ -4,11 +4,12 @@ import React from "react"
 import Sale from "../Sale"
 
 // TODO: Move to metametaphysics after Relay Modern migration
+import { SaleQuery } from "__generated__/SaleQuery.graphql"
 import { graphql, QueryRenderer } from "react-relay"
 import createEnvironment from "../../relay/createEnvironment"
 const RootContainer: React.SFC<any> = ({ Component, saleID }) => {
   return (
-    <QueryRenderer
+    <QueryRenderer<SaleQuery>
       environment={createEnvironment()}
       query={graphql`
         query SaleQuery($saleID: String!) {

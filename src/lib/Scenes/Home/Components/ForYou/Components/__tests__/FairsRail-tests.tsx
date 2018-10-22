@@ -22,6 +22,6 @@ const fairsModule = {
 }
 
 it("looks correct when rendered", () => {
-  const tree = renderer.create(<FairsRail fairs_module={fairsModule} />).toJSON()
+  const tree = renderer.create(<FairsRail fairs_module={fairsModule as any} />).toJSON()
   expect(tree).toMatchSnapshot()
 })

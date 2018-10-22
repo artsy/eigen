@@ -6,12 +6,12 @@ import * as renderer from "react-test-renderer"
 import ConversationSnippet from "../ConversationSnippet"
 
 it("renders correctly with an artwork", () => {
-  const tree = renderer.create(<ConversationSnippet conversation={artworkConversation} onSelected={null} />)
+  const tree = renderer.create(<ConversationSnippet conversation={artworkConversation as any} onSelected={null} />)
   expect(tree).toMatchSnapshot()
 })
 
 it("renders correctly with a show", () => {
-  const tree = renderer.create(<ConversationSnippet conversation={showConversation} onSelected={null} />)
+  const tree = renderer.create(<ConversationSnippet conversation={showConversation as any} onSelected={null} />)
   expect(tree).toMatchSnapshot()
 })
 

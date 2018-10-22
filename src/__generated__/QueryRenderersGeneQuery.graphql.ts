@@ -1,13 +1,20 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
+import { Gene_gene$ref } from "./Gene_gene.graphql";
 export type QueryRenderersGeneQueryVariables = {
     readonly geneID: string;
     readonly medium?: string | null;
     readonly price_range?: string | null;
 };
 export type QueryRenderersGeneQueryResponse = {
-    readonly gene: ({}) | null;
+    readonly gene: ({
+        readonly " $fragmentRefs": Gene_gene$ref;
+    }) | null;
+};
+export type QueryRenderersGeneQuery = {
+    readonly response: QueryRenderersGeneQueryResponse;
+    readonly variables: QueryRenderersGeneQueryVariables;
 };
 
 

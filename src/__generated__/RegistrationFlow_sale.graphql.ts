@@ -1,7 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-export type RegistrationFlow_sale = {};
+import { Registration_sale$ref } from "./Registration_sale.graphql";
+declare const _RegistrationFlow_sale$ref: unique symbol;
+export type RegistrationFlow_sale$ref = typeof _RegistrationFlow_sale$ref;
+export type RegistrationFlow_sale = {
+    readonly " $fragmentRefs": Registration_sale$ref;
+    readonly " $refType": RegistrationFlow_sale$ref;
+};
 
 
 

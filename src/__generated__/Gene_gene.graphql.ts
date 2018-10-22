@@ -1,7 +1,12 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { About_gene$ref } from "./About_gene.graphql";
+import { GeneArtworksGrid_filtered_artworks$ref } from "./GeneArtworksGrid_filtered_artworks.graphql";
+import { Header_gene$ref } from "./Header_gene.graphql";
 export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
+declare const _Gene_gene$ref: unique symbol;
+export type Gene_gene$ref = typeof _Gene_gene$ref;
 export type Gene_gene = {
     readonly filtered_artworks: ({
         readonly total: number | null;
@@ -13,7 +18,10 @@ export type Gene_gene = {
                 readonly count: number | null;
             }) | null> | null;
         }) | null> | null;
+        readonly " $fragmentRefs": GeneArtworksGrid_filtered_artworks$ref;
     }) | null;
+    readonly " $fragmentRefs": Header_gene$ref & About_gene$ref;
+    readonly " $refType": Gene_gene$ref;
 };
 
 

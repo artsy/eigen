@@ -28,6 +28,8 @@ import { SelectMaxBidEdit } from "./SelectMaxBidEdit"
 
 import { ConfirmBid_me } from "__generated__/ConfirmBid_me.graphql"
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
+import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
+import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
 import { Modal } from "lib/Components/Modal"
 
 const Emission = NativeModules.Emission || {}
@@ -58,51 +60,6 @@ interface ConfirmBidState {
 }
 
 const MAX_POLL_ATTEMPTS = 20
-
-const creditCardMutation = graphql`
-  mutation ConfirmBidCreateCreditCardMutation($input: CreditCardInput!) {
-    createCreditCard(input: $input) {
-      creditCardOrError {
-        ... on CreditCardMutationSuccess {
-          creditCard {
-            id
-            brand
-            name
-            last_digits
-            expiration_month
-            expiration_year
-          }
-        }
-        ... on CreditCardMutationFailure {
-          mutationError {
-            type
-            message
-            detail
-          }
-        }
-      }
-    }
-  }
-`
-
-const bidderPositionMutation = graphql`
-  mutation ConfirmBidCreateBidderPositionMutation($input: BidderPositionInput!) {
-    createBidderPosition(input: $input) {
-      result {
-        status
-        message_header
-        message_description_md
-        position {
-          id
-          suggested_next_bid {
-            cents
-            display
-          }
-        }
-      }
-    }
-  }
-`
 
 const queryForBidPosition = (bidderPositionID: string) => {
   return metaphysics({
@@ -199,7 +156,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         addressCountry: billingAddress.country.shortName,
       })
 
-      commitMutation(this.props.relay.environment, {
+      commitMutation<ConfirmBidCreateCreditCardMutation>(this.props.relay.environment, {
         onCompleted: (data, errors) => {
           if (data && get(data, "createCreditCard.creditCardOrError.creditCard")) {
             this.createBidderPosition()
@@ -213,7 +170,31 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
           }
         },
         onError: errors => this.presentErrorResult(errors),
-        mutation: creditCardMutation,
+        mutation: graphql`
+          mutation ConfirmBidCreateCreditCardMutation($input: CreditCardInput!) {
+            createCreditCard(input: $input) {
+              creditCardOrError {
+                ... on CreditCardMutationSuccess {
+                  creditCard {
+                    id
+                    brand
+                    name
+                    last_digits
+                    expiration_month
+                    expiration_year
+                  }
+                }
+                ... on CreditCardMutationFailure {
+                  mutationError {
+                    type
+                    message
+                    detail
+                  }
+                }
+              }
+            }
+          }
+        `,
         variables: { input: { token: token.tokenId } },
       })
     } catch (error) {
@@ -222,11 +203,28 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   createBidderPosition() {
-    commitMutation(this.props.relay.environment, {
+    commitMutation<ConfirmBidCreateBidderPositionMutation>(this.props.relay.environment, {
       onCompleted: (results, errors) =>
         isEmpty(errors) ? this.verifyBidPosition(results) : this.presentErrorResult(errors),
       onError: this.presentErrorResult.bind(this),
-      mutation: bidderPositionMutation,
+      mutation: graphql`
+        mutation ConfirmBidCreateBidderPositionMutation($input: BidderPositionInput!) {
+          createBidderPosition(input: $input) {
+            result {
+              status
+              message_header
+              message_description_md
+              position {
+                id
+                suggested_next_bid {
+                  cents
+                  display
+                }
+              }
+            }
+          }
+        }
+      `,
       variables: {
         input: {
           sale_id: this.props.sale_artwork.sale.id,

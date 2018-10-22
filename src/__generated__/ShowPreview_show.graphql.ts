@@ -1,6 +1,8 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+declare const _ShowPreview_show$ref: unique symbol;
+export type ShowPreview_show$ref = typeof _ShowPreview_show$ref;
 export type ShowPreview_show = {
     readonly id: string;
     readonly _id: string;
@@ -14,6 +16,7 @@ export type ShowPreview_show = {
     readonly partner: ({
         readonly name?: string | null;
     }) | null;
+    readonly " $refType": ShowPreview_show$ref;
 };
 
 

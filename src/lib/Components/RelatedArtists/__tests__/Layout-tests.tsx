@@ -18,6 +18,6 @@ it("lays out correctly", () => {
 
   const layout = { width: 768 }
 
-  const component = renderWithLayout(<RelatedArtists artists={artists} />, layout)
+  const component = renderWithLayout(<RelatedArtists artists={artists as any} />, layout)
   expect(component).toMatchSnapshot()
 })

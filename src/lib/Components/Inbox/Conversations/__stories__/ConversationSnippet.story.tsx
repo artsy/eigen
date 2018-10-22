@@ -3,9 +3,10 @@ import React from "react"
 import "react-native"
 import { ScrollView } from "react-native"
 
+import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"
 import { ConversationSnippet } from "../ConversationSnippet"
 
-const conversation = {
+const conversation = ({
   id: "582",
   to: { name: "ACA Galleries" },
   last_message: "Karl and Anna... Fab!",
@@ -24,7 +25,7 @@ const conversation = {
       },
     },
   ],
-}
+} as any) as ConversationSnippet_conversation
 
 storiesOf("Conversations/Snippet")
   .add("Single row", () => <ConversationSnippet conversation={conversation} />)

@@ -1,6 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { ConversationSnippet_conversation$ref } from "./ConversationSnippet_conversation.graphql";
+declare const _Conversations_me$ref: unique symbol;
+export type Conversations_me$ref = typeof _Conversations_me$ref;
 export type Conversations_me = {
     readonly conversations: ({
         readonly pageInfo: {
@@ -11,9 +14,11 @@ export type Conversations_me = {
             readonly node: ({
                 readonly id: string | null;
                 readonly last_message: string | null;
+                readonly " $fragmentRefs": ConversationSnippet_conversation$ref;
             }) | null;
         }) | null> | null;
     }) | null;
+    readonly " $refType": Conversations_me$ref;
 };
 
 
