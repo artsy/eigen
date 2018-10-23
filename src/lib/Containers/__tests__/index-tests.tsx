@@ -8,6 +8,7 @@ it("should export all components", () => {
     "BidFlow",
     "Conversation",
     "Gene",
+    "ReferenceShow",
     "Fair",
     "Home",
     "Inbox",

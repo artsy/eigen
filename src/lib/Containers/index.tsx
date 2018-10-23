@@ -1,5 +1,6 @@
 import Fair from "../Scenes/Fair"
 import Home from "../Scenes/Home"
+import ReferenceShow from "../Scenes/ReferenceShow"
 import MyProfile from "../Scenes/Settings/MyProfile"
 import Artist from "./Artist"
 import BidFlow from "./BidFlow"
@@ -16,6 +17,7 @@ export default {
   BidFlow,
   Conversation,
   Gene,
+  ReferenceShow,
   Fair,
   Home,
   Inbox,

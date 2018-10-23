@@ -28,7 +28,7 @@ mockedModule("./lib/Components/OpaqueImageView.tsx", "AROpaqueImageView")
 mockedModule("./lib/Components/ArtworkGrids/InfiniteScrollGrid.tsx", "ArtworksGrid")
 
 // Artist tests
-mockedModule("./lib/Components/Artist/Shows/index.tsx", "Shows")
+mockedModule("./lib/Components/Artist/Shows/index.tsx", "PartnerShows")
 mockedModule("./lib/Components/Artist/Artworks/index.tsx", "Artworks")
 mockedModule("./lib/Components/Artist/Header.tsx", "Header")
 mockedModule("./lib/Components/Artist/About.tsx", "About")

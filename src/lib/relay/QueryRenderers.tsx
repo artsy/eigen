@@ -41,6 +41,7 @@ import { QueryRenderersInquiryQuery } from "__generated__/QueryRenderersInquiryQ
 import { QueryRenderersMyProfileQuery } from "__generated__/QueryRenderersMyProfileQuery.graphql"
 import { QueryRenderersRegistrationFlowQuery } from "__generated__/QueryRenderersRegistrationFlowQuery.graphql"
 import { QueryRenderersSaleQuery } from "__generated__/QueryRenderersSaleQuery.graphql"
+import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
 import createEnvironment from "./createEnvironment"
 const environment = createEnvironment()
@@ -346,6 +347,27 @@ export const FairRenderer: React.SFC<FairRendererProps> = ({ render, fairID }) =
         }
       `}
       variables={{ fairID }}
+      render={render}
+    />
+  )
+}
+
+interface ShowRendererProps extends RendererProps {
+  showID: string
+}
+
+export const ShowRenderer: React.SFC<ShowRendererProps> = ({ render, showID }) => {
+  return (
+    <QueryRenderer<QueryRenderersShowQuery>
+      environment={environment}
+      query={graphql`
+        query QueryRenderersShowQuery($showID: String!) {
+          show(id: $showID) {
+            ...ReferenceShow_show
+          }
+        }
+      `}
+      variables={{ showID }}
       render={render}
     />
   )

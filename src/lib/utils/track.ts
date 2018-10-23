@@ -94,6 +94,7 @@ export namespace Schema {
     ConsignmentsSubmission = "ConsignmentsSubmit",
     GenePage = "Gene",
     FairPage = "Fair",
+    ShowPage = "Show",
     InboxPage = "Inbox",
     InquiryPage = "Inquiry",
     HomeArtistsWorksForYou = "HomeArtistsWorksForYou",

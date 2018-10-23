@@ -3,6 +3,7 @@
 import { ConcreteRequest } from "relay-runtime";
 export type CreditCardInput = {
     readonly token: string;
+    readonly oneTimeUse?: boolean | null;
     readonly clientMutationId?: string | null;
 };
 export type ConfirmBidCreateCreditCardMutationVariables = {
