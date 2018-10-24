@@ -15,6 +15,7 @@ it("should export all components", () => {
     "MyProfile",
     "RegistrationFlow",
     "Sale",
+    "Show",
     "WorksForYou",
   ])
 })

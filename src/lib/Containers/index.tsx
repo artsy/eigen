@@ -1,6 +1,7 @@
 import Fair from "../Scenes/Fair"
 import Home from "../Scenes/Home"
 import MyProfile from "../Scenes/Settings/MyProfile"
+import Show from "../Scenes/Show"
 import Artist from "./Artist"
 import BidFlow from "./BidFlow"
 import Conversation from "./Conversation"
@@ -23,5 +24,6 @@ export default {
   MyProfile,
   RegistrationFlow,
   Sale,
+  Show,
   WorksForYou,
 }

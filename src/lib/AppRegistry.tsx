@@ -17,6 +17,7 @@ import {
   InquiryRenderer,
   MyProfileRenderer,
   RegistrationFlowRenderer,
+  ShowRenderer,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
 import FavoritesScene from "./Scenes/Favorites"
@@ -140,6 +141,20 @@ const Fair: React.SFC<FairProps> = track<FairProps>(props => {
   return <FairRenderer fairID={fairID} render={renderWithLoadProgress(Containers.Fair, { fairID })} />
 })
 
+interface ShowProps {
+  showID: string
+}
+
+const Show: React.SFC<ShowProps> = track<ShowProps>(props => {
+  return {
+    context_screen: Schema.PageNames.ShowPage,
+    context_screen_owner_slug: props.showID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Show,
+  }
+})(({ showID }) => {
+  return <ShowRenderer showID={showID} render={renderWithLoadProgress(Containers.Show, { showID })} />
+})
+
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Home", () => HomeScene)
@@ -155,3 +170,4 @@ AppRegistry.registerComponent("Favorites", () => FavoritesScene)
 // TODO: Change everything to BidderFlow? AuctionAction?
 AppRegistry.registerComponent("BidFlow", () => BidderFlow)
 AppRegistry.registerComponent("Fair", () => Fair)
+AppRegistry.registerComponent("Show", () => Show)

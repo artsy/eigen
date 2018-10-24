@@ -190,6 +190,7 @@ type Artist implements Node {
     artist_id: String
     artist_ids: [String]
     at_auction: Boolean
+    attribution_class: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -492,6 +493,7 @@ type ArtistItem implements Node {
     artist_id: String
     artist_ids: [String]
     at_auction: Boolean
+    attribution_class: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -791,7 +793,11 @@ type Artwork implements Node & Sellable {
   ): Partner
   pickup_available: Boolean
   price: String
+  priceCents: PriceCents
   price_currency: String
+
+  # Is this work available for shipping only within the Contenental US?
+  shipsToContinentalUSOnly: Boolean
 
   # The string that describes domestic and international shipping.
   shippingInfo: String
@@ -988,7 +994,7 @@ type ArtworkContextFair {
     section: String
 
     # Sorts for shows in a fair
-    sort: ShowSort = FEATURED_DESC
+    sort: ShowSort
     after: String
     first: Int
     before: String
@@ -1248,6 +1254,7 @@ type ArtworkFilterGene implements Node {
     artist_id: String
     artist_ids: [String]
     at_auction: Boolean
+    attribution_class: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -1301,6 +1308,7 @@ type ArtworkFilterTag implements Node {
     artist_id: String
     artist_ids: [String]
     at_auction: Boolean
+    attribution_class: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -1468,7 +1476,11 @@ type ArtworkItem implements Node & Sellable {
   ): Partner
   pickup_available: Boolean
   price: String
+  priceCents: PriceCents
   price_currency: String
+
+  # Is this work available for shipping only within the Contenental US?
+  shipsToContinentalUSOnly: Boolean
 
   # The string that describes domestic and international shipping.
   shippingInfo: String
@@ -1885,7 +1897,7 @@ type Collection implements Node {
     before: String
     last: Int
     private: Boolean = false
-    sort: CollectionSorts = POSITION_DESC
+    sort: CollectionSorts
   ): ArtworkConnection
   description: String!
   default: Boolean!
@@ -1942,6 +1954,17 @@ type CollectorProfileType {
     timezone: String
   ): String
   intents: [String]
+}
+
+input ConfirmPickupInput {
+  # Order ID
+  orderId: String!
+  clientMutationId: String
+}
+
+type ConfirmPickupPayload {
+  orderOrError: OrderOrFailureUnionType
+  clientMutationId: String
 }
 
 # A work to be consigned to the user
@@ -2324,10 +2347,49 @@ type CreditCard {
 
   # Credit card's expiration year
   expiration_year: Int!
+
+  # Billing address street1
+  street1: String
+
+  # Billing address street2
+  street2: String
+
+  # Billing address city
+  city: String
+
+  # Billing address state
+  state: String
+
+  # Billing address country code
+  country: String
+
+  # Billing address postal code
+  postal_code: String
+}
+
+# A connection to a list of items.
+type CreditCardConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [CreditCardEdge]
+  pageCursors: PageCursors
+  totalCount: Int
+}
+
+# An edge in a connection.
+type CreditCardEdge {
+  # The item at the end of the edge
+  node: CreditCard
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 input CreditCardInput {
   token: String!
+  oneTimeUse: Boolean = false
   clientMutationId: String
 }
 
@@ -2373,6 +2435,8 @@ type CurrentEvent {
   href: String
 }
 
+scalar DateTime
+
 type DaySchedule {
   start_time: Int
   end_time: Int
@@ -2395,6 +2459,16 @@ type DeepZoomImage {
 type DeepZoomImageSize {
   Width: Int
   Height: Int
+}
+
+input DeleteCreditCardInput {
+  id: String!
+  clientMutationId: String
+}
+
+type DeleteCreditCardPayload {
+  creditCardOrError: CreditCardMutationType
+  clientMutationId: String
 }
 
 # Fields of a delivery (currently from Radiation)
@@ -2441,6 +2515,23 @@ type Delivery {
 type dimensions {
   in: String
   cm: String
+}
+
+# Partner
+type DoNotUseThisPartner {
+  # Partners display name
+  display_name: String
+
+  # Partners given name
+  given_name: String
+
+  # Uniq ID for this partner
+  id: ID!
+  relative_size: Int
+
+  # Uniq, friendly identifier for this artist
+  slug: String!
+  subscription_state: String
 }
 
 type EcommerceError {
@@ -2556,7 +2647,7 @@ type Fair {
     section: String
 
     # Sorts for shows in a fair
-    sort: ShowSort = FEATURED_DESC
+    sort: ShowSort
     after: String
     first: Int
     before: String
@@ -2801,6 +2892,17 @@ type FollowGenePayload {
   clientMutationId: String
 }
 
+input FollowProfileInput {
+  profile_id: String
+  unfollow: Boolean = false
+  clientMutationId: String
+}
+
+type FollowProfilePayload {
+  profile: Profile
+  clientMutationId: String
+}
+
 type FollowsAndSaves {
   # A list of published artworks by followed artists (grouped by date and artists).
   bundledArtworksByArtist(
@@ -2873,6 +2975,7 @@ type Gene implements Node {
     artist_id: String
     artist_ids: [String]
     at_auction: Boolean
+    attribution_class: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -2915,6 +3018,7 @@ type Gene implements Node {
     artist_id: String
     artist_ids: [String]
     at_auction: Boolean
+    attribution_class: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -3044,6 +3148,7 @@ type GeneItem implements Node {
     artist_id: String
     artist_ids: [String]
     at_auction: Boolean
+    attribution_class: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -3086,6 +3191,7 @@ type GeneItem implements Node {
     artist_id: String
     artist_ids: [String]
     at_auction: Boolean
+    attribution_class: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -3483,7 +3589,7 @@ type HomePageModuleContextFair {
     section: String
 
     # Sorts for shows in a fair
-    sort: ShowSort = FEATURED_DESC
+    sort: ShowSort
     after: String
     first: Int
     before: String
@@ -3538,6 +3644,7 @@ type HomePageModuleContextGene implements Node {
     artist_id: String
     artist_ids: [String]
     at_auction: Boolean
+    attribution_class: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -3580,6 +3687,7 @@ type HomePageModuleContextGene implements Node {
     artist_id: String
     artist_ids: [String]
     at_auction: Boolean
+    attribution_class: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -3870,6 +3978,105 @@ type LotStanding {
   sale_artwork: SaleArtwork
 }
 
+# Object representing a collection page
+type MarketingCollection {
+  id: ID!
+
+  # slug version of title, used for pretty URLs (e.g. `kaws-prints` for Kaws Prints
+  slug: String!
+
+  # Name of the collection
+  title: String!
+
+  # Description of the collection which can include links to other collections
+  description: String
+
+  # Background image for the header of the collection page
+  headerImage: String
+
+  # Set of keywords used for SEO purposes
+  keywords: String!
+
+  # Image credit for the header image
+  credit: String
+
+  # Category of the collection
+  category: String!
+
+  # Structured object used to build filtered artworks query
+  query: MarketingCollectionQuery!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  artworks(
+    acquireable: Boolean
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    artist_ids: [String]
+    at_auction: Boolean
+    attribution_class: [String]
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    include_medium_filter_in_aggregation: Boolean
+    inquireable_only: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    page: Int
+    sale_id: ID
+    size: Int
+    sort: String
+    tag_id: String
+    keyword: String
+  ): FilterArtworks
+}
+
+type MarketingCollectionQuery {
+  id: ID
+  acquireable: Boolean
+  aggregations: [String!]
+  artist_ids: [String!]
+  artist_id: String
+  at_auction: Boolean
+  color: String
+  dimension_range: String
+  extra_aggregation_gene_ids: [String!]
+  include_artworks_by_followed_artists: Boolean
+  include_medium_filter_in_aggregation: Boolean
+  inquireable_only: Boolean
+  for_sale: Boolean
+  gene_id: String
+  gene_ids: [String!]
+  height: String
+  width: String
+  medium: String
+  period: String
+  periods: [String!]
+  major_periods: [String!]
+  partner_id: ID
+  partner_cities: [String!]
+  price_range: String
+  page: Int
+  sale_id: ID
+  size: Int
+  sort: String
+  tag_id: String
+  keyword: String
+}
+
 type Me implements Node {
   # A globally unique ID.
   __id: ID!
@@ -3932,6 +4139,9 @@ type Me implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # A list of the current user’s credit cards
+  creditCards(after: String, first: Int, before: String, last: Int): CreditCardConnection
   email: String
 
   # A list of the current user’s artist follows
@@ -4091,6 +4301,16 @@ type MessageInitiator {
   email: String
 }
 
+type Metaphysics {
+  environment: Boolean!
+  queryTracing: Boolean!
+  heapDumps: Boolean!
+  stitching: Boolean!
+  stitchingGravity: Boolean!
+  stitchingConvection: Boolean!
+  stitchingExchange: Boolean!
+}
+
 type Mutation {
   # Create a bidder
   createBidder(input: CreateBidderInput!): CreateBidderPayload
@@ -4101,8 +4321,14 @@ type Mutation {
   # Create a credit card
   createCreditCard(input: CreditCardInput!): CreditCardPayload
 
+  # Remove a credit card
+  deleteCreditCard(input: DeleteCreditCardInput!): DeleteCreditCardPayload
+
   # Follow (or unfollow) an artist
   followArtist(input: FollowArtistInput!): FollowArtistPayload
+
+  # Follow (or unfollow) a profile
+  followProfile(input: FollowProfileInput!): FollowProfilePayload
 
   # Follow (or unfollow) an gene
   followGene(input: FollowGeneInput!): FollowGenePayload
@@ -4132,9 +4358,6 @@ type Mutation {
 
   # Attach an gemini asset to a consignment submission
   createGeminiEntryForAsset(input: CreateGeminiEntryForAssetInput!): CreateGeminiEntryForAssetPayload
-
-  # Records an artwork view.
-  recordArtworkView(input: RecordArtworkViewInput!): RecordArtworkViewPayload
 
   # Create a new consignment submission using Convection
   createConsignmentSubmission(input: CreateSubmissionMutationInput!): CreateSubmissionMutationPayload
@@ -4178,6 +4401,9 @@ type Mutation {
   # Approves an order with payment
   ecommerceApproveOrder(input: ApproveOrderInput!): ApproveOrderPayload
 
+  # Confirms pickup for an ecommerce order
+  ecommerceConfirmPickup(input: ConfirmPickupInput!): ConfirmPickupPayload
+
   # Fulfills an Order with one fulfillment by setting this fulfillment to all line items of this order
   ecommerceFulfillOrderAtOnce(input: FulfillOrderAtOnceInput!): FulfillOrderAtOncePayload
 
@@ -4186,6 +4412,7 @@ type Mutation {
 
   # Submits an order
   ecommerceSubmitOrder(input: SubmitOrderInput!): SubmitOrderPayload
+  recordArtworkView(input: RecordArtworkViewInput): RecordArtworkViewPayload
 }
 
 input Near {
@@ -4252,6 +4479,9 @@ type Order {
 
   # State of the order
   state: String
+
+  # Reason for current state
+  stateReason: String
 
   # Tracking code of the order
   code: String
@@ -4328,6 +4558,12 @@ type Order {
     symbol: String
     thousand: String = ","
   ): String
+
+  # Partner commission rate used to calculate commission fee
+  commissionRate: Float
+
+  # Partner commission rate formatted into percentage
+  displayCommissionRate: String
 
   # Buyer total in cents
   buyerTotalCents: Int
@@ -4566,11 +4802,23 @@ union OrderOrFailureUnionType = OrderWithMutationSuccess | OrderWithMutationFail
 union OrderParty = Partner | User
 
 enum OrdersSortMethodType {
-  # Sort by latest timestamp order was updated in ascending order
+  # Sort by the timestamp the order was last updated in ascending order
   UPDATED_AT_ASC
 
-  # Sort by latest timestamp order was updated in descending order
+  # Sort by the timestamp the order was last updated in descending order
   UPDATED_AT_DESC
+
+  # Sort by the timestamp the state of order was last updated in ascending order
+  STATE_UPDATED_AT_ASC
+
+  # Sort by the timestamp the state of order was last updated in descending order
+  STATE_UPDATED_AT_DESC
+
+  # Sort by the timestamp the state of the order expires at in ascending order
+  STATE_EXPIRES_AT_ASC
+
+  # Sort by the timestamp the state of the order expires at in a descending order
+  STATE_EXPIRES_AT_DESC
 }
 
 type OrderWithMutationFailure {
@@ -4663,7 +4911,6 @@ type Partner implements Node {
     status: EventStatus
   ): [PartnerShow]
   type: String
-  acceptsCardPayments: Boolean
 }
 
 type PartnerArtist {
@@ -5020,6 +5267,12 @@ type PopularArtists {
   artists: [Artist]
 }
 
+type PriceCents {
+  min: Int
+  max: Int
+  exact: Boolean
+}
+
 type Profile {
   # A globally unique ID.
   __id: ID!
@@ -5184,6 +5437,7 @@ type Query {
     artist_id: String
     artist_ids: [String]
     at_auction: Boolean
+    attribution_class: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -5440,7 +5694,7 @@ type Query {
     sort: SaleSorts
   ): [Sale]
 
-  # The schema for difference microservice settings
+  # The schema for difference micro-service settings
   services: Services
 
   # A Show
@@ -5502,6 +5756,10 @@ type Query {
     sellerType: String
     state: String
     sort: OrdersSortMethodType
+    after: String
+    first: Int
+    before: String
+    last: Int
   ): OrderConnection
 
   # Returns a single Order
@@ -5515,19 +5773,36 @@ type Query {
     sellerType: String
     state: String
     sort: OrdersSortMethodType
+    after: String
+    first: Int
+    before: String
+    last: Int
   ): OrderConnection
 
   # A wildcard used to support complex root queries in Relay
   viewer: Viewer
+
+  # Autocomplete resolvers.
+  _unused_gravity_match_partners(term: String, page: Int = 1, size: Int = 5, match_type: String): [DoNotUseThisPartner]
+
+  # Find partners by ID
+  _unused_gravity_partners(ids: [ID]!): [DoNotUseThisPartner]
+  marketingCollections: [MarketingCollection!]!
+  marketingCollection(slug: String!): MarketingCollection
 }
 
+# Autogenerated input type of RecordArtworkView
 input RecordArtworkViewInput {
-  artwork_id: String!
+  # A unique identifier for the client performing the mutation.
   clientMutationId: String
+  artwork_id: String!
 }
 
+# Autogenerated return type of RecordArtworkView
 type RecordArtworkViewPayload {
   artwork_id: String!
+
+  # A unique identifier for the client performing the mutation.
   clientMutationId: String
 }
 
@@ -6029,6 +6304,7 @@ type SendConversationMessageMutationPayload {
 
 type Services {
   convection: Convection!
+  metaphysics: Metaphysics!
 }
 
 input SetOrderPaymentInput {
@@ -6363,6 +6639,7 @@ type Tag implements Node {
     artist_id: String
     artist_ids: [String]
     at_auction: Boolean
+    attribution_class: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -6751,6 +7028,7 @@ type Viewer {
     artist_id: String
     artist_ids: [String]
     at_auction: Boolean
+    attribution_class: [String]
     color: String
     dimension_range: String
     extra_aggregation_gene_ids: [String]
@@ -7007,7 +7285,7 @@ type Viewer {
     sort: SaleSorts
   ): [Sale]
 
-  # The schema for difference microservice settings
+  # The schema for difference micro-service settings
   services: Services
 
   # A Show

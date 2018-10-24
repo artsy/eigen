@@ -29,6 +29,7 @@
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/ARFairComponentViewController.h>
+#import <Emission/ARShowComponentViewController.h>
 
 #import "ARStorybookComponentViewController.h"
 
@@ -106,6 +107,7 @@
   ARSectionData *sectionData = [[ARSectionData alloc] init];
   [self setupSection:sectionData withTitle:@"View Controllers"];
 
+  [sectionData addCellData:self.jumpToShow];
   [sectionData addCellData:self.jumpToFair];
   [sectionData addCellData:self.jumpToArtist];
   [sectionData addCellData:self.jumpToRandomArtist];
@@ -357,6 +359,14 @@
   }
                                        preload:^NSArray<ARGraphQLQuery *> *{
     return [ARFavoritesComponentViewController preloadQueries];
+  }];
+}
+
+- (ARCellData *)jumpToShow
+{
+  return [self tappableCellDataWithTitle:@"Show" selection:^{
+    id viewController = [[ARShowComponentViewController alloc] initWithShowID:@"joseph-k-levene-fine-art-ltd-icons-online"];
+    [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
 

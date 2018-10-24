@@ -1,11 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-import { Show_show$ref } from "./Show_show.graphql";
+import { ArtistShow_show$ref } from "./ArtistShow_show.graphql";
 declare const _SmallList_shows$ref: unique symbol;
 export type SmallList_shows$ref = typeof _SmallList_shows$ref;
 export type SmallList_shows = ReadonlyArray<{
-    readonly " $fragmentRefs": Show_show$ref;
+    readonly " $fragmentRefs": ArtistShow_show$ref;
     readonly " $refType": SmallList_shows$ref;
 }>;
 
@@ -22,7 +22,7 @@ const node: ConcreteFragment = {
   "selections": [
     {
       "kind": "FragmentSpread",
-      "name": "Show_show",
+      "name": "ArtistShow_show",
       "args": null
     },
     {
@@ -34,5 +34,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = '7fc693edca8ffe74cb41102a5bc9cb22';
+(node as any).hash = '7b60b30ef5f0eccc1bae5f2c93c817dc';
 export default node;

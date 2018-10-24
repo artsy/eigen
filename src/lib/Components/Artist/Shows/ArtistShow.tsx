@@ -6,10 +6,10 @@ import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import OpaqueImageView from "../../OpaqueImageView"
 import Metadata from "./Metadata"
 
-import { Show_show } from "__generated__/Show_show.graphql"
+import { ArtistShow_show } from "__generated__/ArtistShow_show.graphql"
 
 interface Props {
-  show: Show_show
+  show: ArtistShow_show
   styles?: {
     container?: ViewStyle
     image?: ViewStyle
@@ -43,7 +43,7 @@ class Show extends React.Component<Props> {
 export default createFragmentContainer(
   Show,
   graphql`
-    fragment Show_show on PartnerShow {
+    fragment ArtistShow_show on PartnerShow {
       href
       cover_image {
         url(version: "large")

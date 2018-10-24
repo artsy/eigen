@@ -3,7 +3,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 
-import Show from "./Show"
+import ArtistShow from "./ArtistShow"
 
 import { VariableSizeShowsList_shows } from "__generated__/VariableSizeShowsList_shows.graphql"
 
@@ -71,7 +71,7 @@ class ShowsList extends Component<Props, State> {
   }
 
   renderShow(show, showStyles) {
-    return <Show show={show} styles={showStyles} key={show.__id} />
+    return <ArtistShow show={show} styles={showStyles} key={show.__id} />
   }
 }
 
@@ -95,7 +95,7 @@ export default createFragmentContainer(
   graphql`
     fragment VariableSizeShowsList_shows on PartnerShow @relay(plural: true) {
       __id
-      ...Show_show
+      ...ArtistShow_show
     }
   `
 )
