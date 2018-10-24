@@ -1,4 +1,4 @@
-import { ReferenceShow_show } from "__generated__/ReferenceShow_show.graphql"
+import { Show_show } from "__generated__/Show_show.graphql"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -10,7 +10,7 @@ import { Location } from "./Components/Location"
 import { Shows } from "./Components/Shows"
 
 interface Props extends ViewProperties {
-  show: ReferenceShow_show
+  show: Show_show
 }
 
 interface State {
@@ -20,7 +20,7 @@ interface State {
   }>
 }
 
-export class ReferenceShow extends React.Component<Props, State> {
+export class Show extends React.Component<Props, State> {
   state = {
     sections: [],
   }
@@ -79,9 +79,9 @@ export class ReferenceShow extends React.Component<Props, State> {
 }
 
 export default createFragmentContainer(
-  ReferenceShow,
+  Show,
   graphql`
-    fragment ReferenceShow_show on Show {
+    fragment Show_show on Show {
       id
       name
       description

@@ -1,9 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-declare const _ReferenceShow_show$ref: unique symbol;
-export type ReferenceShow_show$ref = typeof _ReferenceShow_show$ref;
-export type ReferenceShow_show = {
+declare const _Show_show$ref: unique symbol;
+export type Show_show$ref = typeof _Show_show$ref;
+export type Show_show = {
     readonly id: string;
     readonly name: string | null;
     readonly description: string | null;
@@ -51,7 +51,7 @@ export type ReferenceShow_show = {
     readonly partner: ({
         readonly name?: string | null;
     }) | null;
-    readonly " $refType": ReferenceShow_show$ref;
+    readonly " $refType": Show_show$ref;
 };
 
 
@@ -83,7 +83,7 @@ v3 = [
 ];
 return {
   "kind": "Fragment",
-  "name": "ReferenceShow_show",
+  "name": "Show_show",
   "type": "Show",
   "metadata": null,
   "argumentDefinitions": [],
@@ -341,5 +341,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '878814440a77a0f7edaf82a775ed8219';
+(node as any).hash = '7b93332ab0b12a5f35354d9d6d21332c';
 export default node;

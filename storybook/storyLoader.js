@@ -44,8 +44,8 @@ function loadStories() {
   require('../src/lib/Scenes/Home/Components/ForYou/Components/__stories__/MarketingHeader.story.tsx');
   require('../src/lib/Scenes/Home/Components/Sales/Components/__stories__/LotsByFollowedArtists.story.tsx');
   require('../src/lib/Scenes/Home/__stories__/Home.story.tsx');
-  require('../src/lib/Scenes/ReferenceShow/__stories__/Show.story.tsx');
   require('../src/lib/Scenes/Settings/__stories__/Settings.story.tsx');
+  require('../src/lib/Scenes/Show/__stories__/Show.story.tsx');
   
 }
 
@@ -89,8 +89,8 @@ const stories = [
   '../src/lib/Scenes/Home/Components/ForYou/Components/__stories__/MarketingHeader.story.tsx',
   '../src/lib/Scenes/Home/Components/Sales/Components/__stories__/LotsByFollowedArtists.story.tsx',
   '../src/lib/Scenes/Home/__stories__/Home.story.tsx',
-  '../src/lib/Scenes/ReferenceShow/__stories__/Show.story.tsx',
   '../src/lib/Scenes/Settings/__stories__/Settings.story.tsx',
+  '../src/lib/Scenes/Show/__stories__/Show.story.tsx',
   
 ];
 

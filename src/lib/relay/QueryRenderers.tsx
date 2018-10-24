@@ -363,7 +363,7 @@ export const ShowRenderer: React.SFC<ShowRendererProps> = ({ render, showID }) =
       query={graphql`
         query QueryRenderersShowQuery($showID: String!) {
           show(id: $showID) {
-            ...ReferenceShow_show
+            ...Show_show
           }
         }
       `}

@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { ReferenceShow_show$ref } from "./ReferenceShow_show.graphql";
+import { Show_show$ref } from "./Show_show.graphql";
 export type QueryRenderersShowQueryVariables = {
     readonly showID: string;
 };
 export type QueryRenderersShowQueryResponse = {
     readonly show: ({
-        readonly " $fragmentRefs": ReferenceShow_show$ref;
+        readonly " $fragmentRefs": Show_show$ref;
     }) | null;
 };
 export type QueryRenderersShowQuery = {
@@ -22,12 +22,12 @@ query QueryRenderersShowQuery(
   $showID: String!
 ) {
   show(id: $showID) {
-    ...ReferenceShow_show
+    ...Show_show
     __id
   }
 }
 
-fragment ReferenceShow_show on Show {
+fragment Show_show on Show {
   id
   name
   description
@@ -134,7 +134,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "9014180be3de553ec920d906ad172eb8",
+  "id": "b63473c4c674f0cccff309d39a281da4",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -155,7 +155,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "ReferenceShow_show",
+            "name": "Show_show",
             "args": null
           },
           v2
@@ -440,5 +440,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'f3ec53e8c0bef02a19c8b7cdb1468327';
+(node as any).hash = '673a9098896e4777f88f0902608774eb';
 export default node;

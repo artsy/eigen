@@ -6,7 +6,7 @@ import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import OpaqueImageView from "../../OpaqueImageView"
 import Metadata from "./Metadata"
 
-import { ArtistShow_show } from "__generated__/Show_show.graphql"
+import { ArtistShow_show } from "__generated__/ArtistShow_show.graphql"
 
 interface Props {
   show: ArtistShow_show

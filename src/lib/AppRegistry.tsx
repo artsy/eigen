@@ -152,7 +152,7 @@ const Show: React.SFC<ShowProps> = track<ShowProps>(props => {
     context_screen_owner_type: Schema.OwnerEntityTypes.Show,
   }
 })(({ showID }) => {
-  return <ShowRenderer showID={showID} render={renderWithLoadProgress(Containers.ReferenceShow, { showID })} />
+  return <ShowRenderer showID={showID} render={renderWithLoadProgress(Containers.Show, { showID })} />
 })
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
