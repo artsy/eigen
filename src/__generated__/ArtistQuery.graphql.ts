@@ -196,15 +196,15 @@ fragment Artwork_artwork on Artwork {
 
 fragment VariableSizeShowsList_shows on PartnerShow {
   __id
-  ...Show_show
+  ...ArtistShow_show
 }
 
 fragment SmallList_shows on PartnerShow {
-  ...Show_show
+  ...ArtistShow_show
   __id
 }
 
-fragment Show_show on PartnerShow {
+fragment ArtistShow_show on PartnerShow {
   href
   cover_image {
     url(version: "large")
@@ -727,7 +727,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtistQuery",
-  "id": "cb1ddb19853cef3f70ccd90dfd6dbf8a",
+  "id": "fe7976df9f043f60fdd63ee913885f4d",
   "text": null,
   "metadata": {},
   "fragment": {

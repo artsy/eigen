@@ -2,22 +2,22 @@
 
 import { ConcreteFragment } from "relay-runtime";
 import { Metadata_show$ref } from "./Metadata_show.graphql";
-declare const _Show_show$ref: unique symbol;
-export type Show_show$ref = typeof _Show_show$ref;
-export type Show_show = {
+declare const _ArtistShow_show$ref: unique symbol;
+export type ArtistShow_show$ref = typeof _ArtistShow_show$ref;
+export type ArtistShow_show = {
     readonly href: string | null;
     readonly cover_image: ({
         readonly url: string | null;
     }) | null;
     readonly " $fragmentRefs": Metadata_show$ref;
-    readonly " $refType": Show_show$ref;
+    readonly " $refType": ArtistShow_show$ref;
 };
 
 
 
 const node: ConcreteFragment = {
   "kind": "Fragment",
-  "name": "Show_show",
+  "name": "ArtistShow_show",
   "type": "PartnerShow",
   "metadata": null,
   "argumentDefinitions": [],
@@ -68,5 +68,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = 'd981d802fad8863bc7fb561582c3e241';
+(node as any).hash = 'ef153f5e371b4b9f661c13febec59a14';
 export default node;

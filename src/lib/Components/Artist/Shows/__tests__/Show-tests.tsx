@@ -3,7 +3,7 @@ import "react-native"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import Show from "../Show"
+import ArtistShow from "../ArtistShow"
 
 it("renders properly", () => {
   const showProps = {
@@ -36,6 +36,6 @@ it("renders properly", () => {
     },
   }
 
-  const show = renderer.create(<Show show={showProps as any} styles={showStyles} />).toJSON()
+  const show = renderer.create(<ArtistShow show={showProps as any} styles={showStyles} />).toJSON()
   expect(show).toMatchSnapshot()
 })

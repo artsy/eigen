@@ -2,7 +2,7 @@ import React from "react"
 import { ListView, ListViewDataSource, StyleSheet, View, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import Show from "./Show"
+import ArtistShow from "./ArtistShow"
 
 import colors from "lib/data/colors"
 
@@ -39,7 +39,7 @@ class SmallList extends React.Component<Props, State> {
   }
 
   renderShow = (show: any) => {
-    return <Show show={show} styles={showStyles} /> as React.ReactElement<{}>
+    return <ArtistShow show={show} styles={showStyles} /> as React.ReactElement<{}>
   }
 }
 
@@ -69,7 +69,7 @@ export default createFragmentContainer(
   SmallList,
   graphql`
     fragment SmallList_shows on PartnerShow @relay(plural: true) {
-      ...Show_show
+      ...ArtistShow_show
     }
   `
 )
