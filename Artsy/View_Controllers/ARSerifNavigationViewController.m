@@ -14,6 +14,11 @@
 static CGFloat exitButtonDimension = 40;
 
 @interface ARSerifNavigationBar : UINavigationBar
+
+/// There's a UIKit bug we need to workaround; see implementation for more details.
+/// Only set this to `true` if we're presented the auction view controller (in split view).
+@property (nonatomic, assign) BOOL needsLiveAuctionsBackgroundColorFix;
+
 /// Show/hides the underline from a navigation bar
 - (void)hideNavigationBarShadow:(BOOL)hide;
 @end
@@ -141,6 +146,7 @@ static CGFloat exitButtonDimension = 40;
     }
 
     ARSerifNavigationBar *navBar = (id)self.navigationBar;
+    navBar.needsLiveAuctionsBackgroundColorFix = [NSStringFromClass(viewController.class) containsString:@"LiveAuction"];
 
     if (navigationController.viewControllers.count > 1) {
         nav.leftBarButtonItem = self.backButton;
@@ -242,14 +248,16 @@ static CGFloat exitButtonDimension = 40;
 
     [self nudgeViews:self.topItem.rightBarButtonItems horizontally:10];
 
-    // This is a total hack.
-    // UIKit inserts a view behind us which, when we're presented in the left side of a split view controller,
-    // has a single column pixel visible to our right.
-    [self.superview.superview.subviews each:^(UIView *object) {
-        if ([NSStringFromClass([object class]) isEqualToString:@"UIView"]) {
-            object.backgroundColor = [UIColor artsyGraySemibold];
-        }
-    }];
+    if (self.needsLiveAuctionsBackgroundColorFix) {
+        // This is a total hack.
+        // UIKit inserts a view behind us which, when we're presented in the left side of a split view controller,
+        // has a single column pixel visible to our right.
+        [self.superview.superview.subviews each:^(UIView *object) {
+            if ([NSStringFromClass([object class]) isEqualToString:@"UIView"]) {
+                object.backgroundColor = [UIColor artsyGraySemibold];
+            }
+        }];
+    }
 }
 
 - (void)verticallyCenterView:(id)viewOrArray
