@@ -9,6 +9,7 @@ upcoming:
     - Includes artwork blurbs again - ash&jon
     - BN changes from Emission - orta/chris/matt
     - Fixes view-in-room not working - ash
+    - Fixes grey bar on bottom of screen after modal presentations - ash
 
 releases:
   - version: 4.3.1
