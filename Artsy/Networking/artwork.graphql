@@ -87,6 +87,9 @@ query OldArtworkQuery($artworkID: String!) {
     signature
     title
     blurb: description(format: PLAIN)
+    width
+    height
+    metric
   }
 }
 
