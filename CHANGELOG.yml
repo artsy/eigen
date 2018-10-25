@@ -8,6 +8,7 @@ upcoming:
   user_facing:
     - Includes artwork blurbs again - ash&jon
     - BN changes from Emission - orta/chris/matt
+    - Fixes view-in-room not working - ash
 
 releases:
   - version: 4.3.1
