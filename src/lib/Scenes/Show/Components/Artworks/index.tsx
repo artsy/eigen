@@ -1,14 +1,25 @@
+import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import React from "react"
-import { Text } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  artworks: any[]
+  show: any
 }
-
-// TODO: implement
 
 export class Artworks extends React.Component<Props> {
   render() {
-    return <Text>{JSON.stringify(this.props.artworks)}</Text>
+    if (!this.props.show) { return null }
+    return <GenericGrid artworks={this.props.show.artworks} />
   }
 }
+
+export const ArtworksContainer = createFragmentContainer(Artworks, {
+  show: graphql`
+    fragment Artworks_show on Show {
+      __id
+      artworks {
+        ...GenericGrid_artworks
+      }
+    }
+  `,
+})
