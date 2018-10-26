@@ -31,6 +31,7 @@ Inbox
 // tslint:enable:no-unused-expression
 
 import { QueryRenderersArtistQuery } from "__generated__/QueryRenderersArtistQuery.graphql"
+import { QueryRenderersArtworkQuery } from "__generated__/QueryRenderersArtworkQuery.graphql"
 import { QueryRenderersBidFlowQuery } from "__generated__/QueryRenderersBidFlowQuery.graphql"
 import { QueryRenderersConversationQuery } from "__generated__/QueryRenderersConversationQuery.graphql"
 import { QueryRenderersFairQuery } from "__generated__/QueryRenderersFairQuery.graphql"
@@ -368,6 +369,27 @@ export const ShowRenderer: React.SFC<ShowRendererProps> = ({ render, showID }) =
         }
       `}
       variables={{ showID }}
+      render={render}
+    />
+  )
+}
+
+interface ArtworkRendererProps extends RendererProps {
+  artworkID: string
+}
+
+export const ArtworkRenderer: React.SFC<ArtworkRendererProps> = ({ render, artworkID }) => {
+  return (
+    <QueryRenderer<QueryRenderersArtworkQuery>
+      environment={environment}
+      query={graphql`
+        query QueryRenderersArtworkQuery($artworkID: String!) {
+          artwork(id: $artworkID) {
+            ...Artwork_artwork
+          }
+        }
+      `}
+      variables={{ artworkID }}
       render={render}
     />
   )
