@@ -98,8 +98,8 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersRegistrationFlowQuery",
-  "id": "eae7174e3cddc451acab97c6294292ce",
-  "text": null,
+  "id": null,
+  "text": "query QueryRenderersRegistrationFlowQuery(\n  $saleID: String!\n) {\n  sale(id: $saleID) {\n    name\n    ...RegistrationFlow_sale\n    __id\n  }\n  me {\n    ...RegistrationFlow_me\n    __id\n  }\n}\n\nfragment RegistrationFlow_sale on Sale {\n  ...Registration_sale\n  __id\n}\n\nfragment RegistrationFlow_me on Me {\n  ...Registration_me\n  __id\n}\n\nfragment Registration_me on Me {\n  has_credit_cards\n  __id\n}\n\nfragment Registration_sale on Sale {\n  id\n  end_at\n  is_preview\n  live_start_at\n  name\n  start_at\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

@@ -4,6 +4,8 @@ import { ReadyState, RelayContainer } from "react-relay"
 import LoadFailureView from "lib/Components/LoadFailureView"
 import Spinner from "lib/Components/Spinner"
 
+export const LoadingTestID = "relay-loading"
+
 export default function<P>(
   Container: RelayContainer<P>,
   initialProps: object = {}
@@ -12,6 +14,7 @@ export default function<P>(
   return ({ error, props, retry }) => {
     if (error) {
       const networkError = error as any
+      console.log(error)
       if (networkError.response && networkError.response._bodyInit) {
         let data = networkError.response._bodyInit || "{}"
         try {
@@ -36,7 +39,7 @@ export default function<P>(
     } else if (props) {
       return <Container {...initialProps} {...props as any} />
     } else {
-      return <Spinner style={{ flex: 1 }} />
+      return <Spinner testID={LoadingTestID} style={{ flex: 1 }} />
     }
   }
 }

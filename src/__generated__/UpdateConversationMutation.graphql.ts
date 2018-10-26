@@ -103,8 +103,8 @@ return {
   "kind": "Request",
   "operationKind": "mutation",
   "name": "UpdateConversationMutation",
-  "id": "376ca21dfba9abce2459940af585be24",
-  "text": null,
+  "id": null,
+  "text": "mutation UpdateConversationMutation(\n  $input: UpdateConversationMutationInput!\n) {\n  updateConversation(input: $input) {\n    conversation {\n      id\n      from_last_viewed_message_id\n      __id\n    }\n  }\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

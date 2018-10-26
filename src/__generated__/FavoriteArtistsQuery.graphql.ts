@@ -62,8 +62,8 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FavoriteArtistsQuery",
-  "id": "49eaf7c16805166359df52ba8cb4f488",
-  "text": null,
+  "id": null,
+  "text": "query FavoriteArtistsQuery {\n  me {\n    ...Artists_me\n    __id\n  }\n}\n\nfragment Artists_me on Me {\n  followed_artists_connection(first: 10) {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      node {\n        artist {\n          id\n          __id\n          name\n          href\n          image {\n            url\n          }\n        }\n        __id\n        __typename\n      }\n      cursor\n    }\n  }\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

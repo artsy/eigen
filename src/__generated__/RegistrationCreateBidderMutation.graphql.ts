@@ -102,8 +102,8 @@ return {
   "kind": "Request",
   "operationKind": "mutation",
   "name": "RegistrationCreateBidderMutation",
-  "id": "5adb7100b533a36426ccc810956fd44a",
-  "text": null,
+  "id": null,
+  "text": "mutation RegistrationCreateBidderMutation(\n  $input: CreateBidderInput!\n) {\n  createBidder(input: $input) {\n    bidder {\n      id\n      qualified_for_bidding\n      __id\n    }\n  }\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

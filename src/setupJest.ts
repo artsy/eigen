@@ -1,7 +1,23 @@
 import Enzyme from "enzyme"
 import Adapter from "enzyme-adapter-react-16"
 import expect from "expect"
+import { JSDOM } from "jsdom"
 
+function copyProps(src, target) {
+  Object.defineProperties(target, {
+    ...Object.getOwnPropertyDescriptors(src),
+    ...Object.getOwnPropertyDescriptors(target),
+  })
+}
+
+global.window = new JSDOM("<!doctype html><html><body></body></html>").window
+global.document = window.document
+global.navigator = {
+  userAgent: "node.js",
+}
+copyProps(window, global)
+
+import "lib/tests/renderUntil"
 Enzyme.configure({ adapter: new Adapter() })
 
 // Waiting on https://github.com/thymikee/snapshot-diff/pull/17

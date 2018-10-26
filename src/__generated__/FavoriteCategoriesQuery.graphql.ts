@@ -62,8 +62,8 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FavoriteCategoriesQuery",
-  "id": "814089538a6782827e8d5bc579eea904",
-  "text": null,
+  "id": null,
+  "text": "query FavoriteCategoriesQuery {\n  me {\n    ...Categories_me\n    __id\n  }\n}\n\nfragment Categories_me on Me {\n  followed_genes(first: 10) {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      node {\n        gene {\n          id\n          __id\n          name\n          href\n          image {\n            url\n          }\n        }\n        __id\n        __typename\n      }\n      cursor\n    }\n  }\n  __id\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

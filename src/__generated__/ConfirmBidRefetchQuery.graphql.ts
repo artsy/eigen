@@ -101,8 +101,8 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ConfirmBidRefetchQuery",
-  "id": "9d766fcdd80005d680dd9145655fa6ab",
-  "text": null,
+  "id": null,
+  "text": "query ConfirmBidRefetchQuery(\n  $saleID: String!\n) {\n  me {\n    has_qualified_credit_cards\n    bidders(sale_id: $saleID) {\n      qualified_for_bidding\n      __id\n    }\n    __id\n  }\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

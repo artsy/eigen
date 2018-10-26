@@ -170,8 +170,8 @@ return {
   "kind": "Request",
   "operationKind": "mutation",
   "name": "ConfirmBidCreateBidderPositionMutation",
-  "id": "6dc901d7cf30a2e5778b669b04fe3d35",
-  "text": null,
+  "id": null,
+  "text": "mutation ConfirmBidCreateBidderPositionMutation(\n  $input: BidderPositionInput!\n) {\n  createBidderPosition(input: $input) {\n    result {\n      status\n      message_header\n      message_description_md\n      position {\n        id\n        suggested_next_bid {\n          cents\n          display\n        }\n        __id\n      }\n    }\n  }\n}\n",
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
