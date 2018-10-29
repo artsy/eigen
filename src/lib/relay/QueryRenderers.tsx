@@ -373,24 +373,3 @@ export const ShowRenderer: React.SFC<ShowRendererProps> = ({ render, showID }) =
     />
   )
 }
-
-interface ArtworkRendererProps extends RendererProps {
-  artworkID: string
-}
-
-export const ArtworkRenderer: React.SFC<ArtworkRendererProps> = ({ render, artworkID }) => {
-  return (
-    <QueryRenderer<QueryRenderersArtworkQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersArtworkQuery($artworkID: String!) {
-          artwork(id: $artworkID) {
-            ...Artwork_artwork
-          }
-        }
-      `}
-      variables={{ artworkID }}
-      render={render}
-    />
-  )
-}
