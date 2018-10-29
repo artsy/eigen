@@ -31,7 +31,6 @@ Inbox
 // tslint:enable:no-unused-expression
 
 import { QueryRenderersArtistQuery } from "__generated__/QueryRenderersArtistQuery.graphql"
-import { QueryRenderersArtworkQuery } from "__generated__/QueryRenderersArtworkQuery.graphql"
 import { QueryRenderersBidFlowQuery } from "__generated__/QueryRenderersBidFlowQuery.graphql"
 import { QueryRenderersConversationQuery } from "__generated__/QueryRenderersConversationQuery.graphql"
 import { QueryRenderersFairQuery } from "__generated__/QueryRenderersFairQuery.graphql"
