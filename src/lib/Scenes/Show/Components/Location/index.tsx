@@ -16,8 +16,8 @@ interface Props {
   show: Location_show
 }
 
-// Move to
-const GoogleMapsAPIKey = "AIzaSyC8PEDa9CHny20pwkwr4_IDxGKWJpgqud0"
+// Move to cocoapods-keys
+const GoogleMapsAPIKey = "<API KEY HERE>"
 
 export class Location extends React.Component<Props> {
   render() {
