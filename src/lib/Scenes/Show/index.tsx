@@ -6,7 +6,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { Artists } from "./Components/Artists"
 import { Artworks } from "./Components/Artworks"
 import { Header } from "./Components/Header"
-import { Location } from "./Components/Location"
+import { LocationContainer as Location } from "./Components/Location"
 import { Shows } from "./Components/Shows"
 
 interface Props extends ViewProperties {
@@ -31,7 +31,7 @@ export class Show extends React.Component<Props, State> {
 
     sections.push({
       type: "location",
-      data: show.location,
+      data: show,
     })
 
     sections.push({
@@ -60,8 +60,8 @@ export class Show extends React.Component<Props, State> {
         ListHeaderComponent={<Header />}
         renderItem={({ item: { data, type } }) => {
           switch (type) {
-            case "map":
-              return <Location location={data} />
+            case "location":
+              return <Location show={data} />
             case "artworks":
               return <Artworks artworks={data} />
             case "artists":
@@ -86,22 +86,7 @@ export default createFragmentContainer(
       name
       description
       press_release
-      location {
-        __id
-        id
-        city
-        address
-        address_2
-        coordinates {
-          lat
-          lng
-        }
-        day_schedules {
-          start_time
-          end_time
-          day_of_week
-        }
-      }
+      ...Location_show
       artists {
         __id
         id
@@ -127,14 +112,6 @@ export default createFragmentContainer(
       }
       exhibition_period
       description
-      partner {
-        ... on ExternalPartner {
-          name
-        }
-        ... on Partner {
-          name
-        }
-      }
     }
   `
 )

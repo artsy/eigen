@@ -32,22 +32,7 @@ fragment Show_show on Show {
   name
   description
   press_release
-  location {
-    __id
-    id
-    city
-    address
-    address_2
-    coordinates {
-      lat
-      lng
-    }
-    day_schedules {
-      start_time
-      end_time
-      day_of_week
-    }
-  }
+  ...Location_show
   artists {
     __id
     id
@@ -72,6 +57,26 @@ fragment Show_show on Show {
     eligible_artworks
   }
   exhibition_period
+  __id
+}
+
+fragment Location_show on Show {
+  location {
+    __id
+    id
+    city
+    address
+    address_2
+    coordinates {
+      lat
+      lng
+    }
+    day_schedules {
+      start_time
+      end_time
+      day_of_week
+    }
+  }
   partner {
     __typename
     ... on ExternalPartner {
@@ -134,7 +139,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "b63473c4c674f0cccff309d39a281da4",
+  "id": "ef7213f1747dc411c7a2aebb803a1a96",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -177,66 +182,7 @@ return {
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "artworks",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Artwork",
-            "plural": true,
-            "selections": [
-              v2,
-              v3,
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "artist_names",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "image",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "Image",
-                "plural": false,
-                "selections": [
-                  v3,
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "url",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "price",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "availability",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "contact_label",
-                "args": null,
-                "storageKey": null
-              }
-            ]
-          },
+          v2,
           v3,
           {
             "kind": "ScalarField",
@@ -346,6 +292,36 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
+            "name": "partner",
+            "storageKey": null,
+            "args": null,
+            "concreteType": null,
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "__typename",
+                "args": null,
+                "storageKey": null
+              },
+              v2,
+              {
+                "kind": "InlineFragment",
+                "type": "Partner",
+                "selections": v5
+              },
+              {
+                "kind": "InlineFragment",
+                "type": "ExternalPartner",
+                "selections": v5
+              }
+            ]
+          },
+          v4,
+          {
+            "kind": "LinkedField",
+            "alias": null,
             "name": "artists",
             "storageKey": null,
             "args": null,
@@ -364,7 +340,66 @@ return {
               }
             ]
           },
-          v4,
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artworks",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artwork",
+            "plural": true,
+            "selections": [
+              v2,
+              v3,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "artist_names",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "image",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Image",
+                "plural": false,
+                "selections": [
+                  v3,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "url",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "price",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "availability",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "contact_label",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
           {
             "kind": "ScalarField",
             "alias": null,
@@ -403,37 +438,7 @@ return {
             "name": "exhibition_period",
             "args": null,
             "storageKey": null
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "partner",
-            "storageKey": null,
-            "args": null,
-            "concreteType": null,
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "__typename",
-                "args": null,
-                "storageKey": null
-              },
-              v2,
-              {
-                "kind": "InlineFragment",
-                "type": "Partner",
-                "selections": v5
-              },
-              {
-                "kind": "InlineFragment",
-                "type": "ExternalPartner",
-                "selections": v5
-              }
-            ]
-          },
-          v2
+          }
         ]
       }
     ]
