@@ -1,9 +1,9 @@
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
-import { Location } from "../index"
+import { Header } from "../index"
 
 it("looks correct when rendered", () => {
-  const comp = renderer.create(<Location location={{}} />)
+  const comp = renderer.create(<Header />)
   expect(comp).toMatchSnapshot()
 })
