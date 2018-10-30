@@ -78,7 +78,7 @@ export class Show extends React.Component<Props, State> {
           }
           renderItem={({ item: { data, type } }) => {
             switch (type) {
-              case "map":
+              case "location":
                 return <Location show={data} />
               case "artworks":
                 return <Artworks artworks={data} />
