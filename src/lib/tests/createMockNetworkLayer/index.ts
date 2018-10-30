@@ -14,6 +14,9 @@ export const createMockNetworkLayer = (mockResolvers: IMocks) => {
     getNetworkLayer({
       schema,
       mocks: { FormattedNumber: () => FormattedNumber, ...mockResolvers },
+      resolveQueryFromOperation: ({ id }) => {
+        return require("../../../__generated__/complete.queryMap.json")[id]
+      },
     })
   )
 }

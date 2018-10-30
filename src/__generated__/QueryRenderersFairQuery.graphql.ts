@@ -61,8 +61,8 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersFairQuery",
-  "id": null,
-  "text": "query QueryRenderersFairQuery(\n  $fairID: String!\n) {\n  fair(id: $fairID) {\n    ...Fair_fair\n    __id\n  }\n}\n\nfragment Fair_fair on Fair {\n  name\n  __id\n}\n",
+  "id": "be7a98bae37d1dea9e7c6388ee57dd5f",
+  "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

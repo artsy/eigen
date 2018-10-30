@@ -190,8 +190,8 @@ return {
   "kind": "Request",
   "operationKind": "mutation",
   "name": "RegistrationCreateCreditCardMutation",
-  "id": null,
-  "text": "mutation RegistrationCreateCreditCardMutation(\n  $input: CreditCardInput!\n) {\n  createCreditCard(input: $input) {\n    creditCardOrError {\n      __typename\n      ... on CreditCardMutationSuccess {\n        creditCard {\n          id\n          brand\n          name\n          last_digits\n          expiration_month\n          expiration_year\n          __id\n        }\n      }\n      ... on CreditCardMutationFailure {\n        mutationError {\n          type\n          message\n          detail\n        }\n      }\n    }\n  }\n}\n",
+  "id": "c050c181a19740d6db7ff99b876e0dad",
+  "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",

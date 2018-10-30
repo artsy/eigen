@@ -6,15 +6,14 @@ import { renderUntil } from "../../../tests/renderUntil"
 import { ShowFixture } from "./fixtures"
 
 import Show from "../"
-import { Header } from "../Components/Header"
-import OpaqueImageView from "lib/components/OpaqueImageView"
+import { ShowHeader } from "../Components/ShowHeader"
 
 jest.unmock("react-relay")
 
 it("Renders a show", async () => {
   const tree = await renderUntil(
     wrapper => {
-      return wrapper.find(Header).length > 0
+      return wrapper.find(ShowHeader).length > 0
     },
     <MockRelayRenderer
       Component={Show}
