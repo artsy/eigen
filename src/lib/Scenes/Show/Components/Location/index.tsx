@@ -6,8 +6,6 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 // TODO: This is a testing access token, will need to regenerate and move to cocoapods-keys
-
-console.log(Mapbox)
 Mapbox.setAccessToken("pk.eyJ1IjoiYXJ0c3lpdCIsImEiOiJjam51dTJibTEwNHNpM3BxamV4dDRibzJhIn0.bhFMJt1mqxNDrE1xSAtxSw")
 
 const Map = styled(Mapbox.MapView)`
