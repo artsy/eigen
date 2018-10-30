@@ -1,19 +1,19 @@
 PODS:
   - ARGenericTableViewController (1.0.2)
-  - Artsy+Authentication/email (1.5.0):
+  - "Artsy+Authentication/email (1.5.0)":
     - ISO8601DateFormatter
-    - NSURL+QueryDictionary
-  - Artsy+UIColors (3.1.0)
-  - Artsy+UIFonts (3.2.0)
+    - "NSURL+QueryDictionary"
+  - "Artsy+UIColors (3.1.0)"
+  - "Artsy+UIFonts (3.2.0)"
   - Artsy-UIButtons (2.3.3):
-    - Artsy+UIColors (~> 3.0)
-    - Artsy+UIFonts
-    - UIView+BooleanAnimations
+    - "Artsy+UIColors (~> 3.0)"
+    - "Artsy+UIFonts"
+    - "UIView+BooleanAnimations"
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.5)
   - Emission (1.7.2):
-    - Artsy+UIColors
-    - Artsy+UIFonts (>= 3.0.0)
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.5)
     - Extraction (>= 1.2.1)
     - Folly (= 2016.09.26.00)
@@ -34,23 +34,23 @@ PODS:
     - Extraction/ARLoadFailureView (= 1.2.4)
     - Extraction/ARSpinner (= 1.2.4)
     - Extraction/ARSwitchView (= 1.2.4)
-    - Extraction/UILabel+Typography (= 1.2.4)
-    - Extraction/UIView+ARSpinner (= 1.2.4)
+    - "Extraction/UILabel+Typography (= 1.2.4)"
+    - "Extraction/UIView+ARSpinner (= 1.2.4)"
   - Extraction/ARAnimationContinuation (1.2.4)
   - Extraction/ARLoadFailureView (1.2.4):
     - Artsy-UIButtons
-    - Extraction/UILabel+Typography
+    - "Extraction/UILabel+Typography"
     - ORStackView (< 3)
   - Extraction/ARSpinner (1.2.4):
-    - Extraction/UIView+ARSpinner
-    - UIView+BooleanAnimations
+    - "Extraction/UIView+ARSpinner"
+    - "UIView+BooleanAnimations"
   - Extraction/ARSwitchView (1.2.4):
-    - Artsy+UIColors
-    - Artsy+UIFonts (>= 1.1.0)
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts (>= 1.1.0)"
     - FLKAutoLayout
-    - UIView+BooleanAnimations
-  - Extraction/UILabel+Typography (1.2.4)
-  - Extraction/UIView+ARSpinner (1.2.4):
+    - "UIView+BooleanAnimations"
+  - "Extraction/UILabel+Typography (1.2.4)"
+  - "Extraction/UIView+ARSpinner (1.2.4)":
     - Extraction/ARAnimationContinuation
   - FLKAutoLayout (1.0.0)
   - Folly (2016.09.26.00):
@@ -70,11 +70,13 @@ PODS:
   - KSCrash/Reporting/Filters/Basic (1.15.16):
     - KSCrash/Recording
     - KSCrash/Reporting/Filters/Base
-  - NSURL+QueryDictionary (1.2.0)
+  - "NSURL+QueryDictionary (1.2.0)"
   - ORStackView (2.0.3):
     - FLKAutoLayout
   - React (0.54.4):
     - React/Core (= 0.54.4)
+  - react-native-mapbox-gl (6.1.3):
+    - React
   - React/Core (0.54.4):
     - yoga (= 0.54.4.React)
   - React/CxxBridge (0.54.4):
@@ -133,19 +135,20 @@ PODS:
   - tipsi-stripe (5.2.4):
     - React
     - Stripe (~> 11.2.0)
-  - UIView+BooleanAnimations (1.0.2)
+  - "UIView+BooleanAnimations (1.0.2)"
   - yoga (0.54.4.React)
 
 DEPENDENCIES:
   - ARGenericTableViewController
-  - Artsy+Authentication/email (from `https://github.com/artsy/Artsy-Authentication.git`, branch `fetch-user-details`)
-  - Artsy+UIFonts
+  - "Artsy+Authentication/email (from `https://github.com/artsy/Artsy-Authentication.git`, branch `fetch-user-details`)"
+  - "Artsy+UIFonts"
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Emission (from `../`)
   - FLKAutoLayout
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Keys (from `Pods/CocoaPodsKeys`)
+  - "react-native-mapbox-gl (from `../node_modules/@mapbox/react-native-mapbox-gl`)"
   - React/DevSupport (from `../node_modules/react-native`)
   - SAMKeychain
   - Sentry/Core
@@ -154,31 +157,53 @@ DEPENDENCIES:
   - tipsi-stripe (from `../node_modules/tipsi-stripe/tipsi-stripe.podspec`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
+SPEC REPOS:
+  https://github.com/artsy/Specs.git:
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts"
+    - Artsy-UIButtons
+    - Extraction
+  https://github.com/cocoapods/specs.git:
+    - ARGenericTableViewController
+    - boost-for-react-native
+    - FLKAutoLayout
+    - ISO8601DateFormatter
+    - KSCrash
+    - "NSURL+QueryDictionary"
+    - ORStackView
+    - SAMKeychain
+    - SDWebImage
+    - Sentry
+    - Stripe
+    - "UIView+BooleanAnimations"
+
 EXTERNAL SOURCES:
-  Artsy+Authentication:
+  "Artsy+Authentication":
     :branch: fetch-user-details
     :git: https://github.com/artsy/Artsy-Authentication.git
   DoubleConversion:
-    :podspec: ../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec
+    :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   Emission:
-    :path: ../
+    :path: "../"
   Folly:
-    :podspec: ../node_modules/react-native/third-party-podspecs/Folly.podspec
+    :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
-    :podspec: ../node_modules/react-native/third-party-podspecs/glog.podspec
+    :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   Keys:
     :path: Pods/CocoaPodsKeys
   React:
-    :path: ../node_modules/react-native
+    :path: "../node_modules/react-native"
+  react-native-mapbox-gl:
+    :path: "../node_modules/@mapbox/react-native-mapbox-gl"
   SentryReactNative:
-    :path: ../node_modules/react-native-sentry
+    :path: "../node_modules/react-native-sentry"
   tipsi-stripe:
-    :podspec: ../node_modules/tipsi-stripe/tipsi-stripe.podspec
+    :podspec: "../node_modules/tipsi-stripe/tipsi-stripe.podspec"
   yoga:
-    :path: ../node_modules/react-native/ReactCommon/yoga
+    :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
-  Artsy+Authentication:
+  "Artsy+Authentication":
     :commit: 1b582675598c999726d9edacd3b8559e01cf7c48
     :git: https://github.com/artsy/Artsy-Authentication.git
   tipsi-stripe:
@@ -187,9 +212,9 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
-  Artsy+Authentication: 3bf11ceca61c52e9e31490535bf5798f625406fa
-  Artsy+UIColors: 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  Artsy+UIFonts: d29579aa105e3709032651fb3145d24f8339e905
+  "Artsy+Authentication": 3bf11ceca61c52e9e31490535bf5798f625406fa
+  "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
+  "Artsy+UIFonts": d29579aa105e3709032651fb3145d24f8339e905
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: ebb6747c5b66026ad4f97b789c3ceac6f18e57a6
@@ -201,18 +226,19 @@ SPEC CHECKSUMS:
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   Keys: 7e91fe066d4f94790fd35b5a9fc63e441cd3b6d2
   KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
-  NSURL+QueryDictionary: bae616404e2adf6409d3d5c02a093cbf44c8a236
+  "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   React: c237e42de9c70e5cac6eeb52b4cfd3a0910c1f00
+  react-native-mapbox-gl: b42480060cdcc515dfa3d8e403fb4dd32466a1b9
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
   SentryReactNative: a292506edfa707119e3aa155892cdb07e453a93a
   Stripe: 898f83a95d72180c6eb4acd65b2ae6158fc6a8bd
   tipsi-stripe: 25a3f6ba746e9a27f7b21e928c9974d016efcd77
-  UIView+BooleanAnimations: a760be9a066036e55f298b7b7350a6cb14cfcd97
+  "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: eb3798a1b20a532cddd29d0c368339450e54db82
+PODFILE CHECKSUM: 158aeb77c5785a2d9a2b236d52851cd5644914e0
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3
