@@ -1,3 +1,4 @@
+import { Artworks_show } from "__generated__/Artworks_show.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
