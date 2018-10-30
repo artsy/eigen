@@ -81,7 +81,7 @@ export class Show extends React.Component<Props, State> {
               case "map":
                 return <Location location={data} />
               case "artworks":
-                return <Artworks artworks={data} />
+                return <Artworks show={data} />
               case "artists":
                 return <Artists artists={data} />
               case "shows":
