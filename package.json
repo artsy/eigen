@@ -4,7 +4,7 @@
   "native-code-version": 8,
   "description": "Artsy React(Native) components.",
   "engines": {
-    "node": "8.4.x",
+    "node": "8.x.x",
     "npm": "6.1.x",
     "yarn": "1.x"
   },
@@ -68,6 +68,7 @@
   },
   "dependencies": {
     "@artsy/palette": "^2.11.0",
+    "@mapbox/react-native-mapbox-gl": "^6.1.3",
     "lodash": "^4.17.4",
     "moment": "^2.19.4",
     "moment-timezone": "^0.5.17",

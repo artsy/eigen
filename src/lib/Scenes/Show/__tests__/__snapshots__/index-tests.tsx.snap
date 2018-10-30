@@ -10,7 +10,19 @@ exports[`Renders a show 1`] = `
         Object {
           "artists": Array [],
           "artworks": Array [],
-          "location": Object {},
+          "location": Object {
+            "address": "25 Central Park West",
+            "address_2": "",
+            "city": "New York",
+            "coordinates": Object {
+              "lat": 40.770424,
+              "lng": -73.981233,
+            },
+            "id": "52b0ced8cd530ed44400014f",
+          },
+          "partner": Object {
+            "name": "Joseph K. Levene Fine Art, Ltd.",
+          },
           "shows": Array [],
         }
       }
@@ -19,14 +31,43 @@ exports[`Renders a show 1`] = `
   data={
     Array [
       Object {
-        "data": Object {},
+        "data": Object {
+          "artists": Array [],
+          "artworks": Array [],
+          "location": Object {
+            "address": "25 Central Park West",
+            "address_2": "",
+            "city": "New York",
+            "coordinates": Object {
+              "lat": 40.770424,
+              "lng": -73.981233,
+            },
+            "id": "52b0ced8cd530ed44400014f",
+          },
+          "partner": Object {
+            "name": "Joseph K. Levene Fine Art, Ltd.",
+          },
+          "shows": Array [],
+        },
         "type": "location",
       },
       Object {
         "data": Object {
           "artists": Array [],
           "artworks": Array [],
-          "location": Object {},
+          "location": Object {
+            "address": "25 Central Park West",
+            "address_2": "",
+            "city": "New York",
+            "coordinates": Object {
+              "lat": 40.770424,
+              "lng": -73.981233,
+            },
+            "id": "52b0ced8cd530ed44400014f",
+          },
+          "partner": Object {
+            "name": "Joseph K. Levene Fine Art, Ltd.",
+          },
           "shows": Array [],
         },
         "type": "artworks",
@@ -451,7 +492,84 @@ exports[`Renders a show 1`] = `
     <View
       onLayout={[Function]}
       style={null}
-    />
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          color="#000"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize={12}
+          lineHeight={16}
+          style={
+            Array [
+              Object {
+                "color": "#000",
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+          Joseph K. Levene Fine Art, Ltd.
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Regular"
+          fontSize={10}
+          lineHeight={14}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 10,
+                "lineHeight": 14,
+              },
+              undefined,
+            ]
+          }
+        >
+          25 Central Park West
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Regular"
+          fontSize={10}
+          lineHeight={14}
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 10,
+                "lineHeight": 14,
+              },
+              undefined,
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
     <View
       onLayout={[Function]}
       style={null}

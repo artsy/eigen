@@ -18,6 +18,14 @@ jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
   },
 }))
 
+jest.mock("@mapbox/react-native-mapbox-gl", () => ({
+  MapView: () => null,
+  StyleURL: {
+    Light: null,
+  },
+  setAccessToken: () => jest.fn(),
+}))
+
 function mockedModule(path: string, mockModuleName: string) {
   jest.mock(path, () => mockModuleName)
 }

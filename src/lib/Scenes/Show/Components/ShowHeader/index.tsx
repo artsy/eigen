@@ -55,7 +55,7 @@ export class ShowHeader extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(
+export const ShowHeaderContainer = createFragmentContainer(
   ShowHeader,
   graphql`
     fragment ShowHeader_show on Show {
