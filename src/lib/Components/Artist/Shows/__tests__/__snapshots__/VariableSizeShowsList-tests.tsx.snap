@@ -48,9 +48,6 @@ exports[`renders properly 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Object {
             "fontFamily": "AvantGardeGothicITC",
@@ -64,9 +61,6 @@ exports[`renders properly 1`] = `
         GALLERY
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Object {
             "fontFamily": "AvantGardeGothicITC",
@@ -80,9 +74,6 @@ exports[`renders properly 1`] = `
         SOLO SHOW
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={1}
         style={
           Array [
@@ -102,9 +93,6 @@ exports[`renders properly 1`] = `
         Expansive Exhibition
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={1}
         style={
           Array [
@@ -129,9 +117,6 @@ exports[`renders properly 1`] = `
         Berlin, Jan 1 - March 1
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={1}
         style={
           Array [
@@ -185,9 +170,6 @@ exports[`renders properly 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Object {
             "fontFamily": "AvantGardeGothicITC",
@@ -201,9 +183,6 @@ exports[`renders properly 1`] = `
         A VERY NICE GALLERY
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Object {
             "fontFamily": "AvantGardeGothicITC",
@@ -217,9 +196,6 @@ exports[`renders properly 1`] = `
         SOLO SHOW
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={1}
         style={
           Array [
@@ -239,9 +215,6 @@ exports[`renders properly 1`] = `
         Expansive Exhibition
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={1}
         style={
           Array [
@@ -266,9 +239,6 @@ exports[`renders properly 1`] = `
         London, Jan 1 - March 1
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={1}
         style={
           Array [

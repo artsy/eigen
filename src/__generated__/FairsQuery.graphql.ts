@@ -34,6 +34,7 @@ fragment Fairs_me_1G22uz on Me {
     fairs(first: $count, after: $cursor) {
       edges {
         node {
+          __id
           profile {
             id
             is_followed
@@ -50,7 +51,6 @@ fragment Fairs_me_1G22uz on Me {
           }
           start_at
           end_at
-          __id
           __typename
         }
         cursor
@@ -91,7 +91,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairsQuery",
-  "id": "e229fcb56557f40a10c7001df80ad9f8",
+  "id": "62ddb706b284c3b4e9f8bce90941d7a4",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -196,6 +196,7 @@ return {
                         "concreteType": "Fair",
                         "plural": false,
                         "selections": [
+                          v1,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -293,7 +294,6 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v1,
                           {
                             "kind": "ScalarField",
                             "alias": null,

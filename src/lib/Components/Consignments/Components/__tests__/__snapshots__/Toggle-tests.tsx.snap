@@ -45,9 +45,6 @@ exports[`has the expected tree 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -67,9 +64,6 @@ exports[`has the expected tree 1`] = `
         L
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {

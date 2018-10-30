@@ -416,6 +416,8 @@
 - Clean up Jest log output, update relay-mock-network-layer - javamonn
 - Fair performance enhancements - ashley
 - Add start and end properties to Favorites Works and Shows page info queries -ashley
+- Fixes crash in marketing banner - ash
+- Adds Relay DevTools, Update Node.js to 10.13.0 - javamonn
 
 ### 1.7.1
 

@@ -32,12 +32,12 @@ jest.mock("tipsi-stripe", () => ({
 }))
 import stripe from "tipsi-stripe"
 
-import objectContaining = jasmine.objectContaining
-import any = jasmine.any
 import { FakeNavigator } from "lib/Components/Bidding/__tests__/Helpers/FakeNavigator"
 import { SecondaryOutlineButton } from "lib/Components/Buttons"
 import { Modal } from "lib/Components/Modal"
 import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
+
+const { objectContaining, any } = jasmine
 
 let nextStep
 const mockNavigator = { push: route => (nextStep = route) }
@@ -444,8 +444,6 @@ describe("polling to verify bid position", () => {
         })
       )
     })
-
-    // xit("shows the error screen with a network failure")
   })
 })
 

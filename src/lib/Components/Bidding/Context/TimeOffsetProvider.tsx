@@ -64,7 +64,7 @@ const getOffsetBetweenGravityClock = async () => {
 
     return offsetInMilliSeconds
   } catch (error) {
-    console.error("src/lib/Components/Bidding/Context/GravityClock.ts", error)
+    console.error("src/lib/Components/Bidding/Context/TimeOffsetProvider.tsx", error)
 
     // If something goes wrong (e.g. network error), just fall back to "no offset" since there is nothing we can do.
     return 0

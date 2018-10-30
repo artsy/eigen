@@ -19,10 +19,7 @@ Array [
     }
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
       className="sc-bwzfXH uTxCW"
-      ellipsizeMode="tail"
       fontFamily="AGaramondPro-Regular"
       fontSize="22px"
       lineHeight="32px"
@@ -726,10 +723,7 @@ Array [
               }
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
-                ellipsizeMode="tail"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -750,11 +744,8 @@ Array [
                 Delicate Power: The Delicacy and Complexity of Egg Tempera
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -773,11 +764,8 @@ Array [
                 J. Cacciola Gallery
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -871,10 +859,7 @@ Array [
               }
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
-                ellipsizeMode="tail"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -895,11 +880,8 @@ Array [
                 Summer Discoveries: Group Exhibition
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -918,11 +900,8 @@ Array [
                 J. Cacciola Gallery
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -1016,10 +995,7 @@ Array [
               }
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
-                ellipsizeMode="tail"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -1040,11 +1016,8 @@ Array [
                 Winter Invitational
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -1063,11 +1036,8 @@ Array [
                 J. Cacciola Gallery
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -1161,10 +1131,7 @@ Array [
               }
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
-                ellipsizeMode="tail"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -1185,11 +1152,8 @@ Array [
                 The Temporal Painter
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -1208,11 +1172,8 @@ Array [
                 J. Cacciola Gallery
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -1306,10 +1267,7 @@ Array [
               }
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
-                ellipsizeMode="tail"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -1330,11 +1288,8 @@ Array [
                 Incidental Edges
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -1353,11 +1308,8 @@ Array [
                 J. Cacciola Gallery
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -1451,10 +1403,7 @@ Array [
               }
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
-                ellipsizeMode="tail"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -1475,11 +1424,8 @@ Array [
                 Reimagine Everything
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -1498,11 +1444,8 @@ Array [
                 J. Cacciola Gallery
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -1596,10 +1539,7 @@ Array [
               }
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
-                ellipsizeMode="tail"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -1620,11 +1560,8 @@ Array [
                 Crossroads
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -1643,11 +1580,8 @@ Array [
                 J. Cacciola Gallery
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -1741,10 +1675,7 @@ Array [
               }
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
-                ellipsizeMode="tail"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -1765,11 +1696,8 @@ Array [
                 Boundless: The Abstract Landscapes of Carole Pierce
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -1788,11 +1716,8 @@ Array [
                 J. Cacciola Gallery
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -1886,10 +1811,7 @@ Array [
               }
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
-                ellipsizeMode="tail"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -1910,11 +1832,8 @@ Array [
                 Nature is the Fountain's Head
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -1933,11 +1852,8 @@ Array [
                 J. Cacciola Gallery
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -2031,10 +1947,7 @@ Array [
               }
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
-                ellipsizeMode="tail"
                 fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
@@ -2055,11 +1968,8 @@ Array [
                 2018 Winter Invitational
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"
@@ -2078,11 +1988,8 @@ Array [
                 J. Cacciola Gallery
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bwzfXH uTxCW"
                 color="black60"
-                ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
                 fontSize="14px"
                 lineHeight="18px"

@@ -32,9 +32,6 @@ exports[`renders properly 1`] = `
       }
     />
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       numberOfLines={5}
       style={
         Object {
@@ -48,9 +45,6 @@ exports[`renders properly 1`] = `
       Something Happened
     </Text>
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Object {
           "color": "grey",

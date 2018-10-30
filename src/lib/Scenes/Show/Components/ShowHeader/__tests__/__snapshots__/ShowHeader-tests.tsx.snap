@@ -34,9 +34,7 @@ Array [
     />
     <Text
       accessible={true}
-      allowFontScaling={true}
       className="sc-bdVaJa bDWFJH"
-      ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
       fontSize="14px"
       lineHeight="24px"
@@ -62,10 +60,7 @@ Array [
       Anderson Fine Art Gallery
     </Text>
     <Text
-      accessible={true}
-      allowFontScaling={true}
       className="sc-bwzfXH uTxCW"
-      ellipsizeMode="tail"
       fontFamily="AGaramondPro-Regular"
       fontSize="32px"
       lineHeight={34}
@@ -83,10 +78,7 @@ Array [
       Flickinger Collection
     </Text>
     <Text
-      accessible={true}
-      allowFontScaling={true}
       className="sc-bdVaJa bDWFJH"
-      ellipsizeMode="tail"
       fontFamily="Unica77LL-Regular"
       fontSize="14px"
       lineHeight="24px"
@@ -151,10 +143,7 @@ Array [
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
         className="sc-bdVaJa bDWFJH"
-        ellipsizeMode="tail"
         fontFamily="Unica77LL-Regular"
         fontSize="14px"
         lineHeight="19"
@@ -187,10 +176,7 @@ Array [
         }
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
           className="sc-bdVaJa bDWFJH"
-          ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
           fontSize="14px"
           lineHeight="19"
@@ -224,10 +210,7 @@ Array [
         }
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
           className="sc-bdVaJa bDWFJH"
-          ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
           fontSize="14px"
           lineHeight="19"
@@ -261,10 +244,7 @@ Array [
         }
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
           className="sc-bdVaJa bDWFJH"
-          ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
           fontSize="14px"
           lineHeight="19"
@@ -283,10 +263,7 @@ Array [
         </Text>
       </View>
       <Text
-        accessible={true}
-        allowFontScaling={true}
         className="sc-bdVaJa bDWFJH"
-        ellipsizeMode="tail"
         fontFamily="Unica77LL-Regular"
         fontSize="14px"
         lineHeight="19"
@@ -319,10 +296,7 @@ Array [
         }
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
           className="sc-bdVaJa bDWFJH"
-          ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
           fontSize="14px"
           lineHeight="19"
@@ -395,9 +369,6 @@ Array [
           style={null}
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {

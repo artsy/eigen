@@ -33,9 +33,6 @@ exports[`renders correctly 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -125,9 +122,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Array [
                   Object {
@@ -151,9 +145,6 @@ exports[`renders correctly 1`] = `
               OUTBID
             </Text>
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Array [
                   Object {
@@ -172,9 +163,6 @@ exports[`renders correctly 1`] = `
               Lot 14 · undefined 
             </Text>
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Array [
                   Object {
@@ -273,9 +261,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Array [
                   Object {
@@ -299,9 +284,6 @@ exports[`renders correctly 1`] = `
               OUTBID
             </Text>
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Array [
                   Object {
@@ -320,9 +302,6 @@ exports[`renders correctly 1`] = `
               Lot 8 · undefined 
             </Text>
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Array [
                   Object {
@@ -421,9 +400,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Array [
                   Object {
@@ -447,9 +423,6 @@ exports[`renders correctly 1`] = `
               OUTBID
             </Text>
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Array [
                   Object {
@@ -468,9 +441,6 @@ exports[`renders correctly 1`] = `
               Lot 2 · undefined 
             </Text>
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Array [
                   Object {

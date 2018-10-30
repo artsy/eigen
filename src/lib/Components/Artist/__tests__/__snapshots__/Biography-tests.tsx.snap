@@ -10,9 +10,6 @@ exports[`renders properly 1`] = `
   }
 >
   <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
     style={
       Array [
         Object {
@@ -30,9 +27,6 @@ exports[`renders properly 1`] = `
     BIOGRAPHY
   </Text>
   <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
     numberOfLines={0}
     style={
       Array [
@@ -53,9 +47,6 @@ exports[`renders properly 1`] = `
     Once lived in a room with a live coyote for several days to protest the Vietnam War
   </Text>
   <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
     numberOfLines={0}
     style={
       Array [

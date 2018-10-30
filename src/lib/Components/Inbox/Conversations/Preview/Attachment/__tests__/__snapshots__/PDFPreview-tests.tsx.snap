@@ -71,11 +71,7 @@ exports[`renders correctly 1`] = `
           ]
         }
       >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
-        >
+        <Text>
           This is a great PDF telling you all about cats
         </Text>
       </View>

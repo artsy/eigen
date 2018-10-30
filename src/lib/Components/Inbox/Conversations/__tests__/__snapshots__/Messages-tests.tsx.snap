@@ -3,7 +3,7 @@
 exports[`looks correct when rendered 1`] = `
 <RCTScrollView
   ListFooterComponent={
-    <Styled(ActivityIndicator)
+    <Styled(Component)
       animating={false}
       hidesWhenStopped={true}
     />
@@ -135,9 +135,6 @@ exports[`looks correct when rendered 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Array [
                   Object {
@@ -191,9 +188,6 @@ exports[`looks correct when rendered 1`] = `
               }
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
                 style={
                   Array [
                     Object {
@@ -220,9 +214,6 @@ exports[`looks correct when rendered 1`] = `
                 ANITA GARIBALDI
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
                 style={
                   Array [
                     Object {
@@ -256,9 +247,6 @@ exports[`looks correct when rendered 1`] = `
               onPress={[Function]}
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
                 style={
                   Array [
                     Object {

@@ -86,9 +86,6 @@ exports[`renders correctly with a show 1`] = `
         }
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {
@@ -156,8 +153,6 @@ exports[`renders correctly with a show 1`] = `
         }
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
@@ -175,9 +170,6 @@ exports[`renders correctly with a show 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -194,8 +186,6 @@ exports[`renders correctly with a show 1`] = `
         </Text>
       </View>
       <Text
-        accessible={true}
-        allowFontScaling={true}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={
@@ -215,9 +205,6 @@ exports[`renders correctly with a show 1`] = `
         Karl and Anna... Fab!
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -338,9 +325,6 @@ exports[`renders correctly with an artwork 1`] = `
         }
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {
@@ -408,8 +392,6 @@ exports[`renders correctly with an artwork 1`] = `
         }
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
           ellipsizeMode="tail"
           numberOfLines={1}
           style={
@@ -427,9 +409,6 @@ exports[`renders correctly with an artwork 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -444,9 +423,6 @@ exports[`renders correctly with an artwork 1`] = `
             Bradley Theodore · 
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -466,9 +442,6 @@ exports[`renders correctly with an artwork 1`] = `
             Karl and Anna Face Off (Diptych), 
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -485,8 +458,6 @@ exports[`renders correctly with an artwork 1`] = `
         </Text>
       </View>
       <Text
-        accessible={true}
-        allowFontScaling={true}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={
@@ -506,9 +477,6 @@ exports[`renders correctly with an artwork 1`] = `
         Karl and Anna... Fab!
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {

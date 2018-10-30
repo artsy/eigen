@@ -2,8 +2,6 @@
 
 exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
 <View
-  enabled={true}
-  keyboardVerticalOffset={15}
   onLayout={[Function]}
   style={
     Array [
@@ -24,9 +22,6 @@ exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
     }
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Object {
           "color": "white",
@@ -67,9 +62,6 @@ exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
     }
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Array [
           Object {
@@ -93,8 +85,6 @@ exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
 
 exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results Component 1`] = `
 <View
-  enabled={true}
-  keyboardVerticalOffset={15}
   onLayout={[Function]}
   style={
     Array [
@@ -161,6 +151,7 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
                 undefined,
               ]
             }
+            underlineColorAndroid="transparent"
             value="Banko"
           />
         </View>
@@ -185,9 +176,6 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
       >
         <View>
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -202,9 +190,6 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
             &gt; 
              
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Array [
                   Object {
@@ -254,9 +239,6 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
     }
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Array [
           Object {

@@ -60,8 +60,6 @@ exports[`renders correctly for a fair booth 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={
@@ -86,9 +84,6 @@ exports[`renders correctly for a fair booth 1`] = `
         Catty Partner
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={1}
         style={
           Array [
@@ -170,8 +165,6 @@ exports[`renders correctly for a regular show 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
         ellipsizeMode="tail"
         numberOfLines={1}
         style={
@@ -196,9 +189,6 @@ exports[`renders correctly for a regular show 1`] = `
         Catty Partner
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={1}
         style={
           Array [

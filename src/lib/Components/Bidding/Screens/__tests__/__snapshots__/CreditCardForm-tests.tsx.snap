@@ -2,8 +2,6 @@
 
 exports[`renders properly 1`] = `
 <View
-  enabled={true}
-  keyboardVerticalOffset={15}
   onLayout={[Function]}
   style={
     Array [
@@ -76,10 +74,7 @@ exports[`renders properly 1`] = `
         >
           <View>
             <Text
-              accessible={true}
-              allowFontScaling={true}
               className="sc-bwzfXH uTxCW"
-              ellipsizeMode="tail"
               fontFamily="AGaramondPro-Semibold"
               fontSize="22px"
               lineHeight="28px"
@@ -172,9 +167,6 @@ exports[`renders properly 1`] = `
           style={null}
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {

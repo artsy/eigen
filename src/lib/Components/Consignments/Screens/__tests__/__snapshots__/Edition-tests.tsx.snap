@@ -28,8 +28,6 @@ exports[`Sets up the right view hierarchy 1`] = `
     }
   >
     <View
-      enabled={true}
-      keyboardVerticalOffset={15}
       onLayout={[Function]}
       style={
         Array [
@@ -94,9 +92,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                     }
                   >
                     <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      ellipsizeMode="tail"
                       style={
                         Array [
                           Object {
@@ -165,9 +160,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                           }
                         >
                           <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            ellipsizeMode="tail"
                             style={
                               Array [
                                 Object {
@@ -187,9 +179,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                             
                           </Text>
                           <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            ellipsizeMode="tail"
                             style={
                               Array [
                                 Object {
@@ -258,9 +247,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                     }
                   >
                     <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      ellipsizeMode="tail"
                       style={
                         Array [
                           Object {
@@ -329,9 +315,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                           }
                         >
                           <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            ellipsizeMode="tail"
                             style={
                               Array [
                                 Object {
@@ -351,9 +334,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                             
                           </Text>
                           <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            ellipsizeMode="tail"
                             style={
                               Array [
                                 Object {
@@ -422,9 +402,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                     }
                   >
                     <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      ellipsizeMode="tail"
                       style={
                         Array [
                           Object {
@@ -493,9 +470,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                           }
                         >
                           <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            ellipsizeMode="tail"
                             style={
                               Array [
                                 Object {
@@ -515,9 +489,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                             
                           </Text>
                           <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            ellipsizeMode="tail"
                             style={
                               Array [
                                 Object {
@@ -610,9 +581,6 @@ exports[`Sets up the right view hierarchy 1`] = `
         }
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {
@@ -664,8 +632,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
     }
   >
     <View
-      enabled={true}
-      keyboardVerticalOffset={15}
       onLayout={[Function]}
       style={
         Array [
@@ -730,9 +696,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                     }
                   >
                     <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      ellipsizeMode="tail"
                       style={
                         Array [
                           Object {
@@ -801,9 +764,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                           }
                         >
                           <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            ellipsizeMode="tail"
                             style={
                               Array [
                                 Object {
@@ -823,9 +783,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                             YES
                           </Text>
                           <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            ellipsizeMode="tail"
                             style={
                               Array [
                                 Object {
@@ -941,6 +898,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                               undefined,
                             ]
                           }
+                          underlineColorAndroid="transparent"
                         />
                       </View>
                       <View
@@ -999,6 +957,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                               undefined,
                             ]
                           }
+                          underlineColorAndroid="transparent"
                         />
                       </View>
                       <View
@@ -1024,9 +983,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                     }
                   >
                     <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      ellipsizeMode="tail"
                       style={
                         Array [
                           Object {
@@ -1095,9 +1051,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                           }
                         >
                           <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            ellipsizeMode="tail"
                             style={
                               Array [
                                 Object {
@@ -1117,9 +1070,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                             
                           </Text>
                           <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            ellipsizeMode="tail"
                             style={
                               Array [
                                 Object {
@@ -1188,9 +1138,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                     }
                   >
                     <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      ellipsizeMode="tail"
                       style={
                         Array [
                           Object {
@@ -1259,9 +1206,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                           }
                         >
                           <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            ellipsizeMode="tail"
                             style={
                               Array [
                                 Object {
@@ -1281,9 +1225,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                             
                           </Text>
                           <Text
-                            accessible={true}
-                            allowFontScaling={true}
-                            ellipsizeMode="tail"
                             style={
                               Array [
                                 Object {
@@ -1376,9 +1317,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
         }
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {

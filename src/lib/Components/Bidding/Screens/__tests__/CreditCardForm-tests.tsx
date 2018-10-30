@@ -14,6 +14,12 @@ import stripe from "tipsi-stripe"
 
 const onSubmitMock = jest.fn()
 
+const originalConsoleError = console.error
+
+afterEach(() => {
+  console.error = originalConsoleError
+})
+
 it("renders properly", () => {
   const component = renderer.create(<CreditCardForm onSubmit={onSubmitMock} />).toJSON()
   expect(component).toMatchSnapshot()
@@ -51,6 +57,8 @@ it("is enabled while the form is valid", () => {
 })
 
 it("shows an error when stripe's API returns an error", () => {
+  console.error = jest.fn()
+
   stripe.createTokenWithCard = jest.fn()
   stripe.createTokenWithCard.mockImplementationOnce(() => {
     throw new Error("Error tokenizing card")

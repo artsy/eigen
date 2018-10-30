@@ -22,10 +22,7 @@ exports[`renders properly 1`] = `
   }
 >
   <Text
-    accessible={true}
-    allowFontScaling={true}
     className="sc-bwzfXH uTxCW"
-    ellipsizeMode="tail"
     fontFamily="AGaramondPro-Semibold"
     fontSize="22px"
     lineHeight="28px"
@@ -151,9 +148,6 @@ exports[`renders properly 1`] = `
           style={null}
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {

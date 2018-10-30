@@ -33,9 +33,6 @@ exports[`looks like expected 1`] = `
         }
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {
@@ -50,9 +47,6 @@ exports[`looks like expected 1`] = `
         </Text>
       </View>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={1}
         style={
           Array [
@@ -122,9 +116,6 @@ exports[`looks like expected 1`] = `
             }
           />
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -140,9 +131,6 @@ exports[`looks like expected 1`] = `
             SELLING
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             numberOfLines={1}
             style={
               Array [
@@ -198,9 +186,6 @@ exports[`looks like expected 1`] = `
       >
         <View>
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -216,9 +201,6 @@ exports[`looks like expected 1`] = `
             ACCOUNT DETAILS
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             numberOfLines={1}
             style={
               Array [

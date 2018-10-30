@@ -48,9 +48,6 @@ exports[`renders properly 1`] = `
           />
         </View>
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           numberOfLines={1}
           style={
             Array [
@@ -77,9 +74,6 @@ exports[`renders properly 1`] = `
           Guerrilla Girls
         </Text>
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           numberOfLines={1}
           style={
             Array [
@@ -99,9 +93,6 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             numberOfLines={1}
             style={
               Array [
@@ -130,9 +121,6 @@ exports[`renders properly 1`] = `
           , 2012
         </Text>
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           numberOfLines={1}
           style={
             Array [
@@ -191,9 +179,6 @@ exports[`renders properly 1`] = `
           />
         </View>
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           numberOfLines={1}
           style={
             Array [
@@ -220,9 +205,6 @@ exports[`renders properly 1`] = `
           Guerrilla Girls
         </Text>
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           numberOfLines={1}
           style={
             Array [
@@ -242,9 +224,6 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             numberOfLines={1}
             style={
               Array [
@@ -273,9 +252,6 @@ exports[`renders properly 1`] = `
           , 2012
         </Text>
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           numberOfLines={1}
           style={
             Array [
@@ -334,9 +310,6 @@ exports[`renders properly 1`] = `
           />
         </View>
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           numberOfLines={1}
           style={
             Array [
@@ -363,9 +336,6 @@ exports[`renders properly 1`] = `
           Guerrilla Girls
         </Text>
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           numberOfLines={1}
           style={
             Array [
@@ -385,9 +355,6 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             numberOfLines={1}
             style={
               Array [
@@ -416,9 +383,6 @@ exports[`renders properly 1`] = `
           , 2012
         </Text>
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           numberOfLines={1}
           style={
             Array [

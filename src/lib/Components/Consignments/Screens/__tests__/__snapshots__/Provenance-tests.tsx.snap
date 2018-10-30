@@ -28,8 +28,6 @@ exports[`Sets up the right view hierarchy 1`] = `
     }
   >
     <View
-      enabled={true}
-      keyboardVerticalOffset={15}
       onLayout={[Function]}
       style={
         Array [
@@ -88,9 +86,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                 }
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Array [
                       Object {
@@ -131,6 +126,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                       undefined,
                     ]
                   }
+                  underlineColorAndroid="transparent"
                 />
               </View>
             </View>
@@ -168,9 +164,6 @@ exports[`Sets up the right view hierarchy 1`] = `
         }
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {
@@ -222,8 +215,6 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
     }
   >
     <View
-      enabled={true}
-      keyboardVerticalOffset={15}
       onLayout={[Function]}
       style={
         Array [
@@ -304,6 +295,7 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
                       undefined,
                     ]
                   }
+                  underlineColorAndroid="transparent"
                   value="Acquired by my father somewhere"
                 />
               </View>
@@ -342,9 +334,6 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
         }
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {

@@ -8,6 +8,7 @@ export type Shows_show = {
     readonly nearbyShows: ({
         readonly edges: ReadonlyArray<({
             readonly node: ({
+                readonly __id: string;
                 readonly " $fragmentRefs": ShowItem_show$ref;
             }) | null;
         }) | null> | null;
@@ -66,12 +67,12 @@ return {
               "concreteType": "Show",
               "plural": false,
               "selections": [
+                v0,
                 {
                   "kind": "FragmentSpread",
                   "name": "ShowItem_show",
                   "args": null
-                },
-                v0
+                }
               ]
             }
           ]
@@ -82,5 +83,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'af2c7984049427e4b1ab6e33ceefb1a3';
+(node as any).hash = '4877545048325d9b4c62f76889d5ac3d';
 export default node;

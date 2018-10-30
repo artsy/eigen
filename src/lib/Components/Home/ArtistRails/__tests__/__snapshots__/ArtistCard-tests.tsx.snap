@@ -54,9 +54,6 @@ exports[`renders correctly 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={1}
         style={
           Object {
@@ -71,9 +68,6 @@ exports[`renders correctly 1`] = `
         JUAN GRIS
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={1}
         style={
           Object {
@@ -88,9 +82,6 @@ exports[`renders correctly 1`] = `
         Spanish, 1887–1927
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={1}
         style={
           Array [
@@ -145,9 +136,6 @@ exports[`renders correctly 1`] = `
           style={null}
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {

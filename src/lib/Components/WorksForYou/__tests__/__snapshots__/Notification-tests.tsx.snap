@@ -50,9 +50,6 @@ exports[`does not show artist avatar if no avatar image exists 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -70,9 +67,6 @@ exports[`does not show artist avatar if no avatar image exists 1`] = `
         JEAN-MICHEL BASQUIAT
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={1}
         style={
           Array [
@@ -168,9 +162,6 @@ exports[`lays out correctly for read notification 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -188,9 +179,6 @@ exports[`lays out correctly for read notification 1`] = `
         JEAN-MICHEL BASQUIAT
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={1}
         style={
           Array [
@@ -286,9 +274,6 @@ exports[`lays out correctly for unread notification 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -306,9 +291,6 @@ exports[`lays out correctly for unread notification 1`] = `
         JEAN-MICHEL BASQUIAT
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={1}
         style={
           Array [

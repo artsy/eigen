@@ -283,9 +283,6 @@ exports[`looks correct when rendered 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -370,12 +367,9 @@ exports[`looks correct when rendered 1`] = `
           >
             <View
               style={
-                Array [
-                  Object {
-                    "flexDirection": "row",
-                  },
-                  undefined,
-                ]
+                Object {
+                  "flexDirection": "row",
+                }
               }
             >
               <View
@@ -450,9 +444,6 @@ exports[`looks correct when rendered 1`] = `
                     }
                   >
                     <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      ellipsizeMode="tail"
                       numberOfLines={2}
                       style={
                         Array [
@@ -494,9 +485,6 @@ exports[`looks correct when rendered 1`] = `
                       }
                     >
                       <Text
-                        accessible={true}
-                        allowFontScaling={true}
-                        ellipsizeMode="tail"
                         style={
                           Array [
                             Object {
@@ -533,9 +521,6 @@ exports[`looks correct when rendered 1`] = `
                     }
                   >
                     <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      ellipsizeMode="tail"
                       style={
                         Array [
                           Object {
@@ -625,9 +610,6 @@ exports[`looks correct when rendered 1`] = `
                     }
                   >
                     <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      ellipsizeMode="tail"
                       numberOfLines={2}
                       style={
                         Array [
@@ -669,9 +651,6 @@ exports[`looks correct when rendered 1`] = `
                       }
                     >
                       <Text
-                        accessible={true}
-                        allowFontScaling={true}
-                        ellipsizeMode="tail"
                         style={
                           Array [
                             Object {
@@ -708,9 +687,6 @@ exports[`looks correct when rendered 1`] = `
                     }
                   >
                     <Text
-                      accessible={true}
-                      allowFontScaling={true}
-                      ellipsizeMode="tail"
                       style={
                         Array [
                           Object {
