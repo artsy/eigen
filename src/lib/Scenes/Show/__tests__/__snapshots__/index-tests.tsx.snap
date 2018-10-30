@@ -23,7 +23,12 @@ exports[`Renders a show 1`] = `
         "type": "location",
       },
       Object {
-        "data": Array [],
+        "data": Object {
+          "artists": Array [],
+          "artworks": Array [],
+          "location": Object {},
+          "shows": Array [],
+        },
         "type": "artworks",
       },
       Object {
@@ -451,13 +456,18 @@ exports[`Renders a show 1`] = `
       onLayout={[Function]}
       style={null}
     >
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
+      <View
+        onLayout={[Function]}
       >
-        []
-      </Text>
+        <View
+          accessibilityLabel="Artworks Content View"
+          style={
+            Object {
+              "flexDirection": "row",
+            }
+          }
+        />
+      </View>
     </View>
     <View
       onLayout={[Function]}

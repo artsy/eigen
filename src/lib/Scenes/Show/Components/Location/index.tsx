@@ -30,7 +30,7 @@ export class Location extends React.Component<Props> {
           zoomLevel={13}
           logoEnabled={false}
           scrollEnabled={false}
-          zoomEnabled={false}
+          // zoomEnabled={false}
         />
         <Sans size="2" color={color("black100")} weight="medium">
           {partner.name}

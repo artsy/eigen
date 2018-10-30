@@ -5,7 +5,7 @@ import { FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { Artists } from "./Components/Artists"
-import { Artworks } from "./Components/Artworks"
+import { ArtworksContainer as Artworks } from "./Components/Artworks"
 import { LocationContainer as Location } from "./Components/Location"
 import { ShowHeaderContainer as ShowHeader } from "./Components/ShowHeader"
 import { Shows } from "./Components/Shows"
@@ -37,7 +37,7 @@ export class Show extends React.Component<Props, State> {
 
     sections.push({
       type: "artworks",
-      data: show.artworks,
+      data: show,
     })
 
     sections.push({
@@ -81,7 +81,7 @@ export class Show extends React.Component<Props, State> {
               case "location":
                 return <Location show={data} />
               case "artworks":
-                return <Artworks artworks={data} />
+                return <Artworks show={data} />
               case "artists":
                 return <Artists artists={data} />
               case "shows":
@@ -105,26 +105,18 @@ export default createFragmentContainer(
       name
       description
       press_release
+
       ...ShowHeader_show
       ...Location_show
+      ...Artworks_show
+
       artists {
         __id
         id
         name
         is_followed
       }
-      artworks {
-        __id
-        id
-        artist_names
-        image {
-          id
-          url
-        }
-        price
-        availability
-        contact_label
-      }
+      status
       counts {
         artworks
         eligible_artworks
