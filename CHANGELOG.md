@@ -20,6 +20,7 @@
 - Updates to relay-compiler and relay-runtime - ash
 - Adds tslint-plugin-relay lint rule (from Reaction) - ash
 - Adds a new ARComponentVC and root React Components for Shows - javamonn
+- Adds Artwork grids with infinite scroll to Show View - ashley
 
 ### 1.7.1
 
