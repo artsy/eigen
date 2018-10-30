@@ -8,7 +8,14 @@ it("Renders a show", () => {
     shows: [],
     artworks: [],
     artists: [],
-    location: {},
+    location: {
+      id: "52b0ced8cd530ed44400014f",
+      city: "New York",
+      address: "25 Central Park West",
+      address_2: "",
+      coordinates: { lat: 40.770424, lng: -73.981233 },
+    },
+    partner: { name: "Joseph K. Levene Fine Art, Ltd." },
   }
   const comp = renderer.create(<Show show={show as any} />)
   expect(comp).toMatchSnapshot()
