@@ -3,12 +3,14 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  show: any
+  show: Artworks_show
 }
 
 export class Artworks extends React.Component<Props> {
   render() {
-    if (!this.props.show) { return null }
+    if (!this.props.show) {
+      return null
+    }
     return <GenericGrid artworks={this.props.show.artworks} />
   }
 }
