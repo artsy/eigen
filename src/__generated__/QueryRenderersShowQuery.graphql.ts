@@ -32,6 +32,7 @@ fragment Show_show on Show {
   name
   description
   press_release
+  ...ShowHeader_show
   ...Location_show
   artists {
     __id
@@ -51,12 +52,36 @@ fragment Show_show on Show {
     availability
     contact_label
   }
-  status
   counts {
     artworks
     eligible_artworks
   }
+  partner {
+    __typename
+    ... on ExternalPartner {
+      name
+      __id
+    }
+    ... on Partner {
+      name
+    }
+    ... on Node {
+      __id
+    }
+  }
+  __id
+}
+
+fragment ShowHeader_show on Show {
+  name
+  description
+  press_release
   exhibition_period
+  status
+  images {
+    url
+    aspect_ratio
+  }
   __id
 }
 
@@ -121,25 +146,32 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v5 = [
-  v4
+v6 = [
+  v5
 ];
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "ef7213f1747dc411c7a2aebb803a1a96",
+  "id": "08c94141c072036dcdb2d97cada66f2e",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -182,8 +214,26 @@ return {
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          v2,
-          v3,
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "images",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Image",
+            "plural": true,
+            "selections": [
+              v3,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "aspect_ratio",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          v4,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -199,6 +249,22 @@ return {
             "storageKey": null
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "exhibition_period",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "status",
+            "args": null,
+            "storageKey": null
+          },
+          v5,
+          v2,
+          {
             "kind": "LinkedField",
             "alias": null,
             "name": "location",
@@ -208,7 +274,7 @@ return {
             "plural": false,
             "selections": [
               v2,
-              v3,
+              v4,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -309,16 +375,15 @@ return {
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
-                "selections": v5
+                "selections": v6
               },
               {
                 "kind": "InlineFragment",
                 "type": "ExternalPartner",
-                "selections": v5
+                "selections": v6
               }
             ]
           },
-          v4,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -329,8 +394,8 @@ return {
             "plural": true,
             "selections": [
               v2,
-              v3,
               v4,
+              v5,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -350,7 +415,7 @@ return {
             "plural": true,
             "selections": [
               v2,
-              v3,
+              v4,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -367,14 +432,8 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v3,
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "url",
-                    "args": null,
-                    "storageKey": null
-                  }
+                  v4,
+                  v3
                 ]
               },
               {
@@ -401,13 +460,6 @@ return {
             ]
           },
           {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "status",
-            "args": null,
-            "storageKey": null
-          },
-          {
             "kind": "LinkedField",
             "alias": null,
             "name": "counts",
@@ -431,13 +483,6 @@ return {
                 "storageKey": null
               }
             ]
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "exhibition_period",
-            "args": null,
-            "storageKey": null
           }
         ]
       }

@@ -2,6 +2,7 @@
 
 import { ConcreteFragment } from "relay-runtime";
 import { Location_show$ref } from "./Location_show.graphql";
+import { ShowHeader_show$ref } from "./ShowHeader_show.graphql";
 declare const _Show_show$ref: unique symbol;
 export type Show_show$ref = typeof _Show_show$ref;
 export type Show_show = {
@@ -27,13 +28,14 @@ export type Show_show = {
         readonly availability: string | null;
         readonly contact_label: string | null;
     }) | null> | null;
-    readonly status: string | null;
     readonly counts: ({
         readonly artworks: number | null;
         readonly eligible_artworks: any | null;
     }) | null;
-    readonly exhibition_period: string | null;
-    readonly " $fragmentRefs": Location_show$ref;
+    readonly partner: ({
+        readonly name?: string | null;
+    }) | null;
+    readonly " $fragmentRefs": ShowHeader_show$ref & Location_show$ref;
     readonly " $refType": Show_show$ref;
 };
 
@@ -43,24 +45,27 @@ const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "__id",
   "args": null,
   "storageKey": null
-};
+},
+v3 = [
+  v1
+];
 return {
   "kind": "Fragment",
   "name": "Show_show",
@@ -69,27 +74,11 @@ return {
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "artists",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Artist",
-      "plural": true,
-      "selections": [
-        v0,
-        v1,
-        v2,
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "is_followed",
-          "args": null,
-          "storageKey": null
-        }
-      ]
+      "kind": "FragmentSpread",
+      "name": "Location_show",
+      "args": null
     },
-    v1,
+    v0,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -106,10 +95,31 @@ return {
     },
     {
       "kind": "FragmentSpread",
-      "name": "Location_show",
+      "name": "ShowHeader_show",
       "args": null
     },
-    v2,
+    v1,
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "artists",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Artist",
+      "plural": true,
+      "selections": [
+        v2,
+        v0,
+        v1,
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "is_followed",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -119,8 +129,8 @@ return {
       "concreteType": "Artwork",
       "plural": true,
       "selections": [
+        v2,
         v0,
-        v1,
         {
           "kind": "ScalarField",
           "alias": null,
@@ -137,7 +147,7 @@ return {
           "concreteType": "Image",
           "plural": false,
           "selections": [
-            v1,
+            v0,
             {
               "kind": "ScalarField",
               "alias": null,
@@ -171,13 +181,6 @@ return {
       ]
     },
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "status",
-      "args": null,
-      "storageKey": null
-    },
-    {
       "kind": "LinkedField",
       "alias": null,
       "name": "counts",
@@ -203,15 +206,30 @@ return {
       ]
     },
     {
-      "kind": "ScalarField",
+      "kind": "LinkedField",
       "alias": null,
-      "name": "exhibition_period",
+      "name": "partner",
+      "storageKey": null,
       "args": null,
-      "storageKey": null
+      "concreteType": null,
+      "plural": false,
+      "selections": [
+        v2,
+        {
+          "kind": "InlineFragment",
+          "type": "Partner",
+          "selections": v3
+        },
+        {
+          "kind": "InlineFragment",
+          "type": "ExternalPartner",
+          "selections": v3
+        }
+      ]
     },
-    v0
+    v2
   ]
 };
 })();
-(node as any).hash = 'e71d00a8a48cf33584e2d9ff250d53b5';
+(node as any).hash = '70c2bbd6d5d027cd769a67ca7a18b655';
 export default node;

@@ -16,6 +16,7 @@
 
 ### Master
 
+- Adds Shows detail page header components - javamonn
 - Updates to relay-compiler and relay-runtime - ash
 - Adds tslint-plugin-relay lint rule (from Reaction) - ash
 - Adds a new ARComponentVC and root React Components for Shows - javamonn
