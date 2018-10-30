@@ -1,4 +1,4 @@
-import renderWithLoadProgress from "../utils/renderWithLoadProgress"
+import renderWithLoadProgress from "./renderWithLoadProgress"
 import { IMocks } from "graphql-tools/dist/Interfaces"
 import React from "react"
 import { QueryRenderer, RelayContainer } from "react-relay"
