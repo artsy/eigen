@@ -1,3 +1,4 @@
+import { Theme } from "@artsy/palette"
 import { Show_show } from "__generated__/Show_show.graphql"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
@@ -5,8 +6,8 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { Artists } from "./Components/Artists"
 import { Artworks } from "./Components/Artworks"
-import { Header } from "./Components/Header"
 import { Location } from "./Components/Location"
+import ShowHeader from "./Components/ShowHeader"
 import { Shows } from "./Components/Shows"
 
 interface Props extends ViewProperties {
@@ -53,27 +54,45 @@ export class Show extends React.Component<Props, State> {
     this.setState({ sections })
   }
 
+  handleSaveShow = () => {
+    /* TODO: implement */
+    return Promise.resolve()
+  }
+
+  handleMoreInformationPressed = () => {
+    /* TODO: implement */
+  }
+
   render() {
+    const { show } = this.props
     return (
-      <FlatList
-        data={this.state.sections}
-        ListHeaderComponent={<Header />}
-        renderItem={({ item: { data, type } }) => {
-          switch (type) {
-            case "map":
-              return <Location location={data} />
-            case "artworks":
-              return <Artworks artworks={data} />
-            case "artists":
-              return <Artists artists={data} />
-            case "shows":
-              return <Shows shows={data} />
-            default:
-              return null
+      <Theme>
+        <FlatList
+          data={this.state.sections}
+          ListHeaderComponent={
+            <ShowHeader
+              show={show}
+              onSaveShowPressed={this.handleSaveShow}
+              onMoreInformationPressed={this.handleMoreInformationPressed}
+            />
           }
-        }}
-        keyExtractor={(item, index) => item.type + String(index)}
-      />
+          renderItem={({ item: { data, type } }) => {
+            switch (type) {
+              case "map":
+                return <Location location={data} />
+              case "artworks":
+                return <Artworks artworks={data} />
+              case "artists":
+                return <Artists artists={data} />
+              case "shows":
+                return <Shows shows={data} />
+              default:
+                return null
+            }
+          }}
+          keyExtractor={(item, index) => item.type + String(index)}
+        />
+      </Theme>
     )
   }
 }
@@ -82,10 +101,8 @@ export default createFragmentContainer(
   Show,
   graphql`
     fragment Show_show on Show {
+      ...ShowHeader_show
       id
-      name
-      description
-      press_release
       location {
         __id
         id
@@ -120,13 +137,10 @@ export default createFragmentContainer(
         availability
         contact_label
       }
-      status
       counts {
         artworks
         eligible_artworks
       }
-      exhibition_period
-      description
       partner {
         ... on ExternalPartner {
           name
