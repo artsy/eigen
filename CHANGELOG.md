@@ -19,6 +19,8 @@
 - Updates to relay-compiler and relay-runtime - ash
 - Adds tslint-plugin-relay lint rule (from Reaction) - ash
 - Adds a new ARComponentVC and root React Components for Shows - javamonn
+- Updates cocoapods (1.5.3) - luc
+- Adds Mapbox + Location Component - luc
 
 ### 1.7.1
 
