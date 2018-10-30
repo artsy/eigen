@@ -1,3 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`looks correct when rendered 1`] = `null`;
+exports[`looks correct when rendered 1`] = `
+<View
+  onLayout={[Function]}
+>
+  <View
+    accessibilityLabel="Artworks Content View"
+    style={
+      Object {
+        "flexDirection": "row",
+      }
+    }
+  />
+</View>
+`;
