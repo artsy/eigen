@@ -2,7 +2,6 @@
 
 exports[`displays a connectivity banner when network is down 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Conversation
     me={
@@ -71,6 +70,7 @@ ShallowWrapper {
     "batchedUpdates": [Function],
     "getNode": [Function],
     "render": [Function],
+    "simulateError": [Function],
     "simulateEvent": [Function],
     "unmount": [Function],
   },
@@ -94,6 +94,7 @@ ShallowWrapper {
             <View />
           </Styled(View)>
         </Styled(View)>
+        <ConnectivityBanner />
         <Messages
           componentRef={[Function]}
           conversation={
@@ -151,7 +152,7 @@ ShallowWrapper {
           onDataFetching={[Function]}
         />
       </Styled(View)>,
-      "disabled": false,
+      "disabled": true,
       "onSubmit": [Function],
       "value": null,
     },
@@ -176,7 +177,7 @@ ShallowWrapper {
               <View />
             </Styled(View)>
           </Styled(View)>,
-          false,
+          <ConnectivityBanner />,
           <Messages
             componentRef={[Function]}
             conversation={
@@ -304,7 +305,15 @@ ShallowWrapper {
           },
           "type": [Function],
         },
-        false,
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
         Object {
           "instance": null,
           "key": undefined,
@@ -393,6 +402,7 @@ ShallowWrapper {
               <View />
             </Styled(View)>
           </Styled(View)>
+          <ConnectivityBanner />
           <Messages
             componentRef={[Function]}
             conversation={
@@ -450,7 +460,7 @@ ShallowWrapper {
             onDataFetching={[Function]}
           />
         </Styled(View)>,
-        "disabled": false,
+        "disabled": true,
         "onSubmit": [Function],
         "value": null,
       },
@@ -475,7 +485,7 @@ ShallowWrapper {
                 <View />
               </Styled(View)>
             </Styled(View)>,
-            false,
+            <ConnectivityBanner />,
             <Messages
               componentRef={[Function]}
               conversation={
@@ -603,7 +613,15 @@ ShallowWrapper {
             },
             "type": [Function],
           },
-          false,
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {},
+            "ref": null,
+            "rendered": null,
+            "type": [Function],
+          },
           Object {
             "instance": null,
             "key": undefined,
@@ -676,6 +694,16 @@ ShallowWrapper {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
       },
     },
   },
@@ -684,7 +712,6 @@ ShallowWrapper {
 
 exports[`looks correct when rendered 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Conversation
     me={
@@ -753,6 +780,7 @@ ShallowWrapper {
     "batchedUpdates": [Function],
     "getNode": [Function],
     "render": [Function],
+    "simulateError": [Function],
     "simulateEvent": [Function],
     "unmount": [Function],
   },
@@ -1358,6 +1386,16 @@ ShallowWrapper {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
       },
     },
   },

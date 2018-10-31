@@ -2,21 +2,13 @@
 
 exports[`in a closed sale renders bid when an auction is about to open, but not closed or finished 1`] = `
 <View
-  accessibilityComponentType={undefined}
-  accessibilityLabel={undefined}
-  accessibilityTraits={undefined}
   accessible={true}
-  hitSlop={undefined}
-  nativeID={undefined}
-  onLayout={undefined}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
   onResponderTerminate={[Function]}
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
-  style={undefined}
-  testID={undefined}
 >
   <View>
     <AROpaqueImageView
@@ -289,21 +281,13 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
 
 exports[`in a closed sale renders without any price information 1`] = `
 <View
-  accessibilityComponentType={undefined}
-  accessibilityLabel={undefined}
-  accessibilityTraits={undefined}
   accessible={true}
-  hitSlop={undefined}
-  nativeID={undefined}
-  onLayout={undefined}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
   onResponderTerminate={[Function]}
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
-  style={undefined}
-  testID={undefined}
 >
   <View>
     <AROpaqueImageView
@@ -576,21 +560,13 @@ exports[`in a closed sale renders without any price information 1`] = `
 
 exports[`in an open sale renders with current bid 1`] = `
 <View
-  accessibilityComponentType={undefined}
-  accessibilityLabel={undefined}
-  accessibilityTraits={undefined}
   accessible={true}
-  hitSlop={undefined}
-  nativeID={undefined}
-  onLayout={undefined}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
   onResponderTerminate={[Function]}
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
-  style={undefined}
-  testID={undefined}
 >
   <View>
     <AROpaqueImageView
@@ -863,21 +839,13 @@ exports[`in an open sale renders with current bid 1`] = `
 
 exports[`in an open sale renders with starting bid 1`] = `
 <View
-  accessibilityComponentType={undefined}
-  accessibilityLabel={undefined}
-  accessibilityTraits={undefined}
   accessible={true}
-  hitSlop={undefined}
-  nativeID={undefined}
-  onLayout={undefined}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
   onResponderTerminate={[Function]}
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
-  style={undefined}
-  testID={undefined}
 >
   <View>
     <AROpaqueImageView
@@ -1149,21 +1117,13 @@ exports[`in an open sale renders with starting bid 1`] = `
 
 exports[`renders properly 1`] = `
 <View
-  accessibilityComponentType={undefined}
-  accessibilityLabel={undefined}
-  accessibilityTraits={undefined}
   accessible={true}
-  hitSlop={undefined}
-  nativeID={undefined}
-  onLayout={undefined}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
   onResponderTerminate={[Function]}
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
-  style={undefined}
-  testID={undefined}
 >
   <View>
     <AROpaqueImageView

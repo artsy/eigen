@@ -2,15 +2,8 @@
 
 exports[`PrimaryBlack accepts textStyle prop 1`] = `
 <View
-  accessibilityComponentType={undefined}
-  accessibilityLabel={undefined}
-  accessibilityTraits={undefined}
   accessible={true}
-  hasTVPreferredFocus={undefined}
-  hitSlop={undefined}
   isTVSelectable={true}
-  nativeID={undefined}
-  onLayout={undefined}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -26,8 +19,6 @@ exports[`PrimaryBlack accepts textStyle prop 1`] = `
       "justifyContent": "center",
     }
   }
-  testID={undefined}
-  tvParallaxProperties={undefined}
 >
   <View
     style={null}
@@ -60,15 +51,8 @@ exports[`PrimaryBlack accepts textStyle prop 1`] = `
 
 exports[`PrimaryBlack renders properly 1`] = `
 <View
-  accessibilityComponentType={undefined}
-  accessibilityLabel={undefined}
-  accessibilityTraits={undefined}
   accessible={true}
-  hasTVPreferredFocus={undefined}
-  hitSlop={undefined}
   isTVSelectable={true}
-  nativeID={undefined}
-  onLayout={undefined}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -84,8 +68,6 @@ exports[`PrimaryBlack renders properly 1`] = `
       "justifyContent": "center",
     }
   }
-  testID={undefined}
-  tvParallaxProperties={undefined}
 >
   <View
     style={null}

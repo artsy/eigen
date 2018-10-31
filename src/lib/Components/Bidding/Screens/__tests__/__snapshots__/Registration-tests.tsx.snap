@@ -166,13 +166,7 @@ exports[`renders properly for a user with a credit card 1`] = `
         visible={false}
       >
         <View
-          accessibilityComponentType={undefined}
-          accessibilityLabel={undefined}
-          accessibilityTraits={undefined}
           accessible={true}
-          hitSlop={undefined}
-          nativeID={undefined}
-          onLayout={undefined}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -193,16 +187,9 @@ exports[`renders properly for a user with a credit card 1`] = `
               undefined,
             ]
           }
-          testID={undefined}
         >
           <View
-            accessibilityComponentType={undefined}
-            accessibilityLabel={undefined}
-            accessibilityTraits={undefined}
             accessible={true}
-            hitSlop={undefined}
-            nativeID={undefined}
-            onLayout={undefined}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
             onResponderRelease={[Function]}
@@ -224,7 +211,6 @@ exports[`renders properly for a user with a credit card 1`] = `
                 undefined,
               ]
             }
-            testID={undefined}
           >
             <View
               style={
@@ -287,14 +273,7 @@ exports[`renders properly for a user with a credit card 1`] = `
               </Text>
             </View>
             <View
-              accessibilityComponentType={undefined}
-              accessibilityLabel={undefined}
-              accessibilityTraits={undefined}
               accessible={true}
-              collapsable={undefined}
-              hitSlop={undefined}
-              nativeID={undefined}
-              onLayout={undefined}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
               onResponderRelease={[Function]}
@@ -313,7 +292,6 @@ exports[`renders properly for a user with a credit card 1`] = `
                   "opacity": 1,
                 }
               }
-              testID={undefined}
             >
               <Text
                 accessible={true}
@@ -346,17 +324,11 @@ exports[`renders properly for a user with a credit card 1`] = `
   </View>
   <View>
     <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
       accessible={true}
       alignItems="center"
       flexDirection="row"
-      hitSlop={undefined}
       justifyContent="center"
       mb={4}
-      nativeID={undefined}
-      onLayout={undefined}
       onPress={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -372,7 +344,6 @@ exports[`renders properly for a user with a credit card 1`] = `
           undefined,
         ]
       }
-      testID={undefined}
     >
       <View
         animate={
@@ -381,7 +352,6 @@ exports[`renders properly for a user with a credit card 1`] = `
             "borderColor",
           ]
         }
-        collapsable={undefined}
         style={
           Object {
             "alignItems": "center",
@@ -475,15 +445,8 @@ exports[`renders properly for a user with a credit card 1`] = `
         }
       >
         <View
-          accessibilityComponentType={undefined}
-          accessibilityLabel={undefined}
-          accessibilityTraits={undefined}
           accessible={true}
-          hasTVPreferredFocus={undefined}
-          hitSlop={undefined}
           isTVSelectable={true}
-          nativeID={undefined}
-          onLayout={undefined}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -499,8 +462,6 @@ exports[`renders properly for a user with a credit card 1`] = `
               "justifyContent": "center",
             }
           }
-          testID={undefined}
-          tvParallaxProperties={undefined}
         >
           <View
             style={null}
@@ -705,17 +666,11 @@ exports[`renders properly for a user without a credit card 1`] = `
         width="100%"
       />
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
         alignItems="center"
         flexDirection="row"
-        hitSlop={undefined}
         justifyContent="space-between"
         mb={1}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -736,7 +691,6 @@ exports[`renders properly for a user without a credit card 1`] = `
             undefined,
           ]
         }
-        testID={undefined}
       >
         <View
           flex={1}
@@ -847,17 +801,11 @@ exports[`renders properly for a user without a credit card 1`] = `
         width="100%"
       />
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
         alignItems="center"
         flexDirection="row"
-        hitSlop={undefined}
         justifyContent="space-between"
         mb={1}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -878,7 +826,6 @@ exports[`renders properly for a user without a credit card 1`] = `
             undefined,
           ]
         }
-        testID={undefined}
       >
         <View
           flex={1}
@@ -1003,13 +950,7 @@ exports[`renders properly for a user without a credit card 1`] = `
         visible={false}
       >
         <View
-          accessibilityComponentType={undefined}
-          accessibilityLabel={undefined}
-          accessibilityTraits={undefined}
           accessible={true}
-          hitSlop={undefined}
-          nativeID={undefined}
-          onLayout={undefined}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -1030,16 +971,9 @@ exports[`renders properly for a user without a credit card 1`] = `
               undefined,
             ]
           }
-          testID={undefined}
         >
           <View
-            accessibilityComponentType={undefined}
-            accessibilityLabel={undefined}
-            accessibilityTraits={undefined}
             accessible={true}
-            hitSlop={undefined}
-            nativeID={undefined}
-            onLayout={undefined}
             onResponderGrant={[Function]}
             onResponderMove={[Function]}
             onResponderRelease={[Function]}
@@ -1061,7 +995,6 @@ exports[`renders properly for a user without a credit card 1`] = `
                 undefined,
               ]
             }
-            testID={undefined}
           >
             <View
               style={
@@ -1124,14 +1057,7 @@ exports[`renders properly for a user without a credit card 1`] = `
               </Text>
             </View>
             <View
-              accessibilityComponentType={undefined}
-              accessibilityLabel={undefined}
-              accessibilityTraits={undefined}
               accessible={true}
-              collapsable={undefined}
-              hitSlop={undefined}
-              nativeID={undefined}
-              onLayout={undefined}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
               onResponderRelease={[Function]}
@@ -1150,7 +1076,6 @@ exports[`renders properly for a user without a credit card 1`] = `
                   "opacity": 1,
                 }
               }
-              testID={undefined}
             >
               <Text
                 accessible={true}
@@ -1183,17 +1108,11 @@ exports[`renders properly for a user without a credit card 1`] = `
   </View>
   <View>
     <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
       accessible={true}
       alignItems="center"
       flexDirection="row"
-      hitSlop={undefined}
       justifyContent="center"
       mb={4}
-      nativeID={undefined}
-      onLayout={undefined}
       onPress={[Function]}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
@@ -1209,7 +1128,6 @@ exports[`renders properly for a user without a credit card 1`] = `
           undefined,
         ]
       }
-      testID={undefined}
     >
       <View
         animate={
@@ -1218,7 +1136,6 @@ exports[`renders properly for a user without a credit card 1`] = `
             "borderColor",
           ]
         }
-        collapsable={undefined}
         style={
           Object {
             "alignItems": "center",
@@ -1312,15 +1229,8 @@ exports[`renders properly for a user without a credit card 1`] = `
         }
       >
         <View
-          accessibilityComponentType={undefined}
-          accessibilityLabel={undefined}
-          accessibilityTraits={undefined}
           accessible={true}
-          hasTVPreferredFocus={undefined}
-          hitSlop={undefined}
           isTVSelectable={true}
-          nativeID={undefined}
-          onLayout={undefined}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -1336,8 +1246,6 @@ exports[`renders properly for a user without a credit card 1`] = `
               "justifyContent": "center",
             }
           }
-          testID={undefined}
-          tvParallaxProperties={undefined}
         >
           <View
             style={null}

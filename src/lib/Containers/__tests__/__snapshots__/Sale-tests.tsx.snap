@@ -14,7 +14,6 @@ exports[`state looks okay by default 1`] = `
   }
 >
   <View
-    collapsable={undefined}
     style={
       Object {
         "backgroundColor": "white",
@@ -78,7 +77,6 @@ exports[`state looks okay by default 1`] = `
         }
       >
         <View
-          collapsable={undefined}
           style={
             Object {
               "backgroundColor": "transparent",
@@ -212,14 +210,7 @@ exports[`state looks okay by default 1`] = `
               Hey replace me!
             </Text>
             <View
-              accessibilityComponentType={undefined}
-              accessibilityLabel={undefined}
-              accessibilityTraits={undefined}
               accessible={true}
-              collapsable={undefined}
-              hitSlop={undefined}
-              nativeID={undefined}
-              onLayout={undefined}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
               onResponderRelease={[Function]}
@@ -238,7 +229,6 @@ exports[`state looks okay by default 1`] = `
                   "width": 80,
                 }
               }
-              testID={undefined}
             >
               <Text
                 accessible={true}
@@ -360,7 +350,6 @@ exports[`state looks okay by default 1`] = `
     }
   >
     <View
-      collapsable={undefined}
       style={
         Object {
           "backgroundColor": "white",
@@ -370,7 +359,6 @@ exports[`state looks okay by default 1`] = `
       }
     >
       <View
-        collapsable={undefined}
         style={
           Object {
             "transform": Array [

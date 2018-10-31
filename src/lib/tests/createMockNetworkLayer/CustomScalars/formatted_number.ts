@@ -13,9 +13,7 @@ const FormattedNumber = new GraphQLScalarType({
   parseValue: x => x,
   parseLiteral: ast => {
     if (ast.kind !== Kind.STRING && ast.kind !== Kind.INT) {
-      const error = `Query error: Can only parse strings and ints, got a: ${
-        ast.kind
-      }`
+      const error = `Query error: Can only parse strings and ints, got a: ${ast.kind}`
       throw new GraphQLError(error, [ast])
     }
 

@@ -122,15 +122,8 @@ exports[`Sets up the right view hierarchy 1`] = `
                       Is this an edition?
                     </Text>
                     <View
-                      accessibilityComponentType={undefined}
-                      accessibilityLabel={undefined}
-                      accessibilityTraits={undefined}
                       accessible={true}
-                      hasTVPreferredFocus={undefined}
-                      hitSlop={undefined}
                       isTVSelectable={true}
-                      nativeID={undefined}
-                      onLayout={undefined}
                       onResponderGrant={[Function]}
                       onResponderMove={[Function]}
                       onResponderRelease={[Function]}
@@ -153,8 +146,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                           },
                         ]
                       }
-                      testID={undefined}
-                      tvParallaxProperties={undefined}
                     >
                       <View
                         style={null}
@@ -295,15 +286,8 @@ exports[`Sets up the right view hierarchy 1`] = `
                       Is this work signed?
                     </Text>
                     <View
-                      accessibilityComponentType={undefined}
-                      accessibilityLabel={undefined}
-                      accessibilityTraits={undefined}
                       accessible={true}
-                      hasTVPreferredFocus={undefined}
-                      hitSlop={undefined}
                       isTVSelectable={true}
-                      nativeID={undefined}
-                      onLayout={undefined}
                       onResponderGrant={[Function]}
                       onResponderMove={[Function]}
                       onResponderRelease={[Function]}
@@ -326,8 +310,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                           },
                         ]
                       }
-                      testID={undefined}
-                      tvParallaxProperties={undefined}
                     >
                       <View
                         style={null}
@@ -468,15 +450,8 @@ exports[`Sets up the right view hierarchy 1`] = `
                       Do you have a certificate of authenticity?
                     </Text>
                     <View
-                      accessibilityComponentType={undefined}
-                      accessibilityLabel={undefined}
-                      accessibilityTraits={undefined}
                       accessible={true}
-                      hasTVPreferredFocus={undefined}
-                      hitSlop={undefined}
                       isTVSelectable={true}
-                      nativeID={undefined}
-                      onLayout={undefined}
                       onResponderGrant={[Function]}
                       onResponderMove={[Function]}
                       onResponderRelease={[Function]}
@@ -499,8 +474,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                           },
                         ]
                       }
-                      testID={undefined}
-                      tvParallaxProperties={undefined}
                     >
                       <View
                         style={null}
@@ -618,16 +591,8 @@ exports[`Sets up the right view hierarchy 1`] = `
         }
       />
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        collapsable={undefined}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
         isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -643,8 +608,6 @@ exports[`Sets up the right view hierarchy 1`] = `
             "paddingTop": 18,
           }
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <Text
           accessible={true}
@@ -795,15 +758,8 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                       Is this an edition?
                     </Text>
                     <View
-                      accessibilityComponentType={undefined}
-                      accessibilityLabel={undefined}
-                      accessibilityTraits={undefined}
                       accessible={true}
-                      hasTVPreferredFocus={undefined}
-                      hitSlop={undefined}
                       isTVSelectable={true}
-                      nativeID={undefined}
-                      onLayout={undefined}
                       onResponderGrant={[Function]}
                       onResponderMove={[Function]}
                       onResponderRelease={[Function]}
@@ -826,8 +782,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                           },
                         ]
                       }
-                      testID={undefined}
-                      tvParallaxProperties={undefined}
                     >
                       <View
                         style={null}
@@ -987,7 +941,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                               undefined,
                             ]
                           }
-                          value={undefined}
                         />
                       </View>
                       <View
@@ -1046,7 +999,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                               undefined,
                             ]
                           }
-                          value={undefined}
                         />
                       </View>
                       <View
@@ -1100,15 +1052,8 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                       Is this work signed?
                     </Text>
                     <View
-                      accessibilityComponentType={undefined}
-                      accessibilityLabel={undefined}
-                      accessibilityTraits={undefined}
                       accessible={true}
-                      hasTVPreferredFocus={undefined}
-                      hitSlop={undefined}
                       isTVSelectable={true}
-                      nativeID={undefined}
-                      onLayout={undefined}
                       onResponderGrant={[Function]}
                       onResponderMove={[Function]}
                       onResponderRelease={[Function]}
@@ -1131,8 +1076,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                           },
                         ]
                       }
-                      testID={undefined}
-                      tvParallaxProperties={undefined}
                     >
                       <View
                         style={null}
@@ -1273,15 +1216,8 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                       Do you have a certificate of authenticity?
                     </Text>
                     <View
-                      accessibilityComponentType={undefined}
-                      accessibilityLabel={undefined}
-                      accessibilityTraits={undefined}
                       accessible={true}
-                      hasTVPreferredFocus={undefined}
-                      hitSlop={undefined}
                       isTVSelectable={true}
-                      nativeID={undefined}
-                      onLayout={undefined}
                       onResponderGrant={[Function]}
                       onResponderMove={[Function]}
                       onResponderRelease={[Function]}
@@ -1304,8 +1240,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                           },
                         ]
                       }
-                      testID={undefined}
-                      tvParallaxProperties={undefined}
                     >
                       <View
                         style={null}
@@ -1423,16 +1357,8 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
         }
       />
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        collapsable={undefined}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
         isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -1448,8 +1374,6 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
             "paddingTop": 18,
           }
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <Text
           accessible={true}

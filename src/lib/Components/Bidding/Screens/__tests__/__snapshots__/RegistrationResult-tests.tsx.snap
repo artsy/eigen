@@ -125,14 +125,7 @@ to bid on works in this sale.
     </View>
   </View>
   <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
     accessible={true}
-    collapsable={undefined}
-    hitSlop={undefined}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -151,7 +144,6 @@ to bid on works in this sale.
         "opacity": 1,
       }
     }
-    testID={undefined}
   >
     <Text
       accessible={true}
@@ -322,14 +314,7 @@ with any questions.
     </View>
   </View>
   <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
     accessible={true}
-    collapsable={undefined}
-    hitSlop={undefined}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -348,7 +333,6 @@ with any questions.
         "opacity": 1,
       }
     }
-    testID={undefined}
   >
     <Text
       accessible={true}
@@ -520,14 +504,7 @@ more information.
     </View>
   </View>
   <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
     accessible={true}
-    collapsable={undefined}
-    hitSlop={undefined}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -546,7 +523,6 @@ more information.
         "opacity": 1,
       }
     }
-    testID={undefined}
   >
     <Text
       accessible={true}

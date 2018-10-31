@@ -99,13 +99,7 @@ exports[`shows trending artists correctly 1`] = `
       }
     >
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        hitSlop={undefined}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -119,7 +113,6 @@ exports[`shows trending artists correctly 1`] = `
             "width": 1,
           }
         }
-        testID={undefined}
       >
         <AROpaqueImageView
           imageURL="cloudfront.net/some-url"
@@ -162,13 +155,7 @@ exports[`shows trending artists correctly 1`] = `
         </Text>
       </View>
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        hitSlop={undefined}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -182,7 +169,6 @@ exports[`shows trending artists correctly 1`] = `
             "width": 1,
           }
         }
-        testID={undefined}
       >
         <AROpaqueImageView
           imageURL="cloudfront.net/some-url"

@@ -131,7 +131,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                       undefined,
                     ]
                   }
-                  value={undefined}
                 />
               </View>
             </View>
@@ -150,16 +149,8 @@ exports[`Sets up the right view hierarchy 1`] = `
         }
       />
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        collapsable={undefined}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
         isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -175,8 +166,6 @@ exports[`Sets up the right view hierarchy 1`] = `
             "paddingTop": 18,
           }
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <Text
           accessible={true}
@@ -334,16 +323,8 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
         }
       />
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        collapsable={undefined}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
         isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -359,8 +340,6 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
             "paddingTop": 18,
           }
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <Text
           accessible={true}

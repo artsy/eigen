@@ -10,13 +10,7 @@ exports[`renders correctly 1`] = `
   }
 >
   <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
     accessible={true}
-    hitSlop={undefined}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -39,7 +33,6 @@ exports[`renders correctly 1`] = `
         "width": 220,
       }
     }
-    testID={undefined}
   >
     <AROpaqueImageView
       imageURL="https://d32dm0rphc51dk.cloudfront.net/wGMxL6TvlSORJzEHZsK9JA/large.jpg"
@@ -130,15 +123,8 @@ exports[`renders correctly 1`] = `
       }
     >
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
         isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -153,8 +139,6 @@ exports[`renders correctly 1`] = `
             "justifyContent": "center",
           }
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <View
           style={null}

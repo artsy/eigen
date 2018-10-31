@@ -48,16 +48,8 @@ exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
     }
   />
   <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
     accessible={true}
-    collapsable={undefined}
-    hasTVPreferredFocus={undefined}
-    hitSlop={undefined}
     isTVSelectable={true}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -73,8 +65,6 @@ exports[`Bottom-Aligned states:  Looks right when With a Text element 1`] = `
         "paddingTop": 18,
       }
     }
-    testID={undefined}
-    tvParallaxProperties={undefined}
   >
     <Text
       accessible={true}
@@ -151,7 +141,6 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
             clearButtonMode="while-editing"
             keyboardAppearance="dark"
             onBlur={[Function]}
-            onChangeText={undefined}
             onFocus={[Function]}
             placeholder="Example"
             placeholderTextColor="#666666"
@@ -246,16 +235,8 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
     }
   />
   <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
     accessible={true}
-    collapsable={undefined}
-    hasTVPreferredFocus={undefined}
-    hitSlop={undefined}
     isTVSelectable={true}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -271,8 +252,6 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
         "paddingTop": 18,
       }
     }
-    testID={undefined}
-    tvParallaxProperties={undefined}
   >
     <Text
       accessible={true}

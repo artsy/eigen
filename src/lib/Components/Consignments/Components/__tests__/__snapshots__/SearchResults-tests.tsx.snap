@@ -28,7 +28,6 @@ exports[`Search states:  Looks right when Found four results 1`] = `
         clearButtonMode="while-editing"
         keyboardAppearance="dark"
         onBlur={[Function]}
-        onChangeText={undefined}
         onFocus={[Function]}
         placeholder="Artist/Designer Name"
         placeholderTextColor="#666666"
@@ -73,15 +72,8 @@ exports[`Search states:  Looks right when Found four results 1`] = `
   >
     <View>
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
         isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -97,8 +89,6 @@ exports[`Search states:  Looks right when Found four results 1`] = `
             undefined,
           ]
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <View
           style={
@@ -150,15 +140,8 @@ exports[`Search states:  Looks right when Found four results 1`] = `
         </View>
       </View>
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
         isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -174,8 +157,6 @@ exports[`Search states:  Looks right when Found four results 1`] = `
             undefined,
           ]
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <View
           style={
@@ -227,15 +208,8 @@ exports[`Search states:  Looks right when Found four results 1`] = `
         </View>
       </View>
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
         isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -251,8 +225,6 @@ exports[`Search states:  Looks right when Found four results 1`] = `
             undefined,
           ]
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <View
           style={
@@ -304,15 +276,8 @@ exports[`Search states:  Looks right when Found four results 1`] = `
         </View>
       </View>
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
         isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -328,8 +293,6 @@ exports[`Search states:  Looks right when Found four results 1`] = `
             undefined,
           ]
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <View
           style={
@@ -413,7 +376,6 @@ exports[`Search states:  Looks right when Found no results 1`] = `
         clearButtonMode="while-editing"
         keyboardAppearance="dark"
         onBlur={[Function]}
-        onChangeText={undefined}
         onFocus={[Function]}
         placeholder="Artist/Designer Name"
         placeholderTextColor="#666666"
@@ -525,7 +487,6 @@ exports[`Search states:  Looks right when Found one result 1`] = `
         clearButtonMode="while-editing"
         keyboardAppearance="dark"
         onBlur={[Function]}
-        onChangeText={undefined}
         onFocus={[Function]}
         placeholder="Artist/Designer Name"
         placeholderTextColor="#666666"
@@ -570,15 +531,8 @@ exports[`Search states:  Looks right when Found one result 1`] = `
   >
     <View>
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
         isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -594,8 +548,6 @@ exports[`Search states:  Looks right when Found one result 1`] = `
             undefined,
           ]
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <View
           style={
@@ -679,7 +631,6 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
         clearButtonMode="while-editing"
         keyboardAppearance="dark"
         onBlur={[Function]}
-        onChangeText={undefined}
         onFocus={[Function]}
         placeholder="Artist/Designer Name"
         placeholderTextColor="#666666"
@@ -730,15 +681,8 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
   >
     <View>
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
         isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -754,8 +698,6 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
             undefined,
           ]
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <View
           style={
@@ -839,7 +781,6 @@ exports[`Search states:  Looks right when Found two results 1`] = `
         clearButtonMode="while-editing"
         keyboardAppearance="dark"
         onBlur={[Function]}
-        onChangeText={undefined}
         onFocus={[Function]}
         placeholder="Artist/Designer Name"
         placeholderTextColor="#666666"
@@ -884,15 +825,8 @@ exports[`Search states:  Looks right when Found two results 1`] = `
   >
     <View>
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
         isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -908,8 +842,6 @@ exports[`Search states:  Looks right when Found two results 1`] = `
             undefined,
           ]
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <View
           style={
@@ -961,15 +893,8 @@ exports[`Search states:  Looks right when Found two results 1`] = `
         </View>
       </View>
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
         isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -985,8 +910,6 @@ exports[`Search states:  Looks right when Found two results 1`] = `
             undefined,
           ]
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <View
           style={
@@ -1070,7 +993,6 @@ exports[`Search states:  Looks right when Looking for new results 1`] = `
         clearButtonMode="while-editing"
         keyboardAppearance="dark"
         onBlur={[Function]}
-        onChangeText={undefined}
         onFocus={[Function]}
         placeholder="Artist/Designer Name"
         placeholderTextColor="#666666"
@@ -1152,7 +1074,6 @@ exports[`Search states:  Looks right when No query 1`] = `
         clearButtonMode="while-editing"
         keyboardAppearance="dark"
         onBlur={[Function]}
-        onChangeText={undefined}
         onFocus={[Function]}
         placeholder="Artist/Designer Name"
         placeholderTextColor="#666666"
