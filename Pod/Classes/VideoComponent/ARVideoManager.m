@@ -1,6 +1,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import "ARVideoManager.h"
-
+#include <math.h>
 
 @interface ARVideo : UIView
 @property (nonatomic, strong, readwrite) AVPlayer *player;
@@ -33,11 +33,11 @@
     // Only do the positioning logic for aspect fills
     if (self.playerLayer.videoGravity == AVLayerVideoGravityResizeAspectFill && [path isEqualToString:@"readyForDisplay"]) {
         CGRect videoRect = self.playerLayer.videoRect;
-        
+
         if (!CGRectIsEmpty(videoRect)) {
             // Ok, now we've got enough info to handle the sizing
             [self updatePlayerLayerFrame];
-            
+
             // Animate in the video
             self.layer.opacity = 1;
         }
@@ -55,9 +55,14 @@
     AVPlayerItem *item = self.player.currentItem;
     AVPlayerItemTrack *track = [item tracks][0];
     CGSize naturalVideoSize = track.assetTrack.naturalSize;
-    
+
     // Figure our how it would fit un-cropped in aspect fill
     CGFloat aspectRatio = naturalVideoSize.width / naturalVideoSize.height;
+    if (isnan(aspectRatio)) {
+        // Sometimes, we divide by zero and get NaN, which will crash when we set the layer's frame.
+        // For example, if the current item's first track is nil.
+        return;
+    }
     CGRect playerBounds = CGRectMake(0, 0, self.superview.bounds.size.height * aspectRatio, self.superview.bounds.size.height);
 
     [CATransaction begin];
@@ -106,7 +111,7 @@ RCT_CUSTOM_VIEW_PROPERTY(source, NSDictionary, ARVideo)
     view.playerLayer = [AVPlayerLayer playerLayerWithPlayer:view.player];
     view.playerLayer.frame = view.bounds; //CGRectInset(view.bounds, 20, 20);
     view.playerLayer.videoGravity = videoGravity;
-    
+
     // Always listen for the video being set, it's a bit overkill, but it simplifies the dealloc logic
     [view.playerLayer addObserver:view forKeyPath:@"readyForDisplay" options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew context:NULL];
 
@@ -114,9 +119,9 @@ RCT_CUSTOM_VIEW_PROPERTY(source, NSDictionary, ARVideo)
     if ([videoGravity isEqualToString:@"cover"] ) {
         view.layer.opacity = 0;
     }
-    
+
     [view.layer addSublayer:view.playerLayer];
-    
+
     [view.player setMuted:true];
     [view.player play];
 }
