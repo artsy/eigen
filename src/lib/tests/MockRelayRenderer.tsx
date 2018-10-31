@@ -2,8 +2,8 @@ import { IMocks } from "graphql-tools/dist/Interfaces"
 import React from "react"
 import { QueryRenderer, RelayContainer } from "react-relay"
 import { Environment, GraphQLTaggedNode, OperationBase, OperationDefaults, RecordSource, Store } from "relay-runtime"
+import { ContextProvider } from "../utils/Context"
 import renderWithLoadProgress from "../utils/renderWithLoadProgress"
-import { ContextProvider } from "./Context"
 import { createMockNetworkLayer } from "./createMockNetworkLayer"
 
 export interface MockRelayRendererProps<T extends OperationBase = OperationDefaults> {
