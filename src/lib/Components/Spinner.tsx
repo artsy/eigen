@@ -12,7 +12,7 @@ export default class Spinner extends React.Component<SpinnerProps, any> {
 
   render() {
     return (
-      <View style={[this.props.style, styles.container]}>
+      <View style={[this.props.style, styles.container]} testID={this.props.testID}>
         <NativeSpinner spinnerColor={processColor(this.props.spinnerColor)} style={styles.spinner} />
       </View>
     )

@@ -2,6 +2,7 @@ import Enzyme from "enzyme"
 import Adapter from "enzyme-adapter-react-16"
 import expect from "expect"
 
+import "lib/tests/renderUntil"
 Enzyme.configure({ adapter: new Adapter() })
 
 // Waiting on https://github.com/thymikee/snapshot-diff/pull/17

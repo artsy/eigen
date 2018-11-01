@@ -126,14 +126,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
           </Text>
         </View>
         <View
-          accessibilityComponentType={undefined}
-          accessibilityLabel={undefined}
-          accessibilityTraits={undefined}
           accessible={true}
-          collapsable={undefined}
-          hitSlop={undefined}
-          nativeID={undefined}
-          onLayout={undefined}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -153,7 +146,6 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
               "width": 130,
             }
           }
-          testID={undefined}
         >
           <Text
             accessible={true}
@@ -232,13 +224,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
             }
           >
             <View
-              accessibilityComponentType={undefined}
-              accessibilityLabel={undefined}
-              accessibilityTraits={undefined}
               accessible={true}
-              hitSlop={undefined}
-              nativeID={undefined}
-              onLayout={undefined}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
               onResponderRelease={[Function]}
@@ -250,7 +236,6 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                   "flexDirection": "row",
                 }
               }
-              testID={undefined}
             >
               <Image
                 source={
@@ -354,13 +339,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
             }
           >
             <View
-              accessibilityComponentType={undefined}
-              accessibilityLabel={undefined}
-              accessibilityTraits={undefined}
               accessible={true}
-              hitSlop={undefined}
-              nativeID={undefined}
-              onLayout={undefined}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
               onResponderRelease={[Function]}
@@ -372,7 +351,6 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                   "flexDirection": "row",
                 }
               }
-              testID={undefined}
             >
               <Image
                 source={
@@ -599,14 +577,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
           </Text>
         </View>
         <View
-          accessibilityComponentType={undefined}
-          accessibilityLabel={undefined}
-          accessibilityTraits={undefined}
           accessible={true}
-          collapsable={undefined}
-          hitSlop={undefined}
-          nativeID={undefined}
-          onLayout={undefined}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -626,7 +597,6 @@ exports[`with notifications lays out correctly on small screens 1`] = `
               "width": 130,
             }
           }
-          testID={undefined}
         >
           <Text
             accessible={true}
@@ -705,13 +675,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
             }
           >
             <View
-              accessibilityComponentType={undefined}
-              accessibilityLabel={undefined}
-              accessibilityTraits={undefined}
               accessible={true}
-              hitSlop={undefined}
-              nativeID={undefined}
-              onLayout={undefined}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
               onResponderRelease={[Function]}
@@ -723,7 +687,6 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                   "flexDirection": "row",
                 }
               }
-              testID={undefined}
             >
               <Image
                 source={
@@ -827,13 +790,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
             }
           >
             <View
-              accessibilityComponentType={undefined}
-              accessibilityLabel={undefined}
-              accessibilityTraits={undefined}
               accessible={true}
-              hitSlop={undefined}
-              nativeID={undefined}
-              onLayout={undefined}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
               onResponderRelease={[Function]}
@@ -845,7 +802,6 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                   "flexDirection": "row",
                 }
               }
-              testID={undefined}
             >
               <Image
                 source={
@@ -1076,14 +1032,7 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
           </Text>
         </View>
         <View
-          accessibilityComponentType={undefined}
-          accessibilityLabel={undefined}
-          accessibilityTraits={undefined}
           accessible={true}
-          collapsable={undefined}
-          hitSlop={undefined}
-          nativeID={undefined}
-          onLayout={undefined}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -1103,7 +1052,6 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
               "width": 130,
             }
           }
-          testID={undefined}
         >
           <Text
             accessible={true}
@@ -1363,14 +1311,7 @@ exports[`without notifications lays out correctly on small screens 1`] = `
           </Text>
         </View>
         <View
-          accessibilityComponentType={undefined}
-          accessibilityLabel={undefined}
-          accessibilityTraits={undefined}
           accessible={true}
-          collapsable={undefined}
-          hitSlop={undefined}
-          nativeID={undefined}
-          onLayout={undefined}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -1390,7 +1331,6 @@ exports[`without notifications lays out correctly on small screens 1`] = `
               "width": 130,
             }
           }
-          testID={undefined}
         >
           <Text
             accessible={true}

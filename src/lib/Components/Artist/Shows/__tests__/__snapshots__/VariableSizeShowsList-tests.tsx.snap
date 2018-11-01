@@ -15,13 +15,7 @@ exports[`renders properly 1`] = `
   }
 >
   <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
     accessible={true}
-    hitSlop={undefined}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -35,7 +29,6 @@ exports[`renders properly 1`] = `
         "width": 1,
       }
     }
-    testID={undefined}
   >
     <AROpaqueImageView
       imageURL="artsy.net/image-url"
@@ -159,13 +152,7 @@ exports[`renders properly 1`] = `
     </View>
   </View>
   <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
     accessible={true}
-    hitSlop={undefined}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -179,7 +166,6 @@ exports[`renders properly 1`] = `
         "width": 1,
       }
     }
-    testID={undefined}
   >
     <AROpaqueImageView
       imageURL="artsy.net/image-url"

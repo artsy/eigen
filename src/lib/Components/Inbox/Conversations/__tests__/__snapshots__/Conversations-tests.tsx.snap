@@ -102,7 +102,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
     getItemCount={[Function]}
     horizontal={false}
     initialNumToRender={10}
-    invertStickyHeaders={undefined}
     keyExtractor={[Function]}
     maxToRenderPerBatch={10}
     numColumns={1}
@@ -126,13 +125,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
         style={null}
       >
         <View
-          accessibilityComponentType={undefined}
-          accessibilityLabel={undefined}
-          accessibilityTraits={undefined}
           accessible={true}
-          hitSlop={undefined}
-          nativeID={undefined}
-          onLayout={undefined}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -149,7 +142,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
               undefined,
             ]
           }
-          testID={undefined}
         >
           <View
             style={
@@ -409,13 +401,7 @@ exports[`messaging inbox looks correct when rendered 1`] = `
         style={null}
       >
         <View
-          accessibilityComponentType={undefined}
-          accessibilityLabel={undefined}
-          accessibilityTraits={undefined}
           accessible={true}
-          hitSlop={undefined}
-          nativeID={undefined}
-          onLayout={undefined}
           onResponderGrant={[Function]}
           onResponderMove={[Function]}
           onResponderRelease={[Function]}
@@ -432,7 +418,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
               undefined,
             ]
           }
-          testID={undefined}
         >
           <View
             style={
@@ -702,7 +687,6 @@ exports[`messaging inbox looks correct when rendered without messages 1`] = `
     getItemCount={[Function]}
     horizontal={false}
     initialNumToRender={10}
-    invertStickyHeaders={undefined}
     keyExtractor={[Function]}
     maxToRenderPerBatch={10}
     numColumns={1}

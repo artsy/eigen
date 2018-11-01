@@ -9,7 +9,6 @@ exports[`renders properly 1`] = `
   }
 >
   <RCTNavigator
-    interactivePopGestureEnabled={undefined}
     onNavigationComplete={[Function]}
     requestedTopOfStack={0}
     style={
@@ -17,7 +16,6 @@ exports[`renders properly 1`] = `
         "flex": 1,
       }
     }
-    vertical={undefined}
   >
     <RCTNavItem
       initialRoute={
@@ -202,15 +200,8 @@ exports[`renders properly 1`] = `
             }
           >
             <View
-              accessibilityComponentType={undefined}
-              accessibilityLabel={undefined}
-              accessibilityTraits={undefined}
               accessible={true}
-              hasTVPreferredFocus={undefined}
-              hitSlop={undefined}
               isTVSelectable={true}
-              nativeID={undefined}
-              onLayout={undefined}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
               onResponderRelease={[Function]}
@@ -226,8 +217,6 @@ exports[`renders properly 1`] = `
                   "justifyContent": "center",
                 }
               }
-              testID={undefined}
-              tvParallaxProperties={undefined}
             >
               <View
                 style={null}

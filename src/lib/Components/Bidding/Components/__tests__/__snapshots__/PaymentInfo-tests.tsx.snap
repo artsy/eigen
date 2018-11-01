@@ -20,17 +20,11 @@ exports[`renders properly 1`] = `
     width="100%"
   />
   <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
     accessible={true}
     alignItems="center"
     flexDirection="row"
-    hitSlop={undefined}
     justifyContent="space-between"
     mb={1}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -51,7 +45,6 @@ exports[`renders properly 1`] = `
         undefined,
       ]
     }
-    testID={undefined}
   >
     <View
       flex={1}
@@ -185,17 +178,11 @@ exports[`renders properly 1`] = `
     width="100%"
   />
   <View
-    accessibilityComponentType={undefined}
-    accessibilityLabel={undefined}
-    accessibilityTraits={undefined}
     accessible={true}
     alignItems="center"
     flexDirection="row"
-    hitSlop={undefined}
     justifyContent="space-between"
     mb={1}
-    nativeID={undefined}
-    onLayout={undefined}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -216,7 +203,6 @@ exports[`renders properly 1`] = `
         undefined,
       ]
     }
-    testID={undefined}
   >
     <View
       flex={1}

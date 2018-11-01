@@ -92,16 +92,8 @@ exports[`looks like expected 1`] = `
       }
     >
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        collapsable={undefined}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
         isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -114,8 +106,6 @@ exports[`looks like expected 1`] = `
             "width": 330,
           }
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <View>
           <View
@@ -191,16 +181,8 @@ exports[`looks like expected 1`] = `
         </View>
       </View>
       <View
-        accessibilityComponentType={undefined}
-        accessibilityLabel={undefined}
-        accessibilityTraits={undefined}
         accessible={true}
-        collapsable={undefined}
-        hasTVPreferredFocus={undefined}
-        hitSlop={undefined}
         isTVSelectable={true}
-        nativeID={undefined}
-        onLayout={undefined}
         onResponderGrant={[Function]}
         onResponderMove={[Function]}
         onResponderRelease={[Function]}
@@ -213,8 +195,6 @@ exports[`looks like expected 1`] = `
             "width": 330,
           }
         }
-        testID={undefined}
-        tvParallaxProperties={undefined}
       >
         <View>
           <Text

@@ -260,15 +260,8 @@ exports[`looks correct when rendered 1`] = `
             }
           >
             <View
-              accessibilityComponentType={undefined}
-              accessibilityLabel={undefined}
-              accessibilityTraits={undefined}
               accessible={true}
-              hasTVPreferredFocus={undefined}
-              hitSlop={undefined}
               isTVSelectable={true}
-              nativeID={undefined}
-              onLayout={undefined}
               onResponderGrant={[Function]}
               onResponderMove={[Function]}
               onResponderRelease={[Function]}
@@ -283,8 +276,6 @@ exports[`looks correct when rendered 1`] = `
                   "justifyContent": "center",
                 }
               }
-              testID={undefined}
-              tvParallaxProperties={undefined}
             >
               <View
                 style={null}
@@ -323,7 +314,6 @@ exports[`looks correct when rendered 1`] = `
           }
         }
         onPress={[Function]}
-        style={undefined}
       >
         <Text
           accessible={true}

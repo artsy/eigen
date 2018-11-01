@@ -2,13 +2,7 @@
 
 exports[`looks right for bids in live auctions that haven't started yet 1`] = `
 <View
-  accessibilityComponentType={undefined}
-  accessibilityLabel={undefined}
-  accessibilityTraits={undefined}
   accessible={true}
-  hitSlop={undefined}
-  nativeID={undefined}
-  onLayout={undefined}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -27,7 +21,6 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
       undefined,
     ]
   }
-  testID={undefined}
 >
   <View
     style={
@@ -161,13 +154,7 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
 
 exports[`looks right for bids in live open auctions 1`] = `
 <View
-  accessibilityComponentType={undefined}
-  accessibilityLabel={undefined}
-  accessibilityTraits={undefined}
   accessible={true}
-  hitSlop={undefined}
-  nativeID={undefined}
-  onLayout={undefined}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -186,7 +173,6 @@ exports[`looks right for bids in live open auctions 1`] = `
       undefined,
     ]
   }
-  testID={undefined}
 >
   <View
     style={
@@ -320,13 +306,7 @@ exports[`looks right for bids in live open auctions 1`] = `
 
 exports[`renders correctly 1`] = `
 <View
-  accessibilityComponentType={undefined}
-  accessibilityLabel={undefined}
-  accessibilityTraits={undefined}
   accessible={true}
-  hitSlop={undefined}
-  nativeID={undefined}
-  onLayout={undefined}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -345,7 +325,6 @@ exports[`renders correctly 1`] = `
       undefined,
     ]
   }
-  testID={undefined}
 >
   <View
     style={

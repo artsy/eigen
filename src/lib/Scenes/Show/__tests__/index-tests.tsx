@@ -1,22 +1,34 @@
 import React from "react"
-import * as renderer from "react-test-renderer"
-import Show from "../"
+import { graphql } from "react-relay"
 
-it("Renders a show", () => {
-  // TODO: use mocked resolver
-  const show = {
-    shows: [],
-    artworks: [],
-    artists: [],
-    location: {
-      id: "52b0ced8cd530ed44400014f",
-      city: "New York",
-      address: "25 Central Park West",
-      address_2: "",
-      coordinates: { lat: 40.770424, lng: -73.981233 },
+import { MockRelayRenderer } from "../../../tests/MockRelayRenderer"
+import { renderUntil } from "../../../tests/renderUntil"
+import { ShowFixture } from "./fixtures"
+
+import Show from "../"
+import { ShowHeader } from "../Components/ShowHeader"
+
+jest.unmock("react-relay")
+
+it("Renders a show", async () => {
+  const tree = await renderUntil(
+    wrapper => {
+      return wrapper.find(ShowHeader).length > 0
     },
-    partner: { name: "Joseph K. Levene Fine Art, Ltd." },
-  }
-  const comp = renderer.create(<Show show={show as any} />)
-  expect(comp).toMatchSnapshot()
+    <MockRelayRenderer
+      Component={Show}
+      query={graphql`
+        query indexTestsQuery {
+          show(id: "anderson-fine-art-gallery-flickinger-collection") {
+            ...Show_show
+          }
+        }
+      `}
+      mockResolvers={{
+        Show: () => ShowFixture,
+      }}
+    />
+  )
+
+  expect(tree.text()).toContain("Flickinger Collection")
 })

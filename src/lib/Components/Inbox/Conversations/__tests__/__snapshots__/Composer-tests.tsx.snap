@@ -68,16 +68,10 @@ exports[`looks correct when rendered 1`] = `
       value={null}
     />
     <Text
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
       accessible={true}
       allowFontScaling={true}
       disabled={true}
       ellipsizeMode="tail"
-      hitSlop={undefined}
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -95,7 +89,6 @@ exports[`looks correct when rendered 1`] = `
           undefined,
         ]
       }
-      testID={undefined}
     >
       SEND
     </Text>
@@ -105,7 +98,6 @@ exports[`looks correct when rendered 1`] = `
 
 exports[`regarding the send button disables it even if it contains text if the disabled prop is true 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Composer
     disabled={true}
@@ -121,6 +113,7 @@ ShallowWrapper {
     "batchedUpdates": [Function],
     "getNode": [Function],
     "render": [Function],
+    "simulateError": [Function],
     "simulateEvent": [Function],
     "unmount": [Function],
   },
@@ -156,7 +149,7 @@ ShallowWrapper {
                 "paddingTop": 13,
               }
             }
-            value={null}
+            value="History repeats itself, first as tragedy, second as farce."
           />
           <TouchableWithoutFeedback
             disabled={true}
@@ -203,7 +196,7 @@ ShallowWrapper {
                   "paddingTop": 13,
                 }
               }
-              value={null}
+              value="History repeats itself, first as tragedy, second as farce."
             />,
             <TouchableWithoutFeedback
               disabled={true}
@@ -242,7 +235,7 @@ ShallowWrapper {
                 "paddingRight": 10,
                 "paddingTop": 13,
               },
-              "value": null,
+              "value": "History repeats itself, first as tragedy, second as farce.",
             },
             "ref": [Function],
             "rendered": null,
@@ -315,7 +308,7 @@ ShallowWrapper {
                   "paddingTop": 13,
                 }
               }
-              value={null}
+              value="History repeats itself, first as tragedy, second as farce."
             />
             <TouchableWithoutFeedback
               disabled={true}
@@ -362,7 +355,7 @@ ShallowWrapper {
                     "paddingTop": 13,
                   }
                 }
-                value={null}
+                value="History repeats itself, first as tragedy, second as farce."
               />,
               <TouchableWithoutFeedback
                 disabled={true}
@@ -401,7 +394,7 @@ ShallowWrapper {
                   "paddingRight": 10,
                   "paddingTop": 13,
                 },
-                "value": null,
+                "value": "History repeats itself, first as tragedy, second as farce.",
               },
               "ref": [Function],
               "rendered": null,
@@ -446,6 +439,16 @@ ShallowWrapper {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getDerivedStateFromProps": true,
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
       },
     },
   },
@@ -520,16 +523,10 @@ exports[`regarding the send button disables it when there is no text 1`] = `
       value={null}
     />
     <Text
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
       accessible={true}
       allowFontScaling={true}
       disabled={true}
       ellipsizeMode="tail"
-      hitSlop={undefined}
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -547,7 +544,6 @@ exports[`regarding the send button disables it when there is no text 1`] = `
           undefined,
         ]
       }
-      testID={undefined}
     >
       SEND
     </Text>

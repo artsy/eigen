@@ -55,15 +55,9 @@ Array [
     }
   >
     <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
       accessible={true}
-      hitSlop={undefined}
       isActive={true}
       isLast={true}
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -82,7 +76,6 @@ Array [
           undefined,
         ]
       }
-      testID={undefined}
     />
   </View>,
   <Text
@@ -205,14 +198,7 @@ Array [
       }
     />
     <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
       accessible={true}
-      collapsable={undefined}
-      hitSlop={undefined}
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -230,7 +216,6 @@ Array [
           "opacity": 1,
         }
       }
-      testID={undefined}
     >
       <Text
         accessible={true}
@@ -304,17 +289,11 @@ Array [
       }
     />
     <View
-      accessibilityComponentType={undefined}
-      accessibilityLabel={undefined}
-      accessibilityTraits={undefined}
       accessible={true}
       alignItems="center"
       flexDirection="row"
       height={36}
-      hitSlop={undefined}
       justifyContent="space-between"
-      nativeID={undefined}
-      onLayout={undefined}
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -333,7 +312,6 @@ Array [
           undefined,
         ]
       }
-      testID={undefined}
     >
       <Text
         accessible={true}

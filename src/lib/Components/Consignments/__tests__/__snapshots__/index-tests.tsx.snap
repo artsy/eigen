@@ -9,7 +9,6 @@ exports[`Sets up the right navigator view hierarchy 1`] = `
   }
 >
   <RCTNavigator
-    interactivePopGestureEnabled={undefined}
     onNavigationComplete={[Function]}
     requestedTopOfStack={0}
     style={
@@ -17,7 +16,6 @@ exports[`Sets up the right navigator view hierarchy 1`] = `
         "flex": 1,
       }
     }
-    vertical={undefined}
   >
     <RCTNavItem
       initialRoute={
