@@ -10,6 +10,8 @@ import { ShowHeader } from "../Components/ShowHeader"
 
 jest.unmock("react-relay")
 
+// FIXME: Rename Show/index.tx to Show/Show.tsx to avoid `indexTestsQuery` below
+
 it("Renders a show", async () => {
   const tree = await renderUntil(
     wrapper => {

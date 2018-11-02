@@ -1,7 +1,6 @@
-import { Flex, Sans, space, Box } from "@artsy/palette"
-import { StyleSheet } from "react-native"
-import React from "react"
+import { Box, Flex, Sans } from "@artsy/palette"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
+import React from "react"
 
 interface Props {
   name: string

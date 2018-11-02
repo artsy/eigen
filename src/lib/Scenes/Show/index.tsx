@@ -1,5 +1,4 @@
-import { Theme, Separator, Box } from "@artsy/palette"
-import { Show_show } from "__generated__/Show_show.graphql"
+import { Box, Separator, Theme } from "@artsy/palette"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -9,6 +8,8 @@ import { ArtworksContainer as Artworks } from "./Components/Artworks"
 import { LocationContainer as Location } from "./Components/Location"
 import { ShowHeaderContainer as ShowHeader } from "./Components/ShowHeader"
 import { Shows } from "./Components/Shows"
+
+import { Show_show } from "__generated__/Show_show.graphql"
 
 interface Props extends ViewProperties {
   show: Show_show

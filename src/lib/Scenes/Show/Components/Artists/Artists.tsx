@@ -1,14 +1,15 @@
-import React from "react"
 import { Sans, Spacer } from "@artsy/palette"
-import { createFragmentContainer, graphql, commitMutation, RelayProp } from "react-relay"
-import { Artist_show } from "__generated__/Artist_show.graphql"
-import { ArtistsFollowArtistMutation } from "__generated__/ArtistsFollowArtistMutation.graphql"
 import { InvertedButton } from "lib/Components/Buttons"
+import { get, take } from "lodash"
+import React from "react"
+import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { ArtistListItem } from "./Components/ArtistListItem"
-import { take, get } from "lodash"
+
+import { Artists_show } from "__generated__/Artists_show.graphql"
+import { ArtistsFollowArtistMutation } from "__generated__/ArtistsFollowArtistMutation.graphql"
 
 interface Props {
-  show: Artist_show
+  show: Artists_show
   relay: RelayProp
 }
 
@@ -61,8 +62,10 @@ export class Artists extends React.Component<Props, State> {
           },
           optimisticResponse: {
             followArtist: {
-              __id: __id,
-              is_followed: !is_followed,
+              artist: {
+                __id,
+                is_followed: !is_followed,
+              },
             },
           },
           updater: store => {
@@ -78,12 +81,13 @@ export class Artists extends React.Component<Props, State> {
     const { show } = this.props
 
     const artists = get(show, "artists", [])
+    const items: Artists_show["artists"] = isExpanded ? artists : take(artists, 4)
 
     return (
       <>
         <Sans size="5">Artists in this show</Sans>
         <Spacer m={1} />
-        {(isExpanded ? artists : take(artists, 4)).map((artist, idx, arr) => {
+        {items.map((artist, idx, arr) => {
           const { name, id, is_followed } = artist
           return (
             <React.Fragment key={id}>
