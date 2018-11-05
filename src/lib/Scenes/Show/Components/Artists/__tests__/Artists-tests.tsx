@@ -3,7 +3,7 @@ import { graphql } from "react-relay"
 
 import { MockRelayRenderer } from "../../../../../tests/MockRelayRenderer"
 import { renderUntil } from "../../../../../tests/renderUntil"
-import { ShowFixture } from "../../../__tests__/fixtures"
+import { ShowFixture } from "../../../__fixtures__"
 
 import { InvertedButton } from "lib/Components/Buttons"
 import ListItemButton from "lib/Components/Buttons/InvertedButton"
