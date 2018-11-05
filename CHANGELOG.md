@@ -25,6 +25,7 @@
 - Adds Artwork grids with infinite scroll to Show View - ashley
 - Fixes crash in marketing banner - ash
 - Adds Relay DevTools, Update Node.js to 10.13.0 - javamonn
+- Adds artists list component to show detail view - javamonn
 
 ### 1.7.1
 
