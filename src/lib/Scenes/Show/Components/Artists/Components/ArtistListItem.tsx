@@ -13,6 +13,7 @@ export const ArtistListItem: React.SFC<Props> = ({ name, isFollowed, onPress, is
   return (
     <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
       <Sans size="3">{name}</Sans>
+      {/* TODO: Remove hardcoded sizes once designs firm up */}
       <Box width={112} height={32}>
         <InvertedButton
           text={isFollowed ? "Following" : "Follow"}
