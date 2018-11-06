@@ -3,15 +3,15 @@ import React from "react"
 import { Dimensions, Image } from "react-native"
 import styled from "styled-components/native"
 
-import { Box, Separator, Serif, space, Spacer } from "@artsy/palette"
+import { Box, Serif, space, Spacer } from "@artsy/palette"
 import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
 import { InvertedButton } from "lib/Components/Buttons"
-import { Carousel } from "lib/Components/Carousel"
+import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  fair: any
+  fair: FairHeader_fair
   onSaveShowPressed?: () => Promise<void>
 }
 
@@ -43,10 +43,13 @@ const Logo = styled(Image)`
 export class FairHeader extends React.Component<Props> {
   render() {
     const {
-      fair: { image, name, organizer, description, start_at, end_at },
+      fair: { image, name, organizer, start_at, end_at },
     } = this.props
     const { width: screenWidth } = Dimensions.get("window")
-    console.log(this.props.fair)
+
+    // TODO: figure out where description will come from
+    const description =
+      "The Sculpture Objects Functional Art and Design (SOFA) Fair in Chicago is the premier gallery-presented art fair dedicated to three-dimensional art and design. On par with Art Basel and TEFAF Maastricht, SOFA is produced by Urban Expositions, a Clarion Events company."
 
     return (
       <>
@@ -68,8 +71,7 @@ export class FairHeader extends React.Component<Props> {
           <Spacer m={2} />
           <Serif size="2">{description}</Serif>
           <Spacer m={1} />
-          <Separator />
-          <Spacer m={1} />
+          <CaretButton text="More Information" />
         </Box>
       </>
     )
@@ -101,19 +103,7 @@ export const FairHeaderContainer = createFragmentContainer(
           name
         }
       }
-      location {
-        address
-        address_2
-        coordinates {
-          lat
-          lng
-        }
-        display
-        city
-        state
-        country
-        postal_code
-      }
+
       start_at
       end_at
     }

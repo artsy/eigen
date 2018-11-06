@@ -1,6 +1,6 @@
 import { color, Flex, Sans } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
-import { Location_show } from "__generated__/Location_show.graphql"
+import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
@@ -14,12 +14,13 @@ const Map = styled(Mapbox.MapView)`
 `
 
 interface Props {
-  show: Location_show
+  location: LocationMap_location
+  partnerName?: string
 }
 
-export class Location extends React.Component<Props> {
+export class LocationMap extends React.Component<Props> {
   render() {
-    const { location, partner } = this.props.show
+    const { location, partnerName } = this.props
     const { lat, lng } = location.coordinates
 
     return (
@@ -33,7 +34,7 @@ export class Location extends React.Component<Props> {
           // zoomEnabled={false}
         />
         <Sans size="2" color={color("black100")} weight="medium">
-          {partner.name}
+          {partnerName}
         </Sans>
         <Sans size="1">{location.address}</Sans>
         <Sans size="1">{location.address_2}</Sans>
@@ -42,34 +43,24 @@ export class Location extends React.Component<Props> {
   }
 }
 
-export const LocationContainer = createFragmentContainer(
-  Location,
+export const LocationMapContainer = createFragmentContainer(
+  LocationMap,
   graphql`
-    fragment Location_show on Show {
-      location {
-        __id
-        id
-        city
-        address
-        address_2
-        display
-        coordinates {
-          lat
-          lng
-        }
-        day_schedules {
-          start_time
-          end_time
-          day_of_week
-        }
+    fragment LocationMap_location on Location {
+      __id
+      id
+      city
+      address
+      address_2
+      display
+      coordinates {
+        lat
+        lng
       }
-      partner {
-        ... on ExternalPartner {
-          name
-        }
-        ... on Partner {
-          name
-        }
+      day_schedules {
+        start_time
+        end_time
+        day_of_week
       }
     }
   `

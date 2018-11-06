@@ -3,6 +3,8 @@ import { Fair_fair } from "__generated__/Fair_fair.graphql"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+
+import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { FairHeaderContainer as FairHeader } from "./Components/FairHeader"
 
 interface Props extends ViewProperties {
@@ -15,7 +17,16 @@ export class Fair extends React.Component<Props> {
   }
 
   componentDidMount() {
+    const { fair } = this.props
     const sections = []
+
+    sections.push({
+      type: "location",
+      data: {
+        location: fair.location,
+        partnerName: fair.organizer.profile.name,
+      },
+    })
 
     this.setState({ sections })
   }
@@ -29,6 +40,8 @@ export class Fair extends React.Component<Props> {
           ListHeaderComponent={<FairHeader fair={fair} />}
           renderItem={({ item: { data, type } }) => {
             switch (type) {
+              case "location":
+                return <LocationMap {...data} />
               default:
                 return null
             }
@@ -44,6 +57,16 @@ export default createFragmentContainer(
   graphql`
     fragment Fair_fair on Fair {
       ...FairHeader_fair
+
+      location {
+        ...LocationMap_location
+      }
+
+      organizer {
+        profile {
+          name
+        }
+      }
     }
   `
 )

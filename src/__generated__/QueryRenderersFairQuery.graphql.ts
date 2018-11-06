@@ -29,6 +29,16 @@ query QueryRenderersFairQuery(
 
 fragment Fair_fair on Fair {
   ...FairHeader_fair
+  location {
+    ...LocationMap_location
+    __id
+  }
+  organizer {
+    profile {
+      name
+      __id
+    }
+  }
   __id
 }
 
@@ -53,23 +63,27 @@ fragment FairHeader_fair on Fair {
       __id
     }
   }
-  location {
-    address
-    address_2
-    coordinates {
-      lat
-      lng
-    }
-    display
-    city
-    state
-    country
-    postal_code
-    __id
-  }
   start_at
   end_at
   __id
+}
+
+fragment LocationMap_location on Location {
+  __id
+  id
+  city
+  address
+  address_2
+  display
+  coordinates {
+    lat
+    lng
+  }
+  day_schedules {
+    start_time
+    end_time
+    day_of_week
+  }
 }
 */
 
@@ -122,7 +136,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersFairQuery",
-  "id": "ab381b038a80904b983e06cd4d1bdb31",
+  "id": "d911fa3eee8443d1842b659e5d12c646",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -252,6 +266,21 @@ return {
             ]
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "start_at",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "end_at",
+            "args": null,
+            "storageKey": null
+          },
+          v2,
+          {
             "kind": "LinkedField",
             "alias": null,
             "name": "location",
@@ -260,6 +289,15 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
+              v2,
+              v3,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "city",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -271,6 +309,13 @@ return {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "address_2",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "display",
                 "args": null,
                 "storageKey": null
               },
@@ -300,58 +345,39 @@ return {
                 ]
               },
               {
-                "kind": "ScalarField",
+                "kind": "LinkedField",
                 "alias": null,
-                "name": "display",
+                "name": "day_schedules",
+                "storageKey": null,
                 "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "city",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "state",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "country",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "postal_code",
-                "args": null,
-                "storageKey": null
-              },
-              v2
+                "concreteType": "DaySchedule",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "start_time",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "end_time",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "day_of_week",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              }
             ]
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "start_at",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "end_at",
-            "args": null,
-            "storageKey": null
-          },
-          v2
+          }
         ]
       }
     ]

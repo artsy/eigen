@@ -23,19 +23,6 @@ export type FairHeader_fair = {
             readonly name: string | null;
         }) | null;
     }) | null;
-    readonly location: ({
-        readonly address: string | null;
-        readonly address_2: string | null;
-        readonly coordinates: ({
-            readonly lat: number | null;
-            readonly lng: number | null;
-        }) | null;
-        readonly display: string | null;
-        readonly city: string | null;
-        readonly state: string | null;
-        readonly country: string | null;
-        readonly postal_code: string | null;
-    }) | null;
     readonly start_at: string | null;
     readonly end_at: string | null;
     readonly " $refType": FairHeader_fair$ref;
@@ -166,92 +153,6 @@ return {
       ]
     },
     {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "location",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Location",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "address",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "address_2",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "coordinates",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "coordinates",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "lat",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "lng",
-              "args": null,
-              "storageKey": null
-            }
-          ]
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "display",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "city",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "state",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "country",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "postal_code",
-          "args": null,
-          "storageKey": null
-        },
-        v3
-      ]
-    },
-    {
       "kind": "ScalarField",
       "alias": null,
       "name": "start_at",
@@ -269,5 +170,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '76f228e5f87e0fb47e69971f6e414288';
+(node as any).hash = 'ede4092cb080d0499e4046925d630c72';
 export default node;
