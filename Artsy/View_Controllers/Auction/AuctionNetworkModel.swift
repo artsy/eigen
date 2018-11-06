@@ -84,11 +84,14 @@ extension AuctionNetworkModel: AuctionNetworkModelType {
                         self.fetchLotStanding(self.saleID)
                     )
                 case .error(let error):
-                    print(error)
-
-                    // FIXME: Update this return value
-                    // return Observable<Any>(Result.error(error), Result.error(error), Result.error(error), Result.error(error), Result.error(error))
-                    fatalError()
+                    print("Error fetching sale: \(error)")
+                    return combine(
+                        Observable(Result.error(error)),
+                        Observable(Result.error(error)),
+                        Observable(Result.error(error)),
+                        Observable(Result.error(error)),
+                        Observable(Result.error(error))
+                    )
                 }
             }
             .flatMap { [weak self] (
