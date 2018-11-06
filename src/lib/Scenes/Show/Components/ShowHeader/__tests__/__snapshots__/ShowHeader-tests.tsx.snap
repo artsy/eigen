@@ -347,49 +347,6 @@ Array [
         }
       />
     </View>
-    <View
-      m={1}
-      style={
-        Array [
-          Object {
-            "marginBottom": 4,
-            "marginLeft": 4,
-            "marginRight": 4,
-            "marginTop": 4,
-          },
-          undefined,
-        ]
-      }
-    />
-    <View
-      style={
-        Array [
-          Object {
-            "borderBottomWidth": 0,
-            "borderColor": "#E5E5E5",
-            "borderStyle": "solid",
-            "borderWidth": 1,
-            "width": "100%",
-          },
-          undefined,
-        ]
-      }
-      width="100%"
-    />
-    <View
-      m={1}
-      style={
-        Array [
-          Object {
-            "marginBottom": 4,
-            "marginLeft": 4,
-            "marginRight": 4,
-            "marginTop": 4,
-          },
-          undefined,
-        ]
-      }
-    />
   </View>,
 ]
 `;

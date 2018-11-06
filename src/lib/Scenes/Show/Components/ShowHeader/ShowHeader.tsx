@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Box, Separator, Serif, Spacer } from "@artsy/palette"
+import { Box, Serif, Spacer } from "@artsy/palette"
 import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { InvertedButton } from "lib/Components/Buttons"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
@@ -46,9 +46,6 @@ export class ShowHeader extends React.Component<Props> {
           <Serif size="2">{description}</Serif>
           <Spacer m={1} />
           <CaretButton text="More Information" onPress={() => onMoreInformationPressed()} />
-          <Spacer m={1} />
-          <Separator />
-          <Spacer m={1} />
         </Box>
       </>
     )

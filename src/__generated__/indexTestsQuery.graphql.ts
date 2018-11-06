@@ -31,12 +31,7 @@ fragment Show_show on Show {
   ...ShowHeader_show
   ...Location_show
   ...Artworks_show
-  artists {
-    __id
-    id
-    name
-    is_followed
-  }
+  ...Artists_show
   status
   counts {
     artworks
@@ -110,6 +105,16 @@ fragment Artworks_show on Show {
     ...GenericGrid_artworks
     __id
   }
+}
+
+fragment Artists_show on Show {
+  artists {
+    __id
+    id
+    name
+    is_followed
+  }
+  __id
 }
 
 fragment GenericGrid_artworks on Artwork {
@@ -232,7 +237,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "indexTestsQuery",
-  "id": "8b0eaebbc3ed45eeaef8610b48c97cc7",
+  "id": "177ffa99540f527c332477016b897c9a",
   "text": null,
   "metadata": {},
   "fragment": {
