@@ -10,6 +10,7 @@ export type Location_show = {
         readonly city: string | null;
         readonly address: string | null;
         readonly address_2: string | null;
+        readonly display: string | null;
         readonly coordinates: ({
             readonly lat: number | null;
             readonly lng: number | null;
@@ -87,6 +88,13 @@ return {
           "kind": "ScalarField",
           "alias": null,
           "name": "address_2",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "display",
           "args": null,
           "storageKey": null
         },
@@ -175,5 +183,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'bae8d50a563d036d0e76477100d5a2ac';
+(node as any).hash = '25e1e8d504b979dac7c454b959df5e4e';
 export default node;

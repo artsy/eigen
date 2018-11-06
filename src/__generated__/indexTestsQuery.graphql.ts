@@ -78,6 +78,7 @@ fragment Location_show on Show {
     city
     address
     address_2
+    display
     coordinates {
       lat
       lng
@@ -205,26 +206,27 @@ v4 = {
   "args": null,
   "storageKey": null
 },
-v5 = [
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "display",
+  "args": null,
+  "storageKey": null
+},
+v6 = [
   v4
 ],
-v6 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v7 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "display",
-    "args": null,
-    "storageKey": null
-  }
-],
 v8 = [
+  v5
+],
+v9 = [
   v4,
   v1
 ];
@@ -232,7 +234,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "indexTestsQuery",
-  "id": "8b0eaebbc3ed45eeaef8610b48c97cc7",
+  "id": "e81ebf06ca04229db8a64a407cdf2566",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -357,6 +359,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
+              v5,
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -436,12 +439,12 @@ return {
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
-                "selections": v5
+                "selections": v6
               },
               {
                 "kind": "InlineFragment",
                 "type": "ExternalPartner",
-                "selections": v5
+                "selections": v6
               }
             ]
           },
@@ -554,7 +557,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v6,
+                  v7,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -582,7 +585,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkOpeningBid",
                     "plural": false,
-                    "selections": v7
+                    "selections": v8
                   },
                   {
                     "kind": "LinkedField",
@@ -592,7 +595,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkCurrentBid",
                     "plural": false,
-                    "selections": v7
+                    "selections": v8
                   },
                   {
                     "kind": "ScalarField",
@@ -610,7 +613,7 @@ return {
                     "concreteType": "Sale",
                     "plural": false,
                     "selections": [
-                      v6,
+                      v7,
                       v1
                     ]
                   },
@@ -632,7 +635,7 @@ return {
                 ],
                 "concreteType": "Artist",
                 "plural": true,
-                "selections": v8
+                "selections": v9
               },
               {
                 "kind": "LinkedField",
@@ -642,7 +645,7 @@ return {
                 "args": null,
                 "concreteType": "Partner",
                 "plural": false,
-                "selections": v8
+                "selections": v9
               },
               {
                 "kind": "ScalarField",

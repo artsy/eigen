@@ -1,3 +1,3 @@
 {
-  "be7a98bae37d1dea9e7c6388ee57dd5f": "query QueryRenderersFairQuery(\n  $fairID: String!\n) {\n  fair(id: $fairID) {\n    ...Fair_fair\n    __id\n  }\n}\n\nfragment Fair_fair on Fair {\n  name\n  __id\n}\n"
+  "ab381b038a80904b983e06cd4d1bdb31": "query QueryRenderersFairQuery(\n  $fairID: String!\n) {\n  fair(id: $fairID) {\n    ...Fair_fair\n    __id\n  }\n}\n\nfragment Fair_fair on Fair {\n  ...FairHeader_fair\n  __id\n}\n\nfragment FairHeader_fair on Fair {\n  id\n  name\n  image {\n    image_url\n    aspect_ratio\n    url\n  }\n  organizer {\n    profile {\n      icon {\n        id\n        href\n        height\n        width\n        url\n      }\n      name\n      __id\n    }\n  }\n  location {\n    address\n    address_2\n    coordinates {\n      lat\n      lng\n    }\n    display\n    city\n    state\n    country\n    postal_code\n    __id\n  }\n  start_at\n  end_at\n  __id\n}\n"
 }

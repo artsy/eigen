@@ -52,6 +52,7 @@ export const LocationContainer = createFragmentContainer(
         city
         address
         address_2
+        display
         coordinates {
           lat
           lng
