@@ -32,6 +32,12 @@ class AuctionNetworkModelSpec: QuickSpec {
             expect(subject.saleID) == saleID
         }
 
+        it("returns an error when encountering a problem with sale fetch") {
+            class TestError: Error {}
+            subject.saleNetworkModel = Test_AuctionSaleNetworkModel(result: Result.error(TestError()))
+            expect(subject.saleModel).to( beNil() )
+        }
+
         describe("registrationStatus") {
             it("works when bidders fetch errors") {
                 bidderNetworkModel.result = .error(TestError.testing)
