@@ -18,7 +18,7 @@
 
 ### 1.7.4
 
-- Emission's podspec contains deps for all of it's native dependencies - orta
+- Emission's podspec contains deps for all of its native dependencies - orta
 
 ### 1.7.3
 
