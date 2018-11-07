@@ -41,6 +41,7 @@
 - Adds Fair detail view header components - luc
 - Adds MoreInfo screen to show detail view - javamonn
 - Clean up Jest log output, update relay-mock-network-layer - javamonn
+- Adds shows list to Show View - ashley
 
 ### 1.7.1
 
