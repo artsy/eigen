@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.7.2
+
 #### User Facing
 
 - Makes the consignment banner show by default, and allows changing this via an echo flag - orta
