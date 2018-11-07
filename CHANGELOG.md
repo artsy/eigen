@@ -16,6 +16,13 @@
 
 ### Master
 
+#### User Facing
+
+- Makes the consignment banner show by default, and allows changing this via an echo flag - orta
+- Fixes crash in marketing banner - ash
+
+#### Not user facing
+
 - Adds Shows detail page header components - javamonn
 - Updates to relay-compiler and relay-runtime - ash
 - Adds tslint-plugin-relay lint rule (from Reaction) - ash
@@ -23,7 +30,6 @@
 - Updates cocoapods (1.5.3) - luc
 - Adds Mapbox + Location Component - luc
 - Adds Artwork grids with infinite scroll to Show View - ashley
-- Fixes crash in marketing banner - ash
 - Adds Relay DevTools, Update Node.js to 10.13.0 - javamonn
 - Adds artists list component to show detail view - javamonn
 
