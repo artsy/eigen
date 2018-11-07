@@ -27,8 +27,7 @@ export class Shows extends React.Component<Props, State> {
   }
   render() {
     const { city, nearbyShows } = this.props.shows
-
-    const showDetails = _nearbyShows.edges.filter(show => show.node)
+    const showDetails = get(nearbyShows, "edges", []).filter(show => show.node)
     return (
       <>
         <Sans size="8">{"Current Shows In " + city}</Sans>
