@@ -26,6 +26,7 @@
 - Fixes crash in marketing banner - ash
 - Adds Relay DevTools, Update Node.js to 10.13.0 - javamonn
 - Adds artists list component to show detail view - javamonn
+- Adds Fair detail view header components - luc
 
 ### 1.7.1
 

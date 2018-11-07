@@ -33,6 +33,7 @@ export class Fair extends React.Component<Props> {
 
   render() {
     const { fair } = this.props
+
     return (
       <Theme>
         <FlatList

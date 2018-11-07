@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`looks correct when rendererd 1`] = `
+exports[`looks correct when rendered 1`] = `
 <View
   style={
     Array [
