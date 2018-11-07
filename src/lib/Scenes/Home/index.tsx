@@ -6,6 +6,7 @@ import styled from "styled-components/native"
 import { Schema, screenTrack } from "lib/utils/track"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { options } from "lib/options"
 import { Router } from "lib/utils/router"
 
 import WorksForYou from "lib/Containers/WorksForYou"
@@ -102,10 +103,9 @@ export default class Home extends React.Component<Props, State> {
   }
 
   render() {
-    // TODO: Get confirmation on whether we're completey removing this
-    // https://github.com/artsy/emission/pull/1203/files/9ed3eb23a08080601876b50bef4c04468312bb2c#r226737902
-    //
-    const showConsignmentsSash = false
+    // This option doesn't exist today, so it will be undefined, it can
+    // be added to Echo's set of features if we want to disable it.
+    const showConsignmentsSash = !options.hideConsignmentsSash
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView
