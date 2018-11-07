@@ -38,6 +38,7 @@
 - Adds Artwork grids with infinite scroll to Show View - ashley
 - Adds Relay DevTools, Update Node.js to 10.13.0 - javamonn
 - Adds artists list component to show detail view - javamonn
+- Adds Fair detail view header components - luc
 - Adds MoreInfo screen to show detail view - javamonn
 - Clean up Jest log output, update relay-mock-network-layer - javamonn
 

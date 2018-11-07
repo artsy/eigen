@@ -6,7 +6,7 @@ import { InvertedButton } from "lib/Components/Buttons"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { Carousel } from "./Components/Carousel"
+import { Carousel } from "lib/Components/Carousel"
 import { Chip } from "./Components/Chip"
 
 interface Props {

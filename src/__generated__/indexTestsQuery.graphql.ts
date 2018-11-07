@@ -2,26 +2,22 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { Fair_fair$ref } from "./Fair_fair.graphql";
-export type QueryRenderersFairQueryVariables = {
-    readonly fairID: string;
-};
-export type QueryRenderersFairQueryResponse = {
+export type indexTestsQueryVariables = {};
+export type indexTestsQueryResponse = {
     readonly fair: ({
         readonly " $fragmentRefs": Fair_fair$ref;
     }) | null;
 };
-export type QueryRenderersFairQuery = {
-    readonly response: QueryRenderersFairQueryResponse;
-    readonly variables: QueryRenderersFairQueryVariables;
+export type indexTestsQuery = {
+    readonly response: indexTestsQueryResponse;
+    readonly variables: indexTestsQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersFairQuery(
-  $fairID: String!
-) {
-  fair(id: $fairID) {
+query indexTestsQuery {
+  fair(id: "sofa-chicago-2018") {
     ...Fair_fair
     __id
   }
@@ -90,42 +86,34 @@ fragment LocationMap_location on Location {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "LocalArgument",
-    "name": "fairID",
-    "type": "String!",
-    "defaultValue": null
-  }
-],
-v1 = [
-  {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "id",
-    "variableName": "fairID",
+    "value": "sofa-chicago-2018",
     "type": "String!"
   }
 ],
-v2 = {
+v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
   "args": null,
   "storageKey": null
 },
-v3 = {
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v4 = {
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
@@ -135,23 +123,23 @@ v5 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "QueryRenderersFairQuery",
-  "id": "d911fa3eee8443d1842b659e5d12c646",
+  "name": "indexTestsQuery",
+  "id": "0da93b60eb13c8cc448533098d4e40be",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersFairQuery",
+    "name": "indexTestsQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "fair",
-        "storageKey": null,
-        "args": v1,
+        "storageKey": "fair(id:\"sofa-chicago-2018\")",
+        "args": v0,
         "concreteType": "Fair",
         "plural": false,
         "selections": [
@@ -160,27 +148,27 @@ return {
             "name": "Fair_fair",
             "args": null
           },
-          v2
+          v1
         ]
       }
     ]
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersFairQuery",
-    "argumentDefinitions": v0,
+    "name": "indexTestsQuery",
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "fair",
-        "storageKey": null,
-        "args": v1,
+        "storageKey": "fair(id:\"sofa-chicago-2018\")",
+        "args": v0,
         "concreteType": "Fair",
         "plural": false,
         "selections": [
+          v2,
           v3,
-          v4,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -204,7 +192,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v5
+              v4
             ]
           },
           {
@@ -234,7 +222,7 @@ return {
                     "concreteType": "Image",
                     "plural": false,
                     "selections": [
-                      v3,
+                      v2,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -256,11 +244,11 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v5
+                      v4
                     ]
                   },
-                  v4,
-                  v2
+                  v3,
+                  v1
                 ]
               }
             ]
@@ -279,7 +267,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          v2,
+          v1,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -289,8 +277,8 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
+              v1,
               v2,
-              v3,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -384,5 +372,5 @@ return {
   }
 };
 })();
-(node as any).hash = '01761a06b9e03e92a7051ed4665bc2a7';
+(node as any).hash = 'f7e0b73943e52aaed005245ca1611a0c';
 export default node;

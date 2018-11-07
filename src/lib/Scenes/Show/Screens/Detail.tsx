@@ -4,9 +4,9 @@ import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
+import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { ArtistsContainer as Artists } from "../Components/Artists"
 import { ArtworksContainer as Artworks } from "../Components/Artworks"
-import { LocationContainer as Location } from "../Components/Location"
 import { ShowHeaderContainer as ShowHeader } from "../Components/ShowHeader"
 import { Shows } from "../Components/Shows"
 
@@ -33,7 +33,10 @@ export class Detail extends React.Component<Props, State> {
 
     sections.push({
       type: "location",
-      data: show,
+      data: {
+        location: show.location,
+        partnerName: show.partner.name,
+      },
     })
 
     sections.push({
@@ -64,7 +67,7 @@ export class Detail extends React.Component<Props, State> {
   renderItem = ({ item: { data, type } }) => {
     switch (type) {
       case "location":
-        return <Location show={data} />
+        return <LocationMap {...data} />
       case "artworks":
         return <Artworks show={data} />
       case "artists":
@@ -113,9 +116,12 @@ export const DetailContainer = createFragmentContainer(
       description
 
       ...ShowHeader_show
-      ...Location_show
       ...Artworks_show
       ...Artists_show
+
+      location {
+        ...LocationMap_location
+      }
 
       status
       counts {

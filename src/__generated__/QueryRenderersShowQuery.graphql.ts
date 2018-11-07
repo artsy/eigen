@@ -38,9 +38,12 @@ fragment Detail_show on Show {
   name
   description
   ...ShowHeader_show
-  ...Location_show
   ...Artworks_show
   ...Artists_show
+  location {
+    ...LocationMap_location
+    __id
+  }
   status
   counts {
     artworks
@@ -80,39 +83,6 @@ fragment ShowHeader_show on Show {
   __id
 }
 
-fragment Location_show on Show {
-  location {
-    __id
-    id
-    city
-    address
-    address_2
-    coordinates {
-      lat
-      lng
-    }
-    day_schedules {
-      start_time
-      end_time
-      day_of_week
-    }
-  }
-  partner {
-    __typename
-    ... on ExternalPartner {
-      name
-      __id
-    }
-    ... on Partner {
-      name
-    }
-    ... on Node {
-      __id
-    }
-  }
-  __id
-}
-
 fragment Artworks_show on Show {
   __id
   artworks {
@@ -129,6 +99,24 @@ fragment Artists_show on Show {
     is_followed
   }
   __id
+}
+
+fragment LocationMap_location on Location {
+  __id
+  id
+  city
+  address
+  address_2
+  display
+  coordinates {
+    lat
+    lng
+  }
+  day_schedules {
+    start_time
+    end_time
+    day_of_week
+  }
 }
 
 fragment GenericGrid_artworks on Artwork {
@@ -232,34 +220,35 @@ v5 = {
   "args": null,
   "storageKey": null
 },
-v6 = [
-  v5
-],
-v7 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "display",
+  "args": null,
+  "storageKey": null
+},
 v8 = [
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "display",
-    "args": null,
-    "storageKey": null
-  }
+  v7
 ],
 v9 = [
   v5,
   v2
+],
+v10 = [
+  v5
 ];
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "8108904deae4aa070745d2f8f127b20c",
+  "id": "0b6c758e5c8c4acc060cab0fb4fdbc49",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -352,126 +341,6 @@ return {
           },
           v5,
           v2,
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "location",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Location",
-            "plural": false,
-            "selections": [
-              v2,
-              v4,
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "city",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "address",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "address_2",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "coordinates",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "coordinates",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "lat",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "lng",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "day_schedules",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "DaySchedule",
-                "plural": true,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "start_time",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "end_time",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "day_of_week",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "partner",
-            "storageKey": null,
-            "args": null,
-            "concreteType": null,
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "__typename",
-                "args": null,
-                "storageKey": null
-              },
-              v2,
-              {
-                "kind": "InlineFragment",
-                "type": "Partner",
-                "selections": v6
-              },
-              {
-                "kind": "InlineFragment",
-                "type": "ExternalPartner",
-                "selections": v6
-              }
-            ]
-          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -581,7 +450,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v7,
+                  v6,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -637,7 +506,7 @@ return {
                     "concreteType": "Sale",
                     "plural": false,
                     "selections": [
-                      v7,
+                      v6,
                       v2
                     ]
                   },
@@ -704,6 +573,98 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
+            "name": "location",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Location",
+            "plural": false,
+            "selections": [
+              v2,
+              v4,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "city",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "address",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "address_2",
+                "args": null,
+                "storageKey": null
+              },
+              v7,
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "coordinates",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "coordinates",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "lat",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "lng",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "day_schedules",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "DaySchedule",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "start_time",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "end_time",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "day_of_week",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
             "name": "counts",
             "storageKey": null,
             "args": null,
@@ -723,6 +684,35 @@ return {
                 "name": "eligible_artworks",
                 "args": null,
                 "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "partner",
+            "storageKey": null,
+            "args": null,
+            "concreteType": null,
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "__typename",
+                "args": null,
+                "storageKey": null
+              },
+              v2,
+              {
+                "kind": "InlineFragment",
+                "type": "Partner",
+                "selections": v10
+              },
+              {
+                "kind": "InlineFragment",
+                "type": "ExternalPartner",
+                "selections": v10
               }
             ]
           }
