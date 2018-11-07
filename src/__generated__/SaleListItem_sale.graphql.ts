@@ -17,7 +17,7 @@ export type SaleListItem_sale = {
     readonly display_timely_at: string | null;
     readonly cover_image: ({
         readonly url: string | null;
-        readonly aspect_ratio: number | null;
+        readonly aspect_ratio: number;
     }) | null;
     readonly " $refType": SaleListItem_sale$ref;
 };

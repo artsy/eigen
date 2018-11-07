@@ -325,7 +325,7 @@ return {
                 "name": "coordinates",
                 "storageKey": null,
                 "args": null,
-                "concreteType": "coordinates",
+                "concreteType": "LatLng",
                 "plural": false,
                 "selections": [
                   {

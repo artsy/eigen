@@ -18,7 +18,7 @@ export type SaleArtworksGrid_sale = {
                     readonly id: string;
                     readonly __id: string;
                     readonly image: ({
-                        readonly aspect_ratio: number | null;
+                        readonly aspect_ratio: number;
                     }) | null;
                     readonly " $fragmentRefs": Artwork_artwork$ref;
                 }) | null;

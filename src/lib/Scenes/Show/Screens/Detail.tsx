@@ -49,10 +49,9 @@ export class Detail extends React.Component<Props, State> {
       data: show,
     })
 
-    // TODO: Add shows data
     sections.push({
       type: "shows",
-      data: [{ __id: "foo" }],
+      data: show,
     })
 
     this.setState({ sections })
@@ -115,9 +114,33 @@ export const DetailContainer = createFragmentContainer(
       name
       description
 
+      city
+      location {
+        id
+        address
+        address_2
+        city
+        state
+        postal_code
+      }
+      images {
+        id
+      }
+      nearbyShows {
+        edges {
+          node {
+            id
+            name
+            location {
+              address
+            }
+          }
+        }
+      }
       ...ShowHeader_show
       ...Artworks_show
       ...Artists_show
+      ...Shows_show
 
       location {
         ...LocationMap_location

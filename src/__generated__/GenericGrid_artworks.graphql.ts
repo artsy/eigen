@@ -8,7 +8,7 @@ export type GenericGrid_artworks = ReadonlyArray<{
     readonly __id: string;
     readonly id: string;
     readonly image: ({
-        readonly aspect_ratio: number | null;
+        readonly aspect_ratio: number;
     }) | null;
     readonly " $fragmentRefs": Artwork_artwork$ref;
     readonly " $refType": GenericGrid_artworks$ref;
