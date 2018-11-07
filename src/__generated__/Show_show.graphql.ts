@@ -1,53 +1,18 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-import { Artists_show$ref } from "./Artists_show.graphql";
-import { Artworks_show$ref } from "./Artworks_show.graphql";
-import { LocationMap_location$ref } from "./LocationMap_location.graphql";
-import { ShowHeader_show$ref } from "./ShowHeader_show.graphql";
+import { Detail_show$ref } from "./Detail_show.graphql";
+import { MoreInfo_show$ref } from "./MoreInfo_show.graphql";
 declare const _Show_show$ref: unique symbol;
 export type Show_show$ref = typeof _Show_show$ref;
 export type Show_show = {
-    readonly id: string;
-    readonly name: string | null;
-    readonly description: string | null;
-    readonly press_release: string | null;
-    readonly location: ({
-        readonly " $fragmentRefs": LocationMap_location$ref;
-    }) | null;
-    readonly status: string | null;
-    readonly counts: ({
-        readonly artworks: number | null;
-        readonly eligible_artworks: any | null;
-    }) | null;
-    readonly partner: ({
-        readonly name?: string | null;
-    }) | null;
-    readonly " $fragmentRefs": ShowHeader_show$ref & Artworks_show$ref & Artists_show$ref;
+    readonly " $fragmentRefs": Detail_show$ref & MoreInfo_show$ref;
     readonly " $refType": Show_show$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v2 = [
-  v0
-];
-return {
+const node: ConcreteFragment = {
   "kind": "Fragment",
   "name": "Show_show",
   "type": "Show",
@@ -56,115 +21,22 @@ return {
   "selections": [
     {
       "kind": "FragmentSpread",
-      "name": "Artists_show",
-      "args": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "id",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "description",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "press_release",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "ShowHeader_show",
+      "name": "Detail_show",
       "args": null
     },
     {
       "kind": "FragmentSpread",
-      "name": "Artworks_show",
+      "name": "MoreInfo_show",
       "args": null
-    },
-    v0,
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "location",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Location",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "FragmentSpread",
-          "name": "LocationMap_location",
-          "args": null
-        },
-        v1
-      ]
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "status",
+      "name": "__id",
       "args": null,
       "storageKey": null
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "counts",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "ShowCounts",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "artworks",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "eligible_artworks",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "partner",
-      "storageKey": null,
-      "args": null,
-      "concreteType": null,
-      "plural": false,
-      "selections": [
-        v1,
-        {
-          "kind": "InlineFragment",
-          "type": "Partner",
-          "selections": v2
-        },
-        {
-          "kind": "InlineFragment",
-          "type": "ExternalPartner",
-          "selections": v2
-        }
-      ]
-    },
-    v1
+    }
   ]
 };
-})();
-(node as any).hash = '923832cacd86796ed522d1159c357585';
+(node as any).hash = 'de45104018adb6d9fde6f4a10cb280fa';
 export default node;

@@ -3,7 +3,7 @@ import { graphql } from "react-relay"
 
 import { MockRelayRenderer } from "../../../../../tests/MockRelayRenderer"
 import { renderUntil } from "../../../../../tests/renderUntil"
-import { ShowFixture } from "../../../__tests__/fixtures"
+import { ShowFixture } from "../../../__fixtures__"
 
 import { InvertedButton } from "lib/Components/Buttons"
 import ListItemButton from "lib/Components/Buttons/InvertedButton"
@@ -12,8 +12,6 @@ import { Artists, ArtistsContainer } from "../index"
 
 jest.unmock("react-relay")
 import relay from "react-relay"
-
-relay.commitMutation = jest.fn()
 
 const renderTree = () =>
   renderUntil(
@@ -37,6 +35,10 @@ const renderTree = () =>
   )
 
 describe("ArtistsContianer", () => {
+  beforeAll(() => {
+    relay.commitMutation = jest.fn()
+  })
+
   it("Renders the show artists", async () => {
     const tree = await renderTree()
     expect(
@@ -69,5 +71,9 @@ describe("ArtistsContianer", () => {
       .onPress()
 
     expect(tree.find(Artists).state().isExpanded).toBe(true)
+  })
+
+  afterAll(() => {
+    ;(relay.commitMutation as any).mockClear()
   })
 })

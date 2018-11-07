@@ -9,7 +9,7 @@ it("renders properly", async () => {
   const tree = await renderRelayTree({
     Component: Fair,
     query: graphql`
-      query FairTestsQuery {
+      query indexTestsQuery {
         fair(id: "sofa-chicago-2018") {
           ...FairHeader_fair
         }

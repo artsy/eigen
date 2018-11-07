@@ -12,12 +12,15 @@ static NSDictionary *options = nil;
     //
     // The keys in this hash are how you can access the value in Emission code:
     //
-    // import { NativeModules } from "react-native"
-    // const { Emission } = NativeModules
+    // import { options } from "lib/options"
     //
-    // if (Emission.options.example) {
+    // if (options.example) {
     //   [something]
-
+    //
+    //
+    // Then in your test files, you can use jest to mock "lib/options" with your own
+    // object.
+    //
     options = @{
        @"nothingYet": @"No feature flags available"
     };
