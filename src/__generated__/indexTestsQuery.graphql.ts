@@ -1,11 +1,11 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { FairHeader_fair$ref } from "./FairHeader_fair.graphql";
+import { Fair_fair$ref } from "./Fair_fair.graphql";
 export type indexTestsQueryVariables = {};
 export type indexTestsQueryResponse = {
     readonly fair: ({
-        readonly " $fragmentRefs": FairHeader_fair$ref;
+        readonly " $fragmentRefs": Fair_fair$ref;
     }) | null;
 };
 export type indexTestsQuery = {
@@ -18,9 +18,24 @@ export type indexTestsQuery = {
 /*
 query indexTestsQuery {
   fair(id: "sofa-chicago-2018") {
-    ...FairHeader_fair
+    ...Fair_fair
     __id
   }
+}
+
+fragment Fair_fair on Fair {
+  ...FairHeader_fair
+  location {
+    ...LocationMap_location
+    __id
+  }
+  organizer {
+    profile {
+      name
+      __id
+    }
+  }
+  __id
 }
 
 fragment FairHeader_fair on Fair {
@@ -47,6 +62,24 @@ fragment FairHeader_fair on Fair {
   start_at
   end_at
   __id
+}
+
+fragment LocationMap_location on Location {
+  __id
+  id
+  city
+  address
+  address_2
+  display
+  coordinates {
+    lat
+    lng
+  }
+  day_schedules {
+    start_time
+    end_time
+    day_of_week
+  }
 }
 */
 
@@ -91,7 +124,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "indexTestsQuery",
-  "id": "40b8ab76b87d8a82d396cb6e03feca56",
+  "id": "0da93b60eb13c8cc448533098d4e40be",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -112,7 +145,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "FairHeader_fair",
+            "name": "Fair_fair",
             "args": null
           },
           v1
@@ -234,12 +267,110 @@ return {
             "args": null,
             "storageKey": null
           },
-          v1
+          v1,
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "location",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Location",
+            "plural": false,
+            "selections": [
+              v1,
+              v2,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "city",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "address",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "address_2",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "display",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "coordinates",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "coordinates",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "lat",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "lng",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "day_schedules",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "DaySchedule",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "start_time",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "end_time",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "day_of_week",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              }
+            ]
+          }
         ]
       }
     ]
   }
 };
 })();
-(node as any).hash = '57216da948e43ebc69907f7efbdfb974';
+(node as any).hash = 'f7e0b73943e52aaed005245ca1611a0c';
 export default node;
