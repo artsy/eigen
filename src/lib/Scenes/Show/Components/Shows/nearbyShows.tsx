@@ -23,22 +23,6 @@ export const NearbyShows = {
     },
     {
       node: {
-        id: "j-cacciola-gallery-peonies-the-art-of-james-lahey",
-        name: "PEONIES: The Art of James Lahey",
-        images: [],
-        partner: {
-          name: "J. Cacciola Gallery",
-        },
-        location: {
-          address: "35 Mill Street",
-          address_2: "",
-          state: "NJ",
-          postal_code: "07924",
-        },
-      },
-    },
-    {
-      node: {
         id: "j-cacciola-gallery-summer-discoveries-group-exhibition",
         name: "Summer Discoveries: Group Exhibition",
         images: [
@@ -59,38 +43,6 @@ export const NearbyShows = {
             aspect_ratio: 1.52,
           },
         ],
-        partner: {
-          name: "J. Cacciola Gallery",
-        },
-        location: {
-          address: "35 Mill Street",
-          address_2: "",
-          state: "NJ",
-          postal_code: "07924",
-        },
-      },
-    },
-    {
-      node: {
-        id: "j-cacciola-gallery-imagined-slash-discovered-the-photography-of-george-diebold",
-        name: "Imagined / Discovered: The Photography of George Diebold",
-        images: [],
-        partner: {
-          name: "J. Cacciola Gallery",
-        },
-        location: {
-          address: "35 Mill Street",
-          address_2: "",
-          state: "NJ",
-          postal_code: "07924",
-        },
-      },
-    },
-    {
-      node: {
-        id: "j-cacciola-gallery-structures-and-personality",
-        name: "Structures and Personality",
-        images: [],
         partner: {
           name: "J. Cacciola Gallery",
         },
