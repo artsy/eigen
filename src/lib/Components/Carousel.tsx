@@ -13,7 +13,7 @@ const ImageView = styled(OpaqueImageView)`
 `
 
 const PageList = styled(ScrollView)`
-  flex: 1;
+  height: ${ITEM_HEIGHT}px;
 `
 
 const PageIndicator = styled.View<{ isActive: boolean; isLast: boolean }>`
@@ -72,7 +72,9 @@ export class Carousel extends React.Component<Props, State> {
         layout: { width },
       },
     } = ev
-    this.setState({ pageWidth: width })
+    if (width && !this.state.pageWidth) {
+      this.setState({ pageWidth: width })
+    }
   }
 
   handleIndicatorPress = idx => {
