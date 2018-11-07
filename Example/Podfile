@@ -19,6 +19,9 @@ yoga_path = File.join(react_path, 'ReactCommon/yoga')
 folly_spec_path = File.join(react_path, 'third-party-podspecs/Folly.podspec')
 glog_spec_path = File.join(react_path, 'third-party-podspecs/glog.podspec')
 double_conversion_spec_path = File.join(react_path, 'third-party-podspecs/DoubleConversion.podspec')
+
+
+# If you add a new dependency here, it should also go in the Podspec
 sentry_path = File.join(node_modules_path, 'react-native-sentry')
 tispi_stripe_spec_path = File.join(node_modules_path, 'tipsi-stripe/tipsi-stripe.podspec')
 mapbox_path = File.join(node_modules_path, '@mapbox/react-native-mapbox-gl')
