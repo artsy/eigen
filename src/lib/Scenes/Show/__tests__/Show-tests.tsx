@@ -3,24 +3,20 @@ import { graphql } from "react-relay"
 
 import { MockRelayRenderer } from "../../../tests/MockRelayRenderer"
 import { renderUntil } from "../../../tests/renderUntil"
-import { ShowFixture } from "./fixtures"
+import { ShowFixture } from "../__fixtures__"
 
-import Show from "../"
-import { ShowHeader } from "../Components/ShowHeader"
+import { DetailContainer as ShowDetail } from "../Screens/Detail"
+import { ShowContainer } from "../Show"
 
 jest.unmock("react-relay")
 
-// FIXME: Rename Show/index.tx to Show/Show.tsx to avoid `indexTestsQuery` below
-
-it("Renders a show", async () => {
-  const tree = await renderUntil(
-    wrapper => {
-      return wrapper.find(ShowHeader).length > 0
-    },
+const renderTree = () =>
+  renderUntil(
+    wrapper => wrapper.find(ShowDetail).length > 0,
     <MockRelayRenderer
-      Component={Show}
+      Component={ShowContainer}
       query={graphql`
-        query indexTestsQuery {
+        query ShowTestsQuery {
           show(id: "anderson-fine-art-gallery-flickinger-collection") {
             ...Show_show
           }
@@ -32,5 +28,7 @@ it("Renders a show", async () => {
     />
   )
 
+it("renders the Show screen", async () => {
+  const tree = await renderTree()
   expect(tree.text()).toContain("Flickinger Collection")
 })

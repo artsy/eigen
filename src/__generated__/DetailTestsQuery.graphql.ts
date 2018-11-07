@@ -1,33 +1,32 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { Show_show$ref } from "./Show_show.graphql";
-export type indexTestsQueryVariables = {};
-export type indexTestsQueryResponse = {
+import { Detail_show$ref } from "./Detail_show.graphql";
+export type DetailTestsQueryVariables = {};
+export type DetailTestsQueryResponse = {
     readonly show: ({
-        readonly " $fragmentRefs": Show_show$ref;
+        readonly " $fragmentRefs": Detail_show$ref;
     }) | null;
 };
-export type indexTestsQuery = {
-    readonly response: indexTestsQueryResponse;
-    readonly variables: indexTestsQueryVariables;
+export type DetailTestsQuery = {
+    readonly response: DetailTestsQueryResponse;
+    readonly variables: DetailTestsQueryVariables;
 };
 
 
 
 /*
-query indexTestsQuery {
+query DetailTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
-    ...Show_show
+    ...Detail_show
     __id
   }
 }
 
-fragment Show_show on Show {
+fragment Detail_show on Show {
   id
   name
   description
-  press_release
   ...ShowHeader_show
   ...Location_show
   ...Artworks_show
@@ -236,13 +235,13 @@ v8 = [
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "indexTestsQuery",
-  "id": "177ffa99540f527c332477016b897c9a",
+  "name": "DetailTestsQuery",
+  "id": "8b0be1b5a1d40fce2440d50398029d89",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "indexTestsQuery",
+    "name": "DetailTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -258,7 +257,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Show_show",
+            "name": "Detail_show",
             "args": null
           },
           v1
@@ -268,7 +267,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "indexTestsQuery",
+    "name": "DetailTestsQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -710,5 +709,5 @@ return {
   }
 };
 })();
-(node as any).hash = '3e2c9eb71446a9653f129ea9d755a483';
+(node as any).hash = '6394c690850006c17cedfde67dfaa863';
 export default node;

@@ -1,18 +1,18 @@
-import { Box, Separator, Theme } from "@artsy/palette"
+import { Box, Separator } from "@artsy/palette"
+import { Detail_show } from "__generated__/Detail_show.graphql"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { ArtistsContainer as Artists } from "./Components/Artists"
-import { ArtworksContainer as Artworks } from "./Components/Artworks"
-import { LocationContainer as Location } from "./Components/Location"
-import { ShowHeaderContainer as ShowHeader } from "./Components/ShowHeader"
-import { Shows } from "./Components/Shows"
-
-import { Show_show } from "__generated__/Show_show.graphql"
+import { ArtistsContainer as Artists } from "../Components/Artists"
+import { ArtworksContainer as Artworks } from "../Components/Artworks"
+import { LocationContainer as Location } from "../Components/Location"
+import { ShowHeaderContainer as ShowHeader } from "../Components/ShowHeader"
+import { Shows } from "../Components/Shows"
 
 interface Props extends ViewProperties {
-  show: Show_show
+  show: Detail_show
+  onMoreInformationPressed: () => void
 }
 
 interface State {
@@ -22,7 +22,7 @@ interface State {
   }>
 }
 
-export class Show extends React.Component<Props, State> {
+export class Detail extends React.Component<Props, State> {
   state = {
     sections: [],
   }
@@ -55,15 +55,6 @@ export class Show extends React.Component<Props, State> {
     this.setState({ sections })
   }
 
-  handleSaveShow = () => {
-    /* TODO: implement */
-    return Promise.resolve()
-  }
-
-  handleMoreInformationPressed = () => {
-    /* TODO: implement */
-  }
-
   renderItemSeparator = () => (
     <Box py={2} px={2}>
       <Separator />
@@ -79,47 +70,47 @@ export class Show extends React.Component<Props, State> {
       case "artists":
         return <Artists show={data} />
       case "shows":
-        return <Shows shows={data} />
+        return <Shows show={data} />
       default:
         return null
     }
   }
 
+  handleSaveShow = () => {
+    /* TODO: implement */
+    return Promise.resolve()
+  }
+
   render() {
-    const { show } = this.props
+    const { show, onMoreInformationPressed } = this.props
     return (
-      <Theme>
-        <FlatList
-          data={this.state.sections}
-          ListHeaderComponent={
-            <>
-              <ShowHeader
-                show={show}
-                onSaveShowPressed={this.handleSaveShow}
-                onMoreInformationPressed={this.handleMoreInformationPressed}
-              />
-              {this.renderItemSeparator()}
-            </>
-          }
-          ItemSeparatorComponent={this.renderItemSeparator}
-          renderItem={data => {
-            return <Box px={2}>{this.renderItem(data)}</Box>
-          }}
-          keyExtractor={(item, index) => item.type + String(index)}
-        />
-      </Theme>
+      <FlatList
+        data={this.state.sections}
+        ListHeaderComponent={
+          <>
+            <ShowHeader
+              show={show}
+              onSaveShowPressed={this.handleSaveShow}
+              onMoreInformationPressed={onMoreInformationPressed}
+            />
+            {this.renderItemSeparator()}
+          </>
+        }
+        ItemSeparatorComponent={this.renderItemSeparator}
+        renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+        keyExtractor={(item, index) => item.type + String(index)}
+      />
     )
   }
 }
 
-export default createFragmentContainer(
-  Show,
+export const DetailContainer = createFragmentContainer(
+  Detail,
   graphql`
-    fragment Show_show on Show {
+    fragment Detail_show on Show {
       id
       name
       description
-      press_release
 
       ...ShowHeader_show
       ...Location_show

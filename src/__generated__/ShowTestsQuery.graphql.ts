@@ -2,26 +2,22 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { Show_show$ref } from "./Show_show.graphql";
-export type QueryRenderersShowQueryVariables = {
-    readonly showID: string;
-};
-export type QueryRenderersShowQueryResponse = {
+export type ShowTestsQueryVariables = {};
+export type ShowTestsQueryResponse = {
     readonly show: ({
         readonly " $fragmentRefs": Show_show$ref;
     }) | null;
 };
-export type QueryRenderersShowQuery = {
-    readonly response: QueryRenderersShowQueryResponse;
-    readonly variables: QueryRenderersShowQueryVariables;
+export type ShowTestsQuery = {
+    readonly response: ShowTestsQueryResponse;
+    readonly variables: ShowTestsQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersShowQuery(
-  $showID: String!
-) {
-  show(id: $showID) {
+query ShowTestsQuery {
+  show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...Show_show
     __id
   }
@@ -190,59 +186,51 @@ fragment Artwork_artwork on Artwork {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "LocalArgument",
-    "name": "showID",
-    "type": "String!",
-    "defaultValue": null
-  }
-],
-v1 = [
-  {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "id",
-    "variableName": "showID",
+    "value": "anderson-fine-art-gallery-flickinger-collection",
     "type": "String!"
   }
 ],
-v2 = {
+v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
   "args": null,
   "storageKey": null
 },
-v3 = {
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "aspect_ratio",
   "args": null,
   "storageKey": null
 },
-v4 = {
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v6 = [
-  v5
+v5 = [
+  v4
 ],
-v7 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v8 = [
+v7 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -251,30 +239,30 @@ v8 = [
     "storageKey": null
   }
 ],
-v9 = [
-  v5,
-  v2
+v8 = [
+  v4,
+  v1
 ];
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "QueryRenderersShowQuery",
-  "id": "8108904deae4aa070745d2f8f127b20c",
+  "name": "ShowTestsQuery",
+  "id": "b6e942e959606d798983e3fedfa1a90b",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersShowQuery",
+    "name": "ShowTestsQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
-        "storageKey": null,
-        "args": v1,
+        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
+        "args": v0,
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -283,22 +271,22 @@ return {
             "name": "Show_show",
             "args": null
           },
-          v2
+          v1
         ]
       }
     ]
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersShowQuery",
-    "argumentDefinitions": v0,
+    "name": "ShowTestsQuery",
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
-        "storageKey": null,
-        "args": v1,
+        "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
+        "args": v0,
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -318,10 +306,10 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v3
+              v2
             ]
           },
-          v4,
+          v3,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -350,8 +338,8 @@ return {
             "args": null,
             "storageKey": null
           },
-          v5,
-          v2,
+          v4,
+          v1,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -361,8 +349,8 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
-              v2,
-              v4,
+              v1,
+              v3,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -459,16 +447,16 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v2,
+              v1,
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
-                "selections": v6
+                "selections": v5
               },
               {
                 "kind": "InlineFragment",
                 "type": "ExternalPartner",
-                "selections": v6
+                "selections": v5
               }
             ]
           },
@@ -488,7 +476,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v2,
+              v1,
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -498,7 +486,7 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v3,
+                  v2,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -543,7 +531,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v4,
+              v3,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -581,7 +569,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v7,
+                  v6,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -589,7 +577,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v2
+                  v1
                 ]
               },
               {
@@ -609,7 +597,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkOpeningBid",
                     "plural": false,
-                    "selections": v8
+                    "selections": v7
                   },
                   {
                     "kind": "LinkedField",
@@ -619,7 +607,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkCurrentBid",
                     "plural": false,
-                    "selections": v8
+                    "selections": v7
                   },
                   {
                     "kind": "ScalarField",
@@ -637,11 +625,11 @@ return {
                     "concreteType": "Sale",
                     "plural": false,
                     "selections": [
-                      v7,
-                      v2
+                      v6,
+                      v1
                     ]
                   },
-                  v2
+                  v1
                 ]
               },
               {
@@ -659,7 +647,7 @@ return {
                 ],
                 "concreteType": "Artist",
                 "plural": true,
-                "selections": v9
+                "selections": v8
               },
               {
                 "kind": "LinkedField",
@@ -669,7 +657,7 @@ return {
                 "args": null,
                 "concreteType": "Partner",
                 "plural": false,
-                "selections": v9
+                "selections": v8
               },
               {
                 "kind": "ScalarField",
@@ -689,9 +677,9 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              v2,
+              v1,
+              v3,
               v4,
-              v5,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -732,5 +720,5 @@ return {
   }
 };
 })();
-(node as any).hash = '673a9098896e4777f88f0902608774eb';
+(node as any).hash = '8915cd1b9bee6e86f99710827ff35251';
 export default node;
