@@ -35,6 +35,7 @@
 - Adds Relay DevTools, Update Node.js to 10.13.0 - javamonn
 - Adds artists list component to show detail view - javamonn
 - Adds MoreInfo screen to show detail view - javamonn
+- Clean up Jest log output, update relay-mock-network-layer - javamonn
 
 ### 1.7.1
 
