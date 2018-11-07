@@ -23,7 +23,10 @@ const renderTree = () =>
         }
       `}
       mockResolvers={{
-        Show: () => ShowFixture,
+        Show: () => ({
+          ...ShowFixture,
+          artists: () => ShowFixture.show.artists,
+        }),
       }}
     />
   )
