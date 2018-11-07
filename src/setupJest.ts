@@ -31,6 +31,23 @@ function mockedModule(path: string, mockModuleName: string) {
   jest.mock(path, () => mockModuleName)
 }
 
+const originalConsoleError = console.error
+
+console.error = (message?: any) => {
+  if (
+    typeof message === "string" &&
+    (message.includes("is using uppercase HTML. Always use lowercase HTML tags in React.") ||
+      /Warning: React does not recognize the `\w+` prop on a DOM element\./.test(message) ||
+      /Warning: The tag <\w+> is unrecognized in this browser\./.test(message) ||
+      /Warning: Unknown event handler property `\w+`\./.test(message) ||
+      /Warning: Received `\w+` for a non-boolean attribute `\w+`\./.test(message))
+  ) {
+    // NOOP
+  } else {
+    originalConsoleError(message)
+  }
+}
+
 mockedModule("./lib/Components/SwitchView.tsx", "SwitchView")
 mockedModule("./lib/Components/Spinner.tsx", "ARSpinner")
 mockedModule("./lib/Components/OpaqueImageView.tsx", "AROpaqueImageView")
