@@ -21,7 +21,6 @@ describe("FairHeader", () => {
       },
     })
 
-    const result = `<aropaqueimageview imageurl="https://d32dm0rphc51dk.cloudfront.net/o0Zrtm-CgwbV1syD_33DuA/square.jpg" aspectratio="1" width="750"><view></view><image source="[object Object]"></image></aropaqueimageview>`
-    expect(tree.html()).toEqual(result)
+    expect(tree.html()).toMatchSnapshot()
   })
 })

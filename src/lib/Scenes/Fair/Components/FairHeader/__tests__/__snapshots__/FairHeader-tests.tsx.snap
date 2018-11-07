@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FairHeader renders properly 1`] = `"<aropaqueimageview imageurl=\\"https://d32dm0rphc51dk.cloudfront.net/o0Zrtm-CgwbV1syD_33DuA/square.jpg\\" aspectratio=\\"1\\" width=\\"750\\"><view></view><image source=\\"[object Object]\\"></image></aropaqueimageview>"`;
