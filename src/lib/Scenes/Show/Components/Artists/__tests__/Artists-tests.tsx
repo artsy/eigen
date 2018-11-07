@@ -28,8 +28,10 @@ const renderTree = () =>
         }
       `}
       mockResolvers={{
-        Show: () => ShowFixture,
-        Artist: () => ({ name: "Hans Hofmann", is_followed: false, id: "hans-hofmann" }),
+        Show: () => ({
+          ...ShowFixture,
+          artists: () => ShowFixture.show.artists,
+        }),
       }}
     />
   )
