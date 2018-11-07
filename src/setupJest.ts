@@ -33,6 +33,7 @@ function mockedModule(path: string, mockModuleName: string) {
 
 const originalConsoleError = console.error
 
+// TODO: Remove once we're no longer using JSDOM for enzyme static rendering.
 console.error = (message?: any) => {
   if (
     typeof message === "string" &&
