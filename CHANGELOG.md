@@ -16,7 +16,11 @@
 
 ### Master
 
-### 1.7.2
+### 1.7.4
+
+- Emission's podspec contains deps for all of it's native dependencies - orta
+
+### 1.7.3
 
 #### User Facing
 
