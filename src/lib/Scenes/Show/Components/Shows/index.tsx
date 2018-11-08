@@ -16,7 +16,7 @@ export class Shows extends React.Component<Props> {
     const nearbyShowsDetail = (nearbyShows.edges || []).filter(show => show.node)
     return (
       <>
-        <Sans size="8">{"Current Shows In " + city}</Sans>
+        <Sans size="6">{"Current Shows In " + city}</Sans>
         <ShowDetails data={nearbyShowsDetail as any} />
       </>
     )
