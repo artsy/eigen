@@ -1,11 +1,2864 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`looks correct when rendered 1`] = `
-<Text
-  accessible={true}
-  allowFontScaling={true}
-  ellipsizeMode="tail"
->
-  {"name":"this is a show"}
-</Text>
-`;
+Array [
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    className="sc-bdVaJa bDWFJH"
+    ellipsizeMode="tail"
+    fontFamily="Unica77LL-Regular"
+    fontSize={28}
+    lineHeight={36}
+    style={
+      Array [
+        Object {
+          "fontFamily": "Unica77LL-Regular",
+          "fontSize": 28,
+          "lineHeight": 36,
+        },
+        undefined,
+      ]
+    }
+  >
+    Current Shows In New York
+  </Text>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/6HYZ-tKaXLrcqXCfYxNZQQ/large.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Delicate Power: The Delicacy and Complexity of Egg Tempera
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/f4ohqDUBJS298uXRvqgZvA/medium.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Summer Discoveries: Group Exhibition
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/YonNiufAG-b6H6ynPQCVnQ/medium.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Winter Invitational
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/X8vGjbeGeRdpnwLGiyv8PA/medium.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          The Temporal Painter
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/-a1QlTsxnM_pYBCFvYbeDA/larger.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Incidental Edges
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/9SYq8mu4dH_Z3uf5JYCEIA/larger.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Reimagine Everything
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/u1p0egGUb1xma9vnSC2gcQ/medium.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Crossroads
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/Cj1xcyiT6GqgMr2Lun3LeQ/medium.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Boundless: The Abstract Landscapes of Carole Pierce
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/TSm-rJdHshNGSrB_A-cZnA/large.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Nature is the Fountain's Head
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/h8fZL59xBrQWNCy_9qrULg/medium.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          2018 Winter Invitational
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/5OvTwHbBAhbaWTwUfAgjzg/medium.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Past Meets Present: The Paintings of John C. Traynor
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/bHAU1lrkn3weqaoJtluqhQ/medium.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Out of the Ether: Landscapes by Maureen Chatfield
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/cbgKNAsDMKVsyHu8uzdmlw/medium.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Power Through Color
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/y_EcJOYZxauQNtQzrcQOKg/medium.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          2018 Summer Showcase
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/DV78cH6zf1xMEJiCw_JQNA/larger.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Interpreting Nature's Palette
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/zLd4lCdTDbb6cHMpZIvV5g/medium.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Dimensions Discovered
+J. Cacciola Gallery
+35 Mill Street
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/O4QxsEUzI8baeougo9XRvQ/larger.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NORDSTROM "SYNERGY" ART & FASHION
+ACED GALLERY
+NORDSTROM
+3710 U.S. 9
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/s-xmI5kE16KXGqyFoD2PCQ/tall.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          This Leads to Fire: Russian Art from Nonconformism to Global Capitalism, Selections from the Kolodzei Art Foundation Collection, At the Neuberger Museum of Art Purchase College,Purchase, NY
+Kolodzei Art Foundation
+123 South Adelaide Avenue #1N
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/ADYdY8P1kg9vKA9ffrb4pg/larger.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Finding Freedom in Russian Art, 1961-2014. Selections from the Kolodzei Art Foundation and the Collection of Dr. Wayne F. Yakes. Paul and Lulu Hilliard University Art Museum, University of Louisiana at Lafayette,  Lafayette, LA
+Kolodzei Art Foundation
+123 South Adelaide Avenue #1N
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/IxhlHUC5FlbQsAI9ExMn-g/larger.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Heroes and Villains
+Arts Unbound
+544 Freeman St
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/ADYdY8P1kg9vKA9ffrb4pg/larger.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Mindy Solomon Gallery at VOLTA NY 2014
+Mindy Solomon Gallery
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      Array [
+        Object {
+          "display": "flex",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      mb={15}
+      mt={15}
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "marginBottom": 15,
+            "marginTop": 15,
+          },
+          undefined,
+        ]
+      }
+    >
+      <AROpaqueImageView
+        imageURL="https://d32dm0rphc51dk.cloudfront.net/ADYdY8P1kg9vKA9ffrb4pg/larger.jpg"
+        style={
+          Array [
+            Object {
+              "height": 200,
+              "width": "100%",
+            },
+            undefined,
+          ]
+        }
+      />
+    </View>
+    <View
+      flexDirection="row"
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "flexDirection": "row",
+          },
+          undefined,
+        ]
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "70%",
+            },
+            undefined,
+          ]
+        }
+        width="70%"
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Galerie Kleindienst at VOLTA NY 2014
+Galerie Kleindienst
+
+        </Text>
+      </View>
+      <View
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "width": "30%",
+            },
+            undefined,
+          ]
+        }
+        width="30%"
+      >
+        <View
+          accessible={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "rgba(255, 255, 255, 1)",
+              "borderColor": "rgba(0, 0, 0, 1)",
+              "borderWidth": 1,
+              "height": 36,
+              "justifyContent": "center",
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            ellipsizeMode="tail"
+            style={
+              Array [
+                Object {
+                  "fontSize": 12,
+                },
+                Object {
+                  "fontFamily": "AvantGardeGothicITC",
+                },
+                Object {
+                  "color": "rgba(0, 0, 0, 1)",
+                  "opacity": 1,
+                },
+              ]
+            }
+          >
+            SAVE
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+]
+`
