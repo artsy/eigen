@@ -1,6 +1,7 @@
 import { Flex } from "@artsy/palette"
-import { InvertedWhiteBorderedButton } from "lib/Components/Buttons"
+import { WhiteButton } from "lib/Components/Buttons"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
+import { Colors } from "lib/data/colors"
 import React from "react"
 import { Text } from "react-native"
 import styled from "styled-components/native"
@@ -10,6 +11,10 @@ const DEFAULT_ARTWORK_URL = "https://d32dm0rphc51dk.cloudfront.net/ADYdY8P1kg9vK
 const ImageView = styled(OpaqueImageView)`
   height: 200;
   width: 100%;
+`
+
+const ButtonBorderBlack = styled(WhiteButton)`
+  border-color: ${Colors.Black};
 `
 
 interface State {
@@ -44,7 +49,7 @@ export class ShowDetails extends React.Component<Props, State> {
     const gallery = detail.partner.name ? detail.partner.name + "\n" : null
     const address = detail.location.address ? detail.location.address + "\n" : null
     const address2 = detail.location.address_2 ? detail.location.address_2 + "\n" : null
-    const state = detail.partner.state ? detail.partner.state + "\n" : null
+    const state = detail.partner.state ? detail.partner.state + " " : null
     const post = detail.partner.postal_code ? detail.partner.postal_code + "\n" : null
     let galleryDetail = ""
     if (name) {
@@ -81,7 +86,7 @@ export class ShowDetails extends React.Component<Props, State> {
         <Flex flexDirection={"row"}>
           <Flex width={"70%"}>{this.getGalleryDetails(showDetail.node)}</Flex>
           <Flex width={"30%"}>
-            <InvertedWhiteBorderedButton
+            <ButtonBorderBlack
               text="Save"
               onPress={() => {
                 this.saveShow(showDetail.node.id)

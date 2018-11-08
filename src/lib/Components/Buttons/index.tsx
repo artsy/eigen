@@ -157,10 +157,6 @@ export const InvertedButton = (props: ButtonProps) => <Button {...props} stateCo
 
 export const InvertedBorderedButton = (props: ButtonProps) => <Button {...props} stateColors={flatBorderedBlackTheme} />
 
-export const InvertedWhiteBorderedButton = (props: ButtonProps) => (
-  <Button {...props} stateColors={flatWhiteBorderedBlackTheme} />
-)
-
 export const GhostButton = (props: ButtonProps) => <Button {...props} stateColors={ghostTheme} />
 
 export const GrayActionButton = (props: ButtonProps) => <Button {...props} stateColors={greyTheme} />
