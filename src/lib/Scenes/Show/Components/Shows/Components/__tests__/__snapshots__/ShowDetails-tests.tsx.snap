@@ -97,7 +97,7 @@ J. Cacciola Gallery
           Object {
             "alignItems": "center",
             "backgroundColor": "rgba(255, 255, 255, 1)",
-            "borderColor": "rgba(0, 0, 0, 1)",
+            "borderColor": "black",
             "borderWidth": 1,
             "height": 36,
             "justifyContent": "center",
