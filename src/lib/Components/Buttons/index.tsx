@@ -44,24 +44,6 @@ const flatBorderedBlackTheme = {
   },
 }
 
-const flatWhiteBorderedBlackTheme = {
-  enabled: {
-    foreground: Colors.Black,
-    background: Colors.White,
-    border: Colors.Black,
-  },
-  disabled: {
-    foreground: Colors.GrayMedium,
-    background: Colors.GrayBold,
-    border: Colors.GrayLight,
-  },
-  highlighted: {
-    foreground: Colors.Black,
-    background: Colors.PurpleRegular,
-    border: Colors.PurpleRegular,
-  },
-}
-
 const ghostTheme = {
   enabled: {
     foreground: Colors.Black,

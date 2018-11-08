@@ -1,7 +1,4 @@
-import React from "react"
 import "react-native"
-import * as renderer from "react-test-renderer"
-import { Shows } from "../index"
 import { NearbyShows, NearbyShows as _nearbyShows } from "../nearbyShows"
 
 it("returns a nearby shows ", () => {
