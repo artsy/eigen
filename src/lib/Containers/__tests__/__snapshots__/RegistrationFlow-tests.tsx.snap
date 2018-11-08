@@ -116,6 +116,58 @@ exports[`renders properly with credit card 1`] = `
             >
               Register to bid
             </Text>
+            <View
+              alignItems="center"
+              style={
+                Array [
+                  Object {},
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                className="sc-bdVaJa bDWFJH"
+                ellipsizeMode="tail"
+                fontFamily="Unica77LL-Medium"
+                fontSize={16}
+                lineHeight={22}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                15d  23h  07m  27s
+              </Text>
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                className="sc-bdVaJa bDWFJH"
+                ellipsizeMode="tail"
+                fontFamily="Unica77LL-Medium"
+                fontSize={12}
+                lineHeight={16}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                Ends Jun 26, 3:30 PM
+              </Text>
+            </View>
             <Text
               accessible={true}
               allowFontScaling={true}
@@ -608,6 +660,58 @@ exports[`renders properly without credit card 1`] = `
             >
               Register to bid
             </Text>
+            <View
+              alignItems="center"
+              style={
+                Array [
+                  Object {},
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                className="sc-bdVaJa bDWFJH"
+                ellipsizeMode="tail"
+                fontFamily="Unica77LL-Medium"
+                fontSize={16}
+                lineHeight={22}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                15d  23h  07m  27s
+              </Text>
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                className="sc-bdVaJa bDWFJH"
+                ellipsizeMode="tail"
+                fontFamily="Unica77LL-Medium"
+                fontSize={12}
+                lineHeight={16}
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                Ends Jun 26, 3:30 PM
+              </Text>
+            </View>
             <Text
               accessible={true}
               allowFontScaling={true}

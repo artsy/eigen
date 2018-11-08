@@ -1,11 +1,12 @@
 import { Sans } from "@artsy/palette"
+import { mount } from "enzyme"
 import moment from "moment"
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 
 import { mockTimezone } from "lib/tests/mockTimezone"
-import { Timer } from "../Timer"
+import { Timer } from "../index"
 
 const SECONDS = 1000
 const MINUTES = 60 * SECONDS
@@ -14,7 +15,19 @@ const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in mi
 
 const getTimerLabel = timerComponent => timerComponent.root.findAllByType(Sans)[1].props.children
 
-const getTimerText = timerComponent => timerComponent.root.findAllByType(Sans)[0].props.children.join("")
+const getTimerText = timerComponent => timerComponent.root.findAllByType(Sans)[0].props.children
+
+const getMountedTimerLabel = timerComponent =>
+  timerComponent
+    .find(Sans)
+    .at(1)
+    .text()
+
+const getMountedTimerText = timerComponent =>
+  timerComponent
+    .find(Sans)
+    .at(0)
+    .text()
 
 let pastTime
 let futureTime
@@ -145,50 +158,50 @@ it("omits the minutes when the sale ends on the hour", () => {
 
 describe("timer transitions", () => {
   it("transitions state from preview --> closing when the timer ends", () => {
-    const timer = renderer.create(<Timer isPreview={true} startsAt={futureTime} endsAt={futureTime} />)
+    const timer = mount(<Timer isPreview={true} startsAt={futureTime} endsAt={futureTime} />)
 
-    expect(getTimerLabel(timer)).toContain("Starts")
-    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
+    expect(getMountedTimerLabel(timer)).toContain("Starts")
+    expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
 
     jest.advanceTimersByTime(1 * SECONDS)
 
-    expect(getTimerLabel(timer)).toContain("Ends")
-    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
+    expect(getMountedTimerLabel(timer)).toContain("Ends")
+    expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
   })
 
   it("transitions state from preview --> live upcoming when the timer ends", () => {
-    const timer = renderer.create(<Timer isPreview={true} startsAt={futureTime} liveStartsAt={futureTime} />)
+    const timer = mount(<Timer isPreview={true} startsAt={futureTime} liveStartsAt={futureTime} />)
 
-    expect(getTimerLabel(timer)).toContain("Starts")
-    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
+    expect(getMountedTimerLabel(timer)).toContain("Starts")
+    expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
 
     jest.advanceTimersByTime(1 * SECONDS)
 
-    expect(getTimerLabel(timer)).toContain("Live")
-    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
+    expect(getMountedTimerLabel(timer)).toContain("Live")
+    expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
   })
 
   it("transitions state from live upcoming --> live ongoing when the timer ends", () => {
-    const timer = renderer.create(<Timer isPreview={false} startsAt={pastTime} liveStartsAt={futureTime} />)
+    const timer = mount(<Timer isPreview={false} startsAt={pastTime} liveStartsAt={futureTime} />)
 
-    expect(getTimerLabel(timer)).toContain("Live")
-    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
+    expect(getMountedTimerLabel(timer)).toContain("Live")
+    expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
 
     jest.advanceTimersByTime(1 * SECONDS)
 
-    expect(getTimerLabel(timer)).toContain("In progress")
-    expect(getTimerText(timer)).toContain("00d  00h  00m")
+    expect(getMountedTimerLabel(timer)).toContain("In progress")
+    expect(getMountedTimerText(timer)).toContain("00d  00h  00m")
   })
 
   it("transitions state from closing --> closed when the timer ends", () => {
-    const timer = renderer.create(<Timer isPreview={false} startsAt={pastTime} endsAt={futureTime} />)
+    const timer = mount(<Timer isPreview={false} startsAt={pastTime} endsAt={futureTime} />)
 
-    expect(getTimerLabel(timer)).toContain("Ends")
-    expect(getTimerText(timer)).toEqual("00d  00h  00m  01s")
+    expect(getMountedTimerLabel(timer)).toContain("Ends")
+    expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
 
     jest.advanceTimersByTime(1 * SECONDS)
 
-    expect(getTimerLabel(timer)).toContain("Bidding closed")
-    expect(getTimerText(timer)).toContain("00d  00h  00m")
+    expect(getMountedTimerLabel(timer)).toContain("Bidding closed")
+    expect(getMountedTimerText(timer)).toContain("00d  00h  00m")
   })
 })

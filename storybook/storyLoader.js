@@ -7,10 +7,10 @@
 function loadStories() {
   require('../src/lib/Components/Artist/__stories__/ArtistArticles.story.tsx');
   require('../src/lib/Components/Artist/__stories__/ArtistHeader.story.tsx');
+  require('../src/lib/Components/Bidding/Components/Timer/__stories__/Timer.story.tsx');
   require('../src/lib/Components/Bidding/Components/__stories__/Checkbox.story.tsx');
   require('../src/lib/Components/Bidding/Components/__stories__/Input.story.tsx');
   require('../src/lib/Components/Bidding/Components/__stories__/Markdown.story.tsx');
-  require('../src/lib/Components/Bidding/Components/__stories__/Timer.story.tsx');
   require('../src/lib/Components/Bidding/Screens/__stories__/BidResult.story.tsx');
   require('../src/lib/Components/Bidding/Screens/__stories__/RegistrationResult.story.tsx');
   require('../src/lib/Components/Bidding/__stories__/BidFlow.story.tsx');
@@ -52,10 +52,10 @@ function loadStories() {
 const stories = [
   '../src/lib/Components/Artist/__stories__/ArtistArticles.story.tsx',
   '../src/lib/Components/Artist/__stories__/ArtistHeader.story.tsx',
+  '../src/lib/Components/Bidding/Components/Timer/__stories__/Timer.story.tsx',
   '../src/lib/Components/Bidding/Components/__stories__/Checkbox.story.tsx',
   '../src/lib/Components/Bidding/Components/__stories__/Input.story.tsx',
   '../src/lib/Components/Bidding/Components/__stories__/Markdown.story.tsx',
-  '../src/lib/Components/Bidding/Components/__stories__/Timer.story.tsx',
   '../src/lib/Components/Bidding/Screens/__stories__/BidResult.story.tsx',
   '../src/lib/Components/Bidding/Screens/__stories__/RegistrationResult.story.tsx',
   '../src/lib/Components/Bidding/__stories__/BidFlow.story.tsx',
