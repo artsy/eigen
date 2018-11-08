@@ -8,14 +8,14 @@ Array [
     className="sc-bdVaJa bDWFJH"
     ellipsizeMode="tail"
     fontFamily="Unica77LL-Regular"
-    fontSize={28}
-    lineHeight={36}
+    fontSize={22}
+    lineHeight={30}
     style={
       Array [
         Object {
           "fontFamily": "Unica77LL-Regular",
-          "fontSize": 28,
-          "lineHeight": 36,
+          "fontSize": 22,
+          "lineHeight": 30,
         },
         undefined,
       ]
@@ -2861,4 +2861,4 @@ Galerie Kleindienst
     </View>
   </View>,
 ]
-`
+`;
