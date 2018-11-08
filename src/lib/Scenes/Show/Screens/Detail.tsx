@@ -126,13 +126,28 @@ export const DetailContainer = createFragmentContainer(
       images {
         id
       }
-      nearbyShows {
+      nearbyShows(first: 20) {
         edges {
           node {
             id
             name
+            images {
+              url
+              aspect_ratio
+            }
+            partner {
+              ... on ExternalPartner {
+                name
+              }
+              ... on Partner {
+                name
+              }
+            }
             location {
               address
+              address_2
+              state
+              postal_code
             }
           }
         }
