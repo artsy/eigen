@@ -30,8 +30,18 @@ export type Detail_show = {
             readonly node: ({
                 readonly id: string;
                 readonly name: string | null;
+                readonly images: ReadonlyArray<({
+                    readonly url: string | null;
+                    readonly aspect_ratio: number;
+                }) | null> | null;
+                readonly partner: ({
+                    readonly name?: string | null;
+                }) | null;
                 readonly location: ({
                     readonly address: string | null;
+                    readonly address_2: string | null;
+                    readonly state: string | null;
+                    readonly postal_code: string | null;
                 }) | null;
             }) | null;
         }) | null> | null;
@@ -75,20 +85,63 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "address_2",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "state",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "postal_code",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "__id",
+  "args": null,
+  "storageKey": null
+},
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v5 = [
-  v4
-];
+v8 = [
+  v7
+],
+v9 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "partner",
+  "storageKey": null,
+  "args": null,
+  "concreteType": null,
+  "plural": false,
+  "selections": [
+    v6,
+    {
+      "kind": "InlineFragment",
+      "type": "Partner",
+      "selections": v8
+    },
+    {
+      "kind": "InlineFragment",
+      "type": "ExternalPartner",
+      "selections": v8
+    }
+  ]
+};
 return {
   "kind": "Fragment",
   "name": "Detail_show",
@@ -121,29 +174,11 @@ return {
       "selections": [
         v0,
         v2,
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "address_2",
-          "args": null,
-          "storageKey": null
-        },
-        v1,
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "state",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "postal_code",
-          "args": null,
-          "storageKey": null
-        },
         v3,
+        v1,
+        v4,
+        v5,
+        v6,
         {
           "kind": "FragmentSpread",
           "name": "LocationMap_location",
@@ -167,8 +202,15 @@ return {
       "kind": "LinkedField",
       "alias": null,
       "name": "nearbyShows",
-      "storageKey": null,
-      "args": null,
+      "storageKey": "nearbyShows(first:20)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 20,
+          "type": "Int"
+        }
+      ],
       "concreteType": "ShowConnection",
       "plural": false,
       "selections": [
@@ -191,7 +233,33 @@ return {
               "plural": false,
               "selections": [
                 v0,
-                v4,
+                v7,
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "images",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Image",
+                  "plural": true,
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "url",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "aspect_ratio",
+                      "args": null,
+                      "storageKey": null
+                    }
+                  ]
+                },
+                v9,
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -202,17 +270,20 @@ return {
                   "plural": false,
                   "selections": [
                     v2,
-                    v3
+                    v3,
+                    v4,
+                    v5,
+                    v6
                   ]
                 },
-                v3
+                v6
               ]
             }
           ]
         }
       ]
     },
-    v4,
+    v7,
     {
       "kind": "FragmentSpread",
       "name": "Artworks_show",
@@ -260,31 +331,10 @@ return {
         }
       ]
     },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "partner",
-      "storageKey": null,
-      "args": null,
-      "concreteType": null,
-      "plural": false,
-      "selections": [
-        v3,
-        {
-          "kind": "InlineFragment",
-          "type": "Partner",
-          "selections": v5
-        },
-        {
-          "kind": "InlineFragment",
-          "type": "ExternalPartner",
-          "selections": v5
-        }
-      ]
-    },
-    v3
+    v9,
+    v6
   ]
 };
 })();
-(node as any).hash = 'a2b4c17565eaab30792810046c072d5f';
+(node as any).hash = 'f623a1f1aac1c9d8fdff56134d4840f5';
 export default node;

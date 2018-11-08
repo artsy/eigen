@@ -67,8 +67,15 @@ return {
       "kind": "LinkedField",
       "alias": null,
       "name": "nearbyShows",
-      "storageKey": null,
-      "args": null,
+      "storageKey": "nearbyShows(first:20)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 20,
+          "type": "Int"
+        }
+      ],
       "concreteType": "ShowConnection",
       "plural": false,
       "selections": [
@@ -196,5 +203,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f45633f1f8bd2a780373945ae83cfacd';
+(node as any).hash = '850ca07d5e9f11ffc2c4608106e91e00';
 export default node;

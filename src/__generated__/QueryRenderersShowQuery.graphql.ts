@@ -51,13 +51,33 @@ fragment Detail_show on Show {
   images {
     id
   }
-  nearbyShows {
+  nearbyShows(first: 20) {
     edges {
       node {
         id
         name
+        images {
+          url
+          aspect_ratio
+        }
+        partner {
+          __typename
+          ... on ExternalPartner {
+            name
+            __id
+          }
+          ... on Partner {
+            name
+          }
+          ... on Node {
+            __id
+          }
+        }
         location {
           address
+          address_2
+          state
+          postal_code
           __id
         }
         __id
@@ -145,7 +165,7 @@ fragment Artists_show on Show {
 
 fragment Shows_show on Show {
   city
-  nearbyShows {
+  nearbyShows(first: 20) {
     edges {
       node {
         id
@@ -381,7 +401,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "b63330ff1b3cb19c31049fd039e579e7",
+  "id": "b756a763aa73032ab5a3a15ae04b3197",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -534,8 +554,15 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "nearbyShows",
-            "storageKey": null,
-            "args": null,
+            "storageKey": "nearbyShows(first:20)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 20,
+                "type": "Int"
+              }
+            ],
             "concreteType": "ShowConnection",
             "plural": false,
             "selections": [
@@ -562,23 +589,6 @@ return {
                       {
                         "kind": "LinkedField",
                         "alias": null,
-                        "name": "location",
-                        "storageKey": null,
-                        "args": null,
-                        "concreteType": "Location",
-                        "plural": false,
-                        "selections": [
-                          v5,
-                          v2,
-                          v6,
-                          v7,
-                          v8
-                        ]
-                      },
-                      v2,
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
                         "name": "images",
                         "storageKey": null,
                         "args": null,
@@ -589,7 +599,24 @@ return {
                           v11
                         ]
                       },
-                      v14
+                      v14,
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "location",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Location",
+                        "plural": false,
+                        "selections": [
+                          v5,
+                          v6,
+                          v7,
+                          v8,
+                          v2
+                        ]
+                      },
+                      v2
                     ]
                   }
                 ]
