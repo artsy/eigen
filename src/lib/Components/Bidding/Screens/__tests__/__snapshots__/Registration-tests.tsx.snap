@@ -64,7 +64,10 @@ exports[`renders properly for a user with a credit card 1`] = `
         alignItems="center"
         style={
           Array [
-            Object {},
+            Object {
+              "alignItems": "center",
+              "display": "flex",
+            },
             undefined,
           ]
         }
@@ -549,7 +552,10 @@ exports[`renders properly for a user without a credit card 1`] = `
         alignItems="center"
         style={
           Array [
-            Object {},
+            Object {
+              "alignItems": "center",
+              "display": "flex",
+            },
             undefined,
           ]
         }

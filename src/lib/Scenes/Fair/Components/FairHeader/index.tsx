@@ -66,7 +66,7 @@ export class FairHeader extends React.Component<Props> {
           {moment(start_at).format("MMM Do")} - {moment(end_at).format("MMM Do")}
         </Serif>
 
-        <CountdownTimer startAt={start_at} />
+        <CountdownTimer startAt={start_at} endAt={end_at} />
 
         <Box px={2}>
           <Spacer m={2} />

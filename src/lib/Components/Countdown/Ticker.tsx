@@ -41,14 +41,14 @@ const LabeledTimeSection: React.SFC<TimeSectionProps> = ({ time, label, timeText
   </Flex>
 )
 
-interface LabeledDurationTextProps {
+interface LabeledTickerProps {
   duration: Duration
   renderSeparator: () => React.ReactElement<any>
-  timeTextProps: SansProps
-  labelTextProps: SansProps
+  timeTextProps?: SansProps
+  labelTextProps?: SansProps
 }
 
-export const LabeledDurationText: React.SFC<LabeledDurationTextProps> = ({
+export const LabeledTicker: React.SFC<LabeledTickerProps> = ({
   duration,
   renderSeparator,
   timeTextProps,
@@ -67,12 +67,12 @@ export const LabeledDurationText: React.SFC<LabeledDurationTextProps> = ({
   )
 }
 
-interface SimpleDurationTextProps extends SansProps {
+interface SimpleTickerProps extends SansProps {
   duration: Duration
   separator: string
 }
 
-export const SimpleDurationText: React.SFC<SimpleDurationTextProps> = ({ duration, separator, ...rest }) => {
+export const SimpleTicker: React.SFC<SimpleTickerProps> = ({ duration, separator, ...rest }) => {
   const sections = durationSections(duration, ["d", "h", "m", "s"])
   return (
     <Sans {...rest}>

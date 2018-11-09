@@ -1,7 +1,7 @@
 import React from "react"
 import { DurationProvider } from "./DurationProvider"
 
-export interface DurationState {
+export interface TickerState {
   label: string
   date?: string
   state: string
@@ -9,29 +9,29 @@ export interface DurationState {
 
 interface Props {
   CountdownComponent: any // FIXME: how do I type this?
-  timeOffsetInMilliseconds: number
-  onCurrentDurationState: () => DurationState
-  onNextDurationState: (currentState: DurationState) => DurationState
+  timeOffsetInMilliseconds?: number
+  onCurrentTickerState: () => TickerState
+  onNextTickerState: (currentState: TickerState) => TickerState
 }
 
 interface State {
-  currentDurationState: DurationState
+  tickerState: TickerState
 }
 
-export class DurationStateManager extends React.Component<Props, State> {
+export class StateManager extends React.Component<Props, State> {
   constructor(props) {
     super(props)
-    this.state = { currentDurationState: props.onCurrentDurationState() }
+    this.state = { tickerState: props.onCurrentTickerState() }
   }
 
   handleDurationEnd = () => {
-    this.setState({ currentDurationState: this.props.onNextDurationState(this.state.currentDurationState) })
+    this.setState({ tickerState: this.props.onNextTickerState(this.state.tickerState) })
   }
 
   render() {
     const { CountdownComponent, timeOffsetInMilliseconds } = this.props
     const {
-      currentDurationState: { label, date },
+      tickerState: { label, date },
     } = this.state
 
     return (

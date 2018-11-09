@@ -1,8 +1,8 @@
-import React from "react"
+import { Flex, Sans } from "@artsy/palette"
+import { SimpleTicker, StateManager as CountdownStateManager } from "lib/Components/Countdown"
 import moment from "moment-timezone"
-import { Countdown } from "./Countdown"
-import { DurationStateManager } from "lib/Components/Duration/DurationStateManager"
-import { TimeOffsetProvider } from "./TimeOffsetProvider"
+import * as PropTypes from "prop-types"
+import React from "react"
 
 enum AuctionTimerState {
   PREVIEW = "PREVIEW",
@@ -93,17 +93,45 @@ function currentTimerState({ isPreview, isClosed, liveStartsAt }: Props) {
   }
 }
 
+interface CountdownProps {
+  duration: moment.Duration
+  label: string
+}
+
+const Countdown: React.SFC<CountdownProps> = ({ duration, label }) => (
+  <Flex alignItems="center">
+    <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />
+    <Sans size="2" weight="medium">
+      {label}
+    </Sans>
+  </Flex>
+)
+
+interface TimeOffsetProviderProps {
+  children: React.ReactElement<any>
+}
+
+class TimeOffsetProvider extends React.Component<TimeOffsetProviderProps> {
+  static contextTypes = {
+    timeOffsetInMilliSeconds: PropTypes.number,
+  }
+
+  render() {
+    return React.cloneElement(this.props.children, this.context || {})
+  }
+}
+
 export const Timer: React.SFC<Props> = props => {
   return (
     <TimeOffsetProvider>
-      <DurationStateManager
+      <CountdownStateManager
         CountdownComponent={Countdown}
-        onCurrentDurationState={() => {
+        onCurrentTickerState={() => {
           const state = currentTimerState(props)
           const { label, date } = relevantStateData(state, props)
           return { label, date, state }
         }}
-        onNextDurationState={({ state }) => {
+        onNextTickerState={({ state }) => {
           const nextState = nextTimerState(state as AuctionTimerState, props)
           const { label, date } = relevantStateData(nextState, props)
           return { state: nextState, label, date }

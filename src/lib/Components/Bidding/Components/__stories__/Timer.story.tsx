@@ -1,10 +1,10 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
 
-import { Flex } from "../../../Elements/Flex"
-import { BiddingThemeProvider } from "../../BiddingThemeProvider"
-import { Divider } from "../../Divider"
-import { Timer } from "../index"
+import { Flex } from "../../Elements/Flex"
+import { BiddingThemeProvider } from "../BiddingThemeProvider"
+import { Divider } from "../Divider"
+import { Timer } from "../Timer"
 
 import moment from "moment"
 
