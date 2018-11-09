@@ -150,39 +150,6 @@ fragment Artists_show on Show {
 
 fragment Shows_show on Show {
   city
-  nearbyShows(first: 20) {
-    edges {
-      node {
-        id
-        name
-        images {
-          url
-          aspect_ratio
-        }
-        partner {
-          __typename
-          ... on ExternalPartner {
-            name
-            __id
-          }
-          ... on Partner {
-            name
-          }
-          ... on Node {
-            __id
-          }
-        }
-        location {
-          address
-          address_2
-          state
-          postal_code
-          __id
-        }
-        __id
-      }
-    }
-  }
   __id
 }
 
@@ -378,7 +345,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "6387e631c604fcb50d81f77e0501af8f",
+  "id": "d11cf9913375903dced5bdbde4ab8f4c",
   "text": null,
   "metadata": {},
   "fragment": {

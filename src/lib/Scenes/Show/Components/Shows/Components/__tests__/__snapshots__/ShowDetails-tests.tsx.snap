@@ -68,9 +68,34 @@ exports[`looks correct when rendered 1`] = `
         ellipsizeMode="tail"
       >
         Delicate Power: The Delicacy and Complexity of Egg Tempera
-J. Cacciola Gallery
-35 Mill Street
-
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+      >
+        J. Cacciola Gallery
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+      >
+        35 Mill Street
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+      >
+        NJ
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+      >
+        07924
       </Text>
     </View>
     <View

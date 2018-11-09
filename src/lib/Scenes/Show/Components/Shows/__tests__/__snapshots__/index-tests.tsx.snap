@@ -90,9 +90,34 @@ Array [
           ellipsizeMode="tail"
         >
           Delicate Power: The Delicacy and Complexity of Egg Tempera
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -219,9 +244,34 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           Summer Discoveries: Group Exhibition
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -348,9 +398,34 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           Winter Invitational
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -477,9 +552,34 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           The Temporal Painter
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -606,9 +706,34 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           Incidental Edges
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -735,9 +860,34 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           Reimagine Everything
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -864,9 +1014,34 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           Crossroads
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -993,9 +1168,34 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           Boundless: The Abstract Landscapes of Carole Pierce
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -1122,9 +1322,34 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           Nature is the Fountain's Head
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -1251,9 +1476,34 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           2018 Winter Invitational
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -1380,9 +1630,34 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           Past Meets Present: The Paintings of John C. Traynor
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -1509,9 +1784,34 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           Out of the Ether: Landscapes by Maureen Chatfield
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -1638,9 +1938,34 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           Power Through Color
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -1767,9 +2092,34 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           2018 Summer Showcase
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -1896,9 +2246,34 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           Interpreting Nature's Palette
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -2025,9 +2400,34 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           Dimensions Discovered
-J. Cacciola Gallery
-35 Mill Street
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          J. Cacciola Gallery
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          35 Mill Street
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07924
         </Text>
       </View>
       <View
@@ -2154,10 +2554,41 @@ J. Cacciola Gallery
           ellipsizeMode="tail"
         >
           NORDSTROM "SYNERGY" ART & FASHION
-ACED GALLERY
-NORDSTROM
-3710 U.S. 9
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          ACED GALLERY
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NORDSTROM
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          3710 U.S. 9
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07728
         </Text>
       </View>
       <View
@@ -2284,9 +2715,34 @@ NORDSTROM
           ellipsizeMode="tail"
         >
           This Leads to Fire: Russian Art from Nonconformism to Global Capitalism, Selections from the Kolodzei Art Foundation Collection, At the Neuberger Museum of Art Purchase College,Purchase, NY
-Kolodzei Art Foundation
-123 South Adelaide Avenue #1N
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Kolodzei Art Foundation
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          123 South Adelaide Avenue #1N
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          08904
         </Text>
       </View>
       <View
@@ -2413,9 +2869,34 @@ Kolodzei Art Foundation
           ellipsizeMode="tail"
         >
           Finding Freedom in Russian Art, 1961-2014. Selections from the Kolodzei Art Foundation and the Collection of Dr. Wayne F. Yakes. Paul and Lulu Hilliard University Art Museum, University of Louisiana at Lafayette,  Lafayette, LA
-Kolodzei Art Foundation
-123 South Adelaide Avenue #1N
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Kolodzei Art Foundation
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          123 South Adelaide Avenue #1N
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          08904
         </Text>
       </View>
       <View
@@ -2542,9 +3023,34 @@ Kolodzei Art Foundation
           ellipsizeMode="tail"
         >
           Heroes and Villains
-Arts Unbound
-544 Freeman St
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Arts Unbound
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          544 Freeman St
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          NJ
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          07050
         </Text>
       </View>
       <View
@@ -2671,8 +3177,13 @@ Arts Unbound
           ellipsizeMode="tail"
         >
           Mindy Solomon Gallery at VOLTA NY 2014
-Mindy Solomon Gallery
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Mindy Solomon Gallery
         </Text>
       </View>
       <View
@@ -2799,8 +3310,13 @@ Mindy Solomon Gallery
           ellipsizeMode="tail"
         >
           Galerie Kleindienst at VOLTA NY 2014
-Galerie Kleindienst
-
+        </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          Galerie Kleindienst
         </Text>
       </View>
       <View

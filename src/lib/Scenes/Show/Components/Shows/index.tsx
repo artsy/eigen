@@ -2,7 +2,7 @@ import { Sans } from "@artsy/palette"
 import { Shows_show } from "__generated__/Shows_show.graphql"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { ShowDetails } from "./Components/ShowDetails"
+import { ShowItem } from "./Components/ShowItem"
 
 interface Props {
   show: Shows_show
@@ -12,48 +12,21 @@ export class Shows extends React.Component<Props> {
     if (!this.props.show) {
       return null
     }
-    const { city, nearbyShows } = this.props.show
-    const nearbyShowsDetail = (nearbyShows.edges || []).filter(show => show.node)
+    const { city } = this.props.show
     return (
       <>
         <Sans size="6">{"Current Shows In " + city}</Sans>
-        <ShowDetails data={nearbyShowsDetail as any} />
+        <ShowItem show={this.props.show} />
       </>
     )
   }
 }
 
-export const LocationContainer = createFragmentContainer(
+export const ShowsContainer = createFragmentContainer(
   Shows,
   graphql`
     fragment Shows_show on Show {
       city
-      nearbyShows(first: 20) {
-        edges {
-          node {
-            id
-            name
-            images {
-              url
-              aspect_ratio
-            }
-            partner {
-              ... on ExternalPartner {
-                name
-              }
-              ... on Partner {
-                name
-              }
-            }
-            location {
-              address
-              address_2
-              state
-              postal_code
-            }
-          }
-        }
-      }
     }
   `
 )
