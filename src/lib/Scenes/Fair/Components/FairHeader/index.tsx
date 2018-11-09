@@ -2,6 +2,7 @@ import moment from "moment"
 import React from "react"
 import { Dimensions, Image } from "react-native"
 import styled from "styled-components/native"
+import { CountdownTimer } from "./CountdownTimer"
 
 import { Box, Serif, space, Spacer } from "@artsy/palette"
 import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
@@ -64,6 +65,8 @@ export class FairHeader extends React.Component<Props> {
         <Serif size="3" textAlign="center">
           {moment(start_at).format("MMM Do")} - {moment(end_at).format("MMM Do")}
         </Serif>
+
+        <CountdownTimer startAt={start_at} />
 
         <Box px={2}>
           <Spacer m={2} />
