@@ -8,8 +8,6 @@ it("looks correct when rendered", () => {
   expect(comp).toMatchSnapshot()
 })
 
-// console.log(this.props.show.nearbyShows.edges)
-
 const data = {
   nearbyShows: {
     edges: [
