@@ -1,0 +1,158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`looks correct when rendered 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "display": "flex",
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    mb={15}
+    mt={15}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "marginBottom": 15,
+          "marginTop": 15,
+        },
+        undefined,
+      ]
+    }
+  >
+    <AROpaqueImageView
+      imageURL="https://d32dm0rphc51dk.cloudfront.net/6HYZ-tKaXLrcqXCfYxNZQQ/large.jpg"
+      style={
+        Array [
+          Object {
+            "height": 200,
+            "width": "100%",
+          },
+          undefined,
+        ]
+      }
+    />
+  </View>
+  <View
+    flexDirection="row"
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+        },
+        undefined,
+      ]
+    }
+  >
+    <View
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "width": "70%",
+          },
+          undefined,
+        ]
+      }
+      width="70%"
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+      >
+        Delicate Power: The Delicacy and Complexity of Egg Tempera
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+      >
+        J. Cacciola Gallery
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+      >
+        35 Mill Street
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+      >
+        NJ
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+      >
+        07924
+      </Text>
+    </View>
+    <View
+      style={
+        Array [
+          Object {
+            "display": "flex",
+            "width": "30%",
+          },
+          undefined,
+        ]
+      }
+      width="30%"
+    >
+      <View
+        accessible={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "rgba(255, 255, 255, 1)",
+            "borderColor": "black",
+            "borderWidth": 1,
+            "height": 36,
+            "justifyContent": "center",
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+          style={
+            Array [
+              Object {
+                "fontSize": 12,
+              },
+              Object {
+                "fontFamily": "AvantGardeGothicITC",
+              },
+              Object {
+                "color": "rgba(0, 0, 0, 1)",
+                "opacity": 1,
+              },
+            ]
+          }
+        >
+          SAVE
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
