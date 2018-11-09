@@ -8,7 +8,7 @@ export interface TickerState {
 }
 
 interface Props {
-  CountdownComponent: any // FIXME: how do I type this?
+  CountdownComponent: React.ComponentClass | React.StatelessComponent<any>
   timeOffsetInMilliseconds?: number
   onCurrentTickerState: () => TickerState
   onNextTickerState: (currentState: TickerState) => TickerState
