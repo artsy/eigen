@@ -23,7 +23,6 @@
     description
     sale_artworks(all: true) {
       _id
-      position
       currency
       symbol
       reserve_status

@@ -3,10 +3,10 @@ upcoming:
   date: TBD
   emission_version: 1.7.x
   dev:
-    - Nothing yet
+    - Emission update, bringing mapbox sdk and view controllers for local discovery - orta / LD team
 
   user_facing:
-    - Nothing yet
+    - Brings back the consignments sash - orta
 
 releases:
   - version: 4.3.2
