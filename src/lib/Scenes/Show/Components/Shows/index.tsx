@@ -1,14 +1,32 @@
+import { Sans } from "@artsy/palette"
+import { Shows_show } from "__generated__/Shows_show.graphql"
 import React from "react"
-import { Text } from "react-native"
-
-// TODO: implement
+import { createFragmentContainer, graphql } from "react-relay"
+import { ShowItem } from "./Components/ShowItem"
 
 interface Props {
-  show: any
+  show: Shows_show
 }
-
 export class Shows extends React.Component<Props> {
   render() {
-    return <Text>{JSON.stringify(this.props.show)}</Text>
+    if (!this.props.show) {
+      return null
+    }
+    const { city } = this.props.show
+    return (
+      <>
+        <Sans size="6">{"Current Shows In " + city}</Sans>
+        <ShowItem show={this.props.show as any} />
+      </>
+    )
   }
 }
+
+export const ShowsContainer = createFragmentContainer(
+  Shows,
+  graphql`
+    fragment Shows_show on Show {
+      city
+    }
+  `
+)

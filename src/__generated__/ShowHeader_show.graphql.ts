@@ -11,7 +11,7 @@ export type ShowHeader_show = {
     readonly status: string | null;
     readonly images: ReadonlyArray<({
         readonly url: string | null;
-        readonly aspect_ratio: number | null;
+        readonly aspect_ratio: number;
     }) | null> | null;
     readonly " $refType": ShowHeader_show$ref;
 };

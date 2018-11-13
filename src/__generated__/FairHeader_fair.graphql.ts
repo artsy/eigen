@@ -8,7 +8,7 @@ export type FairHeader_fair = {
     readonly name: string | null;
     readonly image: ({
         readonly image_url: string | null;
-        readonly aspect_ratio: number | null;
+        readonly aspect_ratio: number;
         readonly url: string | null;
     }) | null;
     readonly organizer: ({

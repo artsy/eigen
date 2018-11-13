@@ -734,6 +734,7 @@ type Artwork implements Node & Sellable {
   edition_sets: [EditionSet]
   exhibition_history(format: Format): String
   fair: Fair
+  height: String @deprecated(reason: "Prefer dimensions instead.")
 
   # Returns the highlighted shows and articles
   highlights: [Highlighted]
@@ -748,6 +749,9 @@ type Artwork implements Node & Sellable {
 
   # Whether a work can be purchased through e-commerce
   is_acquireable: Boolean
+
+  # Whether a user can make an offer on a work
+  is_offerable: Boolean
 
   # Is this artwork part of an auction that is currently running?
   is_biddable: Boolean
@@ -786,7 +790,11 @@ type Artwork implements Node & Sellable {
   literature(format: Format): String
   manufacturer(format: Format): String
   medium: String
+  metric: String @deprecated(reason: "Prefer dimensions instead.")
   meta: ArtworkMeta
+
+  # [DO NOT USE] Weekly pageview data (static).
+  pageviews: Int @deprecated(reason: "Do not use! This is for an AB test and will be imminently deprecated.")
   partner(
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
@@ -822,6 +830,7 @@ type Artwork implements Node & Sellable {
 
   # If the category is video, then it returns the href for the (youtube/vimeo) video, otherwise returns the website from CMS
   website: String
+  width: String @deprecated(reason: "Prefer dimensions instead.")
   framed: ArtworkInfoRow
   signatureInfo: ArtworkInfoRow
   conditionDescription: ArtworkInfoRow
@@ -979,6 +988,7 @@ type ArtworkContextFair {
   has_homepage_section: Boolean
   has_large_banner: Boolean
   has_listing: Boolean
+  hours: String
   href: String
   image: Image
 
@@ -1417,6 +1427,7 @@ type ArtworkItem implements Node & Sellable {
   edition_sets: [EditionSet]
   exhibition_history(format: Format): String
   fair: Fair
+  height: String @deprecated(reason: "Prefer dimensions instead.")
 
   # Returns the highlighted shows and articles
   highlights: [Highlighted]
@@ -1431,6 +1442,9 @@ type ArtworkItem implements Node & Sellable {
 
   # Whether a work can be purchased through e-commerce
   is_acquireable: Boolean
+
+  # Whether a user can make an offer on a work
+  is_offerable: Boolean
 
   # Is this artwork part of an auction that is currently running?
   is_biddable: Boolean
@@ -1469,7 +1483,11 @@ type ArtworkItem implements Node & Sellable {
   literature(format: Format): String
   manufacturer(format: Format): String
   medium: String
+  metric: String @deprecated(reason: "Prefer dimensions instead.")
   meta: ArtworkMeta
+
+  # [DO NOT USE] Weekly pageview data (static).
+  pageviews: Int @deprecated(reason: "Do not use! This is for an AB test and will be imminently deprecated.")
   partner(
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
@@ -1505,6 +1523,7 @@ type ArtworkItem implements Node & Sellable {
 
   # If the category is video, then it returns the href for the (youtube/vimeo) video, otherwise returns the website from CMS
   website: String
+  width: String @deprecated(reason: "Prefer dimensions instead.")
   framed: ArtworkInfoRow
   signatureInfo: ArtworkInfoRow
   conditionDescription: ArtworkInfoRow
@@ -1562,6 +1581,26 @@ enum ArtworkSorts {
   PUBLISHED_AT_DESC
   TITLE_ASC
   TITLE_DESC
+}
+
+type ArtworkVersion {
+  # ID of the order line item
+  id: ID!
+
+  # Artwork title
+  title: String
+
+  # The Image id
+  defaultImageID: String
+
+  # The artists related to this Artwork Version
+  artists: String
+
+  # The names for the artists related to this Artwork Version
+  artistNames: String
+
+  # The image representing the Artwork Version
+  image: Image
 }
 
 # An asset which is assigned to a consignment submission
@@ -1881,6 +1920,21 @@ enum CategoryType {
   INSTITUTION
 }
 
+type City {
+  slug: String
+  name: String
+  coordinates: LatLng
+  shows(
+    sort: PartnerShowSorts
+    status: EventStatus
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
+  fairs(size: Int, sort: FairSorts, status: EventStatus): [Fair]
+}
+
 type Collection implements Node {
   # A globally unique ID.
   __id: ID!
@@ -2188,11 +2242,6 @@ type ConversationResponder {
   initials(length: Int = 3): String
 }
 
-type coordinates {
-  lat: Float
-  lng: Float
-}
-
 input CreateBidderInput {
   sale_id: String!
   clientMutationId: String
@@ -2220,6 +2269,23 @@ input CreateGeminiEntryForAssetInput {
 
 type CreateGeminiEntryForAssetPayload {
   asset: GeminiEntry
+  clientMutationId: String
+}
+
+input CreateOfferOrderWithArtworkInput {
+  # BSON ID of artwork
+  artworkId: String!
+
+  # ID of artwork's edition set
+  editionSetId: String
+
+  # quantity of artwork
+  quantity: Int
+  clientMutationId: String
+}
+
+type CreateOfferOrderWithArtworkPayload {
+  orderOrError: OrderOrFailureUnionType
   clientMutationId: String
 }
 
@@ -2374,8 +2440,6 @@ type CreditCardConnection {
 
   # A list of edges.
   edges: [CreditCardEdge]
-  pageCursors: PageCursors
-  totalCount: Int
 }
 
 # An edge in a connection.
@@ -2399,6 +2463,7 @@ type CreditCardMutationFailure {
 
 type CreditCardMutationSuccess {
   creditCard: CreditCard
+  creditCardEdge: CreditCardEdge
 }
 
 union CreditCardMutationType = CreditCardMutationSuccess | CreditCardMutationFailure
@@ -2580,6 +2645,7 @@ type EditionSet implements Sellable {
   dimensions: dimensions
   edition_of: String
   is_acquireable: Boolean
+  is_offerable: Boolean
   is_for_sale: Boolean
   is_sold: Boolean
   price: String @deprecated(reason: "Prefer to use `sale_message`.")
@@ -2632,6 +2698,7 @@ type Fair {
   has_homepage_section: Boolean
   has_large_banner: Boolean
   has_listing: Boolean
+  hours: String
   href: String
   image: Image
 
@@ -3574,6 +3641,7 @@ type HomePageModuleContextFair {
   has_homepage_section: Boolean
   has_large_banner: Boolean
   has_listing: Boolean
+  hours: String
   href: String
   image: Image
 
@@ -3860,7 +3928,7 @@ type HomePageModulesParams {
 }
 
 type Image {
-  aspect_ratio: Float
+  aspect_ratio: Float!
   caption: String
   cropped(width: Int!, height: Int!, version: [String]): CroppedImageUrl
   deep_zoom: DeepZoom
@@ -3890,6 +3958,20 @@ type Image {
   width: Int
   url(version: [String]): String
   versions: [String]
+}
+
+input InitialOfferInput {
+  # ID of order
+  orderId: ID!
+
+  # Offer price
+  offerPrice: MoneyInput
+  clientMutationId: String
+}
+
+type InitialOfferPayload {
+  orderOrError: OrderOrFailureUnionType
+  clientMutationId: String
 }
 
 enum Intents {
@@ -3942,6 +4024,11 @@ union Item = ArtistItem | ArtworkItem | FeaturedLinkItem | GeneItem
 # The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 scalar JSON
 
+type LatLng {
+  lat: Float
+  lng: Float
+}
+
 type Location {
   # A globally unique ID.
   __id: ID!
@@ -3953,7 +4040,7 @@ type Location {
   address_2: String
   city: String
   country: String
-  coordinates: coordinates
+  coordinates: LatLng
   day_schedules: [DaySchedule]
   display: String
   phone: String
@@ -4302,13 +4389,22 @@ type MessageInitiator {
 }
 
 type Metaphysics {
-  environment: Boolean!
   queryTracing: Boolean!
   heapDumps: Boolean!
   stitching: Boolean!
-  stitchingGravity: Boolean!
   stitchingConvection: Boolean!
   stitchingExchange: Boolean!
+  stitchingGravity: Boolean!
+  stitchingKaws: Boolean!
+  environment: String!
+}
+
+input MoneyInput {
+  # amount in dollars or major unit
+  amount: Float!
+
+  # The ISO-4217 alphabetic currency code, as per https://en.wikipedia.org/wiki/ISO_4217
+  currencyCode: String!
 }
 
 type Mutation {
@@ -4392,6 +4488,9 @@ type Mutation {
   # Creates an order with an artwork
   ecommerceCreateOrderWithArtwork(input: CreateOrderWithArtworkInput!): CreateOrderWithArtworkPayload
 
+  # Creates an order with an artwork
+  ecommerceCreateOfferOrderWithArtwork(input: CreateOfferOrderWithArtworkInput!): CreateOfferOrderWithArtworkPayload
+
   # Sets shipping information for an order
   ecommerceSetOrderShipping(input: SetOrderShippingInput!): SetOrderShippingPayload
 
@@ -4412,6 +4511,9 @@ type Mutation {
 
   # Submits an order
   ecommerceSubmitOrder(input: SubmitOrderInput!): SubmitOrderPayload
+
+  # Creates an order with an artwork
+  ecommerceInitialOffer(input: InitialOfferInput!): InitialOfferPayload
   recordArtworkView(input: RecordArtworkViewInput): RecordArtworkViewPayload
 }
 
@@ -4470,9 +4572,61 @@ enum NotificationsFeedItemStatus {
   UNREAD
 }
 
+type Offer {
+  # ID of the offer
+  id: ID
+  createdAt(
+    # This arg is deprecated, use timezone instead
+    convert_to_utc: Boolean
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
+
+  # Id of the user who created the order
+  creatorId: String
+
+  # Creator of this order
+  creator: User
+
+  # The type of the party who made the offer
+  from: OrderParty
+
+  # Offer amount in cents
+  amountCents: Int
+
+  # The order on which the offer was made
+  order: Order
+
+  # The order on which the offer was made
+  respondsTo: Offer
+}
+
+# A connection to a list of items.
+type OfferConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [OfferEdge]
+}
+
+# An edge in a connection.
+type OfferEdge {
+  # The item at the end of the edge
+  node: Offer
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
 type Order {
   # ID of the order
   id: ID
+
+  # Order Mode
+  mode: OrderModeEnum
 
   # Currency code of this order
   currencyCode: String
@@ -4489,6 +4643,12 @@ type Order {
   # Order Requested Fulfillment
   requestedFulfillment: RequestedFulfillment
 
+  # Latest offer
+  lastOffer: Offer
+
+  # List of offers made on this order so far
+  offers: OfferConnection
+
   # Item total in cents
   itemsTotalCents: Int
 
@@ -4503,8 +4663,36 @@ type Order {
     thousand: String = ","
   ): String
 
+  # Total list price in cents
+  totalListPriceCents: Int
+
+  # A formatted price with various currency formatting options.
+  totalListPrice(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
   # Shipping total in cents
   shippingTotalCents: Int
+
+  # Total amount of latest offer
+  offerTotalCents: Int @deprecated(reason: "Switch to ItemTotalCents")
+
+  # A formatted price with various currency formatting options.
+  offerTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
 
   # A formatted price with various currency formatting options.
   shippingTotal(
@@ -4739,14 +4927,31 @@ type OrderLineItem {
   # Artwork that is being ordered
   artwork: Artwork
 
+  # Artwork version that is being ordered
+  artworkVersion: ArtworkVersion
+
   # ID of the selected Edition set from the artwork
   editionSetId: String
 
   # Unit price in cents
-  priceCents: Int
+  priceCents: Int @deprecated(reason: "Switched to `listPriceCents`")
 
   # A formatted price with various currency formatting options.
   price(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # Unit list price in cents
+  listPriceCents: Int
+
+  # A formatted price with various currency formatting options.
+  listPrice(
     decimal: String = "."
 
     # Allows control of symbol position (%v = value, %s = symbol)
@@ -4795,6 +5000,14 @@ type OrderLineItemEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+enum OrderModeEnum {
+  # Order initiated by Buy
+  BUY
+
+  # Order initiated by Offer
+  OFFER
 }
 
 union OrderOrFailureUnionType = OrderWithMutationSuccess | OrderWithMutationFailure
@@ -5353,6 +5566,12 @@ type Query {
     # The id of the auction to participate in
     sale_id: String!
   ): String
+
+  # A city-based entry point for local discovery
+  city(
+    # A slug for the city, conforming to Gravity's city slug naming conventions
+    slug: String!
+  ): City
   collection(
     # The slug or ID of the Collection
     id: String!
@@ -5754,6 +5973,7 @@ type Query {
     buyerType: String
     sellerId: String
     sellerType: String
+    mode: OrderModeEnum
     state: String
     sort: OrdersSortMethodType
     after: String
@@ -5771,6 +5991,7 @@ type Query {
     buyerType: String
     sellerId: String
     sellerType: String
+    mode: OrderModeEnum
     state: String
     sort: OrdersSortMethodType
     after: String
@@ -6023,7 +6244,7 @@ type SaleArtwork {
   minimum_next_bid_cents: Float @deprecated(reason: "Favor `minimum_next_bid`")
   opening_bid: SaleArtworkOpeningBid
   opening_bid_cents: Float @deprecated(reason: "Favor `opening_bid`")
-  position: Int
+  position: Float
   reserve: SaleArtworkReserve
   reserve_message: String
   reserve_status: String
@@ -6277,6 +6498,9 @@ interface Sellable {
 
   # Whether a piece can be purchased through e-commerce
   is_acquireable: Boolean
+
+  # Whether a user can make an offer on the work
+  is_offerable: Boolean
   is_for_sale: Boolean
   is_sold: Boolean
   price: String
@@ -6400,7 +6624,11 @@ type Show implements Node {
   # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
+
+  # The Artists presenting in this show
   artists: [Artist]
+
+  # The artworks featured in this show
   artworks(
     # Number of artworks to return
     size: Int = 25
@@ -6411,7 +6639,9 @@ type Show implements Node {
 
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
-  ): [Artwork]
+  ): [Artwork] @deprecated(reason: "Use artworks_connection instead")
+
+  # The artworks featured in the show
   artworks_connection(
     # Number of artworks to return
     size: Int = 25
@@ -6427,10 +6657,20 @@ type Show implements Node {
     before: String
     last: Int
   ): ArtworkConnection
+
+  # Artists inside the show who do not have artworks present
   artists_without_artworks: [Artist]
+
+  # The general city, derived from a fair location, a show location or a potential city
   city: String
+
+  # The image you should use to represent this show
   cover_image: Image
+
+  # An object that represents some of the numbers you might want to highlight
   counts: ShowCounts
+
+  # A description of the show
   description: String
   displayable: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   end_at(
@@ -6441,12 +6681,20 @@ type Show implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # Events from the partner that runs this show
   events: [PartnerShowEventType]
 
   # A formatted description of the start to end dates
   exhibition_period: String
+
+  # If the show is in a Fair, then that fair
   fair: Fair
+
+  # A path to the show on Artsy
   href: String
+
+  # Images that represent the show, you may be interested in meta_image or cover_image for a definitive thumbnail
   images(
     # Number of images to return
     size: Int
@@ -6461,17 +6709,45 @@ type Show implements Node {
 
   # Gravity doesn’t expose the `active` flag. Temporarily re-state its logic.
   is_active: Boolean
+
+  # Is this something we can display to the front-end?
   is_displayable: Boolean
+
+  # Does the show exist as a fair booth?
   is_fair_booth: Boolean
+
+  # Is it a stubbed show?
   is_reference: Boolean
+
+  # Whether the show is in a fair, group or solo
   kind: String
+
+  # Where the show is located (Could also be a fair location)
   location: Location
+
+  # An image representing the show, or a sharable image from an artwork in the show
   meta_image: Image
 
   # The exhibition title
   name: String
+
+  # Shows that are near (~75km) from this show
+  nearbyShows(
+    sort: PartnerShowSorts
+    status: EventStatus
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
+
+  # The partner that represents this show, could be a non-Artsy partner
   partner: PartnerTypes
+
+  # The press release for this show
   press_release(format: Format): String
+
+  # When this show starts
   start_at(
     # This arg is deprecated, use timezone instead
     convert_to_utc: Boolean
@@ -6480,6 +6756,8 @@ type Show implements Node {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # Is this show running, upcoming or closed?
   status: String
 
   # A formatted update on upcoming status changes
@@ -6487,6 +6765,8 @@ type Show implements Node {
     # Before this many days no update will be generated
     max_days: Int
   ): String
+
+  # Is it a fair booth or a show?
   type: String
 }
 
@@ -6944,6 +7224,12 @@ type Viewer {
     # The id of the auction to participate in
     sale_id: String!
   ): String
+
+  # A city-based entry point for local discovery
+  city(
+    # A slug for the city, conforming to Gravity's city slug naming conventions
+    slug: String!
+  ): City
   collection(
     # The slug or ID of the Collection
     id: String!
