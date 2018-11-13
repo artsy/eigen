@@ -29,6 +29,7 @@
 - Add fair-scoped search link to native Eigen screen - javamonn
 - Adds "View on map" to show view for "More shows" - Kieran
 - Adds AllArtist page to Shows and adds styled gray border InvertedButton - Kieran
+- Add HoursCollapsible to Fair detail view - javamonn
 
 ### 1.7.4
 

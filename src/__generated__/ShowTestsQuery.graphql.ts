@@ -42,6 +42,10 @@ fragment Detail_show on Show {
     city
     state
     postal_code
+    displayDaySchedules {
+      days
+      hours
+    }
     __id
     ...LocationMap_location
   }
@@ -400,7 +404,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
-  "id": "fd83c4b2f34c863253577c4c0cd0ea37",
+  "id": "3d6b1d661d1d73445e93bbf023a17cb8",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -468,14 +472,14 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
-              v2,
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "address",
+                "name": "postal_code",
                 "args": null,
                 "storageKey": null
               },
+              v2,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -494,9 +498,34 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "postal_code",
+                "name": "address",
                 "args": null,
                 "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "displayDaySchedules",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "FormattedDaySchedules",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "days",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "hours",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
               },
               v1,
               v4,

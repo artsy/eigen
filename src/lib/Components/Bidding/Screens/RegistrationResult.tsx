@@ -4,10 +4,10 @@ import { View } from "react-native"
 import { Icon20 } from "../Components/Icon"
 import { Flex } from "../Elements/Flex"
 
+import { Markdown } from "../../Markdown"
 import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { BidGhostButton } from "../Components/Button"
 import { Container } from "../Components/Containers"
-import { Markdown } from "../Components/Markdown"
 import { Title } from "../Components/Title"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
