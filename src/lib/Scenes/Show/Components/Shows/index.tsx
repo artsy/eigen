@@ -16,7 +16,7 @@ export class Shows extends React.Component<Props> {
     return (
       <>
         <Sans size="6">{"Current Shows In " + city}</Sans>
-        <ShowItem show={this.props.show} />
+        <ShowItem show={this.props.show as any} />
       </>
     )
   }
