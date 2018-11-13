@@ -1,9 +1,8 @@
 import { Flex } from "@artsy/palette"
-import { Shows_show } from "__generated__/Shows_show.graphql"
+import { ShowItem_show } from "__generated__/ShowItem_show.graphql"
 import { WhiteButton } from "lib/Components/Buttons"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import { Colors } from "lib/data/colors"
-import { element } from "prop-types"
 import React from "react"
 import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -23,7 +22,7 @@ interface State {
 }
 
 interface Props {
-  show: Shows_show
+  show: ShowItem_show
 }
 
 export class ShowItem extends React.Component<Props, State> {
@@ -62,7 +61,7 @@ export class ShowItem extends React.Component<Props, State> {
     } = node
 
     let fields = [showName, galleryName, address, address2, state, postalCode]
-    return (fields = fields.filter(field => !!field).map(text => <Text>{text}</Text>))
+    return (fields = fields.filter(field => !!field).map((text, el) => <Text key={el}>{text}</Text>))
   }
   render() {
     if (!this.props.show) {

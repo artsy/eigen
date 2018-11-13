@@ -988,6 +988,7 @@ type ArtworkContextFair {
   has_homepage_section: Boolean
   has_large_banner: Boolean
   has_listing: Boolean
+  hours: String
   href: String
   image: Image
 
@@ -2697,6 +2698,7 @@ type Fair {
   has_homepage_section: Boolean
   has_large_banner: Boolean
   has_listing: Boolean
+  hours: String
   href: String
   image: Image
 
@@ -3639,6 +3641,7 @@ type HomePageModuleContextFair {
   has_homepage_section: Boolean
   has_large_banner: Boolean
   has_listing: Boolean
+  hours: String
   href: String
   image: Image
 
@@ -4642,18 +4645,6 @@ type Order {
 
   # Latest offer
   lastOffer: Offer
-  offerTotalCents: Int
-
-  # A formatted price with various currency formatting options.
-  offerTotal(
-    decimal: String = "."
-
-    # Allows control of symbol position (%v = value, %s = symbol)
-    format: String = "%s%v"
-    precision: Int = 0
-    symbol: String
-    thousand: String = ","
-  ): String
 
   # List of offers made on this order so far
   offers: OfferConnection
@@ -4672,8 +4663,36 @@ type Order {
     thousand: String = ","
   ): String
 
+  # Total list price in cents
+  totalListPriceCents: Int
+
+  # A formatted price with various currency formatting options.
+  totalListPrice(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
   # Shipping total in cents
   shippingTotalCents: Int
+
+  # Total amount of latest offer
+  offerTotalCents: Int @deprecated(reason: "Switch to ItemTotalCents")
+
+  # A formatted price with various currency formatting options.
+  offerTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
 
   # A formatted price with various currency formatting options.
   shippingTotal(
@@ -4915,10 +4934,24 @@ type OrderLineItem {
   editionSetId: String
 
   # Unit price in cents
-  priceCents: Int
+  priceCents: Int @deprecated(reason: "Switched to `listPriceCents`")
 
   # A formatted price with various currency formatting options.
   price(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+
+  # Unit list price in cents
+  listPriceCents: Int
+
+  # A formatted price with various currency formatting options.
+  listPrice(
     decimal: String = "."
 
     # Allows control of symbol position (%v = value, %s = symbol)
@@ -6211,7 +6244,7 @@ type SaleArtwork {
   minimum_next_bid_cents: Float @deprecated(reason: "Favor `minimum_next_bid`")
   opening_bid: SaleArtworkOpeningBid
   opening_bid_cents: Float @deprecated(reason: "Favor `opening_bid`")
-  position: Int
+  position: Float
   reserve: SaleArtworkReserve
   reserve_message: String
   reserve_status: String
