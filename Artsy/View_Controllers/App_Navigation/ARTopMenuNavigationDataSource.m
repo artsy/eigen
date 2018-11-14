@@ -1,6 +1,7 @@
 #import "ARTopMenuNavigationDataSource.h"
 
 #import "ARFeedTimeline.h"
+#import "Artsy-swift.h"
 #import <Emission/AREmission.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
@@ -99,6 +100,17 @@
     return [[ARNavigationController alloc] initWithRootViewController:worksForYouComponentVC];
 }
 
+- (ARNavigationController *)cameraNavigationController
+{
+    if (@available(iOS 11.3, *)) {
+        MetadataInARViewController *cameraVC = [[MetadataInARViewController alloc] init];
+        return [[ARNavigationController alloc] initWithRootViewController:cameraVC];
+    } else {
+        // Fallback on earlier versions
+        return [[ARNavigationController alloc] initWithRootViewController:[UIViewController new]];
+    }
+}
+
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index;
 {
     return (ARNavigationController *)[self navigationControllerAtIndex:index parameters:nil];
@@ -116,6 +128,9 @@
 
         case ARTopTabControllerIndexMessaging:
             return [self messagingNavigationController];
+            
+        case ARTopTabControllerIndexCamera:
+            return [self cameraNavigationController];
 
         case ARTopTabControllerIndexFavorites:
             return [self favoritesNavigationController];

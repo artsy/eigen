@@ -286,6 +286,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     NSDictionary *menuToPaths = @{
         @(ARTopTabControllerIndexHome) : @"/",
         @(ARTopTabControllerIndexMessaging) : @"/inbox",
+        @(ARTopTabControllerIndexCamera): @"/camera",
         @(ARTopTabControllerIndexFavorites) : @"/favorites",
         @(ARTopTabControllerIndexProfile) : @"/ios-settings", // A good argument is "user/edit", _but_ the app barely supports any of it's features
     };
@@ -302,6 +303,10 @@ static const CGFloat ARMenuButtonDimension = 50;
     
     [switchboard registerPathCallbackAtPath:@"/auctions" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
         return [self rootNavigationControllerHomeWithTab:ARHomeTabAuctions].rootViewController;
+    }];
+    
+    [switchboard registerPathCallbackAtPath:@"/camera" callback:^id _Nullable(NSDictionary * _Nullable parameters) {
+        return [[MetadataInARViewController alloc] init];
     }];
 }
 
@@ -392,6 +397,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     return @[
              [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
              [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
+             [self tabButtonWithName:@"nav_camera" accessibilityName:@"Camera"],
              [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
              [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
              // [self tabButtonWithName:@"nav_profile" accessibilityName:@"Profile"],
