@@ -12,7 +12,6 @@
 
 @end
 
-
 @implementation LiveAuctionLot
 
 - (instancetype)init
