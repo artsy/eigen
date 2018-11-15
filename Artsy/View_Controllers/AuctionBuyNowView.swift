@@ -5,7 +5,7 @@ class AuctionBuyNowView: ORStackView {
     var actionDelegate: UIViewController?
 
     var saleArtworks: [SaleArtwork]?
-    var isCompact = true
+    var isCompact = true 
 
     func setup(isCompact: Bool, promotedSaleArtworks: [SaleArtwork], viewController: UIViewController, delegate: UIViewController) {
 

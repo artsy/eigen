@@ -16,12 +16,12 @@ class MetadataInARViewController: UIViewController, ARSCNViewDelegate {
     
     var sceneView: ARSCNView!
     
-    weak var blurView: UIVisualEffectView!
+    var blurView: UIVisualEffectView!
     
     /// The view controller that displays the status and "restart experience" UI.
-    lazy var statusViewController: MetadataInARStatusViewController = {
-        return MetadataInARStatusViewController()
-    }()
+    var statusViewController: MetadataInARStatusViewController!
+    
+    var artworkView: MetadataInARArtworkView?
     
     /// A serial queue for thread safety when modifying the SceneKit node graph.
     let updateQueue = DispatchQueue(label: Bundle.main.bundleIdentifier! +
@@ -37,7 +37,11 @@ class MetadataInARViewController: UIViewController, ARSCNViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ar_addChildViewController(statusViewController, atFrame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 30))
+        let blurEffect = UIBlurEffect.init(style: .dark)
+        blurView =  UIVisualEffectView.init(effect: blurEffect)
+        
+        statusViewController = MetadataInARStatusViewController()
+        addChild(statusViewController)
         
         sceneView = ARSCNView(frame: view.bounds)
         sceneView.delegate = self
@@ -47,8 +51,10 @@ class MetadataInARViewController: UIViewController, ARSCNViewDelegate {
         statusViewController.restartExperienceHandler = { [unowned self] in
             self.restartExperience()
         }
-        
+
         view.addSubview(sceneView)
+        view.addSubview(statusViewController.view)
+        statusViewController.didMove(toParent: self)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -75,7 +81,6 @@ class MetadataInARViewController: UIViewController, ARSCNViewDelegate {
     /// Creates a new AR configuration to run on the `session`.
     /// - Tag: ARReferenceImage-Loading
     func resetTracking() {
-        
         guard let referenceImages = ARReferenceImage.referenceImages(inGroupNamed: "AR Resources", bundle: nil) else {
             fatalError("Missing expected asset catalog resources.")
         }
@@ -141,36 +146,74 @@ class MetadataInARViewController: UIViewController, ARSCNViewDelegate {
             planeNode.runAction(self.imageHighlightAction)
             
             // TODO: add UI to render
-            let cardNode = self.getArtworkCard(referenceImage: referenceImage)
-            //            cardNode.eulerAngles.x = -.pi / 2
-            
-            //            if #available(iOS 12.0, *) {
-            //                cardNode.position = SCNVector3(
-            //                    x: planeNode.position.x + Float(planeNode.frame.maxX) + 10,
-            //                    y: planeNode.position.y,
-            //                    z: planeNode.position.z)
-            //            } else {
-            //                // Fallback on earlier versions
-            //            }
-            
-            planeNode.addChildNode(cardNode)
+//            let cardNode = self.getArtworkCard(referenceImage: referenceImage)
+//            planeNode.addChildNode(cardNode)
             
             // Add the plane visualization to the scene.
             node.addChildNode(planeNode)
         }
         
         DispatchQueue.main.async {
-            let imageName = referenceImage.name ?? ""
+            let artworkId = referenceImage.name ?? ""
             self.statusViewController.cancelAllScheduledMessages()
-            self.statusViewController.showMessage("Detected image “\(imageName)”")
+            self.statusViewController.showMessage("Detected image \(artworkId)")
+            
+            let artwork = Artwork(artworkID: artworkId)
+            
+//            if self.artworkView == nil {
+//                let artworkView = MetadataInARArtworkView(artwork: artwork)
+//                self.view.addSubview(artworkView)
+//
+//                let bottomPredicate = artworkView.alignBottomEdge(withView: self.view, predicate: "-20")
+//                artworkView.alignLeadingEdge(withView: self.view, predicate: "15")
+//                artworkView.constrainWidth(toView: self.view, predicate: "-30")
+//                artworkView.constrainHeight("200")
+//
+//                bottomPredicate.constant = 200
+//                artworkView.alpha = 0
+//
+//                UIView.animate(withDuration: 0.3, animations: {
+//                    artworkView.alpha = 1
+//
+//                    self.view.layoutIfNeeded()
+//                    bottomPredicate.constant = -30
+//
+//                    UIView.animate(withDuration: 0.3, animations: {
+//                        self.view.layoutIfNeeded()
+//                    })
+//                })
+//
+//                self.artworkView = artworkView
+//            } else {
+//                self.artworkView?.updateWithArtwork(artwork: artwork)
+//            }
+//            print("\(artwork)")
+            
+            self.addBottomSheetView(artwork: artwork)
         }
     }
     
     var imageHighlightAction: SCNAction {
         return .sequence([
             .wait(duration: 0.25),
+            .fadeOpacity(to: 0.85, duration: 0.25),
             .fadeOpacity(to: 0.15, duration: 0.25),
-            .fadeOpacity(to: 0.85, duration: 0.25)
+            .fadeOpacity(to: 0.85, duration: 0.25),
+            .fadeOut(duration: 0.25)
             ])
+    }
+    
+    
+    func addBottomSheetView(artwork: Artwork) {
+        let bottomSheetVC = MetadataInARBottomSheetViewController(artwork: artwork)
+        
+        addChild(bottomSheetVC)
+        view.addSubview(bottomSheetVC.view)
+        bottomSheetVC.didMove(toParent: self)
+        
+        let height = view.frame.height
+        let width = view.frame.width
+        
+        bottomSheetVC.view.frame = CGRect(x: 0, y: view.frame.maxY, width: width, height: height)
     }
 }

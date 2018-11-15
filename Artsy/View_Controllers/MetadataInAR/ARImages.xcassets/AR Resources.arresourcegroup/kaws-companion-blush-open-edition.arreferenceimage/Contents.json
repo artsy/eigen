@@ -1,6 +1,9 @@
 {
   "images" : [
-
+    {
+      "idiom" : "universal",
+      "filename" : "kaws-companion-blush-open-edition.jpg"
+    }
   ],
   "info" : {
     "version" : 1,

@@ -29,11 +29,25 @@ class MetadataInARStatusViewController: UIViewController {
     
     // MARK: - IBOutlets
     
-    @IBOutlet weak private var messagePanel: UIVisualEffectView!
+    private var messagePanel: UIVisualEffectView!
     
-    @IBOutlet weak private var messageLabel: UILabel!
+    private var messageLabel: UILabel!
     
-    @IBOutlet weak private var restartExperienceButton: UIButton!
+    private var restartExperienceButton: UIButton!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        messagePanel = UIVisualEffectView()
+        messageLabel = UILabel()
+        
+        restartExperienceButton = UIButton(type: .infoDark)
+        
+        messagePanel.contentView.addSubview(messageLabel)
+        messagePanel.contentView.addSubview(restartExperienceButton)
+
+        view.addSubview(messagePanel)
+    }
     
     // MARK: - Properties
     
