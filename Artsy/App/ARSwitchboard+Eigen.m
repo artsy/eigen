@@ -238,4 +238,10 @@
     return [self loadPath:path];
 }
 
+
+- (MetadataInARViewController *)loadCamera
+API_AVAILABLE(ios(11.3)) {
+    return [[MetadataInARViewController alloc] init];
+}
+
 @end

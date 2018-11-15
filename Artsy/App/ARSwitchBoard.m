@@ -211,6 +211,11 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
             return nil;
         }
     }];
+    
+    [self.routes addRoute:@"/camera" handler: JLRouteParams {
+        UIViewController *cameraVC = [[MetadataInARViewController alloc] init];
+        return [[ARNavigationController alloc] initWithRootViewController:cameraVC];
+    }];
 
 
     // We don't show a native fairs UI for iPad
