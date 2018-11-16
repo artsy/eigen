@@ -145,11 +145,6 @@ class MetadataInARViewController: UIViewController, ARSCNViewDelegate {
              */
             planeNode.runAction(self.imageHighlightAction)
             
-            // TODO: add UI to render
-//            let cardNode = self.getArtworkCard(referenceImage: referenceImage)
-//            planeNode.addChildNode(cardNode)
-            
-            // Add the plane visualization to the scene.
             node.addChildNode(planeNode)
         }
         
@@ -159,35 +154,6 @@ class MetadataInARViewController: UIViewController, ARSCNViewDelegate {
             self.statusViewController.showMessage("Detected image \(artworkId)")
             
             let artwork = Artwork(artworkID: artworkId)
-            
-//            if self.artworkView == nil {
-//                let artworkView = MetadataInARArtworkView(artwork: artwork)
-//                self.view.addSubview(artworkView)
-//
-//                let bottomPredicate = artworkView.alignBottomEdge(withView: self.view, predicate: "-20")
-//                artworkView.alignLeadingEdge(withView: self.view, predicate: "15")
-//                artworkView.constrainWidth(toView: self.view, predicate: "-30")
-//                artworkView.constrainHeight("200")
-//
-//                bottomPredicate.constant = 200
-//                artworkView.alpha = 0
-//
-//                UIView.animate(withDuration: 0.3, animations: {
-//                    artworkView.alpha = 1
-//
-//                    self.view.layoutIfNeeded()
-//                    bottomPredicate.constant = -30
-//
-//                    UIView.animate(withDuration: 0.3, animations: {
-//                        self.view.layoutIfNeeded()
-//                    })
-//                })
-//
-//                self.artworkView = artworkView
-//            } else {
-//                self.artworkView?.updateWithArtwork(artwork: artwork)
-//            }
-//            print("\(artwork)")
             
             self.addBottomSheetView(artwork: artwork)
         }

@@ -14,7 +14,7 @@
 
 @interface ARArtworkMetadataView : UIView
 
-- (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair;
+- (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair NS_DESIGNATED_INITIALIZER;;
 - (void)updateWithFair:(Fair *)fair;
 - (void)updateConstraintsIsLandscape:(BOOL)isLandscape;
 
@@ -27,6 +27,11 @@
 
 @property (nonatomic, strong, readonly) UIView *left;
 @property (nonatomic, strong, readonly) UIView *right;
+
+@property (nonatomic, strong) ARArtworkPreviewActionsView *artworkPreviewActions;
+@property (nonatomic, strong) ARArtworkPreviewImageView *artworkPreview;
+@property (nonatomic, strong) ARArtworkActionsView *actionsView;
+@property (nonatomic, strong) ARArtworkDetailView *artworkDetailView;
 
 /// TODO: Make this a view controller so that we can negate doing this.
 /// Let subviews know that we're in a fair context

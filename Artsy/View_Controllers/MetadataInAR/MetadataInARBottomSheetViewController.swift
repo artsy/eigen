@@ -8,6 +8,7 @@
 
 import UIKit
 
+@available(iOS 10.0, *)
 class MetadataInARBottomSheetViewController: UIViewController {
     var artworkMetadataView: MetadataInARArtworkView!
     var artwork: Artwork
@@ -56,11 +57,7 @@ class MetadataInARBottomSheetViewController: UIViewController {
     
     func prepareBackgroundView(){
         let blurEffect = UIBlurEffect.init(style: .dark)
-        let visualEffect = UIVisualEffectView.init(effect: blurEffect)
         let blurredView = UIVisualEffectView.init(effect: blurEffect)
-        blurredView.contentView.addSubview(visualEffect)
-
-        visualEffect.frame = UIScreen.main.bounds
         blurredView.frame = UIScreen.main.bounds
         
         view.insertSubview(blurredView, at: 0)
@@ -69,7 +66,8 @@ class MetadataInARBottomSheetViewController: UIViewController {
     @objc func panGesture(recognizer: UIPanGestureRecognizer) {
         let translation = recognizer.translation(in: self.view)
         let y = self.view.frame.minY
-        self.view.frame = CGRect(x: 0, y: y + translation.y, width: view.frame.width, height: view.frame.height)
-        recognizer.setTranslation(CGPoint.zero, in: self.view)
+
+        view.frame = CGRect(x: 0, y: y + translation.y, width: view.frame.width, height: view.frame.height)
+        recognizer.setTranslation(CGPoint.zero, in: view)
     }
 }

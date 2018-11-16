@@ -12,8 +12,11 @@ class MetadataInARArtworkView: UIView {
     var artwork: Artwork
     
     var artworkImage: UIImageView!
-    var titleLabel: UILabel!
-    var subtitleLabel: UILabel!
+    var artworkTitle: UILabel!
+    var artistName: UILabel!
+    var price: UILabel!
+    
+    var metadataView: ARArtworkDetailView!
 
     init(artwork: Artwork) {
         self.artwork = artwork
@@ -23,6 +26,7 @@ class MetadataInARArtworkView: UIView {
         addArtworkImage()
         addTitleLabel()
         addSubtitleLabel()
+        addPriceLabel()
         updateWithArtwork(artwork: artwork)
     }
     
@@ -44,7 +48,7 @@ class MetadataInARArtworkView: UIView {
         titleLabel.alignLeadingEdge(withView: artworkImage, predicate: "90")
         titleLabel.constrainHeight("30")
         
-        self.titleLabel = titleLabel
+        self.artworkTitle = titleLabel
     }
     
     func addSubtitleLabel() {
@@ -57,11 +61,28 @@ class MetadataInARArtworkView: UIView {
         }
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(subtitleLabel)
-        subtitleLabel.alignTopEdge(withView: titleLabel, predicate: "30")
+        subtitleLabel.alignTopEdge(withView: artworkTitle, predicate: "30")
         subtitleLabel.alignLeadingEdge(withView: artworkImage, predicate: "90")
         subtitleLabel.constrainHeight("20")
         
-        self.subtitleLabel = subtitleLabel
+        self.artistName = subtitleLabel
+    }
+    
+    func addPriceLabel() {
+        let priceLabel = ARSansSerifLabel().then {
+            $0.text = artwork.price
+            $0.font = UIFont.displaySansSerifFont(withSize: 14)
+            $0.backgroundColor = .clear
+            $0.textColor = UIColor.artsyGrayLight()
+            $0.textAlignment = .left
+        }
+        priceLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(priceLabel)
+        priceLabel.alignTopEdge(withView: artistName, predicate: "30")
+        priceLabel.alignLeadingEdge(withView: artworkImage, predicate: "90")
+        priceLabel.constrainHeight("20")
+        
+        self.price = priceLabel
     }
     
     func addArtworkImage() {
@@ -81,15 +102,34 @@ class MetadataInARArtworkView: UIView {
         self.artworkImage = imageView
     }
     
+    func addArtworkDetailView() {
+        guard let metadataView = ARArtworkDetailView(artwork: artwork, andFair: artwork.fair()) else {
+            return
+        }
+        metadataView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(metadataView)
+        metadataView.constrainTopSpace(toView: price, predicate: "10")
+        metadataView.constrainWidth(toView: self, predicate: "0")
+        metadataView.constrainHeight("200")
+        metadataView.alignCenterX(withView: self, predicate: "0")
+        
+        self.metadataView = metadataView
+    }
+    
     func updateWithArtwork(artwork: Artwork) {
         self.artwork = artwork
         
         artwork.onArtworkUpdate({
-            self.titleLabel.text = artwork.title
-            self.subtitleLabel.text = artwork.artist?.name
+            self.artworkTitle.text = artwork.title
+            self.artistName.text = artwork.artist?.name
+            self.price.text = artwork.price
             
             if let url = artwork.defaultImage.imageURL(withFormatName: "square") {
                 self.artworkImage.ar_setImage(with: url)
+            }
+            
+            if self.metadataView == nil {
+                self.addArtworkDetailView()
             }
         }, failure: { err in
             
@@ -98,3 +138,4 @@ class MetadataInARArtworkView: UIView {
         artwork.update()
     }
 }
+

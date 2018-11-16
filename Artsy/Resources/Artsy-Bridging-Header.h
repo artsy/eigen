@@ -19,7 +19,7 @@
 
 #import "ARSaleArtworkItemWidthDependentModule.h"
 #import "ARArtworkSetViewController.h"
-//#import "Fair.h" // Required by the switchboard's loadArtworkWithID(inFair:) function, even if we just pass nil in as a fair.
+#import "Fair.h" // Required by the switchboard's loadArtworkWithID(inFair:) function, even if we just pass nil in as a fair.
 
 #import "ARSwitchBoard.h"
 #import "ARSwitchBoard+Eigen.h"
@@ -65,6 +65,9 @@
 #import "ARSharingController.h"
 
 #import "ORStackView+ArtsyViews.h"
+
+// For Metadata in AR
+#import "ARArtworkMetadataView.h"
 
 // For building out Auction Information VC
 
