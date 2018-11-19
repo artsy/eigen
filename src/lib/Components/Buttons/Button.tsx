@@ -1,13 +1,10 @@
+import { Sans } from "@artsy/palette"
 import React from "react"
 import { Animated, StyleSheet, TouchableWithoutFeedback, View } from "react-native"
-
-import Headline from "../Text/Headline"
-
 import { ButtonProps } from "./"
 
 const AnimationDuration = 250
 const AnimatedView = Animated.createAnimatedComponent(View)
-const AnimatedHeadline = Animated.createAnimatedComponent(Headline)
 
 // An abstract class meant to be used by other components by passing in their
 // own theme settings. See index.tsx for some examples.
@@ -149,10 +146,6 @@ export default class Button extends React.Component<Props, State> {
       style: [styles.button, { backgroundColor, borderColor, opacity }, this.props.style],
     }
 
-    const textStyle = this.props.textStyle || {}
-
-    const headlineStyles = [styles.text, textStyle, { opacity: this.state.textOpacity, color }]
-
     return (
       <TouchableWithoutFeedback
         onPress={this.onPress}
@@ -161,7 +154,9 @@ export default class Button extends React.Component<Props, State> {
         disabled={this.props.disabled}
       >
         <AnimatedView {...styling}>
-          <AnimatedHeadline style={headlineStyles}>{this.props.text}</AnimatedHeadline>
+          <Sans size="3" color={color.toString()} weight="medium">
+            {this.props.text}
+          </Sans>
         </AnimatedView>
       </TouchableWithoutFeedback>
     )
@@ -173,7 +168,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    height: 36,
+    borderRadius: 2,
+    height: 46,
   },
   text: {
     color: "black",
