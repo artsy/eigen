@@ -22,6 +22,7 @@
 #import "ARFairGuideContainerViewController.h"
 #import "ARAuctionWebViewController.h"
 #import "ARFairMapViewController.h"
+#import "ARFairSearchViewController.h"
 #import "ARTopMenuViewController.h"
 #import "ARMutableLinkViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
@@ -190,7 +191,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
         __strong typeof (wself) sself = wself;
         return [sself loadConversationWithID:parameters[@"id"]];
     }];
-    
+
     [self.routes addRoute:@"/admin" handler:JLRouteParams {
         return [wself loadAdminMenu];
     }];
@@ -225,6 +226,11 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
             __strong typeof (wself) sself = wself;
             Fair *fair = parameters[@"fair"] ?: [[Fair alloc] initWithFairID:parameters[@"profile_id"]];
             return [sself loadArtistWithID:parameters[@"id"] inFair:fair];
+        }];
+
+        [self.routes addRoute:@"/:fairID/search" handler:JLRouteParams {
+            Fair *fair = [[Fair alloc] initWithFairID:parameters[@"fairID"]];
+            return [[ARFairSearchViewController alloc] initWithFair:fair];
         }];
     }
 
