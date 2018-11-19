@@ -365,7 +365,7 @@
 - (ARCellData *)jumpToShow
 {
   return [self tappableCellDataWithTitle:@"Show" selection:^{
-    id viewController = [[ARShowComponentViewController alloc] initWithShowID:@"joseph-k-levene-fine-art-ltd-icons-online"];
+    id viewController = [[ARShowComponentViewController alloc] initWithShowID:@"ross-plus-kramer-gallery-william-a-hall-symphony-of-survival"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

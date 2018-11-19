@@ -16,8 +16,8 @@
 
   UIButton *backButton = [self createBackButton];
   [self.view addSubview:backButton];
-  [backButton constrainTopSpaceToView:self.topLayoutGuide predicate:@"12"];
-  [backButton alignLeadingEdgeWithView:self.view predicate:@"12"];
+  [backButton constrainTopSpaceToView:self.topLayoutGuide predicate:@"20"];
+  [backButton alignLeadingEdgeWithView:self.view predicate:@"3"];
   [backButton constrainWidth:@"40" height:@"40"];
   _backButton = backButton;
 
@@ -51,16 +51,12 @@
 - (UIButton *)createBackButton
 {
   UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-  [backButton setImage:[UIImage imageNamed:@"BackArrow"] forState:UIControlStateNormal];
+  [backButton setImage:[UIImage imageNamed:@"Back"] forState:UIControlStateNormal];
   [backButton addTarget:self action:@selector(pop) forControlEvents:UIControlEventTouchUpInside];
   backButton.adjustsImageWhenDisabled = NO;
-  backButton.backgroundColor = UIColor.blackColor;
 
   backButton.alpha = self.showBackButtonOnRoot ? 1 : 0;
 
-  backButton.layer.cornerRadius = 20;
-  backButton.layer.borderColor = [UIColor whiteColor].CGColor;
-  backButton.layer.borderWidth = 2;
   return backButton;
 }
 
