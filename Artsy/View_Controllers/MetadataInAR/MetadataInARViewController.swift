@@ -32,6 +32,8 @@ class MetadataInARViewController: UIViewController, ARSCNViewDelegate {
         return sceneView.session
     }
     
+    var currentAnchor: ARImageAnchor?
+    
     // MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {
@@ -93,27 +95,24 @@ class MetadataInARViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func getArtworkCard(referenceImage: ARReferenceImage) -> SCNNode {
-        let skScene = SKScene(size: CGSize(width: 200, height: 200))
+        let width = referenceImage.physicalSize.width
+        let height = referenceImage.physicalSize.height
+    
+        let skScene = SKScene(size: CGSize(width: width, height: height))
         skScene.backgroundColor = UIColor.clear
         
-        let rectangle = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 200, height: 200), cornerRadius: 10)
-        rectangle.fillColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        rectangle.strokeColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
-        rectangle.lineWidth = 5
+        let rectangle = SKShapeNode(rect: CGRect(x: 0, y: 0, width: width, height: height), cornerRadius: 0)
+        rectangle.strokeColor = UIColor.artsyPurpleRegular()
+        rectangle.lineWidth = 2
         rectangle.alpha = 1
-        let labelNode = SKLabelNode(text: "Lupita")
-        labelNode.fontSize = 20
-        labelNode.fontName = "San Fransisco"
-        labelNode.color = .black
-        labelNode.position = CGPoint(x:10, y:20)
         skScene.addChild(rectangle)
-        skScene.addChild(labelNode)
         
         let plane = SCNPlane(width: referenceImage.physicalSize.width, height: referenceImage.physicalSize.height)
         let material = SCNMaterial()
         material.isDoubleSided = false
         material.diffuse.contents = skScene
         material.diffuse.contentsTransform = SCNMatrix4MakeScale(1, -1, 1)
+        
         plane.materials = [material]
         
         return SCNNode(geometry: plane)
@@ -122,7 +121,13 @@ class MetadataInARViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - ARSCNViewDelegate (Image detection results)
     /// - Tag: ARImageAnchor-Visualizing
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        if let anchor = currentAnchor {
+            session.remove(anchor: anchor)
+        }
+
         guard let imageAnchor = anchor as? ARImageAnchor else { return }
+        currentAnchor = imageAnchor
+
         let referenceImage = imageAnchor.referenceImage
         updateQueue.async {
             
@@ -144,6 +149,7 @@ class MetadataInARViewController: UIViewController, ARSCNViewDelegate {
              animation that limits the duration for which the plane visualization appears.
              */
             planeNode.runAction(self.imageHighlightAction)
+//            planeNode.addChildNode(self.getArtworkCard(referenceImage: referenceImage))
             
             node.addChildNode(planeNode)
         }
@@ -165,7 +171,7 @@ class MetadataInARViewController: UIViewController, ARSCNViewDelegate {
             .fadeOpacity(to: 0.85, duration: 0.25),
             .fadeOpacity(to: 0.15, duration: 0.25),
             .fadeOpacity(to: 0.85, duration: 0.25),
-            .fadeOut(duration: 0.25)
+            .fadeOpacity(to: 0.15, duration: 0.25),
             ])
     }
     

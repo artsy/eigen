@@ -4665,9 +4665,9 @@
 				7F206866219CC31E00A338AD /* MetadataInARViewController.swift */,
 				7F206868219CC3A600A338AD /* MetadataInARStatusViewController.swift */,
 				7F20686A219CC42800A338AD /* MetadataInARViewController+ARSessionDelegate.swift */,
-				7F20686C219CE76500A338AD /* ARImages.xcassets */,
 				7F206872219CF41000A338AD /* MetadataInARArtworkView.swift */,
 				7F206874219DD74300A338AD /* MetadataInARBottomSheetViewController.swift */,
+				7F20686C219CE76500A338AD /* ARImages.xcassets */,
 			);
 			path = MetadataInAR;
 			sourceTree = "<group>";

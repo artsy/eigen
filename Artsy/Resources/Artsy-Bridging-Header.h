@@ -68,6 +68,7 @@
 
 // For Metadata in AR
 #import "ARArtworkMetadataView.h"
+#import "ARHeartButton.h"
 
 // For building out Auction Information VC
 

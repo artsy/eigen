@@ -15,6 +15,7 @@ class MetadataInARArtworkView: UIView {
     var artworkTitle: UILabel!
     var artistName: UILabel!
     var price: UILabel!
+    var heartButton: ARHeartButton!
     
     var metadataView: ARArtworkDetailView!
 
@@ -24,6 +25,7 @@ class MetadataInARArtworkView: UIView {
         super.init(frame: CGRect.zero)
         
         addArtworkImage()
+        addHeartView()
         addTitleLabel()
         addSubtitleLabel()
         addPriceLabel()
@@ -35,9 +37,9 @@ class MetadataInARArtworkView: UIView {
     }
     
     func addTitleLabel() {
-        let titleLabel = ARSerifLabel().then {
+        let titleLabel = ARSansSerifLabel().then {
             $0.text = artwork.title
-            $0.font = UIFont.serifFont(withSize: 20)
+            $0.font = UIFont.sansSerifFont(withSize: 16)
             $0.backgroundColor = .clear
             $0.textColor = .white
             $0.textAlignment = .left
@@ -46,39 +48,40 @@ class MetadataInARArtworkView: UIView {
         addSubview(titleLabel)
         titleLabel.alignTopEdge(withView: self, predicate: "10")
         titleLabel.alignLeadingEdge(withView: artworkImage, predicate: "90")
+        titleLabel.alignTrailingEdge(withView: heartButton, predicate: "-40")
         titleLabel.constrainHeight("30")
         
-        self.artworkTitle = titleLabel
+        self.artistName = titleLabel
     }
     
     func addSubtitleLabel() {
-        let subtitleLabel = ARSansSerifLabel().then {
+        let subtitleLabel = ARSerifLabel().then {
             $0.text = artwork.artist?.name
-            $0.font = UIFont.sansSerifFont(withSize: 14)
+            $0.font = UIFont.serifItalicFont(withSize: 14)
             $0.backgroundColor = .clear
             $0.textColor = UIColor.artsyGrayLight()
             $0.textAlignment = .left
         }
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(subtitleLabel)
-        subtitleLabel.alignTopEdge(withView: artworkTitle, predicate: "30")
+        subtitleLabel.alignTopEdge(withView: artistName, predicate: "30")
         subtitleLabel.alignLeadingEdge(withView: artworkImage, predicate: "90")
         subtitleLabel.constrainHeight("20")
         
-        self.artistName = subtitleLabel
+        self.artworkTitle = subtitleLabel
     }
     
     func addPriceLabel() {
         let priceLabel = ARSansSerifLabel().then {
             $0.text = artwork.price
-            $0.font = UIFont.displaySansSerifFont(withSize: 14)
+            $0.font = UIFont.displaySansSerifFont(withSize: 20)
             $0.backgroundColor = .clear
             $0.textColor = UIColor.artsyGrayLight()
             $0.textAlignment = .left
         }
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(priceLabel)
-        priceLabel.alignTopEdge(withView: artistName, predicate: "30")
+        priceLabel.alignTopEdge(withView: artworkTitle, predicate: "30")
         priceLabel.alignLeadingEdge(withView: artworkImage, predicate: "90")
         priceLabel.constrainHeight("20")
         
@@ -116,6 +119,22 @@ class MetadataInARArtworkView: UIView {
         self.metadataView = metadataView
     }
     
+    func addHeartView() {
+        let heartView = ARHeartButton()
+        heartView.translatesAutoresizingMaskIntoConstraints = false
+        heartView.addTarget(self, action: #selector(MetadataInARArtworkView.didTapHeartButton(sender:)), for: .touchUpInside)
+        addSubview(heartView)
+        
+//        heartView.constrainTrailingSpace(toView: self, predicate: "10")
+        heartView.alignTopEdge(withView: self, predicate: "40")
+//        heartView.constrainTopSpace(toView: self, predicate: "20")
+        heartView.alignTrailingEdge(withView: self, predicate: "-10")
+        heartView.constrainWidth("40")
+        heartView.constrainHeight("40")
+        
+        self.heartButton = heartView
+    }
+    
     func updateWithArtwork(artwork: Artwork) {
         self.artwork = artwork
         
@@ -127,15 +146,17 @@ class MetadataInARArtworkView: UIView {
             if let url = artwork.defaultImage.imageURL(withFormatName: "square") {
                 self.artworkImage.ar_setImage(with: url)
             }
-            
-            if self.metadataView == nil {
-                self.addArtworkDetailView()
-            }
         }, failure: { err in
             
         })
         
         artwork.update()
+    }
+    
+    @objc func didTapHeartButton(sender: UIButton) {
+        let status: ARHeartStatus = heartButton.status == .yes ? ARHeartStatus.no : .yes
+        heartButton.setStatus(status, animated: true)
+        artwork.setFollowState(true, success: nil, failure: nil)
     }
 }
 

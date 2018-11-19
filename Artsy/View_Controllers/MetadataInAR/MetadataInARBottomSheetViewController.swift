@@ -34,9 +34,11 @@ class MetadataInARBottomSheetViewController: UIViewController {
         view.addSubview(artworkMetadataView)
         
         
-        let gesture = UIPanGestureRecognizer.init(target: self, action: #selector(MetadataInARBottomSheetViewController.panGesture))
-        view.addGestureRecognizer(gesture)
+//        let gesture = UIPanGestureRecognizer.init(target: self, action: #selector(MetadataInARBottomSheetViewController.panGesture))
+//        view.addGestureRecognizer(gesture)
         
+        let tapGesture = UITapGestureRecognizer.init(target: self, action: #selector(MetadataInARBottomSheetViewController.tapGesture(recognizer:)))
+        artworkMetadataView.addGestureRecognizer(tapGesture)
         artworkMetadataView.updateWithArtwork(artwork: artwork)
     }
     
@@ -50,7 +52,7 @@ class MetadataInARBottomSheetViewController: UIViewController {
         
         UIView.animate(withDuration: 0.3) { [weak self] in
             let frame = self?.view.frame
-            let yComponent = UIScreen.main.bounds.height - 240
+            let yComponent = UIScreen.main.bounds.height - 260
             self?.view.frame = CGRect(x: 0, y: yComponent, width: frame!.width, height: frame!.height)
         }
     }
@@ -69,5 +71,11 @@ class MetadataInARBottomSheetViewController: UIViewController {
 
         view.frame = CGRect(x: 0, y: y + translation.y, width: view.frame.width, height: view.frame.height)
         recognizer.setTranslation(CGPoint.zero, in: view)
+    }
+    
+    @objc func tapGesture(recognizer: UITapGestureRecognizer) {
+        if let artworkVC = ARSwitchBoard.sharedInstance().loadArtwork(withID: artwork.artworkID, in: artwork.fair()) {
+            navigationController?.pushViewController(artworkVC, animated: true)
+        }
     }
 }
