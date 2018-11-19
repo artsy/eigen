@@ -16,6 +16,8 @@
 
 ### Master
 
+- Refactor auctions countdown timer, add fair countdown timer - javamonn
+
 ### 1.7.4
 
 - Emission's podspec contains deps for all of its native dependencies - orta

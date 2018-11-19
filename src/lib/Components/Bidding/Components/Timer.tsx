@@ -1,26 +1,10 @@
-import { Sans } from "@artsy/palette"
+import { Flex, Sans } from "@artsy/palette"
+import { SimpleTicker, StateManager as CountdownStateManager } from "lib/Components/Countdown"
 import moment from "moment-timezone"
 import * as PropTypes from "prop-types"
 import React from "react"
 
-import { Flex } from "../Elements/Flex"
-
-interface TimerProps {
-  liveStartsAt?: string
-  endsAt?: string
-  isPreview?: boolean
-  isClosed?: boolean
-  startsAt?: string
-  timeOffsetInMilliSeconds?: number
-}
-
-interface TimerState {
-  timeLeftInMilliseconds: number
-  label: string
-  timerState: AuctionTimerState
-}
-
-export enum AuctionTimerState {
+enum AuctionTimerState {
   PREVIEW = "PREVIEW",
   LIVE_INTEGRATION_UPCOMING = "LIVE_INTEGRATION_UPCOMING",
   LIVE_INTEGRATION_ONGOING = "LIVE_INTEGRATION_ONGOING",
@@ -28,149 +12,131 @@ export enum AuctionTimerState {
   CLOSED = "CLOSED",
 }
 
-class LocalTimer extends React.Component<TimerProps, TimerState> {
-  private intervalId: number
+interface Props {
+  liveStartsAt?: string
+  endsAt?: string
+  isPreview?: boolean
+  isClosed?: boolean
+  startsAt?: string
+}
+function formatDate(date: string) {
+  const dateInMoment = moment(date, moment.ISO_8601).tz(moment.tz.guess(true))
+  const format = dateInMoment.minutes() === 0 ? "MMM D, h A" : "MMM D, h:mm A"
 
-  constructor(props) {
-    super(props)
+  return dateInMoment.format(format)
+}
 
-    const { liveStartsAt, endsAt, isClosed, isPreview, startsAt } = props
-    const timerState = this.currentState(isPreview, isClosed, liveStartsAt)
-    const { relevantDate, label } = this.upcomingLabel(timerState, liveStartsAt, startsAt, endsAt)
-
-    this.state = { timeLeftInMilliseconds: Date.parse(relevantDate) - Date.now(), label, timerState }
-  }
-
-  componentDidMount() {
-    this.intervalId = setInterval(this.timer, 1000)
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.intervalId)
-  }
-
-  timer = () => {
-    if (this.state.timeLeftInMilliseconds - 1000 > 0) {
-      this.setState({ timeLeftInMilliseconds: this.state.timeLeftInMilliseconds - 1000 })
-    } else {
-      const { liveStartsAt, endsAt, startsAt } = this.props
-      const nextState = this.nextState(this.state.timerState, liveStartsAt)
-      const { relevantDate, label } = this.upcomingLabel(nextState, liveStartsAt, startsAt, endsAt)
-
-      this.setState({ label, timerState: nextState })
-      if (relevantDate) {
-        this.setState({
-          timeLeftInMilliseconds: Date.parse(relevantDate) - Date.now(),
-        })
-      } else {
-        clearInterval(this.intervalId)
+function relevantStateData(currentState: AuctionTimerState, { liveStartsAt, startsAt, endsAt }: Props) {
+  switch (currentState) {
+    case AuctionTimerState.PREVIEW: {
+      if (!startsAt) {
+        console.error("startsAt is required when isPreview is true")
       }
+      return { date: startsAt, label: `Starts ${formatDate(startsAt)}` }
     }
-  }
-
-  formatDate(date: string) {
-    const dateInMoment = moment(date, moment.ISO_8601).tz(moment.tz.guess(true))
-    const format = dateInMoment.minutes() === 0 ? "MMM D, h A" : "MMM D, h:mm A"
-
-    return dateInMoment.format(format)
-  }
-
-  upcomingLabel(currentState: AuctionTimerState, liveStartsAt: string, startsAt: string, endsAt: string) {
-    switch (currentState) {
-      case AuctionTimerState.PREVIEW: {
-        if (!startsAt) {
-          console.error("startsAt is required when isPreview is true")
-        }
-        return { relevantDate: startsAt, label: `Starts ${this.formatDate(startsAt)}` }
-      }
-      case AuctionTimerState.LIVE_INTEGRATION_UPCOMING: {
-        return { relevantDate: liveStartsAt, label: `Live ${this.formatDate(liveStartsAt)}` }
-      }
-      case AuctionTimerState.LIVE_INTEGRATION_ONGOING: {
-        return { relevantDate: null, label: "In progress" }
-      }
-      case AuctionTimerState.CLOSING: {
-        return { relevantDate: endsAt, label: `Ends ${this.formatDate(endsAt)}` }
-      }
-      default: {
-        return { relevantDate: null, label: "Bidding closed" }
-      }
+    case AuctionTimerState.LIVE_INTEGRATION_UPCOMING: {
+      return { date: liveStartsAt, label: `Live ${formatDate(liveStartsAt)}` }
     }
-  }
-
-  nextState(currentState: AuctionTimerState, liveStartsAt: string) {
-    switch (currentState) {
-      case AuctionTimerState.PREVIEW: {
-        if (liveStartsAt) {
-          return AuctionTimerState.LIVE_INTEGRATION_UPCOMING
-        } else {
-          return AuctionTimerState.CLOSING
-        }
-      }
-      case AuctionTimerState.CLOSED: {
-        return AuctionTimerState.CLOSED
-      }
-      case AuctionTimerState.LIVE_INTEGRATION_UPCOMING: {
-        return AuctionTimerState.LIVE_INTEGRATION_ONGOING
-      }
-      case AuctionTimerState.LIVE_INTEGRATION_ONGOING: {
-        return AuctionTimerState.LIVE_INTEGRATION_ONGOING
-      }
-      case AuctionTimerState.CLOSING: {
-        return AuctionTimerState.CLOSED
-      }
-      default: {
-        return AuctionTimerState.CLOSED
-      }
+    case AuctionTimerState.LIVE_INTEGRATION_ONGOING: {
+      return { date: null, label: "In progress" }
     }
-  }
-
-  currentState(isPreview: boolean, isClosed: boolean, liveStartsAt: string) {
-    if (isPreview) {
-      return AuctionTimerState.PREVIEW
-    } else if (isClosed) {
-      return AuctionTimerState.CLOSED
-    } else if (liveStartsAt) {
-      const isLiveOpen = moment().isAfter(liveStartsAt)
-      if (isLiveOpen) {
-        return AuctionTimerState.LIVE_INTEGRATION_ONGOING
-      } else {
-        return AuctionTimerState.LIVE_INTEGRATION_UPCOMING
-      }
-    } else {
-      return AuctionTimerState.CLOSING
+    case AuctionTimerState.CLOSING: {
+      return { date: endsAt, label: `Ends ${formatDate(endsAt)}` }
     }
-  }
-
-  render() {
-    const duration = moment.duration(this.state.timeLeftInMilliseconds + (this.props.timeOffsetInMilliSeconds || 0))
-
-    return (
-      <Flex alignItems="center">
-        <Sans size="4t" weight="medium">
-          {this.padWithZero(duration.days())}d{"  "}
-          {this.padWithZero(duration.hours())}h{"  "}
-          {this.padWithZero(duration.minutes())}m{"  "}
-          {this.padWithZero(duration.seconds())}s
-        </Sans>
-        <Sans size="2" weight="medium">
-          {this.state.label}
-        </Sans>
-      </Flex>
-    )
-  }
-
-  private padWithZero(number: number) {
-    return (number.toString() as any).padStart(2, "0")
+    default: {
+      return { date: null, label: "Bidding closed" }
+    }
   }
 }
 
-export class Timer extends React.Component<TimerProps> {
+function nextTimerState(currentState: AuctionTimerState, { liveStartsAt }: Props) {
+  switch (currentState) {
+    case AuctionTimerState.PREVIEW: {
+      if (liveStartsAt) {
+        return AuctionTimerState.LIVE_INTEGRATION_UPCOMING
+      } else {
+        return AuctionTimerState.CLOSING
+      }
+    }
+    case AuctionTimerState.CLOSED: {
+      return AuctionTimerState.CLOSED
+    }
+    case AuctionTimerState.LIVE_INTEGRATION_UPCOMING: {
+      return AuctionTimerState.LIVE_INTEGRATION_ONGOING
+    }
+    case AuctionTimerState.LIVE_INTEGRATION_ONGOING: {
+      return AuctionTimerState.LIVE_INTEGRATION_ONGOING
+    }
+    case AuctionTimerState.CLOSING: {
+      return AuctionTimerState.CLOSED
+    }
+    default: {
+      return AuctionTimerState.CLOSED
+    }
+  }
+}
+
+function currentTimerState({ isPreview, isClosed, liveStartsAt }: Props) {
+  if (isPreview) {
+    return AuctionTimerState.PREVIEW
+  } else if (isClosed) {
+    return AuctionTimerState.CLOSED
+  } else if (liveStartsAt) {
+    const isLiveOpen = moment().isAfter(liveStartsAt)
+    if (isLiveOpen) {
+      return AuctionTimerState.LIVE_INTEGRATION_ONGOING
+    } else {
+      return AuctionTimerState.LIVE_INTEGRATION_UPCOMING
+    }
+  } else {
+    return AuctionTimerState.CLOSING
+  }
+}
+
+interface CountdownProps {
+  duration: moment.Duration
+  label: string
+}
+
+const Countdown: React.SFC<CountdownProps> = ({ duration, label }) => (
+  <Flex alignItems="center">
+    <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />
+    <Sans size="2" weight="medium">
+      {label}
+    </Sans>
+  </Flex>
+)
+
+interface TimeOffsetProviderProps {
+  children: React.ReactElement<any>
+}
+
+class TimeOffsetProvider extends React.Component<TimeOffsetProviderProps> {
   static contextTypes = {
     timeOffsetInMilliSeconds: PropTypes.number,
   }
 
   render() {
-    return <LocalTimer {...this.props} {...this.context} />
+    return React.cloneElement(this.props.children, this.context || {})
   }
+}
+
+export const Timer: React.SFC<Props> = props => {
+  return (
+    <TimeOffsetProvider>
+      <CountdownStateManager
+        CountdownComponent={Countdown}
+        onCurrentTickerState={() => {
+          const state = currentTimerState(props)
+          const { label, date } = relevantStateData(state, props)
+          return { label, date, state }
+        }}
+        onNextTickerState={({ state }) => {
+          const nextState = nextTimerState(state as AuctionTimerState, props)
+          const { label, date } = relevantStateData(nextState, props)
+          return { state: nextState, label, date }
+        }}
+      />
+    </TimeOffsetProvider>
+  )
 }
