@@ -53,6 +53,7 @@ export type Detail_show = {
     }) | null;
     readonly partner: ({
         readonly name?: string | null;
+        readonly type?: string | null;
     }) | null;
     readonly " $fragmentRefs": ShowHeader_show$ref & Artworks_show$ref & Artists_show$ref & Shows_show$ref;
     readonly " $refType": Detail_show$ref;
@@ -71,76 +72,59 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "city",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "address",
+  "name": "city",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "address_2",
+  "name": "address",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "state",
+  "name": "address_2",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "postal_code",
+  "name": "state",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "postal_code",
   "args": null,
   "storageKey": null
 },
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v8 = [
-  v7
+  v1
 ],
 v9 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "partner",
-  "storageKey": null,
-  "args": null,
-  "concreteType": null,
-  "plural": false,
-  "selections": [
-    v6,
-    {
-      "kind": "InlineFragment",
-      "type": "Partner",
-      "selections": v8
-    },
-    {
-      "kind": "InlineFragment",
-      "type": "ExternalPartner",
-      "selections": v8
-    }
-  ]
+  "kind": "InlineFragment",
+  "type": "ExternalPartner",
+  "selections": v8
 };
 return {
   "kind": "Fragment",
@@ -149,12 +133,8 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "FragmentSpread",
-      "name": "ShowHeader_show",
-      "args": null
-    },
     v0,
+    v1,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -162,7 +142,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    v1,
+    v2,
     {
       "kind": "LinkedField",
       "alias": null,
@@ -173,12 +153,12 @@ return {
       "plural": false,
       "selections": [
         v0,
-        v2,
         v3,
-        v1,
         v4,
+        v2,
         v5,
         v6,
+        v7,
         {
           "kind": "FragmentSpread",
           "name": "LocationMap_location",
@@ -233,7 +213,7 @@ return {
               "plural": false,
               "selections": [
                 v0,
-                v7,
+                v1,
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -259,7 +239,24 @@ return {
                     }
                   ]
                 },
-                v9,
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "partner",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": null,
+                  "plural": false,
+                  "selections": [
+                    v7,
+                    v9,
+                    {
+                      "kind": "InlineFragment",
+                      "type": "Partner",
+                      "selections": v8
+                    }
+                  ]
+                },
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -269,21 +266,25 @@ return {
                   "concreteType": "Location",
                   "plural": false,
                   "selections": [
-                    v2,
                     v3,
                     v4,
                     v5,
-                    v6
+                    v6,
+                    v7
                   ]
                 },
-                v6
+                v7
               ]
             }
           ]
         }
       ]
     },
-    v7,
+    {
+      "kind": "FragmentSpread",
+      "name": "ShowHeader_show",
+      "args": null
+    },
     {
       "kind": "FragmentSpread",
       "name": "Artworks_show",
@@ -331,10 +332,36 @@ return {
         }
       ]
     },
-    v9,
-    v6
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "partner",
+      "storageKey": null,
+      "args": null,
+      "concreteType": null,
+      "plural": false,
+      "selections": [
+        v7,
+        v9,
+        {
+          "kind": "InlineFragment",
+          "type": "Partner",
+          "selections": [
+            v1,
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "type",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        }
+      ]
+    },
+    v7
   ]
 };
 })();
-(node as any).hash = 'f623a1f1aac1c9d8fdff56134d4840f5';
+(node as any).hash = '3aff0369e8166db3b44e5cac11404a7a';
 export default node;

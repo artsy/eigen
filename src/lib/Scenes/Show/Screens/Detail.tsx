@@ -36,6 +36,7 @@ export class Detail extends React.Component<Props, State> {
       data: {
         location: show.location,
         partnerName: show.partner.name,
+        partnerType: show.partner.type,
       },
     })
 
@@ -113,7 +114,6 @@ export const DetailContainer = createFragmentContainer(
       id
       name
       description
-
       city
       location {
         id
@@ -156,7 +156,6 @@ export const DetailContainer = createFragmentContainer(
       ...Artworks_show
       ...Artists_show
       ...Shows_show
-
       location {
         ...LocationMap_location
       }
@@ -172,6 +171,7 @@ export const DetailContainer = createFragmentContainer(
         }
         ... on Partner {
           name
+          type
         }
       }
     }

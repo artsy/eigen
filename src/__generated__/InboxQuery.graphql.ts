@@ -588,6 +588,28 @@ return {
                               v1,
                               {
                                 "kind": "InlineFragment",
+                                "type": "Artwork",
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "date",
+                                    "args": null,
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "title",
+                                    "args": null,
+                                    "storageKey": null
+                                  },
+                                  v6,
+                                  v5
+                                ]
+                              },
+                              {
+                                "kind": "InlineFragment",
                                 "type": "Show",
                                 "selections": [
                                   {
@@ -614,28 +636,6 @@ return {
                                     "plural": false,
                                     "selections": v4
                                   }
-                                ]
-                              },
-                              {
-                                "kind": "InlineFragment",
-                                "type": "Artwork",
-                                "selections": [
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "date",
-                                    "args": null,
-                                    "storageKey": null
-                                  },
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "title",
-                                    "args": null,
-                                    "storageKey": null
-                                  },
-                                  v6,
-                                  v5
                                 ]
                               }
                             ]

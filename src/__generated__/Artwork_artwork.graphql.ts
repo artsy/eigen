@@ -88,50 +88,16 @@ return {
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "LinkedField",
+      "kind": "ScalarField",
       "alias": null,
-      "name": "sale",
-      "storageKey": null,
+      "name": "title",
       "args": null,
-      "concreteType": "Sale",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "is_auction",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "is_live_open",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "is_open",
-          "args": null,
-          "storageKey": null
-        },
-        v0,
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "display_timely_at",
-          "args": null,
-          "storageKey": null
-        },
-        v1
-      ]
+      "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "title",
+      "name": "date",
       "args": null,
       "storageKey": null
     },
@@ -171,11 +137,45 @@ return {
       "storageKey": null
     },
     {
-      "kind": "ScalarField",
+      "kind": "LinkedField",
       "alias": null,
-      "name": "date",
+      "name": "sale",
+      "storageKey": null,
       "args": null,
-      "storageKey": null
+      "concreteType": "Sale",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "is_auction",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "is_live_open",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "is_open",
+          "args": null,
+          "storageKey": null
+        },
+        v0,
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "display_timely_at",
+          "args": null,
+          "storageKey": null
+        },
+        v1
+      ]
     },
     {
       "kind": "LinkedField",
