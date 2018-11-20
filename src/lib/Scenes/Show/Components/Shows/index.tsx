@@ -1,4 +1,4 @@
-import { Sans } from "@artsy/palette"
+import { Serif } from "@artsy/palette"
 import { Shows_show } from "__generated__/Shows_show.graphql"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -12,10 +12,10 @@ export class Shows extends React.Component<Props> {
     if (!this.props.show) {
       return null
     }
-    const { city } = this.props.show
+
     return (
       <>
-        <Sans size="6">{"Current Shows In " + city}</Sans>
+        <Serif size="5">More Shows</Serif>
         <ShowItem show={this.props.show as any} />
       </>
     )
