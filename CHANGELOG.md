@@ -16,6 +16,7 @@
 
 ### Master
 
+- Adds styled LocationMap with custom pins - kieran
 - Refactor auctions countdown timer, add fair countdown timer - javamonn
 
 ### 1.7.4

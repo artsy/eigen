@@ -33,7 +33,7 @@ export class ShowHeader extends React.Component<Props> {
         <Serif size="3" textAlign="center">
           {exhibition_period}
         </Serif>
-        <Box px={2}>
+        <Box px={2} mb={2}>
           <Chip>{status}</Chip>
           <Spacer m={2} />
           <InvertedButton

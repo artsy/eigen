@@ -123,10 +123,12 @@ Array [
     now - later
   </Text>,
   <View
+    mb={2}
     px={2}
     style={
       Array [
         Object {
+          "marginBottom": 8,
           "paddingLeft": 8,
           "paddingRight": 8,
         },
