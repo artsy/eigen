@@ -1,5 +1,4 @@
-import { Sans, Spacer } from "@artsy/palette"
-import { InvertedButton } from "lib/Components/Buttons"
+import { Sans, Serif, Spacer } from "@artsy/palette"
 import { get, take } from "lodash"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -85,7 +84,7 @@ export class Artists extends React.Component<Props, State> {
 
     return (
       <>
-        <Sans size="5">Artists in this show</Sans>
+        <Serif size="5">Artists</Serif>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
           const { name, id, is_followed } = artist
@@ -104,10 +103,9 @@ export class Artists extends React.Component<Props, State> {
         {!isExpanded && (
           <>
             <Spacer m={1} />
-            <InvertedButton
-              text={`View all ${artists.length} artists`}
-              onPress={() => this.setState({ isExpanded: true })}
-            />
+            <Sans size="3" my={2} weight="medium">
+              View all artists
+            </Sans>
           </>
         )}
       </>
