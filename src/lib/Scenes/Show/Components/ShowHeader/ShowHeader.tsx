@@ -19,11 +19,13 @@ export class ShowHeader extends React.Component<Props> {
     const {
       show: { images, name, partner, exhibition_period, description },
       onSaveShowPressed,
-      onMoreInformationPressed,
     } = this.props
+
+    const hasImages = !!images.length
+
     return (
       <>
-        <Box px={2} pt={3}>
+        <Box px={2} pt={hasImages ? 3 : 150} pb={hasImages ? 0 : 150}>
           <Spacer m={2} />
           <Sans size="3" mb={0.5}>
             {partner.name}
@@ -33,9 +35,11 @@ export class ShowHeader extends React.Component<Props> {
           </Serif>
           <Sans size="3">{exhibition_period}</Sans>
         </Box>
-        <Carousel
-          sources={(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({ imageURL, aspectRatio }))}
-        />
+        {hasImages && (
+          <Carousel
+            sources={(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({ imageURL, aspectRatio }))}
+          />
+        )}
         <Box px={2}>
           <Spacer m={2} />
           <InvertedButton
@@ -45,7 +49,7 @@ export class ShowHeader extends React.Component<Props> {
             }}
           />
           <Spacer m={1} />
-          <Serif size="3t" color="black60">
+          <Serif size="3t" color="black100">
             {description}
           </Serif>
           <Spacer m={1} />
