@@ -9,6 +9,7 @@ const Emission = NativeModules.Emission || {}
 
 // TODO: This is a testing access token, will need to regenerate and readd to Emission
 // "pk.eyJ1IjoiYXJ0c3lpdCIsImEiOiJjam51dTJibTEwNHNpM3BxamV4dDRibzJhIn0.bhFMJt1mqxNDrE1xSAtxSw"
+// bundle exec pod keys set MapBoxAPIClientKey "key"
 Mapbox.setAccessToken(Emission.mapBoxAPIClientKey)
 
 const Map = styled(Mapbox.MapView)`
