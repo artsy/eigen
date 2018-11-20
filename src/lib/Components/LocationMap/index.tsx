@@ -36,13 +36,10 @@ interface Props {
 }
 
 export class LocationMap extends React.Component<Props> {
-  symbolLayerStyle: StyleSheet.NamedStyles<any>
-  constructor(props) {
-    super(props)
-
-    this.symbolLayerStyle = Mapbox.StyleSheet.create({
+  get symbolLayerStyle() {
+    return Mapbox.StyleSheet.create({
       symbol: {
-        iconImage: this.returnPinType(props.partnerType),
+        iconImage: this.returnPinType(this.props.partnerType),
         iconSize: 1,
         iconOffset: [0, 0],
         iconAllowOverlap: true,
@@ -74,7 +71,7 @@ export class LocationMap extends React.Component<Props> {
       },
       id: "mapbox-marker",
     }
-
+    // style={this.symbolLayerStyle.symbol}
     return (
       <MapWrapper>
         <Map
@@ -92,7 +89,7 @@ export class LocationMap extends React.Component<Props> {
               features: [marker],
             }}
           >
-            <Mapbox.SymbolLayer id={lng.toString()} style={this.symbolLayerStyle.symbol} />
+            <Mapbox.SymbolLayer id={lng.toString()} />
           </Mapbox.ShapeSource>
         </Map>
         <TextWrapper>
