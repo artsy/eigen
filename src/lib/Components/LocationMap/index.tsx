@@ -70,7 +70,6 @@ export class LocationMap extends React.Component<Props> {
       },
       id: "mapbox-marker",
     }
-    // style={this.symbolLayerStyle.symbol}
     return (
       <MapWrapper>
         <Map
@@ -88,7 +87,7 @@ export class LocationMap extends React.Component<Props> {
               features: [marker],
             }}
           >
-            <Mapbox.SymbolLayer id={lng.toString()} />
+            <Mapbox.SymbolLayer id={lng.toString()} style={this.symbolLayerStyle.symbol} />
           </Mapbox.ShapeSource>
         </Map>
         <TextWrapper>

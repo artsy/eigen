@@ -96,7 +96,6 @@ export class Detail extends React.Component<Props, State> {
               onSaveShowPressed={this.handleSaveShow}
               onMoreInformationPressed={onMoreInformationPressed}
             />
-            {this.renderItemSeparator()}
           </>
         }
         ItemSeparatorComponent={this.renderItemSeparator}

@@ -7,6 +7,7 @@ import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { Carousel } from "lib/Components/Carousel"
+import styled from "styled-components/native"
 import { Chip } from "./Components/Chip"
 
 interface Props {
@@ -14,6 +15,10 @@ interface Props {
   onSaveShowPressed: () => Promise<void>
   onMoreInformationPressed: () => void
 }
+
+const ButtonWrapper = styled(Box)`
+  margin-bottom: 20px;
+`
 
 export class ShowHeader extends React.Component<Props> {
   render() {
@@ -33,7 +38,7 @@ export class ShowHeader extends React.Component<Props> {
         <Serif size="3" textAlign="center">
           {exhibition_period}
         </Serif>
-        <Box px={2}>
+        <ButtonWrapper px={2}>
           <Chip>{status}</Chip>
           <Spacer m={2} />
           <InvertedButton
@@ -46,7 +51,7 @@ export class ShowHeader extends React.Component<Props> {
           <Serif size="2">{description}</Serif>
           <Spacer m={1} />
           <CaretButton text="More Information" onPress={() => onMoreInformationPressed()} />
-        </Box>
+        </ButtonWrapper>
       </>
     )
   }
