@@ -53,6 +53,7 @@ export type Detail_show = {
     }) | null;
     readonly partner: ({
         readonly name?: string | null;
+        readonly type?: string | null;
     }) | null;
     readonly " $fragmentRefs": ShowHeader_show$ref & Artworks_show$ref & Artists_show$ref & Shows_show$ref;
     readonly " $refType": Detail_show$ref;
@@ -121,26 +122,9 @@ v8 = [
   v7
 ],
 v9 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "partner",
-  "storageKey": null,
-  "args": null,
-  "concreteType": null,
-  "plural": false,
-  "selections": [
-    v6,
-    {
-      "kind": "InlineFragment",
-      "type": "Partner",
-      "selections": v8
-    },
-    {
-      "kind": "InlineFragment",
-      "type": "ExternalPartner",
-      "selections": v8
-    }
-  ]
+  "kind": "InlineFragment",
+  "type": "ExternalPartner",
+  "selections": v8
 };
 return {
   "kind": "Fragment",
@@ -259,7 +243,24 @@ return {
                     }
                   ]
                 },
-                v9,
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "partner",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": null,
+                  "plural": false,
+                  "selections": [
+                    v6,
+                    {
+                      "kind": "InlineFragment",
+                      "type": "Partner",
+                      "selections": v8
+                    },
+                    v9
+                  ]
+                },
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -331,10 +332,36 @@ return {
         }
       ]
     },
-    v9,
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "partner",
+      "storageKey": null,
+      "args": null,
+      "concreteType": null,
+      "plural": false,
+      "selections": [
+        v6,
+        {
+          "kind": "InlineFragment",
+          "type": "Partner",
+          "selections": [
+            v7,
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "type",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        v9
+      ]
+    },
     v6
   ]
 };
 })();
-(node as any).hash = 'f623a1f1aac1c9d8fdff56134d4840f5';
+(node as any).hash = '3aff0369e8166db3b44e5cac11404a7a';
 export default node;
