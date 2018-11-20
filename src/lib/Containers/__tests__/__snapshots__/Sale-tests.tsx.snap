@@ -238,8 +238,8 @@ exports[`state looks okay by default 1`] = `
                 color="black"
                 ellipsizeMode="tail"
                 fontFamily="Unica77LL-Medium"
-                fontSize={14}
-                lineHeight={24}
+                fontSize="14px"
+                lineHeight="24px"
                 style={
                   Array [
                     Object {

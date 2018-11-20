@@ -38,8 +38,8 @@ Array [
       className="sc-bdVaJa bDWFJH"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Regular"
-      fontSize={14}
-      lineHeight={24}
+      fontSize="14px"
+      lineHeight="24px"
       mb={0.5}
       style={
         Array [
@@ -61,7 +61,7 @@ Array [
       className="sc-bwzfXH uTxCW"
       ellipsizeMode="tail"
       fontFamily="AGaramondPro-Regular"
-      fontSize={32}
+      fontSize="32px"
       lineHeight={34}
       style={
         Array [
@@ -80,8 +80,8 @@ Array [
       className="sc-bdVaJa bDWFJH"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Regular"
-      fontSize={14}
-      lineHeight={24}
+      fontSize="14px"
+      lineHeight="24px"
       style={
         Array [
           Object {
@@ -148,8 +148,8 @@ Array [
         color="white"
         ellipsizeMode="tail"
         fontFamily="Unica77LL-Medium"
-        fontSize={14}
-        lineHeight={24}
+        fontSize="14px"
+        lineHeight="24px"
         style={
           Array [
             Object {
@@ -185,8 +185,8 @@ Array [
       className="sc-bwzfXH uTxCW"
       ellipsizeMode="tail"
       fontFamily="AGaramondPro-Regular"
-      fontSize={16}
-      lineHeight={20}
+      fontSize="16px"
+      lineHeight="20px"
       style={
         Array [
           Object {
@@ -218,8 +218,8 @@ Array [
       className="sc-bdVaJa bDWFJH"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
-      fontSize={14}
-      lineHeight={24}
+      fontSize="14px"
+      lineHeight="24px"
       style={
         Array [
           Object {

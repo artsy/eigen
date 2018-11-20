@@ -674,8 +674,8 @@ exports[`Sets up the right view hierarchy 1`] = `
                 color="white"
                 ellipsizeMode="tail"
                 fontFamily="Unica77LL-Medium"
-                fontSize={14}
-                lineHeight={24}
+                fontSize="14px"
+                lineHeight="24px"
                 style={
                   Array [
                     Object {

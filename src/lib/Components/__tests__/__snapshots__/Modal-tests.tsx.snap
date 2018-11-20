@@ -74,8 +74,8 @@ exports[`looks like expected 1`] = `
             className="sc-bdVaJa bDWFJH"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -104,8 +104,8 @@ exports[`looks like expected 1`] = `
             color="#666"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Regular"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -149,8 +149,8 @@ exports[`looks like expected 1`] = `
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {

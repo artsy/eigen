@@ -67,8 +67,8 @@ exports[`renders properly 1`] = `
             color="#000"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={12}
-            lineHeight={16}
+            fontSize="12px"
+            lineHeight="16px"
             style={
               Array [
                 Object {
@@ -90,8 +90,8 @@ exports[`renders properly 1`] = `
             color="#666"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Regular"
-            fontSize={12}
-            lineHeight={16}
+            fontSize="12px"
+            lineHeight="16px"
             style={
               Array [
                 Object {
@@ -260,8 +260,8 @@ exports[`renders properly 1`] = `
             color="#000"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={12}
-            lineHeight={16}
+            fontSize="12px"
+            lineHeight="16px"
             style={
               Array [
                 Object {
@@ -283,8 +283,8 @@ exports[`renders properly 1`] = `
             color="#666"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Regular"
-            fontSize={12}
-            lineHeight={16}
+            fontSize="12px"
+            lineHeight="16px"
             style={
               Array [
                 Object {
@@ -453,8 +453,8 @@ exports[`renders properly 1`] = `
             color="#000"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={12}
-            lineHeight={16}
+            fontSize="12px"
+            lineHeight="16px"
             style={
               Array [
                 Object {
@@ -476,8 +476,8 @@ exports[`renders properly 1`] = `
             color="#666"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Regular"
-            fontSize={12}
-            lineHeight={16}
+            fontSize="12px"
+            lineHeight="16px"
             style={
               Array [
                 Object {
