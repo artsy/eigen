@@ -1,5 +1,10 @@
 {
   "extends": [
-    "config:base"
+    "@artsy"
+  ],
+  "assignees": [
+    "orta",
+    "ashfurrow",
+    "javamonn"
   ]
 }
