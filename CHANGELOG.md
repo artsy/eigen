@@ -17,6 +17,7 @@
 ### Master
 
 - Refactor auctions countdown timer, add fair countdown timer - javamonn
+- Updates Show detail view styles - luc
 
 ### 1.7.4
 
