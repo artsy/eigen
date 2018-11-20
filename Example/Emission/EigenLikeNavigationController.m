@@ -56,6 +56,8 @@
   backButton.adjustsImageWhenDisabled = NO;
 
   backButton.alpha = self.showBackButtonOnRoot ? 1 : 0;
+  backButton.layer.cornerRadius = 20;
+  backButton.layer.backgroundColor = [UIColor whiteColor].CGColor;
 
   return backButton;
 }
