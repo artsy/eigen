@@ -17,6 +17,7 @@
 ### Master
 
 - Refactor auctions countdown timer, add fair countdown timer - javamonn
+- Refactors ARNotificationManager to implicitly call all JS methods on main queue - ash
 
 ### 1.7.4
 
