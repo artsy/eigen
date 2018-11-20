@@ -145,21 +145,21 @@ exports[`looks like expected 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
-                },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
+                  "color": "black",
                   "fontFamily": "Unica77LL-Medium",
                   "fontSize": 14,
-                  "opacity": 1,
+                  "lineHeight": 24,
                 },
+                undefined,
               ]
             }
           >
