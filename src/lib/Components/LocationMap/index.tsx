@@ -2,11 +2,14 @@ import { Box, Flex, Sans, Serif } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import React from "react"
+import { NativeModules } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
+const Emission = NativeModules.Emission || {}
 
-// TODO: This is a testing access token, will need to regenerate and move to cocoapods-keys
-Mapbox.setAccessToken("pk.eyJ1IjoiYXJ0c3lpdCIsImEiOiJjam51dTJibTEwNHNpM3BxamV4dDRibzJhIn0.bhFMJt1mqxNDrE1xSAtxSw")
+// TODO: This is a testing access token, will need to regenerate and readd to Emission
+// "pk.eyJ1IjoiYXJ0c3lpdCIsImEiOiJjam51dTJibTEwNHNpM3BxamV4dDRibzJhIn0.bhFMJt1mqxNDrE1xSAtxSw"
+Mapbox.setAccessToken(Emission.mapBoxAPIClientKey)
 
 const Map = styled(Mapbox.MapView)`
   height: 90;
