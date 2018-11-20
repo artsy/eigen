@@ -11,6 +11,15 @@ Mapbox.setAccessToken("pk.eyJ1IjoiYXJ0c3lpdCIsImEiOiJjam51dTJibTEwNHNpM3BxamV4dD
 
 const Map = styled(Mapbox.MapView)`
   height: 90;
+`
+
+const MapWrapper = styled(Flex)`
+  border-width: 1px;
+  border-color: #ebeaec;
+`
+
+const TextWrapper = styled(Box)`
+  margin-top: 20px;
   margin-bottom: 20px;
 `
 
@@ -67,7 +76,7 @@ export class LocationMap extends React.Component<Props> {
     }
 
     return (
-      <Flex>
+      <MapWrapper>
         <Map
           key={lng}
           styleURL={Mapbox.StyleURL.Light}
@@ -86,7 +95,7 @@ export class LocationMap extends React.Component<Props> {
             <Mapbox.SymbolLayer id={lng.toString()} style={this.symbolLayerStyle.symbol} />
           </Mapbox.ShapeSource>
         </Map>
-        <Box>
+        <TextWrapper>
           {partnerName && (
             <Sans size="3" color="black100" textAlign="center" weight="medium">
               {partnerName}
@@ -102,8 +111,8 @@ export class LocationMap extends React.Component<Props> {
               {address_2}
             </Serif>
           )}
-        </Box>
-      </Flex>
+        </TextWrapper>
+      </MapWrapper>
     )
   }
 }
