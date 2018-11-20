@@ -62,6 +62,8 @@ export class LocationMap extends React.Component<Props> {
     const { lat, lng } = location.coordinates
     const { address_2, address } = location
 
+    console.log("Mapbox.MapView.logoView ", Mapbox.MapView)
+
     const marker = {
       type: "Feature",
       geometry: {
@@ -79,6 +81,7 @@ export class LocationMap extends React.Component<Props> {
           zoomLevel={13}
           logoEnabled={false}
           scrollEnabled={false}
+          attributionEnabled={false}
         >
           <Mapbox.ShapeSource
             id="marker-source"
