@@ -1,7 +1,6 @@
 import { Box, Flex, Sans, Serif } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
-// import { string } from "prop-types";
 import React from "react"
 import { StyleSheet } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
