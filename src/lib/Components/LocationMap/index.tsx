@@ -1,7 +1,9 @@
-import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
+import { Box, Flex, Sans, Serif } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
+// import { string } from "prop-types";
 import React from "react"
+import { StyleSheet } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -10,39 +12,52 @@ Mapbox.setAccessToken("pk.eyJ1IjoiYXJ0c3lpdCIsImEiOiJjam51dTJibTEwNHNpM3BxamV4dD
 
 const Map = styled(Mapbox.MapView)`
   height: 90;
-  margin-top: 20px;
+  margin-bottom: 20px;
 `
+
+enum PartnerType {
+  gallery = "Gallery",
+  museum = "Museum",
+  fair = "Fair",
+}
 
 interface Props {
   location: LocationMap_location
-  partnerType: string
-  partnerName: string
+  partnerType: PartnerType
+  partnerName?: string
 }
 
 export class LocationMap extends React.Component<Props> {
-  render() {
-    const { location, partnerType, partnerName } = this.props
-    const { lat, lng } = location.coordinates
-    const { address_2, address } = location
-    let markerAsset
-    const galleryIcon = require("../../../../images/pingalleryon.png")
-    const museumIcon = require("../../../../images/pinmuseumon.png")
-    const fairIcon = require("../../../../images/pinfairon.png")
-    if (partnerType === "Museum") {
-      markerAsset = museumIcon
-    } else if (partnerType === "Fair") {
-      markerAsset = fairIcon
-    } else {
-      markerAsset = galleryIcon
-    }
-    const style = Mapbox.StyleSheet.create({
+  symbolLayerStyle: StyleSheet.NamedStyles<any>
+  constructor(props) {
+    super(props)
+
+    this.symbolLayerStyle = Mapbox.StyleSheet.create({
       symbol: {
-        iconImage: markerAsset,
+        iconImage: this.returnPinType(props.partnerType),
         iconSize: 1,
         iconOffset: [0, 0],
         iconAllowOverlap: true,
       },
     })
+  }
+
+  returnPinType = partnerType => {
+    switch (partnerType) {
+      case "Fair":
+        return require("../../../../images/pinfairon.png")
+      case "Museum":
+        return require("../../../../images/pinmuseumon.png")
+      case "Gallery":
+        return require("../../../../images/pingalleryon.png")
+    }
+  }
+
+  render() {
+    const { location, partnerName } = this.props
+    const { lat, lng } = location.coordinates
+    const { address_2, address } = location
+
     const marker = {
       type: "Feature",
       geometry: {
@@ -54,9 +69,27 @@ export class LocationMap extends React.Component<Props> {
 
     return (
       <Flex>
+        <Map
+          key={lng}
+          styleURL={Mapbox.StyleURL.Light}
+          centerCoordinate={[lng, lat]}
+          zoomLevel={13}
+          logoEnabled={false}
+          scrollEnabled={false}
+        >
+          <Mapbox.ShapeSource
+            id="marker-source"
+            shape={{
+              type: "FeatureCollection",
+              features: [marker],
+            }}
+          >
+            <Mapbox.SymbolLayer id={lng.toString()} style={this.symbolLayerStyle.symbol} />
+          </Mapbox.ShapeSource>
+        </Map>
         <Box>
           {partnerName && (
-            <Sans size="3" color={color("black100")} textAlign={"center"} weight="medium">
+            <Sans size="3" color="black100" textAlign="center" weight="medium">
               {partnerName}
             </Sans>
           )}
@@ -71,25 +104,6 @@ export class LocationMap extends React.Component<Props> {
             </Serif>
           )}
         </Box>
-        <Map
-          key={lng}
-          styleURL={Mapbox.StyleURL.Light}
-          centerCoordinate={[lng, lat]}
-          zoomLevel={13}
-          logoEnabled={false}
-          scrollEnabled={false}
-          // zoomEnabled={true}
-        >
-          <Mapbox.ShapeSource
-            id="marker-source"
-            shape={{
-              type: "FeatureCollection",
-              features: [marker],
-            }}
-          >
-            <Mapbox.SymbolLayer id={lng.toString()} style={style.symbol} />
-          </Mapbox.ShapeSource>
-        </Map>
       </Flex>
     )
   }
