@@ -154,7 +154,7 @@ export default class Button extends React.Component<Props, State> {
         disabled={this.props.disabled}
       >
         <AnimatedView {...styling}>
-          <Sans size="3" color={color.toString()} weight="medium">
+          <Sans size="3" color={this.props.stateColors.enabled.foreground} weight="medium">
             {this.props.text}
           </Sans>
         </AnimatedView>
