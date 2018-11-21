@@ -8,8 +8,8 @@ Array [
     className="sc-bwzfXH uTxCW"
     ellipsizeMode="tail"
     fontFamily="AGaramondPro-Regular"
-    fontSize={22}
-    lineHeight={32}
+    fontSize="22px"
+    lineHeight="32px"
     style={
       Array [
         Object {
@@ -707,8 +707,8 @@ Array [
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
                 fontFamily="Unica77LL-Regular"
-                fontSize={12}
-                lineHeight={16}
+                fontSize="12px"
+                lineHeight="16px"
                 style={
                   Array [
                     Object {
@@ -728,8 +728,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -749,8 +749,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -839,8 +839,8 @@ Array [
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
                 fontFamily="Unica77LL-Regular"
-                fontSize={12}
-                lineHeight={16}
+                fontSize="12px"
+                lineHeight="16px"
                 style={
                   Array [
                     Object {
@@ -860,8 +860,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -881,8 +881,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -971,8 +971,8 @@ Array [
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
                 fontFamily="Unica77LL-Regular"
-                fontSize={12}
-                lineHeight={16}
+                fontSize="12px"
+                lineHeight="16px"
                 style={
                   Array [
                     Object {
@@ -992,8 +992,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -1013,8 +1013,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -1103,8 +1103,8 @@ Array [
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
                 fontFamily="Unica77LL-Regular"
-                fontSize={12}
-                lineHeight={16}
+                fontSize="12px"
+                lineHeight="16px"
                 style={
                   Array [
                     Object {
@@ -1124,8 +1124,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -1145,8 +1145,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -1235,8 +1235,8 @@ Array [
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
                 fontFamily="Unica77LL-Regular"
-                fontSize={12}
-                lineHeight={16}
+                fontSize="12px"
+                lineHeight="16px"
                 style={
                   Array [
                     Object {
@@ -1256,8 +1256,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -1277,8 +1277,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -1367,8 +1367,8 @@ Array [
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
                 fontFamily="Unica77LL-Regular"
-                fontSize={12}
-                lineHeight={16}
+                fontSize="12px"
+                lineHeight="16px"
                 style={
                   Array [
                     Object {
@@ -1388,8 +1388,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -1409,8 +1409,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -1499,8 +1499,8 @@ Array [
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
                 fontFamily="Unica77LL-Regular"
-                fontSize={12}
-                lineHeight={16}
+                fontSize="12px"
+                lineHeight="16px"
                 style={
                   Array [
                     Object {
@@ -1520,8 +1520,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -1541,8 +1541,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -1631,8 +1631,8 @@ Array [
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
                 fontFamily="Unica77LL-Regular"
-                fontSize={12}
-                lineHeight={16}
+                fontSize="12px"
+                lineHeight="16px"
                 style={
                   Array [
                     Object {
@@ -1652,8 +1652,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -1673,8 +1673,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -1763,8 +1763,8 @@ Array [
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
                 fontFamily="Unica77LL-Regular"
-                fontSize={12}
-                lineHeight={16}
+                fontSize="12px"
+                lineHeight="16px"
                 style={
                   Array [
                     Object {
@@ -1784,8 +1784,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -1805,8 +1805,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -1895,8 +1895,8 @@ Array [
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
                 fontFamily="Unica77LL-Regular"
-                fontSize={12}
-                lineHeight={16}
+                fontSize="12px"
+                lineHeight="16px"
                 style={
                   Array [
                     Object {
@@ -1916,8 +1916,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
@@ -1937,8 +1937,8 @@ Array [
                 className="sc-bwzfXH uTxCW"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 style={
                   Array [
                     Object {
