@@ -18,7 +18,7 @@ exports[`looks correct when rendered 1`] = `
 >
   <View
     height={200}
-    mr={1}
+    mr={2}
     my={15}
     style={
       Array [
@@ -26,7 +26,7 @@ exports[`looks correct when rendered 1`] = `
           "display": "flex",
           "height": 200,
           "marginBottom": 15,
-          "marginRight": 4,
+          "marginRight": 8,
           "marginTop": 15,
           "width": 650,
         },
@@ -48,10 +48,13 @@ exports[`looks correct when rendered 1`] = `
       }
     />
     <View
+      my={1}
       style={
         Array [
           Object {
             "display": "flex",
+            "marginBottom": 4,
+            "marginTop": 4,
           },
           undefined,
         ]
@@ -62,13 +65,13 @@ exports[`looks correct when rendered 1`] = `
         allowFontScaling={true}
         className="sc-bdVaJa bDWFJH"
         ellipsizeMode="tail"
-        fontFamily="Unica77LL-Regular"
+        fontFamily="Unica77LL-Medium"
         fontSize="12px"
         lineHeight="16px"
         style={
           Array [
             Object {
-              "fontFamily": "Unica77LL-Regular",
+              "fontFamily": "Unica77LL-Medium",
               "fontSize": 12,
               "lineHeight": 16,
             },

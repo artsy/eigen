@@ -41,10 +41,12 @@ export class ShowItem extends React.Component<Props> {
 
     return (
       <TouchableOpacity onPress={this.onPress}>
-        <Flex my={15} mr={1} width={windowWidth - 100} height={200}>
+        <Flex my={15} mr={2} width={windowWidth - 100} height={200}>
           <ImageView imageURL={this.imageURL} />
-          <Flex>
-            <Sans size="2">{name}</Sans>
+          <Flex my={1}>
+            <Sans size="2" weight="medium">
+              {name}
+            </Sans>
             <Serif size="2">{galleryName}</Serif>
             <Serif size="2">{exhibition_period}</Serif>
           </Flex>

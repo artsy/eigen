@@ -367,7 +367,6 @@ export const ShowRenderer: React.SFC<ShowRendererProps> = ({ render, showID }) =
           }
         }
       `}
-      cacheConfig={{ force: false }} // temporarily disable cache
       variables={{ showID }}
       render={render}
     />

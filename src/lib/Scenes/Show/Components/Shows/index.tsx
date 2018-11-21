@@ -8,24 +8,24 @@ import { ShowItem } from "./Components/ShowItem"
 interface Props {
   show: Shows_show
 }
-export class Shows extends React.Component<Props> {
-  render() {
-    const { edges } = this.props.show.nearbyShows
 
-    return (
-      <>
-        <Serif size="5">More Shows</Serif>
-        <FlatList
-          horizontal
-          data={edges}
-          keyExtractor={item => item.node.id}
-          renderItem={({ item }) => {
-            return <ShowItem show={item.node as any} />
-          }}
-        />
-      </>
-    )
-  }
+export const Shows: React.SFC<Props> = ({ show }) => {
+  const { edges } = show.nearbyShows
+
+  return (
+    <>
+      <Serif size="5">More Shows</Serif>
+      <FlatList
+        horizontal
+        data={edges}
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={item => item.node.id}
+        renderItem={({ item }) => {
+          return <ShowItem show={item.node as any} />
+        }}
+      />
+    </>
+  )
 }
 
 export const ShowsContainer = createFragmentContainer(

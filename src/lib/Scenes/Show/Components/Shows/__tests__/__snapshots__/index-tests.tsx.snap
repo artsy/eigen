@@ -628,6 +628,7 @@ Array [
     onScrollEndDrag={[Function]}
     renderItem={[Function]}
     scrollEventThrottle={50}
+    showsHorizontalScrollIndicator={false}
     stickyHeaderIndices={Array []}
     updateCellsBatchingPeriod={50}
     viewabilityConfigCallbackPairs={Array []}
@@ -662,7 +663,7 @@ Array [
         >
           <View
             height={200}
-            mr={1}
+            mr={2}
             my={15}
             style={
               Array [
@@ -670,7 +671,7 @@ Array [
                   "display": "flex",
                   "height": 200,
                   "marginBottom": 15,
-                  "marginRight": 4,
+                  "marginRight": 8,
                   "marginTop": 15,
                   "width": 650,
                 },
@@ -692,10 +693,13 @@ Array [
               }
             />
             <View
+              my={1}
               style={
                 Array [
                   Object {
                     "display": "flex",
+                    "marginBottom": 4,
+                    "marginTop": 4,
                   },
                   undefined,
                 ]
@@ -706,13 +710,13 @@ Array [
                 allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
-                fontFamily="Unica77LL-Regular"
+                fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
                 style={
                   Array [
                     Object {
-                      "fontFamily": "Unica77LL-Regular",
+                      "fontFamily": "Unica77LL-Medium",
                       "fontSize": 12,
                       "lineHeight": 16,
                     },
@@ -794,7 +798,7 @@ Array [
         >
           <View
             height={200}
-            mr={1}
+            mr={2}
             my={15}
             style={
               Array [
@@ -802,7 +806,7 @@ Array [
                   "display": "flex",
                   "height": 200,
                   "marginBottom": 15,
-                  "marginRight": 4,
+                  "marginRight": 8,
                   "marginTop": 15,
                   "width": 650,
                 },
@@ -824,10 +828,13 @@ Array [
               }
             />
             <View
+              my={1}
               style={
                 Array [
                   Object {
                     "display": "flex",
+                    "marginBottom": 4,
+                    "marginTop": 4,
                   },
                   undefined,
                 ]
@@ -838,13 +845,13 @@ Array [
                 allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
-                fontFamily="Unica77LL-Regular"
+                fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
                 style={
                   Array [
                     Object {
-                      "fontFamily": "Unica77LL-Regular",
+                      "fontFamily": "Unica77LL-Medium",
                       "fontSize": 12,
                       "lineHeight": 16,
                     },
@@ -926,7 +933,7 @@ Array [
         >
           <View
             height={200}
-            mr={1}
+            mr={2}
             my={15}
             style={
               Array [
@@ -934,7 +941,7 @@ Array [
                   "display": "flex",
                   "height": 200,
                   "marginBottom": 15,
-                  "marginRight": 4,
+                  "marginRight": 8,
                   "marginTop": 15,
                   "width": 650,
                 },
@@ -956,10 +963,13 @@ Array [
               }
             />
             <View
+              my={1}
               style={
                 Array [
                   Object {
                     "display": "flex",
+                    "marginBottom": 4,
+                    "marginTop": 4,
                   },
                   undefined,
                 ]
@@ -970,13 +980,13 @@ Array [
                 allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
-                fontFamily="Unica77LL-Regular"
+                fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
                 style={
                   Array [
                     Object {
-                      "fontFamily": "Unica77LL-Regular",
+                      "fontFamily": "Unica77LL-Medium",
                       "fontSize": 12,
                       "lineHeight": 16,
                     },
@@ -1058,7 +1068,7 @@ Array [
         >
           <View
             height={200}
-            mr={1}
+            mr={2}
             my={15}
             style={
               Array [
@@ -1066,7 +1076,7 @@ Array [
                   "display": "flex",
                   "height": 200,
                   "marginBottom": 15,
-                  "marginRight": 4,
+                  "marginRight": 8,
                   "marginTop": 15,
                   "width": 650,
                 },
@@ -1088,10 +1098,13 @@ Array [
               }
             />
             <View
+              my={1}
               style={
                 Array [
                   Object {
                     "display": "flex",
+                    "marginBottom": 4,
+                    "marginTop": 4,
                   },
                   undefined,
                 ]
@@ -1102,13 +1115,13 @@ Array [
                 allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
-                fontFamily="Unica77LL-Regular"
+                fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
                 style={
                   Array [
                     Object {
-                      "fontFamily": "Unica77LL-Regular",
+                      "fontFamily": "Unica77LL-Medium",
                       "fontSize": 12,
                       "lineHeight": 16,
                     },
@@ -1190,7 +1203,7 @@ Array [
         >
           <View
             height={200}
-            mr={1}
+            mr={2}
             my={15}
             style={
               Array [
@@ -1198,7 +1211,7 @@ Array [
                   "display": "flex",
                   "height": 200,
                   "marginBottom": 15,
-                  "marginRight": 4,
+                  "marginRight": 8,
                   "marginTop": 15,
                   "width": 650,
                 },
@@ -1220,10 +1233,13 @@ Array [
               }
             />
             <View
+              my={1}
               style={
                 Array [
                   Object {
                     "display": "flex",
+                    "marginBottom": 4,
+                    "marginTop": 4,
                   },
                   undefined,
                 ]
@@ -1234,13 +1250,13 @@ Array [
                 allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
-                fontFamily="Unica77LL-Regular"
+                fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
                 style={
                   Array [
                     Object {
-                      "fontFamily": "Unica77LL-Regular",
+                      "fontFamily": "Unica77LL-Medium",
                       "fontSize": 12,
                       "lineHeight": 16,
                     },
@@ -1322,7 +1338,7 @@ Array [
         >
           <View
             height={200}
-            mr={1}
+            mr={2}
             my={15}
             style={
               Array [
@@ -1330,7 +1346,7 @@ Array [
                   "display": "flex",
                   "height": 200,
                   "marginBottom": 15,
-                  "marginRight": 4,
+                  "marginRight": 8,
                   "marginTop": 15,
                   "width": 650,
                 },
@@ -1352,10 +1368,13 @@ Array [
               }
             />
             <View
+              my={1}
               style={
                 Array [
                   Object {
                     "display": "flex",
+                    "marginBottom": 4,
+                    "marginTop": 4,
                   },
                   undefined,
                 ]
@@ -1366,13 +1385,13 @@ Array [
                 allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
-                fontFamily="Unica77LL-Regular"
+                fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
                 style={
                   Array [
                     Object {
-                      "fontFamily": "Unica77LL-Regular",
+                      "fontFamily": "Unica77LL-Medium",
                       "fontSize": 12,
                       "lineHeight": 16,
                     },
@@ -1454,7 +1473,7 @@ Array [
         >
           <View
             height={200}
-            mr={1}
+            mr={2}
             my={15}
             style={
               Array [
@@ -1462,7 +1481,7 @@ Array [
                   "display": "flex",
                   "height": 200,
                   "marginBottom": 15,
-                  "marginRight": 4,
+                  "marginRight": 8,
                   "marginTop": 15,
                   "width": 650,
                 },
@@ -1484,10 +1503,13 @@ Array [
               }
             />
             <View
+              my={1}
               style={
                 Array [
                   Object {
                     "display": "flex",
+                    "marginBottom": 4,
+                    "marginTop": 4,
                   },
                   undefined,
                 ]
@@ -1498,13 +1520,13 @@ Array [
                 allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
-                fontFamily="Unica77LL-Regular"
+                fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
                 style={
                   Array [
                     Object {
-                      "fontFamily": "Unica77LL-Regular",
+                      "fontFamily": "Unica77LL-Medium",
                       "fontSize": 12,
                       "lineHeight": 16,
                     },
@@ -1586,7 +1608,7 @@ Array [
         >
           <View
             height={200}
-            mr={1}
+            mr={2}
             my={15}
             style={
               Array [
@@ -1594,7 +1616,7 @@ Array [
                   "display": "flex",
                   "height": 200,
                   "marginBottom": 15,
-                  "marginRight": 4,
+                  "marginRight": 8,
                   "marginTop": 15,
                   "width": 650,
                 },
@@ -1616,10 +1638,13 @@ Array [
               }
             />
             <View
+              my={1}
               style={
                 Array [
                   Object {
                     "display": "flex",
+                    "marginBottom": 4,
+                    "marginTop": 4,
                   },
                   undefined,
                 ]
@@ -1630,13 +1655,13 @@ Array [
                 allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
-                fontFamily="Unica77LL-Regular"
+                fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
                 style={
                   Array [
                     Object {
-                      "fontFamily": "Unica77LL-Regular",
+                      "fontFamily": "Unica77LL-Medium",
                       "fontSize": 12,
                       "lineHeight": 16,
                     },
@@ -1718,7 +1743,7 @@ Array [
         >
           <View
             height={200}
-            mr={1}
+            mr={2}
             my={15}
             style={
               Array [
@@ -1726,7 +1751,7 @@ Array [
                   "display": "flex",
                   "height": 200,
                   "marginBottom": 15,
-                  "marginRight": 4,
+                  "marginRight": 8,
                   "marginTop": 15,
                   "width": 650,
                 },
@@ -1748,10 +1773,13 @@ Array [
               }
             />
             <View
+              my={1}
               style={
                 Array [
                   Object {
                     "display": "flex",
+                    "marginBottom": 4,
+                    "marginTop": 4,
                   },
                   undefined,
                 ]
@@ -1762,13 +1790,13 @@ Array [
                 allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
-                fontFamily="Unica77LL-Regular"
+                fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
                 style={
                   Array [
                     Object {
-                      "fontFamily": "Unica77LL-Regular",
+                      "fontFamily": "Unica77LL-Medium",
                       "fontSize": 12,
                       "lineHeight": 16,
                     },
@@ -1850,7 +1878,7 @@ Array [
         >
           <View
             height={200}
-            mr={1}
+            mr={2}
             my={15}
             style={
               Array [
@@ -1858,7 +1886,7 @@ Array [
                   "display": "flex",
                   "height": 200,
                   "marginBottom": 15,
-                  "marginRight": 4,
+                  "marginRight": 8,
                   "marginTop": 15,
                   "width": 650,
                 },
@@ -1880,10 +1908,13 @@ Array [
               }
             />
             <View
+              my={1}
               style={
                 Array [
                   Object {
                     "display": "flex",
+                    "marginBottom": 4,
+                    "marginTop": 4,
                   },
                   undefined,
                 ]
@@ -1894,13 +1925,13 @@ Array [
                 allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
                 ellipsizeMode="tail"
-                fontFamily="Unica77LL-Regular"
+                fontFamily="Unica77LL-Medium"
                 fontSize="12px"
                 lineHeight="16px"
                 style={
                   Array [
                     Object {
-                      "fontFamily": "Unica77LL-Regular",
+                      "fontFamily": "Unica77LL-Medium",
                       "fontSize": 12,
                       "lineHeight": 16,
                     },
