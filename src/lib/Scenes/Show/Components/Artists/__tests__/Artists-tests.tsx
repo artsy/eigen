@@ -63,18 +63,6 @@ describe("ArtistsContianer", () => {
     expect(relay.commitMutation).toHaveBeenCalled()
   })
 
-  it("Expands to show the full list of artists", async () => {
-    const tree = await renderTree()
-
-    tree
-      .find(InvertedButton)
-      .last()
-      .props()
-      .onPress()
-
-    expect(tree.find(Artists).state().isExpanded).toBe(true)
-  })
-
   afterAll(() => {
     ;(relay.commitMutation as any).mockClear()
   })

@@ -1,9 +1,8 @@
 import React from "react"
 
-import { Box, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, color, Sans, Serif, Spacer } from "@artsy/palette"
 import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { InvertedButton } from "lib/Components/Buttons"
-import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { Carousel } from "./Components/Carousel"
@@ -49,9 +48,7 @@ export class ShowHeader extends React.Component<Props> {
             }}
           />
           <Spacer m={1} />
-          <Serif size="3t" color="black100">
-            {description}
-          </Serif>
+          <Serif size="3t">{description}</Serif>
           <Spacer m={1} />
           <Sans size="3" weight="medium">
             View more information

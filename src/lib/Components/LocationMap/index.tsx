@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Serif } from "@artsy/palette"
+import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import React from "react"
@@ -14,12 +14,7 @@ const Map = styled(Mapbox.MapView)`
 
 const MapWrapper = styled(Flex)`
   border-width: 1px;
-  border-color: #ebeaec;
-`
-
-const TextWrapper = styled(Box)`
-  margin-top: 20px;
-  margin-bottom: 20px;
+  border-color: ${color("black10")};
 `
 
 enum PartnerType {
@@ -91,23 +86,23 @@ export class LocationMap extends React.Component<Props> {
             <Mapbox.SymbolLayer id={lng.toString()} style={this.symbolLayerStyle.symbol} />
           </Mapbox.ShapeSource>
         </Map>
-        <TextWrapper>
+        <Box my={2}>
           {partnerName && (
-            <Sans size="3" color="black100" textAlign="center" weight="medium">
+            <Sans size="3" color={color("black100")} textAlign="center" weight="medium">
               {partnerName}
             </Sans>
           )}
           {address && (
-            <Serif size="3" color="black60" textAlign="center">
-              {address}
+            <Serif size="3" color={color("black60")} textAlign="center">
+            {address}
             </Serif>
           )}
           {address_2 && (
-            <Serif size="3" color="black60" textAlign="center">
+            <Serif size="3" color={color("black60")} textAlign="center">
               {address_2}
             </Serif>
           )}
-        </TextWrapper>
+        </Box>
       </MapWrapper>
     )
   }

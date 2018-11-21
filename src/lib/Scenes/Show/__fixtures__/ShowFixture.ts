@@ -382,6 +382,7 @@ export const ShowFixture = {
     partner: {
       name: "Anderson Fine Art Gallery",
     },
+    images: [],
   },
   name: "Flickinger Collection",
   description:
