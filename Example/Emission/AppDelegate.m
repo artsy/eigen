@@ -124,8 +124,8 @@ randomBOOL(void)
                                                                 authenticationToken:accessToken
                                                                           sentryDSN:nil
                                                                stripePublishableKey:[keys stripePublishableKey]
-                                                                 mapBoxAPIClientKey:[keys mapBoxAPIClientKey]
                                                                    googleMapsAPIKey:nil
+                                                                 mapBoxAPIClientKey:[keys mapBoxAPIClientKey]
                                                                          gravityURL:setup.gravityURL
                                                                      metaphysicsURL:setup.metaphysicsURL
                                                                       predictionURL:setup.predictionURL
