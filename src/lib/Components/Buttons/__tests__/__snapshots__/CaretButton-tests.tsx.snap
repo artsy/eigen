@@ -32,8 +32,8 @@ exports[`CaretButton renders properly 1`] = `
     className="sc-htpNat KtFsv"
     ellipsizeMode="tail"
     fontFamily="AvantGardeGothicITC"
-    fontSize={14}
-    lineHeight={18}
+    fontSize="14px"
+    lineHeight="18px"
     style={
       Array [
         Object {

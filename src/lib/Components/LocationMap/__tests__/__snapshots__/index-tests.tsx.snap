@@ -40,8 +40,8 @@ exports[`looks correct when rendered 1`] = `
       color="black100"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
-      fontSize={14}
-      lineHeight={24}
+      fontSize="14px"
+      lineHeight="24px"
       style={
         Array [
           Object {
@@ -65,8 +65,8 @@ exports[`looks correct when rendered 1`] = `
       color="black60"
       ellipsizeMode="tail"
       fontFamily="AGaramondPro-Regular"
-      fontSize={16}
-      lineHeight={24}
+      fontSize="16px"
+      lineHeight="24px"
       style={
         Array [
           Object {

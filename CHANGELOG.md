@@ -19,6 +19,7 @@
 - Adds styled LocationMap with custom pins - kieran
 - Refactor auctions countdown timer, add fair countdown timer - javamonn
 - Updates Show detail view styles - luc
+- Updates @artsy/palette (2.21.1) - javamonn
 
 ### 1.7.4
 
