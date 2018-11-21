@@ -21,6 +21,7 @@
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
+#import <Emission/ARShowComponentViewController.h>
 #import <Emission/ARConversationComponentViewController.h>
 #import <Keys/EmissionKeys.h>
 
@@ -253,6 +254,10 @@ randomBOOL(void)
   if ([route hasPrefix:@"/artist/"] && [route componentsSeparatedByString:@"/"].count == 3) {
     NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
+
+  } else if ([route hasPrefix:@"/show/"] || [route hasPrefix:@"show/"]) {
+    NSString *showID = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARShowComponentViewController alloc] initWithShowID:showID];
 
   } else if ([route hasPrefix:@"/gene/"] || [route hasPrefix:@"gene/"]) {
     NSString *geneID = [[[[route componentsSeparatedByString:@"/"] lastObject] componentsSeparatedByString:@"?"] firstObject];
