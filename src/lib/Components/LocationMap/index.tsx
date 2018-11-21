@@ -94,7 +94,7 @@ export class LocationMap extends React.Component<Props> {
           )}
           {address && (
             <Serif size="3" color={color("black60")} textAlign="center">
-            {address}
+              {address}
             </Serif>
           )}
           {address_2 && (
