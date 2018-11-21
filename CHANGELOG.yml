@@ -1,20 +1,27 @@
 upcoming:
-  version: 4.3.3
+  version: 4.3.4
   date: TBD
   emission_version: 1.7.x
   dev:
-    - Emission update, bringing mapbox sdk and view controllers for local discovery - orta / LD team
-
+    - 
   user_facing:
-    - Brings back the consignments sash - orta
+    - 
 
 releases:
+  - version: 4.3.3
+    date: Nov 21, 2018
+    signed_of_by: Ash
+    emission_version: 1.7.x
+    dev:
+      - Emission update, bringing mapbox sdk and view controllers for local discovery - orta / LD team
+    user_facing:
+      - Brings back the consignments sash - orta
+
   - version: 4.3.2
     date: Oct 25, 2018
     emission_version: 1.7.x
     dev:
       - Nothing yet
-
     user_facing:
       - Includes artwork blurbs again - ash&jon
       - BN changes from Emission - orta/chris/matt
@@ -27,7 +34,6 @@ releases:
     dev:
       - Crash fixes for fairs - ashfurrow
       - Improvements to BNMO analytics - orta
-
     user_facing:
       - Fixes missing artworks in auction views - ash
       - Fixes a problem with attribution classes not displaying - ash
@@ -43,7 +49,6 @@ releases:
       - Uses metaphysics for the ArtworkVC's Artwork update API - orta
       - Updates Artwork page for Buy Now - orta
       - Another attempt at fixing adjust - orta
-
     user_facing:
       - Fixes to the status bar in an inquiry - orta
       - Shows the edition info on an artwork screen - orta
@@ -65,7 +70,6 @@ releases:
       - Updates the mutation name to use the ecommerce prefix - orta
       - Updates mutation result reference to use new prefix - ash
       - Fixes a problem with order creation input - ash
-
     user_facing:
       - Updates error messaging for Buy Now mutation failures. - ash
 
@@ -75,8 +79,6 @@ releases:
     dev:
       - Clear Relay response cache on logout/switch env - alloy
       - Logged-in user email is displayed in admin menu - ash
-
-
     user_facing:
       - Outbid push notifications are supressed when you're on the bid wizard  - orta/sweir
       - Admins can get the shake gesture when they log in to the app for the first time - orta
@@ -99,7 +101,6 @@ releases:
       - Removes deprecated ReactiveCocoa and uses ReactiveObjC library instead - ash
       - Changes background of internal webvc to white - maxim
       - Separates access to keychain items between staging/prod - orta
-
     user_facing:
       - Adds a round corner to all native buttons - orta
       - All buttons are 50px by default, and use unica - orta
