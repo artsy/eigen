@@ -29,8 +29,8 @@ exports[`InvertedButton accepts textStyle prop 1`] = `
     color="white"
     ellipsizeMode="tail"
     fontFamily="Unica77LL-Medium"
-    fontSize={14}
-    lineHeight={24}
+    fontSize="14px"
+    lineHeight="24px"
     style={
       Array [
         Object {
@@ -77,8 +77,8 @@ exports[`InvertedButton renders properly 1`] = `
     color="white"
     ellipsizeMode="tail"
     fontFamily="Unica77LL-Medium"
-    fontSize={14}
-    lineHeight={24}
+    fontSize="14px"
+    lineHeight="24px"
     style={
       Array [
         Object {

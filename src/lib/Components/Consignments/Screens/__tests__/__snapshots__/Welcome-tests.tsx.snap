@@ -441,8 +441,8 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                   color="black"
                   ellipsizeMode="tail"
                   fontFamily="Unica77LL-Medium"
-                  fontSize={14}
-                  lineHeight={24}
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
@@ -488,8 +488,8 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                   color="white"
                   ellipsizeMode="tail"
                   fontFamily="Unica77LL-Medium"
-                  fontSize={14}
-                  lineHeight={24}
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
@@ -955,8 +955,8 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                   color="black"
                   ellipsizeMode="tail"
                   fontFamily="Unica77LL-Medium"
-                  fontSize={14}
-                  lineHeight={24}
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
@@ -1002,8 +1002,8 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                   color="white"
                   ellipsizeMode="tail"
                   fontFamily="Unica77LL-Medium"
-                  fontSize={14}
-                  lineHeight={24}
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
@@ -1469,8 +1469,8 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                   color="black"
                   ellipsizeMode="tail"
                   fontFamily="Unica77LL-Medium"
-                  fontSize={14}
-                  lineHeight={24}
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
@@ -1516,8 +1516,8 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                   color="white"
                   ellipsizeMode="tail"
                   fontFamily="Unica77LL-Medium"
-                  fontSize={14}
-                  lineHeight={24}
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
@@ -1983,8 +1983,8 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                   color="black"
                   ellipsizeMode="tail"
                   fontFamily="Unica77LL-Medium"
-                  fontSize={14}
-                  lineHeight={24}
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
@@ -2030,8 +2030,8 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                   color="white"
                   ellipsizeMode="tail"
                   fontFamily="Unica77LL-Medium"
-                  fontSize={14}
-                  lineHeight={24}
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
@@ -2497,8 +2497,8 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                   color="black"
                   ellipsizeMode="tail"
                   fontFamily="Unica77LL-Medium"
-                  fontSize={14}
-                  lineHeight={24}
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
@@ -2544,8 +2544,8 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                   color="white"
                   ellipsizeMode="tail"
                   fontFamily="Unica77LL-Medium"
-                  fontSize={14}
-                  lineHeight={24}
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
