@@ -122,15 +122,6 @@ export default class Button extends React.Component<Props, State> {
       ],
     })
 
-    const color = this.state.backgroundColor.interpolate({
-      inputRange: [DisplayState.Enabled, DisplayState.Highlighted, DisplayState.Disabled],
-      outputRange: [
-        this.props.stateColors.enabled.foreground,
-        this.props.stateColors.highlighted.foreground,
-        this.props.stateColors.disabled.foreground,
-      ],
-    })
-
     const borderColor = this.state.borderColor.interpolate({
       inputRange: [DisplayState.Enabled, DisplayState.Highlighted, DisplayState.Disabled],
       outputRange: [

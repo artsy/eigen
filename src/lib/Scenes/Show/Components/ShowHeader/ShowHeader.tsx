@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Box, color, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, Sans, Serif, Spacer } from "@artsy/palette"
 import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { InvertedButton } from "lib/Components/Buttons"
 import { createFragmentContainer, graphql } from "react-relay"
