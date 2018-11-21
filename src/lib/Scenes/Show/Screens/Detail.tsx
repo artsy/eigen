@@ -1,20 +1,21 @@
 import { Box, Separator } from "@artsy/palette"
 import { Detail_show } from "__generated__/Detail_show.graphql"
 import React from "react"
-import { FlatList, ViewProperties } from "react-native"
+import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { ArtistsContainer as Artists } from "../Components/Artists"
-import { ArtworksContainer as Artworks } from "../Components/Artworks"
+import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "../Components/ShowArtworksPreview"
 import { ShowHeaderContainer as ShowHeader } from "../Components/ShowHeader"
 import { ShowsContainer as Shows } from "../Components/Shows"
 
-interface Props extends ViewProperties {
+interface Props {
   show: Detail_show
   onMoreInformationPressed: () => void
   onViewAllArtistsPressed: () => void
+  onViewAllArtworksPressed: () => void
 }
 
 interface State {
@@ -31,7 +32,7 @@ export class Detail extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { show } = this.props
+    const { show, onViewAllArtworksPressed } = this.props
     const sections = []
 
     sections.push({
@@ -52,7 +53,10 @@ export class Detail extends React.Component<Props, State> {
 
     sections.push({
       type: "artworks",
-      data: show,
+      data: {
+        show,
+        onViewAllArtworksPressed,
+      },
     })
 
     sections.push({
@@ -70,14 +74,13 @@ export class Detail extends React.Component<Props, State> {
 
   renderItemSeparator = item => {
     if (item && item.leadingItem.type === "location") {
-      return <Box />
-    } else {
-      return (
-        <Box py={2} px={2}>
-          <Separator />
-        </Box>
-      )
+      return null
     }
+    return (
+      <Box py={2} px={2}>
+        <Separator />
+      </Box>
+    )
   }
 
   handleAnimationFrame = animatedValue => {
@@ -98,7 +101,7 @@ export class Detail extends React.Component<Props, State> {
       case "location":
         return <LocationMap {...data} />
       case "artworks":
-        return <Artworks show={data} />
+        return <ShowArtworksPreview {...data} />
       case "artists":
         return <Artists show={data} onViewAllArtistsPressed={onViewAllArtistsPressed} />
       case "shows":
@@ -163,7 +166,7 @@ export const DetailContainer = createFragmentContainer(
         id
       }
       ...ShowHeader_show
-      ...Artworks_show
+      ...ShowArtworksPreview_show
       ...Artists_show
       ...Shows_show
       location {
@@ -171,10 +174,6 @@ export const DetailContainer = createFragmentContainer(
       }
 
       status
-      counts {
-        artworks
-        eligible_artworks
-      }
       partner {
         ... on ExternalPartner {
           name

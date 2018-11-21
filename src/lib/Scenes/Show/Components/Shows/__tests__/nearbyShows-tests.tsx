@@ -1,6 +1,7 @@
 import "react-native"
-import { NearbyShows, NearbyShows as _nearbyShows } from "../../../__fixtures__/NearbyShowsFixture"
+import { NearbyShows } from "../../../__fixtures__/NearbyShowsFixture"
 
+// FIXME: This isn't testing anything
 it("returns a nearby shows ", () => {
   const show = NearbyShows.edges[0]
   expect(show).toEqual({

@@ -2,14 +2,17 @@
 
 import { ConcreteFragment } from "relay-runtime";
 import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
-declare const _Artworks_show$ref: unique symbol;
-export type Artworks_show$ref = typeof _Artworks_show$ref;
-export type Artworks_show = {
+declare const _ShowArtworksPreview_show$ref: unique symbol;
+export type ShowArtworksPreview_show$ref = typeof _ShowArtworksPreview_show$ref;
+export type ShowArtworksPreview_show = {
     readonly __id: string;
     readonly artworks: ReadonlyArray<({
         readonly " $fragmentRefs": GenericGrid_artworks$ref;
     }) | null> | null;
-    readonly " $refType": Artworks_show$ref;
+    readonly counts: ({
+        readonly artworks: number | null;
+    }) | null;
+    readonly " $refType": ShowArtworksPreview_show$ref;
 };
 
 
@@ -24,7 +27,7 @@ var v0 = {
 };
 return {
   "kind": "Fragment",
-  "name": "Artworks_show",
+  "name": "ShowArtworksPreview_show",
   "type": "Show",
   "metadata": null,
   "argumentDefinitions": [],
@@ -53,9 +56,27 @@ return {
         },
         v0
       ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "counts",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "ShowCounts",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "artworks",
+          "args": null,
+          "storageKey": null
+        }
+      ]
     }
   ]
 };
 })();
-(node as any).hash = '6437e59621c301789c2fc9994ae4771f';
+(node as any).hash = 'e9a2bd9594b37bdc9a58324fddaac1e0';
 export default node;

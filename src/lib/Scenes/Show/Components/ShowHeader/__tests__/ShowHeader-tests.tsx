@@ -1,4 +1,4 @@
-import { ShowFixture } from "lib/Scenes/Show/__fixtures__"
+import { ShowFixture } from "lib/__fixtures__/ShowFixture"
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"

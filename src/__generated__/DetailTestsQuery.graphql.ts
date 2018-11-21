@@ -46,14 +46,10 @@ fragment Detail_show on Show {
     id
   }
   ...ShowHeader_show
-  ...Artworks_show
+  ...ShowArtworksPreview_show
   ...Artists_show
   ...Shows_show
   status
-  counts {
-    artworks
-    eligible_artworks
-  }
   partner {
     __typename
     ... on ExternalPartner {
@@ -119,11 +115,14 @@ fragment ShowHeader_show on Show {
   __id
 }
 
-fragment Artworks_show on Show {
+fragment ShowArtworksPreview_show on Show {
   __id
   artworks(size: 6) {
     ...GenericGrid_artworks
     __id
+  }
+  counts {
+    artworks
   }
 }
 
@@ -333,7 +332,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "c1c7b529eca6dfcb3c6d6d0a7c78ab13",
+  "id": "c6eae227b64c953ba26ced06e490ec39",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -841,6 +840,24 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
+            "name": "counts",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ShowCounts",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "artworks",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
             "name": "nearbyShows",
             "storageKey": "nearbyShows(first:20)",
             "args": [
@@ -911,31 +928,6 @@ return {
                     ]
                   }
                 ]
-              }
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "counts",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "ShowCounts",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "artworks",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "eligible_artworks",
-                "args": null,
-                "storageKey": null
               }
             ]
           }

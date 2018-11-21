@@ -6,6 +6,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { AllArtistsContainer as AllArtists } from "./Screens/AllArtists"
 import { DetailContainer as DetailScreen } from "./Screens/Detail"
 import { MoreInfoContainer as MoreInfoScreen } from "./Screens/MoreInfo"
+import { ShowArtworksContainer as ShowArtworksScreen } from "./Screens/ShowArtworks"
 
 import { Show_show } from "__generated__/Show_show.graphql"
 
@@ -40,6 +41,18 @@ export class Show extends React.Component<Props> {
     })
   }
 
+  handleViewAllArtworksPressed = () => {
+    if (!this.navigator) {
+      throw new Error("navigator is undefined")
+    }
+
+    this.navigator.push({
+      component: ShowArtworksScreen,
+      title: "",
+      passProps: this.props,
+    })
+  }
+
   render() {
     return (
       <Theme>
@@ -55,6 +68,7 @@ export class Show extends React.Component<Props> {
               ...this.props,
               onMoreInformationPressed: this.handleMoreInformationPressed,
               onViewAllArtistsPressed: this.handleViewAllArtists,
+              onViewAllArtworksPressed: this.handleViewAllArtworksPressed,
             },
           }}
           style={{ flex: 1 }}
@@ -71,6 +85,7 @@ export const ShowContainer = createFragmentContainer(
       ...Detail_show
       ...MoreInfo_show
       ...AllArtists_show
+      ...ShowArtworks_show
     }
   `
 )

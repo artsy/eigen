@@ -397,4 +397,218 @@ export const ShowFixture = {
       aspect_ratio: 0.87,
     },
   ],
+  filteredArtworks: {
+    aggregations: [
+      {
+        slice: "PRICE_RANGE",
+        counts: [
+          {
+            id: "*-*",
+            name: "for Sale",
+          },
+          {
+            id: "10000-50000",
+            name: "between $10,000 & $50,000",
+          },
+          {
+            id: "5000-10000",
+            name: "between $5,000 & $10,000",
+          },
+          {
+            id: "1000-5000",
+            name: "between $1,000 & $5,000",
+          },
+          {
+            id: "*-1000",
+            name: "Under $1,000",
+          },
+        ],
+      },
+      {
+        slice: "MEDIUM",
+        counts: [
+          {
+            id: "painting",
+            name: "Painting",
+          },
+          {
+            id: "prints",
+            name: "Prints",
+          },
+          {
+            id: "work-on-paper",
+            name: "Work on Paper",
+          },
+          {
+            id: "drawing",
+            name: "Drawing",
+          },
+          {
+            id: "sculpture",
+            name: "Sculpture",
+          },
+        ],
+      },
+    ],
+    artworks_connection: {
+      edges: [
+        {
+          node: {
+            id: "david-hockney-my-pool-and-terrace-4",
+            title: "My Pool & Terrace",
+            date: "1983",
+            sale_message: "$13,000",
+            is_in_auction: false,
+            is_biddable: false,
+            is_acquireable: false,
+            sale: null,
+            sale_artwork: null,
+            image: {
+              url: "https://d32dm0rphc51dk.cloudfront.net/05rL1DSRwbn9t43xoYkiLg/large.jpg",
+              aspect_ratio: 1.48,
+            },
+            artists: [
+              {
+                name: "David Hockney",
+              },
+            ],
+            partner: {
+              name: "Anderson Fine Art Gallery",
+            },
+            href: "/artwork/david-hockney-my-pool-and-terrace-4",
+          },
+        },
+        {
+          node: {
+            id: "bridget-riley-blue-dominance",
+            title: "Blue Dominance",
+            date: "1977",
+            sale_message: "$15,000",
+            is_in_auction: false,
+            is_biddable: false,
+            is_acquireable: false,
+            sale: null,
+            sale_artwork: null,
+            image: {
+              url: "https://d32dm0rphc51dk.cloudfront.net/SvWPlpYA25k-5Kje-Lp8rg/large.jpg",
+              aspect_ratio: 0.5,
+            },
+            artists: [
+              {
+                name: "Bridget Riley",
+              },
+            ],
+            partner: {
+              name: "Anderson Fine Art Gallery",
+            },
+            href: "/artwork/bridget-riley-blue-dominance",
+          },
+        },
+        {
+          node: {
+            id: "hans-hofmann-untitled-221",
+            title: "Untitled",
+            date: "1942",
+            sale_message: "$5,000",
+            is_in_auction: false,
+            is_biddable: false,
+            is_acquireable: false,
+            sale: null,
+            sale_artwork: null,
+            image: {
+              url: "https://d32dm0rphc51dk.cloudfront.net/WPV9hXX5oms437ujKpPdGg/large.jpg",
+              aspect_ratio: 0.82,
+            },
+            artists: [
+              {
+                name: "Hans Hofmann",
+              },
+            ],
+            partner: {
+              name: "Anderson Fine Art Gallery",
+            },
+            href: "/artwork/hans-hofmann-untitled-221",
+          },
+        },
+        {
+          node: {
+            id: "wolf-kahn-orchard-at-dusk",
+            title: "Orchard at Dusk",
+            date: "1989",
+            sale_message: "$8,000",
+            is_in_auction: false,
+            is_biddable: false,
+            is_acquireable: false,
+            sale: null,
+            sale_artwork: null,
+            image: {
+              url: "https://d32dm0rphc51dk.cloudfront.net/7YGi2ogpyQW4Vl9gorV0dQ/large.jpg",
+              aspect_ratio: 1.25,
+            },
+            artists: [
+              {
+                name: "Wolf Kahn",
+              },
+            ],
+            partner: {
+              name: "Anderson Fine Art Gallery",
+            },
+            href: "/artwork/wolf-kahn-orchard-at-dusk",
+          },
+        },
+        {
+          node: {
+            id: "wolf-kahn-in-ipswich-mass",
+            title: "In Ipswich, Mass",
+            date: "1987",
+            sale_message: "$9,500",
+            is_in_auction: false,
+            is_biddable: false,
+            is_acquireable: false,
+            sale: null,
+            sale_artwork: null,
+            image: {
+              url: "https://d32dm0rphc51dk.cloudfront.net/qY9kBnLdh2EPkPZK8VuAaA/large.jpg",
+              aspect_ratio: 1.35,
+            },
+            artists: [
+              {
+                name: "Wolf Kahn",
+              },
+            ],
+            partner: {
+              name: "Anderson Fine Art Gallery",
+            },
+            href: "/artwork/wolf-kahn-in-ipswich-mass",
+          },
+        },
+        {
+          node: {
+            id: "marc-hanson-scrappy",
+            title: "Scrappy",
+            date: "ca. 2018",
+            sale_message: "$10,300",
+            is_in_auction: false,
+            is_biddable: false,
+            is_acquireable: false,
+            sale: null,
+            sale_artwork: null,
+            image: {
+              url: "https://d32dm0rphc51dk.cloudfront.net/GSzNrBCUurMHdNEgT6LdwQ/large.jpg",
+              aspect_ratio: 1.33,
+            },
+            artists: [
+              {
+                name: "Marc Hanson",
+              },
+            ],
+            partner: {
+              name: "Anderson Fine Art Gallery",
+            },
+            href: "/artwork/marc-hanson-scrappy",
+          },
+        },
+      ],
+    },
+  },
 }

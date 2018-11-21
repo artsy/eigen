@@ -31,6 +31,7 @@
 - Adds "View on map" to show view for "More shows" - Kieran
 - Adds AllArtist page to Shows and adds styled gray border InvertedButton - Kieran
 - Add HoursCollapsible to Fair detail view - javamonn
+- Add browse artworks screen to Fair, Show - javamonn
 
 ### 1.7.4
 
