@@ -1,3 +1,5 @@
+# :world_map:
+
 As we have built our React Native components, our understanding of how to build those components as evolved. As that understanding grows, newer components use newer techniques and older ones are often left un-updated. It can be difficult to orient oneself around what the current preferred practices are.
 
 This document is a map. Not of Emission at a specific time, but a map of how we got here and where we want to go next. This is a living document, expected to be updated regularly, of links to:

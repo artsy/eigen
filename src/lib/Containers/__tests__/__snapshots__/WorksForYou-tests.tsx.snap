@@ -109,8 +109,8 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
             className="sc-bdVaJa bDWFJH"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Regular"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -154,8 +154,8 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
             color="white"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -559,8 +559,8 @@ exports[`with notifications lays out correctly on small screens 1`] = `
             className="sc-bdVaJa bDWFJH"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Regular"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -604,8 +604,8 @@ exports[`with notifications lays out correctly on small screens 1`] = `
             color="white"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -1013,8 +1013,8 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
             className="sc-bdVaJa bDWFJH"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Regular"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -1058,8 +1058,8 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
             color="white"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -1291,8 +1291,8 @@ exports[`without notifications lays out correctly on small screens 1`] = `
             className="sc-bdVaJa bDWFJH"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Regular"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -1336,8 +1336,8 @@ exports[`without notifications lays out correctly on small screens 1`] = `
             color="white"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {

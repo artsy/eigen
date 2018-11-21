@@ -56,7 +56,7 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -96,7 +96,7 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -137,8 +137,8 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
       color="#000"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
@@ -161,8 +161,8 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
       color="#666"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Regular"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
@@ -335,7 +335,7 @@ exports[`in a closed sale renders without any price information 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -375,7 +375,7 @@ exports[`in a closed sale renders without any price information 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -416,8 +416,8 @@ exports[`in a closed sale renders without any price information 1`] = `
       color="#000"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
@@ -440,8 +440,8 @@ exports[`in a closed sale renders without any price information 1`] = `
       color="#666"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Regular"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
@@ -614,7 +614,7 @@ exports[`in an open sale renders with current bid 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -654,7 +654,7 @@ exports[`in an open sale renders with current bid 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -695,8 +695,8 @@ exports[`in an open sale renders with current bid 1`] = `
       color="#000"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
@@ -719,8 +719,8 @@ exports[`in an open sale renders with current bid 1`] = `
       color="#666"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Regular"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
@@ -893,7 +893,7 @@ exports[`in an open sale renders with starting bid 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -933,7 +933,7 @@ exports[`in an open sale renders with starting bid 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -974,8 +974,8 @@ exports[`in an open sale renders with starting bid 1`] = `
       color="#000"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
@@ -997,8 +997,8 @@ exports[`in an open sale renders with starting bid 1`] = `
       color="#666"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Regular"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
@@ -1171,7 +1171,7 @@ exports[`renders properly 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -1211,7 +1211,7 @@ exports[`renders properly 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -1252,8 +1252,8 @@ exports[`renders properly 1`] = `
       color="#000"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
@@ -1276,8 +1276,8 @@ exports[`renders properly 1`] = `
       color="#666"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Regular"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {

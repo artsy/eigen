@@ -8,15 +8,15 @@ Array [
     className="sc-bwzfXH uTxCW"
     ellipsizeMode="tail"
     fontFamily="AGaramondPro-Regular"
-    fontSize={22}
-    lineHeight={32}
+    fontSize="32px"
+    lineHeight="38px"
     my={1}
     style={
       Array [
         Object {
           "fontFamily": "AGaramondPro-Regular",
-          "fontSize": 22,
-          "lineHeight": 32,
+          "fontSize": 32,
+          "lineHeight": 38,
           "marginBottom": 4,
           "marginTop": 4,
         },
@@ -44,8 +44,8 @@ Array [
     className="sc-bdVaJa bDWFJH"
     ellipsizeMode="tail"
     fontFamily="Unica77LL-Medium"
-    fontSize={14}
-    lineHeight={24}
+    fontSize="14px"
+    lineHeight="24px"
     my={2}
     style={
       Array [

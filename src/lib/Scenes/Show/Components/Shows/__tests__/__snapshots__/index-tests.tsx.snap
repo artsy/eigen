@@ -8,8 +8,8 @@ Array [
     className="sc-bwzfXH uTxCW"
     ellipsizeMode="tail"
     fontFamily="AGaramondPro-Regular"
-    fontSize={32}
-    lineHeight={38}
+    fontSize="32px"
+    lineHeight="38px"
     style={
       Array [
         Object {
@@ -160,8 +160,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -317,8 +317,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -474,8 +474,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -631,8 +631,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -788,8 +788,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -945,8 +945,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -1102,8 +1102,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -1259,8 +1259,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -1416,8 +1416,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -1573,8 +1573,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -1730,8 +1730,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -1887,8 +1887,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -2044,8 +2044,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -2201,8 +2201,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -2358,8 +2358,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -2515,8 +2515,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -2679,8 +2679,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -2836,8 +2836,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -2993,8 +2993,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -3150,8 +3150,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -3286,8 +3286,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -3422,8 +3422,8 @@ Array [
             color="black"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {

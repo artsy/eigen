@@ -21,6 +21,7 @@
 - Adds the mapBoxAPIClientKey to cocoapods
 - Updates Show detail view styles - luc
 - Styles artists list - Kieran
+- Updates @artsy/palette (2.21.1) - javamonn
 
 ### 1.7.4
 
