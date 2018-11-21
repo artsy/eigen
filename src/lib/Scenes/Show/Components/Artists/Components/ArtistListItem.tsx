@@ -11,6 +11,10 @@ const RoundedImage = styled(OpaqueImageView)`
   overflow: hidden;
 `
 
+const ImageAndTextWrapper = styled(Flex)`
+  flex-wrap: nowrap;
+`
+
 interface Props {
   name: string
   nationality?: string
@@ -48,7 +52,7 @@ export const ArtistListItem: React.SFC<Props> = ({
 }) => {
   return (
     <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
-      <Box flexDirection="row" wrap="nowrap" alignItems="center">
+      <ImageAndTextWrapper flexDirection="row" alignItems="center">
         <Box mr={1}>
           <RoundedImage imageURL={url} aspectRatio={1} />
         </Box>
@@ -58,7 +62,7 @@ export const ArtistListItem: React.SFC<Props> = ({
             {returnTombstoneText(nationality, birthday, deathday)}
           </Sans>
         </Box>
-      </Box>
+      </ImageAndTextWrapper>
       {/* TODO: Convert the width and height to a padding */}
       <Box width={84} height={34}>
         <InvertedButton
