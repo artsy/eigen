@@ -139,6 +139,19 @@ fragment ShowHeader_show on Show {
   press_release
   exhibition_period
   status
+  partner {
+    __typename
+    ... on Partner {
+      name
+    }
+    ... on ExternalPartner {
+      name
+      __id
+    }
+    ... on Node {
+      __id
+    }
+  }
   images {
     url
     aspect_ratio
@@ -163,6 +176,9 @@ fragment Artists_show on Show {
     nationality
     birthday
     deathday
+    image {
+      url
+    }
   }
   __id
 }
@@ -355,7 +371,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "45d68951b948185fa657e4d3f161bac0",
+  "id": "08a2df58c05a01675e93c26dfaa2cd85",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -610,6 +626,34 @@ return {
             "args": null,
             "storageKey": null
           },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "partner",
+            "storageKey": null,
+            "args": null,
+            "concreteType": null,
+            "plural": false,
+            "selections": [
+              v13,
+              v2,
+              {
+                "kind": "InlineFragment",
+                "type": "Partner",
+                "selections": [
+                  v4,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "type",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
+              v15
+            ]
+          },
           v2,
           {
             "kind": "LinkedField",
@@ -858,6 +902,18 @@ return {
                 "name": "deathday",
                 "args": null,
                 "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "image",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Image",
+                "plural": false,
+                "selections": [
+                  v11
+                ]
               }
             ]
           },
@@ -883,34 +939,6 @@ return {
                 "name": "eligible_artworks",
                 "args": null,
                 "storageKey": null
-              }
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "partner",
-            "storageKey": null,
-            "args": null,
-            "concreteType": null,
-            "plural": false,
-            "selections": [
-              v13,
-              v2,
-              v15,
-              {
-                "kind": "InlineFragment",
-                "type": "Partner",
-                "selections": [
-                  v4,
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "type",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
               }
             ]
           }

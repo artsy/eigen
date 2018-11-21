@@ -32,6 +32,9 @@ fragment Artists_show on Show {
     nationality
     birthday
     deathday
+    image {
+      url
+    }
   }
   __id
 }
@@ -57,7 +60,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtistsTestsQuery",
-  "id": "5123980115dcaadc2d38ccfddc6dd397",
+  "id": "68db0d617a2c40601e400b28c64c7632",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -151,6 +154,24 @@ return {
                 "name": "deathday",
                 "args": null,
                 "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "image",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Image",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "url",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
               }
             ]
           },

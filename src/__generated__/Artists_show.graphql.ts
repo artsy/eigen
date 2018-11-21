@@ -12,6 +12,9 @@ export type Artists_show = {
         readonly nationality: string | null;
         readonly birthday: string | null;
         readonly deathday: string | null;
+        readonly image: ({
+            readonly url: string | null;
+        }) | null;
     }) | null> | null;
     readonly " $refType": Artists_show$ref;
 };
@@ -84,6 +87,24 @@ return {
           "name": "deathday",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "image",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Image",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "url",
+              "args": null,
+              "storageKey": null
+            }
+          ]
         }
       ]
     },
@@ -91,5 +112,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '08a6e2c35ee6679c805953ea02a2bf10';
+(node as any).hash = '98ac953735c8130b330bad29341f90bd';
 export default node;

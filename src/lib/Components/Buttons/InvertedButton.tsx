@@ -3,11 +3,11 @@ import { Animated, StyleProp, StyleSheet, TextStyle, TouchableHighlight, View } 
 
 import colors from "lib/data/colors"
 import Spinner from "../Spinner"
-import Headline from "../Text/Headline"
+import PrimaryButtonText from "../Text/PrimaryButtonText"
 
 const AnimationDuration = 250
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableHighlight)
-const AnimatedHeadline = Animated.createAnimatedComponent(Headline)
+const AnimatedHeadline = Animated.createAnimatedComponent(PrimaryButtonText)
 
 export interface InvertedButtonProps extends React.Props<InvertedButton> {
   text: string
@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 2,
   },
   text: {
     color: "white",

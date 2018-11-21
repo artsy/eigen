@@ -1,15 +1,39 @@
-import { Box, Flex, Sans, Serif } from "@artsy/palette"
+import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
+import OpaqueImageView from "lib/Components/OpaqueImageView"
 import React from "react"
+import styled from "styled-components/native"
+
+const RoundedImage = styled(OpaqueImageView)`
+  height: 45;
+  width: 45;
+  border-radius: 25;
+  overflow: hidden;
+`
 
 interface Props {
   name: string
   nationality?: string
-  birthday?: number
-  deathday?: number
+  birthday?: string
+  deathday?: string
   isFollowed: boolean
   onPress: () => void
   isFollowedChanging: boolean
+  url: string
+}
+
+const returnTombstoneText = (nationality, birthday, deathday) => {
+  if (nationality && birthday && deathday) {
+    return nationality + ", " + birthday + "-" + deathday
+  } else if (nationality && birthday) {
+    return nationality + ", b. " + birthday
+  } else if (nationality) {
+    return nationality
+  } else if (birthday && deathday) {
+    return birthday + "-" + deathday
+  } else if (birthday) {
+    return "b. " + birthday
+  }
 }
 
 export const ArtistListItem: React.SFC<Props> = ({
@@ -20,16 +44,23 @@ export const ArtistListItem: React.SFC<Props> = ({
   isFollowed,
   onPress,
   isFollowedChanging,
+  url,
 }) => {
-  const tombstone = nationality + " " + birthday.toString() + " " + deathday.toString()
   return (
     <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
-      <Box>
-        <Serif size="3">{name}</Serif>
-        <Sans size="3">{tombstone}</Sans>
+      <Box flexDirection="row" wrap="nowrap" alignItems="center">
+        <Box mr={1}>
+          <RoundedImage imageURL={url} aspectRatio={1} />
+        </Box>
+        <Box>
+          <Serif size="3t">{name}</Serif>
+          <Sans size="3t" color="black60">
+            {returnTombstoneText(nationality, birthday, deathday)}
+          </Sans>
+        </Box>
       </Box>
-      {/* TODO: Remove hardcoded sizes once designs firm up */}
-      <Box width={112} height={32}>
+      {/* TODO: Convert the width and height to a padding */}
+      <Box width={84} height={34}>
         <InvertedButton
           text={isFollowed ? "Following" : "Follow"}
           onPress={onPress}

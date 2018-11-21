@@ -19,6 +19,8 @@
 - Adds styled LocationMap with custom pins - kieran
 - Refactor auctions countdown timer, add fair countdown timer - javamonn
 - Adds the mapBoxAPIClientKey to cocoapods
+- Updates Show detail view styles - luc
+- Styles artists list - Kieran
 
 ### 1.7.4
 
