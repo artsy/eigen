@@ -72,54 +72,54 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "city",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "city",
+  "name": "address",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "address",
+  "name": "address_2",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "address_2",
+  "name": "state",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "state",
+  "name": "postal_code",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "postal_code",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v8 = [
-  v1
+  v7
 ],
 v9 = {
   "kind": "InlineFragment",
@@ -133,8 +133,12 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "FragmentSpread",
+      "name": "ShowHeader_show",
+      "args": null
+    },
     v0,
-    v1,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -142,7 +146,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    v2,
+    v1,
     {
       "kind": "LinkedField",
       "alias": null,
@@ -153,12 +157,12 @@ return {
       "plural": false,
       "selections": [
         v0,
-        v3,
-        v4,
         v2,
+        v3,
+        v1,
+        v4,
         v5,
         v6,
-        v7,
         {
           "kind": "FragmentSpread",
           "name": "LocationMap_location",
@@ -213,7 +217,7 @@ return {
               "plural": false,
               "selections": [
                 v0,
-                v1,
+                v7,
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -248,13 +252,13 @@ return {
                   "concreteType": null,
                   "plural": false,
                   "selections": [
-                    v7,
-                    v9,
+                    v6,
                     {
                       "kind": "InlineFragment",
                       "type": "Partner",
                       "selections": v8
-                    }
+                    },
+                    v9
                   ]
                 },
                 {
@@ -266,25 +270,21 @@ return {
                   "concreteType": "Location",
                   "plural": false,
                   "selections": [
+                    v2,
                     v3,
                     v4,
                     v5,
-                    v6,
-                    v7
+                    v6
                   ]
                 },
-                v7
+                v6
               ]
             }
           ]
         }
       ]
     },
-    {
-      "kind": "FragmentSpread",
-      "name": "ShowHeader_show",
-      "args": null
-    },
+    v7,
     {
       "kind": "FragmentSpread",
       "name": "Artworks_show",
@@ -341,13 +341,12 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v7,
-        v9,
+        v6,
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v1,
+            v7,
             {
               "kind": "ScalarField",
               "alias": null,
@@ -356,10 +355,11 @@ return {
               "storageKey": null
             }
           ]
-        }
+        },
+        v9
       ]
     },
-    v7
+    v6
   ]
 };
 })();

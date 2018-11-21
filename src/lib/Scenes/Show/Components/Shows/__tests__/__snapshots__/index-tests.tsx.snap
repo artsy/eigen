@@ -5,23 +5,23 @@ Array [
   <Text
     accessible={true}
     allowFontScaling={true}
-    className="sc-bdVaJa bDWFJH"
+    className="sc-bwzfXH uTxCW"
     ellipsizeMode="tail"
-    fontFamily="Unica77LL-Regular"
+    fontFamily="AGaramondPro-Regular"
     fontSize={22}
-    lineHeight={30}
+    lineHeight={32}
     style={
       Array [
         Object {
-          "fontFamily": "Unica77LL-Regular",
+          "fontFamily": "AGaramondPro-Regular",
           "fontSize": 22,
-          "lineHeight": 30,
+          "lineHeight": 32,
         },
         undefined,
       ]
     }
   >
-    Current Shows In New York
+    More Shows
   </Text>,
   <View
     style={
@@ -145,8 +145,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -155,23 +156,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -299,8 +302,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -309,23 +313,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -453,8 +459,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -463,23 +470,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -607,8 +616,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -617,23 +627,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -761,8 +773,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -771,23 +784,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -915,8 +930,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -925,23 +941,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -1069,8 +1087,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -1079,23 +1098,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -1223,8 +1244,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -1233,23 +1255,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -1377,8 +1401,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -1387,23 +1412,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -1531,8 +1558,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -1541,23 +1569,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -1685,8 +1715,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -1695,23 +1726,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -1839,8 +1872,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -1849,23 +1883,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -1993,8 +2029,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -2003,23 +2040,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -2147,8 +2186,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -2157,23 +2197,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -2301,8 +2343,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -2311,23 +2354,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -2455,8 +2500,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -2465,23 +2511,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -2616,8 +2664,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -2626,23 +2675,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -2770,8 +2821,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -2780,23 +2832,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -2924,8 +2978,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -2934,23 +2989,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -3078,8 +3135,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -3088,23 +3146,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -3211,8 +3271,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -3221,23 +3282,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>
@@ -3344,8 +3407,9 @@ Array [
               "alignItems": "center",
               "backgroundColor": "rgba(255, 255, 255, 1)",
               "borderColor": "black",
+              "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
             }
@@ -3354,23 +3418,25 @@ Array [
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="black"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize={14}
+            lineHeight={24}
             style={
               Array [
                 Object {
-                  "fontSize": 12,
+                  "color": "black",
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 14,
+                  "lineHeight": 24,
                 },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(0, 0, 0, 1)",
-                  "opacity": 1,
-                },
+                undefined,
               ]
             }
           >
-            SAVE
+            Save
           </Text>
         </View>
       </View>

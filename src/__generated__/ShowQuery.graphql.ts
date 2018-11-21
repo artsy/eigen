@@ -2,23 +2,23 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { Show_show$ref } from "./Show_show.graphql";
-export type QueryRenderersShowQueryVariables = {
+export type ShowQueryVariables = {
     readonly showID: string;
 };
-export type QueryRenderersShowQueryResponse = {
+export type ShowQueryResponse = {
     readonly show: ({
         readonly " $fragmentRefs": Show_show$ref;
     }) | null;
 };
-export type QueryRenderersShowQuery = {
-    readonly response: QueryRenderersShowQueryResponse;
-    readonly variables: QueryRenderersShowQueryVariables;
+export type ShowQuery = {
+    readonly response: ShowQueryResponse;
+    readonly variables: ShowQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersShowQuery(
+query ShowQuery(
   $showID: String!
 ) {
   show(id: $showID) {
@@ -364,13 +364,13 @@ v18 = [
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "QueryRenderersShowQuery",
-  "id": "a6a95b6bfcc73457fe65559fb89541fb",
+  "name": "ShowQuery",
+  "id": "46b95f9f1ce05d0f3236cc94cd591fb1",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersShowQuery",
+    "name": "ShowQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -396,7 +396,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersShowQuery",
+    "name": "ShowQuery",
     "argumentDefinitions": v0,
     "selections": [
       {
@@ -909,5 +909,5 @@ return {
   }
 };
 })();
-(node as any).hash = '673a9098896e4777f88f0902608774eb';
+(node as any).hash = '89957ae2c1266a239c15b6ec18350961';
 export default node;

@@ -1,0 +1,326 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Carousel renders properly 1`] = `
+<View
+  ml={2}
+  my={2}
+  style={
+    Array [
+      Object {
+        "marginBottom": 8,
+        "marginLeft": 8,
+        "marginTop": 8,
+      },
+      undefined,
+    ]
+  }
+>
+  <RCTScrollView
+    horizontal={true}
+    scrollEventThrottle={160}
+    showsHorizontalScrollIndicator={false}
+    style={
+      Array [
+        Object {
+          "height": 350,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View>
+      <View
+        alignItems="flex-start"
+        mr={1}
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "display": "flex",
+              "marginRight": 4,
+            },
+            undefined,
+          ]
+        }
+      >
+        <AROpaqueImageView
+          aspectRatio={1.5}
+          imageURL="https://d32dm0rphc51dk.cloudfront.net/GZAyAwIBNitUUogXsAoaBw/larger.jpg"
+          isFirst={true}
+          style={
+            Array [
+              Object {
+                "height": 200,
+                "marginTop": 150,
+                "width": 650,
+              },
+              undefined,
+            ]
+          }
+        />
+      </View>
+      <View
+        alignItems="flex-start"
+        mr={1}
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "display": "flex",
+              "marginRight": 4,
+            },
+            undefined,
+          ]
+        }
+      >
+        <AROpaqueImageView
+          aspectRatio={1.5}
+          imageURL="https://d32dm0rphc51dk.cloudfront.net/GkBR99xMC__SWyi4j5kJdw/larger.jpg"
+          isFirst={false}
+          style={
+            Array [
+              Object {
+                "height": 350,
+                "marginTop": 0,
+              },
+              undefined,
+            ]
+          }
+        />
+      </View>
+      <View
+        alignItems="flex-start"
+        mr={1}
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "display": "flex",
+              "marginRight": 4,
+            },
+            undefined,
+          ]
+        }
+      >
+        <AROpaqueImageView
+          aspectRatio={1.5}
+          imageURL="https://d32dm0rphc51dk.cloudfront.net/zDbgyKt6x3yGoUHFkO--Aw/larger.jpg"
+          isFirst={false}
+          style={
+            Array [
+              Object {
+                "height": 350,
+                "marginTop": 0,
+              },
+              undefined,
+            ]
+          }
+        />
+      </View>
+      <View
+        alignItems="flex-start"
+        mr={1}
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "display": "flex",
+              "marginRight": 4,
+            },
+            undefined,
+          ]
+        }
+      >
+        <AROpaqueImageView
+          aspectRatio={1.5}
+          imageURL="https://d32dm0rphc51dk.cloudfront.net/Eejy0FSVyqJ8NlSe8j8j6Q/larger.jpg"
+          isFirst={false}
+          style={
+            Array [
+              Object {
+                "height": 350,
+                "marginTop": 0,
+              },
+              undefined,
+            ]
+          }
+        />
+      </View>
+      <View
+        alignItems="flex-start"
+        mr={1}
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "display": "flex",
+              "marginRight": 4,
+            },
+            undefined,
+          ]
+        }
+      >
+        <AROpaqueImageView
+          aspectRatio={0.67}
+          imageURL="https://d32dm0rphc51dk.cloudfront.net/aLHd1-5iDe3eTcSb04QwtA/larger.jpg"
+          isFirst={false}
+          style={
+            Array [
+              Object {
+                "height": 350,
+                "marginTop": 0,
+              },
+              undefined,
+            ]
+          }
+        />
+      </View>
+      <View
+        alignItems="flex-start"
+        mr={1}
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "display": "flex",
+              "marginRight": 4,
+            },
+            undefined,
+          ]
+        }
+      >
+        <AROpaqueImageView
+          aspectRatio={1.5}
+          imageURL="https://d32dm0rphc51dk.cloudfront.net/66Lg4kZ4tjMD5nGfPOFUyA/larger.jpg"
+          isFirst={false}
+          style={
+            Array [
+              Object {
+                "height": 350,
+                "marginTop": 0,
+              },
+              undefined,
+            ]
+          }
+        />
+      </View>
+      <View
+        alignItems="flex-start"
+        mr={1}
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "display": "flex",
+              "marginRight": 4,
+            },
+            undefined,
+          ]
+        }
+      >
+        <AROpaqueImageView
+          aspectRatio={1.5}
+          imageURL="https://d32dm0rphc51dk.cloudfront.net/WcGcGFg5y4pnqZAacbDu3w/larger.jpg"
+          isFirst={false}
+          style={
+            Array [
+              Object {
+                "height": 350,
+                "marginTop": 0,
+              },
+              undefined,
+            ]
+          }
+        />
+      </View>
+      <View
+        alignItems="flex-start"
+        mr={1}
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "display": "flex",
+              "marginRight": 4,
+            },
+            undefined,
+          ]
+        }
+      >
+        <AROpaqueImageView
+          aspectRatio={1.5}
+          imageURL="https://d32dm0rphc51dk.cloudfront.net/6Oq63DESPbMW4W4mM3b01g/larger.jpg"
+          isFirst={false}
+          style={
+            Array [
+              Object {
+                "height": 350,
+                "marginTop": 0,
+              },
+              undefined,
+            ]
+          }
+        />
+      </View>
+      <View
+        alignItems="flex-start"
+        mr={1}
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "display": "flex",
+              "marginRight": 4,
+            },
+            undefined,
+          ]
+        }
+      >
+        <AROpaqueImageView
+          aspectRatio={1.5}
+          imageURL="https://d32dm0rphc51dk.cloudfront.net/cyb8k0si34ih-Qf_X5m7JA/larger.jpg"
+          isFirst={false}
+          style={
+            Array [
+              Object {
+                "height": 350,
+                "marginTop": 0,
+              },
+              undefined,
+            ]
+          }
+        />
+      </View>
+      <View
+        alignItems="flex-start"
+        mr={1}
+        style={
+          Array [
+            Object {
+              "alignItems": "flex-start",
+              "display": "flex",
+              "marginRight": 4,
+            },
+            undefined,
+          ]
+        }
+      >
+        <AROpaqueImageView
+          aspectRatio={1.5}
+          imageURL="https://d32dm0rphc51dk.cloudfront.net/PGB4v5DaCME2JjlVJclZ8g/larger.jpg"
+          isFirst={false}
+          style={
+            Array [
+              Object {
+                "height": 350,
+                "marginTop": 0,
+              },
+              undefined,
+            ]
+          }
+        />
+      </View>
+    </View>
+  </RCTScrollView>
+</View>
+`;

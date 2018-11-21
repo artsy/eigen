@@ -272,6 +272,7 @@ exports[`looks correct when rendered 1`] = `
                 Object {
                   "alignItems": "center",
                   "backgroundColor": "rgba(0, 0, 0, 1)",
+                  "borderRadius": 2,
                   "flex": 1,
                   "justifyContent": "center",
                 }
@@ -287,14 +288,14 @@ exports[`looks correct when rendered 1`] = `
                   style={
                     Array [
                       Object {
-                        "fontSize": 12,
-                      },
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
+                        "fontSize": 14,
                       },
                       Object {
                         "color": "white",
                         "opacity": 1,
+                      },
+                      Object {
+                        "fontFamily": "Unica77LL-Medium",
                       },
                     ]
                   }

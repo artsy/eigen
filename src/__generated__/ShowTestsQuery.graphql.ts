@@ -135,6 +135,19 @@ fragment ShowHeader_show on Show {
   press_release
   exhibition_period
   status
+  partner {
+    __typename
+    ... on Partner {
+      name
+    }
+    ... on ExternalPartner {
+      name
+      __id
+    }
+    ... on Node {
+      __id
+    }
+  }
   images {
     url
     aspect_ratio
@@ -247,63 +260,63 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "city",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "city",
+  "name": "address",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "address",
+  "name": "address_2",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "address_2",
+  "name": "state",
   "args": null,
   "storageKey": null
 },
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "state",
+  "name": "postal_code",
   "args": null,
   "storageKey": null
 },
 v8 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "postal_code",
+  "name": "display",
   "args": null,
   "storageKey": null
 },
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "display",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v10 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "aspect_ratio",
   "args": null,
   "storageKey": null
 },
 v11 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "aspect_ratio",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
@@ -315,7 +328,7 @@ v12 = {
   "storageKey": null
 },
 v13 = [
-  v3
+  v11
 ],
 v14 = {
   "kind": "InlineFragment",
@@ -330,17 +343,17 @@ v15 = {
   "storageKey": null
 },
 v16 = [
-  v9
+  v8
 ],
 v17 = [
-  v3,
+  v11,
   v1
 ];
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
-  "id": "635ea3de35c80ed2a0bf6107eeca3870",
+  "id": "d1f243ed8534cce91142d890ff7bfef1",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -383,8 +396,14 @@ return {
         "concreteType": "Show",
         "plural": false,
         "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "press_release",
+            "args": null,
+            "storageKey": null
+          },
           v2,
-          v3,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -392,7 +411,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          v4,
+          v3,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -403,13 +422,13 @@ return {
             "plural": false,
             "selections": [
               v2,
-              v5,
-              v6,
               v4,
+              v5,
+              v3,
+              v6,
               v7,
-              v8,
               v1,
-              v9,
+              v8,
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -479,8 +498,8 @@ return {
             "plural": true,
             "selections": [
               v2,
-              v10,
-              v11
+              v9,
+              v10
             ]
           },
           {
@@ -518,7 +537,7 @@ return {
                     "plural": false,
                     "selections": [
                       v2,
-                      v3,
+                      v11,
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -528,8 +547,8 @@ return {
                         "concreteType": "Image",
                         "plural": true,
                         "selections": [
-                          v10,
-                          v11
+                          v9,
+                          v10
                         ]
                       },
                       {
@@ -543,12 +562,12 @@ return {
                         "selections": [
                           v12,
                           v1,
-                          v14,
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",
                             "selections": v13
-                          }
+                          },
+                          v14
                         ]
                       },
                       {
@@ -560,10 +579,10 @@ return {
                         "concreteType": "Location",
                         "plural": false,
                         "selections": [
+                          v4,
                           v5,
                           v6,
                           v7,
-                          v8,
                           v1
                         ]
                       },
@@ -574,13 +593,7 @@ return {
               }
             ]
           },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "press_release",
-            "args": null,
-            "storageKey": null
-          },
+          v11,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -595,6 +608,34 @@ return {
             "args": null,
             "storageKey": null
           },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "partner",
+            "storageKey": null,
+            "args": null,
+            "concreteType": null,
+            "plural": false,
+            "selections": [
+              v12,
+              v1,
+              v14,
+              {
+                "kind": "InlineFragment",
+                "type": "Partner",
+                "selections": [
+                  v11,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "type",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              }
+            ]
+          },
           v1,
           {
             "kind": "LinkedField",
@@ -605,8 +646,14 @@ return {
             "concreteType": "Artwork",
             "plural": true,
             "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "is_biddable",
+                "args": null,
+                "storageKey": null
+              },
               v1,
-              v2,
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -616,7 +663,7 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v11,
+                  v10,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -661,13 +708,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "is_biddable",
-                "args": null,
-                "storageKey": null
-              },
+              v2,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -815,7 +856,7 @@ return {
             "selections": [
               v1,
               v2,
-              v3,
+              v11,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -847,34 +888,6 @@ return {
                 "name": "eligible_artworks",
                 "args": null,
                 "storageKey": null
-              }
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "partner",
-            "storageKey": null,
-            "args": null,
-            "concreteType": null,
-            "plural": false,
-            "selections": [
-              v12,
-              v1,
-              v14,
-              {
-                "kind": "InlineFragment",
-                "type": "Partner",
-                "selections": [
-                  v3,
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "type",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
               }
             ]
           }

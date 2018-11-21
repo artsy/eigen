@@ -657,6 +657,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                   "alignItems": "center",
                   "backgroundColor": "rgba(0, 0, 0, 1)",
                   "borderColor": "rgba(0, 0, 0, 1)",
+                  "borderRadius": 2,
                   "borderWidth": 1,
                   "height": 43,
                   "justifyContent": "center",
@@ -669,19 +670,21 @@ exports[`Sets up the right view hierarchy 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
+                className="sc-bdVaJa bDWFJH"
+                color="white"
                 ellipsizeMode="tail"
+                fontFamily="Unica77LL-Medium"
+                fontSize={14}
+                lineHeight={24}
                 style={
                   Array [
                     Object {
-                      "fontSize": 12,
+                      "color": "white",
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 14,
+                      "lineHeight": 24,
                     },
-                    Object {
-                      "fontFamily": "AvantGardeGothicITC",
-                    },
-                    Object {
-                      "color": "rgba(255, 255, 255, 1)",
-                      "opacity": 1,
-                    },
+                    undefined,
                   ]
                 }
               >
