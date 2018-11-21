@@ -178,8 +178,39 @@ fragment Artists_show on Show {
 }
 
 fragment Shows_show on Show {
-  city
+  nearbyShows(first: 20) {
+    edges {
+      node {
+        ...ShowItem_show
+        __id
+      }
+    }
+  }
   __id
+}
+
+fragment ShowItem_show on Show {
+  __id
+  id
+  name
+  exhibition_period
+  images {
+    url
+    aspect_ratio
+  }
+  partner {
+    __typename
+    ... on ExternalPartner {
+      name
+      __id
+    }
+    ... on Partner {
+      name
+    }
+    ... on Node {
+      __id
+    }
+  }
 }
 
 fragment GenericGrid_artworks on Artwork {
@@ -350,14 +381,21 @@ v15 = {
 v16 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "exhibition_period",
+  "args": null,
+  "storageKey": null
+},
+v17 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v17 = [
+v18 = [
   v9
 ],
-v18 = [
+v19 = [
   v12,
   v2
 ];
@@ -365,7 +403,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowQuery",
-  "id": "46b95f9f1ce05d0f3236cc94cd591fb1",
+  "id": "2673be5e59c3ebbe627389467b82e31f",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -598,7 +636,8 @@ return {
                           v2
                         ]
                       },
-                      v2
+                      v2,
+                      v16
                     ]
                   }
                 ]
@@ -606,13 +645,7 @@ return {
             ]
           },
           v12,
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "exhibition_period",
-            "args": null,
-            "storageKey": null
-          },
+          v16,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -758,7 +791,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v16,
+                  v17,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -786,7 +819,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkOpeningBid",
                     "plural": false,
-                    "selections": v17
+                    "selections": v18
                   },
                   {
                     "kind": "LinkedField",
@@ -796,7 +829,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkCurrentBid",
                     "plural": false,
-                    "selections": v17
+                    "selections": v18
                   },
                   {
                     "kind": "ScalarField",
@@ -814,7 +847,7 @@ return {
                     "concreteType": "Sale",
                     "plural": false,
                     "selections": [
-                      v16,
+                      v17,
                       v2
                     ]
                   },
@@ -836,7 +869,7 @@ return {
                 ],
                 "concreteType": "Artist",
                 "plural": true,
-                "selections": v18
+                "selections": v19
               },
               {
                 "kind": "LinkedField",
@@ -846,7 +879,7 @@ return {
                 "args": null,
                 "concreteType": "Partner",
                 "plural": false,
-                "selections": v18
+                "selections": v19
               },
               {
                 "kind": "ScalarField",
