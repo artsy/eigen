@@ -9,6 +9,9 @@ export type Artists_show = {
         readonly id: string;
         readonly name: string | null;
         readonly is_followed: boolean | null;
+        readonly nationality: string | null;
+        readonly birthday: string | null;
+        readonly deathday: string | null;
     }) | null> | null;
     readonly " $refType": Artists_show$ref;
 };
@@ -60,6 +63,27 @@ return {
           "name": "is_followed",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "nationality",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "birthday",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "deathday",
+          "args": null,
+          "storageKey": null
         }
       ]
     },
@@ -67,5 +91,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f93375b7e856d346509b98c58ffe1723';
+(node as any).hash = '08a6e2c35ee6679c805953ea02a2bf10';
 export default node;

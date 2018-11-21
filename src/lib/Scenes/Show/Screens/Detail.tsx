@@ -66,10 +66,10 @@ export class Detail extends React.Component<Props, State> {
 
   renderItem = ({ item: { data, type } }) => {
     switch (type) {
-      case "location":
-        return <LocationMap {...data} />
-      case "artworks":
-        return <Artworks show={data} />
+      // case "location":
+      //   return <LocationMap {...data} />
+      // case "artworks":
+      //   return <Artworks show={data} />
       case "artists":
         return <Artists show={data} />
       case "shows":

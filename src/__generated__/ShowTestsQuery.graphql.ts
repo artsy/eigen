@@ -156,6 +156,9 @@ fragment Artists_show on Show {
     id
     name
     is_followed
+    nationality
+    birthday
+    deathday
   }
   __id
 }
@@ -340,7 +343,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
-  "id": "635ea3de35c80ed2a0bf6107eeca3870",
+  "id": "fb1d28cf802ae63cb51410d6eae658f7",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -820,6 +823,27 @@ return {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "is_followed",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "nationality",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "birthday",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "deathday",
                 "args": null,
                 "storageKey": null
               }

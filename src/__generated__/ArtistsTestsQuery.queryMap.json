@@ -1,3 +1,3 @@
 {
-  "42fecaccee9442ff6ea9b40638f4e4fc": "query ArtistsTestsQuery {\n  show(id: \"anderson-fine-art-gallery-flickinger-collection\") {\n    ...Artists_show\n    __id\n  }\n}\n\nfragment Artists_show on Show {\n  artists {\n    __id\n    id\n    name\n    is_followed\n  }\n  __id\n}\n"
+  "5123980115dcaadc2d38ccfddc6dd397": "query ArtistsTestsQuery {\n  show(id: \"anderson-fine-art-gallery-flickinger-collection\") {\n    ...Artists_show\n    __id\n  }\n}\n\nfragment Artists_show on Show {\n  artists {\n    __id\n    id\n    name\n    is_followed\n    nationality\n    birthday\n    deathday\n  }\n  __id\n}\n"
 }

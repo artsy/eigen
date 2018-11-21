@@ -85,14 +85,17 @@ export class Artists extends React.Component<Props, State> {
 
     return (
       <>
-        <Sans size="5">Artists in this show</Sans>
+        <Sans size="5">Artists</Sans>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
-          const { name, id, is_followed } = artist
+          const { name, id, is_followed, nationality, birthday, deathday } = artist
           return (
             <React.Fragment key={id}>
               <ArtistListItem
                 name={name}
+                nationality={nationality}
+                birthday={birthday}
+                deathday={deathday}
                 isFollowed={is_followed}
                 onPress={() => this.handleFollowArtist(artist)}
                 isFollowedChanging={isFollowedChanging[id]}
@@ -124,6 +127,9 @@ export const ArtistsContainer = createFragmentContainer(
         id
         name
         is_followed
+        nationality
+        birthday
+        deathday
       }
     }
   `
