@@ -1,10 +1,15 @@
+import { Theme } from "@artsy/palette"
 import React from "react"
 import "react-native"
 import * as renderer from "react-test-renderer"
 import { LocationMap } from "../index"
 
 it("looks correct when rendered", () => {
-  const comp = renderer.create(<LocationMap {...data as any} />)
+  const comp = renderer.create(
+    <Theme>
+      <LocationMap {...data as any} />
+    </Theme>
+  )
   expect(comp).toMatchSnapshot()
 })
 

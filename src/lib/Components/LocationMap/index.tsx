@@ -88,17 +88,17 @@ export class LocationMap extends React.Component<Props> {
         </Map>
         <Box my={2}>
           {partnerName && (
-            <Sans size="3" color={color("black100")} textAlign="center" weight="medium">
+            <Sans size="3" color="black100" textAlign="center" weight="medium">
               {partnerName}
             </Sans>
           )}
           {address && (
-            <Serif size="3" color={color("black60")} textAlign="center">
+            <Serif size="3" color="black60" textAlign="center">
               {address}
             </Serif>
           )}
           {address_2 && (
-            <Serif size="3" color={color("black60")} textAlign="center">
+            <Serif size="3" color="black60" textAlign="center">
               {address_2}
             </Serif>
           )}

@@ -8,8 +8,8 @@ exports[`looks correct when rendered 1`] = `
     Array [
       Object {
         "display": "flex",
-        "marginBottom": 0.5,
-        "marginTop": 8,
+        "marginBottom": 5,
+        "marginTop": 20,
       },
       Array [
         Object {
@@ -26,8 +26,8 @@ exports[`looks correct when rendered 1`] = `
     style={
       Array [
         Object {
-          "marginBottom": 8,
-          "marginTop": 8,
+          "marginBottom": 20,
+          "marginTop": 20,
         },
         undefined,
       ]
@@ -37,7 +37,7 @@ exports[`looks correct when rendered 1`] = `
       accessible={true}
       allowFontScaling={true}
       className="sc-bdVaJa bDWFJH"
-      color="#000"
+      color="black100"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
       fontSize={14}
@@ -62,7 +62,7 @@ exports[`looks correct when rendered 1`] = `
       accessible={true}
       allowFontScaling={true}
       className="sc-bwzfXH uTxCW"
-      color="#666"
+      color="black60"
       ellipsizeMode="tail"
       fontFamily="AGaramondPro-Regular"
       fontSize={16}
