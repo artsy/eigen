@@ -103,6 +103,23 @@ return {
     v0,
     {
       "kind": "Condition",
+      "passingValue": true,
+      "condition": "isPad",
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": "past_large_shows",
+          "name": "partner_shows",
+          "storageKey": "partner_shows(size:20,status:\"closed\")",
+          "args": v2,
+          "concreteType": "PartnerShow",
+          "plural": true,
+          "selections": v1
+        }
+      ]
+    },
+    {
+      "kind": "Condition",
       "passingValue": false,
       "condition": "isPad",
       "selections": [
@@ -122,23 +139,6 @@ return {
             },
             v0
           ]
-        }
-      ]
-    },
-    {
-      "kind": "Condition",
-      "passingValue": true,
-      "condition": "isPad",
-      "selections": [
-        {
-          "kind": "LinkedField",
-          "alias": "past_large_shows",
-          "name": "partner_shows",
-          "storageKey": "partner_shows(size:20,status:\"closed\")",
-          "args": v2,
-          "concreteType": "PartnerShow",
-          "plural": true,
-          "selections": v1
         }
       ]
     }
