@@ -120,18 +120,19 @@ randomBOOL(void)
   AppSetup *setup = [AppSetup ambientSetup];
 
   EmissionKeys *keys = [[EmissionKeys alloc] init];
-  
+
   AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
                                                                 authenticationToken:accessToken
                                                                           sentryDSN:nil
                                                                stripePublishableKey:[keys stripePublishableKey]
                                                                    googleMapsAPIKey:nil
+                                                                 mapBoxAPIClientKey:[keys mapBoxAPIClientKey]
                                                                          gravityURL:setup.gravityURL
                                                                      metaphysicsURL:setup.metaphysicsURL
                                                                       predictionURL:setup.predictionURL
                                                                           userAgent:@"Emission Example"
                                                                             options:setup.options];
-  
+
   emission = [[AREmission alloc] initWithConfiguration:config packagerURL:setup.jsCodeLocation];
   [AREmission setSharedInstance:emission];
   [emission.bridge reload];

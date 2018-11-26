@@ -140,6 +140,12 @@ fragment Artists_show on Show {
     id
     name
     is_followed
+    nationality
+    birthday
+    deathday
+    image {
+      url
+    }
   }
   __id
 }
@@ -263,14 +269,14 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "exhibition_period",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
@@ -305,7 +311,7 @@ v8 = {
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "exhibition_period",
   "args": null,
   "storageKey": null
 },
@@ -317,7 +323,7 @@ v10 = {
   "storageKey": null
 },
 v11 = [
-  v9
+  v4
 ],
 v12 = {
   "kind": "InlineFragment",
@@ -335,14 +341,14 @@ v14 = [
   v6
 ],
 v15 = [
-  v9,
+  v4,
   v2
 ];
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "c5ff2db308b364154f6a969a5975e58f",
+  "id": "4d3ce75679f449e2c93ecb69ece20e34",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -404,7 +410,7 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
-              v4,
+              v3,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -504,7 +510,7 @@ return {
             "concreteType": "Image",
             "plural": true,
             "selections": [
-              v4,
+              v3,
               v7,
               v8
             ]
@@ -535,12 +541,11 @@ return {
             "selections": [
               v10,
               v2,
-              v12,
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
-                  v9,
+                  v4,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -549,7 +554,8 @@ return {
                     "storageKey": null
                   }
                 ]
-              }
+              },
+              v12
             ]
           },
           v2,
@@ -562,14 +568,8 @@ return {
             "concreteType": "Artwork",
             "plural": true,
             "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "is_biddable",
-                "args": null,
-                "storageKey": null
-              },
               v2,
+              v3,
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -624,7 +624,13 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v4,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "is_biddable",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -771,14 +777,47 @@ return {
             "plural": true,
             "selections": [
               v2,
+              v3,
               v4,
-              v9,
               {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "is_followed",
                 "args": null,
                 "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "nationality",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "birthday",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "deathday",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "image",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Image",
+                "plural": false,
+                "selections": [
+                  v7
+                ]
               }
             ]
           },
@@ -817,9 +856,9 @@ return {
                     "plural": false,
                     "selections": [
                       v2,
+                      v3,
                       v4,
                       v9,
-                      v3,
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -844,12 +883,12 @@ return {
                         "selections": [
                           v10,
                           v2,
+                          v12,
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",
                             "selections": v11
-                          },
-                          v12
+                          }
                         ]
                       }
                     ]
