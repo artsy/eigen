@@ -42,6 +42,7 @@ export class LocationMap extends React.Component<Props> {
   }
 
   returnPinType = partnerType => {
+    console.log(partnerType)
     switch (partnerType) {
       case "Fair":
         return require("../../../../images/pinfairon.png")
