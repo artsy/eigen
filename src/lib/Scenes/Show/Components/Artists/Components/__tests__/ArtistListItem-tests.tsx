@@ -8,7 +8,13 @@ describe("ArtistListItem", () => {
   it("renders", () => {
     const onPressMock = jest.fn()
     const comp = shallow(
-      <ArtistListItem name="This is an artist" isFollowed={false} onPress={onPressMock} isFollowedChanging={false} />
+      <ArtistListItem
+        name="This is an artist"
+        url={"https://d32dm0rphc51dk.cloudfront.net/aewyRIXcvvjpKwpUGywnzw/tall.jpg"}
+        isFollowed={false}
+        onPress={onPressMock}
+        isFollowedChanging={false}
+      />
     )
 
     expect(comp.find(Serif).html()).toContain("This is an artist")

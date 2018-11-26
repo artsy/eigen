@@ -11,8 +11,6 @@ import { ArtistsFollowArtistMutation } from "__generated__/ArtistsFollowArtistMu
 interface Props {
   show: Artists_show
   relay: RelayProp
-  birthday: number
-  deathday: number
 }
 
 interface State {
