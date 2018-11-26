@@ -1,96 +1,62 @@
-import { Flex } from "@artsy/palette"
+import { Flex, Sans, Serif } from "@artsy/palette"
 import { ShowItem_show } from "__generated__/ShowItem_show.graphql"
-import { WhiteButton } from "lib/Components/Buttons"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
-import { Colors } from "lib/data/colors"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
-import { Text } from "react-native"
+import { Dimensions, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-const DEFAULT_ARTWORK_URL = "https://d32dm0rphc51dk.cloudfront.net/ADYdY8P1kg9vKA9ffrb4pg/larger.jpg"
-
+const { width: windowWidth } = Dimensions.get("window")
 const ImageView = styled(OpaqueImageView)`
-  height: 200;
+  height: 120;
   width: 100%;
 `
-const ButtonBorderBlack = styled(WhiteButton)`
-  border-color: ${Colors.Black};
-`
-interface State {
-  savedShows: any[]
-}
 
 interface Props {
   show: ShowItem_show
 }
 
-export class ShowItem extends React.Component<Props, State> {
-  state = {
-    savedShows: [],
-  }
-  saveShow(node) {
+export class ShowItem extends React.Component<Props> {
+  get imageURL() {
     const {
-      node: { id: id },
-    } = node
-    const savedShows = this.state.savedShows
-    savedShows.push(id)
-    this.setState({
-      savedShows,
-    })
-  }
-  getImageURL(node) {
-    const {
-      node: {
-        images: [image],
-      },
-    } = node
+      images: [image],
+    } = this.props.show
 
-    return !image ? DEFAULT_ARTWORK_URL : image.url
+    return (image || { url: "" }).url
   }
-  getGalleryDetails(node) {
-    const {
-      node: {
-        location: { address: address },
-        location: { address_2: address2 },
-        location: { postal_code: postalCode },
-        location: { state: state },
-        name: showName,
-        partner: { name: galleryName },
-      },
-    } = node
 
-    let fields = [showName, galleryName, address, address2, state, postalCode]
-    return (fields = fields.filter(field => !!field).map((text, el) => <Text key={el}>{text}</Text>))
+  onPress = () => {
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}`)
   }
+
   render() {
-    if (!this.props.show) {
-      return null
-    }
-    const {
-      show: {
-        nearbyShows: { edges },
-      },
-    } = this.props
+    const { show } = this.props
 
-    return edges.map((node, el) => (
-      <Flex key={el}>
-        <Flex mb={15} mt={15}>
-          <ImageView imageURL={this.getImageURL(node)} />
-        </Flex>
-        <Flex flexDirection={"row"}>
-          <Flex width={"70%"}>{this.getGalleryDetails(node)}</Flex>
-          <Flex width={"30%"}>
-            <ButtonBorderBlack
-              text="Save"
-              onPress={() => {
-                this.saveShow(node)
-              }}
-            />
+    const {
+      name,
+      partner: { name: galleryName },
+      exhibition_period,
+    } = show
+
+    return (
+      <TouchableOpacity onPress={this.onPress}>
+        <Flex my={15} mr={2} width={windowWidth - 100} height={200}>
+          <ImageView imageURL={this.imageURL} />
+          <Flex my={2}>
+            <Sans size="2" weight="medium" numberOfLines={1} mb={0.5}>
+              {name}
+            </Sans>
+            <Serif size="2" color="black60">
+              {galleryName}
+            </Serif>
+            <Serif size="2" color="black60">
+              {exhibition_period}
+            </Serif>
           </Flex>
         </Flex>
-      </Flex>
-    ))
+      </TouchableOpacity>
+    )
   }
 }
 
@@ -98,30 +64,20 @@ export const ShowItemContainer = createFragmentContainer(
   ShowItem,
   graphql`
     fragment ShowItem_show on Show {
-      nearbyShows(first: 20) {
-        edges {
-          node {
-            id
-            name
-            images {
-              url
-              aspect_ratio
-            }
-            partner {
-              ... on ExternalPartner {
-                name
-              }
-              ... on Partner {
-                name
-              }
-            }
-            location {
-              address
-              address_2
-              state
-              postal_code
-            }
-          }
+      __id
+      id
+      name
+      exhibition_period
+      images {
+        url
+        aspect_ratio
+      }
+      partner {
+        ... on ExternalPartner {
+          name
+        }
+        ... on Partner {
+          name
         }
       }
     }

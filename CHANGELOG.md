@@ -22,6 +22,7 @@
 - Updates Show detail view styles - luc
 - Styles artists list - Kieran
 - Updates @artsy/palette (2.21.1) - javamonn
+- Refactor More Shows section - luc
 
 ### 1.7.4
 

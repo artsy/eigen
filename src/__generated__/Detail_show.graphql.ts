@@ -25,27 +25,6 @@ export type Detail_show = {
     readonly images: ReadonlyArray<({
         readonly id: string | null;
     }) | null> | null;
-    readonly nearbyShows: ({
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
-                readonly id: string;
-                readonly name: string | null;
-                readonly images: ReadonlyArray<({
-                    readonly url: string | null;
-                    readonly aspect_ratio: number;
-                }) | null> | null;
-                readonly partner: ({
-                    readonly name?: string | null;
-                }) | null;
-                readonly location: ({
-                    readonly address: string | null;
-                    readonly address_2: string | null;
-                    readonly state: string | null;
-                    readonly postal_code: string | null;
-                }) | null;
-            }) | null;
-        }) | null> | null;
-    }) | null;
     readonly status: string | null;
     readonly counts: ({
         readonly artworks: number | null;
@@ -86,45 +65,9 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "address",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "address_2",
-  "args": null,
-  "storageKey": null
-},
-v5 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "state",
-  "args": null,
-  "storageKey": null
-},
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "postal_code",
-  "args": null,
-  "storageKey": null
-},
-v7 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "__id",
   "args": null,
   "storageKey": null
-},
-v8 = [
-  v1
-],
-v9 = {
-  "kind": "InlineFragment",
-  "type": "ExternalPartner",
-  "selections": v8
 };
 return {
   "kind": "Fragment",
@@ -153,12 +96,36 @@ return {
       "plural": false,
       "selections": [
         v0,
-        v3,
-        v4,
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "address",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "address_2",
+          "args": null,
+          "storageKey": null
+        },
         v2,
-        v5,
-        v6,
-        v7,
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "state",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "postal_code",
+          "args": null,
+          "storageKey": null
+        },
+        v3,
         {
           "kind": "FragmentSpread",
           "name": "LocationMap_location",
@@ -176,108 +143,6 @@ return {
       "plural": true,
       "selections": [
         v0
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "nearbyShows",
-      "storageKey": "nearbyShows(first:20)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 20,
-          "type": "Int"
-        }
-      ],
-      "concreteType": "ShowConnection",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "edges",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "ShowEdge",
-          "plural": true,
-          "selections": [
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "node",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "Show",
-              "plural": false,
-              "selections": [
-                v0,
-                v1,
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "images",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Image",
-                  "plural": true,
-                  "selections": [
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "url",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "aspect_ratio",
-                      "args": null,
-                      "storageKey": null
-                    }
-                  ]
-                },
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "partner",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": null,
-                  "plural": false,
-                  "selections": [
-                    v7,
-                    v9,
-                    {
-                      "kind": "InlineFragment",
-                      "type": "Partner",
-                      "selections": v8
-                    }
-                  ]
-                },
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "location",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Location",
-                  "plural": false,
-                  "selections": [
-                    v3,
-                    v4,
-                    v5,
-                    v6,
-                    v7
-                  ]
-                },
-                v7
-              ]
-            }
-          ]
-        }
       ]
     },
     {
@@ -341,8 +206,14 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v7,
-        v9,
+        v3,
+        {
+          "kind": "InlineFragment",
+          "type": "ExternalPartner",
+          "selections": [
+            v1
+          ]
+        },
         {
           "kind": "InlineFragment",
           "type": "Partner",
@@ -359,9 +230,9 @@ return {
         }
       ]
     },
-    v7
+    v3
   ]
 };
 })();
-(node as any).hash = '3aff0369e8166db3b44e5cac11404a7a';
+(node as any).hash = 'f2594b4ad38e0b428de5aa2a24356569';
 export default node;

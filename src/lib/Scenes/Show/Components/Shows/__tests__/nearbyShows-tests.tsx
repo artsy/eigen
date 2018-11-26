@@ -1,5 +1,5 @@
 import "react-native"
-import { NearbyShows, NearbyShows as _nearbyShows } from "../nearbyShows"
+import { NearbyShows, NearbyShows as _nearbyShows } from "../../../__fixtures__/NearbyShowsFixture"
 
 it("returns a nearby shows ", () => {
   const show = NearbyShows.edges[0]
