@@ -3,7 +3,7 @@ import { Shows_show } from "__generated__/Shows_show.graphql"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { ShowItem } from "./Components/ShowItem"
+import { ShowItemContainer as ShowItem } from "./Components/ShowItem"
 
 interface Props {
   show: Shows_show

@@ -26,7 +26,7 @@ exports[`looks correct when rendered 1`] = `
           "display": "flex",
           "height": 200,
           "marginBottom": 15,
-          "marginRight": 8,
+          "marginRight": 20,
           "marginTop": 15,
           "width": 650,
         },
@@ -48,13 +48,13 @@ exports[`looks correct when rendered 1`] = `
       }
     />
     <View
-      my={1}
+      my={2}
       style={
         Array [
           Object {
             "display": "flex",
-            "marginBottom": 4,
-            "marginTop": 4,
+            "marginBottom": 20,
+            "marginTop": 20,
           },
           undefined,
         ]
@@ -68,12 +68,15 @@ exports[`looks correct when rendered 1`] = `
         fontFamily="Unica77LL-Medium"
         fontSize="12px"
         lineHeight="16px"
+        mb={0.5}
+        numberOfLines={1}
         style={
           Array [
             Object {
               "fontFamily": "Unica77LL-Medium",
               "fontSize": 12,
               "lineHeight": 16,
+              "marginBottom": 5,
             },
             undefined,
           ]
@@ -85,6 +88,7 @@ exports[`looks correct when rendered 1`] = `
         accessible={true}
         allowFontScaling={true}
         className="sc-bwzfXH uTxCW"
+        color="black60"
         ellipsizeMode="tail"
         fontFamily="AGaramondPro-Regular"
         fontSize="14px"
@@ -92,6 +96,7 @@ exports[`looks correct when rendered 1`] = `
         style={
           Array [
             Object {
+              "color": "#666",
               "fontFamily": "AGaramondPro-Regular",
               "fontSize": 14,
               "lineHeight": 18,
@@ -106,6 +111,7 @@ exports[`looks correct when rendered 1`] = `
         accessible={true}
         allowFontScaling={true}
         className="sc-bwzfXH uTxCW"
+        color="black60"
         ellipsizeMode="tail"
         fontFamily="AGaramondPro-Regular"
         fontSize="14px"
@@ -113,6 +119,7 @@ exports[`looks correct when rendered 1`] = `
         style={
           Array [
             Object {
+              "color": "#666",
               "fontFamily": "AGaramondPro-Regular",
               "fontSize": 14,
               "lineHeight": 18,
