@@ -2,159 +2,132 @@
 
 exports[`looks correct when rendered 1`] = `
 <View
+  accessible={true}
+  isTVSelectable={true}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
   style={
-    Array [
-      Object {
-        "display": "flex",
-      },
-      undefined,
-    ]
+    Object {
+      "opacity": 1,
+    }
   }
 >
   <View
-    mb={15}
-    mt={15}
+    height={200}
+    mr={2}
+    my={15}
     style={
       Array [
         Object {
           "display": "flex",
+          "height": 200,
           "marginBottom": 15,
+          "marginRight": 20,
           "marginTop": 15,
+          "width": 650,
         },
         undefined,
       ]
     }
+    width={650}
   >
     <AROpaqueImageView
       imageURL="https://d32dm0rphc51dk.cloudfront.net/6HYZ-tKaXLrcqXCfYxNZQQ/large.jpg"
       style={
         Array [
           Object {
-            "height": 200,
+            "height": 120,
             "width": "100%",
           },
           undefined,
         ]
       }
     />
-  </View>
-  <View
-    flexDirection="row"
-    style={
-      Array [
-        Object {
-          "display": "flex",
-          "flexDirection": "row",
-        },
-        undefined,
-      ]
-    }
-  >
     <View
+      my={2}
       style={
         Array [
           Object {
             "display": "flex",
-            "width": "70%",
+            "marginBottom": 20,
+            "marginTop": 20,
           },
           undefined,
         ]
       }
-      width="70%"
     >
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bdVaJa bDWFJH"
         ellipsizeMode="tail"
+        fontFamily="Unica77LL-Medium"
+        fontSize="12px"
+        lineHeight="16px"
+        mb={0.5}
+        numberOfLines={1}
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Medium",
+              "fontSize": 12,
+              "lineHeight": 16,
+              "marginBottom": 5,
+            },
+            undefined,
+          ]
+        }
       >
         Delicate Power: The Delicacy and Complexity of Egg Tempera
       </Text>
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
+        color="black60"
         ellipsizeMode="tail"
+        fontFamily="AGaramondPro-Regular"
+        fontSize="14px"
+        lineHeight="18px"
+        style={
+          Array [
+            Object {
+              "color": "#666",
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 14,
+              "lineHeight": 18,
+            },
+            undefined,
+          ]
+        }
       >
         J. Cacciola Gallery
       </Text>
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
+        color="black60"
         ellipsizeMode="tail"
-      >
-        35 Mill Street
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-      >
-        NJ
-      </Text>
-      <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
-      >
-        07924
-      </Text>
-    </View>
-    <View
-      style={
-        Array [
-          Object {
-            "display": "flex",
-            "width": "30%",
-          },
-          undefined,
-        ]
-      }
-      width="30%"
-    >
-      <View
-        accessible={true}
-        onResponderGrant={[Function]}
-        onResponderMove={[Function]}
-        onResponderRelease={[Function]}
-        onResponderTerminate={[Function]}
-        onResponderTerminationRequest={[Function]}
-        onStartShouldSetResponder={[Function]}
+        fontFamily="AGaramondPro-Regular"
+        fontSize="14px"
+        lineHeight="18px"
         style={
-          Object {
-            "alignItems": "center",
-            "backgroundColor": "rgba(255, 255, 255, 1)",
-            "borderColor": "black",
-            "borderRadius": 2,
-            "borderWidth": 1,
-            "height": 46,
-            "justifyContent": "center",
-            "opacity": 1,
-          }
+          Array [
+            Object {
+              "color": "#666",
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 14,
+              "lineHeight": 18,
+            },
+            undefined,
+          ]
         }
-      >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          className="sc-bdVaJa bDWFJH"
-          color="black"
-          ellipsizeMode="tail"
-          fontFamily="Unica77LL-Medium"
-          fontSize="14px"
-          lineHeight="24px"
-          style={
-            Array [
-              Object {
-                "color": "black",
-                "fontFamily": "Unica77LL-Medium",
-                "fontSize": 14,
-                "lineHeight": 24,
-              },
-              undefined,
-            ]
-          }
-        >
-          Save
-        </Text>
-      </View>
+      />
     </View>
   </View>
 </View>

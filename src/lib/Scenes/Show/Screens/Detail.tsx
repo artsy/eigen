@@ -8,7 +8,7 @@ import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { ArtistsContainer as Artists } from "../Components/Artists"
 import { ArtworksContainer as Artworks } from "../Components/Artworks"
 import { ShowHeaderContainer as ShowHeader } from "../Components/ShowHeader"
-import { Shows } from "../Components/Shows"
+import { ShowsContainer as Shows } from "../Components/Shows"
 
 interface Props extends ViewProperties {
   show: Detail_show
@@ -124,32 +124,6 @@ export const DetailContainer = createFragmentContainer(
       }
       images {
         id
-      }
-      nearbyShows(first: 20) {
-        edges {
-          node {
-            id
-            name
-            images {
-              url
-              aspect_ratio
-            }
-            partner {
-              ... on ExternalPartner {
-                name
-              }
-              ... on Partner {
-                name
-              }
-            }
-            location {
-              address
-              address_2
-              state
-              postal_code
-            }
-          }
-        }
       }
       ...ShowHeader_show
       ...Artworks_show
