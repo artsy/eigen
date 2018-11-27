@@ -41,6 +41,9 @@
 @property (nonatomic, strong) NSNumber *gravIsInquireable;
 @property (nonatomic, strong) NSNumber *mpIsInquirable;
 
+@property (nonatomic, strong) NSNumber *gravIsOfferable;
+@property (nonatomic, strong) NSNumber *mpIsOfferable;
+
 @property (nonatomic, strong) NSString *gravAttributionClass;
 @property (nonatomic, strong) NSString *mpAttributionClass;
 
@@ -104,11 +107,13 @@
         ar_keypath(Artwork.new, gravSold) : @"sold",
         ar_keypath(Artwork.new, gravIsAcquirable) : @"acquireable",
         ar_keypath(Artwork.new, gravIsInquireable) : @"inquireable",
+        ar_keypath(Artwork.new, gravIsOfferable) : @"offerable",
         ar_keypath(Artwork.new, gravIsPriceHidden) : @"price_hidden",
         
         ar_keypath(Artwork.new, mpSold) : @"is_sold",
         ar_keypath(Artwork.new, mpIsAcquirable) : @"is_acquireable",
         ar_keypath(Artwork.new, mpIsInquirable) : @"is_inquireable",
+        ar_keypath(Artwork.new, mpIsOfferable) : @"is_offerable",
         ar_keypath(Artwork.new, mpIsPriceHidden) : @"is_price_hidden",
     };
 }
@@ -277,6 +282,11 @@
 - (NSNumber *)isAcquireable
 {
     return self.gravIsAcquirable.boolValue ? self.gravIsAcquirable : self.mpIsAcquirable;
+}
+
+- (NSNumber *)isOfferable
+{
+    return self.gravIsOfferable.boolValue ? self.gravIsOfferable : self.mpIsOfferable;
 }
 
 - (NSString *)attributionClass

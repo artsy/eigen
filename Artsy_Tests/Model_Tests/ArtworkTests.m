@@ -113,6 +113,7 @@ describe(@"defaultImage", ^{
                 @"is_sold": @(YES),
                 @"is_acquireable": @(YES),
                 @"is_inquireable": @(YES),
+                @"is_offerable": @(YES),
                 @"is_price_hidden": @(YES),
                 @"mp_attribution_class": @{
                     @"name": @"classy class"
@@ -132,6 +133,7 @@ describe(@"defaultImage", ^{
                 @"sold": @(YES),
                 @"acquireable": @(YES),
                 @"inquireable": @(YES),
+                @"offerable": @(YES),
                 @"price_hidden": @(YES),
                 @"attribution_class": @"classy class"
             }];

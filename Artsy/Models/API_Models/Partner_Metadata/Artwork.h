@@ -86,6 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy, readonly) NSNumber *isAcquireable;
 @property (nonatomic, copy, readonly) NSNumber *isInquireable;
+@property (nonatomic, copy, readonly) NSNumber *isOfferable;
 @property (nonatomic, copy, readonly) NSNumber *sold;
 @property (nonatomic, copy) NSNumber *forSale;
 
