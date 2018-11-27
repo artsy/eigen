@@ -35,7 +35,7 @@ export class LocationMap extends React.Component<Props> {
     return Mapbox.StyleSheet.create({
       symbol: {
         iconImage: this.returnPinType(this.props.partnerType),
-        iconSize: 1,
+        iconSize: 1.4,
         iconOffset: [0, 0],
         iconAllowOverlap: true,
       },
@@ -72,13 +72,15 @@ export class LocationMap extends React.Component<Props> {
           key={lng}
           styleURL={Mapbox.StyleURL.Light}
           centerCoordinate={[lng, lat]}
-          zoomLevel={13}
+          zoomLevel={14}
           logoEnabled={false}
           scrollEnabled={false}
           attributionEnabled={false}
         >
           <Mapbox.ShapeSource
             id="marker-source"
+            width={50}
+            height={30}
             shape={{
               type: "FeatureCollection",
               features: [marker],
