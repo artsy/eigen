@@ -1,45 +1,32 @@
-import { Sans, Serif, Spacer } from "@artsy/palette"
-import { Artists_show } from "__generated__/Artists_show.graphql"
-import { ArtistsFollowArtistMutation } from "__generated__/ArtistsFollowArtistMutation.graphql"
-import { get, take } from "lodash"
+import { Serif, Spacer } from "@artsy/palette"
+import { AllArtists_show } from "__generated__/AllArtists_show.graphql"
+import { AllArtistsFollowArtistMutation } from "__generated__/AllArtistsFollowArtistMutation.graphql"
+import { get } from "lodash"
 import React from "react"
-import { NavigatorIOS, TouchableOpacity } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-import { AllArtists } from "../../Screens/AllArtists"
-import { ArtistListItem } from "./Components/ArtistListItem"
 
-interface Props {
-  show: Artists_show
+import { NavigatorIOS, ViewProperties } from "react-native"
+import { ArtistListItem } from "../Components/Artists/Components/ArtistListItem"
+
+interface Props extends ViewProperties {
+  navigator: NavigatorIOS
+  show: AllArtists_show
   relay: RelayProp
-  onViewAllArtistsPressed: () => void
 }
 
 interface State {
   isFollowedChanging: { [id: string]: boolean }
 }
 
-export class Artists extends React.Component<Props, State> {
-  navigator?: NavigatorIOS
-
+export class AllArtists extends React.Component<Props, State> {
   state = {
     isFollowedChanging: {},
-  }
-
-  handleViewAllArtists = () => {
-    if (!this.navigator) {
-      throw new Error("navigator is undefined")
-    }
-
-    this.navigator.push({
-      component: AllArtists,
-      title: "",
-      passProps: this.props,
-    })
   }
 
   handleFollowArtist = ({ id, __id, is_followed }) => {
     const { relay } = this.props
     const { isFollowedChanging } = this.state
+
     this.setState(
       {
         isFollowedChanging: {
@@ -48,7 +35,7 @@ export class Artists extends React.Component<Props, State> {
         },
       },
       () => {
-        commitMutation<ArtistsFollowArtistMutation>(relay.environment, {
+        commitMutation<AllArtistsFollowArtistMutation>(relay.environment, {
           onCompleted: () => {
             this.setState({
               isFollowedChanging: {
@@ -58,7 +45,7 @@ export class Artists extends React.Component<Props, State> {
             })
           },
           mutation: graphql`
-            mutation ArtistsFollowArtistMutation($input: FollowArtistInput!) {
+            mutation AllArtistsFollowArtistMutation($input: FollowArtistInput!) {
               followArtist(input: $input) {
                 artist {
                   __id
@@ -91,16 +78,14 @@ export class Artists extends React.Component<Props, State> {
 
   render() {
     const { isFollowedChanging } = this.state
-    const { show, onViewAllArtistsPressed } = this.props
-    console.log("props ", this.props)
-    const artistsShown = 5
+    const { show } = this.props
 
     const artists = get(show, "artists", [])
-    const items: Artists_show["artists"] = take(artists, artistsShown)
+    const items: AllArtists_show["artists"] = artists
 
     return (
       <>
-        <Serif size="8">Artists</Serif>
+        <Serif size="8">All Artists</Serif>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
           const { name, id, is_followed, nationality, birthday, deathday } = artist
@@ -121,25 +106,15 @@ export class Artists extends React.Component<Props, State> {
             </React.Fragment>
           )
         })}
-        {artists.length > artistsShown && (
-          <>
-            <Spacer m={1} />
-            <TouchableOpacity onPress={() => onViewAllArtistsPressed()}>
-              <Sans size="3" my={2} weight="medium">
-                View all artists
-              </Sans>
-            </TouchableOpacity>
-          </>
-        )}
       </>
     )
   }
 }
 
-export const ArtistsContainer = createFragmentContainer(
-  Artists,
+export const AllArtistsContainer = createFragmentContainer(
+  AllArtists,
   graphql`
-    fragment Artists_show on Show {
+    fragment AllArtists_show on Show {
       artists {
         __id
         id

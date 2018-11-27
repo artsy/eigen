@@ -3,6 +3,7 @@ import React from "react"
 import { NavigatorIOS, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
+import { AllArtists } from "./Screens/AllArtists"
 import { DetailContainer as DetailScreen } from "./Screens/Detail"
 import { MoreInfoContainer as MoreInfoScreen } from "./Screens/MoreInfo"
 
@@ -27,6 +28,18 @@ export class Show extends React.Component<Props> {
     })
   }
 
+  handleViewAllArtists = () => {
+    if (!this.navigator) {
+      throw new Error("navigator is undefined")
+    }
+
+    this.navigator.push({
+      component: AllArtists,
+      title: "",
+      passProps: this.props,
+    })
+  }
+
   render() {
     return (
       <Theme>
@@ -41,6 +54,7 @@ export class Show extends React.Component<Props> {
             passProps: {
               ...this.props,
               onMoreInformationPressed: this.handleMoreInformationPressed,
+              onViewAllArtistsPressed: this.handleViewAllArtists,
             },
           }}
           style={{ flex: 1 }}

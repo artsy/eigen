@@ -365,7 +365,7 @@
 - (ARCellData *)jumpToShow
 {
   return [self tappableCellDataWithTitle:@"Show" selection:^{
-    id viewController = [[ARShowComponentViewController alloc] initWithShowID:@"abxy-blk-and-blue"];
+    id viewController = [[ARShowComponentViewController alloc] initWithShowID:@"david-barnett-gallery-out-of-the-vault-and-new-acquisitions"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
