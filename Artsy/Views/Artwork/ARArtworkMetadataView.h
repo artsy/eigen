@@ -9,12 +9,12 @@
 #import "ARArtworkPreviewImageView.h"
 #import "ARArtworkPreviewActionsView.h"
 
-@class ARArtworkMetadataView;
+@class ARArtworkMetadataView, ArtsyEcho;
 
 
 @interface ARArtworkMetadataView : UIView
 
-- (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair;
+- (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair echo:(ArtsyEcho *)echo;
 - (void)updateWithFair:(Fair *)fair;
 - (void)updateConstraintsIsLandscape:(BOOL)isLandscape;
 
@@ -27,6 +27,8 @@
 
 @property (nonatomic, strong, readonly) UIView *left;
 @property (nonatomic, strong, readonly) UIView *right;
+
+@property (nonatomic, strong, readonly) ArtsyEcho *echo;
 
 /// TODO: Make this a view controller so that we can negate doing this.
 /// Let subviews know that we're in a fair context

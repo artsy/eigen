@@ -86,7 +86,7 @@
 
 - (void)loadView
 {
-    self.view = [[ARArtworkView alloc] initWithArtwork:self.artwork fair:self.fair andParentViewController:self];
+    self.view = [[ARArtworkView alloc] initWithArtwork:self.artwork fair:self.fair echo:self.echo andParentViewController:self];
     self.view.delegate = self;
     self.view.metadataView.delegate = self;
     self.view.artworkBlurbView.delegate = self;

@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger, ARArtworkViewIndex) {
     ARArtworkGobbler
 };
 
+@class ArtsyEcho;
 
 @interface ARArtworkView : ORStackScrollView
 
@@ -25,8 +26,9 @@ typedef NS_ENUM(NSInteger, ARArtworkViewIndex) {
 @property (nonatomic, strong) ARArtworkBlurbView *artworkBlurbView;
 @property (nonatomic, weak) ARArtworkViewController *parentViewController;
 
-- (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair andParentViewController:(ARArtworkViewController *)parentViewController;
+- (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair echo:(ArtsyEcho *)echo andParentViewController:(ARArtworkViewController *)parentViewController;
 
 @property (nonatomic, strong, readonly) Artwork *artwork;
+@property (nonatomic, strong, readonly) ArtsyEcho *echo;
 
 @end

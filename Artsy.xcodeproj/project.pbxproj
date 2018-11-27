@@ -704,6 +704,8 @@
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
 		83FF73B41CB87A74002B53FA /* RefinableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF73B31CB87A74002B53FA /* RefinableType.swift */; };
 		83FF73B91CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF73B81CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift */; };
+		9D3ED24421ADAD8800A0318A /* ArtsyEcho+BNMO.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3ED24321ADAD8800A0318A /* ArtsyEcho+BNMO.m */; };
+		9D3ED24621ADB11B00A0318A /* ArtsyEchoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3ED24521ADB11B00A0318A /* ArtsyEchoTests.m */; };
 		9DF23C0F2135C6D6008EAB9C /* create_order.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9DF23C0E2135C6D6008EAB9C /* create_order.graphql */; };
 		B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */; };
 		B316E2F418170DF40086CCDB /* SaleArtwork.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F318170DF40086CCDB /* SaleArtwork.m */; };
@@ -1931,6 +1933,9 @@
 		83FF73B31CB87A74002B53FA /* RefinableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefinableType.swift; path = ../Views/RefinableType.swift; sourceTree = "<group>"; };
 		83FF73B81CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ARTopMenuViewController+SwiftDeveloperExtras.swift"; sourceTree = "<group>"; };
 		9434A9843098609F9F092F0D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D3ED24221ADAD8800A0318A /* ArtsyEcho+BNMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ArtsyEcho+BNMO.h"; sourceTree = "<group>"; };
+		9D3ED24321ADAD8800A0318A /* ArtsyEcho+BNMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ArtsyEcho+BNMO.m"; sourceTree = "<group>"; };
+		9D3ED24521ADB11B00A0318A /* ArtsyEchoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArtsyEchoTests.m; sourceTree = "<group>"; };
 		9DF23C0E2135C6D6008EAB9C /* create_order.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = create_order.graphql; sourceTree = "<group>"; };
 		B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBidButtonTests.m; sourceTree = "<group>"; };
 		B316E2F218170DF40086CCDB /* SaleArtwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaleArtwork.h; sourceTree = "<group>"; };
@@ -2458,6 +2463,7 @@
 				60F63AB31C58D98E00DCFF2A /* ARSwitchboard+EchoSpec.m */,
 				3AF584D5217A1CF400BE4713 /* ARAppDelegateEmissionSpec.m */,
 				3AF584D8217A282100BE4713 /* AROptionsSpec.m */,
+				9D3ED24521ADB11B00A0318A /* ArtsyEchoTests.m */,
 			);
 			name = "App Tests";
 			path = App_Tests;
@@ -4275,6 +4281,8 @@
 				5E830A501E969B1800A56C75 /* ArtsyEcho.h */,
 				5E830A511E969B1800A56C75 /* ArtsyEcho.m */,
 				60A0EA021C511C31002754A8 /* Echo.json */,
+				9D3ED24221ADAD8800A0318A /* ArtsyEcho+BNMO.h */,
+				9D3ED24321ADAD8800A0318A /* ArtsyEcho+BNMO.m */,
 			);
 			name = Routing;
 			sourceTree = "<group>";
@@ -5426,6 +5434,7 @@
 				60D83DEE189EE679001672E9 /* ARFairGuideViewController.m in Sources */,
 				60B617D31815BD3B00EBDC51 /* ARAuctionArtworkTableViewCell.m in Sources */,
 				516CDA6C1BB56611001C02B2 /* UIViewController+ARUserActivity.m in Sources */,
+				9D3ED24421ADAD8800A0318A /* ArtsyEcho+BNMO.m in Sources */,
 				6044CFC8179DD3C200CE4132 /* ARTheme+HeightAdditions.m in Sources */,
 				60745DEA165802D9006CE156 /* ARUserManager.m in Sources */,
 				5EE9A3DD1D11F6810014A3C9 /* BidIncrementStrategy.m in Sources */,
@@ -5853,6 +5862,7 @@
 				60C2CBED1CC0EDDE009B30CA /* ARTopMenuViewController+Testing.m in Sources */,
 				3C4877B3192A745400F40062 /* ARFairMapAnnotationCallOutViewTests.m in Sources */,
 				5EF840801CED0C5F006248D7 /* LiveAuctionFancyLotCollectionViewLayoutTests.swift in Sources */,
+				9D3ED24621ADB11B00A0318A /* ArtsyEchoTests.m in Sources */,
 				3C3FEA8E1884346D00E1A16F /* ARUserManager+Stubs.m in Sources */,
 				60327DE9198933610075B399 /* ARTabContentViewSpec.m in Sources */,
 				B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */,

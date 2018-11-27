@@ -20,7 +20,7 @@
 
 @implementation ARArtworkMetadataView
 
-- (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair
+- (instancetype)initWithArtwork:(Artwork *)artwork andFair:(Fair *)fair echo:(ArtsyEcho *)echo
 {
     CGFloat margin = [UIDevice isPad] ? 50 : 20;
     CGFloat imageMargin = [UIDevice isPad] ? margin : 0;
@@ -31,13 +31,14 @@
     }
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];
     _fair = fair;
+    _echo = echo;
 
 
     ARArtworkPreviewImageView *artworkPreview = [[ARArtworkPreviewImageView alloc] init];
     ARArtworkPreviewActionsView *previewActionsView = [[ARArtworkPreviewActionsView alloc] initWithArtwork:artwork andFair:fair modern: ![UIDevice isPad]];
 
     ARArtworkDetailView *artworkDetailView = [[ARArtworkDetailView alloc] initWithArtwork:artwork andFair:fair];
-    ARArtworkActionsView *artworkActionsView = [[ARArtworkActionsView alloc] initWithArtwork:artwork];
+    ARArtworkActionsView *artworkActionsView = [[ARArtworkActionsView alloc] initWithArtwork:artwork echo:echo];
     self.artworkPreview = artworkPreview;
     self.actionsView = artworkActionsView;
     self.artworkPreviewActions = previewActionsView;
