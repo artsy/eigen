@@ -79,8 +79,6 @@ export class LocationMap extends React.Component<Props> {
         >
           <Mapbox.ShapeSource
             id="marker-source"
-            width={50}
-            height={30}
             shape={{
               type: "FeatureCollection",
               features: [marker],
