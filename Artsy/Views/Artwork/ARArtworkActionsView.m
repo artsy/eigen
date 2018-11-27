@@ -220,7 +220,7 @@
 
         [buttonsWhoseMarginCanChange addObject:button];
 
-        [self addSubview:button withTopMargin:@"30" sideMargin:nil];
+        [self addSubview:button withTopMargin:([self showBuyButton] ? @"10" : @"30") sideMargin:nil];
     }
 
     if ([self showContactButton]) {
