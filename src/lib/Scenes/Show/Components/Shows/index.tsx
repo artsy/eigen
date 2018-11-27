@@ -11,7 +11,6 @@ interface Props {
 
 export const Shows: React.SFC<Props> = ({ show }) => {
   const { edges } = show.nearbyShows
-
   return (
     <>
       <Serif size="5">More Shows</Serif>
@@ -19,7 +18,7 @@ export const Shows: React.SFC<Props> = ({ show }) => {
         horizontal
         data={edges}
         showsHorizontalScrollIndicator={false}
-        keyExtractor={item => item.node.id}
+        keyExtractor={item => item.node.__id}
         renderItem={({ item }) => {
           return <ShowItem show={item.node as any} />
         }}
