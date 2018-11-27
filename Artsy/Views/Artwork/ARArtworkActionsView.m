@@ -1,6 +1,7 @@
 #import "ARArtworkActionsView.h"
 
 #import "Artwork.h"
+#import "AROptions.h"
 #import "ARArtworkPriceView.h"
 #import "ARArtworkAuctionPriceView.h"
 #import "ARCountdownView.h"
@@ -209,6 +210,8 @@
         // If the Make Offer button is by itself, it should be black. Otherwise, should be white.
         if ([self showBuyButton]) {
             button = [[ARWhiteFlatButton alloc] init];
+            button.layer.borderWidth = 1;
+            button.layer.borderColor = UIColor.blackColor.CGColor;
         } else {
             button = [[ARBlackFlatButton alloc] init];
         }
@@ -390,7 +393,7 @@ return [navigationButtons copy];
 {
     // We don't have a UI to select from multiple edition sets yet, so don't show the Make Offer UI at all for those works.
     return (self.artwork.isOfferable.boolValue &&
-            self.echo.isMakeOfferAccessible &&
+            (self.echo.isMakeOfferAccessible || [AROptions boolForOption:AROptionsMakeOffer]) &&
             !self.artwork.hasMultipleEditions);
 }
 
