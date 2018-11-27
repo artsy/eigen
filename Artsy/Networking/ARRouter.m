@@ -1249,10 +1249,10 @@ static NSString *hostFromString(NSString *string)
     return [self graphQLRequestForQuery:[self graphQueryToCreateBuyNowOrder] variables:@{ @"input" : @{ @"artworkId": artworkID, @"quantity": @(1) } }];
 }
 
-+ (NSURLRequest *)newOfferRequestWithArtworkID:(NSString *)artworkID editionSetID:(NSString *)editionSetID
++ (NSURLRequest *)newOfferRequestWithArtworkID:(NSString *)artworkID
 {
     // TODO: Test missing edition set ID
-    return [self graphQLRequestForQuery:[self graphQueryToCreateOffer] variables:@{ @"artworkId": artworkID, @"editionSetId": editionSetID ?: [NSNull null], @"quantity": @(1) }];
+    return [self graphQLRequestForQuery:[self graphQueryToCreateOffer] variables:@{ @"artworkId": artworkID, @"quantity": @(1) }];
 }
 
 + (NSURLRequest *)newRequestOutbidNotificationRequest

@@ -99,9 +99,9 @@
     return [self performGraphQLRequest:request success:success failure:failure];
 }
 
-+ (AFHTTPRequestOperation *)createOfferOrderWithArtworkID:(NSString *)artworkID editionSetID:(NSString *)editionSetID success:(void (^)(id))success failure:(void (^)(NSError *))failure
++ (AFHTTPRequestOperation *)createOfferOrderWithArtworkID:(NSString *)artworkID success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-    NSURLRequest *request = [ARRouter newOfferRequestWithArtworkID:artworkID editionSetID:editionSetID];
+    NSURLRequest *request = [ARRouter newOfferRequestWithArtworkID:artworkID];
     return [self performGraphQLRequest:request success:success failure:failure];
 }
 

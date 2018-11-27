@@ -223,11 +223,11 @@
 
 - (void)tappedMakeOfferButton
 {
-    // We'll need a UI to select multiple edition sets?
-
-    if (self.echo.features[@"AREnableMakeOfferFlow"].state) {
-        // TODO: Make the metaphysics mutation to create the offer order, and then redirect to Force.
-    }
+    [ArtsyAPI createOfferOrderWithArtworkID:self.artwork.artworkUUID success:^(id results) {
+        [self handleOrderCreationOrderOrError:results[@"data"][@"ecommerceCreateOfferOrderWithArtwork"]];
+    } failure:^(NSError *error) {
+        [self presentErrorMessage:@"Something went wrong. Please try again or contact support@artsy.net."];
+    }];
 }
 
 - (void)tappedBuyButton
@@ -241,24 +241,28 @@
 
     // Buy now
     [ArtsyAPI createBuyNowOrderWithArtworkID:self.artwork.artworkUUID success:^(id results) {
-        NSString *orderID = results[@"data"][@"ecommerceCreateOrderWithArtwork"][@"orderOrError"][@"order"][@"id"];
-        if (!orderID) {
-            [self presentErrorMessage:@"Something went wrong. Please try again or contact support@artsy.net."];
-            return;
-        }
-        NSString *path = self.echo.routes[@"ARBuyNowRoute"].path;
-        if (!path) {
-            // path should never be nil, but I'd rather not crash the app if it is.
-            path = @"/order/:id";
-        }
-        path = [path stringByReplacingOccurrencesOfString:@":id" withString:orderID];
-        UIViewController *controller = [ARSwitchBoard.sharedInstance loadPath:path];
-        ARSerifNavigationViewController *navigationController = [[ARSerifNavigationViewController alloc] initWithRootViewController:controller hideNavigationBar:YES];
-        [self presentViewController:navigationController animated:YES completion:nil];
+        [self handleOrderCreationOrderOrError:results[@"data"][@"ecommerceCreateOrderWithArtwork"]];
     } failure:^(NSError *error) {
         [self presentErrorMessage:@"Something went wrong. Please try again or contact support@artsy.net."];
     }];
+}
 
+- (void)handleOrderCreationOrderOrError:(id)orderOrError
+{
+    NSString *orderID = orderOrError[@"orderOrError"][@"order"][@"id"];
+    if (!orderID) {
+        [self presentErrorMessage:@"Something went wrong. Please try again or contact support@artsy.net."];
+        return;
+    }
+    NSString *path = self.echo.routes[@"ARBuyNowRoute"].path;
+    if (!path) {
+        // path should never be nil, but I'd rather not crash the app if it is.
+        path = @"/order/:id";
+    }
+    path = [path stringByReplacingOccurrencesOfString:@":id" withString:orderID];
+    UIViewController *controller = [ARSwitchBoard.sharedInstance loadPath:path];
+    ARSerifNavigationViewController *navigationController = [[ARSerifNavigationViewController alloc] initWithRootViewController:controller hideNavigationBar:YES];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)tappedMoreInfo
