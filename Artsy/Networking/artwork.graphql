@@ -75,6 +75,7 @@ query OldArtworkQuery($artworkID: String!) {
     is_sold
     is_inquireable
     is_acquireable
+    is_offerable
     shippingInfo
     shippingOrigin
     literature

@@ -42,9 +42,14 @@
   return [self graphQLFileNamed:@"record_artwork_view_mutation"];
 }
 
-+ (NSString *)graphQueryToCreateBuyNowOrderForArtwork:(NSString *)artworkID
++ (NSString *)graphQueryToCreateBuyNowOrder
 {
     return [self graphQLFileNamed:@"create_order"];
+}
+
++ (NSString *)graphQueryToCreateOffer
+{
+    return [self graphQLFileNamed:@"create_offer"];
 }
 
 + (NSString *)graphQLQueryForLiveSaleStaticData:(NSString *)saleID role:(NSString *)causalityRole

@@ -706,6 +706,7 @@
 		83FF73B91CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF73B81CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift */; };
 		9D3ED24421ADAD8800A0318A /* ArtsyEcho+BNMO.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3ED24321ADAD8800A0318A /* ArtsyEcho+BNMO.m */; };
 		9D3ED24621ADB11B00A0318A /* ArtsyEchoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3ED24521ADB11B00A0318A /* ArtsyEchoTests.m */; };
+		9D3ED24821ADBB4900A0318A /* create_offer.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9D3ED24721ADBB4900A0318A /* create_offer.graphql */; };
 		9DF23C0F2135C6D6008EAB9C /* create_order.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9DF23C0E2135C6D6008EAB9C /* create_order.graphql */; };
 		B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */; };
 		B316E2F418170DF40086CCDB /* SaleArtwork.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F318170DF40086CCDB /* SaleArtwork.m */; };
@@ -1936,6 +1937,7 @@
 		9D3ED24221ADAD8800A0318A /* ArtsyEcho+BNMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ArtsyEcho+BNMO.h"; sourceTree = "<group>"; };
 		9D3ED24321ADAD8800A0318A /* ArtsyEcho+BNMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ArtsyEcho+BNMO.m"; sourceTree = "<group>"; };
 		9D3ED24521ADB11B00A0318A /* ArtsyEchoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArtsyEchoTests.m; sourceTree = "<group>"; };
+		9D3ED24721ADBB4900A0318A /* create_offer.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = create_offer.graphql; sourceTree = "<group>"; };
 		9DF23C0E2135C6D6008EAB9C /* create_order.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = create_order.graphql; sourceTree = "<group>"; };
 		B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBidButtonTests.m; sourceTree = "<group>"; };
 		B316E2F218170DF40086CCDB /* SaleArtwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaleArtwork.h; sourceTree = "<group>"; };
@@ -3204,6 +3206,7 @@
 				5EFB45711F2280CE00328A6B /* favorites.graphql */,
 				83071C78208DFE27006020DB /* record_artwork_view_mutation.graphql */,
 				9DF23C0E2135C6D6008EAB9C /* create_order.graphql */,
+				9D3ED24721ADBB4900A0318A /* create_offer.graphql */,
 				5EFB45731F22830F00328A6B /* static_sale_data.graphql */,
 				5EFABE221F26934900662FEC /* artworks_in_sale.graphql */,
 				7F45A1672003C7100063D6B5 /* conversations.graphql */,
@@ -5036,6 +5039,7 @@
 				5168A7701B46D6D000FFBCBF /* NotificationsButton@2x.png in Resources */,
 				3C4AE98419094DAA009C0E8B /* MapAnnotation_Lounge@2x.png in Resources */,
 				6082C5B42044A90C00F00635 /* Chevron_White_Left@2x.png in Resources */,
+				9D3ED24821ADBB4900A0318A /* create_offer.graphql in Resources */,
 				1CC9EBA41CC76CDD00A74E3C /* followButtonChecked.png in Resources */,
 				1CFA4EB71E5C4B6B00D44A5A /* full_logo_black_medium@2x.png in Resources */,
 				1C09DFA71E53BAAD003F7BA7 /* onboardingspinner.png in Resources */,
