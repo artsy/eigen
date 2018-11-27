@@ -299,6 +299,23 @@ describe(@"with Echo config that has BNMO enabled", ^{
         expect(view).to.haveValidSnapshot();
     });
 
+    it(@"doesn't display make offer button for multiple edition sets", ^{
+        view.artwork = [Artwork modelWithJSON:@{
+            @"id": @"artwork-id",
+            @"title": @"Artwork Title",
+            @"availability": @"for sale",
+            @"acquireable": @(YES),
+            @"offerable": @(YES),
+            @"edition_sets": @[
+                    @"some-string", @"some-other-string"
+                    ]
+        }];
+        [view updateUI];
+        [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+        [view layoutIfNeeded];
+        expect(view).to.haveValidSnapshot();
+    });
+
     it(@"displays make offer button only", ^{
         view.artwork = [Artwork modelWithJSON:@{
             @"id": @"artwork-id",
