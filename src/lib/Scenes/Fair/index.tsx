@@ -37,6 +37,7 @@ export class Fair extends React.Component<Props> {
     return (
       <Theme>
         <FlatList
+          keyExtractor={(item, index) => item.type + String(index)}
           data={this.state.sections}
           ListHeaderComponent={<FairHeader fair={fair} />}
           renderItem={({ item: { data, type } }) => {
