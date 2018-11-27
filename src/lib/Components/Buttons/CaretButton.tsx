@@ -1,4 +1,4 @@
-import { color, Flex, Sans, space } from "@artsy/palette"
+import { color, Flex, Sans } from "@artsy/palette"
 import React from "react"
 import { GestureResponderEvent, Image, TouchableWithoutFeedback } from "react-native"
 
