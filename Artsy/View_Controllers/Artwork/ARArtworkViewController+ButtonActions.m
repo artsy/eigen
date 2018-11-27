@@ -220,6 +220,15 @@
     }];
 }
 
+- (void)tappedMakeOfferButton
+{
+    // We'll need a UI to select multiple edition sets?
+
+    if (self.echo.features[@"AREnableMakeOfferFlow"].state) {
+        // TODO: Make the metaphysics mutation to create the offer order, and then redirect to Force.
+    }
+}
+
 - (void)tappedBuyButton
 {
     // We currently don't have a UI for a user to select from multiple editions. Instead, send the user
