@@ -1,10 +1,11 @@
 import { Box, Flex, Sans, Serif } from "@artsy/palette"
-import { Markdown } from "lib/Components/Markdown"
+// import { Markdown } from "lib/Components/Markdown"
 import { isArray, isString, uniqBy } from "lodash"
 import moment from "moment"
 import React from "react"
-import { Image, TouchableWithoutFeedback } from "react-native"
+import { Image, ImageURISource, TouchableWithoutFeedback } from "react-native"
 
+// tslint:disable-next-line:no-var-requires
 const chevron: ImageURISource = require("../../../images/chevron.png")
 
 interface Props {
@@ -32,7 +33,7 @@ export class HoursCollapsible extends React.Component<Props, State> {
   renderHours() {
     const { hours } = this.props
     if (isString(hours)) {
-      return <Markdown size="3">{hours}</Markdown>
+      return <Sans size="3">{hours}</Sans>
     } else if (isArray(hours)) {
       return uniqBy(hours, "day_of_week").map(({ start_time, end_time, day_of_week }) => {
         return (
