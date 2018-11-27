@@ -2,9 +2,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Category for ArtsyEcho that wraps Buy Now/Make Offer logic.
 @interface ArtsyEcho (MakeOffer)
 
-// TODO: Move the Buy now check into a property here.
+/// Returns YES if the exchange version is compatible with the app.
+@property (nonatomic, assign, readonly) BOOL isBuyNowAccessible;
 
 /// Returns YES only when the make offer feature flag has been enabled *and* the exchange version is compatible with the app.
 @property (nonatomic, assign, readonly) BOOL isMakeOfferAccessible;

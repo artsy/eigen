@@ -12,6 +12,21 @@ describe(@"an empty Echo object", ^{
         subject.messages = @[];
     });
 
+    describe(@"buy now", ^{
+        it(@"isBuyNowAccessible returns YES for compatible versions", ^{
+            subject.messages = @[
+                                 [[Message alloc] initWithName:@"ExchangeCurrentVersion" content:@"1"]
+                                 ];
+            expect(subject.isBuyNowAccessible).to.beTruthy();
+        });
+        it(@"isBuyNowAccessible returns NO for older versions", ^{
+            subject.messages = @[
+                                 [[Message alloc] initWithName:@"ExchangeCurrentVersion" content:@"10000000"]
+                                 ];
+            expect(subject.isBuyNowAccessible).to.beFalsy();
+        });
+    });
+
     describe(@"make offer", ^{
         describe(@"with compatible Exchange version", ^{
             beforeEach(^{
@@ -25,7 +40,7 @@ describe(@"an empty Echo object", ^{
             });
 
             it(@"returns YES for isMakeOfferAccessible when enabled", ^{
-                subject.features = @{ @"AREnableMakeOfferFlow": [[Feature alloc] initWithName:@"AREnableMakeOfferFlow" state:@(1)] };
+                subject.features = @{ @"AREnableMakeOfferFlow": [[Feature alloc] initWithName:@"AREnableMakeOfferFlow" state:@(YES)] };
                 expect(subject.isMakeOfferAccessible).to.beTruthy();
             });
         });

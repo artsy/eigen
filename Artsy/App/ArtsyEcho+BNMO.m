@@ -6,12 +6,22 @@ NSInteger const ARExchangeCurrentVersionCompatibility = 1;
 
 @implementation ArtsyEcho (MakeOffer)
 
+- (BOOL)isBuyNowAccessible
+{
+    return self.isExchangeCompatible;
+}
+
 - (BOOL)isMakeOfferAccessible
+{
+    return self.features[@"AREnableMakeOfferFlow"].state && self.isExchangeCompatible;
+}
+
+- (BOOL)isExchangeCompatible
 {
     Message *exchangeVersion = [[self.messages select:^BOOL(Message *message) {
         return [message.name isEqualToString:@"ExchangeCurrentVersion"];
     }] firstObject];
-    return self.features[@"AREnableMakeOfferFlow"].state && exchangeVersion.content.integerValue <= ARExchangeCurrentVersionCompatibility;
+    return exchangeVersion.content.integerValue <= ARExchangeCurrentVersionCompatibility;
 }
 
 @end

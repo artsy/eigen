@@ -3,6 +3,7 @@
 #import <Adjust/Adjust.h>
 
 #import "ArtsyEcho.h"
+#import "ArtsyEcho+BNMO.h"
 #import "ARAuctionWebViewController.h"
 #import "Artist.h"
 #import "Artwork.h"
@@ -233,7 +234,7 @@
 {
     // We currently don't have a UI for a user to select from multiple editions. Instead, send the user
     // to the inquiry form.
-    if (self.artwork.hasMultipleEditions) {
+    if (self.artwork.hasMultipleEditions || !self.echo.isBuyNowAccessible) {
         [self tappedContactGallery];
         return;
     }

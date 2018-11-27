@@ -34,6 +34,7 @@
 @property (nonatomic, strong) ARNavigationButtonsViewController *navigationButtonsVC;
 
 @property (nonatomic, strong) Artwork *artwork;
+@property (nonatomic, strong) ArtsyEcho *echo;
 @property (nonatomic, strong) SaleArtwork *saleArtwork;
 
 @end
@@ -212,7 +213,11 @@
             button = [[ARBlackFlatButton alloc] init];
         }
         [button setTitle:@"Make offer" forState:UIControlStateNormal];
-//        [button addTarget:self action:@selector(tappedMakeOfferButton:) forControlEvents:<#(UIControlEvents)#>]
+        [button addTarget:self action:@selector(tappedMakeOfferButton:) forControlEvents:UIControlEventTouchUpInside];
+
+        [buttonsWhoseMarginCanChange addObject:button];
+
+        [self addSubview:button withTopMargin:@"30" sideMargin:nil];
     }
 
     if ([self showContactButton]) {
