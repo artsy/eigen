@@ -1251,7 +1251,6 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newOfferRequestWithArtworkID:(NSString *)artworkID
 {
-    // TODO: Test missing edition set ID
     return [self graphQLRequestForQuery:[self graphQueryToCreateOffer] variables:@{ @"artworkId": artworkID, @"quantity": @(1) }];
 }
 
