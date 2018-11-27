@@ -25,6 +25,8 @@ NSString *const AROptionsUseVCR = @"Use offline recording";
 NSString *const AROptionsForceBuyNow = @"Enable Buy Now Flow via Force";
 NSString *const AROptionsBuyNow = @"enableBuyNowMakeOffer";
 
+NSString *const AROptionsMakeOffer = @"Enable Make Offer";
+
 @implementation AROptions
 
 // Down here is the user-facing description
@@ -39,6 +41,7 @@ NSString *const AROptionsBuyNow = @"enableBuyNowMakeOffer";
          
          AROptionsBuyNow: @"Enable Eigen/Emission Buy Now integration",
          AROptionsForceBuyNow: @"Enable Buy Now purchase flow via Force",
+         AROptionsMakeOffer: @"Enable Make Offer via Force",
          
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
         };
