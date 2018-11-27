@@ -64,8 +64,8 @@ interface TimeStampProps {
 }
 
 const TimeStamp = styled(MetadataText)`
-  font-size: 11.5
-  color: ${(p: TimeStampProps) => (p.pending ? colors["yellow-bold"] : colors["gray-medium"])}
+  font-size: 11.5;
+  color: ${(p: TimeStampProps) => (p.pending ? colors["yellow-bold"] : colors["gray-medium"])};
 `
 
 const Seperator = styled(DottedLine)`
