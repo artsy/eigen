@@ -19,6 +19,7 @@
 #import "ARFairViewController.h"
 #import "ARFairArtistViewController.h"
 #import "ARFairGuideContainerViewController.h"
+#import "ARFairSearchViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARMutableLinkViewController.h"
 
@@ -300,6 +301,12 @@ describe(@"ARSwitchboard", ^{
                     Fair *fair = [OCMockObject mockForClass:[Fair class]];
                     id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"/the-armory-show/browse/artist/artist-id"] fair:fair];
                     expect(viewController).to.beKindOf(ARFairArtistViewController.class);
+                });
+
+                it(@"routes fair search", ^{
+                    Fair *fair = [OCMockObject mockForClass:[Fair class]];
+                    id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"/the-armory-show/search"] fair:fair];
+                    expect(viewController).to.beKindOf(ARFairSearchViewController.class);
                 });
 
                 it(@"forwards fair views to martsy for non-native views", ^{

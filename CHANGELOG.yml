@@ -5,6 +5,7 @@ upcoming:
   dev:
     - Adds AREnableMakeOfferFlow flag to Echo - ash&dlevenson
     - Adds ExchangeCurrentVersion to gate BNMO - ash
+    - Add SwitchBoard path for ARFairSearchViewController - javamonn
   user_facing:
     - Make Offer now accessible - ash
 
