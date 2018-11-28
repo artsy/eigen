@@ -3,16 +3,16 @@
 exports[`looks correct when rendered 1`] = `
 Array [
   <View
-    pb={150}
-    pt={150}
+    pb={467}
+    pt={467}
     px={2}
     style={
       Array [
         Object {
-          "paddingBottom": 150,
+          "paddingBottom": 467,
           "paddingLeft": 8,
           "paddingRight": 8,
-          "paddingTop": 150,
+          "paddingTop": 467,
         },
         undefined,
       ]
@@ -106,15 +106,78 @@ Array [
       ]
     }
   >
-    <View
-      m={2}
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Regular"
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
-            "marginBottom": 8,
-            "marginLeft": 8,
-            "marginRight": 8,
-            "marginTop": 8,
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          undefined,
+        ]
+      }
+    >
+      Works by
+       
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        className="sc-bdVaJa bDWFJH"
+        ellipsizeMode="tail"
+        fontFamily="Unica77LL-Medium"
+        fontSize="12px"
+        lineHeight="16px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Medium",
+              "fontSize": 12,
+              "lineHeight": 16,
+            },
+            undefined,
+          ]
+        }
+      >
+        Hans Hofmann, David Hockney, Sam Francis, Pablo Picasso, Wolf Kahn
+      </Text>
+       and 
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        className="sc-bdVaJa bDWFJH"
+        ellipsizeMode="tail"
+        fontFamily="Unica77LL-Medium"
+        fontSize="12px"
+        lineHeight="16px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Medium",
+              "fontSize": 12,
+              "lineHeight": 16,
+            },
+            undefined,
+          ]
+        }
+      >
+        13
+         more
+      </Text>
+    </Text>
+    <View
+      mt={1}
+      style={
+        Array [
+          Object {
+            "marginTop": 4,
           },
           undefined,
         ]
@@ -212,27 +275,67 @@ Array [
         ]
       }
     />
-    <Text
+    <View
       accessible={true}
-      allowFontScaling={true}
-      className="sc-bdVaJa bDWFJH"
-      ellipsizeMode="tail"
-      fontFamily="Unica77LL-Medium"
-      fontSize="14px"
-      lineHeight="24px"
+      alignItems="center"
+      flexDirection="row"
+      height={36}
+      justifyContent="space-between"
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Array [
           Object {
-            "fontFamily": "Unica77LL-Medium",
-            "fontSize": 14,
-            "lineHeight": 24,
+            "alignItems": "center",
+            "display": "flex",
+            "flexDirection": "row",
+            "height": 36,
+            "justifyContent": "space-between",
           },
           undefined,
         ]
       }
     >
-      View more information
-    </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        className="sc-bdVaJa bDWFJH"
+        ellipsizeMode="tail"
+        fontFamily="Unica77LL-Medium"
+        fontSize="14px"
+        lineHeight="20px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Medium",
+              "fontSize": 14,
+              "lineHeight": 20,
+            },
+            undefined,
+          ]
+        }
+      >
+        View more information
+          
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/horizontal_chevron.png",
+            }
+          }
+          style={
+            Object {
+              "alignSelf": "center",
+              "tintColor": "#C2C2C2",
+            }
+          }
+        />
+      </Text>
+    </View>
   </View>,
 ]
 `;

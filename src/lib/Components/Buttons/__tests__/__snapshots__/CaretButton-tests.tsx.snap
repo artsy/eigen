@@ -29,35 +29,37 @@ exports[`CaretButton renders properly 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
-    className="sc-htpNat KtFsv"
+    className="sc-bdVaJa bDWFJH"
     ellipsizeMode="tail"
-    fontFamily="AvantGardeGothicITC"
+    fontFamily="Unica77LL-Medium"
     fontSize="14px"
-    lineHeight="18px"
+    lineHeight="20px"
     style={
       Array [
         Object {
-          "fontFamily": "AvantGardeGothicITC",
+          "fontFamily": "Unica77LL-Medium",
           "fontSize": 14,
-          "lineHeight": 18,
+          "lineHeight": 20,
         },
         undefined,
       ]
     }
   >
     I am a caret button
+      
+    <Image
+      source={
+        Object {
+          "testUri": "../../../images/horizontal_chevron.png",
+        }
+      }
+      style={
+        Object {
+          "alignSelf": "center",
+          "tintColor": "#C2C2C2",
+        }
+      }
+    />
   </Text>
-  <Image
-    source={
-      Object {
-        "testUri": "../../../images/horizontal_chevron.png",
-      }
-    }
-    style={
-      Object {
-        "alignSelf": "center",
-      }
-    }
-  />
 </View>
 `;

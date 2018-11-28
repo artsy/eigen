@@ -50,3 +50,6 @@ storiesOf("Shows")
   .add("Anna Bjerger – Lit", () => {
     return <RootContainer Component={Show} showID="galleri-magnus-karlsson-anna-bjerger-lit" />
   })
+  .add("Out of the Vault & New Acquisitions (Many Artists)", () => {
+    return <RootContainer Component={Show} showID="david-barnett-gallery-out-of-the-vault-and-new-acquisitions" />
+  })
