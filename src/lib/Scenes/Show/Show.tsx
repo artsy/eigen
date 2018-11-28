@@ -3,7 +3,7 @@ import React from "react"
 import { NavigatorIOS, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { AllArtists } from "./Screens/AllArtists"
+import { AllArtistsContainer as AllArtists } from "./Screens/AllArtists"
 import { DetailContainer as DetailScreen } from "./Screens/Detail"
 import { MoreInfoContainer as MoreInfoScreen } from "./Screens/MoreInfo"
 
@@ -70,6 +70,7 @@ export const ShowContainer = createFragmentContainer(
     fragment Show_show on Show {
       ...Detail_show
       ...MoreInfo_show
+      ...AllArtists_show
     }
   `
 )

@@ -1,11 +1,11 @@
-import { Serif, Spacer } from "@artsy/palette"
+import { Box, Sans, Separator, Serif, Spacer } from "@artsy/palette"
 import { AllArtists_show } from "__generated__/AllArtists_show.graphql"
 import { AllArtistsFollowArtistMutation } from "__generated__/AllArtistsFollowArtistMutation.graphql"
 import { get } from "lodash"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
-import { NavigatorIOS, ViewProperties } from "react-native"
+import { NavigatorIOS, SectionList, ViewProperties } from "react-native"
 import { ArtistListItem } from "../Components/Artists/Components/ArtistListItem"
 
 interface Props extends ViewProperties {
@@ -16,11 +16,16 @@ interface Props extends ViewProperties {
 
 interface State {
   isFollowedChanging: { [id: string]: boolean }
+  sections: Array<{
+    data: any
+    title: string
+  }>
 }
 
 export class AllArtists extends React.Component<Props, State> {
   state = {
     isFollowedChanging: {},
+    sections: [],
   }
 
   handleFollowArtist = ({ id, __id, is_followed }) => {
@@ -76,37 +81,64 @@ export class AllArtists extends React.Component<Props, State> {
     )
   }
 
-  render() {
-    const { isFollowedChanging } = this.state
+  componentDidMount() {
     const { show } = this.props
-
     const artists = get(show, "artists", [])
     const items: AllArtists_show["artists"] = artists
 
+    const sections = []
+
+    sections.push({
+      title: "A",
+      data: items,
+    })
+
+    this.setState({ sections })
+  }
+
+  renderItem = (artist, index, section) => {
+    const { isFollowedChanging } = this.state
+    const { name, id, is_followed, nationality, birthday, deathday } = artist
+    const { url } = artist.image
+
     return (
-      <>
-        <Serif size="8">All Artists</Serif>
-        <Spacer m={1} />
-        {items.map((artist, idx, arr) => {
-          const { name, id, is_followed, nationality, birthday, deathday } = artist
-          const { url } = artist.image
+      <Box mb={2}>
+        <ArtistListItem
+          name={name}
+          nationality={nationality}
+          birthday={birthday}
+          deathday={deathday}
+          isFollowed={is_followed}
+          url={url}
+          onPress={() => this.handleFollowArtist(artist)}
+          isFollowedChanging={isFollowedChanging[id]}
+        />
+      </Box>
+    )
+  }
+
+  render() {
+    return (
+      <SectionList
+        renderItem={({ item, index, section }) => <Box px={2}>{this.renderItem(item, index, section)}</Box>}
+        ListHeaderComponent={() => {
           return (
-            <React.Fragment key={id}>
-              <ArtistListItem
-                name={name}
-                nationality={nationality}
-                birthday={birthday}
-                deathday={deathday}
-                isFollowed={is_followed}
-                url={url}
-                onPress={() => this.handleFollowArtist(artist)}
-                isFollowedChanging={isFollowedChanging[id]}
-              />
-              {idx < arr.length - 1 && <Spacer m={1} />}
-            </React.Fragment>
+            <Box px={2} pt={85}>
+              <Serif size="8">All Artists</Serif>
+            </Box>
           )
-        })}
-      </>
+        }}
+        renderSectionHeader={({ section: { title } }) => (
+          <Box px={2} pt={2}>
+            <Sans size="4">{title}</Sans>
+            <Box pb={2}>
+              <Separator />
+            </Box>
+          </Box>
+        )}
+        sections={this.state.sections}
+        keyExtractor={(item, index) => item + index}
+      />
     )
   }
 }

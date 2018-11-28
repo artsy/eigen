@@ -30,6 +30,7 @@ query QueryRenderersShowQuery(
 fragment Show_show on Show {
   ...Detail_show
   ...MoreInfo_show
+  ...AllArtists_show
   __id
 }
 
@@ -79,6 +80,22 @@ fragment Detail_show on Show {
 
 fragment MoreInfo_show on Show {
   press_release
+  __id
+}
+
+fragment AllArtists_show on Show {
+  artists {
+    __id
+    id
+    name
+    is_followed
+    nationality
+    birthday
+    deathday
+    image {
+      url
+    }
+  }
   __id
 }
 
@@ -348,7 +365,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "4d3ce75679f449e2c93ecb69ece20e34",
+  "id": "88806b039e99266751eeee0c91d955c0",
   "text": null,
   "metadata": {},
   "fragment": {

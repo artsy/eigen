@@ -30,6 +30,7 @@ query ShowQuery(
 fragment Show_show on Show {
   ...Detail_show
   ...MoreInfo_show
+  ...AllArtists_show
   __id
 }
 
@@ -79,6 +80,22 @@ fragment Detail_show on Show {
 
 fragment MoreInfo_show on Show {
   press_release
+  __id
+}
+
+fragment AllArtists_show on Show {
+  artists {
+    __id
+    id
+    name
+    is_followed
+    nationality
+    birthday
+    deathday
+    image {
+      url
+    }
+  }
   __id
 }
 
@@ -348,7 +365,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowQuery",
-  "id": "a7f8572e537ca8cbdfec4276b18440a7",
+  "id": "80376f32e9d476f7a248c0eacf58aded",
   "text": null,
   "metadata": {},
   "fragment": {
