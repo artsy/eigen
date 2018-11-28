@@ -1246,7 +1246,12 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newBuyNowRequestWithArtworkID:(NSString *)artworkID
 {
-    return [self graphQLRequestForQuery:[self graphQueryToCreateBuyNowOrderForArtwork:artworkID] variables:@{ @"input" : @{ @"artworkId": artworkID, @"quantity": @(1) } }];
+    return [self graphQLRequestForQuery:[self graphQueryToCreateBuyNowOrder] variables:@{ @"input" : @{ @"artworkId": artworkID, @"quantity": @(1) } }];
+}
+
++ (NSURLRequest *)newOfferRequestWithArtworkID:(NSString *)artworkID
+{
+    return [self graphQLRequestForQuery:[self graphQueryToCreateOffer] variables:@{ @"artworkId": artworkID, @"quantity": @(1) }];
 }
 
 + (NSURLRequest *)newRequestOutbidNotificationRequest

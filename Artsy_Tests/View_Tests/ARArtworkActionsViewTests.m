@@ -2,10 +2,12 @@
 #import "ORStackView+ArtsyViews.h"
 #import "ARArtworkPriceView.h"
 #import "ARArtworkAuctionPriceView.h"
+#import "ArtsyEcho.h"
 
 
 @interface ARArtworkActionsView ()
 @property (nonatomic, strong) Artwork *artwork;
+@property (nonatomic, strong) ArtsyEcho *echo;
 @property (nonatomic, strong) SaleArtwork *saleArtwork;
 @property (nonatomic, strong) ARBorderLabel *bidderStatusLabel;
 @property (nonatomic, strong) ARArtworkPriceView *priceView;
@@ -274,6 +276,59 @@ it(@"displays sold when artwork is in auction and has been acquired", ^{
     [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
     [view snapshotViewAfterScreenUpdates:YES];
     expect(view).will.haveValidSnapshotNamed(@"soldAtAuction");
+});
+
+describe(@"with Echo config that has BNMO enabled", ^{
+    beforeEach(^{
+        view.echo = [[ArtsyEcho alloc] init];
+        view.echo.features = @{ @"AREnableMakeOfferFlow": [[Feature alloc] initWithName:@"AREnableMakeOfferFlow" state:@(YES)] };
+        view.echo.messages = @[[[Message alloc] initWithName:@"ExchangeCurrentVersion" content:@"1"]];
+    });
+
+    it(@"displays make offer and buy buttons", ^{
+        view.artwork = [Artwork modelWithJSON:@{
+            @"id": @"artwork-id",
+            @"title": @"Artwork Title",
+            @"availability": @"for sale",
+            @"acquireable": @(YES),
+            @"offerable": @(YES)
+        }];
+        [view updateUI];
+        [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+        [view layoutIfNeeded];
+        expect(view).to.haveValidSnapshot();
+    });
+
+    it(@"doesn't display make offer button for multiple edition sets", ^{
+        view.artwork = [Artwork modelWithJSON:@{
+            @"id": @"artwork-id",
+            @"title": @"Artwork Title",
+            @"availability": @"for sale",
+            @"acquireable": @(YES),
+            @"offerable": @(YES),
+            @"edition_sets": @[
+                    @"some-string", @"some-other-string"
+                    ]
+        }];
+        [view updateUI];
+        [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+        [view layoutIfNeeded];
+        expect(view).to.haveValidSnapshot();
+    });
+
+    it(@"displays make offer button only", ^{
+        view.artwork = [Artwork modelWithJSON:@{
+            @"id": @"artwork-id",
+            @"title": @"Artwork Title",
+            @"availability": @"for sale",
+            @"acquireable": @(NO),
+            @"offerable": @(YES)
+        }];
+        [view updateUI];
+        [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+        [view layoutIfNeeded];
+        expect(view).to.haveValidSnapshot();
+    });
 });
 
 context(@"price view", ^{

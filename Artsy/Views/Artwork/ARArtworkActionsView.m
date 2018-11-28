@@ -1,6 +1,7 @@
 #import "ARArtworkActionsView.h"
 
 #import "Artwork.h"
+#import "AROptions.h"
 #import "ARArtworkPriceView.h"
 #import "ARArtworkAuctionPriceView.h"
 #import "ARCountdownView.h"
@@ -14,6 +15,8 @@
 #import "ARMacros.h"
 #import "ARSystemTime.h"
 
+#import "ArtsyEcho.h"
+#import "ArtsyEcho+BNMO.h"
 #import <KSDeferred/KSPromise.h>
 #import <ReactiveObjC/ReactiveObjC.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -32,6 +35,7 @@
 @property (nonatomic, strong) ARNavigationButtonsViewController *navigationButtonsVC;
 
 @property (nonatomic, strong) Artwork *artwork;
+@property (nonatomic, strong) ArtsyEcho *echo;
 @property (nonatomic, strong) SaleArtwork *saleArtwork;
 
 @end
@@ -39,7 +43,7 @@
 
 @implementation ARArtworkActionsView
 
-- (instancetype)initWithArtwork:(Artwork *)artwork
+- (instancetype)initWithArtwork:(Artwork *)artwork echo:(ArtsyEcho *)echo
 {
     self = [super init];
     if (!self) {
@@ -47,6 +51,7 @@
     }
 
     _artwork = artwork;
+    _echo = echo;
     self.bottomMarginHeight = 0;
 
     return self;
@@ -200,6 +205,24 @@
         }
     }
 
+    if ([self showMakeOfferButton]) {
+        ARButton *button;
+        // If the Make Offer button is by itself, it should be black. Otherwise, should be white.
+        if ([self showBuyButton]) {
+            button = [[ARWhiteFlatButton alloc] init];
+            button.layer.borderWidth = 1;
+            button.layer.borderColor = UIColor.blackColor.CGColor;
+        } else {
+            button = [[ARBlackFlatButton alloc] init];
+        }
+        [button setTitle:@"Make offer" forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(tappedMakeOfferButton:) forControlEvents:UIControlEventTouchUpInside];
+
+        [buttonsWhoseMarginCanChange addObject:button];
+
+        [self addSubview:button withTopMargin:([self showBuyButton] ? @"10" : @"30") sideMargin:nil];
+    }
+
     if ([self showContactButton]) {
         NSString *title = nil;
         if (self.artwork.partner.type == ARPartnerTypeGallery) {
@@ -290,6 +313,11 @@
     [self.delegate tappedBuyButton];
 }
 
+- (void)tappedMakeOfferButton:(id)sender
+{
+    [self.delegate tappedMakeOfferButton];
+}
+
 - (void)tappedMoreInfo:(id)sender
 {
     [self.delegate tappedMoreInfo];
@@ -359,6 +387,14 @@ return [navigationButtons copy];
 - (BOOL)showBuyButton
 {
     return self.artwork.isAcquireable.boolValue;
+}
+
+- (BOOL)showMakeOfferButton
+{
+    // We don't have a UI to select from multiple edition sets yet, so don't show the Make Offer UI at all for those works.
+    return (self.artwork.isOfferable.boolValue &&
+            (self.echo.isMakeOfferAccessible || [AROptions boolForOption:AROptionsMakeOffer]) &&
+            !self.artwork.hasMultipleEditions);
 }
 
 - (BOOL)showAuctionControls

@@ -3,9 +3,11 @@ upcoming:
   date: TBD
   emission_version: 1.7.x
   dev:
+    - Adds AREnableMakeOfferFlow flag to Echo - ash&dlevenson
+    - Adds ExchangeCurrentVersion to gate BNMO - ash
     - Add SwitchBoard path for ARFairSearchViewController - javamonn
   user_facing:
-    - 
+    - Make Offer now accessible - ash
 
 releases:
   - version: 4.3.3

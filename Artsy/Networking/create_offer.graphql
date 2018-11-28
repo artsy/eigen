@@ -1,0 +1,26 @@
+mutation createOfferOrder(
+  $artworkId: String!
+  $quantity: Int
+) {
+  ecommerceCreateOfferOrderWithArtwork(
+    input: {
+      artworkId: $artworkId
+      quantity: $quantity
+    }
+  ) {
+    orderOrError {
+      ... on OrderWithMutationSuccess {
+        order {
+          id
+        }
+      }
+      ... on OrderWithMutationFailure {
+        error {
+          type
+          code
+          data
+        }
+      }
+    }
+  }
+}

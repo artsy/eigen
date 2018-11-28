@@ -3,6 +3,7 @@
 #import <Adjust/Adjust.h>
 
 #import "ArtsyEcho.h"
+#import "ArtsyEcho+BNMO.h"
 #import "ARAuctionWebViewController.h"
 #import "Artist.h"
 #import "Artwork.h"
@@ -220,35 +221,48 @@
     }];
 }
 
+- (void)tappedMakeOfferButton
+{
+    [ArtsyAPI createOfferOrderWithArtworkID:self.artwork.artworkUUID success:^(id results) {
+        [self handleOrderCreationOrderOrError:results[@"data"][@"ecommerceCreateOfferOrderWithArtwork"]];
+    } failure:^(NSError *error) {
+        [self presentErrorMessage:@"Something went wrong. Please try again or contact support@artsy.net."];
+    }];
+}
+
 - (void)tappedBuyButton
 {
     // We currently don't have a UI for a user to select from multiple editions. Instead, send the user
     // to the inquiry form.
-    if (self.artwork.hasMultipleEditions) {
+    if (self.artwork.hasMultipleEditions || !self.echo.isBuyNowAccessible) {
         [self tappedContactGallery];
         return;
     }
 
     // Buy now
     [ArtsyAPI createBuyNowOrderWithArtworkID:self.artwork.artworkUUID success:^(id results) {
-        NSString *orderID = results[@"data"][@"ecommerceCreateOrderWithArtwork"][@"orderOrError"][@"order"][@"id"];
-        if (!orderID) {
-            [self presentErrorMessage:@"Something went wrong. Please try again or contact support@artsy.net."];
-            return;
-        }
-        NSString *path = self.echo.routes[@"ARBuyNowRoute"].path;
-        if (!path) {
-            // path should never be nil, but I'd rather not crash the app if it is.
-            path = @"/order/:id";
-        }
-        path = [path stringByReplacingOccurrencesOfString:@":id" withString:orderID];
-        UIViewController *controller = [ARSwitchBoard.sharedInstance loadPath:path];
-        ARSerifNavigationViewController *navigationController = [[ARSerifNavigationViewController alloc] initWithRootViewController:controller hideNavigationBar:YES];
-        [self presentViewController:navigationController animated:YES completion:nil];
+        [self handleOrderCreationOrderOrError:results[@"data"][@"ecommerceCreateOrderWithArtwork"]];
     } failure:^(NSError *error) {
         [self presentErrorMessage:@"Something went wrong. Please try again or contact support@artsy.net."];
     }];
+}
 
+- (void)handleOrderCreationOrderOrError:(id)orderOrError
+{
+    NSString *orderID = orderOrError[@"orderOrError"][@"order"][@"id"];
+    if (!orderID) {
+        [self presentErrorMessage:@"Something went wrong. Please try again or contact support@artsy.net."];
+        return;
+    }
+    NSString *path = self.echo.routes[@"ARBuyNowRoute"].path;
+    if (!path) {
+        // path should never be nil, but I'd rather not crash the app if it is.
+        path = @"/order/:id";
+    }
+    path = [path stringByReplacingOccurrencesOfString:@":id" withString:orderID];
+    UIViewController *controller = [ARSwitchBoard.sharedInstance loadPath:path];
+    ARSerifNavigationViewController *navigationController = [[ARSerifNavigationViewController alloc] initWithRootViewController:controller hideNavigationBar:YES];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)tappedMoreInfo

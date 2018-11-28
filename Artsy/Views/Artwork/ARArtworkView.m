@@ -30,7 +30,7 @@
 static const CGFloat ARArtworkImageHeightAdjustmentForPad = -100;
 static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
 
-- (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair andParentViewController:(ARArtworkViewController *)parentViewController;
+- (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair echo:(ArtsyEcho *)echo andParentViewController:(ARArtworkViewController *)parentViewController;
 {
     self = [super initWithStackViewClass:[ORTagBasedAutoStackView class]];
 
@@ -39,6 +39,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     }
     _artwork = artwork;
     _fair = fair;
+    _echo = echo;
     _parentViewController = parentViewController;
 
     self.scrollsToTop = NO;
@@ -49,7 +50,7 @@ static const CGFloat ARArtworkImageHeightAdjustmentForPhone = -56;
     self.stackView.backgroundColor = [UIColor whiteColor];
     self.stackView.bottomMarginHeight = 20;
 
-    ARArtworkMetadataView *metadataView = [[ARArtworkMetadataView alloc] initWithArtwork:self.artwork andFair:self.fair];
+    ARArtworkMetadataView *metadataView = [[ARArtworkMetadataView alloc] initWithArtwork:self.artwork andFair:self.fair echo:echo];
     metadataView.tag = ARArtworkPreview;
     self.metadataView = metadataView;
 
