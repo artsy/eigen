@@ -139,12 +139,16 @@ fragment ShowHeader_show on Show {
     url
     aspect_ratio
   }
+  artists {
+    name
+    __id
+  }
   __id
 }
 
 fragment Artworks_show on Show {
   __id
-  artworks {
+  artworks(size: 6) {
     ...GenericGrid_artworks
     __id
   }
@@ -401,7 +405,11 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
+<<<<<<< HEAD
   "id": "521536808b3daa4ddc811c1a6fe5f2a6",
+=======
+  "id": "3694896c7d4c6cbf19fdbf6598f3aaad",
+>>>>>>> 71ff8759adb23a57b1e4bdfc502bb98993334fb7
   "text": null,
   "metadata": {},
   "fragment": {
@@ -611,13 +619,74 @@ return {
               v11
             ]
           },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artists",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artist",
+            "plural": true,
+            "selections": [
+              v8,
+              v1,
+              v3,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "is_followed",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "nationality",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "birthday",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "deathday",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "image",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Image",
+                "plural": false,
+                "selections": [
+                  v6
+                ]
+              }
+            ]
+          },
           v1,
           {
             "kind": "LinkedField",
             "alias": null,
             "name": "artworks",
-            "storageKey": null,
-            "args": null,
+            "storageKey": "artworks(size:6)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "size",
+                "value": 6,
+                "type": "Int"
+              }
+            ],
             "concreteType": "Artwork",
             "plural": true,
             "selections": [
@@ -823,6 +892,7 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
+<<<<<<< HEAD
             "name": "artists",
             "storageKey": null,
             "args": null,
@@ -833,6 +903,8 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
+=======
+>>>>>>> 71ff8759adb23a57b1e4bdfc502bb98993334fb7
             "name": "nearbyShows",
             "storageKey": "nearbyShows(first:20)",
             "args": [

@@ -15,7 +15,7 @@ export class Artworks extends React.Component<Props> {
     }
     return (
       <>
-        <Serif size="8" my={1}>
+        <Serif size="5" my={1}>
           All works
         </Serif>
         <GenericGrid artworks={this.props.show.artworks} />
@@ -31,7 +31,7 @@ export const ArtworksContainer = createFragmentContainer(Artworks, {
   show: graphql`
     fragment Artworks_show on Show {
       __id
-      artworks {
+      artworks(size: 6) {
         ...GenericGrid_artworks
       }
     }

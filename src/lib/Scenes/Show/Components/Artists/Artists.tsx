@@ -99,7 +99,7 @@ export class Artists extends React.Component<Props, State> {
 
     return (
       <>
-        <Serif size="8">Artists</Serif>
+        <Serif size="5">Artists</Serif>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
           const { name, id, is_followed, nationality, birthday, deathday } = artist
