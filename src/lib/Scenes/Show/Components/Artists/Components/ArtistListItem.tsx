@@ -79,7 +79,7 @@ export const ArtistListItem: React.SFC<Props> = ({
       {/* TODO: Convert the width and height to a padding */}
       <Box width={102} height={34}>
         <InvertedButton
-          grayOutline={true}
+          grayBorder={true}
           text={isFollowed ? "Following" : "Follow"}
           onPress={onPress}
           selected={isFollowed}

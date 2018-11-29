@@ -14,7 +14,7 @@ export interface InvertedButtonProps extends React.Props<InvertedButton> {
   textStyle?: StyleProp<TextStyle>
   selected?: boolean
   inProgress?: boolean
-  grayOutline?: boolean
+  grayBorder?: boolean
   onPress?: React.TouchEventHandler<InvertedButton>
   onSelectionAnimationFinished?: Animated.EndCallback
 }
@@ -57,7 +57,7 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
     let borderColor
     let styling
     let textStyle
-    if (this.props.grayOutline) {
+    if (this.props.grayBorder) {
       backgroundColor = this.state.backgroundColor.interpolate({
         inputRange: [0, 1],
         outputRange: ["black", "white"],
