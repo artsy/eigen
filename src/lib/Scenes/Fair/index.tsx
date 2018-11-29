@@ -25,6 +25,7 @@ export class Fair extends React.Component<Props> {
       data: {
         location: fair.location,
         partnerName: fair.organizer.profile.name,
+        partnerType: "Fair",
       },
     })
 
