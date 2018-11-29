@@ -548,9 +548,9 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              v8,
-              v1,
               v3,
+              v1,
+              v2,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -812,63 +812,6 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
-<<<<<<< HEAD
-            "name": "artists",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Artist",
-            "plural": true,
-            "selections": [
-              v1,
-              v2,
-              v3,
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "is_followed",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "nationality",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "birthday",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "deathday",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "image",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "Image",
-                "plural": false,
-                "selections": [
-                  v6
-                ]
-              }
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-=======
->>>>>>> 71ff8759adb23a57b1e4bdfc502bb98993334fb7
             "name": "nearbyShows",
             "storageKey": "nearbyShows(first:20)",
             "args": [
