@@ -96,8 +96,6 @@ export class AllArtists extends React.Component<Props, State> {
       })
     })
 
-    // const groups: AllArtists_show["artists_grouped_by_name"] = artistsGroupedByName
-
     this.setState({ sections }, () => console.log("this.state.sections", this.state.sections))
   }
 
