@@ -112,24 +112,4 @@ describe("ArtistListItem", () => {
 
     expect(comp.find(Sans).html()).toContain("b. 1990")
   })
-
-  it("Only death date", () => {
-    const onPressMock = jest.fn()
-    const comp = mount(
-      <Theme>
-        <ArtistListItem
-          name="This is an artist"
-          url={"https://d32dm0rphc51dk.cloudfront.net/aewyRIXcvvjpKwpUGywnzw/tall.jpg"}
-          isFollowed={false}
-          onPress={onPressMock}
-          isFollowedChanging={false}
-          birthday={""}
-          deathday={"1990"}
-          nationality={""}
-        />
-      </Theme>
-    )
-
-    expect(comp.find(Sans).html()).toContain("")
-  })
 })
