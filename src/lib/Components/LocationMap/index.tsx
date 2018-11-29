@@ -18,7 +18,7 @@ const MapWrapper = styled(Flex)`
   border-color: ${color("black10")};
 `
 
-enum PartnerType {
+export enum PartnerType {
   gallery = "Gallery",
   museum = "Museum",
   fair = "Fair",

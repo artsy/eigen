@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchLink Renders properly 1`] = `
+<View
+  pl={2}
+  pr={2}
+  style={
+    Array [
+      Object {
+        "paddingLeft": 8,
+        "paddingRight": 8,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    accessible={true}
+    alignItems="center"
+    flexDirection="row"
+    justifyContent="center"
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    p={1}
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "paddingBottom": 4,
+          "paddingLeft": 4,
+          "paddingRight": 4,
+          "paddingTop": 4,
+        },
+        Array [
+          Object {
+            "borderColor": "#E5E5E5",
+            "borderRadius": 2,
+            "borderStyle": "solid",
+            "borderWidth": 1,
+            "paddingBottom": 4,
+            "paddingLeft": 4,
+            "paddingRight": 4,
+            "paddingTop": 4,
+          },
+          undefined,
+        ],
+      ]
+    }
+  >
+    <Image
+      source={
+        Object {
+          "testUri": "../../../images/SearchButton.png",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "height": 20,
+            "width": 20,
+          },
+          undefined,
+        ]
+      }
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "width": 12,
+          },
+          undefined,
+        ]
+      }
+      width={12}
+    />
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Regular"
+      fontSize="14px"
+      lineHeight="24px"
+      style={
+        Array [
+          Object {
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 14,
+            "lineHeight": 24,
+          },
+          undefined,
+        ]
+      }
+    >
+      Find Exhibitors and Artists
+    </Text>
+  </View>
+</View>
+`;

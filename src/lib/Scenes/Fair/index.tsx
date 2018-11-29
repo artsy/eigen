@@ -4,8 +4,9 @@ import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
+import { LocationMapContainer as LocationMap, PartnerType } from "lib/Components/LocationMap"
 import { FairHeaderContainer as FairHeader } from "./Components/FairHeader"
+import { SearchLink } from "./Components/SearchLink"
 
 interface Props extends ViewProperties {
   fair: Fair_fair
@@ -25,7 +26,14 @@ export class Fair extends React.Component<Props> {
       data: {
         location: fair.location,
         partnerName: fair.organizer.profile.name,
-        partnerType: "Fair",
+        partnerType: PartnerType.fair,
+      },
+    })
+
+    sections.push({
+      type: "search",
+      data: {
+        fairID: fair.id,
       },
     })
 
@@ -45,6 +53,8 @@ export class Fair extends React.Component<Props> {
             switch (type) {
               case "location":
                 return <LocationMap {...data} />
+              case "search":
+                return <SearchLink {...data} />
               default:
                 return null
             }
@@ -60,7 +70,7 @@ export default createFragmentContainer(
   graphql`
     fragment Fair_fair on Fair {
       ...FairHeader_fair
-
+      id
       location {
         ...LocationMap_location
       }
