@@ -85,7 +85,6 @@ export class AllArtists extends React.Component<Props, State> {
   componentDidMount() {
     const { show } = this.props
     const artistsGroupedByName = get(show, "artists_grouped_by_name", []) as any
-    // console.log("artistsGroupedByName ", artistsGroupedByName)
     const sections = []
 
     artistsGroupedByName.forEach((group, index) => {
@@ -96,7 +95,7 @@ export class AllArtists extends React.Component<Props, State> {
       })
     })
 
-    this.setState({ sections }, () => console.log("this.state.sections", this.state.sections))
+    this.setState({ sections })
   }
 
   renderItem = artist => {
