@@ -14,6 +14,7 @@ export interface InvertedButtonProps extends React.Props<InvertedButton> {
   textStyle?: StyleProp<TextStyle>
   selected?: boolean
   inProgress?: boolean
+  grayOutline?: boolean
   onPress?: React.TouchEventHandler<InvertedButton>
   onSelectionAnimationFinished?: Animated.EndCallback
 }
@@ -21,6 +22,7 @@ export interface InvertedButtonProps extends React.Props<InvertedButton> {
 interface InvertedButtonState {
   textOpacity: Animated.Value
   backgroundColor: Animated.Value
+  borderColor: Animated.Value
 }
 
 export default class InvertedButton extends React.Component<InvertedButtonProps, InvertedButtonState> {
@@ -29,6 +31,7 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
     this.state = {
       textOpacity: new Animated.Value(1),
       backgroundColor: new Animated.Value(props.selected ? 1 : 0),
+      borderColor: new Animated.Value(props.selected ? 1 : 0),
     }
   }
 
@@ -43,26 +46,47 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
       const duration = AnimationDuration
       Animated.parallel([
         Animated.timing(this.state.textOpacity, { toValue: 1, duration }),
+        Animated.timing(this.state.borderColor, { toValue: this.props.selected ? 1 : 0, duration }),
         Animated.timing(this.state.backgroundColor, { toValue: this.props.selected ? 1 : 0, duration }),
       ]).start(this.props.onSelectionAnimationFinished)
     }
   }
 
   render() {
-    const backgroundColor = this.state.backgroundColor.interpolate({
-      inputRange: [0, 1],
-      outputRange: ["black", colors["purple-regular"]],
-    })
-    const styling = {
-      underlayColor: this.props.selected ? "black" : colors["purple-regular"],
-      style: [styles.button, { backgroundColor }],
+    let backgroundColor
+    let borderColor
+    let styling
+    let textStyle
+    if (this.props.grayOutline) {
+      backgroundColor = this.state.backgroundColor.interpolate({
+        inputRange: [0, 1],
+        outputRange: ["black", "white"],
+      })
+      borderColor = this.state.borderColor.interpolate({
+        inputRange: [0, 1],
+        outputRange: ["black", colors["gray-regular"]],
+      })
+      styling = {
+        underlayColor: this.props.selected ? "black" : "white",
+        style: [styles.button, { backgroundColor, borderColor, borderWidth: 1 }],
+      }
+      textStyle = { color: this.props.selected ? "black" : "white" }
+    } else {
+      backgroundColor = this.state.backgroundColor.interpolate({
+        inputRange: [0, 1],
+        outputRange: ["black", colors["purple-regular"]],
+      })
+      styling = {
+        underlayColor: this.props.selected ? "black" : colors["purple-regular"],
+        style: [styles.button, { backgroundColor }],
+      }
     }
     let content: JSX.Element = null
     if (this.props.inProgress) {
       content = <Spinner spinnerColor="white" style={{ backgroundColor: "transparent" }} />
     } else {
-      const customStyle = this.props.textStyle || {}
-      const headlineStyles = [styles.text, customStyle, { opacity: this.state.textOpacity }]
+      textStyle = this.props.textStyle || textStyle
+      const headlineStyles = [styles.text, textStyle, { opacity: this.state.textOpacity }]
       content = <AnimatedHeadline style={headlineStyles}>{this.props.text}</AnimatedHeadline>
     }
     return (
