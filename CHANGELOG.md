@@ -25,6 +25,7 @@
 - Refactor More Shows section - luc
 - Styles fair header view - luc
 - Increases size of pin for LocationMap and zooms in slighlty - kieran
+- Adds extra checking around sale artwork messaging in artwork grids - ash
 
 ### 1.7.4
 
