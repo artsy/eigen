@@ -148,7 +148,7 @@ export class AllArtists extends React.Component<Props, State> {
           }
         }}
         sections={this.state.sections}
-        keyExtractor={(item, index) => item + index}
+        keyExtractor={item => item.__id}
       />
     )
   }
