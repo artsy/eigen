@@ -1,4 +1,4 @@
-import { Box, Sans, Separator, Serif, Spacer } from "@artsy/palette"
+import { Box, Sans, Separator, Serif } from "@artsy/palette"
 import { AllArtists_show } from "__generated__/AllArtists_show.graphql"
 import { AllArtistsFollowArtistMutation } from "__generated__/AllArtistsFollowArtistMutation.graphql"
 import { get } from "lodash"
@@ -17,8 +17,9 @@ interface Props extends ViewProperties {
 interface State {
   isFollowedChanging: { [id: string]: boolean }
   sections: Array<{
-    data: any
-    title: string
+    items: any
+    letter: string
+    index: number
   }>
 }
 
@@ -83,20 +84,24 @@ export class AllArtists extends React.Component<Props, State> {
 
   componentDidMount() {
     const { show } = this.props
-    const artists = get(show, "artists", [])
-    const items: AllArtists_show["artists"] = artists
-
+    const artistsGroupedByName = get(show, "artists_grouped_by_name", []) as any
+    // console.log("artistsGroupedByName ", artistsGroupedByName)
     const sections = []
 
-    sections.push({
-      title: "A",
-      data: items,
+    artistsGroupedByName.forEach((group, index) => {
+      sections.push({
+        title: group.letter,
+        data: group.items,
+        index,
+      })
     })
 
-    this.setState({ sections })
+    // const groups: AllArtists_show["artists_grouped_by_name"] = artistsGroupedByName
+
+    this.setState({ sections }, () => console.log("this.state.sections", this.state.sections))
   }
 
-  renderItem = (artist, index, section) => {
+  renderItem = artist => {
     const { isFollowedChanging } = this.state
     const { name, id, is_followed, nationality, birthday, deathday } = artist
     const { url } = artist.image
@@ -120,22 +125,28 @@ export class AllArtists extends React.Component<Props, State> {
   render() {
     return (
       <SectionList
-        renderItem={({ item, index, section }) => <Box px={2}>{this.renderItem(item, index, section)}</Box>}
+        renderItem={({ item }) => <Box px={2}>{this.renderItem(item)}</Box>}
         ListHeaderComponent={() => {
           return (
-            <Box px={2} pt={85}>
+            <Box px={2} mb={2} pt={85}>
               <Serif size="8">All Artists</Serif>
             </Box>
           )
         }}
         renderSectionHeader={({ section: { title } }) => (
-          <Box px={2} pt={2}>
+          <Box px={2} mb={2}>
             <Sans size="4">{title}</Sans>
-            <Box pb={2}>
-              <Separator />
-            </Box>
           </Box>
         )}
+        renderSectionFooter={({ section }) => {
+          if (section.index < this.state.sections.length - 1) {
+            return (
+              <Box px={2} pb={2}>
+                <Separator />
+              </Box>
+            )
+          }
+        }}
         sections={this.state.sections}
         keyExtractor={(item, index) => item + index}
       />
@@ -147,16 +158,19 @@ export const AllArtistsContainer = createFragmentContainer(
   AllArtists,
   graphql`
     fragment AllArtists_show on Show {
-      artists {
-        __id
-        id
-        name
-        is_followed
-        nationality
-        birthday
-        deathday
-        image {
-          url
+      artists_grouped_by_name {
+        letter
+        items {
+          __id
+          id
+          name
+          is_followed
+          nationality
+          birthday
+          deathday
+          image {
+            url
+          }
         }
       }
     }

@@ -87,7 +87,6 @@ export class Detail extends React.Component<Props, State> {
 
   render() {
     const { show, onMoreInformationPressed, onViewAllArtistsPressed } = this.props
-    console.log("props here: ", this.props)
     return (
       <FlatList
         data={this.state.sections}

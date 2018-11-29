@@ -92,7 +92,6 @@ export class Artists extends React.Component<Props, State> {
   render() {
     const { isFollowedChanging } = this.state
     const { show, onViewAllArtistsPressed } = this.props
-    console.log("props ", this.props)
     const artistsShown = 5
 
     const artists = get(show, "artists", [])

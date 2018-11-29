@@ -154,14 +154,7 @@ v1 = {
   "args": null,
   "storageKey": null
 },
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_in_auction",
-  "args": null,
-  "storageKey": null
-},
-v3 = [
+v2 = [
   {
     "kind": "Literal",
     "name": "shallow",
@@ -169,28 +162,28 @@ v3 = [
     "type": "Boolean"
   }
 ],
-v4 = {
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v6 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v6 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -222,24 +215,31 @@ v7 = {
     }
   ]
 },
-v8 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "title",
   "args": null,
   "storageKey": null
 },
-v9 = {
+v8 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "date",
   "args": null,
   "storageKey": null
 },
-v10 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "sale_message",
+  "args": null,
+  "storageKey": null
+},
+v10 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_in_auction",
   "args": null,
   "storageKey": null
 },
@@ -367,7 +367,7 @@ v16 = {
   ]
 },
 v17 = [
-  v5,
+  v4,
   v1
 ],
 v18 = {
@@ -582,33 +582,33 @@ return {
                                 "concreteType": "Artwork",
                                 "plural": true,
                                 "selections": [
-                                  v2,
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
                                     "name": "artists",
                                     "storageKey": "artists(shallow:true)",
-                                    "args": v3,
+                                    "args": v2,
                                     "concreteType": "Artist",
                                     "plural": true,
                                     "selections": [
-                                      v4,
+                                      v3,
                                       v1,
-                                      v5
+                                      v4
                                     ]
                                   },
+                                  v1,
+                                  v5,
                                   v6,
                                   v7,
                                   v8,
                                   v9,
                                   v10,
-                                  v1,
                                   v11,
                                   v12,
                                   v14,
                                   v16,
                                   v18,
-                                  v4
+                                  v3
                                 ]
                               },
                               v19,
@@ -677,9 +677,9 @@ return {
             "concreteType": "Artist",
             "plural": false,
             "selections": [
-              v6,
-              v4,
               v5,
+              v3,
+              v4,
               v19,
               {
                 "kind": "LinkedField",
@@ -703,14 +703,14 @@ return {
                 "concreteType": "Artwork",
                 "plural": true,
                 "selections": [
-                  v11,
                   v1,
+                  v5,
+                  v6,
                   v7,
                   v8,
                   v9,
                   v10,
-                  v2,
-                  v6,
+                  v11,
                   v12,
                   v14,
                   v16,
@@ -719,13 +719,13 @@ return {
                     "alias": null,
                     "name": "artists",
                     "storageKey": "artists(shallow:true)",
-                    "args": v3,
+                    "args": v2,
                     "concreteType": "Artist",
                     "plural": true,
                     "selections": v17
                   },
                   v18,
-                  v4
+                  v3
                 ]
               },
               v1
