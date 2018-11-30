@@ -9,6 +9,7 @@ upcoming:
   user_facing:
     - Make Offer now accessible - ash
     - "Contact Gallery" button doens't show up with "Make offer" button anymore - ash
+    - Adds a cancel option to follow-up push notification prompts - ash
 
 releases:
   - version: 4.3.3

@@ -33,7 +33,7 @@
     if (![AROptions boolForOption:ARPushNotificationsSettingsPromptSeen] &&
         [AROptions boolForOption:ARPushNotificationsAppleDialogueRejected]) {
         // if you've rejected Apple's push notification and you've not seen our prompt to send you to settings
-        // lets show you a prompt to go to stettings
+        // lets show you a prompt to go to settings
         [self displayPushNotificationSettingsPrompt];
 
     } else if (![AROptions boolForOption:ARPushNotificationsAppleDialogueSeen] && [self shouldPresentPushNotificationAgain]) {
@@ -70,6 +70,8 @@
                                                               [self presentSettings];
                                                            }];
     [alert addAction:settingsAction];
+    alert.preferredAction = settingsAction;
+    [alert addAction:[UIAlertAction actionWithTitle:@"No thanks" style:UIAlertActionStyleCancel handler:nil]];
     [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
 
     [AROptions setBool:YES forOption:ARPushNotificationsSettingsPromptSeen];
