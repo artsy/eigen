@@ -3,11 +3,17 @@ import { Shows_show } from "__generated__/Shows_show.graphql"
 import React from "react"
 import { FlatList, Image, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
 import { ShowItemContainer as ShowItem } from "./Components/ShowItem"
 
 interface Props {
   show: Shows_show
 }
+
+const Icon = styled(Image)`
+  width: 20;
+  height: 22;
+`
 
 export const Shows: React.SFC<Props> = ({ show }) => {
   const handleViewOnMap = () => {
@@ -24,7 +30,7 @@ export const Shows: React.SFC<Props> = ({ show }) => {
           <Flex alignItems="center" flexDirection="row">
             <Sans size="2">View on map</Sans>
             <Box ml={1} mr={1}>
-              <Image style={{ width: 20, height: 22 }} source={require("../../../../../../images/map.png")} />
+              <Icon source={require("../../../../../../images/map.png")} />
             </Box>
           </Flex>
         </TouchableOpacity>
