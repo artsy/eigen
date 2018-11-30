@@ -6,8 +6,11 @@ upcoming:
     - Adds AREnableMakeOfferFlow flag to Echo - ash&dlevenson
     - Adds ExchangeCurrentVersion to gate BNMO - ash
     - Add SwitchBoard path for ARFairSearchViewController - javamonn
+    - Removes extraneous OS debugging logs from Xcode - ash
   user_facing:
     - Make Offer now accessible - ash
+    - Contact Gallery button doesn't show up with Make Offer button anymore - ash
+    - Adds a cancel option to follow-up push notification prompts - ash
 
 releases:
   - version: 4.3.3
