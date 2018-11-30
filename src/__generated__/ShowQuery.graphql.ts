@@ -300,42 +300,42 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "city",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "city",
+  "name": "display",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "display",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "aspect_ratio",
   "args": null,
   "storageKey": null
 },
 v8 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "aspect_ratio",
+  "name": "exhibition_period",
   "args": null,
   "storageKey": null
 },
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "exhibition_period",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
@@ -347,7 +347,7 @@ v10 = {
   "storageKey": null
 },
 v11 = [
-  v4
+  v9
 ],
 v12 = {
   "kind": "InlineFragment",
@@ -391,7 +391,7 @@ v17 = {
   "concreteType": "Image",
   "plural": false,
   "selections": [
-    v7
+    v6
   ]
 },
 v18 = {
@@ -402,10 +402,10 @@ v18 = {
   "storageKey": null
 },
 v19 = [
-  v6
+  v5
 ],
 v20 = [
-  v4,
+  v9,
   v2
 ];
 return {
@@ -455,8 +455,14 @@ return {
         "concreteType": "Show",
         "plural": false,
         "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "status",
+            "args": null,
+            "storageKey": null
+          },
           v3,
-          v4,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -464,7 +470,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          v5,
+          v4,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -489,7 +495,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v5,
+              v4,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -505,7 +511,7 @@ return {
                 "storageKey": null
               },
               v2,
-              v6,
+              v5,
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -575,8 +581,8 @@ return {
             "plural": true,
             "selections": [
               v3,
-              v7,
-              v8
+              v6,
+              v7
             ]
           },
           {
@@ -586,14 +592,8 @@ return {
             "args": null,
             "storageKey": null
           },
+          v8,
           v9,
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "status",
-            "args": null,
-            "storageKey": null
-          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -605,11 +605,12 @@ return {
             "selections": [
               v10,
               v2,
+              v12,
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
-                  v4,
+                  v9,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -618,8 +619,7 @@ return {
                     "storageKey": null
                   }
                 ]
-              },
-              v12
+              }
             ]
           },
           {
@@ -631,7 +631,7 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              v4,
+              v9,
               v2,
               v3,
               v13,
@@ -658,8 +658,14 @@ return {
             "concreteType": "Artwork",
             "plural": true,
             "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "is_biddable",
+                "args": null,
+                "storageKey": null
+              },
               v2,
-              v3,
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -669,7 +675,7 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v8,
+                  v7,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -714,13 +720,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "is_biddable",
-                "args": null,
-                "storageKey": null
-              },
+              v3,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -893,8 +893,8 @@ return {
                     "selections": [
                       v2,
                       v3,
-                      v4,
                       v9,
+                      v8,
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -904,8 +904,8 @@ return {
                         "concreteType": "Image",
                         "plural": true,
                         "selections": [
-                          v7,
-                          v8
+                          v6,
+                          v7
                         ]
                       },
                       {
@@ -919,12 +919,12 @@ return {
                         "selections": [
                           v10,
                           v2,
-                          v12,
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",
                             "selections": v11
-                          }
+                          },
+                          v12
                         ]
                       }
                     ]
@@ -985,7 +985,7 @@ return {
                 "selections": [
                   v2,
                   v3,
-                  v4,
+                  v9,
                   v13,
                   v14,
                   v15,

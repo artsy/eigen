@@ -550,8 +550,14 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_biddable",
+                            "args": null,
+                            "storageKey": null
+                          },
                           v3,
-                          v2,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -599,13 +605,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "is_biddable",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          v2,
                           {
                             "kind": "ScalarField",
                             "alias": null,
