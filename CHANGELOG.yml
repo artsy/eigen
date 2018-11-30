@@ -8,6 +8,7 @@ upcoming:
     - Add SwitchBoard path for ARFairSearchViewController - javamonn
   user_facing:
     - Make Offer now accessible - ash
+    - "Contact Gallery" button doens't show up with "Make offer" button anymore - ash
 
 releases:
   - version: 4.3.3

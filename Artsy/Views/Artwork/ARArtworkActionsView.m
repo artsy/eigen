@@ -365,22 +365,22 @@ return [navigationButtons copy];
 }
 
 // Show if artwork is for sale but its price is hidden
-
+// Never shows if Make offer is shown.
 - (BOOL)showContactForPrice
 {
-    return (self.artwork.availability == ARArtworkAvailabilityForSale || self.artwork.availability == ARArtworkAvailabilityNotForSale) && self.artwork.isPriceHidden.boolValue;
+    return (self.artwork.availability == ARArtworkAvailabilityForSale || self.artwork.availability == ARArtworkAvailabilityNotForSale)
+        && self.artwork.isPriceHidden.boolValue
+        && ![self showMakeOfferButton];
 }
 
 // Show if we allow contacting, or the artwork is for sale and inquireable, but not acquireable and not in an auction
-
 - (BOOL)showContactButton
 {
-    return ([self showContactForPrice]
-
-//      self.artwork.forSale.boolValue ( I found an Artwork in force that was not for sale, but was contactable )
-    || (self.artwork.isInquireable.boolValue && !self.artwork.isAcquireable.boolValue))
-    && !([self showAuctionControls] || [self liveAuctionIsOngoing]);
-
+    // Note: we can't use self.artwork.forSale because some artworks aren't for sale but are still contactable.
+    BOOL inquirableButNotAcquirableAndNotInAuction = (self.artwork.isInquireable.boolValue && !self.artwork.isAcquireable.boolValue)
+        && ![self showAuctionControls] && ![self liveAuctionIsOngoing];
+    BOOL shouldShouldContactButton = [self showContactForPrice] || inquirableButNotAcquirableAndNotInAuction;
+    return shouldShouldContactButton && ![self showMakeOfferButton];
 }
 
 // Show if acquireable

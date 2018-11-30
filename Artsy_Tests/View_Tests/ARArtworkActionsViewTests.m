@@ -329,6 +329,26 @@ describe(@"with Echo config that has BNMO enabled", ^{
         [view layoutIfNeeded];
         expect(view).to.haveValidSnapshot();
     });
+
+    describe(@"contactable artwork", ^{
+        it(@"displays make offer button only", ^{
+            view.artwork = [Artwork modelWithJSON:@{
+                @"id": @"artwork-id",
+                @"title": @"Artwork Title",
+                @"availability": @"for sale",
+                @"acquireable": @(NO),
+                @"offerable": @(YES),
+                // The follow ones mark the artwork as contactable.
+                @"inquireable" : @(true),
+                @"availability" : @(ARArtworkAvailabilityForSale),
+                @"price_hidden" : @(true)
+            }];
+            [view updateUI];
+            [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+            [view layoutIfNeeded];
+            expect(view).to.haveValidSnapshot();
+        });
+    });
 });
 
 context(@"price view", ^{
