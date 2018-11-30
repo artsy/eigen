@@ -7,7 +7,6 @@ import { ShowItemContainer as ShowItem } from "./Components/ShowItem"
 
 interface Props {
   show: Shows_show
-  handleViewOnMap: () => void
 }
 
 export const Shows: React.SFC<Props> = ({ show }) => {
