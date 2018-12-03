@@ -35,6 +35,10 @@ fragment Detail_show on Show {
     city
     state
     postal_code
+    displayDaySchedules {
+      days
+      hours
+    }
     __id
     ...LocationMap_location
   }
@@ -329,7 +333,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "f87900d106b255d09f98a8020819a0ad",
+  "id": "c1c7b529eca6dfcb3c6d6d0a7c78ab13",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -391,14 +395,14 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
-              v3,
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "address",
+                "name": "postal_code",
                 "args": null,
                 "storageKey": null
               },
+              v3,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -417,9 +421,34 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "postal_code",
+                "name": "address",
                 "args": null,
                 "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "displayDaySchedules",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "FormattedDaySchedules",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "days",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "hours",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
               },
               v1,
               v5,

@@ -85,6 +85,7 @@ exports[`Registration result component renders registration complete properly 1`
         style={
           Array [
             Object {
+              "display": "flex",
               "marginBottom": 30,
             },
             undefined,
@@ -257,6 +258,7 @@ exports[`Registration result component renders registration error properly 1`] =
         style={
           Array [
             Object {
+              "display": "flex",
               "marginBottom": 30,
             },
             undefined,
@@ -446,6 +448,7 @@ exports[`Registration result component renders registration pending properly 1`]
         style={
           Array [
             Object {
+              "display": "flex",
               "marginBottom": 30,
             },
             undefined,

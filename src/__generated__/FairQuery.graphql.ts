@@ -31,6 +31,7 @@ fragment Fair_fair on Fair {
   ...FairHeader_fair
   id
   name
+  hours
   location {
     ...LocationMap_location
     __id
@@ -138,7 +139,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairQuery",
-  "id": "b61b7770e0687d264b366076c18cd9f3",
+  "id": "d0b06c7b6252cb5f0fee1533f583e3fe",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -282,6 +283,13 @@ return {
             "storageKey": null
           },
           v2,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "hours",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,

@@ -8,6 +8,7 @@ export type Fair_fair$ref = typeof _Fair_fair$ref;
 export type Fair_fair = {
     readonly id: string;
     readonly name: string | null;
+    readonly hours: string | null;
     readonly location: ({
         readonly " $fragmentRefs": LocationMap_location$ref;
     }) | null;
@@ -58,6 +59,13 @@ return {
     },
     v0,
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "hours",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "LinkedField",
       "alias": null,
       "name": "location",
@@ -102,5 +110,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '63b5a40cad3894321204eb0b020effe4';
+(node as any).hash = '605a589dda65dd1c4c9bea3c1504f5c6';
 export default node;
