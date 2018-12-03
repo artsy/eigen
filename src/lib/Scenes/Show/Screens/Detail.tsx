@@ -4,6 +4,7 @@ import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
+import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { ArtistsContainer as Artists } from "../Components/Artists"
 import { ArtworksContainer as Artworks } from "../Components/Artworks"
@@ -21,10 +22,11 @@ interface State {
     type: "location" | "artworks" | "artists" | "shows"
     data: any
   }>
+  extraData?: { animatedValue: { height: number } }
 }
 
 export class Detail extends React.Component<Props, State> {
-  state = {
+  state: State = {
     sections: [],
   }
 
@@ -38,6 +40,13 @@ export class Detail extends React.Component<Props, State> {
         location: show.location,
         partnerName: show.partner.name,
         partnerType: show.partner.type,
+      },
+    })
+
+    sections.push({
+      type: "hours",
+      data: {
+        hours: show.location.displayDaySchedules,
       },
     })
 
@@ -59,11 +68,30 @@ export class Detail extends React.Component<Props, State> {
     this.setState({ sections })
   }
 
-  renderItemSeparator = () => (
-    <Box py={2} px={2}>
-      <Separator />
-    </Box>
-  )
+  renderItemSeparator = item => {
+    if (item && item.leadingItem.type === "location") {
+      return <Box />
+    } else {
+      return (
+        <Box py={2} px={2}>
+          <Separator />
+        </Box>
+      )
+    }
+  }
+
+  handleAnimationFrame = animatedValue => {
+    /**
+     * If children change their size on animation (e.g. HoursCollapsible), we need a sentinel value
+     * in state in order to trigger a re-render, as FlatList statically sizes child cells.
+     */
+    this.setState({
+      extraData: {
+        ...this.state.extraData,
+        animatedValue,
+      },
+    })
+  }
 
   renderItem = ({ item: { data, type } }, onViewAllArtistsPressed) => {
     switch (type) {
@@ -75,6 +103,8 @@ export class Detail extends React.Component<Props, State> {
         return <Artists show={data} onViewAllArtistsPressed={onViewAllArtistsPressed} />
       case "shows":
         return <Shows show={data} />
+      case "hours":
+        return <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} />
       default:
         return null
     }
@@ -87,9 +117,11 @@ export class Detail extends React.Component<Props, State> {
 
   render() {
     const { show, onMoreInformationPressed, onViewAllArtistsPressed } = this.props
+    const { extraData, sections } = this.state
     return (
       <FlatList
-        data={this.state.sections}
+        data={sections}
+        extraData={extraData}
         ListHeaderComponent={
           <>
             <ShowHeader
@@ -122,6 +154,10 @@ export const DetailContainer = createFragmentContainer(
         city
         state
         postal_code
+        displayDaySchedules {
+          days
+          hours
+        }
       }
       images {
         id

@@ -1,38 +1,43 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
 
+import { Separator, Theme } from "@artsy/palette"
 import { ScrollView } from "react-native"
-import { BiddingThemeProvider } from "../BiddingThemeProvider"
-import { Divider } from "../Divider"
 import { Markdown } from "../Markdown"
 
 storiesOf("App Style/Utils").add("Markdown", () => (
-  <BiddingThemeProvider>
-    <ScrollView>
+  <ScrollView>
+    <Theme>
       <Markdown m={4} alignItems="center">
         Another bidder placed a higher max bid
         {"\n"}
         or the same max bid before you did.
       </Markdown>
+    </Theme>
 
-      <Divider />
+    <Separator />
 
+    <Theme>
       <Markdown m={4} alignItems="center">
         Your bid didn’t meet the reserve price
         {"\n"}
         for this work.
       </Markdown>
+    </Theme>
 
-      <Divider />
+    <Separator />
 
+    <Theme>
       <Markdown m={4} alignItems="center">
         Sorry, your bid wasn’t received
         {"\n"}
         before the lot closed.
       </Markdown>
+    </Theme>
 
-      <Divider />
+    <Separator />
 
+    <Theme>
       <Markdown m={4} alignItems="center">
         Sorry, your bid wasn’t received before
         {"\n"}
@@ -40,9 +45,11 @@ storiesOf("App Style/Utils").add("Markdown", () => (
         {"\n"}
         bidding, please [join the live auction](http://www.artsy.net).
       </Markdown>
+    </Theme>
 
-      <Divider />
+    <Separator />
 
+    <Theme>
       <Markdown m={4} alignItems="center">
         Your bid couldn’t be placed. Please
         {"\n"}
@@ -50,9 +57,11 @@ storiesOf("App Style/Utils").add("Markdown", () => (
         {"\n"}
         and try again.
       </Markdown>
+    </Theme>
 
-      <Divider />
+    <Separator />
 
+    <Theme>
       <Markdown m={4} alignItems="center">
         Your bid can’t be placed at this time.
         {"\n"}
@@ -60,9 +69,11 @@ storiesOf("App Style/Utils").add("Markdown", () => (
         {"\n"}
         more information.
       </Markdown>
+    </Theme>
 
-      <Divider />
+    <Separator />
 
+    <Theme>
       <Markdown m={4} alignItems="center">
         We’re receiving a high volume of traffic
         {"\n"}
@@ -73,6 +84,6 @@ storiesOf("App Style/Utils").add("Markdown", () => (
         {"\n"}
          please contact [support@artsy.net](mailto:support@artsy.net).
       </Markdown>
-    </ScrollView>
-  </BiddingThemeProvider>
+    </Theme>
+  </ScrollView>
 ))

@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@artsy/palette@^2.21.1":
-  version "2.21.1"
-  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-2.21.1.tgz#fd8430df93d0981f814d5c97fff8340bbbd98eab"
-  integrity sha512-hF/GrPPjP+w8TGAbfBVwvuKL8JIOUkS2HDSkALWZdVrr9qiBKRfVZriu9w0JTBBzMOuRC7iWYndDo7ufyyjXLg==
+"@artsy/palette@^2.23.0":
+  version "2.23.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette/-/palette-2.23.0.tgz#1b1231f0f17b1022a6b663091a959ffd383aa2f2"
+  integrity sha512-cVgnr7PhPm0kF1BRJfYX+Eb1Woiv8krpOTPYxojppliW9fusi3MgHda6EH2ga0RL+d7mRUJSQbgR1LxMEphjGA==
   dependencies:
     rc-slider "^8.6.2"
     react "^16.5.0"
@@ -464,12 +464,13 @@
     core-js "^2.5.7"
     regenerator-runtime "^0.11.1"
 
-"@babel/runtime@^7.0.0":
-  version "7.1.5"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.1.5.tgz#4170907641cf1f61508f563ece3725150cc6fe39"
-  integrity sha512-xKnPpXG/pvK1B90JkwwxSGii90rQGKtzcMt2gI5G6+M0REXaq6rOHsGC2ay6/d0Uje7zzvSzjEzfR3ENhFlrfA==
+"@babel/runtime@7.0.0-beta.51":
+  version "7.0.0-beta.51"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0-beta.51.tgz#48b8ed18307034c6620f643514650ca2ccc0165a"
+  integrity sha1-SLjtGDBwNMZiD2Q1FGUMoszAFlo=
   dependencies:
-    regenerator-runtime "^0.12.0"
+    core-js "^2.5.7"
+    regenerator-runtime "^0.11.1"
 
 "@babel/runtime@^7.1.2":
   version "7.1.2"
@@ -11483,12 +11484,12 @@ react-split-pane@^0.1.74:
     prop-types "^15.5.10"
     react-style-proptype "^3.0.0"
 
-react-spring@^5.7.2:
-  version "5.9.2"
-  resolved "https://registry.yarnpkg.com/react-spring/-/react-spring-5.9.2.tgz#4c4e048ffce24755eaa60acd2f3fe4a3d686ef16"
-  integrity sha512-ZDCBm4OaYuuSER3k7EELn9AKGs98HI23qMRL93zUUw6AlyBmqoU+eAfouGRx47gVkZkH+hArJXBHf4UGYpH9Og==
+react-spring@5.5, react-spring@^5.7.2:
+  version "5.5.4"
+  resolved "https://registry.yarnpkg.com/react-spring/-/react-spring-5.5.4.tgz#1dd48057172f7f6a411f83e8fd17b36cca0d5a83"
+  integrity sha512-1KVao0Kw5hfZ/zFxqEakghpEPhlOqvZUQ9aUV0zRT6gt9jDFyDWvzPeVpp9YdDbLT0AKbc2J+UVuQUUfiuj80g==
   dependencies:
-    "@babel/runtime" "^7.0.0"
+    "@babel/runtime" "7.0.0-beta.51"
 
 react-storybooks-relay-container@^1.0.0:
   version "1.1.2"

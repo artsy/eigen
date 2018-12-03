@@ -1080,18 +1080,31 @@ type ArtworkContextPartnerShow implements Node {
   _id: String!
   cached: Int
   artists: [Artist]
-  artworks(
-    all: Boolean
 
+  # The artworks featured in the show
+  artworks(
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
     for_sale: Boolean
     published: Boolean = true
+    all: Boolean
     page: Int = 1
 
     # Number of artworks to return
     size: Int = 25
   ): [Artwork]
+
+  # A connection of artworks featured in the show
+  artworksConnection(
+    # List of artwork IDs to exclude from the response (irrespective of size)
+    exclude: [String]
+    for_sale: Boolean
+    published: Boolean = true
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
   counts: PartnerShowCounts
   cover_image: Image
   created_at(
@@ -2185,6 +2198,14 @@ type BuyOrder implements Order {
   ): String
 }
 
+enum CancelReasonType {
+  SELLER_LAPSED
+  SELLER_REJECTED_OFFER_TOO_LOW
+  SELLER_REJECTED_SHIPPING_UNAVAILABLE
+  SELLER_REJECTED_ARTWORK_UNAVAILABLE
+  SELLER_REJECTED_OTHER
+}
+
 # Fields of partner category (currently from Gravity).
 type Category {
   id: String!
@@ -3264,6 +3285,11 @@ enum Format {
   markdown @deprecated(reason: "deprecated")
 }
 
+type FormattedDaySchedules {
+  days: String
+  hours: String
+}
+
 # The `FormattedNumber` type represents a number that can optionally be returnedas
 # a formatted String. It does not try to coerce the type.
 scalar FormattedNumber
@@ -3681,18 +3707,31 @@ type HighlightedShow implements Node {
   _id: String!
   cached: Int
   artists: [Artist]
-  artworks(
-    all: Boolean
 
+  # The artworks featured in the show
+  artworks(
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
     for_sale: Boolean
     published: Boolean = true
+    all: Boolean
     page: Int = 1
 
     # Number of artworks to return
     size: Int = 25
   ): [Artwork]
+
+  # A connection of artworks featured in the show
+  artworksConnection(
+    # List of artwork IDs to exclude from the response (irrespective of size)
+    exclude: [String]
+    for_sale: Boolean
+    published: Boolean = true
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
   counts: PartnerShowCounts
   cover_image: Image
   created_at(
@@ -4264,20 +4303,6 @@ type Image {
   versions: [String]
 }
 
-input InitialOfferInput {
-  # ID of order
-  orderId: ID!
-
-  # Offer price
-  offerPrice: MoneyInput
-  clientMutationId: String
-}
-
-type InitialOfferPayload {
-  orderOrError: OrderOrFailureUnionType
-  clientMutationId: String
-}
-
 enum Intents {
   BUY_ART_AND_DESIGN
   SELL_ART_AND_DESIGN
@@ -4346,6 +4371,10 @@ type Location {
   country: String
   coordinates: LatLng
   day_schedules: [DaySchedule]
+
+  # Alternate Markdown-supporting free text representation of a location's opening hours
+  day_schedule_text: String
+  displayDaySchedules: [FormattedDaySchedules]
   display: String
   phone: String
   postal_code: String
@@ -4793,6 +4822,9 @@ type Mutation {
   # Approves an order with payment
   ecommerceSellerAcceptOffer(input: sellerAcceptOfferInput!): sellerAcceptOfferPayload
 
+  # Rejects an offer
+  ecommerceSellerRejectOffer(input: sellerRejectOfferInput!): sellerRejectOfferPayload
+
   # Confirms pickup for an ecommerce order
   ecommerceConfirmPickup(input: ConfirmPickupInput!): ConfirmPickupPayload
 
@@ -4831,10 +4863,6 @@ type Mutation {
 
   # Submits an order
   submitOrder(input: SubmitOrderInput!): SubmitOrderPayload
-
-  # Deprecated.
-  ecommerceInitialOffer(input: InitialOfferInput!): InitialOfferPayload
-    @deprecated(reason: "Use AddInitialOfferToOrder instead.")
   recordArtworkView(input: RecordArtworkViewInput): RecordArtworkViewPayload
 }
 
@@ -4914,6 +4942,9 @@ type Offer {
   # The type of the party who made the offer
   from: OrderParty
 
+  # the order participant who created the offer
+  fromParticipant: OrderParticipantEnum
+
   # Offer amount in cents
   amountCents: Int
 
@@ -4958,6 +4989,20 @@ type Offer {
 
   # The order on which the offer was made
   order: Order
+
+  # Total of amount, shipping and tax in cents
+  buyerTotalCents: Int
+
+  # A formatted price with various currency formatting options.
+  buyerTotal(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
 
   # The order on which the offer was made
   respondsTo: Offer
@@ -5688,7 +5733,18 @@ type Partner implements Node {
   # A type-specific Gravity Mongo Document ID.
   _id: String!
   cached: Int
-  artworks(size: Int, for_sale: Boolean, sort: ArtworkSorts, exclude: [String]): [Artwork]
+  artworks(for_sale: Boolean, sort: ArtworkSorts, exclude: [String], size: Int): [Artwork]
+
+  # A connection of artworks from a Partner.
+  artworksConnection(
+    for_sale: Boolean
+    sort: ArtworkSorts
+    exclude: [String]
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
   categories: [Category]
   collecting_institution: String
   contact_message: String @deprecated(reason: "Prefer artwork contact_message to handle availability-based prompts.")
@@ -5919,18 +5975,31 @@ type PartnerShow implements Node {
   _id: String!
   cached: Int
   artists: [Artist]
-  artworks(
-    all: Boolean
 
+  # The artworks featured in the show
+  artworks(
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
     for_sale: Boolean
     published: Boolean = true
+    all: Boolean
     page: Int = 1
 
     # Number of artworks to return
     size: Int = 25
   ): [Artwork]
+
+  # A connection of artworks featured in the show
+  artworksConnection(
+    # List of artwork IDs to exclude from the response (irrespective of size)
+    exclude: [String]
+    for_sale: Boolean
+    published: Boolean = true
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtworkConnection
   counts: PartnerShowCounts
   cover_image: Image
   created_at(
@@ -7130,6 +7199,20 @@ type sellerAcceptOfferPayload {
   clientMutationId: String
 }
 
+input sellerRejectOfferInput {
+  # Offer ID
+  offerId: String!
+
+  # Reason for rejecting offer
+  rejectReason: CancelReasonType
+  clientMutationId: String
+}
+
+type sellerRejectOfferPayload {
+  orderOrError: OrderOrFailureUnionType
+  clientMutationId: String
+}
+
 input SendConversationMessageMutationInput {
   # The id of the conversation to be updated
   id: String!
@@ -7253,28 +7336,23 @@ type Show implements Node {
 
   # The artworks featured in this show
   artworks(
-    # Number of artworks to return
-    size: Int = 25
-    published: Boolean = true
-    page: Int = 1
-    all: Boolean
-    for_sale: Boolean
-
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
+    for_sale: Boolean
+    published: Boolean = true
+    all: Boolean
+    page: Int = 1
+
+    # Number of artworks to return
+    size: Int = 25
   ): [Artwork] @deprecated(reason: "Use artworks_connection instead")
 
   # The artworks featured in the show
   artworks_connection(
-    # Number of artworks to return
-    size: Int = 25
-    published: Boolean = true
-    page: Int = 1
-    all: Boolean
-    for_sale: Boolean
-
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
+    for_sale: Boolean
+    published: Boolean = true
     after: String
     first: Int
     before: String
@@ -7344,6 +7422,9 @@ type Show implements Node {
 
   # Is it a stubbed show?
   is_reference: Boolean
+
+  # Is it an outsourced local discovery stub show?
+  is_local_discovery: Boolean
 
   # Whether the show is in a fair, group or solo
   kind: String

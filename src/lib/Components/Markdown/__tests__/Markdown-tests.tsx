@@ -2,8 +2,8 @@ import React from "react"
 import { Text } from "react-native"
 import * as renderer from "react-test-renderer"
 
-import { BiddingThemeProvider } from "../BiddingThemeProvider"
-import { LinkText } from "../LinkText"
+import { Theme } from "@artsy/palette"
+import { LinkText } from "../../Text/LinkText"
 import { Markdown } from "../Markdown"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({ presentModalViewController: jest.fn() }))
@@ -17,14 +17,14 @@ beforeEach(() => {
 
 it("renders multiple paragraphs as Text elements", () => {
   const markdown = renderer.create(
-    <BiddingThemeProvider>
+    <Theme>
       <Markdown>
         paragraph 1 has some text.
         {"\n"}
         {"\n"}
         paragraph 2 also has text.
       </Markdown>
-    </BiddingThemeProvider>
+    </Theme>
   )
 
   expect(markdown.root.findAllByType(Text).length).toEqual(2)
@@ -34,7 +34,7 @@ it("renders multiple paragraphs as Text elements", () => {
 
 it("renders links as LinkText", () => {
   const markdown = renderer.create(
-    <BiddingThemeProvider>
+    <Theme>
       <Markdown>
         Sorry, your bid wasn’t received before
         {"\n"}
@@ -42,7 +42,7 @@ it("renders links as LinkText", () => {
         {"\n"}
         bidding, please [join the live auction](http://www.artsy.net).
       </Markdown>
-    </BiddingThemeProvider>
+    </Theme>
   )
 
   expect(markdown.root.findAllByType(LinkText).length).toEqual(1)
@@ -55,7 +55,7 @@ it("renders links as LinkText", () => {
 
 it("renders mailto links as LinkText", () => {
   const markdown = renderer.create(
-    <BiddingThemeProvider>
+    <Theme>
       <Markdown>
         Your bid can’t be placed at this time.
         {"\n"}
@@ -63,7 +63,7 @@ it("renders mailto links as LinkText", () => {
         {"\n"}
         more information.
       </Markdown>
-    </BiddingThemeProvider>
+    </Theme>
   )
 
   expect(markdown.root.findAllByType(LinkText).length).toEqual(1)
