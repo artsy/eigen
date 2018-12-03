@@ -15,7 +15,7 @@ export class Artworks extends React.Component<Props> {
     }
     return (
       <>
-        <Serif size="5" my={1}>
+        <Serif size="6" my={1}>
           All works
         </Serif>
         <GenericGrid artworks={this.props.show.artworks} />

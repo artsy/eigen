@@ -8,14 +8,14 @@ Array [
     className="sc-bwzfXH uTxCW"
     ellipsizeMode="tail"
     fontFamily="AGaramondPro-Regular"
-    fontSize="22px"
+    fontSize="26px"
     lineHeight="32px"
     my={1}
     style={
       Array [
         Object {
           "fontFamily": "AGaramondPro-Regular",
-          "fontSize": 22,
+          "fontSize": 26,
           "lineHeight": 32,
           "marginBottom": 4,
           "marginTop": 4,

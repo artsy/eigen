@@ -2,27 +2,126 @@
 
 exports[`looks correct when rendered 1`] = `
 Array [
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    className="sc-bwzfXH uTxCW"
-    ellipsizeMode="tail"
-    fontFamily="AGaramondPro-Regular"
-    fontSize="22px"
-    lineHeight="32px"
+  <View
+    alignItems="center"
+    flexDirection="row"
+    justifyContent="space-between"
     style={
       Array [
         Object {
-          "fontFamily": "AGaramondPro-Regular",
-          "fontSize": 22,
-          "lineHeight": 32,
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
         },
         undefined,
       ]
     }
   >
-    More Shows
-  </Text>,
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bwzfXH uTxCW"
+      ellipsizeMode="tail"
+      fontFamily="AGaramondPro-Regular"
+      fontSize="22px"
+      lineHeight="32px"
+      style={
+        Array [
+          Object {
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 22,
+            "lineHeight": 32,
+          },
+          undefined,
+        ]
+      }
+    >
+      More Shows
+    </Text>
+    <View
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        alignItems="center"
+        flexDirection="row"
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "display": "flex",
+              "flexDirection": "row",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Regular"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+          View on map
+        </Text>
+        <View
+          ml={1}
+          mr={1}
+          style={
+            Array [
+              Object {
+                "marginLeft": 10,
+                "marginRight": 10,
+              },
+              undefined,
+            ]
+          }
+        >
+          <Image
+            source={
+              Object {
+                "testUri": "../../../images/map.png",
+              }
+            }
+            style={
+              Array [
+                Object {
+                  "height": 22,
+                  "width": 20,
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
+      </View>
+    </View>
+  </View>,
   <RCTScrollView
     data={
       Array [
