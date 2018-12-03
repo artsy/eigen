@@ -30,6 +30,7 @@ query FairQuery(
 fragment Fair_fair on Fair {
   ...FairHeader_fair
   id
+  name
   location {
     ...LocationMap_location
     __id
@@ -137,7 +138,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairQuery",
-  "id": "95496006afa1b2479e98492aa06a14f4",
+  "id": "b61b7770e0687d264b366076c18cd9f3",
   "text": null,
   "metadata": {},
   "fragment": {

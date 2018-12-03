@@ -7,6 +7,7 @@ declare const _Fair_fair$ref: unique symbol;
 export type Fair_fair$ref = typeof _Fair_fair$ref;
 export type Fair_fair = {
     readonly id: string;
+    readonly name: string | null;
     readonly location: ({
         readonly " $fragmentRefs": LocationMap_location$ref;
     }) | null;
@@ -23,6 +24,13 @@ export type Fair_fair = {
 
 const node: ConcreteFragment = (function(){
 var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
@@ -48,6 +56,7 @@ return {
       "args": null,
       "storageKey": null
     },
+    v0,
     {
       "kind": "LinkedField",
       "alias": null,
@@ -62,7 +71,7 @@ return {
           "name": "LocationMap_location",
           "args": null
         },
-        v0
+        v1
       ]
     },
     {
@@ -83,21 +92,15 @@ return {
           "concreteType": "Profile",
           "plural": false,
           "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "name",
-              "args": null,
-              "storageKey": null
-            },
-            v0
+            v0,
+            v1
           ]
         }
       ]
     },
-    v0
+    v1
   ]
 };
 })();
-(node as any).hash = '8164c9d686b2fb9adaa7c709918f7d02';
+(node as any).hash = '63b5a40cad3894321204eb0b020effe4';
 export default node;

@@ -26,6 +26,7 @@ query indexTestsQuery {
 fragment Fair_fair on Fair {
   ...FairHeader_fair
   id
+  name
   location {
     ...LocationMap_location
     __id
@@ -125,7 +126,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "indexTestsQuery",
-  "id": "8744684dd60962a951fe8c744b4eb733",
+  "id": "2a728cbb1cd26251fbc4f1b589b424b9",
   "text": null,
   "metadata": {},
   "fragment": {
