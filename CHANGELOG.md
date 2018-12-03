@@ -18,9 +18,15 @@
 
 - Adds styled LocationMap with custom pins - kieran
 - Refactor auctions countdown timer, add fair countdown timer - javamonn
+- Adds the mapBoxAPIClientKey to cocoapods
 - Updates Show detail view styles - luc
+- Styles artists list - Kieran
 - Updates @artsy/palette (2.21.1) - javamonn
 - Refactor More Shows section - luc
+- Styles fair header view - luc
+- Increases size of pin for LocationMap and zooms in slighlty - kieran
+- Adds extra checking around sale artwork messaging in artwork grids - ash
+- Add fair-scoped search link to native Eigen screen - javamonn
 
 ### 1.7.4
 

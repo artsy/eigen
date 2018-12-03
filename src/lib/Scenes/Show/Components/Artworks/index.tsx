@@ -31,7 +31,7 @@ export const ArtworksContainer = createFragmentContainer(Artworks, {
   show: graphql`
     fragment Artworks_show on Show {
       __id
-      artworks {
+      artworks(size: 6) {
         ...GenericGrid_artworks
       }
     }

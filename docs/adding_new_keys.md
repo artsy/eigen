@@ -97,6 +97,8 @@ Make sure we have imported they keys (this should already be done) and initializ
   # ...
 ```
 
+Now run `bundle exec pod install` to compile the key.
+
 ---
 
 #### 4. Use that configured key in a `react-native` component.

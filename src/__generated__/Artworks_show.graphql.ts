@@ -34,8 +34,15 @@ return {
       "kind": "LinkedField",
       "alias": null,
       "name": "artworks",
-      "storageKey": null,
-      "args": null,
+      "storageKey": "artworks(size:6)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "size",
+          "value": 6,
+          "type": "Int"
+        }
+      ],
       "concreteType": "Artwork",
       "plural": true,
       "selections": [
@@ -50,5 +57,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'ee953b6e7c6519b43f08a41934fcf621';
+(node as any).hash = '6437e59621c301789c2fc9994ae4771f';
 export default node;

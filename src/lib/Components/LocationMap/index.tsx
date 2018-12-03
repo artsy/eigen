@@ -2,11 +2,12 @@ import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import React from "react"
+import { NativeModules } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
+const Emission = NativeModules.Emission || {}
 
-// TODO: This is a testing access token, will need to regenerate and move to cocoapods-keys
-Mapbox.setAccessToken("pk.eyJ1IjoiYXJ0c3lpdCIsImEiOiJjam51dTJibTEwNHNpM3BxamV4dDRibzJhIn0.bhFMJt1mqxNDrE1xSAtxSw")
+Mapbox.setAccessToken(Emission.mapBoxAPIClientKey)
 
 const Map = styled(Mapbox.MapView)`
   height: 90;
@@ -17,7 +18,7 @@ const MapWrapper = styled(Flex)`
   border-color: ${color("black10")};
 `
 
-enum PartnerType {
+export enum PartnerType {
   gallery = "Gallery",
   museum = "Museum",
   fair = "Fair",
@@ -34,7 +35,7 @@ export class LocationMap extends React.Component<Props> {
     return Mapbox.StyleSheet.create({
       symbol: {
         iconImage: this.returnPinType(this.props.partnerType),
-        iconSize: 1,
+        iconSize: 1.4,
         iconOffset: [0, 0],
         iconAllowOverlap: true,
       },
@@ -72,7 +73,7 @@ export class LocationMap extends React.Component<Props> {
           key={lng}
           styleURL={Mapbox.StyleURL.Light}
           centerCoordinate={[lng, lat]}
-          zoomLevel={13}
+          zoomLevel={14}
           logoEnabled={false}
           scrollEnabled={false}
           attributionEnabled={false}

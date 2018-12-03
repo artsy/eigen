@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly, nullable) NSString *stripePublishableKey;
 @property (nonatomic, copy, readonly, nullable) NSString *sentryDSN;
 @property (nonatomic, copy, readonly, nullable) NSString *googleMapsAPIKey;
+@property (nonatomic, copy, readonly, nullable) NSString *mapBoxAPIClientKey;
 
 // Server configuration
 @property (nonatomic, copy, readonly) NSString *gravityURL;
@@ -35,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
                      sentryDSN:(nullable NSString *)sentryDSN
           stripePublishableKey:(nullable NSString *)stripePublishableKey
               googleMapsAPIKey:(nullable NSString *)googleAPIKey
+            mapBoxAPIClientKey:(nullable NSString *)mapBoxAPIClientKey
                     gravityURL:(NSString *)gravity
                 metaphysicsURL:(NSString *)metaphysics
                  predictionURL:(NSString *)prediction
