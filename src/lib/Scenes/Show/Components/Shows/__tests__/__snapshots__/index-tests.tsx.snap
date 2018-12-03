@@ -109,10 +109,13 @@ Array [
               }
             }
             style={
-              Object {
-                "height": 22,
-                "width": 20,
-              }
+              Array [
+                Object {
+                  "height": 22,
+                  "width": 20,
+                },
+                undefined,
+              ]
             }
           />
         </View>
