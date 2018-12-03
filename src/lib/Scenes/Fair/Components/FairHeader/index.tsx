@@ -62,7 +62,7 @@ export class FairHeader extends React.Component<Props> {
           <Overlay />
           <Flex flexDirection="row" justifyContent="center" alignItems="center">
             <Flex flexDirection="column" flexGrow={1}>
-              <Logo source={{ uri: organizer.profile.icon.url }} />
+              {organizer && <Logo source={{ uri: organizer.profile.icon.url }} />}
               <Sans size="3t" weight="medium" textAlign="center" color="white100">
                 {name}
               </Sans>

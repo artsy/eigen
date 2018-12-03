@@ -21,12 +21,14 @@ export class SearchLink extends React.Component<Props> {
 
   render() {
     return (
-      <Box pl={2} pr={2}>
+      <Box>
         <TouchableWithoutFeedback onPress={this.handlePress}>
           <BorderBox justifyContent="center" alignItems="center" flexDirection="row" p={1}>
             <Icon source={require("../../../../../images/SearchButton.png")} />
             <Spacer width={12} />
-            <Sans size="3">Find Exhibitors and Artists</Sans>
+            <Sans size="3" weight="medium">
+              Find Exhibitors and Artists
+            </Sans>
           </BorderBox>
         </TouchableWithoutFeedback>
       </Box>

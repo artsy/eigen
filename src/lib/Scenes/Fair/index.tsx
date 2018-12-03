@@ -1,4 +1,4 @@
-import { Theme } from "@artsy/palette"
+import { Box, Separator, Theme } from "@artsy/palette"
 import { Fair_fair } from "__generated__/Fair_fair.graphql"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
@@ -25,7 +25,7 @@ export class Fair extends React.Component<Props> {
       type: "location",
       data: {
         location: fair.location,
-        partnerName: fair.organizer.profile.name,
+        partnerName: !!fair.organizer ? fair.organizer.profile.name : fair.name,
         partnerType: PartnerType.fair,
       },
     })
@@ -40,6 +40,23 @@ export class Fair extends React.Component<Props> {
     this.setState({ sections })
   }
 
+  renderItemSeparator = () => (
+    <Box py={2} px={2}>
+      <Separator />
+    </Box>
+  )
+
+  renderItem = ({ item: { data, type } }) => {
+    switch (type) {
+      case "location":
+        return <LocationMap {...data} />
+      case "search":
+        return <SearchLink {...data} />
+      default:
+        return null
+    }
+  }
+
   render() {
     const { fair } = this.props
 
@@ -49,16 +66,7 @@ export class Fair extends React.Component<Props> {
           keyExtractor={(item, index) => item.type + String(index)}
           data={this.state.sections}
           ListHeaderComponent={<FairHeader fair={fair} />}
-          renderItem={({ item: { data, type } }) => {
-            switch (type) {
-              case "location":
-                return <LocationMap {...data} />
-              case "search":
-                return <SearchLink {...data} />
-              default:
-                return null
-            }
-          }}
+          renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
         />
       </Theme>
     )
@@ -71,6 +79,8 @@ export default createFragmentContainer(
     fragment Fair_fair on Fair {
       ...FairHeader_fair
       id
+      name
+
       location {
         ...LocationMap_location
       }
