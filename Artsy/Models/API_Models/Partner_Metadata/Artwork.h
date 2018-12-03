@@ -84,6 +84,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *saleMessage;
 
+/// An artwork is BuyNowable if it isAcquirable but doesn't have multiple editions.
+@property (nonatomic, assign, readonly) BOOL isBuyNowable;
+
 @property (nonatomic, copy, readonly) NSNumber *isAcquireable;
 @property (nonatomic, copy, readonly) NSNumber *isInquireable;
 @property (nonatomic, copy, readonly) NSNumber *isOfferable;
