@@ -33,6 +33,15 @@ const RootContainer: React.SFC<any> = ({ Component, fairID }) => {
   )
 }
 
-storiesOf("Fairs").add("Ink Miami 2018", () => {
-  return <RootContainer Component={Fair} fairID="ink-miami-2018" />
-})
+storiesOf("Fairs")
+  .add("Ink Miami 2018", () => {
+    return <RootContainer Component={Fair} fairID="ink-miami-2018" />
+  })
+  .add("West Bund 2018", () => {
+    return <RootContainer Component={Fair} fairID="west-bund-art-and-design-2018" />
+  })
+  .add("Art Basel Miami 2018", () => {
+    return <RootContainer Component={Fair} fairID="art-basel-in-miami-beach-2018" />
+  })
+
+// art-basel-in-miami-beach-2018
