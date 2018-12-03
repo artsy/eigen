@@ -13,6 +13,7 @@ import { ShowsContainer as Shows } from "../Components/Shows"
 interface Props extends ViewProperties {
   show: Detail_show
   onMoreInformationPressed: () => void
+  onViewAllArtistsPressed: () => void
 }
 
 interface State {
@@ -64,14 +65,14 @@ export class Detail extends React.Component<Props, State> {
     </Box>
   )
 
-  renderItem = ({ item: { data, type } }) => {
+  renderItem = ({ item: { data, type } }, onViewAllArtistsPressed) => {
     switch (type) {
       case "location":
         return <LocationMap {...data} />
       case "artworks":
         return <Artworks show={data} />
       case "artists":
-        return <Artists show={data} />
+        return <Artists show={data} onViewAllArtistsPressed={onViewAllArtistsPressed} />
       case "shows":
         return <Shows show={data} />
       default:
@@ -85,7 +86,7 @@ export class Detail extends React.Component<Props, State> {
   }
 
   render() {
-    const { show, onMoreInformationPressed } = this.props
+    const { show, onMoreInformationPressed, onViewAllArtistsPressed } = this.props
     return (
       <FlatList
         data={this.state.sections}
@@ -99,7 +100,7 @@ export class Detail extends React.Component<Props, State> {
           </>
         }
         ItemSeparatorComponent={this.renderItemSeparator}
-        renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+        renderItem={item => <Box px={2}>{this.renderItem(item, onViewAllArtistsPressed)}</Box>}
         keyExtractor={(item, index) => item.type + String(index)}
       />
     )

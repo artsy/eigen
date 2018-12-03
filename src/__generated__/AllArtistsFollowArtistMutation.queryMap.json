@@ -1,0 +1,3 @@
+{
+  "3779385c2038ed723b8f7291dde06e9b": "mutation AllArtistsFollowArtistMutation(\n  $input: FollowArtistInput!\n) {\n  followArtist(input: $input) {\n    artist {\n      __id\n      is_followed\n    }\n  }\n}\n"
+}

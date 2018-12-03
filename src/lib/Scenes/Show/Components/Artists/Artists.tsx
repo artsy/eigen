@@ -1,16 +1,17 @@
 import { Sans, Serif, Spacer } from "@artsy/palette"
-import { get, take } from "lodash"
-import React from "react"
-import { TouchableOpacity } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-import { ArtistListItem } from "./Components/ArtistListItem"
-
 import { Artists_show } from "__generated__/Artists_show.graphql"
 import { ArtistsFollowArtistMutation } from "__generated__/ArtistsFollowArtistMutation.graphql"
+import { get, take } from "lodash"
+import React from "react"
+import { NavigatorIOS, TouchableOpacity } from "react-native"
+import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { AllArtists } from "../../Screens/AllArtists"
+import { ArtistListItem } from "./Components/ArtistListItem"
 
 interface Props {
   show: Artists_show
   relay: RelayProp
+  onViewAllArtistsPressed: () => void
 }
 
 interface State {
@@ -18,8 +19,22 @@ interface State {
 }
 
 export class Artists extends React.Component<Props, State> {
+  navigator?: NavigatorIOS
+
   state = {
     isFollowedChanging: {},
+  }
+
+  handleViewAllArtists = () => {
+    if (!this.navigator) {
+      throw new Error("navigator is undefined")
+    }
+
+    this.navigator.push({
+      component: AllArtists,
+      title: "",
+      passProps: this.props,
+    })
   }
 
   handleFollowArtist = ({ id, __id, is_followed }) => {
@@ -76,16 +91,11 @@ export class Artists extends React.Component<Props, State> {
 
   render() {
     const { isFollowedChanging } = this.state
-    const { show } = this.props
+    const { show, onViewAllArtistsPressed } = this.props
     const artistsShown = 5
 
     const artists = get(show, "artists", [])
     const items: Artists_show["artists"] = take(artists, artistsShown)
-
-    const viewAllArtists = () => {
-      // TODO: Add button functionality
-      console.log("View all artists pressed")
-    }
 
     return (
       <>
@@ -113,7 +123,7 @@ export class Artists extends React.Component<Props, State> {
         {artists.length > artistsShown && (
           <>
             <Spacer m={1} />
-            <TouchableOpacity onPress={() => viewAllArtists()}>
+            <TouchableOpacity onPress={() => onViewAllArtistsPressed()}>
               <Sans size="3" my={2} weight="medium">
                 View all artists
               </Sans>
