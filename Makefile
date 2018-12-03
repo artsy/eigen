@@ -56,6 +56,7 @@ oss:
 	cd Example && bundle && bundle exec pod keys set ArtsyAPIClientSecret "3a33d2085cbd1176153f99781bbce7c6" Emission
 	cd Example && bundle exec pod keys set ArtsyAPIClientKey "e750db60ac506978fc70"
 	cd Example && bundle exec pod keys set StripePublishableKey "-"
+	cd Example && bundle exec pod keys set MapBoxAPIClientKey "-"
 
 
 JQ := $(shell command -v jq 2> /dev/null)

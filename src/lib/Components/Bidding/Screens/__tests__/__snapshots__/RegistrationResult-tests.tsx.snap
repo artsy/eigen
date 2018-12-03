@@ -56,8 +56,8 @@ exports[`Registration result component renders registration complete properly 1`
         className="sc-bwzfXH uTxCW"
         ellipsizeMode="tail"
         fontFamily="AGaramondPro-Semibold"
-        fontSize={22}
-        lineHeight={28}
+        fontSize="22px"
+        lineHeight="28px"
         m={4}
         mb={4}
         mt={2}
@@ -85,6 +85,7 @@ exports[`Registration result component renders registration complete properly 1`
         style={
           Array [
             Object {
+              "display": "flex",
               "marginBottom": 30,
             },
             undefined,
@@ -98,8 +99,8 @@ exports[`Registration result component renders registration complete properly 1`
           color="black60"
           ellipsizeMode="tail"
           fontFamily="AGaramondPro-Regular"
-          fontSize={16}
-          lineHeight={20}
+          fontSize="16px"
+          lineHeight="20px"
           style={
             Array [
               Object {
@@ -148,21 +149,21 @@ to bid on works in this sale.
     <Text
       accessible={true}
       allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="black"
       ellipsizeMode="tail"
+      fontFamily="Unica77LL-Medium"
+      fontSize="14px"
+      lineHeight="24px"
       style={
         Array [
           Object {
-            "fontSize": 12,
-          },
-          Object {
-            "fontFamily": "AvantGardeGothicITC",
-          },
-          Object {
-            "color": "rgba(0, 0, 0, 1)",
+            "color": "black",
             "fontFamily": "Unica77LL-Medium",
             "fontSize": 14,
-            "opacity": 1,
+            "lineHeight": 24,
           },
+          undefined,
         ]
       }
     >
@@ -228,8 +229,8 @@ exports[`Registration result component renders registration error properly 1`] =
         className="sc-bwzfXH uTxCW"
         ellipsizeMode="tail"
         fontFamily="AGaramondPro-Semibold"
-        fontSize={22}
-        lineHeight={28}
+        fontSize="22px"
+        lineHeight="28px"
         m={4}
         mb={4}
         mt={2}
@@ -257,6 +258,7 @@ exports[`Registration result component renders registration error properly 1`] =
         style={
           Array [
             Object {
+              "display": "flex",
               "marginBottom": 30,
             },
             undefined,
@@ -270,8 +272,8 @@ exports[`Registration result component renders registration error properly 1`] =
           color="black60"
           ellipsizeMode="tail"
           fontFamily="AGaramondPro-Regular"
-          fontSize={16}
-          lineHeight={20}
+          fontSize="16px"
+          lineHeight="20px"
           style={
             Array [
               Object {
@@ -337,21 +339,21 @@ with any questions.
     <Text
       accessible={true}
       allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="black"
       ellipsizeMode="tail"
+      fontFamily="Unica77LL-Medium"
+      fontSize="14px"
+      lineHeight="24px"
       style={
         Array [
           Object {
-            "fontSize": 12,
-          },
-          Object {
-            "fontFamily": "AvantGardeGothicITC",
-          },
-          Object {
-            "color": "rgba(0, 0, 0, 1)",
+            "color": "black",
             "fontFamily": "Unica77LL-Medium",
             "fontSize": 14,
-            "opacity": 1,
+            "lineHeight": 24,
           },
+          undefined,
         ]
       }
     >
@@ -417,8 +419,8 @@ exports[`Registration result component renders registration pending properly 1`]
         className="sc-bwzfXH uTxCW"
         ellipsizeMode="tail"
         fontFamily="AGaramondPro-Semibold"
-        fontSize={22}
-        lineHeight={28}
+        fontSize="22px"
+        lineHeight="28px"
         m={4}
         mb={4}
         mt={2}
@@ -446,6 +448,7 @@ exports[`Registration result component renders registration pending properly 1`]
         style={
           Array [
             Object {
+              "display": "flex",
               "marginBottom": 30,
             },
             undefined,
@@ -459,8 +462,8 @@ exports[`Registration result component renders registration pending properly 1`]
           color="black60"
           ellipsizeMode="tail"
           fontFamily="AGaramondPro-Regular"
-          fontSize={16}
-          lineHeight={20}
+          fontSize="16px"
+          lineHeight="20px"
           style={
             Array [
               Object {
@@ -527,21 +530,21 @@ more information.
     <Text
       accessible={true}
       allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="black"
       ellipsizeMode="tail"
+      fontFamily="Unica77LL-Medium"
+      fontSize="14px"
+      lineHeight="24px"
       style={
         Array [
           Object {
-            "fontSize": 12,
-          },
-          Object {
-            "fontFamily": "AvantGardeGothicITC",
-          },
-          Object {
-            "color": "rgba(0, 0, 0, 1)",
+            "color": "black",
             "fontFamily": "Unica77LL-Medium",
             "fontSize": 14,
-            "opacity": 1,
+            "lineHeight": 24,
           },
+          undefined,
         ]
       }
     >

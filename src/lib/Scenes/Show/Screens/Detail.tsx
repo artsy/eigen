@@ -4,15 +4,17 @@ import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
+import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { ArtistsContainer as Artists } from "../Components/Artists"
 import { ArtworksContainer as Artworks } from "../Components/Artworks"
 import { ShowHeaderContainer as ShowHeader } from "../Components/ShowHeader"
-import { Shows } from "../Components/Shows"
+import { ShowsContainer as Shows } from "../Components/Shows"
 
 interface Props extends ViewProperties {
   show: Detail_show
   onMoreInformationPressed: () => void
+  onViewAllArtistsPressed: () => void
 }
 
 interface State {
@@ -20,10 +22,11 @@ interface State {
     type: "location" | "artworks" | "artists" | "shows"
     data: any
   }>
+  extraData?: { animatedValue: { height: number } }
 }
 
 export class Detail extends React.Component<Props, State> {
-  state = {
+  state: State = {
     sections: [],
   }
 
@@ -36,6 +39,14 @@ export class Detail extends React.Component<Props, State> {
       data: {
         location: show.location,
         partnerName: show.partner.name,
+        partnerType: show.partner.type,
+      },
+    })
+
+    sections.push({
+      type: "hours",
+      data: {
+        hours: show.location.displayDaySchedules,
       },
     })
 
@@ -57,22 +68,43 @@ export class Detail extends React.Component<Props, State> {
     this.setState({ sections })
   }
 
-  renderItemSeparator = () => (
-    <Box py={2} px={2}>
-      <Separator />
-    </Box>
-  )
+  renderItemSeparator = item => {
+    if (item && item.leadingItem.type === "location") {
+      return <Box />
+    } else {
+      return (
+        <Box py={2} px={2}>
+          <Separator />
+        </Box>
+      )
+    }
+  }
 
-  renderItem = ({ item: { data, type } }) => {
+  handleAnimationFrame = animatedValue => {
+    /**
+     * If children change their size on animation (e.g. HoursCollapsible), we need a sentinel value
+     * in state in order to trigger a re-render, as FlatList statically sizes child cells.
+     */
+    this.setState({
+      extraData: {
+        ...this.state.extraData,
+        animatedValue,
+      },
+    })
+  }
+
+  renderItem = ({ item: { data, type } }, onViewAllArtistsPressed) => {
     switch (type) {
       case "location":
         return <LocationMap {...data} />
       case "artworks":
         return <Artworks show={data} />
       case "artists":
-        return <Artists show={data} />
+        return <Artists show={data} onViewAllArtistsPressed={onViewAllArtistsPressed} />
       case "shows":
         return <Shows show={data} />
+      case "hours":
+        return <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} />
       default:
         return null
     }
@@ -84,10 +116,12 @@ export class Detail extends React.Component<Props, State> {
   }
 
   render() {
-    const { show, onMoreInformationPressed } = this.props
+    const { show, onMoreInformationPressed, onViewAllArtistsPressed } = this.props
+    const { extraData, sections } = this.state
     return (
       <FlatList
-        data={this.state.sections}
+        data={sections}
+        extraData={extraData}
         ListHeaderComponent={
           <>
             <ShowHeader
@@ -95,11 +129,10 @@ export class Detail extends React.Component<Props, State> {
               onSaveShowPressed={this.handleSaveShow}
               onMoreInformationPressed={onMoreInformationPressed}
             />
-            {this.renderItemSeparator()}
           </>
         }
         ItemSeparatorComponent={this.renderItemSeparator}
-        renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+        renderItem={item => <Box px={2}>{this.renderItem(item, onViewAllArtistsPressed)}</Box>}
         keyExtractor={(item, index) => item.type + String(index)}
       />
     )
@@ -113,7 +146,6 @@ export const DetailContainer = createFragmentContainer(
       id
       name
       description
-
       city
       location {
         id
@@ -122,41 +154,18 @@ export const DetailContainer = createFragmentContainer(
         city
         state
         postal_code
+        displayDaySchedules {
+          days
+          hours
+        }
       }
       images {
         id
-      }
-      nearbyShows(first: 20) {
-        edges {
-          node {
-            id
-            name
-            images {
-              url
-              aspect_ratio
-            }
-            partner {
-              ... on ExternalPartner {
-                name
-              }
-              ... on Partner {
-                name
-              }
-            }
-            location {
-              address
-              address_2
-              state
-              postal_code
-            }
-          }
-        }
       }
       ...ShowHeader_show
       ...Artworks_show
       ...Artists_show
       ...Shows_show
-
       location {
         ...LocationMap_location
       }
@@ -172,6 +181,7 @@ export const DetailContainer = createFragmentContainer(
         }
         ... on Partner {
           name
+          type
         }
       }
     }

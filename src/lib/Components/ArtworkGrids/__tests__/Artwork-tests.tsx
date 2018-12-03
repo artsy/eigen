@@ -36,6 +36,12 @@ describe("in an open sale", () => {
     const artwork = renderer.create(<Artwork artwork={artworkProps(saleArtwork) as any} />).toJSON()
     expect(artwork).toMatchSnapshot()
   })
+
+  it("safely handles a missing sale_artwork", () => {
+    const props = artworkProps({}) // Passing in empty sale_artwork prop to trigger "sale is live" code in artworkProps()
+    props.sale_artwork = null
+    expect(() => renderer.create(<Artwork artwork={props as any} />).toJSON()).not.toThrowError()
+  })
 })
 
 describe("in a closed sale", () => {

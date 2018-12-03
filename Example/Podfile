@@ -68,6 +68,7 @@ plugin 'cocoapods-keys', {
     'ArtsyAPIClientSecret',   # Authing to the Artsy API
     'ArtsyAPIClientKey',      #
     'StripePublishableKey',
+    'MapBoxAPIClientKey',
   ]
 }
 

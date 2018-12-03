@@ -43,6 +43,9 @@
 		60E4ABF71EE7D85000E8C3B1 /* LoadingSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E4ABF61EE7D85000E8C3B1 /* LoadingSpinner.m */; };
 		60EDA5731F4B2944007A6100 /* InternalWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60EDA5721F4B2944007A6100 /* InternalWebViewController.m */; };
 		60F61A8B1DAF982B00A72101 /* AuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F61A8A1DAF982B00A72101 /* AuthenticationManager.m */; };
+		7F4FEE4321A36F7F00B8766A /* Back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F4FEE4021A36F7E00B8766A /* Back@2x.png */; };
+		7F4FEE4421A36F7F00B8766A /* Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F4FEE4121A36F7E00B8766A /* Back.png */; };
+		7F4FEE4521A36F7F00B8766A /* Back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F4FEE4221A36F7F00B8766A /* Back@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,6 +137,9 @@
 		60EDA5721F4B2944007A6100 /* InternalWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InternalWebViewController.m; sourceTree = "<group>"; };
 		60F61A891DAF982A00A72101 /* AuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationManager.h; sourceTree = "<group>"; };
 		60F61A8A1DAF982B00A72101 /* AuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationManager.m; sourceTree = "<group>"; };
+		7F4FEE4021A36F7E00B8766A /* Back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Back@2x.png"; sourceTree = "<group>"; };
+		7F4FEE4121A36F7E00B8766A /* Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Back.png; sourceTree = "<group>"; };
+		7F4FEE4221A36F7F00B8766A /* Back@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Back@3x.png"; sourceTree = "<group>"; };
 		9AB72C7CDF8351EF0ADB2E4D /* Pods-Emission.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.release.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.release.xcconfig"; sourceTree = "<group>"; };
 		B53B6F10A80F64A976B9F221 /* libPods-Emission.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Emission.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD6A42932C7B5D57AE022D1A /* Emission.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Emission.podspec; path = ../Emission.podspec; sourceTree = "<group>"; };
@@ -291,6 +297,9 @@
 				60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */,
 				60A1A77C1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png */,
 				60A1A77D1DA3A23C005E3357 /* BackArrowBlack@2x.png */,
+				7F4FEE4121A36F7E00B8766A /* Back.png */,
+				7F4FEE4021A36F7E00B8766A /* Back@2x.png */,
+				7F4FEE4221A36F7F00B8766A /* Back@3x.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -506,11 +515,14 @@
 			files = (
 				510E94FD1CCA828900BDF098 /* LaunchScreen.xib in Resources */,
 				6011C2561DAF835900CE54E5 /* logo@2x.png in Resources */,
+				7F4FEE4421A36F7F00B8766A /* Back.png in Resources */,
 				515926A8206BA0C000048C74 /* complete.queryMap.json in Resources */,
 				60A1A77F1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png in Resources */,
 				515926AE206CF8BA00048C74 /* UITabBarDownloadsTemplate@2x.png in Resources */,
 				60A1A7801DA3A23C005E3357 /* BackArrowBlack@2x.png in Resources */,
 				510DCB1D1CCA69EC0075E8CB /* Assets.xcassets in Resources */,
+				7F4FEE4321A36F7F00B8766A /* Back@2x.png in Resources */,
+				7F4FEE4521A36F7F00B8766A /* Back@3x.png in Resources */,
 				60A1A77E1DA3A23C005E3357 /* BackArrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

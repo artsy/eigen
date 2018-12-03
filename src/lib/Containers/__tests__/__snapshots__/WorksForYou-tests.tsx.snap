@@ -109,8 +109,8 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
             className="sc-bdVaJa bDWFJH"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Regular"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -140,7 +140,7 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
               "borderColor": "transparent",
               "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
               "width": 130,
@@ -150,22 +150,21 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="white"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
-                  "fontSize": 12,
-                },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(255, 255, 255, 1)",
+                  "color": "white",
                   "fontFamily": "Unica77LL-Medium",
                   "fontSize": 14,
-                  "opacity": 1,
-                  "textShadowColor": "white",
+                  "lineHeight": 24,
                 },
+                undefined,
               ]
             }
           >
@@ -560,8 +559,8 @@ exports[`with notifications lays out correctly on small screens 1`] = `
             className="sc-bdVaJa bDWFJH"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Regular"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -591,7 +590,7 @@ exports[`with notifications lays out correctly on small screens 1`] = `
               "borderColor": "transparent",
               "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
               "width": 130,
@@ -601,22 +600,21 @@ exports[`with notifications lays out correctly on small screens 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="white"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
-                  "fontSize": 12,
-                },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(255, 255, 255, 1)",
+                  "color": "white",
                   "fontFamily": "Unica77LL-Medium",
                   "fontSize": 14,
-                  "opacity": 1,
-                  "textShadowColor": "white",
+                  "lineHeight": 24,
                 },
+                undefined,
               ]
             }
           >
@@ -1015,8 +1013,8 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
             className="sc-bdVaJa bDWFJH"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Regular"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -1046,7 +1044,7 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
               "borderColor": "transparent",
               "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
               "width": 130,
@@ -1056,22 +1054,21 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="white"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
-                  "fontSize": 12,
-                },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(255, 255, 255, 1)",
+                  "color": "white",
                   "fontFamily": "Unica77LL-Medium",
                   "fontSize": 14,
-                  "opacity": 1,
-                  "textShadowColor": "white",
+                  "lineHeight": 24,
                 },
+                undefined,
               ]
             }
           >
@@ -1294,8 +1291,8 @@ exports[`without notifications lays out correctly on small screens 1`] = `
             className="sc-bdVaJa bDWFJH"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Regular"
-            fontSize={14}
-            lineHeight={24}
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
@@ -1325,7 +1322,7 @@ exports[`without notifications lays out correctly on small screens 1`] = `
               "borderColor": "transparent",
               "borderRadius": 2,
               "borderWidth": 1,
-              "height": 36,
+              "height": 46,
               "justifyContent": "center",
               "opacity": 1,
               "width": 130,
@@ -1335,22 +1332,21 @@ exports[`without notifications lays out correctly on small screens 1`] = `
           <Text
             accessible={true}
             allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            color="white"
             ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize="14px"
+            lineHeight="24px"
             style={
               Array [
                 Object {
-                  "fontSize": 12,
-                },
-                Object {
-                  "fontFamily": "AvantGardeGothicITC",
-                },
-                Object {
-                  "color": "rgba(255, 255, 255, 1)",
+                  "color": "white",
                   "fontFamily": "Unica77LL-Medium",
                   "fontSize": 14,
-                  "opacity": 1,
-                  "textShadowColor": "white",
+                  "lineHeight": 24,
                 },
+                undefined,
               ]
             }
           >

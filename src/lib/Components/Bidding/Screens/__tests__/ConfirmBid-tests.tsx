@@ -7,10 +7,10 @@ import * as renderer from "react-test-renderer"
 
 import Spinner from "../../../Spinner"
 
+import { LinkText } from "../../../Text/LinkText"
 import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Button } from "../../Components/Button"
 import { Checkbox } from "../../Components/Checkbox"
-import { LinkText } from "../../Components/LinkText"
 
 import { BidResultScreen } from "../BidResult"
 import { BillingAddress } from "../BillingAddress"

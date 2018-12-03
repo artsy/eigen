@@ -2,126 +2,98 @@
 
 exports[`looks correct when rendered 1`] = `
 Array [
-  <RCTScrollView
-    horizontal={true}
-    onLayout={[Function]}
-    onScroll={[Function]}
-    pagingEnabled={true}
-    scrollEventThrottle={160}
-    showsHorizontalScrollIndicator={false}
-    style={
-      Array [
-        Object {
-          "height": 250,
-        },
-        undefined,
-      ]
-    }
-  >
-    <View>
-      <View
-        height={250}
-        style={
-          Array [
-            Object {
-              "height": 250,
-            },
-            undefined,
-          ]
-        }
-      />
-    </View>
-  </RCTScrollView>,
   <View
-    alignItems="center"
-    flexDirection="row"
-    justifyContent="center"
-    mb={1}
-    mt={1}
+    pb={467}
+    pt={467}
+    px={2}
     style={
       Array [
         Object {
-          "alignItems": "center",
-          "display": "flex",
-          "flexDirection": "row",
-          "justifyContent": "center",
-          "marginBottom": 4,
-          "marginTop": 4,
+          "paddingBottom": 467,
+          "paddingLeft": 8,
+          "paddingRight": 8,
+          "paddingTop": 467,
         },
         undefined,
       ]
     }
   >
     <View
-      accessible={true}
-      isActive={true}
-      isLast={true}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
+      m={2}
       style={
         Array [
           Object {
-            "backgroundColor": "#000",
-            "borderRadius": 3,
-            "height": 6,
-            "marginRight": 0,
-            "width": 6,
+            "marginBottom": 8,
+            "marginLeft": 8,
+            "marginRight": 8,
+            "marginTop": 8,
+          },
+          undefined,
+        ]
+      }
+    />
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Regular"
+      fontSize="14px"
+      lineHeight="24px"
+      mb={0.5}
+      style={
+        Array [
+          Object {
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 14,
+            "lineHeight": 24,
+            "marginBottom": 0.5,
+          },
+          undefined,
+        ]
+      }
+    >
+      Anderson Fine Art Gallery
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bwzfXH uTxCW"
+      ellipsizeMode="tail"
+      fontFamily="AGaramondPro-Regular"
+      fontSize="32px"
+      lineHeight={34}
+      style={
+        Array [
+          Object {
+            "fontFamily": "AGaramondPro-Regular",
+            "fontSize": 32,
+            "lineHeight": 34,
+          },
+          undefined,
+        ]
+      }
+    />
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Regular"
+      fontSize="14px"
+      lineHeight="24px"
+      style={
+        Array [
+          Object {
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 14,
+            "lineHeight": 24,
           },
           undefined,
         ]
       }
     />
   </View>,
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    className="sc-bwzfXH uTxCW"
-    ellipsizeMode="tail"
-    fontFamily="AGaramondPro-Semibold"
-    fontSize={22}
-    lineHeight={28}
-    style={
-      Array [
-        Object {
-          "fontFamily": "AGaramondPro-Semibold",
-          "fontSize": 22,
-          "lineHeight": 28,
-          "textAlign": "center",
-        },
-        undefined,
-      ]
-    }
-    textAlign="center"
-  >
-    foo
-  </Text>,
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    className="sc-bwzfXH uTxCW"
-    ellipsizeMode="tail"
-    fontFamily="AGaramondPro-Regular"
-    fontSize={16}
-    lineHeight={24}
-    style={
-      Array [
-        Object {
-          "fontFamily": "AGaramondPro-Regular",
-          "fontSize": 16,
-          "lineHeight": 24,
-          "textAlign": "center",
-        },
-        undefined,
-      ]
-    }
-    textAlign="center"
-  >
-    now - later
-  </Text>,
   <View
     px={2}
     style={
@@ -134,62 +106,78 @@ Array [
       ]
     }
   >
-    <View
-      alignItems="center"
-      alignSelf="center"
-      justifyContent="center"
-      px={2}
-      py={1}
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Regular"
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
-            "alignItems": "center",
-            "display": "flex",
-            "justifyContent": "center",
-            "paddingBottom": 4,
-            "paddingLeft": 8,
-            "paddingRight": 8,
-            "paddingTop": 4,
+            "fontFamily": "Unica77LL-Regular",
+            "fontSize": 12,
+            "lineHeight": 16,
           },
-          Array [
-            Object {
-              "backgroundColor": "#E5E5E5",
-              "borderRadius": 20,
-            },
-            undefined,
-          ],
+          undefined,
         ]
       }
     >
+      Works by
+       
       <Text
         accessible={true}
         allowFontScaling={true}
         className="sc-bdVaJa bDWFJH"
         ellipsizeMode="tail"
-        fontFamily="Unica77LL-Regular"
-        fontSize={14}
-        lineHeight={24}
+        fontFamily="Unica77LL-Medium"
+        fontSize="12px"
+        lineHeight="16px"
         style={
           Array [
             Object {
-              "fontFamily": "Unica77LL-Regular",
-              "fontSize": 14,
-              "lineHeight": 24,
+              "fontFamily": "Unica77LL-Medium",
+              "fontSize": 12,
+              "lineHeight": 16,
             },
             undefined,
           ]
         }
-      />
-    </View>
+      >
+        Hans Hofmann, David Hockney, Sam Francis, Pablo Picasso, Wolf Kahn
+      </Text>
+       and 
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        className="sc-bdVaJa bDWFJH"
+        ellipsizeMode="tail"
+        fontFamily="Unica77LL-Medium"
+        fontSize="12px"
+        lineHeight="16px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Medium",
+              "fontSize": 12,
+              "lineHeight": 16,
+            },
+            undefined,
+          ]
+        }
+      >
+        13
+         more
+      </Text>
+    </Text>
     <View
-      m={2}
+      mt={1}
       style={
         Array [
           Object {
-            "marginBottom": 8,
-            "marginLeft": 8,
-            "marginRight": 8,
-            "marginTop": 8,
+            "marginTop": 4,
           },
           undefined,
         ]
@@ -208,8 +196,9 @@ Array [
           "alignItems": "center",
           "backgroundColor": "rgba(0, 0, 0, 1)",
           "borderColor": "rgba(0, 0, 0, 1)",
+          "borderRadius": 2,
           "borderWidth": 1,
-          "height": 36,
+          "height": 46,
           "justifyContent": "center",
           "opacity": 1,
         }
@@ -218,34 +207,36 @@ Array [
       <Text
         accessible={true}
         allowFontScaling={true}
+        className="sc-bdVaJa bDWFJH"
+        color="white"
         ellipsizeMode="tail"
+        fontFamily="Unica77LL-Medium"
+        fontSize="14px"
+        lineHeight="24px"
         style={
           Array [
             Object {
-              "fontSize": 12,
+              "color": "white",
+              "fontFamily": "Unica77LL-Medium",
+              "fontSize": 14,
+              "lineHeight": 24,
             },
-            Object {
-              "fontFamily": "AvantGardeGothicITC",
-            },
-            Object {
-              "color": "rgba(255, 255, 255, 1)",
-              "opacity": 1,
-            },
+            undefined,
           ]
         }
       >
-        SAVE
+        Save show
       </Text>
     </View>
     <View
-      m={2}
+      m={1}
       style={
         Array [
           Object {
-            "marginBottom": 8,
-            "marginLeft": 8,
-            "marginRight": 8,
-            "marginTop": 8,
+            "marginBottom": 4,
+            "marginLeft": 4,
+            "marginRight": 4,
+            "marginTop": 4,
           },
           undefined,
         ]
@@ -257,21 +248,19 @@ Array [
       className="sc-bwzfXH uTxCW"
       ellipsizeMode="tail"
       fontFamily="AGaramondPro-Regular"
-      fontSize={14}
-      lineHeight={18}
+      fontSize="16px"
+      lineHeight="20px"
       style={
         Array [
           Object {
             "fontFamily": "AGaramondPro-Regular",
-            "fontSize": 14,
-            "lineHeight": 18,
+            "fontSize": 16,
+            "lineHeight": 20,
           },
           undefined,
         ]
       }
-    >
-      bar
-    </Text>
+    />
     <View
       m={1}
       style={
@@ -314,36 +303,38 @@ Array [
       <Text
         accessible={true}
         allowFontScaling={true}
-        className="sc-htpNat KtFsv"
+        className="sc-bdVaJa bDWFJH"
         ellipsizeMode="tail"
-        fontFamily="AvantGardeGothicITC"
-        fontSize={14}
-        lineHeight={18}
+        fontFamily="Unica77LL-Medium"
+        fontSize="14px"
+        lineHeight="20px"
         style={
           Array [
             Object {
-              "fontFamily": "AvantGardeGothicITC",
+              "fontFamily": "Unica77LL-Medium",
               "fontSize": 14,
-              "lineHeight": 18,
+              "lineHeight": 20,
             },
             undefined,
           ]
         }
       >
-        More Information
+        View more information
+          
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/horizontal_chevron.png",
+            }
+          }
+          style={
+            Object {
+              "alignSelf": "center",
+              "tintColor": "#C2C2C2",
+            }
+          }
+        />
       </Text>
-      <Image
-        source={
-          Object {
-            "testUri": "../../../images/horizontal_chevron.png",
-          }
-        }
-        style={
-          Object {
-            "alignSelf": "center",
-          }
-        }
-      />
     </View>
   </View>,
 ]

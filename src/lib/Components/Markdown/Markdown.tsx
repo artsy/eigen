@@ -1,12 +1,11 @@
-import { Serif } from "@artsy/palette"
+import { Flex, Serif } from "@artsy/palette"
 import _ from "lodash"
 import React from "react"
 import { Text, ViewProperties } from "react-native"
 import SimpleMarkdown from "simple-markdown"
+import { LinkText } from "../Text/LinkText"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { Flex, FlexProps } from "../Elements/Flex"
-import { LinkText } from "./LinkText"
 
 // Rules for rendering parsed markdown. Currently only handles links and text. Add rules similar to
 // https://github.com/CharlesMangwa/react-native-simple-markdown/blob/next/src/rules.js for new functionalities.
@@ -58,7 +57,8 @@ const rules = {
   },
 }
 
-export class Markdown extends React.Component<ViewProperties & FlexProps> {
+// FIXME: Update this to <ViewProperties & FlexProps> once @artsy/paletete is updated
+export class Markdown extends React.Component<ViewProperties & any> {
   private readonly rawBuiltParser = SimpleMarkdown.parserFor(rules)
 
   private readonly reactOutput = SimpleMarkdown.reactFor(SimpleMarkdown.ruleOutput(rules, "react"))

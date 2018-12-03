@@ -1,14 +1,14 @@
 import React from "react"
 import { graphql } from "react-relay"
 
+import { Theme } from "@artsy/palette"
 import { MockRelayRenderer } from "../../../../../tests/MockRelayRenderer"
 import { renderUntil } from "../../../../../tests/renderUntil"
 import { ShowFixture } from "../../../__fixtures__"
 
-import { InvertedButton } from "lib/Components/Buttons"
 import ListItemButton from "lib/Components/Buttons/InvertedButton"
 import { ArtistListItem } from "../Components/ArtistListItem"
-import { Artists, ArtistsContainer } from "../index"
+import { ArtistsContainer } from "../index"
 
 jest.unmock("react-relay")
 import relay from "react-relay"
@@ -18,25 +18,27 @@ const renderTree = () =>
     wrapper => {
       return wrapper.find(ArtistListItem).length > 0
     },
-    <MockRelayRenderer
-      Component={ArtistsContainer}
-      query={graphql`
-        query ArtistsTestsQuery {
-          show(id: "anderson-fine-art-gallery-flickinger-collection") {
-            ...Artists_show
+    <Theme>
+      <MockRelayRenderer
+        Component={ArtistsContainer}
+        query={graphql`
+          query ArtistsTestsQuery {
+            show(id: "anderson-fine-art-gallery-flickinger-collection") {
+              ...Artists_show
+            }
           }
-        }
-      `}
-      mockResolvers={{
-        Show: () => ({
-          ...ShowFixture,
-          artists: () => ShowFixture.show.artists,
-        }),
-      }}
-    />
+        `}
+        mockResolvers={{
+          Show: () => ({
+            ...ShowFixture,
+            artists: () => ShowFixture.show.artists,
+          }),
+        }}
+      />
+    </Theme>
   )
 
-describe("ArtistsContianer", () => {
+describe("ArtistsContainer", () => {
   beforeAll(() => {
     relay.commitMutation = jest.fn()
   })
@@ -61,18 +63,6 @@ describe("ArtistsContianer", () => {
       .onPress()
 
     expect(relay.commitMutation).toHaveBeenCalled()
-  })
-
-  it("Expands to show the full list of artists", async () => {
-    const tree = await renderTree()
-
-    tree
-      .find(InvertedButton)
-      .last()
-      .props()
-      .onPress()
-
-    expect(tree.find(Artists).state().isExpanded).toBe(true)
   })
 
   afterAll(() => {
