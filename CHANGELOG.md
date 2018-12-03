@@ -28,6 +28,7 @@
 - Adds extra checking around sale artwork messaging in artwork grids - ash
 - Add fair-scoped search link to native Eigen screen - javamonn
 - Adds "View on map" to show view for "More shows" - Kieran
+- Adds AllArtist page to Shows and adds styled gray border InvertedButton - Kieran
 
 ### 1.7.4
 

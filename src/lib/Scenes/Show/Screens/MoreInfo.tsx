@@ -68,7 +68,11 @@ export class MoreInfo extends React.Component<Props, State> {
       <FlatList
         data={this.state.sections}
         ItemSeparatorComponent={this.renderItemSeparator}
-        renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+        renderItem={item => (
+          <Box mb={2} px={2}>
+            {this.renderItem(item)}
+          </Box>
+        )}
         keyExtractor={(item, index) => item.type + String(index)}
       />
     )

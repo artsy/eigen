@@ -11,6 +11,16 @@ const RoundedImage = styled(OpaqueImageView)`
   overflow: hidden;
 `
 
+const TightendSerif = styled(Serif)`
+  position: relative;
+  top: 2;
+`
+
+const TightendSans = styled(Sans)`
+  position: relative;
+  top: -2;
+`
+
 const ImageAndTextWrapper = styled(Flex)`
   flex-wrap: nowrap;
 `
@@ -57,15 +67,19 @@ export const ArtistListItem: React.SFC<Props> = ({
           <RoundedImage imageURL={url} aspectRatio={1} />
         </Box>
         <Box>
-          <Serif size="3t">{name}</Serif>
-          <Sans size="3t" color="black60">
-            {returnTombstoneText(nationality, birthday, deathday)}
-          </Sans>
+          {(nationality || birthday) && <TightendSerif size="3t">{name}</TightendSerif>}
+          {!nationality && !birthday && <Serif size="3t">{name}</Serif>}
+          {(nationality || birthday) && (
+            <TightendSans size="3t" color="black60">
+              {returnTombstoneText(nationality, birthday, deathday)}
+            </TightendSans>
+          )}
         </Box>
       </ImageAndTextWrapper>
       {/* TODO: Convert the width and height to a padding */}
-      <Box width={84} height={34}>
+      <Box width={102} height={34}>
         <InvertedButton
+          grayBorder={true}
           text={isFollowed ? "Following" : "Follow"}
           onPress={onPress}
           selected={isFollowed}
