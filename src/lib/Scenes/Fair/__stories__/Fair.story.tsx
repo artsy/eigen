@@ -3,4 +3,36 @@ import React from "react"
 
 import Fair from "../"
 
-storiesOf("Fair/Relay").add("Root", () => <Fair fair={{ name: "This is a stubbed fair" } as any} />)
+import { FairQuery } from "__generated__/FairQuery.graphql"
+import { graphql, QueryRenderer } from "react-relay"
+import createEnvironment from "../../../relay/createEnvironment"
+
+const RootContainer: React.SFC<any> = ({ Component, fairID }) => {
+  return (
+    <QueryRenderer<FairQuery>
+      environment={createEnvironment()}
+      query={graphql`
+        query FairQuery($fairID: String!) {
+          fair(id: $fairID) {
+            ...Fair_fair
+          }
+        }
+      `}
+      variables={{
+        fairID,
+      }}
+      render={({ error, props }) => {
+        if (error) {
+          console.error(error)
+        } else if (props) {
+          return <Component {...props} />
+        }
+        return null
+      }}
+    />
+  )
+}
+
+storiesOf("Fairs").add("Ink Miami 2018", () => {
+  return <RootContainer Component={Fair} fairID="ink-miami-2018" />
+})
