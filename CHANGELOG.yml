@@ -11,6 +11,7 @@ upcoming:
     - Make Offer now accessible - ash
     - Contact Gallery button doesn't show up with Make Offer button anymore - ash
     - Adds a cancel option to follow-up push notification prompts - ash
+    - Fixes occasions when the shipping info would not show for buy now works - orta
     - Fixes button copy problem where Contact gallery buttons would have Buy Now copy - ash
     - Updates letter casing on "Contact gallery" and "Contact seller" buttons - ash
 

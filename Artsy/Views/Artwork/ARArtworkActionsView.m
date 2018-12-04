@@ -175,8 +175,7 @@
 
     } else {
         // No auction controls
-
-        if ([self showPriceLabel] || [self showContactForPrice]) {
+        if ([self showPriceLabel] || [self showContactForPrice] || [self showShippingInfo]) {
             self.priceView = [[ARArtworkPriceView alloc] initWithFrame:CGRectZero];
 
             if ([self showContactForPrice]) {
@@ -353,10 +352,10 @@ return [navigationButtons copy];
     return self.saleArtwork.auctionState & (ARAuctionStateStarted | ARAuctionStateShowingPreview);
 }
 
-// Show if artwork has a price (but not multiple editions) and inquireable or sold
+// Show if artwork has a price (but not multiple editions) and acquirable, inquireable or sold
 - (BOOL)showPriceLabel
 {
-    return self.artwork.price.length && !self.artwork.hasMultipleEditions && (self.artwork.isInquireable.boolValue || self.artwork.sold.boolValue);
+    return self.artwork.price.length && !self.artwork.hasMultipleEditions && (self.artwork.isAcquireable.boolValue || self.artwork.isInquireable.boolValue || self.artwork.sold.boolValue);
 }
 
 // Show if artwork is for sale but its price is hidden
