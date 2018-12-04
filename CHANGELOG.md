@@ -18,6 +18,7 @@
 
 - Adds styled LocationMap with custom pins - kieran
 - Refactor auctions countdown timer, add fair countdown timer - javamonn
+- Refactors ARNotificationManager to implicitly call all JS methods on main queue - ash
 - Adds the mapBoxAPIClientKey to cocoapods
 - Updates Show detail view styles - luc
 - Styles artists list - Kieran
