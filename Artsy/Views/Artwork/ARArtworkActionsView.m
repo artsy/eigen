@@ -166,7 +166,7 @@
             }
 
             ARBlackFlatButton *buy = [[ARBlackFlatButton alloc] init];
-            [buy setTitle:@"Buy now" forState:UIControlStateNormal];
+            [buy setTitle:self.artwork.isBuyNowable ? @"Buy now" : [self contactButtonTitle] forState:UIControlStateNormal];
             [buy addTarget:self action:@selector(tappedBuyButton:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:buy withTopMargin:@"8" sideMargin:nil];
         }
@@ -195,7 +195,7 @@
 
         if ([self showBuyButton]) {
             ARBlackFlatButton *buy = [[ARBlackFlatButton alloc] init];
-            [buy setTitle:@"Buy now" forState:UIControlStateNormal];
+            [buy setTitle:self.artwork.isBuyNowable ? @"Buy now" : [self contactButtonTitle] forState:UIControlStateNormal];
             [buy addTarget:self action:@selector(tappedBuyButton:) forControlEvents:UIControlEventTouchUpInside];
 
             [buttonsWhoseMarginCanChange addObject:buy];
@@ -223,12 +223,7 @@
     }
 
     if ([self showContactButton]) {
-        NSString *title = nil;
-        if (self.artwork.partner.type == ARPartnerTypeGallery) {
-            title = NSLocalizedString(@"Contact Gallery", @"Contact Gallery");
-        } else {
-            title = NSLocalizedString(@"Contact Seller", @"Contact Seller");
-        }
+        NSString *title = [self contactButtonTitle];
 
         ARBlackFlatButton *contact = [[ARBlackFlatButton alloc] init];
         [contact setTitle:title forState:UIControlStateNormal];
@@ -425,6 +420,15 @@ return [navigationButtons copy];
 - (BOOL)showShippingInfo
 {
     return !self.artwork.sold.boolValue && (self.artwork.shippingInfo.length || self.artwork.shippingOrigin.length);
+}
+
+- (NSString *)contactButtonTitle
+{
+    if (self.artwork.partner.type == ARPartnerTypeGallery) {
+        return NSLocalizedString(@"Contact gallery", @"Contact gallery");
+    } else {
+        return NSLocalizedString(@"Contact seller", @"Contact seller");
+    }
 }
 
 #pragma mark ARContactViewDelegate

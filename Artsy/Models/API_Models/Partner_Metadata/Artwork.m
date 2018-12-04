@@ -284,6 +284,11 @@
     return self.gravIsAcquirable.boolValue ? self.gravIsAcquirable : self.mpIsAcquirable;
 }
 
+- (BOOL)isBuyNowable
+{
+    return self.isAcquireable && !self.hasMultipleEditions;
+}
+
 - (NSNumber *)isOfferable
 {
     return self.gravIsOfferable.boolValue ? self.gravIsOfferable : self.mpIsOfferable;

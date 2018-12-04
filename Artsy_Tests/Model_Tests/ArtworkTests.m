@@ -105,6 +105,17 @@ describe(@"defaultImage", ^{
        expect(artwork.availablityString).to.equal(@"on hold");
     });
 
+    it(@"isBuyNowable returns NO for BuyNowable artworks that have mutliple editions", ^{
+        Artwork *artwork = [Artwork modelWithJSON:
+                            @{ @"id" : @"artwork-id",
+                               @"edition_sets" : @[
+                                       @"it doesn't matter",
+                                       @"what values are in this array",
+                                       @"as long as there are several"]
+                               }];
+        expect(artwork.isBuyNowable).to.beFalsy();
+    });
+
     describe(@"funky mp / grav compatibility", ^{
     
         it(@"deals with mp style results for the is_* things", ^{
