@@ -28,6 +28,9 @@ extern NSString *const ARTwoLabelCell;
 /// Simple cell that has a title and a click handler
 - (ARCellData *)tappableCellDataWithTitle:(NSString *)title selection:(dispatch_block_t)selection;
 
+/// Like above but you can access the cell to make changes
+- (ARCellData *)tappableCellDataWithTitle:(NSString *)title selectionWithCell:(void (^)(UITableViewCell *cell))selection;
+
 /// Simple cell that shows info
 - (ARCellData *)informationCellDataWithTitle:(NSString *)title;
 
