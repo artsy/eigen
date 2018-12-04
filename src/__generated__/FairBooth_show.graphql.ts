@@ -1,31 +1,33 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-import { FairBooth_show$ref } from "./FairBooth_show.graphql";
-import { FairHeader_fair$ref } from "./FairHeader_fair.graphql";
-import { LocationMap_location$ref } from "./LocationMap_location.graphql";
-declare const _Fair_fair$ref: unique symbol;
-export type Fair_fair$ref = typeof _Fair_fair$ref;
-export type Fair_fair = {
+import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
+declare const _FairBooth_show$ref: unique symbol;
+export type FairBooth_show$ref = typeof _FairBooth_show$ref;
+export type FairBooth_show = {
     readonly id: string;
     readonly name: string | null;
-    readonly hours: string | null;
-    readonly location: ({
-        readonly " $fragmentRefs": LocationMap_location$ref;
+    readonly is_fair_booth: boolean | null;
+    readonly partner: ({
+        readonly name?: string | null;
     }) | null;
-    readonly profile: ({
+    readonly fair: ({
         readonly name: string | null;
     }) | null;
-    readonly shows_connection: ({
+    readonly cover_image: ({
+        readonly url: string | null;
+    }) | null;
+    readonly location: ({
+        readonly display: string | null;
+    }) | null;
+    readonly artworks_connection: ({
         readonly edges: ReadonlyArray<({
-            readonly cursor: string;
             readonly node: ({
-                readonly " $fragmentRefs": FairBooth_show$ref;
+                readonly " $fragmentRefs": GenericGrid_artworks$ref;
             }) | null;
         }) | null> | null;
     }) | null;
-    readonly " $fragmentRefs": FairHeader_fair$ref;
-    readonly " $refType": Fair_fair$ref;
+    readonly " $refType": FairBooth_show$ref;
 };
 
 
@@ -44,19 +46,17 @@ v1 = {
   "name": "__id",
   "args": null,
   "storageKey": null
-};
+},
+v2 = [
+  v0
+];
 return {
   "kind": "Fragment",
-  "name": "Fair_fair",
-  "type": "Fair",
+  "name": "FairBooth_show",
+  "type": "Show",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "FragmentSpread",
-      "name": "FairHeader_fair",
-      "args": null
-    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -68,9 +68,62 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "hours",
+      "name": "is_fair_booth",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "partner",
+      "storageKey": null,
+      "args": null,
+      "concreteType": null,
+      "plural": false,
+      "selections": [
+        v1,
+        {
+          "kind": "InlineFragment",
+          "type": "ExternalPartner",
+          "selections": v2
+        },
+        {
+          "kind": "InlineFragment",
+          "type": "Partner",
+          "selections": v2
+        }
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "fair",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Fair",
+      "plural": false,
+      "selections": [
+        v0,
+        v1
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "cover_image",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Image",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "url",
+          "args": null,
+          "storageKey": null
+        }
+      ]
     },
     {
       "kind": "LinkedField",
@@ -82,9 +135,11 @@ return {
       "plural": false,
       "selections": [
         {
-          "kind": "FragmentSpread",
-          "name": "LocationMap_location",
-          "args": null
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "display",
+          "args": null,
+          "storageKey": null
         },
         v1
       ]
@@ -92,21 +147,8 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "profile",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Profile",
-      "plural": false,
-      "selections": [
-        v0,
-        v1
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "shows_connection",
-      "storageKey": "shows_connection(first:4)",
+      "name": "artworks_connection",
+      "storageKey": "artworks_connection(first:4)",
       "args": [
         {
           "kind": "Literal",
@@ -115,7 +157,7 @@ return {
           "type": "Int"
         }
       ],
-      "concreteType": "ShowConnection",
+      "concreteType": "ArtworkConnection",
       "plural": false,
       "selections": [
         {
@@ -124,28 +166,21 @@ return {
           "name": "edges",
           "storageKey": null,
           "args": null,
-          "concreteType": "ShowEdge",
+          "concreteType": "ArtworkEdge",
           "plural": true,
           "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "cursor",
-              "args": null,
-              "storageKey": null
-            },
             {
               "kind": "LinkedField",
               "alias": null,
               "name": "node",
               "storageKey": null,
               "args": null,
-              "concreteType": "Show",
+              "concreteType": "Artwork",
               "plural": false,
               "selections": [
                 {
                   "kind": "FragmentSpread",
-                  "name": "FairBooth_show",
+                  "name": "GenericGrid_artworks",
                   "args": null
                 },
                 v1
@@ -159,5 +194,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '0194a6847c9c26f4807aa3736acc7303';
+(node as any).hash = '591ada5e858d59da61a40fa6ff726b87';
 export default node;

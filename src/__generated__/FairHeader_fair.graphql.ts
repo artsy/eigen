@@ -11,17 +11,15 @@ export type FairHeader_fair = {
         readonly aspect_ratio: number;
         readonly url: string | null;
     }) | null;
-    readonly organizer: ({
-        readonly profile: ({
-            readonly icon: ({
-                readonly id: string | null;
-                readonly href: string | null;
-                readonly height: number | null;
-                readonly width: number | null;
-                readonly url: string | null;
-            }) | null;
-            readonly name: string | null;
+    readonly profile: ({
+        readonly icon: ({
+            readonly id: string | null;
+            readonly href: string | null;
+            readonly height: number | null;
+            readonly width: number | null;
+            readonly url: string | null;
         }) | null;
+        readonly name: string | null;
     }) | null;
     readonly start_at: string | null;
     readonly end_at: string | null;
@@ -97,59 +95,48 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "organizer",
+      "name": "profile",
       "storageKey": null,
       "args": null,
-      "concreteType": "organizer",
+      "concreteType": "Profile",
       "plural": false,
       "selections": [
         {
           "kind": "LinkedField",
           "alias": null,
-          "name": "profile",
+          "name": "icon",
           "storageKey": null,
           "args": null,
-          "concreteType": "Profile",
+          "concreteType": "Image",
           "plural": false,
           "selections": [
+            v0,
             {
-              "kind": "LinkedField",
+              "kind": "ScalarField",
               "alias": null,
-              "name": "icon",
-              "storageKey": null,
+              "name": "href",
               "args": null,
-              "concreteType": "Image",
-              "plural": false,
-              "selections": [
-                v0,
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "href",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "height",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "width",
-                  "args": null,
-                  "storageKey": null
-                },
-                v2
-              ]
+              "storageKey": null
             },
-            v1,
-            v3
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "height",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "width",
+              "args": null,
+              "storageKey": null
+            },
+            v2
           ]
-        }
+        },
+        v1,
+        v3
       ]
     },
     {
@@ -170,5 +157,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'ede4092cb080d0499e4046925d630c72';
+(node as any).hash = '94e963903263b5ca4542b0034aa3d617';
 export default node;

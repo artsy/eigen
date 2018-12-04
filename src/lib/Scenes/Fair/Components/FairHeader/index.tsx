@@ -52,7 +52,7 @@ const CountdownContainer = styled.View`
 export class FairHeader extends React.Component<Props> {
   render() {
     const {
-      fair: { image, name, organizer, start_at, end_at },
+      fair: { image, name, profile, start_at, end_at },
     } = this.props
     const { width: screenWidth } = Dimensions.get("window")
 
@@ -62,7 +62,7 @@ export class FairHeader extends React.Component<Props> {
           <Overlay />
           <Flex flexDirection="row" justifyContent="center" alignItems="center">
             <Flex flexDirection="column" flexGrow={1}>
-              {organizer && <Logo source={{ uri: organizer.profile.icon.url }} />}
+              {profile && <Logo source={{ uri: profile.icon.url }} />}
               <Sans size="3t" weight="medium" textAlign="center" color="white100">
                 {name}
               </Sans>
@@ -101,17 +101,15 @@ export const FairHeaderContainer = createFragmentContainer(
         url
       }
 
-      organizer {
-        profile {
-          icon {
-            id
-            href
-            height
-            width
-            url
-          }
-          name
+      profile {
+        icon {
+          id
+          href
+          height
+          width
+          url
         }
+        name
       }
 
       start_at

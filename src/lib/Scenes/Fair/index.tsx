@@ -6,6 +6,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap, PartnerType } from "lib/Components/LocationMap"
+import { FairBoothContainer as FairBooth } from "./Components/FairBooth"
 import { FairHeaderContainer as FairHeader } from "./Components/FairHeader"
 import { SearchLink } from "./Components/SearchLink"
 
@@ -34,7 +35,7 @@ export class Fair extends React.Component<Props, State> {
       type: "location",
       data: {
         location: fair.location,
-        partnerName: !!fair.organizer ? fair.organizer.profile.name : fair.name,
+        partnerName: fair.profile.name,
         partnerType: PartnerType.fair,
       },
     })
@@ -44,6 +45,13 @@ export class Fair extends React.Component<Props, State> {
       data: {
         hours: fair.hours,
       },
+    })
+
+    fair.shows_connection.edges.forEach(showData => {
+      sections.push({
+        type: "booth",
+        data: showData.node,
+      })
     })
 
     this.setState({ sections })
@@ -63,6 +71,8 @@ export class Fair extends React.Component<Props, State> {
         return <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} />
       case "search":
         return <SearchLink {...data} />
+      case "booth":
+        return <FairBooth show={...data} />
       default:
         return null
     }
@@ -91,7 +101,11 @@ export class Fair extends React.Component<Props, State> {
           keyExtractor={(item, index) => item.type + String(index)}
           extraData={extraData}
           data={sections}
-          ListHeaderComponent={<FairHeader fair={fair} />}
+          ListHeaderComponent={
+            <Box height="567">
+              <FairHeader fair={fair} />
+            </Box>
+          }
           renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
         />
       </Theme>
@@ -111,9 +125,16 @@ export default createFragmentContainer(
         ...LocationMap_location
       }
 
-      organizer {
-        profile {
-          name
+      profile {
+        name
+      }
+
+      shows_connection(first: 4) {
+        edges {
+          cursor
+          node {
+            ...FairBooth_show
+          }
         }
       }
     }
