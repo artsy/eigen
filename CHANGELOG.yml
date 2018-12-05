@@ -7,6 +7,7 @@ upcoming:
     - Adds ExchangeCurrentVersion to gate BNMO - ash
     - Add SwitchBoard path for ARFairSearchViewController - javamonn
     - Removes extraneous OS debugging logs from Xcode - ash
+    - Hopefully fixes for adjust install recognition - orta
   user_facing:
     - Make Offer now accessible - ash
     - Contact Gallery button doesn't show up with Make Offer button anymore - ash

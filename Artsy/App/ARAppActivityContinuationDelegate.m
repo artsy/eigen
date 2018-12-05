@@ -32,20 +32,22 @@ static  NSString *SailthruLinkDomain = @"link.artsy.net";
         URL = userActivity.webpageURL;
     }
 
-    if ([[ARUserManager sharedManager] hasExistingAccount]) {
-        DecodeURL(URL, ^(NSURL *decodedURL) {
-            [[ARAppDelegate sharedInstance] lookAtURLForAnalytics:decodedURL];
+    DecodeURL(URL, ^(NSURL *decodedURL) {
+        [[ARAppDelegate sharedInstance] lookAtURLForAnalytics:decodedURL];
+
+        //
+        if ([[ARUserManager sharedManager] hasExistingAccount]) {
             UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:decodedURL];
             if (viewController) {
                 [[ARTopMenuViewController sharedController] pushViewController:viewController];
             }
-        });
-    } else {
-        // This is (hopefully) an edge-case where the user did not launch the app yet since installing it, in which case
-        // we show on-boarding.
-        [[ARAppDelegate sharedInstance] showOnboarding];
-    }
 
+       } else {
+        // This is (hopefully) an edge-case where the user did not launch the app yet since installing it, in which case
+            // we show on-boarding.
+            [[ARAppDelegate sharedInstance] showOnboarding];
+        }
+    });
     return YES;
 }
 
