@@ -17,6 +17,6 @@ describe("SimpleTicker", () => {
 describe("LabeledTicker", () => {
   it("renders properly", () => {
     const comp = render(<LabeledTicker duration={duration} renderSeparator={() => <Text>:</Text>} />)
-    expect(comp.text()).toEqual("00Days:00Hours:00Minutes:01Seconds")
+    expect(comp.text()).toEqual("00d:00h:00m:01s")
   })
 })

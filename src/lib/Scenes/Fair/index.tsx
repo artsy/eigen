@@ -47,6 +47,13 @@ export class Fair extends React.Component<Props, State> {
       },
     })
 
+    sections.push({
+      type: "search",
+      data: {
+        fairID: fair.id,
+      },
+    })
+
     fair.shows_connection.edges.forEach(showData => {
       sections.push({
         type: "booth",
@@ -102,11 +109,15 @@ export class Fair extends React.Component<Props, State> {
           extraData={extraData}
           data={sections}
           ListHeaderComponent={
-            <Box height="567">
+            <Box height="620">
               <FairHeader fair={fair} />
             </Box>
           }
-          renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+          renderItem={item => (
+            <Box px={2} py={1}>
+              {this.renderItem(item)}
+            </Box>
+          )}
         />
       </Theme>
     )

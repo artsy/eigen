@@ -1,6 +1,7 @@
 import { Box, Separator } from "@artsy/palette"
 import { FairBooth_show } from "__generated__/FairBooth_show.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { FairBoothHeader } from "./Components/FairBoothHeader"
@@ -21,6 +22,9 @@ export const FairBoothContainer = createFragmentContainer<Props>(
         <Separator mb={1} />
         <FairBoothHeader name={partner.name} location={display} url={cover_image.url} />
         <Box mt={1}>{<GenericGrid artworks={artworks_connection.edges.map(a => a.node) as any} />}</Box>
+        <Box mt={2}>
+          <CaretButton text="View all works" />
+        </Box>
       </Box>
     )
   },
