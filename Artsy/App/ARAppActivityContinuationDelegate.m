@@ -33,9 +33,10 @@ static  NSString *SailthruLinkDomain = @"link.artsy.net";
     }
 
     DecodeURL(URL, ^(NSURL *decodedURL) {
+        // Always let adjust know there's a URL being received
         [[ARAppDelegate sharedInstance] lookAtURLForAnalytics:decodedURL];
 
-        //
+        // Show the screen they clicked on
         if ([[ARUserManager sharedManager] hasExistingAccount]) {
             UIViewController *viewController = [ARSwitchBoard.sharedInstance loadURL:decodedURL];
             if (viewController) {
