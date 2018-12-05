@@ -38,6 +38,22 @@ NSString *const ARTwoLabelCell = @"ARTwoLabelCell";
     return cellData;
 }
 
+
+- (ARCellData *)tappableCellDataWithTitle:(NSString *)title selectionWithCell:(void (^)(UITableViewCell *cell))selection
+{
+    ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
+    [cellData setCellConfigurationBlock:^(UITableViewCell *cell) {
+        cell.textLabel.text = title;
+    }];
+
+    [cellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        selection(cell);
+    }];
+    return cellData;
+}
+
+
 - (ARCellData *)informationCellDataWithTitle:(NSString *)title
 {
     ARCellData *cell = [[ARCellData alloc] initWithIdentifier:ARReadOnlyOptionCell];

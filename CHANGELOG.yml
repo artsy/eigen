@@ -8,10 +8,14 @@ upcoming:
     - Add SwitchBoard path for ARFairSearchViewController - javamonn
     - Removes extraneous OS debugging logs from Xcode - ash
     - Hopefully fixes for adjust install recognition - orta
+    - Adds support for getting your advertising UUID in the admin panel - orta
   user_facing:
     - Make Offer now accessible - ash
     - Contact Gallery button doesn't show up with Make Offer button anymore - ash
     - Adds a cancel option to follow-up push notification prompts - ash
+    - Fixes occasions when the shipping info would not show for buy now works - orta
+    - Fixes button copy problem where Contact gallery buttons would have Buy Now copy - ash
+    - Updates letter casing on "Contact gallery" and "Contact seller" buttons - ash
 
 releases:
   - version: 4.3.3

@@ -234,7 +234,7 @@
 {
     // We currently don't have a UI for a user to select from multiple editions. Instead, send the user
     // to the inquiry form.
-    if (self.artwork.hasMultipleEditions || !self.echo.isBuyNowAccessible) {
+    if (!self.artwork.isBuyNowable || !self.echo.isBuyNowAccessible) {
         [self tappedContactGallery];
         return;
     }

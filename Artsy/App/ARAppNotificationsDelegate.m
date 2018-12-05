@@ -98,7 +98,7 @@
 - (UIAlertController *)pushNotificationPromptAlertController
 {
     return [UIAlertController alertControllerWithTitle:@"Artsy Would Like to Send You Notifications"
-                                               message:@"Turn on notifications so you can get important updates about artists you follow"
+                                               message:@"Turn on notifications to get important updates about artists you follow."
                                         preferredStyle:UIAlertControllerStyleAlert];
 }
 

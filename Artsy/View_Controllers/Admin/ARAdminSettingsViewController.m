@@ -1,5 +1,6 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <ReplayKit/ReplayKit.h>
+#import <AdSupport/ASIdentifierManager.h>
 
 #import "ARAdminSettingsViewController.h"
 #import "ARQuicksilverViewController.h"
@@ -75,7 +76,8 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
     ARSectionData *toggleSections = [[ARSectionData alloc] initWithCellDataArray:@[
        [self generateOnScreenAnalytics],
-       [self generateOnScreenMartsy]
+       [self generateOnScreenMartsy],
+       [self copyAdvertisingID]
     ]];
     toggleSections.headerTitle = @"Options";
     [tableViewData addSectionData:toggleSections];
@@ -114,6 +116,15 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 {
     return [self tappableCellDataWithTitle:@"Restart" selection:^{
         exit(0);
+    }];
+}
+
+- (ARCellData *)copyAdvertisingID
+{
+    return [self tappableCellDataWithTitle:@"Copy Advertising ID" selectionWithCell:^(UITableViewCell *cell) {
+        NSUUID *adId = [[ASIdentifierManager sharedManager] advertisingIdentifier];
+        [[UIPasteboard generalPasteboard] setValue:[adId UUIDString] forPasteboardType:(NSString *)kUTTypePlainText];
+        cell.textLabel.text = @"Copied";
     }];
 }
 

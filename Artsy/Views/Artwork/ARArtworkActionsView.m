@@ -166,7 +166,7 @@
             }
 
             ARBlackFlatButton *buy = [[ARBlackFlatButton alloc] init];
-            [buy setTitle:@"Buy now" forState:UIControlStateNormal];
+            [buy setTitle:self.artwork.isBuyNowable ? @"Buy now" : [self contactButtonTitle] forState:UIControlStateNormal];
             [buy addTarget:self action:@selector(tappedBuyButton:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:buy withTopMargin:@"8" sideMargin:nil];
         }
@@ -175,8 +175,7 @@
 
     } else {
         // No auction controls
-
-        if ([self showPriceLabel] || [self showContactForPrice]) {
+        if ([self showPriceLabel] || [self showContactForPrice] || [self showShippingInfo]) {
             self.priceView = [[ARArtworkPriceView alloc] initWithFrame:CGRectZero];
 
             if ([self showContactForPrice]) {
@@ -196,7 +195,7 @@
 
         if ([self showBuyButton]) {
             ARBlackFlatButton *buy = [[ARBlackFlatButton alloc] init];
-            [buy setTitle:@"Buy now" forState:UIControlStateNormal];
+            [buy setTitle:self.artwork.isBuyNowable ? @"Buy now" : [self contactButtonTitle] forState:UIControlStateNormal];
             [buy addTarget:self action:@selector(tappedBuyButton:) forControlEvents:UIControlEventTouchUpInside];
 
             [buttonsWhoseMarginCanChange addObject:buy];
@@ -224,12 +223,7 @@
     }
 
     if ([self showContactButton]) {
-        NSString *title = nil;
-        if (self.artwork.partner.type == ARPartnerTypeGallery) {
-            title = NSLocalizedString(@"Contact Gallery", @"Contact Gallery");
-        } else {
-            title = NSLocalizedString(@"Contact Seller", @"Contact Seller");
-        }
+        NSString *title = [self contactButtonTitle];
 
         ARBlackFlatButton *contact = [[ARBlackFlatButton alloc] init];
         [contact setTitle:title forState:UIControlStateNormal];
@@ -358,10 +352,10 @@ return [navigationButtons copy];
     return self.saleArtwork.auctionState & (ARAuctionStateStarted | ARAuctionStateShowingPreview);
 }
 
-// Show if artwork has a price (but not multiple editions) and inquireable or sold
+// Show if artwork has a price (but not multiple editions) and acquirable, inquireable or sold
 - (BOOL)showPriceLabel
 {
-    return self.artwork.price.length && !self.artwork.hasMultipleEditions && (self.artwork.isInquireable.boolValue || self.artwork.sold.boolValue);
+    return self.artwork.price.length && !self.artwork.hasMultipleEditions && (self.artwork.isAcquireable.boolValue || self.artwork.isInquireable.boolValue || self.artwork.sold.boolValue);
 }
 
 // Show if artwork is for sale but its price is hidden
@@ -426,6 +420,15 @@ return [navigationButtons copy];
 - (BOOL)showShippingInfo
 {
     return !self.artwork.sold.boolValue && (self.artwork.shippingInfo.length || self.artwork.shippingOrigin.length);
+}
+
+- (NSString *)contactButtonTitle
+{
+    if (self.artwork.partner.type == ARPartnerTypeGallery) {
+        return NSLocalizedString(@"Contact gallery", @"Contact gallery");
+    } else {
+        return NSLocalizedString(@"Contact seller", @"Contact seller");
+    }
 }
 
 #pragma mark ARContactViewDelegate

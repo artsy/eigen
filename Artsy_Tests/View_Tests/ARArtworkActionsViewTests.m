@@ -94,11 +94,12 @@ it(@"displays buy now for an acquireable work with pricing", ^{
 });
 
 
-it(@"hides contact button if inquirable but artwork is not for sale ", ^{
+it(@"hides contact button and shipping if inquirable but artwork is not for sale ", ^{
     view.artwork = [Artwork modelWithJSON:@{
         @"id" : @"artwork-id",
         @"title" : @"Artwork Title",
         @"availability" : @"sold",
+        @"sold" : @YES,
         @"inquireable" : @YES,
         @"shippingInfo": @"Some shipping info",
         @"shippingOrigin": @"Origin info for Artwork"
@@ -307,8 +308,8 @@ describe(@"with Echo config that has BNMO enabled", ^{
             @"acquireable": @(YES),
             @"offerable": @(YES),
             @"edition_sets": @[
-                    @"some-string", @"some-other-string"
-                    ]
+                @"some-string", @"some-other-string"
+            ]
         }];
         [view updateUI];
         [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
@@ -414,6 +415,15 @@ context(@"price view", ^{
             [view layoutIfNeeded];
             expect(view.priceView).to.haveValidSnapshot();
         });
+
+        it(@"shows shipping when the work is acquirable", ^{
+            view.artwork = [Artwork modelWithJSON:@{ @"availability" : @"for sale", @"price" : @"$30,000", @"acquirable": @(true), @"shippingInfo": @"Ships with version 4.3.4"}];
+            [view updateUI];
+            [view ensureScrollingWithHeight:CGRectGetHeight(view.bounds)];
+            [view layoutIfNeeded];
+            expect(view.priceView).to.haveValidSnapshot();
+        });
+
     });
 
     context(@"at auction", ^{
