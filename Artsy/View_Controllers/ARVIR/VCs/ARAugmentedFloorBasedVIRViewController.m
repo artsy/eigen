@@ -52,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) id <ARSCNViewDelegate, ARVIRInteractive, ARSessionDelegate> interactionController;
 
+@property (nonatomic, weak, nullable) UIImageView *betaImageView;
 @property (nonatomic, weak, nullable) UIButton *backButton;
 @property (nonatomic, strong, nullable) NSDate *dateOpenedAR;
 
@@ -196,6 +197,7 @@ NS_ASSUME_NONNULL_BEGIN
         [backButton setImage:[UIImage imageNamed:@"ARVIRBack"] forState:UIControlStateNormal];
         backButton.translatesAutoresizingMaskIntoConstraints = false;
         [backButton addTarget:self action:@selector(exitARContext) forControlEvents:UIControlEventTouchUpInside];
+        self.backButton = backButton;
         [self.view addSubview:backButton];
 
         backButton.layer.masksToBounds = NO;
@@ -206,6 +208,7 @@ NS_ASSUME_NONNULL_BEGIN
         // A beta button in the top right
         UIImageView *betaImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ARVIRBeta"]];
         betaImage.translatesAutoresizingMaskIntoConstraints = false;
+        self.betaImageView = betaImage;
         [self.view addSubview:betaImage];
 
         ARClearFlatButton *resetARButton = [[_ARClearFlatButton alloc] init];
@@ -425,6 +428,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (IBAction)screenTapped:(UITapGestureRecognizer *)gesture
 {
     [self.interactionController tappedOnScreen:gesture];
+
+    if ([self.informationView isAtLastState]) {
+        [UIView animateWithDuration:ARAnimationQuickDuration animations:^{
+            self.betaImageView.alpha = self.betaImageView.alpha == 1 ? 0 : 1;
+            self.backButton.alpha = self.backButton.alpha == 1 ? 0 : 1;
+            self.resetARButton.alpha = self.resetARButton.alpha == 1 ? 0 : 1;
+        }];
+    }
 }
 
 // Used to let the interaction controller potentially move the artwork around
