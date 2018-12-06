@@ -16,7 +16,12 @@ export type Fair_fair = {
     readonly profile: ({
         readonly name: string | null;
     }) | null;
-    readonly shows_connection: ({
+    readonly shows: ({
+        readonly pageInfo: {
+            readonly hasNextPage: boolean;
+            readonly startCursor: string | null;
+            readonly endCursor: string | null;
+        };
         readonly edges: ReadonlyArray<({
             readonly cursor: string;
             readonly node: ({
@@ -49,8 +54,32 @@ return {
   "kind": "Fragment",
   "name": "Fair_fair",
   "type": "Fair",
-  "metadata": null,
-  "argumentDefinitions": [],
+  "metadata": {
+    "connection": [
+      {
+        "count": "count",
+        "cursor": "cursor",
+        "direction": "forward",
+        "path": [
+          "shows"
+        ]
+      }
+    ]
+  },
+  "argumentDefinitions": [
+    {
+      "kind": "LocalArgument",
+      "name": "count",
+      "type": "Int",
+      "defaultValue": 10
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "cursor",
+      "type": "String",
+      "defaultValue": null
+    }
+  ],
   "selections": [
     {
       "kind": "FragmentSpread",
@@ -104,20 +133,45 @@ return {
     },
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "shows_connection",
-      "storageKey": "shows_connection(first:4)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 4,
-          "type": "Int"
-        }
-      ],
+      "alias": "shows",
+      "name": "__Fair_shows_connection",
+      "storageKey": null,
+      "args": null,
       "concreteType": "ShowConnection",
       "plural": false,
       "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "pageInfo",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "hasNextPage",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "startCursor",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
         {
           "kind": "LinkedField",
           "alias": null,
@@ -148,7 +202,14 @@ return {
                   "name": "FairBooth_show",
                   "args": null
                 },
-                v1
+                v1,
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "__typename",
+                  "args": null,
+                  "storageKey": null
+                }
               ]
             }
           ]
@@ -159,5 +220,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '0194a6847c9c26f4807aa3736acc7303';
+(node as any).hash = '6d2d0dba0f9803a13cf2ac291e296c86';
 export default node;

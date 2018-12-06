@@ -2,32 +2,36 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { Fair_fair$ref } from "./Fair_fair.graphql";
-export type FairQueryVariables = {
-    readonly fairID: string;
+export type FairShowsQueryVariables = {
+    readonly id: string;
+    readonly count: number;
+    readonly cursor?: string | null;
 };
-export type FairQueryResponse = {
+export type FairShowsQueryResponse = {
     readonly fair: ({
         readonly " $fragmentRefs": Fair_fair$ref;
     }) | null;
 };
-export type FairQuery = {
-    readonly response: FairQueryResponse;
-    readonly variables: FairQueryVariables;
+export type FairShowsQuery = {
+    readonly response: FairShowsQueryResponse;
+    readonly variables: FairShowsQueryVariables;
 };
 
 
 
 /*
-query FairQuery(
-  $fairID: String!
+query FairShowsQuery(
+  $id: String!
+  $count: Int!
+  $cursor: String
 ) {
-  fair(id: $fairID) {
-    ...Fair_fair
+  fair(id: $id) {
+    ...Fair_fair_1G22uz
     __id
   }
 }
 
-fragment Fair_fair on Fair {
+fragment Fair_fair_1G22uz on Fair {
   ...FairHeader_fair
   id
   name
@@ -40,7 +44,7 @@ fragment Fair_fair on Fair {
     name
     __id
   }
-  shows: shows_connection(first: 10) {
+  shows: shows_connection(first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
       startCursor
@@ -199,8 +203,20 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "fairID",
+    "name": "id",
     "type": "String!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "cursor",
+    "type": "String",
     "defaultValue": null
   }
 ],
@@ -208,7 +224,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "fairID",
+    "variableName": "id",
     "type": "String!"
   }
 ],
@@ -288,13 +304,13 @@ v13 = [
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "FairQuery",
-  "id": "7e987bb4f7d7625af327006f6e680a1f",
+  "name": "FairShowsQuery",
+  "id": "9aacf7457c7b1dd3cc2e0ecc996bfe78",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "FairQuery",
+    "name": "FairShowsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -311,7 +327,20 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "Fair_fair",
-            "args": null
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "count",
+                "variableName": "count",
+                "type": null
+              },
+              {
+                "kind": "Variable",
+                "name": "cursor",
+                "variableName": "cursor",
+                "type": null
+              }
+            ]
           },
           v2
         ]
@@ -320,7 +349,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "FairQuery",
+    "name": "FairShowsQuery",
     "argumentDefinitions": v0,
     "selections": [
       {
@@ -513,12 +542,18 @@ return {
             "kind": "LinkedField",
             "alias": "shows",
             "name": "shows_connection",
-            "storageKey": "shows_connection(first:10)",
+            "storageKey": null,
             "args": [
               {
-                "kind": "Literal",
+                "kind": "Variable",
+                "name": "after",
+                "variableName": "cursor",
+                "type": "String"
+              },
+              {
+                "kind": "Variable",
                 "name": "first",
-                "value": 10,
+                "variableName": "count",
                 "type": "Int"
               }
             ],
@@ -894,9 +929,15 @@ return {
             "name": "shows_connection",
             "args": [
               {
-                "kind": "Literal",
+                "kind": "Variable",
+                "name": "after",
+                "variableName": "cursor",
+                "type": "String"
+              },
+              {
+                "kind": "Variable",
                 "name": "first",
-                "value": 10,
+                "variableName": "count",
                 "type": "Int"
               }
             ],
@@ -910,5 +951,5 @@ return {
   }
 };
 })();
-(node as any).hash = '88617e47aae3f01b3fc85bbf0e42277a';
+(node as any).hash = '9c8048cfcaaefa24d6e254a8c8d6bd51';
 export default node;

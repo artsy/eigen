@@ -36,12 +36,18 @@ fragment Fair_fair on Fair {
     name
     __id
   }
-  shows_connection(first: 4) {
+  shows: shows_connection(first: 10) {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    }
     edges {
       cursor
       node {
         ...FairBooth_show
         __id
+        __typename
       }
     }
   }
@@ -243,14 +249,13 @@ v7 = {
   "args": null,
   "storageKey": null
 },
-v8 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 4,
-    "type": "Int"
-  }
-],
+v8 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "__typename",
+  "args": null,
+  "storageKey": null
+},
 v9 = [
   v3
 ],
@@ -272,7 +277,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "indexTestsQuery",
-  "id": "cc4b22f28a0e825455cff7a917aa6240",
+  "id": "896fa25cddbea077f54b757171b34550",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -494,13 +499,52 @@ return {
           },
           {
             "kind": "LinkedField",
-            "alias": null,
+            "alias": "shows",
             "name": "shows_connection",
-            "storageKey": "shows_connection(first:4)",
-            "args": v8,
+            "storageKey": "shows_connection(first:10)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 10,
+                "type": "Int"
+              }
+            ],
             "concreteType": "ShowConnection",
             "plural": false,
             "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "pageInfo",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "hasNextPage",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "startCursor",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "endCursor",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -544,13 +588,7 @@ return {
                         "concreteType": null,
                         "plural": false,
                         "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "__typename",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          v8,
                           v1,
                           {
                             "kind": "InlineFragment",
@@ -604,7 +642,14 @@ return {
                         "alias": null,
                         "name": "artworks_connection",
                         "storageKey": "artworks_connection(first:4)",
-                        "args": v8,
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "first",
+                            "value": 4,
+                            "type": "Int"
+                          }
+                        ],
                         "concreteType": "ArtworkConnection",
                         "plural": false,
                         "selections": [
@@ -823,12 +868,29 @@ return {
                           }
                         ]
                       },
-                      v1
+                      v1,
+                      v8
                     ]
                   }
                 ]
               }
             ]
+          },
+          {
+            "kind": "LinkedHandle",
+            "alias": "shows",
+            "name": "shows_connection",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 10,
+                "type": "Int"
+              }
+            ],
+            "handle": "connection",
+            "key": "Fair_shows",
+            "filters": null
           }
         ]
       }
