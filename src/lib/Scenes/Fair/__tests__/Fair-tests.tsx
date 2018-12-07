@@ -15,7 +15,7 @@ it("renders properly", async () => {
     <MockRelayRenderer
       Component={Fair}
       query={graphql`
-        query indexTestsQuery {
+        query FairTestsQuery {
           fair(id: "sofa-chicago-2018") {
             ...Fair_fair
           }

@@ -86,6 +86,9 @@ export interface Props extends ArtistRelayProps, GeneRelayProps {
 
   /** A callback that is called once all artworks have been queried. */
   onComplete?: () => void
+
+  /** A component to render at the top of all items */
+  HeaderComponent?: React.ComponentType<any> | React.ReactElement<any>
 }
 
 interface State {
@@ -268,6 +271,16 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     return sections
   }
 
+  renderHeader() {
+    const HeaderComponent = this.props.HeaderComponent
+    if (!HeaderComponent) {
+      return null
+    }
+
+    // @ts-ignore
+    return React.isValidElement(HeaderComponent) ? HeaderComponent : <HeaderComponent />
+  }
+
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
     return (
@@ -278,6 +291,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
         scrollsToTop={false}
         accessibilityLabel="Artworks ScrollView"
       >
+        {this.renderHeader()}
         <View style={styles.container} accessibilityLabel="Artworks Content View">
           {artworks}
         </View>

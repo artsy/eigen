@@ -49,6 +49,7 @@ export class LocationMap extends React.Component<Props> {
       case "Museum":
         return require("../../../../images/pinmuseumon.png")
       case "Gallery":
+      default:
         return require("../../../../images/pingalleryon.png")
     }
   }

@@ -1,16 +1,18 @@
 import { Box, Separator, Theme } from "@artsy/palette"
-import { Fair_fair } from "__generated__/Fair_fair.graphql"
+import { FairDetail_fair } from "__generated__/FairDetail_fair.graphql"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap, PartnerType } from "lib/Components/LocationMap"
-import { FairHeaderContainer as FairHeader } from "./Components/FairHeader"
-import { SearchLink } from "./Components/SearchLink"
+import { ArtworksPreviewContainer as ArtworksPreview } from "../Components/ArtworksPreview"
+import { FairHeaderContainer as FairHeader } from "../Components/FairHeader"
+import { SearchLink } from "../Components/SearchLink"
 
 interface Props extends ViewProperties {
-  fair: Fair_fair
+  fair: FairDetail_fair
+  onViewAllArtworksPressed: () => void
 }
 
 interface State {
@@ -21,7 +23,7 @@ interface State {
   extraData?: { animatedValue: { height: number } }
 }
 
-export class Fair extends React.Component<Props, State> {
+export class FairDetail extends React.Component<Props, State> {
   state: State = {
     sections: [],
   }
@@ -46,14 +48,33 @@ export class Fair extends React.Component<Props, State> {
       },
     })
 
+    sections.push({
+      type: "search",
+      data: {
+        fairID: fair.id,
+      },
+    })
+
+    sections.push({
+      type: "artworks",
+      data: {
+        fair,
+      },
+    })
+
     this.setState({ sections })
   }
 
-  renderItemSeparator = () => (
-    <Box py={2} px={2}>
-      <Separator />
-    </Box>
-  )
+  renderItemSeparator = item => {
+    if (item && item.leadingItem.type === "location") {
+      return null
+    }
+    return (
+      <Box py={2} px={2}>
+        <Separator />
+      </Box>
+    )
+  }
 
   renderItem = ({ item: { data, type } }) => {
     switch (type) {
@@ -63,6 +84,8 @@ export class Fair extends React.Component<Props, State> {
         return <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} />
       case "search":
         return <SearchLink {...data} />
+      case "artworks":
+        return <ArtworksPreview {...data} onViewAllArtworksPressed={this.props.onViewAllArtworksPressed} />
       default:
         return null
     }
@@ -88,22 +111,24 @@ export class Fair extends React.Component<Props, State> {
     return (
       <Theme>
         <FlatList
+          ListHeaderComponent={<FairHeader fair={fair} />}
           keyExtractor={(item, index) => item.type + String(index)}
           extraData={extraData}
           data={sections}
-          ListHeaderComponent={<FairHeader fair={fair} />}
           renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+          ItemSeparatorComponent={this.renderItemSeparator}
         />
       </Theme>
     )
   }
 }
 
-export default createFragmentContainer(
-  Fair,
+export const FairDetailContainer = createFragmentContainer(
+  FairDetail,
   graphql`
-    fragment Fair_fair on Fair {
+    fragment FairDetail_fair on Fair {
       ...FairHeader_fair
+      ...ArtworksPreview_fair
       id
       hours
       location {
