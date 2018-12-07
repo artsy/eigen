@@ -1,6 +1,7 @@
 #import "ARLogger.h"
 #import "ARSearchViewController.h"
 #import "ARSearchViewController+Private.h"
+#import "SearchResult.h"
 
 #import "ARAppConstants.h"
 #import "ARFonts.h"
@@ -404,7 +405,7 @@
     return 1;
 }
 
-- (void)selectedResult:(SearchResult *)result ofType:(NSString *)type fromQuery:(NSString *)query
+- (void)selectedResult:(NSObject <SearchResultable> *)result ofType:(NSString *)type fromQuery:(NSString *)query
 {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
@@ -413,9 +414,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SearchResult *result = [self.searchDataSource objectAtIndex:indexPath.row];
-    NSString *type = [NSStringFromClass([result.model class]) lowercaseString];
-    [self selectedResult:result ofType:type fromQuery:self.textField.text];
+    NSObject <SearchResultable >*result = [self.searchDataSource objectAtIndex:indexPath.row];
+    if ([result isKindOfClass:SearchResult.class]) {
+        SearchResult *searchResult = (id)result;
+        NSString *type = [NSStringFromClass([searchResult.model class]) lowercaseString];
+        [self selectedResult:result ofType:type fromQuery:self.textField.text];
+    } else {
+        // Once the Fair search is removed with the new local discovery "SearchResult" can be rm'd
+        // as well as code like above.
+        [self selectedResult:result ofType:@"" fromQuery:self.textField.text];
+    }
+
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView

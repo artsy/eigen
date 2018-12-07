@@ -5,6 +5,7 @@
 #import "Gene.h"
 #import "ARRouter.h"
 #import "SearchResult.h"
+#import "SearchSuggestion.h"
 
 #import "MTLModel+JSON.h"
 #import "AFHTTPRequestOperation+JSON.h"
@@ -42,14 +43,32 @@ EnsureQuery(NSString *query) {
         NSArray *jsonDictionaries = JSON;
         NSMutableArray *returnArray = [NSMutableArray array];
 
-        for (NSDictionary *dictionary in jsonDictionaries) {
-            if ([SearchResult searchResultIsSupported:dictionary]) {
+        if (fairID) {
+            // Old style obj -> objc class mapping for fairs
+            for (NSDictionary *dictionary in jsonDictionaries) {
+                if ([SearchResult searchResultIsSupported:dictionary]) {
+                    NSError *error = nil;
+                    SearchResult *result = [[SearchResult class] modelWithJSON:dictionary error:&error];
+                    if (error) {
+                        ARErrorLog(@"Error creating search result. Error: %@", error.localizedDescription);
+                    } else {
+                        [returnArray addObject:result];
+                    }
+                }
+            }
+        } else {
+            // use "new" suggest API which has all data in response
+            for (NSDictionary *dictionary in jsonDictionaries) {
                 NSError *error = nil;
-                SearchResult *result = [[SearchResult class] modelWithJSON:dictionary error:&error];
-                if (error) {
-                    ARErrorLog(@"Error creating search result. Error: %@", error.localizedDescription);
-                } else {
-                    [returnArray addObject:result];
+                if ([SearchSuggestion searchResultIsSupported:dictionary]) {
+
+                    id result = [SearchSuggestion.class modelWithJSON:dictionary error:&error];
+
+                    if (error) {
+                        ARErrorLog(@"Error creating search result. Error: %@", error.localizedDescription);
+                    } else {
+                        [returnArray addObject:result];
+                    }
                 }
             }
         }

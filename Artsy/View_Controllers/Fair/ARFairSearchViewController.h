@@ -1,4 +1,5 @@
 #import "ARSearchViewController.h"
+#import "SearchResult.h"
 
 @class ARFairSearchViewController, Fair;
 

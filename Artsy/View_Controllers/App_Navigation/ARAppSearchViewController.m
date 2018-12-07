@@ -17,6 +17,7 @@
 #import "UIViewController+TopMenuViewController.h"
 #import "AROptions.h"
 #import "ARFonts.h"
+#import "SearchResult.h"
 
 #import <Emission/ARArtistComponentViewController.h>
 #import <FXBlurView/FXBlurView.h>
@@ -104,25 +105,9 @@ static const NSInteger ARAppSearchParallaxDistance = 20;
     return [ArtsyAPI searchWithQuery:query success:success failure:failure];
 }
 
-- (void)selectedResult:(SearchResult *)result ofType:(NSString *)type fromQuery:(NSString *)query
+- (void)selectedResult:(NSObject <SearchResultable> *)result ofType:(NSString *)type fromQuery:(NSString *)query
 {
-    UIViewController *controller;
-    if (result.model == [Artwork class]) {
-        controller = [[ARArtworkSetViewController alloc] initWithArtworkID:result.modelID];
-    } else if (result.model == [Artist class]) {
-        NSString *path = NSStringWithFormat(@"/artist/%@", result.modelID);
-        controller = [[ARSwitchBoard sharedInstance] loadPath:path];
-    } else if (result.model == [Gene class]) {
-        controller = [[ARSwitchBoard sharedInstance] loadGeneWithID:result.modelID];
-    } else if (result.model == [Profile class]) {
-        controller = [ARSwitchBoard.sharedInstance loadProfileWithID:result.modelID];
-    } else if (result.model == [SiteFeature class]) {
-        NSString *path = NSStringWithFormat(@"/feature/%@", result.modelID);
-        controller = [ARSwitchBoard.sharedInstance loadPath:path];
-    } else if (result.model == [Fair class]) {
-        controller = [ARSwitchBoard.sharedInstance loadProfileWithID:result.modelID];
-    }
-
+    UIViewController *controller = [ARSwitchBoard.sharedInstance loadPath:result.href];
     if (controller) {
         [self.ar_TopMenuViewController pushViewController:controller animated:YES];
     }

@@ -855,7 +855,8 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newSearchRequestWithQuery:(NSString *)query
 {
-    return [self requestWithMethod:@"GET" path:ARNewSearchURL parameters:@{ @"term" : query }];
+    return [self requestWithMethod:@"GET" path:ARNewSearchURL parameters:@{ @"term" : query, @"visible_to_public": @(YES), @"agg": @(NO) }];
+//    visible_to_public=true&fair_id=&size=7&agg=false&term=ssd
 }
 
 + (NSURLRequest *)newSearchRequestWithFairID:(NSString *)fairID andQuery:(NSString *)query

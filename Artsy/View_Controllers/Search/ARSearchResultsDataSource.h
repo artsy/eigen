@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-#import "SearchResult.h"
+#import "SearchResultable.h"
 
 
 @interface ARSearchResultsDataSource : NSObject <UITableViewDataSource>
@@ -9,6 +9,6 @@
 @property (nonatomic, readwrite, strong) UIColor *textColor;
 @property (nonatomic, readwrite, strong) UIImage *placeholderImage;
 
-- (SearchResult *)objectAtIndex:(NSInteger)index;
+- (NSObject <SearchResultable> *)objectAtIndex:(NSInteger)index;
 
 @end
