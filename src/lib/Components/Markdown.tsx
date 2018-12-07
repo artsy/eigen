@@ -1,15 +1,15 @@
-import { Flex, Serif } from "@artsy/palette"
+import { Flex, FlexProps, Serif } from "@artsy/palette"
 import _ from "lodash"
 import React from "react"
-import { Text, ViewProperties } from "react-native"
+import { Text } from "react-native"
 import SimpleMarkdown from "simple-markdown"
-import { LinkText } from "../Text/LinkText"
+import { LinkText } from "./Text/LinkText"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 // Rules for rendering parsed markdown. Currently only handles links and text. Add rules similar to
 // https://github.com/CharlesMangwa/react-native-simple-markdown/blob/next/src/rules.js for new functionalities.
-const rules = {
+export const defaultRules = {
   ...SimpleMarkdown.defaultRules,
 
   link: {
@@ -57,16 +57,39 @@ const rules = {
   },
 }
 
-// FIXME: Update this to <ViewProperties & FlexProps> once @artsy/paletete is updated
-export class Markdown extends React.Component<ViewProperties & any> {
-  private readonly rawBuiltParser = SimpleMarkdown.parserFor(rules)
+interface Props {
+  rules?: { [key: string]: any }
+}
 
-  private readonly reactOutput = SimpleMarkdown.reactFor(SimpleMarkdown.ruleOutput(rules, "react"))
+export class Markdown extends React.Component<Props & FlexProps> {
+  static defaultProps = {
+    rules: defaultRules,
+  }
+  rawBuiltParser: any
+  reactOutput: any
+
+  constructor(props) {
+    super(props)
+    this.buildParser()
+  }
+
+  buildParser() {
+    const { rules } = this.props
+    this.rawBuiltParser = SimpleMarkdown.parserFor(rules)
+    this.reactOutput = SimpleMarkdown.reactFor(SimpleMarkdown.ruleOutput(rules, "react"))
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.rules !== this.props.rules) {
+      this.buildParser()
+    }
+  }
 
   render() {
     const child = _.isArray(this.props.children) ? this.props.children.join("") : this.props.children
+    const { rules, ...rest } = this.props
 
-    return <Flex {...this.props}>{this.reactOutput(this.parse(child))}</Flex>
+    return <Flex {...rest}>{this.reactOutput(this.parse(child))}</Flex>
   }
 
   private parse(source) {
