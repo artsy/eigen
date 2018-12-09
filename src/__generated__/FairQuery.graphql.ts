@@ -28,6 +28,11 @@ query FairQuery(
 }
 
 fragment Fair_fair on Fair {
+  ...FairDetail_fair
+  __id
+}
+
+fragment FairDetail_fair on Fair {
   ...FairHeader_fair
   id
   name
@@ -289,7 +294,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairQuery",
-  "id": "7e987bb4f7d7625af327006f6e680a1f",
+  "id": "ae6493a9594b4ec6a11b0bb52529426b",
   "text": null,
   "metadata": {},
   "fragment": {

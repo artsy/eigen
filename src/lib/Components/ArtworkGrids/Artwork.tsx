@@ -36,7 +36,7 @@ interface Props {
   onPress?: (artworkID: string) => void
 }
 
-class Artwork extends React.Component<Props, any> {
+export class Artwork extends React.Component<Props, any> {
   handleTap() {
     this.props.onPress && this.props.artwork.id
       ? this.props.onPress(this.props.artwork.id)

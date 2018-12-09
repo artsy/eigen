@@ -2,8 +2,8 @@
 
 import { ConcreteFragment } from "relay-runtime";
 import { Artists_show$ref } from "./Artists_show.graphql";
-import { Artworks_show$ref } from "./Artworks_show.graphql";
 import { LocationMap_location$ref } from "./LocationMap_location.graphql";
+import { ShowArtworksPreview_show$ref } from "./ShowArtworksPreview_show.graphql";
 import { ShowHeader_show$ref } from "./ShowHeader_show.graphql";
 import { Shows_show$ref } from "./Shows_show.graphql";
 declare const _Detail_show$ref: unique symbol;
@@ -30,15 +30,11 @@ export type Detail_show = {
         readonly id: string | null;
     }) | null> | null;
     readonly status: string | null;
-    readonly counts: ({
-        readonly artworks: number | null;
-        readonly eligible_artworks: any | null;
-    }) | null;
     readonly partner: ({
         readonly name?: string | null;
         readonly type?: string | null;
     }) | null;
-    readonly " $fragmentRefs": ShowHeader_show$ref & Artworks_show$ref & Artists_show$ref & Shows_show$ref;
+    readonly " $fragmentRefs": ShowHeader_show$ref & ShowArtworksPreview_show$ref & Artists_show$ref & Shows_show$ref;
     readonly " $refType": Detail_show$ref;
 };
 
@@ -82,7 +78,7 @@ return {
   "selections": [
     {
       "kind": "FragmentSpread",
-      "name": "Artworks_show",
+      "name": "ShowHeader_show",
       "args": null
     },
     v0,
@@ -178,12 +174,12 @@ return {
         v0
       ]
     },
+    v3,
     {
       "kind": "FragmentSpread",
-      "name": "ShowHeader_show",
+      "name": "ShowArtworksPreview_show",
       "args": null
     },
-    v3,
     {
       "kind": "FragmentSpread",
       "name": "Artists_show",
@@ -200,31 +196,6 @@ return {
       "name": "status",
       "args": null,
       "storageKey": null
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "counts",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "ShowCounts",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "artworks",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "eligible_artworks",
-          "args": null,
-          "storageKey": null
-        }
-      ]
     },
     {
       "kind": "LinkedField",
@@ -263,5 +234,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'c8b38e16bd26bc2d1f7c98f9837cfcb9';
+(node as any).hash = '51a575546c284ff6936c7dd2a439a7cf';
 export default node;

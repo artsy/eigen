@@ -18,6 +18,7 @@
 
 - Adds styled LocationMap with custom pins - kieran
 - Refactor auctions countdown timer, add fair countdown timer - javamonn
+- Refactors ARNotificationManager to implicitly call all JS methods on main queue - ash
 - Adds the mapBoxAPIClientKey to cocoapods
 - Updates Show detail view styles - luc
 - Styles artists list - Kieran
@@ -31,6 +32,7 @@
 - Adds AllArtist page to Shows and adds styled gray border InvertedButton - Kieran
 - Add HoursCollapsible to Fair detail view - javamonn
 - Adds fair booth section - luc
+- Add browse artworks screen to Fair, Show - javamonn
 
 ### 1.7.4
 

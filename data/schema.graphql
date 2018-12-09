@@ -148,9 +148,11 @@ type Artist implements Node {
     exclude: [String]
   ): [Artwork]
   artworks_connection(
-    sort: ArtworkSorts
+    # List of artwork IDs to exclude from the response.
+    exclude: [String]
     filter: [ArtistArtworksFilters]
     published: Boolean = true
+    sort: ArtworkSorts
     after: String
     first: Int
     before: String
@@ -462,9 +464,11 @@ type ArtistItem implements Node {
     exclude: [String]
   ): [Artwork]
   artworks_connection(
-    sort: ArtworkSorts
+    # List of artwork IDs to exclude from the response.
+    exclude: [String]
     filter: [ArtistArtworksFilters]
     published: Boolean = true
+    sort: ArtworkSorts
     after: String
     first: Int
     before: String
@@ -822,7 +826,7 @@ type Artwork implements Node & Sellable {
   meta: ArtworkMeta
 
   # [DO NOT USE] Weekly pageview data (static).
-  pageviews: Int @deprecated(reason: "Do not use! This is for an AB test and will be imminently deprecated.")
+  pageviews: Int
   partner(
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
@@ -1067,6 +1071,49 @@ type ArtworkContextFair {
   organizer: organizer
   published: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   tagline: String
+
+  # The exhibitors with booths in this fair.
+  exhibitors_grouped_by_name: [FairExhibitorsGroup]
+
+  # Artworks Elastic Search results
+  filteredArtworks(
+    acquireable: Boolean
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    artist_ids: [String]
+    at_auction: Boolean
+    attribution_class: [String]
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    include_medium_filter_in_aggregation: Boolean
+    inquireable_only: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    page: Int
+    sale_id: ID
+    size: Int
+    sort: String
+    tag_id: String
+    keyword: String
+  ): FilterArtworks
 }
 
 type ArtworkContextPartnerShow implements Node {
@@ -1554,7 +1601,7 @@ type ArtworkItem implements Node & Sellable {
   meta: ArtworkMeta
 
   # [DO NOT USE] Weekly pageview data (static).
-  pageviews: Int @deprecated(reason: "Do not use! This is for an AB test and will be imminently deprecated.")
+  pageviews: Int
   partner(
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
@@ -1605,6 +1652,9 @@ type ArtworkLayer {
   # A type-specific ID.
   id: String!
   artworks: [Artwork]
+
+  # A connection of artworks from a Layer.
+  artworksConnection(after: String, first: Int, before: String, last: Int): ArtworkConnection
   description: String
   href: String
   name: String
@@ -1948,6 +1998,17 @@ type BidIncrement {
 type BidIncrementsFormatted {
   cents: Float
   display: String
+}
+
+input buyerAcceptOfferInput {
+  # Offer ID
+  offerId: String!
+  clientMutationId: String
+}
+
+type buyerAcceptOfferPayload {
+  orderOrError: OrderOrFailureUnionType
+  clientMutationId: String
 }
 
 type BuyersPremium {
@@ -3036,6 +3097,57 @@ type Fair {
   organizer: organizer
   published: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   tagline: String
+
+  # The exhibitors with booths in this fair.
+  exhibitors_grouped_by_name: [FairExhibitorsGroup]
+
+  # Artworks Elastic Search results
+  filteredArtworks(
+    acquireable: Boolean
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    artist_ids: [String]
+    at_auction: Boolean
+    attribution_class: [String]
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    include_medium_filter_in_aggregation: Boolean
+    inquireable_only: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    page: Int
+    sale_id: ID
+    size: Int
+    sort: String
+    tag_id: String
+    keyword: String
+  ): FilterArtworks
+}
+
+type FairExhibitorsGroup {
+  # Letter exhibitors group belongs to
+  letter: String
+
+  # Exhibitors sorted by name
+  exhibitors: [String]
 }
 
 enum FairSorts {
@@ -3064,7 +3176,6 @@ type FilterArtworks implements Node {
   # Returns aggregation counts for the given filter query.
   aggregations: [ArtworksAggregationResults]
   artworks_connection(sort: String, after: String, first: Int, before: String, last: Int): ArtworkConnection
-    @deprecated(reason: "Favour artwork connections that take filter arguments.")
   counts: FilterArtworksCounts
   followed_artists_total: Int @deprecated(reason: "Favor `favor counts.followed_artists`")
 
@@ -4009,6 +4120,49 @@ type HomePageModuleContextFair {
   organizer: organizer
   published: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   tagline: String
+
+  # The exhibitors with booths in this fair.
+  exhibitors_grouped_by_name: [FairExhibitorsGroup]
+
+  # Artworks Elastic Search results
+  filteredArtworks(
+    acquireable: Boolean
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    artist_ids: [String]
+    at_auction: Boolean
+    attribution_class: [String]
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    include_medium_filter_in_aggregation: Boolean
+    inquireable_only: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    page: Int
+    sale_id: ID
+    size: Int
+    sort: String
+    tag_id: String
+    keyword: String
+  ): FilterArtworks
 }
 
 type HomePageModuleContextFollowArtists {
@@ -4818,6 +4972,9 @@ type Mutation {
 
   # Approves an order with payment
   ecommerceApproveOrder(input: ApproveOrderInput!): ApproveOrderPayload
+
+  # Buyer accepts a submitted offer from seller
+  ecommerceBuyerAcceptOffer(input: buyerAcceptOfferInput!): buyerAcceptOfferPayload
 
   # Approves an order with payment
   ecommerceSellerAcceptOffer(input: sellerAcceptOfferInput!): sellerAcceptOfferPayload
@@ -7394,6 +7551,46 @@ type Show implements Node {
 
   # If the show is in a Fair, then that fair
   fair: Fair
+
+  # Artworks Elastic Search results
+  filteredArtworks(
+    acquireable: Boolean
+    aggregation_partner_cities: [String]
+    aggregations: [ArtworkAggregation]
+    artist_id: String
+    artist_ids: [String]
+    at_auction: Boolean
+    attribution_class: [String]
+    color: String
+    dimension_range: String
+    extra_aggregation_gene_ids: [String]
+    include_artworks_by_followed_artists: Boolean
+    include_medium_filter_in_aggregation: Boolean
+    inquireable_only: Boolean
+    for_sale: Boolean
+    gene_id: String
+    gene_ids: [String]
+    height: String
+    width: String
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    period: String
+    periods: [String]
+    major_periods: [String]
+    partner_id: ID
+    partner_cities: [String]
+    price_range: String
+    page: Int
+    sale_id: ID
+    size: Int
+    sort: String
+    tag_id: String
+    keyword: String
+  ): FilterArtworks
 
   # A path to the show on Artsy
   href: String

@@ -34,6 +34,244 @@ export const FairFixture = {
     country: "United States",
     postal_code: "60611",
   },
+  filteredArtworks: {
+    aggregations: [
+      {
+        slice: "PRICE_RANGE",
+        counts: [
+          {
+            id: "*-*",
+            name: "for Sale",
+          },
+          {
+            id: "1000-5000",
+            name: "between $1,000 & $5,000",
+          },
+          {
+            id: "5000-10000",
+            name: "between $5,000 & $10,000",
+          },
+          {
+            id: "10000-50000",
+            name: "between $10,000 & $50,000",
+          },
+          {
+            id: "*-1000",
+            name: "Under $1,000",
+          },
+          {
+            id: "50000-*",
+            name: "over $50,000",
+          },
+        ],
+      },
+      {
+        slice: "MEDIUM",
+        counts: [
+          {
+            id: "sculpture",
+            name: "Sculpture",
+          },
+          {
+            id: "painting",
+            name: "Painting",
+          },
+          {
+            id: "design",
+            name: "Design",
+          },
+          {
+            id: "photography",
+            name: "Photography",
+          },
+          {
+            id: "jewelry",
+            name: "Jewelry",
+          },
+          {
+            id: "work-on-paper",
+            name: "Work on Paper",
+          },
+          {
+            id: "installation",
+            name: "Installation",
+          },
+          {
+            id: "prints",
+            name: "Prints",
+          },
+          {
+            id: "drawing",
+            name: "Drawing",
+          },
+          {
+            id: "film-slash-video",
+            name: "Film/Video",
+          },
+        ],
+      },
+    ],
+    artworks_connection: {
+      edges: [
+        {
+          node: {
+            id: "watanabe-chiaki-links",
+            title: "Links",
+            date: "2018",
+            sale_message: "Sold",
+            is_in_auction: false,
+            is_biddable: false,
+            is_acquireable: false,
+            sale: null,
+            sale_artwork: null,
+            image: {
+              url: "https://d32dm0rphc51dk.cloudfront.net/uF3UWRba84Q4wSrRB-BxKA/large.jpg",
+              aspect_ratio: 1.61,
+            },
+            artists: [
+              {
+                name: "Watanabe Chiaki",
+              },
+            ],
+            partner: {
+              name: "TAI Modern",
+            },
+            href: "/artwork/watanabe-chiaki-links",
+          },
+        },
+        {
+          node: {
+            id: "dylan-martinez-water-bag-number-34",
+            title: "Water Bag #34",
+            date: "2018",
+            sale_message: "$1,800",
+            is_in_auction: false,
+            is_biddable: false,
+            is_acquireable: false,
+            sale: null,
+            sale_artwork: null,
+            image: {
+              url: "https://d32dm0rphc51dk.cloudfront.net/EB-WA2El6g-tII076F5vFw/large.jpg",
+              aspect_ratio: 0.67,
+            },
+            artists: [
+              {
+                name: "Dylan Martinez",
+              },
+            ],
+            partner: {
+              name: "Lyons Wier Gallery",
+            },
+            href: "/artwork/dylan-martinez-water-bag-number-34",
+          },
+        },
+        {
+          node: {
+            id: "dylan-martinez-water-bag-number-23",
+            title: "Water Bag #23",
+            date: "2018",
+            sale_message: "$1,800",
+            is_in_auction: false,
+            is_biddable: false,
+            is_acquireable: false,
+            sale: null,
+            sale_artwork: null,
+            image: {
+              url: "https://d32dm0rphc51dk.cloudfront.net/sAKQugZCVUZ9g5AoVyCJdA/large.jpg",
+              aspect_ratio: 0.67,
+            },
+            artists: [
+              {
+                name: "Dylan Martinez",
+              },
+            ],
+            partner: {
+              name: "Lyons Wier Gallery",
+            },
+            href: "/artwork/dylan-martinez-water-bag-number-23",
+          },
+        },
+        {
+          node: {
+            id: "dylan-martinez-water-bag-number-32",
+            title: "Water Bag #32",
+            date: "2018",
+            sale_message: "$1,800",
+            is_in_auction: false,
+            is_biddable: false,
+            is_acquireable: false,
+            sale: null,
+            sale_artwork: null,
+            image: {
+              url: "https://d32dm0rphc51dk.cloudfront.net/jVS6Bolng37bN8GB0y8qfQ/large.jpg",
+              aspect_ratio: 0.67,
+            },
+            artists: [
+              {
+                name: "Dylan Martinez",
+              },
+            ],
+            partner: {
+              name: "Lyons Wier Gallery",
+            },
+            href: "/artwork/dylan-martinez-water-bag-number-32",
+          },
+        },
+        {
+          node: {
+            id: "dylan-martinez-mach-2",
+            title: "Mach 2",
+            date: "2018",
+            sale_message: "$12,000",
+            is_in_auction: false,
+            is_biddable: false,
+            is_acquireable: false,
+            sale: null,
+            sale_artwork: null,
+            image: {
+              url: "https://d32dm0rphc51dk.cloudfront.net/tnjfaBzOFmFvfj227QjLJg/large.jpg",
+              aspect_ratio: 1.5,
+            },
+            artists: [
+              {
+                name: "Dylan Martinez",
+              },
+            ],
+            partner: {
+              name: "Lyons Wier Gallery",
+            },
+            href: "/artwork/dylan-martinez-mach-2",
+          },
+        },
+        {
+          node: {
+            id: "dylan-martinez-water-bag-trio",
+            title: "Water Bag Trio",
+            date: "2018",
+            sale_message: "$5,400",
+            is_in_auction: false,
+            is_biddable: false,
+            is_acquireable: false,
+            sale: null,
+            sale_artwork: null,
+            image: {
+              url: "https://d32dm0rphc51dk.cloudfront.net/BwEuuw_gYmFs69ENusdang/large.jpg",
+              aspect_ratio: 0.67,
+            },
+            artists: [
+              {
+                name: "Dylan Martinez",
+              },
+            ],
+            partner: {
+              name: "Lyons Wier Gallery",
+            },
+            href: "/artwork/dylan-martinez-water-bag-trio",
+          },
+        },
+      ],
+    },
+  },
   __id: "RmFpcjpzb2ZhLWNoaWNhZ28tMjAxOA==",
   shows: {
     edges: [

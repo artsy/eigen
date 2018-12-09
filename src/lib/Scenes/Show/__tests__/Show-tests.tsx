@@ -1,9 +1,9 @@
 import React from "react"
 import { graphql } from "react-relay"
 
+import { ShowFixture } from "../../../__fixtures__/ShowFixture"
 import { MockRelayRenderer } from "../../../tests/MockRelayRenderer"
 import { renderUntil } from "../../../tests/renderUntil"
-import { ShowFixture } from "../__fixtures__"
 
 import { DetailContainer as ShowDetail } from "../Screens/Detail"
 import { ShowContainer } from "../Show"

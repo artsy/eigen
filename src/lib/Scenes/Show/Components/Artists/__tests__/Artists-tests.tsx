@@ -2,9 +2,9 @@ import React from "react"
 import { graphql } from "react-relay"
 
 import { Theme } from "@artsy/palette"
+import { ShowFixture } from "lib/__fixtures__/ShowFixture"
 import { MockRelayRenderer } from "../../../../../tests/MockRelayRenderer"
 import { renderUntil } from "../../../../../tests/renderUntil"
-import { ShowFixture } from "../../../__fixtures__"
 
 import ListItemButton from "lib/Components/Buttons/InvertedButton"
 import { ArtistListItem } from "../Components/ArtistListItem"
