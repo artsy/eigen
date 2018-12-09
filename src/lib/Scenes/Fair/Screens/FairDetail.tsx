@@ -1,4 +1,4 @@
-import { Box, Separator, Theme } from "@artsy/palette"
+import { Box, Theme } from "@artsy/palette"
 import { FairDetail_fair } from "__generated__/FairDetail_fair.graphql"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
@@ -89,8 +89,6 @@ export class FairDetail extends React.Component<Props, State> {
         return <SearchLink {...data} />
       case "booth":
         return <FairBooth show={...data} />
-      // case "artworks":
-      //   return <ArtworksPreview {...data} onViewAllArtworksPressed={this.props.onViewAllArtworksPressed} />
       default:
         return null
     }
