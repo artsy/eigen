@@ -44,7 +44,10 @@ EnsureQuery(NSString *query) {
         NSMutableArray *returnArray = [NSMutableArray array];
 
         if (fairID) {
-            // Old style obj -> objc class mapping for fairs
+            // Old style obj -> objc class mapping for fair inline-search
+            // This is so that when the new version of the FairVC from Emission deprecates the current version
+            // we can just delete everything related to `SearchResult` safely, including this code.
+            //
             for (NSDictionary *dictionary in jsonDictionaries) {
                 if ([SearchResult searchResultIsSupported:dictionary]) {
                     NSError *error = nil;

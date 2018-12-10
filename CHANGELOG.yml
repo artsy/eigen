@@ -8,7 +8,7 @@ upcoming:
     
   user_facing:
     - Uses new search API for the app search - orta
-    - nothing yet
+    - AR feature allows tapping on the done state to hide the UI - orta
 
 releases:
   - version: 4.3.4

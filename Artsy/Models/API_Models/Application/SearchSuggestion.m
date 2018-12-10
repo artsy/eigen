@@ -19,7 +19,13 @@
 + (BOOL)searchResultIsSupported:(NSDictionary *)jsonDict
 {
     NSArray *allSupported = @[@"artist",  @"profile",  @"gene",  @"city",  @"artwork",  @"fair",  @"tag",  @"feature",  @"article",  @"page",  @"sale"];
-    return [allSupported containsObject:jsonDict[@"model"]];
+    BOOL supported = [allSupported containsObject:jsonDict[@"model"]];
+#ifdef DEBUG
+    if(!supported) {
+        NSLog(@"Found a new type of model from search, please update SearchSuggestion with %@", jsonDict[@"model"]);
+    }
+#endif
+    return supported;
 }
 
 - (NSString *)href
@@ -45,8 +51,8 @@
         return NSStringWithFormat(@"/auction/%@", self.modelID);
     }
 
-    @throw [[NSException alloc]  initWithName:@"Should not get here" reason:@"" userInfo:nil];
-
+    NSAssert(NO, @"Got an unknown model from search");
+    return nil;
 }
 
 @end
