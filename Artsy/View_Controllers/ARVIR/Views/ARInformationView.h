@@ -25,4 +25,7 @@
 
 /** So that you can get access to the contents view of the current state */
 - (InformationalViewState * _Nonnull)currentState;
+
+/** Are we in the final state? */
+- (BOOL)isAtLastState;
 @end
