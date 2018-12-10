@@ -1,4 +1,4 @@
-import { Flex, Sans } from "@artsy/palette"
+import { Flex, Sans, Spacer } from "@artsy/palette"
 import { LabeledTicker, StateManager as CountdownStateManager } from "lib/Components/Countdown"
 import moment from "moment"
 import React from "react"
@@ -52,15 +52,14 @@ interface CountdownTextProps {
 const CountdownText: React.SFC<CountdownTextProps> = ({ duration, label }) =>
   label !== "Closed" && (
     <Flex justifyContent="center" alignItems="center">
-      <Sans size="4">{label}</Sans>
       <LabeledTicker
-        renderSeparator={() => (
-          <Sans size="5" mx={2} mb={2}>
-            :
-          </Sans>
-        )}
+        renderSeparator={() => <Spacer mr={0.5} />}
+        textProps={{ color: "white", size: "3t" }}
         duration={duration}
       />
+      <Sans size="1" color="white">
+        {label}
+      </Sans>
     </Flex>
   )
 

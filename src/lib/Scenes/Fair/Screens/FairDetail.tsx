@@ -1,17 +1,19 @@
-import { Box, Separator, Theme } from "@artsy/palette"
+import { Box, Theme } from "@artsy/palette"
 import { FairDetail_fair } from "__generated__/FairDetail_fair.graphql"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap, PartnerType } from "lib/Components/LocationMap"
-import { ArtworksPreviewContainer as ArtworksPreview } from "../Components/ArtworksPreview"
+import { PAGE_SIZE } from "lib/data/constants"
+import { FairBoothContainer as FairBooth } from "../Components/FairBooth"
 import { FairHeaderContainer as FairHeader } from "../Components/FairHeader"
 import { SearchLink } from "../Components/SearchLink"
 
 interface Props extends ViewProperties {
   fair: FairDetail_fair
+  relay: RelayPaginationProp
   onViewAllArtworksPressed: () => void
 }
 
@@ -21,14 +23,26 @@ interface State {
     data: any
   }>
   extraData?: { animatedValue: { height: number } }
+  boothCount: number
 }
 
 export class FairDetail extends React.Component<Props, State> {
   state: State = {
     sections: [],
+    boothCount: 0,
+  }
+
+  componentWillReceiveProps({ fair }: Props) {
+    if (this.state.boothCount !== fair.shows.edges.length) {
+      this.updateSections()
+    }
   }
 
   componentDidMount() {
+    this.updateSections()
+  }
+
+  updateSections = () => {
     const { fair } = this.props
     const sections = []
 
@@ -36,7 +50,7 @@ export class FairDetail extends React.Component<Props, State> {
       type: "location",
       data: {
         location: fair.location,
-        partnerName: fair.organizer.profile.name,
+        partnerName: fair.profile.name,
         partnerType: PartnerType.fair,
       },
     })
@@ -55,25 +69,14 @@ export class FairDetail extends React.Component<Props, State> {
       },
     })
 
-    sections.push({
-      type: "artworks",
-      data: {
-        fair,
-      },
+    fair.shows.edges.forEach(showData => {
+      sections.push({
+        type: "booth",
+        data: showData.node,
+      })
     })
 
-    this.setState({ sections })
-  }
-
-  renderItemSeparator = item => {
-    if (item && item.leadingItem.type === "location") {
-      return null
-    }
-    return (
-      <Box py={2} px={2}>
-        <Separator />
-      </Box>
-    )
+    this.setState({ sections, boothCount: fair.shows.edges.length })
   }
 
   renderItem = ({ item: { data, type } }) => {
@@ -84,11 +87,25 @@ export class FairDetail extends React.Component<Props, State> {
         return <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} />
       case "search":
         return <SearchLink {...data} />
-      case "artworks":
-        return <ArtworksPreview {...data} onViewAllArtworksPressed={this.props.onViewAllArtworksPressed} />
+      case "booth":
+        return <FairBooth show={...data} />
       default:
         return null
     }
+  }
+
+  fetchNextPage = () => {
+    const { relay } = this.props
+
+    if (!relay.hasMore() || relay.isLoading()) {
+      return
+    }
+
+    relay.loadMore(PAGE_SIZE, error => {
+      if (!error) {
+        this.updateSections()
+      }
+    })
   }
 
   handleAnimationFrame = animatedValue => {
@@ -111,35 +128,85 @@ export class FairDetail extends React.Component<Props, State> {
     return (
       <Theme>
         <FlatList
-          ListHeaderComponent={<FairHeader fair={fair} />}
           keyExtractor={(item, index) => item.type + String(index)}
           extraData={extraData}
           data={sections}
-          renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
-          ItemSeparatorComponent={this.renderItemSeparator}
+          ListHeaderComponent={
+            <Box height="620">
+              <FairHeader fair={fair} />
+            </Box>
+          }
+          renderItem={item => (
+            <Box px={2} py={1}>
+              {this.renderItem(item)}
+            </Box>
+          )}
+          onEndReached={this.fetchNextPage}
         />
       </Theme>
     )
   }
 }
 
-export const FairDetailContainer = createFragmentContainer(
+export const FairDetailContainer = createPaginationContainer(
   FairDetail,
-  graphql`
-    fragment FairDetail_fair on Fair {
-      ...FairHeader_fair
-      ...ArtworksPreview_fair
-      id
-      hours
-      location {
-        ...LocationMap_location
-      }
+  {
+    fair: graphql`
+      fragment FairDetail_fair on Fair
+        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+        ...FairHeader_fair
+        id
+        name
+        hours
+        location {
+          ...LocationMap_location
+        }
 
-      organizer {
         profile {
           name
         }
+
+        shows: shows_connection(first: $count, after: $cursor) @connection(key: "Fair_shows") {
+          pageInfo {
+            hasNextPage
+            startCursor
+            endCursor
+          }
+          edges {
+            cursor
+            node {
+              ...FairBooth_show
+            }
+          }
+        }
       }
-    }
-  `
+    `,
+  },
+  {
+    direction: "forward",
+    getConnectionFromProps(props) {
+      return props.fair && props.fair.shows
+    },
+    getFragmentVariables(prevVars, totalCount) {
+      return {
+        ...prevVars,
+        count: totalCount,
+      }
+    },
+    getVariables(props, { count, cursor }, { filter }) {
+      return {
+        id: props.fair.id,
+        count,
+        cursor,
+        filter,
+      }
+    },
+    query: graphql`
+      query FairDetailShowsQuery($id: String!, $count: Int!, $cursor: String) {
+        fair(id: $id) {
+          ...FairDetail_fair @arguments(count: $count, cursor: $cursor)
+        }
+      }
+    `,
+  }
 )

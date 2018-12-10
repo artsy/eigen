@@ -25,7 +25,9 @@ export class SearchLink extends React.Component<Props> {
         <BorderBox justifyContent="center" alignItems="center" flexDirection="row" p={1}>
           <Icon source={require("../../../../../images/SearchButton.png")} />
           <Spacer width={12} />
-          <Sans size="3">Find Exhibitors and Artists</Sans>
+          <Sans size="2" weight="medium">
+            Find Exhibitors and Artists
+          </Sans>
         </BorderBox>
       </TouchableWithoutFeedback>
     )

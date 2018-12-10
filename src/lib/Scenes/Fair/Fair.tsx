@@ -55,7 +55,6 @@ export const FairContainer = createFragmentContainer(
   graphql`
     fragment Fair_fair on Fair {
       ...FairDetail_fair
-      ...FairArtworks_fair
     }
   `
 )

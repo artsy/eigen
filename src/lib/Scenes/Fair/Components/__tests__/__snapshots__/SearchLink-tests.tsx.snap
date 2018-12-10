@@ -73,15 +73,15 @@ exports[`SearchLink Renders properly 1`] = `
     allowFontScaling={true}
     className="sc-bdVaJa bDWFJH"
     ellipsizeMode="tail"
-    fontFamily="Unica77LL-Regular"
-    fontSize="14px"
-    lineHeight="24px"
+    fontFamily="Unica77LL-Medium"
+    fontSize="12px"
+    lineHeight="16px"
     style={
       Array [
         Object {
-          "fontFamily": "Unica77LL-Regular",
-          "fontSize": 14,
-          "lineHeight": 24,
+          "fontFamily": "Unica77LL-Medium",
+          "fontSize": 12,
+          "lineHeight": 16,
         },
         undefined,
       ]

@@ -4,8 +4,7 @@ import { Duration } from "moment"
 import React from "react"
 
 interface TimeSectionProps {
-  timeTextProps: SansProps
-  labelTextProps: SansProps
+  textProps: SansProps
   time: string
   label: string
 }
@@ -30,12 +29,10 @@ const durationSections = (duration: Duration, labels: [string, string, string, s
   },
 ]
 
-const LabeledTimeSection: React.SFC<TimeSectionProps> = ({ time, label, timeTextProps, labelTextProps }) => (
+const LabeledTimeSection: React.SFC<TimeSectionProps> = ({ time, label, textProps }) => (
   <Flex alignItems="center" justifyContent="center">
-    <Sans size="5" weight="medium" {...timeTextProps}>
+    <Sans size="3" weight="medium" {...textProps}>
       {time}
-    </Sans>
-    <Sans size="3" {...labelTextProps}>
       {label}
     </Sans>
   </Flex>
@@ -44,22 +41,16 @@ const LabeledTimeSection: React.SFC<TimeSectionProps> = ({ time, label, timeText
 interface LabeledTickerProps {
   duration: Duration
   renderSeparator: () => React.ReactElement<any>
-  timeTextProps?: SansProps
-  labelTextProps?: SansProps
+  textProps?: SansProps
 }
 
-export const LabeledTicker: React.SFC<LabeledTickerProps> = ({
-  duration,
-  renderSeparator,
-  timeTextProps,
-  labelTextProps,
-}) => {
-  const sections = durationSections(duration, ["Days", "Hours", "Minutes", "Seconds"])
+export const LabeledTicker: React.SFC<LabeledTickerProps> = ({ duration, renderSeparator, textProps }) => {
+  const sections = durationSections(duration, ["d", "h", "m", "s"])
   return (
     <Flex flexDirection="row" justifyContent="center" alignItems="center">
       {sections.map((section, idx) => (
         <React.Fragment key={section.label}>
-          <LabeledTimeSection {...section} timeTextProps={timeTextProps} labelTextProps={labelTextProps} />
+          <LabeledTimeSection {...section} textProps={textProps} />
           {idx < sections.length - 1 && renderSeparator && renderSeparator()}
         </React.Fragment>
       ))}

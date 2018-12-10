@@ -1,23 +1,35 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-import { ArtworksPreview_fair$ref } from "./ArtworksPreview_fair.graphql";
+import { FairBooth_show$ref } from "./FairBooth_show.graphql";
 import { FairHeader_fair$ref } from "./FairHeader_fair.graphql";
 import { LocationMap_location$ref } from "./LocationMap_location.graphql";
 declare const _FairDetail_fair$ref: unique symbol;
 export type FairDetail_fair$ref = typeof _FairDetail_fair$ref;
 export type FairDetail_fair = {
     readonly id: string;
+    readonly name: string | null;
     readonly hours: string | null;
     readonly location: ({
         readonly " $fragmentRefs": LocationMap_location$ref;
     }) | null;
-    readonly organizer: ({
-        readonly profile: ({
-            readonly name: string | null;
-        }) | null;
+    readonly profile: ({
+        readonly name: string | null;
     }) | null;
-    readonly " $fragmentRefs": FairHeader_fair$ref & ArtworksPreview_fair$ref;
+    readonly shows: ({
+        readonly pageInfo: {
+            readonly hasNextPage: boolean;
+            readonly startCursor: string | null;
+            readonly endCursor: string | null;
+        };
+        readonly edges: ReadonlyArray<({
+            readonly cursor: string;
+            readonly node: ({
+                readonly " $fragmentRefs": FairBooth_show$ref;
+            }) | null;
+        }) | null> | null;
+    }) | null;
+    readonly " $fragmentRefs": FairHeader_fair$ref;
     readonly " $refType": FairDetail_fair$ref;
 };
 
@@ -25,6 +37,13 @@ export type FairDetail_fair = {
 
 const node: ConcreteFragment = (function(){
 var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
@@ -35,17 +54,36 @@ return {
   "kind": "Fragment",
   "name": "FairDetail_fair",
   "type": "Fair",
-  "metadata": null,
-  "argumentDefinitions": [],
+  "metadata": {
+    "connection": [
+      {
+        "count": "count",
+        "cursor": "cursor",
+        "direction": "forward",
+        "path": [
+          "shows"
+        ]
+      }
+    ]
+  },
+  "argumentDefinitions": [
+    {
+      "kind": "LocalArgument",
+      "name": "count",
+      "type": "Int",
+      "defaultValue": 10
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "cursor",
+      "type": "String",
+      "defaultValue": null
+    }
+  ],
   "selections": [
     {
       "kind": "FragmentSpread",
       "name": "FairHeader_fair",
-      "args": null
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "ArtworksPreview_fair",
       "args": null
     },
     {
@@ -55,6 +93,7 @@ return {
       "args": null,
       "storageKey": null
     },
+    v0,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -76,42 +115,110 @@ return {
           "name": "LocationMap_location",
           "args": null
         },
-        v0
+        v1
       ]
     },
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "organizer",
+      "name": "profile",
       "storageKey": null,
       "args": null,
-      "concreteType": "organizer",
+      "concreteType": "Profile",
+      "plural": false,
+      "selections": [
+        v0,
+        v1
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": "shows",
+      "name": "__Fair_shows_connection",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "ShowConnection",
       "plural": false,
       "selections": [
         {
           "kind": "LinkedField",
           "alias": null,
-          "name": "profile",
+          "name": "pageInfo",
           "storageKey": null,
           "args": null,
-          "concreteType": "Profile",
+          "concreteType": "PageInfo",
           "plural": false,
           "selections": [
             {
               "kind": "ScalarField",
               "alias": null,
-              "name": "name",
+              "name": "hasNextPage",
               "args": null,
               "storageKey": null
             },
-            v0
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "startCursor",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ShowEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "cursor",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Show",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "FragmentSpread",
+                  "name": "FairBooth_show",
+                  "args": null
+                },
+                v1,
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "__typename",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            }
           ]
         }
       ]
     },
-    v0
+    v1
   ]
 };
 })();
-(node as any).hash = '11a0e180bad404655e657b0bf94c63c5';
+(node as any).hash = 'f157cea40bf443df8c166185f8336709';
 export default node;
