@@ -5,6 +5,7 @@ import styled from "styled-components/native"
 
 interface Props {
   onViewAllExhibitorsPressed: () => void
+  onBrowseArtistsPressed: () => void
 }
 
 // ts-lint:ignore
@@ -25,11 +26,11 @@ export class ArtistsExhibitorsWorksLink extends React.Component<Props> {
     navigateToView()
   }
   render() {
-    const { onViewAllExhibitorsPressed } = this.props
+    const { onViewAllExhibitorsPressed, onBrowseArtistsPressed } = this.props
     return (
       <>
         <TabWrapper>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => onBrowseArtistsPressed()}>
             <LeftTab>
               <Sans size="3">Artists</Sans>
             </LeftTab>

@@ -35,6 +35,7 @@
 - Add browse artworks screen to Fair, Show - javamonn
 - fixes to the artwork favourites pagination - orta
 - Add rules prop to Markdown, left-align fair and show hours markdown - javamonn
+- Add paginated artists screen to fair detail, refactor show artists - javamonn
 
 ### 1.7.4
 

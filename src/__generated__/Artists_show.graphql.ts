@@ -1,20 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
 declare const _Artists_show$ref: unique symbol;
 export type Artists_show$ref = typeof _Artists_show$ref;
 export type Artists_show = {
     readonly artists: ReadonlyArray<({
-        readonly __id: string;
         readonly id: string;
-        readonly name: string | null;
-        readonly is_followed: boolean | null;
-        readonly nationality: string | null;
-        readonly birthday: string | null;
-        readonly deathday: string | null;
-        readonly image: ({
-            readonly url: string | null;
-        }) | null;
+        readonly " $fragmentRefs": ArtistListItem_artist$ref;
     }) | null> | null;
     readonly " $refType": Artists_show$ref;
 };
@@ -45,7 +38,6 @@ return {
       "concreteType": "Artist",
       "plural": true,
       "selections": [
-        v0,
         {
           "kind": "ScalarField",
           "alias": null,
@@ -54,63 +46,16 @@ return {
           "storageKey": null
         },
         {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "name",
-          "args": null,
-          "storageKey": null
+          "kind": "FragmentSpread",
+          "name": "ArtistListItem_artist",
+          "args": null
         },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "is_followed",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "nationality",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "birthday",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "deathday",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "image",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Image",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "url",
-              "args": null,
-              "storageKey": null
-            }
-          ]
-        }
+        v0
       ]
     },
     v0
   ]
 };
 })();
-(node as any).hash = '98ac953735c8130b330bad29341f90bd';
+(node as any).hash = 'dc0547bc0a4574845980f61536b62e8e';
 export default node;

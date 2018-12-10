@@ -17,6 +17,7 @@ interface Props extends ViewProperties {
   relay: RelayPaginationProp
   onViewAllArtworksPressed: () => void
   onViewAllExhibitorsPressed: () => void
+  onBrowseArtistsPressed: () => void
 }
 
 interface State {
@@ -45,7 +46,7 @@ export class FairDetail extends React.Component<Props, State> {
   }
 
   updateSections = () => {
-    const { fair, onViewAllExhibitorsPressed } = this.props
+    const { fair, onViewAllExhibitorsPressed, onBrowseArtistsPressed } = this.props
     const sections = []
 
     sections.push({
@@ -75,6 +76,7 @@ export class FairDetail extends React.Component<Props, State> {
       type: "artists-exhibitors-works",
       data: {
         onViewAllExhibitorsPressed,
+        onBrowseArtistsPressed,
       },
     })
 

@@ -1,24 +1,25 @@
+import { ArtistListItem } from "lib/Components/ArtistListItem"
 import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
 import { renderUntil } from "lib/tests/renderUntil"
 import React from "react"
 import { graphql } from "react-relay"
 import { FairFixture } from "../../__fixtures__"
-import { FairDetailContainer as FairDetail } from "../FairDetail"
+import { FairArtistsContainer as FairArtistsScreen } from "../FairArtists"
 
 jest.unmock("react-relay")
 
-describe("FairDetail", () => {
+describe("FairArtists", () => {
   it("renders properly", async () => {
     const tree = await renderUntil(
       wrapper => {
-        return wrapper.find("FairHeader").length > 0
+        return wrapper.find(ArtistListItem).length > 0
       },
       <MockRelayRenderer
-        Component={FairDetail}
+        Component={FairArtistsScreen}
         query={graphql`
-          query FairDetailTestsQuery {
+          query FairArtistsTestsQuery {
             fair(id: "sofa-chicago-2018") {
-              ...FairDetail_fair
+              ...FairArtists_fair
             }
           }
         `}
