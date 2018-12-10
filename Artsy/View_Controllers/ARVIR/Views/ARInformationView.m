@@ -128,4 +128,9 @@
     }];
 }
 
+- (BOOL)isAtLastState
+{
+    return self.index == self.states.count - 1;
+}
+
 @end
