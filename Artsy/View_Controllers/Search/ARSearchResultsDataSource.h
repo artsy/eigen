@@ -2,7 +2,6 @@
 
 #import "SearchResultable.h"
 
-
 @interface ARSearchResultsDataSource : NSObject <UITableViewDataSource>
 
 @property (nonatomic) NSOrderedSet *searchResults;

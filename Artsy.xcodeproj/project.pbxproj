@@ -94,6 +94,7 @@
 		342F9F5789AD65AD09205030 /* MapFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F93E38025E2D2DA90C6DA /* MapFeature.m */; };
 		342F9FBB86D02FABC8AA9339 /* ARNavigationButtonsViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F965F76AA25C6C700FE1C /* ARNavigationButtonsViewControllerTests.m */; };
 		34B1151A2069AA7C0025D925 /* AuctionBuyNowTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B115192069AA7C0025D925 /* AuctionBuyNowTitleView.swift */; };
+		3A179F5C21BEB38B007705F8 /* SearchSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A179F5B21BEB38B007705F8 /* SearchSuggestion.m */; };
 		3A1DDDA3216CFC7100190F84 /* AREigenInquiryComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1DDDA2216CFC7100190F84 /* AREigenInquiryComponentViewController.m */; };
 		3A1DDDA6216D04DB00190F84 /* ARAuthValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1DDDA5216D04DB00190F84 /* ARAuthValidator.m */; };
 		3A860AD4214C5DD600C7F555 /* artwork.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 3A860AD3214C5DD600C7F555 /* artwork.graphql */; };
@@ -997,6 +998,9 @@
 		342F9FD434A78C36B76A85B6 /* ARFairViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairViewControllerTests.m; sourceTree = "<group>"; };
 		342F9FEFF4A1B56EE307467B /* ARFileUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFileUtils.m; sourceTree = "<group>"; };
 		34B115192069AA7C0025D925 /* AuctionBuyNowTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuctionBuyNowTitleView.swift; path = ../View_Controllers/AuctionBuyNowTitleView.swift; sourceTree = "<group>"; };
+		3A179F5921BEB383007705F8 /* SearchResultable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchResultable.h; sourceTree = "<group>"; };
+		3A179F5A21BEB38B007705F8 /* SearchSuggestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchSuggestion.h; sourceTree = "<group>"; };
+		3A179F5B21BEB38B007705F8 /* SearchSuggestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchSuggestion.m; sourceTree = "<group>"; };
 		3A1DDDA1216CFC7100190F84 /* AREigenInquiryComponentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AREigenInquiryComponentViewController.h; sourceTree = "<group>"; };
 		3A1DDDA2216CFC7100190F84 /* AREigenInquiryComponentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AREigenInquiryComponentViewController.m; sourceTree = "<group>"; };
 		3A1DDDA4216D04DB00190F84 /* ARAuthValidator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAuthValidator.h; sourceTree = "<group>"; };
@@ -3748,8 +3752,11 @@
 				6034EB1C175F68350070478D /* SiteHeroUnit.m */,
 				CB73B48917D2581400891305 /* SiteFeature.h */,
 				CB73B48A17D2581400891305 /* SiteFeature.m */,
+				3A179F5921BEB383007705F8 /* SearchResultable.h */,
 				49A76D0617592C96001D4B81 /* SearchResult.h */,
 				49A76D0717592C96001D4B81 /* SearchResult.m */,
+				3A179F5A21BEB38B007705F8 /* SearchSuggestion.h */,
+				3A179F5B21BEB38B007705F8 /* SearchSuggestion.m */,
 				60D90A0317C2109A0073D5B9 /* FeaturedLink.h */,
 				60D90A0417C2109A0073D5B9 /* FeaturedLink.m */,
 				3C35CC79189FF05E00E3D8DE /* OrderedSet.h */,
@@ -5579,6 +5586,7 @@
 				516CDA631BB32B6A001C02B2 /* ARSpotlight.m in Sources */,
 				5E4E32A71E535D8000C7F724 /* LotStandingsLotListView.swift in Sources */,
 				5E26AF801CE66A7E00C67B7C /* Stringify.swift in Sources */,
+				3A179F5C21BEB38B007705F8 /* SearchSuggestion.m in Sources */,
 				6099F8F9178DBF160004EF04 /* ARModernPartnerShowTableViewCell.m in Sources */,
 				E676B2EE18D11A9B0057B4E1 /* ARImageItemProvider.m in Sources */,
 				3CFBE32D18C3A3F400C781D0 /* ARNetworkErrorView.m in Sources */,
