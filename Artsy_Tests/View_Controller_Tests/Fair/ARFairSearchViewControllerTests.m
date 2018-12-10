@@ -98,7 +98,7 @@ describe(@"init", ^{
 //    });
 
     it(@"without local fair shows - combines results from local and remote search", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/match"
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/match/suggest"
                                  withParams:@{ @"term" : @"Leila", @"fair_id" : @"fair-id" }
                                withResponse:@[
           @{

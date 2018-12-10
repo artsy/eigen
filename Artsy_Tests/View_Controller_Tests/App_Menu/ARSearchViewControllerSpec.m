@@ -1,5 +1,5 @@
 #import "ARSearchViewController.h"
-
+#import "SearchResult.h"
 
 @interface ARSearchViewController (Testing)
 - (void)presentResultsViewAnimated:(BOOL)animated;

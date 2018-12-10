@@ -23,7 +23,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell"];
-    SearchResult *result = self.searchResults[indexPath.row];
+    NSObject <SearchResultable> *result = [self objectAtIndex:indexPath.row];
 
     BOOL published = result.isPublished.boolValue;
     if (!published) {
@@ -39,7 +39,7 @@
     return cell;
 }
 
-- (SearchResult *)objectAtIndex:(NSInteger)index
+- (NSObject <SearchResultable> *)objectAtIndex:(NSInteger)index
 {
     return self.searchResults[index];
 }

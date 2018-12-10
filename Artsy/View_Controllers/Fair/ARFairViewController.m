@@ -30,6 +30,7 @@
 #import "ARScrollNavigationChief.h"
 #import "ARTopMenuViewController.h"
 #import "UIViewController+TopMenuViewController.h"
+#import "SearchResult.h"
 
 #import "UIDevice-Hardware.h"
 

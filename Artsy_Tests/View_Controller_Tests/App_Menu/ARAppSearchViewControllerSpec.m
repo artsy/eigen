@@ -1,6 +1,6 @@
 #import "ARAppSearchViewController.h"
 #import "ARTopMenuViewController.h"
-
+#import "SearchResult.h"
 
 @interface ARAppSearchViewController (Testing)
 - (void)clearTapped:(id)sender;
@@ -29,13 +29,11 @@ itHasSnapshotsForDevicesWithName(@"looks correct", ^{
 
 context(@"searching", ^{
     context(@"with results", ^{
-
-
         itHasSnapshotsForDevicesWithName(@"displays search results", ^{
 
             sharedBefore();
 
-            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/match" withResponse:@[
+            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/match/suggest" withResponse:@[
                 @{
                     @"model": @"artist",
                     @"id": @"aes-plus-f",
@@ -95,7 +93,7 @@ context(@"searching", ^{
                 @"imageURL" : @"http://api.artsy.net.com",
                 @"highlights": @[]
             }], nil];
-            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/match" withResponse:@[]];
+            [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/suggest" withResponse:@[]];
             
             sut.textField.text = @"f";
             [sut.textField sendActionsForControlEvents:UIControlEventEditingChanged];

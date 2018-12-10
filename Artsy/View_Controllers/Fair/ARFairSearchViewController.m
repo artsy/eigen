@@ -1,4 +1,5 @@
 #import "ARFairSearchViewController.h"
+#import "SearchResult.h"
 
 #import "ArtsyAPI+Search.h"
 #import "ARFonts.h"

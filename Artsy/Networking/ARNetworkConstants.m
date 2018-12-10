@@ -80,7 +80,7 @@ NSString *const ARShowFeedURL = @"/api/v1/shows/feed";
 NSString *const ARShowInformationURLFormat = @"/api/v1/show/%@";
 NSString *const ARShowsURL = @"/api/v1/shows";
 
-NSString *const ARNewSearchURL = @"/api/v1/match";
+NSString *const ARNewSearchURL = @"/api/v1/match/suggest";
 NSString *const ARNewArtistSearchURL = @"/api/v1/match/artists";
 NSString *const ARNewGeneSearchURL = @"/api/v1/match/genes";
 

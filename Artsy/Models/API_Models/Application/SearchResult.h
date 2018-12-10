@@ -1,7 +1,7 @@
 #import <Mantle/Mantle.h>
+#import "SearchResultable.h"
 
-
-@interface SearchResult : MTLModel <MTLJSONSerializing>
+@interface SearchResult : MTLModel <MTLJSONSerializing, SearchResultable>
 
 @property (readonly, nonatomic, copy) NSString *modelString;
 @property (readonly, nonatomic, copy) NSString *modelID;
