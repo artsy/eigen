@@ -7,7 +7,7 @@ upcoming:
     - nothing yet
     
   user_facing:
-    - nothing yet
+    - Uses new search API for the app search - orta
 
 releases:
   - version: 4.3.4
