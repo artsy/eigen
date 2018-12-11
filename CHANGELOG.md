@@ -33,6 +33,7 @@
 - Add HoursCollapsible to Fair detail view - javamonn
 - Adds fair booth section - luc
 - Add browse artworks screen to Fair, Show - javamonn
+- fixes to the artwork favourites pagination - orta
 
 ### 1.7.4
 
