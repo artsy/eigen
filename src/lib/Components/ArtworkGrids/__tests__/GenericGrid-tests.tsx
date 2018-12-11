@@ -2,15 +2,25 @@ import React from "react"
 import "react-native"
 import { renderWithLayout } from "../../../tests/renderWithLayout"
 
-import GenericArtworksGrid from "../GenericGrid"
+import RelayGenericArtworksGrid, { GenericArtworksGrid } from "../GenericGrid"
 
 it("renders properly", () => {
   const artworks = [artwork(), artwork(), artwork()]
 
   const layout = { width: 768 }
 
-  const grid = renderWithLayout(<GenericArtworksGrid artworks={artworks as any} />, layout)
+  const grid = renderWithLayout(<RelayGenericArtworksGrid artworks={artworks as any} />, layout)
   expect(grid).toMatchSnapshot()
+})
+
+it("handles showing an update when there are new artworks", () => {
+  const artworks = [artwork(), artwork()] as any
+  const newArtworks = [artwork(), artwork(), artwork()] as any
+
+  const grid = new GenericArtworksGrid({ artworks })
+  const shouldUpdate = grid.shouldComponentUpdate({ artworks: newArtworks }, {} as any)
+
+  expect(shouldUpdate).toBeTruthy()
 })
 
 const artwork = () => {
