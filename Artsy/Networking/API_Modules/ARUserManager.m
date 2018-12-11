@@ -453,7 +453,14 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [[[AREmission sharedInstance] graphQLQueryCacheModule] clearAll];
 
     if (useStaging != nil) {
-        [[NSUserDefaults standardUserDefaults] setValue:useStaging forKey:ARUseStagingDefault];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
+        if ([useStaging isKindOfClass:NSNumber.class]) {
+            [[NSUserDefaults standardUserDefaults] setValue:useStaging forKey:ARUseStagingDefault];
+        } else {
+            [[NSUserDefaults standardUserDefaults] setBool:useStaging forKey:ARUseStagingDefault];
+        }
+
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
