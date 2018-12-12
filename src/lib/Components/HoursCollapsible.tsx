@@ -1,7 +1,6 @@
 import { Box, Collapse as _Collapse, Flex, Sans, Serif, Spacer } from "@artsy/palette"
-import { Markdown } from "lib/Components/Markdown"
+import { defaultRules, Markdown } from "lib/Components/Markdown"
 import { isArray, isString } from "lodash"
-import moment from "moment"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -29,11 +28,16 @@ interface State {
   isExpanded: boolean
 }
 
-export function formatTime(time) {
-  const hourMoment = moment().hour(time / 60 / 60)
-  const minutesMoment = moment().minutes(time / 60)
-  const amPm = hourMoment.hour() >= 12 ? "pm" : "am"
-  return hourMoment.format("h") + (minutesMoment.format("mm") === "00" ? "" : minutesMoment.format(":mm")) + amPm
+const markdownRules = {
+  ...defaultRules,
+  paragraph: {
+    ...defaultRules.paragraph,
+    react: (node, output, state) => (
+      <Serif size="3t" color="black60" key={state.key}>
+        {output(node.content, state)}
+      </Serif>
+    ),
+  },
 }
 
 export class HoursCollapsible extends React.Component<Props, State> {
@@ -52,7 +56,7 @@ export class HoursCollapsible extends React.Component<Props, State> {
   renderHours() {
     const { hours } = this.props
     if (isString(hours)) {
-      return <Markdown size="3">{hours}</Markdown>
+      return <Markdown rules={markdownRules}>{hours}</Markdown>
     } else if (isArray(hours)) {
       return hours.map((daySchedule, idx, arr) => {
         return (
