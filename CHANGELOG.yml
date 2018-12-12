@@ -2,20 +2,21 @@ upcoming:
   version: 4.3.5
   date: Dec 5, 2018
   signed_of_by: Ash
-  emission_version: 1.7.x
+  emission_version: 1.7.5
   dev:
     - nothing yet
     
   user_facing:
     - Uses new search API for the app search - orta
     - AR feature allows tapping on the done state to hide the UI - orta
+    - Fix for favourites pagination via Emission update - orta
 
 releases:
   - version: 4.3.4
     date: TBD
-    emission_version: 1.7.x
+    emission_version: 1.7.4
     dev:
-      - Adds AREnableMakeOfferFlow flag to Echo - ash&dlevenson
+      - Adds AREnableMakeOfferFlow flag to Echo - ash & dlevenson
       - Adds ExchangeCurrentVersion to gate BNMO - ash
       - Add SwitchBoard path for ARFairSearchViewController - javamonn
       - Removes extraneous OS debugging logs from Xcode - ash
