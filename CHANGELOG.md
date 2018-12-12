@@ -16,6 +16,8 @@
 
 ### Master
 
+- Removes the buy now banner from the homescreen - orta
+
 ### 1.7.5
 
 - fixes to the artwork favourites pagination - orta
