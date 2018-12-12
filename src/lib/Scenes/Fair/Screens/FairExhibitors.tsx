@@ -27,7 +27,7 @@ export class FairExhibitors extends React.Component<Props, State> {
       return
     }
     const sections = [] as any
-    const exhibitorsGroupedByName = (fair.exhibitors_grouped_by_name || []) as any
+    const exhibitorsGroupedByName = fair.exhibitors_grouped_by_name || []
     exhibitorsGroupedByName.forEach(group => {
       sections.push({
         title: group.letter,

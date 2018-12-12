@@ -26,8 +26,5 @@ it("renders properly", async () => {
       }}
     />
   )
-
-  console.log("​tree.html()", tree.html())
-
   expect(tree.html()).toMatchSnapshot()
 })
