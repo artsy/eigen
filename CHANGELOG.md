@@ -16,23 +16,8 @@
 
 ### Master
 
-- Adds styled LocationMap with custom pins - kieran
-- Refactor auctions countdown timer, add fair countdown timer - javamonn
-- Refactors ARNotificationManager to implicitly call all JS methods on main queue - ash
-- Adds the mapBoxAPIClientKey to cocoapods
-- Updates Show detail view styles - luc
-- Styles artists list - Kieran
-- Updates @artsy/palette (2.21.1) - javamonn
-- Refactor More Shows section - luc
-- Styles fair header view - luc
-- Increases size of pin for LocationMap and zooms in slighlty - kieran
-- Adds extra checking around sale artwork messaging in artwork grids - ash
-- Add fair-scoped search link to native Eigen screen - javamonn
-- Adds "View on map" to show view for "More shows" - Kieran
-- Adds AllArtist page to Shows and adds styled gray border InvertedButton - Kieran
-- Add HoursCollapsible to Fair detail view - javamonn
-- Adds fair booth section - luc
-- Add browse artworks screen to Fair, Show - javamonn
+### 1.7.5
+
 - fixes to the artwork favourites pagination - orta
 
 ### 1.7.4
