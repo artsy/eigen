@@ -1,4 +1,4 @@
-import { Box, Collapse as _Collapse, Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, Collapse as _Collapse, Flex, Sans, Separator, Serif, Spacer } from "@artsy/palette"
 import { defaultRules, Markdown } from "lib/Components/Markdown"
 import { isArray, isString } from "lodash"
 import React from "react"
@@ -89,6 +89,7 @@ export class HoursCollapsible extends React.Component<Props, State> {
         <Collapse open={isExpanded} onAnimationFrame={this.handleAnimationFrame}>
           <Box mt={2}>{this.renderHours()}</Box>
         </Collapse>
+        <Separator mt={"2"} mb={"3"} />
       </Box>
     )
   }
