@@ -63,6 +63,7 @@
 - Clean up Jest log output, update relay-mock-network-layer - javamonn
 - Adds shows list to Show View - ashley
 - Adds fair exhibitors to Fair view - ashley
+- Reordering Fair sections to match design specs -ashley
 
 ### 1.7.1
 
