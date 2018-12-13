@@ -9,8 +9,8 @@ interface Props {
 
 // ts-lint:ignore
 const TabWrapper = styled(Flex)`
-  margin-top: ${space("3")};
-  margin-bottom: ${space("2")};
+  margin-top: ${space(3)};
+  margin-bottom: ${space(2)};
   flex-direction: row;
   justify-content: space-evenly;
 `
