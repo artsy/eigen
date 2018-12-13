@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Separator } from "@artsy/palette"
+import { Box, color, Flex, Sans, Separator, space } from "@artsy/palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -9,8 +9,8 @@ interface Props {
 
 // ts-lint:ignore
 const TabWrapper = styled(Flex)`
-  margin-top: 30px;
-  margin-bottom: 20px;
+  margin-top: ${space("3")};
+  margin-bottom: ${space("2")};
   flex-direction: row;
   justify-content: space-evenly;
 `
