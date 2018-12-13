@@ -62,6 +62,7 @@
 - Adds MoreInfo screen to show detail view - javamonn
 - Clean up Jest log output, update relay-mock-network-layer - javamonn
 - Adds shows list to Show View - ashley
+- Adds fair exhibitors to Fair view - ashley
 
 ### 1.7.1
 

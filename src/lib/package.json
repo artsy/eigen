@@ -1,3 +1,6 @@
 {
-  "name": "lib"
+  "name": "lib",
+  "devDependencies": {
+    "@types/enzyme": "^3.1.15"
+  }
 }

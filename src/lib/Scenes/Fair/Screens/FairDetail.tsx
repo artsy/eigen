@@ -7,6 +7,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap, PartnerType } from "lib/Components/LocationMap"
 import { PAGE_SIZE } from "lib/data/constants"
+import { ArtistsExhibitorsWorksLink } from "../Components/ArtistsExhibitorsWorksLink"
 import { FairBoothContainer as FairBooth } from "../Components/FairBooth"
 import { FairHeaderContainer as FairHeader } from "../Components/FairHeader"
 import { SearchLink } from "../Components/SearchLink"
@@ -15,6 +16,7 @@ interface Props extends ViewProperties {
   fair: FairDetail_fair
   relay: RelayPaginationProp
   onViewAllArtworksPressed: () => void
+  onViewAllExhibitorsPressed: () => void
 }
 
 interface State {
@@ -43,7 +45,7 @@ export class FairDetail extends React.Component<Props, State> {
   }
 
   updateSections = () => {
-    const { fair } = this.props
+    const { fair, onViewAllExhibitorsPressed } = this.props
     const sections = []
 
     sections.push({
@@ -76,6 +78,13 @@ export class FairDetail extends React.Component<Props, State> {
       })
     })
 
+    sections.push({
+      type: "artists-exhibitors-works",
+      data: {
+        onViewAllExhibitorsPressed,
+      },
+    })
+
     this.setState({ sections, boothCount: fair.shows.edges.length })
   }
 
@@ -89,6 +98,8 @@ export class FairDetail extends React.Component<Props, State> {
         return <SearchLink {...data} />
       case "booth":
         return <FairBooth show={...data} />
+      case "artists-exhibitors-works":
+        return <ArtistsExhibitorsWorksLink {...data} />
       default:
         return null
     }
