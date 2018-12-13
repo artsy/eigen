@@ -90,7 +90,12 @@ uitest:
 ### CI
 
 ci: CONFIGURATION = Debug
-ci: build
+ci: 
+	if [ "$(LOCAL_BRANCH)" != "beta" ]; then make build; else echo "Skipping test build on beta deploy."; fi
+
+ci-test: CONFIGURATION = Debug 
+ci-test: 
+	if [ "$(LOCAL_BRANCH)" != "beta" ]; then make test; else echo "Skipping test run on beta deploy."; fi
 
 deploy_if_beta_branch:
 	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make distribute; fi

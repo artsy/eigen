@@ -4,7 +4,7 @@ upcoming:
   signed_of_by: Ash
   emission_version: 1.7.x
   dev:
-    - nothing yet
+    - Skips running tests on beta deploys - ash
     
   user_facing:
     - Uses new search API for the app search - orta
