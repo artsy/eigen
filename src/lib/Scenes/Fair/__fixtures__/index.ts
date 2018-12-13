@@ -34,6 +34,104 @@ export const FairFixture = {
     country: "United States",
     postal_code: "60611",
   },
+  exhibitors_grouped_by_name: [
+    {
+      letter: "3",
+      exhibitors: ["303 Gallery"],
+    },
+    {
+      letter: "A",
+      exhibitors: [
+        "Acquavella Galleries",
+        "Alan Cristea Gallery",
+        "Alfonso Artiaco",
+        "Altman Siegel",
+        "Anat Ebgi",
+        "Annely Juda Fine Art",
+        "Anton Kern Gallery",
+      ],
+    },
+    {
+      letter: "B",
+      exhibitors: ["Bergamin & Gomide", "Berggruen Gallery", "Blum & Poe", "Boers-Li Gallery", "Bortolami"],
+    },
+    {
+      letter: "C",
+      exhibitors: [
+        "CARDI GALLERY",
+        "Casa Triângulo",
+        "Casey Kaplan",
+        "Cheim & Read",
+        "Cristina Guerra Contemporary Art",
+        "Crown Point Press",
+      ],
+    },
+    {
+      letter: "D",
+      exhibitors: ["Dan Galeria", "DC Moore Gallery"],
+    },
+    {
+      letter: "E",
+      exhibitors: ["Edward Tyler Nahem Fine Art LLC", "Edwynn Houk Gallery", "Eric Firestone Gallery"],
+    },
+    {
+      letter: "F",
+      exhibitors: ["Fergus McCaffrey", "Fortes D'Aloia & Gabriel", "Francis M. Naumann Fine Art"],
+    },
+    {
+      letter: "G",
+      exhibitors: [
+        "Gagosian",
+        "Galerie Chantal Crousel",
+        "Galerie Christophe Gaillard",
+        "galerie frank elbaz",
+        "GALERIE GEORGES-PHILIPPE ET NATHALIE VALLOIS",
+        "Galerie Greta Meert",
+        "Galerie Jérôme Poggi",
+        "GALLERIA CONTINUA",
+        "Gemini G.E.L.",
+        "Gladstone Gallery",
+        "Goodman Gallery",
+        "GRIMM",
+      ],
+    },
+    {
+      letter: "H",
+      exhibitors: ["Haines Gallery", "Hales Gallery", "Hammer Galleries", "Hauser & Wirth", "Howard Greenberg Gallery"],
+    },
+    {
+      letter: "I",
+      exhibitors: ["Ingleby Gallery", "Inman Gallery", "Instituto de Visión"],
+    },
+    {
+      letter: "J",
+      exhibitors: ["James Cohan"],
+    },
+    {
+      letter: "K",
+      exhibitors: ["Kasmin", "Kavi Gupta", "Kayne Griffin Corcoran", "KEWENIG"],
+    },
+    {
+      letter: "M",
+      exhibitors: ["Marian Goodman Gallery", "Marianne Boesky Gallery"],
+    },
+    {
+      letter: "P",
+      exhibitors: ["Peter Blum Gallery", "Pilar Corrias Gallery"],
+    },
+    {
+      letter: "R",
+      exhibitors: ["Rhona Hoffman Gallery", "Richard Gray Gallery"],
+    },
+    {
+      letter: "S",
+      exhibitors: ["Sean Kelly Gallery"],
+    },
+    {
+      letter: "X",
+      exhibitors: ["Xavier Hufkens"],
+    },
+  ],
   filteredArtworks: {
     aggregations: [
       {

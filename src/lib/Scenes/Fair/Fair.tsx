@@ -5,6 +5,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { FairArtworksContainer as FairArtworksScreen } from "./Screens/FairArtworks"
 import { FairDetailContainer as FairDetailScreen } from "./Screens/FairDetail"
+import { FairExhibitors as FairExhibitorsScreen } from "./Screens/FairExhibitors"
 
 import { Fair_fair } from "__generated__/Fair_fair.graphql"
 
@@ -14,6 +15,18 @@ interface Props extends ViewProperties {
 
 export class Fair extends React.Component<Props> {
   navigator?: NavigatorIOS
+
+  handleViewAllExhibitorsPressed = () => {
+    if (!this.navigator) {
+      throw new Error("navigator is undefined")
+    }
+
+    this.navigator.push({
+      component: FairExhibitorsScreen,
+      title: "",
+      passProps: this.props,
+    })
+  }
 
   handleViewAllArtworksPressed = () => {
     if (!this.navigator) {
@@ -41,6 +54,7 @@ export class Fair extends React.Component<Props> {
             passProps: {
               ...this.props,
               onViewAllArtworksPressed: this.handleViewAllArtworksPressed,
+              onViewAllExhibitorsPressed: this.handleViewAllExhibitorsPressed,
             },
           }}
           style={{ flex: 1 }}
@@ -55,6 +69,7 @@ export const FairContainer = createFragmentContainer(
   graphql`
     fragment Fair_fair on Fair {
       ...FairDetail_fair
+      ...FairExhibitors_fair
     }
   `
 )

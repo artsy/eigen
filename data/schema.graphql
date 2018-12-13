@@ -2011,6 +2011,20 @@ type buyerAcceptOfferPayload {
   clientMutationId: String
 }
 
+input buyerCounterOfferInput {
+  # The ID of the offer to counter
+  offerId: String!
+
+  # Offer price
+  offerPrice: MoneyInput
+  clientMutationId: String
+}
+
+type buyerCounterOfferPayload {
+  orderOrError: OrderOrFailureUnionType
+  clientMutationId: String
+}
+
 type BuyersPremium {
   # A globally unique ID.
   __id: ID!
@@ -2287,6 +2301,9 @@ type City {
   shows(
     sort: PartnerShowSorts
     status: EventStatus
+
+    # Whether to include local discovery stubs as well as displayable shows
+    discoverable: Boolean
     after: String
     first: Int
     before: String
@@ -4982,6 +4999,12 @@ type Mutation {
   # Rejects an offer
   ecommerceSellerRejectOffer(input: sellerRejectOfferInput!): sellerRejectOfferPayload
 
+  # Seller counters buyers offer
+  ecommerceSellerCounterOffer(input: sellerCounterOfferInput!): sellerCounterOfferPayload
+
+  # Buyer counters sellers offer
+  ecommerceBuyerCounterOffer(input: buyerCounterOfferInput!): buyerCounterOfferPayload
+
   # Confirms pickup for an ecommerce order
   ecommerceConfirmPickup(input: ConfirmPickupInput!): ConfirmPickupPayload
 
@@ -7356,6 +7379,20 @@ type sellerAcceptOfferPayload {
   clientMutationId: String
 }
 
+input sellerCounterOfferInput {
+  # The ID of the offer to counter
+  offerId: String!
+
+  # Offer price
+  offerPrice: MoneyInput
+  clientMutationId: String
+}
+
+type sellerCounterOfferPayload {
+  orderOrError: OrderOrFailureUnionType
+  clientMutationId: String
+}
+
 input sellerRejectOfferInput {
   # Offer ID
   offerId: String!
@@ -7639,11 +7676,17 @@ type Show implements Node {
   nearbyShows(
     sort: PartnerShowSorts
     status: EventStatus
+
+    # Whether to include local discovery stubs as well as displayable shows
+    discoverable: Boolean
     after: String
     first: Int
     before: String
     last: Int
   ): ShowConnection
+
+  # Alternate Markdown-supporting free text representation of the opening reception event’s date/time
+  openingReceptionText: String
 
   # The partner that represents this show, could be a non-Artsy partner
   partner: PartnerTypes

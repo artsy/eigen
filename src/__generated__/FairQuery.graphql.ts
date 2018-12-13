@@ -29,6 +29,7 @@ query FairQuery(
 
 fragment Fair_fair on Fair {
   ...FairDetail_fair
+  ...FairExhibitors_fair
   __id
 }
 
@@ -59,6 +60,14 @@ fragment FairDetail_fair on Fair {
         __typename
       }
     }
+  }
+  __id
+}
+
+fragment FairExhibitors_fair on Fair {
+  exhibitors_grouped_by_name {
+    letter
+    exhibitors
   }
   __id
 }
@@ -234,28 +243,28 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "aspect_ratio",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "aspect_ratio",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
@@ -274,10 +283,10 @@ v9 = {
   "storageKey": null
 },
 v10 = [
-  v4
+  v7
 ],
 v11 = [
-  v4,
+  v7,
   v2
 ],
 v12 = {
@@ -294,7 +303,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairQuery",
-  "id": "ae6493a9594b4ec6a11b0bb52529426b",
+  "id": "921a72f0177df5e125573e19a554fe63",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -337,8 +346,14 @@ return {
         "concreteType": "Fair",
         "plural": false,
         "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "end_at",
+            "args": null,
+            "storageKey": null
+          },
           v3,
-          v4,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -355,8 +370,8 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v5,
-              v6
+              v4,
+              v5
             ]
           },
           {
@@ -378,7 +393,7 @@ return {
                 "plural": false,
                 "selections": [
                   v3,
-                  v7,
+                  v6,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -393,10 +408,10 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v6
+                  v5
                 ]
               },
-              v4,
+              v7,
               v2
             ]
           },
@@ -407,13 +422,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "end_at",
-            "args": null,
-            "storageKey": null
-          },
+          v7,
           v2,
           {
             "kind": "ScalarField",
@@ -588,7 +597,7 @@ return {
                     "plural": false,
                     "selections": [
                       v3,
-                      v4,
+                      v7,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -638,7 +647,7 @@ return {
                         "concreteType": "Image",
                         "plural": false,
                         "selections": [
-                          v6
+                          v5
                         ]
                       },
                       {
@@ -705,7 +714,7 @@ return {
                                     "concreteType": "Image",
                                     "plural": false,
                                     "selections": [
-                                      v5,
+                                      v4,
                                       {
                                         "kind": "ScalarField",
                                         "alias": null,
@@ -878,7 +887,7 @@ return {
                                     "plural": false,
                                     "selections": v11
                                   },
-                                  v7
+                                  v6
                                 ]
                               }
                             ]
@@ -908,6 +917,31 @@ return {
             "handle": "connection",
             "key": "Fair_shows",
             "filters": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "exhibitors_grouped_by_name",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "FairExhibitorsGroup",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "letter",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "exhibitors",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           }
         ]
       }

@@ -34,6 +34,7 @@
 - Adds fair booth section - luc
 - Add browse artworks screen to Fair, Show - javamonn
 - fixes to the artwork favourites pagination - orta
+- Add rules prop to Markdown, left-align fair and show hours markdown - javamonn
 
 ### 1.7.4
 
@@ -61,6 +62,7 @@
 - Adds MoreInfo screen to show detail view - javamonn
 - Clean up Jest log output, update relay-mock-network-layer - javamonn
 - Adds shows list to Show View - ashley
+- Adds fair exhibitors to Fair view - ashley
 
 ### 1.7.1
 
