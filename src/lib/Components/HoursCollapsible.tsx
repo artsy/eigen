@@ -89,7 +89,7 @@ export class HoursCollapsible extends React.Component<Props, State> {
         <Collapse open={isExpanded} onAnimationFrame={this.handleAnimationFrame}>
           <Box mt={2}>{this.renderHours()}</Box>
         </Collapse>
-        <Separator mt={"2"} mb={"3"} />
+        <Separator mt={"2"} mb={"1"} />
       </Box>
     )
   }
