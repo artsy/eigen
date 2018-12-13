@@ -407,6 +407,8 @@
 
       [[NSUserDefaults standardUserDefaults] setBool:!useStaging forKey:ARUseStagingDefault];
       [[NSUserDefaults standardUserDefaults] synchronize];
+      [[[AREmission sharedInstance] graphQLQueryCacheModule] clearAll];
+      
       exit(0);
     }];
   }];
