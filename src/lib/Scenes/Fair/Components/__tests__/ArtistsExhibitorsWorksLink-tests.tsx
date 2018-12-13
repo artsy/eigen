@@ -8,7 +8,13 @@ const data = {
 }
 describe("ArtistsExhibitorsWorksLink", () => {
   it("Renders correctly", () => {
-    const comp = renderer.create(<ArtistsExhibitorsWorksLink {...data as any} />)
-    expect(comp).toMatchSnapshot()
+    const component = renderer.create(<ArtistsExhibitorsWorksLink {...data as any} />)
+    expect(component).toMatchSnapshot()
+  })
+
+  it("passes a function as a prop when clicked", () => {
+    const component = renderer.create(<ArtistsExhibitorsWorksLink {...data as any} />).getInstance()
+    component.props.onViewAllExhibitorsPressed()
+    expect(onViewAllExhibitorsPressed).toHaveBeenCalled()
   })
 })
