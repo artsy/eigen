@@ -15,20 +15,14 @@ It takes about 45 minutes for [Circle CI](https://circleci.com/gh/artsy/eigen) t
 
 Eigen's beta pre-submission checklist has [moved into Notion](https://www.notion.so/artsy/Pre-submission-QA-Checklist-785e3233fdcf423f95ee239ab3c22ec3).
 
-## Prepare in iTunesConnect
+## Prepare Metadata
 
-1. You need to have copy for the next release, for minor releases this is just a list of notable changes.
-1. Log in to [iTunesConnect](https://itunesconnect.apple.com) as it@artsymail.com (team _Art.sy Inc_).
-1. Manage Your Apps > Which-ever app > select the version.
-1. Fill in the copy for each localization.
-1. Add "what's new in this version" information.
-1. About halfway down the page, select the binary to submit, and save your changes.
-1. Click 'Submit for Review'. Then answer the subsequent questions as follows:
-  * Have you added or made changes to encryption features since your last submission of this app?: *NO*
-  * Does your app contain, display, or access third-party content?: *YES*
-  * Do you have all necessary rights to that content […]?: *YES*
-  * Does this app use the Advertising Identifier (IDFA)?: *YES*
-    - When asked for the use case of the IDFA, select the second option: "Attribute this app installation to a previously served advertisement"
+1. You'll need to update the release notes in `/fastlane/metadata/common/release_notes.txt`.
+1. Then, run `make promote_beta_to_submission`.
+
+### What about IDFA?
+
+We _do_ use the IDFA to attribute app installations to previously service advertisements. This should be handled for you.
 
 ## Release to App Store
 
