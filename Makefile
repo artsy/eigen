@@ -64,14 +64,11 @@ certs:
 	echo "Don't log in with it@artsymail.com, use your account on our Artsy team."
 	bundle exec match appstore
 
-distribute: 
-	echo "hi"
-
-	# change_version_to_date set_git_properties setup_fastlane_env
-	# brew update
-	# brew install getsentry/tools/sentry-cli
-	# bundle exec fastlane update_plugins
-	# bundle exec fastlane ship_beta
+distribute: change_version_to_date set_git_properties setup_fastlane_env
+	brew update
+	brew install getsentry/tools/sentry-cli
+	bundle exec fastlane update_plugins
+	bundle exec fastlane ship_beta
 
 setup_fastlane_env:
 	rm -f Gemfile.lock Gemfile
@@ -115,8 +112,8 @@ promote_beta_to_submission:
 promote_if_app_store_submission_branch:
   if [ "$(LOCAL_BRANCH)" == "beta" ]; then make promote_beta; fi
 
-promote_beta:
-	# bundle exec fastlane update_plugins
+promote_beta: setup_fastlane_env
+	bundle exec fastlane update_plugins
 	bundle exec fastlane promote_beta
 
 ### Utility functions

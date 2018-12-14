@@ -125,7 +125,6 @@ lane :promote_beta do
     build_number: beta.id,
     submit_for_review: true,
     force: true, # Skip HTMl report verification
-    # skip_metadata: true, # TODO: make sure metadata stored in this repo is up to date with ASC. 
     skip_screenshots: true,
     skip_binary_upload: true
   )
