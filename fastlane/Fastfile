@@ -50,14 +50,7 @@ lane :ship_beta do
 
   build_ios_app(configuration: 'Store')
 
-  # Do a tag, we use a http git remote so we can have push access
-  # as the default remote for circle is read-only
-  tag = "#{latest_version}-#{latest_testflight_build_number}"
-  `git tag -d "#{tag}"`
-
-  add_git_tag tag: tag
-  `git remote add http https://github.com/artsy/eigen.git`
-  `git push http #{tag} -f`
+  tag_and_push(tag: "#{latest_version}-#{latest_testflight_build_number}")
 
   # First make individual dSYM archives available to the sentry-cli tool.
   root = File.expand_path('../..', __FILE__)
@@ -136,5 +129,20 @@ lane :promote_beta do
     skip_screenshots: true,
     skip_binary_upload: true
   )
+
+  puts "Tagging submission and pushing to GitHub."
+  tag_and_push(tag: "#{beta.train_version}-#{beta.build_version}-submission")
+  
   puts "All done."
+end
+
+lane :tag_and_push do |options|
+  # Do a tag, we use a http git remote so we can have push access
+  # as the default remote for circle is read-only
+  tag = options[:tag]
+  `git tag -d "#{tag}"`
+
+  add_git_tag tag: tag
+  `git remote add http https://github.com/artsy/eigen.git`
+  `git push http #{tag} -f`
 end
