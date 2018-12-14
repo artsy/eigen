@@ -5,7 +5,9 @@ exports[`SearchLink Renders properly 1`] = `
   accessible={true}
   alignItems="center"
   flexDirection="row"
+  height={48}
   justifyContent="center"
+  mb={1}
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -19,7 +21,9 @@ exports[`SearchLink Renders properly 1`] = `
         "alignItems": "center",
         "display": "flex",
         "flexDirection": "row",
+        "height": 48,
         "justifyContent": "center",
+        "marginBottom": 4,
         "paddingBottom": 4,
         "paddingLeft": 4,
         "paddingRight": 4,
@@ -31,6 +35,8 @@ exports[`SearchLink Renders properly 1`] = `
           "borderRadius": 2,
           "borderStyle": "solid",
           "borderWidth": 1,
+          "height": 48,
+          "marginBottom": 4,
           "paddingBottom": 4,
           "paddingLeft": 4,
           "paddingRight": 4,

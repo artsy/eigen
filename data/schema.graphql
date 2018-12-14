@@ -763,7 +763,7 @@ type Artwork implements Node & Sellable {
   # Returns an HTML string representing the embedded content (video)
   embed(width: Int = 853, height: Int = 450, autoplay: Boolean = false): String
   edition_of: String
-  edition_sets: [EditionSet]
+  edition_sets(sort: EditionSetSorts): [EditionSet]
   exhibition_history(format: Format): String
   fair: Fair
   height: String @deprecated(reason: "Prefer dimensions instead.")
@@ -1538,7 +1538,7 @@ type ArtworkItem implements Node & Sellable {
   # Returns an HTML string representing the embedded content (video)
   embed(width: Int = 853, height: Int = 450, autoplay: Boolean = false): String
   edition_of: String
-  edition_sets: [EditionSet]
+  edition_sets(sort: EditionSetSorts): [EditionSet]
   exhibition_history(format: Format): String
   fair: Fair
   height: String @deprecated(reason: "Prefer dimensions instead.")
@@ -3025,6 +3025,10 @@ type EditionSet implements Sellable {
   is_sold: Boolean
   price: String @deprecated(reason: "Prefer to use `sale_message`.")
   sale_message: String
+}
+
+enum EditionSetSorts {
+  PRICE_ASC
 }
 
 input EndSaleInput {

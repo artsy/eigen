@@ -9,7 +9,7 @@ interface Props {
 
 // ts-lint:ignore
 const TabWrapper = styled(Flex)`
-  margin-top: ${space(3)};
+  margin-top: ${space(1)};
   margin-bottom: ${space(2)};
   flex-direction: row;
   justify-content: space-evenly;
@@ -45,7 +45,7 @@ export class ArtistsExhibitorsWorksLink extends React.Component<Props> {
             </Box>
           </TouchableOpacity>
         </TabWrapper>
-        <Separator />
+        <Separator mt="1" />
       </>
     )
   }

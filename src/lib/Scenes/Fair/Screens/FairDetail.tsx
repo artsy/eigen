@@ -71,18 +71,18 @@ export class FairDetail extends React.Component<Props, State> {
       },
     })
 
-    fair.shows.edges.forEach(showData => {
-      sections.push({
-        type: "booth",
-        data: showData.node,
-      })
-    })
-
     sections.push({
       type: "artists-exhibitors-works",
       data: {
         onViewAllExhibitorsPressed,
       },
+    })
+
+    fair.shows.edges.forEach(showData => {
+      sections.push({
+        type: "booth",
+        data: showData.node,
+      })
     })
 
     this.setState({ sections, boothCount: fair.shows.edges.length })

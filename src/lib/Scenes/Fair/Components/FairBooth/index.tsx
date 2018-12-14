@@ -1,4 +1,4 @@
-import { Box, Separator } from "@artsy/palette"
+import { Box } from "@artsy/palette"
 import { FairBooth_show } from "__generated__/FairBooth_show.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
@@ -19,7 +19,6 @@ export const FairBoothContainer = createFragmentContainer<Props>(
     const display = !!location ? location.display : ""
     return (
       <Box my={1}>
-        <Separator mb={1} />
         <FairBoothHeader name={partner.name} location={display} url={cover_image.url} />
         <Box mt={1}>{<GenericGrid artworks={artworks_connection.edges.map(a => a.node) as any} />}</Box>
         <Box mt={2}>

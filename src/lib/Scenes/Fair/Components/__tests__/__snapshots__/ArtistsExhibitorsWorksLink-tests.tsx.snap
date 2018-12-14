@@ -13,7 +13,7 @@ Array [
             "flexDirection": "row",
             "justifyContent": "space-evenly",
             "marginBottom": 20,
-            "marginTop": 30,
+            "marginTop": 10,
           },
           undefined,
         ],
@@ -180,6 +180,7 @@ Array [
     </View>
   </View>,
   <View
+    mt="1"
     style={
       Array [
         Object {
@@ -187,6 +188,7 @@ Array [
           "borderColor": "#E5E5E5",
           "borderStyle": "solid",
           "borderWidth": 1,
+          "marginTop": 4,
           "width": "100%",
         },
         undefined,
