@@ -3,6 +3,7 @@ import React from "react"
 import { NavigatorIOS, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
+import { FairArtistsContainer as FairArtistsScreen } from "./Screens/FairArtists"
 import { FairArtworksContainer as FairArtworksScreen } from "./Screens/FairArtworks"
 import { FairDetailContainer as FairDetailScreen } from "./Screens/FairDetail"
 import { FairExhibitors as FairExhibitorsScreen } from "./Screens/FairExhibitors"
@@ -40,6 +41,18 @@ export class Fair extends React.Component<Props> {
     })
   }
 
+  handleBrowseArtistsPressed = () => {
+    if (!this.navigator) {
+      throw new Error("navigator is undefined")
+    }
+
+    this.navigator.push({
+      component: FairArtistsScreen,
+      title: "",
+      passProps: this.props,
+    })
+  }
+
   render() {
     return (
       <Theme>
@@ -55,6 +68,7 @@ export class Fair extends React.Component<Props> {
               ...this.props,
               onViewAllArtworksPressed: this.handleViewAllArtworksPressed,
               onViewAllExhibitorsPressed: this.handleViewAllExhibitorsPressed,
+              onBrowseArtistsPressed: this.handleBrowseArtistsPressed,
             },
           }}
           style={{ flex: 1 }}
@@ -70,6 +84,7 @@ export const FairContainer = createFragmentContainer(
     fragment Fair_fair on Fair {
       ...FairDetail_fair
       ...FairExhibitors_fair
+      ...FairArtists_fair
     }
   `
 )

@@ -6,10 +6,10 @@ export type FollowArtistInput = {
     readonly unfollow?: boolean | null;
     readonly clientMutationId?: string | null;
 };
-export type AllArtistsFollowArtistMutationVariables = {
+export type ArtistListItemFollowArtistMutationVariables = {
     readonly input: FollowArtistInput;
 };
-export type AllArtistsFollowArtistMutationResponse = {
+export type ArtistListItemFollowArtistMutationResponse = {
     readonly followArtist: ({
         readonly artist: ({
             readonly __id: string;
@@ -17,15 +17,15 @@ export type AllArtistsFollowArtistMutationResponse = {
         }) | null;
     }) | null;
 };
-export type AllArtistsFollowArtistMutation = {
-    readonly response: AllArtistsFollowArtistMutationResponse;
-    readonly variables: AllArtistsFollowArtistMutationVariables;
+export type ArtistListItemFollowArtistMutation = {
+    readonly response: ArtistListItemFollowArtistMutationResponse;
+    readonly variables: ArtistListItemFollowArtistMutationVariables;
 };
 
 
 
 /*
-mutation AllArtistsFollowArtistMutation(
+mutation ArtistListItemFollowArtistMutation(
   $input: FollowArtistInput!
 ) {
   followArtist(input: $input) {
@@ -94,13 +94,13 @@ v1 = [
 return {
   "kind": "Request",
   "operationKind": "mutation",
-  "name": "AllArtistsFollowArtistMutation",
-  "id": "3779385c2038ed723b8f7291dde06e9b",
+  "name": "ArtistListItemFollowArtistMutation",
+  "id": "5fe5566b2c4b7ad53ce3fdfba9919f89",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "AllArtistsFollowArtistMutation",
+    "name": "ArtistListItemFollowArtistMutation",
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -108,11 +108,11 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "AllArtistsFollowArtistMutation",
+    "name": "ArtistListItemFollowArtistMutation",
     "argumentDefinitions": v0,
     "selections": v1
   }
 };
 })();
-(node as any).hash = '7e3c61004285bd46cf653896ab8080b9';
+(node as any).hash = '0a86340c441f9e59f4bdc7acf46e5f4a';
 export default node;

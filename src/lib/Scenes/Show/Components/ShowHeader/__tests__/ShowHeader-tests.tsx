@@ -10,7 +10,7 @@ it("looks correct when rendered", () => {
   }
   const comp = renderer.create(
     <ShowHeader
-      show={ShowFixture.show as any}
+      show={ShowFixture as any}
       onSaveShowPressed={onSaveShowPressed}
       onMoreInformationPressed={onMoreInformationPressed}
     />

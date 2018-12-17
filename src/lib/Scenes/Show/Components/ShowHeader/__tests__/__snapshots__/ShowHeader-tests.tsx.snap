@@ -3,16 +3,16 @@
 exports[`looks correct when rendered 1`] = `
 Array [
   <View
-    pb={467}
-    pt={467}
+    pb={0}
+    pt={3}
     px={2}
     style={
       Array [
         Object {
-          "paddingBottom": 467,
+          "paddingBottom": 0,
           "paddingLeft": 8,
           "paddingRight": 8,
-          "paddingTop": 467,
+          "paddingTop": 16,
         },
         undefined,
       ]
@@ -73,7 +73,9 @@ Array [
           undefined,
         ]
       }
-    />
+    >
+      Flickinger Collection
+    </Text>
     <Text
       accessible={true}
       allowFontScaling={true}
@@ -92,7 +94,70 @@ Array [
           undefined,
         ]
       }
-    />
+    >
+      Jul 1 – Oct 30
+    </Text>
+  </View>,
+  <View
+    ml={2}
+    my={2}
+    style={
+      Array [
+        Object {
+          "marginBottom": 8,
+          "marginLeft": 8,
+          "marginTop": 8,
+        },
+        undefined,
+      ]
+    }
+  >
+    <RCTScrollView
+      horizontal={true}
+      scrollEventThrottle={160}
+      showsHorizontalScrollIndicator={false}
+      style={
+        Array [
+          Object {
+            "height": 350,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View>
+        <View
+          alignItems="flex-start"
+          mr={1}
+          style={
+            Array [
+              Object {
+                "alignItems": "flex-start",
+                "display": "flex",
+                "marginRight": 4,
+              },
+              undefined,
+            ]
+          }
+        >
+          <AROpaqueImageView
+            aspectRatio={0.87}
+            imageURL="https://d32dm0rphc51dk.cloudfront.net/Bu7ONuoTlR-PLZDUjs6ZTA/medium.jpg"
+            isFirst={true}
+            style={
+              Array [
+                Object {
+                  "height": 200,
+                  "marginTop": 150,
+                  "width": 650,
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
+      </View>
+    </RCTScrollView>
   </View>,
   <View
     px={2}
@@ -260,7 +325,9 @@ Array [
           undefined,
         ]
       }
-    />
+    >
+      Masterworks on paper, prints, paintings, and sculptures by mainstay postwar and contemporary artists are the focus in this exclusive exhibition showcasing the discerning connoisseurship of Tom & Penny Flickinger, lifelong collectors, and trustees of the Albright Knox Art Gallery.
+    </Text>
     <View
       m={1}
       style={

@@ -17,9 +17,7 @@ export const FairBoothHeader: React.SFC<Props> = ({ name, location, isFollowed, 
   return (
     <Flex justifyContent="space-between" alignItems="center" flexDirection="row" mb={1}>
       <ImageAndTextWrapper flexDirection="row" alignItems="center">
-        <Box mr={1}>
-          <RoundedImage imageURL={url} aspectRatio={1} />
-        </Box>
+        <Box mr={1}>{url && <RoundedImage imageURL={url} aspectRatio={1} />}</Box>
         <Box>
           <TightendSerif size="2">{name}</TightendSerif>
           <TightendSans size="2" color="black60">

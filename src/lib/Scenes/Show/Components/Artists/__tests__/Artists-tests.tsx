@@ -6,8 +6,8 @@ import { ShowFixture } from "lib/__fixtures__/ShowFixture"
 import { MockRelayRenderer } from "../../../../../tests/MockRelayRenderer"
 import { renderUntil } from "../../../../../tests/renderUntil"
 
+import { ArtistListItem } from "lib/Components/ArtistListItem"
 import ListItemButton from "lib/Components/Buttons/InvertedButton"
-import { ArtistListItem } from "../Components/ArtistListItem"
 import { ArtistsContainer } from "../index"
 
 jest.unmock("react-relay")
@@ -31,7 +31,7 @@ const renderTree = () =>
         mockResolvers={{
           Show: () => ({
             ...ShowFixture,
-            artists: () => ShowFixture.show.artists,
+            artists: () => ShowFixture.artists,
           }),
         }}
       />

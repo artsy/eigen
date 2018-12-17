@@ -29,7 +29,7 @@ xit("Renders the Show Detail Screen", async () => {
       mockResolvers={{
         Show: () => ({
           ...ShowFixture,
-          artists: () => ShowFixture.show.artists,
+          artists: () => ShowFixture.artists,
         }),
       }}
     />

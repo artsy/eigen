@@ -84,16 +84,8 @@ fragment AllArtists_show on Show {
   artists_grouped_by_name {
     letter
     items {
+      ...ArtistListItem_artist
       __id
-      id
-      name
-      is_followed
-      nationality
-      birthday
-      deathday
-      image {
-        url
-      }
     }
   }
   __id
@@ -194,6 +186,19 @@ fragment Artwork_artwork on Artwork {
   __id
 }
 
+fragment ArtistListItem_artist on Artist {
+  id
+  __id
+  name
+  is_followed
+  nationality
+  birthday
+  deathday
+  image {
+    url
+  }
+}
+
 fragment LocationMap_location on Location {
   __id
   id
@@ -255,16 +260,9 @@ fragment ShowArtworksPreview_show on Show {
 
 fragment Artists_show on Show {
   artists {
-    __id
     id
-    name
-    is_followed
-    nationality
-    birthday
-    deathday
-    image {
-      url
-    }
+    ...ArtistListItem_artist
+    __id
   }
   __id
 }
@@ -648,7 +646,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
-  "id": "c9ea7e1cc7f215d4d607b8d32401b4ac",
+  "id": "0a98283b425b8ffdfb919e00783b186b",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -1054,8 +1052,8 @@ return {
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
-                  v1,
                   v2,
+                  v1,
                   v8,
                   v12,
                   v13,
