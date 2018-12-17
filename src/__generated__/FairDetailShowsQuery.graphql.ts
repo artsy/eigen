@@ -65,6 +65,9 @@ fragment FairDetail_fair_1G22uz on Fair {
 fragment FairHeader_fair on Fair {
   id
   name
+  exhibitors_grouped_by_name {
+    exhibitors
+  }
   image {
     image_url
     aspect_ratio
@@ -245,28 +248,28 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "aspect_ratio",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "aspect_ratio",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
@@ -285,10 +288,10 @@ v9 = {
   "storageKey": null
 },
 v10 = [
-  v4
+  v7
 ],
 v11 = [
-  v4,
+  v7,
   v2
 ],
 v12 = {
@@ -305,7 +308,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairDetailShowsQuery",
-  "id": "0c4ba72b7e44ecf483fbf9b10412440a",
+  "id": "cc520dd012ba26a33ba31a715ed34d5f",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -361,8 +364,32 @@ return {
         "concreteType": "Fair",
         "plural": false,
         "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "start_at",
+            "args": null,
+            "storageKey": null
+          },
           v3,
-          v4,
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "exhibitors_grouped_by_name",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "FairExhibitorsGroup",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "exhibitors",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -379,8 +406,8 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v5,
-              v6
+              v4,
+              v5
             ]
           },
           {
@@ -402,7 +429,7 @@ return {
                 "plural": false,
                 "selections": [
                   v3,
-                  v7,
+                  v6,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -417,20 +444,14 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v6
+                  v5
                 ]
               },
-              v4,
+              v7,
               v2
             ]
           },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "start_at",
-            "args": null,
-            "storageKey": null
-          },
+          v7,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -618,7 +639,7 @@ return {
                     "plural": false,
                     "selections": [
                       v3,
-                      v4,
+                      v7,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -668,7 +689,7 @@ return {
                         "concreteType": "Image",
                         "plural": false,
                         "selections": [
-                          v6
+                          v5
                         ]
                       },
                       {
@@ -735,7 +756,7 @@ return {
                                     "concreteType": "Image",
                                     "plural": false,
                                     "selections": [
-                                      v5,
+                                      v4,
                                       {
                                         "kind": "ScalarField",
                                         "alias": null,
@@ -908,7 +929,7 @@ return {
                                     "plural": false,
                                     "selections": v11
                                   },
-                                  v7
+                                  v6
                                 ]
                               }
                             ]

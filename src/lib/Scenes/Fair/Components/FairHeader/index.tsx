@@ -1,15 +1,15 @@
-import moment from "moment"
-import React from "react"
-import { Dimensions, Image } from "react-native"
-import styled from "styled-components/native"
-import { CountdownTimer } from "./CountdownTimer"
-
 import { Box, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
 import { InvertedButton } from "lib/Components/Buttons"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
+import first from "lodash/first"
+import moment from "moment"
+import React from "react"
+import { Dimensions, Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
+import { CountdownTimer } from "./CountdownTimer"
 
 interface Props {
   fair: FairHeader_fair
@@ -50,9 +50,48 @@ const CountdownContainer = styled.View`
 `
 
 export class FairHeader extends React.Component<Props> {
+  getArtists() {
+    return <Sans size="3">Works By</Sans>
+  }
+  getExhibitors(exhibitors) {
+    let exhibitorCount = 0
+    const exhibitorNamesToDisplay = []
+    const areOtherExhibitorsToDisplay = exhibitors.length > 4 ? true : false
+
+    exhibitors.forEach(group => {
+      if (exhibitorNamesToDisplay.length < 4) {
+        exhibitorNamesToDisplay.push(first(group.exhibitors))
+      }
+      exhibitorCount += group.exhibitors.length
+    })
+
+    if (areOtherExhibitorsToDisplay) {
+      return (
+        "From " +
+        exhibitorNamesToDisplay[0] +
+        ", " +
+        exhibitorNamesToDisplay[1] +
+        ", " +
+        "and " +
+        (exhibitorCount - 2) +
+        " others"
+      )
+    }
+
+    // Handle instance when there are 3 or fewer exhibitors to display
+    let shortExhibitorList = "From "
+    exhibitorNamesToDisplay.forEach((exhibitor, index) => {
+      if (index === exhibitorNamesToDisplay.length - 1) {
+        shortExhibitorList += "and " + exhibitor
+      } else {
+        shortExhibitorList += exhibitor + ", "
+      }
+    })
+    return shortExhibitorList
+  }
   render() {
     const {
-      fair: { image, name, profile, start_at, end_at },
+      fair: { image, name, profile, start_at, end_at, exhibitors_grouped_by_name },
     } = this.props
     const { width: screenWidth } = Dimensions.get("window")
 
@@ -76,7 +115,9 @@ export class FairHeader extends React.Component<Props> {
           </CountdownContainer>
         </BackgroundImage>
         <Spacer m={1} />
-
+        <Box mx={3}>
+          <Sans size="3">{this.getExhibitors(exhibitors_grouped_by_name)}</Sans>
+        </Box>
         <Box px={2}>
           <Spacer m={2} />
           <InvertedButton text="Save" />
@@ -94,6 +135,10 @@ export const FairHeaderContainer = createFragmentContainer(
     fragment FairHeader_fair on Fair {
       id
       name
+
+      exhibitors_grouped_by_name {
+        exhibitors
+      }
 
       image {
         image_url

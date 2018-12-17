@@ -6,6 +6,9 @@ export type FairHeader_fair$ref = typeof _FairHeader_fair$ref;
 export type FairHeader_fair = {
     readonly id: string;
     readonly name: string | null;
+    readonly exhibitors_grouped_by_name: ReadonlyArray<({
+        readonly exhibitors: ReadonlyArray<string | null> | null;
+    }) | null> | null;
     readonly image: ({
         readonly image_url: string | null;
         readonly aspect_ratio: number;
@@ -66,6 +69,24 @@ return {
   "selections": [
     v0,
     v1,
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "exhibitors_grouped_by_name",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "FairExhibitorsGroup",
+      "plural": true,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "exhibitors",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -157,5 +178,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '94e963903263b5ca4542b0034aa3d617';
+(node as any).hash = 'a82c38748e6b1574c6d8d1e6269e3ac9';
 export default node;

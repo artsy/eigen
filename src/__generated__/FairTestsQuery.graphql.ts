@@ -106,6 +106,9 @@ fragment ArtistListItem_artist on Artist {
 fragment FairHeader_fair on Fair {
   id
   name
+  exhibitors_grouped_by_name {
+    exhibitors
+  }
   image {
     image_url
     aspect_ratio
@@ -376,7 +379,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairTestsQuery",
-  "id": "f63221576d05cc3c1e9f5b0c3eb2a525",
+  "id": "b02e13530a177897e446bcbba66c08ae",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -419,8 +422,39 @@ return {
         "concreteType": "Fair",
         "plural": false,
         "selections": [
-          v1,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "end_at",
+            "args": null,
+            "storageKey": null
+          },
           v2,
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "exhibitors_grouped_by_name",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "FairExhibitorsGroup",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "exhibitors",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "letter",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -489,14 +523,8 @@ return {
             "args": null,
             "storageKey": null
           },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "end_at",
-            "args": null,
-            "storageKey": null
-          },
           v6,
+          v1,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -937,31 +965,6 @@ return {
             "handle": "connection",
             "key": "Fair_shows",
             "filters": null
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "exhibitors_grouped_by_name",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "FairExhibitorsGroup",
-            "plural": true,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "letter",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "exhibitors",
-                "args": null,
-                "storageKey": null
-              }
-            ]
           },
           {
             "kind": "LinkedField",

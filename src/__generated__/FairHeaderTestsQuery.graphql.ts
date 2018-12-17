@@ -26,6 +26,9 @@ query FairHeaderTestsQuery {
 fragment FairHeader_fair on Fair {
   id
   name
+  exhibitors_grouped_by_name {
+    exhibitors
+  }
   image {
     image_url
     aspect_ratio
@@ -89,7 +92,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairHeaderTestsQuery",
-  "id": "9538f0d1fc74557b9b090443617f90b8",
+  "id": "34201c25e38383828dba5843334c422f",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -134,6 +137,24 @@ return {
         "selections": [
           v2,
           v3,
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "exhibitors_grouped_by_name",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "FairExhibitorsGroup",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "exhibitors",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
           {
             "kind": "LinkedField",
             "alias": null,
