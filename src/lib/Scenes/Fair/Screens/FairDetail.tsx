@@ -46,7 +46,7 @@ export class FairDetail extends React.Component<Props, State> {
   }
 
   updateSections = () => {
-    const { fair, onViewAllExhibitorsPressed, onBrowseArtistsPressed } = this.props
+    const { fair, onViewAllExhibitorsPressed, onViewAllArtworksPressed, onBrowseArtistsPressed } = this.props
     const sections = []
 
     sections.push({
@@ -77,13 +77,19 @@ export class FairDetail extends React.Component<Props, State> {
       data: {
         onViewAllExhibitorsPressed,
         onBrowseArtistsPressed,
+        onViewAllArtworksPressed,
       },
     })
 
     fair.shows.edges.forEach(showData => {
       sections.push({
         type: "booth",
-        data: showData.node,
+        data: {
+          show: showData.node,
+          onViewWorksPressed: () => {
+            /* TODO: Implement */
+          },
+        },
       })
     })
 
@@ -99,7 +105,7 @@ export class FairDetail extends React.Component<Props, State> {
       case "search":
         return <SearchLink {...data} />
       case "booth":
-        return <FairBooth show={...data} />
+        return <FairBooth {...data} />
       case "artists-exhibitors-works":
         return <ArtistsExhibitorsWorksLink {...data} />
       default:
@@ -189,6 +195,7 @@ export const FairDetailContainer = createPaginationContainer(
             cursor
             node {
               ...FairBooth_show
+              ...ShowArtworks_show
             }
           }
         }

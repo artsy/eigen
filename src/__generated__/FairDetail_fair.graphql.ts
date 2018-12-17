@@ -4,6 +4,7 @@ import { ConcreteFragment } from "relay-runtime";
 import { FairBooth_show$ref } from "./FairBooth_show.graphql";
 import { FairHeader_fair$ref } from "./FairHeader_fair.graphql";
 import { LocationMap_location$ref } from "./LocationMap_location.graphql";
+import { ShowArtworks_show$ref } from "./ShowArtworks_show.graphql";
 declare const _FairDetail_fair$ref: unique symbol;
 export type FairDetail_fair$ref = typeof _FairDetail_fair$ref;
 export type FairDetail_fair = {
@@ -25,7 +26,7 @@ export type FairDetail_fair = {
         readonly edges: ReadonlyArray<({
             readonly cursor: string;
             readonly node: ({
-                readonly " $fragmentRefs": FairBooth_show$ref;
+                readonly " $fragmentRefs": FairBooth_show$ref & ShowArtworks_show$ref;
             }) | null;
         }) | null> | null;
     }) | null;
@@ -202,6 +203,11 @@ return {
                   "name": "FairBooth_show",
                   "args": null
                 },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "ShowArtworks_show",
+                  "args": null
+                },
                 v1,
                 {
                   "kind": "ScalarField",
@@ -220,5 +226,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f157cea40bf443df8c166185f8336709';
+(node as any).hash = '58529a47e98c04e13e649524c159ff61';
 export default node;
