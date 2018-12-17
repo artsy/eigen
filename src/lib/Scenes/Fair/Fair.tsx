@@ -3,8 +3,11 @@ import React from "react"
 import { NavigatorIOS, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
+import { ShowArtistsContainer as ShowArtistsScreen } from "lib/Components/Show/ShowArtists"
+import { ShowArtworksContainer as ShowArtworksScreen } from "lib/Components/Show/ShowArtworks"
 import { FairArtistsContainer as FairArtistsScreen } from "./Screens/FairArtists"
 import { FairArtworksContainer as FairArtworksScreen } from "./Screens/FairArtworks"
+import { FairBoothContainer as FairBoothScreen } from "./Screens/FairBooth"
 import { FairDetailContainer as FairDetailScreen } from "./Screens/FairDetail"
 import { FairExhibitorsContainer as FairExhibitorsScreen } from "./Screens/FairExhibitors"
 
@@ -17,40 +20,48 @@ interface Props extends ViewProperties {
 export class Fair extends React.Component<Props> {
   navigator?: NavigatorIOS
 
-  handleViewAllExhibitorsPressed = () => {
+  navigate = ({ component, props }: { component: any; props?: object }) => {
     if (!this.navigator) {
       throw new Error("navigator is undefined")
     }
-
     this.navigator.push({
-      component: FairExhibitorsScreen,
+      component,
+      passProps: {
+        ...this.props,
+        onViewAllExhibitorsPressed: this.handleViewAllExhibitorsPressed,
+        onViewAllArtworksPressed: this.handleViewAllArtworksPressed,
+        onViewAllArtistsPressed: this.handleViewAllArtistsPressed,
+        onViewFairBoothPressed: this.handleViewFairBoothPressed,
+        onViewFairBoothArtworksPressed: this.handleViewFairBoothArtworksPressed,
+        onViewFairBoothArtistsPressed: this.handleViewFairBoothArtistsPressed,
+        ...(props || {}),
+      },
       title: "",
-      passProps: this.props,
     })
+  }
+
+  handleViewAllExhibitorsPressed = () => {
+    this.navigate({ component: FairExhibitorsScreen })
   }
 
   handleViewAllArtworksPressed = () => {
-    if (!this.navigator) {
-      throw new Error("navigator is undefined")
-    }
-
-    this.navigator.push({
-      component: FairArtworksScreen,
-      title: "",
-      passProps: this.props,
-    })
+    this.navigate({ component: FairArtworksScreen })
   }
 
-  handleBrowseArtistsPressed = () => {
-    if (!this.navigator) {
-      throw new Error("navigator is undefined")
-    }
+  handleViewAllArtistsPressed = () => {
+    this.navigate({ component: FairArtistsScreen })
+  }
 
-    this.navigator.push({
-      component: FairArtistsScreen,
-      title: "",
-      passProps: this.props,
-    })
+  handleViewFairBoothPressed = props => {
+    this.navigate({ component: FairBoothScreen, props })
+  }
+
+  handleViewFairBoothArtistsPressed = props => {
+    this.navigate({ component: ShowArtistsScreen, props })
+  }
+
+  handleViewFairBoothArtworksPressed = props => {
+    this.navigate({ component: ShowArtworksScreen, props })
   }
 
   render() {
@@ -66,9 +77,10 @@ export class Fair extends React.Component<Props> {
             title: "",
             passProps: {
               ...this.props,
-              onViewAllArtworksPressed: this.handleViewAllArtworksPressed,
               onViewAllExhibitorsPressed: this.handleViewAllExhibitorsPressed,
-              onBrowseArtistsPressed: this.handleBrowseArtistsPressed,
+              onViewAllArtworksPressed: this.handleViewAllArtworksPressed,
+              onViewAllArtistsPressed: this.handleViewAllArtistsPressed,
+              onViewFairBoothPressed: this.handleViewFairBoothPressed,
             },
           }}
           style={{ flex: 1 }}

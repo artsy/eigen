@@ -1,48 +1,51 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { Artists_show$ref } from "./Artists_show.graphql";
-export type ArtistsTestsQueryVariables = {};
-export type ArtistsTestsQueryResponse = {
+import { FairBoothHeader_show$ref } from "./FairBoothHeader_show.graphql";
+export type FairBoothHeaderTestsQueryVariables = {};
+export type FairBoothHeaderTestsQueryResponse = {
     readonly show: ({
-        readonly " $fragmentRefs": Artists_show$ref;
+        readonly " $fragmentRefs": FairBoothHeader_show$ref;
     }) | null;
 };
-export type ArtistsTestsQuery = {
-    readonly response: ArtistsTestsQueryResponse;
-    readonly variables: ArtistsTestsQueryVariables;
+export type FairBoothHeaderTestsQuery = {
+    readonly response: FairBoothHeaderTestsQueryResponse;
+    readonly variables: FairBoothHeaderTestsQueryVariables;
 };
 
 
 
 /*
-query ArtistsTestsQuery {
+query FairBoothHeaderTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
-    ...Artists_show
+    ...FairBoothHeader_show
     __id
   }
 }
 
-fragment Artists_show on Show {
-  artists {
-    id
-    ...ArtistListItem_artist
+fragment FairBoothHeader_show on Show {
+  fair {
+    name
     __id
   }
-  __id
-}
-
-fragment ArtistListItem_artist on Artist {
-  id
-  __id
-  name
-  is_followed
-  nationality
-  birthday
-  deathday
-  image {
-    url
+  partner {
+    __typename
+    ... on Partner {
+      name
+    }
+    ... on ExternalPartner {
+      name
+      __id
+    }
+    ... on Node {
+      __id
+    }
   }
+  counts {
+    artworks
+    artists
+  }
+  __id
 }
 */
 
@@ -61,17 +64,27 @@ v1 = {
   "name": "__id",
   "args": null,
   "storageKey": null
-};
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v3 = [
+  v2
+];
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "ArtistsTestsQuery",
-  "id": "216183cefbce25726bdbdaf740d52b85",
+  "name": "FairBoothHeaderTestsQuery",
+  "id": "ed0d9734993e709e6a876d6945b27562",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "ArtistsTestsQuery",
+    "name": "FairBoothHeaderTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -87,7 +100,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Artists_show",
+            "name": "FairBoothHeader_show",
             "args": null
           },
           v1
@@ -97,7 +110,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "ArtistsTestsQuery",
+    "name": "FairBoothHeaderTestsQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -112,72 +125,67 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "artists",
+            "name": "fair",
             "storageKey": null,
             "args": null,
-            "concreteType": "Artist",
-            "plural": true,
+            "concreteType": "Fair",
+            "plural": false,
+            "selections": [
+              v2,
+              v1
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "partner",
+            "storageKey": null,
+            "args": null,
+            "concreteType": null,
+            "plural": false,
             "selections": [
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
+                "name": "__typename",
                 "args": null,
                 "storageKey": null
               },
               v1,
               {
+                "kind": "InlineFragment",
+                "type": "ExternalPartner",
+                "selections": v3
+              },
+              {
+                "kind": "InlineFragment",
+                "type": "Partner",
+                "selections": v3
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "counts",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ShowCounts",
+            "plural": false,
+            "selections": [
+              {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "name",
+                "name": "artworks",
                 "args": null,
                 "storageKey": null
               },
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "is_followed",
+                "name": "artists",
                 "args": null,
                 "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "nationality",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "birthday",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "deathday",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "image",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "Image",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "url",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
               }
             ]
           },
@@ -188,5 +196,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'dd8d3b68093abb82b624d92759b6f5d5';
+(node as any).hash = 'ae12004335f8c4d530fc3b74a3a8e899';
 export default node;

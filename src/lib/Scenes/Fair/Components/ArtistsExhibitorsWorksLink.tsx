@@ -5,8 +5,8 @@ import styled from "styled-components/native"
 
 interface Props {
   onViewAllExhibitorsPressed: () => void
-  onBrowseArtistsPressed: () => void
   onViewAllArtworksPressed: () => void
+  onViewAllArtistsPressed: () => void
 }
 
 // ts-lint:ignore
@@ -24,11 +24,11 @@ const LeftTab = styled(Box)`
 
 export class ArtistsExhibitorsWorksLink extends React.Component<Props> {
   render() {
-    const { onViewAllExhibitorsPressed, onBrowseArtistsPressed, onViewAllArtworksPressed } = this.props
+    const { onViewAllExhibitorsPressed, onViewAllArtistsPressed, onViewAllArtworksPressed } = this.props
     return (
       <>
         <TabWrapper>
-          <TouchableOpacity onPress={() => onBrowseArtistsPressed()}>
+          <TouchableOpacity onPress={() => onViewAllArtistsPressed()}>
             <LeftTab>
               <Sans size="3">Artists</Sans>
             </LeftTab>

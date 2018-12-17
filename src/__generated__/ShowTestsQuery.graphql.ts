@@ -26,7 +26,7 @@ query ShowTestsQuery {
 fragment Show_show on Show {
   ...Detail_show
   ...MoreInfo_show
-  ...AllArtists_show
+  ...ShowArtists_show
   ...ShowArtworks_show
   __id
 }
@@ -55,7 +55,7 @@ fragment Detail_show on Show {
   }
   ...ShowHeader_show
   ...ShowArtworksPreview_show
-  ...Artists_show
+  ...ShowArtistsPreview_show
   ...Shows_show
   status
   partner {
@@ -83,7 +83,7 @@ fragment MoreInfo_show on Show {
   __id
 }
 
-fragment AllArtists_show on Show {
+fragment ShowArtists_show on Show {
   artists_grouped_by_name {
     letter
     items {
@@ -268,7 +268,7 @@ fragment ShowArtworksPreview_show on Show {
   }
 }
 
-fragment Artists_show on Show {
+fragment ShowArtistsPreview_show on Show {
   artists {
     id
     ...ArtistListItem_artist
@@ -663,7 +663,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
-  "id": "687b8861827f4ad71d9be29dcc6e5593",
+  "id": "f316b4d6d53af61adca10e6a67936c46",
   "text": null,
   "metadata": {},
   "fragment": {
