@@ -1,17 +1,25 @@
-language: ruby
-rvm:
-  - 2.2
-
-git:
-  submodules: false
+# Use the latest macOS, mainly so
+# we get Swift set up manually, otherwise we can use linux
+# with swiftenv to get set up quickly, we do nothing macOS
+# specific in the Dangerfile.
+#
+os: osx
+osx_image: xcode10.1
 
 cache:
   directories:
-    - bundle
+  # General SwiftPM
+  # Danger Swift plugins, like Yams
+  - .build
+  - ~/.danger-swift
 
-bundler_args: "--without documentation --path bundle"
+install:
+  # Grab the latest Danger JS from npm
+  - npm install -g danger
 
 script:
-  # Tests use real git commands
-  - bundle exec danger --danger_id=travis 
+  # Compile the Danger runtime
+  - swift build
+  # Run the Dangerfile.swift
+  - swift run danger-swift ci
 
