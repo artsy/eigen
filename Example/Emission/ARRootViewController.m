@@ -30,6 +30,7 @@
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARShowComponentViewController.h>
+#import <Emission/ARMapComponentViewController.h>
 
 #import "ARStorybookComponentViewController.h"
 
@@ -109,6 +110,7 @@
 
   [sectionData addCellData:self.jumpToShow];
   [sectionData addCellData:self.jumpToFair];
+  [sectionData addCellData:self.jumpToMap];
   [sectionData addCellData:self.jumpToArtist];
   [sectionData addCellData:self.jumpToRandomArtist];
   [sectionData addCellData:self.jumpToHomepage];
@@ -378,6 +380,16 @@
   }];
 }
 
+- (ARCellData *)jumpToMap
+{
+  return [self tappableCellDataWithTitle:@"Map" selection:^{
+    //
+    id viewController = [[ARMapComponentViewController alloc] init];
+    [self.navigationController pushViewController:viewController animated:YES];
+
+  }];
+}
+
 - (ARCellData *)jumpToBidFlow
 {
   NSString *artworkID = @"david-hockney-pool-made-with-paper-and-blue-ink-for-book-from-paper-pools-2";
@@ -408,7 +420,7 @@
       [[NSUserDefaults standardUserDefaults] setBool:!useStaging forKey:ARUseStagingDefault];
       [[NSUserDefaults standardUserDefaults] synchronize];
       [[[AREmission sharedInstance] graphQLQueryCacheModule] clearAll];
-      
+
       exit(0);
     }];
   }];
