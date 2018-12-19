@@ -22,6 +22,7 @@ import {
 } from "./relay/QueryRenderers"
 import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
+import { GlobalMap } from "./Scenes/Map"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
 
@@ -171,3 +172,4 @@ AppRegistry.registerComponent("Favorites", () => FavoritesScene)
 AppRegistry.registerComponent("BidFlow", () => BidderFlow)
 AppRegistry.registerComponent("Fair", () => Fair)
 AppRegistry.registerComponent("Show", () => Show)
+AppRegistry.registerComponent("Map", () => GlobalMap)
