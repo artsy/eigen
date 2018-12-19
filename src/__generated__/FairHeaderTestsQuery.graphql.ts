@@ -29,6 +29,17 @@ fragment FairHeader_fair on Fair {
   exhibitors_grouped_by_name {
     exhibitors
   }
+  counts {
+    artists
+  }
+  artists_names: artists(first: 2) {
+    edges {
+      node {
+        name
+        __id
+      }
+    }
+  }
   image {
     image_url
     aspect_ratio
@@ -92,7 +103,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairHeaderTestsQuery",
-  "id": "34201c25e38383828dba5843334c422f",
+  "id": "e1d8439a834e8464990d51da7bb263eb",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -152,6 +163,66 @@ return {
                 "name": "exhibitors",
                 "args": null,
                 "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "counts",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "FairCounts",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "artists",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": "artists_names",
+            "name": "artists",
+            "storageKey": "artists(first:2)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 2,
+                "type": "Int"
+              }
+            ],
+            "concreteType": "ArtistConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ArtistEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Artist",
+                    "plural": false,
+                    "selections": [
+                      v3,
+                      v1
+                    ]
+                  }
+                ]
               }
             ]
           },

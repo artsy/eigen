@@ -1034,6 +1034,7 @@ type ArtworkContextFair {
   ): ArtistConnection
   cached: Int
   banner_size: String
+  counts: FairCounts
   has_full_feature: Boolean
   has_homepage_section: Boolean
   has_large_banner: Boolean
@@ -3105,6 +3106,7 @@ type Fair {
   ): ArtistConnection
   cached: Int
   banner_size: String
+  counts: FairCounts
   has_full_feature: Boolean
   has_homepage_section: Boolean
   has_large_banner: Boolean
@@ -3198,6 +3200,29 @@ type Fair {
 enum FairArtistSorts {
   NAME_ASC
   NAME_DESC
+}
+
+type FairCounts {
+  artists(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  artworks(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  partners(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
+  partner_shows(
+    # Returns a `String` when format is specified. e.g.`'0,0.0000''`
+    format: String
+    label: String
+  ): FormattedNumber
 }
 
 type FairExhibitorsGroup {
@@ -4141,6 +4166,7 @@ type HomePageModuleContextFair {
   ): ArtistConnection
   cached: Int
   banner_size: String
+  counts: FairCounts
   has_full_feature: Boolean
   has_homepage_section: Boolean
   has_large_banner: Boolean
@@ -5048,6 +5074,9 @@ type Mutation {
   # Buyer counters sellers offer
   ecommerceBuyerCounterOffer(input: buyerCounterOfferInput!): buyerCounterOfferPayload
 
+  # Submit pending offer
+  ecommerceSubmitPendingOffer(input: submitPendingOfferInput!): submitPendingOfferPayload
+
   # Seller counters buyers offer
   ecommerceSellerCounterOffer(input: sellerCounterOfferInput!): sellerCounterOfferPayload
 
@@ -5238,6 +5267,14 @@ type Offer {
 
   # The order on which the offer was made
   respondsTo: Offer
+  submittedAt(
+    # This arg is deprecated, use timezone instead
+    convert_to_utc: Boolean
+    format: String
+
+    # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
+    timezone: String
+  ): String
 }
 
 # A connection to a list of items.
@@ -7790,6 +7827,7 @@ type ShowCounts {
     format: String
     label: String
   ): FormattedNumber
+  artists: Int
 }
 
 # An edge in a connection.
@@ -7881,6 +7919,17 @@ input SubmitOrderWithOfferInput {
 }
 
 type SubmitOrderWithOfferPayload {
+  orderOrError: OrderOrFailureUnionType
+  clientMutationId: String
+}
+
+input submitPendingOfferInput {
+  # The ID of the pending offer you want to submit
+  offerId: String!
+  clientMutationId: String
+}
+
+type submitPendingOfferPayload {
   orderOrError: OrderOrFailureUnionType
   clientMutationId: String
 }

@@ -9,6 +9,16 @@ export type FairHeader_fair = {
     readonly exhibitors_grouped_by_name: ReadonlyArray<({
         readonly exhibitors: ReadonlyArray<string | null> | null;
     }) | null> | null;
+    readonly counts: ({
+        readonly artists: any | null;
+    }) | null;
+    readonly artists_names: ({
+        readonly edges: ReadonlyArray<({
+            readonly node: ({
+                readonly name: string | null;
+            }) | null;
+        }) | null> | null;
+    }) | null;
     readonly image: ({
         readonly image_url: string | null;
         readonly aspect_ratio: number;
@@ -49,14 +59,14 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "url",
   "args": null,
   "storageKey": null
 };
@@ -90,6 +100,66 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
+      "name": "counts",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "FairCounts",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "artists",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": "artists_names",
+      "name": "artists",
+      "storageKey": "artists(first:2)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 2,
+          "type": "Int"
+        }
+      ],
+      "concreteType": "ArtistConnection",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ArtistEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Artist",
+              "plural": false,
+              "selections": [
+                v1,
+                v2
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
       "name": "image",
       "storageKey": null,
       "args": null,
@@ -110,7 +180,7 @@ return {
           "args": null,
           "storageKey": null
         },
-        v2
+        v3
       ]
     },
     {
@@ -153,11 +223,11 @@ return {
               "args": null,
               "storageKey": null
             },
-            v2
+            v3
           ]
         },
         v1,
-        v3
+        v2
       ]
     },
     {
@@ -174,9 +244,9 @@ return {
       "args": null,
       "storageKey": null
     },
-    v3
+    v2
   ]
 };
 })();
-(node as any).hash = 'a82c38748e6b1574c6d8d1e6269e3ac9';
+(node as any).hash = 'dcaeb9735194de94e2f11f64228d6cd8';
 export default node;

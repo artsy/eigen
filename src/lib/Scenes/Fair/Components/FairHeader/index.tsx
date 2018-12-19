@@ -49,9 +49,22 @@ const CountdownContainer = styled.View`
   width: 100%;
 `
 
+const Bold = styled(Sans)`
+  font-weight: bold;
+`
 export class FairHeader extends React.Component<Props> {
-  getArtists() {
-    return <Sans size="3">Works By</Sans>
+  getArtists(artistCounts, artistsNames) {
+    const { artists } = artistCounts
+
+    return (
+      <Flex flexDirection="row" flexWrap="wrap">
+        <Sans size="3">Works by </Sans>
+        <Bold size="3">{artistsNames.edges[0].node.name + ", "}</Bold>
+        <Bold size="3">{artistsNames.edges[1].node.name + ", "}</Bold>
+        <Sans size="3">{"and "}</Sans>
+        <Bold size="3">{artists - 2 + " others."}</Bold>
+      </Flex>
+    )
   }
   getExhibitors(exhibitors) {
     let exhibitorCount = 0
@@ -67,31 +80,30 @@ export class FairHeader extends React.Component<Props> {
 
     if (areOtherExhibitorsToDisplay) {
       return (
-        "From " +
-        exhibitorNamesToDisplay[0] +
-        ", " +
-        exhibitorNamesToDisplay[1] +
-        ", " +
-        "and " +
-        (exhibitorCount - 2) +
-        " others"
+        <Flex flexDirection="row" flexWrap="wrap">
+          <Sans size="3">{"From "}</Sans>
+          <Bold size="3">{exhibitorNamesToDisplay[0] + ", "}</Bold>
+          <Bold size="3">{exhibitorNamesToDisplay[1] + ", "}</Bold>
+          <Sans size="3">{"and "}</Sans>
+          <Bold size="3">{exhibitorCount - 2 + " others"}</Bold>
+        </Flex>
       )
     }
 
     // Handle instance when there are 3 or fewer exhibitors to display
-    let shortExhibitorList = "From "
+    const shortExhibitorList = [<Sans size="3">{"From "}</Sans>]
     exhibitorNamesToDisplay.forEach((exhibitor, index) => {
       if (index === exhibitorNamesToDisplay.length - 1) {
-        shortExhibitorList += "and " + exhibitor
+        shortExhibitorList.push(<Sans size="3">{" and "}</Sans>, <Bold size="3">{exhibitor}</Bold>)
       } else {
-        shortExhibitorList += exhibitor + ", "
+        shortExhibitorList.push(<Bold size="3">{exhibitor + ", "}</Bold>)
       }
     })
     return shortExhibitorList
   }
   render() {
     const {
-      fair: { image, name, profile, start_at, end_at, exhibitors_grouped_by_name },
+      fair: { image, name, profile, start_at, end_at, artists_names, counts, exhibitors_grouped_by_name },
     } = this.props
     const { width: screenWidth } = Dimensions.get("window")
 
@@ -116,7 +128,8 @@ export class FairHeader extends React.Component<Props> {
         </BackgroundImage>
         <Spacer m={1} />
         <Box mx={3}>
-          <Sans size="3">{this.getExhibitors(exhibitors_grouped_by_name)}</Sans>
+          {this.getArtists(counts, artists_names)}
+          {this.getExhibitors(exhibitors_grouped_by_name)}
         </Box>
         <Box px={2}>
           <Spacer m={2} />
@@ -138,6 +151,18 @@ export const FairHeaderContainer = createFragmentContainer(
 
       exhibitors_grouped_by_name {
         exhibitors
+      }
+
+      counts {
+        artists
+      }
+
+      artists_names: artists(first: 2) {
+        edges {
+          node {
+            name
+          }
+        }
       }
 
       image {
