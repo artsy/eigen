@@ -4,6 +4,7 @@ import { LocationMap_location } from "__generated__/LocationMap_location.graphql
 import React from "react"
 import { NativeModules } from "react-native"
 import styled from "styled-components/native"
+import { FiltersBar } from "./Components/FiltersBar"
 const Emission = NativeModules.Emission || {}
 
 Mapbox.setAccessToken(Emission.mapBoxAPIClientKey)
@@ -29,7 +30,8 @@ export class GlobalMap extends React.Component<Props> {
     const { lat, lng } = { lat: 40.770424, lng: -73.981233 }
 
     return (
-      <Flex mt={2} mb={0.5}>
+      <Flex mb={0.5}>
+        <FiltersBar tabs={["All", "Saved", "Fairs", "Galleries", "Museums"]} />
         <Map
           key={lng}
           styleURL={Mapbox.StyleURL.Light}

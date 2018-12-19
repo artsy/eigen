@@ -20,6 +20,7 @@ import {
   ShowRenderer,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
+import { City } from "./Scenes/City"
 import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
 import { GlobalMap } from "./Scenes/Map"
@@ -173,3 +174,4 @@ AppRegistry.registerComponent("BidFlow", () => BidderFlow)
 AppRegistry.registerComponent("Fair", () => Fair)
 AppRegistry.registerComponent("Show", () => Show)
 AppRegistry.registerComponent("Map", () => GlobalMap)
+AppRegistry.registerComponent("City", () => City)

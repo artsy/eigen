@@ -615,15 +615,6 @@ open class BottomSheetViewController: UIViewController, BottomSheetDrawerViewCon
         })()
     }
     
-    /**
-     Initialize the drawer controller from Interface Builder.
-     
-     - note: Usage notes: Make 2 container views in Interface Builder and connect their outlets to -primaryContentContainerView and -drawerContentContainerView. Then use embed segues to place your content/drawer view controllers into the appropriate container.
-     
-     - parameter aDecoder: The NSCoder to decode from.
-     
-     - returns: A newly created BottomSheet drawer.
-     */
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
