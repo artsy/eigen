@@ -38,7 +38,6 @@ export class GlobalMap extends React.Component<Props> {
           centerCoordinate={[lng, lat]}
           zoomLevel={14}
           logoEnabled={false}
-          scrollEnabled={false}
           attributionEnabled={false}
         />
       </Flex>

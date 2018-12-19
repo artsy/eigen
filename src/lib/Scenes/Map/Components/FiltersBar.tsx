@@ -1,15 +1,20 @@
 import { Box, color, Sans, Serif } from "@artsy/palette"
 import React from "react"
-import { Animated } from "react-native"
+import { Animated, View } from "react-native"
 import styled from "styled-components/native"
 
-interface TabBarProps {
+interface FiltersBarProps {
   goToPage?: () => null
   activeTab?: number
   tabs?: any[]
   containerWidth?: number
   scrollValue?: Animated.AnimatedInterpolation
 }
+
+interface FiltersBarState {
+  activeTab: number
+}
+
 const Button = styled.TouchableWithoutFeedback`
   flex: 1;
 `
@@ -20,14 +25,24 @@ const Tabs = styled.View`
   justify-content: space-around;
 `
 
-const TabButton = styled.View`
+const TabButton = styled(View)<{ isActive: boolean }>`
   align-items: center;
   justify-content: center;
   padding-top: 5;
   flex: 1;
+  ${p =>
+    p.isActive &&
+    `
+    border-color: ${color("black100")};
+    border-bottom-width: 2px;
+  `};
 `
 
-export class FiltersBar extends React.Component<TabBarProps, null> {
+export class FiltersBar extends React.Component<FiltersBarProps, FiltersBarState> {
+  state = {
+    activeTab: this.props.activeTab || 0,
+  }
+
   renderTab(name, page, isTabActive, onPressHandler) {
     return (
       <Button
@@ -37,13 +52,19 @@ export class FiltersBar extends React.Component<TabBarProps, null> {
         accessibilityTraits="button"
         onPress={() => onPressHandler(page)}
       >
-        <TabButton>
+        <TabButton isActive={isTabActive}>
           <TabLabel size="3" weight="medium" isActive={isTabActive}>
             {name}
           </TabLabel>
         </TabButton>
       </Button>
     )
+  }
+
+  applyFilter = index => {
+    this.setState({
+      activeTab: index,
+    })
   }
 
   render() {
@@ -54,8 +75,8 @@ export class FiltersBar extends React.Component<TabBarProps, null> {
         </Box>
         <Tabs>
           {this.props.tabs.map((name, page) => {
-            const isTabActive = this.props.activeTab === page
-            return this.renderTab(name, page, isTabActive, this.props.goToPage)
+            const isTabActive = this.state.activeTab === page
+            return this.renderTab(name, page, isTabActive, this.applyFilter)
           })}
           <Animated.View
             style={[
