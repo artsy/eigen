@@ -7,12 +7,12 @@
 
 #import "ARMapContainerViewController.h"
 #import "ARMapComponentViewController.h"
+#import "Emission-Swift.h"
 
 @interface ARMapContainerViewController ()
 
-@property (nonatomic, readwrite) UIView *primaryContentContainer;
-@property (nonatomic, readwrite) UIView *drawerContentContainer;
-
+@property (nonatomic, readwrite) BottomSheetViewController *bottomSheetVC;
+@property (nonatomic, readwrite) ARMapComponentViewController *mapVC;
 
 @end
 
@@ -20,17 +20,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-}
+    
+    self.mapVC = [[ARMapComponentViewController alloc] init];
 
-/*
-#pragma mark - Navigation
+    self.bottomSheetVC = [[BottomSheetViewController alloc] initWithContentViewController:self.mapVC drawerViewController:[[UIViewController alloc] init]];
+    [self.view addSubview:self.bottomSheetVC.view];
+    self.bottomSheetVC.view.frame = self.view.bounds;
+    [self addChildViewController:self.bottomSheetVC];
+    [self.bottomSheetVC didMoveToParentViewController:self];
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
-*/
 
 @end

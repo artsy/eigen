@@ -30,7 +30,7 @@
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARShowComponentViewController.h>
-#import <Emission/ARMapComponentViewController.h>
+#import <Emission/ARMapContainerViewController.h>
 
 #import "ARStorybookComponentViewController.h"
 
@@ -384,7 +384,7 @@
 {
   return [self tappableCellDataWithTitle:@"Map" selection:^{
     //
-    id viewController = [[ARMapComponentViewController alloc] init];
+    id viewController = [[ARMapContainerViewController alloc] init];
     [self.navigationController pushViewController:viewController animated:YES];
 
   }];

@@ -162,14 +162,6 @@ private let kBottomSheetDefaultPartialRevealHeight: CGFloat = 264.0
 
 open class BottomSheetViewController: UIViewController, BottomSheetDrawerViewControllerDelegate {
     
-    // Interface Builder
-    
-    /// When using with Interface Builder only! Connect a containing view to this outlet.
-    @IBOutlet public var primaryContentContainerView: UIView!
-    
-    /// When using with Interface Builder only! Connect a containing view to this outlet.
-    @IBOutlet public var drawerContentContainerView: UIView!
-    
     // Internal
     fileprivate let primaryContentContainer: UIView = UIView()
     fileprivate let drawerContentContainer: UIView = UIView()
@@ -614,7 +606,7 @@ open class BottomSheetViewController: UIViewController, BottomSheetDrawerViewCon
      
      - returns: A newly created BottomSheet drawer.
      */
-    required public init(contentViewController: UIViewController, drawerViewController: UIViewController) {
+    @objc required public init(contentViewController: UIViewController, drawerViewController: UIViewController) {
         super.init(nibName: nil, bundle: nil)
         
         ({
@@ -638,17 +630,6 @@ open class BottomSheetViewController: UIViewController, BottomSheetDrawerViewCon
     
     override open func loadView() {
         super.loadView()
-        
-        // IB Support
-        if primaryContentContainerView != nil
-        {
-            primaryContentContainerView.removeFromSuperview()
-        }
-        
-        if drawerContentContainerView != nil
-        {
-            drawerContentContainerView.removeFromSuperview()
-        }
         
         // Setup
         primaryContentContainer.backgroundColor = UIColor.white
@@ -708,28 +689,6 @@ open class BottomSheetViewController: UIViewController, BottomSheetDrawerViewCon
     
     override open func viewDidLoad() {
         super.viewDidLoad()
-        
-        // IB Support
-        if primaryContentViewController == nil || drawerContentViewController == nil
-        {
-            assert(primaryContentContainerView != nil && drawerContentContainerView != nil, "When instantiating from Interface Builder you must provide container views with an embedded view controller.")
-            
-            // Locate main content VC
-            for child in self.children
-            {
-                if child.view == primaryContentContainerView.subviews.first
-                {
-                    primaryContentViewController = child
-                }
-                
-                if child.view == drawerContentContainerView.subviews.first
-                {
-                    drawerContentViewController = child
-                }
-            }
-            
-            assert(primaryContentViewController != nil && drawerContentViewController != nil, "Container views must contain an embedded view controller.")
-        }
         
         enforceCanScrollDrawer()
         setDrawerPosition(position: initialDrawerPosition, animated: false)
