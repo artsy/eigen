@@ -5,11 +5,12 @@ import styled from "styled-components/native"
 
 interface Props {
   onViewAllExhibitorsPressed: () => void
+  onBrowseArtistsPressed: () => void
 }
 
 // ts-lint:ignore
 const TabWrapper = styled(Flex)`
-  margin-top: ${space(3)};
+  margin-top: ${space(1)};
   margin-bottom: ${space(2)};
   flex-direction: row;
   justify-content: space-evenly;
@@ -25,11 +26,11 @@ export class ArtistsExhibitorsWorksLink extends React.Component<Props> {
     navigateToView()
   }
   render() {
-    const { onViewAllExhibitorsPressed } = this.props
+    const { onViewAllExhibitorsPressed, onBrowseArtistsPressed } = this.props
     return (
       <>
         <TabWrapper>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => onBrowseArtistsPressed()}>
             <LeftTab>
               <Sans size="3">Artists</Sans>
             </LeftTab>
@@ -45,7 +46,7 @@ export class ArtistsExhibitorsWorksLink extends React.Component<Props> {
             </Box>
           </TouchableOpacity>
         </TabWrapper>
-        <Separator />
+        <Separator mt="1" />
       </>
     )
   }

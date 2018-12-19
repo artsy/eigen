@@ -22,7 +22,7 @@ export class SearchLink extends React.Component<Props> {
   render() {
     return (
       <TouchableWithoutFeedback onPress={this.handlePress}>
-        <BorderBox justifyContent="center" alignItems="center" flexDirection="row" p={1}>
+        <BorderBox justifyContent="center" height={48} alignItems="center" flexDirection="row" p={1} mb={1}>
           <Icon source={require("../../../../../images/SearchButton.png")} />
           <Spacer width={12} />
           <Sans size="2" weight="medium">

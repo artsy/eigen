@@ -1,3 +1,0 @@
-{
-  "dc828c256c3c62b91a8ecf4b6c206647": "mutation ArtistsFollowArtistMutation(\n  $input: FollowArtistInput!\n) {\n  followArtist(input: $input) {\n    artist {\n      __id\n      is_followed\n    }\n  }\n}\n"
-}

@@ -370,6 +370,80 @@ export const FairFixture = {
       ],
     },
   },
+  artists: {
+    edges: [
+      {
+        node: {
+          id: "tamas-abel",
+          __id: "QXJ0aXN0OnRhbWFzLWFiZWw=",
+          name: "Tamás Ábel",
+          is_followed: false,
+          nationality: "Hungarian",
+          birthday: "",
+          deathday: "",
+          image: {
+            url: "https://d32dm0rphc51dk.cloudfront.net/mSFWvVbcQezxjjS0ordckg/large.jpg",
+          },
+        },
+      },
+      {
+        node: {
+          id: "charlie-aldrich",
+          __id: "QXJ0aXN0OmNoYXJsaWUtYWxkcmljaA==",
+          name: "Charlie Aldrich",
+          is_followed: false,
+          nationality: "United States",
+          birthday: "",
+          deathday: "",
+          image: {
+            url: "https://d32dm0rphc51dk.cloudfront.net/3v-35X7zWI3p6Lk8p6pYhg/large.jpg",
+          },
+        },
+      },
+      {
+        node: {
+          id: "rik-allen",
+          __id: "QXJ0aXN0OnJpay1hbGxlbg==",
+          name: "Rik Allen",
+          is_followed: false,
+          nationality: "",
+          birthday: "",
+          deathday: "",
+          image: {
+            url: "https://d32dm0rphc51dk.cloudfront.net/8Irjs-pCGNU9VvWg9r8wFg/tall.jpg",
+          },
+        },
+      },
+      {
+        node: {
+          id: "jean-luc-almond",
+          __id: "QXJ0aXN0OmplYW4tbHVjLWFsbW9uZA==",
+          name: "Jean-Luc Almond",
+          is_followed: false,
+          nationality: "English",
+          birthday: "",
+          deathday: "",
+          image: {
+            url: "https://d32dm0rphc51dk.cloudfront.net/qDxLZGl8BHeP8zCkoeW8tw/tall.jpg",
+          },
+        },
+      },
+      {
+        node: {
+          id: "amador",
+          __id: "QXJ0aXN0OmFtYWRvcg==",
+          name: "Amador",
+          is_followed: false,
+          nationality: "Spanish",
+          birthday: "1957",
+          deathday: "",
+          image: {
+            url: "https://d32dm0rphc51dk.cloudfront.net/UEPyf29fi9y4wwaHTJ9nqg/large.jpg",
+          },
+        },
+      },
+    ],
+  },
   __id: "RmFpcjpzb2ZhLWNoaWNhZ28tMjAxOA==",
   shows: {
     edges: [

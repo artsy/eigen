@@ -128,16 +128,9 @@ fragment ShowArtworksPreview_show on Show {
 
 fragment Artists_show on Show {
   artists {
-    __id
     id
-    name
-    is_followed
-    nationality
-    birthday
-    deathday
-    image {
-      url
-    }
+    ...ArtistListItem_artist
+    __id
   }
   __id
 }
@@ -175,6 +168,19 @@ fragment ShowItem_show on Show {
     ... on Node {
       __id
     }
+  }
+}
+
+fragment ArtistListItem_artist on Artist {
+  id
+  __id
+  name
+  is_followed
+  nationality
+  birthday
+  deathday
+  image {
+    url
   }
 }
 
@@ -332,7 +338,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "c6eae227b64c953ba26ced06e490ec39",
+  "id": "e0b3ab0827e1e05fd32485e6062b92ce",
   "text": null,
   "metadata": {},
   "fragment": {

@@ -25,18 +25,24 @@ query ArtistsTestsQuery {
 
 fragment Artists_show on Show {
   artists {
-    __id
     id
-    name
-    is_followed
-    nationality
-    birthday
-    deathday
-    image {
-      url
-    }
+    ...ArtistListItem_artist
+    __id
   }
   __id
+}
+
+fragment ArtistListItem_artist on Artist {
+  id
+  __id
+  name
+  is_followed
+  nationality
+  birthday
+  deathday
+  image {
+    url
+  }
 }
 */
 
@@ -60,7 +66,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtistsTestsQuery",
-  "id": "68db0d617a2c40601e400b28c64c7632",
+  "id": "216183cefbce25726bdbdaf740d52b85",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -112,7 +118,6 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              v1,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -120,6 +125,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
+              v1,
               {
                 "kind": "ScalarField",
                 "alias": null,

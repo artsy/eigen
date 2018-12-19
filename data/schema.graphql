@@ -763,7 +763,7 @@ type Artwork implements Node & Sellable {
   # Returns an HTML string representing the embedded content (video)
   embed(width: Int = 853, height: Int = 450, autoplay: Boolean = false): String
   edition_of: String
-  edition_sets: [EditionSet]
+  edition_sets(sort: EditionSetSorts): [EditionSet]
   exhibition_history(format: Format): String
   fair: Fair
   height: String @deprecated(reason: "Prefer dimensions instead.")
@@ -1024,6 +1024,14 @@ type ArtworkContextFair {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
+  artists(
+    # Sorts for artists in a fair
+    sort: FairArtistSorts
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtistConnection
   cached: Int
   banner_size: String
   has_full_feature: Boolean
@@ -1538,7 +1546,7 @@ type ArtworkItem implements Node & Sellable {
   # Returns an HTML string representing the embedded content (video)
   embed(width: Int = 853, height: Int = 450, autoplay: Boolean = false): String
   edition_of: String
-  edition_sets: [EditionSet]
+  edition_sets(sort: EditionSetSorts): [EditionSet]
   exhibition_history(format: Format): String
   fair: Fair
   height: String @deprecated(reason: "Prefer dimensions instead.")
@@ -2025,6 +2033,20 @@ type buyerCounterOfferPayload {
   clientMutationId: String
 }
 
+input buyerRejectOfferInput {
+  # Offer ID
+  offerId: String!
+
+  # Reason for rejecting offer
+  rejectReason: CancelReasonType
+  clientMutationId: String
+}
+
+type buyerRejectOfferPayload {
+  orderOrError: OrderOrFailureUnionType
+  clientMutationId: String
+}
+
 type BuyersPremium {
   # A globally unique ID.
   __id: ID!
@@ -2274,7 +2296,9 @@ type BuyOrder implements Order {
 }
 
 enum CancelReasonType {
+  BUYER_REJECTED
   SELLER_LAPSED
+  SELLER_REJECTED
   SELLER_REJECTED_OFFER_TOO_LOW
   SELLER_REJECTED_SHIPPING_UNAVAILABLE
   SELLER_REJECTED_ARTWORK_UNAVAILABLE
@@ -3027,6 +3051,10 @@ type EditionSet implements Sellable {
   sale_message: String
 }
 
+enum EditionSetSorts {
+  PRICE_ASC
+}
+
 input EndSaleInput {
   sale_id: String
   clientMutationId: String
@@ -3067,6 +3095,14 @@ type Fair {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
+  artists(
+    # Sorts for artists in a fair
+    sort: FairArtistSorts
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtistConnection
   cached: Int
   banner_size: String
   has_full_feature: Boolean
@@ -3157,6 +3193,11 @@ type Fair {
     tag_id: String
     keyword: String
   ): FilterArtworks
+}
+
+enum FairArtistSorts {
+  NAME_ASC
+  NAME_DESC
 }
 
 type FairExhibitorsGroup {
@@ -4090,6 +4131,14 @@ type HomePageModuleContextFair {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
+  artists(
+    # Sorts for artists in a fair
+    sort: FairArtistSorts
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ArtistConnection
   cached: Int
   banner_size: String
   has_full_feature: Boolean
@@ -4996,14 +5045,17 @@ type Mutation {
   # Approves an order with payment
   ecommerceSellerAcceptOffer(input: sellerAcceptOfferInput!): sellerAcceptOfferPayload
 
-  # Rejects an offer
-  ecommerceSellerRejectOffer(input: sellerRejectOfferInput!): sellerRejectOfferPayload
+  # Buyer counters sellers offer
+  ecommerceBuyerCounterOffer(input: buyerCounterOfferInput!): buyerCounterOfferPayload
 
   # Seller counters buyers offer
   ecommerceSellerCounterOffer(input: sellerCounterOfferInput!): sellerCounterOfferPayload
 
-  # Buyer counters sellers offer
-  ecommerceBuyerCounterOffer(input: buyerCounterOfferInput!): buyerCounterOfferPayload
+  # Buyer rejects a submitted offer from seller
+  ecommerceBuyerRejectOffer(input: buyerRejectOfferInput!): buyerRejectOfferPayload
+
+  # Rejects an offer
+  ecommerceSellerRejectOffer(input: sellerRejectOfferInput!): sellerRejectOfferPayload
 
   # Confirms pickup for an ecommerce order
   ecommerceConfirmPickup(input: ConfirmPickupInput!): ConfirmPickupPayload

@@ -7,25 +7,27 @@ import { FairDetailContainer as FairDetail } from "../FairDetail"
 
 jest.unmock("react-relay")
 
-it("renders properly", async () => {
-  const tree = await renderUntil(
-    wrapper => {
-      return wrapper.find("FairHeader").length > 0
-    },
-    <MockRelayRenderer
-      Component={FairDetail}
-      query={graphql`
-        query FairDetailTestsQuery {
-          fair(id: "sofa-chicago-2018") {
-            ...FairDetail_fair
+describe("FairDetail", () => {
+  it("renders properly", async () => {
+    const tree = await renderUntil(
+      wrapper => {
+        return wrapper.find("FairHeader").length > 0
+      },
+      <MockRelayRenderer
+        Component={FairDetail}
+        query={graphql`
+          query FairDetailTestsQuery {
+            fair(id: "sofa-chicago-2018") {
+              ...FairDetail_fair
+            }
           }
-        }
-      `}
-      mockResolvers={{
-        Fair: () => FairFixture,
-      }}
-    />
-  )
+        `}
+        mockResolvers={{
+          Fair: () => FairFixture,
+        }}
+      />
+    )
 
-  expect(tree.html()).toMatchSnapshot()
+    expect(tree.html()).toMatchSnapshot()
+  })
 })
