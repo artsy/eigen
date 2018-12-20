@@ -3,6 +3,7 @@ import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import React from "react"
 import { NativeModules } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { FiltersBar } from "./Components/FiltersBar"
 const Emission = NativeModules.Emission || {}
@@ -44,3 +45,16 @@ export class GlobalMap extends React.Component<Props> {
     )
   }
 }
+
+export const GlobalMapContainer = createFragmentContainer(
+  GlobalMap,
+  graphql`
+    fragment GlobalMap_viewer on Viewer
+      @argumentDefinitions(near: { type: "Near", defaultValue: { lat: 22.3964, lng: 114.1095 } }) {
+      shows: partner_shows(near: $near) {
+        id
+        name
+      }
+    }
+  `
+)

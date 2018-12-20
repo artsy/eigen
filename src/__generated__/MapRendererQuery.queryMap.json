@@ -1,0 +1,3 @@
+{
+  "98382631341054cb502834a1c6b4d64c": "query MapRendererQuery(\n  $near: Near!\n) {\n  viewer {\n    ...GlobalMap_viewer_279V1T\n  }\n}\n\nfragment GlobalMap_viewer_279V1T on Viewer {\n  shows: partner_shows(near: $near) {\n    id\n    name\n    __id\n  }\n}\n"
+}

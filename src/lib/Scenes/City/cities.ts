@@ -1,4 +1,4 @@
-const cities = [
+export const cities = [
   {
     name: "New York",
     epicenter: {
