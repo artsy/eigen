@@ -72,7 +72,7 @@ export default class TabBar extends React.Component<TabBarProps, null> {
     const containerWidth = this.props.containerWidth
     const numberOfTabs = this.props.tabs.length
 
-    const translateX = (this.props.scrollValue || new Animated.Value(0)).interpolate({
+    const translateX = this.props.scrollValue.interpolate({
       inputRange: [0, 1],
       outputRange: [0, containerWidth / numberOfTabs],
     })
