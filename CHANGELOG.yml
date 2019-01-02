@@ -4,6 +4,7 @@ upcoming:
   signed_of_by: Ash
   emission_version: 1.7.6
   dev:
+    - Sends a user agent which includes the device model for Reaction SSR - orta
     - Skips running tests on beta deploys - ash
     
   user_facing:
