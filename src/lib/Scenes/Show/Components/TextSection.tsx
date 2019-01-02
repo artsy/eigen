@@ -1,4 +1,4 @@
-import { Serif } from "@artsy/palette"
+import { Sans, Serif } from "@artsy/palette"
 import React from "react"
 
 interface Props {
@@ -8,9 +8,9 @@ interface Props {
 
 export const TextSection: React.SFC<Props> = ({ text, title }) => (
   <>
-    <Serif size="4" weight="semibold">
+    <Sans size="3t" weight="medium" mb={2}>
       {title}
-    </Serif>
+    </Sans>
     <Serif size="3">{text}</Serif>
   </>
 )
