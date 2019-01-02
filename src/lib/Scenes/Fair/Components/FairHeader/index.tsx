@@ -3,7 +3,6 @@ import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
 import { InvertedButton } from "lib/Components/Buttons"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
-import first from "lodash/first"
 import moment from "moment"
 import React from "react"
 import { Dimensions, Image } from "react-native"
@@ -49,61 +48,81 @@ const CountdownContainer = styled.View`
   width: 100%;
 `
 
-const Bold = styled(Sans)`
-  font-weight: bold;
-`
 export class FairHeader extends React.Component<Props> {
-  getArtists(artistCounts, artistsNames) {
-    const { artists } = artistCounts
+  getContextualDetails() {
+    const { artists_names, counts, exhibitors_grouped_by_name } = this.props.fair
+    let { artists: artistsCount, partners: exhibitorsCount } = counts
+    const {
+      edges: [
+        {
+          node: { name: firstArtistName },
+        },
+        {
+          node: { name: lastArtistName },
+        },
+      ],
+    } = artists_names
+    const [
+      {
+        exhibitors: [firstExhibitorName],
+      },
+      {
+        exhibitors: [lastExhibitorName],
+      },
+    ] = exhibitors_grouped_by_name
+
+    artistsCount = !firstArtistName ? artistsCount : artistsCount - 1
+    artistsCount = !lastArtistName ? artistsCount : artistsCount - 1
+    exhibitorsCount = !firstExhibitorName ? exhibitorsCount : exhibitorsCount - 1
+    exhibitorsCount = !lastExhibitorName ? exhibitorsCount : exhibitorsCount - 1
 
     return (
-      <Flex flexDirection="row" flexWrap="wrap">
-        <Sans size="3">Works by </Sans>
-        <Bold size="3">{artistsNames.edges[0].node.name + ", "}</Bold>
-        <Bold size="3">{artistsNames.edges[1].node.name + ", "}</Bold>
-        <Sans size="3">{"and "}</Sans>
-        <Bold size="3">{artists - 2 + " others."}</Bold>
-      </Flex>
+      <>
+        {(!firstArtistName && !lastArtistName) || !artistsCount ? null : (
+          <Flex flexDirection="row" flexWrap="wrap">
+            <Sans size="3">Works by </Sans>
+            {firstArtistName && (
+              <Sans weight="medium" size="3">
+                {firstArtistName + ", "}
+              </Sans>
+            )}
+            {lastArtistName && (
+              <Sans weight="medium" size="3">
+                {lastArtistName + ", "}
+              </Sans>
+            )}
+            {(firstArtistName || lastArtistName) && <Sans size="3">and </Sans>}
+            <Sans weight="medium" size="3">
+              {artistsCount + " others."}
+            </Sans>
+          </Flex>
+        )}
+        {(!firstExhibitorName && !lastExhibitorName) || !exhibitorsCount ? null : (
+          <Flex flexDirection="row" flexWrap="wrap">
+            <Sans size="3">From </Sans>
+            {firstExhibitorName && (
+              <Sans weight="medium" size="3">
+                {firstExhibitorName + ", "}
+              </Sans>
+            )}
+            {lastExhibitorName && (
+              <Sans weight="medium" size="3">
+                {lastExhibitorName + ", "}
+              </Sans>
+            )}
+            {(firstExhibitorName || lastExhibitorName) && <Sans size="3">and </Sans>}
+            <Sans weight="medium" size="3">
+              {exhibitorsCount + " others"}
+            </Sans>
+          </Flex>
+        )}
+      </>
     )
   }
-  getExhibitors(exhibitors) {
-    let exhibitorCount = 0
-    const exhibitorNamesToDisplay = []
-    const areOtherExhibitorsToDisplay = exhibitors.length > 4 ? true : false
 
-    exhibitors.forEach(group => {
-      if (exhibitorNamesToDisplay.length < 4) {
-        exhibitorNamesToDisplay.push(first(group.exhibitors))
-      }
-      exhibitorCount += group.exhibitors.length
-    })
-
-    if (areOtherExhibitorsToDisplay) {
-      return (
-        <Flex flexDirection="row" flexWrap="wrap">
-          <Sans size="3">{"From "}</Sans>
-          <Bold size="3">{exhibitorNamesToDisplay[0] + ", "}</Bold>
-          <Bold size="3">{exhibitorNamesToDisplay[1] + ", "}</Bold>
-          <Sans size="3">{"and "}</Sans>
-          <Bold size="3">{exhibitorCount - 2 + " others"}</Bold>
-        </Flex>
-      )
-    }
-
-    // Handle instance when there are 3 or fewer exhibitors to display
-    const shortExhibitorList = [<Sans size="3">{"From "}</Sans>]
-    exhibitorNamesToDisplay.forEach((exhibitor, index) => {
-      if (index === exhibitorNamesToDisplay.length - 1) {
-        shortExhibitorList.push(<Sans size="3">{" and "}</Sans>, <Bold size="3">{exhibitor}</Bold>)
-      } else {
-        shortExhibitorList.push(<Bold size="3">{exhibitor + ", "}</Bold>)
-      }
-    })
-    return shortExhibitorList
-  }
   render() {
     const {
-      fair: { image, name, profile, start_at, end_at, artists_names, counts, exhibitors_grouped_by_name },
+      fair: { image, name, profile, start_at, end_at },
     } = this.props
     const { width: screenWidth } = Dimensions.get("window")
 
@@ -127,10 +146,7 @@ export class FairHeader extends React.Component<Props> {
           </CountdownContainer>
         </BackgroundImage>
         <Spacer m={1} />
-        <Box mx={3}>
-          {this.getArtists(counts, artists_names)}
-          {this.getExhibitors(exhibitors_grouped_by_name)}
-        </Box>
+        <Box mx={2}>{this.getContextualDetails()}</Box>
         <Box px={2}>
           <Spacer m={2} />
           <InvertedButton text="Save" />
@@ -155,6 +171,7 @@ export const FairHeaderContainer = createFragmentContainer(
 
       counts {
         artists
+        partners
       }
 
       artists_names: artists(first: 2) {

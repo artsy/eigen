@@ -201,6 +201,7 @@ type Artist implements Node {
   # Artworks Elastic Search results
   filtered_artworks(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -252,6 +253,7 @@ type Artist implements Node {
   hometown: String
   image: Image
   initials(length: Int = 3): String
+  insights: [ArtistInsight]
   is_consignable: Boolean
 
   # Only specific Artists should show a link to auction results.
@@ -392,6 +394,7 @@ type ArtistCounts {
     format: String
     label: String
   ): FormattedNumber
+  has_make_offer_artworks: Boolean
   auction_artworks(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
@@ -426,6 +429,17 @@ type ArtistHighlights {
     before: String
     last: Int
   ): PartnerArtistConnection
+}
+
+type ArtistInsight {
+  # The type of insight.
+  type: String
+
+  # Label to use when displaying the insight.
+  label: String
+
+  # List of entities relevant to the insight.
+  entities: [String]
 }
 
 type ArtistItem implements Node {
@@ -517,6 +531,7 @@ type ArtistItem implements Node {
   # Artworks Elastic Search results
   filtered_artworks(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -568,6 +583,7 @@ type ArtistItem implements Node {
   hometown: String
   image: Image
   initials(length: Int = 3): String
+  insights: [ArtistInsight]
   is_consignable: Boolean
 
   # Only specific Artists should show a link to auction results.
@@ -1087,6 +1103,7 @@ type ArtworkContextFair {
   # Artworks Elastic Search results
   filteredArtworks(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -1376,6 +1393,7 @@ type ArtworkFilterGene implements Node {
   # Artworks Elastic Search results
   filtered_artworks(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -1433,6 +1451,7 @@ type ArtworkFilterTag implements Node {
   # Artworks Elastic Search results
   filtered_artworks(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -3159,6 +3178,7 @@ type Fair {
   # Artworks Elastic Search results
   filteredArtworks(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -3533,6 +3553,7 @@ type Gene implements Node {
   artists_connection(after: String, first: Int, before: String, last: Int): ArtistConnection
   artworks_connection(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -3579,6 +3600,7 @@ type Gene implements Node {
   # Artworks Elastic Search results
   filtered_artworks(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -3712,6 +3734,7 @@ type GeneItem implements Node {
   artists_connection(after: String, first: Int, before: String, last: Int): ArtistConnection
   artworks_connection(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -3758,6 +3781,7 @@ type GeneItem implements Node {
   # Artworks Elastic Search results
   filtered_artworks(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -4219,6 +4243,7 @@ type HomePageModuleContextFair {
   # Artworks Elastic Search results
   filteredArtworks(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -4280,6 +4305,7 @@ type HomePageModuleContextGene implements Node {
   artists_connection(after: String, first: Int, before: String, last: Int): ArtistConnection
   artworks_connection(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -4326,6 +4352,7 @@ type HomePageModuleContextGene implements Node {
   # Artworks Elastic Search results
   filtered_artworks(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -6587,6 +6614,7 @@ type Query {
   # Artworks Elastic Search results
   filter_artworks(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -7681,6 +7709,7 @@ type Show implements Node {
   # Artworks Elastic Search results
   filteredArtworks(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -7973,6 +8002,7 @@ type Tag implements Node {
   # Artworks Elastic Search results
   filtered_artworks(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -8371,6 +8401,7 @@ type Viewer {
   # Artworks Elastic Search results
   filter_artworks(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String

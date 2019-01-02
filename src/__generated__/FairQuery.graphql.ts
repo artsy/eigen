@@ -115,6 +115,7 @@ fragment FairHeader_fair on Fair {
   }
   counts {
     artists
+    partners
   }
   artists_names: artists(first: 2) {
     edges {
@@ -402,7 +403,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairQuery",
-  "id": "8f1988ae6ee0bcef0e1202e9ecf67e7a",
+  "id": "6f5e117da59c44302c8c67ea90ac8b7d",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -491,6 +492,13 @@ return {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "artists",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "partners",
                 "args": null,
                 "storageKey": null
               }

@@ -11,6 +11,7 @@ export type FairHeader_fair = {
     }) | null> | null;
     readonly counts: ({
         readonly artists: any | null;
+        readonly partners: any | null;
     }) | null;
     readonly artists_names: ({
         readonly edges: ReadonlyArray<({
@@ -110,6 +111,13 @@ return {
           "kind": "ScalarField",
           "alias": null,
           "name": "artists",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "partners",
           "args": null,
           "storageKey": null
         }
@@ -248,5 +256,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'dcaeb9735194de94e2f11f64228d6cd8';
+(node as any).hash = '4c7aefd7f3af68346b29d9a5aaefb0c8';
 export default node;
