@@ -12,6 +12,7 @@
 #import "SiteFeature.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARTopMenuViewController.h"
+#import "SearchSuggestion.h"
 
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -191,7 +192,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchCell"];
-    SearchResult *result = self.contentArray[indexPath.row];
+    SearchSuggestion *result = self.contentArray[indexPath.row];
 
     if ([result isKindOfClass:NSString.class]) {
         cell.textLabel.text = (id)result;
@@ -210,18 +211,7 @@
     cell.backgroundColor = [UIColor blackColor];
 
     UIImage *placeholder = [UIImage imageNamed:@"SearchThumb_LightGray"];
-
-
-    __weak typeof(cell) wcell = cell;
-    [cell.imageView setImageWithURLRequest:result.imageRequest placeholderImage:placeholder
-
-                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        __weak typeof (wcell) cell = wcell;
-         cell.imageView.image = image;
-         [cell layoutSubviews];
-
-                                   }
-                                   failure:nil];
+    [cell.imageView setImageWithURL:[NSURL URLWithString:result.imageURL] placeholderImage:placeholder];
 
     return cell;
 }
@@ -230,7 +220,7 @@
 {
     [self.presentedViewController dismissViewControllerAnimated:NO completion:nil];
 
-    SearchResult *result;
+    SearchSuggestion *result;
     if (!self.contentArray || self.contentArray.count == 0) {
         result = (id)self.searchController.searchBar.text;
     } else {
@@ -248,22 +238,8 @@
         } else {
             controller = [ARSwitchBoard.sharedInstance loadURL:[NSURL URLWithString:text]];
         }
-
-    } else if (result.model == [Artwork class]) {
-        controller = [[ARArtworkSetViewController alloc] initWithArtworkID:result.modelID];
-
-    } else if (result.model == [Artist class]) {
-        controller = [ARSwitchBoard.sharedInstance loadArtistWithID:result.modelID];
-
-    } else if (result.model == [Gene class]) {
-        controller = [ARSwitchBoard.sharedInstance loadGeneWithID:result.modelID];
-
-    } else if (result.model == [Profile class]) {
-        controller = [ARSwitchBoard.sharedInstance loadProfileWithID:result.modelID];
-
-    } else if (result.model == [SiteFeature class]) {
-        NSString *path = NSStringWithFormat(@"/feature/%@", result.modelID);
-        controller = [ARSwitchBoard.sharedInstance loadPath:path];
+    } else {
+        controller = [ARSwitchBoard.sharedInstance loadURL:[NSURL URLWithString:result.href]];
     }
 
     if (controller) {
