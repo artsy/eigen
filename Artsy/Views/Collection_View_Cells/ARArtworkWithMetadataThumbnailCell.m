@@ -29,9 +29,9 @@ static const CGFloat ARArtworkCellMetadataMargin = 8;
 + (CGFloat)heightIncludingPriceLabel:(BOOL)includePriceLabel
 {
     if (includePriceLabel) {
-        return [UIDevice isPad] ? 63 : 51;
+        return 60;
     } else {
-        return [UIDevice isPad] ? 42 : 34;
+        return 34;
     }
 }
 

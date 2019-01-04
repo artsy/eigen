@@ -6,6 +6,7 @@ upcoming:
   dev:
     - Sends a user agent which includes the device model for Reaction SSR - orta
     - Skips running tests on beta deploys - ash
+    - Updates Related Artworks grid item metadata styling - javamonn
     
   user_facing:
     - Uses new search API for the app search - orta

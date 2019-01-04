@@ -1,6 +1,7 @@
 #import "ARArtworkThumbnailMetadataView.h"
 
 #import "Artist.h"
+#import "Partner.h"
 #import "Artwork.h"
 #import "ARFonts.h"
 #import "Artsy-Swift.h"
@@ -9,14 +10,16 @@
 
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
-static CGFloat ARMetadataFontSize;
+static const CGFloat ARMetadataFontSize = 12;
+static const CGFloat ARMetadataPriceBottomMargin = 4;
 
 
 @interface ARArtworkThumbnailMetadataView ()
 
 @property (nonatomic, strong) ARSerifLabel *primaryLabel;
 @property (nonatomic, strong) ARArtworkTitleLabel *secondaryLabel;
-@property (nonatomic, strong) ARSerifLabel *priceLabel;
+@property (nonatomic, strong) ARSansSerifLabelUncapitalized *priceLabel;
+@property (nonatomic, strong) ARSerifLabel *partnerLabel;
 @property (nonatomic, strong) UIImageView *paddleImageView;
 
 @property (nonatomic, assign) ARArtworkWithMetadataThumbnailCellPriceInfoMode mode;
@@ -26,12 +29,6 @@ static CGFloat ARMetadataFontSize;
 
 
 @implementation ARArtworkThumbnailMetadataView
-
-+ (void)initialize
-{
-    [super initialize];
-    ARMetadataFontSize = [UIDevice isPad] ? 15 : 12;
-}
 
 + (CGFloat)heightForMargin
 {
@@ -49,17 +46,26 @@ static CGFloat ARMetadataFontSize;
     _secondaryLabel = [[ARArtworkTitleLabel alloc] init];
     _secondaryLabel.lineHeight = 1;
     _secondaryLabel.numberOfLines = 1;
-    _priceLabel = [[ARSerifLabel alloc] init];
+    _priceLabel = [[ARSansSerifLabelUncapitalized alloc] init];
+    _partnerLabel = [[ARSerifLabel alloc] init];
     _showPaddle = NO;
 
     _paddleImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"paddle"]];
     [self addSubview:_paddleImageView];
 
-    [@[ self.primaryLabel, self.secondaryLabel, self.priceLabel ] each:^(UILabel *label) {
+    [@[ self.secondaryLabel, self.partnerLabel ] each:^(UILabel *label) {
         label.font = [label.font fontWithSize:ARMetadataFontSize];
         label.textColor = [UIColor artsyGraySemibold];
         [self addSubview:label];
     }];
+
+    self.primaryLabel.font = [UIFont serifBoldFontWithSize:ARMetadataFontSize];
+    self.primaryLabel.textColor = [UIColor artsyGraySemibold];
+    [self addSubview:self.primaryLabel];
+
+    self.priceLabel.font = [UIFont displayMediumSansSerifFontWithSize:ARMetadataFontSize];
+    self.priceLabel.textColor = [UIColor blackColor];
+    [self addSubview:self.priceLabel];
 
     return self;
 }
@@ -86,19 +92,21 @@ static CGFloat ARMetadataFontSize;
             if (self.showPaddle) {
                 labelFrame.origin.x += 8;
                 self.paddleImageView.hidden = NO;
-                self.paddleImageView.frame = CGRectMake(self.bounds.origin.x, labelFrame.origin.y+2, 6, 9);
+                self.paddleImageView.frame = CGRectMake(self.bounds.origin.x, labelFrame.origin.y + 2, 6, 9);
             }
             self.priceLabel.frame = labelFrame;
 
             break;
         case ARArtworkWithMetadataThumbnailCellPriceInfoModeSaleMessage:
-            labelFrame.size.height /= 3;
+            labelFrame.size.height /= 4;
 
+            self.priceLabel.frame = labelFrame;
+            labelFrame.origin.y = labelFrame.size.height + ARMetadataPriceBottomMargin;
             self.primaryLabel.frame = labelFrame;
-            labelFrame.origin.y = labelFrame.size.height;
+            labelFrame.origin.y += labelFrame.size.height;
             self.secondaryLabel.frame = labelFrame;
             labelFrame.origin.y += labelFrame.size.height;
-            self.priceLabel.frame = labelFrame;
+            self.partnerLabel.frame = labelFrame;
 
             break;
         case ARArtworkWithMetadataThumbnailCellPriceInfoModeNone:
@@ -136,6 +144,7 @@ static CGFloat ARMetadataFontSize;
         }
         case ARArtworkWithMetadataThumbnailCellPriceInfoModeSaleMessage:
             self.priceLabel.text = artwork.saleMessage;
+            self.partnerLabel.text = artwork.partner.name;
             break;
         case ARArtworkWithMetadataThumbnailCellPriceInfoModeNone:
             // nop
