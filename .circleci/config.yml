@@ -114,6 +114,10 @@ jobs:
           name: Deploy if beta
           command: make deploy_if_beta_branch
 
+      - run:
+          name: Promote if app_store_submission
+          command: make promote_if_app_store_submission_branch
+
 
 workflows:
   version: 2

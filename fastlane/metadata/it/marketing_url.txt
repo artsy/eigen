@@ -1,1 +1,0 @@
-../common/marketing_url.txt
