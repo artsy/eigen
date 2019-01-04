@@ -31,6 +31,7 @@ PODS:
     - SentryReactNative (= 0.30.3)
     - tipsi-stripe (= 5.2.4)
     - yoga (= 0.54.4.React)
+  - Expecta (1.0.6)
   - Extraction (1.2.4):
     - Extraction/ARAnimationContinuation (= 1.2.4)
     - Extraction/ARLoadFailureView (= 1.2.4)
@@ -113,6 +114,8 @@ PODS:
     - React/Core
   - React/RCTNetwork (0.54.4):
     - React/Core
+  - React/RCTTest (0.54.4):
+    - React/Core
   - React/RCTText (0.54.4):
     - React/Core
   - React/RCTWebSocket (0.54.4):
@@ -133,6 +136,7 @@ PODS:
     - React
     - Sentry (~> 3.9.0)
     - Sentry/KSCrash (~> 3.9.0)
+  - Specta (1.0.7)
   - Stripe (11.2.0)
   - tipsi-stripe (5.2.4):
     - React
@@ -146,16 +150,19 @@ DEPENDENCIES:
   - "Artsy+UIFonts"
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Emission (from `../`)
+  - Expecta
   - FLKAutoLayout
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Keys (from `Pods/CocoaPodsKeys`)
   - "react-native-mapbox-gl (from `../node_modules/@mapbox/react-native-mapbox-gl`)"
   - React/DevSupport (from `../node_modules/react-native`)
+  - React/RCTTest (from `../node_modules/react-native`)
   - SAMKeychain
   - Sentry/Core
   - Sentry/KSCrash
   - SentryReactNative (from `../node_modules/react-native-sentry`)
+  - Specta
   - tipsi-stripe (from `../node_modules/tipsi-stripe/tipsi-stripe.podspec`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -168,6 +175,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - ARGenericTableViewController
     - boost-for-react-native
+    - Expecta
     - FLKAutoLayout
     - ISO8601DateFormatter
     - KSCrash
@@ -176,6 +184,7 @@ SPEC REPOS:
     - SAMKeychain
     - SDWebImage
     - Sentry
+    - Specta
     - Stripe
     - "UIView+BooleanAnimations"
 
@@ -221,6 +230,7 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: ebb6747c5b66026ad4f97b789c3ceac6f18e57a6
   Emission: dbe8f982c47244d6bba0ae18c7be639244222d19
+  Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   Folly: 211775e49d8da0ca658aebc8eab89d642935755c
@@ -236,11 +246,12 @@ SPEC CHECKSUMS:
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
   SentryReactNative: a292506edfa707119e3aa155892cdb07e453a93a
+  Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   Stripe: 898f83a95d72180c6eb4acd65b2ae6158fc6a8bd
   tipsi-stripe: 25a3f6ba746e9a27f7b21e928c9974d016efcd77
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: 32d5d022857cc12e4ceeb1e86add1d64874f32b5
+PODFILE CHECKSUM: 8c25b0ed804e0e791219080e3ea88386d622ccdc
 
 COCOAPODS: 1.5.3

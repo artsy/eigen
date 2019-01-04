@@ -38,8 +38,8 @@
 {
   NSOperatingSystemVersion version = [NSProcessInfo processInfo].operatingSystemVersion;
 
-  NSAssert(version.majorVersion == 9,
-           @"The tests should be run on iOS 9.x, not %ld.%ld", version.majorVersion, version.minorVersion);
+  NSAssert(version.majorVersion == 10,
+           @"The tests should be run on iOS 10.x, not %ld.%ld", version.majorVersion, version.minorVersion);
 
   CGSize nativeResolution = [UIScreen mainScreen].nativeBounds.size;
   NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(750, 1334)),
@@ -89,9 +89,8 @@
   if (_reactTestRunner == nil) {
     NSURL *URL = TestHelper.sharedHelper.fixturesURL;
     URL = [URL URLByAppendingPathComponent:@"ReferenceImages"];
-    _reactTestRunner = [[RCTTestRunner alloc] initWithApp:@"EmissionTests/TestApps"
-                                       referenceDirectory:URL.path
-                                           moduleProvider:nil];
+    NSURL *scriptURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
+    _reactTestRunner = RCTInitRunnerForApp(@"EmissionTests/TestApps", nil, scriptURL);
   }
   return _reactTestRunner;
 }

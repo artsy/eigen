@@ -60,6 +60,15 @@ target 'Emission' do
 
   # Map library
   pod 'react-native-mapbox-gl', :path => mapbox_path
+
+  target 'EmissionTests' do
+    inherit! :search_paths
+
+    pod 'React', :path => react_path, :subspecs => %w(DevSupport RCTTest)
+
+    pod 'Specta'
+    pod 'Expecta'
+  end
 end
 
 plugin 'cocoapods-keys', {
