@@ -1,34 +1,30 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { MoreInfo_show$ref } from "./MoreInfo_show.graphql";
-export type MoreInfoTestsQueryVariables = {};
-export type MoreInfoTestsQueryResponse = {
+import { EventSection_event$ref } from "./EventSection_event.graphql";
+export type EventSectionTestsQueryVariables = {};
+export type EventSectionTestsQueryResponse = {
     readonly show: ({
-        readonly " $fragmentRefs": MoreInfo_show$ref;
+        readonly events: ReadonlyArray<({
+            readonly " $fragmentRefs": EventSection_event$ref;
+        }) | null> | null;
     }) | null;
 };
-export type MoreInfoTestsQuery = {
-    readonly response: MoreInfoTestsQueryResponse;
-    readonly variables: MoreInfoTestsQueryVariables;
+export type EventSectionTestsQuery = {
+    readonly response: EventSectionTestsQueryResponse;
+    readonly variables: EventSectionTestsQueryVariables;
 };
 
 
 
 /*
-query MoreInfoTestsQuery {
+query EventSectionTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
-    ...MoreInfo_show
+    events {
+      ...EventSection_event
+    }
     __id
   }
-}
-
-fragment MoreInfo_show on Show {
-  press_release
-  events {
-    ...EventSection_event
-  }
-  __id
 }
 
 fragment EventSection_event on PartnerShowEventType {
@@ -58,13 +54,13 @@ v1 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "MoreInfoTestsQuery",
-  "id": "a53acbf4de12e719680dab058d86bf58",
+  "name": "EventSectionTestsQuery",
+  "id": "75e45e153d144984f152ba201f9ca9e7",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "MoreInfoTestsQuery",
+    "name": "EventSectionTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -79,9 +75,20 @@ return {
         "plural": false,
         "selections": [
           {
-            "kind": "FragmentSpread",
-            "name": "MoreInfo_show",
-            "args": null
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "events",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PartnerShowEventType",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "FragmentSpread",
+                "name": "EventSection_event",
+                "args": null
+              }
+            ]
           },
           v1
         ]
@@ -90,7 +97,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "MoreInfoTestsQuery",
+    "name": "EventSectionTestsQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -102,13 +109,6 @@ return {
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "press_release",
-            "args": null,
-            "storageKey": null
-          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -155,5 +155,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'bc9b5b8df734aa249ca91e119888e47e';
+(node as any).hash = '2ecb8e3dba5e94545b9ac457a7eb30c9';
 export default node;
