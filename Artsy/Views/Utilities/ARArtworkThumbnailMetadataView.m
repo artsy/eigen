@@ -18,7 +18,7 @@ static const CGFloat ARMetadataPriceBottomMargin = 4;
 
 @property (nonatomic, strong) ARSerifLabel *primaryLabel;
 @property (nonatomic, strong) ARArtworkTitleLabel *secondaryLabel;
-@property (nonatomic, strong) ARSansSerifLabelUncapitalized *priceLabel;
+@property (nonatomic, strong) UILabel *priceLabel;
 @property (nonatomic, strong) ARSerifLabel *partnerLabel;
 @property (nonatomic, strong) UIImageView *paddleImageView;
 
@@ -46,7 +46,7 @@ static const CGFloat ARMetadataPriceBottomMargin = 4;
     _secondaryLabel = [[ARArtworkTitleLabel alloc] init];
     _secondaryLabel.lineHeight = 1;
     _secondaryLabel.numberOfLines = 1;
-    _priceLabel = [[ARSansSerifLabelUncapitalized alloc] init];
+    _priceLabel = [[UILabel alloc] init];
     _partnerLabel = [[ARSerifLabel alloc] init];
     _showPaddle = NO;
 
