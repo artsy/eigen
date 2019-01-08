@@ -6,7 +6,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { FairArtistsContainer as FairArtistsScreen } from "./Screens/FairArtists"
 import { FairArtworksContainer as FairArtworksScreen } from "./Screens/FairArtworks"
 import { FairDetailContainer as FairDetailScreen } from "./Screens/FairDetail"
-import { FairExhibitors as FairExhibitorsScreen } from "./Screens/FairExhibitors"
+import { FairExhibitorsContainer as FairExhibitorsScreen } from "./Screens/FairExhibitors"
 
 import { Fair_fair } from "__generated__/Fair_fair.graphql"
 
