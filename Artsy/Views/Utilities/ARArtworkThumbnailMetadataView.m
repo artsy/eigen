@@ -65,6 +65,7 @@ static const CGFloat ARMetadataPriceBottomMargin = 4;
 
     self.priceLabel.font = [UIFont displayMediumSansSerifFontWithSize:ARMetadataFontSize];
     self.priceLabel.textColor = [UIColor blackColor];
+    self.priceLabel.backgroundColor = [UIColor whiteColor];
     [self addSubview:self.priceLabel];
 
     return self;
