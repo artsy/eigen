@@ -141,7 +141,7 @@ export class FairDetail extends React.Component<Props, State> {
   }
 
   render() {
-    const { fair } = this.props
+    const { fair, onViewAllExhibitorsPressed, onBrowseArtistsPressed } = this.props
     const { sections, extraData } = this.state
 
     return (
@@ -152,7 +152,11 @@ export class FairDetail extends React.Component<Props, State> {
           data={sections}
           ListHeaderComponent={
             <Box height="620">
-              <FairHeader fair={fair} />
+              <FairHeader
+                fair={fair}
+                viewAllExhibitors={onViewAllExhibitorsPressed}
+                viewAllArtists={onBrowseArtistsPressed}
+              />
             </Box>
           }
           renderItem={item => (
