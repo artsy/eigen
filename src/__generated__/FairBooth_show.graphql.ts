@@ -5,7 +5,6 @@ import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _FairBooth_show$ref: unique symbol;
 export type FairBooth_show$ref = typeof _FairBooth_show$ref;
 export type FairBooth_show = {
-    readonly id: string;
     readonly name: string | null;
     readonly is_fair_booth: boolean | null;
     readonly partner: ({
@@ -57,13 +56,6 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "id",
-      "args": null,
-      "storageKey": null
-    },
     v0,
     {
       "kind": "ScalarField",
@@ -194,5 +186,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '591ada5e858d59da61a40fa6ff726b87';
+(node as any).hash = 'e78b9ffbc2611850e6e7b2b4e9f3f28c';
 export default node;

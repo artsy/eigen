@@ -85,6 +85,7 @@ export const FairContainer = createFragmentContainer(
       ...FairDetail_fair
       ...FairExhibitors_fair
       ...FairArtists_fair
+      ...FairArtworks_fair
     }
   `
 )
