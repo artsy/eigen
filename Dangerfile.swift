@@ -18,15 +18,14 @@ let testFiles = editedFiles.filter { $0.contains("Tests") && ($0.fileType == .sw
 // Validates that we've not accidentally let in a testing
 // shortcut to simplify dev work
 let testingShortcuts = ["fdescribe", "fit(@", "fit("]
-// WIP: This seems to be unable to handle binary files
-// for file in editedFiles {
-//    let content = danger.utils.readFile(file)
-//    for shortcut in testingShortcuts {
-//        if content.contains(shortcut) {
-//            fail(message: "Found a testing shortcut", file: file, line: 0)
-//        }
-//    }
-// }
+for file in editedFiles where file.hasSuffix(".swift") || file.hasSuffix(".m") {
+    let content = danger.utils.readFile(file)
+    for shortcut in testingShortcuts {
+        if content.contains(shortcut) {
+            fail(message: "Found a testing shortcut", file: file, line: 0)
+        }
+    }
+}
 
 // A shortcut to say "I know what I'm doing thanks"
 let knownDevTools = danger.github.pullRequest.body.contains("#known")
