@@ -8,6 +8,7 @@ export type FairHeader_fair = {
     readonly name: string | null;
     readonly exhibitors_grouped_by_name: ReadonlyArray<({
         readonly exhibitors: ReadonlyArray<string | null> | null;
+        readonly profile_ids: ReadonlyArray<string | null> | null;
     }) | null> | null;
     readonly counts: ({
         readonly artists: any | null;
@@ -17,6 +18,7 @@ export type FairHeader_fair = {
         readonly edges: ReadonlyArray<({
             readonly node: ({
                 readonly name: string | null;
+                readonly href: string | null;
             }) | null;
         }) | null> | null;
     }) | null;
@@ -60,11 +62,18 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
 v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "__id",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
@@ -93,6 +102,13 @@ return {
           "kind": "ScalarField",
           "alias": null,
           "name": "exhibitors",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "profile_ids",
           "args": null,
           "storageKey": null
         }
@@ -158,7 +174,8 @@ return {
               "plural": false,
               "selections": [
                 v1,
-                v2
+                v2,
+                v3
               ]
             }
           ]
@@ -188,7 +205,7 @@ return {
           "args": null,
           "storageKey": null
         },
-        v3
+        v4
       ]
     },
     {
@@ -210,13 +227,7 @@ return {
           "plural": false,
           "selections": [
             v0,
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "href",
-              "args": null,
-              "storageKey": null
-            },
+            v2,
             {
               "kind": "ScalarField",
               "alias": null,
@@ -231,11 +242,11 @@ return {
               "args": null,
               "storageKey": null
             },
-            v3
+            v4
           ]
         },
         v1,
-        v2
+        v3
       ]
     },
     {
@@ -252,9 +263,9 @@ return {
       "args": null,
       "storageKey": null
     },
-    v2
+    v3
   ]
 };
 })();
-(node as any).hash = '4c7aefd7f3af68346b29d9a5aaefb0c8';
+(node as any).hash = '4b5a611d161096b9c913377e6bdcd380';
 export default node;
