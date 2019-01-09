@@ -1,6 +1,6 @@
 import { Theme } from "@artsy/palette"
-import { AllArtists_show } from "__generated__/AllArtists_show.graphql"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
+import { ShowArtists_show } from "__generated__/ShowArtists_show.graphql"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -10,7 +10,7 @@ import { NavigatorIOS, ViewProperties } from "react-native"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
-  show: AllArtists_show
+  show: ShowArtists_show
 }
 
 interface State {
@@ -20,7 +20,7 @@ interface State {
   }>
 }
 
-export class AllArtists extends React.Component<Props, State> {
+export class ShowArtists extends React.Component<Props, State> {
   state = {
     data: [],
   }
@@ -28,8 +28,6 @@ export class AllArtists extends React.Component<Props, State> {
   componentDidMount() {
     const { show } = this.props
     const artistsGroupedByName = get(show, "artists_grouped_by_name", []) as any
-
-    console.log("artistsGroupedByName", artistsGroupedByName, show)
 
     this.setState({ data: artistsGroupedByName.map(({ letter, items }, index) => ({ letter, data: items, index })) })
   }
@@ -43,10 +41,10 @@ export class AllArtists extends React.Component<Props, State> {
   }
 }
 
-export const AllArtistsContainer = createFragmentContainer(
-  AllArtists,
+export const ShowArtistsContainer = createFragmentContainer(
+  ShowArtists,
   graphql`
-    fragment AllArtists_show on Show {
+    fragment ShowArtists_show on Show {
       artists_grouped_by_name {
         letter
         items {

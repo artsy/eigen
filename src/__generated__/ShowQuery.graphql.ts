@@ -30,7 +30,7 @@ query ShowQuery(
 fragment Show_show on Show {
   ...Detail_show
   ...MoreInfo_show
-  ...AllArtists_show
+  ...ShowArtists_show
   ...ShowArtworks_show
   __id
 }
@@ -59,7 +59,7 @@ fragment Detail_show on Show {
   }
   ...ShowHeader_show
   ...ShowArtworksPreview_show
-  ...Artists_show
+  ...ShowArtistsPreview_show
   ...Shows_show
   status
   partner {
@@ -87,7 +87,7 @@ fragment MoreInfo_show on Show {
   __id
 }
 
-fragment AllArtists_show on Show {
+fragment ShowArtists_show on Show {
   artists_grouped_by_name {
     letter
     items {
@@ -272,7 +272,7 @@ fragment ShowArtworksPreview_show on Show {
   }
 }
 
-fragment Artists_show on Show {
+fragment ShowArtistsPreview_show on Show {
   artists {
     id
     ...ArtistListItem_artist
@@ -675,7 +675,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowQuery",
-  "id": "a90569fed356de9283a2344adc4d50b2",
+  "id": "5da1b87f4d143db0d447a7f0eb7d389d",
   "text": null,
   "metadata": {},
   "fragment": {

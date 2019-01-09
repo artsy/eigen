@@ -1040,6 +1040,7 @@ type ArtworkContextFair {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
+  artists_count: Int
   artists(
     # Sorts for artists in a fair
     sort: FairArtistSorts
@@ -3124,6 +3125,7 @@ type Fair {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
+  artists_count: Int
   artists(
     # Sorts for artists in a fair
     sort: FairArtistSorts
@@ -4192,6 +4194,7 @@ type HomePageModuleContextFair {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
+  artists_count: Int
   artists(
     # Sorts for artists in a fair
     sort: FairArtistSorts

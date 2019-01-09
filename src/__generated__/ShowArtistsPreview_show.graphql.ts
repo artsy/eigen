@@ -2,14 +2,14 @@
 
 import { ConcreteFragment } from "relay-runtime";
 import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
-declare const _Artists_show$ref: unique symbol;
-export type Artists_show$ref = typeof _Artists_show$ref;
-export type Artists_show = {
+declare const _ShowArtistsPreview_show$ref: unique symbol;
+export type ShowArtistsPreview_show$ref = typeof _ShowArtistsPreview_show$ref;
+export type ShowArtistsPreview_show = {
     readonly artists: ReadonlyArray<({
         readonly id: string;
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
     }) | null> | null;
-    readonly " $refType": Artists_show$ref;
+    readonly " $refType": ShowArtistsPreview_show$ref;
 };
 
 
@@ -24,7 +24,7 @@ var v0 = {
 };
 return {
   "kind": "Fragment",
-  "name": "Artists_show",
+  "name": "ShowArtistsPreview_show",
   "type": "Show",
   "metadata": null,
   "argumentDefinitions": [],
@@ -57,5 +57,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'dc0547bc0a4574845980f61536b62e8e';
+(node as any).hash = '74946b1a55dc7c2b4ffe7c15e1f0da67';
 export default node;

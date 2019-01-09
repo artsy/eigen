@@ -3,12 +3,12 @@ import { graphql } from "react-relay"
 
 import { Theme } from "@artsy/palette"
 import { ShowFixture } from "lib/__fixtures__/ShowFixture"
-import { MockRelayRenderer } from "../../../../../tests/MockRelayRenderer"
-import { renderUntil } from "../../../../../tests/renderUntil"
+import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
+import { renderUntil } from "lib/tests/renderUntil"
 
 import { ArtistListItem } from "lib/Components/ArtistListItem"
 import ListItemButton from "lib/Components/Buttons/InvertedButton"
-import { ArtistsContainer } from "../index"
+import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "../ShowArtistsPreview"
 
 jest.unmock("react-relay")
 import relay from "react-relay"
@@ -20,11 +20,11 @@ const renderTree = () =>
     },
     <Theme>
       <MockRelayRenderer
-        Component={ArtistsContainer}
+        Component={ShowArtistsPreview}
         query={graphql`
-          query ArtistsTestsQuery {
+          query ShowArtistsPreviewTestsQuery {
             show(id: "anderson-fine-art-gallery-flickinger-collection") {
-              ...Artists_show
+              ...ShowArtistsPreview_show
             }
           }
         `}

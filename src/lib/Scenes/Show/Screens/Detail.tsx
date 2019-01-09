@@ -6,8 +6,8 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
-import { ArtistsContainer as Artists } from "../Components/Artists"
-import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "../Components/ShowArtworksPreview"
+import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Components/Show/ShowArtistsPreview"
+import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
 import { ShowHeaderContainer as ShowHeader } from "../Components/ShowHeader"
 import { ShowsContainer as Shows } from "../Components/Shows"
 
@@ -32,7 +32,7 @@ export class Detail extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { show, onViewAllArtworksPressed } = this.props
+    const { show, onViewAllArtworksPressed, onViewAllArtistsPressed } = this.props
     const sections = []
 
     sections.push({
@@ -61,7 +61,10 @@ export class Detail extends React.Component<Props, State> {
 
     sections.push({
       type: "artists",
-      data: show,
+      data: {
+        show,
+        onViewAllArtistsPressed,
+      },
     })
 
     sections.push({
@@ -96,14 +99,14 @@ export class Detail extends React.Component<Props, State> {
     })
   }
 
-  renderItem = ({ item: { data, type } }, onViewAllArtistsPressed) => {
+  renderItem = ({ item: { data, type } }) => {
     switch (type) {
       case "location":
         return <LocationMap {...data} />
       case "artworks":
         return <ShowArtworksPreview {...data} />
       case "artists":
-        return <Artists show={data} onViewAllArtistsPressed={onViewAllArtistsPressed} />
+        return <ShowArtistsPreview {...data} />
       case "shows":
         return <Shows show={data} />
       case "hours":
@@ -119,23 +122,21 @@ export class Detail extends React.Component<Props, State> {
   }
 
   render() {
-    const { show, onMoreInformationPressed, onViewAllArtistsPressed } = this.props
+    const { show, onMoreInformationPressed } = this.props
     const { extraData, sections } = this.state
     return (
       <FlatList
         data={sections}
         extraData={extraData}
         ListHeaderComponent={
-          <>
-            <ShowHeader
-              show={show}
-              onSaveShowPressed={this.handleSaveShow}
-              onMoreInformationPressed={onMoreInformationPressed}
-            />
-          </>
+          <ShowHeader
+            show={show}
+            onSaveShowPressed={this.handleSaveShow}
+            onMoreInformationPressed={onMoreInformationPressed}
+          />
         }
         ItemSeparatorComponent={this.renderItemSeparator}
-        renderItem={item => <Box px={2}>{this.renderItem(item, onViewAllArtistsPressed)}</Box>}
+        renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
         keyExtractor={(item, index) => item.type + String(index)}
       />
     )
@@ -167,7 +168,7 @@ export const DetailContainer = createFragmentContainer(
       }
       ...ShowHeader_show
       ...ShowArtworksPreview_show
-      ...Artists_show
+      ...ShowArtistsPreview_show
       ...Shows_show
       location {
         ...LocationMap_location

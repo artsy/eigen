@@ -3,10 +3,10 @@ import React from "react"
 import { NavigatorIOS, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { AllArtistsContainer as AllArtists } from "./Screens/AllArtists"
+import { ShowArtistsContainer as ShowArtistsScreen } from "lib/Components/Show/ShowArtists"
+import { ShowArtworksContainer as ShowArtworksScreen } from "lib/Components/Show/ShowArtworks"
 import { DetailContainer as DetailScreen } from "./Screens/Detail"
 import { MoreInfoContainer as MoreInfoScreen } from "./Screens/MoreInfo"
-import { ShowArtworksContainer as ShowArtworksScreen } from "./Screens/ShowArtworks"
 
 import { Show_show } from "__generated__/Show_show.graphql"
 
@@ -35,7 +35,7 @@ export class Show extends React.Component<Props> {
     }
 
     this.navigator.push({
-      component: AllArtists,
+      component: ShowArtistsScreen,
       title: "",
       passProps: this.props,
     })
@@ -84,7 +84,7 @@ export const ShowContainer = createFragmentContainer(
     fragment Show_show on Show {
       ...Detail_show
       ...MoreInfo_show
-      ...AllArtists_show
+      ...ShowArtists_show
       ...ShowArtworks_show
     }
   `
