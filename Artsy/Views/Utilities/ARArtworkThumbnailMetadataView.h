@@ -11,6 +11,6 @@
 
 @property (nonatomic, readonly) ARSerifLabel *primaryLabel;
 @property (nonatomic, readonly) ARArtworkTitleLabel *secondaryLabel;
-@property (nonatomic, readonly) ARSansSerifLabelUncapitalized *priceLabel;
+@property (nonatomic, readonly) UILabel *priceLabel;
 
 @end
