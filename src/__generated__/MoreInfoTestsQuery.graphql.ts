@@ -25,7 +25,17 @@ query MoreInfoTestsQuery {
 
 fragment MoreInfo_show on Show {
   press_release
+  events {
+    ...EventSection_event
+  }
   __id
+}
+
+fragment EventSection_event on PartnerShowEventType {
+  event_type
+  description
+  start_at
+  end_at
 }
 */
 
@@ -49,7 +59,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MoreInfoTestsQuery",
-  "id": "a71fe63e268713f0acb9b130c5fd3ff9",
+  "id": "a53acbf4de12e719680dab058d86bf58",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -98,6 +108,45 @@ return {
             "name": "press_release",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "events",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PartnerShowEventType",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "event_type",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "description",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "start_at",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "end_at",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           },
           v1
         ]

@@ -8,7 +8,7 @@ import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap, PartnerType } from "lib/Components/LocationMap"
 import { PAGE_SIZE } from "lib/data/constants"
 import { ArtistsExhibitorsWorksLink } from "../Components/ArtistsExhibitorsWorksLink"
-import { FairBoothContainer as FairBooth } from "../Components/FairBooth"
+import { FairBoothPreviewContainer as FairBoothPreview } from "../Components/FairBoothPreview"
 import { FairHeaderContainer as FairHeader } from "../Components/FairHeader"
 import { SearchLink } from "../Components/SearchLink"
 
@@ -17,7 +17,8 @@ interface Props extends ViewProperties {
   relay: RelayPaginationProp
   onViewAllArtworksPressed: () => void
   onViewAllExhibitorsPressed: () => void
-  onBrowseArtistsPressed: () => void
+  onViewAllArtistsPressed: () => void
+  onViewFairBoothPressed: (props: object) => void
 }
 
 interface State {
@@ -46,7 +47,13 @@ export class FairDetail extends React.Component<Props, State> {
   }
 
   updateSections = () => {
-    const { fair, onViewAllExhibitorsPressed, onBrowseArtistsPressed } = this.props
+    const {
+      fair,
+      onViewAllExhibitorsPressed,
+      onViewAllArtworksPressed,
+      onViewAllArtistsPressed,
+      onViewFairBoothPressed,
+    } = this.props
     const sections = []
 
     sections.push({
@@ -76,14 +83,18 @@ export class FairDetail extends React.Component<Props, State> {
       type: "artists-exhibitors-works",
       data: {
         onViewAllExhibitorsPressed,
-        onBrowseArtistsPressed,
+        onViewAllArtistsPressed,
+        onViewAllArtworksPressed,
       },
     })
 
     fair.shows.edges.forEach(showData => {
       sections.push({
         type: "booth",
-        data: showData.node,
+        data: {
+          show: showData.node,
+          onViewFairBoothPressed: () => onViewFairBoothPressed({ show: showData.node }),
+        },
       })
     })
 
@@ -99,7 +110,7 @@ export class FairDetail extends React.Component<Props, State> {
       case "search":
         return <SearchLink {...data} />
       case "booth":
-        return <FairBooth show={...data} />
+        return <FairBoothPreview {...data} />
       case "artists-exhibitors-works":
         return <ArtistsExhibitorsWorksLink {...data} />
       default:
@@ -135,7 +146,7 @@ export class FairDetail extends React.Component<Props, State> {
   }
 
   render() {
-    const { fair } = this.props
+    const { fair, onViewAllExhibitorsPressed, onViewAllArtistsPressed } = this.props
     const { sections, extraData } = this.state
 
     return (
@@ -146,7 +157,11 @@ export class FairDetail extends React.Component<Props, State> {
           data={sections}
           ListHeaderComponent={
             <Box height="620">
-              <FairHeader fair={fair} />
+              <FairHeader
+                fair={fair}
+                viewAllExhibitors={onViewAllExhibitorsPressed}
+                viewAllArtists={onViewAllArtistsPressed}
+              />
             </Box>
           }
           renderItem={item => (
@@ -188,7 +203,9 @@ export const FairDetailContainer = createPaginationContainer(
           edges {
             cursor
             node {
+              ...FairBoothPreview_show
               ...FairBooth_show
+              ...ShowArtworks_show
             }
           }
         }

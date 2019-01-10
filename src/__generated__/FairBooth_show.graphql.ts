@@ -1,56 +1,21 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
+import { FairBoothHeader_show$ref } from "./FairBoothHeader_show.graphql";
+import { ShowArtistsPreview_show$ref } from "./ShowArtistsPreview_show.graphql";
+import { ShowArtists_show$ref } from "./ShowArtists_show.graphql";
+import { ShowArtworksPreview_show$ref } from "./ShowArtworksPreview_show.graphql";
+import { ShowArtworks_show$ref } from "./ShowArtworks_show.graphql";
 declare const _FairBooth_show$ref: unique symbol;
 export type FairBooth_show$ref = typeof _FairBooth_show$ref;
 export type FairBooth_show = {
-    readonly id: string;
-    readonly name: string | null;
-    readonly is_fair_booth: boolean | null;
-    readonly partner: ({
-        readonly name?: string | null;
-    }) | null;
-    readonly fair: ({
-        readonly name: string | null;
-    }) | null;
-    readonly cover_image: ({
-        readonly url: string | null;
-    }) | null;
-    readonly location: ({
-        readonly display: string | null;
-    }) | null;
-    readonly artworks_connection: ({
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
-                readonly " $fragmentRefs": GenericGrid_artworks$ref;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+    readonly " $fragmentRefs": FairBoothHeader_show$ref & ShowArtworksPreview_show$ref & ShowArtistsPreview_show$ref & ShowArtists_show$ref & ShowArtworks_show$ref;
     readonly " $refType": FairBooth_show$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v2 = [
-  v0
-];
-return {
+const node: ConcreteFragment = {
   "kind": "Fragment",
   "name": "FairBooth_show",
   "type": "Show",
@@ -58,141 +23,38 @@ return {
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "id",
-      "args": null,
-      "storageKey": null
+      "kind": "FragmentSpread",
+      "name": "FairBoothHeader_show",
+      "args": null
     },
-    v0,
+    {
+      "kind": "FragmentSpread",
+      "name": "ShowArtworksPreview_show",
+      "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "ShowArtistsPreview_show",
+      "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "ShowArtists_show",
+      "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "ShowArtworks_show",
+      "args": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "is_fair_booth",
+      "name": "__id",
       "args": null,
       "storageKey": null
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "partner",
-      "storageKey": null,
-      "args": null,
-      "concreteType": null,
-      "plural": false,
-      "selections": [
-        v1,
-        {
-          "kind": "InlineFragment",
-          "type": "ExternalPartner",
-          "selections": v2
-        },
-        {
-          "kind": "InlineFragment",
-          "type": "Partner",
-          "selections": v2
-        }
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "fair",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Fair",
-      "plural": false,
-      "selections": [
-        v0,
-        v1
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "cover_image",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Image",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "url",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "location",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Location",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "display",
-          "args": null,
-          "storageKey": null
-        },
-        v1
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "artworks_connection",
-      "storageKey": "artworks_connection(first:4)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 4,
-          "type": "Int"
-        }
-      ],
-      "concreteType": "ArtworkConnection",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "edges",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "ArtworkEdge",
-          "plural": true,
-          "selections": [
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "node",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "Artwork",
-              "plural": false,
-              "selections": [
-                {
-                  "kind": "FragmentSpread",
-                  "name": "GenericGrid_artworks",
-                  "args": null
-                },
-                v1
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    v1
+    }
   ]
 };
-})();
-(node as any).hash = '591ada5e858d59da61a40fa6ff726b87';
+(node as any).hash = 'a09b925fec62958663d3153cbcbafdc4';
 export default node;

@@ -123,8 +123,8 @@ export class Artwork extends React.Component<Props, any> {
 
     // TODO: Look into wrapping in <Theme> component to remove `color` util functions
     return (
-      <Flex flexDirection="row" mb={2}>
-        <Sans color={color("black100")} weight="medium" size="2">
+      <Flex flexDirection="row" mb="2px">
+        <Sans color={color("black100")} weight="medium" size="2" fontSize="13px" lineHeight="18px">
           {inClosedAuction ? "Bidding closed" : this.saleMessageOrBidInfo()}{" "}
         </Sans>
         <Sans size="2" color={color("black60")}>
@@ -164,10 +164,12 @@ export class Artwork extends React.Component<Props, any> {
 
 const styles = StyleSheet.create({
   image: {
-    marginBottom: 10,
+    marginBottom: 8,
   },
   text: {
-    fontSize: 12,
+    fontSize: 14,
+    lineHeight: 18,
+    height: 18,
     color: colors["gray-semibold"],
   },
   artist: {

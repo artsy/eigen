@@ -1,3 +1,3 @@
 {
-  "a71fe63e268713f0acb9b130c5fd3ff9": "query MoreInfoTestsQuery {\n  show(id: \"anderson-fine-art-gallery-flickinger-collection\") {\n    ...MoreInfo_show\n    __id\n  }\n}\n\nfragment MoreInfo_show on Show {\n  press_release\n  __id\n}\n"
+  "a53acbf4de12e719680dab058d86bf58": "query MoreInfoTestsQuery {\n  show(id: \"anderson-fine-art-gallery-flickinger-collection\") {\n    ...MoreInfo_show\n    __id\n  }\n}\n\nfragment MoreInfo_show on Show {\n  press_release\n  events {\n    ...EventSection_event\n  }\n  __id\n}\n\nfragment EventSection_event on PartnerShowEventType {\n  event_type\n  description\n  start_at\n  end_at\n}\n"
 }

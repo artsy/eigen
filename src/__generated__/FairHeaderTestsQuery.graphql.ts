@@ -28,6 +28,7 @@ fragment FairHeader_fair on Fair {
   name
   exhibitors_grouped_by_name {
     exhibitors
+    profile_ids
   }
   counts {
     artists
@@ -37,6 +38,7 @@ fragment FairHeader_fair on Fair {
     edges {
       node {
         name
+        href
         __id
       }
     }
@@ -96,6 +98,13 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "href",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "url",
   "args": null,
   "storageKey": null
@@ -104,7 +113,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairHeaderTestsQuery",
-  "id": "963fbc5c3ad8996798b1b4ba954baeaf",
+  "id": "671c8e35d0cc4647276acf57d707d7c8",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -162,6 +171,13 @@ return {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "exhibitors",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "profile_ids",
                 "args": null,
                 "storageKey": null
               }
@@ -227,6 +243,7 @@ return {
                     "plural": false,
                     "selections": [
                       v3,
+                      v4,
                       v1
                     ]
                   }
@@ -257,7 +274,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v4
+              v5
             ]
           },
           {
@@ -279,13 +296,7 @@ return {
                 "plural": false,
                 "selections": [
                   v2,
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "href",
-                    "args": null,
-                    "storageKey": null
-                  },
+                  v4,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -300,7 +311,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v4
+                  v5
                 ]
               },
               v3,

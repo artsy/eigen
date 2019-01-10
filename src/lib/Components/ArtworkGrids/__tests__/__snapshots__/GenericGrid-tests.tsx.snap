@@ -41,20 +41,20 @@ exports[`renders properly 1`] = `
             imageURL="artsy.net/image-url"
             style={
               Object {
-                "marginBottom": 10,
+                "marginBottom": 8,
               }
             }
           />
         </View>
         <View
           flexDirection="row"
-          mb={2}
+          mb="2px"
           style={
             Array [
               Object {
                 "display": "flex",
                 "flexDirection": "row",
-                "marginBottom": 8,
+                "marginBottom": 2,
               },
               undefined,
             ]
@@ -67,15 +67,15 @@ exports[`renders properly 1`] = `
             color="#000"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize="12px"
-            lineHeight="16px"
+            fontSize="13px"
+            lineHeight="18px"
             style={
               Array [
                 Object {
                   "color": "#000",
                   "fontFamily": "Unica77LL-Medium",
-                  "fontSize": 12,
-                  "lineHeight": 16,
+                  "fontSize": 13,
+                  "lineHeight": 18,
                 },
                 undefined,
               ]
@@ -118,7 +118,9 @@ exports[`renders properly 1`] = `
               Array [
                 Object {
                   "color": "#666666",
-                  "fontSize": 12,
+                  "fontSize": 14,
+                  "height": 18,
+                  "lineHeight": 18,
                 },
                 Object {
                   "fontWeight": "bold",
@@ -144,7 +146,9 @@ exports[`renders properly 1`] = `
               },
               Object {
                 "color": "#666666",
-                "fontSize": 12,
+                "fontSize": 14,
+                "height": 18,
+                "lineHeight": 18,
               },
               Object {
                 "fontFamily": "AGaramondPro-Regular",
@@ -165,7 +169,9 @@ exports[`renders properly 1`] = `
                 Array [
                   Object {
                     "color": "#666666",
-                    "fontSize": 12,
+                    "fontSize": 14,
+                    "height": 18,
+                    "lineHeight": 18,
                   },
                   Object {
                     "fontStyle": "italic",
@@ -193,7 +199,9 @@ exports[`renders properly 1`] = `
               },
               Object {
                 "color": "#666666",
-                "fontSize": 12,
+                "fontSize": 14,
+                "height": 18,
+                "lineHeight": 18,
               },
               Object {
                 "fontFamily": "AGaramondPro-Regular",
@@ -234,20 +242,20 @@ exports[`renders properly 1`] = `
             imageURL="artsy.net/image-url"
             style={
               Object {
-                "marginBottom": 10,
+                "marginBottom": 8,
               }
             }
           />
         </View>
         <View
           flexDirection="row"
-          mb={2}
+          mb="2px"
           style={
             Array [
               Object {
                 "display": "flex",
                 "flexDirection": "row",
-                "marginBottom": 8,
+                "marginBottom": 2,
               },
               undefined,
             ]
@@ -260,15 +268,15 @@ exports[`renders properly 1`] = `
             color="#000"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize="12px"
-            lineHeight="16px"
+            fontSize="13px"
+            lineHeight="18px"
             style={
               Array [
                 Object {
                   "color": "#000",
                   "fontFamily": "Unica77LL-Medium",
-                  "fontSize": 12,
-                  "lineHeight": 16,
+                  "fontSize": 13,
+                  "lineHeight": 18,
                 },
                 undefined,
               ]
@@ -311,7 +319,9 @@ exports[`renders properly 1`] = `
               Array [
                 Object {
                   "color": "#666666",
-                  "fontSize": 12,
+                  "fontSize": 14,
+                  "height": 18,
+                  "lineHeight": 18,
                 },
                 Object {
                   "fontWeight": "bold",
@@ -337,7 +347,9 @@ exports[`renders properly 1`] = `
               },
               Object {
                 "color": "#666666",
-                "fontSize": 12,
+                "fontSize": 14,
+                "height": 18,
+                "lineHeight": 18,
               },
               Object {
                 "fontFamily": "AGaramondPro-Regular",
@@ -358,7 +370,9 @@ exports[`renders properly 1`] = `
                 Array [
                   Object {
                     "color": "#666666",
-                    "fontSize": 12,
+                    "fontSize": 14,
+                    "height": 18,
+                    "lineHeight": 18,
                   },
                   Object {
                     "fontStyle": "italic",
@@ -386,7 +400,9 @@ exports[`renders properly 1`] = `
               },
               Object {
                 "color": "#666666",
-                "fontSize": 12,
+                "fontSize": 14,
+                "height": 18,
+                "lineHeight": 18,
               },
               Object {
                 "fontFamily": "AGaramondPro-Regular",
@@ -427,20 +443,20 @@ exports[`renders properly 1`] = `
             imageURL="artsy.net/image-url"
             style={
               Object {
-                "marginBottom": 10,
+                "marginBottom": 8,
               }
             }
           />
         </View>
         <View
           flexDirection="row"
-          mb={2}
+          mb="2px"
           style={
             Array [
               Object {
                 "display": "flex",
                 "flexDirection": "row",
-                "marginBottom": 8,
+                "marginBottom": 2,
               },
               undefined,
             ]
@@ -453,15 +469,15 @@ exports[`renders properly 1`] = `
             color="#000"
             ellipsizeMode="tail"
             fontFamily="Unica77LL-Medium"
-            fontSize="12px"
-            lineHeight="16px"
+            fontSize="13px"
+            lineHeight="18px"
             style={
               Array [
                 Object {
                   "color": "#000",
                   "fontFamily": "Unica77LL-Medium",
-                  "fontSize": 12,
-                  "lineHeight": 16,
+                  "fontSize": 13,
+                  "lineHeight": 18,
                 },
                 undefined,
               ]
@@ -504,7 +520,9 @@ exports[`renders properly 1`] = `
               Array [
                 Object {
                   "color": "#666666",
-                  "fontSize": 12,
+                  "fontSize": 14,
+                  "height": 18,
+                  "lineHeight": 18,
                 },
                 Object {
                   "fontWeight": "bold",
@@ -530,7 +548,9 @@ exports[`renders properly 1`] = `
               },
               Object {
                 "color": "#666666",
-                "fontSize": 12,
+                "fontSize": 14,
+                "height": 18,
+                "lineHeight": 18,
               },
               Object {
                 "fontFamily": "AGaramondPro-Regular",
@@ -551,7 +571,9 @@ exports[`renders properly 1`] = `
                 Array [
                   Object {
                     "color": "#666666",
-                    "fontSize": 12,
+                    "fontSize": 14,
+                    "height": 18,
+                    "lineHeight": 18,
                   },
                   Object {
                     "fontStyle": "italic",
@@ -579,7 +601,9 @@ exports[`renders properly 1`] = `
               },
               Object {
                 "color": "#666666",
-                "fontSize": 12,
+                "fontSize": 14,
+                "height": 18,
+                "lineHeight": 18,
               },
               Object {
                 "fontFamily": "AGaramondPro-Regular",
