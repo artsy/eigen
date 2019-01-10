@@ -1,4 +1,6 @@
 #import "TestHelper.h"
+#import "AppSetup.h"
+#import "AREmission.h"
 
 #import <SDWebImage/SDImageCache.h>
 #import <SDWebImage/SDWebImageManager.h>
@@ -7,7 +9,6 @@
 
 
 @interface TestHelper ()
-@property (nonatomic, strong, readwrite) UIWindow *window;
 @property (nonatomic, strong, readwrite) NSArray<NSDictionary *> *artworksPages;
 @property (nonatomic, strong, readwrite) NSArray<NSDictionary *> *artworks;
 @end
@@ -87,10 +88,26 @@
 - (RCTTestRunner *)reactTestRunner;
 {
   if (_reactTestRunner == nil) {
+    AppSetup *setup = [AppSetup ambientSetup];
+    NSURL *scriptURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.tests.ios.bundle?platform=ios&dev=true"];
+
     NSURL *URL = TestHelper.sharedHelper.fixturesURL;
     URL = [URL URLByAppendingPathComponent:@"ReferenceImages"];
-    NSURL *scriptURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true"];
-    _reactTestRunner = RCTInitRunnerForApp(@"EmissionTests/TestApps", nil, scriptURL);
+    _reactTestRunner = RCTInitRunnerForApp(@"EmissionTests/TestApps", ^NSArray<id<RCTBridgeModule>> *{
+      // RCTTestRunner expects a new config for each run instead of storing one between runs.
+      AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:@"userID"
+                                                                    authenticationToken:@"some.access.token"
+                                                                              sentryDSN:nil
+                                                                   stripePublishableKey:@"strip-test-key"
+                                                                       googleMapsAPIKey:nil
+                                                                     mapBoxAPIClientKey:@"mapbox-test-key"
+                                                                             gravityURL:setup.gravityURL
+                                                                         metaphysicsURL:setup.metaphysicsURL
+                                                                          predictionURL:setup.predictionURL
+                                                                              userAgent:@"Emission Example"
+                                                                                options:setup.options];
+      return @[config];
+    }, scriptURL);
   }
   return _reactTestRunner;
 }
