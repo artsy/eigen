@@ -75,10 +75,14 @@ jobs:
 
       - run:
           name: Run Unit Tests
-          command: cd Example ; set -o pipefail && xcodebuild -workspace Emission.xcworkspace -scheme "Emission Example" -configuration Debug test -sdk iphonesimulator -destination "platform=iOS Simulator,OS=10.3.1,name=iPhone 6" GCC_PREPROCESSOR_DEFINITIONS="\$GCC_PREPROCESSOR_DEFINITIONS RUNNING_ON_CI=1" | tee ./xcode_build_raw.log | bundle exec xcpretty -c --test
+          command: cd Example ; set -o pipefail && xcodebuild -workspace Emission.xcworkspace -scheme "Emission Example" -configuration Debug test -sdk iphonesimulator -destination "platform=iOS Simulator,OS=10.3.1,name=iPhone 6" GCC_PREPROCESSOR_DEFINITIONS="\$GCC_PREPROCESSOR_DEFINITIONS RUNNING_ON_CI=1" | tee ./xcode_build_raw.log | bundle exec xcpretty -c --test --report junit  --output ./test-results.xml
 
       - store_test_results:
-          path: xcode_build_raw.log
+          path: test-results.xml
+
+      - store_artifacts:
+          path: xcode_test_raw.log
+          prefix: tests
 
 workflows:
   version: 2
