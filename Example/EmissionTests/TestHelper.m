@@ -1,6 +1,7 @@
 #import "TestHelper.h"
 #import "AppSetup.h"
 #import "AREmission.h"
+#import "ARDefaults.h"
 
 #import <SDWebImage/SDImageCache.h>
 #import <SDWebImage/SDWebImageManager.h>
@@ -88,8 +89,8 @@
 - (RCTTestRunner *)reactTestRunner;
 {
   if (_reactTestRunner == nil) {
+    [ARDefaults setup];
     AppSetup *setup = [AppSetup ambientSetup];
-    NSURL *scriptURL = [NSURL URLWithString:@"http://localhost:8081/Example/Emission/index.tests.ios.bundle?platform=ios&dev=true"];
 
     NSURL *URL = TestHelper.sharedHelper.fixturesURL;
     URL = [URL URLByAppendingPathComponent:@"ReferenceImages"];
@@ -107,7 +108,7 @@
                                                                               userAgent:@"Emission Example"
                                                                                 options:setup.options];
       return @[config];
-    }, scriptURL);
+    }, setup.jsCodeLocation);
   }
   return _reactTestRunner;
 }
