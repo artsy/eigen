@@ -1,11 +1,13 @@
 import { Box, Separator, Serif } from "@artsy/palette"
-import { FairExhibitors_fair } from "__generated__/FairExhibitors_fair.graphql"
+import { FairExhibitorsQuery } from "__generated__/FairExhibitorsQuery.graphql"
 import React from "react"
 import { SectionList, ViewProperties } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { graphql, QueryRenderer } from "react-relay"
+import { defaultEnvironment } from "../../../relay/createEnvironment"
+import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
 
 interface Props extends ViewProperties {
-  fair: FairExhibitors_fair
+  fair: FairExhibitorsQuery["response"]["fair"]
 }
 
 interface State {
@@ -81,14 +83,20 @@ export class FairExhibitors extends React.Component<Props, State> {
   }
 }
 
-export const FairExhibitorsContainer = createFragmentContainer(
-  FairExhibitors,
-  graphql`
-    fragment FairExhibitors_fair on Fair {
-      exhibitors_grouped_by_name {
-        letter
-        exhibitors
+export const FairExhibitorsRenderer = ({ fair }) => (
+  <QueryRenderer<FairExhibitorsQuery>
+    environment={defaultEnvironment}
+    query={graphql`
+      query FairExhibitorsQuery($fairID: String!) {
+        fair(id: $fairID) {
+          exhibitors_grouped_by_name {
+            letter
+            exhibitors
+          }
+        }
       }
-    }
-  `
+    `}
+    variables={{ fairID: fair.id }}
+    render={renderWithLoadProgress<Props>(FairExhibitors)}
+  />
 )
