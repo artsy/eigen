@@ -1,11 +1,14 @@
 import { Theme } from "@artsy/palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { FairArtists_fair } from "__generated__/FairArtists_fair.graphql"
+import { FairArtistsRendererQuery } from "__generated__/FairArtistsRendererQuery.graphql"
 import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
 import { PAGE_SIZE } from "lib/data/constants"
 import { groupBy, map, sortBy, toPairs } from "lodash"
 import React from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { defaultEnvironment } from "../../../relay/createEnvironment"
+import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
 
 interface Props {
   fair: FairArtists_fair
@@ -129,4 +132,19 @@ export const FairArtistsContainer = createPaginationContainer(
       }
     `,
   }
+)
+
+export const FairArtistsRenderer = ({ fair }) => (
+  <QueryRenderer<FairArtistsRendererQuery>
+    environment={defaultEnvironment}
+    query={graphql`
+      query FairArtistsRendererQuery($fairID: String!) {
+        fair(id: $fairID) {
+          ...FairArtists_fair
+        }
+      }
+    `}
+    variables={{ fairID: fair.id }}
+    render={renderWithLoadProgress(FairArtistsContainer)}
+  />
 )

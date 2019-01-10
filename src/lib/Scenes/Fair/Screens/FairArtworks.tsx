@@ -1,8 +1,11 @@
 import { Theme } from "@artsy/palette"
 import { FairArtworks_fair } from "__generated__/FairArtworks_fair.graphql"
+import { FairArtworksQuery } from "__generated__/FairArtworksQuery.graphql"
 import { FilteredInfiniteScrollGrid } from "lib/Components/FilteredInfiniteScrollGrid"
 import React from "react"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { defaultEnvironment } from "../../../relay/createEnvironment"
+import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
 
 interface Props {
   fair: FairArtworks_fair
@@ -62,4 +65,19 @@ export const FairArtworksContainer = createRefetchContainer(
       }
     }
   `
+)
+
+export const FairArtworksRenderer = ({ fair }) => (
+  <QueryRenderer<FairArtworksQuery>
+    environment={defaultEnvironment}
+    query={graphql`
+      query FairArtworksQuery($fairID: String!) {
+        fair(id: $fairID) {
+          ...FairArtworks_fair
+        }
+      }
+    `}
+    variables={{ fairID: fair.id }}
+    render={renderWithLoadProgress(FairArtworksContainer)}
+  />
 )
