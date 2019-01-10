@@ -134,7 +134,7 @@ export const FairArtistsContainer = createPaginationContainer(
   }
 )
 
-export const FairArtistsRenderer = ({ fair }) => (
+export const FairArtistsRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
   <QueryRenderer<FairArtistsRendererQuery>
     environment={defaultEnvironment}
     query={graphql`
@@ -144,7 +144,7 @@ export const FairArtistsRenderer = ({ fair }) => (
         }
       }
     `}
-    variables={{ fairID: fair.id }}
+    variables={{ fairID }}
     render={renderWithLoadProgress(FairArtistsContainer)}
   />
 )

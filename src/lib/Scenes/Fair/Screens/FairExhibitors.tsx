@@ -83,7 +83,7 @@ export class FairExhibitors extends React.Component<Props, State> {
   }
 }
 
-export const FairExhibitorsRenderer = ({ fair }) => (
+export const FairExhibitorsRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
   <QueryRenderer<FairExhibitorsQuery>
     environment={defaultEnvironment}
     query={graphql`
@@ -96,7 +96,7 @@ export const FairExhibitorsRenderer = ({ fair }) => (
         }
       }
     `}
-    variables={{ fairID: fair.id }}
+    variables={{ fairID }}
     render={renderWithLoadProgress<Props>(FairExhibitors)}
   />
 )

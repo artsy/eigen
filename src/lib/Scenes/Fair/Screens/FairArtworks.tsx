@@ -67,7 +67,7 @@ export const FairArtworksContainer = createRefetchContainer(
   `
 )
 
-export const FairArtworksRenderer = ({ fair }) => (
+export const FairArtworksRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
   <QueryRenderer<FairArtworksQuery>
     environment={defaultEnvironment}
     query={graphql`
@@ -77,7 +77,7 @@ export const FairArtworksRenderer = ({ fair }) => (
         }
       }
     `}
-    variables={{ fairID: fair.id }}
+    variables={{ fairID }}
     render={renderWithLoadProgress(FairArtworksContainer)}
   />
 )

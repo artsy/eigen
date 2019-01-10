@@ -35,6 +35,7 @@ export class Fair extends React.Component<Props> {
         onViewFairBoothArtworksPressed: this.handleViewFairBoothArtworksPressed,
         onViewFairBoothArtistsPressed: this.handleViewFairBoothArtistsPressed,
         ...(props || {}),
+        fairID: this.props.fair.id,
       },
       title: "",
     })
