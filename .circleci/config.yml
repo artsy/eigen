@@ -11,7 +11,7 @@ jobs:
       StripePublishableKey: "-"
       MapBoxAPIClientKey: "-"
 
-      # For caching gems
+      # For caching gems, relative to current directory
       BUNDLE_PATH: vendor/bundle
 
     steps:
@@ -33,7 +33,22 @@ jobs:
       - save_cache:
           key: v1-gems-{{ checksum "Example/Gemfile.lock" }}
           paths:
-            - vendor/bundle
+            - Example/vendor/bundle
+
+      - restore_cache:
+          keys:
+            - v1-yarn-{{ checksum "yarn.lock" }}
+            # Fall back to using the latest cache if no exact match is found.
+            - v1-yarn-
+
+      - run:
+          name: Install Yarn Dependencies
+          command: yarn install --ignore-engines
+
+      - save_cache:
+          key: v1-yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
 
       - restore_cache:
           keys:
@@ -42,21 +57,21 @@ jobs:
             - v1-pods-
 
       - run:
-          name: Install Yarn Dependencies
-          command: yarn install --ignore-engines
+          name: Install CocoaPods Specs If Necessary
+          command: bundle exec pod check || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
 
       - run:
           name: Install CocoaPods
-          command: cd Example ; bundle exec pod install
-
-      - run:
-          name: Package JavaScript for Testing
-          command: "yarn bundle:native-ci"
+          command: cd Example ; bundle exec pod check || bundle exec pod install
 
       - save_cache:
           key: v1-gems-{{ checksum "Example/Podfile.lock" }}
           paths:
             - Example/Pods
+
+      - run:
+          name: Package JavaScript for Testing
+          command: "yarn bundle:native-ci"
 
       - run:
           name: Run Unit Tests
