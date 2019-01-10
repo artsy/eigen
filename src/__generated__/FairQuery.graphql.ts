@@ -28,8 +28,8 @@ query FairQuery(
 }
 
 fragment Fair_fair on Fair {
+  id
   ...FairDetail_fair
-  ...FairExhibitors_fair
   ...FairArtists_fair
   ...FairArtworks_fair
   __id
@@ -63,14 +63,6 @@ fragment FairDetail_fair on Fair {
         __typename
       }
     }
-  }
-  __id
-}
-
-fragment FairExhibitors_fair on Fair {
-  exhibitors_grouped_by_name {
-    letter
-    exhibitors
   }
   __id
 }
@@ -773,7 +765,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairQuery",
-  "id": "7e956c90b04bbcbb2cc8810d618193e4",
+  "id": "0326cc08fe3e4a65eb9d8de34d0e61d9",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -837,13 +829,6 @@ return {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "exhibitors",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "letter",
                 "args": null,
                 "storageKey": null
               }

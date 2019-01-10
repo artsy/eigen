@@ -1,8 +1,10 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type FairExhibitorsTestsQueryVariables = {};
-export type FairExhibitorsTestsQueryResponse = {
+export type FairExhibitorsQueryVariables = {
+    readonly fairID: string;
+};
+export type FairExhibitorsQueryResponse = {
     readonly fair: ({
         readonly exhibitors_grouped_by_name: ReadonlyArray<({
             readonly letter: string | null;
@@ -10,16 +12,18 @@ export type FairExhibitorsTestsQueryResponse = {
         }) | null> | null;
     }) | null;
 };
-export type FairExhibitorsTestsQuery = {
-    readonly response: FairExhibitorsTestsQueryResponse;
-    readonly variables: FairExhibitorsTestsQueryVariables;
+export type FairExhibitorsQuery = {
+    readonly response: FairExhibitorsQueryResponse;
+    readonly variables: FairExhibitorsQueryVariables;
 };
 
 
 
 /*
-query FairExhibitorsTestsQuery {
-  fair(id: "art-basel-in-miami-beach-2018") {
+query FairExhibitorsQuery(
+  $fairID: String!
+) {
+  fair(id: $fairID) {
     exhibitors_grouped_by_name {
       letter
       exhibitors
@@ -32,15 +36,23 @@ query FairExhibitorsTestsQuery {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "kind": "LocalArgument",
+    "name": "fairID",
+    "type": "String!",
+    "defaultValue": null
+  }
+],
+v1 = [
+  {
     "kind": "LinkedField",
     "alias": null,
     "name": "fair",
-    "storageKey": "fair(id:\"art-basel-in-miami-beach-2018\")",
+    "storageKey": null,
     "args": [
       {
-        "kind": "Literal",
+        "kind": "Variable",
         "name": "id",
-        "value": "art-basel-in-miami-beach-2018",
+        "variableName": "fairID",
         "type": "String!"
       }
     ],
@@ -85,25 +97,25 @@ var v0 = [
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "FairExhibitorsTestsQuery",
-  "id": "35ac3b92824f845526fead61ce39b078",
+  "name": "FairExhibitorsQuery",
+  "id": "7ec752ba42d1059cd19a98e834e1902b",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "FairExhibitorsTestsQuery",
+    "name": "FairExhibitorsQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": [],
-    "selections": v0
+    "argumentDefinitions": v0,
+    "selections": v1
   },
   "operation": {
     "kind": "Operation",
-    "name": "FairExhibitorsTestsQuery",
-    "argumentDefinitions": [],
-    "selections": v0
+    "name": "FairExhibitorsQuery",
+    "argumentDefinitions": v0,
+    "selections": v1
   }
 };
 })();
-(node as any).hash = 'a9a20e3e36e1f7a4fcf66257b4b9e1b9';
+(node as any).hash = '5f8096282b7e43f58386eb23c5e8b803';
 export default node;
