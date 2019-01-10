@@ -31,7 +31,7 @@ jobs:
             BUNDLE_RETRY: 3
 
       - save_cache:
-          key: v1-gems-{{ checksum "Example/Gemfile.lock" }}
+          key: v2-gems-{{ checksum "Example/Gemfile.lock" }}
           paths:
             - Example/vendor/bundle
 
@@ -58,7 +58,7 @@ jobs:
 
       - run:
           name: Install CocoaPods Specs If Necessary
-          command: bundle exec pod check || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+          command: cd Example ; bundle exec pod check || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
 
       - run:
           name: Install CocoaPods If Necessary
