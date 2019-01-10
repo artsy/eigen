@@ -67,14 +67,8 @@ export class Fair extends React.Component<Props> {
   }
 
   handleViewMoreInfoPressed = () => {
-    if (!this.navigator) {
-      throw new Error("navigator is undefined")
-    }
-
-    this.navigator.push({
+    this.navigate({
       component: FairMoreInfoScreen,
-      title: "",
-      passProps: this.props,
     })
   }
 

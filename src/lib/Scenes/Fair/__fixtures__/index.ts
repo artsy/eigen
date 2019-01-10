@@ -526,4 +526,9 @@ export const FairFixture = {
       },
     ],
   },
+  links:
+    "[Palm Beach Modern + Contempoary](http://www.artpbfair.com/)\r\n[Facebook](https://www.facebook.com/PalmBeachModernandContemporary) | [Instagram](https://www.instagram.com/artmiamifairs/) | [Twitter](https://twitter.com/PB_Modern)",
+  about:
+    "Cillum adipisicing dolore qui ullamco deserunt ut in. In ad do laboris fugiat nostrud. Officia et duis sunt velit cupidatat irure.\r\n\r\nAdipisicing aliqua sunt magna nisi qui mollit non amet commodo ad ex eu. Nostrud nostrud excepteur sint esse occaecat qui et magna reprehenderit. Non do eiusmod ullamco consequat.\r\n\r\nCommodo exercitation aliqua nostrud minim sint laboris et. Fugiat elit labore magna Lorem aliqua ex nulla ea in sunt consequat. Fugiat tempor minim ex ex ullamco quis ullamco ea. Proident consectetur pariatur aliqua minim voluptate ad sunt sint aliqua mollit ullamco enim proident. Aliquip adipisicing elit ad mollit ad magna est officia nisi mollit eu. Cupidatat aute ex deserunt ad voluptate labore ipsum voluptate. Elit proident nisi labore deserunt cupidatat exercitation dolor nulla sint mollit in.",
+  tickets_link: "https://ticket.artbasel.com/MCH/miamibeach2018/Shop",
 }
