@@ -864,4 +864,27 @@ export const ShowFixture = {
       ],
     },
   ],
+  events: [
+    {
+      event_type: "Opening Reception",
+      description: "",
+      title: "",
+      start_at: "2018-11-02T18:00:00+00:00",
+      end_at: "2018-11-02T21:00:00+00:00",
+    },
+    {
+      event_type: "Guided Tour",
+      description: "Keith Macgregor will take visitors around the gallery and share his stories.",
+      title: "",
+      start_at: "2018-11-10T11:00:00+00:00",
+      end_at: "2018-11-10T12:00:00+00:00",
+    },
+    {
+      event_type: "Artist Talk",
+      description: "Meet and greet Keith Macgregor who will be glad to share his stories and answer your questions.",
+      title: "",
+      start_at: "2018-11-10T14:00:00+00:00",
+      end_at: "2018-11-10T18:00:00+00:00",
+    },
+  ],
 }
