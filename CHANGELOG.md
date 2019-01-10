@@ -42,7 +42,7 @@
 - Enable navigation link from Fair contextual detail to Gallery and Artist pages - ashley
 - All Exhibitors View bug fix - ashley
 - Add FairBooth screen - javamonn
-- Splits Fair Exhibitors screen into own query renderer - luc
+- Splits Fair screens into seperate query renderers - luc
 
 ### 1.7.4
 
