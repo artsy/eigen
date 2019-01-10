@@ -1,5 +1,5 @@
 import { Sans, Serif, Spacer } from "@artsy/palette"
-import { Artists_show } from "__generated__/Artists_show.graphql"
+import { ShowArtistsPreview_show } from "__generated__/ShowArtistsPreview_show.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { get, take } from "lodash"
 import React from "react"
@@ -7,15 +7,15 @@ import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  show: Artists_show
+  show: ShowArtistsPreview_show
   onViewAllArtistsPressed: () => void
 }
 
-export const Artists: React.SFC<Props> = ({ show, onViewAllArtistsPressed }) => {
+export const ShowArtistsPreview: React.SFC<Props> = ({ show, onViewAllArtistsPressed }) => {
   const artistsShown = 5
 
   const artists = get(show, "artists", [])
-  const items: Artists_show["artists"] = take(artists, artistsShown)
+  const items: ShowArtistsPreview_show["artists"] = take(artists, artistsShown)
 
   return (
     <>
@@ -43,10 +43,10 @@ export const Artists: React.SFC<Props> = ({ show, onViewAllArtistsPressed }) => 
   )
 }
 
-export const ArtistsContainer = createFragmentContainer(
-  Artists,
+export const ShowArtistsPreviewContainer = createFragmentContainer(
+  ShowArtistsPreview,
   graphql`
-    fragment Artists_show on Show {
+    fragment ShowArtistsPreview_show on Show {
       artists {
         id
         ...ArtistListItem_artist

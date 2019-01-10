@@ -47,7 +47,7 @@ fragment Detail_show on Show {
   }
   ...ShowHeader_show
   ...ShowArtworksPreview_show
-  ...Artists_show
+  ...ShowArtistsPreview_show
   ...Shows_show
   status
   partner {
@@ -126,7 +126,7 @@ fragment ShowArtworksPreview_show on Show {
   }
 }
 
-fragment Artists_show on Show {
+fragment ShowArtistsPreview_show on Show {
   artists {
     id
     ...ArtistListItem_artist
@@ -338,7 +338,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "e0b3ab0827e1e05fd32485e6062b92ce",
+  "id": "06aefd373e8f31809849145e90981efe",
   "text": null,
   "metadata": {},
   "fragment": {

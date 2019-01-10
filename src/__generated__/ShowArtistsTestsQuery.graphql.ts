@@ -1,29 +1,29 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { AllArtists_show$ref } from "./AllArtists_show.graphql";
-export type AllArtistsTestsQueryVariables = {};
-export type AllArtistsTestsQueryResponse = {
+import { ShowArtists_show$ref } from "./ShowArtists_show.graphql";
+export type ShowArtistsTestsQueryVariables = {};
+export type ShowArtistsTestsQueryResponse = {
     readonly show: ({
-        readonly " $fragmentRefs": AllArtists_show$ref;
+        readonly " $fragmentRefs": ShowArtists_show$ref;
     }) | null;
 };
-export type AllArtistsTestsQuery = {
-    readonly response: AllArtistsTestsQueryResponse;
-    readonly variables: AllArtistsTestsQueryVariables;
+export type ShowArtistsTestsQuery = {
+    readonly response: ShowArtistsTestsQueryResponse;
+    readonly variables: ShowArtistsTestsQueryVariables;
 };
 
 
 
 /*
-query AllArtistsTestsQuery {
+query ShowArtistsTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
-    ...AllArtists_show
+    ...ShowArtists_show
     __id
   }
 }
 
-fragment AllArtists_show on Show {
+fragment ShowArtists_show on Show {
   artists_grouped_by_name {
     letter
     items {
@@ -67,13 +67,13 @@ v1 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "AllArtistsTestsQuery",
-  "id": "c1fce053e7ee8152317fc726e83e675e",
+  "name": "ShowArtistsTestsQuery",
+  "id": "39ffc9010d41e7e3a7ea5e24cf0208ee",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "AllArtistsTestsQuery",
+    "name": "ShowArtistsTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -89,7 +89,7 @@ return {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "AllArtists_show",
+            "name": "ShowArtists_show",
             "args": null
           },
           v1
@@ -99,7 +99,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "AllArtistsTestsQuery",
+    "name": "ShowArtistsTestsQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -208,5 +208,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'f713cd73009568ff5f091e4d12236418';
+(node as any).hash = '112df1f78ef22031c816a0c5c43aa1f5';
 export default node;

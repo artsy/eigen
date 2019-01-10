@@ -4,7 +4,8 @@ import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
 import { renderUntil } from "lib/tests/renderUntil"
 import React from "react"
 import { graphql } from "react-relay"
-import { AllArtistsContainer as AllArtistsScreen } from "../AllArtists"
+
+import { ShowArtistsContainer as ShowArtistsScreen } from "../ShowArtists"
 
 jest.unmock("react-relay")
 
@@ -15,11 +16,11 @@ describe("AllArtists", () => {
         return wrapper.find(ArtistsGroupedByName).length > 0
       },
       <MockRelayRenderer
-        Component={AllArtistsScreen}
+        Component={ShowArtistsScreen}
         query={graphql`
-          query AllArtistsTestsQuery {
+          query ShowArtistsTestsQuery {
             show(id: "anderson-fine-art-gallery-flickinger-collection") {
-              ...AllArtists_show
+              ...ShowArtists_show
             }
           }
         `}

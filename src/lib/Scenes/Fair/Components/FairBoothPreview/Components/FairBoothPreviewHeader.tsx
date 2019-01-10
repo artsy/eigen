@@ -13,7 +13,14 @@ interface Props {
   url: string
 }
 
-export const FairBoothHeader: React.SFC<Props> = ({ name, location, isFollowed, onPress, isFollowedChanging, url }) => {
+export const FairBoothPreviewHeader: React.SFC<Props> = ({
+  name,
+  location,
+  isFollowed,
+  onPress,
+  isFollowedChanging,
+  url,
+}) => {
   return (
     <Flex justifyContent="space-between" alignItems="center" flexDirection="row" mb={1}>
       <ImageAndTextWrapper flexDirection="row" alignItems="center">

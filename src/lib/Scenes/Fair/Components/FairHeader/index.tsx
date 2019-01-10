@@ -3,9 +3,10 @@ import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
 import { InvertedButton } from "lib/Components/Buttons"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
+import Switchboard from "lib/NativeModules/SwitchBoard"
 import moment from "moment"
 import React from "react"
-import { Dimensions, Image } from "react-native"
+import { Dimensions, Image, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { CountdownTimer } from "./CountdownTimer"
@@ -13,6 +14,8 @@ import { CountdownTimer } from "./CountdownTimer"
 interface Props {
   fair: FairHeader_fair
   onSaveShowPressed?: () => Promise<void>
+  viewAllExhibitors: () => void
+  viewAllArtists: () => void
 }
 
 const BackgroundImage = styled(OpaqueImageView)<{ width: number }>`
@@ -55,19 +58,22 @@ export class FairHeader extends React.Component<Props> {
     const {
       edges: [
         {
-          node: { name: firstArtistName },
+          node: { name: firstArtistName, href: firstArtistSlug },
         },
         {
-          node: { name: lastArtistName },
+          node: { name: lastArtistName, href: lastArtistSlug },
         },
       ],
     } = artists_names
+
     const [
       {
         exhibitors: [firstExhibitorName],
+        profile_ids: [firstExhibitorProfileSlug],
       },
       {
         exhibitors: [lastExhibitorName],
+        profile_ids: [lastExhibitorProfileSlug],
       },
     ] = exhibitors_grouped_by_name
 
@@ -79,45 +85,73 @@ export class FairHeader extends React.Component<Props> {
     return (
       <>
         {(!firstArtistName && !lastArtistName) || !artistsCount ? null : (
-          <Flex flexDirection="row" flexWrap="wrap">
-            <Sans size="3">Works by </Sans>
+          <Flex flexDirection="row" flexWrap="wrap" mb={"8"}>
+            <Sans size="3" lineHeight="19">
+              Works by{" "}
+            </Sans>
             {firstArtistName && (
-              <Sans weight="medium" size="3">
-                {firstArtistName + ", "}
-              </Sans>
+              <TouchableOpacity onPress={() => this.handlePress(this, firstArtistSlug)}>
+                <Sans weight="medium" size="3" lineHeight="19">
+                  {firstArtistName + ", "}
+                </Sans>
+              </TouchableOpacity>
             )}
             {lastArtistName && (
-              <Sans weight="medium" size="3">
-                {lastArtistName + ", "}
+              <TouchableOpacity onPress={() => this.handlePress(this, lastArtistSlug)}>
+                <Sans weight="medium" size="3" lineHeight="19">
+                  {lastArtistName + ", "}
+                </Sans>
+              </TouchableOpacity>
+            )}
+            {(firstArtistName || lastArtistName) && (
+              <Sans size="3" lineHeight="19">
+                and{" "}
               </Sans>
             )}
-            {(firstArtistName || lastArtistName) && <Sans size="3">and </Sans>}
-            <Sans weight="medium" size="3">
-              {artistsCount + " others."}
-            </Sans>
+            <TouchableOpacity onPress={() => this.props.viewAllExhibitors()}>
+              <Sans weight="medium" size="3" lineHeight="19">
+                {artistsCount + " others"}
+              </Sans>
+            </TouchableOpacity>
           </Flex>
         )}
         {(!firstExhibitorName && !lastExhibitorName) || !exhibitorsCount ? null : (
           <Flex flexDirection="row" flexWrap="wrap">
-            <Sans size="3">From </Sans>
+            <Sans size="3" lineHeight="19">
+              From{" "}
+            </Sans>
             {firstExhibitorName && (
-              <Sans weight="medium" size="3">
-                {firstExhibitorName + ", "}
-              </Sans>
+              <TouchableOpacity onPress={() => this.handlePress(this, firstExhibitorProfileSlug)}>
+                <Sans weight="medium" size="3" lineHeight="19">
+                  {firstExhibitorName + ", "}
+                </Sans>
+              </TouchableOpacity>
             )}
             {lastExhibitorName && (
-              <Sans weight="medium" size="3">
-                {lastExhibitorName + ", "}
+              <TouchableOpacity onPress={() => this.handlePress(this, lastExhibitorProfileSlug)}>
+                <Sans weight="medium" size="3" lineHeight="19">
+                  {lastExhibitorName + ", "}
+                </Sans>
+              </TouchableOpacity>
+            )}
+            {(firstExhibitorName || lastExhibitorName) && (
+              <Sans size="3" lineHeight="19">
+                and{" "}
               </Sans>
             )}
-            {(firstExhibitorName || lastExhibitorName) && <Sans size="3">and </Sans>}
-            <Sans weight="medium" size="3">
-              {exhibitorsCount + " others"}
-            </Sans>
+            <TouchableOpacity onPress={() => this.props.viewAllArtists()}>
+              <Sans weight="medium" size="3" lineHeight="19">
+                {exhibitorsCount + " others"}
+              </Sans>
+            </TouchableOpacity>
           </Flex>
         )}
       </>
     )
+  }
+
+  handlePress(component, url) {
+    Switchboard.presentNavigationViewController(component, url)
   }
 
   render() {
@@ -130,7 +164,7 @@ export class FairHeader extends React.Component<Props> {
       <>
         <BackgroundImage imageURL={image.url} aspectRatio={image.aspect_ratio} width={screenWidth}>
           <Overlay />
-          <Flex flexDirection="row" justifyContent="center" alignItems="center">
+          <Flex flexDirection="row" justifyContent="center" alignItems="center" px={2}>
             <Flex flexDirection="column" flexGrow={1}>
               {profile && <Logo source={{ uri: profile.icon.url }} />}
               <Sans size="3t" weight="medium" textAlign="center" color="white100">
@@ -145,10 +179,10 @@ export class FairHeader extends React.Component<Props> {
             <CountdownTimer startAt={start_at} endAt={end_at} />
           </CountdownContainer>
         </BackgroundImage>
-        <Spacer m={1} />
+        <Spacer mt={2} />
         <Box mx={2}>{this.getContextualDetails()}</Box>
         <Box px={2}>
-          <Spacer m={2} />
+          <Spacer m={2} mt={1} />
           <InvertedButton text="Save" />
           <Spacer m={1} />
           <CaretButton text="View more information" />
@@ -167,6 +201,7 @@ export const FairHeaderContainer = createFragmentContainer(
 
       exhibitors_grouped_by_name {
         exhibitors
+        profile_ids
       }
 
       counts {
@@ -178,6 +213,7 @@ export const FairHeaderContainer = createFragmentContainer(
         edges {
           node {
             name
+            href
           }
         }
       }

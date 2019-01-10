@@ -39,6 +39,9 @@
 - Update Show MoreInfo screen with events - javamonn
 - Update artwork grid item text spacing - javamonn
 - Add Browse Artworks link from Fair booth, works - javamonn
+- Enable navigation link from Fair contextual detail to Gallery and Artist pages -ashley
+- All Exhibitors View bug fix
+- Add FairBooth screen - javamonn
 
 ### 1.7.4
 

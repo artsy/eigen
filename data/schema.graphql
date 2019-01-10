@@ -757,7 +757,6 @@ type Artwork implements Node & Sellable {
   artist_names: String
   articles(size: Int): [Article]
   availability: String
-  myLotStanding(live: Boolean = null): [LotStanding!]
   can_share_image: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   category: String
 
@@ -840,6 +839,7 @@ type Artwork implements Node & Sellable {
   medium: String
   metric: String @deprecated(reason: "Prefer dimensions instead.")
   meta: ArtworkMeta
+  myLotStanding(live: Boolean = null): [LotStanding!]
 
   # [DO NOT USE] Weekly pageview data (static).
   pageviews: Int
@@ -1040,6 +1040,7 @@ type ArtworkContextFair {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
+  artists_count: Int
   artists(
     # Sorts for artists in a fair
     sort: FairArtistSorts
@@ -1544,7 +1545,6 @@ type ArtworkItem implements Node & Sellable {
   artist_names: String
   articles(size: Int): [Article]
   availability: String
-  myLotStanding(live: Boolean = null): [LotStanding!]
   can_share_image: Boolean @deprecated(reason: "Favor `is_`-prefixed boolean attributes")
   category: String
 
@@ -1627,6 +1627,7 @@ type ArtworkItem implements Node & Sellable {
   medium: String
   metric: String @deprecated(reason: "Prefer dimensions instead.")
   meta: ArtworkMeta
+  myLotStanding(live: Boolean = null): [LotStanding!]
 
   # [DO NOT USE] Weekly pageview data (static).
   pageviews: Int
@@ -1692,6 +1693,7 @@ type ArtworkLayer {
 type ArtworkMeta {
   description(limit: Int = 155): String
   image: String
+  share: String
   title: String
 }
 
@@ -3090,9 +3092,17 @@ enum EventStatus {
   current @deprecated(reason: "use capital enums")
   running @deprecated(reason: "use capital enums")
   upcoming @deprecated(reason: "use capital enums")
+
+  # End date is in the past
   CLOSED
+
+  # Start date or end date is in the future
   CURRENT
+
+  # Start date is in the past and end date is in the future
   RUNNING
+
+  # Start date is in the future
   UPCOMING
 }
 
@@ -3115,6 +3125,7 @@ type Fair {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
+  artists_count: Int
   artists(
     # Sorts for artists in a fair
     sort: FairArtistSorts
@@ -3251,6 +3262,9 @@ type FairExhibitorsGroup {
 
   # Exhibitors sorted by name
   exhibitors: [String]
+
+  # Partner/Exhibitor default profile id
+  profile_ids: [String]
 }
 
 enum FairSorts {
@@ -4180,6 +4194,7 @@ type HomePageModuleContextFair {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
+  artists_count: Int
   artists(
     # Sorts for artists in a fair
     sort: FairArtistSorts
@@ -4702,6 +4717,7 @@ type MarketingCollection {
   updatedAt: MarketingDateTime!
   artworks(
     acquireable: Boolean
+    offerable: Boolean
     aggregation_partner_cities: [String]
     aggregations: [ArtworkAggregation]
     artist_id: String
@@ -6533,7 +6549,10 @@ type Query {
   # A city-based entry point for local discovery
   city(
     # A slug for the city, conforming to Gravity's city slug naming conventions
-    slug: String!
+    slug: String
+
+    # A point which will be used to locate the nearest local discovery city within a threshold
+    near: Near
   ): City
   collection(
     # The slug or ID of the Collection
@@ -8320,7 +8339,10 @@ type Viewer {
   # A city-based entry point for local discovery
   city(
     # A slug for the city, conforming to Gravity's city slug naming conventions
-    slug: String!
+    slug: String
+
+    # A point which will be used to locate the nearest local discovery city within a threshold
+    near: Near
   ): City
   collection(
     # The slug or ID of the Collection

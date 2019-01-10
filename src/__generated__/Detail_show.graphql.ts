@@ -1,8 +1,8 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-import { Artists_show$ref } from "./Artists_show.graphql";
 import { LocationMap_location$ref } from "./LocationMap_location.graphql";
+import { ShowArtistsPreview_show$ref } from "./ShowArtistsPreview_show.graphql";
 import { ShowArtworksPreview_show$ref } from "./ShowArtworksPreview_show.graphql";
 import { ShowHeader_show$ref } from "./ShowHeader_show.graphql";
 import { Shows_show$ref } from "./Shows_show.graphql";
@@ -34,7 +34,7 @@ export type Detail_show = {
         readonly name?: string | null;
         readonly type?: string | null;
     }) | null;
-    readonly " $fragmentRefs": ShowHeader_show$ref & ShowArtworksPreview_show$ref & Artists_show$ref & Shows_show$ref;
+    readonly " $fragmentRefs": ShowHeader_show$ref & ShowArtworksPreview_show$ref & ShowArtistsPreview_show$ref & Shows_show$ref;
     readonly " $refType": Detail_show$ref;
 };
 
@@ -182,7 +182,7 @@ return {
     },
     {
       "kind": "FragmentSpread",
-      "name": "Artists_show",
+      "name": "ShowArtistsPreview_show",
       "args": null
     },
     {
@@ -234,5 +234,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '51a575546c284ff6936c7dd2a439a7cf';
+(node as any).hash = '72d152d35d7fe0b1d2063a9c6402a127';
 export default node;
