@@ -55,6 +55,11 @@ PODS:
   - "Extraction/UILabel+Typography (1.2.4)"
   - "Extraction/UIView+ARSpinner (1.2.4)":
     - Extraction/ARAnimationContinuation
+  - FBSnapshotTestCase (2.1.4):
+    - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
+  - FBSnapshotTestCase/Core (2.1.4)
+  - FBSnapshotTestCase/SwiftSupport (2.1.4):
+    - FBSnapshotTestCase/Core
   - FLKAutoLayout (1.0.0)
   - Folly (2016.09.26.00):
     - boost-for-react-native
@@ -114,8 +119,6 @@ PODS:
     - React/Core
   - React/RCTNetwork (0.54.4):
     - React/Core
-  - React/RCTTest (0.54.4):
-    - React/Core
   - React/RCTText (0.54.4):
     - React/Core
   - React/RCTWebSocket (0.54.4):
@@ -151,13 +154,13 @@ DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Emission (from `../`)
   - Expecta
+  - FBSnapshotTestCase
   - FLKAutoLayout
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Keys (from `Pods/CocoaPodsKeys`)
   - "react-native-mapbox-gl (from `../node_modules/@mapbox/react-native-mapbox-gl`)"
   - React/DevSupport (from `../node_modules/react-native`)
-  - React/RCTTest (from `../node_modules/react-native`)
   - SAMKeychain
   - Sentry/Core
   - Sentry/KSCrash
@@ -176,6 +179,7 @@ SPEC REPOS:
     - ARGenericTableViewController
     - boost-for-react-native
     - Expecta
+    - FBSnapshotTestCase
     - FLKAutoLayout
     - ISO8601DateFormatter
     - KSCrash
@@ -232,6 +236,7 @@ SPEC CHECKSUMS:
   Emission: dbe8f982c47244d6bba0ae18c7be639244222d19
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
+  FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   Folly: 211775e49d8da0ca658aebc8eab89d642935755c
   glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
@@ -252,6 +257,6 @@ SPEC CHECKSUMS:
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: 8c25b0ed804e0e791219080e3ea88386d622ccdc
+PODFILE CHECKSUM: d1615d572c5cc3077542086df365f8347f54feb7
 
 COCOAPODS: 1.5.3

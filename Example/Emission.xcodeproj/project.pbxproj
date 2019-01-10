@@ -21,6 +21,9 @@
 		515926A8206BA0C000048C74 /* complete.queryMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 515926A7206BA0C000048C74 /* complete.queryMap.json */; };
 		515926AE206CF8BA00048C74 /* UITabBarDownloadsTemplate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 515926AD206CF8B900048C74 /* UITabBarDownloadsTemplate@2x.png */; };
 		51F3E9A41CF3B8A4004A2013 /* EigenLikeNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51F3E9A31CF3B8A4004A2013 /* EigenLikeNavigationController.m */; };
+		5E09C96B21E7B46B00207812 /* RCTTestModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E09C96621E7B46B00207812 /* RCTTestModule.m */; };
+		5E09C96C21E7B46B00207812 /* RCTSnapshotManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E09C96921E7B46B00207812 /* RCTSnapshotManager.m */; };
+		5E09C96D21E7B46B00207812 /* RCTTestRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E09C96A21E7B46B00207812 /* RCTTestRunner.m */; };
 		6011C23B1DAF5DD900CE54E5 /* ARRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C23A1DAF5DD900CE54E5 /* ARRootViewController.m */; };
 		6011C2451DAF61AF00CE54E5 /* ARAdminTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C23E1DAF61AF00CE54E5 /* ARAdminTableViewCell.m */; };
 		6011C2461DAF61AF00CE54E5 /* ARTickedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2401DAF61AF00CE54E5 /* ARTickedTableViewCell.m */; };
@@ -96,6 +99,12 @@
 		51F3E9A21CF3B8A4004A2013 /* EigenLikeNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EigenLikeNavigationController.h; sourceTree = "<group>"; };
 		51F3E9A31CF3B8A4004A2013 /* EigenLikeNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EigenLikeNavigationController.m; sourceTree = "<group>"; };
 		5D75FFB0E282ED7DB0B9141E /* Pods-EmissionTests.deploy.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmissionTests.deploy.xcconfig"; path = "Pods/Target Support Files/Pods-EmissionTests/Pods-EmissionTests.deploy.xcconfig"; sourceTree = "<group>"; };
+		5E09C96521E7B46B00207812 /* RCTSnapshotManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTSnapshotManager.h; sourceTree = "<group>"; };
+		5E09C96621E7B46B00207812 /* RCTTestModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTTestModule.m; sourceTree = "<group>"; };
+		5E09C96721E7B46B00207812 /* RCTTestModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTTestModule.h; sourceTree = "<group>"; };
+		5E09C96821E7B46B00207812 /* RCTTestRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTTestRunner.h; sourceTree = "<group>"; };
+		5E09C96921E7B46B00207812 /* RCTSnapshotManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTSnapshotManager.m; sourceTree = "<group>"; };
+		5E09C96A21E7B46B00207812 /* RCTTestRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTTestRunner.m; sourceTree = "<group>"; };
 		6011C2391DAF5DD900CE54E5 /* ARRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRootViewController.h; sourceTree = "<group>"; };
 		6011C23A1DAF5DD900CE54E5 /* ARRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRootViewController.m; sourceTree = "<group>"; };
 		6011C23D1DAF61AF00CE54E5 /* ARAdminTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAdminTableViewCell.h; sourceTree = "<group>"; };
@@ -209,6 +218,7 @@
 		510DCB291CCA69EC0075E8CB /* EmissionTests */ = {
 			isa = PBXGroup;
 			children = (
+				5E09C95221E7A0D500207812 /* RCTTest */,
 				510DCB2A1CCA69EC0075E8CB /* OpaqueImageViewComponentTests.m */,
 				510DCB2C1CCA69EC0075E8CB /* Info.plist */,
 				510E95151CCEC22C00BDF098 /* TestHelper.h */,
@@ -234,6 +244,19 @@
 			);
 			path = Resources;
 			sourceTree = SOURCE_ROOT;
+		};
+		5E09C95221E7A0D500207812 /* RCTTest */ = {
+			isa = PBXGroup;
+			children = (
+				5E09C96521E7B46B00207812 /* RCTSnapshotManager.h */,
+				5E09C96921E7B46B00207812 /* RCTSnapshotManager.m */,
+				5E09C96721E7B46B00207812 /* RCTTestModule.h */,
+				5E09C96621E7B46B00207812 /* RCTTestModule.m */,
+				5E09C96821E7B46B00207812 /* RCTTestRunner.h */,
+				5E09C96A21E7B46B00207812 /* RCTTestRunner.m */,
+			);
+			path = RCTTest;
+			sourceTree = "<group>";
 		};
 		6011C23C1DAF619700CE54E5 /* Admin Tableview Cells */ = {
 			isa = PBXGroup;
@@ -743,6 +766,9 @@
 			files = (
 				510DCB2B1CCA69EC0075E8CB /* OpaqueImageViewComponentTests.m in Sources */,
 				510E95141CCEB84F00BDF098 /* TestHelper.m in Sources */,
+				5E09C96B21E7B46B00207812 /* RCTTestModule.m in Sources */,
+				5E09C96D21E7B46B00207812 /* RCTTestRunner.m in Sources */,
+				5E09C96C21E7B46B00207812 /* RCTSnapshotManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

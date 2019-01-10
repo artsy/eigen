@@ -64,10 +64,12 @@ target 'Emission' do
   target 'EmissionTests' do
     inherit! :search_paths
 
-    pod 'React', :path => react_path, :subspecs => %w(DevSupport RCTTest)
-
+    # Used for standard Objective-C unit tests, analagous to Jest.
     pod 'Specta'
     pod 'Expecta'
+
+    # Necessary because we're bypassing the RCTTestCase subspec.
+    pod 'FBSnapshotTestCase'
   end
 end
 
