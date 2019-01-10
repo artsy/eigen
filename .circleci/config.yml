@@ -19,9 +19,9 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-gems-{{ checksum "Example/Gemfile.lock" }}
+            - v2-gems-{{ checksum "Example/Gemfile.lock" }}
             # Fall back to using the latest cache if no exact match is found.
-            - v1-gems-
+            - v2-gems-
 
       - run:
           name: Bundle install
@@ -61,7 +61,7 @@ jobs:
           command: bundle exec pod check || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
 
       - run:
-          name: Install CocoaPods
+          name: Install CocoaPods If Necessary
           command: cd Example ; bundle exec pod check || bundle exec pod install
 
       - save_cache:
@@ -75,7 +75,7 @@ jobs:
 
       - run:
           name: Run Unit Tests
-          command: cd Example ; set -o pipefail && xcodebuild -workspace Emission.xcworkspace -scheme "Emission Example" -configuration Debug test -sdk iphonesimulator -destination "platform=iOS Simulator,OS=10.3.1,name=iPhone 6" GCC_PREPROCESSOR_DEFINITIONS="\$GCC_PREPROCESSOR_DEFINITIONS RUNNING_ON_CI=1"
+          command: cd Example ; set -o pipefail && xcodebuild -workspace Emission.xcworkspace -scheme "Emission Example" -configuration Debug test -sdk iphonesimulator -destination "platform=iOS Simulator,OS=10.3.1,name=iPhone 6" GCC_PREPROCESSOR_DEFINITIONS="\$GCC_PREPROCESSOR_DEFINITIONS RUNNING_ON_CI=1" | tee ./xcode_build_raw.log | bundle exec xcpretty -c --test
 
 workflows:
   version: 2
