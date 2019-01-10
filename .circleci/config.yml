@@ -6,6 +6,8 @@ jobs:
       xcode: "10.1.0"
 
     environment:
+      # WARNING: These env vars are passed to PRs on forks.
+      # WARNING: DO NOT PUT SENSITIVE INFORMATION HERE.
       ArtsyAPIClientSecret: "-"
       ArtsyAPIClientKey: "-"
       StripePublishableKey: "-"
