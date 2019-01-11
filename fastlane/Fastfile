@@ -127,8 +127,26 @@ lane :promote_beta do
     force: true, # Skip HTMl report verification
     skip_screenshots: true,
     skip_binary_upload: true,
-    add_id_info_uses_idfa: true,
-    add_id_info_tracks_install: true
+    submit_for_review: true,
+    # Comes from https://github.com/fastlane/fastlane/issues/5542#issuecomment-254201994
+    submission_information: {
+      add_id_info_limits_tracking: true,
+      add_id_info_serves_ads: false,
+      add_id_info_tracks_action: true,
+      add_id_info_tracks_install: true,
+      add_id_info_uses_idfa: true,
+      content_rights_has_rights: true,
+      content_rights_contains_third_party_content: true,
+      export_compliance_platform: 'ios',
+      export_compliance_compliance_required: false,
+      export_compliance_encryption_updated: false,
+      export_compliance_app_type: nil,
+      export_compliance_uses_encryption: false,
+      export_compliance_is_exempt: false,
+      export_compliance_contains_third_party_cryptography: false,
+      export_compliance_contains_proprietary_cryptography: false,
+      export_compliance_available_on_french_store: false
+    }
   )
 
   puts "Tagging submission and pushing to GitHub."
