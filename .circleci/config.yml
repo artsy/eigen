@@ -73,7 +73,7 @@ jobs:
 
       - run:
           name: Package JavaScript for Testing
-          command: "yarn bundle:native-ci"
+          command: "yarn bundle-for-native-ci"
 
       - run:
           name: Set up build artefact directories
