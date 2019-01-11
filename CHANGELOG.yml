@@ -1,7 +1,7 @@
 upcoming:
   version: 4.3.5
-  date: Dec 5, 2018
-  signed_of_by: Ash
+  date: Jan 11, 2019 
+  signed_of_by: Orta
   emission_version: 1.7.6
   dev:
     - Sends a user agent which includes the device model for Reaction SSR - orta
@@ -15,7 +15,7 @@ upcoming:
 
 releases:
   - version: 4.3.4
-    date: TBD
+    date: Dec 7, 2018
     emission_version: 1.7.4
     dev:
       - Adds AREnableMakeOfferFlow flag to Echo - ash & dlevenson
