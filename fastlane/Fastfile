@@ -126,7 +126,9 @@ lane :promote_beta do
     submit_for_review: true,
     force: true, # Skip HTMl report verification
     skip_screenshots: true,
-    skip_binary_upload: true
+    skip_binary_upload: true,
+    add_id_info_uses_idfa: true,
+    add_id_info_tracks_install: true
   )
 
   puts "Tagging submission and pushing to GitHub."
