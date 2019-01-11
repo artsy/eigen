@@ -1,1 +1,0 @@
-Lots of bug fixes in this release, especially around live auctions. If you had trouble viewing images or lot info before, things should be fixed now. We've also included higher-resolution images for our iPad Pro users.

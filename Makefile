@@ -107,10 +107,15 @@ deploy:
 ### App Store Submission
 
 promote_beta_to_submission:
-  git push origin "$(LOCAL_BRANCH):app_store_submission" -f
+	git push origin "$(LOCAL_BRANCH):app_store_submission" -f
+	# Make sure there's a non-master branch to push
+	if [ "$(LOCAL_BRANCH)" == "master" ]; then git checkout -b "deploy_$(GIT_COMMIT_SHA)"; fi
+	echo 'Pushing changes so you can PR them back to master'
+	git push -u origin "$(LOCAL_BRANCH):$(BRANCH)" -f
+	open "https://github.com/artsy/eigen/pull/new/artsy:master...$(BRANCH)"
 
 promote_if_app_store_submission_branch:
-  if [ "$(LOCAL_BRANCH)" == "beta" ]; then make promote_beta; fi
+	if [ "$(LOCAL_BRANCH)" == "app_store_submission" ]; then make promote_beta; fi
 
 promote_beta: setup_fastlane_env
 	bundle exec fastlane update_plugins
