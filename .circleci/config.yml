@@ -60,11 +60,11 @@ jobs:
 
       - run:
           name: Install CocoaPods Specs If Necessary
-          command: cd Example ; bundle exec pod check || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+          command: cd Example ; bundle exec pod check --ignore-dev-pods || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
 
       - run:
           name: Install CocoaPods If Necessary
-          command: cd Example ; bundle exec pod check || bundle exec pod install
+          command: cd Example ; bundle exec pod check --ignore-dev-pods || bundle exec pod install
 
       - save_cache:
           key: v2-pods-{{ checksum "Example/Podfile.lock" }}
