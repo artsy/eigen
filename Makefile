@@ -107,10 +107,10 @@ deploy:
 ### App Store Submission
 
 promote_beta_to_submission:
-  git push origin "$(LOCAL_BRANCH):app_store_submission" -f
+	git push origin "$(LOCAL_BRANCH):app_store_submission" -f
 
 promote_if_app_store_submission_branch:
-  if [ "$(LOCAL_BRANCH)" == "beta" ]; then make promote_beta; fi
+	if [ "$(LOCAL_BRANCH)" == "beta" ]; then make promote_beta; fi
 
 promote_beta: setup_fastlane_env
 	bundle exec fastlane update_plugins
