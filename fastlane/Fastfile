@@ -120,9 +120,9 @@ lane :promote_beta do
   # app.builds are listed most recently first; we are assuming that we're shipping the most recent beta.
   beta = app.builds.first
 
-  puts "Let's deliver beta #{beta.train_version} (#{beta.build_version}) with build ID #{beta.id}."
+  puts "Let's deliver beta #{beta.train_version} (#{beta.build_version}) with build number #{latest_testflight_build_number}."
   deliver(
-    build_number: beta.id,
+    build_number: latest_testflight_build_number,
     submit_for_review: true,
     force: true, # Skip HTMl report verification
     skip_screenshots: true,
