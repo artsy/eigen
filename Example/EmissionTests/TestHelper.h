@@ -1,13 +1,13 @@
 #import <UIKit/UIKit.h>
 #import <Specta/Specta.h>
 
-#import <React/RCTTestRunner.h>
+#import "RCTTestRunner.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TestHelper : NSObject <UIApplicationDelegate>
 
-@property (nonatomic, strong, readonly) UIWindow *window;
+@property (nonatomic, strong, readwrite) UIWindow *window;
 @property (nonatomic, strong, readonly) NSURL *fixturesURL;
 @property (nonatomic, strong, readonly) NSArray<NSDictionary *> *artworksPages;
 @property (nonatomic, strong, readonly) NSArray<NSDictionary *> *artworks;
