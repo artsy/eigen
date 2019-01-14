@@ -1,10 +1,3 @@
-//
-//  BottomSheetViewController.swift
-//  Emission
-//
-//  Code reused from https://github.com/52inc/Pulley
-//
-
 import UIKit
 
 /**

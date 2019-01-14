@@ -60,6 +60,17 @@ target 'Emission' do
 
   # Map library
   pod 'react-native-mapbox-gl', :path => mapbox_path
+
+  target 'EmissionTests' do
+    inherit! :search_paths
+
+    # Used for standard Objective-C unit tests, analagous to Jest.
+    pod 'Specta'
+    pod 'Expecta'
+
+    # Necessary because we're bypassing the RCTTestCase subspec.
+    pod 'FBSnapshotTestCase'
+  end
 end
 
 plugin 'cocoapods-keys', {

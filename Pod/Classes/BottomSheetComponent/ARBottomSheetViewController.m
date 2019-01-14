@@ -1,16 +1,9 @@
-//
-//  ARBottomSheetViewController.m
-//  Emission
-//
-//  Created by Luc Succes on 1/3/19.
-//
-
 #import "ARBottomSheetViewController.h"
 
 @interface ARBottomSheetViewController ()
 
 @property (nonatomic) CGFloat lastY;
-
+@property (nonatomic, strong) UIPanGestureRecognizer *pan;
 
 
 @end
@@ -20,6 +13,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    
 }
 
 /*
