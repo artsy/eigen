@@ -122,7 +122,7 @@ export class Detail extends React.Component<Props, State> {
   }
 
   render() {
-    const { show, onMoreInformationPressed } = this.props
+    const { show, onMoreInformationPressed, onViewAllArtistsPressed } = this.props
     const { extraData, sections } = this.state
     return (
       <FlatList
@@ -133,6 +133,7 @@ export class Detail extends React.Component<Props, State> {
             show={show}
             onSaveShowPressed={this.handleSaveShow}
             onMoreInformationPressed={onMoreInformationPressed}
+            onViewAllArtistsPressed={onViewAllArtistsPressed}
           />
         }
         ItemSeparatorComponent={this.renderItemSeparator}

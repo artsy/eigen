@@ -110,6 +110,7 @@ fragment ShowHeader_show on Show {
   }
   artists {
     name
+    href
     __id
   }
   __id
@@ -323,14 +324,21 @@ v11 = {
 v12 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "href",
+  "args": null,
+  "storageKey": null
+},
+v13 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v13 = [
+v14 = [
   v5
 ],
-v14 = [
+v15 = [
   v8,
   v1
 ];
@@ -338,7 +346,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "06aefd373e8f31809849145e90981efe",
+  "id": "1c7068c846e583b9a3c71c90e226d09f",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -583,6 +591,7 @@ return {
             "plural": true,
             "selections": [
               v8,
+              v12,
               v1,
               v3,
               {
@@ -744,7 +753,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v12,
+                  v13,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -772,7 +781,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkOpeningBid",
                     "plural": false,
-                    "selections": v13
+                    "selections": v14
                   },
                   {
                     "kind": "LinkedField",
@@ -782,7 +791,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkCurrentBid",
                     "plural": false,
-                    "selections": v13
+                    "selections": v14
                   },
                   {
                     "kind": "ScalarField",
@@ -800,7 +809,7 @@ return {
                     "concreteType": "Sale",
                     "plural": false,
                     "selections": [
-                      v12,
+                      v13,
                       v1
                     ]
                   },
@@ -822,7 +831,7 @@ return {
                 ],
                 "concreteType": "Artist",
                 "plural": true,
-                "selections": v14
+                "selections": v15
               },
               {
                 "kind": "LinkedField",
@@ -832,15 +841,9 @@ return {
                 "args": null,
                 "concreteType": "Partner",
                 "plural": false,
-                "selections": v14
+                "selections": v15
               },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "href",
-                "args": null,
-                "storageKey": null
-              }
+              v12
             ]
           },
           {

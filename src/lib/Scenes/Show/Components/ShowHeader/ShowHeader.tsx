@@ -14,16 +14,17 @@ interface Props {
   show: ShowHeader_show
   onSaveShowPressed: () => Promise<void>
   onMoreInformationPressed: () => void
+  onViewAllArtistsPressed: () => void
 }
 
 const { height: windowHeight } = Dimensions.get("window")
-
 export class ShowHeader extends React.Component<Props> {
   render() {
     const {
       show: { artists, images, name, partner, exhibition_period, description },
       onMoreInformationPressed,
       onSaveShowPressed,
+      onViewAllArtistsPressed,
     } = this.props
 
     const hasImages = !!images.length
@@ -47,7 +48,7 @@ export class ShowHeader extends React.Component<Props> {
           />
         )}
         <Box px={2}>
-          <ArtistNamesList artists={artists} />
+          <ArtistNamesList artists={artists} component={this} viewAllArtists={onViewAllArtistsPressed} />
           <Spacer mt={1} />
           <InvertedButton
             text="Save show"
@@ -88,6 +89,7 @@ export const ShowHeaderContainer = createFragmentContainer(
       }
       artists {
         name
+        href
       }
     }
   `
