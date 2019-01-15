@@ -2,11 +2,11 @@
 #import "ARMapComponentViewController.h"
 #import "ARCityComponentViewController.h"
 
-#import "Emission-Swift.h"
+@import Pulley;
 
 @interface ARMapContainerViewController ()
 
-@property (nonatomic, readwrite) BottomSheetViewController *bottomSheetVC;
+@property (nonatomic, readwrite) PulleyViewController *bottomSheetVC;
 @property (nonatomic, readwrite) ARMapComponentViewController *mapVC;
 @property (nonatomic, readwrite) ARCityComponentViewController *cityVC;
 
@@ -20,7 +20,7 @@
     self.mapVC = [[ARMapComponentViewController alloc] init];
     self.cityVC = [[ARCityComponentViewController alloc] init];
 
-    self.bottomSheetVC = [[BottomSheetViewController alloc] initWithContentViewController:self.mapVC drawerViewController:self.cityVC];
+    self.bottomSheetVC = [[PulleyViewController alloc] initWithContentViewController:self.mapVC drawerViewController:self.cityVC];
 
     [self.view addSubview:self.bottomSheetVC.view];
     self.bottomSheetVC.view.frame = self.view.bounds;
