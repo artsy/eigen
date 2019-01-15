@@ -48,7 +48,7 @@ export class ShowHeader extends React.Component<Props> {
           />
         )}
         <Box px={2}>
-          <ArtistNamesList artists={artists} component={this} viewAllArtists={onViewAllArtistsPressed} />
+          <ArtistNamesList artists={artists} Component={this} viewAllArtists={onViewAllArtistsPressed} />
           <Spacer mt={1} />
           <InvertedButton
             text="Save show"
