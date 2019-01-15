@@ -61,6 +61,9 @@ target 'Emission' do
   # Map library
   pod 'react-native-mapbox-gl', :path => mapbox_path
 
+  # Bottom Sheet view controller for Map view
+  pod 'Pulley', :git => 'https://github.com/l2succes/Pulley.git', :branch => 'master'
+
   target 'EmissionTests' do
     inherit! :search_paths
 
