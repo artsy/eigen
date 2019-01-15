@@ -1,0 +1,1 @@
+export { GlobalMap } from "./GlobalMap"

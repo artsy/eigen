@@ -49,6 +49,7 @@
 		7F4FEE4321A36F7F00B8766A /* Back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F4FEE4021A36F7E00B8766A /* Back@2x.png */; };
 		7F4FEE4421A36F7F00B8766A /* Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F4FEE4121A36F7E00B8766A /* Back.png */; };
 		7F4FEE4521A36F7F00B8766A /* Back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F4FEE4221A36F7F00B8766A /* Back@3x.png */; };
+		7F6D717721CAA82D001BC122 /* Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6D717621CAA82D001BC122 /* Placeholder.swift */; };
 		DC0E8A345456472B4B0828A5 /* libPods-EmissionTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F07E47A447A6BE9EE66978 /* libPods-EmissionTests.a */; };
 /* End PBXBuildFile section */
 
@@ -152,6 +153,7 @@
 		7F4FEE4021A36F7E00B8766A /* Back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Back@2x.png"; sourceTree = "<group>"; };
 		7F4FEE4121A36F7E00B8766A /* Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Back.png; sourceTree = "<group>"; };
 		7F4FEE4221A36F7F00B8766A /* Back@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Back@3x.png"; sourceTree = "<group>"; };
+		7F6D717621CAA82D001BC122 /* Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholder.swift; sourceTree = "<group>"; };
 		9AB72C7CDF8351EF0ADB2E4D /* Pods-Emission.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.release.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.release.xcconfig"; sourceTree = "<group>"; };
 		B53B6F10A80F64A976B9F221 /* libPods-Emission.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Emission.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD6A42932C7B5D57AE022D1A /* Emission.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Emission.podspec; path = ../Emission.podspec; sourceTree = "<group>"; };
@@ -376,6 +378,7 @@
 				60DA49AA1EE7D219001FE871 /* EmissionPRChooseViewController.m */,
 				60EDA5711F4B2944007A6100 /* InternalWebViewController.h */,
 				60EDA5721F4B2944007A6100 /* InternalWebViewController.m */,
+				7F6D717621CAA82D001BC122 /* Placeholder.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -757,6 +760,7 @@
 				510DCB121CCA69EC0075E8CB /* main.m in Sources */,
 				6011C24E1DAF697B00CE54E5 /* EigenLikeAdminViewController.m in Sources */,
 				6011C23B1DAF5DD900CE54E5 /* ARRootViewController.m in Sources */,
+				7F6D717721CAA82D001BC122 /* Placeholder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -832,6 +836,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Artsy Dev Wildcard";
 				SWIFT_OBJC_BRIDGING_HEADER = "Emission/Emission-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -858,6 +863,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.Emission";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -866,6 +872,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 17DDC2B5E27740D462B9B1E4 /* Pods-EmissionTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -886,6 +893,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E347387A62A41620FEED9427 /* Pods-EmissionTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = EmissionTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
@@ -899,6 +907,7 @@
 		510DCB3C1CCA69ED0075E8CB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				INFOPLIST_FILE = EmissionUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
@@ -913,6 +922,7 @@
 		510DCB3D1CCA69ED0075E8CB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = EmissionUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1106,6 +1116,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.Emission";
 				SWIFT_OBJC_BRIDGING_HEADER = "Emission/Emission-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Deploy;
@@ -1114,6 +1125,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5D75FFB0E282ED7DB0B9141E /* Pods-EmissionTests.deploy.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				INFOPLIST_FILE = EmissionTests/Info.plist;
@@ -1128,6 +1140,7 @@
 		608A60D31F755E2F00B6EF83 /* Deploy */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				INFOPLIST_FILE = EmissionUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;

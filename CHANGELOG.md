@@ -42,6 +42,7 @@
 - Enable navigation link from Fair contextual detail to Gallery and Artist pages -ashley
 - All Exhibitors View bug fix
 - Add FairBooth screen - javamonn
+- Adds Map and City view container - luc
 - Adds native unit test suite and CI - ash
 
 ### 1.7.4
