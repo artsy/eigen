@@ -383,7 +383,6 @@
 - (ARCellData *)jumpToMap
 {
   return [self tappableCellDataWithTitle:@"Map" selection:^{
-    //
     id viewController = [[ARMapContainerViewController alloc] init];
     [self.navigationController pushViewController:viewController animated:YES];
 

@@ -1,10 +1,3 @@
-//
-//  ARMapContainerViewController.m
-//  Emission
-//
-//  Created by Luc Succes on 12/19/18.
-//
-
 #import "ARMapContainerViewController.h"
 #import "ARMapComponentViewController.h"
 #import "ARCityComponentViewController.h"
