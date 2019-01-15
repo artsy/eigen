@@ -43,6 +43,7 @@
 - All Exhibitors View bug fix - ashley
 - Add FairBooth screen - javamonn
 - Splits Fair screens into seperate query renderers - luc
+- Adds native unit test suite and CI - ash
 
 ### 1.7.4
 
