@@ -171,39 +171,32 @@ Array [
       ]
     }
   >
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      className="sc-bdVaJa bDWFJH"
-      ellipsizeMode="tail"
-      fontFamily="Unica77LL-Regular"
-      fontSize="12px"
-      lineHeight="16px"
+    <View
+      flexDirection="row"
+      flexWrap="wrap"
       style={
         Array [
           Object {
-            "fontFamily": "Unica77LL-Regular",
-            "fontSize": 12,
-            "lineHeight": 16,
+            "display": "flex",
+            "flexDirection": "row",
+            "flexWrap": "wrap",
           },
           undefined,
         ]
       }
     >
-      Works by
-       
       <Text
         accessible={true}
         allowFontScaling={true}
         className="sc-bdVaJa bDWFJH"
         ellipsizeMode="tail"
-        fontFamily="Unica77LL-Medium"
+        fontFamily="Unica77LL-Regular"
         fontSize="12px"
         lineHeight="16px"
         style={
           Array [
             Object {
-              "fontFamily": "Unica77LL-Medium",
+              "fontFamily": "Unica77LL-Regular",
               "fontSize": 12,
               "lineHeight": 16,
             },
@@ -211,32 +204,267 @@ Array [
           ]
         }
       >
-        Hans Hofmann, David Hockney, Sam Francis, Pablo Picasso, Wolf Kahn
+        Works by 
       </Text>
-       and 
-      <Text
+      <View
         accessible={true}
-        allowFontScaling={true}
-        className="sc-bdVaJa bDWFJH"
-        ellipsizeMode="tail"
-        fontFamily="Unica77LL-Medium"
-        fontSize="12px"
-        lineHeight="16px"
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+          Hans Hofmann, 
+        </Text>
+      </View>
+      <View
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+          David Hockney, 
+        </Text>
+      </View>
+      <View
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+          Sam Francis, 
+        </Text>
+      </View>
+      <View
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+          Pablo Picasso, 
+        </Text>
+      </View>
+      <View
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+          Wolf Kahn
+        </Text>
+      </View>
+      <View
+        flexDirection="row"
+        flexWrap="wrap"
         style={
           Array [
             Object {
-              "fontFamily": "Unica77LL-Medium",
-              "fontSize": 12,
-              "lineHeight": 16,
+              "display": "flex",
+              "flexDirection": "row",
+              "flexWrap": "wrap",
             },
             undefined,
           ]
         }
       >
-        13
-         more
-      </Text>
-    </Text>
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Regular"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+           and 
+        </Text>
+        <View
+          accessible={true}
+          isTVSelectable={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize="12px"
+            lineHeight="16px"
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 12,
+                  "lineHeight": 16,
+                },
+                undefined,
+              ]
+            }
+          >
+            13 more
+          </Text>
+        </View>
+      </View>
+    </View>
     <View
       mt={1}
       style={

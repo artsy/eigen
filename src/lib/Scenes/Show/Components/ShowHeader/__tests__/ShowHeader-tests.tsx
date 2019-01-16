@@ -8,11 +8,15 @@ it("looks correct when rendered", () => {
   const onMoreInformationPressed = () => {
     /** noop */
   }
+  const onViewAllArtistsPressed = () => {
+    /** noop */
+  }
   const comp = renderer.create(
     <ShowHeader
       show={ShowFixture as any}
       onSaveShowPressed={onSaveShowPressed}
       onMoreInformationPressed={onMoreInformationPressed}
+      onViewAllArtistsPressed={onViewAllArtistsPressed}
     />
   )
   expect(comp).toMatchSnapshot()

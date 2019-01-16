@@ -18,6 +18,7 @@ export type ShowHeader_show = {
     }) | null> | null;
     readonly artists: ReadonlyArray<({
         readonly name: string | null;
+        readonly href: string | null;
     }) | null> | null;
     readonly " $refType": ShowHeader_show$ref;
 };
@@ -135,6 +136,13 @@ return {
       "plural": true,
       "selections": [
         v0,
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "href",
+          "args": null,
+          "storageKey": null
+        },
         v1
       ]
     },
@@ -142,5 +150,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '476c664b51287a3ad9af0c6b93b70d1a';
+(node as any).hash = '70a74731b910cd34bb301d2b6e34a0ff';
 export default node;

@@ -252,6 +252,7 @@ fragment ShowHeader_show on Show {
   }
   artists {
     name
+    href
     __id
   }
   __id
@@ -413,32 +414,39 @@ v12 = {
 v13 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_followed",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
 v14 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "nationality",
+  "name": "is_followed",
   "args": null,
   "storageKey": null
 },
 v15 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "birthday",
+  "name": "nationality",
   "args": null,
   "storageKey": null
 },
 v16 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "deathday",
+  "name": "birthday",
   "args": null,
   "storageKey": null
 },
 v17 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "deathday",
+  "args": null,
+  "storageKey": null
+},
+v18 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -450,14 +458,14 @@ v17 = {
     v10
   ]
 },
-v18 = {
+v19 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_biddable",
   "args": null,
   "storageKey": null
 },
-v19 = {
+v20 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -483,49 +491,49 @@ v19 = {
     }
   ]
 },
-v20 = {
+v21 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "title",
   "args": null,
   "storageKey": null
 },
-v21 = {
+v22 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "date",
   "args": null,
   "storageKey": null
 },
-v22 = {
+v23 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "sale_message",
   "args": null,
   "storageKey": null
 },
-v23 = {
+v24 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_in_auction",
   "args": null,
   "storageKey": null
 },
-v24 = {
+v25 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_acquireable",
   "args": null,
   "storageKey": null
 },
-v25 = {
+v26 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v26 = {
+v27 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "sale",
@@ -555,7 +563,7 @@ v26 = {
       "args": null,
       "storageKey": null
     },
-    v25,
+    v26,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -566,10 +574,10 @@ v26 = {
     v1
   ]
 },
-v27 = [
+v28 = [
   v9
 ],
-v28 = {
+v29 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "sale_artwork",
@@ -586,7 +594,7 @@ v28 = {
       "args": null,
       "concreteType": "SaleArtworkOpeningBid",
       "plural": false,
-      "selections": v27
+      "selections": v28
     },
     {
       "kind": "LinkedField",
@@ -596,7 +604,7 @@ v28 = {
       "args": null,
       "concreteType": "SaleArtworkCurrentBid",
       "plural": false,
-      "selections": v27
+      "selections": v28
     },
     {
       "kind": "ScalarField",
@@ -614,18 +622,18 @@ v28 = {
       "concreteType": "Sale",
       "plural": false,
       "selections": [
-        v25,
+        v26,
         v1
       ]
     },
     v1
   ]
 },
-v29 = [
+v30 = [
   v3,
   v1
 ],
-v30 = {
+v31 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "artists",
@@ -640,9 +648,9 @@ v30 = {
   ],
   "concreteType": "Artist",
   "plural": true,
-  "selections": v29
+  "selections": v30
 },
-v31 = {
+v32 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "partner",
@@ -650,20 +658,13 @@ v31 = {
   "args": null,
   "concreteType": "Partner",
   "plural": false,
-  "selections": v29
-},
-v32 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "href",
-  "args": null,
-  "storageKey": null
+  "selections": v30
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
-  "id": "f316b4d6d53af61adca10e6a67936c46",
+  "id": "4f89b58ecafa4878829004c0bb7cc8c7",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -902,13 +903,14 @@ return {
             "plural": true,
             "selections": [
               v3,
+              v13,
               v1,
               v6,
-              v13,
               v14,
               v15,
               v16,
-              v17
+              v17,
+              v18
             ]
           },
           v1,
@@ -928,20 +930,20 @@ return {
             "concreteType": "Artwork",
             "plural": true,
             "selections": [
-              v18,
-              v1,
               v19,
+              v1,
               v20,
               v21,
               v22,
               v23,
-              v6,
               v24,
-              v26,
-              v28,
-              v30,
+              v6,
+              v25,
+              v27,
+              v29,
               v31,
-              v32
+              v32,
+              v13
             ]
           },
           {
@@ -1099,11 +1101,11 @@ return {
                   v6,
                   v1,
                   v3,
-                  v13,
                   v14,
                   v15,
                   v16,
-                  v17
+                  v17,
+                  v18
                 ]
               }
             ]
@@ -1245,20 +1247,20 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          v18,
-                          v6,
                           v19,
+                          v6,
                           v20,
                           v21,
                           v22,
                           v23,
-                          v1,
                           v24,
-                          v26,
-                          v28,
-                          v30,
+                          v1,
+                          v25,
+                          v27,
+                          v29,
                           v31,
                           v32,
+                          v13,
                           v2
                         ]
                       },
