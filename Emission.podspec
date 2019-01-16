@@ -30,6 +30,8 @@ podspec = Pod::Spec.new do |s|
   s.dependency 'Artsy+UIFonts', '>= 3.0.0'
   s.dependency 'Extraction', '>= 1.2.1'
 
+  s.dependency 'Pulley'
+
   # To ensure a consistent image cache between app/lib
   s.dependency 'SDWebImage', '>= 3.7.2', '< 4'
 
