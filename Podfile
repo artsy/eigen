@@ -80,7 +80,7 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission', path: '../emission'
+  pod 'Emission', '~> 1.8.0'
   pod 'yoga', podspec: 'https://raw.githubusercontent.com/artsy/emission/v1.5.2/externals/yoga/yoga.podspec.json'
   pod 'React/Core'
 
@@ -93,7 +93,7 @@ target 'Artsy' do
   # my fork let's the scripts folder exist inside the repo so that it can be executed in the post_install below
   pod 'react-native-mapbox-gl', git: 'https://github.com/orta/react-native-mapbox-gl.git', branch: '6_1_3_podspec_fix'
   pod 'SentryReactNative', git: 'https://github.com/getsentry/react-native-sentry.git', tag: 'v0.30.3'
-  pod 'Pulley', path: '../Pulley'
+  pod 'Pulley', :git => 'https://github.com/l2succes/Pulley.git', :branch => 'master'
 
   # Facebook
   pod 'FBSDKCoreKit', '~> 4.33'
