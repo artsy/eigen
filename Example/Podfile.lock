@@ -11,7 +11,7 @@ PODS:
     - "UIView+BooleanAnimations"
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.5)
-  - Emission (1.7.6):
+  - Emission (1.8.0):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.5)
@@ -161,7 +161,7 @@ DEPENDENCIES:
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Keys (from `Pods/CocoaPodsKeys`)
-  - Pulley (from `../../Pulley`)
+  - Pulley (from `https://github.com/l2succes/Pulley.git`, branch `master`)
   - "react-native-mapbox-gl (from `../node_modules/@mapbox/react-native-mapbox-gl`)"
   - React/DevSupport (from `../node_modules/react-native`)
   - SAMKeychain
@@ -210,7 +210,8 @@ EXTERNAL SOURCES:
   Keys:
     :path: Pods/CocoaPodsKeys
   Pulley:
-    :path: "../../Pulley"
+    :branch: master
+    :git: https://github.com/l2succes/Pulley.git
   React:
     :path: "../node_modules/react-native"
   react-native-mapbox-gl:
@@ -226,6 +227,9 @@ CHECKOUT OPTIONS:
   "Artsy+Authentication":
     :commit: 1b582675598c999726d9edacd3b8559e01cf7c48
     :git: https://github.com/artsy/Artsy-Authentication.git
+  Pulley:
+    :commit: d09b4f1907a8928cfe5870043f2b01d0a94719c0
+    :git: https://github.com/l2succes/Pulley.git
   tipsi-stripe:
     :commit: efcbc49dc7cf472099d8aa8c3fb2b64441fc5ea1
     :git: https://github.com/erikdstock/tipsi-stripe.git
@@ -250,7 +254,7 @@ SPEC CHECKSUMS:
   KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
-  Pulley: 88acb054e83e4cb2315795fc21d570a5f337ccd6
+  Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
   React: c237e42de9c70e5cac6eeb52b4cfd3a0910c1f00
   react-native-mapbox-gl: b42480060cdcc515dfa3d8e403fb4dd32466a1b9
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
@@ -263,6 +267,6 @@ SPEC CHECKSUMS:
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: 4c8dd3b90288ce2d3ab86593d16b0e8391251db7
+PODFILE CHECKSUM: a31864aad2cc92e4fb8c0c6511ef5630a57949e7
 
 COCOAPODS: 1.5.3
