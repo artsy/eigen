@@ -1,10 +1,4 @@
 {
-  "extends": [
-    "@artsy"
-  ],
-  "assignees": [
-    "orta",
-    "ashfurrow",
-    "javamonn"
-  ]
+  "extends": ["@artsy"],
+  "assignees": ["orta", "ashfurrow", "javamonn"]
 }
