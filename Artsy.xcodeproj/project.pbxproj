@@ -694,6 +694,8 @@
 		66A43C6B1CE48FA800FFD6ED /* SearchButtonWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C6A1CE48FA800FFD6ED /* SearchButtonWhite@2x.png */; };
 		6F3D85ED204DD876000BF304 /* Artwork+AttributionClassStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3D85EC204DD876000BF304 /* Artwork+AttributionClassStrings.m */; };
 		6F3D85F0204DDB37000BF304 /* ArtworkAttributionClassTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F3D85EE204DDB1C000BF304 /* ArtworkAttributionClassTests.m */; };
+		7F45982C21F09EC0002932ED /* nav_map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F45982A21F09EC0002932ED /* nav_map@2x.png */; };
+		7F45982D21F09EC0002932ED /* nav_map@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F45982B21F09EC0002932ED /* nav_map@3x.png */; };
 		7F45A1682003C7100063D6B5 /* conversations.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 7F45A1672003C7100063D6B5 /* conversations.graphql */; };
 		7FB8852720A3704700DE5E82 /* checkbox_unselected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8852420A3704600DE5E82 /* checkbox_unselected@3x.png */; };
 		7FB8852820A3704700DE5E82 /* checkbox_unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8852520A3704600DE5E82 /* checkbox_unselected@2x.png */; };
@@ -1923,6 +1925,8 @@
 		6F3D85EB204DD876000BF304 /* Artwork+AttributionClassStrings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Artwork+AttributionClassStrings.h"; sourceTree = "<group>"; };
 		6F3D85EC204DD876000BF304 /* Artwork+AttributionClassStrings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "Artwork+AttributionClassStrings.m"; sourceTree = "<group>"; };
 		6F3D85EE204DDB1C000BF304 /* ArtworkAttributionClassTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArtworkAttributionClassTests.m; sourceTree = "<group>"; };
+		7F45982A21F09EC0002932ED /* nav_map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_map@2x.png"; sourceTree = "<group>"; };
+		7F45982B21F09EC0002932ED /* nav_map@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_map@3x.png"; sourceTree = "<group>"; };
 		7F45A1672003C7100063D6B5 /* conversations.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = conversations.graphql; sourceTree = "<group>"; };
 		7FB8852420A3704600DE5E82 /* checkbox_unselected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox_unselected@3x.png"; sourceTree = "<group>"; };
 		7FB8852520A3704600DE5E82 /* checkbox_unselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox_unselected@2x.png"; sourceTree = "<group>"; };
@@ -4132,6 +4136,8 @@
 		608C6DBC1FAA10000044E235 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				7F45982A21F09EC0002932ED /* nav_map@2x.png */,
+				7F45982B21F09EC0002932ED /* nav_map@3x.png */,
 				608C6DBE1FAA11600044E235 /* nav_favs@2x.png */,
 				608C6DC41FAA11620044E235 /* nav_favs@3x.png */,
 				608C6DC11FAA11610044E235 /* nav_home@2x.png */,
@@ -5069,6 +5075,7 @@
 				5E4E32AE1E53884E00C7F724 /* paddle@2x.png in Resources */,
 				3C4AE98119094DAA009C0E8B /* MapAnnotation_Highlighted@2x.png in Resources */,
 				60E71A011B4C60AC008948FA /* Artsy_Logo.png in Resources */,
+				7F45982C21F09EC0002932ED /* nav_map@2x.png in Resources */,
 				605002E317D8912300C090B8 /* Artwork_Icon_Share@2x.png in Resources */,
 				7FB8852820A3704700DE5E82 /* checkbox_unselected@2x.png in Resources */,
 				E6FFEABD19C7925600A0D7DE /* splash_5@2x~ipad.jpg in Resources */,
@@ -5137,6 +5144,7 @@
 				7FB8852720A3704700DE5E82 /* checkbox_unselected@3x.png in Resources */,
 				3C4AE99719094F96009C0E8B /* ViewInRoom_Wall@2x.png in Resources */,
 				51E576091BFFA16C00A146C1 /* Artsy.Store.entitlements in Resources */,
+				7F45982D21F09EC0002932ED /* nav_map@3x.png in Resources */,
 				608C6DC81FAA11630044E235 /* nav_favs@2x.png in Resources */,
 				3C4AE98919094DAA009C0E8B /* MapAnnotation_Default@2x.png in Resources */,
 				604E081C2051C5B700785717 /* ARVIRBack@3x.png in Resources */,

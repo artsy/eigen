@@ -26,6 +26,7 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <MultiDelegate/AIMultiDelegate.h>
 #import <Emission/ARHomeComponentViewController.h>
+#import <Emission/ARMapContainerViewController.h>
 
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
@@ -179,6 +180,10 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
 - (BOOL)shouldUseWhiteBackground:(UIViewController *)viewController
 {
+    if ([viewController isKindOfClass:ARMapContainerViewController.class]) {
+        return YES;
+    }
+
     return [viewController isKindOfClass:ARComponentViewController.class] && [viewController preferredStatusBarStyle] == UIStatusBarStyleDefault;
 }
 
