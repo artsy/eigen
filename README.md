@@ -71,7 +71,7 @@ There is a comprehensive document covering [the various options](docs/debugging.
 
 ### Updating Dependencies
 
-We vendor some data from other repositories that you will sometimes need to update. Notably the GraphQL schema of metaphysics that Relay uses to generate queries from: `$ yarnsync-schema`
+We vendor some data from other repositories that you will sometimes need to update. Notably the GraphQL schema of metaphysics that Relay uses to generate queries from: `$ yarn sync-schema`
 
 ### Deploying Emission
 
