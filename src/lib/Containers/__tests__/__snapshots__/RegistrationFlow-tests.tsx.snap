@@ -93,8 +93,8 @@ exports[`renders properly with credit card 1`] = `
               className="sc-bwzfXH uTxCW"
               ellipsizeMode="tail"
               fontFamily="AGaramondPro-Semibold"
-              fontSize={22}
-              lineHeight={28}
+              fontSize="22px"
+              lineHeight="28px"
               m={4}
               mb={3}
               style={
@@ -116,14 +116,69 @@ exports[`renders properly with credit card 1`] = `
             >
               Register to bid
             </Text>
+            <View
+              alignItems="center"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                className="sc-bdVaJa bDWFJH"
+                ellipsizeMode="tail"
+                fontFamily="Unica77LL-Medium"
+                fontSize="16px"
+                lineHeight="22px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                15d  23h  07m  27s
+              </Text>
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                className="sc-bdVaJa bDWFJH"
+                ellipsizeMode="tail"
+                fontFamily="Unica77LL-Medium"
+                fontSize="12px"
+                lineHeight="16px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                Ends Jun 26, 3:30 PM
+              </Text>
+            </View>
             <Text
               accessible={true}
               allowFontScaling={true}
               className="sc-bwzfXH uTxCW"
               ellipsizeMode="tail"
               fontFamily="AGaramondPro-Semibold"
-              fontSize={18}
-              lineHeight={22}
+              fontSize="18px"
+              lineHeight="22px"
               mx={6}
               my={5}
               style={
@@ -219,8 +274,8 @@ exports[`renders properly with credit card 1`] = `
                       className="sc-bdVaJa bDWFJH"
                       ellipsizeMode="tail"
                       fontFamily="Unica77LL-Medium"
-                      fontSize={14}
-                      lineHeight={24}
+                      fontSize="14px"
+                      lineHeight="24px"
                       style={
                         Array [
                           Object {
@@ -249,8 +304,8 @@ exports[`renders properly with credit card 1`] = `
                       color="#666"
                       ellipsizeMode="tail"
                       fontFamily="Unica77LL-Regular"
-                      fontSize={14}
-                      lineHeight={24}
+                      fontSize="14px"
+                      lineHeight="24px"
                       style={
                         Array [
                           Object {
@@ -290,21 +345,21 @@ exports[`renders properly with credit card 1`] = `
                     <Text
                       accessible={true}
                       allowFontScaling={true}
+                      className="sc-bdVaJa bDWFJH"
+                      color="black"
                       ellipsizeMode="tail"
+                      fontFamily="Unica77LL-Medium"
+                      fontSize="14px"
+                      lineHeight="24px"
                       style={
                         Array [
                           Object {
-                            "fontSize": 12,
-                          },
-                          Object {
-                            "fontFamily": "AvantGardeGothicITC",
-                          },
-                          Object {
-                            "color": "rgba(0, 0, 0, 1)",
+                            "color": "black",
                             "fontFamily": "Unica77LL-Medium",
                             "fontSize": 14,
-                            "opacity": 1,
+                            "lineHeight": 24,
                           },
+                          undefined,
                         ]
                       }
                     >
@@ -376,8 +431,8 @@ exports[`renders properly with credit card 1`] = `
                 color="black60"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 mt={2}
                 style={
                   Array [
@@ -585,8 +640,8 @@ exports[`renders properly without credit card 1`] = `
               className="sc-bwzfXH uTxCW"
               ellipsizeMode="tail"
               fontFamily="AGaramondPro-Semibold"
-              fontSize={22}
-              lineHeight={28}
+              fontSize="22px"
+              lineHeight="28px"
               m={4}
               mb={3}
               style={
@@ -608,14 +663,69 @@ exports[`renders properly without credit card 1`] = `
             >
               Register to bid
             </Text>
+            <View
+              alignItems="center"
+              style={
+                Array [
+                  Object {
+                    "alignItems": "center",
+                    "display": "flex",
+                  },
+                  undefined,
+                ]
+              }
+            >
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                className="sc-bdVaJa bDWFJH"
+                ellipsizeMode="tail"
+                fontFamily="Unica77LL-Medium"
+                fontSize="16px"
+                lineHeight="22px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                15d  23h  07m  27s
+              </Text>
+              <Text
+                accessible={true}
+                allowFontScaling={true}
+                className="sc-bdVaJa bDWFJH"
+                ellipsizeMode="tail"
+                fontFamily="Unica77LL-Medium"
+                fontSize="12px"
+                lineHeight="16px"
+                style={
+                  Array [
+                    Object {
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 12,
+                      "lineHeight": 16,
+                    },
+                    undefined,
+                  ]
+                }
+              >
+                Ends Jun 26, 3:30 PM
+              </Text>
+            </View>
             <Text
               accessible={true}
               allowFontScaling={true}
               className="sc-bwzfXH uTxCW"
               ellipsizeMode="tail"
               fontFamily="AGaramondPro-Semibold"
-              fontSize={18}
-              lineHeight={22}
+              fontSize="18px"
+              lineHeight="22px"
               mx={6}
               my={5}
               style={
@@ -702,8 +812,8 @@ exports[`renders properly without credit card 1`] = `
                   className="sc-bwzfXH uTxCW"
                   ellipsizeMode="tail"
                   fontFamily="AGaramondPro-Semibold"
-                  fontSize={16}
-                  lineHeight={24}
+                  fontSize="16px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
@@ -752,8 +862,8 @@ exports[`renders properly without credit card 1`] = `
                   color="purple100"
                   ellipsizeMode="tail"
                   fontFamily="Unica77LL-Regular"
-                  fontSize={12}
-                  lineHeight={16}
+                  fontSize="12px"
+                  lineHeight="16px"
                   mb={1}
                   ml={3}
                   style={
@@ -837,8 +947,8 @@ exports[`renders properly without credit card 1`] = `
                   className="sc-bwzfXH uTxCW"
                   ellipsizeMode="tail"
                   fontFamily="AGaramondPro-Semibold"
-                  fontSize={16}
-                  lineHeight={24}
+                  fontSize="16px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
@@ -887,8 +997,8 @@ exports[`renders properly without credit card 1`] = `
                   color="purple100"
                   ellipsizeMode="tail"
                   fontFamily="Unica77LL-Regular"
-                  fontSize={12}
-                  lineHeight={16}
+                  fontSize="12px"
+                  lineHeight="16px"
                   mb={1}
                   ml={3}
                   style={
@@ -1000,8 +1110,8 @@ exports[`renders properly without credit card 1`] = `
                       className="sc-bdVaJa bDWFJH"
                       ellipsizeMode="tail"
                       fontFamily="Unica77LL-Medium"
-                      fontSize={14}
-                      lineHeight={24}
+                      fontSize="14px"
+                      lineHeight="24px"
                       style={
                         Array [
                           Object {
@@ -1030,8 +1140,8 @@ exports[`renders properly without credit card 1`] = `
                       color="#666"
                       ellipsizeMode="tail"
                       fontFamily="Unica77LL-Regular"
-                      fontSize={14}
-                      lineHeight={24}
+                      fontSize="14px"
+                      lineHeight="24px"
                       style={
                         Array [
                           Object {
@@ -1071,21 +1181,21 @@ exports[`renders properly without credit card 1`] = `
                     <Text
                       accessible={true}
                       allowFontScaling={true}
+                      className="sc-bdVaJa bDWFJH"
+                      color="black"
                       ellipsizeMode="tail"
+                      fontFamily="Unica77LL-Medium"
+                      fontSize="14px"
+                      lineHeight="24px"
                       style={
                         Array [
                           Object {
-                            "fontSize": 12,
-                          },
-                          Object {
-                            "fontFamily": "AvantGardeGothicITC",
-                          },
-                          Object {
-                            "color": "rgba(0, 0, 0, 1)",
+                            "color": "black",
                             "fontFamily": "Unica77LL-Medium",
                             "fontSize": 14,
-                            "opacity": 1,
+                            "lineHeight": 24,
                           },
+                          undefined,
                         ]
                       }
                     >
@@ -1157,8 +1267,8 @@ exports[`renders properly without credit card 1`] = `
                 color="black60"
                 ellipsizeMode="tail"
                 fontFamily="AGaramondPro-Regular"
-                fontSize={14}
-                lineHeight={18}
+                fontSize="14px"
+                lineHeight="18px"
                 mt={2}
                 style={
                   Array [

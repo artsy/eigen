@@ -32,38 +32,58 @@
       _predictionURL = [defaults stringForKey:ARStagingPredictionURLDefault];
     }
 
+    BOOL runningUnitTests = NSClassFromString(@"XCTest") != Nil;
+    BOOL runningCITests = NO;
     BOOL useMaster = ![[KSCrash sharedInstance] crashedLastLaunch];
     BOOL usePRBuild = NO;
     BOOL useRNP = NO;
     BOOL isSimulator = NO;
 
-#if TARGET_IPHONE_SIMULATOR
-    isSimulator = YES;
+#ifdef RUNNING_ON_CI
+    runningCITests = YES;
 #endif
+
+#if TARGET_IPHONE_SIMULATOR
+    isSimulator = !runningCITests; // Don't use RNP with unit tests
+#endif
+
+    NSLog(@"HI THERE %@", @(runningUnitTests));
 
     // Comment these out to set yourself up as though you were running the beta
     usePRBuild = [defaults boolForKey:ARUsePREmissionDefault];
     useMaster = useMaster || isSimulator;
     useRNP = isSimulator || [defaults boolForKey:ARForceUseRNPDefault];
 
-    if (usePRBuild) {
-      PRNetworkModel *pr = [PRNetworkModel new];
-      _jsCodeLocation = [pr fileURLForPRJavaScript];
+    if (runningUnitTests) {
+      if (runningCITests) {
+        // nop on CI, we'll fall back to the bundled Emission JS which we've just built with `yarn bundle:native-tests`
+        NSLog(@"ASH I AM HERE");
+      } else {
+        NSString *rnpString = [NSString stringWithFormat:@"http://%@:8081/Example/Emission/index.tests.ios.bundle?platform=ios&dev=true", packagerURL];
 
-      NSInteger prNumber = [defaults integerForKey:ARPREmissionIDDefault];
-      _emissionLoadedFromString = [NSString stringWithFormat:@"PR #%@", @(prNumber)];
+        _jsCodeLocation = [NSURL URLWithString:rnpString];
+        _emissionLoadedFromString = [NSString stringWithFormat:@"Using Unit Test RNP from %@", _jsCodeLocation.host];
+      }
+    } else {
+      if (usePRBuild) {
+        PRNetworkModel *pr = [PRNetworkModel new];
+        _jsCodeLocation = [pr fileURLForPRJavaScript];
 
-    } else if (useRNP) {
+        NSInteger prNumber = [defaults integerForKey:ARPREmissionIDDefault];
+        _emissionLoadedFromString = [NSString stringWithFormat:@"PR #%@", @(prNumber)];
+
+      } else if (useRNP) {
         NSString *rnpString = [NSString stringWithFormat:@"http://%@:8081/Example/Emission/index.ios.bundle?platform=ios&dev=true", packagerURL];
 
         _jsCodeLocation = [NSURL URLWithString:rnpString];
         _emissionLoadedFromString = [NSString stringWithFormat:@"Using RNP from %@", _jsCodeLocation.host];
 
-    } else if (useMaster) {
-      CommitNetworkModel *master = [CommitNetworkModel new];
-      _jsCodeLocation = [master fileURLForLatestCommitJavaScript];
+      } else if (useMaster) {
+        CommitNetworkModel *master = [CommitNetworkModel new];
+        _jsCodeLocation = [master fileURLForLatestCommitJavaScript];
 
-      _emissionLoadedFromString = @"Using latest JS from master";
+        _emissionLoadedFromString = @"Using latest JS from master";
+      }
     }
 
     // Fall back to the bundled Emission JS for release
@@ -72,6 +92,7 @@
 
       _jsCodeLocation = [emissionBundle URLForResource:@"Emission" withExtension:@"js"];
       _emissionLoadedFromString = @"Using bundled JS";
+      NSLog(@"%@", _emissionLoadedFromString);
     }
 
     _inSimulator = isSimulator;

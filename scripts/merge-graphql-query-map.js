@@ -5,7 +5,7 @@ const path = require("path")
 const spawnSync = require("child_process").spawnSync
 const chalk = require("chalk")
 
-function sh(command, cwd) {
+function sh(command, cwd, opts) {
   console.log("$ " + command)
   const task = spawnSync(command, { shell: true, cwd })
   if (task.status != 0) {
@@ -38,21 +38,28 @@ for (const key in queryMap) {
 
 fs.writeFileSync(mpQueryMapFilename, JSON.stringify(mpQueryMap, null, 2))
 
-console.log(chalk.green("=> Creating a new branch and pushing."))
+if (spawnSync("git diff --quiet", { shell: true, cwd: mpDir }).status !== 0) {
+  // There are no changes
+  // Clean up tmp folder
+  sh("rm -rf tmp")
+} else {
+  // There are querymap changes
+  console.log(chalk.green("=> Creating a new branch and pushing."))
 
-// Make a random branch, and a quick func for scoping commands
-const branch = "query_" + Math.round(Math.random() * 100000)
-const shMP = cmd => sh(cmd, mpDir)
+  // Make a random branch, and a quick func for scoping commands
+  const branch = "query_" + Math.round(Math.random() * 100000)
+  const shMP = cmd => sh(cmd, mpDir)
 
-// Make a commit with the new querymap
-shMP("git add .")
-shMP("git commit -m 'Update emission querymap JSON'")
-shMP("git checkout -b " + branch)
-shMP("git push origin " + branch)
+  // Make a commit with the new querymap
+  shMP("git add .")
+  shMP("git commit -m 'Update emission querymap JSON'")
+  shMP("git checkout -b " + branch)
+  shMP("git push origin " + branch)
 
-// Open your browser
-console.log(chalk.green("=> Opening you into a PR"))
-sh("open https://github.com/artsy/metaphysics/pull/new/" + branch)
+  // Open your browser
+  console.log(chalk.green("=> Opening you into a PR"))
+  sh("open https://github.com/artsy/metaphysics/pull/new/" + branch)
 
-// Clean up tmp folder
-sh("rm -rf tmp")
+  // Clean up tmp folder
+  sh("rm -rf tmp")
+}

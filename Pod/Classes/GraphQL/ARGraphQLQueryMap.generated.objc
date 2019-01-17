@@ -26,7 +26,8 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"ConfirmBidCreateCreditCardMutation": @"a833785410d332d2103d281ec3289db1",
       @"ConfirmBidRefetchQuery": @"9d766fcdd80005d680dd9145655fa6ab",
       @"ConversationsQuery": @"4af7bbf7a45f0e2bfd6f6eaf48108225",
-      @"DetailTestsQuery": @"8b0be1b5a1d40fce2440d50398029d89",
+      @"DetailTestsQuery": @"fead0e10ae2b1a54564699748982f45c",
+      @"FairHeaderTestsQuery": @"ed40ba0e438ae91a867e8fc168ddfd48",
       @"FavoriteArtistsQuery": @"49eaf7c16805166359df52ba8cb4f488",
       @"FavoriteArtworksQuery": @"ff178ed1459def1d7ad65169f5b419f0",
       @"FavoriteCategoriesQuery": @"814089538a6782827e8d5bc579eea904",
@@ -45,7 +46,7 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"QueryRenderersArtistQuery": @"497fd97a51b700b7884f42376cd1226e",
       @"QueryRenderersBidFlowQuery": @"79c707a33aa8c1d75ad950162468be2b",
       @"QueryRenderersConversationQuery": @"e497726ea96581d8a9f121a7c97823c8",
-      @"QueryRenderersFairQuery": @"be7a98bae37d1dea9e7c6388ee57dd5f",
+      @"QueryRenderersFairQuery": @"d911fa3eee8443d1842b659e5d12c646",
       @"QueryRenderersForYouQuery": @"94f115ac967e9864eb9ff97d2d355ae5",
       @"QueryRenderersGeneQuery": @"3e87733930ed99148d4327fc3c3cb5eb",
       @"QueryRenderersInboxQuery": @"927e7fd3e0d34488bc507ebd9d77bfa2",
@@ -53,7 +54,7 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"QueryRenderersMyProfileQuery": @"85b61ef601f4dbaf3081af4877d57680",
       @"QueryRenderersRegistrationFlowQuery": @"eae7174e3cddc451acab97c6294292ce",
       @"QueryRenderersSaleQuery": @"3c4605d630e87ab0a12859177dde7b5e",
-      @"QueryRenderersShowQuery": @"8108904deae4aa070745d2f8f127b20c",
+      @"QueryRenderersShowQuery": @"5059f28efb7615f0db0895f001a9c8a4",
       @"QueryRenderersWorksForYouQuery": @"c6c36bc2e916a4f3dc24d921dff6d4a5",
       @"RegistrationCreateBidderMutation": @"5adb7100b533a36426ccc810956fd44a",
       @"RegistrationCreateCreditCardMutation": @"c050c181a19740d6db7ff99b876e0dad",
@@ -64,9 +65,11 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"SalesRendererQuery": @"acac4f09f36c95ad5d0c21d3db6ddb79",
       @"SelectMaxBidRefetchQuery": @"add71fb5f4b666877f2e0b1415b2fb23",
       @"SendConversationMessageMutation": @"fafb72e0ce2a42a7b7eb5db013f1f6a5",
-      @"ShowTestsQuery": @"b6e942e959606d798983e3fedfa1a90b",
+      @"ShowQuery": @"2673be5e59c3ebbe627389467b82e31f",
+      @"ShowTestsQuery": @"ba25d83751943fdbccef4edc183a6e38",
       @"UpdateConversationMutation": @"376ca21dfba9abce2459940af585be24",
-      @"WorksForYouQuery": @"4989808ac1636ed9cc9f80598084a781"
+      @"WorksForYouQuery": @"4989808ac1636ed9cc9f80598084a781",
+      @"indexTestsQuery": @"0da93b60eb13c8cc448533098d4e40be"
     };
   });
   return queryMap[name];

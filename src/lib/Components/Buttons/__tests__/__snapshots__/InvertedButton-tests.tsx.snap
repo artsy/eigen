@@ -14,8 +14,9 @@ exports[`InvertedButton accepts textStyle prop 1`] = `
       "alignItems": "center",
       "backgroundColor": "rgba(51, 51, 51, 1)",
       "borderColor": "rgba(248, 248, 248, 1)",
+      "borderRadius": 2,
       "borderWidth": 1,
-      "height": 36,
+      "height": 46,
       "justifyContent": "center",
       "opacity": 1,
     }
@@ -24,24 +25,25 @@ exports[`InvertedButton accepts textStyle prop 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
+    className="sc-bdVaJa bDWFJH"
+    color="white"
     ellipsizeMode="tail"
+    fontFamily="Unica77LL-Medium"
+    fontSize="14px"
+    lineHeight="24px"
     style={
       Array [
         Object {
-          "fontSize": 12,
+          "color": "white",
+          "fontFamily": "Unica77LL-Medium",
+          "fontSize": 14,
+          "lineHeight": 24,
         },
-        Object {
-          "fontFamily": "AvantGardeGothicITC",
-        },
-        Object {
-          "color": "rgba(204, 204, 204, 1)",
-          "fontSize": 20,
-          "opacity": 1,
-        },
+        undefined,
       ]
     }
   >
-    I AM AN INVERTED BUTTON
+    I am an inverted button
   </Text>
 </View>
 `;
@@ -60,8 +62,9 @@ exports[`InvertedButton renders properly 1`] = `
       "alignItems": "center",
       "backgroundColor": "rgba(51, 51, 51, 1)",
       "borderColor": "rgba(248, 248, 248, 1)",
+      "borderRadius": 2,
       "borderWidth": 1,
-      "height": 36,
+      "height": 46,
       "justifyContent": "center",
       "opacity": 1,
     }
@@ -70,23 +73,25 @@ exports[`InvertedButton renders properly 1`] = `
   <Text
     accessible={true}
     allowFontScaling={true}
+    className="sc-bdVaJa bDWFJH"
+    color="white"
     ellipsizeMode="tail"
+    fontFamily="Unica77LL-Medium"
+    fontSize="14px"
+    lineHeight="24px"
     style={
       Array [
         Object {
-          "fontSize": 12,
+          "color": "white",
+          "fontFamily": "Unica77LL-Medium",
+          "fontSize": 14,
+          "lineHeight": 24,
         },
-        Object {
-          "fontFamily": "AvantGardeGothicITC",
-        },
-        Object {
-          "color": "rgba(204, 204, 204, 1)",
-          "opacity": 1,
-        },
+        undefined,
       ]
     }
   >
-    I AM AN INVERTED BUTTON
+    I am an inverted button
   </Text>
 </View>
 `;
@@ -105,6 +110,7 @@ exports[`InvertedButtonWithSpinner accepts textStyle prop 1`] = `
     Object {
       "alignItems": "center",
       "backgroundColor": "rgba(0, 0, 0, 1)",
+      "borderRadius": 2,
       "flex": 1,
       "justifyContent": "center",
     }
@@ -120,20 +126,20 @@ exports[`InvertedButtonWithSpinner accepts textStyle prop 1`] = `
       style={
         Array [
           Object {
-            "fontSize": 12,
-          },
-          Object {
-            "fontFamily": "AvantGardeGothicITC",
+            "fontSize": 14,
           },
           Object {
             "color": "white",
             "fontSize": 20,
             "opacity": 1,
           },
+          Object {
+            "fontFamily": "Unica77LL-Medium",
+          },
         ]
       }
     >
-      I AM AN INVERTED BUTTON
+      I am an inverted button
     </Text>
   </View>
 </View>
@@ -153,6 +159,7 @@ exports[`InvertedButtonWithSpinner renders properly 1`] = `
     Object {
       "alignItems": "center",
       "backgroundColor": "rgba(0, 0, 0, 1)",
+      "borderRadius": 2,
       "flex": 1,
       "justifyContent": "center",
     }
@@ -168,19 +175,19 @@ exports[`InvertedButtonWithSpinner renders properly 1`] = `
       style={
         Array [
           Object {
-            "fontSize": 12,
-          },
-          Object {
-            "fontFamily": "AvantGardeGothicITC",
+            "fontSize": 14,
           },
           Object {
             "color": "white",
             "opacity": 1,
           },
+          Object {
+            "fontFamily": "Unica77LL-Medium",
+          },
         ]
       }
     >
-      I AM AN INVERTED BUTTON
+      I am an inverted button
     </Text>
   </View>
 </View>

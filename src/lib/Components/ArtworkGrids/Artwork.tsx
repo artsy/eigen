@@ -36,7 +36,7 @@ interface Props {
   onPress?: (artworkID: string) => void
 }
 
-class Artwork extends React.Component<Props, any> {
+export class Artwork extends React.Component<Props, any> {
   handleTap() {
     this.props.onPress && this.props.artwork.id
       ? this.props.onPress(this.props.artwork.id)
@@ -76,14 +76,14 @@ class Artwork extends React.Component<Props, any> {
         <Badges>
           {is_acquireable && (
             <Badge>
-              <Sans fontSize={8} lineHeight={8} style={{ paddingTop: 1 }} weight="medium" size="1">
+              <Sans fontSize="8px" lineHeight={8} style={{ paddingTop: 1 }} weight="medium" size="1">
                 BUY NOW
               </Sans>
             </Badge>
           )}
           {is_biddable && (
             <Badge>
-              <Sans fontSize={8} lineHeight={8} style={{ paddingTop: 1 }} weight="medium" size="1">
+              <Sans fontSize="8px" lineHeight={8} style={{ paddingTop: 1 }} weight="medium" size="1">
                 BID
               </Sans>
             </Badge>
@@ -123,8 +123,8 @@ class Artwork extends React.Component<Props, any> {
 
     // TODO: Look into wrapping in <Theme> component to remove `color` util functions
     return (
-      <Flex flexDirection="row" mb={2}>
-        <Sans color={color("black100")} weight="medium" size="2">
+      <Flex flexDirection="row" mb="2px">
+        <Sans color={color("black100")} weight="medium" size="2" fontSize="13px" lineHeight="18px">
           {inClosedAuction ? "Bidding closed" : this.saleMessageOrBidInfo()}{" "}
         </Sans>
         <Sans size="2" color={color("black60")}>
@@ -136,12 +136,11 @@ class Artwork extends React.Component<Props, any> {
 
   saleMessageOrBidInfo() {
     const { artwork } = this.props
-    const { sale } = artwork
-    const inRunningAuction = sale && sale.is_auction && !sale.is_closed
+    const { sale, sale_artwork } = artwork
+    const inRunningAuction = sale && sale_artwork && sale.is_auction && !sale.is_closed
 
     if (inRunningAuction) {
-      const sa = artwork.sale_artwork
-      const currentBid = sa.current_bid
+      const currentBid = sale_artwork.current_bid
       return currentBid && currentBid.display
     }
 
@@ -165,10 +164,12 @@ class Artwork extends React.Component<Props, any> {
 
 const styles = StyleSheet.create({
   image: {
-    marginBottom: 10,
+    marginBottom: 8,
   },
   text: {
-    fontSize: 12,
+    fontSize: 14,
+    lineHeight: 18,
+    height: 18,
     color: colors["gray-semibold"],
   },
   artist: {

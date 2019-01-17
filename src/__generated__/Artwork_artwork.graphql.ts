@@ -32,7 +32,7 @@ export type Artwork_artwork = {
     }) | null;
     readonly image: ({
         readonly url: string | null;
-        readonly aspect_ratio: number | null;
+        readonly aspect_ratio: number;
     }) | null;
     readonly artists: ReadonlyArray<({
         readonly name: string | null;

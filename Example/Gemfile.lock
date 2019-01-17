@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/ashfurrow/cocoapods-check.git
+  revision: ded2d0195a902e54917bd935e5a015db1d6ef799
+  branch: ignore-dev-pods
+  specs:
+    cocoapods-check (1.0.2)
+      cocoapods (~> 1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -82,9 +90,10 @@ PLATFORMS
 
 DEPENDENCIES
   cocoapods
+  cocoapods-check!
   cocoapods-fix-react-native
   cocoapods-keys
   psych
 
 BUNDLED WITH
-   1.16.6
+   1.17.1

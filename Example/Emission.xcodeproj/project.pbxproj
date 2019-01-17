@@ -21,6 +21,9 @@
 		515926A8206BA0C000048C74 /* complete.queryMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 515926A7206BA0C000048C74 /* complete.queryMap.json */; };
 		515926AE206CF8BA00048C74 /* UITabBarDownloadsTemplate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 515926AD206CF8B900048C74 /* UITabBarDownloadsTemplate@2x.png */; };
 		51F3E9A41CF3B8A4004A2013 /* EigenLikeNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51F3E9A31CF3B8A4004A2013 /* EigenLikeNavigationController.m */; };
+		5E09C96B21E7B46B00207812 /* RCTTestModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E09C96621E7B46B00207812 /* RCTTestModule.m */; };
+		5E09C96C21E7B46B00207812 /* RCTSnapshotManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E09C96921E7B46B00207812 /* RCTSnapshotManager.m */; };
+		5E09C96D21E7B46B00207812 /* RCTTestRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E09C96A21E7B46B00207812 /* RCTTestRunner.m */; };
 		6011C23B1DAF5DD900CE54E5 /* ARRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C23A1DAF5DD900CE54E5 /* ARRootViewController.m */; };
 		6011C2451DAF61AF00CE54E5 /* ARAdminTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C23E1DAF61AF00CE54E5 /* ARAdminTableViewCell.m */; };
 		6011C2461DAF61AF00CE54E5 /* ARTickedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6011C2401DAF61AF00CE54E5 /* ARTickedTableViewCell.m */; };
@@ -43,6 +46,11 @@
 		60E4ABF71EE7D85000E8C3B1 /* LoadingSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 60E4ABF61EE7D85000E8C3B1 /* LoadingSpinner.m */; };
 		60EDA5731F4B2944007A6100 /* InternalWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 60EDA5721F4B2944007A6100 /* InternalWebViewController.m */; };
 		60F61A8B1DAF982B00A72101 /* AuthenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 60F61A8A1DAF982B00A72101 /* AuthenticationManager.m */; };
+		7F4FEE4321A36F7F00B8766A /* Back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F4FEE4021A36F7E00B8766A /* Back@2x.png */; };
+		7F4FEE4421A36F7F00B8766A /* Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F4FEE4121A36F7E00B8766A /* Back.png */; };
+		7F4FEE4521A36F7F00B8766A /* Back@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F4FEE4221A36F7F00B8766A /* Back@3x.png */; };
+		7F6D717721CAA82D001BC122 /* Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6D717621CAA82D001BC122 /* Placeholder.swift */; };
+		DC0E8A345456472B4B0828A5 /* libPods-EmissionTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4F07E47A447A6BE9EE66978 /* libPods-EmissionTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +73,7 @@
 /* Begin PBXFileReference section */
 		02E9860078C8122DA3D55F0F /* Pods-Emission.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.debug.xcconfig"; sourceTree = "<group>"; };
 		163341760E6AD3C2BD2501B6 /* Pods-Emission.deploy.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.deploy.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.deploy.xcconfig"; sourceTree = "<group>"; };
+		17DDC2B5E27740D462B9B1E4 /* Pods-EmissionTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmissionTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EmissionTests/Pods-EmissionTests.debug.xcconfig"; sourceTree = "<group>"; };
 		34C566E5214C4AAA00479C22 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		3A7D41FC213F3CAC009618F5 /* ARLabOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLabOptions.m; sourceTree = "<group>"; };
 		3A7D41FD213F3CAD009618F5 /* ARLabOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLabOptions.h; sourceTree = "<group>"; };
@@ -90,6 +99,13 @@
 		515926AD206CF8B900048C74 /* UITabBarDownloadsTemplate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UITabBarDownloadsTemplate@2x.png"; sourceTree = "<group>"; };
 		51F3E9A21CF3B8A4004A2013 /* EigenLikeNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EigenLikeNavigationController.h; sourceTree = "<group>"; };
 		51F3E9A31CF3B8A4004A2013 /* EigenLikeNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EigenLikeNavigationController.m; sourceTree = "<group>"; };
+		5D75FFB0E282ED7DB0B9141E /* Pods-EmissionTests.deploy.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmissionTests.deploy.xcconfig"; path = "Pods/Target Support Files/Pods-EmissionTests/Pods-EmissionTests.deploy.xcconfig"; sourceTree = "<group>"; };
+		5E09C96521E7B46B00207812 /* RCTSnapshotManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTSnapshotManager.h; sourceTree = "<group>"; };
+		5E09C96621E7B46B00207812 /* RCTTestModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTTestModule.m; sourceTree = "<group>"; };
+		5E09C96721E7B46B00207812 /* RCTTestModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTTestModule.h; sourceTree = "<group>"; };
+		5E09C96821E7B46B00207812 /* RCTTestRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTTestRunner.h; sourceTree = "<group>"; };
+		5E09C96921E7B46B00207812 /* RCTSnapshotManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTSnapshotManager.m; sourceTree = "<group>"; };
+		5E09C96A21E7B46B00207812 /* RCTTestRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTTestRunner.m; sourceTree = "<group>"; };
 		6011C2391DAF5DD900CE54E5 /* ARRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRootViewController.h; sourceTree = "<group>"; };
 		6011C23A1DAF5DD900CE54E5 /* ARRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRootViewController.m; sourceTree = "<group>"; };
 		6011C23D1DAF61AF00CE54E5 /* ARAdminTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAdminTableViewCell.h; sourceTree = "<group>"; };
@@ -134,10 +150,16 @@
 		60EDA5721F4B2944007A6100 /* InternalWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InternalWebViewController.m; sourceTree = "<group>"; };
 		60F61A891DAF982A00A72101 /* AuthenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthenticationManager.h; sourceTree = "<group>"; };
 		60F61A8A1DAF982B00A72101 /* AuthenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthenticationManager.m; sourceTree = "<group>"; };
+		7F4FEE4021A36F7E00B8766A /* Back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Back@2x.png"; sourceTree = "<group>"; };
+		7F4FEE4121A36F7E00B8766A /* Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Back.png; sourceTree = "<group>"; };
+		7F4FEE4221A36F7F00B8766A /* Back@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Back@3x.png"; sourceTree = "<group>"; };
+		7F6D717621CAA82D001BC122 /* Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholder.swift; sourceTree = "<group>"; };
 		9AB72C7CDF8351EF0ADB2E4D /* Pods-Emission.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.release.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.release.xcconfig"; sourceTree = "<group>"; };
 		B53B6F10A80F64A976B9F221 /* libPods-Emission.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Emission.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD6A42932C7B5D57AE022D1A /* Emission.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Emission.podspec; path = ../Emission.podspec; sourceTree = "<group>"; };
+		C4F07E47A447A6BE9EE66978 /* libPods-EmissionTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-EmissionTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB1BB078CB1708CE8106DA15 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		E347387A62A41620FEED9427 /* Pods-EmissionTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmissionTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EmissionTests/Pods-EmissionTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +176,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC0E8A345456472B4B0828A5 /* libPods-EmissionTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +220,7 @@
 		510DCB291CCA69EC0075E8CB /* EmissionTests */ = {
 			isa = PBXGroup;
 			children = (
+				5E09C95221E7A0D500207812 /* RCTTest */,
 				510DCB2A1CCA69EC0075E8CB /* OpaqueImageViewComponentTests.m */,
 				510DCB2C1CCA69EC0075E8CB /* Info.plist */,
 				510E95151CCEC22C00BDF098 /* TestHelper.h */,
@@ -222,6 +246,19 @@
 			);
 			path = Resources;
 			sourceTree = SOURCE_ROOT;
+		};
+		5E09C95221E7A0D500207812 /* RCTTest */ = {
+			isa = PBXGroup;
+			children = (
+				5E09C96521E7B46B00207812 /* RCTSnapshotManager.h */,
+				5E09C96921E7B46B00207812 /* RCTSnapshotManager.m */,
+				5E09C96721E7B46B00207812 /* RCTTestModule.h */,
+				5E09C96621E7B46B00207812 /* RCTTestModule.m */,
+				5E09C96821E7B46B00207812 /* RCTTestRunner.h */,
+				5E09C96A21E7B46B00207812 /* RCTTestRunner.m */,
+			);
+			path = RCTTest;
+			sourceTree = "<group>";
 		};
 		6011C23C1DAF619700CE54E5 /* Admin Tableview Cells */ = {
 			isa = PBXGroup;
@@ -291,6 +328,9 @@
 				60A1A77B1DA3A23C005E3357 /* BackArrow@2x.png */,
 				60A1A77C1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png */,
 				60A1A77D1DA3A23C005E3357 /* BackArrowBlack@2x.png */,
+				7F4FEE4121A36F7E00B8766A /* Back.png */,
+				7F4FEE4021A36F7E00B8766A /* Back@2x.png */,
+				7F4FEE4221A36F7F00B8766A /* Back@3x.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -338,6 +378,7 @@
 				60DA49AA1EE7D219001FE871 /* EmissionPRChooseViewController.m */,
 				60EDA5711F4B2944007A6100 /* InternalWebViewController.h */,
 				60EDA5721F4B2944007A6100 /* InternalWebViewController.m */,
+				7F6D717621CAA82D001BC122 /* Placeholder.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -372,6 +413,7 @@
 				34C566E5214C4AAA00479C22 /* AVFoundation.framework */,
 				607673A21ECC4C9F005848B5 /* XCTest.framework */,
 				B53B6F10A80F64A976B9F221 /* libPods-Emission.a */,
+				C4F07E47A447A6BE9EE66978 /* libPods-EmissionTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -382,6 +424,9 @@
 				02E9860078C8122DA3D55F0F /* Pods-Emission.debug.xcconfig */,
 				9AB72C7CDF8351EF0ADB2E4D /* Pods-Emission.release.xcconfig */,
 				163341760E6AD3C2BD2501B6 /* Pods-Emission.deploy.xcconfig */,
+				17DDC2B5E27740D462B9B1E4 /* Pods-EmissionTests.debug.xcconfig */,
+				5D75FFB0E282ED7DB0B9141E /* Pods-EmissionTests.deploy.xcconfig */,
+				E347387A62A41620FEED9427 /* Pods-EmissionTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -416,6 +461,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 510DCB3F1CCA69ED0075E8CB /* Build configuration list for PBXNativeTarget "EmissionTests" */;
 			buildPhases = (
+				26CA73EDB939BB2466B1F25A /* [CP] Check Pods Manifest.lock */,
 				510DCB221CCA69EC0075E8CB /* Sources */,
 				510DCB231CCA69EC0075E8CB /* Frameworks */,
 				510DCB241CCA69EC0075E8CB /* Resources */,
@@ -506,11 +552,14 @@
 			files = (
 				510E94FD1CCA828900BDF098 /* LaunchScreen.xib in Resources */,
 				6011C2561DAF835900CE54E5 /* logo@2x.png in Resources */,
+				7F4FEE4421A36F7F00B8766A /* Back.png in Resources */,
 				515926A8206BA0C000048C74 /* complete.queryMap.json in Resources */,
 				60A1A77F1DA3A23C005E3357 /* BackArrow_Highlighted@2x.png in Resources */,
 				515926AE206CF8BA00048C74 /* UITabBarDownloadsTemplate@2x.png in Resources */,
 				60A1A7801DA3A23C005E3357 /* BackArrowBlack@2x.png in Resources */,
 				510DCB1D1CCA69EC0075E8CB /* Assets.xcassets in Resources */,
+				7F4FEE4321A36F7F00B8766A /* Back@2x.png in Resources */,
+				7F4FEE4521A36F7F00B8766A /* Back@3x.png in Resources */,
 				60A1A77E1DA3A23C005E3357 /* BackArrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -532,6 +581,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		26CA73EDB939BB2466B1F25A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-EmissionTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3531E0CB4D0C66204FFF9D4A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -689,6 +760,7 @@
 				510DCB121CCA69EC0075E8CB /* main.m in Sources */,
 				6011C24E1DAF697B00CE54E5 /* EigenLikeAdminViewController.m in Sources */,
 				6011C23B1DAF5DD900CE54E5 /* ARRootViewController.m in Sources */,
+				7F6D717721CAA82D001BC122 /* Placeholder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -698,6 +770,9 @@
 			files = (
 				510DCB2B1CCA69EC0075E8CB /* OpaqueImageViewComponentTests.m in Sources */,
 				510E95141CCEB84F00BDF098 /* TestHelper.m in Sources */,
+				5E09C96B21E7B46B00207812 /* RCTTestModule.m in Sources */,
+				5E09C96D21E7B46B00207812 /* RCTTestRunner.m in Sources */,
+				5E09C96C21E7B46B00207812 /* RCTSnapshotManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -761,6 +836,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Artsy Dev Wildcard";
 				SWIFT_OBJC_BRIDGING_HEADER = "Emission/Emission-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -787,15 +863,23 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.Emission";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 		510DCB3A1CCA69ED0075E8CB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 17DDC2B5E27740D462B9B1E4 /* Pods-EmissionTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"FB_REFERENCE_IMAGE_DIR=\"\\\"$(SOURCE_ROOT)/$(TARGET_NAME)/ReferenceImages\\\"\"",
+				);
 				INFOPLIST_FILE = EmissionTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -807,7 +891,9 @@
 		};
 		510DCB3B1CCA69ED0075E8CB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E347387A62A41620FEED9427 /* Pods-EmissionTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = EmissionTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
@@ -821,6 +907,7 @@
 		510DCB3C1CCA69ED0075E8CB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				INFOPLIST_FILE = EmissionUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
@@ -835,6 +922,7 @@
 		510DCB3D1CCA69ED0075E8CB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = EmissionUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1028,13 +1116,16 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.Emission";
 				SWIFT_OBJC_BRIDGING_HEADER = "Emission/Emission-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Deploy;
 		};
 		608A60D21F755E2F00B6EF83 /* Deploy */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5D75FFB0E282ED7DB0B9141E /* Pods-EmissionTests.deploy.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				INFOPLIST_FILE = EmissionTests/Info.plist;
@@ -1049,6 +1140,7 @@
 		608A60D31F755E2F00B6EF83 /* Deploy */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				INFOPLIST_FILE = EmissionUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;

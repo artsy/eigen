@@ -222,6 +222,7 @@ exports[`state looks okay by default 1`] = `
                   "alignItems": "center",
                   "backgroundColor": "rgba(255, 255, 255, 1)",
                   "borderColor": "rgba(229, 229, 229, 1)",
+                  "borderRadius": 2,
                   "borderWidth": 1,
                   "height": 26,
                   "justifyContent": "center",
@@ -233,19 +234,21 @@ exports[`state looks okay by default 1`] = `
               <Text
                 accessible={true}
                 allowFontScaling={true}
+                className="sc-bdVaJa bDWFJH"
+                color="black"
                 ellipsizeMode="tail"
+                fontFamily="Unica77LL-Medium"
+                fontSize="14px"
+                lineHeight="24px"
                 style={
                   Array [
                     Object {
-                      "fontSize": 12,
+                      "color": "black",
+                      "fontFamily": "Unica77LL-Medium",
+                      "fontSize": 14,
+                      "lineHeight": 24,
                     },
-                    Object {
-                      "fontFamily": "AvantGardeGothicITC",
-                    },
-                    Object {
-                      "color": "rgba(0, 0, 0, 1)",
-                      "opacity": 1,
-                    },
+                    undefined,
                   ]
                 }
               >

@@ -30,6 +30,7 @@
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARShowComponentViewController.h>
+#import <Emission/ARMapContainerViewController.h>
 
 #import "ARStorybookComponentViewController.h"
 
@@ -73,7 +74,7 @@
 
   ARSectionData *labsSection = [self labsSection];
   [tableViewData addSectionData:labsSection];
-  
+
   // TODO: Deprecate
   // These were nice quick for getting bootstrapped, but they should be storybooks
   // so that they can be controlled in JS and deployed with PRs.
@@ -89,7 +90,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
-  
+
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     BOOL autoJump = [[NSUserDefaults standardUserDefaults] boolForKey:ARJumpStraightIntoStorybooks];
@@ -109,6 +110,7 @@
 
   [sectionData addCellData:self.jumpToShow];
   [sectionData addCellData:self.jumpToFair];
+  [sectionData addCellData:self.jumpToMap];
   [sectionData addCellData:self.jumpToArtist];
   [sectionData addCellData:self.jumpToRandomArtist];
   [sectionData addCellData:self.jumpToHomepage];
@@ -139,23 +141,23 @@
 {
   ARSectionData *labsSectionData = [[ARSectionData alloc] init];
   labsSectionData.headerTitle = @"Labs";
-  
+
   NSArray *options = [ARLabOptions labsOptions];
   for (NSInteger index = 0; index < options.count; index++) {
     NSString *key = options[index];
     NSString *title = [ARLabOptions descriptionForOption:key];
     BOOL requiresRestart = [[ARLabOptions labsOptionsThatRequireRestart] indexOfObject:title] != NSNotFound;
-    
+
     ARCellData *cellData = [[ARCellData alloc] initWithIdentifier:ARLabOptionCell];
     [cellData setCellConfigurationBlock:^(UITableViewCell *cell) {
       cell.textLabel.text = requiresRestart ? [title stringByAppendingString:@" (restarts)"] : title;
       cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:[ARLabOptions boolForOption:key]];
     }];
-    
+
     [cellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
       BOOL currentSelection = [ARLabOptions boolForOption:key];
       [ARLabOptions setBool:!currentSelection forOption:key];
-      
+
       if (requiresRestart) {
         // Show checkmark.
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -165,11 +167,11 @@
         AppDelegate *appDelegate = (id)[UIApplication sharedApplication].delegate;
         [appDelegate reloadEmission];
       }
-      
+
       UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
       [(ARAnimatedTickView *)cell.accessoryView setSelected:!currentSelection animated:YES];
     }];
-    
+
     [labsSectionData addCellData:cellData];
   }
   return labsSectionData;
@@ -187,17 +189,17 @@
 {
   BOOL autoJump = [[NSUserDefaults standardUserDefaults] boolForKey:ARJumpStraightIntoStorybooks];
   NSString *title = autoJump ? @"Stop auto-jumping into Storybooks" : @"Jump into Storybooks on launch";
-  
+
   ARCellData *autoSwitchCellData = [[ARCellData alloc] initWithIdentifier:AROptionCell];
   [autoSwitchCellData setCellConfigurationBlock:^(UITableViewCell *cell) {
     cell.textLabel.text = title;
     cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:autoJump];
   }];
-  
+
   [autoSwitchCellData setCellSelectionBlock:^(UITableView *tableView, NSIndexPath *indexPath) {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     cell.accessoryView = [[ARAnimatedTickView alloc] initWithSelection:!autoJump];
-    
+
     [self showAlertViewWithTitle:@"Confirm Switch" message:@"Switching auto-storybooks." actionTitle:@"Do it" actionHandler:^{
       [[NSUserDefaults standardUserDefaults] setBool:!autoJump forKey:ARJumpStraightIntoStorybooks];
       [[NSUserDefaults standardUserDefaults] synchronize];
@@ -365,7 +367,7 @@
 - (ARCellData *)jumpToShow
 {
   return [self tappableCellDataWithTitle:@"Show" selection:^{
-    id viewController = [[ARShowComponentViewController alloc] initWithShowID:@"joseph-k-levene-fine-art-ltd-icons-online"];
+    id viewController = [[ARShowComponentViewController alloc] initWithShowID:@"blue-lotus-gallery-the-way-we-were"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
@@ -373,8 +375,17 @@
 - (ARCellData *)jumpToFair
 {
   return [self tappableCellDataWithTitle:@"Fair" selection:^{
-    id viewController = [[ARFairComponentViewController alloc] initWithFairID:@"the-armory-show-2014"];
+    id viewController = [[ARFairComponentViewController alloc] initWithFairID:@"art-basel-in-miami-beach-2018"];
     [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+- (ARCellData *)jumpToMap
+{
+  return [self tappableCellDataWithTitle:@"Map" selection:^{
+    id viewController = [[ARMapContainerViewController alloc] init];
+    [self.navigationController pushViewController:viewController animated:YES];
+
   }];
 }
 
@@ -407,6 +418,8 @@
 
       [[NSUserDefaults standardUserDefaults] setBool:!useStaging forKey:ARUseStagingDefault];
       [[NSUserDefaults standardUserDefaults] synchronize];
+      [[[AREmission sharedInstance] graphQLQueryCacheModule] clearAll];
+
       exit(0);
     }];
   }];

@@ -1,18 +1,21 @@
 import { Box, Separator } from "@artsy/palette"
 import { Detail_show } from "__generated__/Detail_show.graphql"
 import React from "react"
-import { FlatList, ViewProperties } from "react-native"
+import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { ArtistsContainer as Artists } from "../Components/Artists"
-import { ArtworksContainer as Artworks } from "../Components/Artworks"
-import { LocationContainer as Location } from "../Components/Location"
+import { HoursCollapsible } from "lib/Components/HoursCollapsible"
+import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
+import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Components/Show/ShowArtistsPreview"
+import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
 import { ShowHeaderContainer as ShowHeader } from "../Components/ShowHeader"
-import { Shows } from "../Components/Shows"
+import { ShowsContainer as Shows } from "../Components/Shows"
 
-interface Props extends ViewProperties {
+interface Props {
   show: Detail_show
   onMoreInformationPressed: () => void
+  onViewAllArtistsPressed: () => void
+  onViewAllArtworksPressed: () => void
 }
 
 interface State {
@@ -20,57 +23,94 @@ interface State {
     type: "location" | "artworks" | "artists" | "shows"
     data: any
   }>
+  extraData?: { animatedValue: { height: number } }
 }
 
 export class Detail extends React.Component<Props, State> {
-  state = {
+  state: State = {
     sections: [],
   }
 
   componentDidMount() {
-    const { show } = this.props
+    const { show, onViewAllArtworksPressed, onViewAllArtistsPressed } = this.props
     const sections = []
 
     sections.push({
       type: "location",
-      data: show,
+      data: {
+        location: show.location,
+        partnerName: show.partner.name,
+        partnerType: show.partner.type,
+      },
+    })
+
+    sections.push({
+      type: "hours",
+      data: {
+        hours: show.location.displayDaySchedules,
+      },
     })
 
     sections.push({
       type: "artworks",
-      data: show,
+      data: {
+        show,
+        onViewAllArtworksPressed,
+      },
     })
 
     sections.push({
       type: "artists",
-      data: show,
+      data: {
+        show,
+        onViewAllArtistsPressed,
+      },
     })
 
-    // TODO: Add shows data
     sections.push({
       type: "shows",
-      data: [{ __id: "foo" }],
+      data: show,
     })
 
     this.setState({ sections })
   }
 
-  renderItemSeparator = () => (
-    <Box py={2} px={2}>
-      <Separator />
-    </Box>
-  )
+  renderItemSeparator = item => {
+    if (item && item.leadingItem.type === "location") {
+      return null
+    }
+    return (
+      <Box py={2} px={2}>
+        <Separator />
+      </Box>
+    )
+  }
+
+  handleAnimationFrame = animatedValue => {
+    /**
+     * If children change their size on animation (e.g. HoursCollapsible), we need a sentinel value
+     * in state in order to trigger a re-render, as FlatList statically sizes child cells.
+     */
+    this.setState({
+      extraData: {
+        ...this.state.extraData,
+        animatedValue,
+      },
+    })
+  }
 
   renderItem = ({ item: { data, type } }) => {
     switch (type) {
       case "location":
-        return <Location show={data} />
+        return <LocationMap {...data} />
       case "artworks":
-        return <Artworks show={data} />
+        return <ShowArtworksPreview {...data} />
       case "artists":
-        return <Artists show={data} />
+        return <ShowArtistsPreview {...data} />
       case "shows":
         return <Shows show={data} />
+      case "hours":
+        return <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} />
       default:
         return null
     }
@@ -82,19 +122,19 @@ export class Detail extends React.Component<Props, State> {
   }
 
   render() {
-    const { show, onMoreInformationPressed } = this.props
+    const { show, onMoreInformationPressed, onViewAllArtistsPressed } = this.props
+    const { extraData, sections } = this.state
     return (
       <FlatList
-        data={this.state.sections}
+        data={sections}
+        extraData={extraData}
         ListHeaderComponent={
-          <>
-            <ShowHeader
-              show={show}
-              onSaveShowPressed={this.handleSaveShow}
-              onMoreInformationPressed={onMoreInformationPressed}
-            />
-            {this.renderItemSeparator()}
-          </>
+          <ShowHeader
+            show={show}
+            onSaveShowPressed={this.handleSaveShow}
+            onMoreInformationPressed={onMoreInformationPressed}
+            onViewAllArtistsPressed={onViewAllArtistsPressed}
+          />
         }
         ItemSeparatorComponent={this.renderItemSeparator}
         renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
@@ -111,23 +151,38 @@ export const DetailContainer = createFragmentContainer(
       id
       name
       description
-
+      city
+      location {
+        id
+        address
+        address_2
+        city
+        state
+        postal_code
+        displayDaySchedules {
+          days
+          hours
+        }
+      }
+      images {
+        id
+      }
       ...ShowHeader_show
-      ...Location_show
-      ...Artworks_show
-      ...Artists_show
+      ...ShowArtworksPreview_show
+      ...ShowArtistsPreview_show
+      ...Shows_show
+      location {
+        ...LocationMap_location
+      }
 
       status
-      counts {
-        artworks
-        eligible_artworks
-      }
       partner {
         ... on ExternalPartner {
           name
         }
         ... on Partner {
           name
+          type
         }
       }
     }

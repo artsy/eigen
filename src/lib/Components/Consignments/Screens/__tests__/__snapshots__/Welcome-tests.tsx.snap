@@ -424,6 +424,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                     "alignItems": "center",
                     "backgroundColor": "rgba(255, 255, 255, 1)",
                     "borderColor": "rgba(255, 255, 255, 1)",
+                    "borderRadius": 2,
                     "borderWidth": 1,
                     "height": 43,
                     "justifyContent": "center",
@@ -436,19 +437,21 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
+                  className="sc-bdVaJa bDWFJH"
+                  color="black"
                   ellipsizeMode="tail"
+                  fontFamily="Unica77LL-Medium"
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
-                        "fontSize": 12,
+                        "color": "black",
+                        "fontFamily": "Unica77LL-Medium",
+                        "fontSize": 14,
+                        "lineHeight": 24,
                       },
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                      Object {
-                        "color": "rgba(0, 0, 0, 1)",
-                        "opacity": 1,
-                      },
+                      undefined,
                     ]
                   }
                 >
@@ -468,6 +471,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                     "alignItems": "center",
                     "backgroundColor": "rgba(0, 0, 0, 1)",
                     "borderColor": "rgba(0, 0, 0, 1)",
+                    "borderRadius": 2,
                     "borderWidth": 1,
                     "height": 43,
                     "justifyContent": "center",
@@ -480,19 +484,21 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
+                  className="sc-bdVaJa bDWFJH"
+                  color="white"
                   ellipsizeMode="tail"
+                  fontFamily="Unica77LL-Medium"
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
-                        "fontSize": 12,
+                        "color": "white",
+                        "fontFamily": "Unica77LL-Medium",
+                        "fontSize": 14,
+                        "lineHeight": 24,
                       },
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                      Object {
-                        "color": "rgba(255, 255, 255, 1)",
-                        "opacity": 1,
-                      },
+                      undefined,
                     ]
                   }
                 >
@@ -932,6 +938,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                     "alignItems": "center",
                     "backgroundColor": "rgba(255, 255, 255, 1)",
                     "borderColor": "rgba(255, 255, 255, 1)",
+                    "borderRadius": 2,
                     "borderWidth": 1,
                     "height": 43,
                     "justifyContent": "center",
@@ -944,19 +951,21 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
+                  className="sc-bdVaJa bDWFJH"
+                  color="black"
                   ellipsizeMode="tail"
+                  fontFamily="Unica77LL-Medium"
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
-                        "fontSize": 12,
+                        "color": "black",
+                        "fontFamily": "Unica77LL-Medium",
+                        "fontSize": 14,
+                        "lineHeight": 24,
                       },
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                      Object {
-                        "color": "rgba(0, 0, 0, 1)",
-                        "opacity": 1,
-                      },
+                      undefined,
                     ]
                   }
                 >
@@ -976,6 +985,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                     "alignItems": "center",
                     "backgroundColor": "rgba(0, 0, 0, 1)",
                     "borderColor": "rgba(0, 0, 0, 1)",
+                    "borderRadius": 2,
                     "borderWidth": 1,
                     "height": 43,
                     "justifyContent": "center",
@@ -988,19 +998,21 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
+                  className="sc-bdVaJa bDWFJH"
+                  color="white"
                   ellipsizeMode="tail"
+                  fontFamily="Unica77LL-Medium"
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
-                        "fontSize": 12,
+                        "color": "white",
+                        "fontFamily": "Unica77LL-Medium",
+                        "fontSize": 14,
+                        "lineHeight": 24,
                       },
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                      Object {
-                        "color": "rgba(255, 255, 255, 1)",
-                        "opacity": 1,
-                      },
+                      undefined,
                     ]
                   }
                 >
@@ -1440,6 +1452,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                     "alignItems": "center",
                     "backgroundColor": "rgba(255, 255, 255, 1)",
                     "borderColor": "rgba(255, 255, 255, 1)",
+                    "borderRadius": 2,
                     "borderWidth": 1,
                     "height": 43,
                     "justifyContent": "center",
@@ -1452,19 +1465,21 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
+                  className="sc-bdVaJa bDWFJH"
+                  color="black"
                   ellipsizeMode="tail"
+                  fontFamily="Unica77LL-Medium"
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
-                        "fontSize": 12,
+                        "color": "black",
+                        "fontFamily": "Unica77LL-Medium",
+                        "fontSize": 14,
+                        "lineHeight": 24,
                       },
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                      Object {
-                        "color": "rgba(0, 0, 0, 1)",
-                        "opacity": 1,
-                      },
+                      undefined,
                     ]
                   }
                 >
@@ -1484,6 +1499,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                     "alignItems": "center",
                     "backgroundColor": "rgba(0, 0, 0, 1)",
                     "borderColor": "rgba(0, 0, 0, 1)",
+                    "borderRadius": 2,
                     "borderWidth": 1,
                     "height": 43,
                     "justifyContent": "center",
@@ -1496,19 +1512,21 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
+                  className="sc-bdVaJa bDWFJH"
+                  color="white"
                   ellipsizeMode="tail"
+                  fontFamily="Unica77LL-Medium"
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
-                        "fontSize": 12,
+                        "color": "white",
+                        "fontFamily": "Unica77LL-Medium",
+                        "fontSize": 14,
+                        "lineHeight": 24,
                       },
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                      Object {
-                        "color": "rgba(255, 255, 255, 1)",
-                        "opacity": 1,
-                      },
+                      undefined,
                     ]
                   }
                 >
@@ -1948,6 +1966,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                     "alignItems": "center",
                     "backgroundColor": "rgba(255, 255, 255, 1)",
                     "borderColor": "rgba(255, 255, 255, 1)",
+                    "borderRadius": 2,
                     "borderWidth": 1,
                     "height": 43,
                     "justifyContent": "center",
@@ -1960,19 +1979,21 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
+                  className="sc-bdVaJa bDWFJH"
+                  color="black"
                   ellipsizeMode="tail"
+                  fontFamily="Unica77LL-Medium"
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
-                        "fontSize": 12,
+                        "color": "black",
+                        "fontFamily": "Unica77LL-Medium",
+                        "fontSize": 14,
+                        "lineHeight": 24,
                       },
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                      Object {
-                        "color": "rgba(0, 0, 0, 1)",
-                        "opacity": 1,
-                      },
+                      undefined,
                     ]
                   }
                 >
@@ -1992,6 +2013,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                     "alignItems": "center",
                     "backgroundColor": "rgba(0, 0, 0, 1)",
                     "borderColor": "rgba(0, 0, 0, 1)",
+                    "borderRadius": 2,
                     "borderWidth": 1,
                     "height": 43,
                     "justifyContent": "center",
@@ -2004,19 +2026,21 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
+                  className="sc-bdVaJa bDWFJH"
+                  color="white"
                   ellipsizeMode="tail"
+                  fontFamily="Unica77LL-Medium"
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
-                        "fontSize": 12,
+                        "color": "white",
+                        "fontFamily": "Unica77LL-Medium",
+                        "fontSize": 14,
+                        "lineHeight": 24,
                       },
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                      Object {
-                        "color": "rgba(255, 255, 255, 1)",
-                        "opacity": 1,
-                      },
+                      undefined,
                     ]
                   }
                 >
@@ -2456,6 +2480,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                     "alignItems": "center",
                     "backgroundColor": "rgba(255, 255, 255, 1)",
                     "borderColor": "rgba(255, 255, 255, 1)",
+                    "borderRadius": 2,
                     "borderWidth": 1,
                     "height": 43,
                     "justifyContent": "center",
@@ -2468,19 +2493,21 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
+                  className="sc-bdVaJa bDWFJH"
+                  color="black"
                   ellipsizeMode="tail"
+                  fontFamily="Unica77LL-Medium"
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
-                        "fontSize": 12,
+                        "color": "black",
+                        "fontFamily": "Unica77LL-Medium",
+                        "fontSize": 14,
+                        "lineHeight": 24,
                       },
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                      Object {
-                        "color": "rgba(0, 0, 0, 1)",
-                        "opacity": 1,
-                      },
+                      undefined,
                     ]
                   }
                 >
@@ -2500,6 +2527,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                     "alignItems": "center",
                     "backgroundColor": "rgba(0, 0, 0, 1)",
                     "borderColor": "rgba(0, 0, 0, 1)",
+                    "borderRadius": 2,
                     "borderWidth": 1,
                     "height": 43,
                     "justifyContent": "center",
@@ -2512,19 +2540,21 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                 <Text
                   accessible={true}
                   allowFontScaling={true}
+                  className="sc-bdVaJa bDWFJH"
+                  color="white"
                   ellipsizeMode="tail"
+                  fontFamily="Unica77LL-Medium"
+                  fontSize="14px"
+                  lineHeight="24px"
                   style={
                     Array [
                       Object {
-                        "fontSize": 12,
+                        "color": "white",
+                        "fontFamily": "Unica77LL-Medium",
+                        "fontSize": 14,
+                        "lineHeight": 24,
                       },
-                      Object {
-                        "fontFamily": "AvantGardeGothicITC",
-                      },
-                      Object {
-                        "color": "rgba(255, 255, 255, 1)",
-                        "opacity": 1,
-                      },
+                      undefined,
                     ]
                   }
                 >

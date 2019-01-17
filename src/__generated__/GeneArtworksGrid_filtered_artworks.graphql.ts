@@ -17,7 +17,7 @@ export type GeneArtworksGrid_filtered_artworks = {
                 readonly id: string;
                 readonly __id: string;
                 readonly image: ({
-                    readonly aspect_ratio: number | null;
+                    readonly aspect_ratio: number;
                 }) | null;
                 readonly " $fragmentRefs": Artwork_artwork$ref;
             }) | null;

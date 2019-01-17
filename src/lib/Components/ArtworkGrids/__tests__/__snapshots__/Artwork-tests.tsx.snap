@@ -16,7 +16,7 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
       imageURL="artsy.net/image-url"
       style={
         Object {
-          "marginBottom": 10,
+          "marginBottom": 8,
         }
       }
     />
@@ -56,7 +56,7 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -96,7 +96,7 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -118,13 +118,13 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
   </View>
   <View
     flexDirection="row"
-    mb={2}
+    mb="2px"
     style={
       Array [
         Object {
           "display": "flex",
           "flexDirection": "row",
-          "marginBottom": 8,
+          "marginBottom": 2,
         },
         undefined,
       ]
@@ -137,15 +137,15 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
       color="#000"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="13px"
+      lineHeight="18px"
       style={
         Array [
           Object {
             "color": "#000",
             "fontFamily": "Unica77LL-Medium",
-            "fontSize": 12,
-            "lineHeight": 16,
+            "fontSize": 13,
+            "lineHeight": 18,
           },
           undefined,
         ]
@@ -161,8 +161,8 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
       color="#666"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Regular"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
@@ -191,7 +191,9 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
         Array [
           Object {
             "color": "#666666",
-            "fontSize": 12,
+            "fontSize": 14,
+            "height": 18,
+            "lineHeight": 18,
           },
           Object {
             "fontWeight": "bold",
@@ -217,7 +219,9 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
         },
         Object {
           "color": "#666666",
-          "fontSize": 12,
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
         },
         Object {
           "fontFamily": "AGaramondPro-Regular",
@@ -238,7 +242,9 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
           Array [
             Object {
               "color": "#666666",
-              "fontSize": 12,
+              "fontSize": 14,
+              "height": 18,
+              "lineHeight": 18,
             },
             Object {
               "fontStyle": "italic",
@@ -266,7 +272,9 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
         },
         Object {
           "color": "#666666",
-          "fontSize": 12,
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
         },
         Object {
           "fontFamily": "AGaramondPro-Regular",
@@ -295,7 +303,7 @@ exports[`in a closed sale renders without any price information 1`] = `
       imageURL="artsy.net/image-url"
       style={
         Object {
-          "marginBottom": 10,
+          "marginBottom": 8,
         }
       }
     />
@@ -335,7 +343,7 @@ exports[`in a closed sale renders without any price information 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -375,7 +383,7 @@ exports[`in a closed sale renders without any price information 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -397,13 +405,13 @@ exports[`in a closed sale renders without any price information 1`] = `
   </View>
   <View
     flexDirection="row"
-    mb={2}
+    mb="2px"
     style={
       Array [
         Object {
           "display": "flex",
           "flexDirection": "row",
-          "marginBottom": 8,
+          "marginBottom": 2,
         },
         undefined,
       ]
@@ -416,15 +424,15 @@ exports[`in a closed sale renders without any price information 1`] = `
       color="#000"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="13px"
+      lineHeight="18px"
       style={
         Array [
           Object {
             "color": "#000",
             "fontFamily": "Unica77LL-Medium",
-            "fontSize": 12,
-            "lineHeight": 16,
+            "fontSize": 13,
+            "lineHeight": 18,
           },
           undefined,
         ]
@@ -440,8 +448,8 @@ exports[`in a closed sale renders without any price information 1`] = `
       color="#666"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Regular"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
@@ -470,7 +478,9 @@ exports[`in a closed sale renders without any price information 1`] = `
         Array [
           Object {
             "color": "#666666",
-            "fontSize": 12,
+            "fontSize": 14,
+            "height": 18,
+            "lineHeight": 18,
           },
           Object {
             "fontWeight": "bold",
@@ -496,7 +506,9 @@ exports[`in a closed sale renders without any price information 1`] = `
         },
         Object {
           "color": "#666666",
-          "fontSize": 12,
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
         },
         Object {
           "fontFamily": "AGaramondPro-Regular",
@@ -517,7 +529,9 @@ exports[`in a closed sale renders without any price information 1`] = `
           Array [
             Object {
               "color": "#666666",
-              "fontSize": 12,
+              "fontSize": 14,
+              "height": 18,
+              "lineHeight": 18,
             },
             Object {
               "fontStyle": "italic",
@@ -545,7 +559,9 @@ exports[`in a closed sale renders without any price information 1`] = `
         },
         Object {
           "color": "#666666",
-          "fontSize": 12,
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
         },
         Object {
           "fontFamily": "AGaramondPro-Regular",
@@ -574,7 +590,7 @@ exports[`in an open sale renders with current bid 1`] = `
       imageURL="artsy.net/image-url"
       style={
         Object {
-          "marginBottom": 10,
+          "marginBottom": 8,
         }
       }
     />
@@ -614,7 +630,7 @@ exports[`in an open sale renders with current bid 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -654,7 +670,7 @@ exports[`in an open sale renders with current bid 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -676,13 +692,13 @@ exports[`in an open sale renders with current bid 1`] = `
   </View>
   <View
     flexDirection="row"
-    mb={2}
+    mb="2px"
     style={
       Array [
         Object {
           "display": "flex",
           "flexDirection": "row",
-          "marginBottom": 8,
+          "marginBottom": 2,
         },
         undefined,
       ]
@@ -695,15 +711,15 @@ exports[`in an open sale renders with current bid 1`] = `
       color="#000"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="13px"
+      lineHeight="18px"
       style={
         Array [
           Object {
             "color": "#000",
             "fontFamily": "Unica77LL-Medium",
-            "fontSize": 12,
-            "lineHeight": 16,
+            "fontSize": 13,
+            "lineHeight": 18,
           },
           undefined,
         ]
@@ -719,8 +735,8 @@ exports[`in an open sale renders with current bid 1`] = `
       color="#666"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Regular"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
@@ -749,7 +765,9 @@ exports[`in an open sale renders with current bid 1`] = `
         Array [
           Object {
             "color": "#666666",
-            "fontSize": 12,
+            "fontSize": 14,
+            "height": 18,
+            "lineHeight": 18,
           },
           Object {
             "fontWeight": "bold",
@@ -775,7 +793,9 @@ exports[`in an open sale renders with current bid 1`] = `
         },
         Object {
           "color": "#666666",
-          "fontSize": 12,
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
         },
         Object {
           "fontFamily": "AGaramondPro-Regular",
@@ -796,7 +816,9 @@ exports[`in an open sale renders with current bid 1`] = `
           Array [
             Object {
               "color": "#666666",
-              "fontSize": 12,
+              "fontSize": 14,
+              "height": 18,
+              "lineHeight": 18,
             },
             Object {
               "fontStyle": "italic",
@@ -824,7 +846,9 @@ exports[`in an open sale renders with current bid 1`] = `
         },
         Object {
           "color": "#666666",
-          "fontSize": 12,
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
         },
         Object {
           "fontFamily": "AGaramondPro-Regular",
@@ -853,7 +877,7 @@ exports[`in an open sale renders with starting bid 1`] = `
       imageURL="artsy.net/image-url"
       style={
         Object {
-          "marginBottom": 10,
+          "marginBottom": 8,
         }
       }
     />
@@ -893,7 +917,7 @@ exports[`in an open sale renders with starting bid 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -933,7 +957,7 @@ exports[`in an open sale renders with starting bid 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -955,13 +979,13 @@ exports[`in an open sale renders with starting bid 1`] = `
   </View>
   <View
     flexDirection="row"
-    mb={2}
+    mb="2px"
     style={
       Array [
         Object {
           "display": "flex",
           "flexDirection": "row",
-          "marginBottom": 8,
+          "marginBottom": 2,
         },
         undefined,
       ]
@@ -974,15 +998,15 @@ exports[`in an open sale renders with starting bid 1`] = `
       color="#000"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="13px"
+      lineHeight="18px"
       style={
         Array [
           Object {
             "color": "#000",
             "fontFamily": "Unica77LL-Medium",
-            "fontSize": 12,
-            "lineHeight": 16,
+            "fontSize": 13,
+            "lineHeight": 18,
           },
           undefined,
         ]
@@ -997,8 +1021,8 @@ exports[`in an open sale renders with starting bid 1`] = `
       color="#666"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Regular"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
@@ -1027,7 +1051,9 @@ exports[`in an open sale renders with starting bid 1`] = `
         Array [
           Object {
             "color": "#666666",
-            "fontSize": 12,
+            "fontSize": 14,
+            "height": 18,
+            "lineHeight": 18,
           },
           Object {
             "fontWeight": "bold",
@@ -1053,7 +1079,9 @@ exports[`in an open sale renders with starting bid 1`] = `
         },
         Object {
           "color": "#666666",
-          "fontSize": 12,
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
         },
         Object {
           "fontFamily": "AGaramondPro-Regular",
@@ -1074,7 +1102,9 @@ exports[`in an open sale renders with starting bid 1`] = `
           Array [
             Object {
               "color": "#666666",
-              "fontSize": 12,
+              "fontSize": 14,
+              "height": 18,
+              "lineHeight": 18,
             },
             Object {
               "fontStyle": "italic",
@@ -1102,7 +1132,9 @@ exports[`in an open sale renders with starting bid 1`] = `
         },
         Object {
           "color": "#666666",
-          "fontSize": 12,
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
         },
         Object {
           "fontFamily": "AGaramondPro-Regular",
@@ -1131,7 +1163,7 @@ exports[`renders properly 1`] = `
       imageURL="artsy.net/image-url"
       style={
         Object {
-          "marginBottom": 10,
+          "marginBottom": 8,
         }
       }
     />
@@ -1171,7 +1203,7 @@ exports[`renders properly 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -1211,7 +1243,7 @@ exports[`renders properly 1`] = `
           className="sc-bdVaJa bDWFJH"
           ellipsizeMode="tail"
           fontFamily="Unica77LL-Medium"
-          fontSize={8}
+          fontSize="8px"
           lineHeight={8}
           style={
             Array [
@@ -1233,13 +1265,13 @@ exports[`renders properly 1`] = `
   </View>
   <View
     flexDirection="row"
-    mb={2}
+    mb="2px"
     style={
       Array [
         Object {
           "display": "flex",
           "flexDirection": "row",
-          "marginBottom": 8,
+          "marginBottom": 2,
         },
         undefined,
       ]
@@ -1252,15 +1284,15 @@ exports[`renders properly 1`] = `
       color="#000"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Medium"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="13px"
+      lineHeight="18px"
       style={
         Array [
           Object {
             "color": "#000",
             "fontFamily": "Unica77LL-Medium",
-            "fontSize": 12,
-            "lineHeight": 16,
+            "fontSize": 13,
+            "lineHeight": 18,
           },
           undefined,
         ]
@@ -1276,8 +1308,8 @@ exports[`renders properly 1`] = `
       color="#666"
       ellipsizeMode="tail"
       fontFamily="Unica77LL-Regular"
-      fontSize={12}
-      lineHeight={16}
+      fontSize="12px"
+      lineHeight="16px"
       style={
         Array [
           Object {
@@ -1304,7 +1336,9 @@ exports[`renders properly 1`] = `
         Array [
           Object {
             "color": "#666666",
-            "fontSize": 12,
+            "fontSize": 14,
+            "height": 18,
+            "lineHeight": 18,
           },
           Object {
             "fontWeight": "bold",
@@ -1330,7 +1364,9 @@ exports[`renders properly 1`] = `
         },
         Object {
           "color": "#666666",
-          "fontSize": 12,
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
         },
         Object {
           "fontFamily": "AGaramondPro-Regular",
@@ -1351,7 +1387,9 @@ exports[`renders properly 1`] = `
           Array [
             Object {
               "color": "#666666",
-              "fontSize": 12,
+              "fontSize": 14,
+              "height": 18,
+              "lineHeight": 18,
             },
             Object {
               "fontStyle": "italic",
@@ -1379,7 +1417,9 @@ exports[`renders properly 1`] = `
         },
         Object {
           "color": "#666666",
-          "fontSize": 12,
+          "fontSize": 14,
+          "height": 18,
+          "lineHeight": 18,
         },
         Object {
           "fontFamily": "AGaramondPro-Regular",

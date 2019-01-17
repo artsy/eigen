@@ -1,4 +1,7 @@
 #import "TestHelper.h"
+#import "AppSetup.h"
+#import "AREmission.h"
+#import "ARDefaults.h"
 
 #import <SDWebImage/SDImageCache.h>
 #import <SDWebImage/SDWebImageManager.h>
@@ -7,7 +10,6 @@
 
 
 @interface TestHelper ()
-@property (nonatomic, strong, readwrite) UIWindow *window;
 @property (nonatomic, strong, readwrite) NSArray<NSDictionary *> *artworksPages;
 @property (nonatomic, strong, readwrite) NSArray<NSDictionary *> *artworks;
 @end
@@ -38,8 +40,8 @@
 {
   NSOperatingSystemVersion version = [NSProcessInfo processInfo].operatingSystemVersion;
 
-  NSAssert(version.majorVersion == 9,
-           @"The tests should be run on iOS 9.x, not %ld.%ld", version.majorVersion, version.minorVersion);
+  NSAssert(version.majorVersion == 10,
+           @"The tests should be run on iOS 10.x, not %ld.%ld", version.majorVersion, version.minorVersion);
 
   CGSize nativeResolution = [UIScreen mainScreen].nativeBounds.size;
   NSAssert([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone && CGSizeEqualToSize(nativeResolution, CGSizeMake(750, 1334)),
@@ -87,11 +89,26 @@
 - (RCTTestRunner *)reactTestRunner;
 {
   if (_reactTestRunner == nil) {
+    [ARDefaults setup];
+    AppSetup *setup = [AppSetup ambientSetup];
+
     NSURL *URL = TestHelper.sharedHelper.fixturesURL;
     URL = [URL URLByAppendingPathComponent:@"ReferenceImages"];
-    _reactTestRunner = [[RCTTestRunner alloc] initWithApp:@"EmissionTests/TestApps"
-                                       referenceDirectory:URL.path
-                                           moduleProvider:nil];
+    _reactTestRunner = RCTInitRunnerForApp(@"EmissionTests/TestApps", ^NSArray<id<RCTBridgeModule>> *{
+      // RCTTestRunner expects a new config for each run instead of storing one between runs.
+      AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:@"userID"
+                                                                    authenticationToken:@"some.access.token"
+                                                                              sentryDSN:nil
+                                                                   stripePublishableKey:@"strip-test-key"
+                                                                       googleMapsAPIKey:nil
+                                                                     mapBoxAPIClientKey:@"mapbox-test-key"
+                                                                             gravityURL:setup.gravityURL
+                                                                         metaphysicsURL:setup.metaphysicsURL
+                                                                          predictionURL:setup.predictionURL
+                                                                              userAgent:@"Emission Example"
+                                                                                options:setup.options];
+      return @[config];
+    }, setup.jsCodeLocation);
   }
   return _reactTestRunner;
 }
