@@ -173,6 +173,8 @@
 	</array>
 	<key>UIViewEdgeAntialiasing</key>
 	<true/>
+	<key>MGLMapboxMetricsEnabledSettingShownInApp</key>
+	<string>YES</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
