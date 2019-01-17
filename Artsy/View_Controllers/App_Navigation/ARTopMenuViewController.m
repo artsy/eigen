@@ -365,6 +365,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     NSInteger numberOfTabs = [self.navigationDataSource numberOfViewControllersForTabContentView:self.tabContentView];
     for (NSInteger index = 0; index < numberOfTabs; index++) {
         ARNavigationController *rootController = [self rootNavigationControllerAtIndex:index];
+
         if (rootController.rootViewController == viewController) {
             return index;
         } else if ([viewController isKindOfClass:ARFavoritesComponentViewController.class]) {

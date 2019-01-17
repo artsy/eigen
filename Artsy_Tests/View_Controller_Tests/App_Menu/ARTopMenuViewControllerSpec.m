@@ -12,6 +12,7 @@
 
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
+#import <Emission/ARMapContainerViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 
 
@@ -216,7 +217,15 @@ describe(@"navigation", ^{
 
                 // This will regenerate each time
                 } else if (tabIndex.integerValue == ARTopTabControllerIndexMessaging) {
-                    expect(viewcontroller).to.beAKindOf(ARInboxComponentViewController.class);
+
+                    // This gets pushed aside for the new navigation
+                    if (![AROptions boolForOption:AROptionsLocalDiscovery]) {
+                        expect(viewcontroller).to.beAKindOf(ARFavoritesComponentViewController.class);
+                    }
+
+                    if ([AROptions boolForOption:AROptionsLocalDiscovery]) {
+                        expect(viewcontroller).to.beAKindOf(ARInboxComponentViewController.class);
+                    }
 
                 } else {
                     expect(viewcontroller).to.equal([[ARTopMenuViewController sharedController] rootNavigationControllerAtIndex:tabIndex.integerValue].rootViewController);
