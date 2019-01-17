@@ -30,7 +30,8 @@ plugin 'cocoapods-keys',
          'SentryStagingDSN',          #
          'StripeProductionPublishableKey', # Necessary for Stripe integration
          'StripeStagingPublishableKey',
-         'GoogleMapsAPIKey', # Consignment Location Lookup
+         'GoogleMapsAPIKey', # Consignment Location Lookup,
+         'MapBoxAPIClientKey' # Used in local discovery
        ]
 
 target 'Artsy' do
