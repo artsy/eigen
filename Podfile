@@ -8,7 +8,7 @@ end
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '8.0'
+platform :ios, '9.0'
 inhibit_all_warnings!
 plugin 'cocoapods-fix-react-native'
 
