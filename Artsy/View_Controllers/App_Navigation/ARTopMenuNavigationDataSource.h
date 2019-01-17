@@ -5,6 +5,7 @@
 typedef NS_ENUM(NSInteger, ARTopTabControllerIndex) {
     ARTopTabControllerIndexHome,
     ARTopTabControllerIndexSearch,
+    ARTopTabControllerIndexLocalDiscovery,
     ARTopTabControllerIndexMessaging,
     ARTopTabControllerIndexFavorites,
     ARTopTabControllerIndexProfile,
