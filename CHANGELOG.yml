@@ -13,6 +13,7 @@ upcoming:
     - AR feature allows tapping on the done state to hide the UI - orta
     - Fix for favourites pagination via Emission update - orta
     - Removes the buy now promo video from the app - orta
+    - Adds Local Discovery tab behind lab option - luc
 
 releases:
   - version: 4.3.4

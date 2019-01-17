@@ -7,6 +7,7 @@
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARMyProfileViewController.h>
+#import <Emission/ARMapContainerViewController.h>
 
 #import "ARTopMenuInternalMobileWebViewController.h"
 #import "ARFeedSubclasses.h"
@@ -28,6 +29,7 @@
 
 @property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
 @property (nonatomic, strong) ARNavigationController *favoritesNavigationController;
+@property (nonatomic, strong) ARNavigationController *localDiscoveryNavigationController;
 @property (nonatomic, strong) ARNavigationController *messagingNavigationController;
 @property (nonatomic, strong) ARNavigationController *profileNavigationController;
 
@@ -66,6 +68,17 @@
     ARComponentViewController *messagingVC = [[ARInboxComponentViewController alloc] initWithInbox];
     _messagingNavigationController = [[ARNavigationController alloc] initWithRootViewController:messagingVC];
     return _messagingNavigationController;
+}
+
+- (ARNavigationController *)localDiscoveryNavigationController
+{
+    if (_localDiscoveryNavigationController) {
+        return _localDiscoveryNavigationController;
+    }
+    
+    ARMapContainerViewController *mapVC = [[ARMapContainerViewController alloc] init];
+    _localDiscoveryNavigationController = [[ARNavigationController alloc] initWithRootViewController:mapVC];
+    return _localDiscoveryNavigationController;
 }
 
 - (ARNavigationController *)getHomeViewControllerWithArtist:(NSString *)artistID
@@ -115,6 +128,15 @@
             }
 
         case ARTopTabControllerIndexMessaging:
+            if ([AROptions boolForOption:AROptionsLocalDiscovery]) {
+                return [self messagingNavigationController];
+            }
+            return [self favoritesNavigationController];
+        
+        case ARTopTabControllerIndexLocalDiscovery:
+            if ([AROptions boolForOption:AROptionsLocalDiscovery]) {
+                return [self localDiscoveryNavigationController];
+            }
             return [self messagingNavigationController];
 
         case ARTopTabControllerIndexFavorites:

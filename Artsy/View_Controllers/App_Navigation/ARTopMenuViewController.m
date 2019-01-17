@@ -32,6 +32,7 @@
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
+#import <Emission/ARMapContainerViewController.h>
 #import <React/RCTScrollView.h>
 
 static const CGFloat ARMenuButtonDimension = 50;
@@ -286,6 +287,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     NSDictionary *menuToPaths = @{
         @(ARTopTabControllerIndexHome) : @"/",
         @(ARTopTabControllerIndexMessaging) : @"/inbox",
+        @(ARTopTabControllerIndexLocalDiscovery) : @"/local-discovery",
         @(ARTopTabControllerIndexFavorites) : @"/favorites",
         @(ARTopTabControllerIndexProfile) : @"/ios-settings", // A good argument is "user/edit", _but_ the app barely supports any of it's features
     };
@@ -382,6 +384,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     ARNavigationTabButtonWithBadge *button = [[ARNavigationTabButtonWithBadge alloc] init];
     button.accessibilityLabel = accessibilityName;
     button.icon = [[UIImage imageNamed:name] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    button.imageEdgeInsets = UIEdgeInsetsMake(13, 13, 13, 13);
     [button setTintColor:[UIColor blackColor]];
     [button ar_extendHitTestSizeByWidth:5 andHeight:5];
     return button;
@@ -389,12 +392,21 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 - (NSArray *)buttons
 {
+    if ([AROptions boolForOption:AROptionsLocalDiscovery]) {
+        return @[
+             [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
+             [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
+             [self tabButtonWithName:@"nav_map" accessibilityName:@"Local Discovery"],
+             [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
+             [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
+            ];
+    }
+    
     return @[
              [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
              [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],
              [self tabButtonWithName:@"nav_messaging" accessibilityName:@"Messages"],
              [self tabButtonWithName:@"nav_favs" accessibilityName:@"Saved"],
-             // [self tabButtonWithName:@"nav_profile" accessibilityName:@"Profile"],
              ];
 }
 
@@ -583,6 +595,9 @@ static const CGFloat ARMenuButtonDimension = 50;
             }
             break;
         case ARTopTabControllerIndexMessaging:
+            presentableController = [self rootNavigationControllerAtIndex:index];
+            break;
+        case ARTopTabControllerIndexLocalDiscovery:
             presentableController = [self rootNavigationControllerAtIndex:index];
             break;
         case ARTopTabControllerIndexFavorites:

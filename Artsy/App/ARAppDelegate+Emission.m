@@ -115,6 +115,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                                                                                 sentryDSN:sentryDSN
                                                                      stripePublishableKey:stripePublishableKey
                                                                          googleMapsAPIKey:[keys googleMapsAPIKey]
+                                                                       mapBoxAPIClientKey:[keys mapBoxAPIClientKey]
                                                                                gravityURL:gravity
                                                                            metaphysicsURL:metaphysics
                                                                             predictionURL:liveAuctionsURL
