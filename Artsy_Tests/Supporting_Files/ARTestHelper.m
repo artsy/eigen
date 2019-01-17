@@ -65,6 +65,7 @@
                                                                             sentryDSN:@""
                                                                  stripePublishableKey:@""
                                                                      googleMapsAPIKey:@""
+                                                                   mapBoxAPIClientKey:@""
                                                                            gravityURL:gravity
                                                                        metaphysicsURL:metaphysics
                                                                         predictionURL:@""
