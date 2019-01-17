@@ -15,6 +15,7 @@ extern NSString *const AROptionsForceBuyNow;
 extern NSString *const AROptionsBuyNow;
 extern NSString *const AROptionsMakeOffer;
 extern NSString *const AROptionsLocalDiscovery;
+extern NSString *const AROptionsModernShowFairPages;
 
 @interface AROptions : NSObject
 

@@ -72,11 +72,11 @@
 - (UIViewController *)loadGeneWithID:(NSString *)geneID;
 - (UIViewController *)loadGeneWithID:(NSString *)geneID refineParams:(NSDictionary *)params;
 
-/// Load a fair booth
-- (ARShowViewController *)loadShow:(PartnerShow *)show fair:(Fair *)fair;
-- (ARShowViewController *)loadShow:(PartnerShow *)show;
-- (ARShowViewController *)loadShowWithID:(NSString *)showID;
-- (ARShowViewController *)loadShowWithID:(NSString *)showID fair:(Fair *)fair;
+/// Load a fair booth, or show
+- (UIViewController *)loadShow:(PartnerShow *)show fair:(Fair *)fair;
+- (UIViewController *)loadShow:(PartnerShow *)show;
+- (UIViewController *)loadShowWithID:(NSString *)showID;
+- (UIViewController *)loadShowWithID:(NSString *)showID fair:(Fair *)fair;
 
 /// Buy artwork
 - (UIViewController *)loadOrderUIForID:(NSString *)orderID resumeToken:(NSString *)resumeToken;

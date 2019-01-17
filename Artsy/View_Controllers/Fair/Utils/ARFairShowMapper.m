@@ -264,7 +264,7 @@
         __strong typeof (wself) sself = wself;
 
         NSMapTable *result = [NSMapTable strongToStrongObjectsMapTable];
-        for(PartnerShow *show in sself.shows) {
+        for (PartnerShow *show in sself.shows) {
             if (show.partner) {
                 NSMutableArray *shows = [result objectForKey:show.partner];
                 if (!shows) {
