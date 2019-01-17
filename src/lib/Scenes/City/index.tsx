@@ -1,1 +1,1 @@
-export { City } from "./City"
+export { CityView } from "./City"

@@ -1,9 +1,11 @@
 import { Box, color, Sans, Serif } from "@artsy/palette"
+import { City } from "lib/Scenes/City/City"
 import React from "react"
 import { Animated, View } from "react-native"
 import styled from "styled-components/native"
 
 interface FiltersBarProps {
+  currentCity: City
   goToPage?: () => null
   activeTab?: number
   tabs?: any[]
@@ -71,7 +73,7 @@ export class FiltersBar extends React.Component<FiltersBarProps, FiltersBarState
     return (
       <>
         <Box pt={4} pb={2} px={3}>
-          <Serif size="8">Hong Kong</Serif>
+          <Serif size="8">{this.props.currentCity.name}</Serif>
         </Box>
         <Tabs>
           {this.props.tabs.map((name, page) => {

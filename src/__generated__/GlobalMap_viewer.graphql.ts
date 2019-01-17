@@ -23,10 +23,7 @@ const node: ConcreteFragment = {
       "kind": "LocalArgument",
       "name": "near",
       "type": "Near",
-      "defaultValue": {
-        "lat": 22.3964,
-        "lng": 114.1095
-      }
+      "defaultValue": null
     }
   ],
   "selections": [
@@ -71,5 +68,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = '354a0cec61fad4b19055b74297443222';
+(node as any).hash = '403e79bf37060972dfadb971cbb5aa75';
 export default node;
