@@ -27,8 +27,6 @@ export class FairBooth extends React.Component<Props, State> {
     const { show, onViewFairBoothArtworksPressed, onViewFairBoothArtistsPressed } = this.props
     const sections = []
 
-    console.log(show)
-
     sections.push({
       type: "artworks",
       data: {

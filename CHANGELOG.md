@@ -16,6 +16,13 @@
 
 ### Master
 
+### 1.7.6
+
+- Removes the buy now banner from the homescreen - orta
+
+### 1.7.5
+
+- fixes to the artwork favourites pagination - orta
 - Adds styled LocationMap with custom pins - kieran
 - Refactor auctions countdown timer, add fair countdown timer - javamonn
 - Refactors ARNotificationManager to implicitly call all JS methods on main queue - ash
