@@ -1,4 +1,11 @@
 upcoming:
+  version: 4.3.6
+  date: Jan 17, 2019
+  emission_version: 1.8.0
+  dev:
+    - Nothing yet
+  user_facing:
+    - Adds Local Discovery tab behind lab option - luc
     version: 4.3.6
     date: Jan 17, 2019
     emission_version: 1.8.0
