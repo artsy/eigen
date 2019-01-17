@@ -382,6 +382,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     ARNavigationTabButtonWithBadge *button = [[ARNavigationTabButtonWithBadge alloc] init];
     button.accessibilityLabel = accessibilityName;
     button.icon = [[UIImage imageNamed:name] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    button.imageEdgeInsets = UIEdgeInsetsMake(13, 13, 13, 13);
     [button setTintColor:[UIColor blackColor]];
     [button ar_extendHitTestSizeByWidth:5 andHeight:5];
     return button;
