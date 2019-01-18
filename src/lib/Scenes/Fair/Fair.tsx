@@ -5,11 +5,11 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { ShowArtistsContainer as ShowArtistsScreen } from "lib/Components/Show/ShowArtists"
 import { ShowArtworksContainer as ShowArtworksScreen } from "lib/Components/Show/ShowArtworks"
-import { FairArtistsContainer as FairArtistsScreen } from "./Screens/FairArtists"
-import { FairArtworksContainer as FairArtworksScreen } from "./Screens/FairArtworks"
+import { FairArtistsRenderer as FairArtistsScreen } from "./Screens/FairArtists"
+import { FairArtworksRenderer as FairArtworksScreen } from "./Screens/FairArtworks"
 import { FairBoothContainer as FairBoothScreen } from "./Screens/FairBooth"
 import { FairDetailContainer as FairDetailScreen } from "./Screens/FairDetail"
-import { FairExhibitorsContainer as FairExhibitorsScreen } from "./Screens/FairExhibitors"
+import { FairExhibitorsRenderer as FairExhibitorsScreen } from "./Screens/FairExhibitors"
 
 import { Fair_fair } from "__generated__/Fair_fair.graphql"
 
@@ -35,6 +35,7 @@ export class Fair extends React.Component<Props> {
         onViewFairBoothArtworksPressed: this.handleViewFairBoothArtworksPressed,
         onViewFairBoothArtistsPressed: this.handleViewFairBoothArtistsPressed,
         ...(props || {}),
+        fairID: this.props.fair.id,
       },
       title: "",
     })
@@ -94,10 +95,8 @@ export const FairContainer = createFragmentContainer(
   Fair,
   graphql`
     fragment Fair_fair on Fair {
+      id
       ...FairDetail_fair
-      ...FairExhibitors_fair
-      ...FairArtists_fair
-      ...FairArtworks_fair
     }
   `
 )

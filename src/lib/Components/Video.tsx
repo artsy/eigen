@@ -18,6 +18,9 @@ interface VideoProps {
   resizeMode?: VideoResizeMode
 }
 
+// Note: This is currently unused in Emission,
+// but is useful enough that we may want it again in the future.
+
 export class Video extends React.Component<VideoProps> {
   static propTypes = {
     source: PropTypes.oneOfType([

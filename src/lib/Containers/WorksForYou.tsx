@@ -23,7 +23,6 @@ import colors from "lib/data/colors"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
 import { WorksForYou_viewer } from "__generated__/WorksForYou_viewer.graphql"
-import { MarketingHeader } from "../Scenes/Home/Components/ForYou/Components/MarketingHeader"
 
 interface Props {
   relay: RelayPaginationProp
@@ -138,10 +137,7 @@ export class WorksForYou extends React.Component<Props, State> {
         ref={scrollView => (this.scrollView = scrollView)}
         refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
       >
-        <View style={{ flex: 1 }}>
-          <MarketingHeader />
-          {hasNotifications ? this.renderNotifications() : this.renderEmptyState()}
-        </View>
+        <View style={{ flex: 1 }}>{hasNotifications ? this.renderNotifications() : this.renderEmptyState()}</View>
       </ScrollView>
     )
   }

@@ -28,4 +28,11 @@
     [self.bottomSheetVC didMoveToParentViewController:self];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
+}
+
+
+
 @end

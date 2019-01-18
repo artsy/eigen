@@ -3,7 +3,7 @@ import { renderUntil } from "lib/tests/renderUntil"
 import React from "react"
 import { graphql } from "react-relay"
 import { FairFixture } from "../../__fixtures__"
-import { FairExhibitorsContainer as FairExhibitors } from "../FairExhibitors"
+import { FairExhibitors } from "../FairExhibitors"
 
 jest.unmock("react-relay")
 
@@ -17,7 +17,10 @@ it("renders properly", async () => {
       query={graphql`
         query FairExhibitorsTestsQuery {
           fair(id: "art-basel-in-miami-beach-2018") {
-            ...FairExhibitors_fair
+            exhibitors_grouped_by_name {
+              letter
+              exhibitors
+            }
           }
         }
       `}

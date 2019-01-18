@@ -16,6 +16,13 @@
 
 ### Master
 
+### 1.7.6
+
+- Removes the buy now banner from the homescreen - orta
+
+### 1.7.5
+
+- fixes to the artwork favourites pagination - orta
 - Adds styled LocationMap with custom pins - kieran
 - Refactor auctions countdown timer, add fair countdown timer - javamonn
 - Refactors ARNotificationManager to implicitly call all JS methods on main queue - ash
@@ -39,9 +46,10 @@
 - Update Show MoreInfo screen with events - javamonn
 - Update artwork grid item text spacing - javamonn
 - Add Browse Artworks link from Fair booth, works - javamonn
-- Enable navigation link from Fair contextual detail to Gallery and Artist pages -ashley
-- All Exhibitors View bug fix
+- Enable navigation link from Fair contextual detail to Gallery and Artist pages - ashley
+- All Exhibitors View bug fix - ashley
 - Add FairBooth screen - javamonn
+- Splits Fair screens into seperate query renderers - luc
 - Adds Map and City view container - luc
 - Adds native unit test suite and CI - ash
 
