@@ -298,6 +298,7 @@ fragment ShowArtworksPreview_show on Show {
 fragment ShowArtistsPreview_show on Show {
   artists {
     id
+    href
     ...ArtistListItem_artist
     __id
   }
@@ -678,57 +679,52 @@ v27 = {
 v28 = [
   v5
 ],
-v29 = [
+v29 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_followed",
+  "args": null,
+  "storageKey": null
+},
+v30 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "nationality",
+  "args": null,
+  "storageKey": null
+},
+v31 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "birthday",
+  "args": null,
+  "storageKey": null
+},
+v32 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "deathday",
+  "args": null,
+  "storageKey": null
+},
+v33 = [
   v4
 ],
-v30 = [
-  v2,
-  v1,
-  v5,
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "is_followed",
-    "args": null,
-    "storageKey": null
-  },
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "nationality",
-    "args": null,
-    "storageKey": null
-  },
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "birthday",
-    "args": null,
-    "storageKey": null
-  },
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "deathday",
-    "args": null,
-    "storageKey": null
-  },
-  {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "image",
-    "storageKey": null,
-    "args": null,
-    "concreteType": "Image",
-    "plural": false,
-    "selections": v29
-  }
-];
+v34 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "image",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "Image",
+  "plural": false,
+  "selections": v33
+};
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairDetailTestsQuery",
-  "id": "8abdeb580e8273e92d409e8d5084d1da",
+  "id": "b68a5be52a4ee869ad4c5ac6923491d3",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -1151,7 +1147,17 @@ return {
                         "args": null,
                         "concreteType": "Artist",
                         "plural": true,
-                        "selections": v30
+                        "selections": [
+                          v2,
+                          v3,
+                          v1,
+                          v5,
+                          v29,
+                          v30,
+                          v31,
+                          v32,
+                          v34
+                        ]
                       },
                       {
                         "kind": "LinkedField",
@@ -1177,7 +1183,16 @@ return {
                             "args": null,
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": v30
+                            "selections": [
+                              v2,
+                              v1,
+                              v5,
+                              v29,
+                              v30,
+                              v31,
+                              v32,
+                              v34
+                            ]
                           }
                         ]
                       },
@@ -1321,7 +1336,7 @@ return {
                         "args": null,
                         "concreteType": "Image",
                         "plural": false,
-                        "selections": v29
+                        "selections": v33
                       },
                       {
                         "kind": "LinkedField",
