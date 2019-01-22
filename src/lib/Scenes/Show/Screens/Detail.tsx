@@ -64,6 +64,7 @@ export class Detail extends React.Component<Props, State> {
       data: {
         show,
         onViewAllArtistsPressed,
+        Component: this,
       },
     })
 

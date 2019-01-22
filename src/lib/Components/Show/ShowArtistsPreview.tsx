@@ -1,6 +1,7 @@
 import { Sans, Serif, Spacer } from "@artsy/palette"
 import { ShowArtistsPreview_show } from "__generated__/ShowArtistsPreview_show.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
+import Switchboard from "lib/NativeModules/SwitchBoard"
 import { get, take } from "lodash"
 import React from "react"
 import { TouchableOpacity } from "react-native"
@@ -9,11 +10,11 @@ import { createFragmentContainer, graphql } from "react-relay"
 interface Props {
   show: ShowArtistsPreview_show
   onViewAllArtistsPressed: () => void
+  Component: () => void
 }
 
-export const ShowArtistsPreview: React.SFC<Props> = ({ show, onViewAllArtistsPressed }) => {
+export const ShowArtistsPreview: React.SFC<Props> = ({ show, onViewAllArtistsPressed, Component }) => {
   const artistsShown = 5
-
   const artists = get(show, "artists", [])
   const items: ShowArtistsPreview_show["artists"] = take(artists, artistsShown)
 
@@ -24,7 +25,9 @@ export const ShowArtistsPreview: React.SFC<Props> = ({ show, onViewAllArtistsPre
       {items.map((artist, idx, arr) => {
         return (
           <React.Fragment key={artist.id}>
-            <ArtistListItem artist={artist} />
+            <TouchableOpacity onPress={() => Switchboard.presentNavigationViewController(Component, artist.href)}>
+              <ArtistListItem artist={artist} Component={Component} />
+            </TouchableOpacity>
             {idx < arr.length - 1 && <Spacer m={1} />}
           </React.Fragment>
         )
@@ -49,6 +52,7 @@ export const ShowArtistsPreviewContainer = createFragmentContainer(
     fragment ShowArtistsPreview_show on Show {
       artists {
         id
+        href
         ...ArtistListItem_artist
       }
     }
