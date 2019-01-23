@@ -2,9 +2,12 @@ import { MapRendererQuery } from "__generated__/MapRendererQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { City } from "../City/City"
+import { GlobalMapContainer as GlobalMap } from "./GlobalMap"
+import { Coordinates } from "./types"
 
-export const MapRenderer = ({ city, render }: { city: City; render: any }) => {
+export const MapRenderer = ({ coords }: { coords: Coordinates }) => {
+  console.log("coords", coords)
+
   return (
     <QueryRenderer<MapRendererQuery>
       environment={defaultEnvironment}
@@ -16,9 +19,16 @@ export const MapRenderer = ({ city, render }: { city: City; render: any }) => {
         }
       `}
       variables={{
-        near: city.epicenter,
+        near: coords,
       }}
-      render={render}
+      render={({ props }) => {
+        if (props) {
+          console.log(props)
+          return <GlobalMap {...props as any} initialCoordinates={coords} />
+        }
+
+        return null
+      }}
     />
   )
 }
