@@ -158,7 +158,9 @@ RCT_EXPORT_METHOD(_setResponseForQueryIDWithVariables:(nullable NSString *)respo
     if (response == nil) {
         // this is a sentinel to indicate the value is being fetched and a place where interested parties can request a
         // future resolved value as a promise
-//        NSAssert(self.inFlightRequests[cacheKey] == nil, @"[ARGraphQLQueryCache] [%@] Expected no promise queue to exist yet", cacheKey);
+        if (self.inFlightRequests[cacheKey] == nil) {
+            DLog(@"[ARGraphQLQueryCache] [%@] Expected no promise queue to exist yet", cacheKey);
+        }
         DLog(@"[ARGraphQLQueryCache] [%@] Marking as in-flight request", cacheKey);
         self.inFlightRequests[cacheKey] = [NSMutableArray new];
     } else {
