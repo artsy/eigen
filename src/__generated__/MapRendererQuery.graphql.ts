@@ -38,7 +38,7 @@ fragment GlobalMap_viewer_279V1T on Viewer {
       lat
       lng
     }
-    shows(first: 10) {
+    shows(discoverable: true, first: 50, sort: START_AT_ASC) {
       edges {
         node {
           id
@@ -53,6 +53,11 @@ fragment GlobalMap_viewer_279V1T on Viewer {
           __id
         }
       }
+    }
+    fairs(size: 10) {
+      id
+      name
+      __id
     }
   }
 }
@@ -102,6 +107,13 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "__id",
   "args": null,
   "storageKey": null
@@ -110,7 +122,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MapRendererQuery",
-  "id": "97c99e1f65f3aaadc316583b97ecb1d6",
+  "id": "ecfdb5d9130b7771fb7e50a5d17206f1",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -181,13 +193,25 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "shows",
-                "storageKey": "shows(first:10)",
+                "storageKey": "shows(discoverable:true,first:50,sort:\"START_AT_ASC\")",
                 "args": [
                   {
                     "kind": "Literal",
+                    "name": "discoverable",
+                    "value": true,
+                    "type": "Boolean"
+                  },
+                  {
+                    "kind": "Literal",
                     "name": "first",
-                    "value": 10,
+                    "value": 50,
                     "type": "Int"
+                  },
+                  {
+                    "kind": "Literal",
+                    "name": "sort",
+                    "value": "START_AT_ASC",
+                    "type": "PartnerShowSorts"
                   }
                 ],
                 "concreteType": "ShowConnection",
@@ -211,13 +235,7 @@ return {
                         "concreteType": "Show",
                         "plural": false,
                         "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "id",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          v3,
                           v1,
                           {
                             "kind": "LinkedField",
@@ -229,14 +247,35 @@ return {
                             "plural": false,
                             "selections": [
                               v2,
-                              v3
+                              v4
                             ]
                           },
-                          v3
+                          v4
                         ]
                       }
                     ]
                   }
+                ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "fairs",
+                "storageKey": "fairs(size:10)",
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "size",
+                    "value": 10,
+                    "type": "Int"
+                  }
+                ],
+                "concreteType": "Fair",
+                "plural": true,
+                "selections": [
+                  v3,
+                  v1,
+                  v4
                 ]
               }
             ]

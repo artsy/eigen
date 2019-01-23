@@ -5,6 +5,7 @@ import React from "react"
 import { NativeModules } from "react-native"
 import { createRefetchContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
+
 import { cities } from "../City/cities"
 import { FiltersBar } from "./Components/FiltersBar"
 
@@ -27,62 +28,66 @@ interface Props {
   viewer: GlobalMap_viewer
 }
 
+export const GlobalMapContext = React.createContext("map")
 export class GlobalMap extends React.Component<Props> {
   state = {
     currentCity: cities["new-york"],
   }
 
-  get symbolLayerStyle() {
-    return Mapbox.StyleSheet.create({
-      symbol: {
-        iconImage: require("../../../../images/pingalleryon.png"),
-        iconSize: 1.4,
-        iconOffset: [0, 0],
-        iconAllowOverlap: true,
-      },
-    })
-  }
+  stylesheet = Mapbox.StyleSheet.create({
+    symbol: {
+      iconImage: require("../../../../images/pingalleryon.png"),
+      iconSize: 1.5,
+      iconAllowOverlap: true,
+    },
+  })
 
   render() {
     const { city } = this.props.viewer
-    const { lat, lng } = this.props.initialCoordinates
+    const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || city.coordinates
+
+    const features = city.shows.edges
+      .map(({ node }) => {
+        if (!node || !node.location || !node.location.coordinates) {
+          return null
+        }
+
+        const { id, location } = node
+        const { lat, lng } = location.coordinates
+
+        return {
+          type: "Feature",
+          id,
+          geometry: {
+            type: "Point",
+            coordinates: [lng, lat],
+          },
+        }
+      })
+      .filter(Boolean)
 
     return (
       <Flex mb={0.5}>
         <FiltersBar currentCity={city as any} tabs={["All", "Saved", "Fairs", "Galleries", "Museums"]} />
 
         <Map
-          key={lng}
+          showUserLocation={true}
           styleURL={Mapbox.StyleURL.Light}
-          centerCoordinate={[lng, lat]}
+          userTrackingMode={Mapbox.UserTrackingModes.Follow}
+          centerCoordinate={[centerLng, centerLat]}
           zoomLevel={14}
           logoEnabled={false}
           attributionEnabled={false}
         >
-          {city.shows.edges.map(({ node }) => {
-            const { id, location } = node
-            const { lat, lng } = location.coordinates
-            const marker = {
-              type: "Feature",
-              geometry: {
-                type: "Point",
-                coordinates: [lng, lat],
-              },
-              id,
-            }
-
-            return (
-              <Mapbox.ShapeSource
-                id={id}
-                shape={{
-                  type: "FeatureCollection",
-                  features: [marker],
-                }}
-              >
-                <Mapbox.SymbolLayer id={id} style={this.symbolLayerStyle.symbol} />
-              </Mapbox.ShapeSource>
-            )
-          })}
+          <Mapbox.ShapeSource
+            id="GalleryIconSource"
+            shape={{
+              type: "FeatureCollection",
+              features,
+            }}
+          >
+            <Mapbox.SymbolLayer id="GalleryIconSymbol" minZoomLevel={1} style={this.stylesheet.symbol} />
+          </Mapbox.ShapeSource>
         </Map>
       </Flex>
     )
@@ -100,7 +105,7 @@ export const GlobalMapContainer = createRefetchContainer(
           lng
         }
 
-        shows(first: 10) {
+        shows(discoverable: true, first: 50, sort: START_AT_ASC) {
           edges {
             node {
               id
@@ -113,6 +118,11 @@ export const GlobalMapContainer = createRefetchContainer(
               }
             }
           }
+        }
+
+        fairs(size: 10) {
+          id
+          name
         }
       }
     }

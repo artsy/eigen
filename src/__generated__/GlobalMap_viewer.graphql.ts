@@ -24,6 +24,10 @@ export type GlobalMap_viewer = {
                 }) | null;
             }) | null> | null;
         }) | null;
+        readonly fairs: ReadonlyArray<({
+            readonly id: string;
+            readonly name: string | null;
+        }) | null> | null;
     }) | null;
     readonly " $refType": GlobalMap_viewer$ref;
 };
@@ -66,6 +70,13 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "__id",
   "args": null,
   "storageKey": null
@@ -106,13 +117,25 @@ return {
           "kind": "LinkedField",
           "alias": null,
           "name": "shows",
-          "storageKey": "shows(first:10)",
+          "storageKey": "shows(discoverable:true,first:50,sort:\"START_AT_ASC\")",
           "args": [
             {
               "kind": "Literal",
+              "name": "discoverable",
+              "value": true,
+              "type": "Boolean"
+            },
+            {
+              "kind": "Literal",
               "name": "first",
-              "value": 10,
+              "value": 50,
               "type": "Int"
+            },
+            {
+              "kind": "Literal",
+              "name": "sort",
+              "value": "START_AT_ASC",
+              "type": "PartnerShowSorts"
             }
           ],
           "concreteType": "ShowConnection",
@@ -136,13 +159,7 @@ return {
                   "concreteType": "Show",
                   "plural": false,
                   "selections": [
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "id",
-                      "args": null,
-                      "storageKey": null
-                    },
+                    v2,
                     v0,
                     {
                       "kind": "LinkedField",
@@ -154,14 +171,35 @@ return {
                       "plural": false,
                       "selections": [
                         v1,
-                        v2
+                        v3
                       ]
                     },
-                    v2
+                    v3
                   ]
                 }
               ]
             }
+          ]
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "fairs",
+          "storageKey": "fairs(size:10)",
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "size",
+              "value": 10,
+              "type": "Int"
+            }
+          ],
+          "concreteType": "Fair",
+          "plural": true,
+          "selections": [
+            v2,
+            v0,
+            v3
           ]
         }
       ]
@@ -169,5 +207,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '19c9f7cd37e955ef042ce8b578f63594';
+(node as any).hash = '562317a85ef6b01df5517c7e09399dcc';
 export default node;
