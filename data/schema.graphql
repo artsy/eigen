@@ -982,6 +982,7 @@ type ArtworkContextAuction implements Node {
   href: String
   name: String
   is_auction: Boolean
+  is_benefit: Boolean
   is_auction_promo: Boolean
   is_closed: Boolean
   is_open: Boolean
@@ -1040,7 +1041,7 @@ type ArtworkContextFair {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
-  artists_count: Int
+  about: String
   artists(
     # Sorts for artists in a fair
     sort: FairArtistSorts
@@ -1062,6 +1063,7 @@ type ArtworkContextFair {
 
   # Are we currently in the fair's active period?
   is_active: Boolean
+  links: String
   mobile_image: Image
   is_published: Boolean
   location: Location
@@ -1097,6 +1099,7 @@ type ArtworkContextFair {
   organizer: organizer
   published: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   tagline: String
+  ticketsLink: String
 
   # The exhibitors with booths in this fair.
   exhibitors_grouped_by_name: [FairExhibitorsGroup]
@@ -1315,6 +1318,7 @@ type ArtworkContextSale implements Node {
   href: String
   name: String
   is_auction: Boolean
+  is_benefit: Boolean
   is_auction_promo: Boolean
   is_closed: Boolean
   is_open: Boolean
@@ -2704,6 +2708,11 @@ input CreateOfferOrderWithArtworkInput {
 
   # quantity of artwork
   quantity: Int
+
+  # When set to true, we will not reuse existing pending/submitted order.
+  # Otherwise if current user has pending/submitted orders on same artwork/edition
+  # with same quantity, we will return that
+  find_active_or_create: Boolean
   clientMutationId: String
 }
 
@@ -3125,7 +3134,7 @@ type Fair {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
-  artists_count: Int
+  about: String
   artists(
     # Sorts for artists in a fair
     sort: FairArtistSorts
@@ -3147,6 +3156,7 @@ type Fair {
 
   # Are we currently in the fair's active period?
   is_active: Boolean
+  links: String
   mobile_image: Image
   is_published: Boolean
   location: Location
@@ -3182,6 +3192,7 @@ type Fair {
   organizer: organizer
   published: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   tagline: String
+  ticketsLink: String
 
   # The exhibitors with booths in this fair.
   exhibitors_grouped_by_name: [FairExhibitorsGroup]
@@ -3446,6 +3457,42 @@ type FollowedArtistsArtworksGroupEdge {
   cursor: String!
 }
 
+# A connection to a list of items.
+type FollowedFairConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FollowedFairEdge]
+}
+
+# An edge in a connection.
+type FollowedFairEdge {
+  # The item at the end of the edge
+  node: Fair
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# A connection to a list of items.
+type FollowedShowConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [FollowedShowEdge]
+}
+
+# An edge in a connection.
+type FollowedShowEdge {
+  # The item at the end of the edge
+  node: Show
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
 type FollowGene {
   gene: Gene
 
@@ -3505,6 +3552,23 @@ type FollowsAndSaves {
     before: String
     last: Int
   ): FollowedArtistsArtworksGroupConnection
+
+  # A list of the current user’s currently followed shows
+  shows(after: String, first: Int, before: String, last: Int): FollowedShowConnection
+
+  # A list of the current user’s currently followed fair profiles
+  fairs(after: String, first: Int, before: String, last: Int): FollowedFairConnection
+}
+
+input FollowShowInput {
+  partner_show_id: String
+  unfollow: Boolean = false
+  clientMutationId: String
+}
+
+type FollowShowPayload {
+  show: Show
+  clientMutationId: String
 }
 
 enum Format {
@@ -4194,7 +4258,7 @@ type HomePageModuleContextFair {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
-  artists_count: Int
+  about: String
   artists(
     # Sorts for artists in a fair
     sort: FairArtistSorts
@@ -4216,6 +4280,7 @@ type HomePageModuleContextFair {
 
   # Are we currently in the fair's active period?
   is_active: Boolean
+  links: String
   mobile_image: Image
   is_published: Boolean
   location: Location
@@ -4251,6 +4316,7 @@ type HomePageModuleContextFair {
   organizer: organizer
   published: Boolean @deprecated(reason: "Prefix Boolean returning fields with `is_`")
   tagline: String
+  ticketsLink: String
 
   # The exhibitors with booths in this fair.
   exhibitors_grouped_by_name: [FairExhibitorsGroup]
@@ -4496,6 +4562,7 @@ type HomePageModuleContextSale implements Node {
   href: String
   name: String
   is_auction: Boolean
+  is_benefit: Boolean
   is_auction_promo: Boolean
   is_closed: Boolean
   is_open: Boolean
@@ -5057,6 +5124,9 @@ type Mutation {
 
   # Follow (or unfollow) an gene
   followGene(input: FollowGeneInput!): FollowGenePayload
+
+  # Follow (or unfollow) a show
+  followShow(input: FollowShowInput!): FollowShowPayload
 
   # Updating a collector profile (loyalty applicant status).
   updateCollectorProfile(input: UpdateCollectorProfileInput!): UpdateCollectorProfilePayload
@@ -6000,6 +6070,7 @@ type OrderWithMutationSuccess {
 type organizer {
   profile_id: ID
   profile: Profile
+  website: String
 }
 
 type PageCursor {
@@ -6090,6 +6161,9 @@ type Partner implements Node {
     status: EventStatus
   ): [PartnerShow]
   type: String
+
+  # The gallery partner's web address
+  website: String
 }
 
 type PartnerArtist {
@@ -7150,6 +7224,7 @@ type Sale implements Node {
   href: String
   name: String
   is_auction: Boolean
+  is_benefit: Boolean
   is_auction_promo: Boolean
   is_closed: Boolean
   is_open: Boolean

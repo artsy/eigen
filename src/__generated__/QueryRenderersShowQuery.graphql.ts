@@ -80,6 +80,18 @@ fragment Detail_show on Show {
 }
 
 fragment MoreInfo_show on Show {
+  partner {
+    __typename
+    ... on Partner {
+      website
+    }
+    ... on Node {
+      __id
+    }
+    ... on ExternalPartner {
+      __id
+    }
+  }
   press_release
   events {
     ...EventSection_event
@@ -677,7 +689,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "f90443a4a8ec6b3761a83a83fddb3c65",
+  "id": "e764d449f7e3f8383f1004d5daf1b985",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -741,6 +753,13 @@ return {
                     "kind": "ScalarField",
                     "alias": null,
                     "name": "type",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "website",
                     "args": null,
                     "storageKey": null
                   }

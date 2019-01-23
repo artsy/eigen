@@ -1,7 +1,8 @@
 import { Box, Separator, Serif } from "@artsy/palette"
 import { MoreInfo_show } from "__generated__/MoreInfo_show.graphql"
+import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import React from "react"
-import { FlatList, NavigatorIOS, ViewProperties } from "react-native"
+import { FlatList, Linking, NavigatorIOS, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import styled from "styled-components/native"
@@ -19,7 +20,7 @@ interface Props extends ViewProperties {
 
 interface State {
   sections: Array<{
-    type: "event" | "press-release"
+    type: "event" | "press-release" | "gallery-website"
     data: any
   }>
 }
@@ -48,6 +49,13 @@ export class MoreInfo extends React.Component<Props, State> {
       })
     }
 
+    if (show.partner.website) {
+      sections.push({
+        type: "gallery-website",
+        data: show,
+      })
+    }
+
     this.setState({ sections })
   }
 
@@ -57,8 +65,14 @@ export class MoreInfo extends React.Component<Props, State> {
     </Box>
   )
 
+  renderGalleryWebsite(url) {
+    Linking.openURL(url).catch(err => console.error("An error occurred opening gallery link", err))
+  }
+
   renderItem = ({ item: { data, type } }) => {
     switch (type) {
+      case "gallery-website":
+        return <CaretButton onPress={() => this.renderGalleryWebsite(data.partner.website)} text="Visit Gallery Site" />
       case "event":
         return <EventSection {...data} />
       case "press-release":
@@ -90,6 +104,11 @@ export const MoreInfoContainer = createFragmentContainer(
   MoreInfo,
   graphql`
     fragment MoreInfo_show on Show {
+      partner {
+        ... on Partner {
+          website
+        }
+      }
       press_release
       events {
         ...EventSection_event
