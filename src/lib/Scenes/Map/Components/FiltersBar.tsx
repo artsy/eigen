@@ -71,7 +71,7 @@ export class FiltersBar extends React.Component<FiltersBarProps, FiltersBarState
 
   render() {
     return (
-      <>
+      <View>
         <Box pt={4} pb={2} px={3}>
           <Serif size="8">{this.props.currentCity.name}</Serif>
         </Box>
@@ -96,7 +96,7 @@ export class FiltersBar extends React.Component<FiltersBarProps, FiltersBarState
             ]}
           />
         </Tabs>
-      </>
+      </View>
     )
   }
 }

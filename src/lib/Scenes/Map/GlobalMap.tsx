@@ -8,6 +8,7 @@ import styled from "styled-components/native"
 
 import { cities } from "../City/cities"
 import { FiltersBar } from "./Components/FiltersBar"
+import { EventEmitter } from "./EventEmitter"
 
 const Emission = NativeModules.Emission || {}
 
@@ -28,7 +29,7 @@ interface Props {
   viewer: GlobalMap_viewer
 }
 
-export const GlobalMapContext = React.createContext("map")
+export const GlobalMapContext = React.createContext({ shows: [], fairs: [] })
 export class GlobalMap extends React.Component<Props> {
   state = {
     currentCity: cities["new-york"],
@@ -37,10 +38,14 @@ export class GlobalMap extends React.Component<Props> {
   stylesheet = Mapbox.StyleSheet.create({
     symbol: {
       iconImage: require("../../../../images/pingalleryon.png"),
-      iconSize: 1.5,
+      iconSize: 2,
       iconAllowOverlap: true,
     },
   })
+
+  componentWillReceiveProps(newProps) {
+    EventEmitter.dispatch("map:change", newProps.viewer)
+  }
 
   render() {
     const { city } = this.props.viewer
@@ -78,6 +83,9 @@ export class GlobalMap extends React.Component<Props> {
           zoomLevel={14}
           logoEnabled={false}
           attributionEnabled={false}
+          onRegionDidChange={() => {
+            EventEmitter.dispatch("map:change", this.props.viewer)
+          }}
         >
           <Mapbox.ShapeSource
             id="GalleryIconSource"
