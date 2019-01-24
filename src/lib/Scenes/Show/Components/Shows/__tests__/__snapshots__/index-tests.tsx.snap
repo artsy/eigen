@@ -89,36 +89,6 @@ Array [
         >
           View on map
         </Text>
-        <View
-          ml={1}
-          mr={1}
-          style={
-            Array [
-              Object {
-                "marginLeft": 10,
-                "marginRight": 10,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Image
-            source={
-              Object {
-                "testUri": "../../../images/map.png",
-              }
-            }
-            style={
-              Array [
-                Object {
-                  "height": 22,
-                  "width": 20,
-                },
-                undefined,
-              ]
-            }
-          />
-        </View>
       </View>
     </View>
   </View>,
