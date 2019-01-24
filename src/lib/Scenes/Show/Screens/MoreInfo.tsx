@@ -72,7 +72,12 @@ export class MoreInfo extends React.Component<Props, State> {
   renderItem = ({ item: { data, type } }) => {
     switch (type) {
       case "gallery-website":
-        return <CaretButton onPress={() => this.renderGalleryWebsite(data.partner.website)} text="Visit Gallery Site" />
+        return (
+          <CaretButton
+            onPress={() => this.renderGalleryWebsite(data.partner.website)}
+            text={data.partner.type === "Gallery" ? "Visit gallery site" : "Visit institution site"}
+          />
+        )
       case "event":
         return <EventSection {...data} />
       case "press-release":
@@ -107,6 +112,7 @@ export const MoreInfoContainer = createFragmentContainer(
       partner {
         ... on Partner {
           website
+          type
         }
       }
       press_release
