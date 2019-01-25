@@ -48,7 +48,7 @@ export class FairMoreInfo extends React.Component<Props, State> {
       type: "links",
       data: {
         links: fair.links,
-        tickets_link: fair.tickets_link,
+        ticketsLink: fair.ticketsLink,
       },
     })
 
@@ -77,7 +77,7 @@ export class FairMoreInfo extends React.Component<Props, State> {
           <>
             <CaretButton text="View fair site" onPress={() => this.openUrl(data.links)} />
             <Spacer m={1} />
-            <CaretButton text="Buy tickets" onPress={() => this.openUrl(data.tickets_link)} />
+            <CaretButton text="Buy tickets" onPress={() => this.openUrl(data.ticketsLink)} />
           </>
         )
     }

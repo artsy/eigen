@@ -42,12 +42,12 @@ describe("FairMoreInfo", () => {
     expect(tree.text()).toContain(FairFixture.about)
   })
 
-  it("opens fair tickets_link url", async () => {
+  it("opens fair ticketsLink url", async () => {
     const tree = await renderTree()
     const button = tree.find("[text='Buy tickets']")
 
     button.props().onPress()
 
-    expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), FairFixture.tickets_link)
+    expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), FairFixture.ticketsLink)
   })
 })
