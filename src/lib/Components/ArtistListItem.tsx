@@ -31,6 +31,7 @@ const TextContainer = styled(Flex)`
 interface Props {
   artist: ArtistListItem_artist
   relay: RelayProp
+  Component?: any
 }
 
 interface State {

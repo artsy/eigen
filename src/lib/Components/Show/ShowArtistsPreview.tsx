@@ -10,7 +10,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 interface Props {
   show: ShowArtistsPreview_show
   onViewAllArtistsPressed: () => void
-  Component: () => void
+  Component: any
 }
 
 export const ShowArtistsPreview: React.SFC<Props> = ({ show, onViewAllArtistsPressed, Component }) => {
