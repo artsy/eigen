@@ -76,6 +76,19 @@ fragment Detail_show on Show {
 }
 
 fragment MoreInfo_show on Show {
+  partner {
+    __typename
+    ... on Partner {
+      website
+      type
+    }
+    ... on Node {
+      __id
+    }
+    ... on ExternalPartner {
+      __id
+    }
+  }
   press_release
   events {
     ...EventSection_event
@@ -272,6 +285,7 @@ fragment ShowArtworksPreview_show on Show {
 fragment ShowArtistsPreview_show on Show {
   artists {
     id
+    href
     ...ArtistListItem_artist
     __id
   }
@@ -664,7 +678,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
-  "id": "4f89b58ecafa4878829004c0bb7cc8c7",
+  "id": "dbc60d658242384899059a58f7ff9629",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -728,6 +742,13 @@ return {
                     "kind": "ScalarField",
                     "alias": null,
                     "name": "type",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "website",
                     "args": null,
                     "storageKey": null
                   }

@@ -130,6 +130,7 @@ fragment ShowArtworksPreview_show on Show {
 fragment ShowArtistsPreview_show on Show {
   artists {
     id
+    href
     ...ArtistListItem_artist
     __id
   }
@@ -346,7 +347,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "1c7068c846e583b9a3c71c90e226d09f",
+  "id": "b23d666b92f6246dd3f869eb251d50b7",
   "text": null,
   "metadata": {},
   "fragment": {

@@ -83,6 +83,7 @@
 - Reordering Fair sections to match design specs -ashley
 - Add contextual data to Fair view - ashley
 - Enable navigation on contextual data in Show view - ashley
+- Show UI cleanup: removes map icon, enables Artist navigation, expands Show installation shot carousel to screen width, adds external link to partner galleries, removes extra separators - ashley
 
 ### 1.7.1
 

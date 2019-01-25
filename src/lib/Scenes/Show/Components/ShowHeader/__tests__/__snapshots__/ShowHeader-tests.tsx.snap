@@ -99,13 +99,11 @@ Array [
     </Text>
   </View>,
   <View
-    ml={2}
     my={2}
     style={
       Array [
         Object {
           "marginBottom": 8,
-          "marginLeft": 8,
           "marginTop": 8,
         },
         undefined,
@@ -120,6 +118,7 @@ Array [
         Array [
           Object {
             "height": 350,
+            "paddingLeft": 20,
           },
           undefined,
         ]

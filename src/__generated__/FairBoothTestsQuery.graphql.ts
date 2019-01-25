@@ -71,6 +71,7 @@ fragment ShowArtworksPreview_show on Show {
 fragment ShowArtistsPreview_show on Show {
   artists {
     id
+    href
     ...ArtistListItem_artist
     __id
   }
@@ -467,62 +468,57 @@ v20 = {
   "args": null,
   "storageKey": null
 },
-v21 = [
-  v12,
-  v1,
-  v2,
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "is_followed",
-    "args": null,
-    "storageKey": null
-  },
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "nationality",
-    "args": null,
-    "storageKey": null
-  },
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "birthday",
-    "args": null,
-    "storageKey": null
-  },
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "deathday",
-    "args": null,
-    "storageKey": null
-  },
-  {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "image",
-    "storageKey": null,
-    "args": null,
-    "concreteType": "Image",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "url",
-        "args": null,
-        "storageKey": null
-      }
-    ]
-  }
-];
+v21 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_followed",
+  "args": null,
+  "storageKey": null
+},
+v22 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "nationality",
+  "args": null,
+  "storageKey": null
+},
+v23 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "birthday",
+  "args": null,
+  "storageKey": null
+},
+v24 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "deathday",
+  "args": null,
+  "storageKey": null
+},
+v25 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "image",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "Image",
+  "plural": false,
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "url",
+      "args": null,
+      "storageKey": null
+    }
+  ]
+};
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairBoothTestsQuery",
-  "id": "d3c94958ab6c1a25131e49881d069fde",
+  "id": "f38e3ef0759143a310e14bffd5707fb8",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -664,7 +660,17 @@ return {
             "args": null,
             "concreteType": "Artist",
             "plural": true,
-            "selections": v21
+            "selections": [
+              v12,
+              v20,
+              v1,
+              v2,
+              v21,
+              v22,
+              v23,
+              v24,
+              v25
+            ]
           },
           {
             "kind": "LinkedField",
@@ -690,7 +696,16 @@ return {
                 "args": null,
                 "concreteType": "Artist",
                 "plural": true,
-                "selections": v21
+                "selections": [
+                  v12,
+                  v1,
+                  v2,
+                  v21,
+                  v22,
+                  v23,
+                  v24,
+                  v25
+                ]
               }
             ]
           },

@@ -1,19 +1,13 @@
-import { Box, Flex, Sans, Serif } from "@artsy/palette"
+import { Flex, Sans, Serif } from "@artsy/palette"
 import { Shows_show } from "__generated__/Shows_show.graphql"
 import React from "react"
-import { FlatList, Image, TouchableOpacity } from "react-native"
+import { FlatList, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
 import { ShowItemContainer as ShowItem } from "./Components/ShowItem"
 
 interface Props {
   show: Shows_show
 }
-
-const Icon = styled(Image)`
-  width: 20;
-  height: 22;
-`
 
 export const Shows: React.SFC<Props> = ({ show }) => {
   const handleViewOnMap = () => {
@@ -29,9 +23,6 @@ export const Shows: React.SFC<Props> = ({ show }) => {
         <TouchableOpacity onPress={() => handleViewOnMap()}>
           <Flex alignItems="center" flexDirection="row">
             <Sans size="2">View on map</Sans>
-            <Box ml={1} mr={1}>
-              <Icon source={require("../../../../../../images/map.png")} />
-            </Box>
           </Flex>
         </TouchableOpacity>
       </Flex>
