@@ -7,6 +7,7 @@ export type MoreInfo_show$ref = typeof _MoreInfo_show$ref;
 export type MoreInfo_show = {
     readonly partner: ({
         readonly website?: string | null;
+        readonly type?: string | null;
     }) | null;
     readonly press_release: string | null;
     readonly events: ReadonlyArray<({
@@ -52,6 +53,13 @@ return {
               "name": "website",
               "args": null,
               "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "type",
+              "args": null,
+              "storageKey": null
             }
           ]
         }
@@ -84,5 +92,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2b0b53fec5db6bc015a735421109f5d2';
+(node as any).hash = '32dd567388e83b7b10354d76294fd39c';
 export default node;

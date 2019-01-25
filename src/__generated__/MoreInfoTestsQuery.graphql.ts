@@ -28,6 +28,7 @@ fragment MoreInfo_show on Show {
     __typename
     ... on Partner {
       website
+      type
     }
     ... on Node {
       __id
@@ -71,7 +72,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MoreInfoTestsQuery",
-  "id": "8de0bd83cd20e60df255f290072ac34f",
+  "id": "ca48b956eb5ffbe51746af79771a7880",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -139,6 +140,13 @@ return {
                     "kind": "ScalarField",
                     "alias": null,
                     "name": "website",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "type",
                     "args": null,
                     "storageKey": null
                   }

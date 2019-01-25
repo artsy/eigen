@@ -80,6 +80,7 @@ fragment MoreInfo_show on Show {
     __typename
     ... on Partner {
       website
+      type
     }
     ... on Node {
       __id
@@ -677,7 +678,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
-  "id": "58a89f6b9ec85f2564799a6218b5553b",
+  "id": "dbc60d658242384899059a58f7ff9629",
   "text": null,
   "metadata": {},
   "fragment": {
