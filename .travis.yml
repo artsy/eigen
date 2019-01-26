@@ -11,7 +11,6 @@ cache:
   # General SwiftPM
   # Danger Swift plugins, like Yams
   - .build
-  - ~/.danger-swift
 
 install:
   # Grab the latest Danger JS from npm
