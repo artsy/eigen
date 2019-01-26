@@ -17,8 +17,6 @@ install:
   - npm install -g danger
 
 script:
-  # Compile the Danger runtime
-  - swift build
   # Run the Dangerfile.swift
   - swift run danger-swift ci
 
