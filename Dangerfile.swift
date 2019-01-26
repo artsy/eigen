@@ -18,7 +18,7 @@ let testFiles = editedFiles.filter { $0.contains("Tests") && ($0.fileType == .sw
 // Validates that we've not accidentally let in a testing
 // shortcut to simplify dev work
 let testingShortcuts = ["fdescribe", "fit(@", "fit("]
-for file in editedFiles where file.fileType == .swift  || file.fileType == .m {
+for file in editedFiles where (file.fileType == .swift  || file.fileType == .m) && file.name != "Dangerfile.swift" {
     let content = danger.utils.readFile(file)
     for shortcut in testingShortcuts {
         if content.contains(shortcut) {
