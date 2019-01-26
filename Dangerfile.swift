@@ -4,7 +4,7 @@
 
 import Danger
 import Foundation
-import Yams // package: https://github.com/jpsim/Yams.git
+import Yams
 
 let danger = Danger()
 
