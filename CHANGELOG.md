@@ -16,6 +16,11 @@
 
 ### Master
 
+- Ports over @ds300's Relay mock utils from reaction - luc
+- Swap Mapbox style from default to Artsy theme - luc
+- Display pins on map based user location - luc
+- Update MapRenderer to user Geolocation service - luc
+
 ### 1.7.6
 
 - Removes the buy now banner from the homescreen - orta
