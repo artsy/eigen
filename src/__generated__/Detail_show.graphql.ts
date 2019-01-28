@@ -1,9 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-import { Artists_show$ref } from "./Artists_show.graphql";
-import { Artworks_show$ref } from "./Artworks_show.graphql";
 import { LocationMap_location$ref } from "./LocationMap_location.graphql";
+import { ShowArtistsPreview_show$ref } from "./ShowArtistsPreview_show.graphql";
+import { ShowArtworksPreview_show$ref } from "./ShowArtworksPreview_show.graphql";
 import { ShowHeader_show$ref } from "./ShowHeader_show.graphql";
 import { Shows_show$ref } from "./Shows_show.graphql";
 declare const _Detail_show$ref: unique symbol;
@@ -20,21 +20,21 @@ export type Detail_show = {
         readonly city: string | null;
         readonly state: string | null;
         readonly postal_code: string | null;
+        readonly displayDaySchedules: ReadonlyArray<({
+            readonly days: string | null;
+            readonly hours: string | null;
+        }) | null> | null;
         readonly " $fragmentRefs": LocationMap_location$ref;
     }) | null;
     readonly images: ReadonlyArray<({
         readonly id: string | null;
     }) | null> | null;
     readonly status: string | null;
-    readonly counts: ({
-        readonly artworks: number | null;
-        readonly eligible_artworks: any | null;
-    }) | null;
     readonly partner: ({
         readonly name?: string | null;
         readonly type?: string | null;
     }) | null;
-    readonly " $fragmentRefs": ShowHeader_show$ref & Artworks_show$ref & Artists_show$ref & Shows_show$ref;
+    readonly " $fragmentRefs": ShowHeader_show$ref & ShowArtworksPreview_show$ref & ShowArtistsPreview_show$ref & Shows_show$ref;
     readonly " $refType": Detail_show$ref;
 };
 
@@ -78,7 +78,7 @@ return {
   "selections": [
     {
       "kind": "FragmentSpread",
-      "name": "Artworks_show",
+      "name": "ShowHeader_show",
       "args": null
     },
     v0,
@@ -129,6 +129,31 @@ return {
           "args": null,
           "storageKey": null
         },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "displayDaySchedules",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "FormattedDaySchedules",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "days",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "hours",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
         v2,
         {
           "kind": "FragmentSpread",
@@ -149,15 +174,15 @@ return {
         v0
       ]
     },
-    {
-      "kind": "FragmentSpread",
-      "name": "ShowHeader_show",
-      "args": null
-    },
     v3,
     {
       "kind": "FragmentSpread",
-      "name": "Artists_show",
+      "name": "ShowArtworksPreview_show",
+      "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "ShowArtistsPreview_show",
       "args": null
     },
     {
@@ -171,31 +196,6 @@ return {
       "name": "status",
       "args": null,
       "storageKey": null
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "counts",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "ShowCounts",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "artworks",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "eligible_artworks",
-          "args": null,
-          "storageKey": null
-        }
-      ]
     },
     {
       "kind": "LinkedField",
@@ -234,5 +234,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f2594b4ad38e0b428de5aa2a24356569';
+(node as any).hash = '72d152d35d7fe0b1d2063a9c6402a127';
 export default node;

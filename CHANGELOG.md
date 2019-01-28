@@ -16,13 +16,45 @@
 
 ### Master
 
+- Adds `Make Offer` badge to artwork brick - matt
+
+### 1.7.6
+
+- Removes the buy now banner from the homescreen - orta
+
+### 1.7.5
+
+- fixes to the artwork favourites pagination - orta
 - Adds styled LocationMap with custom pins - kieran
 - Refactor auctions countdown timer, add fair countdown timer - javamonn
+- Refactors ARNotificationManager to implicitly call all JS methods on main queue - ash
 - Adds the mapBoxAPIClientKey to cocoapods
 - Updates Show detail view styles - luc
 - Styles artists list - Kieran
 - Updates @artsy/palette (2.21.1) - javamonn
 - Refactor More Shows section - luc
+- Styles fair header view - luc
+- Increases size of pin for LocationMap and zooms in slighlty - kieran
+- Adds extra checking around sale artwork messaging in artwork grids - ash
+- Add fair-scoped search link to native Eigen screen - javamonn
+- Adds "View on map" to show view for "More shows" - Kieran
+- Adds AllArtist page to Shows and adds styled gray border InvertedButton - Kieran
+- Add HoursCollapsible to Fair detail view - javamonn
+- Adds fair booth section - luc
+- Add browse artworks screen to Fair, Show - javamonn
+- fixes to the artwork favourites pagination - orta
+- Add rules prop to Markdown, left-align fair and show hours markdown - javamonn
+- Add paginated artists screen to fair detail, refactor show artists - javamonn
+- Update Show MoreInfo screen with events - javamonn
+- Update artwork grid item text spacing - javamonn
+- Add Browse Artworks link from Fair booth, works - javamonn
+- Enable navigation link from Fair contextual detail to Gallery and Artist pages - ashley
+- All Exhibitors View bug fix - ashley
+- Add FairBooth screen - javamonn
+- Splits Fair screens into seperate query renderers - luc
+- Adds Map and City view container - luc
+- Adds native unit test suite and CI - ash
+- Add FairMoreInfo screen - roop and javamonn
 
 ### 1.7.4
 
@@ -50,6 +82,11 @@
 - Adds MoreInfo screen to show detail view - javamonn
 - Clean up Jest log output, update relay-mock-network-layer - javamonn
 - Adds shows list to Show View - ashley
+- Adds fair exhibitors to Fair view - ashley
+- Reordering Fair sections to match design specs -ashley
+- Add contextual data to Fair view - ashley
+- Enable navigation on contextual data in Show view - ashley
+- Show UI cleanup: removes map icon, enables Artist navigation, expands Show installation shot carousel to screen width, adds external link to partner galleries, removes extra separators - ashley
 
 ### 1.7.1
 

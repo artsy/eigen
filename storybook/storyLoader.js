@@ -9,7 +9,6 @@ function loadStories() {
   require('../src/lib/Components/Artist/__stories__/ArtistHeader.story.tsx');
   require('../src/lib/Components/Bidding/Components/__stories__/Checkbox.story.tsx');
   require('../src/lib/Components/Bidding/Components/__stories__/Input.story.tsx');
-  require('../src/lib/Components/Bidding/Components/__stories__/Markdown.story.tsx');
   require('../src/lib/Components/Bidding/Components/__stories__/Timer.story.tsx');
   require('../src/lib/Components/Bidding/Screens/__stories__/BidResult.story.tsx');
   require('../src/lib/Components/Bidding/Screens/__stories__/RegistrationResult.story.tsx');
@@ -33,6 +32,7 @@ function loadStories() {
   require('../src/lib/Components/States/__stories__/ZeroState.story.tsx');
   require('../src/lib/Components/Text/__stories__/Typography.story.tsx');
   require('../src/lib/Components/__stories__/DottedLine.story.tsx');
+  require('../src/lib/Components/__stories__/Markdown.story.tsx');
   require('../src/lib/Components/__stories__/Modal.story.tsx');
   require('../src/lib/Components/__stories__/Video.story.tsx');
   require('../src/lib/Containers/__stories__/Artist.story.tsx');
@@ -41,7 +41,6 @@ function loadStories() {
   require('../src/lib/Containers/__stories__/Sale.story.tsx');
   require('../src/lib/Scenes/Fair/__stories__/Fair.story.tsx');
   require('../src/lib/Scenes/Favorites/__stories__/Favorites.story.tsx');
-  require('../src/lib/Scenes/Home/Components/ForYou/Components/__stories__/MarketingHeader.story.tsx');
   require('../src/lib/Scenes/Home/Components/Sales/Components/__stories__/LotsByFollowedArtists.story.tsx');
   require('../src/lib/Scenes/Home/__stories__/Home.story.tsx');
   require('../src/lib/Scenes/Settings/__stories__/Settings.story.tsx');
@@ -54,7 +53,6 @@ const stories = [
   '../src/lib/Components/Artist/__stories__/ArtistHeader.story.tsx',
   '../src/lib/Components/Bidding/Components/__stories__/Checkbox.story.tsx',
   '../src/lib/Components/Bidding/Components/__stories__/Input.story.tsx',
-  '../src/lib/Components/Bidding/Components/__stories__/Markdown.story.tsx',
   '../src/lib/Components/Bidding/Components/__stories__/Timer.story.tsx',
   '../src/lib/Components/Bidding/Screens/__stories__/BidResult.story.tsx',
   '../src/lib/Components/Bidding/Screens/__stories__/RegistrationResult.story.tsx',
@@ -78,6 +76,7 @@ const stories = [
   '../src/lib/Components/States/__stories__/ZeroState.story.tsx',
   '../src/lib/Components/Text/__stories__/Typography.story.tsx',
   '../src/lib/Components/__stories__/DottedLine.story.tsx',
+  '../src/lib/Components/__stories__/Markdown.story.tsx',
   '../src/lib/Components/__stories__/Modal.story.tsx',
   '../src/lib/Components/__stories__/Video.story.tsx',
   '../src/lib/Containers/__stories__/Artist.story.tsx',
@@ -86,7 +85,6 @@ const stories = [
   '../src/lib/Containers/__stories__/Sale.story.tsx',
   '../src/lib/Scenes/Fair/__stories__/Fair.story.tsx',
   '../src/lib/Scenes/Favorites/__stories__/Favorites.story.tsx',
-  '../src/lib/Scenes/Home/Components/ForYou/Components/__stories__/MarketingHeader.story.tsx',
   '../src/lib/Scenes/Home/Components/Sales/Components/__stories__/LotsByFollowedArtists.story.tsx',
   '../src/lib/Scenes/Home/__stories__/Home.story.tsx',
   '../src/lib/Scenes/Settings/__stories__/Settings.story.tsx',

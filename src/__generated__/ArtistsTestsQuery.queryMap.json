@@ -1,3 +1,0 @@
-{
-  "68db0d617a2c40601e400b28c64c7632": "query ArtistsTestsQuery {\n  show(id: \"anderson-fine-art-gallery-flickinger-collection\") {\n    ...Artists_show\n    __id\n  }\n}\n\nfragment Artists_show on Show {\n  artists {\n    __id\n    id\n    name\n    is_followed\n    nationality\n    birthday\n    deathday\n    image {\n      url\n    }\n  }\n  __id\n}\n"
-}

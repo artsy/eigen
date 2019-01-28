@@ -1,0 +1,97 @@
+version: 2
+jobs:
+  build-and-test:
+    # Specify the Xcode version to use
+    macos:
+      xcode: "10.1.0"
+
+    environment:
+      # WARNING: These env vars are passed to PRs on forks.
+      # WARNING: DO NOT PUT SENSITIVE INFORMATION HERE.
+      ArtsyAPIClientSecret: "-"
+      ArtsyAPIClientKey: "-"
+      StripePublishableKey: "-"
+      MapBoxAPIClientKey: "-"
+
+      # For caching gems, relative to current directory
+      BUNDLE_PATH: vendor/bundle
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v2-gems-{{ checksum "Example/Gemfile.lock" }}
+            # Fall back to using the latest cache if no exact match is found.
+            - v2-gems-
+
+      - run:
+          name: Bundle install
+          command: cd Example ; bundle check || bundle install
+          environment:
+            BUNDLE_JOBS: 4
+            BUNDLE_RETRY: 3
+
+      - save_cache:
+          key: v2-gems-{{ checksum "Example/Gemfile.lock" }}
+          paths:
+            - Example/vendor/bundle
+
+      - restore_cache:
+          keys:
+            - v1-yarn-{{ checksum "yarn.lock" }}
+            # Fall back to using the latest cache if no exact match is found.
+            - v1-yarn-
+
+      - run:
+          name: Install Yarn Dependencies
+          command: yarn install --ignore-engines
+
+      - save_cache:
+          key: v1-yarn-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+
+      - restore_cache:
+          keys:
+            - v2-pods-{{ checksum "Example/Podfile.lock" }}
+            # Fall back to using the latest cache if no exact match is found.
+            - v2-pods-
+
+      - run:
+          name: Install CocoaPods Specs If Necessary
+          command: cd Example ; bundle exec pod check --ignore-dev-pods || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+
+      - run:
+          name: Install CocoaPods If Necessary
+          command: cd Example ; bundle exec pod check --ignore-dev-pods || bundle exec pod install
+
+      - save_cache:
+          key: v2-pods-{{ checksum "Example/Podfile.lock" }}
+          paths:
+            - Example/Pods
+
+      - run:
+          name: Package JavaScript for Testing
+          command: "yarn bundle-for-native-ci"
+
+      - run:
+          name: Set up build artefact directories
+          command: mkdir -p /tmp/test_results/xcode
+
+      - run:
+          name: Run Unit Tests
+          command: cd Example ; set -o pipefail && xcodebuild -workspace Emission.xcworkspace -scheme "Emission Example" -configuration Debug test -sdk iphonesimulator -destination "platform=iOS Simulator,OS=10.3.1,name=iPhone 6" GCC_PREPROCESSOR_DEFINITIONS="\$GCC_PREPROCESSOR_DEFINITIONS RUNNING_ON_CI=1" | tee /tmp/xcode_test_raw.log | xcpretty -c --test --report junit --output /tmp/test_results/xcode/results.xml
+
+      - store_test_results:
+          path: /tmp/test_results/
+
+      - store_artifacts:
+          path: /tmp/xcode_test_raw.log
+          prefix: tests
+
+workflows:
+  version: 2
+  build-test:
+    jobs:
+      - build-and-test

@@ -22,7 +22,7 @@ interface State {
   sectionCount: number
 }
 
-class GenericArtworksGrid extends React.Component<Props, State> {
+export class GenericArtworksGrid extends React.Component<Props, State> {
   static defaultProps = {
     sectionDirection: "column" as "column",
     sectionMargin: 20,
@@ -66,9 +66,9 @@ class GenericArtworksGrid extends React.Component<Props, State> {
     }
   }
 
-  shouldComponentUpdate(_, nextState) {
-    if (this.state.sectionCount === nextState.sectionCount) {
-      // if there's a change in columns, we'll need to re-render
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    // if there's a change in columns, we'll need to re-render
+    if (this.props.artworks === nextProps.artworks && this.state.sectionCount === nextState.sectionCount) {
       return false
     }
     return true

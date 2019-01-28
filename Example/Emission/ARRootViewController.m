@@ -30,6 +30,7 @@
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARShowComponentViewController.h>
+#import <Emission/ARMapContainerViewController.h>
 
 #import "ARStorybookComponentViewController.h"
 
@@ -109,6 +110,7 @@
 
   [sectionData addCellData:self.jumpToShow];
   [sectionData addCellData:self.jumpToFair];
+  [sectionData addCellData:self.jumpToMap];
   [sectionData addCellData:self.jumpToArtist];
   [sectionData addCellData:self.jumpToRandomArtist];
   [sectionData addCellData:self.jumpToHomepage];
@@ -365,7 +367,7 @@
 - (ARCellData *)jumpToShow
 {
   return [self tappableCellDataWithTitle:@"Show" selection:^{
-    id viewController = [[ARShowComponentViewController alloc] initWithShowID:@"abxy-blk-and-blue"];
+    id viewController = [[ARShowComponentViewController alloc] initWithShowID:@"blue-lotus-gallery-the-way-we-were"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
@@ -373,8 +375,17 @@
 - (ARCellData *)jumpToFair
 {
   return [self tappableCellDataWithTitle:@"Fair" selection:^{
-    id viewController = [[ARFairComponentViewController alloc] initWithFairID:@"sofa-chicago-2018"];
+    id viewController = [[ARFairComponentViewController alloc] initWithFairID:@"art-basel-in-miami-beach-2018"];
     [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+- (ARCellData *)jumpToMap
+{
+  return [self tappableCellDataWithTitle:@"Map" selection:^{
+    id viewController = [[ARMapContainerViewController alloc] init];
+    [self.navigationController pushViewController:viewController animated:YES];
+
   }];
 }
 
@@ -407,6 +418,8 @@
 
       [[NSUserDefaults standardUserDefaults] setBool:!useStaging forKey:ARUseStagingDefault];
       [[NSUserDefaults standardUserDefaults] synchronize];
+      [[[AREmission sharedInstance] graphQLQueryCacheModule] clearAll];
+
       exit(0);
     }];
   }];

@@ -26,6 +26,7 @@ function _fetchQuery(queryID: string, variables: object, isQuery: boolean) {
   let body
   if (__DEV__) {
     body = { query: require("../../__generated__/complete.queryMap.json")[queryID], variables }
+    console.log(body)
   } else {
     body = { documentID: queryID, variables }
   }

@@ -1,32 +1,35 @@
-import moment from "moment"
-import React from "react"
-import { Dimensions, Image } from "react-native"
-import styled from "styled-components/native"
-import { CountdownTimer } from "./CountdownTimer"
-
-import { Box, Serif, space, Spacer } from "@artsy/palette"
+import { Box, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
 import { InvertedButton } from "lib/Components/Buttons"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
+import Switchboard from "lib/NativeModules/SwitchBoard"
+import moment from "moment"
+import React from "react"
+import { Dimensions, Image, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
+import { CountdownTimer } from "./CountdownTimer"
 
 interface Props {
   fair: FairHeader_fair
   onSaveShowPressed?: () => Promise<void>
+  viewAllExhibitors: () => void
+  viewAllArtists: () => void
+  onViewMoreInfoPressed: () => void
 }
 
 const BackgroundImage = styled(OpaqueImageView)<{ width: number }>`
   flex: 1;
-  height: ${p => p.width};
+  height: 530;
   align-self: center;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: center;
 `
 
 // Set background color of overlay based on logo color
 const Overlay = styled.View`
-  background-color: rgba(100, 100, 100, 0.3);
+  background-color: rgba(0, 0, 0, 0.3);
   width: 100%;
   height: 100%;
   position: absolute;
@@ -39,42 +42,152 @@ const Logo = styled(Image)`
   margin-right: auto;
   background-color: transparent;
   margin-bottom: ${space(1)};
+  tint-color: white;
+`
+
+const CountdownContainer = styled.View`
+  position: absolute;
+  bottom: ${space(1)};
+  left: 0;
+  width: 100%;
 `
 
 export class FairHeader extends React.Component<Props> {
+  getContextualDetails() {
+    const { artists_names, counts, exhibitors_grouped_by_name } = this.props.fair
+    let { artists: artistsCount, partners: exhibitorsCount } = counts
+    const {
+      edges: [
+        {
+          node: { name: firstArtistName, href: firstArtistSlug },
+        },
+        {
+          node: { name: lastArtistName, href: lastArtistSlug },
+        },
+      ],
+    } = artists_names
+
+    const [
+      {
+        exhibitors: [firstExhibitorName],
+        profile_ids: [firstExhibitorProfileSlug],
+      },
+      {
+        exhibitors: [lastExhibitorName],
+        profile_ids: [lastExhibitorProfileSlug],
+      },
+    ] = exhibitors_grouped_by_name
+
+    artistsCount = !firstArtistName ? artistsCount : artistsCount - 1
+    artistsCount = !lastArtistName ? artistsCount : artistsCount - 1
+    exhibitorsCount = !firstExhibitorName ? exhibitorsCount : exhibitorsCount - 1
+    exhibitorsCount = !lastExhibitorName ? exhibitorsCount : exhibitorsCount - 1
+
+    return (
+      <>
+        {(!firstArtistName && !lastArtistName) || !artistsCount ? null : (
+          <Flex flexDirection="row" flexWrap="wrap" mb={"8"}>
+            <Sans size="3" lineHeight="19">
+              Works by{" "}
+            </Sans>
+            {firstArtistName && (
+              <TouchableOpacity onPress={() => this.handlePress(this, firstArtistSlug)}>
+                <Sans weight="medium" size="3" lineHeight="19">
+                  {firstArtistName + ", "}
+                </Sans>
+              </TouchableOpacity>
+            )}
+            {lastArtistName && (
+              <TouchableOpacity onPress={() => this.handlePress(this, lastArtistSlug)}>
+                <Sans weight="medium" size="3" lineHeight="19">
+                  {lastArtistName + ", "}
+                </Sans>
+              </TouchableOpacity>
+            )}
+            {(firstArtistName || lastArtistName) && (
+              <Sans size="3" lineHeight="19">
+                and{" "}
+              </Sans>
+            )}
+            <TouchableOpacity onPress={() => this.props.viewAllExhibitors()}>
+              <Sans weight="medium" size="3" lineHeight="19">
+                {artistsCount + " others"}
+              </Sans>
+            </TouchableOpacity>
+          </Flex>
+        )}
+        {(!firstExhibitorName && !lastExhibitorName) || !exhibitorsCount ? null : (
+          <Flex flexDirection="row" flexWrap="wrap">
+            <Sans size="3" lineHeight="19">
+              From{" "}
+            </Sans>
+            {firstExhibitorName && (
+              <TouchableOpacity onPress={() => this.handlePress(this, firstExhibitorProfileSlug)}>
+                <Sans weight="medium" size="3" lineHeight="19">
+                  {firstExhibitorName + ", "}
+                </Sans>
+              </TouchableOpacity>
+            )}
+            {lastExhibitorName && (
+              <TouchableOpacity onPress={() => this.handlePress(this, lastExhibitorProfileSlug)}>
+                <Sans weight="medium" size="3" lineHeight="19">
+                  {lastExhibitorName + ", "}
+                </Sans>
+              </TouchableOpacity>
+            )}
+            {(firstExhibitorName || lastExhibitorName) && (
+              <Sans size="3" lineHeight="19">
+                and{" "}
+              </Sans>
+            )}
+            <TouchableOpacity onPress={() => this.props.viewAllArtists()}>
+              <Sans weight="medium" size="3" lineHeight="19">
+                {exhibitorsCount + " others"}
+              </Sans>
+            </TouchableOpacity>
+          </Flex>
+        )}
+      </>
+    )
+  }
+
+  handlePress(component, url) {
+    Switchboard.presentNavigationViewController(component, url)
+  }
+
   render() {
     const {
-      fair: { image, name, organizer, start_at, end_at },
+      fair: { image, name, profile, start_at, end_at },
+      onViewMoreInfoPressed,
     } = this.props
     const { width: screenWidth } = Dimensions.get("window")
-
-    // TODO: figure out where description will come from
-    const description =
-      "The Sculpture Objects Functional Art and Design (SOFA) Fair in Chicago is the premier gallery-presented art fair dedicated to three-dimensional art and design. On par with Art Basel and TEFAF Maastricht, SOFA is produced by Urban Expositions, a Clarion Events company."
 
     return (
       <>
         <BackgroundImage imageURL={image.url} aspectRatio={image.aspect_ratio} width={screenWidth}>
           <Overlay />
-          <Logo source={{ uri: organizer.profile.icon.url }} />
+          <Flex flexDirection="row" justifyContent="center" alignItems="center" px={2}>
+            <Flex flexDirection="column" flexGrow={1}>
+              {profile && <Logo source={{ uri: profile.icon.url }} />}
+              <Sans size="3t" weight="medium" textAlign="center" color="white100">
+                {name}
+              </Sans>
+              <Sans size="3" textAlign="center" color="white100">
+                {moment(start_at).format("MMM Do")} - {moment(end_at).format("MMM Do")}
+              </Sans>
+            </Flex>
+          </Flex>
+          <CountdownContainer>
+            <CountdownTimer startAt={start_at} endAt={end_at} />
+          </CountdownContainer>
         </BackgroundImage>
-        <Spacer m={1} />
-        <Serif size="5t" weight="semibold" textAlign="center">
-          {name}
-        </Serif>
-        <Serif size="3" textAlign="center">
-          {moment(start_at).format("MMM Do")} - {moment(end_at).format("MMM Do")}
-        </Serif>
-
-        <CountdownTimer startAt={start_at} endAt={end_at} />
-
+        <Spacer mt={2} />
+        <Box mx={2}>{this.getContextualDetails()}</Box>
         <Box px={2}>
-          <Spacer m={2} />
+          <Spacer m={2} mt={1} />
           <InvertedButton text="Save" />
-          <Spacer m={2} />
-          <Serif size="2">{description}</Serif>
           <Spacer m={1} />
-          <CaretButton text="More Information" />
+          <CaretButton onPress={() => onViewMoreInfoPressed()} text="View more information" />
         </Box>
       </>
     )
@@ -88,23 +201,40 @@ export const FairHeaderContainer = createFragmentContainer(
       id
       name
 
+      exhibitors_grouped_by_name {
+        exhibitors
+        profile_ids
+      }
+
+      counts {
+        artists
+        partners
+      }
+
+      artists_names: artists(first: 2) {
+        edges {
+          node {
+            name
+            href
+          }
+        }
+      }
+
       image {
         image_url
         aspect_ratio
         url
       }
 
-      organizer {
-        profile {
-          icon {
-            id
-            href
-            height
-            width
-            url
-          }
-          name
+      profile {
+        icon {
+          id
+          href
+          height
+          width
+          url
         }
+        name
       }
 
       start_at

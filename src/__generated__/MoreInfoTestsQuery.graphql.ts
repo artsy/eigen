@@ -24,8 +24,31 @@ query MoreInfoTestsQuery {
 }
 
 fragment MoreInfo_show on Show {
+  partner {
+    __typename
+    ... on Partner {
+      website
+      type
+    }
+    ... on Node {
+      __id
+    }
+    ... on ExternalPartner {
+      __id
+    }
+  }
   press_release
+  events {
+    ...EventSection_event
+  }
   __id
+}
+
+fragment EventSection_event on PartnerShowEventType {
+  event_type
+  description
+  start_at
+  end_at
 }
 */
 
@@ -49,7 +72,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MoreInfoTestsQuery",
-  "id": "a71fe63e268713f0acb9b130c5fd3ff9",
+  "id": "ca48b956eb5ffbe51746af79771a7880",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -93,11 +116,89 @@ return {
         "plural": false,
         "selections": [
           {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "partner",
+            "storageKey": null,
+            "args": null,
+            "concreteType": null,
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "__typename",
+                "args": null,
+                "storageKey": null
+              },
+              v1,
+              {
+                "kind": "InlineFragment",
+                "type": "Partner",
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "website",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "type",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              }
+            ]
+          },
+          {
             "kind": "ScalarField",
             "alias": null,
             "name": "press_release",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "events",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "PartnerShowEventType",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "event_type",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "description",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "start_at",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "end_at",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           },
           v1
         ]

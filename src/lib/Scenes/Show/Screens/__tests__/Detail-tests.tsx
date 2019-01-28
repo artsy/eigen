@@ -1,9 +1,9 @@
 import React from "react"
 import { graphql } from "react-relay"
 
+import { ShowFixture } from "lib/__fixtures__/ShowFixture"
 import { MockRelayRenderer } from "../../../../tests/MockRelayRenderer"
 import { renderUntil } from "../../../../tests/renderUntil"
-import { ShowFixture } from "../../__fixtures__"
 
 import { ShowHeader } from "../../Components/ShowHeader"
 import { DetailContainer } from "../Detail"
@@ -29,7 +29,7 @@ xit("Renders the Show Detail Screen", async () => {
       mockResolvers={{
         Show: () => ({
           ...ShowFixture,
-          artists: () => ShowFixture.show.artists,
+          artists: () => ShowFixture.artists,
         }),
       }}
     />

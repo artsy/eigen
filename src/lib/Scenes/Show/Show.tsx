@@ -3,6 +3,8 @@ import React from "react"
 import { NavigatorIOS, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
+import { ShowArtistsContainer as ShowArtistsScreen } from "lib/Components/Show/ShowArtists"
+import { ShowArtworksContainer as ShowArtworksScreen } from "lib/Components/Show/ShowArtworks"
 import { DetailContainer as DetailScreen } from "./Screens/Detail"
 import { MoreInfoContainer as MoreInfoScreen } from "./Screens/MoreInfo"
 
@@ -27,6 +29,30 @@ export class Show extends React.Component<Props> {
     })
   }
 
+  handleViewAllArtists = () => {
+    if (!this.navigator) {
+      throw new Error("navigator is undefined")
+    }
+
+    this.navigator.push({
+      component: ShowArtistsScreen,
+      title: "",
+      passProps: this.props,
+    })
+  }
+
+  handleViewAllArtworksPressed = () => {
+    if (!this.navigator) {
+      throw new Error("navigator is undefined")
+    }
+
+    this.navigator.push({
+      component: ShowArtworksScreen,
+      title: "",
+      passProps: this.props,
+    })
+  }
+
   render() {
     return (
       <Theme>
@@ -41,6 +67,8 @@ export class Show extends React.Component<Props> {
             passProps: {
               ...this.props,
               onMoreInformationPressed: this.handleMoreInformationPressed,
+              onViewAllArtistsPressed: this.handleViewAllArtists,
+              onViewAllArtworksPressed: this.handleViewAllArtworksPressed,
             },
           }}
           style={{ flex: 1 }}
@@ -56,6 +84,8 @@ export const ShowContainer = createFragmentContainer(
     fragment Show_show on Show {
       ...Detail_show
       ...MoreInfo_show
+      ...ShowArtists_show
+      ...ShowArtworks_show
     }
   `
 )

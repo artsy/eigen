@@ -1,7 +1,7 @@
-import { Serif } from "@artsy/palette"
+import { Flex, Sans, Serif } from "@artsy/palette"
 import { Shows_show } from "__generated__/Shows_show.graphql"
 import React from "react"
-import { FlatList } from "react-native"
+import { FlatList, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ShowItemContainer as ShowItem } from "./Components/ShowItem"
 
@@ -10,16 +10,27 @@ interface Props {
 }
 
 export const Shows: React.SFC<Props> = ({ show }) => {
-  const { edges } = show.nearbyShows
+  const handleViewOnMap = () => {
+    // TODO: Show view on map view when clicked
+    console.log("clicked view on map")
+  }
 
+  const { edges } = show.nearbyShows
   return (
     <>
-      <Serif size="5">More Shows</Serif>
+      <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
+        <Serif size="5">More Shows</Serif>
+        <TouchableOpacity onPress={() => handleViewOnMap()}>
+          <Flex alignItems="center" flexDirection="row">
+            <Sans size="2">View on map</Sans>
+          </Flex>
+        </TouchableOpacity>
+      </Flex>
       <FlatList
         horizontal
         data={edges}
         showsHorizontalScrollIndicator={false}
-        keyExtractor={item => item.node.id}
+        keyExtractor={item => item.node.__id}
         renderItem={({ item }) => {
           return <ShowItem show={item.node as any} />
         }}

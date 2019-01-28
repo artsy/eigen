@@ -21,6 +21,7 @@ const ImageView = styled(OpaqueImageView)<{ isFirst: boolean; aspectRatio: numbe
 
 const PageList = styled(ScrollView)`
   height: ${ITEM_HEIGHT}px;
+  padding-left: ${space(2)};
 `
 
 interface Props {
@@ -47,7 +48,7 @@ export class Carousel extends React.Component<Props> {
 
   render() {
     return (
-      <Box my={2} ml={2}>
+      <Box my={2}>
         <PageList
           innerRef={ref => {
             this.scrollView = ref

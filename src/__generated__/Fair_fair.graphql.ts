@@ -1,34 +1,18 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-import { FairHeader_fair$ref } from "./FairHeader_fair.graphql";
-import { LocationMap_location$ref } from "./LocationMap_location.graphql";
+import { FairDetail_fair$ref } from "./FairDetail_fair.graphql";
 declare const _Fair_fair$ref: unique symbol;
 export type Fair_fair$ref = typeof _Fair_fair$ref;
 export type Fair_fair = {
-    readonly location: ({
-        readonly " $fragmentRefs": LocationMap_location$ref;
-    }) | null;
-    readonly organizer: ({
-        readonly profile: ({
-            readonly name: string | null;
-        }) | null;
-    }) | null;
-    readonly " $fragmentRefs": FairHeader_fair$ref;
+    readonly id: string;
+    readonly " $fragmentRefs": FairDetail_fair$ref;
     readonly " $refType": Fair_fair$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ConcreteFragment = {
   "kind": "Fragment",
   "name": "Fair_fair",
   "type": "Fair",
@@ -36,60 +20,25 @@ return {
   "argumentDefinitions": [],
   "selections": [
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "FragmentSpread",
-      "name": "FairHeader_fair",
+      "name": "FairDetail_fair",
       "args": null
     },
     {
-      "kind": "LinkedField",
+      "kind": "ScalarField",
       "alias": null,
-      "name": "location",
-      "storageKey": null,
+      "name": "__id",
       "args": null,
-      "concreteType": "Location",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "FragmentSpread",
-          "name": "LocationMap_location",
-          "args": null
-        },
-        v0
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "organizer",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "organizer",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "profile",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "Profile",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "name",
-              "args": null,
-              "storageKey": null
-            },
-            v0
-          ]
-        }
-      ]
-    },
-    v0
+      "storageKey": null
+    }
   ]
 };
-})();
-(node as any).hash = 'f0b8b23018e349d3dcff17edf15d1c96';
+(node as any).hash = '76379b672e62b0644edc02b901ea0bee';
 export default node;

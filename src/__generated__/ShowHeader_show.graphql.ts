@@ -16,6 +16,10 @@ export type ShowHeader_show = {
         readonly url: string | null;
         readonly aspect_ratio: number;
     }) | null> | null;
+    readonly artists: ReadonlyArray<({
+        readonly name: string | null;
+        readonly href: string | null;
+    }) | null> | null;
     readonly " $refType": ShowHeader_show$ref;
 };
 
@@ -122,9 +126,29 @@ return {
         }
       ]
     },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "artists",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Artist",
+      "plural": true,
+      "selections": [
+        v0,
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "href",
+          "args": null,
+          "storageKey": null
+        },
+        v1
+      ]
+    },
     v1
   ]
 };
 })();
-(node as any).hash = 'ec69c4f5125894344a59f5697abd9e6c';
+(node as any).hash = '70a74731b910cd34bb301d2b6e34a0ff';
 export default node;

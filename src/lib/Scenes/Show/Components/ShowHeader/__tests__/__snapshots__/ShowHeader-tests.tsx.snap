@@ -3,16 +3,16 @@
 exports[`looks correct when rendered 1`] = `
 Array [
   <View
-    pb={150}
-    pt={150}
+    pb={0}
+    pt={3}
     px={2}
     style={
       Array [
         Object {
-          "paddingBottom": 150,
+          "paddingBottom": 0,
           "paddingLeft": 8,
           "paddingRight": 8,
-          "paddingTop": 150,
+          "paddingTop": 16,
         },
         undefined,
       ]
@@ -73,7 +73,9 @@ Array [
           undefined,
         ]
       }
-    />
+    >
+      Flickinger Collection
+    </Text>
     <Text
       accessible={true}
       allowFontScaling={true}
@@ -92,7 +94,69 @@ Array [
           undefined,
         ]
       }
-    />
+    >
+      Jul 1 – Oct 30
+    </Text>
+  </View>,
+  <View
+    my={2}
+    style={
+      Array [
+        Object {
+          "marginBottom": 8,
+          "marginTop": 8,
+        },
+        undefined,
+      ]
+    }
+  >
+    <RCTScrollView
+      horizontal={true}
+      scrollEventThrottle={160}
+      showsHorizontalScrollIndicator={false}
+      style={
+        Array [
+          Object {
+            "height": 350,
+            "paddingLeft": 20,
+          },
+          undefined,
+        ]
+      }
+    >
+      <View>
+        <View
+          alignItems="flex-start"
+          mr={1}
+          style={
+            Array [
+              Object {
+                "alignItems": "flex-start",
+                "display": "flex",
+                "marginRight": 4,
+              },
+              undefined,
+            ]
+          }
+        >
+          <AROpaqueImageView
+            aspectRatio={0.87}
+            imageURL="https://d32dm0rphc51dk.cloudfront.net/Bu7ONuoTlR-PLZDUjs6ZTA/medium.jpg"
+            isFirst={true}
+            style={
+              Array [
+                Object {
+                  "height": 200,
+                  "marginTop": 150,
+                  "width": 650,
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
+      </View>
+    </RCTScrollView>
   </View>,
   <View
     px={2}
@@ -107,14 +171,305 @@ Array [
     }
   >
     <View
-      m={2}
+      flexDirection="row"
+      flexWrap="wrap"
       style={
         Array [
           Object {
-            "marginBottom": 8,
-            "marginLeft": 8,
-            "marginRight": 8,
-            "marginTop": 8,
+            "display": "flex",
+            "flexDirection": "row",
+            "flexWrap": "wrap",
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        className="sc-bdVaJa bDWFJH"
+        ellipsizeMode="tail"
+        fontFamily="Unica77LL-Regular"
+        fontSize="12px"
+        lineHeight="16px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Regular",
+              "fontSize": 12,
+              "lineHeight": 16,
+            },
+            undefined,
+          ]
+        }
+      >
+        Works by 
+      </Text>
+      <View
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+          Hans Hofmann, 
+        </Text>
+      </View>
+      <View
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+          David Hockney, 
+        </Text>
+      </View>
+      <View
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+          Sam Francis, 
+        </Text>
+      </View>
+      <View
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+          Pablo Picasso, 
+        </Text>
+      </View>
+      <View
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+          Wolf Kahn
+        </Text>
+      </View>
+      <View
+        flexDirection="row"
+        flexWrap="wrap"
+        style={
+          Array [
+            Object {
+              "display": "flex",
+              "flexDirection": "row",
+              "flexWrap": "wrap",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Regular"
+          fontSize="12px"
+          lineHeight="16px"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 12,
+                "lineHeight": 16,
+              },
+              undefined,
+            ]
+          }
+        >
+           and 
+        </Text>
+        <View
+          accessible={true}
+          isTVSelectable={true}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text
+            accessible={true}
+            allowFontScaling={true}
+            className="sc-bdVaJa bDWFJH"
+            ellipsizeMode="tail"
+            fontFamily="Unica77LL-Medium"
+            fontSize="12px"
+            lineHeight="16px"
+            style={
+              Array [
+                Object {
+                  "fontFamily": "Unica77LL-Medium",
+                  "fontSize": 12,
+                  "lineHeight": 16,
+                },
+                undefined,
+              ]
+            }
+          >
+            13 more
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      mt={1}
+      style={
+        Array [
+          Object {
+            "marginTop": 4,
           },
           undefined,
         ]
@@ -197,7 +552,9 @@ Array [
           undefined,
         ]
       }
-    />
+    >
+      Masterworks on paper, prints, paintings, and sculptures by mainstay postwar and contemporary artists are the focus in this exclusive exhibition showcasing the discerning connoisseurship of Tom & Penny Flickinger, lifelong collectors, and trustees of the Albright Knox Art Gallery.
+    </Text>
     <View
       m={1}
       style={
@@ -212,27 +569,67 @@ Array [
         ]
       }
     />
-    <Text
+    <View
       accessible={true}
-      allowFontScaling={true}
-      className="sc-bdVaJa bDWFJH"
-      ellipsizeMode="tail"
-      fontFamily="Unica77LL-Medium"
-      fontSize="14px"
-      lineHeight="24px"
+      alignItems="center"
+      flexDirection="row"
+      height={36}
+      justifyContent="space-between"
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
       style={
         Array [
           Object {
-            "fontFamily": "Unica77LL-Medium",
-            "fontSize": 14,
-            "lineHeight": 24,
+            "alignItems": "center",
+            "display": "flex",
+            "flexDirection": "row",
+            "height": 36,
+            "justifyContent": "space-between",
           },
           undefined,
         ]
       }
     >
-      View more information
-    </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        className="sc-bdVaJa bDWFJH"
+        ellipsizeMode="tail"
+        fontFamily="Unica77LL-Medium"
+        fontSize="14px"
+        lineHeight="20px"
+        style={
+          Array [
+            Object {
+              "fontFamily": "Unica77LL-Medium",
+              "fontSize": 14,
+              "lineHeight": 20,
+            },
+            undefined,
+          ]
+        }
+      >
+        View more information
+          
+        <Image
+          source={
+            Object {
+              "testUri": "../../../images/horizontal_chevron.png",
+            }
+          }
+          style={
+            Object {
+              "alignSelf": "center",
+              "tintColor": "#C2C2C2",
+            }
+          }
+        />
+      </Text>
+    </View>
   </View>,
 ]
 `;

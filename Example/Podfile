@@ -5,6 +5,12 @@ unless using_bundler
   exit(1)
 end
 
+unless Dir.exist? '../node_modules'
+  puts "\nYou will need to run:".red
+  puts "  yarn install\n\n"
+  exit(1)
+end
+
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
@@ -60,6 +66,20 @@ target 'Emission' do
 
   # Map library
   pod 'react-native-mapbox-gl', :path => mapbox_path
+
+  # Bottom Sheet view controller for Map view
+  pod 'Pulley', :git => 'https://github.com/l2succes/Pulley.git', :branch => 'master'
+
+  target 'EmissionTests' do
+    inherit! :search_paths
+
+    # Used for standard Objective-C unit tests, analagous to Jest.
+    pod 'Specta'
+    pod 'Expecta'
+
+    # Necessary because we're bypassing the RCTTestCase subspec.
+    pod 'FBSnapshotTestCase'
+  end
 end
 
 plugin 'cocoapods-keys', {

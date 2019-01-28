@@ -10,6 +10,7 @@ export type Artwork_artwork = {
     readonly is_in_auction: boolean | null;
     readonly is_biddable: boolean | null;
     readonly is_acquireable: boolean | null;
+    readonly is_offerable: boolean | null;
     readonly id: string;
     readonly sale: ({
         readonly is_auction: boolean | null;
@@ -88,45 +89,11 @@ return {
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "LinkedField",
+      "kind": "ScalarField",
       "alias": null,
-      "name": "sale",
-      "storageKey": null,
+      "name": "id",
       "args": null,
-      "concreteType": "Sale",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "is_auction",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "is_live_open",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "is_open",
-          "args": null,
-          "storageKey": null
-        },
-        v0,
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "display_timely_at",
-          "args": null,
-          "storageKey": null
-        },
-        v1
-      ]
+      "storageKey": null
     },
     {
       "kind": "ScalarField",
@@ -166,7 +133,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "is_offerable",
       "args": null,
       "storageKey": null
     },
@@ -176,6 +143,47 @@ return {
       "name": "date",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "sale",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Sale",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "is_auction",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "is_live_open",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "is_open",
+          "args": null,
+          "storageKey": null
+        },
+        v0,
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "display_timely_at",
+          "args": null,
+          "storageKey": null
+        },
+        v1
+      ]
     },
     {
       "kind": "LinkedField",
@@ -299,5 +307,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '04c9b3fbe7b5dab12285d6bb35038a96';
+(node as any).hash = '99894048b4ca80523e456ee5fb5d3c3b';
 export default node;
