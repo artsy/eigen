@@ -82,6 +82,7 @@
     "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-sentry": "^0.30.2",
+    "react-native-svg": "^9.0.4",
     "react-relay": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/react-relay-1.5.0-artsy.5.tgz",
     "react-spring": "5.5",
     "react-tracking": "^5.0.0",
