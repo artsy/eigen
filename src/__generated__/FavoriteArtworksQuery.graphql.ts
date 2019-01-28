@@ -60,6 +60,7 @@ fragment Artwork_artwork on Artwork {
   is_in_auction
   is_biddable
   is_acquireable
+  is_offerable
   id
   sale {
     is_auction
@@ -138,7 +139,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FavoriteArtworksQuery",
-  "id": "ff178ed1459def1d7ad65169f5b419f0",
+  "id": "e8f99f1b37b86ad40bad2621bc9e09a0",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -264,7 +265,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "is_biddable",
+                            "name": "is_acquireable",
                             "args": null,
                             "storageKey": null
                           },
@@ -332,6 +333,13 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
+                            "name": "is_biddable",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
                             "name": "id",
                             "args": null,
                             "storageKey": null
@@ -339,7 +347,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "is_acquireable",
+                            "name": "is_offerable",
                             "args": null,
                             "storageKey": null
                           },

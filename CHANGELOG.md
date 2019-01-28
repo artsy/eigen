@@ -16,6 +16,8 @@
 
 ### Master
 
+- Adds `Make Offer` badge to artwork brick - matt
+
 ### 1.7.6
 
 - Removes the buy now banner from the homescreen - orta

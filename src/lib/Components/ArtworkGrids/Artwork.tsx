@@ -63,12 +63,12 @@ export class Artwork extends React.Component<Props, any> {
   }
 
   hasBadges() {
-    const { is_acquireable, is_biddable } = this.props.artwork
-    return is_acquireable || is_biddable
+    const { is_acquireable, is_biddable, is_offerable } = this.props.artwork
+    return is_acquireable || is_biddable || is_offerable
   }
 
   badges() {
-    const { is_acquireable, is_biddable } = this.props.artwork
+    const { is_acquireable, is_biddable, is_offerable } = this.props.artwork
 
     // TODO: Replace with proper size "0".
     return (
@@ -78,6 +78,13 @@ export class Artwork extends React.Component<Props, any> {
             <Badge>
               <Sans fontSize="8px" lineHeight={8} style={{ paddingTop: 1 }} weight="medium" size="1">
                 BUY NOW
+              </Sans>
+            </Badge>
+          )}
+          {is_offerable && (
+            <Badge>
+              <Sans fontSize="8px" lineHeight={8} style={{ paddingTop: 1 }} weight="medium" size="1">
+                MAKE OFFER
               </Sans>
             </Badge>
           )}
@@ -190,6 +197,7 @@ export default createFragmentContainer(
       is_in_auction
       is_biddable
       is_acquireable
+      is_offerable
       id
       sale {
         is_auction

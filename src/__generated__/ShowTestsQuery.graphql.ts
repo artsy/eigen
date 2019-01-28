@@ -163,6 +163,7 @@ fragment Artwork_artwork on Artwork {
   is_in_auction
   is_biddable
   is_acquireable
+  is_offerable
   id
   sale {
     is_auction
@@ -543,11 +544,18 @@ v25 = {
 v26 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_closed",
+  "name": "is_offerable",
   "args": null,
   "storageKey": null
 },
 v27 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_closed",
+  "args": null,
+  "storageKey": null
+},
+v28 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "sale",
@@ -577,7 +585,7 @@ v27 = {
       "args": null,
       "storageKey": null
     },
-    v26,
+    v27,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -588,10 +596,10 @@ v27 = {
     v1
   ]
 },
-v28 = [
+v29 = [
   v9
 ],
-v29 = {
+v30 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "sale_artwork",
@@ -608,7 +616,7 @@ v29 = {
       "args": null,
       "concreteType": "SaleArtworkOpeningBid",
       "plural": false,
-      "selections": v28
+      "selections": v29
     },
     {
       "kind": "LinkedField",
@@ -618,7 +626,7 @@ v29 = {
       "args": null,
       "concreteType": "SaleArtworkCurrentBid",
       "plural": false,
-      "selections": v28
+      "selections": v29
     },
     {
       "kind": "ScalarField",
@@ -636,18 +644,18 @@ v29 = {
       "concreteType": "Sale",
       "plural": false,
       "selections": [
-        v26,
+        v27,
         v1
       ]
     },
     v1
   ]
 },
-v30 = [
+v31 = [
   v3,
   v1
 ],
-v31 = {
+v32 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "artists",
@@ -662,9 +670,9 @@ v31 = {
   ],
   "concreteType": "Artist",
   "plural": true,
-  "selections": v30
+  "selections": v31
 },
-v32 = {
+v33 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "partner",
@@ -672,13 +680,13 @@ v32 = {
   "args": null,
   "concreteType": "Partner",
   "plural": false,
-  "selections": v30
+  "selections": v31
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
-  "id": "dbc60d658242384899059a58f7ff9629",
+  "id": "2d72191418408d412dbac68e0499ceec",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -960,10 +968,11 @@ return {
               v24,
               v6,
               v25,
-              v27,
-              v29,
-              v31,
+              v26,
+              v28,
+              v30,
               v32,
+              v33,
               v13
             ]
           },
@@ -1268,19 +1277,20 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          v19,
+                          v25,
                           v6,
                           v20,
                           v21,
                           v22,
                           v23,
                           v24,
+                          v19,
                           v1,
-                          v25,
-                          v27,
-                          v29,
-                          v31,
+                          v26,
+                          v28,
+                          v30,
                           v32,
+                          v33,
                           v13,
                           v2
                         ]
