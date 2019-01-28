@@ -54,6 +54,7 @@
 - Splits Fair screens into seperate query renderers - luc
 - Adds Map and City view container - luc
 - Adds native unit test suite and CI - ash
+- Add FairMoreInfo screen - roop and javamonn
 
 ### 1.7.4
 
