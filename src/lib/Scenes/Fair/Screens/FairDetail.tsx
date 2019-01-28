@@ -15,6 +15,7 @@ import { SearchLink } from "../Components/SearchLink"
 interface Props extends ViewProperties {
   fair: FairDetail_fair
   relay: RelayPaginationProp
+  onViewMoreInfoPressed: () => void
   onViewAllArtworksPressed: () => void
   onViewAllExhibitorsPressed: () => void
   onViewAllArtistsPressed: () => void
@@ -146,7 +147,7 @@ export class FairDetail extends React.Component<Props, State> {
   }
 
   render() {
-    const { fair, onViewAllExhibitorsPressed, onViewAllArtistsPressed } = this.props
+    const { fair, onViewAllExhibitorsPressed, onViewAllArtistsPressed, onViewMoreInfoPressed } = this.props
     const { sections, extraData } = this.state
 
     return (
@@ -161,6 +162,7 @@ export class FairDetail extends React.Component<Props, State> {
                 fair={fair}
                 viewAllExhibitors={onViewAllExhibitorsPressed}
                 viewAllArtists={onViewAllArtistsPressed}
+                onViewMoreInfoPressed={onViewMoreInfoPressed}
               />
             </Box>
           }
