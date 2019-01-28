@@ -23,7 +23,6 @@ export const MapRenderer = ({ coords }: { coords: Coordinates }) => {
       }}
       render={({ props }) => {
         if (props) {
-          console.log(props)
           return <GlobalMap {...props as any} initialCoordinates={coords} />
         }
 
