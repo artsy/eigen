@@ -21,6 +21,13 @@ export type GlobalMap_viewer = {
                             readonly lng: number | null;
                         }) | null;
                     }) | null;
+                    readonly type: string | null;
+                    readonly start_at: string | null;
+                    readonly end_at: string | null;
+                    readonly partner: ({
+                        readonly name?: string | null;
+                        readonly type?: string | null;
+                    }) | null;
                 }) | null;
             }) | null> | null;
         }) | null;
@@ -78,6 +85,13 @@ v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "type",
   "args": null,
   "storageKey": null
 };
@@ -174,6 +188,48 @@ return {
                         v3
                       ]
                     },
+                    v4,
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "start_at",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "end_at",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "LinkedField",
+                      "alias": null,
+                      "name": "partner",
+                      "storageKey": null,
+                      "args": null,
+                      "concreteType": null,
+                      "plural": false,
+                      "selections": [
+                        v3,
+                        {
+                          "kind": "InlineFragment",
+                          "type": "ExternalPartner",
+                          "selections": [
+                            v0
+                          ]
+                        },
+                        {
+                          "kind": "InlineFragment",
+                          "type": "Partner",
+                          "selections": [
+                            v0,
+                            v4
+                          ]
+                        }
+                      ]
+                    },
                     v3
                   ]
                 }
@@ -207,5 +263,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '562317a85ef6b01df5517c7e09399dcc';
+(node as any).hash = 'fba6f6d7ec7cbcad191b7886831bcf4a';
 export default node;

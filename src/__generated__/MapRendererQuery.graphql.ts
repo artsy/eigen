@@ -50,6 +50,23 @@ fragment GlobalMap_viewer_279V1T on Viewer {
             }
             __id
           }
+          type
+          start_at
+          end_at
+          partner {
+            __typename
+            ... on Partner {
+              name
+              type
+            }
+            ... on ExternalPartner {
+              name
+              __id
+            }
+            ... on Node {
+              __id
+            }
+          }
           __id
         }
       }
@@ -117,12 +134,19 @@ v4 = {
   "name": "__id",
   "args": null,
   "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "type",
+  "args": null,
+  "storageKey": null
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MapRendererQuery",
-  "id": "ecfdb5d9130b7771fb7e50a5d17206f1",
+  "id": "a9cdae61ba0566e061accdd9b5dcf422",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -248,6 +272,55 @@ return {
                             "selections": [
                               v2,
                               v4
+                            ]
+                          },
+                          v5,
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "start_at",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "end_at",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "partner",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": null,
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "__typename",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              v4,
+                              {
+                                "kind": "InlineFragment",
+                                "type": "ExternalPartner",
+                                "selections": [
+                                  v1
+                                ]
+                              },
+                              {
+                                "kind": "InlineFragment",
+                                "type": "Partner",
+                                "selections": [
+                                  v1,
+                                  v5
+                                ]
+                              }
                             ]
                           },
                           v4
