@@ -16,6 +16,7 @@ interface Props {
   onSaveShowPressed?: () => Promise<void>
   viewAllExhibitors: () => void
   viewAllArtists: () => void
+  onViewMoreInfoPressed: () => void
 }
 
 const BackgroundImage = styled(OpaqueImageView)<{ width: number }>`
@@ -157,6 +158,7 @@ export class FairHeader extends React.Component<Props> {
   render() {
     const {
       fair: { image, name, profile, start_at, end_at },
+      onViewMoreInfoPressed,
     } = this.props
     const { width: screenWidth } = Dimensions.get("window")
 
@@ -185,7 +187,7 @@ export class FairHeader extends React.Component<Props> {
           <Spacer m={2} mt={1} />
           <InvertedButton text="Save" />
           <Spacer m={1} />
-          <CaretButton text="View more information" />
+          <CaretButton onPress={() => onViewMoreInfoPressed()} text="View more information" />
         </Box>
       </>
     )

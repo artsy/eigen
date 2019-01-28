@@ -7,6 +7,7 @@ export type ShowArtistsPreview_show$ref = typeof _ShowArtistsPreview_show$ref;
 export type ShowArtistsPreview_show = {
     readonly artists: ReadonlyArray<({
         readonly id: string;
+        readonly href: string | null;
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
     }) | null> | null;
     readonly " $refType": ShowArtistsPreview_show$ref;
@@ -46,6 +47,13 @@ return {
           "storageKey": null
         },
         {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "href",
+          "args": null,
+          "storageKey": null
+        },
+        {
           "kind": "FragmentSpread",
           "name": "ArtistListItem_artist",
           "args": null
@@ -57,5 +65,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '74946b1a55dc7c2b4ffe7c15e1f0da67';
+(node as any).hash = '8f64b8808531de5dbbeb4844a2a15c8a';
 export default node;

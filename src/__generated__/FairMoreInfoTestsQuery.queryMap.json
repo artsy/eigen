@@ -1,0 +1,3 @@
+{
+  "398dcc6c14190bbb341954c9da19f280": "query FairMoreInfoTestsQuery {\n  fair(id: \"sofa-chicago-2018\") {\n    ...FairMoreInfo_fair\n    __id\n  }\n}\n\nfragment FairMoreInfo_fair on Fair {\n  links\n  about\n  ticketsLink\n  __id\n}\n"
+}

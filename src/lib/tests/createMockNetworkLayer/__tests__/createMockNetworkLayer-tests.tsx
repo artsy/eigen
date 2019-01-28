@@ -15,7 +15,7 @@ describe("createMockNetworkLayer", () => {
       environment,
       query ||
         graphql`
-          query createMockNetworkLayerTestQuery {
+          query createMockNetworkLayerTestsQuery {
             artwork(id: "untitled") {
               __id
               title
@@ -69,7 +69,7 @@ describe("createMockNetworkLayer", () => {
         },
       },
       graphql`
-        query createMockNetworkLayerTestAliasQuery {
+        query createMockNetworkLayerTestsAliasQuery {
           artist(id: "banksy") {
             forSaleArtworks: artworks(filter: IS_FOR_SALE) {
               __id

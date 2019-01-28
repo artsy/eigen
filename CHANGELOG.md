@@ -20,6 +20,7 @@
 - Swap Mapbox style from default to Artsy theme - luc
 - Display pins on map based user location - luc
 - Update MapRenderer to user Geolocation service - luc
+- Adds `Make Offer` badge to artwork brick - matt
 
 ### 1.7.6
 
@@ -57,6 +58,7 @@
 - Splits Fair screens into seperate query renderers - luc
 - Adds Map and City view container - luc
 - Adds native unit test suite and CI - ash
+- Add FairMoreInfo screen - roop and javamonn
 
 ### 1.7.4
 
@@ -88,6 +90,7 @@
 - Reordering Fair sections to match design specs -ashley
 - Add contextual data to Fair view - ashley
 - Enable navigation on contextual data in Show view - ashley
+- Show UI cleanup: removes map icon, enables Artist navigation, expands Show installation shot carousel to screen width, adds external link to partner galleries, removes extra separators - ashley
 
 ### 1.7.1
 
