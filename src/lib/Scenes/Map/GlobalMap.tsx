@@ -2,12 +2,13 @@ import { Flex } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import React from "react"
-import { NativeModules } from "react-native"
+import { Animated, Dimensions, NativeModules } from "react-native"
 import { createRefetchContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import { cities } from "../City/cities"
-import { FiltersBar } from "./Components/FiltersBar"
+import { FiltersBar, Tab } from "./Components/FiltersBar"
+import { Pin } from "./Components/Pin"
 import { EventEmitter } from "./EventEmitter"
 
 const Emission = NativeModules.Emission || {}
@@ -15,87 +16,154 @@ const Emission = NativeModules.Emission || {}
 Mapbox.setAccessToken(Emission.mapBoxAPIClientKey)
 
 const Map = styled(Mapbox.MapView)`
-  height: 100%;
+  height: ${Dimensions.get("window").height - 245};
+  width: 100%;
 `
-
-export enum PartnerType {
-  gallery = "Gallery",
-  museum = "Museum",
-  fair = "Fair",
-}
 
 interface Props {
   initialCoordinates?: { lat: number; lng: number }
   viewer: GlobalMap_viewer
 }
 
-export const GlobalMapContext = React.createContext({ shows: [], fairs: [] })
-export class GlobalMap extends React.Component<Props> {
-  state = {
-    currentCity: cities["new-york"],
-  }
+interface State {
+  activeIndex?: number
+  activeShowID?: string
+  currentLocation?: any
+}
+
+export class GlobalMap extends React.Component<Props, State> {
+  map: Mapbox.MapView
+  scaleIn: Animated.Value
+  scaleOut: Animated.Value
+
+  filters: Tab[] = [
+    { id: "all", text: "All" },
+    { id: "saved", text: "Saved" },
+    { id: "fairs", text: "Fairs" },
+    { id: "galleries", text: "Galleries" },
+    { id: "museums", text: "Museums" },
+  ]
 
   stylesheet = Mapbox.StyleSheet.create({
     symbol: {
-      iconImage: require("../../../../images/pingalleryon.png"),
-      iconSize: 2,
+      iconImage: "pin",
+      iconSize: Mapbox.StyleSheet.composite(
+        {
+          0: [0, 0],
+          5: [0.5, 0.5],
+          12: [1, 1],
+        },
+        "",
+        Mapbox.InterpolationMode.Exponential
+      ),
       iconAllowOverlap: true,
     },
   })
 
+  constructor(props) {
+    super(props)
+
+    const currentLocation = this.props.initialCoordinates || this.props.viewer.city.coordinates
+    this.state = {
+      activeIndex: 0,
+      currentLocation,
+    }
+  }
+
   componentWillReceiveProps(newProps) {
     EventEmitter.dispatch("map:change", newProps.viewer)
+  }
+
+  onAnnotationSelected(showID: string, feature) {
+    if (this.state.activeShowID === showID) {
+      return
+    }
+    const previousShowID = this.state.activeShowID
+    this.scaleIn = new Animated.Value(0.6)
+
+    Animated.timing(this.scaleIn, { toValue: 1.0, duration: 200 }).start()
+    this.setState({ activeShowID: showID })
+
+    if (previousShowID !== showID) {
+      this.map.moveTo(feature.geometry.coordinates, 500)
+    }
+  }
+
+  onAnnotationDeselected(showID: string) {
+    const nextState: State = {}
+
+    if (this.state.activeShowID === showID) {
+      nextState.activeShowID = null
+    }
+
+    this.scaleOut = new Animated.Value(1)
+    Animated.timing(this.scaleOut, { toValue: 0.6, duration: 200 }).start()
+    this.setState(nextState)
+  }
+
+  renderAnnotations() {
+    const { city } = this.props.viewer
+    return !!city
+      ? city.shows.edges
+          .map(({ node }, i) => {
+            if (!node || !node.location || !node.location.coordinates) {
+              return null
+            }
+
+            const { id, location } = node
+            const { lat, lng } = location.coordinates
+            const selected = id === this.state.activeShowID
+            const animationStyle = selected
+              ? {
+                  transform: [{ scale: this.scaleIn }],
+                }
+              : {}
+
+            return (
+              <Mapbox.PointAnnotation
+                key={id}
+                id={id}
+                selected={selected}
+                onSelected={feature => this.onAnnotationSelected(id, feature)}
+                onDeselected={() => this.onAnnotationDeselected(id)}
+                coordinate={[lng, lat]}
+              >
+                <Animated.View style={[animationStyle]}>
+                  <Pin selected={selected} />
+                </Animated.View>
+              </Mapbox.PointAnnotation>
+            )
+          })
+          .filter(Boolean)
+      : []
   }
 
   render() {
     const { city } = this.props.viewer
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || city.coordinates
 
-    const features = city.shows.edges
-      .map(({ node }) => {
-        if (!node || !node.location || !node.location.coordinates) {
-          return null
-        }
-
-        const { id, location } = node
-        const { lat, lng } = location.coordinates
-
-        return {
-          type: "Feature",
-          id,
-          geometry: {
-            type: "Point",
-            coordinates: [lng, lat],
-          },
-        }
-      })
-      .filter(Boolean)
-
     return (
-      <Flex mb={0.5}>
-        <FiltersBar currentCity={city as any} tabs={["All", "Saved", "Fairs", "Galleries", "Museums"]} />
+      <Flex mb={0.5} flexDirection="column">
+        <FiltersBar currentCity={city as any} tabs={this.filters} />
 
         <Map
+          ref={(c: any) => {
+            if (c) {
+              this.map = c.root
+            }
+          }}
           showUserLocation={true}
-          styleURL={Mapbox.StyleURL.Light}
+          styleURL="mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
           userTrackingMode={Mapbox.UserTrackingModes.Follow}
           centerCoordinate={[centerLng, centerLat]}
-          zoomLevel={14}
+          zoomLevel={13}
           logoEnabled={false}
           attributionEnabled={false}
           onRegionDidChange={() => {
             EventEmitter.dispatch("map:change", this.props.viewer)
           }}
         >
-          <Mapbox.ShapeSource
-            id="GalleryIconSource"
-            shape={{
-              type: "FeatureCollection",
-              features,
-            }}
-          >
-            <Mapbox.SymbolLayer id="GalleryIconSymbol" minZoomLevel={1} style={this.stylesheet.symbol} />
-          </Mapbox.ShapeSource>
+          {this.renderAnnotations()}
         </Map>
       </Flex>
     )
@@ -122,6 +190,18 @@ export const GlobalMapContainer = createRefetchContainer(
                 coordinates {
                   lat
                   lng
+                }
+              }
+              type
+              start_at
+              end_at
+              partner {
+                ... on Partner {
+                  name
+                  type
+                }
+                ... on ExternalPartner {
+                  name
                 }
               }
             }
