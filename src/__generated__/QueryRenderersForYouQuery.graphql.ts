@@ -176,6 +176,7 @@ fragment Artwork_artwork on Artwork {
   is_in_auction
   is_biddable
   is_acquireable
+  is_offerable
   id
   sale {
     is_auction
@@ -344,7 +345,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersForYouQuery",
-  "id": "94f115ac967e9864eb9ff97d2d355ae5",
+  "id": "a5ddb63c4b34c5ca9ae44d4e6bdfbc13",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -620,6 +621,13 @@ return {
                     "kind": "ScalarField",
                     "alias": null,
                     "name": "is_acquireable",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "is_offerable",
                     "args": null,
                     "storageKey": null
                   },
