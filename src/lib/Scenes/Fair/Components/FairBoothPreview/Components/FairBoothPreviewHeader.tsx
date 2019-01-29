@@ -2,7 +2,7 @@ import { Box, Flex, Sans, Serif } from "@artsy/palette"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import React, { Component } from "react"
+import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
