@@ -10,7 +10,7 @@ import { FairArtworksRenderer as FairArtworksScreen } from "./Screens/FairArtwor
 import { FairBoothContainer as FairBoothScreen } from "./Screens/FairBooth"
 import { FairDetailContainer as FairDetailScreen } from "./Screens/FairDetail"
 import { FairExhibitorsRenderer as FairExhibitorsScreen } from "./Screens/FairExhibitors"
-import { FairMoreInfoContainer as FairMoreInfoScreen } from "./Screens/FairMoreInfo"
+import { FairMoreInfoRenderer as FairMoreInfoScreen } from "./Screens/FairMoreInfo"
 
 import { Fair_fair } from "__generated__/Fair_fair.graphql"
 

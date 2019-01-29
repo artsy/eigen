@@ -4,7 +4,7 @@ import React from "react"
 import { graphql } from "react-relay"
 import { FairFixture } from "../__fixtures__"
 import { Fair, FairContainer as FairScreen } from "../Fair"
-import { FairMoreInfoContainer as FairMoreInfoScreen } from "../Screens/FairMoreInfo"
+import { FairMoreInfoRenderer as FairMoreInfoScreen } from "../Screens/FairMoreInfo"
 
 jest.unmock("react-relay")
 

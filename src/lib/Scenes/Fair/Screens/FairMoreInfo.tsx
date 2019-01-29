@@ -1,18 +1,20 @@
 import { Box, Separator, Serif, Spacer } from "@artsy/palette"
-import { FairMoreInfo_fair } from "__generated__/FairMoreInfo_fair.graphql"
+import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
-import { FlatList } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { FlatList, ViewProperties } from "react-native"
+import { graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
+import { defaultEnvironment } from "../../../relay/createEnvironment"
+import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
 
 const ListHeaderText = styled(Serif)`
   height: 36px;
 `
 
-interface Props {
-  fair: FairMoreInfo_fair
+interface Props extends ViewProperties {
+  fair: FairMoreInfoQuery["response"]["fair"]
 }
 
 interface State {
@@ -75,9 +77,17 @@ export class FairMoreInfo extends React.Component<Props, State> {
       case "links":
         return (
           <>
-            <CaretButton text="View fair site" onPress={() => this.openUrl(data.links)} />
-            <Spacer m={1} />
-            <CaretButton text="Buy tickets" onPress={() => this.openUrl(data.ticketsLink)} />
+            {data.links && (
+              <>
+                <CaretButton text="View fair site" onPress={() => this.openUrl(data.links)} />
+                <Spacer m={1} />
+              </>
+            )}
+            {data.ticketsLink && (
+              <>
+                <CaretButton text="Buy tickets" onPress={() => this.openUrl(data.ticketsLink)} />
+              </>
+            )}
           </>
         )
     }
@@ -94,7 +104,6 @@ export class FairMoreInfo extends React.Component<Props, State> {
               <ListHeaderText size="8" mt={12} px={2}>
                 About the fair
               </ListHeaderText>
-              {this.renderItemSeparator()}
             </>
           }
           ItemSeparatorComponent={this.renderItemSeparator}
@@ -105,13 +114,19 @@ export class FairMoreInfo extends React.Component<Props, State> {
   }
 }
 
-export const FairMoreInfoContainer = createFragmentContainer(
-  FairMoreInfo,
-  graphql`
-    fragment FairMoreInfo_fair on Fair {
-      links
-      about
-      ticketsLink
-    }
-  `
+export const FairMoreInfoRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
+  <QueryRenderer<FairMoreInfoQuery>
+    environment={defaultEnvironment}
+    query={graphql`
+      query FairMoreInfoQuery($fairID: String!) {
+        fair(id: $fairID) {
+          links
+          about
+          ticketsLink
+        }
+      }
+    `}
+    variables={{ fairID }}
+    render={renderWithLoadProgress<Props>(FairMoreInfo)}
+  />
 )
