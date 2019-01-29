@@ -22,6 +22,7 @@
 - Update MapRenderer to user Geolocation service - luc
 - Adds `Make Offer` badge to artwork brick - matt
 - Fair booth title now a link to gallery - kieran
+- Replace theme and icon on LocationMap - luc
 
 ### 1.7.6
 
