@@ -30,6 +30,7 @@
 - Show UI cleanup: removes map icon, enables Artist navigation - ashley
 - Expands Show installation shot carousel to screen width - ashley
 - Adds external link to partner galleries - ashley
+- Replace theme and icon on LocationMap - luc
 
 ### 1.8.0
 
