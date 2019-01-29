@@ -6,6 +6,8 @@ import { ContextConsumer, ContextProvider } from "../utils/Context"
 import renderWithLoadProgress from "../utils/renderWithLoadProgress"
 import { createMockNetworkLayer, createMockNetworkLayer2 } from "./createMockNetworkLayer"
 
+// TODO: Copied from https://github.com/artsy/reaction/blob/master/src/DevTools/createMockNetworkLayer/index.ts
+// extract to another package
 export interface MockRelayRendererProps<T extends OperationBase = OperationDefaults> {
   Component: RelayContainer<T["response"]>
   variables?: T["variables"]
