@@ -70,7 +70,7 @@ export class FairExhibitors extends React.Component<Props, State> {
         ListHeaderComponent={() => {
           return (
             <Box px={2} mb={2} pt={85}>
-              <Serif size="8">All exhibitors</Serif>
+              <Serif size="8">Exhibitors</Serif>
             </Box>
           )
         }}

@@ -24,7 +24,7 @@ export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached }) =
     ListHeaderComponent={() => {
       return (
         <Box px={2} mb={2} pt={85}>
-          <Serif size="8">All Artists</Serif>
+          <Serif size="8">Artists</Serif>
         </Box>
       )
     }}
