@@ -3,6 +3,7 @@ import { FairBooth_show } from "__generated__/FairBooth_show.graphql"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import SwitchBoard from "../../../NativeModules/SwitchBoard"
 
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Components/Show/ShowArtistsPreview"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
@@ -60,13 +61,19 @@ export class FairBooth extends React.Component<Props, State> {
     /** TODO: implement */
   }
 
+  onTitlePressed = partnerId => {
+    SwitchBoard.presentNavigationViewController(this, "/" + partnerId)
+  }
+
   render() {
     const { sections } = this.state
     const { show } = this.props
     return (
       <FlatList
         data={sections}
-        ListHeaderComponent={<FairBoothHeader show={show} onSaveShowPressed={this.handleSaveShow} />}
+        ListHeaderComponent={
+          <FairBoothHeader show={show} onTitlePressed={this.onTitlePressed} onSaveShowPressed={this.handleSaveShow} />
+        }
         renderItem={item => (
           <Box px={2} py={2}>
             {this.renderItem(item)}

@@ -41,9 +41,11 @@ fragment FairBoothHeader_show on Show {
     __typename
     ... on Partner {
       name
+      id
     }
     ... on ExternalPartner {
       name
+      id
       __id
     }
     ... on Node {
@@ -242,17 +244,25 @@ v4 = {
   "args": null,
   "storageKey": null
 },
-v5 = [
-  v2
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v6 = [
+  v2,
+  v5
 ],
-v6 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_biddable",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v8 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -284,38 +294,31 @@ v7 = {
     }
   ]
 },
-v8 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "title",
   "args": null,
   "storageKey": null
 },
-v9 = {
+v10 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "date",
   "args": null,
   "storageKey": null
 },
-v10 = {
+v11 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "sale_message",
   "args": null,
   "storageKey": null
 },
-v11 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_in_auction",
-  "args": null,
-  "storageKey": null
-},
 v12 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "is_in_auction",
   "args": null,
   "storageKey": null
 },
@@ -526,7 +529,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairBoothTestsQuery",
-  "id": "350416284caa78d0d800e6fb6073b035",
+  "id": "903504eb2c2f746b765e1986568722d9",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -593,12 +596,12 @@ return {
               {
                 "kind": "InlineFragment",
                 "type": "ExternalPartner",
-                "selections": v5
+                "selections": v6
               },
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
-                "selections": v5
+                "selections": v6
               }
             ]
           },
@@ -644,14 +647,14 @@ return {
             "concreteType": "Artwork",
             "plural": true,
             "selections": [
-              v6,
-              v1,
               v7,
+              v1,
               v8,
               v9,
               v10,
               v11,
               v12,
+              v5,
               v13,
               v14,
               v16,
@@ -670,7 +673,7 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              v12,
+              v5,
               v21,
               v1,
               v2,
@@ -706,7 +709,7 @@ return {
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
-                  v12,
+                  v5,
                   v1,
                   v2,
                   v22,
@@ -781,7 +784,7 @@ return {
                     "concreteType": "AggregationCount",
                     "plural": true,
                     "selections": [
-                      v12,
+                      v5,
                       v2,
                       v1
                     ]
@@ -856,13 +859,13 @@ return {
                         "plural": false,
                         "selections": [
                           v13,
-                          v12,
-                          v7,
+                          v5,
                           v8,
                           v9,
                           v10,
                           v11,
-                          v6,
+                          v12,
+                          v7,
                           v1,
                           v14,
                           v16,
