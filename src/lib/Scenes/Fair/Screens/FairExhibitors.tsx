@@ -17,6 +17,7 @@ interface State {
     letter: string
     index: number
     sections: any
+    data: any
   }>
 }
 export class FairExhibitors extends React.Component<Props, State> {
@@ -42,7 +43,8 @@ export class FairExhibitors extends React.Component<Props, State> {
     this.setState({ sections })
   }
 
-  renderExhibitor(item, index, section) {
+  renderExhibitor(data) {
+    const { item, index, section } = data
     const { partnerIds, count } = section
     const generatedKey = count - index
     return (
@@ -58,7 +60,7 @@ export class FairExhibitors extends React.Component<Props, State> {
     return (
       <SectionList
         stickySectionHeadersEnabled={true}
-        renderItem={({ item, index, section }) => <Box px={2}>{this.renderExhibitor(item, index, section)}</Box>}
+        renderItem={data => <Box px={2}>{this.renderExhibitor(data)}</Box>}
         ListHeaderComponent={() => {
           return (
             <Box px={2} mb={2} pt={85}>
