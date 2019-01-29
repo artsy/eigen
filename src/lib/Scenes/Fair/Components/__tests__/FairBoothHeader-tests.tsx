@@ -16,7 +16,7 @@ const render = () =>
     <MockRelayRenderer
       Component={({ show }) => (
         <Theme>
-          <FairBoothHeader show={show} onSaveShowPressed={jest.fn()} />
+          <FairBoothHeader onTitlePressed={jest.fn()} show={show} onSaveShowPressed={jest.fn()} />
         </Theme>
       )}
       query={graphql`
