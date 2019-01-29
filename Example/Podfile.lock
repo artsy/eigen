@@ -29,6 +29,7 @@ PODS:
     - React/RCTLinkingIOS (= 0.54.4)
     - React/RCTNetwork (= 0.54.4)
     - React/RCTText (= 0.54.4)
+    - RNSVG (= 9.0.4)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.30.3)
     - tipsi-stripe (= 5.2.4)
@@ -250,7 +251,7 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: ebb6747c5b66026ad4f97b789c3ceac6f18e57a6
-  Emission: 145b16720b288e2502c2c70dfab51b7e71436c79
+  Emission: 2518da842760c0e8534cf278aa1004b6a8e71cfc
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
