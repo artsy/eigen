@@ -6,7 +6,6 @@ import { Animated, Dimensions, NativeModules } from "react-native"
 import { createRefetchContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import { cities } from "../City/cities"
 import { FiltersBar, Tab } from "./Components/FiltersBar"
 import { Pin } from "./Components/Pin"
 import { EventEmitter } from "./EventEmitter"
@@ -105,7 +104,7 @@ export class GlobalMap extends React.Component<Props, State> {
     const { city } = this.props.viewer
     return !!city
       ? city.shows.edges
-          .map(({ node }, i) => {
+          .map(({ node }) => {
             if (!node || !node.location || !node.location.coordinates) {
               return null
             }

@@ -36,6 +36,7 @@ export class MapContainer extends Component<null, State> {
   render() {
     const { coordinates } = this.state
     if (!coordinates) {
+      // Show spinner
       return null
     }
 
