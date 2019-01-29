@@ -6,7 +6,7 @@ import React from "react"
 import { SectionList, TouchableOpacity } from "react-native"
 
 interface Props {
-  Component: any
+  Component?: any
   data: Array<{
     data: ArtistListItem_artist[]
     letter: string
