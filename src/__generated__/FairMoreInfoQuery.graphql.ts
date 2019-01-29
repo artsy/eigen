@@ -1,24 +1,28 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-export type FairMoreInfoTestsQueryVariables = {};
-export type FairMoreInfoTestsQueryResponse = {
+export type FairMoreInfoQueryVariables = {
+    readonly fairID: string;
+};
+export type FairMoreInfoQueryResponse = {
     readonly fair: ({
         readonly links: string | null;
         readonly about: string | null;
         readonly ticketsLink: string | null;
     }) | null;
 };
-export type FairMoreInfoTestsQuery = {
-    readonly response: FairMoreInfoTestsQueryResponse;
-    readonly variables: FairMoreInfoTestsQueryVariables;
+export type FairMoreInfoQuery = {
+    readonly response: FairMoreInfoQueryResponse;
+    readonly variables: FairMoreInfoQueryVariables;
 };
 
 
 
 /*
-query FairMoreInfoTestsQuery {
-  fair(id: "sofa-chicago-2018") {
+query FairMoreInfoQuery(
+  $fairID: String!
+) {
+  fair(id: $fairID) {
     links
     about
     ticketsLink
@@ -30,15 +34,23 @@ query FairMoreInfoTestsQuery {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
+    "kind": "LocalArgument",
+    "name": "fairID",
+    "type": "String!",
+    "defaultValue": null
+  }
+],
+v1 = [
+  {
     "kind": "LinkedField",
     "alias": null,
     "name": "fair",
-    "storageKey": "fair(id:\"sofa-chicago-2018\")",
+    "storageKey": null,
     "args": [
       {
-        "kind": "Literal",
+        "kind": "Variable",
         "name": "id",
-        "value": "sofa-chicago-2018",
+        "variableName": "fairID",
         "type": "String!"
       }
     ],
@@ -79,25 +91,25 @@ var v0 = [
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "FairMoreInfoTestsQuery",
-  "id": "5f94084efd2a3b38df04063bfd4d7b3d",
+  "name": "FairMoreInfoQuery",
+  "id": "af7669110691bb6ead956db54ce4b40b",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "FairMoreInfoTestsQuery",
+    "name": "FairMoreInfoQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": [],
-    "selections": v0
+    "argumentDefinitions": v0,
+    "selections": v1
   },
   "operation": {
     "kind": "Operation",
-    "name": "FairMoreInfoTestsQuery",
-    "argumentDefinitions": [],
-    "selections": v0
+    "name": "FairMoreInfoQuery",
+    "argumentDefinitions": v0,
+    "selections": v1
   }
 };
 })();
-(node as any).hash = '2ed3205d94bc196c8fe618fdc3db1933';
+(node as any).hash = '492a03aa463ac56e061915787f79f57f';
 export default node;
