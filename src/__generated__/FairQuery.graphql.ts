@@ -279,9 +279,11 @@ fragment FairBoothHeader_show on Show {
     __typename
     ... on Partner {
       name
+      id
     }
     ... on ExternalPartner {
       name
+      id
       __id
     }
     ... on Node {
@@ -704,7 +706,8 @@ v29 = {
   "storageKey": null
 },
 v30 = [
-  v6
+  v6,
+  v3
 ],
 v31 = {
   "kind": "ScalarField",
@@ -751,7 +754,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairQuery",
-  "id": "ccd539f47fb8a5e044f70586e94f4e7d",
+  "id": "1b8b87967fbdb5367c4f4020c0994ca8",
   "text": null,
   "metadata": {},
   "fragment": {

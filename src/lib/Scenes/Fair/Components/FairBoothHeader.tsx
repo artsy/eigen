@@ -2,11 +2,13 @@ import { Box, Sans, Serif, Spacer } from "@artsy/palette"
 import { FairBoothHeader_show } from "__generated__/FairBoothHeader_show.graphql"
 import { InvertedButton } from "lib/Components/Buttons"
 import React from "react"
+import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
   show: FairBoothHeader_show
   onSaveShowPressed: () => void
+  onTitlePressed: (id: string) => void
 }
 
 const formatCounts = ({ artists, artworks }) => {
@@ -17,15 +19,18 @@ const formatCounts = ({ artists, artworks }) => {
 
 export const FairBoothHeader: React.SFC<Props> = ({
   show: {
-    partner: { name: partnerName },
+    partner: { name: partnerName, id: partnerId },
     fair: { name: fairName },
     counts,
   },
   onSaveShowPressed,
+  onTitlePressed,
 }) => {
   return (
     <Box pt={12} px={2}>
-      <Serif size="8">{partnerName}</Serif>
+      <TouchableOpacity onPress={() => onTitlePressed(partnerId)}>
+        <Serif size="8">{partnerName}</Serif>
+      </TouchableOpacity>
       <Spacer m={0.3} />
       <Sans weight="medium" size="3t">
         {fairName} • Booth
@@ -52,9 +57,11 @@ export const FairBoothHeaderContainer = createFragmentContainer(
       partner {
         ... on Partner {
           name
+          id
         }
         ... on ExternalPartner {
           name
+          id
         }
       }
       counts {
