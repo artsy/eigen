@@ -49,7 +49,13 @@ export class FairExhibitors extends React.Component<Props, State> {
     const generatedKey = count - index
     return (
       <Box mb={2} key={generatedKey}>
-        <TouchableOpacity onPress={() => SwitchBoard.presentNavigationViewController(this, partnerIds[index])}>
+        <TouchableOpacity
+          onPress={() => {
+            if (partnerIds && partnerIds[index]) {
+              SwitchBoard.presentNavigationViewController(this, partnerIds[index])
+            }
+          }}
+        >
           <Serif size="3">{item}</Serif>
         </TouchableOpacity>
       </Box>
