@@ -1,7 +1,9 @@
 import { Box, Flex, Sans, Serif } from "@artsy/palette"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
-import React from "react"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import React, { Component } from "react"
+import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
 interface Props {
@@ -11,6 +13,8 @@ interface Props {
   onPress?: () => void
   isFollowedChanging?: boolean
   url: string
+  context: any
+  galleryURL: string
 }
 
 export const FairBoothPreviewHeader: React.SFC<Props> = ({
@@ -20,18 +24,22 @@ export const FairBoothPreviewHeader: React.SFC<Props> = ({
   onPress,
   isFollowedChanging,
   url,
+  context,
+  galleryURL,
 }) => {
   return (
     <Flex justifyContent="space-between" alignItems="center" flexDirection="row" mb={1}>
-      <ImageAndTextWrapper flexDirection="row" alignItems="center">
-        <Box mr={1}>{url && <RoundedImage imageURL={url} aspectRatio={1} />}</Box>
-        <Box>
-          <TightendSerif size="2">{name}</TightendSerif>
-          <TightendSans size="2" color="black60">
-            {location}
-          </TightendSans>
-        </Box>
-      </ImageAndTextWrapper>
+      <TouchableOpacity onPress={() => SwitchBoard.presentNavigationViewController(context, galleryURL)}>
+        <ImageAndTextWrapper flexDirection="row" alignItems="center">
+          <Box mr={1}>{url && <RoundedImage imageURL={url} aspectRatio={1} />}</Box>
+          <Box>
+            <TightendSerif size="2">{name}</TightendSerif>
+            <TightendSans size="2" color="black60">
+              {location}
+            </TightendSans>
+          </Box>
+        </ImageAndTextWrapper>
+      </TouchableOpacity>
       {/* TODO: Convert the width and height to a padding */}
       <Box width={102} height={34} mr={1}>
         <InvertedButton

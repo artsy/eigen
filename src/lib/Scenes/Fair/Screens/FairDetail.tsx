@@ -111,7 +111,7 @@ export class FairDetail extends React.Component<Props, State> {
       case "search":
         return <SearchLink {...data} />
       case "booth":
-        return <FairBoothPreview {...data} />
+        return <FairBoothPreview {...data} Component={this} />
       case "artists-exhibitors-works":
         return <ArtistsExhibitorsWorksLink {...data} />
       default:

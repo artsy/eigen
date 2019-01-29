@@ -19,7 +19,7 @@ const formatCounts = ({ artists, artworks }) => {
 
 export const FairBoothHeader: React.SFC<Props> = ({
   show: {
-    partner: { name: partnerName, id: partnerId },
+    partner: { name: partnerName, href: partnerId },
     fair: { name: fairName },
     counts,
   },
@@ -58,6 +58,7 @@ export const FairBoothHeaderContainer = createFragmentContainer(
         ... on Partner {
           name
           id
+          href
         }
         ... on ExternalPartner {
           name
