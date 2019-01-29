@@ -7,23 +7,23 @@ export type Near = {
     readonly lng: number;
     readonly max_distance?: number | null;
 };
-export type MapRendererQueryVariables = {
+export type GlobalMapTestsQueryVariables = {
     readonly near: Near;
 };
-export type MapRendererQueryResponse = {
+export type GlobalMapTestsQueryResponse = {
     readonly viewer: ({
         readonly " $fragmentRefs": GlobalMap_viewer$ref;
     }) | null;
 };
-export type MapRendererQuery = {
-    readonly response: MapRendererQueryResponse;
-    readonly variables: MapRendererQueryVariables;
+export type GlobalMapTestsQuery = {
+    readonly response: GlobalMapTestsQueryResponse;
+    readonly variables: GlobalMapTestsQueryVariables;
 };
 
 
 
 /*
-query MapRendererQuery(
+query GlobalMapTestsQuery(
   $near: Near!
 ) {
   viewer {
@@ -145,13 +145,13 @@ v5 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "MapRendererQuery",
-  "id": "a9cdae61ba0566e061accdd9b5dcf422",
+  "name": "GlobalMapTestsQuery",
+  "id": "e0904b133930cca9eba261555fd4054f",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "MapRendererQuery",
+    "name": "GlobalMapTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -183,7 +183,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "MapRendererQuery",
+    "name": "GlobalMapTestsQuery",
     "argumentDefinitions": v0,
     "selections": [
       {
@@ -368,5 +368,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'a924837874386dd66ef68c243edd0a54';
+(node as any).hash = '46371233625c3101a751e49c7d15db5d';
 export default node;

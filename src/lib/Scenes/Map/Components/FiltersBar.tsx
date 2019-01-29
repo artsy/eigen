@@ -1,35 +1,40 @@
 import { Box, color, Sans, Serif } from "@artsy/palette"
+import { City } from "lib/Scenes/City/City"
 import React from "react"
-import { Animated, View } from "react-native"
+import { Animated, Dimensions, ScrollView, View } from "react-native"
 import styled from "styled-components/native"
 
-interface FiltersBarProps {
+export interface Tab {
+  id: string
+  text: string
+}
+export interface FiltersBarProps {
+  currentCity: City
   goToPage?: () => null
   activeTab?: number
-  tabs?: any[]
+  tabs?: Tab[]
   containerWidth?: number
   scrollValue?: Animated.AnimatedInterpolation
 }
 
-interface FiltersBarState {
+export interface FiltersBarState {
   activeTab: number
 }
 
 const Button = styled.TouchableWithoutFeedback`
-  flex: 1;
+  height: 50px;
 `
 
-const Tabs = styled.View`
+const Tabs = styled.ScrollView`
   height: 50px;
-  flex-direction: row;
-  justify-content: space-around;
 `
 
 const TabButton = styled(View)<{ isActive: boolean }>`
   align-items: center;
   justify-content: center;
-  padding-top: 5;
-  flex: 1;
+  height: 50;
+  padding-left: 20px;
+  padding-right: 20px;
   ${p =>
     p.isActive &&
     `
@@ -39,62 +44,79 @@ const TabButton = styled(View)<{ isActive: boolean }>`
 `
 
 export class FiltersBar extends React.Component<FiltersBarProps, FiltersBarState> {
+  scrollView: ScrollView = null
+  els: any[] = []
+
   state = {
     activeTab: this.props.activeTab || 0,
   }
 
-  renderTab(name, page, isTabActive, onPressHandler) {
+  renderTab(tab: Tab, page: number, isTabActive: boolean, onPressHandler: (page: number) => void) {
     return (
       <Button
-        key={name}
+        key={tab.id}
         accessible={true}
-        accessibilityLabel={name}
+        accessibilityLabel={tab.text}
         accessibilityTraits="button"
-        onPress={() => onPressHandler(page)}
+        onPress={onPressHandler.bind(this, page)}
+        onLayout={e => {
+          const layout = e.nativeEvent.layout
+          this.els[page] = layout
+
+          if (page === this.state.activeTab) {
+            this.centerOnTab(page)
+          }
+        }}
       >
         <TabButton isActive={isTabActive}>
           <TabLabel size="3" weight="medium" isActive={isTabActive}>
-            {name}
+            {tab.text}
           </TabLabel>
         </TabButton>
       </Button>
     )
   }
 
-  applyFilter = index => {
+  applyFilter = (index: number) => {
+    this.centerOnTab(index)
     this.setState({
       activeTab: index,
     })
   }
 
+  centerOnTab = (index: number) => {
+    const { x, width } = this.els[index]
+    const { width: screenWidth } = Dimensions.get("window")
+    const xOffset = x + width / 2 - screenWidth / 2
+    if (xOffset > 0) {
+      this.scrollView.scrollTo({ x: xOffset, y: 0 })
+    }
+  }
+
   render() {
     return (
-      <>
+      <View>
         <Box pt={4} pb={2} px={3}>
-          <Serif size="8">Hong Kong</Serif>
+          <Serif size="8">{this.props.currentCity.name}</Serif>
         </Box>
-        <Tabs>
-          {this.props.tabs.map((name, page) => {
+        <Tabs
+          ref={(r: any) => {
+            if (r) {
+              this.scrollView = r.root
+            }
+          }}
+          alwaysBounceVertical={false}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flexDirection: "row" }}
+          horizontal
+        >
+          {this.props.tabs.map((tab, page) => {
             const isTabActive = this.state.activeTab === page
-            return this.renderTab(name, page, isTabActive, this.applyFilter)
+            return this.renderTab(tab, page, isTabActive, this.applyFilter)
           })}
-          <Animated.View
-            style={[
-              {
-                position: "absolute",
-                height: 1,
-                backgroundColor: "black",
-                bottom: -1,
-                left: 0,
-                right: 0,
-              },
-              {
-                // transform: [{ translateX }],
-              },
-            ]}
-          />
         </Tabs>
-      </>
+      </View>
     )
   }
 }

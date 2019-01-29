@@ -44,6 +44,7 @@ podspec = Pod::Spec.new do |s|
   s.dependency 'React/RCTLinkingIOS', react_native_version
   s.dependency 'React/RCTNetwork', react_native_version
   s.dependency 'React/RCTText', react_native_version
+  s.dependency 'React/RCTGeolocation', react_native_version
 
   # React's Dependencies
   s.dependency 'yoga', "#{react_native_version}.React"
@@ -57,7 +58,8 @@ podspec = Pod::Spec.new do |s|
   dep_podspecs = [
     'node_modules/tipsi-stripe/tipsi-stripe.podspec',
     'node_modules/@mapbox/react-native-mapbox-gl/react-native-mapbox-gl.podspec',
-    'node_modules/react-native-sentry/SentryReactNative.podspec'
+    'node_modules/react-native-sentry/SentryReactNative.podspec',
+    'node_modules/react-native-svg/RNSVG.podspec'
   ]
 
   # Ties the exact versions so host apps don't need to guess the version

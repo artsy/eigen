@@ -24,10 +24,12 @@ PODS:
     - React/CxxBridge (= 0.54.4)
     - React/RCTAnimation (= 0.54.4)
     - React/RCTCameraRoll (= 0.54.4)
+    - React/RCTGeolocation (= 0.54.4)
     - React/RCTImage (= 0.54.4)
     - React/RCTLinkingIOS (= 0.54.4)
     - React/RCTNetwork (= 0.54.4)
     - React/RCTText (= 0.54.4)
+    - RNSVG (= 9.0.4)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.30.3)
     - tipsi-stripe (= 5.2.4)
@@ -114,6 +116,8 @@ PODS:
   - React/RCTCameraRoll (0.54.4):
     - React/Core
     - React/RCTImage
+  - React/RCTGeolocation (0.54.4):
+    - React/Core
   - React/RCTImage (0.54.4):
     - React/Core
     - React/RCTNetwork
@@ -127,6 +131,8 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - RNSVG (9.0.4):
+    - React
   - SAMKeychain (1.5.0)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
@@ -164,6 +170,7 @@ DEPENDENCIES:
   - Pulley (from `https://github.com/l2succes/Pulley.git`, branch `master`)
   - "react-native-mapbox-gl (from `../node_modules/@mapbox/react-native-mapbox-gl`)"
   - React/DevSupport (from `../node_modules/react-native`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - SAMKeychain
   - Sentry/Core
   - Sentry/KSCrash
@@ -216,6 +223,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native"
   react-native-mapbox-gl:
     :path: "../node_modules/@mapbox/react-native-mapbox-gl"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   SentryReactNative:
     :path: "../node_modules/react-native-sentry"
   tipsi-stripe:
@@ -242,7 +251,7 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: ebb6747c5b66026ad4f97b789c3ceac6f18e57a6
-  Emission: a537268b51bff551c5f3f7b7f2a7ab0b03098b1f
+  Emission: 2518da842760c0e8534cf278aa1004b6a8e71cfc
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
@@ -257,6 +266,7 @@ SPEC CHECKSUMS:
   Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
   React: c237e42de9c70e5cac6eeb52b4cfd3a0910c1f00
   react-native-mapbox-gl: b42480060cdcc515dfa3d8e403fb4dd32466a1b9
+  RNSVG: 4834be1d644eb77f0e3f6de851881b83758a3124
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
@@ -267,6 +277,6 @@ SPEC CHECKSUMS:
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 55da126afc384965b96bff46652464373b330add
 
-PODFILE CHECKSUM: a31864aad2cc92e4fb8c0c6511ef5630a57949e7
+PODFILE CHECKSUM: 278087d891d4b4dd228571713a2c1d65ef4b875a
 
 COCOAPODS: 1.5.3

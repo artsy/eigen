@@ -16,6 +16,10 @@
 
 ### Master
 
+- Ports over @ds300's Relay mock utils from reaction - luc
+- Swap Mapbox style from default to Artsy theme - luc
+- Display pins on map based user location - luc
+- Update MapRenderer to user Geolocation service - luc
 - Adds `Make Offer` badge to artwork brick - matt
 - Fair booth title now a link to gallery - kieran
 

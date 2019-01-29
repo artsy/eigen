@@ -35,21 +35,23 @@ export class Detail extends React.Component<Props, State> {
     const { show, onViewAllArtworksPressed, onViewAllArtistsPressed } = this.props
     const sections = []
 
-    sections.push({
-      type: "location",
-      data: {
-        location: show.location,
-        partnerName: show.partner.name,
-        partnerType: show.partner.type,
-      },
-    })
+    if (show.location) {
+      sections.push({
+        type: "location",
+        data: {
+          location: show.location,
+          partnerName: show.partner.name,
+          partnerType: show.partner.type,
+        },
+      })
 
-    sections.push({
-      type: "hours",
-      data: {
-        hours: show.location.displayDaySchedules,
-      },
-    })
+      sections.push({
+        type: "hours",
+        data: {
+          hours: show.location.displayDaySchedules,
+        },
+      })
+    }
 
     sections.push({
       type: "artworks",

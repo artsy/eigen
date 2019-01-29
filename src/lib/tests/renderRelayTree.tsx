@@ -96,9 +96,25 @@ export function renderRelayTree<P = {}, S = {}, C extends React.Component = Reac
     wrapper?: (renderer: JSX.Element) => JSX.Element
   }
 ) {
-  const { Component, query, mockResolvers, renderUntil: renderUntilPredicate, variables, wrapper } = params
+  const {
+    Component,
+    query,
+    mockResolvers,
+    mockData,
+    mockMutationResults,
+    renderUntil: renderUntilPredicate,
+    variables,
+    wrapper,
+  } = params
   const renderer = (
-    <MockRelayRenderer Component={Component} mockResolvers={mockResolvers} query={query} variables={variables} />
+    <MockRelayRenderer
+      Component={Component}
+      mockResolvers={mockResolvers}
+      query={query}
+      variables={variables}
+      mockData={mockData}
+      mockMutationResults={mockMutationResults}
+    />
   )
   return mount<C, P, S>(wrapper ? wrapper(renderer) : renderer).renderUntil(
     renderUntilPredicate || RelayFinishedLoading

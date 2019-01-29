@@ -2,15 +2,36 @@ import { IMocks } from "graphql-tools/dist/Interfaces"
 import React from "react"
 import { QueryRenderer, RelayContainer } from "react-relay"
 import { Environment, GraphQLTaggedNode, OperationBase, OperationDefaults, RecordSource, Store } from "relay-runtime"
-import { ContextProvider } from "../utils/Context"
+import { ContextConsumer, ContextProvider } from "../utils/Context"
 import renderWithLoadProgress from "../utils/renderWithLoadProgress"
-import { createMockNetworkLayer } from "./createMockNetworkLayer"
+import { createMockNetworkLayer, createMockNetworkLayer2 } from "./createMockNetworkLayer"
 
+// TODO: Copied from https://github.com/artsy/reaction/blob/master/src/DevTools/createMockNetworkLayer/index.ts
+// extract to another package
 export interface MockRelayRendererProps<T extends OperationBase = OperationDefaults> {
   Component: RelayContainer<T["response"]>
   variables?: T["variables"]
   query: GraphQLTaggedNode
-  mockResolvers: IMocks
+  /**
+   * @deprecated use mockData and mockMutationResults
+   */
+  mockResolvers?: IMocks
+  /**
+   * @example
+   * mockData={{order: {id: "my-order-id", lineItems: {...}}}}
+   */
+  mockData?: object
+  /**
+   * @example
+   * mockMutationResults={{
+   *   ecommerceCreateOrderWithArtworkId: {
+   *     orderOrError: {
+   *       order: {id: "my-order-id"}
+   *     }
+   *   }
+   * }}
+   */
+  mockMutationResults?: object
 }
 
 export interface MockRelayRendererState {
@@ -94,6 +115,8 @@ export interface MockRelayRendererState {
  * })
  * ```
  *
+ * @param params.mockMutationResults
+ * @param params.mockData
  */
 export class MockRelayRenderer<T extends OperationBase = OperationDefaults> extends React.Component<
   MockRelayRendererProps<T>,
@@ -123,12 +146,21 @@ export class MockRelayRenderer<T extends OperationBase = OperationDefaults> exte
       return `Error occurred while rendering Relay component: ${error}`
     }
 
-    const { Component, variables, query, mockResolvers } = this.props
+    const { Component, variables, query, mockResolvers, mockData, mockMutationResults } = this.props
 
-    const network = createMockNetworkLayer({
-      Query: () => ({}),
-      ...mockResolvers,
-    })
+    if ((mockData || mockMutationResults) && mockResolvers) {
+      throw new Error("You cannot use mockResolvers with either mockData or mockMutationResults")
+    }
+    if (!mockData && !mockResolvers && !mockMutationResults) {
+      throw new Error("You must supply mockData and/or mockMutationResults")
+    }
+
+    const network = mockData
+      ? createMockNetworkLayer2(mockData, mockMutationResults)
+      : createMockNetworkLayer({
+          Query: () => ({}),
+          ...mockResolvers,
+        })
     const source = new RecordSource()
     const store = new Store(source)
     const environment = new Environment({
@@ -137,18 +169,22 @@ export class MockRelayRenderer<T extends OperationBase = OperationDefaults> exte
     })
 
     return (
-      <ContextProvider relayEnvironment={environment}>
-        <QueryRenderer
-          // tslint:disable-next-line relay-operation-generics
-          query={query}
-          environment={environment}
-          variables={variables || {}}
-          // We rely on renderWithLoadProgress to throw an error in the test
-          // env ASAP. When we extract these test helpers to their own package
-          // that will need to be handled explicitly.
-          render={renderWithLoadProgress(Component as any)}
-        />
-      </ContextProvider>
+      <ContextConsumer>
+        {contextProps => (
+          <ContextProvider {...contextProps} relayEnvironment={environment}>
+            <QueryRenderer
+              // tslint:disable-next-line relay-operation-generics
+              query={query}
+              environment={environment}
+              variables={variables || {}}
+              // We rely on renderWithLoadProgress to throw an error in the test
+              // env ASAP. When we extract these test helpers to their own package
+              // that will need to be handled explicitly.
+              render={renderWithLoadProgress(Component as any)}
+            />
+          </ContextProvider>
+        )}
+      </ContextConsumer>
     )
   }
 }

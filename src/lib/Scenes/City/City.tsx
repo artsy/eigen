@@ -1,8 +1,34 @@
 import { Box, color, Flex, Serif } from "@artsy/palette"
 import React, { Component } from "react"
 import styled from "styled-components/native"
+import { EventEmitter } from "../Map/EventEmitter"
 
-export class City extends Component {
+export interface City {
+  name: string
+  epicenter: {
+    lat: number
+    lng: number
+  }
+}
+
+interface State {
+  shows: [any]
+  fairs: [any]
+}
+
+export class CityView extends Component<null, State> {
+  componentWillMount() {
+    EventEmitter.subscribe("map:change", ({ city }) => {
+      const { shows, fairs } = city
+      console.log(city)
+
+      this.setState({
+        shows,
+        fairs,
+      })
+    })
+  }
+
   render() {
     return (
       <Box>

@@ -2,16 +2,12 @@ import { MapRendererQuery } from "__generated__/MapRendererQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { cities } from "../City/cities"
+import { GlobalMapContainer as GlobalMap } from "./GlobalMap"
+import { Coordinates } from "./types"
 
-export const MapRenderer = ({ render }) => {
-  // Logic for whether to show a city or cities list
-  //
-  // 1. Get user location (lat, lng) from native code
-  // 2. do a lookup to get nearest city up to a certain threshold
-  // 3. if within threshold select nearest city
-  // 4. else show cities list
-  const city = cities[0]
+export const MapRenderer = ({ coords }: { coords: Coordinates }) => {
+  console.log("coords", coords)
+
   return (
     <QueryRenderer<MapRendererQuery>
       environment={defaultEnvironment}
@@ -23,9 +19,15 @@ export const MapRenderer = ({ render }) => {
         }
       `}
       variables={{
-        near: city.epicenter,
+        near: coords,
       }}
-      render={render}
+      render={({ props }) => {
+        if (props) {
+          return <GlobalMap {...props as any} initialCoordinates={coords} />
+        }
+
+        return null
+      }}
     />
   )
 }

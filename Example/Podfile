@@ -66,6 +66,7 @@ target 'Emission' do
 
   # Map library
   pod 'react-native-mapbox-gl', :path => mapbox_path
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
   # Bottom Sheet view controller for Map view
   pod 'Pulley', :git => 'https://github.com/l2succes/Pulley.git', :branch => 'master'
