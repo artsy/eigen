@@ -9,6 +9,7 @@ export type FairBoothHeader_show = {
     }) | null;
     readonly partner: ({
         readonly name?: string | null;
+        readonly id?: string;
     }) | null;
     readonly counts: ({
         readonly artworks: number | null;
@@ -35,7 +36,14 @@ v1 = {
   "storageKey": null
 },
 v2 = [
-  v0
+  v0,
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "id",
+    "args": null,
+    "storageKey": null
+  }
 ];
 return {
   "kind": "Fragment",
@@ -108,5 +116,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '9a9830ee7482d9a70eef8a5a3e6e4b9d';
+(node as any).hash = '48042d29de49189b4fa430bd29b589d0';
 export default node;

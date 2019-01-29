@@ -3,7 +3,7 @@ import { renderUntil } from "lib/tests/renderUntil"
 import React from "react"
 import { graphql } from "react-relay"
 import { FairFixture } from "../../__fixtures__"
-import { FairMoreInfoContainer as FairMoreInfo } from "../FairMoreInfo"
+import { FairMoreInfo } from "../FairMoreInfo"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   presentModalViewController: jest.fn(),
@@ -22,7 +22,9 @@ const renderTree = () =>
       query={graphql`
         query FairMoreInfoTestsQuery {
           fair(id: "sofa-chicago-2018") {
-            ...FairMoreInfo_fair
+            links
+            about
+            ticketsLink
           }
         }
       `}

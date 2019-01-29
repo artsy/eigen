@@ -21,6 +21,7 @@
 - Display pins on map based user location - luc
 - Update MapRenderer to user Geolocation service - luc
 - Adds `Make Offer` badge to artwork brick - matt
+- Fair booth title now a link to gallery - kieran
 
 ### 1.7.6
 
