@@ -29,6 +29,7 @@ export const FairBoothPreviewContainer = createFragmentContainer<Props>(
           location={display}
           url={cover_image && cover_image.url}
           galleryURL={partner.href}
+          onViewFairBoothPressed={() => onViewFairBoothPressed()}
         />
         <Box mt={1}>{<GenericGrid artworks={artworks_connection.edges.map(a => a.node) as any} />}</Box>
         <Box mt={2}>
