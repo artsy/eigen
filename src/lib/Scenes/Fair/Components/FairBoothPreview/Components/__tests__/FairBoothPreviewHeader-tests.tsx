@@ -12,8 +12,7 @@ describe("FairBoothPreviewHeader", () => {
           name="A Partner"
           location="Booth 21"
           url="http://placehold.it/200x200"
-          galleryURL="https://www.somegallery.org"
-          context={FairBooth}
+          onViewFairBoothPressed={jest.fn()}
         />
       </Theme>
     )
