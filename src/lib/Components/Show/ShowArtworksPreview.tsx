@@ -1,9 +1,9 @@
 import { Box, Serif } from "@artsy/palette"
 import { ShowArtworksPreview_show } from "__generated__/ShowArtworksPreview_show.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { CaretButton } from "../../../lib/Components/Buttons/CaretButton"
 
 interface Props {
   onViewAllArtworksPressed: () => void
