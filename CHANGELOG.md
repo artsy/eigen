@@ -16,6 +16,13 @@
 
 ### Master
 
+- Removes All Artworks from artwork preview - kieran
+- Adds booth number to fair booth view ( https://artsyproduct.atlassian.net/browse/LD-134 ) - kieran
+- Adds item separator to FairBooth - kieran
+- Adds counts to Artworks and Artist previews for FairBooth - kieran
+- Restyles CaretButton to reflect design - kieran
+- Clicking on Fair booth title now takes you to booth view (Reviewed this with Jun) - kieran
+
 ### 1.8.1
 
 - Ports over @ds300's Relay mock utils from reaction - luc
