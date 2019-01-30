@@ -1,4 +1,4 @@
-import { Sans, Serif, Spacer } from "@artsy/palette"
+import { Serif, Spacer } from "@artsy/palette"
 import { ShowArtistsPreview_show } from "__generated__/ShowArtistsPreview_show.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import Switchboard from "lib/NativeModules/SwitchBoard"
@@ -6,6 +6,7 @@ import { get, take } from "lodash"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { CaretButton } from "../../../lib/Components/Buttons/CaretButton"
 
 interface Props {
   show: ShowArtistsPreview_show
@@ -35,11 +36,7 @@ export const ShowArtistsPreview: React.SFC<Props> = ({ show, onViewAllArtistsPre
       {artists.length > artistsShown && (
         <>
           <Spacer m={1} />
-          <TouchableOpacity onPress={() => onViewAllArtistsPressed()}>
-            <Sans size="3" my={2} weight="medium">
-              {`View all ${artists.length} artists`}
-            </Sans>
-          </TouchableOpacity>
+          <CaretButton text={`View all ${artists.length} artists`} onPress={() => onViewAllArtistsPressed()} />
         </>
       )}
     </>
