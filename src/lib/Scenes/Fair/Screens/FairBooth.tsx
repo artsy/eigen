@@ -81,7 +81,7 @@ export class FairBooth extends React.Component<Props, State> {
         )}
         ItemSeparatorComponent={() => {
           return (
-            <Box px={2} pb={2}>
+            <Box px={2} pb={2} mt={2}>
               <Separator />
             </Box>
           )

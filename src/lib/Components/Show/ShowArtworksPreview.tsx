@@ -23,8 +23,8 @@ export class ShowArtworksPreview extends React.Component<Props> {
         {counts &&
           counts.artworks > artworks.length && (
             <TouchableOpacity onPress={onViewAllArtworksPressed}>
-              <Sans size="3" my={2} weight="medium">
-                View all works
+              <Sans size="3" weight="medium" mt={2}>
+                {`View all ${artworks.length} works`}
               </Sans>
             </TouchableOpacity>
           )}
