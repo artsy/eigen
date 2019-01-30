@@ -27,7 +27,6 @@ export const FairBoothHeader: React.SFC<Props> = ({
   onSaveShowPressed,
   onTitlePressed,
 }) => {
-  console.log("??", boothLocation)
   return (
     <Box pt={12} px={2}>
       <TouchableOpacity onPress={() => onTitlePressed(partnerId)}>
