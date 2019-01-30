@@ -37,7 +37,7 @@ export const ShowArtistsPreview: React.SFC<Props> = ({ show, onViewAllArtistsPre
           <Spacer m={1} />
           <TouchableOpacity onPress={() => onViewAllArtistsPressed()}>
             <Sans size="3" my={2} weight="medium">
-              View all artists
+              {`View all ${artists.length} artists`}
             </Sans>
           </TouchableOpacity>
         </>
