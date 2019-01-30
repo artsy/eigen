@@ -210,6 +210,10 @@ fragment FairBoothHeader_show on Show {
     artworks
     artists
   }
+  location {
+    display
+    __id
+  }
   __id
 }
 
@@ -751,7 +755,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairDetailTestsQuery",
-  "id": "0c30b6f21eb38a472351012dea682001",
+  "id": "8f3ac7a0976dd8854c861e668f0684cd",
   "text": null,
   "metadata": {},
   "fragment": {
