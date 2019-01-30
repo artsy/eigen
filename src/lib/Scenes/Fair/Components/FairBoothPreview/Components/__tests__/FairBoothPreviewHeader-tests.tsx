@@ -1,6 +1,5 @@
 import { Theme } from "@artsy/palette"
 import { shallow } from "enzyme"
-import { FairBooth } from "lib/Scenes/Fair/Screens/FairBooth"
 import React from "react"
 import { FairBoothPreviewHeader } from "../FairBoothPreviewHeader"
 
