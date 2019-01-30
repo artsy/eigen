@@ -1,4 +1,4 @@
-import { Sans, Serif } from "@artsy/palette"
+import { Sans } from "@artsy/palette"
 import { ShowArtworksPreview_show } from "__generated__/ShowArtworksPreview_show.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import React from "react"
@@ -19,9 +19,6 @@ export class ShowArtworksPreview extends React.Component<Props> {
     const { artworks, counts } = show
     return (
       <>
-        <Serif size="6" mt={2} mb={3}>
-          All works
-        </Serif>
         <GenericGrid artworks={this.props.show.artworks} />
         {counts &&
           counts.artworks > artworks.length && (
