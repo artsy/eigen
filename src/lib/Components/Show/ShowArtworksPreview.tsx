@@ -1,4 +1,4 @@
-import { Box } from "@artsy/palette"
+import { Box, Serif } from "@artsy/palette"
 import { ShowArtworksPreview_show } from "__generated__/ShowArtworksPreview_show.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import React from "react"
@@ -8,17 +8,23 @@ import { CaretButton } from "../../../lib/Components/Buttons/CaretButton"
 interface Props {
   onViewAllArtworksPressed: () => void
   show: ShowArtworksPreview_show
+  title: string
 }
 
 export class ShowArtworksPreview extends React.Component<Props> {
   render() {
-    const { show, onViewAllArtworksPressed } = this.props
+    const { show, onViewAllArtworksPressed, title } = this.props
     if (!show) {
       return null
     }
     const { artworks, counts } = show
     return (
       <>
+        {title && (
+          <Serif size="6" mt={2} mb={3}>
+            {title}
+          </Serif>
+        )}
         <GenericGrid artworks={this.props.show.artworks} />
         {counts &&
           counts.artworks > artworks.length && (
