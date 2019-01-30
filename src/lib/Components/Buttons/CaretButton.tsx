@@ -1,4 +1,4 @@
-import { color, Flex, Sans } from "@artsy/palette"
+import { Box, color, Flex, Sans } from "@artsy/palette"
 import React from "react"
 import { GestureResponderEvent, Image, TouchableWithoutFeedback } from "react-native"
 
@@ -10,15 +10,16 @@ interface Props {
 export const CaretButton: React.SFC<Props> = ({ text, onPress }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <Flex alignItems="center" justifyContent="space-between" flexDirection="row" height={36}>
+      <Flex flexDirection="row" align-items="base-line">
         <Sans size="3t" weight="medium">
           {text}
-          {"  "}
+        </Sans>
+        <Box ml={1}>
           <Image
-            style={{ alignSelf: "center", tintColor: color("black30") }}
+            style={{ tintColor: color("black30"), top: 3 }}
             source={require("../../../../images/horizontal_chevron.png")}
           />
-        </Sans>
+        </Box>
       </Flex>
     </TouchableWithoutFeedback>
   )
