@@ -103,6 +103,7 @@
 - Reordering Fair sections to match design specs -ashley
 - Add contextual data to Fair view - ashley
 - Enable navigation on contextual data in Show view - ashley
+- Removes "View on Map" text from More Shows section in Show view -ashley
 
 ### 1.7.1
 
