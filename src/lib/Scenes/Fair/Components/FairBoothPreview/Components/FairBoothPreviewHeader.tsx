@@ -13,8 +13,6 @@ interface Props {
   onPress?: () => void
   isFollowedChanging?: boolean
   url: string
-  context: any
-  galleryURL: string
   onViewFairBoothPressed: () => void
 }
 
