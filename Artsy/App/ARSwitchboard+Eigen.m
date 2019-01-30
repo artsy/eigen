@@ -229,9 +229,13 @@
     return [[ARMutableLinkViewController alloc] initWithPath:path];
 }
 
-- (ARProfileViewController *)loadProfileWithID:(NSString *)profileID
+- (UIViewController *)loadProfileWithID:(NSString *)profileID
 {
-    return [[ARProfileViewController alloc] initWithProfileID:profileID];
+    if ([AROptions boolForOption:AROptionsModernShowFairPages]) {
+        return [[ARFairComponentViewController alloc] initWithFairID:profileID];
+    } else {
+        return [[ARProfileViewController alloc] initWithProfileID:profileID];
+    }
 }
 
 #pragma mark -
