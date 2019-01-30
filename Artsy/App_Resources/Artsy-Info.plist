@@ -103,6 +103,10 @@
 	<string>Used for beta testers to collect usage information.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera access is needed for this experience.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Used to display shows near you</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Using User Location to display nearby shows</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Camera access is needed to submit consignments.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -139,6 +143,7 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>location</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
