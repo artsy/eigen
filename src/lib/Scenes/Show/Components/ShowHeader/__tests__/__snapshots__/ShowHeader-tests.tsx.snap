@@ -571,10 +571,8 @@ Array [
     />
     <View
       accessible={true}
-      alignItems="center"
+      align-items="base-line"
       flexDirection="row"
-      height={36}
-      justifyContent="space-between"
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -584,11 +582,8 @@ Array [
       style={
         Array [
           Object {
-            "alignItems": "center",
             "display": "flex",
             "flexDirection": "row",
-            "height": 36,
-            "justifyContent": "space-between",
           },
           undefined,
         ]
@@ -614,7 +609,18 @@ Array [
         }
       >
         View more information
-          
+      </Text>
+      <View
+        ml={1}
+        style={
+          Array [
+            Object {
+              "marginLeft": 4,
+            },
+            undefined,
+          ]
+        }
+      >
         <Image
           source={
             Object {
@@ -623,12 +629,12 @@ Array [
           }
           style={
             Object {
-              "alignSelf": "center",
               "tintColor": "#C2C2C2",
+              "top": 3,
             }
           }
         />
-      </Text>
+      </View>
     </View>
   </View>,
 ]
