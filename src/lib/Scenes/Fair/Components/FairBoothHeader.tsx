@@ -40,7 +40,7 @@ export const FairBoothHeader: React.SFC<Props> = ({
       {boothLocation && (
         <>
           <Serif size="3t">{boothLocation}</Serif>
-          <Spacer m={0.2} />
+          <Spacer m={0.3} />
         </>
       )}
       <Sans size="3t" color="black60">
