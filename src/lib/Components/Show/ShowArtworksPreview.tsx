@@ -1,9 +1,9 @@
-import { Sans } from "@artsy/palette"
+import { Box } from "@artsy/palette"
 import { ShowArtworksPreview_show } from "__generated__/ShowArtworksPreview_show.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import React from "react"
-import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { CaretButton } from "../../../lib/Components/Buttons/CaretButton"
 
 interface Props {
   onViewAllArtworksPressed: () => void
@@ -22,11 +22,9 @@ export class ShowArtworksPreview extends React.Component<Props> {
         <GenericGrid artworks={this.props.show.artworks} />
         {counts &&
           counts.artworks > artworks.length && (
-            <TouchableOpacity onPress={onViewAllArtworksPressed}>
-              <Sans size="3" weight="medium" mt={2}>
-                {`View all ${artworks.length} works`}
-              </Sans>
-            </TouchableOpacity>
+            <Box mt={1}>
+              <CaretButton text={`View all ${artworks.length} artists`} onPress={() => onViewAllArtworksPressed()} />
+            </Box>
           )}
       </>
     )
