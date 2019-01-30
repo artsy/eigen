@@ -23,6 +23,7 @@
 - Adds `Make Offer` badge to artwork brick - matt
 - Fair booth title now a link to gallery - kieran
 - Replace theme and icon on LocationMap - luc
+- Adds links to fair exhibitors - Kieran
 
 ### 1.7.6
 
@@ -93,6 +94,7 @@
 - Add contextual data to Fair view - ashley
 - Enable navigation on contextual data in Show view - ashley
 - Show UI cleanup: removes map icon, enables Artist navigation, expands Show installation shot carousel to screen width, adds external link to partner galleries, removes extra separators - ashley
+- Removes "All" from Artists, Exhibitors, and Works Headers and adds navigation from Fair Booth Partners to Partners page and from Fair Artists view to Artists page -ashley
 
 ### 1.7.1
 

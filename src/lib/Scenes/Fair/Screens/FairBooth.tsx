@@ -1,9 +1,9 @@
 import { Box } from "@artsy/palette"
 import { FairBooth_show } from "__generated__/FairBooth_show.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import SwitchBoard from "../../../NativeModules/SwitchBoard"
 
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Components/Show/ShowArtistsPreview"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
@@ -62,7 +62,7 @@ export class FairBooth extends React.Component<Props, State> {
   }
 
   onTitlePressed = partnerId => {
-    SwitchBoard.presentNavigationViewController(this, "/" + partnerId)
+    SwitchBoard.presentNavigationViewController(this, partnerId)
   }
 
   render() {

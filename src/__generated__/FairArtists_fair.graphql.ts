@@ -16,6 +16,7 @@ export type FairArtists_fair = {
             readonly cursor: string;
             readonly node: ({
                 readonly sortable_id: string | null;
+                readonly href: string | null;
                 readonly " $fragmentRefs": ArtistListItem_artist$ref;
             }) | null;
         }) | null> | null;
@@ -149,6 +150,13 @@ return {
                   "args": null,
                   "storageKey": null
                 },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "href",
+                  "args": null,
+                  "storageKey": null
+                },
                 v0,
                 {
                   "kind": "ScalarField",
@@ -167,5 +175,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '97d11b90c427f8f5f878314415c09631';
+(node as any).hash = '463231a052e05286c46a0c6721b908d7';
 export default node;

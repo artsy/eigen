@@ -9,6 +9,7 @@ import { FairBoothPreviewHeader } from "./Components/FairBoothPreviewHeader"
 interface Props {
   show: FairBoothPreview_show
   onViewFairBoothPressed: () => void
+  Component: any
 }
 
 export const FairBoothPreviewContainer = createFragmentContainer<Props>(
@@ -16,12 +17,19 @@ export const FairBoothPreviewContainer = createFragmentContainer<Props>(
     const {
       show: { artworks_connection, cover_image, location, partner },
       onViewFairBoothPressed,
+      Component,
     } = props
-
     const display = !!location ? location.display : ""
+
     return (
       <Box my={1}>
-        <FairBoothPreviewHeader name={partner.name} location={display} url={cover_image && cover_image.url} />
+        <FairBoothPreviewHeader
+          context={Component}
+          name={partner.name}
+          location={display}
+          url={cover_image && cover_image.url}
+          galleryURL={partner.href}
+        />
         <Box mt={1}>{<GenericGrid artworks={artworks_connection.edges.map(a => a.node) as any} />}</Box>
         <Box mt={2}>
           <CaretButton text="View all works" onPress={() => onViewFairBoothPressed()} />
@@ -40,6 +48,7 @@ export const FairBoothPreviewContainer = createFragmentContainer<Props>(
       partner {
         ... on Partner {
           name
+          href
         }
 
         ... on ExternalPartner {
