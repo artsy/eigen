@@ -12,19 +12,27 @@ export interface City {
 }
 
 interface State {
-  shows: [any]
-  fairs: [any]
+  shows: any[]
+  fairs: any[]
+  title: string
 }
 
 export class CityView extends Component<null, State> {
+  state = {
+    shows: [],
+    fairs: [],
+    title: "",
+  }
+
   componentWillMount() {
-    EventEmitter.subscribe("map:change", ({ city }) => {
+    EventEmitter.subscribe("map:change", ({ filter, city }) => {
       const { shows, fairs } = city
       console.log(city)
 
       this.setState({
         shows,
         fairs,
+        title: filter.id === "all" ? "All events" : filter.text,
       })
     })
   }
@@ -36,7 +44,7 @@ export class CityView extends Component<null, State> {
           <Handle />
         </Flex>
         <Box px={3}>
-          <Serif size="8">All Events</Serif>
+          <Serif size="8">{this.state.title}</Serif>
         </Box>
       </Box>
     )

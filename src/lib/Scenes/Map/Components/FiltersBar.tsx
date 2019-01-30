@@ -10,7 +10,7 @@ export interface Tab {
 }
 export interface FiltersBarProps {
   currentCity: City
-  goToPage?: () => null
+  goToPage?: (number) => void
   activeTab?: number
   tabs?: Tab[]
   containerWidth?: number
@@ -79,9 +79,12 @@ export class FiltersBar extends React.Component<FiltersBarProps, FiltersBarState
 
   applyFilter = (index: number) => {
     this.centerOnTab(index)
-    this.setState({
-      activeTab: index,
-    })
+    this.setState(
+      {
+        activeTab: index,
+      },
+      () => this.props.goToPage && this.props.goToPage(index)
+    )
   }
 
   centerOnTab = (index: number) => {

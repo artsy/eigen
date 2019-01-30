@@ -6,7 +6,11 @@ import { Animated, Dimensions, NativeModules } from "react-native"
 import { createRefetchContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
+<<<<<<< HEAD
 import { Pin } from "lib/Icons/Pin"
+=======
+import { bucketCityResults, BucketResults } from "./Bucket"
+>>>>>>> City list filter implementation.
 import { FiltersBar, Tab } from "./Components/FiltersBar"
 import { EventEmitter } from "./EventEmitter"
 
@@ -25,9 +29,10 @@ interface Props {
 }
 
 interface State {
-  activeIndex?: number
+  activeIndex: number
   activeShowID?: string
   currentLocation?: any
+  bucketResults: BucketResults
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
@@ -65,14 +70,22 @@ export class GlobalMap extends React.Component<Props, State> {
     super(props)
 
     const currentLocation = this.props.initialCoordinates || this.props.viewer.city.coordinates
+    const bucketResults = bucketCityResults(props.viewer)
     this.state = {
       activeIndex: 0,
       currentLocation,
+      bucketResults,
     }
   }
 
-  componentWillReceiveProps(newProps) {
-    EventEmitter.dispatch("map:change", newProps.viewer)
+  componentWillReceiveProps() {
+    this.emitFilteredBucketResults()
+  }
+
+  emitFilteredBucketResults() {
+    // TODO: map region filtering can live here.
+    const filter = this.filters[this.state.activeIndex]
+    EventEmitter.dispatch("map:change", { filter, city: this.state.bucketResults[filter.id] })
   }
 
   onAnnotationSelected(showID: string, feature) {
@@ -91,7 +104,7 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   onAnnotationDeselected(showID: string) {
-    const nextState: State = {}
+    const nextState: State = { activeIndex: this.state.activeIndex, bucketResults: this.state.bucketResults }
 
     if (this.state.activeShowID === showID) {
       nextState.activeShowID = null
@@ -145,7 +158,11 @@ export class GlobalMap extends React.Component<Props, State> {
 
     return (
       <Flex mb={0.5} flexDirection="column">
-        <FiltersBar currentCity={city as any} tabs={this.filters} />
+        <FiltersBar
+          currentCity={city as any}
+          tabs={this.filters}
+          goToPage={activeIndex => this.setState({ activeIndex }, () => this.emitFilteredBucketResults())}
+        />
 
         <Map
           ref={(c: any) => {
@@ -161,7 +178,8 @@ export class GlobalMap extends React.Component<Props, State> {
           logoEnabled={false}
           attributionEnabled={false}
           onRegionDidChange={() => {
-            EventEmitter.dispatch("map:change", this.props.viewer)
+            // TODO: We should be filtering the bucketResults based on the new map region.
+            this.emitFilteredBucketResults()
           }}
         >
           {this.renderAnnotations()}
