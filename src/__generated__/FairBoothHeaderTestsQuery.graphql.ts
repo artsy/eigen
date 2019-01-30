@@ -33,6 +33,7 @@ fragment FairBoothHeader_show on Show {
     ... on Partner {
       name
       id
+      href
     }
     ... on ExternalPartner {
       name
@@ -74,21 +75,18 @@ v2 = {
   "args": null,
   "storageKey": null
 },
-v3 = [
-  v2,
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "id",
-    "args": null,
-    "storageKey": null
-  }
-];
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairBoothHeaderTestsQuery",
-  "id": "08a6034683cbd148d4c6c77ad55b5685",
+  "id": "31117df73e87f27610ae360ab9a4cd28",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -164,12 +162,25 @@ return {
               {
                 "kind": "InlineFragment",
                 "type": "ExternalPartner",
-                "selections": v3
+                "selections": [
+                  v2,
+                  v3
+                ]
               },
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
-                "selections": v3
+                "selections": [
+                  v2,
+                  v3,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "href",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
               }
             ]
           },

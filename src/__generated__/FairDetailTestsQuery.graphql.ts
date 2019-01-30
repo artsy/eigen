@@ -124,6 +124,7 @@ fragment FairBoothPreview_show on Show {
     __typename
     ... on Partner {
       name
+      href
     }
     ... on ExternalPartner {
       name
@@ -270,6 +271,7 @@ fragment FairBoothHeader_show on Show {
     ... on Partner {
       name
       id
+      href
     }
     ... on ExternalPartner {
       name
@@ -687,42 +689,38 @@ v28 = {
   "args": null,
   "storageKey": null
 },
-v29 = [
-  v5,
-  v2
-],
-v30 = {
+v29 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_followed",
   "args": null,
   "storageKey": null
 },
-v31 = {
+v30 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "nationality",
   "args": null,
   "storageKey": null
 },
-v32 = {
+v31 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "birthday",
   "args": null,
   "storageKey": null
 },
-v33 = {
+v32 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "deathday",
   "args": null,
   "storageKey": null
 },
-v34 = [
+v33 = [
   v4
 ],
-v35 = {
+v34 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -730,13 +728,13 @@ v35 = {
   "args": null,
   "concreteType": "Image",
   "plural": false,
-  "selections": v34
+  "selections": v33
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairDetailTestsQuery",
-  "id": "4bef66fb7717fcbfd8e5d2c7e53f86d4",
+  "id": "6df12a44c12d6839296fff1e1c88551d",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -1121,12 +1119,19 @@ return {
                           {
                             "kind": "InlineFragment",
                             "type": "ExternalPartner",
-                            "selections": v29
+                            "selections": [
+                              v5,
+                              v2
+                            ]
                           },
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",
-                            "selections": v29
+                            "selections": [
+                              v5,
+                              v2,
+                              v3
+                            ]
                           }
                         ]
                       },
@@ -1164,11 +1169,11 @@ return {
                           v3,
                           v1,
                           v5,
+                          v29,
                           v30,
                           v31,
                           v32,
-                          v33,
-                          v35
+                          v34
                         ]
                       },
                       {
@@ -1199,11 +1204,11 @@ return {
                               v2,
                               v1,
                               v5,
+                              v29,
                               v30,
                               v31,
                               v32,
-                              v33,
-                              v35
+                              v34
                             ]
                           }
                         ]
@@ -1349,7 +1354,7 @@ return {
                         "args": null,
                         "concreteType": "Image",
                         "plural": false,
-                        "selections": v34
+                        "selections": v33
                       },
                       {
                         "kind": "LinkedField",

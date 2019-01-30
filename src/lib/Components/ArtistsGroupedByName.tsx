@@ -1,10 +1,12 @@
 import { Box, Sans, Separator, Serif } from "@artsy/palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
-import { SectionList } from "react-native"
+import { SectionList, TouchableOpacity } from "react-native"
 
 interface Props {
+  Component?: any
   data: Array<{
     data: ArtistListItem_artist[]
     letter: string
@@ -13,18 +15,24 @@ interface Props {
   onEndReached?: () => void
 }
 
-export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached }) => (
+const viewArtist = (context, artist) => {
+  SwitchBoard.presentNavigationViewController(context, artist)
+}
+
+export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached, Component }) => (
   <SectionList
     onEndReached={onEndReached}
     renderItem={({ item }) => (
-      <Box px={2} mb={2}>
-        <ArtistListItem artist={item} />
-      </Box>
+      <TouchableOpacity onPress={() => viewArtist(Component, item.href)}>
+        <Box px={2} mb={2}>
+          <ArtistListItem artist={item} />
+        </Box>
+      </TouchableOpacity>
     )}
     ListHeaderComponent={() => {
       return (
         <Box px={2} mb={2} pt={85}>
-          <Serif size="8">All Artists</Serif>
+          <Serif size="8">Artists</Serif>
         </Box>
       )
     }}

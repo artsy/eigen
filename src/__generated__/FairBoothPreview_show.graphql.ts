@@ -11,6 +11,7 @@ export type FairBoothPreview_show = {
     readonly is_fair_booth: boolean | null;
     readonly partner: ({
         readonly name?: string | null;
+        readonly href?: string | null;
     }) | null;
     readonly fair: ({
         readonly name: string | null;
@@ -48,10 +49,7 @@ v1 = {
   "name": "__id",
   "args": null,
   "storageKey": null
-},
-v2 = [
-  v0
-];
+};
 return {
   "kind": "Fragment",
   "name": "FairBoothPreview_show",
@@ -92,12 +90,23 @@ return {
         {
           "kind": "InlineFragment",
           "type": "ExternalPartner",
-          "selections": v2
+          "selections": [
+            v0
+          ]
         },
         {
           "kind": "InlineFragment",
           "type": "Partner",
-          "selections": v2
+          "selections": [
+            v0,
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "href",
+              "args": null,
+              "storageKey": null
+            }
+          ]
         }
       ]
     },
@@ -201,5 +210,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f0a60912b8a366e81f58bc697d807b1a';
+(node as any).hash = '11a16c4726e181f77e2bd707060da0b5';
 export default node;

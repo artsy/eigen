@@ -44,6 +44,7 @@ fragment FairArtists_fair_1G22uz on Fair {
       node {
         ...ArtistListItem_artist
         sortable_id
+        href
         __id
         __typename
       }
@@ -113,7 +114,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairArtistsQuery",
-  "id": "9438e4f7f191002758ecd15cc63cc28c",
+  "id": "79e0e0c90daaf0ab6d0ec6c6841b0d76",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -249,8 +250,14 @@ return {
                     "concreteType": "Artist",
                     "plural": false,
                     "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "birthday",
+                        "args": null,
+                        "storageKey": null
+                      },
                       v3,
-                      v2,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -272,13 +279,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "birthday",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      v2,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -308,6 +309,13 @@ return {
                         "kind": "ScalarField",
                         "alias": null,
                         "name": "sortable_id",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "href",
                         "args": null,
                         "storageKey": null
                       },

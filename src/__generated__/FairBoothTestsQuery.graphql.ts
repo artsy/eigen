@@ -42,6 +42,7 @@ fragment FairBoothHeader_show on Show {
     ... on Partner {
       name
       id
+      href
     }
     ... on ExternalPartner {
       name
@@ -251,10 +252,13 @@ v5 = {
   "args": null,
   "storageKey": null
 },
-v6 = [
-  v2,
-  v5
-],
+v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "href",
+  "args": null,
+  "storageKey": null
+},
 v7 = {
   "kind": "ScalarField",
   "alias": null,
@@ -475,39 +479,32 @@ v20 = {
 v21 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "is_followed",
   "args": null,
   "storageKey": null
 },
 v22 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_followed",
+  "name": "nationality",
   "args": null,
   "storageKey": null
 },
 v23 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "nationality",
+  "name": "birthday",
   "args": null,
   "storageKey": null
 },
 v24 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "birthday",
-  "args": null,
-  "storageKey": null
-},
-v25 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "deathday",
   "args": null,
   "storageKey": null
 },
-v26 = {
+v25 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -529,7 +526,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairBoothTestsQuery",
-  "id": "903504eb2c2f746b765e1986568722d9",
+  "id": "265813f97dfc377be451f969b6441a58",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -596,12 +593,19 @@ return {
               {
                 "kind": "InlineFragment",
                 "type": "ExternalPartner",
-                "selections": v6
+                "selections": [
+                  v2,
+                  v5
+                ]
               },
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
-                "selections": v6
+                "selections": [
+                  v2,
+                  v5,
+                  v6
+                ]
               }
             ]
           },
@@ -661,7 +665,7 @@ return {
               v18,
               v19,
               v20,
-              v21
+              v6
             ]
           },
           {
@@ -674,14 +678,14 @@ return {
             "plural": true,
             "selections": [
               v5,
-              v21,
+              v6,
               v1,
               v2,
+              v21,
               v22,
               v23,
               v24,
-              v25,
-              v26
+              v25
             ]
           },
           {
@@ -712,11 +716,11 @@ return {
                   v5,
                   v1,
                   v2,
+                  v21,
                   v22,
                   v23,
                   v24,
-                  v25,
-                  v26
+                  v25
                 ]
               }
             ]
@@ -872,7 +876,7 @@ return {
                           v18,
                           v19,
                           v20,
-                          v21,
+                          v6,
                           v4
                         ]
                       },
