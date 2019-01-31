@@ -1,7 +1,6 @@
 import { Box, Flex, Sans, Serif } from "@artsy/palette"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -13,8 +12,7 @@ interface Props {
   onPress?: () => void
   isFollowedChanging?: boolean
   url: string
-  context: any
-  galleryURL: string
+  onViewFairBoothPressed: () => void
 }
 
 export const FairBoothPreviewHeader: React.SFC<Props> = ({
@@ -24,12 +22,11 @@ export const FairBoothPreviewHeader: React.SFC<Props> = ({
   onPress,
   isFollowedChanging,
   url,
-  context,
-  galleryURL,
+  onViewFairBoothPressed,
 }) => {
   return (
     <Flex justifyContent="space-between" alignItems="center" flexDirection="row" mb={1}>
-      <TouchableOpacity onPress={() => SwitchBoard.presentNavigationViewController(context, galleryURL)}>
+      <TouchableOpacity onPress={() => onViewFairBoothPressed()}>
         <ImageAndTextWrapper flexDirection="row" alignItems="center">
           <Box mr={1}>{url && <RoundedImage imageURL={url} aspectRatio={1} />}</Box>
           <Box>

@@ -1,35 +1,36 @@
-import { Sans, Serif } from "@artsy/palette"
+import { Box, Serif } from "@artsy/palette"
 import { ShowArtworksPreview_show } from "__generated__/ShowArtworksPreview_show.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import React from "react"
-import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
   onViewAllArtworksPressed: () => void
   show: ShowArtworksPreview_show
+  title: string
 }
 
 export class ShowArtworksPreview extends React.Component<Props> {
   render() {
-    const { show, onViewAllArtworksPressed } = this.props
+    const { show, onViewAllArtworksPressed, title } = this.props
     if (!show) {
       return null
     }
     const { artworks, counts } = show
     return (
       <>
-        <Serif size="6" mt={2} mb={3}>
-          All works
-        </Serif>
+        {title && (
+          <Serif size="6" mt={3} mb={3}>
+            {title}
+          </Serif>
+        )}
         <GenericGrid artworks={this.props.show.artworks} />
         {counts &&
           counts.artworks > artworks.length && (
-            <TouchableOpacity onPress={onViewAllArtworksPressed}>
-              <Sans size="3" my={2} weight="medium">
-                View all works
-              </Sans>
-            </TouchableOpacity>
+            <Box mt={1}>
+              <CaretButton text={`View all ${artworks.length} works`} onPress={() => onViewAllArtworksPressed()} />
+            </Box>
           )}
       </>
     )

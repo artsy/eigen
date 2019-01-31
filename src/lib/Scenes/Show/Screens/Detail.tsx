@@ -107,7 +107,7 @@ export class Detail extends React.Component<Props, State> {
       case "location":
         return <LocationMap {...data} />
       case "artworks":
-        return <ShowArtworksPreview {...data} />
+        return <ShowArtworksPreview title="All works" {...data} />
       case "artists":
         return <ShowArtistsPreview {...data} />
       case "shows":

@@ -21,6 +21,7 @@ export const FairBoothHeader: React.SFC<Props> = ({
   show: {
     partner: { name: partnerName, href: partnerId },
     fair: { name: fairName },
+    location: { display: boothLocation },
     counts,
   },
   onSaveShowPressed,
@@ -33,16 +34,21 @@ export const FairBoothHeader: React.SFC<Props> = ({
       </TouchableOpacity>
       <Spacer m={0.3} />
       <Sans weight="medium" size="3t">
-        {fairName} • Booth
+        {fairName}
       </Sans>
       <Spacer m={0.5} />
-      <Serif size="3t">Galleries</Serif>
-      <Spacer m={0.3} />
+      {boothLocation && (
+        <>
+          <Serif size="3t">{boothLocation}</Serif>
+          <Spacer m={0.3} />
+        </>
+      )}
       <Sans size="3t" color="black60">
         {formatCounts(counts)}
       </Sans>
-      <Spacer m={6} />
+      <Spacer m={3} />
       <InvertedButton text="Follow gallery" onPress={() => onSaveShowPressed()} />
+      <Spacer m={0.5} />
     </Box>
   )
 }
@@ -68,6 +74,9 @@ export const FairBoothHeaderContainer = createFragmentContainer(
       counts {
         artworks
         artists
+      }
+      location {
+        display
       }
     }
   `

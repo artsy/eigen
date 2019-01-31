@@ -1,4 +1,4 @@
-import { Box } from "@artsy/palette"
+import { Box, Separator } from "@artsy/palette"
 import { FairBooth_show } from "__generated__/FairBooth_show.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
@@ -79,6 +79,13 @@ export class FairBooth extends React.Component<Props, State> {
             {this.renderItem(item)}
           </Box>
         )}
+        ItemSeparatorComponent={() => {
+          return (
+            <Box px={2} pb={2} mt={2}>
+              <Separator />
+            </Box>
+          )
+        }}
         keyExtractor={(item, index) => item.type + String(index)}
       />
     )

@@ -3,10 +3,8 @@
 exports[`CaretButton renders properly 1`] = `
 <View
   accessible={true}
-  alignItems="center"
+  align-items="base-line"
   flexDirection="row"
-  height={36}
-  justifyContent="space-between"
   onResponderGrant={[Function]}
   onResponderMove={[Function]}
   onResponderRelease={[Function]}
@@ -16,11 +14,8 @@ exports[`CaretButton renders properly 1`] = `
   style={
     Array [
       Object {
-        "alignItems": "center",
         "display": "flex",
         "flexDirection": "row",
-        "height": 36,
-        "justifyContent": "space-between",
       },
       undefined,
     ]
@@ -46,7 +41,18 @@ exports[`CaretButton renders properly 1`] = `
     }
   >
     I am a caret button
-      
+  </Text>
+  <View
+    ml={1}
+    style={
+      Array [
+        Object {
+          "marginLeft": 4,
+        },
+        undefined,
+      ]
+    }
+  >
     <Image
       source={
         Object {
@@ -55,11 +61,11 @@ exports[`CaretButton renders properly 1`] = `
       }
       style={
         Object {
-          "alignSelf": "center",
           "tintColor": "#C2C2C2",
+          "top": 3,
         }
       }
     />
-  </Text>
+  </View>
 </View>
 `;

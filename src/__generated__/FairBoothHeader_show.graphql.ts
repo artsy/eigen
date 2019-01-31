@@ -16,6 +16,9 @@ export type FairBoothHeader_show = {
         readonly artworks: number | null;
         readonly artists: number | null;
     }) | null;
+    readonly location: ({
+        readonly display: string | null;
+    }) | null;
     readonly " $refType": FairBoothHeader_show$ref;
 };
 
@@ -123,9 +126,28 @@ return {
         }
       ]
     },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "location",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Location",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "display",
+          "args": null,
+          "storageKey": null
+        },
+        v1
+      ]
+    },
     v1
   ]
 };
 })();
-(node as any).hash = '6f55447b254083154cf00ac94d9efdc1';
+(node as any).hash = '7ec9d3300793ec4b095dc1ee09f0c9a9';
 export default node;

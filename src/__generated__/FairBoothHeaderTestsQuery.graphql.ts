@@ -48,6 +48,10 @@ fragment FairBoothHeader_show on Show {
     artworks
     artists
   }
+  location {
+    display
+    __id
+  }
   __id
 }
 */
@@ -86,7 +90,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairBoothHeaderTestsQuery",
-  "id": "31117df73e87f27610ae360ab9a4cd28",
+  "id": "89466d65f4c929faf8026483d2b08012",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -207,6 +211,25 @@ return {
                 "args": null,
                 "storageKey": null
               }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "location",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Location",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "display",
+                "args": null,
+                "storageKey": null
+              },
+              v1
             ]
           },
           v1
