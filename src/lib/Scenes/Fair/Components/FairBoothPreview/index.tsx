@@ -43,8 +43,6 @@ export const FairBoothPreviewContainer = createFragmentContainer<Props>(
       name
       is_fair_booth
 
-      ...FairBooth_show
-
       partner {
         ... on Partner {
           name
