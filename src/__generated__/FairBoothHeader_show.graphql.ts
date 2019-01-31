@@ -10,6 +10,7 @@ export type FairBoothHeader_show = {
     readonly partner: ({
         readonly name?: string | null;
         readonly id?: string;
+        readonly href?: string | null;
     }) | null;
     readonly counts: ({
         readonly artworks: number | null;
@@ -35,16 +36,13 @@ v1 = {
   "args": null,
   "storageKey": null
 },
-v2 = [
-  v0,
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "id",
-    "args": null,
-    "storageKey": null
-  }
-];
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Fragment",
   "name": "FairBoothHeader_show",
@@ -78,12 +76,25 @@ return {
         {
           "kind": "InlineFragment",
           "type": "ExternalPartner",
-          "selections": v2
+          "selections": [
+            v0,
+            v2
+          ]
         },
         {
           "kind": "InlineFragment",
           "type": "Partner",
-          "selections": v2
+          "selections": [
+            v0,
+            v2,
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "href",
+              "args": null,
+              "storageKey": null
+            }
+          ]
         }
       ]
     },
@@ -116,5 +127,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '48042d29de49189b4fa430bd29b589d0';
+(node as any).hash = '6f55447b254083154cf00ac94d9efdc1';
 export default node;

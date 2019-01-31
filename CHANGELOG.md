@@ -16,6 +16,10 @@
 
 ### Master
 
+- Adds inter-component communication for map and bottom sheet view - ash
+
+### 1.8.1
+
 - Ports over @ds300's Relay mock utils from reaction - luc
 - Swap Mapbox style from default to Artsy theme - luc
 - Display pins on map based user location - luc
@@ -23,14 +27,17 @@
 - Adds `Make Offer` badge to artwork brick - matt
 - Fair booth title now a link to gallery - kieran
 - Replace theme and icon on LocationMap - luc
+- Adds links to fair exhibitors - Kieran
+- Removes "All" from Artists, Exhibitors, and Works Headers - ashley
+- Adds navigation from Fair Booth Partners to Partners page and from Fair Artists view to Artists page - ashley
+- Show UI cleanup: removes map icon, enables Artist navigation - ashley
+- Expands Show installation shot carousel to screen width - ashley
+- Adds external link to partner galleries - ashley
+- Removes "View on Map" text from More Shows section in Show view - ashley
 
-### 1.7.6
 
-- Removes the buy now banner from the homescreen - orta
+### 1.8.0
 
-### 1.7.5
-
-- fixes to the artwork favourites pagination - orta
 - Adds styled LocationMap with custom pins - kieran
 - Refactor auctions countdown timer, add fair countdown timer - javamonn
 - Refactors ARNotificationManager to implicitly call all JS methods on main queue - ash
@@ -62,6 +69,14 @@
 - Adds native unit test suite and CI - ash
 - Add FairMoreInfo screen - roop and javamonn
 
+### 1.7.6
+
+- Removes the buy now banner from the homescreen - orta
+
+### 1.7.5
+
+- fixes to the artwork favourites pagination - orta
+
 ### 1.7.4
 
 - Emission's podspec contains deps for all of its native dependencies - orta
@@ -92,7 +107,6 @@
 - Reordering Fair sections to match design specs -ashley
 - Add contextual data to Fair view - ashley
 - Enable navigation on contextual data in Show view - ashley
-- Show UI cleanup: removes map icon, enables Artist navigation, expands Show installation shot carousel to screen width, adds external link to partner galleries, removes extra separators - ashley
 
 ### 1.7.1
 

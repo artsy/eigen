@@ -75,7 +75,7 @@ export class FairArtists extends React.Component<Props, State> {
     const { groupedArtists } = this.state
     return (
       <Theme>
-        <ArtistsGroupedByName data={groupedArtists} onEndReached={this.fetchNextPage} />
+        <ArtistsGroupedByName data={groupedArtists} onEndReached={this.fetchNextPage} Component={this} />
       </Theme>
     )
   }
@@ -99,6 +99,7 @@ export const FairArtistsContainer = createPaginationContainer(
             node {
               ...ArtistListItem_artist
               sortable_id
+              href
             }
           }
         }

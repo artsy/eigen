@@ -63,7 +63,7 @@ export class FilteredInfiniteScrollGrid extends React.Component<Props, State> {
             HeaderComponent={
               <Box>
                 <Spacer m={2} />
-                <Serif size="8">All works</Serif>
+                <Serif size="8">Works</Serif>
                 <Filters
                   filteredArtworks={filteredArtworks}
                   priceRangeValue={priceRange}

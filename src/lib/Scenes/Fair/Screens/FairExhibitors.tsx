@@ -1,8 +1,9 @@
 import { Box, Separator, Serif } from "@artsy/palette"
 import { FairExhibitorsQuery } from "__generated__/FairExhibitorsQuery.graphql"
 import React from "react"
-import { SectionList, ViewProperties } from "react-native"
+import { SectionList, TouchableOpacity, ViewProperties } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
+import SwitchBoard from "../../../../lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
 
@@ -16,6 +17,7 @@ interface State {
     letter: string
     index: number
     sections: any
+    data: any
   }>
 }
 export class FairExhibitors extends React.Component<Props, State> {
@@ -34,18 +36,28 @@ export class FairExhibitors extends React.Component<Props, State> {
       sections.push({
         title: group.letter,
         data: group.exhibitors,
+        partnerIds: group.profile_ids,
         count: group.exhibitors.length,
       })
     })
     this.setState({ sections })
   }
 
-  renderExhibitor(item) {
-    const { count, index } = item
+  renderExhibitor(data) {
+    const { item, index, section } = data
+    const { partnerIds, count } = section
     const generatedKey = count - index
     return (
       <Box mb={2} key={generatedKey}>
-        <Serif size="3">{item}</Serif>
+        <TouchableOpacity
+          onPress={() => {
+            if (partnerIds && partnerIds[index]) {
+              SwitchBoard.presentNavigationViewController(this, partnerIds[index])
+            }
+          }}
+        >
+          <Serif size="3">{item}</Serif>
+        </TouchableOpacity>
       </Box>
     )
   }
@@ -54,11 +66,11 @@ export class FairExhibitors extends React.Component<Props, State> {
     return (
       <SectionList
         stickySectionHeadersEnabled={true}
-        renderItem={({ item }) => <Box px={2}>{this.renderExhibitor(item)}</Box>}
+        renderItem={data => <Box px={2}>{this.renderExhibitor(data)}</Box>}
         ListHeaderComponent={() => {
           return (
             <Box px={2} mb={2} pt={85}>
-              <Serif size="8">All exhibitors</Serif>
+              <Serif size="8">Exhibitors</Serif>
             </Box>
           )
         }}
@@ -92,6 +104,7 @@ export const FairExhibitorsRenderer: React.SFC<{ fairID: string }> = ({ fairID }
           exhibitors_grouped_by_name {
             letter
             exhibitors
+            profile_ids
           }
         }
       }
