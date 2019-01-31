@@ -66,6 +66,9 @@ export const createMockNetworkLayer2 = (queryData: object = {}, mutationData: ob
         complain(info, info.returnType.inspect())
       }) as GraphQLFieldResolver<any, any>,
       schema,
+      resolveQueryFromOperation: ({ id }) => {
+        return require("../../../__generated__/complete.queryMap.json")[id]
+      },
       resolvers: {
         FormattedNumber: () => FormattedNumber,
         // @ts-ignore

@@ -4,7 +4,7 @@ import { Environment, fetchQuery, GraphQLTaggedNode, RecordSource, Store } from 
 import { createMockNetworkLayer2 } from "../index"
 
 // Pulled from https://github.com/artsy/reaction/pull/1854
-xdescribe("createMockNetworkLayer", () => {
+describe("createMockNetworkLayer", () => {
   function fetchQueryWithResolvers(resolvers: IResolvers, query?: GraphQLTaggedNode) {
     const network = createMockNetworkLayer2(resolvers)
 
