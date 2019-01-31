@@ -13,7 +13,7 @@ it("renders properly", async () => {
       return wrapper.text().includes("All works")
     },
     <MockRelayRenderer
-      Component={ShowArtworksPreview}
+      Component={(props: any) => <ShowArtworksPreview title="All works" {...props} />}
       query={graphql`
         query ShowArtworksPreviewTestsQuery {
           show(id: "anderson-fine-art-gallery-flickinger-collection") {
