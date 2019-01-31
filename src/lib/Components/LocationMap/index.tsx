@@ -68,7 +68,7 @@ export class LocationMap extends React.Component<Props> {
       id: "mapbox-marker",
     }
     return (
-      <MapWrapper mt={2} mb={0.5}>
+      <MapWrapper>
         <Map
           key={lng}
           styleURL={Mapbox.StyleURL.Light}

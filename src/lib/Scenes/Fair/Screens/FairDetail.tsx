@@ -1,5 +1,6 @@
-import { Box, Theme } from "@artsy/palette"
+import { Box, Separator, Serif, Theme } from "@artsy/palette"
 import { FairDetail_fair } from "__generated__/FairDetail_fair.graphql"
+import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -67,6 +68,10 @@ export class FairDetail extends React.Component<Props, State> {
     })
 
     sections.push({
+      type: "information",
+    })
+
+    sections.push({
       type: "hours",
       data: {
         hours: fair.hours,
@@ -74,10 +79,7 @@ export class FairDetail extends React.Component<Props, State> {
     })
 
     sections.push({
-      type: "search",
-      data: {
-        fairID: fair.id,
-      },
+      type: "title",
     })
 
     sections.push({
@@ -86,6 +88,13 @@ export class FairDetail extends React.Component<Props, State> {
         onViewAllExhibitorsPressed,
         onViewAllArtistsPressed,
         onViewAllArtworksPressed,
+      },
+    })
+
+    sections.push({
+      type: "search",
+      data: {
+        fairID: fair.id,
       },
     })
 
@@ -102,18 +111,36 @@ export class FairDetail extends React.Component<Props, State> {
     this.setState({ sections, boothCount: fair.shows.edges.length })
   }
 
-  renderItem = ({ item: { data, type } }) => {
+  renderItem = ({ item: { data, type }, onViewMoreInfoPressed }) => {
     switch (type) {
       case "location":
         return <LocationMap partnerType="Fair" {...data} />
       case "hours":
-        return <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} />
+        return (
+          <>
+            <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} />
+            <Separator mt={2} />
+          </>
+        )
       case "search":
         return <SearchLink {...data} />
       case "booth":
         return <FairBoothPreview {...data} Component={this} />
+      case "information":
+        return (
+          <>
+            <CaretButton onPress={() => onViewMoreInfoPressed()} text="View more information" />
+            <Separator mt={2} />
+          </>
+        )
       case "artists-exhibitors-works":
         return <ArtistsExhibitorsWorksLink {...data} />
+      case "title":
+        return (
+          <Box mt={1}>
+            <Serif size={"6"}>Browse the fair</Serif>
+          </Box>
+        )
       default:
         return null
     }

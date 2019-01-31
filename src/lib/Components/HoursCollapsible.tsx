@@ -77,13 +77,15 @@ export class HoursCollapsible extends React.Component<Props, State> {
   render() {
     const { isExpanded } = this.state
     return (
-      <Box mt={2}>
+      <Box>
         <TouchableWithoutFeedback onPress={this.handleToggleIsExpanded}>
-          <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
+          <Flex alignItems="center" flexDirection="row">
             <Sans size="3t" weight="medium">
-              Hours
+              Opening hours
             </Sans>
-            <Chevron source={require("../../../images/chevron.png")} isExpanded={isExpanded} />
+            <Box ml={1}>
+              <Chevron source={require("../../../images/chevron.png")} isExpanded={isExpanded} />
+            </Box>
           </Flex>
         </TouchableWithoutFeedback>
         <Collapse open={isExpanded} onAnimationFrame={this.handleAnimationFrame}>

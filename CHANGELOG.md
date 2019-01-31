@@ -16,6 +16,7 @@
 
 ### Master
 
+- Styles Fair view to match design - kieran
 - Removes All Artworks from artwork preview - kieran
 - Adds booth number to fair booth view ( https://artsyproduct.atlassian.net/browse/LD-134 ) - kieran
 - Adds item separator to FairBooth - kieran
