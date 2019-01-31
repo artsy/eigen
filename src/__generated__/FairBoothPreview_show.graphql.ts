@@ -1,7 +1,6 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-import { FairBooth_show$ref } from "./FairBooth_show.graphql";
 import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _FairBoothPreview_show$ref: unique symbol;
 export type FairBoothPreview_show$ref = typeof _FairBoothPreview_show$ref;
@@ -29,7 +28,6 @@ export type FairBoothPreview_show = {
             }) | null;
         }) | null> | null;
     }) | null;
-    readonly " $fragmentRefs": FairBooth_show$ref;
     readonly " $refType": FairBoothPreview_show$ref;
 };
 
@@ -71,11 +69,6 @@ return {
       "name": "is_fair_booth",
       "args": null,
       "storageKey": null
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "FairBooth_show",
-      "args": null
     },
     {
       "kind": "LinkedField",
@@ -210,5 +203,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '11a16c4726e181f77e2bd707060da0b5';
+(node as any).hash = '09fd65aab1b611a0f990e63eead4c6a7';
 export default node;

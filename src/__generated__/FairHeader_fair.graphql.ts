@@ -6,13 +6,21 @@ export type FairHeader_fair$ref = typeof _FairHeader_fair$ref;
 export type FairHeader_fair = {
     readonly id: string;
     readonly name: string | null;
-    readonly exhibitors_grouped_by_name: ReadonlyArray<({
-        readonly exhibitors: ReadonlyArray<string | null> | null;
-        readonly profile_ids: ReadonlyArray<string | null> | null;
-    }) | null> | null;
     readonly counts: ({
         readonly artists: any | null;
         readonly partners: any | null;
+    }) | null;
+    readonly partner_names: ({
+        readonly edges: ReadonlyArray<({
+            readonly node: ({
+                readonly partner: ({
+                    readonly profile?: ({
+                        readonly name: string | null;
+                        readonly href: string | null;
+                    }) | null;
+                }) | null;
+            }) | null;
+        }) | null> | null;
     }) | null;
     readonly artists_names: ({
         readonly edges: ReadonlyArray<({
@@ -59,13 +67,14 @@ v1 = {
   "args": null,
   "storageKey": null
 },
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "href",
-  "args": null,
-  "storageKey": null
-},
+v2 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 2,
+    "type": "Int"
+  }
+],
 v3 = {
   "kind": "ScalarField",
   "alias": null,
@@ -74,6 +83,18 @@ v3 = {
   "storageKey": null
 },
 v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "href",
+  "args": null,
+  "storageKey": null
+},
+v5 = [
+  v1,
+  v4,
+  v3
+],
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
@@ -89,31 +110,6 @@ return {
   "selections": [
     v0,
     v1,
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "exhibitors_grouped_by_name",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "FairExhibitorsGroup",
-      "plural": true,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "exhibitors",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "profile_ids",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -141,17 +137,72 @@ return {
     },
     {
       "kind": "LinkedField",
+      "alias": "partner_names",
+      "name": "shows_connection",
+      "storageKey": "shows_connection(first:2)",
+      "args": v2,
+      "concreteType": "ShowConnection",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ShowEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Show",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "partner",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": null,
+                  "plural": false,
+                  "selections": [
+                    v3,
+                    {
+                      "kind": "InlineFragment",
+                      "type": "Partner",
+                      "selections": [
+                        {
+                          "kind": "LinkedField",
+                          "alias": null,
+                          "name": "profile",
+                          "storageKey": null,
+                          "args": null,
+                          "concreteType": "Profile",
+                          "plural": false,
+                          "selections": v5
+                        }
+                      ]
+                    }
+                  ]
+                },
+                v3
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "LinkedField",
       "alias": "artists_names",
       "name": "artists",
       "storageKey": "artists(first:2)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 2,
-          "type": "Int"
-        }
-      ],
+      "args": v2,
       "concreteType": "ArtistConnection",
       "plural": false,
       "selections": [
@@ -172,11 +223,7 @@ return {
               "args": null,
               "concreteType": "Artist",
               "plural": false,
-              "selections": [
-                v1,
-                v2,
-                v3
-              ]
+              "selections": v5
             }
           ]
         }
@@ -205,7 +252,7 @@ return {
           "args": null,
           "storageKey": null
         },
-        v4
+        v6
       ]
     },
     {
@@ -227,7 +274,7 @@ return {
           "plural": false,
           "selections": [
             v0,
-            v2,
+            v4,
             {
               "kind": "ScalarField",
               "alias": null,
@@ -242,7 +289,7 @@ return {
               "args": null,
               "storageKey": null
             },
-            v4
+            v6
           ]
         },
         v1,
@@ -267,5 +314,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '4b5a611d161096b9c913377e6bdcd380';
+(node as any).hash = '30ef446d95b38d597353e6ffe04c0cad';
 export default node;
