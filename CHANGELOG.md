@@ -33,6 +33,7 @@
 - Update MapRenderer to user Geolocation service - luc
 - Adds `Make Offer` badge to artwork brick - matt
 - Fair booth title now a link to gallery - kieran
+- Replace theme and icon on LocationMap - luc
 - Adds links to fair exhibitors - Kieran
 - Removes "All" from Artists, Exhibitors, and Works Headers - ashley
 - Adds navigation from Fair Booth Partners to Partners page and from Fair Artists view to Artists page - ashley
