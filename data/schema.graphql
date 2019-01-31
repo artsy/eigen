@@ -5816,6 +5816,8 @@ type OrderConnection {
   # A list of edges.
   edges: [OrderEdge]
   totalCount: Int
+  totalPages: Int
+  pageCursors: PageCursors
 }
 
 # An edge in a connection.

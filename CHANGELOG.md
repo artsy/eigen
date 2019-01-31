@@ -32,6 +32,8 @@
 - Show UI cleanup: removes map icon, enables Artist navigation - ashley
 - Expands Show installation shot carousel to screen width - ashley
 - Adds external link to partner galleries - ashley
+- Removes "View on Map" text from More Shows section in Show view - ashley
+
 
 ### 1.8.0
 
