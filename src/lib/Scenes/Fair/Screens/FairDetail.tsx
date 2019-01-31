@@ -183,7 +183,7 @@ export const FairDetailContainer = createPaginationContainer(
   {
     fair: graphql`
       fragment FairDetail_fair on Fair
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+        @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String" }) {
         ...FairHeader_fair
         id
         name
