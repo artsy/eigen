@@ -6,11 +6,8 @@ import { Animated, Dimensions, NativeModules } from "react-native"
 import { createRefetchContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-<<<<<<< HEAD
 import { Pin } from "lib/Icons/Pin"
-=======
 import { bucketCityResults, BucketResults } from "./Bucket"
->>>>>>> City list filter implementation.
 import { FiltersBar, Tab } from "./Components/FiltersBar"
 import { EventEmitter } from "./EventEmitter"
 
