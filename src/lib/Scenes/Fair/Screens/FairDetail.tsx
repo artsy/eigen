@@ -206,8 +206,11 @@ export const FairDetailContainer = createPaginationContainer(
             cursor
             node {
               ...FairBoothPreview_show
-              ...FairBooth_show
               ...ShowArtworks_show
+              ...FairBoothHeader_show
+              ...ShowArtistsPreview_show
+              ...ShowArtists_show
+              ...ShowArtworksPreview_show
             }
           }
         }
