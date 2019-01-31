@@ -22,6 +22,7 @@
 - Adds counts to Artworks and Artist previews for FairBooth - kieran
 - Restyles CaretButton to reflect design - kieran
 - Clicking on Fair booth title now takes you to booth view (Reviewed this with Jun) - kieran
+- Fix createMockNetworkLayer and update tests - luc
 
 ### 1.8.1
 
