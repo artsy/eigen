@@ -71,8 +71,8 @@ export class FairDetail extends React.Component<Props, State> {
     sections.push({
       type: "information",
       data: {
-        onViewMoreInfoPressed: () => onViewMoreInfoPressed()
-      }
+        onViewMoreInfoPressed: () => onViewMoreInfoPressed(),
+      },
     })
 
     sections.push({
@@ -115,7 +115,7 @@ export class FairDetail extends React.Component<Props, State> {
     this.setState({ sections, boothCount: fair.shows.edges.length })
   }
 
-  renderItem = ({ item: { data, type }) => {
+  renderItem = ({ item: { data, type } }) => {
     switch (type) {
       case "location":
         return <LocationMap partnerType="Fair" {...data} />
