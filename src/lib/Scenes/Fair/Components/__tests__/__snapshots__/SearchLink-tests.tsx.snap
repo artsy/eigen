@@ -2,98 +2,110 @@
 
 exports[`SearchLink Renders properly 1`] = `
 <View
-  accessible={true}
-  alignItems="center"
-  flexDirection="row"
-  height={48}
-  justifyContent="center"
-  mb={1}
-  onResponderGrant={[Function]}
-  onResponderMove={[Function]}
-  onResponderRelease={[Function]}
-  onResponderTerminate={[Function]}
-  onResponderTerminationRequest={[Function]}
-  onStartShouldSetResponder={[Function]}
-  p={1}
+  mt={1}
   style={
     Array [
       Object {
-        "alignItems": "center",
-        "display": "flex",
-        "flexDirection": "row",
-        "height": 48,
-        "justifyContent": "center",
-        "marginBottom": 4,
-        "paddingBottom": 4,
-        "paddingLeft": 4,
-        "paddingRight": 4,
-        "paddingTop": 4,
+        "marginTop": 4,
       },
+      undefined,
+    ]
+  }
+>
+  <View
+    accessible={true}
+    alignItems="center"
+    flexDirection="row"
+    height={48}
+    justifyContent="center"
+    mb={1}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    p={1}
+    style={
       Array [
         Object {
-          "borderColor": "#E5E5E5",
-          "borderRadius": 2,
-          "borderStyle": "solid",
-          "borderWidth": 1,
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "row",
           "height": 48,
+          "justifyContent": "center",
           "marginBottom": 4,
           "paddingBottom": 4,
           "paddingLeft": 4,
           "paddingRight": 4,
           "paddingTop": 4,
         },
-        undefined,
-      ],
-    ]
-  }
->
-  <Image
-    source={
-      Object {
-        "testUri": "../../../images/SearchButton.png",
-      }
-    }
-    style={
-      Array [
-        Object {
-          "height": 20,
-          "width": 20,
-        },
-        undefined,
-      ]
-    }
-  />
-  <View
-    style={
-      Array [
-        Object {
-          "width": 12,
-        },
-        undefined,
-      ]
-    }
-    width={12}
-  />
-  <Text
-    accessible={true}
-    allowFontScaling={true}
-    className="sc-bdVaJa bDWFJH"
-    ellipsizeMode="tail"
-    fontFamily="Unica77LL-Medium"
-    fontSize="12px"
-    lineHeight="16px"
-    style={
-      Array [
-        Object {
-          "fontFamily": "Unica77LL-Medium",
-          "fontSize": 12,
-          "lineHeight": 16,
-        },
-        undefined,
+        Array [
+          Object {
+            "borderColor": "#E5E5E5",
+            "borderRadius": 2,
+            "borderStyle": "solid",
+            "borderWidth": 1,
+            "height": 48,
+            "marginBottom": 4,
+            "paddingBottom": 4,
+            "paddingLeft": 4,
+            "paddingRight": 4,
+            "paddingTop": 4,
+          },
+          undefined,
+        ],
       ]
     }
   >
-    Find Exhibitors and Artists
-  </Text>
+    <Image
+      source={
+        Object {
+          "testUri": "../../../images/SearchButton.png",
+        }
+      }
+      style={
+        Array [
+          Object {
+            "height": 20,
+            "width": 20,
+          },
+          undefined,
+        ]
+      }
+    />
+    <View
+      style={
+        Array [
+          Object {
+            "width": 12,
+          },
+          undefined,
+        ]
+      }
+      width={12}
+    />
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Medium"
+      fontSize="12px"
+      lineHeight="16px"
+      style={
+        Array [
+          Object {
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 12,
+            "lineHeight": 16,
+          },
+          undefined,
+        ]
+      }
+    >
+      Find Exhibitors and Artists
+    </Text>
+  </View>
 </View>
 `;

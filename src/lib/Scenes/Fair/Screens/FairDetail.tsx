@@ -55,6 +55,7 @@ export class FairDetail extends React.Component<Props, State> {
       onViewAllArtworksPressed,
       onViewAllArtistsPressed,
       onViewFairBoothPressed,
+      onViewMoreInfoPressed,
     } = this.props
     const sections = []
 
@@ -69,6 +70,9 @@ export class FairDetail extends React.Component<Props, State> {
 
     sections.push({
       type: "information",
+      data: {
+        onViewMoreInfoPressed: () => onViewMoreInfoPressed()
+      }
     })
 
     sections.push({
@@ -111,7 +115,7 @@ export class FairDetail extends React.Component<Props, State> {
     this.setState({ sections, boothCount: fair.shows.edges.length })
   }
 
-  renderItem = ({ item: { data, type }, onViewMoreInfoPressed }) => {
+  renderItem = ({ item: { data, type }) => {
     switch (type) {
       case "location":
         return <LocationMap partnerType="Fair" {...data} />
@@ -129,7 +133,7 @@ export class FairDetail extends React.Component<Props, State> {
       case "information":
         return (
           <>
-            <CaretButton onPress={() => onViewMoreInfoPressed()} text="View more information" />
+            <CaretButton onPress={() => data.onViewMoreInfoPressed()} text="View more information" />
             <Separator mt={2} />
           </>
         )
@@ -174,7 +178,7 @@ export class FairDetail extends React.Component<Props, State> {
   }
 
   render() {
-    const { fair, onViewAllExhibitorsPressed, onViewAllArtistsPressed, onViewMoreInfoPressed } = this.props
+    const { fair, onViewAllExhibitorsPressed, onViewAllArtistsPressed } = this.props
     const { sections, extraData } = this.state
 
     return (
@@ -189,7 +193,6 @@ export class FairDetail extends React.Component<Props, State> {
                 fair={fair}
                 viewAllExhibitors={onViewAllExhibitorsPressed}
                 viewAllArtists={onViewAllArtistsPressed}
-                onViewMoreInfoPressed={onViewMoreInfoPressed}
               />
             </Box>
           }

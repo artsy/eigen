@@ -1,200 +1,222 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
-Array [
+<View
+  flexDirection="row"
+  flexWrap="nowrap"
+  justifyContent="space-between"
+  style={
+    Array [
+      Object {
+        "display": "flex",
+        "flexDirection": "row",
+        "flexWrap": "nowrap",
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
   <View
+    accessible={true}
+    align-items="base-line"
+    flexDirection="row"
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
     style={
       Array [
         Object {
           "display": "flex",
-        },
-        Array [
-          Object {
-            "flexDirection": "row",
-            "justifyContent": "space-evenly",
-            "marginBottom": 20,
-            "marginTop": 10,
-          },
-          undefined,
-        ],
-      ]
-    }
-  >
-    <View
-      accessible={true}
-      isTVSelectable={true}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "opacity": 1,
-        }
-      }
-    >
-      <View
-        style={
-          Array [
-            Object {},
-            Array [
-              Object {
-                "borderRightColor": "#E5E5E5",
-                "borderRightWidth": 1,
-                "paddingRight": 25,
-              },
-              undefined,
-            ],
-          ]
-        }
-      >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          className="sc-bdVaJa bDWFJH"
-          ellipsizeMode="tail"
-          fontFamily="Unica77LL-Regular"
-          fontSize="14px"
-          lineHeight="24px"
-          style={
-            Array [
-              Object {
-                "fontFamily": "Unica77LL-Regular",
-                "fontSize": 14,
-                "lineHeight": 24,
-              },
-              undefined,
-            ]
-          }
-        >
-          Artists
-        </Text>
-      </View>
-    </View>
-    <View
-      accessible={true}
-      isTVSelectable={true}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "opacity": 1,
-        }
-      }
-    >
-      <View
-        right="3"
-        style={
-          Array [
-            Object {
-              "right": 3,
-            },
-            Array [
-              Object {
-                "borderRightColor": "#E5E5E5",
-                "borderRightWidth": 1,
-                "paddingRight": 25,
-              },
-              undefined,
-            ],
-          ]
-        }
-      >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          className="sc-bdVaJa bDWFJH"
-          ellipsizeMode="tail"
-          fontFamily="Unica77LL-Regular"
-          fontSize="14px"
-          lineHeight="24px"
-          style={
-            Array [
-              Object {
-                "fontFamily": "Unica77LL-Regular",
-                "fontSize": 14,
-                "lineHeight": 24,
-              },
-              undefined,
-            ]
-          }
-        >
-          Exhibitors
-        </Text>
-      </View>
-    </View>
-    <View
-      accessible={true}
-      isTVSelectable={true}
-      onResponderGrant={[Function]}
-      onResponderMove={[Function]}
-      onResponderRelease={[Function]}
-      onResponderTerminate={[Function]}
-      onResponderTerminationRequest={[Function]}
-      onStartShouldSetResponder={[Function]}
-      style={
-        Object {
-          "opacity": 1,
-        }
-      }
-    >
-      <View
-        right="3"
-        style={
-          Array [
-            Object {
-              "right": 3,
-            },
-            undefined,
-          ]
-        }
-      >
-        <Text
-          accessible={true}
-          allowFontScaling={true}
-          className="sc-bdVaJa bDWFJH"
-          ellipsizeMode="tail"
-          fontFamily="Unica77LL-Regular"
-          fontSize="14px"
-          lineHeight="24px"
-          style={
-            Array [
-              Object {
-                "fontFamily": "Unica77LL-Regular",
-                "fontSize": 14,
-                "lineHeight": 24,
-              },
-              undefined,
-            ]
-          }
-        >
-          Works
-        </Text>
-      </View>
-    </View>
-  </View>,
-  <View
-    mt="1"
-    style={
-      Array [
-        Object {
-          "borderBottomWidth": 0,
-          "borderColor": "#E5E5E5",
-          "borderStyle": "solid",
-          "borderWidth": 1,
-          "marginTop": 4,
-          "width": "100%",
+          "flexDirection": "row",
         },
         undefined,
       ]
     }
-    width="100%"
-  />,
-]
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Medium"
+      fontSize="14px"
+      lineHeight="20px"
+      style={
+        Array [
+          Object {
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 14,
+            "lineHeight": 20,
+          },
+          undefined,
+        ]
+      }
+    >
+      All artists
+    </Text>
+    <View
+      ml={1}
+      style={
+        Array [
+          Object {
+            "marginLeft": 4,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Image
+        source={
+          Object {
+            "testUri": "../../../images/horizontal_chevron.png",
+          }
+        }
+        style={
+          Object {
+            "tintColor": "#C2C2C2",
+            "top": 3,
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    accessible={true}
+    align-items="base-line"
+    flexDirection="row"
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Medium"
+      fontSize="14px"
+      lineHeight="20px"
+      style={
+        Array [
+          Object {
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 14,
+            "lineHeight": 20,
+          },
+          undefined,
+        ]
+      }
+    >
+      All exhibitors
+    </Text>
+    <View
+      ml={1}
+      style={
+        Array [
+          Object {
+            "marginLeft": 4,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Image
+        source={
+          Object {
+            "testUri": "../../../images/horizontal_chevron.png",
+          }
+        }
+        style={
+          Object {
+            "tintColor": "#C2C2C2",
+            "top": 3,
+          }
+        }
+      />
+    </View>
+  </View>
+  <View
+    accessible={true}
+    align-items="base-line"
+    flexDirection="row"
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "display": "flex",
+          "flexDirection": "row",
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      ellipsizeMode="tail"
+      fontFamily="Unica77LL-Medium"
+      fontSize="14px"
+      lineHeight="20px"
+      style={
+        Array [
+          Object {
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 14,
+            "lineHeight": 20,
+          },
+          undefined,
+        ]
+      }
+    >
+      All works
+    </Text>
+    <View
+      ml={1}
+      style={
+        Array [
+          Object {
+            "marginLeft": 4,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Image
+        source={
+          Object {
+            "testUri": "../../../images/horizontal_chevron.png",
+          }
+        }
+        style={
+          Object {
+            "tintColor": "#C2C2C2",
+            "top": 3,
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
 `;

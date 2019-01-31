@@ -2,14 +2,10 @@
 
 exports[`looks correct when rendered 1`] = `
 <View
-  mb={0.5}
-  mt={2}
   style={
     Array [
       Object {
         "display": "flex",
-        "marginBottom": 5,
-        "marginTop": 20,
       },
       Array [
         Object {

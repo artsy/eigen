@@ -39,7 +39,7 @@ describe("Fair", () => {
     const mockedPush = jest.fn()
     tree.find(Fair).instance().navigator = { push: mockedPush }
 
-    const button = tree.find("FairHeader").find("[text='View more information']")
+    const button = tree.find("Fair").find("[text='View more information']")
     button.props().onPress()
 
     expect(mockedPush).toHaveBeenCalledWith(
