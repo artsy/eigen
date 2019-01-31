@@ -11,7 +11,7 @@ jest.unmock("react-relay")
 const render = () =>
   renderUntil(
     wrapper => {
-      return wrapper.text().includes("Galleries")
+      return wrapper.text().includes("Follow gallery")
     },
     <MockRelayRenderer
       Component={({ show }) => (
