@@ -16,6 +16,8 @@
 
 ### Master
 
+- Adds inter-component communication for map and bottom sheet view - ash
+
 ### 1.8.1
 
 - Ports over @ds300's Relay mock utils from reaction - luc
