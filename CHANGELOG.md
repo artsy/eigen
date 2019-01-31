@@ -23,6 +23,7 @@
 - Restyles CaretButton to reflect design - kieran
 - Clicking on Fair booth title now takes you to booth view (Reviewed this with Jun) - kieran
 - Adds inter-component communication for map and bottom sheet view - ash
+- Fix createMockNetworkLayer and update tests - luc
 
 ### 1.8.1
 
