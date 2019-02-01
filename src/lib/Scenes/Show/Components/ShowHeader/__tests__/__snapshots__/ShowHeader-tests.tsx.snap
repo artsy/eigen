@@ -159,10 +159,12 @@ Array [
     </RCTScrollView>
   </View>,
   <View
+    mb={4}
     px={2}
     style={
       Array [
         Object {
+          "marginBottom": 32,
           "paddingLeft": 8,
           "paddingRight": 8,
         },

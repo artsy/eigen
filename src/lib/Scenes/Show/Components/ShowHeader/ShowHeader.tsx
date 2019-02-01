@@ -47,7 +47,7 @@ export class ShowHeader extends React.Component<Props> {
             sources={(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({ imageURL, aspectRatio }))}
           />
         )}
-        <Box px={2}>
+        <Box px={2} mb={4}>
           <ArtistNamesList artists={artists} Component={this} viewAllArtists={onViewAllArtistsPressed} />
           <Spacer mt={1} />
           <InvertedButton
