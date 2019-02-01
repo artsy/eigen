@@ -25,11 +25,11 @@
 - Clicking on Fair booth title now takes you to booth view (Reviewed this with Jun) - kieran
 - Adds inter-component communication for map and bottom sheet view - ash
 - Fix createMockNetworkLayer and update tests - luc
-- Fix createMockNetworkLayer and update tests - luc
 - Adds inter-component communication for map and bottom sheet view - ash
 - Fixes bug in filter bar when centering selected items - ash
 - Centers Fair titles in fairbooth preview - kieran
 - Adds some small styling adjustments to the hoursCollapsible - kieran
+- Fix overfetching data on Fair Detail - luc
 
 ### 1.8.1
 
