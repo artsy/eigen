@@ -1,10 +1,22 @@
-export const FairFixture = {
+export const
+FairFixture = {
   id: "sofa-chicago-2018",
   name: "SOFA CHICAGO 2018",
   image: {
     image_url: "https://d32dm0rphc51dk.cloudfront.net/o0Zrtm-CgwbV1syD_33DuA/:version.jpg",
     aspect_ratio: 1,
     url: "https://d32dm0rphc51dk.cloudfront.net/o0Zrtm-CgwbV1syD_33DuA/square.jpg",
+  },
+  profile: {
+    id: "art-basel-in-miami-beach-2018",
+    name: "art-basel",
+    icon: {
+      id: "58ff95298b3b8104783c119c",
+      href: null,
+      height: 279,
+      width: 279,
+      url: "https://d32dm0rphc51dk.cloudfront.net/B1x-CqoWO1KitQnRj7PrrA/untouched-png.png",
+    },
   },
   organizer: {
     profile: {
@@ -22,17 +34,29 @@ export const FairFixture = {
   start_at: "2018-11-01T17:00:00+00:00",
   end_at: "2018-11-04T18:00:00+00:00",
   location: {
+    __id: "TG9jYXRpb246NWJiNjJmMzYyYjVlN2QwMDI5ODliZDhh",
+    id: "5bb62f362b5e7d002989bd8a",
     address: "",
-    address_2: "",
     coordinates: {
-      lat: 41.891551,
-      lng: -87.6073751,
+      lat: 25.7949009,
+      lng: -80.134698,
     },
-    display: "41.891972, -87.605161",
-    city: "Chicago",
-    state: "Illinois",
-    country: "United States",
-    postal_code: "60611",
+    cached: null,
+    day_schedules: null,
+    day_schedule_text: null,
+    displayDaySchedules: [
+      {
+        days: "Monday–Sunday",
+        hours: "Closed",
+      },
+    ],
+    display: "25.794890, -80.134550",
+  },
+  counts: {
+    artists: 809,
+    artworks: 2028,
+    partners: 127,
+    partner_shows: 127,
   },
   exhibitors_grouped_by_name: [
     {
@@ -374,6 +398,7 @@ export const FairFixture = {
     edges: [
       {
         node: {
+          href: "/tamas",
           id: "tamas-abel",
           __id: "QXJ0aXN0OnRhbWFzLWFiZWw=",
           name: "Tamás Ábel",
@@ -388,6 +413,7 @@ export const FairFixture = {
       },
       {
         node: {
+          href: "/charlie",
           id: "charlie-aldrich",
           __id: "QXJ0aXN0OmNoYXJsaWUtYWxkcmljaA==",
           name: "Charlie Aldrich",
@@ -402,6 +428,7 @@ export const FairFixture = {
       },
       {
         node: {
+          href: "/rik",
           id: "rik-allen",
           __id: "QXJ0aXN0OnJpay1hbGxlbg==",
           name: "Rik Allen",
@@ -416,6 +443,7 @@ export const FairFixture = {
       },
       {
         node: {
+          href: "/jean",
           id: "jean-luc-almond",
           __id: "QXJ0aXN0OmplYW4tbHVjLWFsbW9uZA==",
           name: "Jean-Luc Almond",
@@ -430,6 +458,7 @@ export const FairFixture = {
       },
       {
         node: {
+          href: "/amador",
           id: "amador",
           __id: "QXJ0aXN0OmFtYWRvcg==",
           name: "Amador",
@@ -445,6 +474,34 @@ export const FairFixture = {
     ],
   },
   __id: "RmFpcjpzb2ZhLWNoaWNhZ28tMjAxOA==",
+  shows_connection: {
+    edges: [
+      {
+        node: {
+          partner: {
+            __typename: "Partner",
+            profile: {
+              id: "spruth-magers",
+              href: "/spruth-magers",
+              name: "Sprüth Magers",
+            },
+          },
+        },
+      },
+      {
+        node: {
+          partner: {
+            __typename: "Partner",
+            profile: {
+              id: "cardi-gallery",
+              href: "/cardi-gallery",
+              name: "CARDI GALLERY",
+            },
+          },
+        },
+      },
+    ],
+  },
   shows: {
     edges: [
       {
@@ -456,6 +513,7 @@ export const FairFixture = {
           partner: {
             __id: "UGFydG5lcjpzdGVpZGVsLWNvbnRlbXBvcmFyeQ==",
             name: "Steidel Contemporary",
+            href: "http://www.stei.com",
           },
           fair: {
             name: "SOFA CHICAGO 2018",
@@ -467,6 +525,9 @@ export const FairFixture = {
           location: {
             display: "Booth B32",
             __id: "TG9jYXRpb246NWI5ODIwNjU0OTUzZjEwMDA1ZjY5ZTBh",
+          },
+          profile: {
+            id: "art-basel-in-miami-beach-2018",
           },
           artworks_connection: {
             edges: [
