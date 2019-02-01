@@ -235,12 +235,14 @@ export const FairDetailContainer = createPaginationContainer(
           edges {
             cursor
             node {
+              # ...FairBoothHeader_show
+
               ...FairBoothPreview_show
-              ...ShowArtworks_show
-              ...FairBoothHeader_show
-              ...ShowArtistsPreview_show
-              ...ShowArtists_show
-              ...ShowArtworksPreview_show
+              # ...ShowArtworks_show
+              # ...FairBoothHeader_show
+              # ...ShowArtistsPreview_show
+              # ...ShowArtists_show
+              # ...ShowArtworksPreview_show
             }
           }
         }

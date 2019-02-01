@@ -1,14 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-import { FairBoothHeader_show$ref } from "./FairBoothHeader_show.graphql";
 import { FairBoothPreview_show$ref } from "./FairBoothPreview_show.graphql";
 import { FairHeader_fair$ref } from "./FairHeader_fair.graphql";
 import { LocationMap_location$ref } from "./LocationMap_location.graphql";
-import { ShowArtistsPreview_show$ref } from "./ShowArtistsPreview_show.graphql";
-import { ShowArtists_show$ref } from "./ShowArtists_show.graphql";
-import { ShowArtworksPreview_show$ref } from "./ShowArtworksPreview_show.graphql";
-import { ShowArtworks_show$ref } from "./ShowArtworks_show.graphql";
 declare const _FairDetail_fair$ref: unique symbol;
 export type FairDetail_fair$ref = typeof _FairDetail_fair$ref;
 export type FairDetail_fair = {
@@ -30,7 +25,7 @@ export type FairDetail_fair = {
         readonly edges: ReadonlyArray<({
             readonly cursor: string;
             readonly node: ({
-                readonly " $fragmentRefs": FairBoothPreview_show$ref & ShowArtworks_show$ref & FairBoothHeader_show$ref & ShowArtistsPreview_show$ref & ShowArtists_show$ref & ShowArtworksPreview_show$ref;
+                readonly " $fragmentRefs": FairBoothPreview_show$ref;
             }) | null;
         }) | null> | null;
     }) | null;
@@ -207,31 +202,6 @@ return {
                   "name": "FairBoothPreview_show",
                   "args": null
                 },
-                {
-                  "kind": "FragmentSpread",
-                  "name": "ShowArtworks_show",
-                  "args": null
-                },
-                {
-                  "kind": "FragmentSpread",
-                  "name": "FairBoothHeader_show",
-                  "args": null
-                },
-                {
-                  "kind": "FragmentSpread",
-                  "name": "ShowArtistsPreview_show",
-                  "args": null
-                },
-                {
-                  "kind": "FragmentSpread",
-                  "name": "ShowArtists_show",
-                  "args": null
-                },
-                {
-                  "kind": "FragmentSpread",
-                  "name": "ShowArtworksPreview_show",
-                  "args": null
-                },
                 v1,
                 {
                   "kind": "ScalarField",
@@ -250,5 +220,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '948eae6ce65e9204949f88b6d6f3c852';
+(node as any).hash = '43f66998d55354e1906b911ac7d98199';
 export default node;
