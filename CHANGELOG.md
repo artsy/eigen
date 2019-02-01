@@ -26,6 +26,7 @@
 - Adds inter-component communication for map and bottom sheet view - ash
 - Adds SearchIcon from svg - Kieran
 - Styles SearchLink - Kieran
+- Fixes bug in filter bar when centering selected items - ash
 
 ### 1.8.1
 
