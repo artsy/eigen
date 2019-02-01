@@ -47,7 +47,7 @@ export class LocationMap extends React.Component<Props> {
   render() {
     const { location, partnerName } = this.props
     const { lat, lng } = location.coordinates
-    const { address_2, address } = location
+    const { address_2, address, id } = location
 
     return (
       <MapWrapper>
@@ -60,7 +60,7 @@ export class LocationMap extends React.Component<Props> {
           scrollEnabled={false}
           attributionEnabled={false}
         >
-          <Mapbox.PointAnnotation coordinate={[lng, lat]}>
+          <Mapbox.PointAnnotation id={id} coordinate={[lng, lat]}>
             <Pin />
           </Mapbox.PointAnnotation>
         </Map>

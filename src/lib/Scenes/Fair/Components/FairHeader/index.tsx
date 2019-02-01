@@ -52,8 +52,8 @@ const CountdownContainer = styled.View`
 
 export class FairHeader extends React.Component<Props> {
   getContextualDetails() {
-    const { artists_names, counts, exhibitors_grouped_by_name } = this.props.fair
-    let { artists: artistsCount, partners: exhibitorsCount } = counts
+    const { artists_names, counts, partner_names } = this.props.fair
+    let { artists: artistsCount, partners: partnersCount } = counts
     const {
       edges: [
         {
@@ -64,22 +64,29 @@ export class FairHeader extends React.Component<Props> {
         },
       ],
     } = artists_names
+    const {
+      edges: [
+        {
+          node: {
+            partner: {
+              profile: { name: firstExhibitorName, href: firstPartnerSlug },
+            },
+          },
+        },
+        {
+          node: {
+            partner: {
+              profile: { name: lastExhibitorName, href: lastPartnerSlug },
+            },
+          },
+        },
+      ],
+    } = partner_names
 
-    const [
-      {
-        exhibitors: [firstExhibitorName],
-        profile_ids: [firstExhibitorProfileSlug],
-      },
-      {
-        exhibitors: [lastExhibitorName],
-        profile_ids: [lastExhibitorProfileSlug],
-      },
-    ] = exhibitors_grouped_by_name
-
-    artistsCount = !firstArtistName ? artistsCount : artistsCount - 1
-    artistsCount = !lastArtistName ? artistsCount : artistsCount - 1
-    exhibitorsCount = !firstExhibitorName ? exhibitorsCount : exhibitorsCount - 1
-    exhibitorsCount = !lastExhibitorName ? exhibitorsCount : exhibitorsCount - 1
+    // @ts-ignore
+    artistsCount = artistsCount - Boolean(firstArtistName) - Boolean(lastArtistName)
+    // @ts-ignore
+    partnersCount = partnersCount - Boolean(firstExhibitorName) - Boolean(lastExhibitorName)
 
     return (
       <>
@@ -107,27 +114,27 @@ export class FairHeader extends React.Component<Props> {
                 and{" "}
               </Sans>
             )}
-            <TouchableOpacity onPress={() => this.props.viewAllExhibitors()}>
+            <TouchableOpacity onPress={() => this.props.viewAllArtists()}>
               <Sans weight="medium" size="3" lineHeight="19">
                 {artistsCount + " others"}
               </Sans>
             </TouchableOpacity>
           </Flex>
         )}
-        {(!firstExhibitorName && !lastExhibitorName) || !exhibitorsCount ? null : (
+        {(!firstExhibitorName && !lastExhibitorName) || !partnersCount ? null : (
           <Flex flexDirection="row" flexWrap="wrap">
             <Sans size="3" lineHeight="19">
               From{" "}
             </Sans>
             {firstExhibitorName && (
-              <TouchableOpacity onPress={() => this.handlePress(this, firstExhibitorProfileSlug)}>
+              <TouchableOpacity onPress={() => this.handlePress(this, firstPartnerSlug)}>
                 <Sans weight="medium" size="3" lineHeight="19">
                   {firstExhibitorName + ", "}
                 </Sans>
               </TouchableOpacity>
             )}
             {lastExhibitorName && (
-              <TouchableOpacity onPress={() => this.handlePress(this, lastExhibitorProfileSlug)}>
+              <TouchableOpacity onPress={() => this.handlePress(this, lastPartnerSlug)}>
                 <Sans weight="medium" size="3" lineHeight="19">
                   {lastExhibitorName + ", "}
                 </Sans>
@@ -138,9 +145,9 @@ export class FairHeader extends React.Component<Props> {
                 and{" "}
               </Sans>
             )}
-            <TouchableOpacity onPress={() => this.props.viewAllArtists()}>
+            <TouchableOpacity onPress={() => this.props.viewAllExhibitors()}>
               <Sans weight="medium" size="3" lineHeight="19">
-                {exhibitorsCount + " others"}
+                {partnersCount + " others"}
               </Sans>
             </TouchableOpacity>
           </Flex>
@@ -197,16 +204,25 @@ export const FairHeaderContainer = createFragmentContainer(
       id
       name
 
-      exhibitors_grouped_by_name {
-        exhibitors
-        profile_ids
-      }
-
       counts {
         artists
         partners
       }
 
+      partner_names: shows_connection(first: 2) {
+        edges {
+          node {
+            partner {
+              ... on Partner {
+                profile {
+                  name
+                  href
+                }
+              }
+            }
+          }
+        }
+      }
       artists_names: artists(first: 2) {
         edges {
           node {

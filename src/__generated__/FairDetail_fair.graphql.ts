@@ -2,10 +2,8 @@
 
 import { ConcreteFragment } from "relay-runtime";
 import { FairBoothPreview_show$ref } from "./FairBoothPreview_show.graphql";
-import { FairBooth_show$ref } from "./FairBooth_show.graphql";
 import { FairHeader_fair$ref } from "./FairHeader_fair.graphql";
 import { LocationMap_location$ref } from "./LocationMap_location.graphql";
-import { ShowArtworks_show$ref } from "./ShowArtworks_show.graphql";
 declare const _FairDetail_fair$ref: unique symbol;
 export type FairDetail_fair$ref = typeof _FairDetail_fair$ref;
 export type FairDetail_fair = {
@@ -27,7 +25,7 @@ export type FairDetail_fair = {
         readonly edges: ReadonlyArray<({
             readonly cursor: string;
             readonly node: ({
-                readonly " $fragmentRefs": FairBoothPreview_show$ref & FairBooth_show$ref & ShowArtworks_show$ref;
+                readonly " $fragmentRefs": FairBoothPreview_show$ref;
             }) | null;
         }) | null> | null;
     }) | null;
@@ -73,7 +71,7 @@ return {
       "kind": "LocalArgument",
       "name": "count",
       "type": "Int",
-      "defaultValue": 10
+      "defaultValue": 5
     },
     {
       "kind": "LocalArgument",
@@ -204,16 +202,6 @@ return {
                   "name": "FairBoothPreview_show",
                   "args": null
                 },
-                {
-                  "kind": "FragmentSpread",
-                  "name": "FairBooth_show",
-                  "args": null
-                },
-                {
-                  "kind": "FragmentSpread",
-                  "name": "ShowArtworks_show",
-                  "args": null
-                },
                 v1,
                 {
                   "kind": "ScalarField",
@@ -232,5 +220,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '5012468ac4d5c94c3e78b15d501a138b';
+(node as any).hash = '43f66998d55354e1906b911ac7d98199';
 export default node;
