@@ -14,6 +14,10 @@ export class SearchLink extends React.Component<Props> {
     SwitchBoard.presentNavigationViewController(this, `/${fairID}/search`)
   }
 
+  componentDidMount() {
+    console.log("mounted")
+  }
+
   render() {
     return (
       <TouchableWithoutFeedback onPress={this.handlePress}>

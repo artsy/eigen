@@ -16,6 +16,7 @@
 
 ### Master
 
+- Styles Fair view to match design - kieran
 - Removes All Artworks from artwork preview - kieran
 - Adds booth number to fair booth view ( https://artsyproduct.atlassian.net/browse/LD-134 ) - kieran
 - Adds item separator to FairBooth - kieran
@@ -26,6 +27,7 @@
 - Adds inter-component communication for map and bottom sheet view - ash
 - Adds SearchIcon from svg - Kieran
 - Styles SearchLink - Kieran
+- Fixes bug in filter bar when centering selected items - ash
 
 ### 1.8.1
 
