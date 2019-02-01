@@ -56,12 +56,9 @@ export class HoursCollapsible extends React.Component<Props, State> {
   renderHours() {
     const { hours } = this.props
     if (isString(hours)) {
-      console.log("hours1", hours)
       return <Markdown rules={markdownRules}>{hours}</Markdown>
     } else if (isArray(hours)) {
       return hours.map((daySchedule, idx, arr) => {
-        console.log("daySchedule.days", daySchedule.days)
-        console.log("daySchedule.hours", daySchedule.hours)
         return (
           <Box key={daySchedule.days}>
             <Sans size="3t" weight="medium">
