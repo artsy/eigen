@@ -25,6 +25,8 @@
 - Clicking on Fair booth title now takes you to booth view (Reviewed this with Jun) - kieran
 - Fix createMockNetworkLayer and update tests - luc
 - Adds inter-component communication for map and bottom sheet view - ash
+- Adds SearchIcon from svg - Kieran
+- Styles SearchLink - Kieran
 - Fixes bug in filter bar when centering selected items - ash
 - Centers Fair titles in fairbooth preview - kieran
 - Adds some small styling adjustments to the hoursCollapsible - kieran

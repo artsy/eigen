@@ -2,110 +2,220 @@
 
 exports[`SearchLink Renders properly 1`] = `
 <View
-  mt={1}
+  accessible={true}
+  background="#F8F8F8"
+  height={46}
+  mb={1}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  px={2}
+  py={1}
   style={
     Array [
       Object {
-        "marginTop": 4,
+        "backgroundColor": "#F8F8F8",
+        "height": 46,
+        "marginBottom": 4,
+        "paddingBottom": 4,
+        "paddingLeft": 8,
+        "paddingRight": 8,
+        "paddingTop": 4,
       },
       undefined,
     ]
   }
 >
   <View
-    accessible={true}
     alignItems="center"
     flexDirection="row"
-    height={48}
-    justifyContent="center"
-    mb={1}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    p={1}
+    flexWrap="nowrap"
     style={
       Array [
         Object {
           "alignItems": "center",
           "display": "flex",
           "flexDirection": "row",
-          "height": 48,
-          "justifyContent": "center",
-          "marginBottom": 4,
-          "paddingBottom": 4,
-          "paddingLeft": 4,
-          "paddingRight": 4,
-          "paddingTop": 4,
+          "flexWrap": "nowrap",
         },
-        Array [
-          Object {
-            "borderColor": "#E5E5E5",
-            "borderRadius": 2,
-            "borderStyle": "solid",
-            "borderWidth": 1,
-            "height": 48,
-            "marginBottom": 4,
-            "paddingBottom": 4,
-            "paddingLeft": 4,
-            "paddingRight": 4,
-            "paddingTop": 4,
-          },
-          undefined,
-        ],
+        undefined,
       ]
     }
   >
-    <Image
-      source={
-        Object {
-          "testUri": "../../../images/SearchButton.png",
+    <RNSVGSvgView
+      align="xMidYMid"
+      bbHeight={14}
+      bbWidth={14}
+      height={14}
+      meetOrSlice={0}
+      minX={0}
+      minY={0}
+      style={
+        Array [
+          Object {
+            "backgroundColor": "transparent",
+            "borderWidth": 0,
+          },
+          undefined,
+          false,
+          Object {
+            "flex": 0,
+            "height": 14,
+            "width": 14,
+          },
+        ]
+      }
+      vbHeight={54}
+      vbWidth={54}
+      width={14}
+    >
+      <RNSVGGroup
+        fill={
+          Array [
+            0,
+            0,
+            0,
+            0,
+            1,
+          ]
         }
-      }
-      style={
-        Array [
-          Object {
-            "height": 20,
-            "width": 20,
-          },
-          undefined,
-        ]
-      }
-    />
+        fillOpacity={1}
+        fillRule={1}
+        font={Object {}}
+        matrix={
+          Array [
+            1,
+            0,
+            -0,
+            1,
+            0,
+            0,
+          ]
+        }
+        opacity={1}
+        originX={0}
+        originY={0}
+        propList={
+          Array [
+            "fill",
+            "fillOpacity",
+            "fillRule",
+            "stroke",
+            "strokeWidth",
+            "strokeOpacity",
+            "strokeDasharray",
+            "strokeDashoffset",
+            "strokeLinecap",
+            "strokeLinejoin",
+            "strokeMiterlimit",
+          ]
+        }
+        rotation={0}
+        scaleX={1}
+        scaleY={1}
+        skewX={0}
+        skewY={0}
+        stroke={null}
+        strokeDasharray={null}
+        strokeDashoffset={null}
+        strokeLinecap={0}
+        strokeLinejoin={0}
+        strokeMiterlimit={4}
+        strokeOpacity={1}
+        strokeWidth={1}
+        x={0}
+        y={0}
+      >
+        <RNSVGPath
+          d="M49.7 46.9L38.2 35.3c2.5-3.1 4-7 4-11.3C42.1 14 34 5.9 24 5.9S5.9 14 5.9 24C5.9 34 14 42.1 24 42.1c4.3 0 8.2-1.5 11.3-4l11.6 11.6c.4.4 1 .4 1.4 0l1.4-1.4c.4-.4.4-1 0-1.4zM10 24c0-7.7 6.3-14 14-14s14 6.3 14 14-6.3 14-14 14-14-6.3-14-14z"
+          fill={
+            Array [
+              0,
+              0.4,
+              0.4,
+              0.4,
+              1,
+            ]
+          }
+          fillOpacity={1}
+          fillRule={1}
+          matrix={
+            Array [
+              1,
+              0,
+              -0,
+              1,
+              0,
+              0,
+            ]
+          }
+          opacity={1}
+          originX={0}
+          originY={0}
+          propList={
+            Array [
+              "fill",
+              "fillRule",
+            ]
+          }
+          rotation={0}
+          scaleX={1}
+          scaleY={1}
+          skewX={0}
+          skewY={0}
+          stroke={null}
+          strokeDasharray={null}
+          strokeDashoffset={null}
+          strokeLinecap={0}
+          strokeLinejoin={0}
+          strokeMiterlimit={4}
+          strokeOpacity={1}
+          strokeWidth={1}
+          x={0}
+          y={0}
+        />
+      </RNSVGGroup>
+    </RNSVGSvgView>
     <View
+      ml={1}
+      pt={0.3}
       style={
         Array [
           Object {
-            "width": 12,
-          },
-          undefined,
-        ]
-      }
-      width={12}
-    />
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      className="sc-bdVaJa bDWFJH"
-      ellipsizeMode="tail"
-      fontFamily="Unica77LL-Medium"
-      fontSize="12px"
-      lineHeight="16px"
-      style={
-        Array [
-          Object {
-            "fontFamily": "Unica77LL-Medium",
-            "fontSize": 12,
-            "lineHeight": 16,
+            "marginLeft": 4,
+            "paddingTop": 0.3,
           },
           undefined,
         ]
       }
     >
-      Find Exhibitors and Artists
-    </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
+        color="#666"
+        ellipsizeMode="tail"
+        fontFamily="AGaramondPro-Regular"
+        fontSize="16px"
+        lineHeight="24px"
+        style={
+          Array [
+            Object {
+              "color": "#666",
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "lineHeight": 24,
+            },
+            undefined,
+          ]
+        }
+      >
+        Search exhibitors & artists
+      </Text>
+    </View>
   </View>
 </View>
 `;
