@@ -1,13 +1,8 @@
-import { BorderBox, Box, Sans, Spacer } from "@artsy/palette"
+import { Box, color, Flex, Serif } from "@artsy/palette"
+import SearchIcon from "lib/Icons/SearchIcon"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
-import { Image, TouchableWithoutFeedback } from "react-native"
-import styled from "styled-components/native"
-
-const Icon = styled(Image)`
-  width: 20;
-  height: 20;
-`
+import { TouchableWithoutFeedback } from "react-native"
 
 interface Props {
   fairID: string
@@ -25,17 +20,18 @@ export class SearchLink extends React.Component<Props> {
 
   render() {
     return (
-      <Box mt={1}>
-        <TouchableWithoutFeedback onPress={this.handlePress}>
-          <BorderBox justifyContent="center" height={48} alignItems="center" flexDirection="row" p={1} mb={1}>
-            <Icon source={require("../../../../../images/SearchButton.png")} />
-            <Spacer width={12} />
-            <Sans size="2" weight="medium">
-              Find Exhibitors and Artists
-            </Sans>
-          </BorderBox>
-        </TouchableWithoutFeedback>
-      </Box>
+      <TouchableWithoutFeedback onPress={this.handlePress}>
+        <Box background={color("black5")} height={46} px={2} py={1} mb={1}>
+          <Flex alignItems="center" flexDirection="row" flexWrap="nowrap">
+            <SearchIcon />
+            <Box pt={0.3} ml={1}>
+              <Serif color={color("black60")} size="3">
+                Search exhibitors & artists
+              </Serif>
+            </Box>
+          </Flex>
+        </Box>
+      </TouchableWithoutFeedback>
     )
   }
 }
