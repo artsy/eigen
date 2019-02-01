@@ -1,4 +1,4 @@
-import { Box, Collapse as _Collapse, Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, Collapse as _Collapse, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import { defaultRules, Markdown } from "lib/Components/Markdown"
 import { isArray, isString } from "lodash"
 import React from "react"
@@ -33,7 +33,7 @@ const markdownRules = {
   paragraph: {
     ...defaultRules.paragraph,
     react: (node, output, state) => (
-      <Serif size="3t" color="black60" key={state.key}>
+      <Serif size="3t" color="black100" key={state.key}>
         {output(node.content, state)}
       </Serif>
     ),
@@ -56,9 +56,12 @@ export class HoursCollapsible extends React.Component<Props, State> {
   renderHours() {
     const { hours } = this.props
     if (isString(hours)) {
+      console.log("hours1", hours)
       return <Markdown rules={markdownRules}>{hours}</Markdown>
     } else if (isArray(hours)) {
       return hours.map((daySchedule, idx, arr) => {
+        console.log("daySchedule.days", daySchedule.days)
+        console.log("daySchedule.hours", daySchedule.hours)
         return (
           <Box key={daySchedule.days}>
             <Sans size="3t" weight="medium">
@@ -80,7 +83,7 @@ export class HoursCollapsible extends React.Component<Props, State> {
       <Box>
         <TouchableWithoutFeedback onPress={this.handleToggleIsExpanded}>
           <Flex alignItems="center" flexDirection="row">
-            <Sans size="3t" weight="medium">
+            <Sans size="3t" weight="medium" color={isExpanded ? color("black60") : color("black100")}>
               Opening hours
             </Sans>
             <Box ml={1}>
