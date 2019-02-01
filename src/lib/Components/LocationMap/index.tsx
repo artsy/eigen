@@ -1,16 +1,19 @@
 import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
+import { Pin } from "lib/Icons/Pin"
+import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
 import React from "react"
 import { NativeModules } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
+
 const Emission = NativeModules.Emission || {}
 
 Mapbox.setAccessToken(Emission.mapBoxAPIClientKey)
 
 const Map = styled(Mapbox.MapView)`
-  height: 90;
+  height: 120;
 `
 
 const MapWrapper = styled(Flex)`
@@ -34,7 +37,6 @@ export class LocationMap extends React.Component<Props> {
   get symbolLayerStyle() {
     return Mapbox.StyleSheet.create({
       symbol: {
-        iconImage: this.returnPinType(this.props.partnerType),
         iconSize: 1.4,
         iconOffset: [0, 0],
         iconAllowOverlap: true,
@@ -42,51 +44,25 @@ export class LocationMap extends React.Component<Props> {
     })
   }
 
-  returnPinType = partnerType => {
-    switch (partnerType) {
-      case "Fair":
-        return require("../../../../images/pinfairon.png")
-      case "Museum":
-        return require("../../../../images/pinmuseumon.png")
-      case "Gallery":
-      default:
-        return require("../../../../images/pingalleryon.png")
-    }
-  }
-
   render() {
     const { location, partnerName } = this.props
     const { lat, lng } = location.coordinates
     const { address_2, address } = location
 
-    const marker = {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [lng, lat],
-      },
-      id: "mapbox-marker",
-    }
     return (
       <MapWrapper>
         <Map
           key={lng}
-          styleURL={Mapbox.StyleURL.Light}
+          styleURL={ArtsyMapStyleURL}
           centerCoordinate={[lng, lat]}
           zoomLevel={14}
           logoEnabled={false}
           scrollEnabled={false}
           attributionEnabled={false}
         >
-          <Mapbox.ShapeSource
-            id="marker-source"
-            shape={{
-              type: "FeatureCollection",
-              features: [marker],
-            }}
-          >
-            <Mapbox.SymbolLayer id={lng.toString()} style={this.symbolLayerStyle.symbol} />
-          </Mapbox.ShapeSource>
+          <Mapbox.PointAnnotation coordinate={[lng, lat]}>
+            <Pin />
+          </Mapbox.PointAnnotation>
         </Map>
         <Box my={2}>
           {partnerName && (

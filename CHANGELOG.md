@@ -25,6 +25,7 @@
 - Clicking on Fair booth title now takes you to booth view (Reviewed this with Jun) - kieran
 - Fix createMockNetworkLayer and update tests - luc
 - Adds inter-component communication for map and bottom sheet view - ash
+- Fixes bug in filter bar when centering selected items - ash
 
 ### 1.8.1
 
@@ -34,6 +35,7 @@
 - Update MapRenderer to user Geolocation service - luc
 - Adds `Make Offer` badge to artwork brick - matt
 - Fair booth title now a link to gallery - kieran
+- Replace theme and icon on LocationMap - luc
 - Adds links to fair exhibitors - Kieran
 - Removes "All" from Artists, Exhibitors, and Works Headers - ashley
 - Adds navigation from Fair Booth Partners to Partners page and from Fair Artists view to Artists page - ashley
@@ -41,7 +43,6 @@
 - Expands Show installation shot carousel to screen width - ashley
 - Adds external link to partner galleries - ashley
 - Removes "View on Map" text from More Shows section in Show view - ashley
-
 
 ### 1.8.0
 

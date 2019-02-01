@@ -6,9 +6,9 @@ import { Animated, Dimensions, NativeModules } from "react-native"
 import { createRefetchContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
+import { Pin } from "lib/Icons/Pin"
 import { bucketCityResults, BucketResults } from "./Bucket"
 import { FiltersBar, Tab } from "./Components/FiltersBar"
-import { Pin } from "./Components/Pin"
 import { EventEmitter } from "./EventEmitter"
 
 const Emission = NativeModules.Emission || {}
@@ -31,6 +31,8 @@ interface State {
   currentLocation?: any
   bucketResults: BucketResults
 }
+
+export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
 
 export class GlobalMap extends React.Component<Props, State> {
   map: Mapbox.MapView
@@ -166,7 +168,7 @@ export class GlobalMap extends React.Component<Props, State> {
             }
           }}
           showUserLocation={true}
-          styleURL="mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
+          styleURL={ArtsyMapStyleURL}
           userTrackingMode={Mapbox.UserTrackingModes.Follow}
           centerCoordinate={[centerLng, centerLat]}
           zoomLevel={13}
