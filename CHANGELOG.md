@@ -16,6 +16,7 @@
 
 ### Master
 
+- Styles Fair view to match design - kieran
 - Removes All Artworks from artwork preview - kieran
 - Adds booth number to fair booth view ( https://artsyproduct.atlassian.net/browse/LD-134 ) - kieran
 - Adds item separator to FairBooth - kieran
@@ -24,6 +25,8 @@
 - Clicking on Fair booth title now takes you to booth view (Reviewed this with Jun) - kieran
 - Adds inter-component communication for map and bottom sheet view - ash
 - Fix createMockNetworkLayer and update tests - luc
+- Fix createMockNetworkLayer and update tests - luc
+- Adds inter-component communication for map and bottom sheet view - ash
 - Fixes bug in filter bar when centering selected items - ash
 
 ### 1.8.1
@@ -34,6 +37,7 @@
 - Update MapRenderer to user Geolocation service - luc
 - Adds `Make Offer` badge to artwork brick - matt
 - Fair booth title now a link to gallery - kieran
+- Replace theme and icon on LocationMap - luc
 - Adds links to fair exhibitors - Kieran
 - Removes "All" from Artists, Exhibitors, and Works Headers - ashley
 - Adds navigation from Fair Booth Partners to Partners page and from Fair Artists view to Artists page - ashley

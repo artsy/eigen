@@ -50,7 +50,7 @@ export class LocationMap extends React.Component<Props> {
     const { address_2, address } = location
 
     return (
-      <MapWrapper mt={2} mb={0.5}>
+      <MapWrapper>
         <Map
           key={lng}
           styleURL={ArtsyMapStyleURL}
