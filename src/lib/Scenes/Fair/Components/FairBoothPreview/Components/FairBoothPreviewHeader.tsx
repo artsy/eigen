@@ -31,9 +31,11 @@ export const FairBoothPreviewHeader: React.SFC<Props> = ({
           <Box mr={1}>{url && <RoundedImage imageURL={url} aspectRatio={1} />}</Box>
           <Box>
             <TightendSerif size="2">{name}</TightendSerif>
-            <TightendSans size="2" color="black60">
-              {location}
-            </TightendSans>
+            {location && (
+              <TightendSans size="2" color="black60">
+                {location}
+              </TightendSans>
+            )}
           </Box>
         </ImageAndTextWrapper>
       </TouchableOpacity>
