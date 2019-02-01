@@ -1,5 +1,4 @@
-export const
-FairFixture = {
+export const FairFixture = {
   id: "sofa-chicago-2018",
   name: "SOFA CHICAGO 2018",
   image: {
