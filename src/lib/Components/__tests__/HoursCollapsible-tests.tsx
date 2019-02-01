@@ -15,7 +15,7 @@ describe("HoursCollapsible", () => {
       </Theme>
     )
 
-    expect(comp.text()).toContain("Hours")
+    expect(comp.text()).toContain("Opening hours")
   })
 
   it("expands when pressed", () => {
