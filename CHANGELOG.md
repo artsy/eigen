@@ -24,6 +24,7 @@
 - Clicking on Fair booth title now takes you to booth view (Reviewed this with Jun) - kieran
 - Adds inter-component communication for map and bottom sheet view - ash
 - Fix createMockNetworkLayer and update tests - luc
+- Fixes bug in filter bar when centering selected items - ash
 
 ### 1.8.1
 
@@ -41,7 +42,6 @@
 - Adds external link to partner galleries - ashley
 - Replace theme and icon on LocationMap - luc
 - Removes "View on Map" text from More Shows section in Show view - ashley
-
 
 ### 1.8.0
 
