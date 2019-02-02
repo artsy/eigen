@@ -17,6 +17,10 @@ jobs:
       BUNDLE_PATH: vendor/bundle
 
     steps:
+      - run:
+          name: List Simulators
+          command: xcrun simctl list
+
       - checkout
 
       - restore_cache:
