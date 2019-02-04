@@ -56,10 +56,10 @@ export const defaultRules = {
   },
 
   strong: {
-    react: (_node, _output, state) => {
+    react: (node, output, state) => {
       return (
         <Sans size="3t" weight="medium" key={state.key}>
-          {_node.content}
+          {output(node.content, state)}
         </Sans>
       )
     },
@@ -67,7 +67,7 @@ export const defaultRules = {
 
   br: {
     react: (_node, _output, state) => {
-      return <Text key={state.key}>{"\n"}</Text>
+      return <Text key={state.key}>{"\n\n"}</Text>
     },
   },
 }
