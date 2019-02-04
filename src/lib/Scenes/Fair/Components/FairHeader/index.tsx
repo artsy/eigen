@@ -5,9 +5,10 @@ import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 import moment from "moment"
 import React from "react"
-import { Dimensions, Image, TouchableOpacity } from "react-native"
+import { Dimensions, Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
+import { EntityList } from "./Components/EntityList"
 import { CountdownTimer } from "./CountdownTimer"
 
 interface Props {
@@ -53,105 +54,14 @@ const CountdownContainer = styled.View`
 export class FairHeader extends React.Component<Props> {
   getContextualDetails() {
     const { artists_names, counts, partner_names } = this.props.fair
-    let { artists: artistsCount, partners: partnersCount } = counts
-    const {
-      edges: [
-        {
-          node: { name: firstArtistName, href: firstArtistSlug },
-        },
-        {
-          node: { name: lastArtistName, href: lastArtistSlug },
-        },
-      ],
-    } = artists_names
-    const {
-      edges: [
-        {
-          node: {
-            partner: {
-              profile: { name: firstExhibitorName, href: firstPartnerSlug },
-            },
-          },
-        },
-        {
-          node: {
-            partner: {
-              profile: { name: lastExhibitorName, href: lastPartnerSlug },
-            },
-          },
-        },
-      ],
-    } = partner_names
 
-    // @ts-ignore
-    artistsCount = artistsCount - Boolean(firstArtistName) - Boolean(lastArtistName)
-    // @ts-ignore
-    partnersCount = partnersCount - Boolean(firstExhibitorName) - Boolean(lastExhibitorName)
+    const artistList = artists_names.edges.map(i => i.node).filter(Boolean)
+    const partnerList = partner_names.edges.map(i => i.node.partner.profile).filter(Boolean)
 
     return (
       <>
-        {(!firstArtistName && !lastArtistName) || !artistsCount ? null : (
-          <Flex flexDirection="row" flexWrap="wrap" mb={"8"}>
-            <Sans size="3" lineHeight="19">
-              Works by{" "}
-            </Sans>
-            {firstArtistName && (
-              <TouchableOpacity onPress={() => this.handlePress(this, firstArtistSlug)}>
-                <Sans weight="medium" size="3" lineHeight="19">
-                  {firstArtistName + ", "}
-                </Sans>
-              </TouchableOpacity>
-            )}
-            {lastArtistName && (
-              <TouchableOpacity onPress={() => this.handlePress(this, lastArtistSlug)}>
-                <Sans weight="medium" size="3" lineHeight="19">
-                  {lastArtistName + ", "}
-                </Sans>
-              </TouchableOpacity>
-            )}
-            {(firstArtistName || lastArtistName) && (
-              <Sans size="3" lineHeight="19">
-                and{" "}
-              </Sans>
-            )}
-            <TouchableOpacity onPress={() => this.props.viewAllArtists()}>
-              <Sans weight="medium" size="3" lineHeight="19">
-                {artistsCount + " others"}
-              </Sans>
-            </TouchableOpacity>
-          </Flex>
-        )}
-        {(!firstExhibitorName && !lastExhibitorName) || !partnersCount ? null : (
-          <Flex flexDirection="row" flexWrap="wrap">
-            <Sans size="3" lineHeight="19">
-              From{" "}
-            </Sans>
-            {firstExhibitorName && (
-              <TouchableOpacity onPress={() => this.handlePress(this, firstPartnerSlug)}>
-                <Sans weight="medium" size="3" lineHeight="19">
-                  {firstExhibitorName + ", "}
-                </Sans>
-              </TouchableOpacity>
-            )}
-            {lastExhibitorName && (
-              <TouchableOpacity onPress={() => this.handlePress(this, lastPartnerSlug)}>
-                <Sans weight="medium" size="3" lineHeight="19">
-                  {lastExhibitorName + ", "}
-                </Sans>
-              </TouchableOpacity>
-            )}
-            {(firstExhibitorName || lastExhibitorName) && (
-              <Sans size="3" lineHeight="19">
-                and{" "}
-              </Sans>
-            )}
-            <TouchableOpacity onPress={() => this.props.viewAllExhibitors()}>
-              <Sans weight="medium" size="3" lineHeight="19">
-                {partnersCount + " others"}
-              </Sans>
-            </TouchableOpacity>
-          </Flex>
-        )}
+        <EntityList prefix="Works by" list={artistList} count={counts.artists} displayedItems={2} />
+        <EntityList prefix="From" list={partnerList} count={counts.partners} displayedItems={2} />
       </>
     )
   }
