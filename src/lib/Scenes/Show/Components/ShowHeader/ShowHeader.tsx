@@ -7,7 +7,8 @@ import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import { ArtistNamesList } from "./Components/ArtistNamesList"
+import { EntityList } from "lib/Components/EntityList"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Carousel } from "./Components/Carousel"
 
 interface Props {
@@ -48,7 +49,15 @@ export class ShowHeader extends React.Component<Props> {
           />
         )}
         <Box px={2} mb={4}>
-          <ArtistNamesList artists={artists} Component={this} viewAllArtists={onViewAllArtistsPressed} />
+          <EntityList
+            prefix="Works by"
+            list={artists}
+            count={artists.length}
+            displayedItems={2}
+            onItemSelected={(_, url) => {
+              SwitchBoard.presentNavigationViewController(this, url)
+            }}
+          />
           <Spacer mt={1} />
           <InvertedButton
             text="Save show"
