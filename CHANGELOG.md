@@ -33,6 +33,8 @@
 - Adds some small styling adjustments to the hoursCollapsible - kieran
 - Fix overfetching data on Fair Detail - luc
 - Update Show detail view spacing & copy - luc
+- Refactors Fair Header view - luc
+- Fix bug with Markdown renderer - luc
 
 ### 1.8.1
 
