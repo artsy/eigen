@@ -33,7 +33,13 @@ export const EntityList: React.SFC<EntityListProps> = ({
         {prefix + " "}
       </Sans>
       {filteredList.map((item, i) => (
-        <EntityItem item={item} isFirst={i === 0} isLast={i === filteredList.length - 1} onPress={onItemSelected} />
+        <EntityItem
+          key={item.href}
+          item={item}
+          isFirst={i === 0}
+          isLast={i === filteredList.length - 1}
+          onPress={onItemSelected}
+        />
       ))}
       {shouldShowMore && (
         <>
