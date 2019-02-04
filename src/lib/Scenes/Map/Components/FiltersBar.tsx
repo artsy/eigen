@@ -1,13 +1,9 @@
 import { Box, color, Sans, Serif } from "@artsy/palette"
-import { City } from "lib/Scenes/City/City"
+import { City, Tab } from "../types"
 import React from "react"
 import { Animated, Dimensions, LayoutRectangle, ScrollView, View } from "react-native"
 import styled from "styled-components/native"
 
-export interface Tab {
-  id: string
-  text: string
-}
 export interface FiltersBarProps {
   currentCity: City
   goToPage?: (number) => void

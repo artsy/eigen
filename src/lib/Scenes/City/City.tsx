@@ -2,26 +2,20 @@ import { Box, color, Flex, Serif } from "@artsy/palette"
 import React, { Component } from "react"
 import styled from "styled-components/native"
 import { EventEmitter } from "../Map/EventEmitter"
-
-export interface City {
-  name: string
-  epicenter: {
-    lat: number
-    lng: number
-  }
-}
+import { Tab } from "../Map/types"
+import { AllEvents } from "./Components/AllEvents"
 
 interface State {
   shows: any[]
   fairs: any[]
-  title: string
+  filter: Tab
 }
 
 export class CityView extends Component<null, State> {
   state = {
     shows: [],
     fairs: [],
-    title: "",
+    filter: { id: "all", text: "All events" },
   }
 
   componentWillMount() {
