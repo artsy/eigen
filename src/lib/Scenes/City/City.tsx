@@ -7,16 +7,23 @@ import { EventEmitter } from "../Map/EventEmitter"
 import { Tab } from "../Map/types"
 import { AllEvents } from "./Components/AllEvents"
 
+interface Props {
+  verticalMargin?: number
+  isDrawerOpen?: boolean
+}
+
 interface State {
   city?: GlobalMap_viewer
   filter: Tab
 }
 
-export class CityView extends Component<{}, State> {
+export class CityView extends Component<Props, State> {
   state = {
     city: null,
     filter: { id: "all", text: "All events" },
   }
+  scrollViewVerticalStart = 0
+  scrollView: ScrollView = null
 
   componentWillMount() {
     EventEmitter.subscribe("map:change", ({ filter, city }) => {
@@ -29,15 +36,33 @@ export class CityView extends Component<{}, State> {
     })
   }
 
+  componentDidUpdate() {
+    if (!this.props.isDrawerOpen && this.scrollView) {
+      this.scrollView.scrollTo({ x: 0, y: 0, animated: true })
+    }
+  }
+
   render() {
     const { city, filter } = this.state
+    const { isDrawerOpen, verticalMargin } = this.props
+    const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
     return (
       city && (
         <Box>
           <Flex py={3} alignItems="center">
             <Handle />
           </Flex>
-          <ScrollView contentInset={{ bottom: 0 }}>
+          <ScrollView
+            contentInset={{ bottom: bottomInset }}
+            onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
+            scrollEnabled={isDrawerOpen}
+            ref={r => {
+              console.log({ r: !!r })
+              if (r) {
+                this.scrollView = (r as any) as ScrollView
+              }
+            }}
+          >
             <Box px={3}>
               <Serif size="8" mb="3">
                 {filter.id === "all" ? "All events" : filter.text}
