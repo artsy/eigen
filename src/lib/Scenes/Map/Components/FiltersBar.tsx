@@ -1,8 +1,8 @@
 import { Box, color, Sans, Serif } from "@artsy/palette"
-import { City, Tab } from "../types"
 import React from "react"
 import { Animated, Dimensions, LayoutRectangle, ScrollView, View } from "react-native"
 import styled from "styled-components/native"
+import { City, Tab } from "../types"
 
 export interface FiltersBarProps {
   currentCity: City
