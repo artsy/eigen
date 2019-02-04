@@ -1,6 +1,7 @@
 import { Box, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
 import { InvertedButton } from "lib/Components/Buttons"
+import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 import moment from "moment"
@@ -8,7 +9,6 @@ import React from "react"
 import { Dimensions, Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
-import { EntityList } from "./Components/EntityList"
 import { CountdownTimer } from "./CountdownTimer"
 
 interface Props {
@@ -53,6 +53,7 @@ const CountdownContainer = styled.View`
 
 export class FairHeader extends React.Component<Props> {
   getContextualDetails() {
+    const { viewAllArtists, viewAllExhibitors } = this.props
     const { artists_names, counts, partner_names } = this.props.fair
 
     const artistList = artists_names.edges.map(i => i.node).filter(Boolean)
@@ -60,14 +61,28 @@ export class FairHeader extends React.Component<Props> {
 
     return (
       <>
-        <EntityList prefix="Works by" list={artistList} count={counts.artists} displayedItems={2} />
-        <EntityList prefix="From" list={partnerList} count={counts.partners} displayedItems={2} />
+        <EntityList
+          prefix="Works by"
+          list={artistList}
+          count={counts.artists}
+          displayedItems={2}
+          onItemSelected={this.handlePress}
+          onViewAllPressed={viewAllArtists}
+        />
+        <EntityList
+          prefix="From"
+          list={partnerList}
+          count={counts.partners}
+          displayedItems={2}
+          onItemSelected={this.handlePress}
+          onViewAllPressed={viewAllExhibitors}
+        />
       </>
     )
   }
 
-  handlePress(component, url) {
-    Switchboard.presentNavigationViewController(component, url)
+  handlePress = url => {
+    Switchboard.presentNavigationViewController(this, url)
   }
 
   render() {
