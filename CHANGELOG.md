@@ -29,6 +29,7 @@
 - Adds SearchIcon from svg - Kieran
 - Styles SearchLink - Kieran
 - Fixes bug in filter bar when centering selected items - ash
+- Replaces PNG Chevron for SVG icon - kieran
 - Centers Fair titles in fairbooth preview - kieran
 - Adds some small styling adjustments to the hoursCollapsible - kieran
 - Fix overfetching data on Fair Detail - luc
