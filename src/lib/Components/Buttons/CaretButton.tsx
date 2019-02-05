@@ -1,6 +1,7 @@
-import { Box, color, Flex, Sans } from "@artsy/palette"
+import { Box, Flex, Sans } from "@artsy/palette"
+import ChevronHorizontal from "lib/Icons/ChevronHorizontal"
 import React from "react"
-import { GestureResponderEvent, Image, TouchableWithoutFeedback } from "react-native"
+import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
 
 interface Props {
   onPress?: (ev: GestureResponderEvent) => void
@@ -15,10 +16,7 @@ export const CaretButton: React.SFC<Props> = ({ text, onPress }) => {
           {text}
         </Sans>
         <Box ml={1}>
-          <Image
-            style={{ tintColor: color("black30"), top: 3 }}
-            source={require("../../../../images/horizontal_chevron.png")}
-          />
+          <ChevronHorizontal />
         </Box>
       </Flex>
     </TouchableWithoutFeedback>
