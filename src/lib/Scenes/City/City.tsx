@@ -45,6 +45,7 @@ export class CityView extends Component<Props, State> {
   render() {
     const { city, filter } = this.state
     const { isDrawerOpen, verticalMargin } = this.props
+    // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
     return (
       city && (
@@ -57,9 +58,8 @@ export class CityView extends Component<Props, State> {
             onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
             scrollEnabled={isDrawerOpen}
             ref={r => {
-              console.log({ r: !!r })
               if (r) {
-                this.scrollView = (r as any) as ScrollView
+                this.scrollView = r as any
               }
             }}
           >
