@@ -54,9 +54,10 @@ export class ShowHeader extends React.Component<Props> {
             list={artists}
             count={artists.length}
             displayedItems={2}
-            onItemSelected={(_, url) => {
+            onItemSelected={url => {
               SwitchBoard.presentNavigationViewController(this, url)
             }}
+            onViewAllPressed={onViewAllArtistsPressed}
           />
           <Spacer mt={1} />
           <InvertedButton
