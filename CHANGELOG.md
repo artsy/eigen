@@ -26,6 +26,7 @@
 - Fix createMockNetworkLayer and update tests - luc
 - Adds inter-component communication for map and bottom sheet view - ash
 - Fixes bug in filter bar when centering selected items - ash
+- Replaces PNG Chevron for SVG icon - kieran
 
 ### 1.8.1
 
