@@ -23,10 +23,17 @@
 - Adds counts to Artworks and Artist previews for FairBooth - kieran
 - Restyles CaretButton to reflect design - kieran
 - Clicking on Fair booth title now takes you to booth view (Reviewed this with Jun) - kieran
+- Adds inter-component communication for map and bottom sheet view - ash
 - Fix createMockNetworkLayer and update tests - luc
 - Adds inter-component communication for map and bottom sheet view - ash
+- Adds SearchIcon from svg - Kieran
+- Styles SearchLink - Kieran
 - Fixes bug in filter bar when centering selected items - ash
 - Replaces PNG Chevron for SVG icon - kieran
+- Centers Fair titles in fairbooth preview - kieran
+- Adds some small styling adjustments to the hoursCollapsible - kieran
+- Fix overfetching data on Fair Detail - luc
+- Update Show detail view spacing & copy - luc
 
 ### 1.8.1
 
@@ -43,7 +50,9 @@
 - Show UI cleanup: removes map icon, enables Artist navigation - ashley
 - Expands Show installation shot carousel to screen width - ashley
 - Adds external link to partner galleries - ashley
+- Replace theme and icon on LocationMap - luc
 - Removes "View on Map" text from More Shows section in Show view - ashley
+- Adds more data marshalling for city view, sets up city scaffold - ash
 
 ### 1.8.0
 
@@ -116,6 +125,7 @@
 - Reordering Fair sections to match design specs -ashley
 - Add contextual data to Fair view - ashley
 - Enable navigation on contextual data in Show view - ashley
+- Fair performance enhancements - ashley
 
 ### 1.7.1
 

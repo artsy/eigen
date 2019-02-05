@@ -22,8 +22,8 @@ describe("FairHeader", () => {
           }
         }
       `,
-      mockResolvers: {
-        Fair: () => FairFixture,
+      mockData: {
+        fair: FairFixture,
       },
     })
 

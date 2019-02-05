@@ -1,4 +1,4 @@
-import { Box, Separator } from "@artsy/palette"
+import { Box, Separator, Spacer } from "@artsy/palette"
 import { Detail_show } from "__generated__/Detail_show.graphql"
 import React from "react"
 import { FlatList } from "react-native"
@@ -107,13 +107,18 @@ export class Detail extends React.Component<Props, State> {
       case "location":
         return <LocationMap {...data} />
       case "artworks":
-        return <ShowArtworksPreview title="All works" {...data} />
+        return <ShowArtworksPreview title="Works" {...data} />
       case "artists":
         return <ShowArtistsPreview {...data} />
       case "shows":
         return <Shows show={data} />
       case "hours":
-        return <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} />
+        return (
+          <>
+            <Spacer mt={2} />
+            <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} />
+          </>
+        )
       default:
         return null
     }
