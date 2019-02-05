@@ -34,6 +34,7 @@
 - Adds some small styling adjustments to the hoursCollapsible - kieran
 - Fix overfetching data on Fair Detail - luc
 - Update Show detail view spacing & copy - luc
+- Adds missing fair booth separator - kieran
 - Refactors Fair Header view to use EntityList - luc
 - Fix bug with Markdown renderer - luc
 - Refactors Show Header view to use EntityList - luc
