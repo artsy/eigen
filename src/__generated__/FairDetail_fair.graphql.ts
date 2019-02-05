@@ -25,6 +25,7 @@ export type FairDetail_fair = {
         readonly edges: ReadonlyArray<({
             readonly cursor: string;
             readonly node: ({
+                readonly id: string;
                 readonly " $fragmentRefs": FairBoothPreview_show$ref;
             }) | null;
         }) | null> | null;
@@ -39,11 +40,18 @@ const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
@@ -86,14 +94,8 @@ return {
       "name": "FairHeader_fair",
       "args": null
     },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "id",
-      "args": null,
-      "storageKey": null
-    },
     v0,
+    v1,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -115,7 +117,7 @@ return {
           "name": "LocationMap_location",
           "args": null
         },
-        v1
+        v2
       ]
     },
     {
@@ -127,8 +129,8 @@ return {
       "concreteType": "Profile",
       "plural": false,
       "selections": [
-        v0,
-        v1
+        v1,
+        v2
       ]
     },
     {
@@ -197,12 +199,13 @@ return {
               "concreteType": "Show",
               "plural": false,
               "selections": [
+                v0,
                 {
                   "kind": "FragmentSpread",
                   "name": "FairBoothPreview_show",
                   "args": null
                 },
-                v1,
+                v2,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -216,9 +219,9 @@ return {
         }
       ]
     },
-    v1
+    v2
   ]
 };
 })();
-(node as any).hash = '43f66998d55354e1906b911ac7d98199';
+(node as any).hash = '832f0d4ecbe109ad940215a63ea6d7f7';
 export default node;

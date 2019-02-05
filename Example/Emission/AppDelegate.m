@@ -23,6 +23,7 @@
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARShowComponentViewController.h>
 #import <Emission/ARConversationComponentViewController.h>
+#import <Emission/ARFairComponentViewController.h>
 #import <Keys/EmissionKeys.h>
 
 #import <React/RCTUtils.h>
@@ -281,8 +282,8 @@ randomBOOL(void)
     viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:artistID tab:ARHomeTabArtists emission:nil];
 
   } else {
-
-    viewController = [[UnroutedViewController alloc] initWithRoute:route];
+    NSString *fairID = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
   }
 
   return viewController;

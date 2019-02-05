@@ -240,6 +240,7 @@ export const FairDetailContainer = createPaginationContainer(
           edges {
             cursor
             node {
+              id
               ...FairBoothPreview_show
             }
           }

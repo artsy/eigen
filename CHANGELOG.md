@@ -35,6 +35,10 @@
 - Fix overfetching data on Fair Detail - luc
 - Update Show detail view spacing & copy - luc
 - Adds missing fair booth separator - kieran
+- Refactors Fair Header view to use EntityList - luc
+- Fix bug with Markdown renderer - luc
+- Refactors Show Header view to use EntityList - luc
+- Fix fair booth view by adding query renderer - luc
 
 ### 1.8.1
 
