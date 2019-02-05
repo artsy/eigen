@@ -1,6 +1,6 @@
 import { Box, Collapse as _Collapse, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import { defaultRules, Markdown } from "lib/Components/Markdown"
-import ChevronHorizontal from "lib/Icons/ChevronHorizontal"
+import ChevronIcon from "lib/Icons/ChevronIcon"
 import { isArray, isString } from "lodash"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -76,7 +76,7 @@ export class HoursCollapsible extends React.Component<Props, State> {
               Opening hours
             </Sans>
             <Box ml={1}>
-              <ChevronHorizontal initialDirection="down" expanded={isExpanded} />
+              <ChevronIcon initialDirection="down" expanded={isExpanded} />
             </Box>
           </Flex>
         </TouchableWithoutFeedback>

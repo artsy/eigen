@@ -2,7 +2,7 @@ import { color } from "@artsy/palette"
 import React from "react"
 import Svg, { G, Path } from "react-native-svg"
 
-const ChevronHorizontal = props => {
+const ChevronIcon = props => {
   let rotation
   if (props.expanded) {
     rotation = "rotate(-90, 25, 25)"
@@ -25,11 +25,11 @@ const ChevronHorizontal = props => {
   )
 }
 
-ChevronHorizontal.defaultProps = {
+ChevronIcon.defaultProps = {
   height: 16,
   width: 16,
   fill: color("black30"),
   rotate: false,
 }
 
-export default ChevronHorizontal
+export default ChevronIcon
