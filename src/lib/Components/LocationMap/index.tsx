@@ -46,8 +46,12 @@ export class LocationMap extends React.Component<Props> {
 
   render() {
     const { location, partnerName } = this.props
-    const { lat, lng } = location.coordinates
+    const { lat, lng } = location.coordinates || { lat: null, lng: null }
     const { address_2, address, id } = location
+
+    if (!lat || !lng) {
+      return null
+    }
 
     return (
       <MapWrapper>

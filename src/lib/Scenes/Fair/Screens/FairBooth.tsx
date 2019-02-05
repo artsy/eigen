@@ -3,10 +3,13 @@ import { FairBooth_show } from "__generated__/FairBooth_show.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { FlatList } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
+import { FairBoothQuery } from "__generated__/FairBoothQuery.graphql"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Components/Show/ShowArtistsPreview"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { FairBoothHeaderContainer as FairBoothHeader } from "../Components/FairBoothHeader"
 
 interface State {
@@ -103,4 +106,19 @@ export const FairBoothContainer = createFragmentContainer(
       ...ShowArtworks_show
     }
   `
+)
+
+export const FairBoothRenderer: React.SFC<{ showID: string }> = ({ showID }) => (
+  <QueryRenderer<FairBoothQuery>
+    environment={defaultEnvironment}
+    query={graphql`
+      query FairBoothQuery($showID: String!) {
+        show(id: $showID) {
+          ...FairBooth_show
+        }
+      }
+    `}
+    variables={{ showID }}
+    render={renderWithLoadProgress(FairBoothContainer)}
+  />
 )
