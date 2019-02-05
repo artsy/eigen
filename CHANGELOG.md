@@ -51,6 +51,7 @@
 - Adds external link to partner galleries - ashley
 - Replace theme and icon on LocationMap - luc
 - Removes "View on Map" text from More Shows section in Show view - ashley
+- Adds more data marshalling for city view, sets up city scaffold - ash
 
 ### 1.8.0
 
