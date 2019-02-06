@@ -103,13 +103,15 @@ export class FairDetail extends React.Component<Props, State> {
     })
 
     fair.shows.edges.forEach(showData => {
-      sections.push({
-        type: "booth",
-        data: {
-          show: showData.node,
-          onViewFairBoothPressed: () => onViewFairBoothPressed({ show: showData.node }),
-        },
-      })
+      if (showData.node.artworks_connection.edges.length) {
+        sections.push({
+          type: "booth",
+          data: {
+            show: showData.node,
+            onViewFairBoothPressed: () => onViewFairBoothPressed({ show: showData.node }),
+          },
+        })
+      }
     })
 
     this.setState({ sections, boothCount: fair.shows.edges.length })
@@ -193,7 +195,7 @@ export class FairDetail extends React.Component<Props, State> {
           extraData={extraData}
           data={sections}
           ListHeaderComponent={
-            <Box height="620">
+            <Box height="710">
               <FairHeader
                 fair={fair}
                 viewAllExhibitors={onViewAllExhibitorsPressed}
@@ -241,6 +243,13 @@ export const FairDetailContainer = createPaginationContainer(
             cursor
             node {
               id
+              artworks_connection(first: 4) {
+                edges {
+                  node {
+                    id
+                  }
+                }
+              }
               ...FairBoothPreview_show
             }
           }
