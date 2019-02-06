@@ -40,6 +40,7 @@
 - Fix bug with Markdown renderer - luc
 - Refactors Show Header view to use EntityList - luc
 - Fix fair booth view by adding query renderer - luc
+- Enable saving fairs in Fair header view - ashley
 
 ### 1.8.1
 
