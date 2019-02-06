@@ -8,7 +8,7 @@ int main(int argc, char * argv[]) {
       delegate = @"TestHelper";
       if (NSClassFromString(delegate) == nil) {
         NSString *testBundlePath = [[NSProcessInfo processInfo] environment][@"XCInjectBundle"];
-        NSCParameterAssert(testBundlePath);
+        NSCParameterAssert(testBundlePath); 
         NSCParameterAssert([[NSBundle bundleWithPath:testBundlePath] load]);
       }
     }
