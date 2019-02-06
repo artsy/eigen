@@ -293,13 +293,10 @@ v9 = {
   "storageKey": null
 },
 v10 = [
-  v9
-],
-v11 = [
   v9,
   v0
 ],
-v12 = [
+v11 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -308,8 +305,11 @@ v12 = [
     "args": null,
     "concreteType": "Artist",
     "plural": false,
-    "selections": v11
+    "selections": v10
   }
+],
+v12 = [
+  v9
 ],
 v13 = {
   "kind": "ScalarField",
@@ -533,27 +533,27 @@ return {
                   v0,
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextSale",
-                    "selections": v10
-                  },
-                  {
-                    "kind": "InlineFragment",
-                    "type": "HomePageModuleContextGene",
-                    "selections": v10
-                  },
-                  {
-                    "kind": "InlineFragment",
-                    "type": "HomePageModuleContextFair",
-                    "selections": v10
+                    "type": "HomePageModuleContextFollowedArtist",
+                    "selections": v11
                   },
                   {
                     "kind": "InlineFragment",
                     "type": "HomePageModuleContextRelatedArtist",
+                    "selections": v11
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "type": "HomePageModuleContextFair",
                     "selections": v12
                   },
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextFollowedArtist",
+                    "type": "HomePageModuleContextGene",
+                    "selections": v12
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "type": "HomePageModuleContextSale",
                     "selections": v12
                   }
                 ]
@@ -567,14 +567,8 @@ return {
                 "concreteType": "Artwork",
                 "plural": true,
                 "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "is_biddable",
-                    "args": null,
-                    "storageKey": null
-                  },
                   v0,
+                  v5,
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -616,7 +610,13 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v5,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "is_biddable",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -839,7 +839,7 @@ return {
                     "args": null,
                     "concreteType": "Profile",
                     "plural": false,
-                    "selections": v11
+                    "selections": v10
                   },
                   {
                     "kind": "LinkedField",

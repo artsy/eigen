@@ -215,17 +215,17 @@ return {
                         v3,
                         {
                           "kind": "InlineFragment",
-                          "type": "ExternalPartner",
-                          "selections": [
-                            v0
-                          ]
-                        },
-                        {
-                          "kind": "InlineFragment",
                           "type": "Partner",
                           "selections": [
                             v0,
                             v4
+                          ]
+                        },
+                        {
+                          "kind": "InlineFragment",
+                          "type": "ExternalPartner",
+                          "selections": [
+                            v0
                           ]
                         }
                       ]

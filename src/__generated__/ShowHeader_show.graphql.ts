@@ -91,12 +91,12 @@ return {
         v1,
         {
           "kind": "InlineFragment",
-          "type": "ExternalPartner",
+          "type": "Partner",
           "selections": v2
         },
         {
           "kind": "InlineFragment",
-          "type": "Partner",
+          "type": "ExternalPartner",
           "selections": v2
         }
       ]

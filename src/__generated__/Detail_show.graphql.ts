@@ -51,21 +51,21 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "city",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "city",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "__id",
   "args": null,
   "storageKey": null
 };
@@ -76,12 +76,8 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "FragmentSpread",
-      "name": "ShowHeader_show",
-      "args": null
-    },
     v0,
+    v1,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -89,7 +85,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    v1,
+    v2,
     {
       "kind": "LinkedField",
       "alias": null,
@@ -114,7 +110,7 @@ return {
           "args": null,
           "storageKey": null
         },
-        v1,
+        v2,
         {
           "kind": "ScalarField",
           "alias": null,
@@ -154,7 +150,7 @@ return {
             }
           ]
         },
-        v2,
+        v3,
         {
           "kind": "FragmentSpread",
           "name": "LocationMap_location",
@@ -174,7 +170,11 @@ return {
         v0
       ]
     },
-    v3,
+    {
+      "kind": "FragmentSpread",
+      "name": "ShowHeader_show",
+      "args": null
+    },
     {
       "kind": "FragmentSpread",
       "name": "ShowArtworksPreview_show",
@@ -206,12 +206,19 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v2,
+        v3,
+        {
+          "kind": "InlineFragment",
+          "type": "ExternalPartner",
+          "selections": [
+            v1
+          ]
+        },
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v3,
+            v1,
             {
               "kind": "ScalarField",
               "alias": null,
@@ -220,17 +227,10 @@ return {
               "storageKey": null
             }
           ]
-        },
-        {
-          "kind": "InlineFragment",
-          "type": "ExternalPartner",
-          "selections": [
-            v3
-          ]
         }
       ]
     },
-    v2
+    v3
   ]
 };
 })();
