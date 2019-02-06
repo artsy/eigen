@@ -95,18 +95,18 @@ exports[`Registration result component renders registration complete properly 1`
         <Text
           accessible={true}
           allowFontScaling={true}
-          className="sc-bwzfXH uTxCW"
+          className="sc-bdVaJa bDWFJH"
           color="black60"
           ellipsizeMode="tail"
-          fontFamily="AGaramondPro-Regular"
-          fontSize="16px"
+          fontFamily="Unica77LL-Regular"
+          fontSize="14px"
           lineHeight="20px"
           style={
             Array [
               Object {
                 "color": "#666",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 16,
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 14,
                 "lineHeight": 20,
                 "textAlign": "center",
               },
@@ -268,18 +268,18 @@ exports[`Registration result component renders registration error properly 1`] =
         <Text
           accessible={true}
           allowFontScaling={true}
-          className="sc-bwzfXH uTxCW"
+          className="sc-bdVaJa bDWFJH"
           color="black60"
           ellipsizeMode="tail"
-          fontFamily="AGaramondPro-Regular"
-          fontSize="16px"
+          fontFamily="Unica77LL-Regular"
+          fontSize="14px"
           lineHeight="20px"
           style={
             Array [
               Object {
                 "color": "#666",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 16,
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 14,
                 "lineHeight": 20,
                 "textAlign": "center",
               },
@@ -458,18 +458,18 @@ exports[`Registration result component renders registration pending properly 1`]
         <Text
           accessible={true}
           allowFontScaling={true}
-          className="sc-bwzfXH uTxCW"
+          className="sc-bdVaJa bDWFJH"
           color="black60"
           ellipsizeMode="tail"
-          fontFamily="AGaramondPro-Regular"
-          fontSize="16px"
+          fontFamily="Unica77LL-Regular"
+          fontSize="14px"
           lineHeight="20px"
           style={
             Array [
               Object {
                 "color": "#666",
-                "fontFamily": "AGaramondPro-Regular",
-                "fontSize": 16,
+                "fontFamily": "Unica77LL-Regular",
+                "fontSize": 14,
                 "lineHeight": 20,
                 "textAlign": "center",
               },

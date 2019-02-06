@@ -1,11 +1,10 @@
-import { Flex, FlexProps, Serif } from "@artsy/palette"
+import { Flex, FlexProps, Sans } from "@artsy/palette"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import _ from "lodash"
 import React from "react"
 import { Text } from "react-native"
 import SimpleMarkdown from "simple-markdown"
 import { LinkText } from "./Text/LinkText"
-
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 // Rules for rendering parsed markdown. Currently only handles links and text. Add rules similar to
 // https://github.com/CharlesMangwa/react-native-simple-markdown/blob/next/src/rules.js for new functionalities.
@@ -43,9 +42,9 @@ export const defaultRules = {
     match: SimpleMarkdown.blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
     react: (node, output, state) => {
       return (
-        <Serif size="3t" color="black60" key={state.key} textAlign="center">
+        <Sans size="3t" color="black60" key={state.key} textAlign="center">
           {output(node.content, state)}
-        </Serif>
+        </Sans>
       )
     },
   },
@@ -53,6 +52,22 @@ export const defaultRules = {
   newline: {
     react: (_node, _output, state) => {
       return <Text key={state.key}>{"\n"}</Text>
+    },
+  },
+
+  strong: {
+    react: (node, output, state) => {
+      return (
+        <Sans size="3t" weight="medium" key={state.key}>
+          {output(node.content, state)}
+        </Sans>
+      )
+    },
+  },
+
+  br: {
+    react: (_node, _output, state) => {
+      return <Text key={state.key}>{"\n\n"}</Text>
     },
   },
 }

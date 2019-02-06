@@ -55,6 +55,7 @@ fragment FairDetail_fair on Fair {
     edges {
       cursor
       node {
+        id
         ...FairBoothPreview_show
         __id
         __typename
@@ -345,7 +346,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersFairQuery",
-  "id": "2d17c587bea8c4f714792dd85b502ed8",
+  "id": "3547fe9e0b21c451fa5c87de08d0c121",
   "text": null,
   "metadata": {},
   "fragment": {

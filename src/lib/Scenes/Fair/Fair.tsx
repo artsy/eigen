@@ -7,7 +7,7 @@ import { ShowArtistsContainer as ShowArtistsScreen } from "lib/Components/Show/S
 import { ShowArtworksContainer as ShowArtworksScreen } from "lib/Components/Show/ShowArtworks"
 import { FairArtistsRenderer as FairArtistsScreen } from "./Screens/FairArtists"
 import { FairArtworksRenderer as FairArtworksScreen } from "./Screens/FairArtworks"
-import { FairBoothContainer as FairBoothScreen } from "./Screens/FairBooth"
+import { FairBoothRenderer as FairBoothScreen } from "./Screens/FairBooth"
 import { FairDetailContainer as FairDetailScreen } from "./Screens/FairDetail"
 import { FairExhibitorsRenderer as FairExhibitorsScreen } from "./Screens/FairExhibitors"
 import { FairMoreInfoRenderer as FairMoreInfoScreen } from "./Screens/FairMoreInfo"
@@ -55,7 +55,7 @@ export class Fair extends React.Component<Props> {
   }
 
   handleViewFairBoothPressed = props => {
-    this.navigate({ component: FairBoothScreen, props })
+    this.navigate({ component: FairBoothScreen, props: { ...props, showID: props.show.id } })
   }
 
   handleViewFairBoothArtistsPressed = props => {
