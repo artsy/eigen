@@ -106,6 +106,7 @@ export class FairHeader extends React.Component<Props> {
         <Box px={2}>
           <Spacer m={2} mt={1} />
           <InvertedButton text="Save fair" />
+          <Spacer mt={2} />
         </Box>
       </>
     )

@@ -199,13 +199,11 @@ export class FairDetail extends React.Component<Props, State> {
           extraData={extraData}
           data={sections}
           ListHeaderComponent={
-            <Box height="745">
-              <FairHeader
-                fair={fair}
-                viewAllExhibitors={onViewAllExhibitorsPressed}
-                viewAllArtists={onViewAllArtistsPressed}
-              />
-            </Box>
+            <FairHeader
+              fair={fair}
+              viewAllExhibitors={onViewAllExhibitorsPressed}
+              viewAllArtists={onViewAllArtistsPressed}
+            />
           }
           renderItem={item => (
             <Box px={2} py={1}>
