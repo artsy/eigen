@@ -39,6 +39,9 @@
 - Fix bug with Markdown renderer - luc
 - Refactors Show Header view to use EntityList - luc
 - Fix fair booth view by adding query renderer - luc
+- Resizes fair banner to be larger - kieran
+- Adds artwork count to view all in booth preview - kieran
+- Checks coords before rending map & checks for artworks before render fair booth preview - kieran
 
 ### 1.8.1
 
