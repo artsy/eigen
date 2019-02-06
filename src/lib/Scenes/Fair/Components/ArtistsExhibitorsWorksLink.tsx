@@ -13,9 +13,9 @@ export class ArtistsExhibitorsWorksLink extends React.Component<Props> {
     const { onViewAllExhibitorsPressed, onViewAllArtistsPressed, onViewAllArtworksPressed } = this.props
     return (
       <Flex justifyContent={"space-between"} flexDirection={"row"} flexWrap={"nowrap"}>
-        <CaretButton onPress={() => onViewAllArtistsPressed()} text="All artists" />
-        <CaretButton onPress={() => onViewAllExhibitorsPressed()} text="All exhibitors" />
-        <CaretButton onPress={() => onViewAllArtworksPressed()} text="All works" />
+        <CaretButton onPress={() => onViewAllArtistsPressed()} text="Artists" />
+        <CaretButton onPress={() => onViewAllExhibitorsPressed()} text="Exhibitors" />
+        <CaretButton onPress={() => onViewAllArtworksPressed()} text="Works" />
       </Flex>
     )
   }
