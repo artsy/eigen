@@ -59,14 +59,17 @@ export class FairDetail extends React.Component<Props, State> {
     } = this.props
     const sections = []
 
-    sections.push({
-      type: "location",
-      data: {
-        location: fair.location,
-        partnerName: fair.profile.name,
-        partnerType: PartnerType.fair,
-      },
-    })
+    const coords = fair.location.coordinates
+    if (coords && coords.lat && coords.lng) {
+      sections.push({
+        type: "location",
+        data: {
+          location: fair.location,
+          partnerName: fair.profile.name,
+          partnerType: PartnerType.fair,
+        },
+      })
+    }
 
     sections.push({
       type: "information",
@@ -103,7 +106,8 @@ export class FairDetail extends React.Component<Props, State> {
     })
 
     fair.shows.edges.forEach(showData => {
-      if (showData.node.artworks_connection.edges.length) {
+      const showArtworks = showData.node.artworks_connection
+      if (showArtworks && showArtworks.edges.length) {
         sections.push({
           type: "booth",
           data: {
@@ -195,7 +199,7 @@ export class FairDetail extends React.Component<Props, State> {
           extraData={extraData}
           data={sections}
           ListHeaderComponent={
-            <Box height="710">
+            <Box height="745">
               <FairHeader
                 fair={fair}
                 viewAllExhibitors={onViewAllExhibitorsPressed}
@@ -227,6 +231,10 @@ export const FairDetailContainer = createPaginationContainer(
         hours
         location {
           ...LocationMap_location
+          coordinates {
+            lat
+            lng
+          }
         }
 
         profile {
