@@ -92,6 +92,11 @@
 - Adds Map and City view container - luc
 - Adds native unit test suite and CI - ash
 - Add FairMoreInfo screen - roop and javamonn
+- Adds shows list to Show View - ashley
+- Adds fair exhibitors to Fair view - ashley
+- Reordering Fair sections to match design specs -ashley
+- Add contextual data to Fair view - ashley
+- Enable navigation on contextual data in Show view - ashley
 
 ### 1.7.6
 
@@ -126,11 +131,6 @@
 - Adds Fair detail view header components - luc
 - Adds MoreInfo screen to show detail view - javamonn
 - Clean up Jest log output, update relay-mock-network-layer - javamonn
-- Adds shows list to Show View - ashley
-- Adds fair exhibitors to Fair view - ashley
-- Reordering Fair sections to match design specs -ashley
-- Add contextual data to Fair view - ashley
-- Enable navigation on contextual data in Show view - ashley
 - Fair performance enhancements - ashley
 
 ### 1.7.1
