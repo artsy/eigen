@@ -8,6 +8,8 @@ export const FairFixture = {
   },
   profile: {
     id: "art-basel-in-miami-beach-2018",
+    _id: "dfdlfjfua7d8a0_",
+    is_followed: false,
     name: "art-basel",
     icon: {
       id: "58ff95298b3b8104783c119c",
