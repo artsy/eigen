@@ -80,6 +80,7 @@ export class ShowHeader extends React.Component<Props, State> {
       }
     )
   }
+
   render() {
     const { isFollowedChanging } = this.state
     const {
@@ -87,7 +88,6 @@ export class ShowHeader extends React.Component<Props, State> {
       onMoreInformationPressed,
       onViewAllArtistsPressed,
     } = this.props
-
     const hasImages = !!images.length
     const noImagesPadding = windowHeight / 2 - 200
 
