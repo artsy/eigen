@@ -8,8 +8,9 @@ import styled from "styled-components/native"
 
 import { Pin } from "lib/Icons/Pin"
 import { bucketCityResults, BucketResults } from "./Bucket"
-import { FiltersBar, Tab } from "./Components/FiltersBar"
+import { FiltersBar } from "./Components/FiltersBar"
 import { EventEmitter } from "./EventEmitter"
+import { Tab } from "./types"
 
 const Emission = NativeModules.Emission || {}
 

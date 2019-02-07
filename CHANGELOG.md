@@ -29,10 +29,17 @@
 - Adds SearchIcon from svg - Kieran
 - Styles SearchLink - Kieran
 - Fixes bug in filter bar when centering selected items - ash
+- Replaces PNG Chevron for SVG icon - kieran
 - Centers Fair titles in fairbooth preview - kieran
 - Adds some small styling adjustments to the hoursCollapsible - kieran
 - Fix overfetching data on Fair Detail - luc
 - Update Show detail view spacing & copy - luc
+- Improves native integration with bottom sheet UI - ash
+- Adds missing fair booth separator - kieran
+- Refactors Fair Header view to use EntityList - luc
+- Fix bug with Markdown renderer - luc
+- Refactors Show Header view to use EntityList - luc
+- Fix fair booth view by adding query renderer - luc
 
 ### 1.8.1
 
@@ -51,6 +58,7 @@
 - Adds external link to partner galleries - ashley
 - Replace theme and icon on LocationMap - luc
 - Removes "View on Map" text from More Shows section in Show view - ashley
+- Adds more data marshalling for city view, sets up city scaffold - ash
 
 ### 1.8.0
 

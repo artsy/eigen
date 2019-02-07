@@ -1,17 +1,9 @@
 import { Box, Collapse as _Collapse, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import { defaultRules, Markdown } from "lib/Components/Markdown"
+import ChevronIcon from "lib/Icons/ChevronIcon"
 import { isArray, isString } from "lodash"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import styled from "styled-components/native"
-
-const Chevron = styled.Image<{ isExpanded: boolean }>`
-  height: 8;
-  width: 15;
-  align-self: center;
-  opacity: 0.3;
-  ${({ isExpanded }) => (isExpanded ? `transform: rotate(180deg)` : "")};
-`
 
 /**
  * FIXME: RN Collapse implementation diverges from web and we're using props
@@ -84,7 +76,7 @@ export class HoursCollapsible extends React.Component<Props, State> {
               Opening hours
             </Sans>
             <Box ml={1}>
-              <Chevron source={require("../../../images/chevron.png")} isExpanded={isExpanded} />
+              <ChevronIcon initialDirection="down" expanded={isExpanded} />
             </Box>
           </Flex>
         </TouchableWithoutFeedback>
