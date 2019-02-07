@@ -19,7 +19,7 @@ interface Props {
 }
 
 interface State {
-  isFollowedChanging: boolean
+  isFollowedSaving: boolean
 }
 
 const ButtonWrapper = styled(Box)`
@@ -30,7 +30,7 @@ const ButtonWrapper = styled(Box)`
 const { height: windowHeight } = Dimensions.get("window")
 
 export class ShowHeader extends React.Component<Props, State> {
-  state = { isFollowedChanging: false }
+  state = { isFollowedSaving: false }
 
   handleFollowShow = () => {
     const {
@@ -40,13 +40,13 @@ export class ShowHeader extends React.Component<Props, State> {
 
     this.setState(
       {
-        isFollowedChanging: true,
+        isFollowedSaving: true,
       },
       () => {
         commitMutation<ShowHeaderFollowShowMutation>(relay.environment, {
           onCompleted: () => {
             this.setState({
-              isFollowedChanging: false,
+              isFollowedSaving: false,
             })
           },
           mutation: graphql`
@@ -82,7 +82,7 @@ export class ShowHeader extends React.Component<Props, State> {
   }
 
   render() {
-    const { isFollowedChanging } = this.state
+    const { isFollowedSaving } = this.state
     const {
       show: { artists, images, is_followed, name, partner, exhibition_period, description },
       onMoreInformationPressed,
@@ -123,7 +123,7 @@ export class ShowHeader extends React.Component<Props, State> {
           <ButtonWrapper>
             <Spacer m={2} mt={1} />
             <InvertedButton
-              inProgress={isFollowedChanging}
+              inProgress={isFollowedSaving}
               text={is_followed ? "Show saved" : "Save show"}
               selected={is_followed}
               onPress={this.handleFollowShow}
