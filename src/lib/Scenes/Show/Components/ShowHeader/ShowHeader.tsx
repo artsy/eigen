@@ -28,8 +28,10 @@ const ButtonWrapper = styled(Box)`
 `
 
 const { height: windowHeight } = Dimensions.get("window")
+
 export class ShowHeader extends React.Component<Props, State> {
   state = { isFollowedChanging: false }
+
   handleFollowShow = () => {
     const {
       relay,
