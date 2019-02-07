@@ -40,6 +40,8 @@
 - Fix bug with Markdown renderer - luc
 - Refactors Show Header view to use EntityList - luc
 - Fix fair booth view by adding query renderer - luc
+- Moves Description and View more information below map - kieran
+- Decreases size of pin slightly - kieran
 
 ### 1.8.1
 
