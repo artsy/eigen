@@ -29,7 +29,14 @@ export const FairBoothPreviewContainer = createFragmentContainer<Props>(
         />
         <Box mt={1}>{<GenericGrid artworks={artworks_connection.edges.map(a => a.node) as any} />}</Box>
         <Box mt={2}>
-          <CaretButton text="View all works" onPress={() => onViewFairBoothPressed()} />
+          <CaretButton
+            text={
+              artworks_connection.edges.length > 1
+                ? `View all ${artworks_connection.edges.length} works`
+                : `View 1 work`
+            }
+            onPress={() => onViewFairBoothPressed()}
+          />
         </Box>
       </Box>
     )
