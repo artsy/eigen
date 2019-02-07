@@ -125,11 +125,9 @@ export class Detail extends React.Component<Props, State> {
         return <LocationMap {...data} />
       case "description":
         return (
-          <>
-            <Spacer m={1} />
+          <Box py={2}>
             <Serif size="3t">{data.description}</Serif>
-            <Spacer m={1} />
-          </>
+          </Box>
         )
       case "artworks":
         return <ShowArtworksPreview title="Works" {...data} />
@@ -146,11 +144,6 @@ export class Detail extends React.Component<Props, State> {
     }
   }
 
-  handleSaveShow = () => {
-    /* TODO: implement */
-    return Promise.resolve()
-  }
-
   render() {
     const { show, onViewAllArtistsPressed } = this.props
     const { extraData, sections } = this.state
@@ -158,13 +151,7 @@ export class Detail extends React.Component<Props, State> {
       <FlatList
         data={sections}
         extraData={extraData}
-        ListHeaderComponent={
-          <ShowHeader
-            show={show}
-            onSaveShowPressed={this.handleSaveShow}
-            onViewAllArtistsPressed={onViewAllArtistsPressed}
-          />
-        }
+        ListHeaderComponent={<ShowHeader show={show} onViewAllArtistsPressed={onViewAllArtistsPressed} />}
         ItemSeparatorComponent={this.renderItemSeparator}
         renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
         keyExtractor={(item, index) => item.type + String(index)}

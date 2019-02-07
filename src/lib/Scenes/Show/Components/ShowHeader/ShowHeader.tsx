@@ -1,28 +1,90 @@
 import { Box, Sans, Serif, Spacer } from "@artsy/palette"
 import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
-import { InvertedButton } from "lib/Components/Buttons"
+import { ShowHeaderFollowShowMutation } from "__generated__/ShowHeaderFollowShowMutation.graphql"
+import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { EntityList } from "lib/Components/EntityList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { Dimensions } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import styled from "styled-components/native"
 import { Carousel } from "./Components/Carousel"
 
 interface Props {
   show: ShowHeader_show
-  onSaveShowPressed: () => Promise<void>
   onViewAllArtistsPressed: () => void
+  relay: RelayProp
 }
 
+interface State {
+  isFollowedSaving: boolean
+}
+
+const ButtonWrapper = styled(Box)`
+  width: 100%;
+  height: 95;
+`
+
 const { height: windowHeight } = Dimensions.get("window")
-export class ShowHeader extends React.Component<Props> {
-  render() {
+
+export class ShowHeader extends React.Component<Props, State> {
+  state = { isFollowedSaving: false }
+
+  handleFollowShow = () => {
     const {
-      show: { artists, images, name, partner, exhibition_period },
-      onSaveShowPressed,
-      onViewAllArtistsPressed,
+      relay,
+      show: { id, __id, is_followed },
     } = this.props
 
+    this.setState(
+      {
+        isFollowedSaving: true,
+      },
+      () => {
+        commitMutation<ShowHeaderFollowShowMutation>(relay.environment, {
+          onCompleted: () => {
+            this.setState({
+              isFollowedSaving: false,
+            })
+          },
+          mutation: graphql`
+            mutation ShowHeaderFollowShowMutation($input: FollowShowInput!) {
+              followShow(input: $input) {
+                show {
+                  __id
+                  is_followed
+                }
+              }
+            }
+          `,
+          variables: {
+            input: {
+              partner_show_id: id,
+              unfollow: is_followed,
+            },
+          },
+          optimisticResponse: {
+            followShow: {
+              show: {
+                __id,
+                is_followed: !is_followed,
+              },
+            },
+          },
+          updater: store => {
+            store.get(__id).setValue(!is_followed, "is_followed")
+          },
+        })
+      }
+    )
+  }
+
+  render() {
+    const { isFollowedSaving } = this.state
+    const {
+      show: { artists, images, is_followed, name, partner, exhibition_period },
+      onViewAllArtistsPressed,
+    } = this.props
     const hasImages = !!images.length
     const noImagesPadding = windowHeight / 2 - 200
 
@@ -43,7 +105,7 @@ export class ShowHeader extends React.Component<Props> {
             sources={(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({ imageURL, aspectRatio }))}
           />
         )}
-        <Box px={2} mb={2}>
+        <Box px={2}>
           <EntityList
             prefix="Works by"
             list={artists}
@@ -54,13 +116,17 @@ export class ShowHeader extends React.Component<Props> {
             }}
             onViewAllPressed={onViewAllArtistsPressed}
           />
-          <Spacer mt={1} />
-          <InvertedButton
-            text="Save show"
-            onPress={() => {
-              onSaveShowPressed()
-            }}
-          />
+          <ButtonWrapper>
+            <Spacer m={2} mt={1} />
+            <InvertedButton
+              inProgress={isFollowedSaving}
+              text={is_followed ? "Show saved" : "Save show"}
+              selected={is_followed}
+              onPress={this.handleFollowShow}
+              grayBorder={true}
+            />
+            <Spacer m={1} />
+          </ButtonWrapper>
         </Box>
       </>
     )
@@ -71,9 +137,11 @@ export const ShowHeaderContainer = createFragmentContainer(
   ShowHeader,
   graphql`
     fragment ShowHeader_show on Show {
+      id
+      __id
       name
-      description
       press_release
+      is_followed
       exhibition_period
       status
       partner {

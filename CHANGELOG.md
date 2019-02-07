@@ -42,6 +42,7 @@
 - Fix fair booth view by adding query renderer - luc
 - Moves Description and View more information below map - kieran
 - Decreases size of pin slightly - kieran
+- Adds save functionality to show - kieran
 
 ### 1.8.1
 
