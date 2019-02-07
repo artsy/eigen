@@ -33,7 +33,7 @@ export class Detail extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { show, onViewMoreInfoPressed, onViewAllArtworksPressed, onViewAllArtistsPressed } = this.props
+    const { show, onMoreInformationPressed, onViewAllArtworksPressed, onViewAllArtistsPressed } = this.props
     const sections = []
 
     if (show.location) {
@@ -59,7 +59,7 @@ export class Detail extends React.Component<Props, State> {
     sections.push({
       type: "information",
       data: {
-        onViewMoreInfoPressed: () => onViewMoreInfoPressed(),
+        onViewMoreInfoPressed: () => onMoreInformationPressed(),
       },
     })
 
