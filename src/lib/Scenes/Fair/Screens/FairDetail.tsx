@@ -28,8 +28,8 @@ interface State {
     type: "hours" | "location"
     data: any
   }>
-  extraData?: { animatedValue: { height: number } }
   boothCount: number
+  extraData?: { animatedValue: { height: number } }
 }
 
 export class FairDetail extends React.Component<Props, State> {
@@ -38,8 +38,8 @@ export class FairDetail extends React.Component<Props, State> {
     boothCount: 0,
   }
 
-  componentWillReceiveProps({ fair }: Props) {
-    if (this.state.boothCount !== fair.shows.edges.length) {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.fair.shows.edges.length !== nextProps.fair.shows.edges.length) {
       this.updateSections()
     }
   }
@@ -59,14 +59,17 @@ export class FairDetail extends React.Component<Props, State> {
     } = this.props
     const sections = []
 
-    sections.push({
-      type: "location",
-      data: {
-        location: fair.location,
-        partnerName: fair.profile.name,
-        partnerType: PartnerType.fair,
-      },
-    })
+    const coords = fair.location.coordinates
+    if (coords && coords.lat && coords.lng) {
+      sections.push({
+        type: "location",
+        data: {
+          location: fair.location,
+          partnerName: fair.profile.name,
+          partnerType: PartnerType.fair,
+        },
+      })
+    }
 
     sections.push({
       type: "information",
@@ -75,12 +78,14 @@ export class FairDetail extends React.Component<Props, State> {
       },
     })
 
-    sections.push({
-      type: "hours",
-      data: {
-        hours: fair.hours,
-      },
-    })
+    if (fair.hours) {
+      sections.push({
+        type: "hours",
+        data: {
+          hours: fair.hours,
+        },
+      })
+    }
 
     sections.push({
       type: "title",
@@ -102,20 +107,27 @@ export class FairDetail extends React.Component<Props, State> {
       },
     })
 
+    let boothCount = 0
+
     fair.shows.edges.forEach(showData => {
-      sections.push({
-        type: "booth",
-        data: {
-          show: showData.node,
-          onViewFairBoothPressed: () => onViewFairBoothPressed({ show: showData.node }),
-        },
-      })
+      const showArtworks = showData.node.artworks_connection
+      if (showArtworks && showArtworks.edges.length) {
+        sections.push({
+          type: "booth",
+          showIndex: boothCount,
+          data: {
+            show: showData.node,
+            onViewFairBoothPressed: () => onViewFairBoothPressed({ show: showData.node }),
+          },
+        })
+        boothCount++
+      }
     })
 
-    this.setState({ sections, boothCount: fair.shows.edges.length })
+    this.setState({ sections, boothCount })
   }
 
-  renderItem = ({ item: { data, type } }) => {
+  renderItem = ({ item: { data, type, showIndex } }) => {
     switch (type) {
       case "location":
         return <LocationMap partnerType="Fair" {...data} />
@@ -129,10 +141,11 @@ export class FairDetail extends React.Component<Props, State> {
       case "search":
         return <SearchLink {...data} />
       case "booth":
+        const renderSeparator = this.state.boothCount - 1 > showIndex ? true : false
         return (
           <>
             <FairBoothPreview {...data} Component={this} />
-            <Separator mt={2} />
+            {renderSeparator && <Separator mt={2} />}
           </>
         )
       case "information":
@@ -193,13 +206,11 @@ export class FairDetail extends React.Component<Props, State> {
           extraData={extraData}
           data={sections}
           ListHeaderComponent={
-            <Box height="620">
-              <FairHeader
-                fair={fair}
-                viewAllExhibitors={onViewAllExhibitorsPressed}
-                viewAllArtists={onViewAllArtistsPressed}
-              />
-            </Box>
+            <FairHeader
+              fair={fair}
+              viewAllExhibitors={onViewAllExhibitorsPressed}
+              viewAllArtists={onViewAllArtistsPressed}
+            />
           }
           renderItem={item => (
             <Box px={2} py={1}>
@@ -225,6 +236,10 @@ export const FairDetailContainer = createPaginationContainer(
         hours
         location {
           ...LocationMap_location
+          coordinates {
+            lat
+            lng
+          }
         }
 
         profile {
@@ -241,6 +256,13 @@ export const FairDetailContainer = createPaginationContainer(
             cursor
             node {
               id
+              artworks_connection(first: 4) {
+                edges {
+                  node {
+                    id
+                  }
+                }
+              }
               ...FairBoothPreview_show
             }
           }
