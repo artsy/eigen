@@ -18,7 +18,7 @@
 
 - Styles Fair view to match design - kieran
 - Removes All Artworks from artwork preview - kieran
-- Adds booth number to fair booth view ( https://artsyproduct.atlassian.net/browse/LD-134 ) - kieran
+- Adds booth number to fair booth view - kieran
 - Adds item separator to FairBooth - kieran
 - Adds counts to Artworks and Artist previews for FairBooth - kieran
 - Restyles CaretButton to reflect design - kieran
@@ -43,6 +43,7 @@
 - Resizes fair banner to be larger - kieran
 - Adds artwork count to view all in booth preview - kieran
 - Checks coords before rending map & checks for artworks before render fair booth preview - kieran
+- Adds save functionality to show - kieran
 
 ### 1.8.1
 
