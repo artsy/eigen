@@ -354,20 +354,18 @@ Array [
       }
     />
     <View
-      height={95}
-      px={2}
       style={
         Array [
-          Object {
-            "height": 95,
-            "paddingLeft": 8,
-            "paddingRight": 8,
-            "width": 375,
-          },
-          undefined,
+          Object {},
+          Array [
+            Object {
+              "height": 95,
+              "width": "100%",
+            },
+            undefined,
+          ],
         ]
       }
-      width={375}
     >
       <View
         m={2}

@@ -5,8 +5,6 @@ import { RelayProp } from "react-relay"
 import * as renderer from "react-test-renderer"
 import { ShowHeader } from "../index"
 
-jest.unmock("react-relay")
-
 it("looks correct when rendered", () => {
   const onMoreInformationPressed = () => {
     /** noop */
