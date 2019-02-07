@@ -18,7 +18,7 @@ const { height: windowHeight } = Dimensions.get("window")
 export class ShowHeader extends React.Component<Props> {
   render() {
     const {
-      show: { artists, images, name, partner, exhibition_period, description },
+      show: { artists, images, name, partner, exhibition_period },
       onSaveShowPressed,
       onViewAllArtistsPressed,
     } = this.props
