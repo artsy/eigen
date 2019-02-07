@@ -28,18 +28,18 @@ interface State {
     type: "hours" | "location"
     data: any
   }>
+  boothCount: number
   extraData?: { animatedValue: { height: number } }
 }
 
 export class FairDetail extends React.Component<Props, State> {
   state: State = {
     sections: [],
+    boothCount: 0,
   }
 
-  boothCount = 0
-
-  componentWillReceiveProps({ fair }: Props) {
-    if (this.boothCount !== fair.shows.edges.length) {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.fair.shows.edges.length !== nextProps.fair.shows.edges.length) {
       this.updateSections()
     }
   }
@@ -107,22 +107,24 @@ export class FairDetail extends React.Component<Props, State> {
       },
     })
 
+    let boothCount = 0
+
     fair.shows.edges.forEach(showData => {
       const showArtworks = showData.node.artworks_connection
       if (showArtworks && showArtworks.edges.length) {
         sections.push({
           type: "booth",
-          showIndex: this.boothCount,
+          showIndex: boothCount,
           data: {
             show: showData.node,
             onViewFairBoothPressed: () => onViewFairBoothPressed({ show: showData.node }),
           },
         })
-        this.boothCount++
+        boothCount++
       }
     })
 
-    this.setState({ sections })
+    this.setState({ sections, boothCount })
   }
 
   renderItem = ({ item: { data, type, showIndex } }) => {
@@ -139,7 +141,7 @@ export class FairDetail extends React.Component<Props, State> {
       case "search":
         return <SearchLink {...data} />
       case "booth":
-        const renderSeparator = showIndex < this.boothCount ? true : false
+        const renderSeparator = this.state.boothCount - 1 > showIndex ? true : false
         return (
           <>
             <FairBoothPreview {...data} Component={this} />
