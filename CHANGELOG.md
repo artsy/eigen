@@ -40,6 +40,7 @@
 - Fix bug with Markdown renderer - luc
 - Refactors Show Header view to use EntityList - luc
 - Fix fair booth view by adding query renderer - luc
+- Adds save functionality to show - kieran
 
 ### 1.8.1
 
