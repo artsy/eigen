@@ -124,11 +124,6 @@ export class Detail extends React.Component<Props, State> {
     }
   }
 
-  handleSaveShow = () => {
-    /* TODO: implement */
-    return Promise.resolve()
-  }
-
   render() {
     const { show, onMoreInformationPressed, onViewAllArtistsPressed } = this.props
     const { extraData, sections } = this.state
@@ -139,7 +134,6 @@ export class Detail extends React.Component<Props, State> {
         ListHeaderComponent={
           <ShowHeader
             show={show}
-            onSaveShowPressed={this.handleSaveShow}
             onMoreInformationPressed={onMoreInformationPressed}
             onViewAllArtistsPressed={onViewAllArtistsPressed}
           />

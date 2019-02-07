@@ -1,0 +1,3 @@
+{
+  "fb6c2528015464ea7ef9fe206780e3e0": "mutation ShowHeaderFollowShowMutation(\n  $input: FollowShowInput!\n) {\n  followShow(input: $input) {\n    show {\n      __id\n      is_followed\n    }\n  }\n}\n"
+}

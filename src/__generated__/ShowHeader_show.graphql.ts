@@ -4,9 +4,12 @@ import { ConcreteFragment } from "relay-runtime";
 declare const _ShowHeader_show$ref: unique symbol;
 export type ShowHeader_show$ref = typeof _ShowHeader_show$ref;
 export type ShowHeader_show = {
+    readonly id: string;
+    readonly __id: string;
     readonly name: string | null;
     readonly description: string | null;
     readonly press_release: string | null;
+    readonly is_followed: boolean | null;
     readonly exhibition_period: string | null;
     readonly status: string | null;
     readonly partner: ({
@@ -50,6 +53,20 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_followed",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
     v0,
     {
       "kind": "ScalarField",
@@ -65,6 +82,7 @@ return {
       "args": null,
       "storageKey": null
     },
+    v1,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -145,10 +163,9 @@ return {
         },
         v1
       ]
-    },
-    v1
+    }
   ]
 };
 })();
-(node as any).hash = '70a74731b910cd34bb301d2b6e34a0ff';
+(node as any).hash = '8f7602670d19e490e92feb621979ae6c';
 export default node;
