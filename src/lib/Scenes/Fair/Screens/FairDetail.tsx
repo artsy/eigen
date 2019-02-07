@@ -29,17 +29,17 @@ interface State {
     data: any
   }>
   extraData?: { animatedValue: { height: number } }
-  boothCount: number
 }
 
 export class FairDetail extends React.Component<Props, State> {
   state: State = {
     sections: [],
-    boothCount: 0,
   }
 
+  boothCount = 0
+
   componentWillReceiveProps({ fair }: Props) {
-    if (this.state.boothCount !== fair.shows.edges.length) {
+    if (this.boothCount !== fair.shows.edges.length) {
       this.updateSections()
     }
   }
@@ -78,12 +78,14 @@ export class FairDetail extends React.Component<Props, State> {
       },
     })
 
-    sections.push({
-      type: "hours",
-      data: {
-        hours: fair.hours,
-      },
-    })
+    if (fair.hours) {
+      sections.push({
+        type: "hours",
+        data: {
+          hours: fair.hours,
+        },
+      })
+    }
 
     sections.push({
       type: "title",
@@ -110,18 +112,20 @@ export class FairDetail extends React.Component<Props, State> {
       if (showArtworks && showArtworks.edges.length) {
         sections.push({
           type: "booth",
+          showIndex: this.boothCount,
           data: {
             show: showData.node,
             onViewFairBoothPressed: () => onViewFairBoothPressed({ show: showData.node }),
           },
         })
+        this.boothCount++
       }
     })
 
-    this.setState({ sections, boothCount: fair.shows.edges.length })
+    this.setState({ sections })
   }
 
-  renderItem = ({ item: { data, type } }) => {
+  renderItem = ({ item: { data, type, showIndex } }) => {
     switch (type) {
       case "location":
         return <LocationMap partnerType="Fair" {...data} />
@@ -135,10 +139,11 @@ export class FairDetail extends React.Component<Props, State> {
       case "search":
         return <SearchLink {...data} />
       case "booth":
+        const renderSeparator = showIndex < this.boothCount ? true : false
         return (
           <>
             <FairBoothPreview {...data} Component={this} />
-            <Separator mt={2} />
+            {renderSeparator && <Separator mt={2} />}
           </>
         )
       case "information":
