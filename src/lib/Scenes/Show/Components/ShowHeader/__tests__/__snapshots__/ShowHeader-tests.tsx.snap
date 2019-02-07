@@ -344,7 +344,7 @@ Array [
           Object {},
           Array [
             Object {
-              "height": 95,
+              "height": 85,
               "width": "100%",
             },
             undefined,
@@ -353,14 +353,14 @@ Array [
       }
     >
       <View
-        m={2}
+        m={1}
         mt={1}
         style={
           Array [
             Object {
-              "marginBottom": 8,
-              "marginLeft": 8,
-              "marginRight": 8,
+              "marginBottom": 4,
+              "marginLeft": 4,
+              "marginRight": 4,
               "marginTop": 4,
             },
             undefined,

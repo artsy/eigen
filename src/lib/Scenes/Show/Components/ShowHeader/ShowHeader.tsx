@@ -22,7 +22,7 @@ interface State {
 
 const ButtonWrapper = styled(Box)`
   width: 100%;
-  height: 95;
+  height: 85;
 `
 
 const { height: windowHeight } = Dimensions.get("window")
@@ -117,7 +117,7 @@ export class ShowHeader extends React.Component<Props, State> {
             onViewAllPressed={onViewAllArtistsPressed}
           />
           <ButtonWrapper>
-            <Spacer m={2} mt={1} />
+            <Spacer m={1} mt={1} />
             <InvertedButton
               inProgress={isFollowedSaving}
               text={is_followed ? "Show saved" : "Save show"}

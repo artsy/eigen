@@ -1,4 +1,4 @@
-import { Box, Separator, Serif, Spacer } from "@artsy/palette"
+import { Box, Separator, Serif } from "@artsy/palette"
 import { Detail_show } from "__generated__/Detail_show.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { HoursCollapsible } from "lib/Components/HoursCollapsible"
