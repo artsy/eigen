@@ -21,7 +21,7 @@ export class ShowArtworksPreview extends React.Component<Props> {
     return (
       <>
         {title && (
-          <Serif size="6" mt={3} mb={3}>
+          <Serif size="6" mt={2} mb={3}>
             {title}
           </Serif>
         )}

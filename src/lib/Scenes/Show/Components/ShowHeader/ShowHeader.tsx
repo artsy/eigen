@@ -1,20 +1,16 @@
-import React from "react"
-
 import { Box, Sans, Serif, Spacer } from "@artsy/palette"
 import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { InvertedButton } from "lib/Components/Buttons"
-import { Dimensions } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-
-import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { EntityList } from "lib/Components/EntityList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import React from "react"
+import { Dimensions } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import { Carousel } from "./Components/Carousel"
 
 interface Props {
   show: ShowHeader_show
   onSaveShowPressed: () => Promise<void>
-  onMoreInformationPressed: () => void
   onViewAllArtistsPressed: () => void
 }
 
@@ -23,7 +19,6 @@ export class ShowHeader extends React.Component<Props> {
   render() {
     const {
       show: { artists, images, name, partner, exhibition_period, description },
-      onMoreInformationPressed,
       onSaveShowPressed,
       onViewAllArtistsPressed,
     } = this.props
@@ -48,7 +43,7 @@ export class ShowHeader extends React.Component<Props> {
             sources={(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({ imageURL, aspectRatio }))}
           />
         )}
-        <Box px={2} mb={4}>
+        <Box px={2} mb={2}>
           <EntityList
             prefix="Works by"
             list={artists}
@@ -66,10 +61,6 @@ export class ShowHeader extends React.Component<Props> {
               onSaveShowPressed()
             }}
           />
-          <Spacer m={1} />
-          <Serif size="3t">{description}</Serif>
-          <Spacer m={1} />
-          <CaretButton text="View more information" onPress={onMoreInformationPressed} />
         </Box>
       </>
     )
