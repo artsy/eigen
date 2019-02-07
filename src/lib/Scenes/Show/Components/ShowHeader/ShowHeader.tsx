@@ -1,5 +1,3 @@
-import React from "react"
-
 import { Box, Sans, Serif, Spacer } from "@artsy/palette"
 import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { ShowHeaderFollowShowMutation } from "__generated__/ShowHeaderFollowShowMutation.graphql"
@@ -7,8 +5,10 @@ import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { EntityList } from "lib/Components/EntityList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import React from "react"
 import { Dimensions } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import styled from "styled-components/native"
 import { Carousel } from "./Components/Carousel"
 
 interface Props {
@@ -21,6 +21,11 @@ interface Props {
 interface State {
   isFollowedChanging: boolean
 }
+
+const ButtonWrapper = styled(Box)`
+  width: 100%;
+  height: 95;
+`
 
 const { height: windowHeight } = Dimensions.get("window")
 export class ShowHeader extends React.Component<Props, State> {
@@ -113,7 +118,7 @@ export class ShowHeader extends React.Component<Props, State> {
             onViewAllPressed={onViewAllArtistsPressed}
           />
           <Spacer mt={1} />
-          <Box px={2} width={375} height={95}>
+          <ButtonWrapper>
             <Spacer m={2} mt={1} />
             <InvertedButton
               inProgress={isFollowedChanging}
@@ -123,7 +128,7 @@ export class ShowHeader extends React.Component<Props, State> {
               grayBorder={true}
             />
             <Spacer m={1} />
-          </Box>
+          </ButtonWrapper>
           <Spacer m={1} />
           <Serif size="3t">{description}</Serif>
           <Spacer m={1} />
