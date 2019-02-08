@@ -1,21 +1,29 @@
 upcoming:
-  version: 4.3.5
-  date: Jan 11, 2019 
-  signed_of_by: Orta
-  emission_version: 1.7.6
+  version: 4.3.6
+  date: Jan 17, 2019
+  emission_version: 1.8.0
   dev:
-    - Sends a user agent which includes the device model for Reaction SSR - orta
-    - Skips running tests on beta deploys - ash
-    - Updates Related Artworks grid item metadata styling - javamonn
-    
+    - Nothing yet
   user_facing:
-    - Uses new search API for the app search - orta
-    - AR feature allows tapping on the done state to hide the UI - orta
-    - Fix for favourites pagination via Emission update - orta
-    - Removes the buy now promo video from the app - orta
     - Adds Local Discovery tab behind lab option - luc
 
 releases:
+  - version: 4.3.5
+    date: Jan 11, 2019 
+    signed_of_by: Orta
+    emission_version: 1.7.6
+    dev:
+      - Sends a user agent which includes the device model for Reaction SSR - orta
+      - Skips running tests on beta deploys - ash
+      - Updates Related Artworks grid item metadata styling - javamonn
+      
+    user_facing:
+      - Uses new search API for the app search - orta
+      - AR feature allows tapping on the done state to hide the UI - orta
+      - Fix for favourites pagination via Emission update - orta
+      - Removes the buy now promo video from the app - orta
+      - Adds Local Discovery tab behind lab option - luc
+
   - version: 4.3.4
     date: Dec 7, 2018
     emission_version: 1.7.4

@@ -8,7 +8,7 @@ end
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '8.0'
+platform :ios, '9.0'
 inhibit_all_warnings!
 plugin 'cocoapods-fix-react-native'
 
@@ -95,6 +95,7 @@ target 'Artsy' do
   pod 'react-native-mapbox-gl', git: 'https://github.com/orta/react-native-mapbox-gl.git', branch: '6_1_3_podspec_fix'
   pod 'SentryReactNative', git: 'https://github.com/getsentry/react-native-sentry.git', tag: 'v0.30.3'
   pod 'Pulley', :git => 'https://github.com/l2succes/Pulley.git', :branch => 'master'
+  pod 'RNSVG', git: 'https://github.com/react-native-community/react-native-svg.git', tag: 'v9.0.4'
 
   # Facebook
   pod 'FBSDKCoreKit', '~> 4.33'

@@ -20,6 +20,8 @@
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARConversationComponentViewController.h>
 #import <Emission/ARBidFlowViewController.h>
+#import <Emission/ARShowComponentViewController.h>
+#import <Emission/ARFairComponentViewController.h>
 
 // TODO This does not use the new React based VC yet.
 #import "ARFairArtistViewController.h"
@@ -28,6 +30,7 @@
 #import "Artsy-Swift.h"
 #import "AROptions.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
+#import "PartnerShow.h"
 
 @interface ARSwitchBoard (Private)
 @property (nonatomic, strong) Aerodramus *echo;
@@ -131,22 +134,30 @@
     return [[ARArtworkInfoViewController alloc] initWithArtwork:artwork];
 }
 
-- (ARShowViewController *)loadShow:(PartnerShow *)show fair:(Fair *)fair
+- (UIViewController *)loadShow:(PartnerShow *)show fair:(Fair *)fair
 {
-    return [[ARShowViewController alloc] initWithShow:show fair:fair];
+    if ([AROptions boolForOption:AROptionsModernShowFairPages]) {
+        return [[ARShowComponentViewController alloc] initWithShowID:show.showID];
+    } else {
+        return [[ARShowViewController alloc] initWithShow:show fair:fair];
+    }
 }
 
-- (ARShowViewController *)loadShow:(PartnerShow *)show
+- (UIViewController *)loadShow:(PartnerShow *)show
 {
     return [self loadShow:show fair:nil];
 }
 
-- (ARShowViewController *)loadShowWithID:(NSString *)showID fair:(Fair *)fair
+- (UIViewController *)loadShowWithID:(NSString *)showID fair:(Fair *)fair
 {
-    return [[ARShowViewController alloc] initWithShowID:showID fair:fair];
+    if ([AROptions boolForOption:AROptionsModernShowFairPages]) {
+        return [[ARShowComponentViewController alloc] initWithShowID:showID];
+    } else {
+        return [[ARShowViewController alloc] initWithShowID:showID fair:fair];
+    }
 }
 
-- (ARShowViewController *)loadShowWithID:(NSString *)showID
+- (UIViewController *)loadShowWithID:(NSString *)showID
 {
     return [self loadShowWithID:showID fair:nil];
 }
@@ -218,9 +229,13 @@
     return [[ARMutableLinkViewController alloc] initWithPath:path];
 }
 
-- (ARProfileViewController *)loadProfileWithID:(NSString *)profileID
+- (UIViewController *)loadProfileWithID:(NSString *)profileID
 {
-    return [[ARProfileViewController alloc] initWithProfileID:profileID];
+    if ([AROptions boolForOption:AROptionsModernShowFairPages]) {
+        return [[ARFairComponentViewController alloc] initWithFairID:profileID];
+    } else {
+        return [[ARProfileViewController alloc] initWithProfileID:profileID];
+    }
 }
 
 #pragma mark -
