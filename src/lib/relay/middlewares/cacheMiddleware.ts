@@ -2,7 +2,7 @@ import { NetworkError } from "lib/utils/errors"
 import { RelayQueryRequest, RelayResponsePayload } from "relay-runtime"
 import * as cache from "../../NativeModules/GraphQLQueryCache"
 
-export const cacheMiddleware = (opts = {}) => {
+export const cacheMiddleware = () => {
   return next => async (req: RelayQueryRequest) => {
     const { cacheConfig, operation, variables } = req
     const isQuery = operation.operationKind === "query"
