@@ -72,13 +72,15 @@ export class Detail extends React.Component<Props, State> {
       })
     }
 
-    sections.push({
-      type: "artworks",
-      data: {
-        show,
-        onViewAllArtworksPressed,
-      },
-    })
+    if (show.counts && show.counts.artworks) {
+      sections.push({
+        type: "artworks",
+        data: {
+          show,
+          onViewAllArtworksPressed,
+        },
+      })
+    }
 
     sections.push({
       type: "artists",
@@ -127,7 +129,7 @@ export class Detail extends React.Component<Props, State> {
         return <LocationMap {...data} />
       case "description":
         return (
-          <Box py={2}>
+          <Box pb={2}>
             <Serif size="3t">{data.description}</Serif>
           </Box>
         )
@@ -174,9 +176,6 @@ export const DetailContainer = createFragmentContainer(
         id
         address
         address_2
-        city
-        state
-        postal_code
         displayDaySchedules {
           days
           hours
@@ -192,7 +191,9 @@ export const DetailContainer = createFragmentContainer(
       location {
         ...LocationMap_location
       }
-
+      counts {
+        artworks
+      }
       status
       partner {
         ... on ExternalPartner {
