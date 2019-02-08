@@ -63,12 +63,14 @@ export class Detail extends React.Component<Props, State> {
       },
     })
 
-    sections.push({
-      type: "hours",
-      data: {
-        hours: show.location.displayDaySchedules,
-      },
-    })
+    if (show.location && show.location.displayDaySchedules) {
+      sections.push({
+        type: "hours",
+        data: {
+          hours: show.location.displayDaySchedules,
+        },
+      })
+    }
 
     sections.push({
       type: "artworks",
