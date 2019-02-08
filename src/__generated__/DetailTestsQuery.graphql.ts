@@ -89,7 +89,6 @@ fragment ShowHeader_show on Show {
   id
   __id
   name
-  description
   press_release
   is_followed
   exhibition_period
@@ -357,7 +356,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "2ee28b4a6fdc7a734de9f295776eb799",
+  "id": "607f24aae4fcce0e9e26fcfc8513b872",
   "text": null,
   "metadata": {},
   "fragment": {

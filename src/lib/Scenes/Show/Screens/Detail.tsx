@@ -1,13 +1,13 @@
-import { Box, Separator, Spacer } from "@artsy/palette"
+import { Box, Separator, Serif } from "@artsy/palette"
 import { Detail_show } from "__generated__/Detail_show.graphql"
-import React from "react"
-import { FlatList } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-
+import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Components/Show/ShowArtistsPreview"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
+import React from "react"
+import { FlatList } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import { ShowHeaderContainer as ShowHeader } from "../Components/ShowHeader"
 import { ShowsContainer as Shows } from "../Components/Shows"
 
@@ -16,6 +16,7 @@ interface Props {
   onMoreInformationPressed: () => void
   onViewAllArtistsPressed: () => void
   onViewAllArtworksPressed: () => void
+  onViewMoreInfoPressed: () => void
 }
 
 interface State {
@@ -32,7 +33,7 @@ export class Detail extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { show, onViewAllArtworksPressed, onViewAllArtistsPressed } = this.props
+    const { show, onMoreInformationPressed, onViewAllArtworksPressed, onViewAllArtistsPressed } = this.props
     const sections = []
 
     if (show.location) {
@@ -44,14 +45,30 @@ export class Detail extends React.Component<Props, State> {
           partnerType: show.partner.type,
         },
       })
+    }
 
+    if (show.description) {
       sections.push({
-        type: "hours",
+        type: "description",
         data: {
-          hours: show.location.displayDaySchedules,
+          description: show.description,
         },
       })
     }
+
+    sections.push({
+      type: "information",
+      data: {
+        onViewMoreInfoPressed: () => onMoreInformationPressed(),
+      },
+    })
+
+    sections.push({
+      type: "hours",
+      data: {
+        hours: show.location.displayDaySchedules,
+      },
+    })
 
     sections.push({
       type: "artworks",
@@ -79,7 +96,7 @@ export class Detail extends React.Component<Props, State> {
   }
 
   renderItemSeparator = item => {
-    if (item && item.leadingItem.type === "location") {
+    if (item && (item.leadingItem.type === "location" || item.leadingItem.type === "description")) {
       return null
     }
     return (
@@ -106,38 +123,35 @@ export class Detail extends React.Component<Props, State> {
     switch (type) {
       case "location":
         return <LocationMap {...data} />
+      case "description":
+        return (
+          <Box py={2}>
+            <Serif size="3t">{data.description}</Serif>
+          </Box>
+        )
       case "artworks":
         return <ShowArtworksPreview title="Works" {...data} />
       case "artists":
         return <ShowArtistsPreview {...data} />
       case "shows":
         return <Shows show={data} />
+      case "information":
+        return <CaretButton onPress={() => data.onViewMoreInfoPressed()} text="View more information" />
       case "hours":
-        return (
-          <>
-            <Spacer mt={2} />
-            <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} />
-          </>
-        )
+        return <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} />
       default:
         return null
     }
   }
 
   render() {
-    const { show, onMoreInformationPressed, onViewAllArtistsPressed } = this.props
+    const { show, onViewAllArtistsPressed } = this.props
     const { extraData, sections } = this.state
     return (
       <FlatList
         data={sections}
         extraData={extraData}
-        ListHeaderComponent={
-          <ShowHeader
-            show={show}
-            onMoreInformationPressed={onMoreInformationPressed}
-            onViewAllArtistsPressed={onViewAllArtistsPressed}
-          />
-        }
+        ListHeaderComponent={<ShowHeader show={show} onViewAllArtistsPressed={onViewAllArtistsPressed} />}
         ItemSeparatorComponent={this.renderItemSeparator}
         renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
         keyExtractor={(item, index) => item.type + String(index)}

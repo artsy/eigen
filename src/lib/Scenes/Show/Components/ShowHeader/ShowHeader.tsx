@@ -1,7 +1,6 @@
 import { Box, Sans, Serif, Spacer } from "@artsy/palette"
 import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { ShowHeaderFollowShowMutation } from "__generated__/ShowHeaderFollowShowMutation.graphql"
-import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { EntityList } from "lib/Components/EntityList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -13,7 +12,6 @@ import { Carousel } from "./Components/Carousel"
 
 interface Props {
   show: ShowHeader_show
-  onMoreInformationPressed: () => void
   onViewAllArtistsPressed: () => void
   relay: RelayProp
 }
@@ -24,7 +22,7 @@ interface State {
 
 const ButtonWrapper = styled(Box)`
   width: 100%;
-  height: 95;
+  height: 85;
 `
 
 const { height: windowHeight } = Dimensions.get("window")
@@ -84,8 +82,7 @@ export class ShowHeader extends React.Component<Props, State> {
   render() {
     const { isFollowedSaving } = this.state
     const {
-      show: { artists, images, is_followed, name, partner, exhibition_period, description },
-      onMoreInformationPressed,
+      show: { artists, images, is_followed, name, partner, exhibition_period },
       onViewAllArtistsPressed,
     } = this.props
     const hasImages = !!images.length
@@ -108,7 +105,7 @@ export class ShowHeader extends React.Component<Props, State> {
             sources={(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({ imageURL, aspectRatio }))}
           />
         )}
-        <Box px={2} mb={4}>
+        <Box px={2}>
           <EntityList
             prefix="Works by"
             list={artists}
@@ -119,9 +116,8 @@ export class ShowHeader extends React.Component<Props, State> {
             }}
             onViewAllPressed={onViewAllArtistsPressed}
           />
-          <Spacer mt={1} />
           <ButtonWrapper>
-            <Spacer m={2} mt={1} />
+            <Spacer m={1} mt={1} />
             <InvertedButton
               inProgress={isFollowedSaving}
               text={is_followed ? "Show saved" : "Save show"}
@@ -131,10 +127,6 @@ export class ShowHeader extends React.Component<Props, State> {
             />
             <Spacer m={1} />
           </ButtonWrapper>
-          <Spacer m={1} />
-          <Serif size="3t">{description}</Serif>
-          <Spacer m={1} />
-          <CaretButton text="View more information" onPress={onMoreInformationPressed} />
         </Box>
       </>
     )
@@ -148,7 +140,6 @@ export const ShowHeaderContainer = createFragmentContainer(
       id
       __id
       name
-      description
       press_release
       is_followed
       exhibition_period

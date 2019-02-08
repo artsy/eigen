@@ -7,7 +7,6 @@ export type ShowHeader_show = {
     readonly id: string;
     readonly __id: string;
     readonly name: string | null;
-    readonly description: string | null;
     readonly press_release: string | null;
     readonly is_followed: boolean | null;
     readonly exhibition_period: string | null;
@@ -32,19 +31,19 @@ const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v2 = [
-  v0
+  v1
 ];
 return {
   "kind": "Fragment",
@@ -56,25 +55,12 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "is_followed",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
       "name": "id",
       "args": null,
       "storageKey": null
     },
     v0,
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "description",
-      "args": null,
-      "storageKey": null
-    },
+    v1,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -82,7 +68,13 @@ return {
       "args": null,
       "storageKey": null
     },
-    v1,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_followed",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -106,7 +98,7 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v1,
+        v0,
         {
           "kind": "InlineFragment",
           "type": "ExternalPartner",
@@ -153,7 +145,7 @@ return {
       "concreteType": "Artist",
       "plural": true,
       "selections": [
-        v0,
+        v1,
         {
           "kind": "ScalarField",
           "alias": null,
@@ -161,11 +153,11 @@ return {
           "args": null,
           "storageKey": null
         },
-        v1
+        v0
       ]
     }
   ]
 };
 })();
-(node as any).hash = '8f7602670d19e490e92feb621979ae6c';
+(node as any).hash = '4ccb36c9fbb90a0e85f9d16f4f139549';
 export default node;
