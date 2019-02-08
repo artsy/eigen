@@ -167,7 +167,7 @@ export class FairHeader extends React.Component<Props, State> {
         </CountdownContainer>
         <Spacer mt={2} />
         <Box mx={2}>{this.getContextualDetails()}</Box>
-        <Box px={2} width={375} height={95}>
+        <Box px={2}>
           <Spacer m={2} mt={1} />
           <InvertedButton
             text={profile.is_followed ? "Fair Saved" : "Save Fair"}
@@ -175,6 +175,7 @@ export class FairHeader extends React.Component<Props, State> {
             selected={profile.is_followed}
             inProgress={isSavedFairStateUpdating}
             grayBorder={true}
+            buttonSize={"large"}
           />
           <Spacer m={1} />
         </Box>
