@@ -141,7 +141,7 @@ fragment LocationMap_location on Location {
   city
   address
   address_2
-  display
+  postal_code
   coordinates {
     lat
     lng
@@ -344,19 +344,19 @@ v10 = {
 v11 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "display",
+  "name": "is_closed",
   "args": null,
   "storageKey": null
 },
 v12 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_closed",
+  "name": "display",
   "args": null,
   "storageKey": null
 },
 v13 = [
-  v11
+  v12
 ],
 v14 = [
   v6,
@@ -366,7 +366,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairDetailShowsQuery",
-  "id": "2cb3c0d8f7875880f6990d4145df9049",
+  "id": "f7f51d95477e7836330b7ab4b1152c64",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -659,7 +659,13 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v11,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "postal_code",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -940,7 +946,7 @@ return {
                                         "args": null,
                                         "storageKey": null
                                       },
-                                      v12,
+                                      v11,
                                       {
                                         "kind": "ScalarField",
                                         "alias": null,
@@ -996,7 +1002,7 @@ return {
                                         "concreteType": "Sale",
                                         "plural": false,
                                         "selections": [
-                                          v12,
+                                          v11,
                                           v2
                                         ]
                                       },
@@ -1104,7 +1110,7 @@ return {
                         "concreteType": "Location",
                         "plural": false,
                         "selections": [
-                          v11,
+                          v12,
                           v2
                         ]
                       },

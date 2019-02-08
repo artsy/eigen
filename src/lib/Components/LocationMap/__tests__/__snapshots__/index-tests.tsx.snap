@@ -1,85 +1,136 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`looks correct when rendered 1`] = `
-<View
-  style={
-    Array [
-      Object {
-        "display": "flex",
-      },
-      Array [
-        Object {
-          "borderColor": "#E5E5E5",
-          "borderWidth": 1,
-        },
-        undefined,
-      ],
-    ]
-  }
->
+Array [
   <View
-    my={2}
     style={
       Array [
         Object {
-          "marginBottom": 20,
-          "marginTop": 20,
+          "display": "flex",
+        },
+        Array [
+          Object {
+            "borderColor": "#E5E5E5",
+            "borderWidth": 1,
+          },
+          undefined,
+        ],
+      ]
+    }
+  >
+    <View
+      my={2}
+      style={
+        Array [
+          Object {
+            "marginBottom": 20,
+            "marginTop": 20,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        className="sc-bdVaJa bDWFJH"
+        color="black100"
+        ellipsizeMode="tail"
+        fontFamily="Unica77LL-Medium"
+        fontSize="14px"
+        lineHeight="24px"
+        style={
+          Array [
+            Object {
+              "color": "#000",
+              "fontFamily": "Unica77LL-Medium",
+              "fontSize": 14,
+              "lineHeight": 24,
+              "textAlign": "center",
+            },
+            undefined,
+          ]
+        }
+        textAlign="center"
+      >
+        Joseph K. Levene Fine Art, Ltd.
+      </Text>
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
+        color="black60"
+        ellipsizeMode="tail"
+        fontFamily="AGaramondPro-Regular"
+        fontSize="16px"
+        lineHeight="24px"
+        style={
+          Array [
+            Object {
+              "color": "#666",
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "lineHeight": 24,
+              "textAlign": "center",
+            },
+            Array [
+              Object {
+                "lineHeight": 18,
+              },
+              undefined,
+            ],
+          ]
+        }
+        textAlign="center"
+      >
+        25 Central Park West
+      </Text>
+      
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        className="sc-bwzfXH uTxCW"
+        color="black60"
+        ellipsizeMode="tail"
+        fontFamily="AGaramondPro-Regular"
+        fontSize="16px"
+        lineHeight="24px"
+        style={
+          Array [
+            Object {
+              "color": "#666",
+              "fontFamily": "AGaramondPro-Regular",
+              "fontSize": 16,
+              "lineHeight": 24,
+              "textAlign": "center",
+            },
+            Array [
+              Object {
+                "lineHeight": 18,
+              },
+              undefined,
+            ],
+          ]
+        }
+        textAlign="center"
+      >
+        New York
+      </Text>
+    </View>
+  </View>,
+  <View
+    m={1}
+    style={
+      Array [
+        Object {
+          "marginBottom": 10,
+          "marginLeft": 10,
+          "marginRight": 10,
+          "marginTop": 10,
         },
         undefined,
       ]
     }
-  >
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      className="sc-bdVaJa bDWFJH"
-      color="black100"
-      ellipsizeMode="tail"
-      fontFamily="Unica77LL-Medium"
-      fontSize="14px"
-      lineHeight="24px"
-      style={
-        Array [
-          Object {
-            "color": "#000",
-            "fontFamily": "Unica77LL-Medium",
-            "fontSize": 14,
-            "lineHeight": 24,
-            "textAlign": "center",
-          },
-          undefined,
-        ]
-      }
-      textAlign="center"
-    >
-      Joseph K. Levene Fine Art, Ltd.
-    </Text>
-    <Text
-      accessible={true}
-      allowFontScaling={true}
-      className="sc-bwzfXH uTxCW"
-      color="black60"
-      ellipsizeMode="tail"
-      fontFamily="AGaramondPro-Regular"
-      fontSize="16px"
-      lineHeight="24px"
-      style={
-        Array [
-          Object {
-            "color": "#666",
-            "fontFamily": "AGaramondPro-Regular",
-            "fontSize": 16,
-            "lineHeight": 24,
-            "textAlign": "center",
-          },
-          undefined,
-        ]
-      }
-      textAlign="center"
-    >
-      25 Central Park West
-    </Text>
-    
-  </View>
-</View>
+  />,
+]
 `;
