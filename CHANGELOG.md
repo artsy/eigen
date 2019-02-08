@@ -46,6 +46,9 @@
 - Adds artwork count to view all in booth preview - kieran
 - Checks coords before rending map & checks for artworks before render fair booth preview - kieran
 - Adds save functionality to show - kieran
+- Adds city and zip code to show address - kieran
+- Checks for works before rendering works section - kieran
+- Checks for hours before rending hours section - kieran
 
 ### 1.8.1
 
