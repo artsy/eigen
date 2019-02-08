@@ -2,21 +2,21 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FairHeader_fair$ref } from "./FairHeader_fair.graphql";
-export type FairHeaderTestsQueryVariables = {};
-export type FairHeaderTestsQueryResponse = {
+export type indexTestsFairHeaderQueryVariables = {};
+export type indexTestsFairHeaderQueryResponse = {
     readonly fair: ({
         readonly " $fragmentRefs": FairHeader_fair$ref;
     }) | null;
 };
-export type FairHeaderTestsQuery = {
-    readonly response: FairHeaderTestsQueryResponse;
-    readonly variables: FairHeaderTestsQueryVariables;
+export type indexTestsFairHeaderQuery = {
+    readonly response: indexTestsFairHeaderQueryResponse;
+    readonly variables: indexTestsFairHeaderQueryVariables;
 };
 
 
 
 /*
-query FairHeaderTestsQuery {
+query indexTestsFairHeaderQuery {
   fair(id: "sofa-chicago-2018") {
     ...FairHeader_fair
     __id
@@ -146,13 +146,13 @@ v7 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "FairHeaderTestsQuery",
-  "id": "c43dee5dc99620fac6a406bf728e4100",
+  "name": "indexTestsFairHeaderQuery",
+  "id": "e78aa5624d87bb3d3e5d8f92070ccb4a",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "FairHeaderTestsQuery",
+    "name": "indexTestsFairHeaderQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -178,7 +178,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "FairHeaderTestsQuery",
+    "name": "indexTestsFairHeaderQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -414,5 +414,5 @@ return {
   }
 };
 })();
-(node as any).hash = '03c9b173327b501b47b97a6f6817238a';
+(node as any).hash = '5ef9b6e4aa7c6762bd2dd66872aa8eb0';
 export default node;

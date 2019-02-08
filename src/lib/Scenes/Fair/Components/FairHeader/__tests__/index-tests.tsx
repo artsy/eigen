@@ -16,7 +16,7 @@ describe("FairHeader", () => {
         </Theme>
       ),
       query: graphql`
-        query FairHeaderTestsQuery {
+        query indexTestsFairHeaderQuery {
           fair(id: "sofa-chicago-2018") {
             ...FairHeader_fair
           }
