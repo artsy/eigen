@@ -52,7 +52,9 @@ describe("cacheMiddleware", () => {
 
     it("caches the fetched data", async () => {
       await cacheMiddleware()(mockedNext)(request)
-      expect(cache.set).toHaveNthReturnedWith(1, operation.id, variables)
+
+      expect(cache.set.mock.calls.length).toEqual(2)
+      expect(cache.set.mock.calls[0][0]).toEqual(operation.id)
     })
   })
 
