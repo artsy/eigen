@@ -4,9 +4,11 @@ import { ConcreteFragment } from "relay-runtime";
 declare const _ShowHeader_show$ref: unique symbol;
 export type ShowHeader_show$ref = typeof _ShowHeader_show$ref;
 export type ShowHeader_show = {
+    readonly id: string;
+    readonly __id: string;
     readonly name: string | null;
-    readonly description: string | null;
     readonly press_release: string | null;
+    readonly is_followed: boolean | null;
     readonly exhibition_period: string | null;
     readonly status: string | null;
     readonly partner: ({
@@ -29,19 +31,19 @@ const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v2 = [
-  v0
+  v1
 ];
 return {
   "kind": "Fragment",
@@ -50,18 +52,26 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    v0,
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "description",
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    v0,
+    v1,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "press_release",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "press_release",
+      "name": "is_followed",
       "args": null,
       "storageKey": null
     },
@@ -88,7 +98,7 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v1,
+        v0,
         {
           "kind": "InlineFragment",
           "type": "ExternalPartner",
@@ -135,7 +145,7 @@ return {
       "concreteType": "Artist",
       "plural": true,
       "selections": [
-        v0,
+        v1,
         {
           "kind": "ScalarField",
           "alias": null,
@@ -143,12 +153,11 @@ return {
           "args": null,
           "storageKey": null
         },
-        v1
+        v0
       ]
-    },
-    v1
+    }
   ]
 };
 })();
-(node as any).hash = '70a74731b910cd34bb301d2b6e34a0ff';
+(node as any).hash = '4ccb36c9fbb90a0e85f9d16f4f139549';
 export default node;

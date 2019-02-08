@@ -7583,6 +7583,12 @@ type SearchableEdge {
 
 type SearchableItem implements Node & Searchable {
   __id: ID!
+
+  # A type-specific ID.
+  id: String!
+
+  # A type-specific Gravity Mongo Document ID.
+  _id: String!
   displayLabel: String
   imageUrl: String
   href: String
@@ -7590,8 +7596,17 @@ type SearchableItem implements Node & Searchable {
 }
 
 enum SearchEntity {
-  ARTWORK
   ARTIST
+  ARTWORK
+  ARTICLE
+  CITY
+  COLLECTION
+  FAIR
+  FEATURE
+  GENE
+  PROFILE
+  SALE
+  TAG
 }
 
 enum SearchMode {
@@ -7919,6 +7934,9 @@ type Show implements Node {
 
   # An image representing the show, or a sharable image from an artwork in the show
   meta_image: Image
+
+  # Is the user following this show
+  is_followed: Boolean
 
   # The exhibition title
   name: String

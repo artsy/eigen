@@ -40,7 +40,7 @@ export const FairBoothPreviewHeader: React.SFC<Props> = ({
         </ImageAndTextWrapper>
       </TouchableOpacity>
       {/* TODO: Convert the width and height to a padding */}
-      <Box width={102} height={34} mr={1}>
+      <Box width={102} height={34}>
         <InvertedButton
           grayBorder={true}
           text={isFollowed ? "Following" : "Follow"}

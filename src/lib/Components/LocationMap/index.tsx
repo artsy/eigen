@@ -34,16 +34,6 @@ interface Props {
 }
 
 export class LocationMap extends React.Component<Props> {
-  get symbolLayerStyle() {
-    return Mapbox.StyleSheet.create({
-      symbol: {
-        iconSize: 1.4,
-        iconOffset: [0, 0],
-        iconAllowOverlap: true,
-      },
-    })
-  }
-
   render() {
     const { location, partnerName } = this.props
     const { lat, lng } = location.coordinates || { lat: null, lng: null }

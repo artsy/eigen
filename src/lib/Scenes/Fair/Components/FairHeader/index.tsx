@@ -24,20 +24,10 @@ interface State {
   isSavedFairStateUpdating: boolean
 }
 
-const BackgroundImage = styled(OpaqueImageView)<{ width: number }>`
-  flex: 1;
-  height: 530;
-  align-self: center;
-  flex-direction: row;
-  align-items: center;
-`
-
-// Set background color of overlay based on logo color
-const Overlay = styled.View`
-  background-color: rgba(0, 0, 0, 0.3);
-  width: 100%;
-  height: 100%;
+const BackgroundImage = styled(OpaqueImageView)<{ height: number; width: number }>`
   position: absolute;
+  height: 100%;
+  width: 100%;
 `
 
 const Logo = styled(Image)`
@@ -153,14 +143,15 @@ export class FairHeader extends React.Component<Props, State> {
       fair: { image, name, profile, start_at, end_at },
     } = this.props
     const { width: screenWidth } = Dimensions.get("window")
+    const imageHeight = 567
     const { isSavedFairStateUpdating } = this.state
 
     return (
       <>
-        <BackgroundImage imageURL={image.url} aspectRatio={image.aspect_ratio} width={screenWidth}>
-          <Overlay />
-          <Flex flexDirection="row" justifyContent="center" alignItems="center" px={2}>
-            <Flex flexDirection="column" flexGrow={1}>
+        <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
+          <BackgroundImage imageURL={image.url} height={imageHeight} width={screenWidth} />
+          <Flex flexDirection="row" justifyContent="center" alignItems="center" px={2} height={imageHeight}>
+            <Flex alignItems="center" flexDirection="column" flexGrow={1}>
               {profile && <Logo source={{ uri: profile.icon.url }} />}
               <Sans size="3t" weight="medium" textAlign="center" color="white100">
                 {name}
@@ -170,10 +161,10 @@ export class FairHeader extends React.Component<Props, State> {
               </Sans>
             </Flex>
           </Flex>
-          <CountdownContainer>
-            <CountdownTimer startAt={start_at} endAt={end_at} />
-          </CountdownContainer>
-        </BackgroundImage>
+        </Box>
+        <CountdownContainer>
+          <CountdownTimer startAt={start_at} endAt={end_at} />
+        </CountdownContainer>
         <Spacer mt={2} />
         <Box mx={2}>{this.getContextualDetails()}</Box>
         <Box px={2} width={375} height={95}>

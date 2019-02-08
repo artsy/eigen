@@ -11,6 +11,10 @@ export type FairDetail_fair = {
     readonly name: string | null;
     readonly hours: string | null;
     readonly location: ({
+        readonly coordinates: ({
+            readonly lat: number | null;
+            readonly lng: number | null;
+        }) | null;
         readonly " $fragmentRefs": LocationMap_location$ref;
     }) | null;
     readonly profile: ({
@@ -26,6 +30,13 @@ export type FairDetail_fair = {
             readonly cursor: string;
             readonly node: ({
                 readonly id: string;
+                readonly artworks_connection: ({
+                    readonly edges: ReadonlyArray<({
+                        readonly node: ({
+                            readonly id: string;
+                        }) | null;
+                    }) | null> | null;
+                }) | null;
                 readonly " $fragmentRefs": FairBoothPreview_show$ref;
             }) | null;
         }) | null> | null;
@@ -117,6 +128,31 @@ return {
           "name": "LocationMap_location",
           "args": null
         },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "coordinates",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "LatLng",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "lat",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "lng",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
         v2
       ]
     },
@@ -201,6 +237,48 @@ return {
               "selections": [
                 v0,
                 {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "artworks_connection",
+                  "storageKey": "artworks_connection(first:4)",
+                  "args": [
+                    {
+                      "kind": "Literal",
+                      "name": "first",
+                      "value": 4,
+                      "type": "Int"
+                    }
+                  ],
+                  "concreteType": "ArtworkConnection",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "LinkedField",
+                      "alias": null,
+                      "name": "edges",
+                      "storageKey": null,
+                      "args": null,
+                      "concreteType": "ArtworkEdge",
+                      "plural": true,
+                      "selections": [
+                        {
+                          "kind": "LinkedField",
+                          "alias": null,
+                          "name": "node",
+                          "storageKey": null,
+                          "args": null,
+                          "concreteType": "Artwork",
+                          "plural": false,
+                          "selections": [
+                            v0,
+                            v2
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
                   "kind": "FragmentSpread",
                   "name": "FairBoothPreview_show",
                   "args": null
@@ -223,5 +301,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '832f0d4ecbe109ad940215a63ea6d7f7';
+(node as any).hash = '0919f2e7131809a5159b757b895d32a5';
 export default node;
