@@ -2,21 +2,21 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FairHeader_fair$ref } from "./FairHeader_fair.graphql";
-export type FairHeaderTestsQueryVariables = {};
-export type FairHeaderTestsQueryResponse = {
+export type indexTestsFairHeaderQueryVariables = {};
+export type indexTestsFairHeaderQueryResponse = {
     readonly fair: ({
         readonly " $fragmentRefs": FairHeader_fair$ref;
     }) | null;
 };
-export type FairHeaderTestsQuery = {
-    readonly response: FairHeaderTestsQueryResponse;
-    readonly variables: FairHeaderTestsQueryVariables;
+export type indexTestsFairHeaderQuery = {
+    readonly response: indexTestsFairHeaderQueryResponse;
+    readonly variables: indexTestsFairHeaderQueryVariables;
 };
 
 
 
 /*
-query FairHeaderTestsQuery {
+query indexTestsFairHeaderQuery {
   fair(id: "sofa-chicago-2018") {
     ...FairHeader_fair
     __id
@@ -75,8 +75,10 @@ fragment FairHeader_fair on Fair {
       width
       url
     }
-    name
     __id
+    id
+    name
+    is_followed
   }
   start_at
   end_at
@@ -139,13 +141,13 @@ v6 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "FairHeaderTestsQuery",
-  "id": "c042912a129073b2a3cdb99c89e96222",
+  "name": "indexTestsFairHeaderQuery",
+  "id": "f7356d0960d41a2f3174aec5819e817e",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "FairHeaderTestsQuery",
+    "name": "indexTestsFairHeaderQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -171,7 +173,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "FairHeaderTestsQuery",
+    "name": "indexTestsFairHeaderQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -382,8 +384,16 @@ return {
                   v6
                 ]
               },
+              v1,
+              v2,
               v3,
-              v1
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "is_followed",
+                "args": null,
+                "storageKey": null
+              }
             ]
           },
           {
@@ -407,5 +417,5 @@ return {
   }
 };
 })();
-(node as any).hash = '03c9b173327b501b47b97a6f6817238a';
+(node as any).hash = '5ef9b6e4aa7c6762bd2dd66872aa8eb0';
 export default node;

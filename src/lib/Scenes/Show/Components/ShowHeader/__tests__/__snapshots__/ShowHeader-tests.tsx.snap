@@ -384,6 +384,7 @@ Array [
             "borderRadius": 2,
             "borderWidth": 1,
             "flex": 1,
+            "height": undefined,
             "justifyContent": "center",
           }
         }
