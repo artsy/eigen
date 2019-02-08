@@ -119,8 +119,10 @@ fragment FairHeader_fair on Fair {
       width
       url
     }
-    name
     __id
+    id
+    name
+    is_followed
   }
   start_at
   end_at
@@ -338,7 +340,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairDetailTestsQuery",
-  "id": "e7091d2817ce11a9daac0942d4834105",
+  "id": "711bd89a4ad28874d53c8c1046322d25",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -418,8 +420,16 @@ return {
                   v4
                 ]
               },
+              v1,
+              v2,
               v5,
-              v1
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "is_followed",
+                "args": null,
+                "storageKey": null
+              }
             ]
           },
           v2,

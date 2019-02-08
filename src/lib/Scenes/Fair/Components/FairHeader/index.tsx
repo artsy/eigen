@@ -1,13 +1,14 @@
 import { Box, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
-import { InvertedButton } from "lib/Components/Buttons"
+import { FairHeaderMutation } from "__generated__/FairHeaderMutation.graphql"
+import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 import moment from "moment"
 import React from "react"
 import { Dimensions, Image } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { CountdownTimer } from "./CountdownTimer"
 
@@ -16,6 +17,11 @@ interface Props {
   onSaveShowPressed?: () => Promise<void>
   viewAllExhibitors: () => void
   viewAllArtists: () => void
+  relay: RelayProp
+}
+
+interface State {
+  isSavedFairStateUpdating: boolean
 }
 
 const BackgroundImage = styled(OpaqueImageView)<{ height: number; width: number }>`
@@ -41,7 +47,9 @@ const CountdownContainer = styled.View`
   width: 100%;
 `
 
-export class FairHeader extends React.Component<Props> {
+export class FairHeader extends React.Component<Props, State> {
+  state = { isSavedFairStateUpdating: false }
+
   getContextualDetails() {
     const { viewAllArtists, viewAllExhibitors } = this.props
     const { artists_names, counts, partner_names } = this.props.fair
@@ -75,12 +83,68 @@ export class FairHeader extends React.Component<Props> {
     Switchboard.presentNavigationViewController(this, url)
   }
 
+  handleSaveFair() {
+    const {
+      relay,
+      fair: {
+        profile: { __id: fairProfileID, id: fairID, is_followed: isFairFollowed },
+      },
+    } = this.props
+
+    this.setState(
+      {
+        isSavedFairStateUpdating: true,
+      },
+      () => {
+        if (fairProfileID) {
+          return commitMutation<FairHeaderMutation>(relay.environment, {
+            onCompleted: () => {
+              this.setState({
+                isSavedFairStateUpdating: false,
+              })
+            },
+            mutation: graphql`
+              mutation FairHeaderMutation($input: FollowProfileInput!) {
+                followProfile(input: $input) {
+                  profile {
+                    id
+                    is_followed
+                    __id
+                  }
+                }
+              }
+            `,
+            variables: {
+              input: {
+                profile_id: fairProfileID,
+                unfollow: isFairFollowed,
+              },
+            },
+            optimisticResponse: {
+              followProfile: {
+                profile: {
+                  __id: fairProfileID,
+                  is_followed: !isFairFollowed,
+                  id: fairID,
+                },
+              },
+            },
+            updater: store => {
+              store.get(fairProfileID).setValue(!isFairFollowed, "is_followed")
+            },
+          })
+        }
+      }
+    )
+  }
+
   render() {
     const {
       fair: { image, name, profile, start_at, end_at },
     } = this.props
     const { width: screenWidth } = Dimensions.get("window")
     const imageHeight = 567
+    const { isSavedFairStateUpdating } = this.state
 
     return (
       <>
@@ -105,8 +169,15 @@ export class FairHeader extends React.Component<Props> {
         <Box mx={2}>{this.getContextualDetails()}</Box>
         <Box px={2}>
           <Spacer m={2} mt={1} />
-          <InvertedButton text="Save fair" />
-          <Spacer mt={2} />
+          <InvertedButton
+            text={profile.is_followed ? "Fair Saved" : "Save Fair"}
+            onPress={() => this.handleSaveFair()}
+            selected={profile.is_followed}
+            inProgress={isSavedFairStateUpdating}
+            grayBorder={true}
+            buttonSize={"large"}
+          />
+          <Spacer m={1} />
         </Box>
       </>
     )
@@ -162,7 +233,10 @@ export const FairHeaderContainer = createFragmentContainer(
           width
           url
         }
+        __id
+        id
         name
+        is_followed
       }
 
       start_at

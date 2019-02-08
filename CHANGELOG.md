@@ -40,6 +40,7 @@
 - Fix bug with Markdown renderer - luc
 - Refactors Show Header view to use EntityList - luc
 - Fix fair booth view by adding query renderer - luc
+- Enable saving fairs in Fair header view - ashley
 - Moves Description and View more information below map - kieran
 - Decreases size of pin slightly - kieran
 - Resizes fair banner to be larger - kieran
