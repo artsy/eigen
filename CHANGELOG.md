@@ -40,6 +40,7 @@
 - Fix bug with Markdown renderer - luc
 - Refactors Show Header view to use EntityList - luc
 - Fix fair booth view by adding query renderer - luc
+- Adds logging for relay queries and metaphysics extensions used in query - luc
 
 ### 1.8.1
 
