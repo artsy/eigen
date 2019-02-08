@@ -87,7 +87,7 @@ export class FairHeader extends React.Component<Props, State> {
     const {
       relay,
       fair: {
-        profile: { __id: fairProfile, id: fairID, is_followed: isFairFollowed },
+        profile: { __id: fairProfileID, id: fairID, is_followed: isFairFollowed },
       },
     } = this.props
 
@@ -96,7 +96,7 @@ export class FairHeader extends React.Component<Props, State> {
         isSavedFairStateUpdating: true,
       },
       () => {
-        if (fairProfile) {
+        if (fairProfileID) {
           return commitMutation<FairHeaderMutation>(relay.environment, {
             onCompleted: () => {
               this.setState({
@@ -116,21 +116,21 @@ export class FairHeader extends React.Component<Props, State> {
             `,
             variables: {
               input: {
-                profile_id: fairProfile,
+                profile_id: fairProfileID,
                 unfollow: isFairFollowed,
               },
             },
             optimisticResponse: {
               followProfile: {
                 profile: {
-                  __id: fairProfile,
+                  __id: fairProfileID,
                   is_followed: !isFairFollowed,
                   id: fairID,
                 },
               },
             },
             updater: store => {
-              store.get(fairProfile).setValue(!isFairFollowed, "is_followed")
+              store.get(fairProfileID).setValue(!isFairFollowed, "is_followed")
             },
           })
         }
