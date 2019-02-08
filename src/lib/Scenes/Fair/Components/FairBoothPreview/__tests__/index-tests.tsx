@@ -16,7 +16,7 @@ describe("FairBoothPreview", () => {
         </Theme>
       ),
       query: graphql`
-        query indexTestsQuery {
+        query indexTestsFairBothPreviewQuery {
           show(id: "abxy-blk-and-blue") {
             ...FairBoothPreview_show
           }

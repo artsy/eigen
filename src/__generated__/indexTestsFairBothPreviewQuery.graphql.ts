@@ -2,21 +2,21 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FairBoothPreview_show$ref } from "./FairBoothPreview_show.graphql";
-export type indexTestsQueryVariables = {};
-export type indexTestsQueryResponse = {
+export type indexTestsFairBothPreviewQueryVariables = {};
+export type indexTestsFairBothPreviewQueryResponse = {
     readonly show: ({
         readonly " $fragmentRefs": FairBoothPreview_show$ref;
     }) | null;
 };
-export type indexTestsQuery = {
-    readonly response: indexTestsQueryResponse;
-    readonly variables: indexTestsQueryVariables;
+export type indexTestsFairBothPreviewQuery = {
+    readonly response: indexTestsFairBothPreviewQueryResponse;
+    readonly variables: indexTestsFairBothPreviewQueryVariables;
 };
 
 
 
 /*
-query indexTestsQuery {
+query indexTestsFairBothPreviewQuery {
   show(id: "abxy-blk-and-blue") {
     ...FairBoothPreview_show
     __id
@@ -181,13 +181,13 @@ v8 = [
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "indexTestsQuery",
-  "id": "a1f19326589d225d20480f3fb7d22aee",
+  "name": "indexTestsFairBothPreviewQuery",
+  "id": "b9ed91b34cd32449f6472fd33e51ccbb",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "indexTestsQuery",
+    "name": "indexTestsFairBothPreviewQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -213,7 +213,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "indexTestsQuery",
+    "name": "indexTestsFairBothPreviewQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -560,5 +560,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'ad878fe9584b1504d061c5e04f9a24b3';
+(node as any).hash = 'bc73543ff24fdb5c115822d142772bba';
 export default node;
