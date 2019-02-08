@@ -55,7 +55,8 @@ export class Fair extends React.Component<Props> {
   }
 
   handleViewFairBoothPressed = props => {
-    this.navigate({ component: FairBoothScreen, props: { ...props, showID: props.show.id } })
+    const id = props.show ? props.show.id : props.id
+    this.navigate({ component: FairBoothScreen, props: { ...props, showID: id } })
   }
 
   handleViewFairBoothArtistsPressed = props => {

@@ -33,12 +33,12 @@ fragment FairHeader_fair on Fair {
   partner_names: shows_connection(first: 2) {
     edges {
       node {
+        id
         partner {
           __typename
           ... on Partner {
             profile {
               name
-              href
               __id
             }
           }
@@ -129,12 +129,7 @@ v5 = {
   "args": null,
   "storageKey": null
 },
-v6 = [
-  v3,
-  v5,
-  v1
-],
-v7 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
@@ -145,7 +140,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairHeaderTestsQuery",
-  "id": "d48982f330170958a72e165930b8453e",
+  "id": "c042912a129073b2a3cdb99c89e96222",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -242,6 +237,7 @@ return {
                     "concreteType": "Show",
                     "plural": false,
                     "selections": [
+                      v2,
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -271,7 +267,10 @@ return {
                                 "args": null,
                                 "concreteType": "Profile",
                                 "plural": false,
-                                "selections": v6
+                                "selections": [
+                                  v3,
+                                  v1
+                                ]
                               }
                             ]
                           }
@@ -310,7 +309,11 @@ return {
                     "args": null,
                     "concreteType": "Artist",
                     "plural": false,
-                    "selections": v6
+                    "selections": [
+                      v3,
+                      v5,
+                      v1
+                    ]
                   }
                 ]
               }
@@ -339,7 +342,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v7
+              v6
             ]
           },
           {
@@ -376,7 +379,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v7
+                  v6
                 ]
               },
               v3,
