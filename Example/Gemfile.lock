@@ -1,7 +1,7 @@
 GIT
-  remote: https://github.com/ashfurrow/cocoapods-check.git
-  revision: ded2d0195a902e54917bd935e5a015db1d6ef799
-  branch: ignore-dev-pods
+  remote: https://github.com/square/cocoapods-check.git
+  revision: f19086dee299c27b52453e5a87b011900b7f8ae0
+  branch: master
   specs:
     cocoapods-check (1.0.2)
       cocoapods (~> 1.0)
