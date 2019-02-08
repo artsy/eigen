@@ -16,10 +16,6 @@ const Map = styled(Mapbox.MapView)`
   height: 120;
 `
 
-const StyledSerif = styled(Serif)`
-  line-height: 18px;
-`
-
 const MapWrapper = styled(Flex)`
   border-width: 1px;
   border-color: ${color("black10")};
@@ -66,19 +62,19 @@ export class LocationMap extends React.Component<Props> {
             </Sans>
           )}
           {address && (
-            <StyledSerif size="3" color="black60" textAlign="center">
+            <Serif size="3t" color="black60" textAlign="center">
               {address}
-            </StyledSerif>
+            </Serif>
           )}
           {address_2 && (
-            <StyledSerif size="3" color="black60" textAlign="center">
+            <Serif size="3t" color="black60" textAlign="center">
               {address_2}
-            </StyledSerif>
+            </Serif>
           )}
           {(city || postal_code) && (
-            <StyledSerif size="3" color="black60" textAlign="center">
+            <Serif size="3t" color="black60" textAlign="center">
               {cityAndPostalCode()}
-            </StyledSerif>
+            </Serif>
           )}
         </Box>
       )

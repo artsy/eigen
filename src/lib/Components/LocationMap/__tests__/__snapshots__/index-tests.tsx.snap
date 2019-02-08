@@ -63,22 +63,17 @@ Array [
         ellipsizeMode="tail"
         fontFamily="AGaramondPro-Regular"
         fontSize="16px"
-        lineHeight="24px"
+        lineHeight="20px"
         style={
           Array [
             Object {
               "color": "#666",
               "fontFamily": "AGaramondPro-Regular",
               "fontSize": 16,
-              "lineHeight": 24,
+              "lineHeight": 20,
               "textAlign": "center",
             },
-            Array [
-              Object {
-                "lineHeight": 18,
-              },
-              undefined,
-            ],
+            undefined,
           ]
         }
         textAlign="center"
@@ -94,22 +89,17 @@ Array [
         ellipsizeMode="tail"
         fontFamily="AGaramondPro-Regular"
         fontSize="16px"
-        lineHeight="24px"
+        lineHeight="20px"
         style={
           Array [
             Object {
               "color": "#666",
               "fontFamily": "AGaramondPro-Regular",
               "fontSize": 16,
-              "lineHeight": 24,
+              "lineHeight": 20,
               "textAlign": "center",
             },
-            Array [
-              Object {
-                "lineHeight": 18,
-              },
-              undefined,
-            ],
+            undefined,
           ]
         }
         textAlign="center"
