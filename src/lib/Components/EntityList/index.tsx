@@ -28,7 +28,7 @@ export const EntityList: React.SFC<EntityListProps> = ({
   const shouldShowMore = count > displayedItems
 
   return (
-    <Flex flexDirection="row" flexWrap="wrap" mb="8">
+    <Flex flexDirection="row" flexWrap="wrap">
       <Sans size="3" lineHeight="19">
         {prefix + " "}
       </Sans>

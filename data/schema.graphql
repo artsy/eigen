@@ -21,6 +21,9 @@ input AddInitialOfferToOrderInput {
 
   # Offer price
   offerPrice: MoneyInput
+
+  # Offer note
+  note: String
   clientMutationId: String
 }
 
@@ -112,7 +115,7 @@ enum ArticleSorts {
   PUBLISHED_AT_DESC
 }
 
-type Artist implements Node {
+type Artist implements Node & Searchable {
   # A globally unique ID.
   __id: ID!
 
@@ -252,6 +255,7 @@ type Artist implements Node {
   has_metadata: Boolean
   hometown: String
   image: Image
+  imageUrl: String
   initials(length: Int = 3): String
   insights: [ArtistInsight]
   is_consignable: Boolean
@@ -261,6 +265,7 @@ type Artist implements Node {
   is_followed: Boolean
   is_public: Boolean
   is_shareable: Boolean
+  displayLabel: String
   location: String
   meta: ArtistMeta
   nationality: String
@@ -336,6 +341,7 @@ type Artist implements Node {
   statuses: ArtistStatuses
   highlights: ArtistHighlights
   years: String
+  marketingCollections: [MarketingCollection]
 }
 
 enum ArtistArtworksFilters {
@@ -442,7 +448,7 @@ type ArtistInsight {
   entities: [String]
 }
 
-type ArtistItem implements Node {
+type ArtistItem implements Node & Searchable {
   # A globally unique ID.
   __id: ID!
 
@@ -582,6 +588,7 @@ type ArtistItem implements Node {
   has_metadata: Boolean
   hometown: String
   image: Image
+  imageUrl: String
   initials(length: Int = 3): String
   insights: [ArtistInsight]
   is_consignable: Boolean
@@ -591,6 +598,7 @@ type ArtistItem implements Node {
   is_followed: Boolean
   is_public: Boolean
   is_shareable: Boolean
+  displayLabel: String
   location: String
   meta: ArtistMeta
   nationality: String
@@ -736,7 +744,7 @@ type ArtistStatuses {
   shows: Boolean
 }
 
-type Artwork implements Node & Sellable {
+type Artwork implements Node & Searchable & Sellable {
   # A globally unique ID.
   __id: ID!
 
@@ -787,6 +795,7 @@ type Artwork implements Node & Sellable {
   highlights: [Highlighted]
   href: String
   image: Image
+  imageUrl: String
   image_rights: String
   image_title: String
   images(size: Int): [Image]
@@ -832,6 +841,7 @@ type Artwork implements Node & Sellable {
   is_shareable: Boolean
   is_sold: Boolean
   is_unique: Boolean
+  displayLabel: String
   layer(id: String): ArtworkLayer
   layers: [ArtworkLayer]
   literature(format: Format): String
@@ -1528,7 +1538,7 @@ type ArtworkInquiryEdge {
   cursor: String!
 }
 
-type ArtworkItem implements Node & Sellable {
+type ArtworkItem implements Node & Searchable & Sellable {
   # A globally unique ID.
   __id: ID!
 
@@ -1579,6 +1589,7 @@ type ArtworkItem implements Node & Sellable {
   highlights: [Highlighted]
   href: String
   image: Image
+  imageUrl: String
   image_rights: String
   image_title: String
   images(size: Int): [Image]
@@ -1624,6 +1635,7 @@ type ArtworkItem implements Node & Sellable {
   is_shareable: Boolean
   is_sold: Boolean
   is_unique: Boolean
+  displayLabel: String
   layer(id: String): ArtworkLayer
   layers: [ArtworkLayer]
   literature(format: Format): String
@@ -2051,6 +2063,9 @@ input buyerCounterOfferInput {
 
   # Offer price
   offerPrice: MoneyInput
+
+  # Offer note
+  note: String
   clientMutationId: String
 }
 
@@ -5368,6 +5383,9 @@ type Offer {
     # A tz database time zone, otherwise falls back to `X-TIMEZONE` header
     timezone: String
   ): String
+
+  # Offer note
+  note: String
 }
 
 # A connection to a list of items.
@@ -6533,6 +6551,12 @@ type Query {
     id: String!
   ): Artwork
 
+  # A subset of the metadata for an artwork at a specific time
+  artworkVersion(
+    # The ID of the ArtworkVersion
+    id: String!
+  ): ArtworkVersion
+
   # A list of Artworks
   artworks(ids: [String]): [Artwork]
 
@@ -6921,6 +6945,22 @@ type Query {
     sort: SaleSorts
   ): [Sale]
 
+  # Global search
+  search(
+    # Search query to perform. Required.
+    query: String!
+
+    # Entities to include in search. Default: [ARTIST, ARTWORK].
+    entities: [SearchEntity]
+
+    # Mode of search to exceute. Default: SITE.
+    mode: SearchMode
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SearchableConnection
+
   # The schema for difference micro-service settings
   services: Services
 
@@ -6955,6 +6995,9 @@ type Query {
   user(
     # Email to search for user by
     email: String
+
+    # ID of the user
+    id: String
   ): User
 
   # A list of Users
@@ -7016,7 +7059,7 @@ type Query {
 
   # Find partners by ID
   _unused_gravity_partners(ids: [ID]!): [DoNotUseThisPartner]
-  marketingCollections: [MarketingCollection!]!
+  marketingCollections(artistID: String): [MarketingCollection!]!
   marketingCategories: [MarketingCollectionCategory!]!
   marketingCollection(slug: String!): MarketingCollection
 }
@@ -7511,6 +7554,66 @@ type SaveArtworkPayload {
   clientMutationId: String
 }
 
+# An object that may be searched for
+interface Searchable {
+  displayLabel: String
+  imageUrl: String
+  href: String
+}
+
+# A connection to a list of items.
+type SearchableConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [SearchableEdge]
+  pageCursors: PageCursors
+  totalCount: Int
+}
+
+# An edge in a connection.
+type SearchableEdge {
+  # The item at the end of the edge
+  node: Searchable
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type SearchableItem implements Node & Searchable {
+  __id: ID!
+
+  # A type-specific ID.
+  id: String!
+
+  # A type-specific Gravity Mongo Document ID.
+  _id: String!
+  displayLabel: String
+  imageUrl: String
+  href: String
+  searchableType: String
+}
+
+enum SearchEntity {
+  ARTIST
+  ARTWORK
+  ARTICLE
+  CITY
+  COLLECTION
+  FAIR
+  FEATURE
+  GENE
+  PROFILE
+  SALE
+  TAG
+}
+
+enum SearchMode {
+  AUTOSUGGEST
+  SITE
+}
+
 # A piece that can be sold
 interface Sellable {
   dimensions: dimensions
@@ -7544,6 +7647,9 @@ input sellerCounterOfferInput {
 
   # Offer price
   offerPrice: MoneyInput
+
+  # Offer note
+  note: String
   clientMutationId: String
 }
 
@@ -7828,6 +7934,9 @@ type Show implements Node {
 
   # An image representing the show, or a sharable image from an artwork in the show
   meta_image: Image
+
+  # Is the user following this show
+  is_followed: Boolean
 
   # The exhibition title
   name: String
@@ -8324,6 +8433,12 @@ type Viewer {
     id: String!
   ): Artwork
 
+  # A subset of the metadata for an artwork at a specific time
+  artworkVersion(
+    # The ID of the ArtworkVersion
+    id: String!
+  ): ArtworkVersion
+
   # A list of Artworks
   artworks(ids: [String]): [Artwork]
 
@@ -8712,6 +8827,22 @@ type Viewer {
     sort: SaleSorts
   ): [Sale]
 
+  # Global search
+  search(
+    # Search query to perform. Required.
+    query: String!
+
+    # Entities to include in search. Default: [ARTIST, ARTWORK].
+    entities: [SearchEntity]
+
+    # Mode of search to exceute. Default: SITE.
+    mode: SearchMode
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): SearchableConnection
+
   # The schema for difference micro-service settings
   services: Services
 
@@ -8746,6 +8877,9 @@ type Viewer {
   user(
     # Email to search for user by
     email: String
+
+    # ID of the user
+    id: String
   ): User
 
   # A list of Users

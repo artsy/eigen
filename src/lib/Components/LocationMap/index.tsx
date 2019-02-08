@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
+import { Box, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import { Pin } from "lib/Icons/Pin"
@@ -34,40 +34,27 @@ interface Props {
 }
 
 export class LocationMap extends React.Component<Props> {
-  get symbolLayerStyle() {
-    return Mapbox.StyleSheet.create({
-      symbol: {
-        iconSize: 1.4,
-        iconOffset: [0, 0],
-        iconAllowOverlap: true,
-      },
-    })
-  }
-
   render() {
     const { location, partnerName } = this.props
     const { lat, lng } = location.coordinates || { lat: null, lng: null }
-    const { address_2, address, id } = location
+    const { address_2, address, id, postal_code, city } = location
 
     if (!lat || !lng) {
       return null
     }
 
-    return (
-      <MapWrapper>
-        <Map
-          key={lng}
-          styleURL={ArtsyMapStyleURL}
-          centerCoordinate={[lng, lat]}
-          zoomLevel={14}
-          logoEnabled={false}
-          scrollEnabled={false}
-          attributionEnabled={false}
-        >
-          <Mapbox.PointAnnotation id={id} coordinate={[lng, lat]}>
-            <Pin />
-          </Mapbox.PointAnnotation>
-        </Map>
+    const cityAndPostalCode = () => {
+      if (city && postal_code) {
+        return city + ", " + postal_code
+      } else if (city) {
+        return city
+      } else if (postal_code) {
+        return postal_code
+      }
+    }
+
+    const renderAddress = () => {
+      return (
         <Box my={2}>
           {partnerName && (
             <Sans size="3" color="black100" textAlign="center" weight="medium">
@@ -75,17 +62,44 @@ export class LocationMap extends React.Component<Props> {
             </Sans>
           )}
           {address && (
-            <Serif size="3" color="black60" textAlign="center">
+            <Serif size="3t" color="black60" textAlign="center">
               {address}
             </Serif>
           )}
           {address_2 && (
-            <Serif size="3" color="black60" textAlign="center">
+            <Serif size="3t" color="black60" textAlign="center">
               {address_2}
             </Serif>
           )}
+          {(city || postal_code) && (
+            <Serif size="3t" color="black60" textAlign="center">
+              {cityAndPostalCode()}
+            </Serif>
+          )}
         </Box>
-      </MapWrapper>
+      )
+    }
+
+    return (
+      <>
+        <MapWrapper>
+          <Map
+            key={lng}
+            styleURL={ArtsyMapStyleURL}
+            centerCoordinate={[lng, lat]}
+            zoomLevel={14}
+            logoEnabled={false}
+            scrollEnabled={false}
+            attributionEnabled={false}
+          >
+            <Mapbox.PointAnnotation id={id} coordinate={[lng, lat]}>
+              <Pin />
+            </Mapbox.PointAnnotation>
+          </Map>
+          {renderAddress()}
+        </MapWrapper>
+        <Spacer m={1} />
+      </>
     )
   }
 }
@@ -99,7 +113,7 @@ export const LocationMapContainer = createFragmentContainer(
       city
       address
       address_2
-      display
+      postal_code
       coordinates {
         lat
         lng

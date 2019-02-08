@@ -43,7 +43,10 @@ export type FairHeader_fair = {
             readonly width: number | null;
             readonly url: string | null;
         }) | null;
+        readonly __id: string;
+        readonly id: string;
         readonly name: string | null;
+        readonly is_followed: boolean | null;
     }) | null;
     readonly start_at: string | null;
     readonly end_at: string | null;
@@ -292,8 +295,16 @@ return {
             v6
           ]
         },
+        v3,
+        v0,
         v1,
-        v3
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "is_followed",
+          "args": null,
+          "storageKey": null
+        }
       ]
     },
     {
@@ -314,5 +325,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '30ef446d95b38d597353e6ffe04c0cad';
+(node as any).hash = '7a991978fc157d2b18213253edd4abc9';
 export default node;

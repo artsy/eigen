@@ -18,7 +18,7 @@
 
 - Styles Fair view to match design - kieran
 - Removes All Artworks from artwork preview - kieran
-- Adds booth number to fair booth view ( https://artsyproduct.atlassian.net/browse/LD-134 ) - kieran
+- Adds booth number to fair booth view - kieran
 - Adds item separator to FairBooth - kieran
 - Adds counts to Artworks and Artist previews for FairBooth - kieran
 - Restyles CaretButton to reflect design - kieran
@@ -40,6 +40,16 @@
 - Fix bug with Markdown renderer - luc
 - Refactors Show Header view to use EntityList - luc
 - Fix fair booth view by adding query renderer - luc
+- Enable saving fairs in Fair header view - ashley
+- Moves Description and View more information below map - kieran
+- Decreases size of pin slightly - kieran
+- Resizes fair banner to be larger - kieran
+- Adds artwork count to view all in booth preview - kieran
+- Checks coords before rending map & checks for artworks before render fair booth preview - kieran
+- Adds save functionality to show - kieran
+- Adds city and zip code to show address - kieran
+- Checks for works before rendering works section - kieran
+- Checks for hours before rending hours section - kieran
 - Adds logging for relay queries and metaphysics extensions used in query - luc
 
 ### 1.8.1
@@ -93,6 +103,11 @@
 - Adds Map and City view container - luc
 - Adds native unit test suite and CI - ash
 - Add FairMoreInfo screen - roop and javamonn
+- Adds shows list to Show View - ashley
+- Adds fair exhibitors to Fair view - ashley
+- Reordering Fair sections to match design specs -ashley
+- Add contextual data to Fair view - ashley
+- Enable navigation on contextual data in Show view - ashley
 
 ### 1.7.6
 
@@ -127,11 +142,6 @@
 - Adds Fair detail view header components - luc
 - Adds MoreInfo screen to show detail view - javamonn
 - Clean up Jest log output, update relay-mock-network-layer - javamonn
-- Adds shows list to Show View - ashley
-- Adds fair exhibitors to Fair view - ashley
-- Reordering Fair sections to match design specs -ashley
-- Add contextual data to Fair view - ashley
-- Enable navigation on contextual data in Show view - ashley
 - Fair performance enhancements - ashley
 
 ### 1.7.1
