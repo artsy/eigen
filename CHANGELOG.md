@@ -49,6 +49,7 @@
 - Adds city and zip code to show address - kieran
 - Checks for works before rendering works section - kieran
 - Checks for hours before rending hours section - kieran
+- Parter names in entitylist now link to LD view - Kieran
 
 ### 1.8.1
 
