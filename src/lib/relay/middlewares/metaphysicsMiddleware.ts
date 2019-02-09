@@ -23,7 +23,7 @@ export function metaphysicsExtensionsLoggerMiddleware() {
         const apis = _.omit(requests, ["stitching"])
         const requestCount = Object.keys(apis)
           .map(k => Object.keys(requests[k].requests).length) // API requests
-          .reduce((a, c) => a + c) // Add them all up
+          .reduce((a, c) => a + c, 0) // Add them all up
 
         // Not telling anyone off, but over 15 is probably a point
         // where you want that highlighted.
