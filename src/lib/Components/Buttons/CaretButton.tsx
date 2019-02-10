@@ -15,7 +15,7 @@ export const CaretButton: React.SFC<Props> = ({ text, onPress }) => {
         <Sans size="3t" weight="medium">
           {text}
         </Sans>
-        <Box ml={1}>
+        <Box ml={0.5}>
           <ChevronIcon />
         </Box>
       </Flex>
