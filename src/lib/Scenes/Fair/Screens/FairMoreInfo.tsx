@@ -8,6 +8,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
+import { Fair } from "../Fair"
 
 const ListHeaderText = styled(Serif)`
   height: 36px;
@@ -46,13 +47,15 @@ export class FairMoreInfo extends React.Component<Props, State> {
     //  data: {},
     // })
 
-    sections.push({
-      type: "links",
-      data: {
-        links: fair.links,
-        ticketsLink: fair.ticketsLink,
-      },
-    })
+    if (fair.organizer || fair.ticketsLink) {
+      sections.push({
+        type: "links",
+        data: {
+          links: fair.organizer,
+          ticketsLink: fair.ticketsLink,
+        },
+      })
+    }
 
     this.setState({ sections })
   }
@@ -77,17 +80,14 @@ export class FairMoreInfo extends React.Component<Props, State> {
       case "links":
         return (
           <>
-            {data.links && (
-              <>
-                <CaretButton text="View fair site" onPress={() => this.openUrl(data.links)} />
-                <Spacer m={1} />
-              </>
-            )}
-            {data.ticketsLink && (
-              <>
-                <CaretButton text="Buy tickets" onPress={() => this.openUrl(data.ticketsLink)} />
-              </>
-            )}
+            {data.organizer &&
+              data.organizer.website(
+                <>
+                  <CaretButton text="View fair site" onPress={() => this.openUrl(data.organizer.website)} />
+                  <Spacer m={1} />
+                </>
+              )}
+            {data.ticketsLink && <CaretButton text="Buy tickets" onPress={() => this.openUrl(data.ticketsLink)} />}
           </>
         )
     }
@@ -104,6 +104,9 @@ export class FairMoreInfo extends React.Component<Props, State> {
               <ListHeaderText size="8" mt={12} px={2}>
                 About the fair
               </ListHeaderText>
+              <Box py={3} px={2}>
+                <Separator />
+              </Box>
             </>
           }
           ItemSeparatorComponent={this.renderItemSeparator}
@@ -120,7 +123,9 @@ export const FairMoreInfoRenderer: React.SFC<{ fairID: string }> = ({ fairID }) 
     query={graphql`
       query FairMoreInfoQuery($fairID: String!) {
         fair(id: $fairID) {
-          links
+          organizer {
+            website
+          }
           about
           ticketsLink
         }

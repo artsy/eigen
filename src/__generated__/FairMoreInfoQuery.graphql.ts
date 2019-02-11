@@ -6,7 +6,9 @@ export type FairMoreInfoQueryVariables = {
 };
 export type FairMoreInfoQueryResponse = {
     readonly fair: ({
-        readonly links: string | null;
+        readonly organizer: ({
+            readonly website: string | null;
+        }) | null;
         readonly about: string | null;
         readonly ticketsLink: string | null;
     }) | null;
@@ -23,7 +25,9 @@ query FairMoreInfoQuery(
   $fairID: String!
 ) {
   fair(id: $fairID) {
-    links
+    organizer {
+      website
+    }
     about
     ticketsLink
     __id
@@ -58,11 +62,22 @@ v1 = [
     "plural": false,
     "selections": [
       {
-        "kind": "ScalarField",
+        "kind": "LinkedField",
         "alias": null,
-        "name": "links",
+        "name": "organizer",
+        "storageKey": null,
         "args": null,
-        "storageKey": null
+        "concreteType": "organizer",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "website",
+            "args": null,
+            "storageKey": null
+          }
+        ]
       },
       {
         "kind": "ScalarField",
@@ -92,7 +107,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairMoreInfoQuery",
-  "id": "af7669110691bb6ead956db54ce4b40b",
+  "id": "c9e29749e65ae24c75b581d0e97c7171",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -111,5 +126,5 @@ return {
   }
 };
 })();
-(node as any).hash = '492a03aa463ac56e061915787f79f57f';
+(node as any).hash = 'b803554575aec82302903918192429ed';
 export default node;

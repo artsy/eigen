@@ -165,14 +165,6 @@ return {
               v1,
               {
                 "kind": "InlineFragment",
-                "type": "ExternalPartner",
-                "selections": [
-                  v2,
-                  v3
-                ]
-              },
-              {
-                "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
                   v2,
@@ -184,6 +176,14 @@ return {
                     "args": null,
                     "storageKey": null
                   }
+                ]
+              },
+              {
+                "kind": "InlineFragment",
+                "type": "ExternalPartner",
+                "selections": [
+                  v2,
+                  v3
                 ]
               }
             ]
