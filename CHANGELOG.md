@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.8.2
+
 - Styles Fair view to match design - kieran
 - Removes All Artworks from artwork preview - kieran
 - Adds booth number to fair booth view - kieran
