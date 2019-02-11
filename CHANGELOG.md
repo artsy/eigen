@@ -16,6 +16,9 @@
 
 ### Master
 
+- Checks in the view for fair.profile before rending profile values - kieran
+- Moves countdown timer higher on fair - kieran
+
 ### 1.8.2
 
 - Styles Fair view to match design - kieran
