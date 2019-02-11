@@ -86,11 +86,10 @@ export class ShowHeader extends React.Component<Props, State> {
       onViewAllArtistsPressed,
     } = this.props
     const hasImages = !!images.length
-    const noImagesPadding = windowHeight / 2 - 200
 
     return (
       <>
-        <Box px={2} pt={hasImages ? 3 : noImagesPadding} pb={hasImages ? 0 : noImagesPadding}>
+        <Box px={2} pt={3} pb={hasImages ? 0 : 4}>
           <Spacer m={2} />
           <Sans size="3" mb={0.5} weight="medium">
             {partner.name}
