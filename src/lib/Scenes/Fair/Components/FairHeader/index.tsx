@@ -30,6 +30,14 @@ const BackgroundImage = styled(OpaqueImageView)<{ height: number; width: number 
   width: 100%;
 `
 
+// Set background color of overlay based on logo color
+const Overlay = styled.View`
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+`
+
 const Logo = styled(Image)`
   width: 150;
   height: 150;
@@ -159,6 +167,7 @@ export class FairHeader extends React.Component<Props, State> {
       <>
         <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
           <BackgroundImage imageURL={image.url} height={imageHeight} width={screenWidth} />
+          <Overlay />
           <Flex flexDirection="row" justifyContent="center" alignItems="center" px={2} height={imageHeight}>
             <Flex alignItems="center" flexDirection="column" flexGrow={1}>
               {profile && <Logo source={{ uri: profile.icon.url }} />}
