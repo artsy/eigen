@@ -129,7 +129,7 @@ export class Detail extends React.Component<Props, State> {
         return <LocationMap {...data} />
       case "description":
         return (
-          <Box pb={2}>
+          <Box my={2}>
             <Serif size="3t">{data.description}</Serif>
           </Box>
         )

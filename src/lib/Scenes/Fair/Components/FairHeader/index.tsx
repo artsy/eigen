@@ -170,7 +170,7 @@ export class FairHeader extends React.Component<Props, State> {
         <Box px={2}>
           <Spacer m={2} mt={1} />
           <InvertedButton
-            text={profile.is_followed ? "Fair Saved" : "Save Fair"}
+            text={profile.is_followed ? "Fair saved" : "Save fair"}
             onPress={() => this.handleSaveFair()}
             selected={profile.is_followed}
             inProgress={isSavedFairStateUpdating}
