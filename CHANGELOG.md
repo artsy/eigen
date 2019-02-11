@@ -53,6 +53,7 @@
 - Parter names in entitylist now link to LD view - Kieran
 - Adds logging for relay queries and metaphysics extensions used in query - luc
 - Minor styling adjustments to Fair and Show - Kieran
+- Styles about fair and uses correct link for website - kieran
 
 ### 1.8.1
 
