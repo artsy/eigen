@@ -25,8 +25,6 @@ const ButtonWrapper = styled(Box)`
   height: 85;
 `
 
-const { height: windowHeight } = Dimensions.get("window")
-
 export class ShowHeader extends React.Component<Props, State> {
   state = { isFollowedSaving: false }
 
