@@ -65,7 +65,7 @@ export class FairDetail extends React.Component<Props, State> {
         type: "location",
         data: {
           location: fair.location,
-          partnerName: fair.profile.name,
+          partnerName: fair.profile ? fair.profile.name : fair.name,
           partnerType: PartnerType.fair,
         },
       })
