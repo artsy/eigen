@@ -50,7 +50,7 @@ const Logo = styled(Image)`
 
 const CountdownContainer = styled.View`
   position: absolute;
-  bottom: ${space(1)};
+  bottom: ${space(6)};
   left: 0;
   width: 100%;
 `
