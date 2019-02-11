@@ -50,6 +50,7 @@
 - Adds city and zip code to show address - kieran
 - Checks for works before rendering works section - kieran
 - Checks for hours before rending hours section - kieran
+- Parter names in entitylist now link to LD view - Kieran
 - Adds logging for relay queries and metaphysics extensions used in query - luc
 - Minor styling adjustments to Fair and Show - Kieran
 
@@ -71,6 +72,7 @@
 - Replace theme and icon on LocationMap - luc
 - Removes "View on Map" text from More Shows section in Show view - ashley
 - Adds more data marshalling for city view, sets up city scaffold - ash
+- Readds the overlay to fair banner image - kieran
 
 ### 1.8.0
 

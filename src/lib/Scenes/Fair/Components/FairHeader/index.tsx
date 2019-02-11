@@ -30,6 +30,14 @@ const BackgroundImage = styled(OpaqueImageView)<{ height: number; width: number 
   width: 100%;
 `
 
+// Set background color of overlay based on logo color
+const Overlay = styled.View`
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+`
+
 const Logo = styled(Image)`
   width: 150;
   height: 150;
@@ -55,7 +63,16 @@ export class FairHeader extends React.Component<Props, State> {
     const { artists_names, counts, partner_names } = this.props.fair
 
     const artistList = artists_names.edges.map(i => i.node).filter(Boolean)
-    const partnerList = partner_names.edges.map(i => i.node.partner.profile).filter(Boolean)
+    const partnerList = partner_names.edges
+      .map(i => {
+        if (i.node.partner && i.node.partner.profile && i.node.partner.profile.name) {
+          return {
+            href: "show/" + i.node.id,
+            name: i.node.partner.profile.name,
+          }
+        }
+      })
+      .filter(Boolean)
 
     return (
       <>
@@ -79,8 +96,8 @@ export class FairHeader extends React.Component<Props, State> {
     )
   }
 
-  handlePress = url => {
-    Switchboard.presentNavigationViewController(this, url)
+  handlePress = item => {
+    Switchboard.presentNavigationViewController(this, item)
   }
 
   handleSaveFair() {
@@ -150,6 +167,7 @@ export class FairHeader extends React.Component<Props, State> {
       <>
         <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
           <BackgroundImage imageURL={image.url} height={imageHeight} width={screenWidth} />
+          <Overlay />
           <Flex flexDirection="row" justifyContent="center" alignItems="center" px={2} height={imageHeight}>
             <Flex alignItems="center" flexDirection="column" flexGrow={1}>
               {profile && <Logo source={{ uri: profile.icon.url }} />}
@@ -199,11 +217,11 @@ export const FairHeaderContainer = createFragmentContainer(
       partner_names: shows_connection(first: 2) {
         edges {
           node {
+            id
             partner {
               ... on Partner {
                 profile {
                   name
-                  href
                 }
               }
             }

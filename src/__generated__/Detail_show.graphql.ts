@@ -51,14 +51,14 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "name",
   "args": null,
   "storageKey": null
 };
@@ -69,8 +69,12 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "FragmentSpread",
+      "name": "ShowArtworksPreview_show",
+      "args": null
+    },
     v0,
-    v1,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -134,7 +138,7 @@ return {
             }
           ]
         },
-        v2,
+        v1,
         {
           "kind": "FragmentSpread",
           "name": "LocationMap_location",
@@ -159,11 +163,7 @@ return {
       "name": "ShowHeader_show",
       "args": null
     },
-    {
-      "kind": "FragmentSpread",
-      "name": "ShowArtworksPreview_show",
-      "args": null
-    },
+    v2,
     {
       "kind": "FragmentSpread",
       "name": "ShowArtistsPreview_show",
@@ -208,19 +208,12 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v2,
-        {
-          "kind": "InlineFragment",
-          "type": "ExternalPartner",
-          "selections": [
-            v1
-          ]
-        },
+        v1,
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v1,
+            v2,
             {
               "kind": "ScalarField",
               "alias": null,
@@ -229,10 +222,17 @@ return {
               "storageKey": null
             }
           ]
+        },
+        {
+          "kind": "InlineFragment",
+          "type": "ExternalPartner",
+          "selections": [
+            v2
+          ]
         }
       ]
     },
-    v2
+    v1
   ]
 };
 })();
