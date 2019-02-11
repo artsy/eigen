@@ -38,7 +38,7 @@ for (const key in queryMap) {
 
 fs.writeFileSync(mpQueryMapFilename, JSON.stringify(mpQueryMap, null, 2))
 
-if (spawnSync("git diff --quiet", { shell: true, cwd: mpDir }).status !== 0) {
+if (JSON.stringify(queryMap) === JSON.stringify(mpQueryMap)) {
   // There are no changes
   // Clean up tmp folder
   sh("rm -rf tmp")
