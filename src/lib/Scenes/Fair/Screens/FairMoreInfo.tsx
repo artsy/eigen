@@ -8,7 +8,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
-import { Fair } from "../Fair"
 
 const ListHeaderText = styled(Serif)`
   height: 36px;

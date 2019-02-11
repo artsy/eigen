@@ -43,9 +43,6 @@ v1 = {
   "storageKey": null
 },
 v2 = [
-  v1
-],
-v3 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -59,6 +56,9 @@ v3 = [
       v0
     ]
   }
+],
+v3 = [
+  v1
 ];
 return {
   "kind": "Fragment",
@@ -131,27 +131,27 @@ return {
         v0,
         {
           "kind": "InlineFragment",
-          "type": "HomePageModuleContextSale",
-          "selections": v2
-        },
-        {
-          "kind": "InlineFragment",
-          "type": "HomePageModuleContextGene",
-          "selections": v2
-        },
-        {
-          "kind": "InlineFragment",
-          "type": "HomePageModuleContextFair",
+          "type": "HomePageModuleContextFollowedArtist",
           "selections": v2
         },
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextRelatedArtist",
+          "selections": v2
+        },
+        {
+          "kind": "InlineFragment",
+          "type": "HomePageModuleContextFair",
           "selections": v3
         },
         {
           "kind": "InlineFragment",
-          "type": "HomePageModuleContextFollowedArtist",
+          "type": "HomePageModuleContextGene",
+          "selections": v3
+        },
+        {
+          "kind": "InlineFragment",
+          "type": "HomePageModuleContextSale",
           "selections": v3
         }
       ]

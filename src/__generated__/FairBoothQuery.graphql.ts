@@ -283,13 +283,6 @@ v8 = {
   "storageKey": null
 },
 v9 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_biddable",
-  "args": null,
-  "storageKey": null
-},
-v10 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -321,31 +314,38 @@ v10 = {
     }
   ]
 },
-v11 = {
+v10 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "title",
   "args": null,
   "storageKey": null
 },
-v12 = {
+v11 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "date",
   "args": null,
   "storageKey": null
 },
-v13 = {
+v12 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "sale_message",
   "args": null,
   "storageKey": null
 },
-v14 = {
+v13 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_in_auction",
+  "args": null,
+  "storageKey": null
+},
+v14 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_biddable",
   "args": null,
   "storageKey": null
 },
@@ -609,19 +609,19 @@ return {
               v2,
               {
                 "kind": "InlineFragment",
-                "type": "ExternalPartner",
-                "selections": [
-                  v3,
-                  v6
-                ]
-              },
-              {
-                "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
                   v3,
                   v6,
                   v7
+                ]
+              },
+              {
+                "kind": "InlineFragment",
+                "type": "ExternalPartner",
+                "selections": [
+                  v3,
+                  v6
                 ]
               }
             ]
@@ -681,14 +681,14 @@ return {
             "concreteType": "Artwork",
             "plural": true,
             "selections": [
-              v9,
               v2,
+              v6,
+              v9,
               v10,
               v11,
               v12,
               v13,
               v14,
-              v6,
               v15,
               v16,
               v18,
@@ -892,15 +892,15 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          v15,
                           v6,
+                          v2,
+                          v9,
                           v10,
                           v11,
                           v12,
                           v13,
                           v14,
-                          v9,
-                          v2,
+                          v15,
                           v16,
                           v18,
                           v20,
