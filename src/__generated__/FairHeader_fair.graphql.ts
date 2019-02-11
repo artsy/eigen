@@ -13,10 +13,10 @@ export type FairHeader_fair = {
     readonly partner_names: ({
         readonly edges: ReadonlyArray<({
             readonly node: ({
+                readonly id: string;
                 readonly partner: ({
                     readonly profile?: ({
                         readonly name: string | null;
-                        readonly href: string | null;
                     }) | null;
                 }) | null;
             }) | null;
@@ -92,12 +92,7 @@ v4 = {
   "args": null,
   "storageKey": null
 },
-v5 = [
-  v1,
-  v4,
-  v3
-],
-v6 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
@@ -165,6 +160,7 @@ return {
               "concreteType": "Show",
               "plural": false,
               "selections": [
+                v0,
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -187,7 +183,10 @@ return {
                           "args": null,
                           "concreteType": "Profile",
                           "plural": false,
-                          "selections": v5
+                          "selections": [
+                            v1,
+                            v3
+                          ]
                         }
                       ]
                     }
@@ -226,7 +225,11 @@ return {
               "args": null,
               "concreteType": "Artist",
               "plural": false,
-              "selections": v5
+              "selections": [
+                v1,
+                v4,
+                v3
+              ]
             }
           ]
         }
@@ -255,7 +258,7 @@ return {
           "args": null,
           "storageKey": null
         },
-        v6
+        v5
       ]
     },
     {
@@ -292,7 +295,7 @@ return {
               "args": null,
               "storageKey": null
             },
-            v6
+            v5
           ]
         },
         v3,
@@ -325,5 +328,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7a991978fc157d2b18213253edd4abc9';
+(node as any).hash = '2e837ef608909764579ac0acc4530da4';
 export default node;

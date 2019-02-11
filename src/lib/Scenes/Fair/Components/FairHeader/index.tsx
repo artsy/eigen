@@ -55,7 +55,16 @@ export class FairHeader extends React.Component<Props, State> {
     const { artists_names, counts, partner_names } = this.props.fair
 
     const artistList = artists_names.edges.map(i => i.node).filter(Boolean)
-    const partnerList = partner_names.edges.map(i => i.node.partner.profile).filter(Boolean)
+    const partnerList = partner_names.edges
+      .map(i => {
+        if (i.node.partner && i.node.partner.profile && i.node.partner.profile.name) {
+          return {
+            href: "show/" + i.node.id,
+            name: i.node.partner.profile.name,
+          }
+        }
+      })
+      .filter(Boolean)
 
     return (
       <>
@@ -79,8 +88,8 @@ export class FairHeader extends React.Component<Props, State> {
     )
   }
 
-  handlePress = url => {
-    Switchboard.presentNavigationViewController(this, url)
+  handlePress = item => {
+    Switchboard.presentNavigationViewController(this, item)
   }
 
   handleSaveFair() {
@@ -199,11 +208,11 @@ export const FairHeaderContainer = createFragmentContainer(
       partner_names: shows_connection(first: 2) {
         edges {
           node {
+            id
             partner {
               ... on Partner {
                 profile {
                   name
-                  href
                 }
               }
             }

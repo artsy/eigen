@@ -87,12 +87,12 @@ fragment FairHeader_fair on Fair {
   partner_names: shows_connection(first: 2) {
     edges {
       node {
+        id
         partner {
           __typename
           ... on Partner {
             profile {
               name
-              href
               __id
             }
           }
@@ -323,7 +323,6 @@ v8 = {
 },
 v9 = [
   v6,
-  v4,
   v2
 ],
 v10 = {
@@ -349,16 +348,12 @@ v12 = {
 },
 v13 = [
   v12
-],
-v14 = [
-  v6,
-  v2
 ];
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairQuery",
-  "id": "913499a084711b07b45bd4c22edc6c1c",
+  "id": "ef7133cd1c97c9f3e4ba3354a98397f5",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -503,6 +498,7 @@ return {
                     "concreteType": "Show",
                     "plural": false,
                     "selections": [
+                      v3,
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -565,7 +561,11 @@ return {
                     "args": null,
                     "concreteType": "Artist",
                     "plural": false,
-                    "selections": v9
+                    "selections": [
+                      v6,
+                      v4,
+                      v2
+                    ]
                   }
                 ]
               }
@@ -1005,7 +1005,7 @@ return {
                                     ],
                                     "concreteType": "Artist",
                                     "plural": true,
-                                    "selections": v14
+                                    "selections": v9
                                   },
                                   {
                                     "kind": "LinkedField",
@@ -1015,7 +1015,7 @@ return {
                                     "args": null,
                                     "concreteType": "Partner",
                                     "plural": false,
-                                    "selections": v14
+                                    "selections": v9
                                   },
                                   v4
                                 ]
@@ -1068,7 +1068,7 @@ return {
                         "args": null,
                         "concreteType": "Fair",
                         "plural": false,
-                        "selections": v14
+                        "selections": v9
                       },
                       {
                         "kind": "LinkedField",
