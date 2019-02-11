@@ -92,7 +92,7 @@ export class ShowHeader extends React.Component<Props, State> {
       <>
         <Box px={2} pt={hasImages ? 3 : noImagesPadding} pb={hasImages ? 0 : noImagesPadding}>
           <Spacer m={2} />
-          <Sans size="3" mb={0.5}>
+          <Sans size="3" mb={0.5} weight="medium">
             {partner.name}
           </Sans>
           <Serif size="8" lineHeight={34}>

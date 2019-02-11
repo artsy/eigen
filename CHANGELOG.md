@@ -16,6 +16,8 @@
 
 ### Master
 
+- Updates show header gallery name to medium font weight - kieran
+
 ### 1.8.2
 
 - Styles Fair view to match design - kieran
