@@ -10047,6 +10047,11 @@ react-proxy@^1.1.7:
     lodash "^4.6.1"
     react-deep-force-update "^1.0.0"
 
+react-relay-network-modern@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/react-relay-network-modern/-/react-relay-network-modern-2.5.1.tgz#a081ae2691dbf2cfa53129cd6eb41a1e91a071aa"
+  integrity sha512-Edp9XWAWLiAntrtNmfeLZMPMcwUmTpBhAoxHCaSKcet7gWN5RS0Z2OhKpVhKg3p1qZz+VLMMvWg8eQghBe0auQ==
+
 "react-relay@https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/react-relay-1.5.0-artsy.5.tgz":
   version "1.5.0-artsy.5"
   resolved "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/react-relay-1.5.0-artsy.5.tgz#956280da8d941af7f6f65f3831b01051ee2c32c7"

@@ -43,11 +43,11 @@ exports[`CaretButton renders properly 1`] = `
     I am a caret button
   </Text>
   <View
-    ml={1}
+    ml={0.5}
     style={
       Array [
         Object {
-          "marginLeft": 4,
+          "marginLeft": 0.5,
         },
         undefined,
       ]

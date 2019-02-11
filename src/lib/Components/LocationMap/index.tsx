@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import { Pin } from "lib/Icons/Pin"
@@ -81,25 +81,22 @@ export class LocationMap extends React.Component<Props> {
     }
 
     return (
-      <>
-        <MapWrapper>
-          <Map
-            key={lng}
-            styleURL={ArtsyMapStyleURL}
-            centerCoordinate={[lng, lat]}
-            zoomLevel={14}
-            logoEnabled={false}
-            scrollEnabled={false}
-            attributionEnabled={false}
-          >
-            <Mapbox.PointAnnotation id={id} coordinate={[lng, lat]}>
-              <Pin />
-            </Mapbox.PointAnnotation>
-          </Map>
-          {renderAddress()}
-        </MapWrapper>
-        <Spacer m={1} />
-      </>
+      <MapWrapper>
+        <Map
+          key={lng}
+          styleURL={ArtsyMapStyleURL}
+          centerCoordinate={[lng, lat]}
+          zoomLevel={14}
+          logoEnabled={false}
+          scrollEnabled={false}
+          attributionEnabled={false}
+        >
+          <Mapbox.PointAnnotation id={id} coordinate={[lng, lat]}>
+            <Pin />
+          </Mapbox.PointAnnotation>
+        </Map>
+        {renderAddress()}
+      </MapWrapper>
     )
   }
 }

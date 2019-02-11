@@ -51,6 +51,8 @@
 - Checks for works before rendering works section - kieran
 - Checks for hours before rending hours section - kieran
 - Parter names in entitylist now link to LD view - Kieran
+- Adds logging for relay queries and metaphysics extensions used in query - luc
+- Minor styling adjustments to Fair and Show - Kieran
 
 ### 1.8.1
 

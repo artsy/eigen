@@ -70,11 +70,11 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
         Artists
       </Text>
       <View
-        ml={1}
+        ml={0.5}
         style={
           Array [
             Object {
-              "marginLeft": 4,
+              "marginLeft": 0.5,
             },
             undefined,
           ]
@@ -304,11 +304,11 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
         Exhibitors
       </Text>
       <View
-        ml={1}
+        ml={0.5}
         style={
           Array [
             Object {
-              "marginLeft": 4,
+              "marginLeft": 0.5,
             },
             undefined,
           ]
@@ -538,11 +538,11 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
         Works
       </Text>
       <View
-        ml={1}
+        ml={0.5}
         style={
           Array [
             Object {
-              "marginLeft": 4,
+              "marginLeft": 0.5,
             },
             undefined,
           ]
