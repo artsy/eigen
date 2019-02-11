@@ -50,7 +50,7 @@ const Logo = styled(Image)`
 
 const CountdownContainer = styled.View`
   position: absolute;
-  bottom: ${space(1)};
+  bottom: ${space(6)};
   left: 0;
   width: 100%;
 `
@@ -185,18 +185,20 @@ export class FairHeader extends React.Component<Props, State> {
         </CountdownContainer>
         <Spacer mt={2} />
         <Box mx={2}>{this.getContextualDetails()}</Box>
-        <Box px={2}>
-          <Spacer m={2} mt={1} />
-          <InvertedButton
-            text={profile.is_followed ? "Fair saved" : "Save fair"}
-            onPress={() => this.handleSaveFair()}
-            selected={profile.is_followed}
-            inProgress={isSavedFairStateUpdating}
-            grayBorder={true}
-            buttonSize={"large"}
-          />
-          <Spacer m={1} />
-        </Box>
+        {profile && (
+          <Box px={2}>
+            <Spacer m={2} mt={1} />
+            <InvertedButton
+              text={profile.is_followed ? "Fair saved" : "Save fair"}
+              onPress={() => this.handleSaveFair()}
+              selected={profile.is_followed}
+              inProgress={isSavedFairStateUpdating}
+              grayBorder={true}
+              buttonSize={"large"}
+            />
+            <Spacer m={1} />
+          </Box>
+        )}
       </>
     )
   }
@@ -208,12 +210,10 @@ export const FairHeaderContainer = createFragmentContainer(
     fragment FairHeader_fair on Fair {
       id
       name
-
       counts {
         artists
         partners
       }
-
       partner_names: shows_connection(first: 2) {
         edges {
           node {
