@@ -81,7 +81,7 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission', '~> 1.8.0'
+  pod 'Emission', '~> 1.8.2'
   pod 'yoga', podspec: 'https://raw.githubusercontent.com/artsy/emission/v1.5.2/externals/yoga/yoga.podspec.json'
   pod 'React/Core'
 

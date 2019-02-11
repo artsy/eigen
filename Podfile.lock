@@ -72,7 +72,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.5)
   - EDColor (1.0.0)
-  - Emission (1.8.1):
+  - Emission (1.8.2):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.5)
@@ -273,7 +273,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission (~> 1.8.0)
+  - Emission (~> 1.8.2)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -465,7 +465,7 @@ CHECKOUT OPTIONS:
     :commit: 9a2b842a1067785cf8af18276d4de4f0e3f0a17c
     :git: https://github.com/neilang/NAMapKit
   Pulley:
-    :commit: 216de069e31173c231b5cf88848dbbce5621b7a9
+    :commit: 34b274c62823f005d6d6d8cf3cb726e3c7e419be
     :git: https://github.com/l2succes/Pulley.git
   react-native-mapbox-gl:
     :commit: c86bdb8130525aeb2476c6584e11aa3408408992
@@ -504,7 +504,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 44b10a07f78a0a72aa40d6c679432cde3c859571
+  Emission: 5fd5d1b7dcd59a85549526138b2c44d31307862e
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
@@ -561,6 +561,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: de8782b10b9fdede33554bcad8a2a6653e0ebb30
 
-PODFILE CHECKSUM: 2970e5b6bfcb617015d1e53b7cc58263cfe80b16
+PODFILE CHECKSUM: 2519723b7c6a002c34c75b205ea761cecc027c35
 
 COCOAPODS: 1.6.0.beta.1
