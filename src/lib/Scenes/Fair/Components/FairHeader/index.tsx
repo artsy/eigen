@@ -15,7 +15,6 @@ import { CountdownTimer } from "./CountdownTimer"
 interface Props {
   fair: FairHeader_fair
   onSaveShowPressed?: () => Promise<void>
-  onViewFairBoothPressed: () => Promise<void>
   viewAllExhibitors: () => void
   viewAllArtists: () => void
   relay: RelayProp

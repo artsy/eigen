@@ -196,7 +196,7 @@ export class FairDetail extends React.Component<Props, State> {
   }
 
   render() {
-    const { fair, onViewFairBoothPressed, onViewAllExhibitorsPressed, onViewAllArtistsPressed } = this.props
+    const { fair, onViewAllExhibitorsPressed, onViewAllArtistsPressed } = this.props
     const { sections, extraData } = this.state
 
     return (
@@ -208,7 +208,6 @@ export class FairDetail extends React.Component<Props, State> {
           ListHeaderComponent={
             <FairHeader
               fair={fair}
-              onViewFairBoothPressed={onViewFairBoothPressed}
               viewAllExhibitors={onViewAllExhibitorsPressed}
               viewAllArtists={onViewAllArtistsPressed}
             />
