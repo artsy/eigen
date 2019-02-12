@@ -50,6 +50,7 @@ const Logo = styled(Image)`
   margin-right: auto;
   background-color: transparent;
   margin-bottom: ${space(1)};
+  /* stylelint-disable */
   tint-color: white;
 `
 
