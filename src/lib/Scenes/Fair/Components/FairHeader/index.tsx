@@ -38,6 +38,11 @@ const Overlay = styled.View`
   position: absolute;
 `
 
+const ButtonWrapper = styled(Box)`
+  width: 100%;
+  height: 85;
+`
+
 const Logo = styled(Image)`
   width: 150;
   height: 150;
@@ -186,8 +191,8 @@ export class FairHeader extends React.Component<Props, State> {
         <Spacer mt={2} />
         <Box mx={2}>{this.getContextualDetails()}</Box>
         {profile && (
-          <Box px={2}>
-            <Spacer m={2} mt={1} />
+          <ButtonWrapper px={2}>
+            <Spacer m={1} mt={1} />
             <InvertedButton
               text={profile.is_followed ? "Fair saved" : "Save fair"}
               onPress={() => this.handleSaveFair()}
@@ -197,7 +202,7 @@ export class FairHeader extends React.Component<Props, State> {
               buttonSize={"large"}
             />
             <Spacer m={1} />
-          </Box>
+          </ButtonWrapper>
         )}
       </>
     )
