@@ -5,7 +5,6 @@ import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { EntityList } from "lib/Components/EntityList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
-import { Dimensions } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { Carousel } from "./Components/Carousel"
@@ -24,8 +23,6 @@ const ButtonWrapper = styled(Box)`
   width: 100%;
   height: 85;
 `
-
-const { height: windowHeight } = Dimensions.get("window")
 
 export class ShowHeader extends React.Component<Props, State> {
   state = { isFollowedSaving: false }
@@ -86,13 +83,12 @@ export class ShowHeader extends React.Component<Props, State> {
       onViewAllArtistsPressed,
     } = this.props
     const hasImages = !!images.length
-    const noImagesPadding = windowHeight / 2 - 200
 
     return (
       <>
-        <Box px={2} pt={hasImages ? 3 : noImagesPadding} pb={hasImages ? 0 : noImagesPadding}>
+        <Box px={2} pt={3} pb={hasImages ? 0 : 4}>
           <Spacer m={2} />
-          <Sans size="3" mb={0.5}>
+          <Sans size="3" mb={0.5} weight="medium">
             {partner.name}
           </Sans>
           <Serif size="8" lineHeight={34}>

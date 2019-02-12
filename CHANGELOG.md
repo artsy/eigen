@@ -16,8 +16,11 @@
 
 ### Master
 
+- Updates show header gallery name to medium font weight - kieran
 - Checks in the view for fair.profile before rending profile values - kieran
 - Moves countdown timer higher on fair - kieran
+- Fixes space under map when no description - kieran
+- Fixes show title header when no carousel images - kieran
 
 ### 1.8.2
 
