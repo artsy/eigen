@@ -1,79 +1,62 @@
-import { color, Serif } from "@artsy/palette"
+import { Box, Separator } from "@artsy/palette"
+import { EventSection } from "lib/Scenes/City/Components/EventSection"
 import React from "react"
-import styled from "styled-components/native"
 
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { FlatList } from "react-native"
 
-export interface Props {
+interface Props {
   // TODO: Use this to render the UI.
   city: GlobalMap_viewer
 }
-export const AllEvents: React.SFC<Props> = ({}) => {
-  return (
-    <>
-      <MarginContainer>
-        <Divider />
-        <Placeholder>BMW Sponsorship view</Placeholder>
-        <Placeholder>Saved items view</Placeholder>
-        <Placeholder tall>
-          <Title size="8">Fairs</Title>
-        </Placeholder>
-        <Divider />
-        <Placeholder tall>
-          <Title size="8">Gallery shows</Title>
-        </Placeholder>
-        <Divider />
-        <Placeholder tall>
-          <Title size="8">Museum shows</Title>
-        </Placeholder>
-        <Divider />
-        <Placeholder tall>
-          <Title size="8">BMW Art Guide</Title>
-        </Placeholder>
-        <Divider />
-        <Placeholder tall>
-          <Title size="8">Closing this week</Title>
-        </Placeholder>
-        <Divider />
-        <Placeholder tall>
-          <Title size="8">Opening this week</Title>
-        </Placeholder>
-      </MarginContainer>
-    </>
-  )
+
+interface State {
+  sections: Array<{
+    title: string
+    id: number
+  }>
+  extraData?: { animatedValue: { height: number } }
 }
 
-const Title = styled(Serif)`
-  width: auto;
-  margin-left: 0;
-  margin-right: 0;
-  margin-bottom: 700px;
-`
+export class AllEvents extends React.Component<Props, State> {
+  state: State = {
+    sections: [
+      {
+        title: "Gallery shows",
+        id: 1,
+      },
+      {
+        title: "Museum shows",
+        id: 2,
+      },
+      {
+        title: "BMW Art Guide",
+        id: 3,
+      },
+    ],
+  }
 
-export const Placeholder = styled.Text<{ tall?: boolean }>`
-  z-index: -1;
-  color: ${colors["gray-semibold"]};
-  font-family: "${fonts["garamond-regular"]}";
-  font-size: 20;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  width: 100%;
-  background-color: #ffcccc;
-  ${props => (props.tall ? "height: 200px;" : "")}
-`
+  renderItemSeparator = () => {
+    return (
+      <Box py={2} px={4}>
+        <Separator />
+      </Box>
+    )
+  }
 
-export const MarginContainer = styled.View`
-  margin-left: 15px;
-  margin-right: 15px;
-  width: auto;
-`
+  renderItem = ({ item: { title } }) => {
+    return <EventSection title={title} />
+  }
 
-export const Divider = styled.View`
-  width: 100%;
-  border: 1px;
-  border-color: ${color("black30")};
-  border-bottom-width: 0;
-  margin-bottom: 15px;
-`
+  render() {
+    const { sections } = this.state
+    return (
+      <FlatList
+        data={sections}
+        ItemSeparatorComponent={this.renderItemSeparator}
+        keyExtractor={item => item.id}
+        renderItem={item => this.renderItem(item)}
+      />
+    )
+  }
+}
