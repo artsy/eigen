@@ -83,7 +83,7 @@ export class GlobalMap extends React.Component<Props, State> {
   emitFilteredBucketResults() {
     // TODO: map region filtering can live here.
     const filter = this.filters[this.state.activeIndex]
-    EventEmitter.dispatch("map:change", { filter, city: this.state.bucketResults[filter.id] })
+    EventEmitter.dispatch("map:change", { filter, buckets: this.state.bucketResults })
   }
 
   onAnnotationSelected(showID: string, feature) {

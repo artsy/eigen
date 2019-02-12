@@ -1,16 +1,16 @@
 import { color, Serif } from "@artsy/palette"
+import colors from "lib/data/colors"
+import fonts from "lib/data/fonts"
+import { BucketKey, BucketResults } from "lib/Scenes/Map/Bucket";
 import React from "react"
 import styled from "styled-components/native"
 
-import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
-
 export interface Props {
-  // TODO: Use this to render the UI.
-  city: GlobalMap_viewer
+  currentBucket: BucketKey
+  buckets: BucketResults
 }
-export const AllEvents: React.SFC<Props> = ({}) => {
+
+export const AllEvents: React.SFC<Props> = () => {
   return (
     <>
       <MarginContainer>
