@@ -21,6 +21,7 @@
 - Moves countdown timer higher on fair - kieran
 - Fixes space under map when no description - kieran
 - Fixes show title header when no carousel images - kieran
+- Fixes save show - kieran
 
 ### 1.8.2
 
