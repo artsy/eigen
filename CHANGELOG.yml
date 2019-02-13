@@ -3,8 +3,9 @@ upcoming:
   date: Jan 17, 2019
   emission_version: 1.8.0
   dev:
-    - Nothing yet
+    - Adjust SDK update - orta
   user_facing:
+    - Incorrect auth detection (e.g. passwords being changed) are now correclty detected - orta
     - Adds Local Discovery tab behind lab option - luc
 
 releases:
