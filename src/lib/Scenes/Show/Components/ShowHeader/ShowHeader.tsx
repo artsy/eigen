@@ -95,7 +95,6 @@ export class ShowHeader extends React.Component<Props, State> {
     } = this.props
     const hasImages = !!images.length
     const singleImage = hasImages && images.length === 1 ? true : false
-    console.log("images[0].url", images[0].url)
 
     return (
       <>
