@@ -23,16 +23,16 @@ export class FairEventSectionCard extends Component<Props> {
           <Flex flexDirection="column" px={2}>
             {profile && <Logo source={{ uri: profile.icon.url }} />}
           </Flex>
-          <Box p={2} style={{position: "absolute", bottom: 0, left: 0}}>
-              <Flex flexDirection="column" flexGrow={1}>
-                <Sans size="3t" weight="medium" color="white">
-                  {name}
-                </Sans>
-                <Sans size="3" color="white">
-                  {moment(start_at).format("MMM Do")} - {moment(end_at).format("MMM Do")}
-                </Sans>
-              </Flex>
-            </Box>
+          <Box p={2} style={{ position: "absolute", bottom: 0, left: 0 }}>
+            <Flex flexDirection="column" flexGrow={1}>
+              <Sans size="3t" weight="medium" color="white">
+                {name}
+              </Sans>
+              <Sans size="3" color="white">
+                {moment(start_at).format("MMM Do")} - {moment(end_at).format("MMM Do")}
+              </Sans>
+            </Flex>
+          </Box>
         </Container>
       </>
     )

@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Separator } from "@artsy/palette"
+import { Box, color, Flex, Sans } from "@artsy/palette"
 import PinSavedOff from "lib/Icons/PinSavedOff"
 import PinSavedOn from "lib/Icons/PinSavedOn"
 import React, { Component } from "react"
@@ -37,8 +37,8 @@ export class SavedEventSection extends Component<any> {
     return (
       <>
         <Box mx={2}>
-          <Flex flexDirection="row" p={1} m={1} alignItems="center">
-            <Logo source={require("../../../../../../images/BMW-logo.png")} />
+          <Flex flexDirection="row" py={1} m={1} alignItems="center">
+            <Logo source={require("../../../../../../images/BMW-logo.jpg")} />
             <Sans size="3" weight="medium" ml={1}>
               Presented in Partnership with BMW
             </Sans>

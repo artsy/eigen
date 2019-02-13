@@ -12,7 +12,7 @@ const FairSectionBackground = styled(Box)`
 export class FairEventSection extends Component<any> {
   renderItem = ({ item }) => {
     return (
-      <Box pr={2}>
+      <Box pr={1}>
         <FairEventSectionCard fair={item} />
       </Box>
     )
