@@ -1,5 +1,6 @@
 import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
 import Button from "lib/Components/Buttons/InvertedButton"
+import moment from "moment"
 import React from "react"
 import styled from "styled-components/native"
 
@@ -13,11 +14,37 @@ const TextContainer = styled(Box)`
 `
 
 interface Props {
-  event: { title: string; dates: string; partnerName: string }
+  event: {
+    node: {
+      name: string
+      __id: string
+      id: string
+      end_at: string
+      start_at: string
+      partner: {
+        name: string
+      }
+    }
+  }
 }
 
 interface State {
   eventSaved: boolean
+}
+
+export const formatDuration = (startAt, endAt) => {
+  const momentStartAt = moment(startAt)
+  const momentEndAt = moment(endAt)
+  if (momentStartAt.dayOfYear() === momentEndAt.dayOfYear() && momentStartAt.year() === momentEndAt.year()) {
+    // duration is a time range within a single day
+    return `${momentStartAt.format("MMM D")}`
+  } else if (momentStartAt.month() === momentEndAt.month()) {
+    // duration is a time range within same month
+    return `${momentStartAt.format("MMM D")} - ` + momentEndAt.format("D")
+  } else {
+    // duration spans more than one day
+    return `${momentStartAt.format("MMM D")} - ` + momentEndAt.format("MMM D")
+  }
 }
 
 export class Event extends React.Component<Props, State> {
@@ -30,7 +57,9 @@ export class Event extends React.Component<Props, State> {
   }
 
   render() {
-    const { title, dates, partnerName } = this.props.event
+    const { node } = this.props.event
+    const { name, start_at, end_at, partner } = node
+    const { name: partnerName } = partner
     return (
       <Box mb={2} px={4}>
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
@@ -38,9 +67,9 @@ export class Event extends React.Component<Props, State> {
             <Sans size="3" weight="medium">
               {partnerName}
             </Sans>
-            <Serif size="3t">{title}</Serif>
+            <Serif size="3t">{name}</Serif>
             <Sans size="2" color={color("black60")}>
-              {dates}
+              {formatDuration(start_at, end_at)}
             </Sans>
           </TextContainer>
           <ButtonWrapper>

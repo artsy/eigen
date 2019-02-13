@@ -1,13 +1,11 @@
 import { Box, Separator } from "@artsy/palette"
 import { EventSection } from "lib/Scenes/City/Components/EventSection"
 import React from "react"
-
-import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import { FlatList } from "react-native"
 
 interface Props {
-  // TODO: Use this to render the UI.
-  city: GlobalMap_viewer
+  buckets: any
+  currentBucket: string
 }
 
 interface State {
@@ -15,25 +13,50 @@ interface State {
     title: string
     id: number
   }>
-  extraData?: { animatedValue: { height: number } }
 }
 
 export class AllEvents extends React.Component<Props, State> {
-  state: State = {
-    sections: [
-      {
-        title: "Gallery shows",
-        id: 1,
-      },
-      {
-        title: "Museum shows",
-        id: 2,
-      },
-      {
-        title: "BMW Art Guide",
-        id: 3,
-      },
-    ],
+  state = {
+    sections: [],
+  }
+
+  componentDidMount() {
+    this.updateSections()
+  }
+
+  updateSections = () => {
+    const { buckets } = this.props
+    const sections = []
+
+    if (buckets.saved && buckets.saved.length) {
+      sections.push({
+        type: "saved",
+        data: buckets.saved,
+      })
+    }
+
+    if (buckets.fairs && buckets.fairs.length) {
+      sections.push({
+        type: "fairs",
+        data: buckets.fairs,
+      })
+    }
+
+    if (buckets.galleries && buckets.galleries.length) {
+      sections.push({
+        type: "galleries",
+        data: buckets.galleries,
+      })
+    }
+
+    if (buckets.museums && buckets.museums.length) {
+      sections.push({
+        type: "museums",
+        data: buckets.museums,
+      })
+    }
+
+    this.setState({ sections })
   }
 
   renderItemSeparator = () => {
@@ -44,8 +67,19 @@ export class AllEvents extends React.Component<Props, State> {
     )
   }
 
-  renderItem = ({ item: { title } }) => {
-    return <EventSection title={title} />
+  renderItem = ({ item: { data, type } }) => {
+    switch (type) {
+      case "fairs":
+        return null
+      case "galleries":
+        return <EventSection title={"Gallery shows"} data={data} />
+      case "museums":
+        return <EventSection title={"Museum shows"} data={data} />
+      case "saved":
+        return <EventSection title={"Saved events"} data={data} />
+      default:
+        return null
+    }
   }
 
   render() {
