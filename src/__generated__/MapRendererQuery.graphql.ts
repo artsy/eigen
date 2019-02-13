@@ -43,7 +43,7 @@ fragment GlobalMap_viewer_279V1T on Viewer {
         node {
           id
           name
-          images {
+          cover_image {
             url
           }
           location {
@@ -149,7 +149,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MapRendererQuery",
-  "id": "0ff72ab745bdfccaba3c99d0eb70f04f",
+  "id": "c146ba3089add7ff792540bcccf9a627",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -267,11 +267,11 @@ return {
                           {
                             "kind": "LinkedField",
                             "alias": null,
-                            "name": "images",
+                            "name": "cover_image",
                             "storageKey": null,
                             "args": null,
                             "concreteType": "Image",
-                            "plural": true,
+                            "plural": false,
                             "selections": [
                               {
                                 "kind": "ScalarField",

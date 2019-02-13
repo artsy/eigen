@@ -20,7 +20,9 @@ interface Props {
       name: string
       __id: string
       id: string
-      images: []
+      cover_image: {
+        url: string
+      }
       end_at: string
       start_at: string
       partner: {
@@ -60,17 +62,14 @@ export class Event extends React.Component<Props, State> {
 
   render() {
     const { node } = this.props.event
-    const { name, start_at, end_at, partner, images } = node
+    const { name, start_at, end_at, partner, cover_image } = node
     const { name: partnerName } = partner
-    let imageURL
-    if (!!images && images.length) {
-      imageURL = images[0].url
-    }
+    const { url } = cover_image
     return (
       <Box mb={2} px={2}>
-        {imageURL && (
+        {url && (
           <Box mb={2}>
-            <OpaqueImageView imageURL={imageURL} height={145} />
+            <OpaqueImageView imageURL={url} height={145} />
           </Box>
         )}
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
