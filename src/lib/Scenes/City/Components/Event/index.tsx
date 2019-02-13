@@ -66,7 +66,7 @@ export class Event extends React.Component<Props, State> {
     const { name: partnerName } = partner
     const { url } = cover_image
     return (
-      <Box mb={2} px={2}>
+      <Box mb={2} px={3}>
         {url && (
           <Box mb={2}>
             <OpaqueImageView imageURL={url} height={145} />
