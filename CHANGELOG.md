@@ -24,6 +24,7 @@
 - Styles Fair save button - kieran
 - Fixes save show - kieran
 - Show header title now links to gallery - kieran
+- Show image now full width if one image - kieran
 
 ### 1.8.2
 
