@@ -3,6 +3,7 @@ import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { ShowHeaderFollowShowMutation } from "__generated__/ShowHeaderFollowShowMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { EntityList } from "lib/Components/EntityList"
+import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -93,6 +94,8 @@ export class ShowHeader extends React.Component<Props, State> {
       onViewAllArtistsPressed,
     } = this.props
     const hasImages = !!images.length
+    const singleImage = hasImages && images.length === 1 ? true : false
+    console.log("images[0].url", images[0].url)
 
     return (
       <>
@@ -108,10 +111,19 @@ export class ShowHeader extends React.Component<Props, State> {
           </Serif>
           <Sans size="3">{exhibition_period}</Sans>
         </Box>
-        {hasImages && (
-          <Carousel
-            sources={(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({ imageURL, aspectRatio }))}
-          />
+        {hasImages &&
+          !singleImage && (
+            <Carousel
+              sources={(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({
+                imageURL,
+                aspectRatio,
+              }))}
+            />
+          )}
+        {singleImage && (
+          <Box px={2} py={2}>
+            <OpaqueImageView imageURL={images[0].url} aspectRatio={images[0].aspect_ratio} />
+          </Box>
         )}
         <Box px={2}>
           <EntityList

@@ -105,64 +105,24 @@ Array [
     </Text>
   </View>,
   <View
-    my={2}
+    px={2}
+    py={2}
     style={
       Array [
         Object {
-          "marginBottom": 8,
-          "marginTop": 8,
+          "paddingBottom": 8,
+          "paddingLeft": 8,
+          "paddingRight": 8,
+          "paddingTop": 8,
         },
         undefined,
       ]
     }
   >
-    <RCTScrollView
-      horizontal={true}
-      scrollEventThrottle={160}
-      showsHorizontalScrollIndicator={false}
-      style={
-        Array [
-          Object {
-            "height": 350,
-            "paddingLeft": 20,
-          },
-          undefined,
-        ]
-      }
-    >
-      <View>
-        <View
-          alignItems="flex-start"
-          mr={1}
-          style={
-            Array [
-              Object {
-                "alignItems": "flex-start",
-                "display": "flex",
-                "marginRight": 4,
-              },
-              undefined,
-            ]
-          }
-        >
-          <AROpaqueImageView
-            aspectRatio={0.87}
-            imageURL="https://d32dm0rphc51dk.cloudfront.net/Bu7ONuoTlR-PLZDUjs6ZTA/medium.jpg"
-            isFirst={true}
-            style={
-              Array [
-                Object {
-                  "height": 200,
-                  "marginTop": 150,
-                  "width": 650,
-                },
-                undefined,
-              ]
-            }
-          />
-        </View>
-      </View>
-    </RCTScrollView>
+    <AROpaqueImageView
+      aspectRatio={0.87}
+      imageURL="https://d32dm0rphc51dk.cloudfront.net/Bu7ONuoTlR-PLZDUjs6ZTA/medium.jpg"
+    />
   </View>,
   <View
     px={2}
