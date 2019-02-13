@@ -24,6 +24,7 @@
 - Refactors Buckets for All events city view - luc
 - Adds Fair Section in city view - luc
 - Adds AllEvents data and styling to city view - kieran
+- Adds Saved Shows section to city view - luc
 
 ### 1.8.2
 
