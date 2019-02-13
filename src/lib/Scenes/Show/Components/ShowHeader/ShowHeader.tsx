@@ -5,6 +5,7 @@ import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { EntityList } from "lib/Components/EntityList"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
+import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { Carousel } from "./Components/Carousel"
@@ -26,6 +27,13 @@ const ButtonWrapper = styled(Box)`
 
 export class ShowHeader extends React.Component<Props, State> {
   state = { isFollowedSaving: false }
+
+  handlePartnerTitleClick = () => {
+    const {
+      show: { partner },
+    } = this.props
+    SwitchBoard.presentNavigationViewController(this, `/${partner.id}?entity=gallery`)
+  }
 
   handleFollowShow = () => {
     const {
@@ -90,9 +98,11 @@ export class ShowHeader extends React.Component<Props, State> {
       <>
         <Box px={2} pt={3} pb={hasImages ? 0 : 4}>
           <Spacer m={2} />
-          <Sans size="3" mb={0.5} weight="medium">
-            {partner.name}
-          </Sans>
+          <TouchableWithoutFeedback onPress={this.handlePartnerTitleClick}>
+            <Sans size="3" mb={0.5} weight="medium">
+              {partner.name}
+            </Sans>
+          </TouchableWithoutFeedback>
           <Serif size="8" lineHeight={34}>
             {name}
           </Serif>
@@ -146,6 +156,7 @@ export const ShowHeaderContainer = createFragmentContainer(
       partner {
         ... on Partner {
           name
+          id
         }
         ... on ExternalPartner {
           name

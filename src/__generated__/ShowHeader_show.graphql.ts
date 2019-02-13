@@ -14,6 +14,7 @@ export type ShowHeader_show = {
     readonly status: string | null;
     readonly partner: ({
         readonly name?: string | null;
+        readonly id?: string;
     }) | null;
     readonly images: ReadonlyArray<({
         readonly url: string | null;
@@ -32,20 +33,24 @@ const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
-v2 = [
-  v1
-];
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Fragment",
   "name": "ShowHeader_show",
@@ -60,15 +65,9 @@ return {
       "args": null,
       "storageKey": null
     },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "id",
-      "args": null,
-      "storageKey": null
-    },
     v0,
     v1,
+    v2,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -106,16 +105,21 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v0,
+        v1,
         {
           "kind": "InlineFragment",
           "type": "ExternalPartner",
-          "selections": v2
+          "selections": [
+            v2
+          ]
         },
         {
           "kind": "InlineFragment",
           "type": "Partner",
-          "selections": v2
+          "selections": [
+            v2,
+            v0
+          ]
         }
       ]
     },
@@ -153,7 +157,7 @@ return {
       "concreteType": "Artist",
       "plural": true,
       "selections": [
-        v1,
+        v2,
         {
           "kind": "ScalarField",
           "alias": null,
@@ -161,11 +165,11 @@ return {
           "args": null,
           "storageKey": null
         },
-        v0
+        v1
       ]
     }
   ]
 };
 })();
-(node as any).hash = '1cb2954bb4134309450fda36b5ca7a64';
+(node as any).hash = '554f39c5093aa6921e472cd62c54120a';
 export default node;
