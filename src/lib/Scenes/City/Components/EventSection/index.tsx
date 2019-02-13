@@ -10,7 +10,7 @@ export interface Props {
 const renderEvents = events => {
   return events.map((event, i) => {
     if (i < 2) {
-      return <Event key={event.name} event={event} />
+      return <Event key={i} event={event} />
     }
   })
 }
