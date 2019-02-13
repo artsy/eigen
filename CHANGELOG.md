@@ -21,6 +21,8 @@
 - Moves countdown timer higher on fair - kieran
 - Fixes space under map when no description - kieran
 - Fixes show title header when no carousel images - kieran
+- Refactors Buckets for All events city view - luc
+- Adds Fair Section in city view - luc
 
 ### 1.8.2
 

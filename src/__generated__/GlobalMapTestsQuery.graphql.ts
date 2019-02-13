@@ -74,6 +74,32 @@ fragment GlobalMap_viewer_279V1T on Viewer {
     fairs(size: 10) {
       id
       name
+      location {
+        coordinates {
+          lat
+          lng
+        }
+        __id
+      }
+      image {
+        image_url
+        aspect_ratio
+        url
+      }
+      profile {
+        icon {
+          id
+          href
+          height
+          width
+          url
+        }
+        __id
+        id
+        name
+      }
+      start_at
+      end_at
       __id
     }
   }
@@ -136,9 +162,43 @@ v4 = {
   "storageKey": null
 },
 v5 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "location",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "Location",
+  "plural": false,
+  "selections": [
+    v2,
+    v4
+  ]
+},
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
+  "args": null,
+  "storageKey": null
+},
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "start_at",
+  "args": null,
+  "storageKey": null
+},
+v8 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "end_at",
+  "args": null,
+  "storageKey": null
+},
+v9 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "url",
   "args": null,
   "storageKey": null
 };
@@ -146,7 +206,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "GlobalMapTestsQuery",
-  "id": "e0904b133930cca9eba261555fd4054f",
+  "id": "fb421ad82bb327f04702e942514f363b",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -261,34 +321,10 @@ return {
                         "selections": [
                           v3,
                           v1,
-                          {
-                            "kind": "LinkedField",
-                            "alias": null,
-                            "name": "location",
-                            "storageKey": null,
-                            "args": null,
-                            "concreteType": "Location",
-                            "plural": false,
-                            "selections": [
-                              v2,
-                              v4
-                            ]
-                          },
                           v5,
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "start_at",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "end_at",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          v6,
+                          v7,
+                          v8,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -318,7 +354,7 @@ return {
                                 "type": "Partner",
                                 "selections": [
                                   v1,
-                                  v5
+                                  v6
                                 ]
                               }
                             ]
@@ -348,6 +384,83 @@ return {
                 "selections": [
                   v3,
                   v1,
+                  v5,
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "image",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Image",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "image_url",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "aspect_ratio",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      v9
+                    ]
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "profile",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Profile",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "icon",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": [
+                          v3,
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "href",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "height",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "width",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          v9
+                        ]
+                      },
+                      v4,
+                      v3,
+                      v1
+                    ]
+                  },
+                  v7,
+                  v8,
                   v4
                 ]
               }
