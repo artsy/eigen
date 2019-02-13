@@ -23,6 +23,7 @@
 - Fixes show title header when no carousel images - kieran
 - Styles Fair save button - kieran
 - Fixes save show - kieran
+- Show header title now links to gallery - kieran
 
 ### 1.8.2
 
