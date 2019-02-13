@@ -61,10 +61,10 @@ export class AllEvents extends React.Component<Props, State> {
     this.setState({ sections })
   }
 
-  renderItemSeparator = () => {
+  renderItemSeparator = ({ leadingItem }) => {
     return (
       <Box py={2} px={2}>
-        <Separator />
+        {leadingItem.type !== "fairs" && <Separator />}
       </Box>
     )
   }
@@ -90,7 +90,7 @@ export class AllEvents extends React.Component<Props, State> {
       <FlatList
         data={sections}
         ItemSeparatorComponent={this.renderItemSeparator}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.type}
         renderItem={item => this.renderItem(item)}
       />
     )
