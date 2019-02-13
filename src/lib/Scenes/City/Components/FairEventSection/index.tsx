@@ -22,7 +22,7 @@ export class FairEventSection extends Component<any> {
     const { data } = this.props
     return (
       <FairSectionBackground>
-        <Box mx={3} mt={4}>
+        <Box mx={2} mt={3}>
           <Serif size="8" color="white">
             Fairs
           </Serif>
@@ -34,7 +34,7 @@ export class FairEventSection extends Component<any> {
           contentContainerStyle={{ padding: space(2) }}
           horizontal
         />
-        <Box mx={3} mb={4}>
+        <Box mx={2} mb={3}>
           <Sans weight="medium" size="3" color="white" px={1}>
             View all {data.length} fairs
           </Sans>

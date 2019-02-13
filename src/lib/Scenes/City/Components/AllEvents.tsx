@@ -4,6 +4,7 @@ import { BucketKey, BucketResults } from "lib/Scenes/Map/Bucket"
 import React from "react"
 import { FlatList } from "react-native"
 import { FairEventSection } from "./FairEventSection"
+import { SavedEventSection } from "./SavedEventSection"
 
 interface Props {
   currentBucket: BucketKey
@@ -30,7 +31,7 @@ export class AllEvents extends React.Component<Props, State> {
     const { buckets } = this.props
     const sections = []
 
-    if (buckets.saved && buckets.saved.length) {
+    if (buckets.saved) {
       sections.push({
         type: "saved",
         data: buckets.saved,
@@ -63,8 +64,8 @@ export class AllEvents extends React.Component<Props, State> {
 
   renderItemSeparator = ({ leadingItem }) => {
     return (
-      <Box py={2} px={2}>
-        {leadingItem.type !== "fairs" && <Separator />}
+      <Box py={1} px={2}>
+        {["fairs", "saved"].indexOf(leadingItem.type) === -1 && <Separator />}
       </Box>
     )
   }
@@ -78,7 +79,7 @@ export class AllEvents extends React.Component<Props, State> {
       case "museums":
         return <EventSection title="Museum shows" data={data} />
       case "saved":
-        return <EventSection title="Saved events" data={data} />
+        return <SavedEventSection data={data} />
       default:
         return null
     }

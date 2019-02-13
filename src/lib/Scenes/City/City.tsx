@@ -1,4 +1,4 @@
-import { Box, color, Flex, Serif } from "@artsy/palette"
+import { Box, color, Flex, Separator, Serif, Theme } from "@artsy/palette"
 import React, { Component } from "react"
 import { ScrollView } from "react-native"
 import styled from "styled-components/native"
@@ -49,35 +49,38 @@ export class CityView extends Component<Props, State> {
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
     return (
       buckets && (
-        <Box>
-          <Flex py={3} alignItems="center">
-            <Handle />
-          </Flex>
-          <ScrollView
-            contentInset={{ bottom: bottomInset }}
-            onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
-            scrollEnabled={isDrawerOpen}
-            ref={r => {
-              if (r) {
-                this.scrollView = r as any
-              }
-            }}
-          >
-            <Box px={3}>
-              <Serif size="8" mb="3">
-                {filter.id === "all" ? "All events" : filter.text}
-              </Serif>
-            </Box>
-            {(() => {
-              switch (filter && filter.id) {
-                case "all":
-                  return <AllEvents currentBucket={filter.id as BucketKey} buckets={buckets} />
-                default:
-                  return <Serif size="3">Not implemented yet.</Serif>
-              }
-            })()}
-          </ScrollView>
-        </Box>
+        <Theme>
+          <Box>
+            <Flex py={3} alignItems="center">
+              <Handle />
+            </Flex>
+            <ScrollView
+              contentInset={{ bottom: bottomInset }}
+              onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
+              scrollEnabled={isDrawerOpen}
+              ref={r => {
+                if (r) {
+                  this.scrollView = r as any
+                }
+              }}
+            >
+              <Box px={2}>
+                <Serif size="8" mb={1.5}>
+                  {filter.id === "all" ? "All events" : filter.text}
+                </Serif>
+                <Separator my={1} />
+              </Box>
+              {(() => {
+                switch (filter && filter.id) {
+                  case "all":
+                    return <AllEvents currentBucket={filter.id as BucketKey} buckets={buckets} />
+                  default:
+                    return <Serif size="3">Not implemented yet.</Serif>
+                }
+              })()}
+            </ScrollView>
+          </Box>
+        </Theme>
       )
     )
   }
