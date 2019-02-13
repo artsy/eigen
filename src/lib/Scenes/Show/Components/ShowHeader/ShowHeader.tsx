@@ -94,7 +94,7 @@ export class ShowHeader extends React.Component<Props, State> {
       onViewAllArtistsPressed,
     } = this.props
     const hasImages = !!images.length
-    const singleImage = hasImages && images.length === 1 ? true : false
+    const singleImage = hasImages && images.length === 1
 
     return (
       <>
