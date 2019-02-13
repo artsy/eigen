@@ -228,6 +228,35 @@ export const GlobalMapContainer = createRefetchContainer(
         fairs(size: 10) {
           id
           name
+
+          location {
+            coordinates {
+              lat
+              lng
+            }
+          }
+
+          image {
+            image_url
+            aspect_ratio
+            url
+          }
+
+          profile {
+            icon {
+              id
+              href
+              height
+              width
+              url
+            }
+            __id
+            id
+            name
+          }
+
+          start_at
+          end_at
         }
       }
     }
