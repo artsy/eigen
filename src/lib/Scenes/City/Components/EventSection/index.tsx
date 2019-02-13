@@ -4,7 +4,7 @@ import React from "react"
 
 export interface Props {
   title: string
-  data: []
+  data: any
 }
 
 const renderEvents = events => {
