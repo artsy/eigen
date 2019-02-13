@@ -12,7 +12,6 @@ let danger = Danger()
 // There is another on Circle which validates the tests
 let modified = danger.git.modifiedFiles
 let editedFiles = modified + danger.git.createdFiles
-message("These files have changed: \(editedFiles.joined(separator: ", "))")
 let testFiles = editedFiles.filter { $0.contains("Tests") && ($0.fileType == .swift  || $0.fileType == .m) }
 
 // Validates that we've not accidentally let in a testing
