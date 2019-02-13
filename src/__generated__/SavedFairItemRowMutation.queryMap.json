@@ -1,0 +1,3 @@
+{
+  "9cf2c5eb9b7d9b7d15a2ae33316c6205": "mutation SavedFairItemRowMutation(\n  $input: FollowProfileInput!\n) {\n  followProfile(input: $input) {\n    profile {\n      id\n      is_followed\n      __id\n    }\n  }\n}\n"
+}

@@ -174,6 +174,8 @@ export namespace Schema {
     SavesAndFollowsWorks = "savesAndFollowsWorks",
     SavesAndFollowsArtists = "savesAndFollowsArtists",
     SavesAndFollowsCategories = "savesAndFollowsCategories",
+    SavesAndFollowsFairs = "savesAndFollowsFairs",
+    SavesAndFollowsShows = "savesAndFollowsShows",
 
     /**
      *  Consignment flow
