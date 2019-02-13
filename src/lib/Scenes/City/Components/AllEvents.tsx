@@ -1,4 +1,4 @@
-import { Box, Separator } from "@artsy/palette"
+import { Box, Separator, Theme } from "@artsy/palette"
 import { EventSection } from "lib/Scenes/City/Components/EventSection"
 import React from "react"
 import { FlatList } from "react-native"
@@ -61,7 +61,7 @@ export class AllEvents extends React.Component<Props, State> {
 
   renderItemSeparator = () => {
     return (
-      <Box py={2} px={4}>
+      <Box py={2} px={2}>
         <Separator />
       </Box>
     )
@@ -85,12 +85,14 @@ export class AllEvents extends React.Component<Props, State> {
   render() {
     const { sections } = this.state
     return (
-      <FlatList
-        data={sections}
-        ItemSeparatorComponent={this.renderItemSeparator}
-        keyExtractor={item => item.id}
-        renderItem={item => this.renderItem(item)}
-      />
+      <Theme>
+        <FlatList
+          data={sections}
+          ItemSeparatorComponent={this.renderItemSeparator}
+          keyExtractor={item => item.id}
+          renderItem={item => this.renderItem(item)}
+        />
+      </Theme>
     )
   }
 }

@@ -43,6 +43,9 @@ fragment GlobalMap_viewer_279V1T on Viewer {
         node {
           id
           name
+          images {
+            url
+          }
           location {
             coordinates {
               lat
@@ -146,7 +149,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MapRendererQuery",
-  "id": "a9cdae61ba0566e061accdd9b5dcf422",
+  "id": "0ff72ab745bdfccaba3c99d0eb70f04f",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -261,6 +264,24 @@ return {
                         "selections": [
                           v3,
                           v1,
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "images",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Image",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "url",
+                                "args": null,
+                                "storageKey": null
+                              }
+                            ]
+                          },
                           {
                             "kind": "LinkedField",
                             "alias": null,

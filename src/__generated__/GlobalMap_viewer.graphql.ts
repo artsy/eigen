@@ -15,6 +15,9 @@ export type GlobalMap_viewer = {
                 readonly node: ({
                     readonly id: string;
                     readonly name: string | null;
+                    readonly images: ReadonlyArray<({
+                        readonly url: string | null;
+                    }) | null> | null;
                     readonly location: ({
                         readonly coordinates: ({
                             readonly lat: number | null;
@@ -178,6 +181,24 @@ return {
                     {
                       "kind": "LinkedField",
                       "alias": null,
+                      "name": "images",
+                      "storageKey": null,
+                      "args": null,
+                      "concreteType": "Image",
+                      "plural": true,
+                      "selections": [
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "url",
+                          "args": null,
+                          "storageKey": null
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "LinkedField",
+                      "alias": null,
                       "name": "location",
                       "storageKey": null,
                       "args": null,
@@ -263,5 +284,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'fba6f6d7ec7cbcad191b7886831bcf4a';
+(node as any).hash = 'b2b8cb4521ec00f55944e97c01568d26';
 export default node;
