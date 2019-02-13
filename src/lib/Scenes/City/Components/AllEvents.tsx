@@ -1,13 +1,13 @@
-import { Box, Separator } from "@artsy/palette"
+import { Box, Separator, Serif } from "@artsy/palette"
 import { EventSection } from "lib/Scenes/City/Components/EventSection"
-import React from "react"
-
-import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import { BucketKey, BucketResults } from "lib/Scenes/Map/Bucket"
+import React, { Component } from "react"
 import { FlatList } from "react-native"
+import styled from "styled-components/native"
 
 interface Props {
-  // TODO: Use this to render the UI.
-  city: GlobalMap_viewer
+  currentBucket: BucketKey
+  buckets: BucketResults
 }
 
 interface State {
@@ -21,6 +21,10 @@ interface State {
 export class AllEvents extends React.Component<Props, State> {
   state: State = {
     sections: [
+      {
+        title: "Fairs",
+        id: 0,
+      },
       {
         title: "Gallery shows",
         id: 1,
@@ -38,13 +42,16 @@ export class AllEvents extends React.Component<Props, State> {
 
   renderItemSeparator = () => {
     return (
-      <Box py={2} px={4}>
+      <Box py={2} px={2}>
         <Separator />
       </Box>
     )
   }
 
-  renderItem = ({ item: { title } }) => {
+  renderItem = ({ item: { title, id } }) => {
+    if (id === 0) {
+      return <AllEventsFairSection />
+    }
     return <EventSection title={title} />
   }
 
@@ -60,3 +67,20 @@ export class AllEvents extends React.Component<Props, State> {
     )
   }
 }
+
+class AllEventsFairSection extends Component {
+  render() {
+    return (
+      <FairSectionBackground>
+        <Serif size="8" color="white">
+          Fairs
+        </Serif>
+      </FairSectionBackground>
+    )
+  }
+}
+
+const FairSectionBackground = styled(Box)`
+  background: black;
+  padding: 20px;
+`
