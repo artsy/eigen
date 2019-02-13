@@ -282,9 +282,11 @@ randomBOOL(void)
     viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:artistID tab:ARHomeTabArtists emission:nil];
   } else if ([route hasSuffix:@"entity=gallery"]){
     return [[UnroutedViewController alloc] initWithRoute:route];
-  } else {
+  } else if ([route hasSuffix:@"entity=fair"]) {
     NSString *fairID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
+  } else {
+    viewController = [[UnroutedViewController alloc] initWithRoute:route];
   }
 
   return viewController;
