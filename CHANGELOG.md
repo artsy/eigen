@@ -21,6 +21,7 @@
 - Moves countdown timer higher on fair - kieran
 - Fixes space under map when no description - kieran
 - Fixes show title header when no carousel images - kieran
+- Adds AllEvents data and styling to city view - kieran
 
 ### 1.8.2
 
