@@ -4,7 +4,7 @@ import React from "react"
 
 export interface Props {
   title: string
-  data: []
+  data: any
 }
 
 const renderEvents = events => {
@@ -19,11 +19,11 @@ export const EventSection: React.SFC<Props> = (props: Props) => {
   const { data } = props
   return (
     <>
-      <Box mt={4} mb={2} px={4}>
+      <Box my={2} px={2}>
         <Serif size="8">{props.title}</Serif>
       </Box>
       {renderEvents(data)}
-      <Box mt={2} mb={4} px={4}>
+      <Box px={2} mb={1}>
         <Sans weight="medium" size="3">
           View all {data.length} {props.title.toLowerCase()}
         </Sans>

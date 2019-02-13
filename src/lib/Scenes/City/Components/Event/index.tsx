@@ -1,5 +1,6 @@
 import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
 import Button from "lib/Components/Buttons/InvertedButton"
+import OpaqueImageView from "lib/Components/OpaqueImageView"
 import moment from "moment"
 import React from "react"
 import styled from "styled-components/native"
@@ -19,6 +20,9 @@ interface Props {
       name: string
       __id: string
       id: string
+      cover_image: {
+        url: string
+      }
       end_at: string
       start_at: string
       partner: {
@@ -58,12 +62,18 @@ export class Event extends React.Component<Props, State> {
 
   render() {
     const { node } = this.props.event
-    const { name, start_at, end_at, partner } = node
+    const { name, start_at, end_at, partner, cover_image } = node
     const { name: partnerName } = partner
+    const { url } = cover_image
     return (
-      <Box mb={2} px={4}>
+      <Box mb={2} px={2}>
+        {url && (
+          <Box mb={2}>
+            <OpaqueImageView imageURL={url} height={145} />
+          </Box>
+        )}
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
-          <TextContainer mb={4}>
+          <TextContainer mb={2}>
             <Sans size="3" weight="medium">
               {partnerName}
             </Sans>

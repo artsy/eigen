@@ -43,6 +43,9 @@ fragment GlobalMap_viewer_279V1T on Viewer {
         node {
           id
           name
+          cover_image {
+            url
+          }
           location {
             coordinates {
               lat
@@ -157,11 +160,18 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "__id",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "location",
@@ -171,34 +181,27 @@ v5 = {
   "plural": false,
   "selections": [
     v2,
-    v4
+    v5
   ]
 },
-v6 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v8 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "start_at",
   "args": null,
   "storageKey": null
 },
-v8 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "end_at",
-  "args": null,
-  "storageKey": null
-},
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "end_at",
   "args": null,
   "storageKey": null
 };
@@ -206,7 +209,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MapRendererQuery",
-  "id": "8568585c85f4f97bc65ebe72a1d447b4",
+  "id": "9b30bb466b875b07d76a782197ad3106",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -321,10 +324,22 @@ return {
                         "selections": [
                           v3,
                           v1,
-                          v5,
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "cover_image",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": "Image",
+                            "plural": false,
+                            "selections": [
+                              v4
+                            ]
+                          },
                           v6,
                           v7,
                           v8,
+                          v9,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -341,7 +356,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              v4,
+                              v5,
                               {
                                 "kind": "InlineFragment",
                                 "type": "ExternalPartner",
@@ -354,12 +369,12 @@ return {
                                 "type": "Partner",
                                 "selections": [
                                   v1,
-                                  v6
+                                  v7
                                 ]
                               }
                             ]
                           },
-                          v4
+                          v5
                         ]
                       }
                     ]
@@ -384,7 +399,7 @@ return {
                 "selections": [
                   v3,
                   v1,
-                  v5,
+                  v6,
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -408,7 +423,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v9
+                      v4
                     ]
                   },
                   {
@@ -451,17 +466,17 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v9
+                          v4
                         ]
                       },
-                      v4,
+                      v5,
                       v3,
                       v1
                     ]
                   },
-                  v7,
                   v8,
-                  v4
+                  v9,
+                  v5
                 ]
               }
             ]

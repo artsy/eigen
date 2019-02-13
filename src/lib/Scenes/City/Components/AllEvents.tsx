@@ -74,11 +74,11 @@ export class AllEvents extends React.Component<Props, State> {
       case "fairs":
         return <FairEventSection data={data} />
       case "galleries":
-        return <EventSection title={"Gallery shows"} data={data} />
+        return <EventSection title="Gallery shows" data={data} />
       case "museums":
-        return <EventSection title={"Museum shows"} data={data} />
+        return <EventSection title="Museum shows" data={data} />
       case "saved":
-        return <EventSection title={"Saved events"} data={data} />
+        return <EventSection title="Saved events" data={data} />
       default:
         return null
     }

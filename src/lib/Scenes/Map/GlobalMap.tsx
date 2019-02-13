@@ -203,6 +203,9 @@ export const GlobalMapContainer = createRefetchContainer(
             node {
               id
               name
+              cover_image {
+                url
+              }
               location {
                 coordinates {
                   lat
