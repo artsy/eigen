@@ -110,7 +110,10 @@ lane :ship_beta do
   # upload_to_sentry.call('eigen-staging')
 
   # Send to the app store
-  pilot changelog: beta_readme, itc_provider: 'ArtsyInc'
+  pilot changelog: beta_readme,
+    itc_provider: 'ArtsyInc',
+    distribute_external: true,
+    groups: ["Artsy"]
 end
 
 lane :promote_beta do
