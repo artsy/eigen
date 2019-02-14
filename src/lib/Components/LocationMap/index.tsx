@@ -37,7 +37,7 @@ export class LocationMap extends React.Component<Props> {
   render() {
     const { location, partnerName } = this.props
     const { lat, lng } = location.coordinates || { lat: null, lng: null }
-    const { address_2, address, id, postal_code, city } = location
+    const { address_2, address, id, postal_code, city, summary } = location
 
     if (!lat || !lng) {
       return null
@@ -53,7 +53,22 @@ export class LocationMap extends React.Component<Props> {
       }
     }
 
-    const renderAddress = () => {
+    const renderSummaryAddress = () => {
+      return (
+        <Box my={2}>
+          {partnerName && (
+            <Sans size="3" color="black100" textAlign="center" weight="medium">
+              {partnerName}
+            </Sans>
+          )}
+          <Serif size="3t" color="black60" textAlign="center">
+            {summary}
+          </Serif>
+        </Box>
+      )
+    }
+
+    const renderSegmentedAddress = () => {
       return (
         <Box my={2}>
           {partnerName && (
@@ -78,6 +93,14 @@ export class LocationMap extends React.Component<Props> {
           )}
         </Box>
       )
+    }
+
+    const renderAddress = () => {
+      if (summary) {
+        return renderSummaryAddress()
+      } else {
+        return renderSegmentedAddress()
+      }
     }
 
     return (
@@ -113,6 +136,7 @@ export const LocationMapContainer = createFragmentContainer(
       address
       address_2
       postal_code
+      summary
       coordinates {
         lat
         lng

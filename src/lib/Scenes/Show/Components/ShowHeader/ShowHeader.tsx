@@ -39,7 +39,7 @@ export class ShowHeader extends React.Component<Props, State> {
   handleFollowShow = () => {
     const {
       relay,
-      show: { id, __id, is_followed },
+      show: { id: showSlugID, __id: relayID, _id: showID, is_followed: isShowFollowed },
     } = this.props
 
     this.setState(
@@ -57,7 +57,8 @@ export class ShowHeader extends React.Component<Props, State> {
             mutation ShowHeaderFollowShowMutation($input: FollowShowInput!) {
               followShow(input: $input) {
                 show {
-                  __id
+                  id
+                  _id
                   is_followed
                 }
               }
@@ -65,20 +66,21 @@ export class ShowHeader extends React.Component<Props, State> {
           `,
           variables: {
             input: {
-              partner_show_id: id,
-              unfollow: is_followed,
+              partner_show_id: showID,
+              unfollow: isShowFollowed,
             },
           },
           optimisticResponse: {
             followShow: {
               show: {
-                __id,
-                is_followed: !is_followed,
+                _id: showID,
+                is_followed: !isShowFollowed,
+                id: showSlugID,
               },
             },
           },
           updater: store => {
-            store.get(__id).setValue(!is_followed, "is_followed")
+            store.get(relayID).setValue(!isShowFollowed, "is_followed")
           },
         })
       }
@@ -155,6 +157,7 @@ export const ShowHeaderContainer = createFragmentContainer(
   graphql`
     fragment ShowHeader_show on Show {
       id
+      _id
       __id
       name
       press_release
