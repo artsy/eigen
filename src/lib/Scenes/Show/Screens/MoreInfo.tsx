@@ -1,4 +1,4 @@
-import { Box, Separator, Serif } from "@artsy/palette"
+import { Box, Separator, Serif, Spacer } from "@artsy/palette"
 import { MoreInfo_show } from "__generated__/MoreInfo_show.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import React from "react"
@@ -97,6 +97,7 @@ export class MoreInfo extends React.Component<Props, State> {
             {this.renderItemSeparator()}
           </>
         }
+        ListFooterComponent={<Spacer pb={4} />}
         ItemSeparatorComponent={this.renderItemSeparator}
         renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
         keyExtractor={(item, index) => item.type + String(index)}

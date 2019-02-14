@@ -258,6 +258,7 @@ fragment ShowHeader_show on Show {
     __typename
     ... on Partner {
       name
+      id
     }
     ... on ExternalPartner {
       name
@@ -699,7 +700,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowQuery",
-  "id": "8541f310f2b691e3c0bee63abb394025",
+  "id": "f2ad113d13abf5855fdbbb1a1d051425",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -918,6 +919,7 @@ return {
                 "type": "Partner",
                 "selections": [
                   v10,
+                  v4,
                   {
                     "kind": "ScalarField",
                     "alias": null,
