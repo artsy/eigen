@@ -280,10 +280,13 @@ randomBOOL(void)
     NSURLComponents *components = [[NSURLComponents alloc] initWithString:route];
     NSString *artistID = [self valueForKey:@"artist_id" fromQueryItems:components.queryItems];
     viewController = [[ARHomeComponentViewController alloc] initWithSelectedArtist:artistID tab:ARHomeTabArtists emission:nil];
-
-  } else {
+  } else if ([route hasSuffix:@"entity=gallery"]){
+    return [[UnroutedViewController alloc] initWithRoute:route];
+  } else if ([route hasSuffix:@"entity=fair"]) {
     NSString *fairID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
+  } else {
+    viewController = [[UnroutedViewController alloc] initWithRoute:route];
   }
 
   return viewController;

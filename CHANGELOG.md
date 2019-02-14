@@ -25,6 +25,11 @@
 - Adds Fair Section in city view - luc
 - Adds AllEvents data and styling to city view - kieran
 - Adds Saved Shows section to city view - luc
+- Styles Fair save button - kieran
+- Fixes save show - kieran
+- Show header title now links to gallery - kieran
+- Show image now full width if one image - kieran
+- Adds spacer below links in show about page - kieran
 
 ### 1.8.2
 

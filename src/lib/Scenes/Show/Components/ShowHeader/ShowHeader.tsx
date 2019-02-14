@@ -3,8 +3,10 @@ import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { ShowHeaderFollowShowMutation } from "__generated__/ShowHeaderFollowShowMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { EntityList } from "lib/Components/EntityList"
+import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
+import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { Carousel } from "./Components/Carousel"
@@ -26,6 +28,13 @@ const ButtonWrapper = styled(Box)`
 
 export class ShowHeader extends React.Component<Props, State> {
   state = { isFollowedSaving: false }
+
+  handlePartnerTitleClick = () => {
+    const {
+      show: { partner },
+    } = this.props
+    SwitchBoard.presentNavigationViewController(this, `/${partner.id}?entity=gallery`)
+  }
 
   handleFollowShow = () => {
     const {
@@ -83,23 +92,35 @@ export class ShowHeader extends React.Component<Props, State> {
       onViewAllArtistsPressed,
     } = this.props
     const hasImages = !!images.length
+    const singleImage = hasImages && images.length === 1
 
     return (
       <>
         <Box px={2} pt={3} pb={hasImages ? 0 : 4}>
           <Spacer m={2} />
-          <Sans size="3" mb={0.5} weight="medium">
-            {partner.name}
-          </Sans>
+          <TouchableWithoutFeedback onPress={this.handlePartnerTitleClick}>
+            <Sans size="3" mb={0.5} weight="medium">
+              {partner.name}
+            </Sans>
+          </TouchableWithoutFeedback>
           <Serif size="8" lineHeight={34}>
             {name}
           </Serif>
           <Sans size="3">{exhibition_period}</Sans>
         </Box>
-        {hasImages && (
-          <Carousel
-            sources={(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({ imageURL, aspectRatio }))}
-          />
+        {hasImages &&
+          !singleImage && (
+            <Carousel
+              sources={(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({
+                imageURL,
+                aspectRatio,
+              }))}
+            />
+          )}
+        {singleImage && (
+          <Box px={2} py={2}>
+            <OpaqueImageView imageURL={images[0].url} aspectRatio={images[0].aspect_ratio} />
+          </Box>
         )}
         <Box px={2}>
           <EntityList
@@ -143,6 +164,7 @@ export const ShowHeaderContainer = createFragmentContainer(
       partner {
         ... on Partner {
           name
+          id
         }
         ... on ExternalPartner {
           name

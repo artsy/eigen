@@ -51,7 +51,7 @@ export class CityView extends Component<Props, State> {
       buckets && (
         <Theme>
           <Box>
-            <Flex py={3} alignItems="center">
+            <Flex py={1} alignItems="center">
               <Handle />
             </Flex>
             <ScrollView
