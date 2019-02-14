@@ -30,6 +30,7 @@
 - Show header title now links to gallery - kieran
 - Show image now full width if one image - kieran
 - Adds spacer below links in show about page - kieran
+- Uses Summary from Location before segmented address in locationMap - kieran
 
 ### 1.8.2
 

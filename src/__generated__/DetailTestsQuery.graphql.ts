@@ -74,6 +74,7 @@ fragment LocationMap_location on Location {
   address
   address_2
   postal_code
+  summary
   coordinates {
     lat
     lng
@@ -356,7 +357,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "eab855d93b250b4d45dcc71952390977",
+  "id": "e0c54fafdc79b5e9f65896ee779b5c2b",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -464,6 +465,13 @@ return {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "postal_code",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "summary",
                 "args": null,
                 "storageKey": null
               },

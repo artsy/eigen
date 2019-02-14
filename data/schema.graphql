@@ -341,7 +341,7 @@ type Artist implements Node & Searchable {
   statuses: ArtistStatuses
   highlights: ArtistHighlights
   years: String
-  marketingCollections: [MarketingCollection]
+  marketingCollections(size: Int): [MarketingCollection]
 }
 
 enum ArtistArtworksFilters {
@@ -1052,6 +1052,7 @@ type ArtworkContextFair {
   # A type-specific Gravity Mongo Document ID.
   _id: String!
   about: String
+  followed_content: FollowedContent
   artists(
     # Sorts for artists in a fair
     sort: FairArtistSorts
@@ -3130,6 +3131,7 @@ type Fair {
   # A type-specific Gravity Mongo Document ID.
   _id: String!
   about: String
+  followed_content: FollowedContent
   artists(
     # Sorts for artists in a fair
     sort: FairArtistSorts
@@ -3450,6 +3452,11 @@ type FollowedArtistsArtworksGroupEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+type FollowedContent {
+  artists: [Artist]
+  galleries: [Partner]
 }
 
 # A connection to a list of items.
@@ -4254,6 +4261,7 @@ type HomePageModuleContextFair {
   # A type-specific Gravity Mongo Document ID.
   _id: String!
   about: String
+  followed_content: FollowedContent
   artists(
     # Sorts for artists in a fair
     sort: FairArtistSorts
@@ -4729,6 +4737,7 @@ type Location {
   phone: String
   postal_code: String
   state: String
+  summary: String
 }
 
 type LotStanding {
@@ -4777,6 +4786,12 @@ type MarketingCollection {
   query: MarketingCollectionQuery!
   createdAt: MarketingDateTime!
   updatedAt: MarketingDateTime!
+
+  # Suggested average price for included works
+  price_guidance: Float
+
+  # Collection can be surfaced on editorial pages
+  show_on_editorial: Boolean!
   artworks(
     acquireable: Boolean
     offerable: Boolean
@@ -7059,7 +7074,7 @@ type Query {
 
   # Find partners by ID
   _unused_gravity_partners(ids: [ID]!): [DoNotUseThisPartner]
-  marketingCollections(artistID: String): [MarketingCollection!]!
+  marketingCollections(size: Int, showOnEditorial: Boolean, artistID: String): [MarketingCollection!]!
   marketingCategories: [MarketingCollectionCategory!]!
   marketingCollection(slug: String!): MarketingCollection
 }
