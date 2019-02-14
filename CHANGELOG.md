@@ -62,6 +62,8 @@
 - Adds Shows to Global Saves and Follows view -ashley
 - Adds seperator between fair entities - kieran
 - Adds Fair analytics - kieran
+- Refactor and style new filter header in map view - luc
+- Move filters down to city view - luc
 
 ### 1.8.2
 
