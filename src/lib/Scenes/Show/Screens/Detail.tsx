@@ -5,6 +5,7 @@ import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Components/Show/ShowArtistsPreview"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
+import { isEmpty } from "lodash"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -63,7 +64,7 @@ export class Detail extends React.Component<Props, State> {
       },
     })
 
-    if (show.location && show.location.displayDaySchedules) {
+    if (show.location && !isEmpty(show.location.displayDaySchedules)) {
       sections.push({
         type: "hours",
         data: {
