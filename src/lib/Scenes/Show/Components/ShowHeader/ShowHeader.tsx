@@ -58,7 +58,7 @@ export class ShowHeader extends React.Component<Props, State> {
               followShow(input: $input) {
                 show {
                   id
-                  __id
+                  _id
                   is_followed
                 }
               }
