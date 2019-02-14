@@ -93,6 +93,7 @@ export class AllEvents extends React.Component<Props, State> {
         ItemSeparatorComponent={this.renderItemSeparator}
         keyExtractor={item => item.type}
         renderItem={item => this.renderItem(item)}
+        scrollEnabled={false}
       />
     )
   }
