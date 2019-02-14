@@ -230,6 +230,7 @@ fragment LocationMap_location on Location {
   address
   address_2
   postal_code
+  summary
   coordinates {
     lat
     lng
@@ -243,6 +244,7 @@ fragment LocationMap_location on Location {
 
 fragment ShowHeader_show on Show {
   id
+  _id
   __id
   name
   press_release
@@ -687,7 +689,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
-  "id": "28935f5282cbd45654a99381ea49af8e",
+  "id": "fa1525e9429bdb6792b98867fafd9575",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -793,6 +795,13 @@ return {
                 "storageKey": null
               },
               {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "summary",
+                "args": null,
+                "storageKey": null
+              },
+              {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "coordinates",
@@ -864,6 +873,13 @@ return {
               v6,
               v7
             ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "_id",
+            "args": null,
+            "storageKey": null
           },
           v1,
           {

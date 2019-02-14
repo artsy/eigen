@@ -10,6 +10,7 @@ export type LocationMap_location = {
     readonly address: string | null;
     readonly address_2: string | null;
     readonly postal_code: string | null;
+    readonly summary: string | null;
     readonly coordinates: ({
         readonly lat: number | null;
         readonly lng: number | null;
@@ -74,6 +75,13 @@ const node: ConcreteFragment = {
       "storageKey": null
     },
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "summary",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "LinkedField",
       "alias": null,
       "name": "coordinates",
@@ -132,5 +140,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = '069b9b3b343f9c9a36639edbd82d2049';
+(node as any).hash = 'e1c9c49cac63aaaa08ff3a09f279f4e2';
 export default node;

@@ -5,6 +5,7 @@ declare const _ShowHeader_show$ref: unique symbol;
 export type ShowHeader_show$ref = typeof _ShowHeader_show$ref;
 export type ShowHeader_show = {
     readonly id: string;
+    readonly _id: string;
     readonly __id: string;
     readonly name: string | null;
     readonly press_release: string | null;
@@ -57,6 +58,13 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_followed",
+      "args": null,
+      "storageKey": null
+    },
     v0,
     v1,
     v2,
@@ -70,7 +78,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "is_followed",
+      "name": "_id",
       "args": null,
       "storageKey": null
     },
@@ -163,5 +171,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7ad7caebb675a8f3fc7e8c372b7c655c';
+(node as any).hash = '554f39c5093aa6921e472cd62c54120a';
 export default node;
