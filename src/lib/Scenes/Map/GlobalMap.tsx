@@ -1,4 +1,4 @@
-import { Flex } from "@artsy/palette"
+import { Box, Flex } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import React from "react"
@@ -8,7 +8,8 @@ import styled from "styled-components/native"
 
 import { Pin } from "lib/Icons/Pin"
 import { bucketCityResults, BucketResults } from "./Bucket"
-import { FiltersBar } from "./Components/FiltersBar"
+import { CitySwitcherButton } from "./Components/CitySwitcherButton"
+import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
 import { Tab } from "./types"
 
@@ -17,20 +18,20 @@ const Emission = NativeModules.Emission || {}
 Mapbox.setAccessToken(Emission.mapBoxAPIClientKey)
 
 const Map = styled(Mapbox.MapView)`
-  height: ${Dimensions.get("window").height - 245};
+  height: ${Dimensions.get("window").height};
   width: 100%;
 `
-
 interface Props {
   initialCoordinates?: { lat: number; lng: number }
   viewer: GlobalMap_viewer
 }
-
 interface State {
   activeIndex: number
   activeShowID?: string
-  currentLocation?: any
   bucketResults: BucketResults
+  currentLocation?: any
+  userLocation?: any
+  trackUserLocation?: boolean
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
@@ -73,7 +74,14 @@ export class GlobalMap extends React.Component<Props, State> {
       activeIndex: 0,
       currentLocation,
       bucketResults,
+      trackUserLocation: false,
     }
+  }
+
+  componentDidMount() {
+    EventEmitter.subscribe("filters:change", activeIndex =>
+      this.setState({ activeIndex }, () => this.emitFilteredBucketResults())
+    )
   }
 
   componentWillReceiveProps() {
@@ -156,12 +164,6 @@ export class GlobalMap extends React.Component<Props, State> {
 
     return (
       <Flex mb={0.5} flexDirection="column">
-        <FiltersBar
-          currentCity={city as any}
-          tabs={this.filters}
-          goToPage={activeIndex => this.setState({ activeIndex }, () => this.emitFilteredBucketResults())}
-        />
-
         <Map
           ref={(c: any) => {
             if (c) {
@@ -175,11 +177,33 @@ export class GlobalMap extends React.Component<Props, State> {
           zoomLevel={13}
           logoEnabled={false}
           attributionEnabled={false}
-          onRegionDidChange={() => {
-            // TODO: We should be filtering the bucketResults based on the new map region.
+          onRegionDidChange={location => {
             this.emitFilteredBucketResults()
+            this.setState({
+              trackUserLocation: false,
+              currentLocation: location.geometry.coordinate,
+            })
+          }}
+          onUserLocationUpdate={location => {
+            this.setState({
+              userLocation: location,
+              currentLocation: location,
+              trackUserLocation: true,
+            })
           }}
         >
+          <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={3}>
+            <CitySwitcherButton city={city} />
+            <Box style={{ marginLeft: "auto" }}>
+              <UserPositionButton
+                highlight={this.state.userLocation === this.state.currentLocation}
+                onPress={() => {
+                  const { latitude, longitude } = this.state.userLocation.coords
+                  this.map.moveTo([longitude, latitude], 500)
+                }}
+              />
+            </Box>
+          </Flex>
           {this.renderAnnotations()}
         </Map>
       </Flex>
