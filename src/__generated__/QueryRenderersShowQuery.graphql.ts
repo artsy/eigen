@@ -247,7 +247,6 @@ fragment LocationMap_location on Location {
 
 fragment ShowHeader_show on Show {
   id
-  _id
   __id
   name
   press_release
@@ -700,7 +699,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "92d2c1858034d517e562e830ca5c342d",
+  "id": "3e56584dbbfba8a5397d7181a33ec4e8",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -877,13 +876,6 @@ return {
               v7,
               v8
             ]
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "_id",
-            "args": null,
-            "storageKey": null
           },
           v2,
           {

@@ -15,6 +15,9 @@ export type GlobalMap_viewer = {
                 readonly node: ({
                     readonly id: string;
                     readonly name: string | null;
+                    readonly cover_image: ({
+                        readonly url: string | null;
+                    }) | null;
                     readonly location: ({
                         readonly coordinates: ({
                             readonly lat: number | null;
@@ -34,6 +37,31 @@ export type GlobalMap_viewer = {
         readonly fairs: ReadonlyArray<({
             readonly id: string;
             readonly name: string | null;
+            readonly location: ({
+                readonly coordinates: ({
+                    readonly lat: number | null;
+                    readonly lng: number | null;
+                }) | null;
+            }) | null;
+            readonly image: ({
+                readonly image_url: string | null;
+                readonly aspect_ratio: number;
+                readonly url: string | null;
+            }) | null;
+            readonly profile: ({
+                readonly icon: ({
+                    readonly id: string | null;
+                    readonly href: string | null;
+                    readonly height: number | null;
+                    readonly width: number | null;
+                    readonly url: string | null;
+                }) | null;
+                readonly __id: string;
+                readonly id: string;
+                readonly name: string | null;
+            }) | null;
+            readonly start_at: string | null;
+            readonly end_at: string | null;
         }) | null> | null;
     }) | null;
     readonly " $refType": GlobalMap_viewer$ref;
@@ -84,14 +112,48 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "__id",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "location",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "Location",
+  "plural": false,
+  "selections": [
+    v1,
+    v4
+  ]
+},
+v6 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "type",
+  "args": null,
+  "storageKey": null
+},
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "start_at",
+  "args": null,
+  "storageKey": null
+},
+v8 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "end_at",
   "args": null,
   "storageKey": null
 };
@@ -178,31 +240,19 @@ return {
                     {
                       "kind": "LinkedField",
                       "alias": null,
-                      "name": "location",
+                      "name": "cover_image",
                       "storageKey": null,
                       "args": null,
-                      "concreteType": "Location",
+                      "concreteType": "Image",
                       "plural": false,
                       "selections": [
-                        v1,
                         v3
                       ]
                     },
-                    v4,
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "start_at",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "end_at",
-                      "args": null,
-                      "storageKey": null
-                    },
+                    v5,
+                    v6,
+                    v7,
+                    v8,
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -212,7 +262,7 @@ return {
                       "concreteType": null,
                       "plural": false,
                       "selections": [
-                        v3,
+                        v4,
                         {
                           "kind": "InlineFragment",
                           "type": "ExternalPartner",
@@ -225,12 +275,12 @@ return {
                           "type": "Partner",
                           "selections": [
                             v0,
-                            v4
+                            v6
                           ]
                         }
                       ]
                     },
-                    v3
+                    v4
                   ]
                 }
               ]
@@ -255,7 +305,84 @@ return {
           "selections": [
             v2,
             v0,
-            v3
+            v5,
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "image",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Image",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "image_url",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "aspect_ratio",
+                  "args": null,
+                  "storageKey": null
+                },
+                v3
+              ]
+            },
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "profile",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Profile",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "icon",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Image",
+                  "plural": false,
+                  "selections": [
+                    v2,
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "href",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "height",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "width",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    v3
+                  ]
+                },
+                v4,
+                v2,
+                v0
+              ]
+            },
+            v7,
+            v8,
+            v4
           ]
         }
       ]
@@ -263,5 +390,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'fba6f6d7ec7cbcad191b7886831bcf4a';
+(node as any).hash = '346718ea7f2a07238a1023a981e4f773';
 export default node;

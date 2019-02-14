@@ -43,6 +43,9 @@ fragment GlobalMap_viewer_279V1T on Viewer {
         node {
           id
           name
+          cover_image {
+            url
+          }
           location {
             coordinates {
               lat
@@ -74,6 +77,32 @@ fragment GlobalMap_viewer_279V1T on Viewer {
     fairs(size: 10) {
       id
       name
+      location {
+        coordinates {
+          lat
+          lng
+        }
+        __id
+      }
+      image {
+        image_url
+        aspect_ratio
+        url
+      }
+      profile {
+        icon {
+          id
+          href
+          height
+          width
+          url
+        }
+        __id
+        id
+        name
+      }
+      start_at
+      end_at
       __id
     }
   }
@@ -131,14 +160,48 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "__id",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "location",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "Location",
+  "plural": false,
+  "selections": [
+    v2,
+    v5
+  ]
+},
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "type",
+  "args": null,
+  "storageKey": null
+},
+v8 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "start_at",
+  "args": null,
+  "storageKey": null
+},
+v9 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "end_at",
   "args": null,
   "storageKey": null
 };
@@ -146,7 +209,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MapRendererQuery",
-  "id": "a9cdae61ba0566e061accdd9b5dcf422",
+  "id": "9b30bb466b875b07d76a782197ad3106",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -264,31 +327,19 @@ return {
                           {
                             "kind": "LinkedField",
                             "alias": null,
-                            "name": "location",
+                            "name": "cover_image",
                             "storageKey": null,
                             "args": null,
-                            "concreteType": "Location",
+                            "concreteType": "Image",
                             "plural": false,
                             "selections": [
-                              v2,
                               v4
                             ]
                           },
-                          v5,
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "start_at",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "end_at",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          v6,
+                          v7,
+                          v8,
+                          v9,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -305,7 +356,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              v4,
+                              v5,
                               {
                                 "kind": "InlineFragment",
                                 "type": "ExternalPartner",
@@ -318,12 +369,12 @@ return {
                                 "type": "Partner",
                                 "selections": [
                                   v1,
-                                  v5
+                                  v7
                                 ]
                               }
                             ]
                           },
-                          v4
+                          v5
                         ]
                       }
                     ]
@@ -348,7 +399,84 @@ return {
                 "selections": [
                   v3,
                   v1,
-                  v4
+                  v6,
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "image",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Image",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "image_url",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "aspect_ratio",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      v4
+                    ]
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "profile",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Profile",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "icon",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": [
+                          v3,
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "href",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "height",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "width",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          v4
+                        ]
+                      },
+                      v5,
+                      v3,
+                      v1
+                    ]
+                  },
+                  v8,
+                  v9,
+                  v5
                 ]
               }
             ]

@@ -1,79 +1,99 @@
-import { color, Serif } from "@artsy/palette"
+import { Box, Separator } from "@artsy/palette"
+import { EventSection } from "lib/Scenes/City/Components/EventSection"
+import { BucketKey, BucketResults } from "lib/Scenes/Map/Bucket"
 import React from "react"
-import styled from "styled-components/native"
+import { FlatList } from "react-native"
+import { FairEventSection } from "./FairEventSection"
+import { SavedEventSection } from "./SavedEventSection"
 
-import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
-
-export interface Props {
-  // TODO: Use this to render the UI.
-  city: GlobalMap_viewer
-}
-export const AllEvents: React.SFC<Props> = ({}) => {
-  return (
-    <>
-      <MarginContainer>
-        <Divider />
-        <Placeholder>BMW Sponsorship view</Placeholder>
-        <Placeholder>Saved items view</Placeholder>
-        <Placeholder tall>
-          <Title size="8">Fairs</Title>
-        </Placeholder>
-        <Divider />
-        <Placeholder tall>
-          <Title size="8">Gallery shows</Title>
-        </Placeholder>
-        <Divider />
-        <Placeholder tall>
-          <Title size="8">Museum shows</Title>
-        </Placeholder>
-        <Divider />
-        <Placeholder tall>
-          <Title size="8">BMW Art Guide</Title>
-        </Placeholder>
-        <Divider />
-        <Placeholder tall>
-          <Title size="8">Closing this week</Title>
-        </Placeholder>
-        <Divider />
-        <Placeholder tall>
-          <Title size="8">Opening this week</Title>
-        </Placeholder>
-      </MarginContainer>
-    </>
-  )
+interface Props {
+  currentBucket: BucketKey
+  buckets: BucketResults
 }
 
-const Title = styled(Serif)`
-  width: auto;
-  margin-left: 0;
-  margin-right: 0;
-  margin-bottom: 700px;
-`
+interface State {
+  sections: Array<{
+    title: string
+    id: number
+  }>
+}
 
-export const Placeholder = styled.Text<{ tall?: boolean }>`
-  z-index: -1;
-  color: ${colors["gray-semibold"]};
-  font-family: "${fonts["garamond-regular"]}";
-  font-size: 20;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  width: 100%;
-  background-color: #ffcccc;
-  ${props => (props.tall ? "height: 200px;" : "")}
-`
+export class AllEvents extends React.Component<Props, State> {
+  state = {
+    sections: [],
+  }
 
-export const MarginContainer = styled.View`
-  margin-left: 15px;
-  margin-right: 15px;
-  width: auto;
-`
+  componentDidMount() {
+    this.updateSections()
+  }
 
-export const Divider = styled.View`
-  width: 100%;
-  border: 1px;
-  border-color: ${color("black30")};
-  border-bottom-width: 0;
-  margin-bottom: 15px;
-`
+  updateSections = () => {
+    const { buckets } = this.props
+    const sections = []
+
+    if (buckets.saved) {
+      sections.push({
+        type: "saved",
+        data: buckets.saved,
+      })
+    }
+
+    if (buckets.fairs && buckets.fairs.length) {
+      sections.push({
+        type: "fairs",
+        data: buckets.fairs,
+      })
+    }
+
+    if (buckets.galleries && buckets.galleries.length) {
+      sections.push({
+        type: "galleries",
+        data: buckets.galleries,
+      })
+    }
+
+    if (buckets.museums && buckets.museums.length) {
+      sections.push({
+        type: "museums",
+        data: buckets.museums,
+      })
+    }
+
+    this.setState({ sections })
+  }
+
+  renderItemSeparator = ({ leadingItem }) => {
+    return (
+      <Box py={1} px={2}>
+        {["fairs", "saved"].indexOf(leadingItem.type) === -1 && <Separator />}
+      </Box>
+    )
+  }
+
+  renderItem = ({ item: { data, type } }) => {
+    switch (type) {
+      case "fairs":
+        return <FairEventSection data={data} />
+      case "galleries":
+        return <EventSection title="Gallery shows" data={data} />
+      case "museums":
+        return <EventSection title="Museum shows" data={data} />
+      case "saved":
+        return <SavedEventSection data={data} />
+      default:
+        return null
+    }
+  }
+
+  render() {
+    const { sections } = this.state
+    return (
+      <FlatList
+        data={sections}
+        ItemSeparatorComponent={this.renderItemSeparator}
+        keyExtractor={item => item.type}
+        renderItem={item => this.renderItem(item)}
+      />
+    )
+  }
+}

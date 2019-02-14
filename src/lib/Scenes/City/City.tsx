@@ -1,8 +1,8 @@
-import { Box, color, Flex, Serif } from "@artsy/palette"
-import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import { Box, color, Flex, Separator, Serif, Theme } from "@artsy/palette"
 import React, { Component } from "react"
 import { ScrollView } from "react-native"
 import styled from "styled-components/native"
+import { BucketKey, BucketResults } from "../Map/Bucket"
 import { EventEmitter } from "../Map/EventEmitter"
 import { Tab } from "../Map/types"
 import { AllEvents } from "./Components/AllEvents"
@@ -13,25 +13,25 @@ interface Props {
 }
 
 interface State {
-  city?: GlobalMap_viewer
+  buckets?: BucketResults
   filter: Tab
 }
 
 export class CityView extends Component<Props, State> {
   state = {
-    city: null,
+    buckets: null,
     filter: { id: "all", text: "All events" },
   }
   scrollViewVerticalStart = 0
   scrollView: ScrollView = null
 
   componentWillMount() {
-    EventEmitter.subscribe("map:change", ({ filter, city }) => {
-      console.log(city)
+    EventEmitter.subscribe("map:change", ({ filter, buckets }: { filter: Tab; buckets: BucketResults }) => {
+      console.log(buckets)
 
       this.setState({
-        city,
-        filter: filter as any,
+        buckets,
+        filter,
       })
     })
   }
@@ -43,41 +43,44 @@ export class CityView extends Component<Props, State> {
   }
 
   render() {
-    const { city, filter } = this.state
+    const { buckets, filter } = this.state
     const { isDrawerOpen, verticalMargin } = this.props
     // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
     return (
-      city && (
-        <Box>
-          <Flex py={3} alignItems="center">
-            <Handle />
-          </Flex>
-          <ScrollView
-            contentInset={{ bottom: bottomInset }}
-            onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
-            scrollEnabled={isDrawerOpen}
-            ref={r => {
-              if (r) {
-                this.scrollView = r as any
-              }
-            }}
-          >
-            <Box px={3}>
-              <Serif size="8" mb="3">
-                {filter.id === "all" ? "All events" : filter.text}
-              </Serif>
-            </Box>
-            {(() => {
-              switch (filter && filter.id) {
-                case "all":
-                  return <AllEvents city={city} />
-                default:
-                  return <Serif size="3">Not implemented yet.</Serif>
-              }
-            })()}
-          </ScrollView>
-        </Box>
+      buckets && (
+        <Theme>
+          <Box>
+            <Flex py={1} alignItems="center">
+              <Handle />
+            </Flex>
+            <ScrollView
+              contentInset={{ bottom: bottomInset }}
+              onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
+              scrollEnabled={isDrawerOpen}
+              ref={r => {
+                if (r) {
+                  this.scrollView = r as any
+                }
+              }}
+            >
+              <Box px={2}>
+                <Serif size="8" mb={1.5}>
+                  {filter.id === "all" ? "All events" : filter.text}
+                </Serif>
+                <Separator my={1} />
+              </Box>
+              {(() => {
+                switch (filter && filter.id) {
+                  case "all":
+                    return <AllEvents currentBucket={filter.id as BucketKey} buckets={buckets} />
+                  default:
+                    return <Serif size="3">Not implemented yet.</Serif>
+                }
+              })()}
+            </ScrollView>
+          </Box>
+        </Theme>
       )
     )
   }

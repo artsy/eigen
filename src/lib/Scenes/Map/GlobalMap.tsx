@@ -83,7 +83,7 @@ export class GlobalMap extends React.Component<Props, State> {
   emitFilteredBucketResults() {
     // TODO: map region filtering can live here.
     const filter = this.filters[this.state.activeIndex]
-    EventEmitter.dispatch("map:change", { filter, city: this.state.bucketResults[filter.id] })
+    EventEmitter.dispatch("map:change", { filter, buckets: this.state.bucketResults })
   }
 
   onAnnotationSelected(showID: string, feature) {
@@ -203,6 +203,9 @@ export const GlobalMapContainer = createRefetchContainer(
             node {
               id
               name
+              cover_image {
+                url
+              }
               location {
                 coordinates {
                   lat
@@ -228,6 +231,35 @@ export const GlobalMapContainer = createRefetchContainer(
         fairs(size: 10) {
           id
           name
+
+          location {
+            coordinates {
+              lat
+              lng
+            }
+          }
+
+          image {
+            image_url
+            aspect_ratio
+            url
+          }
+
+          profile {
+            icon {
+              id
+              href
+              height
+              width
+              url
+            }
+            __id
+            id
+            name
+          }
+
+          start_at
+          end_at
         }
       }
     }
