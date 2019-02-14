@@ -16,7 +16,7 @@ const render = () =>
     <MockRelayRenderer
       Component={({ show }) => (
         <Theme>
-          <FairBoothHeader onTitlePressed={jest.fn()} show={show} onSaveShowPressed={jest.fn()} />
+          <FairBoothHeader onTitlePressed={jest.fn()} show={show} />
         </Theme>
       )}
       query={graphql`
@@ -36,12 +36,5 @@ describe("FairBoothHeader", () => {
   it("Renders the Fair Booth Header", async () => {
     const tree = await render()
     expect(tree.html()).toMatchSnapshot()
-  })
-
-  it("Renders the fair and partner names", async () => {
-    const tree = await render()
-
-    expect(tree.text()).toContain(FairBoothShowFixture.partner.name)
-    expect(tree.text()).toContain(FairBoothShowFixture.fair.name)
   })
 })

@@ -60,10 +60,6 @@ export class FairBooth extends React.Component<Props, State> {
     }
   }
 
-  handleSaveShow = () => {
-    /** TODO: implement */
-  }
-
   onTitlePressed = partnerId => {
     SwitchBoard.presentNavigationViewController(this, partnerId)
   }
@@ -74,9 +70,7 @@ export class FairBooth extends React.Component<Props, State> {
     return (
       <FlatList
         data={sections}
-        ListHeaderComponent={
-          <FairBoothHeader show={show} onTitlePressed={this.onTitlePressed} onSaveShowPressed={this.handleSaveShow} />
-        }
+        ListHeaderComponent={<FairBoothHeader show={show} onTitlePressed={this.onTitlePressed} />}
         renderItem={item => (
           <Box px={2} py={2}>
             {this.renderItem(item)}

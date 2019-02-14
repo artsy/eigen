@@ -9,7 +9,7 @@ interface Props {
   name: string
   location: string
   isFollowed?: boolean
-  onPress?: () => void
+  onFollowPartner?: () => void
   isFollowedChanging?: boolean
   url: string
   onViewFairBoothPressed: () => void
@@ -19,7 +19,7 @@ export const FairBoothPreviewHeader: React.SFC<Props> = ({
   name,
   location,
   isFollowed,
-  onPress,
+  onFollowPartner,
   isFollowedChanging,
   url,
   onViewFairBoothPressed,
@@ -39,12 +39,11 @@ export const FairBoothPreviewHeader: React.SFC<Props> = ({
           </Box>
         </ImageAndTextWrapper>
       </TouchableOpacity>
-      {/* TODO: Convert the width and height to a padding */}
       <Box width={102} height={34}>
         <InvertedButton
           grayBorder={true}
           text={isFollowed ? "Following" : "Follow"}
-          onPress={onPress}
+          onPress={onFollowPartner}
           selected={isFollowed}
           inProgress={isFollowedChanging}
         />

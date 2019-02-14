@@ -10,7 +10,12 @@ export type FairBoothHeader_show = {
     readonly partner: ({
         readonly name?: string | null;
         readonly id?: string;
+        readonly __id?: string;
         readonly href?: string | null;
+        readonly profile?: ({
+            readonly _id: string;
+            readonly is_followed: boolean | null;
+        }) | null;
     }) | null;
     readonly counts: ({
         readonly artworks: number | null;
@@ -96,6 +101,32 @@ return {
               "name": "href",
               "args": null,
               "storageKey": null
+            },
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "profile",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Profile",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "_id",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "is_followed",
+                  "args": null,
+                  "storageKey": null
+                },
+                v1
+              ]
             }
           ]
         }
@@ -149,5 +180,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7ec9d3300793ec4b095dc1ee09f0c9a9';
+(node as any).hash = '1728034f9cda88ad6d1ca2ae54d7742a';
 export default node;

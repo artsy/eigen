@@ -31,6 +31,7 @@
 - Show image now full width if one image - kieran
 - Adds spacer below links in show about page - kieran
 - Uses Summary from Location before segmented address in locationMap - kieran
+- Adds Follow functionality to Fair partners - kieran
 
 ### 1.8.2
 

@@ -46,7 +46,13 @@ fragment FairBoothHeader_show on Show {
     ... on Partner {
       name
       id
+      __id
       href
+      profile {
+        _id
+        is_followed
+        __id
+      }
     }
     ... on ExternalPartner {
       name
@@ -278,18 +284,25 @@ v7 = {
 v8 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "display",
+  "name": "is_followed",
   "args": null,
   "storageKey": null
 },
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_biddable",
+  "name": "display",
   "args": null,
   "storageKey": null
 },
 v10 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_biddable",
+  "args": null,
+  "storageKey": null
+},
+v11 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -321,56 +334,56 @@ v10 = {
     }
   ]
 },
-v11 = {
+v12 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "title",
   "args": null,
   "storageKey": null
 },
-v12 = {
+v13 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "date",
   "args": null,
   "storageKey": null
 },
-v13 = {
+v14 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "sale_message",
   "args": null,
   "storageKey": null
 },
-v14 = {
+v15 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_in_auction",
   "args": null,
   "storageKey": null
 },
-v15 = {
+v16 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_acquireable",
   "args": null,
   "storageKey": null
 },
-v16 = {
+v17 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_offerable",
   "args": null,
   "storageKey": null
 },
-v17 = {
+v18 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v18 = {
+v19 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "sale",
@@ -400,7 +413,7 @@ v18 = {
       "args": null,
       "storageKey": null
     },
-    v17,
+    v18,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -411,10 +424,10 @@ v18 = {
     v2
   ]
 },
-v19 = [
-  v8
+v20 = [
+  v9
 ],
-v20 = {
+v21 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "sale_artwork",
@@ -431,7 +444,7 @@ v20 = {
       "args": null,
       "concreteType": "SaleArtworkOpeningBid",
       "plural": false,
-      "selections": v19
+      "selections": v20
     },
     {
       "kind": "LinkedField",
@@ -441,7 +454,7 @@ v20 = {
       "args": null,
       "concreteType": "SaleArtworkCurrentBid",
       "plural": false,
-      "selections": v19
+      "selections": v20
     },
     {
       "kind": "ScalarField",
@@ -459,14 +472,14 @@ v20 = {
       "concreteType": "Sale",
       "plural": false,
       "selections": [
-        v17,
+        v18,
         v2
       ]
     },
     v2
   ]
 },
-v21 = {
+v22 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "artists",
@@ -483,7 +496,7 @@ v21 = {
   "plural": true,
   "selections": v4
 },
-v22 = {
+v23 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "partner",
@@ -492,13 +505,6 @@ v22 = {
   "concreteType": "Partner",
   "plural": false,
   "selections": v4
-},
-v23 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_followed",
-  "args": null,
-  "storageKey": null
 },
 v24 = {
   "kind": "ScalarField",
@@ -543,7 +549,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairBoothQuery",
-  "id": "86ac5291b3c62d079320a07df127b0ac",
+  "id": "6354fb44a328a12b9f3272581260f8d3",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -621,7 +627,27 @@ return {
                 "selections": [
                   v3,
                   v6,
-                  v7
+                  v7,
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "profile",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Profile",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "_id",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      v8,
+                      v2
+                    ]
+                  }
                 ]
               }
             ]
@@ -660,7 +686,7 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
-              v8,
+              v9,
               v2
             ]
           },
@@ -681,20 +707,20 @@ return {
             "concreteType": "Artwork",
             "plural": true,
             "selections": [
-              v9,
-              v2,
               v10,
+              v2,
               v11,
               v12,
               v13,
               v14,
-              v6,
               v15,
+              v6,
               v16,
-              v18,
-              v20,
+              v17,
+              v19,
               v21,
               v22,
+              v23,
               v7
             ]
           },
@@ -711,7 +737,7 @@ return {
               v7,
               v2,
               v3,
-              v23,
+              v8,
               v24,
               v25,
               v26,
@@ -746,7 +772,7 @@ return {
                   v6,
                   v2,
                   v3,
-                  v23,
+                  v8,
                   v24,
                   v25,
                   v26,
@@ -892,20 +918,20 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          v15,
+                          v16,
                           v6,
-                          v10,
                           v11,
                           v12,
                           v13,
                           v14,
-                          v9,
+                          v15,
+                          v10,
                           v2,
-                          v16,
-                          v18,
-                          v20,
+                          v17,
+                          v19,
                           v21,
                           v22,
+                          v23,
                           v7,
                           v5
                         ]

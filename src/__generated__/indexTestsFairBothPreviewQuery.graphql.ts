@@ -32,6 +32,13 @@ fragment FairBoothPreview_show on Show {
     ... on Partner {
       name
       href
+      id
+      __id
+      profile {
+        _id
+        is_followed
+        __id
+      }
     }
     ... on ExternalPartner {
       name
@@ -182,7 +189,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "indexTestsFairBothPreviewQuery",
-  "id": "b9ed91b34cd32449f6472fd33e51ccbb",
+  "id": "f0402c1c36997ad61634fa6b4ef9afa6",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -263,7 +270,34 @@ return {
                 "type": "Partner",
                 "selections": [
                   v3,
-                  v4
+                  v4,
+                  v2,
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "profile",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Profile",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "_id",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "is_followed",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      v1
+                    ]
+                  }
                 ]
               }
             ]
