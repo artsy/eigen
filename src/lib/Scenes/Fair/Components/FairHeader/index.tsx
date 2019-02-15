@@ -1,13 +1,12 @@
 import { Box, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
-import { FairHeaderMutation } from "__generated__/FairHeaderMutation.graphql"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 import moment from "moment"
 import React from "react"
 import { Dimensions, Image } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { CountdownTimer } from "./CountdownTimer"
 
@@ -98,61 +97,6 @@ export class FairHeader extends React.Component<Props, State> {
 
   handlePress = item => {
     Switchboard.presentNavigationViewController(this, item)
-  }
-
-  handleSaveFair() {
-    const {
-      relay,
-      fair: {
-        profile: { __id: fairProfileID, id: fairID, is_followed: isFairFollowed },
-      },
-    } = this.props
-
-    this.setState(
-      {
-        isSavedFairStateUpdating: true,
-      },
-      () => {
-        if (fairProfileID) {
-          return commitMutation<FairHeaderMutation>(relay.environment, {
-            onCompleted: () => {
-              this.setState({
-                isSavedFairStateUpdating: false,
-              })
-            },
-            mutation: graphql`
-              mutation FairHeaderMutation($input: FollowProfileInput!) {
-                followProfile(input: $input) {
-                  profile {
-                    id
-                    is_followed
-                    __id
-                  }
-                }
-              }
-            `,
-            variables: {
-              input: {
-                profile_id: fairProfileID,
-                unfollow: isFairFollowed,
-              },
-            },
-            optimisticResponse: {
-              followProfile: {
-                profile: {
-                  __id: fairProfileID,
-                  is_followed: !isFairFollowed,
-                  id: fairID,
-                },
-              },
-            },
-            updater: store => {
-              store.get(fairProfileID).setValue(!isFairFollowed, "is_followed")
-            },
-          })
-        }
-      }
-    )
   }
 
   render() {
