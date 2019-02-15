@@ -31,6 +31,9 @@
 - Show image now full width if one image - kieran
 - Adds spacer below links in show about page - kieran
 - Uses Summary from Location before segmented address in locationMap - kieran
+- Fixes inconsistent padding between items in show and fair views - kieran
+- Removes fair save button - kieran
+- Adds params to fair link - kieran
 
 ### 1.8.2
 

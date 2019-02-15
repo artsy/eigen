@@ -1,7 +1,6 @@
 import { Box, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
 import { FairHeaderMutation } from "__generated__/FairHeaderMutation.graphql"
-// import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
@@ -162,8 +161,6 @@ export class FairHeader extends React.Component<Props, State> {
     } = this.props
     const { width: screenWidth } = Dimensions.get("window")
     const imageHeight = 567
-    // const { isSavedFairStateUpdating } = this.state
-    // FIXME: When saving fairs is defined we can use commented code
 
     return (
       <>
