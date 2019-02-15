@@ -5,7 +5,7 @@ upcoming:
   dev:
     - Not yet
   user_facing:
-    - Not yet
+    - Fixes issue where non-fair routes would be sent to the new fair component - ash
 
 releases:
   -
