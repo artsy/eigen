@@ -104,24 +104,22 @@ export class LocationMap extends React.Component<Props> {
     }
 
     return (
-      <Box pb={2}>
-        <MapWrapper>
-          <Map
-            key={lng}
-            styleURL={ArtsyMapStyleURL}
-            centerCoordinate={[lng, lat]}
-            zoomLevel={14}
-            logoEnabled={false}
-            scrollEnabled={false}
-            attributionEnabled={false}
-          >
-            <Mapbox.PointAnnotation id={id} coordinate={[lng, lat]}>
-              <Pin />
-            </Mapbox.PointAnnotation>
-          </Map>
-          {renderAddress()}
-        </MapWrapper>
-      </Box>
+      <MapWrapper>
+        <Map
+          key={lng}
+          styleURL={ArtsyMapStyleURL}
+          centerCoordinate={[lng, lat]}
+          zoomLevel={14}
+          logoEnabled={false}
+          scrollEnabled={false}
+          attributionEnabled={false}
+        >
+          <Mapbox.PointAnnotation id={id} coordinate={[lng, lat]}>
+            <Pin />
+          </Mapbox.PointAnnotation>
+        </Map>
+        {renderAddress()}
+      </MapWrapper>
     )
   }
 }

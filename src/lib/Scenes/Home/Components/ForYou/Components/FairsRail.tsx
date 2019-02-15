@@ -58,7 +58,7 @@ export class FairsRail extends Component<Props, null> {
       }
 
       const selectionHandler = () => {
-        Switchboard.presentNavigationViewController(this, fair.profile.href)
+        Switchboard.presentNavigationViewController(this, `${fair.profile.href}?entity=fair`)
       }
 
       return (

@@ -105,7 +105,7 @@ export class Detail extends React.Component<Props, State> {
       return null
     }
     return (
-      <Box py={2} px={2}>
+      <Box pb={2} px={2}>
         <Separator />
       </Box>
     )
@@ -129,11 +129,7 @@ export class Detail extends React.Component<Props, State> {
       case "location":
         return <LocationMap {...data} />
       case "description":
-        return (
-          <Box pb={2}>
-            <Serif size="3t">{data.description}</Serif>
-          </Box>
-        )
+        return <Serif size="3t">{data.description}</Serif>
       case "artworks":
         return <ShowArtworksPreview title="Works" {...data} />
       case "artists":
@@ -158,7 +154,11 @@ export class Detail extends React.Component<Props, State> {
         extraData={extraData}
         ListHeaderComponent={<ShowHeader show={show} onViewAllArtistsPressed={onViewAllArtistsPressed} />}
         ItemSeparatorComponent={this.renderItemSeparator}
-        renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+        renderItem={item => (
+          <Box px={2} pb={2}>
+            {this.renderItem(item)}
+          </Box>
+        )}
         keyExtractor={(item, index) => item.type + String(index)}
       />
     )
