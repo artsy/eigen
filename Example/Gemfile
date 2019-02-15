@@ -4,7 +4,7 @@ source "https://rubygems.org"
 gem "cocoapods"
 
 # So we know if we need to run `pod install`
-gem 'cocoapods-check', git: 'https://github.com/square/cocoapods-check.git', branch: 'master'
+gem 'cocoapods-check'
 
 # To manage our secret keys
 gem "cocoapods-keys"
