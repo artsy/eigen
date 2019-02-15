@@ -24,7 +24,7 @@ Then you'll want to find "Eigen" in our Engineering 1Password for your ENV vars,
 
 ### Quick Start
 
-Want to get the app running ? Run this in your shell:
+Want to get the app running? Run this in your shell:
 
 ```sh
 git clone https://github.com/artsy/eigen.git

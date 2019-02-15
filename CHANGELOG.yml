@@ -1,14 +1,23 @@
 upcoming:
-  version: 4.3.6
-  date: Jan 17, 2019
+  version: 4.4.0
+  date: TBD
   emission_version: 1.8.0
   dev:
-    - Adjust SDK update - orta
+    - Not yet
   user_facing:
-    - Incorrect auth detection (e.g. passwords being changed) are now correclty detected - orta
-    - Adds Local Discovery tab behind lab option - luc
+    - Not yet
 
 releases:
+  -
+    version: 4.3.6
+    date: Feb 15, 2019
+    emission_version: 1.8.0
+    dev:
+      - Adjust SDK update - orta
+    user_facing:
+      - Incorrect auth detection (e.g. passwords being changed) are now correclty detected - orta
+      - Adds Local Discovery tab behind lab option - luc
+
   - version: 4.3.5
     date: Jan 11, 2019 
     signed_of_by: Orta
