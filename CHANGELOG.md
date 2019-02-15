@@ -34,6 +34,7 @@
 - Fixes inconsistent padding between items in show and fair views - kieran
 - Removes fair save button - kieran
 - Adds params to fair link - kieran
+- Fixes Exhibitor name overflows and pushes follow button off the screen - kieran
 
 ### 1.8.2
 
