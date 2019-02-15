@@ -12,6 +12,7 @@ jest.unmock("react-relay")
 
 jest.mock("../../../../Components/LocationMap/index.tsx", () => "LocationMap")
 
+// Blocked by LD-158.
 xit("Renders the Show Detail Screen", async () => {
   const tree = await renderUntil(
     wrapper => {
@@ -36,4 +37,9 @@ xit("Renders the Show Detail Screen", async () => {
   )
 
   expect(tree.text()).toContain("Flickinger Collection")
+})
+
+describe("with missing schedule values", () => {
+  // Blocked by LD-158.
+  pending("it renders without (the missing) opening hours")
 })
