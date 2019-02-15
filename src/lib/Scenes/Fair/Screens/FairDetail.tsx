@@ -213,7 +213,7 @@ export class FairDetail extends React.Component<Props, State> {
             />
           }
           renderItem={item => (
-            <Box px={2} py={1}>
+            <Box px={2} pb={2}>
               {this.renderItem(item)}
             </Box>
           )}
