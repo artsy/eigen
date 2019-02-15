@@ -1,7 +1,7 @@
 import { Box, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
 import { FairHeaderMutation } from "__generated__/FairHeaderMutation.graphql"
-import InvertedButton from "lib/Components/Buttons/InvertedButton"
+// import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
@@ -51,7 +51,7 @@ const Logo = styled(Image)`
 
 const CountdownContainer = styled.View`
   position: absolute;
-  bottom: ${space(6)};
+  bottom: ${space(2)};
   left: 0;
   width: 100%;
 `
@@ -162,7 +162,8 @@ export class FairHeader extends React.Component<Props, State> {
     } = this.props
     const { width: screenWidth } = Dimensions.get("window")
     const imageHeight = 567
-    const { isSavedFairStateUpdating } = this.state
+    // const { isSavedFairStateUpdating } = this.state
+    // FIXME: When saving fairs is defined we can use commented code
 
     return (
       <>
@@ -180,26 +181,14 @@ export class FairHeader extends React.Component<Props, State> {
               </Sans>
             </Flex>
           </Flex>
+          <CountdownContainer>
+            <CountdownTimer startAt={start_at} endAt={end_at} />
+          </CountdownContainer>
         </Box>
-        <CountdownContainer>
-          <CountdownTimer startAt={start_at} endAt={end_at} />
-        </CountdownContainer>
         <Spacer mt={2} />
-        <Box mx={2}>{this.getContextualDetails()}</Box>
-        {profile && (
-          <Box px={2}>
-            <Spacer m={2} mt={1} />
-            <InvertedButton
-              text={profile.is_followed ? "Fair saved" : "Save fair"}
-              onPress={() => this.handleSaveFair()}
-              selected={profile.is_followed}
-              inProgress={isSavedFairStateUpdating}
-              grayBorder={true}
-              buttonSize={"large"}
-            />
-            <Spacer m={1} />
-          </Box>
-        )}
+        <Box mx={2} mb={2}>
+          {this.getContextualDetails()}
+        </Box>
       </>
     )
   }
