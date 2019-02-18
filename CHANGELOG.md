@@ -38,6 +38,7 @@
 - Fixes x-margin on images in grid - kieran
 - Fixes artworks filter - kieran
 - Fixes scroll in artworks grid - kieran
+- Check for saleInfoLine before rendering sales info on artwork - kieran
 
 ### 1.8.2
 
