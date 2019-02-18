@@ -22,10 +22,8 @@ interface State {
 
 export class FairArtworks extends React.Component<Props, State> {
   handleRefetch = params => {
-    const { fairID } = this.props
     this.props.relay.refetch({
       ...params,
-      fairID,
     })
   }
 
@@ -67,17 +65,19 @@ export const FairArtworksContainer = createRefetchContainer(
   `
 )
 
-export const FairArtworksRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
-  <QueryRenderer<FairArtworksQuery>
-    environment={defaultEnvironment}
-    query={graphql`
-      query FairArtworksQuery($fairID: String!) {
-        fair(id: $fairID) {
-          ...FairArtworks_fair
+export const FairArtworksRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => {
+  return (
+    <QueryRenderer<FairArtworksQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query FairArtworksQuery($fairID: String!) {
+          fair(id: $fairID) {
+            ...FairArtworks_fair
+          }
         }
-      }
-    `}
-    variables={{ fairID }}
-    render={renderWithLoadProgress(FairArtworksContainer)}
-  />
-)
+      `}
+      variables={{ fairID }}
+      render={renderWithLoadProgress(FairArtworksContainer)}
+    />
+  )
+}
