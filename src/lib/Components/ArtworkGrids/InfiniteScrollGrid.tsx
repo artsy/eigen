@@ -20,6 +20,8 @@ import { GeneRelayProps } from "./RelayConnections/GeneArtworksGrid"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
+import { Box, space } from "@artsy/palette"
+
 /**
  * TODO:
  * - currently all the code assumes column layout
@@ -89,6 +91,9 @@ export interface Props extends ArtistRelayProps, GeneRelayProps {
 
   /** A component to render at the top of all items */
   HeaderComponent?: React.ComponentType<any> | React.ReactElement<any>
+
+  /** Pass true if artworks should have a Box wrapper with gutter padding */
+  shouldAddPadding?: boolean
 }
 
 interface State {
@@ -103,6 +108,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     sectionCount: Dimensions.get("window").width > 700 ? 3 : 2,
     sectionMargin: 20,
     itemMargin: 20,
+    shouldAddPadding: false,
   }
 
   state = {
@@ -178,11 +184,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
 
   onLayout = (event: LayoutChangeEvent) => {
     const layout = event.nativeEvent.layout
+    const { shouldAddPadding } = this.props
     if (layout.width > 0) {
       // This is the sum of all margins in between sections, so do not count to the right of last column.
       const sectionMargins = this.props.sectionMargin * (this.props.sectionCount - 1)
+      const artworkPadding = shouldAddPadding ? space(4) : 0
       this.setState({
-        sectionDimension: (layout.width - sectionMargins) / this.props.sectionCount,
+        sectionDimension: (layout.width - sectionMargins) / this.props.sectionCount - artworkPadding,
       })
     }
   }
@@ -283,6 +291,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
+    const { shouldAddPadding } = this.props
+    const boxPadding = shouldAddPadding ? 2 : 0
     return (
       <ScrollView
         onScroll={isCloseToBottom(this.fetchNextPage)}
@@ -292,9 +302,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
         accessibilityLabel="Artworks ScrollView"
       >
         {this.renderHeader()}
-        <View style={styles.container} accessibilityLabel="Artworks Content View">
-          {artworks}
-        </View>
+        <Box px={boxPadding}>
+          <View style={styles.container} accessibilityLabel="Artworks Content View">
+            {artworks}
+          </View>
+        </Box>
         {this.state.fetchingNextPage ? <Spinner style={styles.spinner} /> : null}
       </ScrollView>
     )

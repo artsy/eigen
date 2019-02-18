@@ -5,6 +5,7 @@ import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Components/Show/ShowArtistsPreview"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
+import { isEmpty } from "lodash"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -63,7 +64,7 @@ export class Detail extends React.Component<Props, State> {
       },
     })
 
-    if (show.location && show.location.displayDaySchedules) {
+    if (show.location && !isEmpty(show.location.displayDaySchedules)) {
       sections.push({
         type: "hours",
         data: {
@@ -104,7 +105,7 @@ export class Detail extends React.Component<Props, State> {
       return null
     }
     return (
-      <Box py={2} px={2}>
+      <Box pb={2} px={2}>
         <Separator />
       </Box>
     )
@@ -128,11 +129,7 @@ export class Detail extends React.Component<Props, State> {
       case "location":
         return <LocationMap {...data} />
       case "description":
-        return (
-          <Box pb={2}>
-            <Serif size="3t">{data.description}</Serif>
-          </Box>
-        )
+        return <Serif size="3t">{data.description}</Serif>
       case "artworks":
         return <ShowArtworksPreview title="Works" {...data} />
       case "artists":
@@ -157,7 +154,11 @@ export class Detail extends React.Component<Props, State> {
         extraData={extraData}
         ListHeaderComponent={<ShowHeader show={show} onViewAllArtistsPressed={onViewAllArtistsPressed} />}
         ItemSeparatorComponent={this.renderItemSeparator}
-        renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+        renderItem={item => (
+          <Box px={2} pb={2}>
+            {this.renderItem(item)}
+          </Box>
+        )}
         keyExtractor={(item, index) => item.type + String(index)}
       />
     )

@@ -1,3 +1,0 @@
-{
-  "843bd2ee8cbb73827dd74873463eb1e7": "mutation FairHeaderMutation(\n  $input: FollowProfileInput!\n) {\n  followProfile(input: $input) {\n    profile {\n      id\n      is_followed\n      __id\n    }\n  }\n}\n"
-}

@@ -30,8 +30,17 @@
 - Show header title now links to gallery - kieran
 - Show image now full width if one image - kieran
 - Adds spacer below links in show about page - kieran
+- Fixes empty schedules rendering empty Opening Hours - ash
 - Uses Summary from Location before segmented address in locationMap - kieran
 - Adds Follow functionality to Fair partners - kieran
+- Fixes inconsistent padding between items in show and fair views - kieran
+- Removes fair save button - kieran
+- Adds params to fair link - kieran
+- Fixes Exhibitor name overflows and pushes follow button off the screen - kieran
+- Fixes x-margin on images in grid - kieran
+- Fixes artworks filter - kieran
+- Fixes scroll in artworks grid - kieran
+- Check for saleInfoLine before rendering sales info on artwork - kieran
 
 ### 1.8.2
 

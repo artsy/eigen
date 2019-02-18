@@ -56,12 +56,13 @@ export class FilteredInfiniteScrollGrid extends React.Component<Props, State> {
     } = this.state
     return (
       <PortalProvider>
-        <Box mx={2} pt={3}>
+        <Box pt={3}>
           <ArtworksGridPaginationContainer
             filteredArtworks={filteredArtworks}
+            shouldAddPadding={true}
             mapPropsToArtworksConnection={props => props.filteredArtworks.artworks}
             HeaderComponent={
-              <Box>
+              <Box px={2}>
                 <Spacer m={2} />
                 <Serif size="8">Works</Serif>
                 <Filters
