@@ -35,15 +35,16 @@ exports[`renders properly 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
       >
-        <View>
+        <View
+          style={
+            Object {
+              "marginBottom": 8,
+            }
+          }
+        >
           <AROpaqueImageView
             aspectRatio={2.18}
             imageURL="artsy.net/image-url"
-            style={
-              Object {
-                "marginBottom": 8,
-              }
-            }
           />
         </View>
         <View
@@ -236,15 +237,16 @@ exports[`renders properly 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
       >
-        <View>
+        <View
+          style={
+            Object {
+              "marginBottom": 8,
+            }
+          }
+        >
           <AROpaqueImageView
             aspectRatio={2.18}
             imageURL="artsy.net/image-url"
-            style={
-              Object {
-                "marginBottom": 8,
-              }
-            }
           />
         </View>
         <View
@@ -437,15 +439,16 @@ exports[`renders properly 1`] = `
         onResponderTerminationRequest={[Function]}
         onStartShouldSetResponder={[Function]}
       >
-        <View>
+        <View
+          style={
+            Object {
+              "marginBottom": 8,
+            }
+          }
+        >
           <AROpaqueImageView
             aspectRatio={2.18}
             imageURL="artsy.net/image-url"
-            style={
-              Object {
-                "marginBottom": 8,
-              }
-            }
           />
         </View>
         <View
