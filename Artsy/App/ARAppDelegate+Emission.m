@@ -211,7 +211,7 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
             // When presenting modally, view controller generally have to be wrapped in a navigation controller
             // so the user can hit the close button. Consignments is the exception, and it has its own close button.
-            if (![viewController isKindOfClass:[UINavigationController class]]) {
+            if (!([viewController isKindOfClass:[UINavigationController class]] || [viewController isKindOfClass:[LiveAuctionViewController class]])) {
                 viewController = [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
             }
 
@@ -222,9 +222,9 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     };
 
     // Uncomment the following to simulate Emission calling out to presentModalViewController with whatever route.
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        emission.switchBoardModule.presentModalViewController([UIViewController new], @"/conditions-of-sale");
-//    });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        emission.switchBoardModule.presentModalViewController([UIViewController new], @"https://live-staging.artsy.net/ash-test-sale");
+    });
 
     emission.switchBoardModule.presentArtworkSet = ^(UIViewController * _Nonnull fromViewController, NSArray<NSString *> * _Nonnull artworkIDs, NSNumber * _Nonnull index) {
         UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadArtworkIDSet:artworkIDs inFair:nil atIndex:index.integerValue];
