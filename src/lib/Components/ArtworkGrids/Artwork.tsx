@@ -127,6 +127,11 @@ export class Artwork extends React.Component<Props, any> {
     const { artwork } = this.props
     const { sale } = artwork
     const inClosedAuction = sale && sale.is_auction && sale.is_closed
+    const renderSaleInfo = inClosedAuction || !!this.saleMessageOrBidInfo() || !!this.auctionInfo()
+
+    if (!renderSaleInfo) {
+      return null
+    }
 
     // TODO: Look into wrapping in <Theme> component to remove `color` util functions
     return (
