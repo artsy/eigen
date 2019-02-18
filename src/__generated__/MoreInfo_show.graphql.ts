@@ -5,6 +5,8 @@ import { EventSection_event$ref } from "./EventSection_event.graphql";
 declare const _MoreInfo_show$ref: unique symbol;
 export type MoreInfo_show$ref = typeof _MoreInfo_show$ref;
 export type MoreInfo_show = {
+    readonly __id: string;
+    readonly id: string;
     readonly partner: ({
         readonly website?: string | null;
         readonly type?: string | null;
@@ -33,6 +35,14 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    v0,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -87,10 +97,9 @@ return {
           "args": null
         }
       ]
-    },
-    v0
+    }
   ]
 };
 })();
-(node as any).hash = '32dd567388e83b7b10354d76294fd39c';
+(node as any).hash = '9b64ca0ceb2cf53712854d39e9b0e75c';
 export default node;

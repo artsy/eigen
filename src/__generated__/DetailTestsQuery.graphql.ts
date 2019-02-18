@@ -24,6 +24,7 @@ query DetailTestsQuery {
 }
 
 fragment Detail_show on Show {
+  __id
   id
   name
   description
@@ -64,7 +65,6 @@ fragment Detail_show on Show {
       __id
     }
   }
-  __id
 }
 
 fragment LocationMap_location on Location {
@@ -266,7 +266,7 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
@@ -280,21 +280,21 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "aspect_ratio",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "aspect_ratio",
   "args": null,
   "storageKey": null
 },
@@ -320,7 +320,7 @@ v9 = {
   "storageKey": null
 },
 v10 = [
-  v6
+  v2
 ],
 v11 = {
   "kind": "InlineFragment",
@@ -351,14 +351,14 @@ v14 = [
   }
 ],
 v15 = [
-  v6,
+  v2,
   v1
 ];
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "c6cb6df2c66e2089e59315b53a80fc09",
+  "id": "1ae701dce1b8ef9d9370b86b8ef27ff5",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -408,6 +408,7 @@ return {
             "args": null,
             "storageKey": null
           },
+          v1,
           v2,
           {
             "kind": "ScalarField",
@@ -426,7 +427,7 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
-              v2,
+              v4,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -550,9 +551,9 @@ return {
             "concreteType": "Image",
             "plural": true,
             "selections": [
-              v2,
               v4,
-              v5
+              v5,
+              v6
             ]
           },
           {
@@ -562,8 +563,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          v1,
-          v6,
+          v4,
           v7,
           v8,
           {
@@ -589,8 +589,8 @@ return {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
-                  v6,
                   v2,
+                  v4,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -611,10 +611,10 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              v6,
+              v2,
               v12,
               v1,
-              v2,
+              v4,
               v7,
               {
                 "kind": "ScalarField",
@@ -646,7 +646,7 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v4
+                  v5
                 ]
               }
             ]
@@ -684,7 +684,7 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v5,
+                  v6,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -729,7 +729,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v2,
+              v4,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -920,8 +920,8 @@ return {
                     "plural": false,
                     "selections": [
                       v1,
+                      v4,
                       v2,
-                      v6,
                       v8,
                       {
                         "kind": "LinkedField",
@@ -932,8 +932,8 @@ return {
                         "concreteType": "Image",
                         "plural": true,
                         "selections": [
-                          v4,
-                          v5
+                          v5,
+                          v6
                         ]
                       },
                       {
