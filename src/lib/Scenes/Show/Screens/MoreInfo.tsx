@@ -1,10 +1,10 @@
 import { Box, Separator, Serif, Spacer } from "@artsy/palette"
 import { MoreInfo_show } from "__generated__/MoreInfo_show.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
+import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { FlatList, Linking, NavigatorIOS, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
 import styled from "styled-components/native"
 import { EventSectionContainer as EventSection } from "../Components/EventSection"
 import { TextSection } from "../Components/TextSection"
@@ -24,7 +24,12 @@ interface State {
     data: any
   }>
 }
-
+@screenTrack<Props>(props => ({
+  context_screen: Schema.PageNames.AboutTheShowPage,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Show,
+  context_screen_owner_slug: props.show.id,
+  context_screen_owner_id: props.show.__id,
+}))
 export class MoreInfo extends React.Component<Props, State> {
   state = {
     sections: [],
@@ -110,6 +115,8 @@ export const MoreInfoContainer = createFragmentContainer(
   MoreInfo,
   graphql`
     fragment MoreInfo_show on Show {
+      __id
+      id
       partner {
         ... on Partner {
           website

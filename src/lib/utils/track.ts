@@ -95,6 +95,7 @@ export namespace Schema {
     GenePage = "Gene",
     FairPage = "Fair",
     ShowPage = "Show",
+    AboutTheShowPage = "AboutTheShow",
     InboxPage = "Inbox",
     InquiryPage = "Inquiry",
     HomeArtistsWorksForYou = "HomeArtistsWorksForYou",
@@ -186,6 +187,13 @@ export namespace Schema {
     BidFlowAddBillingAddress = "addBillingAddress",
     BidFlowPlaceBid = "placeBid",
     BidFlowSaveBillingAddress = "saveBillingAddress",
+
+    /**
+     * Show flow
+     */
+    ShowAllArtists = "showAllArtists",
+    ShowAllArtworks = "showAllArtworks",
+    SingleShowMap = "singleShowMap",
   }
 }
 
