@@ -221,11 +221,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
         }
     };
 
-    // Uncomment the following to simulate Emission calling out to presentModalViewController with whatever route.
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        emission.switchBoardModule.presentModalViewController([UIViewController new], @"https://live-staging.artsy.net/ash-test-sale");
-    });
-
     emission.switchBoardModule.presentArtworkSet = ^(UIViewController * _Nonnull fromViewController, NSArray<NSString *> * _Nonnull artworkIDs, NSNumber * _Nonnull index) {
         UIViewController *viewController = [[ARSwitchBoard sharedInstance] loadArtworkIDSet:artworkIDs inFair:nil atIndex:index.integerValue];
         [[ARTopMenuViewController sharedController] pushViewController:viewController];
