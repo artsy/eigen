@@ -2,9 +2,11 @@
 #import "ARMapComponentViewController.h"
 #import "ARCityComponentViewController.h"
 
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+
 @import Pulley;
 
-@interface ARMapContainerViewController () <PulleyDelegate>
+@interface ARMapContainerViewController () <PulleyDelegate, PulleyDrawerViewControllerDelegate>
 
 @property (nonatomic, readwrite) PulleyViewController *bottomSheetVC;
 @property (nonatomic, readwrite) ARMapComponentViewController *mapVC;

@@ -27,5 +27,20 @@
     return [super initWithEmission:emission moduleName:@"Fair" initialProperties:@{ @"fairID": fairID }];
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self.view addConstraints:@[
+                                [NSLayoutConstraint constraintWithItem:self.rootView
+                                                             attribute:NSLayoutAttributeTop
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:self.view
+                                                             attribute:NSLayoutAttributeTop
+                                                            multiplier:1
+                                                              constant:0]
+                                ]];
+}
+
 
 @end
