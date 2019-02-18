@@ -32,6 +32,10 @@ class LiveAuctionBidButton: ARFlatButton {
     var outbidNoticeDuration: TimeInterval = 1
     let spinner = ARSpinner()
 
+    /// When in a max-bid overlay we want to hide the button
+    /// during an error, but when live-bidding we need it to
+    /// show some kind of error message
+    var hideOnError: Bool = false
 
     @IBOutlet weak var delegate: LiveAuctionBidButtonDelegate?
 
@@ -126,15 +130,17 @@ class LiveAuctionBidButton: ARFlatButton {
         setupWithState(buttonState)
     }
 
-    fileprivate func setupUI(_ title: String, background: UIColor = .black, border: UIColor? = nil, textColor: UIColor = UIColor.white, applySpinAnimation: Bool = false) {
+    fileprivate func setupUI(_ title: String, background: UIColor = .black, border: UIColor? = nil, textColor: UIColor = UIColor.white, applySpinAnimation: Bool = false, hideButton: Bool = false) {
         [UIControl.State.normal, .disabled].forEach { state in
-            setTitle(title.uppercased(), for: state)
-            setTitleColor(textColor, for: state)
+
+            setAttributedTitle(NSAttributedString(string: title, attributes: [NSAttributedString.Key.foregroundColor: textColor]), for: state)
 
             let borderColor = border ?? background
             setBorderColor(borderColor, for: state, animated: false)
             setBackgroundColor(background, for: state)
         }
+
+        self.isHidden = hideButton
 
         if applySpinAnimation {
             addSubview(spinner)
@@ -147,7 +153,7 @@ class LiveAuctionBidButton: ARFlatButton {
 
     fileprivate func setupWithState(_ buttonState: LiveAuctionBidButtonState) {
         let highestBidderSetup = {
-            self.setupUI("You're the highest bidder", background: .white, border: green, textColor: green!)
+            self.setupUI("You're the highest bidder", background: .white, border: green, textColor: green)
         }
 
         switch buttonState {
@@ -168,26 +174,39 @@ class LiveAuctionBidButton: ARFlatButton {
                 isEnabled = false
 
             case .lotSold:
-                setupUI("Sold", background: .white, border: purple, textColor: purple!)
+                setupUI("Sold", background: .white, border: purple, textColor: purple)
             case .lotWaitingToOpen:
-                setupUI("Waiting for Auctioneer…", background: white, border: grey, textColor: grey!)
+                setupUI("Waiting for Auctioneer…", background: white, border: grey, textColor: grey)
 
             case .biddable(let price, let currencySymbol):
                 let formattedPrice = price.convertToDollarString(currencySymbol)
                 handleBiddable(buttonState, formattedPrice: formattedPrice)
 
             case .biddingInProgress:
-                setupUI("", background: purple!, applySpinAnimation: ARPerformWorkAsynchronously.boolValue)
+                setupUI("", background: purple, applySpinAnimation: ARPerformWorkAsynchronously.boolValue)
+
+            case .bidNotYetAccepted(let price, let currencySymbol):
+                let formattedPrice = price.convertToDollarString(currencySymbol)
+                setupUI("Bid \(formattedPrice)", background: greyMedium, border: greyMedium, textColor: white)
 
             case .bidBecameMaxBidder, .bidAcknowledged:
-                // If the bid has been acknowledged, we'll bee the max bidder until the next Biddable state, even if that's directly following this one.
+                // If the bid has been acknowledged, we'll be the max bidder until the next Biddable state, even if that's directly following this one.
                 highestBidderSetup()
 
             case .bidNetworkFail:
-                setupUI("Network Failed", background: .white, border: red, textColor: red!)
+                setupUI("Network Failed", background: .white, border: red, textColor: red)
+
+            case .bidFailed(_):
+                setupUI("An Error Occurred", background: red, border: .white, textColor: .white, hideButton: hideOnError)
+                // Show an error message for 2s then switch back to the previous (biddable) state
+                ar_dispatch_after(2) {
+                    if (!self.hideOnError) {
+                        self.setupWithState(self._previousButtonState!)
+                    }
+                }
 
             case .bidOutbid:
-                self.setupUI("Outbid", background: red!)
+                self.setupUI("Outbid", background: red)
             }
 
 
@@ -198,14 +217,14 @@ class LiveAuctionBidButton: ARFlatButton {
                 if wasPassed {
                     setupUI("Lot Closed", background: .white, border: passedGrey, textColor: passedGrey)
                 } else {
-                    setupUI("Sold", background: .white, border: purple, textColor: purple!)
+                    setupUI("Sold", background: .white, border: purple, textColor: purple)
                 }
                 isEnabled = false
             case .liveLot: break // Should never happen, as it'd be handled above
             case .upcomingLot(let isHighestBidder):
                 isEnabled = true
                 if isHighestBidder {
-                    highestBidderSetup()
+                    setupUI("Raise Bid")
                 } else {
                     setupUI("Bid")
                 }
@@ -213,19 +232,29 @@ class LiveAuctionBidButton: ARFlatButton {
         }
     }
 
+    fileprivate func handleError(_ buttonState: LiveAuctionBidButtonState, formattedPrice: String) {
+    }
+
     fileprivate func handleBiddable(_ buttonState: LiveAuctionBidButtonState, formattedPrice: String) {
         // First we check to see if our previous button state was "I'm the highest bidder" and now
         // our state is "I'm Biddable", then we infer the user got outbid. Let's present a nice animation.
+
+        let skipAnimation = {
+            self.setupUI("Bid \(formattedPrice)")
+            self.isEnabled = true
+        }
+
         if  let previousButtonState = _previousButtonState,
-            case .active(let previousState) = previousButtonState,
-            case .bidBecameMaxBidder = previousState {
+            case .active(let previousState) = previousButtonState {
 
-            if !flashOutbidOnBiddableStateChanges { return }
-            // User was previously the highest bidder but has been outbid
+            switch previousState {
+            case .bidBecameMaxBidder, .bidNotYetAccepted:
+                if !flashOutbidOnBiddableStateChanges { return }
+                // User was previously the highest bidder but has been outbid
 
-            _outbidAnimationIsInProgress = true
-            isEnabled = false
-            UIView.animateIf(ARPerformWorkAsynchronously.boolValue, duration: ARAnimationQuickDuration, {
+                _outbidAnimationIsInProgress = true
+                isEnabled = false
+                UIView.animateIf(ARPerformWorkAsynchronously.boolValue, duration: ARAnimationQuickDuration, {
                     self.setupWithState(.active(biddingState: .bidOutbid))
                 }, completion: { _ in
                     // Note: we're not using ar_dispatch_after because if the completion and dispatch_after blocks are run synchronously, we'll get a stack overflow 😬
@@ -236,10 +265,13 @@ class LiveAuctionBidButton: ARFlatButton {
                         self?.attemptSetupWithState(buttonState) // Once the animation is complete, try to re-apply our original button state.
                         self?.outbidNoticeAnimationComplete()
                     })
-            })
+                })
+
+            default:
+                skipAnimation()
+            }
         } else {
-            setupUI("Bid \(formattedPrice)")
-            isEnabled = true
+            skipAnimation()
         }
     }
 
@@ -250,8 +282,9 @@ class LiveAuctionBidButton: ARFlatButton {
 
 
 private let white = UIColor.white
-private let purple = UIColor.artsyPurpleRegular()
-private let green = UIColor.artsyGreenRegular()
-private let red = UIColor.artsyRedRegular()
-private let grey = UIColor.artsyGrayRegular()
+private let purple = UIColor.artsyPurpleRegular()!
+private let green = UIColor.artsyGreenRegular()!
+private let red = UIColor.artsyRedRegular()!
+private let grey = UIColor.artsyGrayRegular()!
+private let greyMedium = UIColor.artsyGrayMedium()!
 private let passedGrey = UIColor(white: 0, alpha: 0.5)
