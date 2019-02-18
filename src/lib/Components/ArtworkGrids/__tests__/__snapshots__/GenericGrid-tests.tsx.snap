@@ -47,65 +47,6 @@ exports[`renders properly 1`] = `
             imageURL="artsy.net/image-url"
           />
         </View>
-        <View
-          flexDirection="row"
-          mb="2px"
-          style={
-            Array [
-              Object {
-                "display": "flex",
-                "flexDirection": "row",
-                "marginBottom": 2,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            className="sc-bdVaJa bDWFJH"
-            color="#000"
-            ellipsizeMode="tail"
-            fontFamily="Unica77LL-Medium"
-            fontSize="13px"
-            lineHeight="18px"
-            style={
-              Array [
-                Object {
-                  "color": "#000",
-                  "fontFamily": "Unica77LL-Medium",
-                  "fontSize": 13,
-                  "lineHeight": 18,
-                },
-                undefined,
-              ]
-            }
-          >
-             
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            className="sc-bdVaJa bDWFJH"
-            color="#666"
-            ellipsizeMode="tail"
-            fontFamily="Unica77LL-Regular"
-            fontSize="12px"
-            lineHeight="16px"
-            style={
-              Array [
-                Object {
-                  "color": "#666",
-                  "fontFamily": "Unica77LL-Regular",
-                  "fontSize": 12,
-                  "lineHeight": 16,
-                },
-                undefined,
-              ]
-            }
-          />
-        </View>
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -249,65 +190,6 @@ exports[`renders properly 1`] = `
             imageURL="artsy.net/image-url"
           />
         </View>
-        <View
-          flexDirection="row"
-          mb="2px"
-          style={
-            Array [
-              Object {
-                "display": "flex",
-                "flexDirection": "row",
-                "marginBottom": 2,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            className="sc-bdVaJa bDWFJH"
-            color="#000"
-            ellipsizeMode="tail"
-            fontFamily="Unica77LL-Medium"
-            fontSize="13px"
-            lineHeight="18px"
-            style={
-              Array [
-                Object {
-                  "color": "#000",
-                  "fontFamily": "Unica77LL-Medium",
-                  "fontSize": 13,
-                  "lineHeight": 18,
-                },
-                undefined,
-              ]
-            }
-          >
-             
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            className="sc-bdVaJa bDWFJH"
-            color="#666"
-            ellipsizeMode="tail"
-            fontFamily="Unica77LL-Regular"
-            fontSize="12px"
-            lineHeight="16px"
-            style={
-              Array [
-                Object {
-                  "color": "#666",
-                  "fontFamily": "Unica77LL-Regular",
-                  "fontSize": 12,
-                  "lineHeight": 16,
-                },
-                undefined,
-              ]
-            }
-          />
-        </View>
         <Text
           accessible={true}
           allowFontScaling={true}
@@ -449,65 +331,6 @@ exports[`renders properly 1`] = `
           <AROpaqueImageView
             aspectRatio={2.18}
             imageURL="artsy.net/image-url"
-          />
-        </View>
-        <View
-          flexDirection="row"
-          mb="2px"
-          style={
-            Array [
-              Object {
-                "display": "flex",
-                "flexDirection": "row",
-                "marginBottom": 2,
-              },
-              undefined,
-            ]
-          }
-        >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            className="sc-bdVaJa bDWFJH"
-            color="#000"
-            ellipsizeMode="tail"
-            fontFamily="Unica77LL-Medium"
-            fontSize="13px"
-            lineHeight="18px"
-            style={
-              Array [
-                Object {
-                  "color": "#000",
-                  "fontFamily": "Unica77LL-Medium",
-                  "fontSize": 13,
-                  "lineHeight": 18,
-                },
-                undefined,
-              ]
-            }
-          >
-             
-          </Text>
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            className="sc-bdVaJa bDWFJH"
-            color="#666"
-            ellipsizeMode="tail"
-            fontFamily="Unica77LL-Regular"
-            fontSize="12px"
-            lineHeight="16px"
-            style={
-              Array [
-                Object {
-                  "color": "#666",
-                  "fontFamily": "Unica77LL-Regular",
-                  "fontSize": 12,
-                  "lineHeight": 16,
-                },
-                undefined,
-              ]
-            }
           />
         </View>
         <Text
