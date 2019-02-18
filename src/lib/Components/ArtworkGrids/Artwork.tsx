@@ -1,4 +1,5 @@
 import { color, Flex, Sans } from "@artsy/palette"
+import OpaqueImageView from "lib/Components/OpaqueImageView"
 import colors from "lib/data/colors"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { map } from "lodash"
@@ -6,7 +7,6 @@ import React from "react"
 import { StyleSheet, TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
-import ImageView from "../OpaqueImageView"
 import SerifText from "../Text/Serif"
 
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
@@ -49,8 +49,8 @@ export class Artwork extends React.Component<Props, any> {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View>
-          <View>
-            <ImageView style={styles.image} aspectRatio={artwork.image.aspect_ratio} imageURL={artwork.image.url} />
+          <View style={styles.imageWrapper}>
+            <OpaqueImageView aspectRatio={artwork.image.aspect_ratio} imageURL={artwork.image.url} />
             {this.badges()}
           </View>
           {this.saleInfoLine()}
@@ -127,6 +127,11 @@ export class Artwork extends React.Component<Props, any> {
     const { artwork } = this.props
     const { sale } = artwork
     const inClosedAuction = sale && sale.is_auction && sale.is_closed
+    const renderSaleInfo = inClosedAuction || !!this.saleMessageOrBidInfo() || !!this.auctionInfo()
+
+    if (!renderSaleInfo) {
+      return null
+    }
 
     // TODO: Look into wrapping in <Theme> component to remove `color` util functions
     return (
@@ -170,7 +175,7 @@ export class Artwork extends React.Component<Props, any> {
 }
 
 const styles = StyleSheet.create({
-  image: {
+  imageWrapper: {
     marginBottom: 8,
   },
   text: {

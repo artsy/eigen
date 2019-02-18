@@ -36,6 +36,10 @@
 - Removes fair save button - kieran
 - Adds params to fair link - kieran
 - Fixes Exhibitor name overflows and pushes follow button off the screen - kieran
+- Fixes x-margin on images in grid - kieran
+- Fixes artworks filter - kieran
+- Fixes scroll in artworks grid - kieran
+- Check for saleInfoLine before rendering sales info on artwork - kieran
 
 ### 1.8.2
 

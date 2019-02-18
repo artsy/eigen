@@ -10,15 +10,16 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
 >
-  <View>
+  <View
+    style={
+      Object {
+        "marginBottom": 8,
+      }
+    }
+  >
     <AROpaqueImageView
       aspectRatio={0.74}
       imageURL="artsy.net/image-url"
-      style={
-        Object {
-          "marginBottom": 8,
-        }
-      }
     />
     <View
       style={
@@ -297,15 +298,16 @@ exports[`in a closed sale renders without any price information 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
 >
-  <View>
+  <View
+    style={
+      Object {
+        "marginBottom": 8,
+      }
+    }
+  >
     <AROpaqueImageView
       aspectRatio={0.74}
       imageURL="artsy.net/image-url"
-      style={
-        Object {
-          "marginBottom": 8,
-        }
-      }
     />
     <View
       style={
@@ -584,15 +586,16 @@ exports[`in an open sale renders with current bid 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
 >
-  <View>
+  <View
+    style={
+      Object {
+        "marginBottom": 8,
+      }
+    }
+  >
     <AROpaqueImageView
       aspectRatio={0.74}
       imageURL="artsy.net/image-url"
-      style={
-        Object {
-          "marginBottom": 8,
-        }
-      }
     />
     <View
       style={
@@ -871,15 +874,16 @@ exports[`in an open sale renders with starting bid 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
 >
-  <View>
+  <View
+    style={
+      Object {
+        "marginBottom": 8,
+      }
+    }
+  >
     <AROpaqueImageView
       aspectRatio={0.74}
       imageURL="artsy.net/image-url"
-      style={
-        Object {
-          "marginBottom": 8,
-        }
-      }
     />
     <View
       style={
@@ -1157,15 +1161,16 @@ exports[`renders properly 1`] = `
   onResponderTerminationRequest={[Function]}
   onStartShouldSetResponder={[Function]}
 >
-  <View>
+  <View
+    style={
+      Object {
+        "marginBottom": 8,
+      }
+    }
+  >
     <AROpaqueImageView
       aspectRatio={0.74}
       imageURL="artsy.net/image-url"
-      style={
-        Object {
-          "marginBottom": 8,
-        }
-      }
     />
     <View
       style={
