@@ -93,7 +93,7 @@ export interface Props extends ArtistRelayProps, GeneRelayProps {
   HeaderComponent?: React.ComponentType<any> | React.ReactElement<any>
 
   /** Pass true if artworks should have a Box wrapper with gutter padding */
-  artworksWrapper?: boolean
+  shouldAddPadding?: boolean
 }
 
 interface State {
@@ -108,7 +108,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
     sectionCount: Dimensions.get("window").width > 700 ? 3 : 2,
     sectionMargin: 20,
     itemMargin: 20,
-    artworksWrapper: false,
+    shouldAddPadding: false,
   }
 
   state = {
@@ -184,12 +184,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
 
   onLayout = (event: LayoutChangeEvent) => {
     const layout = event.nativeEvent.layout
-    const { artworksWrapper } = this.props
+    const { shouldAddPadding } = this.props
     if (layout.width > 0) {
       // This is the sum of all margins in between sections, so do not count to the right of last column.
       const sectionMargins = this.props.sectionMargin * (this.props.sectionCount - 1)
-      let artworkPadding
-      artworksWrapper ? (artworkPadding = space(4)) : (artworkPadding = 0)
+      const artworkPadding = shouldAddPadding ? space(4) : 0
       this.setState({
         sectionDimension: (layout.width - sectionMargins) / this.props.sectionCount - artworkPadding,
       })
@@ -292,8 +291,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const { artworksWrapper } = this.props
-    const boxPadding = artworksWrapper ? 2 : 0
+    const { shouldAddPadding } = this.props
+    const boxPadding = shouldAddPadding ? 2 : 0
     return (
       <ScrollView
         onScroll={isCloseToBottom(this.fetchNextPage)}
