@@ -235,7 +235,7 @@ export class FairDetail extends React.Component<Props, State> {
     const { sections, extraData } = this.state
 
     return (
-      <Theme>
+      <Theme contentInset={{ top: 0, bottom: 0, left: 0, right: 0 }}>
         <FlatList
           keyExtractor={(item, index) => item.type + String(index)}
           extraData={extraData}
@@ -253,6 +253,8 @@ export class FairDetail extends React.Component<Props, State> {
             </Box>
           )}
           onEndReached={this.fetchNextPage}
+          contentInsetAdjustmentBehavior="automatic"
+          contentInset={{ top: 0, bottom: 0, left: 0, right: 0 }}
         />
       </Theme>
     )

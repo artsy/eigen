@@ -2,7 +2,7 @@ import { Box, Flex } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import React from "react"
-import { Animated, Dimensions, NativeModules } from "react-native"
+import { Animated, Dimensions, NativeModules, SafeAreaView } from "react-native"
 import { createRefetchContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -192,18 +192,20 @@ export class GlobalMap extends React.Component<Props, State> {
             })
           }}
         >
-          <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={3}>
-            <CitySwitcherButton city={city} />
-            <Box style={{ marginLeft: "auto" }}>
-              <UserPositionButton
-                highlight={this.state.userLocation === this.state.currentLocation}
-                onPress={() => {
-                  const { latitude, longitude } = this.state.userLocation.coords
-                  this.map.moveTo([longitude, latitude], 500)
-                }}
-              />
-            </Box>
-          </Flex>
+          <SafeAreaView style={{ flex: 1 }}>
+            <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
+              <CitySwitcherButton city={city} />
+              <Box style={{ marginLeft: "auto" }}>
+                <UserPositionButton
+                  highlight={this.state.userLocation === this.state.currentLocation}
+                  onPress={() => {
+                    const { latitude, longitude } = this.state.userLocation.coords
+                    this.map.moveTo([longitude, latitude], 500)
+                  }}
+                />
+              </Box>
+            </Flex>
+          </SafeAreaView>
           {this.renderAnnotations()}
         </Map>
       </Flex>
