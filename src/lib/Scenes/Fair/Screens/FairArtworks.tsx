@@ -22,8 +22,10 @@ interface State {
 
 export class FairArtworks extends React.Component<Props, State> {
   handleRefetch = params => {
+    const { id: fairID } = this.props.fair
     this.props.relay.refetch({
       ...params,
+      fairID,
     })
   }
 
@@ -46,6 +48,7 @@ export const FairArtworksContainer = createRefetchContainer(
         price_range: { type: "String", defaultValue: "*-*" }
       ) {
       __id
+      id
       artworks: filteredArtworks(
         size: 0
         medium: $medium
