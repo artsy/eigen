@@ -25,8 +25,8 @@ query FairTestsQuery {
 
 fragment Fair_fair on Fair {
   id
-  ...FairDetail_fair
   __id
+  ...FairDetail_fair
 }
 
 fragment FairDetail_fair on Fair {
@@ -270,21 +270,21 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "aspect_ratio",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -317,7 +317,7 @@ v8 = [
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "aspect_ratio",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
@@ -342,7 +342,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairTestsQuery",
-  "id": "f7eb5bb3cfaad4f7147c9fd9d0eae1a0",
+  "id": "2519f724f635c1d611077007bfb7432b",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -388,53 +388,25 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "profile",
+            "name": "image",
             "storageKey": null,
             "args": null,
-            "concreteType": "Profile",
+            "concreteType": "Image",
             "plural": false,
             "selections": [
               {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "icon",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "Image",
-                "plural": false,
-                "selections": [
-                  v2,
-                  v3,
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "height",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "width",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  v4
-                ]
-              },
-              v1,
-              v2,
-              v5,
-              {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "is_followed",
+                "name": "image_url",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              v2,
+              v3
             ]
           },
-          v2,
+          v4,
+          v5,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -487,7 +459,7 @@ return {
                     "concreteType": "Show",
                     "plural": false,
                     "selections": [
-                      v2,
+                      v4,
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -552,7 +524,7 @@ return {
                     "plural": false,
                     "selections": [
                       v5,
-                      v3,
+                      v9,
                       v1
                     ]
                   }
@@ -560,27 +532,56 @@ return {
               }
             ]
           },
+          v1,
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "image",
+            "name": "profile",
             "storageKey": null,
             "args": null,
-            "concreteType": "Image",
+            "concreteType": "Profile",
             "plural": false,
             "selections": [
               {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "icon",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Image",
+                "plural": false,
+                "selections": [
+                  v4,
+                  v9,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "height",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "width",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  v3
+                ]
+              },
+              v1,
+              v4,
+              v5,
+              {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "image_url",
+                "name": "is_followed",
                 "args": null,
                 "storageKey": null
-              },
-              v9,
-              v4
+              }
             ]
           },
-          v5,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -595,7 +596,6 @@ return {
             "args": null,
             "storageKey": null
           },
-          v1,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -613,7 +613,7 @@ return {
             "plural": false,
             "selections": [
               v1,
-              v2,
+              v4,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -781,7 +781,7 @@ return {
                     "concreteType": "Show",
                     "plural": false,
                     "selections": [
-                      v2,
+                      v4,
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -823,7 +823,7 @@ return {
                                     "args": null,
                                     "storageKey": null
                                   },
-                                  v2,
+                                  v4,
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
@@ -833,7 +833,7 @@ return {
                                     "concreteType": "Image",
                                     "plural": false,
                                     "selections": [
-                                      v9,
+                                      v2,
                                       {
                                         "kind": "ScalarField",
                                         "alias": null,
@@ -1013,7 +1013,7 @@ return {
                                     "plural": false,
                                     "selections": v8
                                   },
-                                  v3
+                                  v9
                                 ]
                               }
                             ]
@@ -1051,7 +1051,7 @@ return {
                             "type": "Partner",
                             "selections": [
                               v5,
-                              v3
+                              v9
                             ]
                           }
                         ]
@@ -1075,7 +1075,7 @@ return {
                         "concreteType": "Image",
                         "plural": false,
                         "selections": [
-                          v4
+                          v3
                         ]
                       },
                       {
