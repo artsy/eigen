@@ -69,24 +69,20 @@ class LiveAuctionStateManager: NSObject {
             let json = JSON(response)
             let bidUUID = json["key"].stringValue
             let biddingViewModel = self?.biddingStates.removeValue(forKey: bidUUID)
-//            So far this event isn 't needed anywhere, but keeping for prosperities sake
+//            So far this event isn't needed anywhere, but keeping for prosperities sake
 //            let eventJSON = json["event"].dictionaryObject
 //            let liveEvent = LiveEvent(JSON: eventJSON)
+
             let confirmed: LiveAuctionBiddingProgressState
             let responseType = json["type"].stringValue
-            if responseType == "CommandFailed" {
-                let reason = json["reason"]["type"].string
-                let userFacingError: String
-                if reason != nil {
-                    userFacingError = reason!
-                } else {
-                     userFacingError = "An unknown error occurred"
-                }
-                confirmed = LiveAuctionBiddingProgressState.bidFailed(reason: userFacingError)
-            } else {
-                confirmed = LiveAuctionBiddingProgressState.bidAcknowledged
-            }
 
+            if responseType != "CommandFailed" {
+                confirmed = LiveAuctionBiddingProgressState.bidAcknowledged
+            } else {
+                let reason = json["reason"]["type"].string
+                let userFacingError = reason != nil ? reason! : "An unknown error occurred"
+                confirmed = LiveAuctionBiddingProgressState.bidFailed(reason: userFacingError)
+            }
 
             biddingViewModel?.bidPendingSignal.update(confirmed)
         }

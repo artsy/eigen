@@ -48,11 +48,6 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
         if tinyScreen {
             setYourMaxBidLabel.font = UIFont.serifFont(withSize: 16)
         }
-//
-//        if bidViewModel.lotViewModel.userIsBeingSoldTo {
-//            // User is already the highest bidder, tell them so and Dismiss.
-//            showHighestBidderStatusAndDismiss()
-//        }
     }
 
     @IBOutlet weak var lotNumberLabel: UILabel!
@@ -146,20 +141,6 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
             }
         }
     }
-
-    // TODO: WOT DO?
-//    fileprivate func showHighestBidderStatusAndDismiss() {
-//        bidProgressOverlayView.biddingProgressSignal.update(.bidNotYetAccepted)
-//        bidButtonViewModel.progressSignal.update(.active(biddingState: .bidNotYetAccepted))
-//        shouldShowBiddingOverlay(true, maxBidder: true)
-//
-//        let exitButton = self.navigationItem.rightBarButtonItem?.customView as? UIButton
-//        exitButton?.isEnabled = false
-//
-//        ar_dispatch_after(2) {
-//            self.presentingViewController?.dismiss(animated: true, completion: nil)
-//        }
-//    }
 }
 
 extension LiveAuctionPlaceMaxBidViewController: UIPickerViewDataSource {

@@ -87,6 +87,17 @@ class LiveAuctionPlaceMaxBidViewControllerSpecs: QuickSpec {
             expect(subject.bidProgressOverlayView.superview).to( beNil() )
         }
 
+        // https://github.com/artsy/causality/blob/c9101610a8c169c2ff913b96065743d1a56117b4/src/main/scala/net/artsy/auction/domain/LotEventModel.scala#L401
+        it("Handles converting the causality error message into human readable") {
+            subject = StoryboardScene.LiveAuctions.instantiateBid()
+            let lotVM = Test_LiveAuctionLotViewModel()
+            subject.bidViewModel = LiveAuctionBidViewModel(lotVM: lotVM, salesPerson:  stub_auctionSalesPerson())
+            subject.loadViewProgrammatically()
+
+            let message = subject.bidProgressOverlayView.errorCodeToHumanReadable("ReservePriceChangeAfterLotIsSelling")
+            expect(message).to( equal("Reserve price change after lot is selling") )
+        }
+
         describe("networking") {
 
             let examples: [String: [LiveAuctionBiddingProgressState]] = [

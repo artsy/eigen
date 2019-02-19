@@ -232,9 +232,6 @@ class LiveAuctionBidButton: ARFlatButton {
         }
     }
 
-    fileprivate func handleError(_ buttonState: LiveAuctionBidButtonState, formattedPrice: String) {
-    }
-
     fileprivate func handleBiddable(_ buttonState: LiveAuctionBidButtonState, formattedPrice: String) {
         // First we check to see if our previous button state was "I'm the highest bidder" and now
         // our state is "I'm Biddable", then we infer the user got outbid. Let's present a nice animation.

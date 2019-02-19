@@ -391,7 +391,7 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
                 isUser = false
             }
 
-            if (userTopBidCents ?? 0 < bidEvent.bidAmountCents ?? 0) {
+            if (userTopBidCents ?? 0) < (bidEvent.bidAmountCents ?? 0) {
                  userTopBidCents = bidEvent.bidAmountCents
             }
 
