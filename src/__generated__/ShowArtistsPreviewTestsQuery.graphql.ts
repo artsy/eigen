@@ -24,6 +24,8 @@ query ShowArtistsPreviewTestsQuery {
 }
 
 fragment ShowArtistsPreview_show on Show {
+  _id
+  id
   artists {
     id
     href
@@ -34,8 +36,9 @@ fragment ShowArtistsPreview_show on Show {
 }
 
 fragment ArtistListItem_artist on Artist {
-  id
   __id
+  _id
+  id
   name
   is_followed
   nationality
@@ -62,12 +65,26 @@ v1 = {
   "name": "__id",
   "args": null,
   "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "_id",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowArtistsPreviewTestsQuery",
-  "id": "a6f498fb712a061ca820bfa58e06b84d",
+  "id": "cb77cf332a729918d5455f909a2f17e5",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -110,6 +127,8 @@ return {
         "concreteType": "Show",
         "plural": false,
         "selections": [
+          v2,
+          v3,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -119,13 +138,7 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "id",
-                "args": null,
-                "storageKey": null
-              },
+              v3,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -134,6 +147,7 @@ return {
                 "storageKey": null
               },
               v1,
+              v2,
               {
                 "kind": "ScalarField",
                 "alias": null,

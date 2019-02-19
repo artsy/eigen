@@ -46,8 +46,9 @@ fragment FairArtists_fair on Fair {
 }
 
 fragment ArtistListItem_artist on Artist {
-  id
   __id
+  _id
+  id
   name
   is_followed
   nationality
@@ -86,7 +87,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairArtistsTestsQuery",
-  "id": "74c73b687f0289ca6089057a48bac90d",
+  "id": "295fbc2764ac93b3f376a90a52879743",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -210,6 +211,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      v1,
                       v2,
                       {
                         "kind": "ScalarField",
@@ -232,7 +234,13 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v1,
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "_id",
+                        "args": null,
+                        "storageKey": null
+                      },
                       {
                         "kind": "ScalarField",
                         "alias": null,

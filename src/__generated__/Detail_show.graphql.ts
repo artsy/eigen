@@ -9,7 +9,7 @@ import { Shows_show$ref } from "./Shows_show.graphql";
 declare const _Detail_show$ref: unique symbol;
 export type Detail_show$ref = typeof _Detail_show$ref;
 export type Detail_show = {
-    readonly __id: string;
+    readonly _id: string;
     readonly id: string;
     readonly name: string | null;
     readonly description: string | null;
@@ -45,21 +45,21 @@ const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "__id",
   "args": null,
   "storageKey": null
 };
@@ -75,8 +75,14 @@ return {
       "name": "ShowHeader_show",
       "args": null
     },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "_id",
+      "args": null,
+      "storageKey": null
+    },
     v0,
-    v1,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -100,7 +106,7 @@ return {
       "concreteType": "Location",
       "plural": false,
       "selections": [
-        v2,
+        v1,
         {
           "kind": "ScalarField",
           "alias": null,
@@ -140,7 +146,7 @@ return {
             }
           ]
         },
-        v0,
+        v2,
         {
           "kind": "FragmentSpread",
           "name": "LocationMap_location",
@@ -157,10 +163,10 @@ return {
       "concreteType": "Image",
       "plural": true,
       "selections": [
-        v2
+        v1
       ]
     },
-    v2,
+    v1,
     {
       "kind": "FragmentSpread",
       "name": "ShowArtworksPreview_show",
@@ -210,12 +216,12 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v0,
+        v2,
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v1,
+            v0,
             {
               "kind": "ScalarField",
               "alias": null,
@@ -229,13 +235,14 @@ return {
           "kind": "InlineFragment",
           "type": "ExternalPartner",
           "selections": [
-            v1
+            v0
           ]
         }
       ]
-    }
+    },
+    v2
   ]
 };
 })();
-(node as any).hash = 'a383a50fee55cf2f5383e76ca51a3297';
+(node as any).hash = '7a67cb172b100a196474cd4d3b3b18f6';
 export default node;

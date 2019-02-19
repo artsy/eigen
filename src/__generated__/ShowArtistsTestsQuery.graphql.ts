@@ -35,8 +35,9 @@ fragment ShowArtists_show on Show {
 }
 
 fragment ArtistListItem_artist on Artist {
-  id
   __id
+  _id
+  id
   name
   is_followed
   nationality
@@ -68,7 +69,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowArtistsTestsQuery",
-  "id": "39ffc9010d41e7e3a7ea5e24cf0208ee",
+  "id": "159a9268da083415c0d89fb8a5211bb9",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -136,6 +137,14 @@ return {
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
+                  v1,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "_id",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -143,7 +152,6 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v1,
                   {
                     "kind": "ScalarField",
                     "alias": null,
