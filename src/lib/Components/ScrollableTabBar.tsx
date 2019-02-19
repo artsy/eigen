@@ -1,4 +1,4 @@
-import { color } from "@artsy/palette"
+import { color, Flex } from "@artsy/palette"
 import React from "react"
 import { Animated, Dimensions, LayoutRectangle, ScrollView, View } from "react-native"
 import styled from "styled-components/native"
@@ -28,12 +28,12 @@ const Tabs = styled.ScrollView`
   border-color: ${colors["gray-medium"]};
 `
 
-const TabButton = styled(View)<{ active: boolean }>`
+const TabButton = styled(Flex)<{ active: boolean }>`
   align-items: center;
   justify-content: center;
   padding-left: 20px;
   padding-right: 20px;
-  flex: 1;
+  flex-grow: 1;
   ${p =>
     p.active &&
     `
