@@ -4,7 +4,7 @@ import { ConcreteFragment } from "relay-runtime";
 declare const _ShowItem_show$ref: unique symbol;
 export type ShowItem_show$ref = typeof _ShowItem_show$ref;
 export type ShowItem_show = {
-    readonly __id: string;
+    readonly _id: string;
     readonly id: string;
     readonly name: string | null;
     readonly exhibition_period: string | null;
@@ -24,19 +24,19 @@ const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v2 = [
-  v1
+  v0
 ];
 return {
   "kind": "Fragment",
@@ -45,7 +45,13 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    v0,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "_id",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -53,7 +59,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    v1,
+    v0,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -95,7 +101,7 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v0,
+        v1,
         {
           "kind": "InlineFragment",
           "type": "Partner",
@@ -107,9 +113,10 @@ return {
           "selections": v2
         }
       ]
-    }
+    },
+    v1
   ]
 };
 })();
-(node as any).hash = '241e102418df119bace2a96a9ff760d1';
+(node as any).hash = '664ddf4b9b8c1e6752afbfe34f43c7e8';
 export default node;

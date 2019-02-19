@@ -95,6 +95,7 @@ export namespace Schema {
     GenePage = "Gene",
     FairPage = "Fair",
     ShowPage = "Show",
+    AboutTheShowPage = "AboutTheShow",
     InboxPage = "Inbox",
     InquiryPage = "Inquiry",
     HomeArtistsWorksForYou = "HomeArtistsWorksForYou",
@@ -186,6 +187,21 @@ export namespace Schema {
     BidFlowAddBillingAddress = "addBillingAddress",
     BidFlowPlaceBid = "placeBid",
     BidFlowSaveBillingAddress = "saveBillingAddress",
+
+    /**
+     * Show flow
+     */
+    ShowAllArtists = "showAllArtists",
+    ShowAllArtworks = "showAllArtworks",
+    SingleShowMap = "singleShowMap",
+    CarouselSwipe = "carouselSwipe",
+    ContextualArtist = "contextualArtist",
+    GallerySite = "gallerySite",
+    ListArtist = "listArtist",
+    SaveShow = "saveShow",
+    UnsaveShow = "unsaveShow",
+    ToggleHours = "toggleHours",
+    NearbyShow = "nearbyShow",
   }
 }
 

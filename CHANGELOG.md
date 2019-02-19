@@ -41,6 +41,7 @@
 - Fixes artworks filter - kieran
 - Fixes scroll in artworks grid - kieran
 - Check for saleInfoLine before rendering sales info on artwork - kieran
+- Adds analytics to all Show screens and views - luc
 
 ### 1.8.2
 

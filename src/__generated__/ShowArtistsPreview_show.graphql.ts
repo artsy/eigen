@@ -5,6 +5,8 @@ import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
 declare const _ShowArtistsPreview_show$ref: unique symbol;
 export type ShowArtistsPreview_show$ref = typeof _ShowArtistsPreview_show$ref;
 export type ShowArtistsPreview_show = {
+    readonly _id: string;
+    readonly id: string;
     readonly artists: ReadonlyArray<({
         readonly id: string;
         readonly href: string | null;
@@ -19,6 +21,13 @@ const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "__id",
   "args": null,
   "storageKey": null
@@ -31,6 +40,14 @@ return {
   "argumentDefinitions": [],
   "selections": [
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "_id",
+      "args": null,
+      "storageKey": null
+    },
+    v0,
+    {
       "kind": "LinkedField",
       "alias": null,
       "name": "artists",
@@ -39,13 +56,7 @@ return {
       "concreteType": "Artist",
       "plural": true,
       "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "id",
-          "args": null,
-          "storageKey": null
-        },
+        v0,
         {
           "kind": "ScalarField",
           "alias": null,
@@ -58,12 +69,12 @@ return {
           "name": "ArtistListItem_artist",
           "args": null
         },
-        v0
+        v1
       ]
     },
-    v0
+    v1
   ]
 };
 })();
-(node as any).hash = '8f64b8808531de5dbbeb4844a2a15c8a';
+(node as any).hash = '6e0235fdd0006f1a08ab7690b60eff86';
 export default node;

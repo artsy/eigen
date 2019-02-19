@@ -24,8 +24,9 @@ query ArtistListItemTestsQuery {
 }
 
 fragment ArtistListItem_artist on Artist {
-  id
   __id
+  _id
+  id
   name
   is_followed
   nationality
@@ -57,7 +58,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtistListItemTestsQuery",
-  "id": "b0883b0826563882fd357ccd737294ea",
+  "id": "3439b99fe49b6fda99a4673c71da7da7",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -100,6 +101,14 @@ return {
         "concreteType": "Artist",
         "plural": false,
         "selections": [
+          v1,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "_id",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "ScalarField",
             "alias": null,
@@ -107,7 +116,6 @@ return {
             "args": null,
             "storageKey": null
           },
-          v1,
           {
             "kind": "ScalarField",
             "alias": null,

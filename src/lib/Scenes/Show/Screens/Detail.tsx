@@ -5,6 +5,7 @@ import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Components/Show/ShowArtistsPreview"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
+import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import { isEmpty } from "lodash"
 import React from "react"
 import { FlatList } from "react-native"
@@ -28,13 +29,20 @@ interface State {
   extraData?: { animatedValue: { height: number } }
 }
 
+const track: Track<Props, State> = _track
+@screenTrack<Props>(props => ({
+  context_screen: Schema.PageNames.ShowPage,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Show,
+  context_screen_owner_slug: props.show.id,
+  context_screen_owner_id: props.show._id,
+}))
 export class Detail extends React.Component<Props, State> {
   state: State = {
     sections: [],
   }
 
   componentDidMount() {
-    const { show, onMoreInformationPressed, onViewAllArtworksPressed, onViewAllArtistsPressed } = this.props
+    const { show, onMoreInformationPressed } = this.props
     const sections = []
 
     if (show.location) {
@@ -60,7 +68,7 @@ export class Detail extends React.Component<Props, State> {
     sections.push({
       type: "information",
       data: {
-        onViewMoreInfoPressed: () => onMoreInformationPressed(),
+        onViewMoreInfoPressed: onMoreInformationPressed,
       },
     })
 
@@ -78,7 +86,7 @@ export class Detail extends React.Component<Props, State> {
         type: "artworks",
         data: {
           show,
-          onViewAllArtworksPressed,
+          onViewAllArtworksPressed: this.handleViewAllArtworksPressed.bind(this),
         },
       })
     }
@@ -87,7 +95,7 @@ export class Detail extends React.Component<Props, State> {
       type: "artists",
       data: {
         show,
-        onViewAllArtistsPressed,
+        onViewAllArtistsPressed: this.handleViewAllArtistsPressed.bind(this),
         Component: this,
       },
     })
@@ -109,6 +117,21 @@ export class Detail extends React.Component<Props, State> {
         <Separator />
       </Box>
     )
+  }
+
+  @track(eventProps(Schema.ActionNames.ShowAllArtists))
+  handleViewAllArtistsPressed() {
+    this.props.onViewAllArtistsPressed()
+  }
+
+  @track(eventProps(Schema.ActionNames.ShowAllArtworks))
+  handleViewAllArtworksPressed() {
+    this.props.onViewAllArtworksPressed()
+  }
+
+  @track(eventProps(Schema.ActionNames.ToggleHours))
+  handleHoursToggled() {
+    return null
   }
 
   handleAnimationFrame = animatedValue => {
@@ -139,20 +162,24 @@ export class Detail extends React.Component<Props, State> {
       case "information":
         return <CaretButton onPress={() => data.onViewMoreInfoPressed()} text="View more information" />
       case "hours":
-        return <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} />
+        return (
+          <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} onToggle={this.handleHoursToggled} />
+        )
       default:
         return null
     }
   }
 
   render() {
-    const { show, onViewAllArtistsPressed } = this.props
+    const { show } = this.props
     const { extraData, sections } = this.state
     return (
       <FlatList
         data={sections}
         extraData={extraData}
-        ListHeaderComponent={<ShowHeader show={show} onViewAllArtistsPressed={onViewAllArtistsPressed} />}
+        ListHeaderComponent={
+          <ShowHeader show={show} onViewAllArtistsPressed={() => this.handleViewAllArtistsPressed()} />
+        }
         ItemSeparatorComponent={this.renderItemSeparator}
         renderItem={item => (
           <Box px={2} pb={2}>
@@ -165,10 +192,21 @@ export class Detail extends React.Component<Props, State> {
   }
 }
 
+function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTypes = Schema.ActionTypes.Tap) {
+  return props => ({
+    action_name: actionName,
+    action_type: actionType,
+    owner_id: props.show._id,
+    owner_slug: props.show.id,
+    owner_type: Schema.OwnerEntityTypes.Show,
+  })
+}
+
 export const DetailContainer = createFragmentContainer(
   Detail,
   graphql`
     fragment Detail_show on Show {
+      _id
       id
       name
       description

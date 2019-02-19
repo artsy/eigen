@@ -2,6 +2,7 @@ import { Flex, Sans, Serif } from "@artsy/palette"
 import { ShowItem_show } from "__generated__/ShowItem_show.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { Dimensions, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -17,6 +18,7 @@ interface Props {
   show: ShowItem_show
 }
 
+@track()
 export class ShowItem extends React.Component<Props> {
   get imageURL() {
     const {
@@ -26,7 +28,14 @@ export class ShowItem extends React.Component<Props> {
     return (image || { url: "" }).url
   }
 
-  onPress = () => {
+  @track(props => ({
+    action_name: Schema.ActionNames.NearbyShow,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: props.show._id,
+    owner_slug: props.show.id,
+    owner_type: Schema.OwnerEntityTypes.Show,
+  }))
+  onPress() {
     SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}`)
   }
 
@@ -40,7 +49,7 @@ export class ShowItem extends React.Component<Props> {
     } = show
 
     return (
-      <TouchableOpacity onPress={this.onPress}>
+      <TouchableOpacity onPress={() => this.onPress()}>
         <Flex my={15} mr={2} width={windowWidth - 100} height={200}>
           <ImageView imageURL={this.imageURL} />
           <Flex my={2}>
@@ -64,7 +73,7 @@ export const ShowItemContainer = createFragmentContainer(
   ShowItem,
   graphql`
     fragment ShowItem_show on Show {
-      __id
+      _id
       id
       name
       exhibition_period

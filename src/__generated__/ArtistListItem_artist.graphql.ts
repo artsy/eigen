@@ -4,8 +4,9 @@ import { ConcreteFragment } from "relay-runtime";
 declare const _ArtistListItem_artist$ref: unique symbol;
 export type ArtistListItem_artist$ref = typeof _ArtistListItem_artist$ref;
 export type ArtistListItem_artist = {
-    readonly id: string;
     readonly __id: string;
+    readonly _id: string;
+    readonly id: string;
     readonly name: string | null;
     readonly is_followed: boolean | null;
     readonly nationality: string | null;
@@ -29,14 +30,21 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "__id",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "__id",
+      "name": "_id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -95,5 +103,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = 'b2fa018759c31171e3d5137d7d4e22f8';
+(node as any).hash = '32c85235a10b3a5787d77a19cf73f7c9';
 export default node;

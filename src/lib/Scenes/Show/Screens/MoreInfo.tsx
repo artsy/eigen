@@ -1,10 +1,10 @@
 import { Box, Separator, Serif, Spacer } from "@artsy/palette"
 import { MoreInfo_show } from "__generated__/MoreInfo_show.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
+import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
 import { FlatList, Linking, NavigatorIOS, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
 import styled from "styled-components/native"
 import { EventSectionContainer as EventSection } from "../Components/EventSection"
 import { TextSection } from "../Components/TextSection"
@@ -24,7 +24,12 @@ interface State {
     data: any
   }>
 }
-
+@screenTrack<Props>(props => ({
+  context_screen: Schema.PageNames.AboutTheShowPage,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Show,
+  context_screen_owner_slug: props.show.id,
+  context_screen_owner_id: props.show._id,
+}))
 export class MoreInfo extends React.Component<Props, State> {
   state = {
     sections: [],
@@ -65,6 +70,13 @@ export class MoreInfo extends React.Component<Props, State> {
     </Box>
   )
 
+  @track(props => ({
+    action_name: Schema.ActionNames.GallerySite,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: props.show._id,
+    owner_slug: props.show.id,
+    owner_type: Schema.OwnerEntityTypes.Show,
+  }))
   renderGalleryWebsite(url) {
     Linking.openURL(url).catch(err => console.error("An error occurred opening gallery link", err))
   }
@@ -110,6 +122,8 @@ export const MoreInfoContainer = createFragmentContainer(
   MoreInfo,
   graphql`
     fragment MoreInfo_show on Show {
+      _id
+      id
       partner {
         ... on Partner {
           website

@@ -24,6 +24,8 @@ query MoreInfoTestsQuery {
 }
 
 fragment MoreInfo_show on Show {
+  _id
+  id
   partner {
     __typename
     ... on Partner {
@@ -72,7 +74,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MoreInfoTestsQuery",
-  "id": "ca48b956eb5ffbe51746af79771a7880",
+  "id": "e4b345d7270c225c0acf4669c6faa553",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -115,6 +117,20 @@ return {
         "concreteType": "Show",
         "plural": false,
         "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "_id",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,
