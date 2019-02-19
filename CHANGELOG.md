@@ -32,6 +32,7 @@
 - Adds spacer below links in show about page - kieran
 - Fixes empty schedules rendering empty Opening Hours - ash
 - Uses Summary from Location before segmented address in locationMap - kieran
+- Adds Follow functionality to Fair partners - kieran
 - Fixes inconsistent padding between items in show and fair views - kieran
 - Removes fair save button - kieran
 - Adds params to fair link - kieran
