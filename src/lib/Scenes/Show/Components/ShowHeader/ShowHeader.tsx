@@ -5,6 +5,7 @@ import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -26,6 +27,8 @@ const ButtonWrapper = styled(Box)`
   height: 85;
 `
 
+const track: Track<Props, State> = _track
+@track()
 export class ShowHeader extends React.Component<Props, State> {
   state = { isFollowedSaving: false }
 
@@ -48,11 +51,7 @@ export class ShowHeader extends React.Component<Props, State> {
       },
       () => {
         commitMutation<ShowHeaderFollowShowMutation>(relay.environment, {
-          onCompleted: () => {
-            this.setState({
-              isFollowedSaving: false,
-            })
-          },
+          onCompleted: () => this.handleShowSuccessfullyUpdated(),
           mutation: graphql`
             mutation ShowHeaderFollowShowMutation($input: FollowShowInput!) {
               followShow(input: $input) {
@@ -87,6 +86,40 @@ export class ShowHeader extends React.Component<Props, State> {
     )
   }
 
+  @track(props => ({
+    action_name: props.show.is_followed ? Schema.ActionNames.SaveShow : Schema.ActionNames.UnsaveShow,
+    action_type: Schema.ActionTypes.Success,
+    owner_id: props.show._id,
+    owner_slug: props.show.id,
+    owner_type: Schema.OwnerEntityTypes.Show,
+  }))
+  handleShowSuccessfullyUpdated() {
+    this.setState({
+      isFollowedSaving: false,
+    })
+  }
+
+  @track(props => ({
+    action_name: Schema.ActionNames.CarouselSwipe,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: props.show._id,
+    owner_slug: props.show.id,
+    owner_type: Schema.OwnerEntityTypes.Show,
+  }))
+  handleUserSwipingCarousel() {
+    return null
+  }
+
+  @track(props => ({
+    action_name: Schema.ActionNames.ContextualArtist,
+    owner_id: props.show._id,
+    owner_slug: props.show.id,
+    owner_type: Schema.OwnerEntityTypes.Show,
+  }))
+  handleArtistSelected(url) {
+    SwitchBoard.presentNavigationViewController(this, url)
+  }
+
   render() {
     const { isFollowedSaving } = this.state
     const {
@@ -117,6 +150,11 @@ export class ShowHeader extends React.Component<Props, State> {
                 imageURL,
                 aspectRatio,
               }))}
+              onScrollEndDrag={e => {
+                if (e.nativeEvent.velocity.x > 0) {
+                  this.handleUserSwipingCarousel()
+                }
+              }}
             />
           )}
         {singleImage && (
@@ -131,7 +169,8 @@ export class ShowHeader extends React.Component<Props, State> {
             count={artists.length}
             displayedItems={2}
             onItemSelected={url => {
-              SwitchBoard.presentNavigationViewController(this, url)
+              debugger
+              this.handleArtistSelected(url)
             }}
             onViewAllPressed={onViewAllArtistsPressed}
           />

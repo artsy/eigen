@@ -1,7 +1,7 @@
 import { Box, Flex, space } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import React from "react"
-import { Dimensions, ScrollView } from "react-native"
+import { Dimensions, ScrollView, ScrollViewProperties } from "react-native"
 import styled from "styled-components/native"
 
 const ITEM_HEIGHT = 350
@@ -24,7 +24,7 @@ const PageList = styled(ScrollView)`
   padding-left: ${space(2)};
 `
 
-interface Props {
+interface Props extends ScrollViewProperties {
   sources: Array<{
     imageURL: string
     aspectRatio: number
@@ -50,6 +50,7 @@ export class Carousel extends React.Component<Props> {
     return (
       <Box my={2}>
         <PageList
+          {...this.props}
           innerRef={ref => {
             this.scrollView = ref
           }}
