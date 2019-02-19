@@ -231,11 +231,7 @@
 
 - (UIViewController *)loadProfileWithID:(NSString *)profileID
 {
-    if ([AROptions boolForOption:AROptionsModernShowFairPages]) {
-        return [[ARFairComponentViewController alloc] initWithFairID:profileID];
-    } else {
-        return [[ARProfileViewController alloc] initWithProfileID:profileID];
-    }
+    return [[ARProfileViewController alloc] initWithProfileID:profileID];
 }
 
 #pragma mark -

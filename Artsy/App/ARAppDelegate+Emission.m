@@ -208,6 +208,13 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
             if (targetViewController.presentedViewController) {
                 targetViewController = targetViewController.presentedViewController;
             }
+
+            // When presenting modally, view controller generally have to be wrapped in a navigation controller
+            // so the user can hit the close button. Consignments is the exception, and it has its own close button.
+            if (!([viewController isKindOfClass:[UINavigationController class]] || [viewController isKindOfClass:[LiveAuctionViewController class]])) {
+                viewController = [[ARSerifNavigationViewController alloc] initWithRootViewController:viewController];
+            }
+
             [targetViewController presentViewController:viewController
                                                animated:ARPerformWorkAsynchronously
                                              completion:nil];
