@@ -17,4 +17,5 @@ export default {
   "garamond-regular": "AGaramondPro-Regular",
   "garamond-italic": "AGaramondPro-Italic",
   "avant-garde-regular": "AvantGardeGothicITC",
+  "unica77ll-regular": "Unica77LL-Regular",
 }

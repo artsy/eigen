@@ -5,7 +5,7 @@ import styled from "styled-components/native"
 
 import { Schema, screenTrack } from "lib/utils/track"
 
-import TabBar, { Tab } from "lib/Components/TabBar"
+import ScrollableTabBar, { ScrollableTab } from "lib/Components/ScrollableTabBar"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
@@ -19,6 +19,12 @@ import ArtworksRenderer from "./Components/Artworks/Relay/FavoriteArtworks"
 
 import Categories from "./Components/Categories"
 import CategoriesRenderer from "./Components/Categories/Relay/FavoriteCategories"
+
+import Fairs from "./Components/Fairs"
+import FairsRenderer from "./Components/Fairs/Relay/FavoriteFairs"
+
+import Shows from "./Components/Shows"
+import ShowsRenderer from "./Components/Shows/Relay/FavoriteShows"
 
 import { gravityURL } from "lib/relay/config"
 
@@ -35,6 +41,8 @@ const isStaging = gravityURL.includes("staging")
 const WorksTab = 0
 const ArtistsTab = 1
 const CategoriesTab = 2
+const FairsTab = 3
+const ShowsTab = 3
 
 interface Props {
   tracking: any
@@ -53,19 +61,25 @@ class Favorites extends React.Component<Props, null> {
           renderTabBar={props => (
             <View>
               <Title>Saves &amp; Follows</Title>
-              <TabBar {...props} />
+              <ScrollableTabBar {...props} />
             </View>
           )}
         >
-          <Tab tabLabel="Works">
+          <ScrollableTab tabLabel="Works">
             <ArtworksRenderer render={renderWithLoadProgress(Artworks)} />
-          </Tab>
-          <Tab tabLabel="Artists">
+          </ScrollableTab>
+          <ScrollableTab tabLabel="Artists">
             <ArtistsRenderer render={renderWithLoadProgress(Artists)} />
-          </Tab>
-          <Tab tabLabel="Categories">
+          </ScrollableTab>
+          <ScrollableTab tabLabel="Categories">
             <CategoriesRenderer render={renderWithLoadProgress(Categories)} />
-          </Tab>
+          </ScrollableTab>
+          <ScrollableTab tabLabel="Fairs">
+            <FairsRenderer render={renderWithLoadProgress(Fairs)} />
+          </ScrollableTab>
+          <ScrollableTab tabLabel="Shows">
+            <ShowsRenderer render={renderWithLoadProgress(Shows)} />
+          </ScrollableTab>
         </ScrollableTabView>
         {isStaging && <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />}
       </View>
@@ -81,7 +95,12 @@ class Favorites extends React.Component<Props, null> {
       tabType = Schema.ActionNames.SavesAndFollowsArtists
     } else if (selectedTab.i === CategoriesTab) {
       tabType = Schema.ActionNames.SavesAndFollowsCategories
+    } else if (selectedTab.i === FairsTab) {
+      tabType = Schema.ActionNames.SavesAndFollowsFairs
+    } else if (selectedTab.i === ShowsTab) {
+      tabType = Schema.ActionNames.SavesAndFollowsShows
     }
+
     this.props.tracking.trackEvent({
       action_name: tabType,
       action_type: Schema.ActionTypes.Tap,

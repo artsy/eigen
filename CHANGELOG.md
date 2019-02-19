@@ -83,6 +83,8 @@
 - Adds logging for relay queries and metaphysics extensions used in query - luc
 - Minor styling adjustments to Fair and Show - Kieran
 - Styles about fair and uses correct link for website - kieran
+- Adds Scrollable tab to Favorites screen - ashley
+- Enables followed Fairs in Favorites - ashley
 
 ### 1.8.1
 

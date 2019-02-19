@@ -1,0 +1,3 @@
+{
+  "38f90615c9e1cf6fcdbb23ef868211d1": "query FairsQuery(\n  $count: Int!\n  $cursor: String\n) {\n  me {\n    ...Fairs_me_1G22uz\n    __id\n  }\n}\n\nfragment Fairs_me_1G22uz on Me {\n  followsAndSaves {\n    fairs(first: $count, after: $cursor) {\n      edges {\n        node {\n          profile {\n            id\n            is_followed\n            __id\n          }\n          name\n          counts {\n            partners\n          }\n          href\n          image {\n            url\n          }\n          start_at\n          end_at\n          __id\n          __typename\n        }\n        cursor\n      }\n      pageInfo {\n        endCursor\n        hasNextPage\n      }\n    }\n  }\n  __id\n}\n"
+}
