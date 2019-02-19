@@ -29,7 +29,7 @@
     "open-sim": "open -a Simulator",
     "open-emission": "xcrun simctl launch booted net.artsy.Emission",
     "test": "jest",
-    "test:ci": "jest --outputFile test-results.json --json --detectOpenHandles",
+    "test:ci": "jest --outputFile test-results.json --json --ci --forceExit",
     "testing": "jest --watch",
     "relay": "relay-compiler --src ./src --schema data/schema.graphql --language typescript --artifactDirectory ./src/__generated__ --persist --persistOutput ./src/__generated__/complete.queryMap.json --exclude '**/node_modules/**,**/__mocks__/**,**/__generated__/**'",
     "release": "node scripts/release.js",
