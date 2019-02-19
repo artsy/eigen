@@ -1,3 +1,3 @@
 {
-  "35ac3b92824f845526fead61ce39b078": "query FairExhibitorsTestsQuery {\n  fair(id: \"art-basel-in-miami-beach-2018\") {\n    exhibitors_grouped_by_name {\n      letter\n      exhibitors\n    }\n    __id\n  }\n}\n"
+  "3e46c6aa2eae83724a8b6edb75dce53b": "query FairExhibitorsTestsQuery {\n  fair(id: \"art-basel-in-miami-beach-2018\") {\n    exhibitors_grouped_by_name {\n      letter\n      exhibitors {\n        name\n        id\n        profile_id\n      }\n    }\n    __id\n  }\n}\n"
 }

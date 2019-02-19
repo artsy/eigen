@@ -1112,7 +1112,7 @@ type ArtworkContextFair {
   tagline: String
   ticketsLink: String
 
-  # The exhibitors with booths in this fair.
+  # The exhibitors with booths in this fair with letter.
   exhibitors_grouped_by_name: [FairExhibitorsGroup]
 
   # Artworks Elastic Search results
@@ -3191,7 +3191,7 @@ type Fair {
   tagline: String
   ticketsLink: String
 
-  # The exhibitors with booths in this fair.
+  # The exhibitors with booths in this fair with letter.
   exhibitors_grouped_by_name: [FairExhibitorsGroup]
 
   # Artworks Elastic Search results
@@ -3264,15 +3264,23 @@ type FairCounts {
   ): FormattedNumber
 }
 
+type FairExhibitor {
+  # Exhibitor name
+  name: String
+
+  # Exhibitors id
+  id: String
+
+  # Partner default profile id
+  profile_id: String
+}
+
 type FairExhibitorsGroup {
   # Letter exhibitors group belongs to
   letter: String
 
-  # Exhibitors sorted by name
-  exhibitors: [String]
-
-  # Partner/Exhibitor default profile id
-  profile_ids: [String]
+  # The exhibitor data.
+  exhibitors: [FairExhibitor]
 }
 
 enum FairSorts {
@@ -4321,7 +4329,7 @@ type HomePageModuleContextFair {
   tagline: String
   ticketsLink: String
 
-  # The exhibitors with booths in this fair.
+  # The exhibitors with booths in this fair with letter.
   exhibitors_grouped_by_name: [FairExhibitorsGroup]
 
   # Artworks Elastic Search results
