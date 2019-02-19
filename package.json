@@ -19,7 +19,7 @@
     "prettier-write": "prettier --write",
     "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx}'",
     "stylelint-project": " stylelint -- 'src/**/*.{ts,tsx}'",
-    "ci": "yarn type-check && yarn lint && yarn prettier-project -l && yarn relay && yarn test:ci --detectOpenHandles",
+    "ci": "yarn type-check && yarn lint && yarn prettier-project -l && yarn relay && yarn test:ci",
     "danger": "danger",
     "start": "yarn start-servers",
     "start-servers": "concurrently --kill-others 'yarn start-packager' 'yarn relay --watch' 'yarn storybook'",
