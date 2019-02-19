@@ -224,7 +224,7 @@ class LiveAuctionBidButton: ARFlatButton {
             case .upcomingLot(let isHighestBidder):
                 isEnabled = true
                 if isHighestBidder {
-                    setupUI("Raise Bid")
+                    setupUI("Increase Max Bid")
                 } else {
                     setupUI("Bid")
                 }

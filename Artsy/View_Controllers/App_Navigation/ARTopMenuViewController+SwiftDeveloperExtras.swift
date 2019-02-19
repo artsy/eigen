@@ -21,7 +21,6 @@ import UIKit
 extension ARTopMenuViewController {
 
     @objc func runSwiftDeveloperExtras() {
-//        let uiVC = ARSwitchBoard.sharedInstance().loadLiveAuction("ortrahs")
-//        self.push(uiVC!, animated: true)
+        // run swift code here at startup
     }
 }
