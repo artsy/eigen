@@ -194,6 +194,14 @@ export namespace Schema {
     ShowAllArtists = "showAllArtists",
     ShowAllArtworks = "showAllArtworks",
     SingleShowMap = "singleShowMap",
+    CarouselSwipe = "carouselSwipe",
+    ContextualArtist = "contextualArtist",
+    GallerySite = "gallerySite",
+    ListArtist = "listArtist",
+    SaveShow = "saveShow",
+    UnsaveShow = "unsaveShow",
+    ToggleHours = "toggleHours",
+    NearbyShow = "nearbyShow",
   }
 }
 
