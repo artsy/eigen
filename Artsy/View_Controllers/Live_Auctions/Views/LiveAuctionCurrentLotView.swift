@@ -30,6 +30,7 @@ class LiveAuctionCurrentLotView: UIButton {
 
         let hammerView = UIImageView(image: UIImage(asset: .Lot_bidder_hammer_white))
         let thumbnailView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        thumbnailView.contentMode = .scaleAspectFit
 
         [liveLotLabel, artistNameLabel, biddingPriceLabel, thumbnailView, hammerView].forEach { addSubview($0) }
         [liveLotLabel, artistNameLabel, biddingPriceLabel].forEach {

@@ -24,17 +24,18 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-
 enum LiveAuctionBiddingProgressState {
     case userRegistrationRequired
     case userRegistrationPending
     case userRegistrationClosed
     case biddable(askingPrice: UInt64, currencySymbol: String)
     case biddingInProgress
+    case bidNotYetAccepted(askingPrice: UInt64, currencySymbol: String)
     case bidAcknowledged
     case bidBecameMaxBidder
     case bidOutbid
     case bidNetworkFail
+    case bidFailed(reason: String)
     case lotWaitingToOpen
     case lotSold
 }
@@ -47,6 +48,7 @@ func == (lhs: LiveAuctionBiddingProgressState, rhs: LiveAuctionBiddingProgressSt
     case (.biddable(let lhsState), .biddable(let rhsState)) where lhsState.askingPrice == rhsState.askingPrice && lhsState.currencySymbol == rhsState.currencySymbol: return true
     case (.biddingInProgress, .biddingInProgress): return true
     case (.bidBecameMaxBidder, .bidBecameMaxBidder): return true
+    case (.bidNotYetAccepted(let lhsState), .bidNotYetAccepted(let rhsState)) where lhsState.askingPrice == rhsState.askingPrice && lhsState.currencySymbol == rhsState.currencySymbol: return true
     case (.bidAcknowledged, .bidAcknowledged): return true
     case (.bidNetworkFail, .bidNetworkFail): return true
     case (.lotWaitingToOpen, .lotWaitingToOpen): return true

@@ -115,7 +115,6 @@ class LiveAuctionLotViewControllerTests: QuickSpec {
             }
         }
     }
-
 }
 
 class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
@@ -134,6 +133,10 @@ class Test_LiveAuctionViewModel: LiveAuctionViewModelType {
 }
 
 class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
+    var userIsFloorWinningBidder: Bool = true
+
+    var usersTopBidCents: UInt64? = 1_300_00
+
     var lotArtist = "Artist Name"
     var lotArtistBlurb: String? = "Artist Blurb"
     var lotArtworkDescription: String? = "Ipsum lorem whatever."
@@ -166,7 +169,7 @@ class Test_LiveAuctionLotViewModel: LiveAuctionLotViewModelType {
     func derivedEventAtPresentationIndex(_ index: Int) -> LiveAuctionEventViewModel {
         let event = LiveAuctionEventViewModel(event: LiveEvent(json: liveEventJSON), currencySymbol: "$")
         event.confirm()
-        event.bidStatus = .bid(isMine: false, isTop: false)
+        event.bidStatus = .bid(isMine: false, isTop: false, userIsFloorWinningBidder: false)
         if cancelEvents { event.cancel() }
         return event
     }

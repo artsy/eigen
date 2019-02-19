@@ -17,12 +17,15 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
         bidButtonViewModel = bidButton.viewModel
         bidButton.delegate  = self
         bidButton.flashOutbidOnBiddableStateChanges = false
+        bidButton.hideOnError = true
 
         updateLotInformation()
         updateCurrentBidInformation([])
         updateBiddingControls(bidViewModel.currentBid)
 
         bidViewModel.lotViewModel.newEventsSignal.subscribe(updateCurrentBidInformation)
+
+
         biddingProgressSignal.subscribe(biddingProgressUpdated)
 
         bidButtonViewModel.bidPendingSignal.subscribe(biddingProgressUpdated)
@@ -44,11 +47,6 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
         let tinyScreen = view.bounds.height == 420
         if tinyScreen {
             setYourMaxBidLabel.font = UIFont.serifFont(withSize: 16)
-        }
-
-        if bidViewModel.lotViewModel.userIsBeingSoldTo {
-            // User is already the highest bidder, tell them so and Dismiss.
-            showHighestBidderStatusAndDismiss()
         }
     }
 
@@ -105,7 +103,7 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
     fileprivate func handleProgressViewVisibility(_ state: LiveAuctionBiddingProgressState) {
         let shouldShowBidProgressView: Bool
         switch state {
-        case .bidAcknowledged, .biddingInProgress: shouldShowBidProgressView = true
+        case .bidAcknowledged, .biddingInProgress, .bidFailed(_): shouldShowBidProgressView = true
         default: shouldShowBidProgressView = false
         }
 
@@ -141,19 +139,6 @@ class LiveAuctionPlaceMaxBidViewController: UIViewController {
                     self.bidProgressOverlayView.removeFromSuperview()
                 }
             }
-        }
-    }
-
-    fileprivate func showHighestBidderStatusAndDismiss() {
-        bidProgressOverlayView.biddingProgressSignal.update(.bidBecameMaxBidder)
-        bidButtonViewModel.progressSignal.update(.active(biddingState: .bidBecameMaxBidder))
-        shouldShowBiddingOverlay(true, maxBidder: true)
-
-        let exitButton = self.navigationItem.rightBarButtonItem?.customView as? UIButton
-        exitButton?.isEnabled = false
-
-        ar_dispatch_after(2) {
-            self.presentingViewController?.dismiss(animated: true, completion: nil)
         }
     }
 }
