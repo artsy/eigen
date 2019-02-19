@@ -52,7 +52,7 @@ export class FairExhibitors extends React.Component<Props, State> {
         <TouchableOpacity
           onPress={() => {
             if (profile_id) {
-              SwitchBoard.presentNavigationViewController(this, "show/" + profile_id)
+              SwitchBoard.presentNavigationViewController(this, "fair/" + profile_id)
             }
           }}
         >
