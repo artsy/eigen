@@ -167,6 +167,13 @@ fragment FairBoothPreview_show on Show {
     ... on Partner {
       name
       href
+      id
+      __id
+      profile {
+        _id
+        is_followed
+        __id
+      }
     }
     ... on ExternalPartner {
       name
@@ -336,25 +343,32 @@ v10 = {
 v11 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_closed",
+  "name": "is_followed",
   "args": null,
   "storageKey": null
 },
 v12 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "is_closed",
+  "args": null,
+  "storageKey": null
+},
+v13 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "display",
   "args": null,
   "storageKey": null
 },
-v13 = [
-  v12
+v14 = [
+  v13
 ];
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersFairQuery",
-  "id": "20f9e98701bbed7024f3082a6abde1f9",
+  "id": "6230cb71769b30f106b993318379ab61",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -585,13 +599,7 @@ return {
               v2,
               v5,
               v6,
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "is_followed",
-                "args": null,
-                "storageKey": null
-              }
+              v11
             ]
           },
           {
@@ -935,7 +943,7 @@ return {
                                         "args": null,
                                         "storageKey": null
                                       },
-                                      v11,
+                                      v12,
                                       {
                                         "kind": "ScalarField",
                                         "alias": null,
@@ -963,7 +971,7 @@ return {
                                         "args": null,
                                         "concreteType": "SaleArtworkOpeningBid",
                                         "plural": false,
-                                        "selections": v13
+                                        "selections": v14
                                       },
                                       {
                                         "kind": "LinkedField",
@@ -973,7 +981,7 @@ return {
                                         "args": null,
                                         "concreteType": "SaleArtworkCurrentBid",
                                         "plural": false,
-                                        "selections": v13
+                                        "selections": v14
                                       },
                                       {
                                         "kind": "ScalarField",
@@ -991,7 +999,7 @@ return {
                                         "concreteType": "Sale",
                                         "plural": false,
                                         "selections": [
-                                          v11,
+                                          v12,
                                           v2
                                         ]
                                       },
@@ -1063,7 +1071,28 @@ return {
                             "type": "Partner",
                             "selections": [
                               v6,
-                              v10
+                              v10,
+                              v5,
+                              {
+                                "kind": "LinkedField",
+                                "alias": null,
+                                "name": "profile",
+                                "storageKey": null,
+                                "args": null,
+                                "concreteType": "Profile",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "_id",
+                                    "args": null,
+                                    "storageKey": null
+                                  },
+                                  v11,
+                                  v2
+                                ]
+                              }
                             ]
                           }
                         ]
@@ -1099,7 +1128,7 @@ return {
                         "concreteType": "Location",
                         "plural": false,
                         "selections": [
-                          v12,
+                          v13,
                           v2
                         ]
                       },

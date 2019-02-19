@@ -168,10 +168,7 @@ export class ShowHeader extends React.Component<Props, State> {
             list={artists}
             count={artists.length}
             displayedItems={2}
-            onItemSelected={url => {
-              debugger
-              this.handleArtistSelected(url)
-            }}
+            onItemSelected={url => this.handleArtistSelected(url)}
             onViewAllPressed={onViewAllArtistsPressed}
           />
           <ButtonWrapper>

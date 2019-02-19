@@ -42,7 +42,13 @@ fragment FairBoothHeader_show on Show {
     ... on Partner {
       name
       id
+      __id
       href
+      profile {
+        _id
+        is_followed
+        __id
+      }
     }
     ... on ExternalPartner {
       name
@@ -541,7 +547,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairBoothTestsQuery",
-  "id": "c3d6f1b1b55ec61b4de0dcb22f4a9925",
+  "id": "e8402172df695c559b730e97d060cdb5",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -691,7 +697,21 @@ return {
                 "selections": [
                   v16,
                   v8,
-                  v20
+                  v20,
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "profile",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Profile",
+                    "plural": false,
+                    "selections": [
+                      v22,
+                      v23,
+                      v1
+                    ]
+                  }
                 ]
               }
             ]

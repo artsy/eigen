@@ -1,29 +1,104 @@
 import { Box } from "@artsy/palette"
 import { FairBoothPreview_show } from "__generated__/FairBoothPreview_show.graphql"
+import { FairBoothPreviewMutation } from "__generated__/FairBoothPreviewMutation.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import React from "react"
-import { createFragmentContainer, graphql } from "react-relay"
+import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { FairBoothPreviewHeader } from "./Components/FairBoothPreviewHeader"
 
 interface Props {
   show: FairBoothPreview_show
   onViewFairBoothPressed: () => void
+  relay: RelayProp
 }
 
-export const FairBoothPreviewContainer = createFragmentContainer<Props>(
-  props => {
+interface State {
+  isFollowedChanging: boolean
+}
+
+export class FairBoothPreview extends React.Component<Props, State> {
+  state = {
+    isFollowedChanging: false,
+  }
+
+  handleFollowPartner = () => {
+    const { show, relay } = this.props
     const {
-      show: { artworks_connection, cover_image, location, partner },
+      partner: {
+        id: partnerSlug,
+        __id: partnerRelayID,
+        profile: { is_followed: partnerFollowed, _id: profileID },
+      },
+    } = show
+    this.setState(
+      {
+        isFollowedChanging: true,
+      },
+      () => {
+        commitMutation<FairBoothPreviewMutation>(relay.environment, {
+          onCompleted: () => {
+            this.setState({
+              isFollowedChanging: false,
+            })
+          },
+          mutation: graphql`
+            mutation FairBoothPreviewMutation($input: FollowProfileInput!) {
+              followProfile(input: $input) {
+                profile {
+                  id
+                  _id
+                  is_followed
+                }
+              }
+            }
+          `,
+          variables: {
+            input: {
+              profile_id: profileID,
+              unfollow: partnerFollowed,
+            },
+          },
+          optimisticResponse: {
+            followProfile: {
+              profile: {
+                _id: profileID,
+                id: partnerSlug,
+                is_followed: !partnerFollowed,
+              },
+            },
+          },
+          updater: store => {
+            store.get(partnerRelayID).setValue(!partnerFollowed, "is_followed")
+          },
+        })
+      }
+    )
+  }
+
+  render() {
+    const {
+      show: {
+        artworks_connection,
+        cover_image,
+        location,
+        partner: {
+          name: partnerName,
+          profile: { is_followed: partnerFollowed },
+        },
+      },
       onViewFairBoothPressed,
-    } = props
+    } = this.props
     const display = !!location ? location.display : ""
 
     return (
       <Box my={1}>
         <FairBoothPreviewHeader
-          name={partner.name}
+          onFollowPartner={this.handleFollowPartner}
+          name={partnerName}
           location={display}
+          isFollowed={partnerFollowed}
+          isFollowedChanging={this.state.isFollowedChanging}
           url={cover_image && cover_image.url}
           onViewFairBoothPressed={() => onViewFairBoothPressed()}
         />
@@ -40,36 +115,40 @@ export const FairBoothPreviewContainer = createFragmentContainer<Props>(
         </Box>
       </Box>
     )
-  },
+  }
+}
+
+export const FairBoothPreviewContainer = createFragmentContainer(
+  FairBoothPreview,
   graphql`
     fragment FairBoothPreview_show on Show {
       id
       name
       is_fair_booth
-
       partner {
         ... on Partner {
           name
           href
+          id
+          __id
+          profile {
+            _id
+            is_followed
+          }
         }
-
         ... on ExternalPartner {
           name
         }
       }
-
       fair {
         name
       }
-
       cover_image {
         url
       }
-
       location {
         display
       }
-
       artworks_connection(first: 4) {
         edges {
           node {
