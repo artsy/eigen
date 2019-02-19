@@ -5,6 +5,7 @@ upcoming:
   dev:
     - Not yet
   user_facing:
+    - Fixes to selection of fairs in Search - orta + matt
     - Make it obvious you can re-bid on upcoming lots - orta + sarah
     - Show error messages from Causality in raising max bids - orta + sarah
     - Flash for errors from Causality in current auction bids - orta + sarah
