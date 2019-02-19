@@ -18,6 +18,7 @@ class LiveAuctionLotSetViewControllerSpec: QuickSpec {
                 horizontalSizeClass = UIUserInterfaceSizeClass(rawValue: context()["horizontalSizeClass"] as! Int)
                 device = ARDeviceType(rawValue: context()["device"] as! Int)
                 OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[:])
+                OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/me/bidders", withResponse:[])
             }
 
             it("looks good by default") {

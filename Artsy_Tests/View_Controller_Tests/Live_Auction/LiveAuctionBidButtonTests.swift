@@ -18,6 +18,8 @@ class LiveAuctionBidButtonTests: QuickSpec {
             "biddable": [.active(biddingState: .biddable(askingPrice: 45_000_00, currencySymbol: "$"))],
             "in progress": [.active(biddingState: .biddingInProgress )],
             "failed": [.active(biddingState: .bidNetworkFail)],
+            // Note: a positive side-effect of this test is that we don't accidentally lowercase currencies
+            "waiting on auctioneer confirmation": [.active(biddingState: .bidNotYetAccepted(askingPrice: 23_000_00, currencySymbol: "ETH"))],
             "max bidder": [.active(biddingState: .bidBecameMaxBidder)],
             "not max bidder": [.active(biddingState: .bidBecameMaxBidder), .active(biddingState: .biddable(askingPrice: 1000, currencySymbol: ""))],
             "waiting": [.active(biddingState: .lotWaitingToOpen)],
@@ -25,7 +27,7 @@ class LiveAuctionBidButtonTests: QuickSpec {
             "closed": [.inActive(lotState: .closedLot(wasPassed: false))],
             "passed": [.inActive(lotState: .closedLot(wasPassed: true))],
             "upcoming": [.inActive(lotState: .upcomingLot(isHighestBidder: false))],
-            "highest bidder": [.inActive(lotState: .upcomingLot(isHighestBidder: true))],
+            "highest bidder, and can re-bid": [.inActive(lotState: .upcomingLot(isHighestBidder: true))],
         ]
 
         for (_, tuple) in examples.enumerated() {
