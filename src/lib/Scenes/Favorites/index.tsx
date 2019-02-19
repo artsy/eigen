@@ -37,12 +37,13 @@ const Title = styled.Text`
 `
 
 const isStaging = gravityURL.includes("staging")
+const isTabVisible = false
 
 const WorksTab = 0
 const ArtistsTab = 1
 const CategoriesTab = 2
-const FairsTab = 3
 const ShowsTab = 3
+const FairsTab = 4
 
 interface Props {
   tracking: any
@@ -74,9 +75,11 @@ class Favorites extends React.Component<Props, null> {
           <ScrollableTab tabLabel="Categories">
             <CategoriesRenderer render={renderWithLoadProgress(Categories)} />
           </ScrollableTab>
-          <ScrollableTab tabLabel="Fairs">
-            <FairsRenderer render={renderWithLoadProgress(Fairs)} />
-          </ScrollableTab>
+          {isTabVisible && ( // @TODO: hides Fairs tab for now. Revert after v1 of Local Discovery is launched.
+            <ScrollableTab tabLabel="Fairs">
+              <FairsRenderer render={renderWithLoadProgress(Fairs)} />
+            </ScrollableTab>
+          )}
           <ScrollableTab tabLabel="Shows">
             <ShowsRenderer render={renderWithLoadProgress(Shows)} />
           </ScrollableTab>
@@ -95,10 +98,10 @@ class Favorites extends React.Component<Props, null> {
       tabType = Schema.ActionNames.SavesAndFollowsArtists
     } else if (selectedTab.i === CategoriesTab) {
       tabType = Schema.ActionNames.SavesAndFollowsCategories
-    } else if (selectedTab.i === FairsTab) {
-      tabType = Schema.ActionNames.SavesAndFollowsFairs
     } else if (selectedTab.i === ShowsTab) {
       tabType = Schema.ActionNames.SavesAndFollowsShows
+    } else if (selectedTab.i === FairsTab) {
+      tabType = Schema.ActionNames.SavesAndFollowsFairs
     }
 
     this.props.tracking.trackEvent({
