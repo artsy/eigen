@@ -14,6 +14,7 @@ const Collapse = _Collapse as React.ComponentClass<any>
 interface Props {
   hours: string | Array<{ hours: string; days: string }>
   onAnimationFrame?: ({ height: number }) => void
+  onToggle?: (isExpanded: boolean) => void
 }
 
 interface State {
@@ -36,7 +37,12 @@ export class HoursCollapsible extends React.Component<Props, State> {
   state = { isExpanded: false }
 
   handleToggleIsExpanded = () => {
-    this.setState({ isExpanded: !this.state.isExpanded })
+    const isExpanded = !this.state.isExpanded
+    this.setState({ isExpanded })
+
+    if (this.props.onToggle) {
+      this.props.onToggle(isExpanded)
+    }
   }
 
   handleAnimationFrame = animatedValue => {

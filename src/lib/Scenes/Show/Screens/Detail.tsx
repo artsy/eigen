@@ -34,7 +34,7 @@ const track: Track<Props, State> = _track
   context_screen: Schema.PageNames.ShowPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Show,
   context_screen_owner_slug: props.show.id,
-  context_screen_owner_id: props.show.__id,
+  context_screen_owner_id: props.show._id,
 }))
 export class Detail extends React.Component<Props, State> {
   state: State = {
@@ -119,26 +119,19 @@ export class Detail extends React.Component<Props, State> {
     )
   }
 
-  @track(props => ({
-    action_name: Schema.ActionNames.ShowAllArtists,
-    action_type: Schema.ActionTypes.Tap,
-    owner_id: props.show.__id,
-    owner_slug: props.show.id,
-    owner_type: Schema.OwnerEntityTypes.Show,
-  }))
+  @track(eventProps(Schema.ActionNames.ShowAllArtists))
   handleViewAllArtistsPressed() {
     this.props.onViewAllArtistsPressed()
   }
 
-  @track(props => ({
-    action_name: Schema.ActionNames.ShowAllArtworks,
-    action_type: Schema.ActionTypes.Tap,
-    owner_id: props.show.__id,
-    owner_slug: props.show.id,
-    owner_type: Schema.OwnerEntityTypes.Show,
-  }))
+  @track(eventProps(Schema.ActionNames.ShowAllArtworks))
   handleViewAllArtworksPressed() {
     this.props.onViewAllArtworksPressed()
+  }
+
+  @track(eventProps(Schema.ActionNames.ToggleHours))
+  handleHoursToggled() {
+    return null
   }
 
   handleAnimationFrame = animatedValue => {
@@ -169,7 +162,9 @@ export class Detail extends React.Component<Props, State> {
       case "information":
         return <CaretButton onPress={() => data.onViewMoreInfoPressed()} text="View more information" />
       case "hours":
-        return <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} />
+        return (
+          <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} onToggle={this.handleHoursToggled} />
+        )
       default:
         return null
     }
@@ -197,11 +192,21 @@ export class Detail extends React.Component<Props, State> {
   }
 }
 
+function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTypes = Schema.ActionTypes.Tap) {
+  return props => ({
+    action_name: actionName,
+    action_type: actionType,
+    owner_id: props.show._id,
+    owner_slug: props.show.id,
+    owner_type: Schema.OwnerEntityTypes.Show,
+  })
+}
+
 export const DetailContainer = createFragmentContainer(
   Detail,
   graphql`
     fragment Detail_show on Show {
-      __id
+      _id
       id
       name
       description
