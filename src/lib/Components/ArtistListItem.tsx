@@ -3,6 +3,7 @@ import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graph
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
+import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
@@ -51,7 +52,7 @@ export const formatTombstoneText = (nationality, birthday, deathday) => {
     return "b. " + birthday
   }
 }
-
+@track()
 export class ArtistListItem extends React.Component<Props, State> {
   state = { isFollowedChanging: false }
 
@@ -67,11 +68,7 @@ export class ArtistListItem extends React.Component<Props, State> {
       },
       () => {
         commitMutation<ArtistListItemFollowArtistMutation>(relay.environment, {
-          onCompleted: () => {
-            this.setState({
-              isFollowedChanging: false,
-            })
-          },
+          onCompleted: () => this.handleShowSuccessfullyUpdated(),
           mutation: graphql`
             mutation ArtistListItemFollowArtistMutation($input: FollowArtistInput!) {
               followArtist(input: $input) {
@@ -102,6 +99,19 @@ export class ArtistListItem extends React.Component<Props, State> {
         })
       }
     )
+  }
+
+  @track((props: Props) => ({
+    action_name: props.artist.is_followed ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
+    action_type: Schema.ActionTypes.Success,
+    owner_id: props.artist._id,
+    owner_slug: props.artist.id,
+    owner_type: Schema.OwnerEntityTypes.Show,
+  }))
+  handleShowSuccessfullyUpdated() {
+    this.setState({
+      isFollowedChanging: false,
+    })
   }
 
   renderText() {
@@ -159,8 +169,9 @@ export const ArtistListItemContainer = createFragmentContainer(
   ArtistListItem,
   graphql`
     fragment ArtistListItem_artist on Artist {
-      id
       __id
+      _id
+      id
       name
       is_followed
       nationality
