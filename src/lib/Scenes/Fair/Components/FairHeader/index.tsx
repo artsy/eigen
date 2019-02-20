@@ -80,7 +80,7 @@ export class FairHeader extends React.Component<Props, State> {
           list={artistList}
           count={counts.artists}
           displayedItems={2}
-          onItemSelected={this.handlePress}
+          onItemSelected={this.handleWorksPress}
           onViewAllPressed={viewAllArtists}
         />
         <EntityList
@@ -88,14 +88,18 @@ export class FairHeader extends React.Component<Props, State> {
           list={partnerList}
           count={counts.partners}
           displayedItems={2}
-          onItemSelected={this.handlePress}
+          onItemSelected={this.handleExhibitorPress}
           onViewAllPressed={viewAllExhibitors}
         />
       </>
     )
   }
 
-  handlePress = item => {
+  handleExhibitorPress = item => {
+    Switchboard.presentNavigationViewController(this, `show/${item}?entity=fair-booth`)
+  }
+
+  handleWorksPress = item => {
     Switchboard.presentNavigationViewController(this, item)
   }
 

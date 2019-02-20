@@ -6,7 +6,11 @@ export type FairExhibitorsTestsQueryResponse = {
     readonly fair: ({
         readonly exhibitors_grouped_by_name: ReadonlyArray<({
             readonly letter: string | null;
-            readonly exhibitors: ReadonlyArray<string | null> | null;
+            readonly exhibitors: ReadonlyArray<({
+                readonly name: string | null;
+                readonly id: string | null;
+                readonly profile_id: string | null;
+            }) | null> | null;
         }) | null> | null;
     }) | null;
 };
@@ -22,7 +26,11 @@ query FairExhibitorsTestsQuery {
   fair(id: "art-basel-in-miami-beach-2018") {
     exhibitors_grouped_by_name {
       letter
-      exhibitors
+      exhibitors {
+        name
+        id
+        profile_id
+      }
     }
     __id
   }
@@ -64,11 +72,36 @@ var v0 = [
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
+            "kind": "LinkedField",
             "alias": null,
             "name": "exhibitors",
+            "storageKey": null,
             "args": null,
-            "storageKey": null
+            "concreteType": "FairExhibitor",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "profile_id",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           }
         ]
       },
@@ -86,7 +119,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairExhibitorsTestsQuery",
-  "id": "35ac3b92824f845526fead61ce39b078",
+  "id": "3e46c6aa2eae83724a8b6edb75dce53b",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -105,5 +138,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'a9a20e3e36e1f7a4fcf66257b4b9e1b9';
+(node as any).hash = 'cbfa24bee4a376dea1245376746f0c5a';
 export default node;

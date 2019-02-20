@@ -24,6 +24,7 @@
 #import <Emission/ARShowComponentViewController.h>
 #import <Emission/ARConversationComponentViewController.h>
 #import <Emission/ARFairComponentViewController.h>
+#import <Emission/ARFairBoothComponentViewController.h>
 #import <Keys/EmissionKeys.h>
 
 #import <React/RCTUtils.h>
@@ -257,10 +258,6 @@ randomBOOL(void)
     NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
 
-  } else if ([route hasPrefix:@"/show/"] || [route hasPrefix:@"show/"]) {
-    NSString *showID = [[route componentsSeparatedByString:@"/"] lastObject];
-    viewController = [[ARShowComponentViewController alloc] initWithShowID:showID];
-
   } else if ([route hasPrefix:@"/gene/"] || [route hasPrefix:@"gene/"]) {
     NSString *geneID = [[[[route componentsSeparatedByString:@"/"] lastObject] componentsSeparatedByString:@"?"] firstObject];
     NSURLComponents *components = [NSURLComponents componentsWithString:route];
@@ -285,6 +282,13 @@ randomBOOL(void)
   } else if ([route hasSuffix:@"entity=fair"]) {
     NSString *fairID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
+  } else if ([route hasSuffix:@"entity=fair-booth"]) {
+    NSString *fairBoothID = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARFairBoothComponentViewController alloc] initWithFairBoothID:fairBoothID];
+  } else if ([route hasPrefix:@"/show/"] || [route hasPrefix:@"show/"]) {
+    NSString *showID = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARShowComponentViewController alloc] initWithShowID:showID];
+    
   } else {
     viewController = [[UnroutedViewController alloc] initWithRoute:route];
   }

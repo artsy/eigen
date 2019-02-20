@@ -8,8 +8,11 @@ export type FairExhibitorsQueryResponse = {
     readonly fair: ({
         readonly exhibitors_grouped_by_name: ReadonlyArray<({
             readonly letter: string | null;
-            readonly exhibitors: ReadonlyArray<string | null> | null;
-            readonly profile_ids: ReadonlyArray<string | null> | null;
+            readonly exhibitors: ReadonlyArray<({
+                readonly name: string | null;
+                readonly id: string | null;
+                readonly profile_id: string | null;
+            }) | null> | null;
         }) | null> | null;
     }) | null;
 };
@@ -27,8 +30,11 @@ query FairExhibitorsQuery(
   fair(id: $fairID) {
     exhibitors_grouped_by_name {
       letter
-      exhibitors
-      profile_ids
+      exhibitors {
+        name
+        id
+        profile_id
+      }
     }
     __id
   }
@@ -78,18 +84,36 @@ v1 = [
             "storageKey": null
           },
           {
-            "kind": "ScalarField",
+            "kind": "LinkedField",
             "alias": null,
             "name": "exhibitors",
+            "storageKey": null,
             "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "profile_ids",
-            "args": null,
-            "storageKey": null
+            "concreteType": "FairExhibitor",
+            "plural": true,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "profile_id",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           }
         ]
       },
@@ -107,7 +131,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairExhibitorsQuery",
-  "id": "fe2da1d1b1abcd66129c15a6bce5abc7",
+  "id": "a80412e826e25b99ff2412e1d73fedfe",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -126,5 +150,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'aa5ef8093f267993b559f13487de2afb';
+(node as any).hash = '49d86459c44ccc08847c6ade7629cddf';
 export default node;

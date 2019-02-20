@@ -251,7 +251,7 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: ebb6747c5b66026ad4f97b789c3ceac6f18e57a6
-  Emission: 2518da842760c0e8534cf278aa1004b6a8e71cfc
+  Emission: 202c19b1c2fa7d91d490f0e850eb982660f1dc6c
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
@@ -264,19 +264,19 @@ SPEC CHECKSUMS:
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
-  React: c237e42de9c70e5cac6eeb52b4cfd3a0910c1f00
-  react-native-mapbox-gl: b42480060cdcc515dfa3d8e403fb4dd32466a1b9
-  RNSVG: 4834be1d644eb77f0e3f6de851881b83758a3124
+  React: e8b3cf60f93a0e64045862a003c1bf9408098cff
+  react-native-mapbox-gl: d0ac3b81a6cadbd7cadc80891da72e3e85379350
+  RNSVG: 36f6615444ab569023444e09b01a1900d964e967
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
-  SentryReactNative: a292506edfa707119e3aa155892cdb07e453a93a
+  SentryReactNative: 3dff4e9bd82aa581dc64ff8d2524d7007cea076b
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   Stripe: 898f83a95d72180c6eb4acd65b2ae6158fc6a8bd
   tipsi-stripe: 25a3f6ba746e9a27f7b21e928c9974d016efcd77
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
-  yoga: 55da126afc384965b96bff46652464373b330add
+  yoga: 4cf45c8bdb4d7e1a1f285e273009756314e6df53
 
 PODFILE CHECKSUM: 278087d891d4b4dd228571713a2c1d65ef4b875a
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.0

@@ -19,7 +19,11 @@ it("renders properly", async () => {
           fair(id: "art-basel-in-miami-beach-2018") {
             exhibitors_grouped_by_name {
               letter
-              exhibitors
+              exhibitors {
+                name
+                id
+                profile_id
+              }
             }
           }
         }

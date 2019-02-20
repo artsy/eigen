@@ -1,9 +1,9 @@
 import { Box, Separator, Serif } from "@artsy/palette"
 import { FairExhibitorsQuery } from "__generated__/FairExhibitorsQuery.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { SectionList, TouchableOpacity, ViewProperties } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import SwitchBoard from "../../../../lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
 
@@ -36,7 +36,6 @@ export class FairExhibitors extends React.Component<Props, State> {
       sections.push({
         title: group.letter,
         data: group.exhibitors,
-        partnerIds: group.profile_ids,
         count: group.exhibitors.length,
       })
     })
@@ -45,18 +44,19 @@ export class FairExhibitors extends React.Component<Props, State> {
 
   renderExhibitor(data) {
     const { item, index, section } = data
-    const { partnerIds, count } = section
+    const { count } = section
+    const { name, profile_id } = item
     const generatedKey = count - index
     return (
       <Box mb={2} key={generatedKey}>
         <TouchableOpacity
           onPress={() => {
-            if (partnerIds && partnerIds[index]) {
-              SwitchBoard.presentNavigationViewController(this, partnerIds[index])
+            if (profile_id) {
+              SwitchBoard.presentNavigationViewController(this, `show/${profile_id}?entity=fair-booth`)
             }
           }}
         >
-          <Serif size="3">{item}</Serif>
+          <Serif size="3">{name}</Serif>
         </TouchableOpacity>
       </Box>
     )
@@ -103,8 +103,11 @@ export const FairExhibitorsRenderer: React.SFC<{ fairID: string }> = ({ fairID }
         fair(id: $fairID) {
           exhibitors_grouped_by_name {
             letter
-            exhibitors
-            profile_ids
+            exhibitors {
+              name
+              id
+              profile_id
+            }
           }
         }
       }
