@@ -43,6 +43,7 @@
 - Check for saleInfoLine before rendering sales info on artwork - kieran
 - Adds analytics to all Show screens and views - luc
 - Removes Fairs tab from Global Saves and Follows view -ashley
+- Fixes FairBooth routing - kieran
 
 ### 1.8.2
 
