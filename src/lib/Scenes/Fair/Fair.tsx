@@ -5,9 +5,9 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { ShowArtistsContainer as ShowArtistsScreen } from "lib/Components/Show/ShowArtists"
 import { ShowArtworksContainer as ShowArtworksScreen } from "lib/Components/Show/ShowArtworks"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { FairArtistsRenderer as FairArtistsScreen } from "./Screens/FairArtists"
 import { FairArtworksRenderer as FairArtworksScreen } from "./Screens/FairArtworks"
-import { FairBoothRenderer as FairBoothScreen } from "./Screens/FairBooth"
 import { FairDetailContainer as FairDetailScreen } from "./Screens/FairDetail"
 import { FairExhibitorsRenderer as FairExhibitorsScreen } from "./Screens/FairExhibitors"
 import { FairMoreInfoRenderer as FairMoreInfoScreen } from "./Screens/FairMoreInfo"
@@ -55,8 +55,7 @@ export class Fair extends React.Component<Props> {
   }
 
   handleViewFairBoothPressed = props => {
-    const id = props.show ? props.show.id : props.id
-    this.navigate({ component: FairBoothScreen, props: { ...props, showID: id } })
+    SwitchBoard.presentNavigationViewController(this, `show/${props.show.id}?entity=fair-booth`)
   }
 
   handleViewFairBoothArtistsPressed = props => {

@@ -21,6 +21,7 @@ import {
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
 import { CityView } from "./Scenes/City"
+import { FairBoothRenderer } from "./Scenes/Fair/Screens/FairBooth"
 import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
 import { MapContainer } from "./Scenes/Map"
@@ -157,6 +158,20 @@ const Show: React.SFC<ShowProps> = track<ShowProps>(props => {
   return <ShowRenderer showID={showID} render={renderWithLoadProgress(Containers.Show, { showID })} />
 })
 
+interface FairBoothProps {
+  fairBoothID: string
+}
+
+const FairBooth: React.SFC<FairBoothProps> = track<FairBoothProps>(props => {
+  return {
+    context_screen: Schema.PageNames.ShowPage,
+    context_screen_owner_slug: props.fairBoothID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Show,
+  }
+})(({ fairBoothID }) => {
+  return <FairBoothRenderer showID={fairBoothID} />
+})
+
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Home", () => HomeScene)
@@ -172,6 +187,7 @@ AppRegistry.registerComponent("Favorites", () => FavoritesScene)
 // TODO: Change everything to BidderFlow? AuctionAction?
 AppRegistry.registerComponent("BidFlow", () => BidderFlow)
 AppRegistry.registerComponent("Fair", () => Fair)
+AppRegistry.registerComponent("FairBooth", () => FairBooth)
 AppRegistry.registerComponent("Show", () => Show)
 AppRegistry.registerComponent("Map", () => MapContainer)
 AppRegistry.registerComponent("City", () => CityView)

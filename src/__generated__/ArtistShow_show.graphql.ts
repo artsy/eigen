@@ -6,6 +6,7 @@ declare const _ArtistShow_show$ref: unique symbol;
 export type ArtistShow_show$ref = typeof _ArtistShow_show$ref;
 export type ArtistShow_show = {
     readonly href: string | null;
+    readonly is_fair_booth: boolean | null;
     readonly cover_image: ({
         readonly url: string | null;
     }) | null;
@@ -26,6 +27,13 @@ const node: ConcreteFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "href",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_fair_booth",
       "args": null,
       "storageKey": null
     },
@@ -68,5 +76,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = 'ef153f5e371b4b9f661c13febec59a14';
+(node as any).hash = 'b63f406cdea558d9050c4b60249de870';
 export default node;

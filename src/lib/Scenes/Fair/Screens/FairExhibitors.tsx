@@ -1,9 +1,9 @@
 import { Box, Separator, Serif } from "@artsy/palette"
 import { FairExhibitorsQuery } from "__generated__/FairExhibitorsQuery.graphql"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { SectionList, TouchableOpacity, ViewProperties } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import SwitchBoard from "../../../../lib/NativeModules/SwitchBoard"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
 
@@ -52,7 +52,7 @@ export class FairExhibitors extends React.Component<Props, State> {
         <TouchableOpacity
           onPress={() => {
             if (profile_id) {
-              SwitchBoard.presentNavigationViewController(this, "fair/" + profile_id)
+              SwitchBoard.presentNavigationViewController(this, `show/${profile_id}?entity=fair-booth`)
             }
           }}
         >
