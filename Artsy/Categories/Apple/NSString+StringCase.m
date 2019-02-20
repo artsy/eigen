@@ -49,4 +49,35 @@
     return builder;
 }
 
+- (NSString *)fromCamelCaseToSentence
+{
+    NSScanner *scanner = [NSScanner scannerWithString:self];
+    scanner.caseSensitive = YES;
+
+    NSString *builder = [NSString string];
+    NSString *buffer = nil;
+    NSUInteger lastScanLocation = 0;
+
+    while ([scanner isAtEnd] == NO) {
+        if ([scanner scanCharactersFromSet:[NSCharacterSet lowercaseLetterCharacterSet] intoString:&buffer]) {
+            builder = [builder stringByAppendingString:buffer];
+
+            if ([scanner scanCharactersFromSet:[NSCharacterSet uppercaseLetterCharacterSet] intoString:&buffer]) {
+                builder = [builder stringByAppendingString:@" "];
+                builder = [builder stringByAppendingString:[buffer lowercaseString]];
+            }
+        }
+
+        // If the scanner location has not moved, there's a problem somewhere.
+        if (lastScanLocation == scanner.scanLocation) {
+            return nil;
+        }
+
+        lastScanLocation = scanner.scanLocation;
+    }
+
+    return builder;
+}
+
+
 @end

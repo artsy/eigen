@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.3.6</string>
+	<string>4.4.0</string>
 	<key>CFBundleVersion</key>
 	<string>2019.01.17.20</string>
 	<key>NSExtension</key>

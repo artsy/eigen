@@ -210,16 +210,16 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
             gotUser(user);
 
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-            if (authenticationFailure) {
-                authenticationFailure(error);
-            }
-        }];
-        [userOp start];
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                if (authenticationFailure) {
+                    authenticationFailure(error);
+                }
+            }];
+            [userOp start];
         }
 
-        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        if (JSON) {
+    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+        if ([response statusCode] == 401 || JSON) {
             if (authenticationFailure) {
                 authenticationFailure(error);
             }
@@ -228,7 +228,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
                 networkFailure(error);
             }
         }
-        }];
+    }];
     [op start];
 }
 

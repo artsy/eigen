@@ -1,7 +1,7 @@
 import Foundation
 
 enum BidEventBidStatus {
-    case bid(isMine: Bool, isTop: Bool)
+    case bid(isMine: Bool, isTop: Bool, userIsFloorWinningBidder: Bool)
     case pendingBid(isMine: Bool)
 }
 
@@ -107,10 +107,12 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
 
     fileprivate func colorForBidStatus(_ status: BidEventBidStatus) -> UIColor {
         switch status {
-        case .bid(let isMine, let isTop):
+        case .bid(let isMine, let isTop, let userIsFloorWinningBidder):
             var color: UIColor
-            if isMine && isTop {
+            if isMine && isTop && userIsFloorWinningBidder {
                 color = .artsyGreenRegular()
+            } else if isMine && isTop {
+                color = UIColor.artsyGrayMedium()
             } else if isMine && !isTop {
                 color = red()
             } else {
@@ -134,13 +136,20 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
                 let status = bidStatus else { return attributify("ERROR", .red) }
 
             switch status {
-            case .bid(let isMine, _):
-                let display = isMine ? "Your Bid" : event.displayString()
+            case .bid(let isMine, let isTop, _):
+                let text: String
+                if isMine && !isTop {
+                    text = "You (Outbid)"
+                } else if isMine {
+                    text = "You"
+                } else {
+                    text = event.displayString()
+                }
                 let color = colorForBidStatus(status)
-                return attributify(display.uppercased(), color, strike: event.cancelled)
+                return attributify(text.uppercased(), color, strike: event.cancelled)
 
             case .pendingBid(let isMine):
-                let display = isMine ? "Your Bid" : event.displayString()
+                let display = isMine ? "You" : event.displayString()
                 return attributify(display.uppercased(), .artsyGrayMedium(), strike: event.cancelled)
             }
 

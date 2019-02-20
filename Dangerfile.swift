@@ -4,7 +4,7 @@
 
 import Danger
 import Foundation
-import Yams // package: https://github.com/jpsim/Yams.git
+import Yams
 
 let danger = Danger()
 
@@ -12,13 +12,12 @@ let danger = Danger()
 // There is another on Circle which validates the tests
 let modified = danger.git.modifiedFiles
 let editedFiles = modified + danger.git.createdFiles
-message("These files have changed: \(editedFiles.joined())")
 let testFiles = editedFiles.filter { $0.contains("Tests") && ($0.fileType == .swift  || $0.fileType == .m) }
 
 // Validates that we've not accidentally let in a testing
 // shortcut to simplify dev work
 let testingShortcuts = ["fdescribe", "fit(@", "fit("]
-for file in editedFiles where file.fileType == .swift  || file.fileType == .m {
+for file in testFiles {
     let content = danger.utils.readFile(file)
     for shortcut in testingShortcuts {
         if content.contains(shortcut) {

@@ -1,13 +1,30 @@
 upcoming:
-  version: 4.3.6
-  date: Jan 17, 2019
+  version: 4.4.0
+  date: TBD
   emission_version: 1.8.0
   dev:
-    - Nothing yet
+    - Not yet
   user_facing:
-    - Adds Local Discovery tab behind lab option - luc
+    - Fixes to selection of fairs in Search - orta + matt
+    - Make it obvious you can re-bid on upcoming lots - orta + sarah
+    - Show error messages from Causality in raising max bids - orta + sarah
+    - Flash for errors from Causality in current auction bids - orta + sarah
+    - Make it more explicit visually that a bid made needs confirmation from auctioneer - orta + sarah
+    - The price we show on your bid button isn't the next increment, but your bud  - orta + sarah
+    - Non-symbol currencies aren't forced into lowercase - orta + sarah
+    - Fixes issue where non-fair routes would be sent to the new fair component - ash
 
 releases:
+  -
+    version: 4.3.6
+    date: Feb 15, 2019
+    emission_version: 1.8.0
+    dev:
+      - Adjust SDK update - orta
+    user_facing:
+      - Incorrect auth detection (e.g. passwords being changed) are now correclty detected - orta
+      - Adds Local Discovery tab behind lab option - luc
+
   - version: 4.3.5
     date: Jan 11, 2019 
     signed_of_by: Orta

@@ -91,9 +91,14 @@ class LiveAuctionBiddingViewModel: LiveAuctionBiddingViewModelType {
                 let biddingState: LiveAuctionBiddingProgressState
 
                 let isSellingToMe = state.currentLot?.userIsBeingSoldTo ?? false
+                let isFloorWinningBidder = state.currentLot?.userIsFloorWinningBidder ?? false
 
-                if isSellingToMe {
+                if isSellingToMe && isFloorWinningBidder {
                     biddingState = .bidBecameMaxBidder
+                } else if isSellingToMe {
+                    // get the amount you offered or the current asking price
+                    let price = state.currentLot?.usersTopBidCents ?? state.askingPrice
+                    biddingState = .bidNotYetAccepted(askingPrice: price, currencySymbol: currencySymbol)
                 } else {
                     biddingState = .biddable(askingPrice: state.askingPrice, currencySymbol: currencySymbol)
                 }

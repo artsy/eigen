@@ -11,15 +11,12 @@ cache:
   # General SwiftPM
   # Danger Swift plugins, like Yams
   - .build
-  - ~/.danger-swift
 
 install:
   # Grab the latest Danger JS from npm
   - npm install -g danger
 
 script:
-  # Compile the Danger runtime
-  - swift build
   # Run the Dangerfile.swift
   - swift run danger-swift ci
 

@@ -51,6 +51,8 @@ protocol LiveAuctionLotViewModelType: class {
     var userIsBeingSoldTo: Bool { get }
     var isBeingSold: Bool { get }
     var userIsWinning: Bool { get }
+    var userIsFloorWinningBidder: Bool { get }
+    var usersTopBidCents: UInt64? { get }
 
     var reserveStatusSignal: Observable<ARReserveStatus> { get }
     var lotStateSignal: Observable<LotState> { get }
@@ -113,6 +115,12 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     var sellingToBidderID: String? = nil
     var winningBidEventID: String? = nil
+    /// So you can differentiate whether your bid has been confirmed
+    /// by the floor or not
+    var floorWinningBidderID: String? = nil
+
+    /// The value of the highest bid the user has placed on this lot
+    var userTopBidCents: UInt64? = nil
 
     init(lot: LiveAuctionLot, bidderCredentials: BiddingCredentials) {
         self.model = lot
@@ -152,6 +160,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
 
     var winningBidPrice: UInt64? {
         return self.winningBidEvent?.bidAmountCents
+    }
+
+    var usersTopBidCents: UInt64? {
+        return userTopBidCents
     }
 
     var askingPrice: UInt64 {
@@ -218,6 +230,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
             bidderID = bidderCredentials.bidderID,
             let winningBidEvent = winningBidEvent else { return false }
         return winningBidEvent.hasBidderID(bidderID)
+    }
+
+    var userIsFloorWinningBidder: Bool {
+        return bidderCredentials.bidderID == floorWinningBidderID
     }
 
     func findBidWithValue(_ amountCents: UInt64) -> LiveAuctionEventViewModel? {
@@ -309,6 +325,10 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
         numberOfBidsSignal.update(onlineBidCount)
     }
 
+    func updateFloorWinningBidderID(_ floorWinningBidderID: String?) {
+        self.floorWinningBidderID = floorWinningBidderID
+    }
+
     func updateSellingToBidder(_ sellingToBidderID: String?) {
         self.sellingToBidderID = sellingToBidderID
     }
@@ -371,12 +391,16 @@ class LiveAuctionLotViewModel: NSObject, LiveAuctionLotViewModelType {
                 isUser = false
             }
 
+            if isUser && (userTopBidCents ?? 0) < (bidEvent.bidAmountCents ?? 0) {
+                 userTopBidCents = bidEvent.bidAmountCents
+            }
+
             let status: BidEventBidStatus
             if bidEvent.isFloorBidder {
-                status = .bid(isMine: isUser, isTop: isTopBid)
+                status = .bid(isMine: isUser, isTop: isTopBid, userIsFloorWinningBidder: false)
 
             } else { // if bidEvent.isArtsyBidder {
-                status = .bid(isMine: isUser, isTop: isTopBid)
+                status = .bid(isMine: isUser, isTop: isTopBid, userIsFloorWinningBidder: userIsFloorWinningBidder)
             }
             bidEvent.bidStatus = status
         }
