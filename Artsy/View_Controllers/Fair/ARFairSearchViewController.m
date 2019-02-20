@@ -33,10 +33,18 @@
 
 - (void)viewDidLoad
 {
+    // Setup required before calling super.
     self.defaultInfoLabelText = @"Find Exhibitors & Artists";
     self.searchIconImageName = @"SearchIcon_HeavyGrey";
-
+    
+    // Call super.
     [super viewDidLoad];
+    
+    // Download local data for client-side search.
+    [self.fair updateFair:^{
+        [self.fair downloadShows];
+        NSLog(@"Updated fair.");
+    }];
 
     self.view.backgroundColor = [UIColor whiteColor];
     self.textField.textColor = [UIColor artsyGraySemibold];
@@ -55,11 +63,12 @@
 
     [self.view insertSubview:searchBox atIndex:0];
 
-    [self.view alignLeadingEdgeWithView:searchBox predicate:@"-10"];
-    [searchBox alignTrailingEdgeWithView:self.closeButton predicate:@"-46"];
-    [self.view alignTopEdgeWithView:searchBox predicate:@"-10"];
-
-    [searchBox alignCenterYWithView:self.searchBoxView predicate:@"0"];
+    // TODO: Investigate what these were doing (or rather, were supposed to be doing)
+//    [self.view alignLeadingEdgeWithView:searchBox predicate:@"-10"];
+//    [searchBox alignTrailingEdgeWithView:self.closeButton predicate:@"-46"];
+//    [self.view alignTopEdgeWithView:searchBox predicate:@"-10"];
+//
+//    [searchBox alignCenterYWithView:self.searchBoxView predicate:@"0"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
