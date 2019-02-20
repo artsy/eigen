@@ -30,6 +30,7 @@ import { ConfirmBid_me } from "__generated__/ConfirmBid_me.graphql"
 import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
 import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
 import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
+import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { Modal } from "lib/Components/Modal"
 
 const Emission = NativeModules.Emission || {}
@@ -135,31 +136,84 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.BidFlowPlaceBid,
   })
-  placeBid() {
+  async placeBid() {
     this.setState({ isLoading: true })
 
-    this.state.requiresPaymentInformation ? this.createCreditCardAndBidderPosition() : this.createBidderPosition()
+    this.state.requiresPaymentInformation ? this.setupAddressCardAndBidderPosition() : this.setupBidderPosition()
   }
 
-  async createCreditCardAndBidderPosition() {
+  /** Make a bid */
+  async setupBidderPosition() {
+    await this.createBidderPosition()
+  }
+
+  /** Run through the full flow setting up the user account and making a bid  */
+  async setupAddressCardAndBidderPosition() {
+    try {
+      await this.updatePhoneNumber()
+      const token = await this.createTokenFromAddress()
+      await this.createCreditCard(token)
+      await this.createBidderPosition()
+    } catch (error) {
+      if (!this.state.errorModalVisible) {
+        this.presentErrorModal(error, null)
+      }
+    }
+  }
+
+  /**
+   * Because the phone number lives on the user, not as creditcard metadata, then we
+   * need a separate call to update our User model to store that info
+   */
+  async updatePhoneNumber() {
+    return new Promise((done, reject) => {
+      const { phoneNumber } = this.state.billingAddress
+      commitMutation<ConfirmBidUpdateUserMutation>(this.props.relay.environment, {
+        onCompleted: (_, errors) => {
+          if (errors.length) {
+            this.presentErrorModal(errors, null)
+            reject(errors)
+          } else {
+            done()
+          }
+        },
+        onError: errors => this.presentErrorResult(errors),
+        mutation: graphql`
+          mutation ConfirmBidUpdateUserMutation($input: UpdateMyProfileInput!) {
+            updateMyUserProfile(input: $input) {
+              clientMutationId
+              user {
+                phone
+              }
+            }
+          }
+        `,
+        variables: { input: { phone: phoneNumber } },
+      })
+    })
+  }
+
+  async createTokenFromAddress() {
     const { billingAddress, creditCardFormParams } = this.state
 
-    try {
-      const token = await stripe.createTokenWithCard({
-        ...creditCardFormParams,
-        name: billingAddress.fullName,
-        addressLine1: billingAddress.addressLine1,
-        addressLine2: billingAddress.addressLine2,
-        addressCity: billingAddress.city,
-        addressState: billingAddress.state,
-        addressZip: billingAddress.postalCode,
-        addressCountry: billingAddress.country.shortName,
-      })
+    return stripe.createTokenWithCard({
+      ...creditCardFormParams,
+      name: billingAddress.fullName,
+      addressLine1: billingAddress.addressLine1,
+      addressLine2: billingAddress.addressLine2,
+      addressCity: billingAddress.city,
+      addressState: billingAddress.state,
+      addressZip: billingAddress.postalCode,
+      addressCountry: billingAddress.country.shortName,
+    })
+  }
 
+  async createCreditCard(token: any) {
+    return new Promise(done => {
       commitMutation<ConfirmBidCreateCreditCardMutation>(this.props.relay.environment, {
         onCompleted: (data, errors) => {
           if (data && get(data, "createCreditCard.creditCardOrError.creditCard")) {
-            this.createBidderPosition()
+            done()
           } else {
             if (isEmpty(errors)) {
               const mutationError = data && get(data, "createCreditCard.creditCardOrError.mutationError")
@@ -197,9 +251,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         `,
         variables: { input: { token: token.tokenId } },
       })
-    } catch (error) {
-      this.presentErrorResult(error)
-    }
+    })
   }
 
   createBidderPosition() {

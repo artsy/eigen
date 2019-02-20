@@ -6,6 +6,7 @@ export interface Address {
   state: string
   country: Country
   postalCode: string
+  phoneNumber: string
 }
 
 export interface Country {
