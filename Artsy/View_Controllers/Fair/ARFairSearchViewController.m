@@ -56,19 +56,14 @@
     self.searchDataSource.placeholderImage = [UIImage imageNamed:@"SearchThumb_HeavyGrey"];
 
     // fair search is a solid grey background
-    UIView *searchBox = [[UIView alloc] init];
-    searchBox.backgroundColor = [UIColor artsyGrayLight];
+    UIView *searchBoxBackgroundView = [[UIView alloc] init];
+    searchBoxBackgroundView.backgroundColor = [UIColor artsyGrayLight];
+    [self.view insertSubview:searchBoxBackgroundView atIndex:0];
 
-    [searchBox constrainHeight:@"44"];
-
-    [self.view insertSubview:searchBox atIndex:0];
-
-    // TODO: Investigate what these were doing (or rather, were supposed to be doing)
-//    [self.view alignLeadingEdgeWithView:searchBox predicate:@"-10"];
-//    [searchBox alignTrailingEdgeWithView:self.closeButton predicate:@"-46"];
-//    [self.view alignTopEdgeWithView:searchBox predicate:@"-10"];
-//
-//    [searchBox alignCenterYWithView:self.searchBoxView predicate:@"0"];
+    [searchBoxBackgroundView alignLeadingEdgeWithView:self.view predicate:@"10"];
+    [searchBoxBackgroundView alignTrailingEdgeWithView:self.closeButton predicate:@"-46"];
+    [searchBoxBackgroundView alignTopEdgeWithView:self.view predicate:@"10"];
+    [searchBoxBackgroundView constrainHeight:@"44"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -130,7 +125,7 @@
     AFHTTPRequestOperation *request = [ArtsyAPI searchWithFairID:self.fair.fairID andQuery:query success:^(NSArray *searchResults) {
         success([searchResults select:^BOOL(SearchResult *searchResult) {
             // If we have local shows, do not include shows from the API
-            return self.fair.shows == nil || ![searchResult.model isEqual:[PartnerShow class]];
+            return self.fair.shows == nil || self.fair.shows.count == 0 || ![searchResult.model isEqual:[PartnerShow class]];
         }]);
     } failure:failure];
 
