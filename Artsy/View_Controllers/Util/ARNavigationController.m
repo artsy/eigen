@@ -35,7 +35,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
 @protocol ARMenuAwareViewController;
 
-
 @interface ARNavigationController () <UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, assign) BOOL isAnimatingTransition;
@@ -119,10 +118,18 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     _backButton.adjustsImageWhenDisabled = NO;
 
     [self.view addSubview:_backButton];
-    [_backButton alignTopEdgeWithView:self.view predicate:@"12"];
+
     [_backButton alignLeadingEdgeWithView:self.view predicate:@"12"];
     _backButton.accessibilityIdentifier = @"Back";
     _backButton.alpha = 0;
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    NSString *topPredicate = [NSString stringWithFormat:@"%f", self.view.safeAreaInsets.top + 12];
+    [_backButton alignTopEdgeWithView:self.view predicate:topPredicate];
 }
 
 // Handle modal changes to status bars

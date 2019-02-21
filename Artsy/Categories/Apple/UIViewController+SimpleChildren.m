@@ -25,7 +25,9 @@
 - (void)ar_addAlignedModernChildViewController:(UIViewController *)controller
 {
     [self ar_addModernChildViewController:controller];
-
+    
+    // TODO: check if view controller should be full edge (iPhone X)
+    [controller.view alignTopEdgeWithView:self.view predicate:@"0"];
     [controller.view constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];
     [controller.view alignLeading:@"0" trailing:@"0" toView:self.view];
     [controller.view constrainBottomSpaceToView:self.flk_bottomLayoutGuide predicate:@"0"];

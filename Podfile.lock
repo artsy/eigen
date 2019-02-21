@@ -273,7 +273,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission (~> 1.8.2)
+  - Emission (from `../Emission`)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -304,7 +304,7 @@ DEPENDENCIES:
   - OHHTTPStubs
   - ORKeyboardReactingApplication
   - ORStackView (= 2.0.3)
-  - Pulley (from `https://github.com/l2succes/Pulley.git`, branch `master`)
+  - Pulley (from `../Pulley`)
   - Quick
   - react-native-mapbox-gl (from `https://github.com/orta/react-native-mapbox-gl.git`, branch `6_1_3_podspec_fix`)
   - React/Core
@@ -331,7 +331,6 @@ SPEC REPOS:
     - "Artsy+UIFonts"
     - "Artsy+UILabels"
     - Artsy-UIButtons
-    - Emission
     - Extraction
     - React
   https://github.com/cocoapods/specs.git:
@@ -398,6 +397,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/dblock/ARTiledImageView
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
+  Emission:
+    :path: "../Emission"
   FLKAutoLayout:
     :branch: v1
     :git: https://github.com/orta/FLKAutoLayout.git
@@ -413,8 +414,7 @@ EXTERNAL SOURCES:
   NAMapKit:
     :git: https://github.com/neilang/NAMapKit
   Pulley:
-    :branch: master
-    :git: https://github.com/l2succes/Pulley.git
+    :path: "../Pulley"
   react-native-mapbox-gl:
     :branch: 6_1_3_podspec_fix
     :git: https://github.com/orta/react-native-mapbox-gl.git
@@ -464,9 +464,6 @@ CHECKOUT OPTIONS:
   NAMapKit:
     :commit: 9a2b842a1067785cf8af18276d4de4f0e3f0a17c
     :git: https://github.com/neilang/NAMapKit
-  Pulley:
-    :commit: 34b274c62823f005d6d6d8cf3cb726e3c7e419be
-    :git: https://github.com/l2succes/Pulley.git
   react-native-mapbox-gl:
     :commit: c86bdb8130525aeb2476c6584e11aa3408408992
     :git: https://github.com/orta/react-native-mapbox-gl.git
@@ -504,7 +501,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 5fd5d1b7dcd59a85549526138b2c44d31307862e
+  Emission: 2518da842760c0e8534cf278aa1004b6a8e71cfc
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
@@ -538,7 +535,7 @@ SPEC CHECKSUMS:
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
-  Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
+  Pulley: 88acb054e83e4cb2315795fc21d570a5f337ccd6
   Quick: d17304d58d0d169dd0bd1c6e5c28e3318de32a1a
   React: e8b3cf60f93a0e64045862a003c1bf9408098cff
   react-native-mapbox-gl: 4ea0ec95bf8351b212d223c3bac4fbbf5f03fb14
@@ -561,6 +558,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: de8782b10b9fdede33554bcad8a2a6653e0ebb30
 
-PODFILE CHECKSUM: 2519723b7c6a002c34c75b205ea761cecc027c35
+PODFILE CHECKSUM: d2b9a82851a159458cac49184870284375c97f7d
 
 COCOAPODS: 1.6.0.beta.1

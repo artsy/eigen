@@ -6,6 +6,7 @@
 #import "AROptions.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARLogger.h"
+#import "ARNavigationController.h"
 
 #import "ARFairViewController.h"
 #import "ARInternalMobileWebViewController.h"
@@ -83,12 +84,15 @@
                 NSString * fairID = ((Fair *) profile.profileOwner).fairID;
                 Fair *fair = [[Fair alloc] initWithFairID:fairID];
 
+
                 if ([AROptions boolForOption:AROptionsModernShowFairPages]) {
                     ARFairComponentViewController *viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
-                       [self showViewController:viewController];
+                    [self showViewController:viewController];
+                    [(ARNavigationController *)self.navigationController didUpdateStatusBarForTopViewControllerAnimated:NO];
                 } else {
                     ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:fair andProfile:profile];
                     RAC(self, hidesNavigationButtons) = RACObserve(viewController, hidesNavigationButtons);
+                    RAC(self, hidesStatusBarBackground) = RACObserve(viewController, hidesStatusBarBackground);
                     [self showViewController:viewController];
                 }
             }
@@ -120,5 +124,14 @@
 {
     return [UIDevice isPad];
 }
+
+- (BOOL)hidesStatusBarBackground
+{
+    if (self.childViewControllers.firstObject) {
+        return [self.childViewControllers.firstObject isKindOfClass:ARFairComponentViewController.class];
+    }
+    return NO;
+}
+
 
 @end

@@ -261,6 +261,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
         [self registerPathCallbackForDomain:route.path callback:presentNativeAuctionsViewControllerBlock];
         [self registerPathCallbackForDomain:stagingDomain callback:presentNativeAuctionsViewControllerBlock];
     }
+    
 
     // This route will match any single path component and thus should be added last.
     // It doesn't need to run through echo, as it's pretty much here to stay forever.
