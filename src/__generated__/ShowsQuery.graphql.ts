@@ -34,7 +34,28 @@ fragment Shows_me_1G22uz on Me {
     shows(first: $count, after: $cursor) {
       edges {
         node {
+          id
+          is_followed
+          _id
           name
+          partner {
+            __typename
+            ... on Partner {
+              name
+            }
+            ... on ExternalPartner {
+              name
+              __id
+            }
+            ... on Node {
+              __id
+            }
+          }
+          href
+          status
+          images(size: 1) {
+            url
+          }
           __id
           __typename
         }
@@ -71,12 +92,29 @@ v1 = {
   "name": "__id",
   "args": null,
   "storageKey": null
-};
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "__typename",
+  "args": null,
+  "storageKey": null
+},
+v4 = [
+  v2
+];
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowsQuery",
-  "id": "156642b04edbeda07d74ba7d2e21d9cf",
+  "id": "cedf73be34d7e11c718439d396fbe608",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -184,18 +222,89 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "name",
+                            "name": "id",
                             "args": null,
                             "storageKey": null
                           },
-                          v1,
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "__typename",
+                            "name": "is_followed",
                             "args": null,
                             "storageKey": null
-                          }
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "_id",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          v2,
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "partner",
+                            "storageKey": null,
+                            "args": null,
+                            "concreteType": null,
+                            "plural": false,
+                            "selections": [
+                              v3,
+                              v1,
+                              {
+                                "kind": "InlineFragment",
+                                "type": "ExternalPartner",
+                                "selections": v4
+                              },
+                              {
+                                "kind": "InlineFragment",
+                                "type": "Partner",
+                                "selections": v4
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "href",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "status",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "name": "images",
+                            "storageKey": "images(size:1)",
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "size",
+                                "value": 1,
+                                "type": "Int"
+                              }
+                            ],
+                            "concreteType": "Image",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "url",
+                                "args": null,
+                                "storageKey": null
+                              }
+                            ]
+                          },
+                          v1,
+                          v3
                         ]
                       },
                       {
