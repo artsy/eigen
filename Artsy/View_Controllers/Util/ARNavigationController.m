@@ -150,7 +150,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     return self.topViewController.preferredInterfaceOrientationForPresentation ?: UIInterfaceOrientationPortrait;
 }
 
-#pragma mark - po 
+#pragma mark - UINavigationControllerDelegate
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                   animationControllerForOperation:(UINavigationControllerOperation)operation
