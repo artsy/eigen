@@ -37,7 +37,6 @@ static Fair *stashedFair;
 
 - (void)selectedResult:(SearchResult *)result ofType:(NSString *)type fromQuery:(NSString *)query
 {
-    // TODO: When re-appearing, the back button is visible and obscures our view.
     [self presentSearchResult:result fair:stashedFair];
 }
 

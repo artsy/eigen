@@ -69,7 +69,12 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:NO animated:YES];
+    // ARNavigationController is going to get confused by our view controller hierarchy. Fine, let it be confused.
+    // We know that we need to hide the back button, and we're going to defer to the next runloop invocation to get
+    // around ARNavigationController. (I'm so sorry.)
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:NO animated:YES];
+    });
 }
 
 - (void)fetchSearchResults:(NSString *)text replace:(BOOL)replaceResults
