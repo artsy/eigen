@@ -12,6 +12,7 @@ import { ArtistsExhibitorsWorksLink } from "../Components/ArtistsExhibitorsWorks
 import { FairBoothPreviewContainer as FairBoothPreview } from "../Components/FairBoothPreview"
 import { FairHeaderContainer as FairHeader } from "../Components/FairHeader"
 import { SearchLink } from "../Components/SearchLink"
+import { shouldGoStraightToWebsite, shouldShowFairMoreInfo } from "./FairMoreInfo"
 
 interface Props extends ViewProperties {
   fair: FairDetail_fair
@@ -150,10 +151,13 @@ export class FairDetail extends React.Component<Props, State> {
         )
       case "information":
         return (
-          <>
-            <CaretButton onPress={() => data.onViewMoreInfoPressed()} text="View more information" />
-            <Separator mt={2} />
-          </>
+          shouldGoStraightToWebsite(this.props.fair) ||
+          (shouldShowFairMoreInfo(this.props.fair) && (
+            <>
+              <CaretButton onPress={() => data.onViewMoreInfoPressed()} text="View more information" />
+              <Separator mt={2} />
+            </>
+          ))
         )
       case "artists-exhibitors-works":
         return <ArtistsExhibitorsWorksLink {...data} />
@@ -241,6 +245,13 @@ export const FairDetailContainer = createPaginationContainer(
             lng
           }
         }
+
+        # so that we know whether to show more info
+        organizer {
+          website
+        }
+        about
+        ticketsLink
 
         profile {
           name
