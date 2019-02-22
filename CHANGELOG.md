@@ -16,6 +16,12 @@
 
 ### Master
 
+- Fair exhibitors overview looks up to spec - orta
+- Hides additional info when a fair doesn't have it - orta
+- When there's only a website for the fair additional info, the app goes there - orta
+
+### 1.8.3
+
 - Updates show header gallery name to medium font weight - kieran
 - Checks in the view for fair.profile before rending profile values - kieran
 - Moves countdown timer higher on fair - kieran
@@ -42,10 +48,9 @@
 - Fixes scroll in artworks grid - kieran
 - Check for saleInfoLine before rendering sales info on artwork - kieran
 - Adds analytics to all Show screens and views - luc
-- Removes Fairs tab from Global Saves and Follows view -ashley
+- Removes Fairs tab from Global Saves and Follows view - ashley
 - Fixes FairBooth routing - kieran
-- Fair exhibitors overview looks up to spec - orta
-- Adds Shows to Global Saves and Follows view -ashley
+- Adds Shows to Global Saves and Follows view - ashley
 
 ### 1.8.2
 
