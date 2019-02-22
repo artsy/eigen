@@ -118,10 +118,14 @@ exports[`Registration result component renders registration complete properly 1`
           Thank you for registering. You’re now eligible
 to bid on works in this sale.
         </Text>
-        
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          
 
-
-
+        </Text>
       </View>
     </View>
   </View>
@@ -308,10 +312,14 @@ exports[`Registration result component renders registration error properly 1`] =
           
 with any questions.
         </Text>
-        
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          
 
-
-
+        </Text>
       </View>
     </View>
   </View>
@@ -499,10 +507,14 @@ Please contact
            for
 more information.
         </Text>
-        
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          ellipsizeMode="tail"
+        >
+          
 
-
-
+        </Text>
       </View>
     </View>
   </View>

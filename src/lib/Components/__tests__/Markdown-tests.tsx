@@ -28,9 +28,9 @@ describe("Markdown", () => {
       </Theme>
     )
 
-    expect(markdown.root.findAllByType(Text).length).toEqual(2)
+    expect(markdown.root.findAllByType(Text).length).toEqual(4)
     expect(markdown.root.findAllByType(Text)[0].props.children[0]).toMatch("paragraph 1 has some text")
-    expect(markdown.root.findAllByType(Text)[1].props.children[0]).toMatch("paragraph 2 also has text")
+    expect(markdown.root.findAllByType(Text)[2].props.children[0]).toMatch("paragraph 2 also has text")
   })
 
   it("renders links as LinkText", () => {
