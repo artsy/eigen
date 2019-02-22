@@ -5,6 +5,8 @@
 #import "UIViewController+FullScreenLoading.h"
 #import "ARTabContentView.h"
 #import "ARTopMenuNavigationDataSource.h"
+#import "ARFairSearchViewController.h"
+#import "ARFairComponentViewController+Eigen.h"
 #import "ARUserManager.h"
 #import "ArtsyAPI+Private.h"
 #import "ARAppConstants.h"
@@ -553,6 +555,16 @@ static const CGFloat ARMenuButtonDimension = 50;
         return;
     }
 
+    if ([viewController isKindOfClass:[ARFairSearchViewController class]]) {
+        // This isn't great, but we need to support the legacy fair search behaviour until we
+        // implement a new fair search component view controller in React Native.
+        id parentViewController = [[[[[[self rootNavigationController] topViewController] childViewControllers] first] childViewControllers] first];
+        if ([parentViewController isKindOfClass:[ARFairComponentViewController class]]) {
+            [(ARFairComponentViewController *)parentViewController presentFairSearchViewController:(id)viewController completion:completion];
+            return;
+        }
+    }
+    
     if ([viewController respondsToSelector:@selector(isRootNavViewController)] && [(id<ARRootViewController>)viewController isRootNavViewController]) {
         [self presentRootViewController:viewController animated:NO];
     } else {

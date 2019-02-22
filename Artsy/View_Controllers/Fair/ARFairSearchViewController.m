@@ -33,10 +33,18 @@
 
 - (void)viewDidLoad
 {
+    // Setup required before calling super.
     self.defaultInfoLabelText = @"Find Exhibitors & Artists";
     self.searchIconImageName = @"SearchIcon_HeavyGrey";
-
+    
+    // Call super.
     [super viewDidLoad];
+    
+    // Download local data for client-side search.
+    [self.fair updateFair:^{
+        [self.fair downloadShows];
+        NSLog(@"Updated fair.");
+    }];
 
     self.view.backgroundColor = [UIColor whiteColor];
     self.textField.textColor = [UIColor artsyGraySemibold];
@@ -48,24 +56,25 @@
     self.searchDataSource.placeholderImage = [UIImage imageNamed:@"SearchThumb_HeavyGrey"];
 
     // fair search is a solid grey background
-    UIView *searchBox = [[UIView alloc] init];
-    searchBox.backgroundColor = [UIColor artsyGrayLight];
+    UIView *searchBoxBackgroundView = [[UIView alloc] init];
+    searchBoxBackgroundView.backgroundColor = [UIColor artsyGrayLight];
+    [self.view insertSubview:searchBoxBackgroundView atIndex:0];
 
-    [searchBox constrainHeight:@"44"];
-
-    [self.view insertSubview:searchBox atIndex:0];
-
-    [self.view alignLeadingEdgeWithView:searchBox predicate:@"-10"];
-    [searchBox alignTrailingEdgeWithView:self.closeButton predicate:@"-46"];
-    [self.view alignTopEdgeWithView:searchBox predicate:@"-10"];
-
-    [searchBox alignCenterYWithView:self.searchBoxView predicate:@"0"];
+    [searchBoxBackgroundView alignLeadingEdgeWithView:self.view predicate:@"10"];
+    [searchBoxBackgroundView alignTrailingEdgeWithView:self.closeButton predicate:@"-46"];
+    [searchBoxBackgroundView alignTopEdgeWithView:self.view predicate:@"10"];
+    [searchBoxBackgroundView constrainHeight:@"44"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:NO animated:YES];
+    // ARNavigationController is going to get confused by our view controller hierarchy. Fine, let it be confused.
+    // We know that we need to hide the back button, and we're going to defer to the next runloop invocation to get
+    // around ARNavigationController. (I'm so sorry.)
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[[ARTopMenuViewController sharedController] rootNavigationController] showBackButton:NO animated:YES];
+    });
 }
 
 - (void)fetchSearchResults:(NSString *)text replace:(BOOL)replaceResults
@@ -121,7 +130,7 @@
     AFHTTPRequestOperation *request = [ArtsyAPI searchWithFairID:self.fair.fairID andQuery:query success:^(NSArray *searchResults) {
         success([searchResults select:^BOOL(SearchResult *searchResult) {
             // If we have local shows, do not include shows from the API
-            return self.fair.shows == nil || ![searchResult.model isEqual:[PartnerShow class]];
+            return self.fair.shows == nil || self.fair.shows.count == 0 || ![searchResult.model isEqual:[PartnerShow class]];
         }]);
     } failure:failure];
 

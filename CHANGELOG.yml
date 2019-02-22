@@ -13,6 +13,7 @@ upcoming:
     - The price we show on your bid button isn't the next increment, but your bud  - orta + sarah
     - Non-symbol currencies aren't forced into lowercase - orta + sarah
     - Fixes issue where non-fair routes would be sent to the new fair component - ash
+    - Fixes search on Fair component - ash
 
 releases:
   -
