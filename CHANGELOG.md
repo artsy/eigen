@@ -45,6 +45,7 @@
 - Removes Fairs tab from Global Saves and Follows view -ashley
 - Fixes FairBooth routing - kieran
 - Fair exhibitors overview looks up to spec - orta
+- Adds Shows to Global Saves and Follows view -ashley
 
 ### 1.8.2
 
