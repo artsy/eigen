@@ -75,7 +75,7 @@ We vendor some data from other repositories that you will sometimes need to upda
 
 ### Deploying Emission
 
-**Note:** Deploys are mostly automated, these instructions should be valid but take a look at [this issue](https://github.com/artsy/emission/issues/1077#issuecomment-401128949) if things break.
+**Note:** Deploys are mostly automated using `yarn release --patch|minor|major`; the following instructions should be valid but take a look at [this issue](https://github.com/artsy/emission/issues/1077#issuecomment-401128949) if things break.
 
 **Note 2:** If you're updating React Native, you're gonna have to do a lot of this stuff manually. See the makefile/alloy/orta for more info.
 
