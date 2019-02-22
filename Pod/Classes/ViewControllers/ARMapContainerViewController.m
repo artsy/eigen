@@ -51,4 +51,9 @@
     [self.cityVC setProperty:@(isDrawerOpen) forKey:@"isDrawerOpen"];
 }
 
+- (BOOL)fullBleed
+{
+    return YES;
+}
+
 @end

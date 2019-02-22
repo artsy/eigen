@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol ARComponentFullBleedViewSizing
 
-@property (nonatomic, assign) BOOL fullBleed;
+@property (nonatomic, readonly) BOOL fullBleed;
 
 @end
 
