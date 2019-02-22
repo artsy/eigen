@@ -37,6 +37,6 @@ describe("GlobalMap", () => {
       },
     })
 
-    console.log(wrapper.html())
+    // console.log(wrapper.html())
   })
 })

@@ -139,7 +139,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   async placeBid() {
     this.setState({ isLoading: true })
 
-    this.state.requiresPaymentInformation ? this.setupAddressCardAndBidderPosition() : this.setupBidderPosition()
+    this.state.requiresPaymentInformation
+      ? await this.setupAddressCardAndBidderPosition()
+      : await this.setupBidderPosition()
   }
 
   /** Make a bid */

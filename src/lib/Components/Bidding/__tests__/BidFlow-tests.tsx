@@ -67,7 +67,7 @@ it("allows bidders with a qualified credit card to bid", () => {
   expect(getTitleText(screen)).toEqual("You’re the highest bidder")
 })
 
-it("allows bidders without a qualified credit card to register a card and bid", () => {
+it("allows bidders without a qualified credit card to register a card and bid", async () => {
   let screen = renderer.create(
     <SelectMaxBid
       me={Me.unqualifiedUser as any}
@@ -87,6 +87,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
   stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
   relay.commitMutation = jest
     .fn()
+    .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
     .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardSuccess))
     .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.placingBid.bidAccepted))
   mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
@@ -104,8 +105,7 @@ it("allows bidders without a qualified credit card to register a card and bid", 
   })
 
   screen.root.findByType(Checkbox).instance.props.onPress()
-  screen.root.findByType(Button).instance.props.onPress()
-  jest.runAllTicks()
+  await screen.root.findByType(Button).instance.props.onPress()
 
   expect(stripe.createTokenWithCard).toHaveBeenCalledWith({
     ...creditCardFormParams,
@@ -191,6 +191,7 @@ const SaleArtwork = {
 }
 
 const mockRequestResponses = {
+  updateMyUserProfile: {},
   creatingCreditCardSuccess: {
     createCreditCard: {
       creditCardOrError: {

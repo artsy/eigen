@@ -678,6 +678,13 @@ const saleArtwork = {
 }
 
 const mockRequestResponses = {
+  updateMyUserProfile: {
+    updateMyUserProfile: {
+      user: {
+        phone: "111 222 4444",
+      },
+    },
+  },
   creatingCreditCardSuccess: {
     createCreditCard: {
       creditCardOrError: {

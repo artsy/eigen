@@ -33,6 +33,7 @@ import { RegistrationResult, RegistrationStatus } from "lib/Components/Bidding/S
 import { SecondaryOutlineButton } from "lib/Components/Buttons"
 import { Modal } from "lib/Components/Modal"
 import stripe from "tipsi-stripe"
+import { Address } from "../../types"
 
 let nextStep
 const mockNavigator = { push: route => (nextStep = route), pop: () => null }
@@ -97,11 +98,13 @@ it("shows no option for entering payment information if the user has a credit ca
 })
 
 describe("when pressing register button", () => {
-  it("when a credit card needs to be added, it commits two mutations on button press", () => {
+  it.only("when a credit card needs to be added, it commits three mutations on button press", async () => {
     relay.commitMutation = jest
       .fn()
+      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
       .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardSuccess))
       .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.qualifiedBidder))
+
     mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.qualifiedBidder))
 
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
@@ -109,9 +112,20 @@ describe("when pressing register button", () => {
     const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
     component.root.instance.setState({ conditionsOfSaleChecked: true, billingAddress, creditCardToken: stripeToken })
 
-    component.root.findByType(Button).instance.props.onPress()
+    await component.root.findByType(Button).instance.props.onPress()
 
-    jest.runAllTicks()
+    // jest.runAllTicks()
+
+    expect(relay.commitMutation).toHaveBeenCalledWith(
+      any(Object),
+      objectContaining({
+        variables: {
+          input: {
+            phone: "111 222 333",
+          },
+        },
+      })
+    )
 
     expect(relay.commitMutation).toHaveBeenCalledWith(
       any(Object),
@@ -359,13 +373,14 @@ describe("when pressing register button", () => {
   })
 })
 
-const billingAddress = {
+const billingAddress: Partial<Address> = {
   fullName: "Yuki Stockmeier",
   addressLine1: "401 Broadway",
   addressLine2: "25th floor",
   city: "New York",
   state: "NY",
   postalCode: "10013",
+  phoneNumber: "111 222 333",
 }
 
 const stripeToken = {
@@ -390,6 +405,13 @@ const sale = {
 }
 
 const mockRequestResponses = {
+  updateMyUserProfile: {
+    updateMyUserProfile: {
+      user: {
+        phone: "111 222 4444",
+      },
+    },
+  },
   qualifiedBidder: {
     createBidder: {
       bidder: {

@@ -101,10 +101,10 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     this.setState({ conditionsOfSaleChecked: !this.state.conditionsOfSaleChecked })
   }
 
-  register() {
+  async register() {
     this.setState({ isLoading: true })
 
-    this.state.requiresPaymentInformation ? this.setupAddressCardAndBidder() : this.setupBidder()
+    this.state.requiresPaymentInformation ? await this.setupAddressCardAndBidder() : await this.setupBidder()
   }
 
   /** Make a bid */
@@ -114,11 +114,16 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
   /** Run through the full flow setting up the user account and making a bid  */
   async setupAddressCardAndBidder() {
+    console.log("------------------")
     try {
       await this.updatePhoneNumber()
+      console.log("1")
       const token = await this.createTokenFromAddress()
+      console.log("2")
       await this.createCreditCard(token)
+      console.log("3")
       await this.createBidder()
+      console.log("4")
     } catch (error) {
       if (!this.state.errorModalVisible) {
         this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusError)
@@ -135,10 +140,13 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       const { phoneNumber } = this.state.billingAddress
       commitMutation<RegistrationUpdateUserMutation>(this.props.relay.environment, {
         onCompleted: (_, errors) => {
+          console.log(1111)
           if (errors.length) {
             this.presentErrorModal(errors, null)
+            console.log(2222)
             reject(errors)
           } else {
+            console.log(33333)
             done()
           }
         },
@@ -188,7 +196,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             }
           }
         },
-        onError: errors => this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusNetworkError),
+        onError: errors => this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusError),
         mutation: graphql`
           mutation RegistrationCreateCreditCardMutation($input: CreditCardInput!) {
             createCreditCard(input: $input) {
@@ -337,7 +345,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                 text="Complete registration"
                 inProgress={isLoading}
                 selected={isLoading}
-                onPress={this.canCreateBidder() ? () => this.register() : null}
+                onPress={this.canCreateBidder() ? this.register.bind(this) : null}
                 disabled={!this.canCreateBidder()}
               />
             </Flex>
