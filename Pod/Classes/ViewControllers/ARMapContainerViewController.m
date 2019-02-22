@@ -1,6 +1,7 @@
 #import "ARMapContainerViewController.h"
 #import "ARMapComponentViewController.h"
 #import "ARCityComponentViewController.h"
+#import "ARComponentViewController.h"
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
@@ -18,7 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     self.mapVC = [[ARMapComponentViewController alloc] init];
     self.cityVC = [[ARCityComponentViewController alloc] init];
 

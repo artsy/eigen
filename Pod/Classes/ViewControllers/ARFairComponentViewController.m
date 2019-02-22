@@ -24,23 +24,11 @@
 
 - (instancetype)initWithFairID:(NSString *)fairID emission:(nullable AREmission *)emission
 {
-    return [super initWithEmission:emission moduleName:@"Fair" initialProperties:@{ @"fairID": fairID }];
+    self = [super initWithEmission:emission moduleName:@"Fair" initialProperties:@{ @"fairID": fairID }];
+    if (self) {
+        self.fullBleed = YES;
+    }
+    return self;
 }
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    [self.view addConstraints:@[
-                                [NSLayoutConstraint constraintWithItem:self.rootView
-                                                             attribute:NSLayoutAttributeTop
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:self.view
-                                                             attribute:NSLayoutAttributeTop
-                                                            multiplier:1
-                                                              constant:0]
-                                ]];
-}
-
 
 @end

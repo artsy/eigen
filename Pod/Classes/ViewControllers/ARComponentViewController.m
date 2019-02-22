@@ -40,12 +40,15 @@
   self.rootView.reactViewController = self;
 
   self.rootView.translatesAutoresizingMaskIntoConstraints = NO;
+  id topConstrainedItem = self.fullBleed ? (id)self.view : self.topLayoutGuide;
+  NSLayoutAttribute topConstrainedAttribute = self.fullBleed ? NSLayoutAttributeTop : NSLayoutAttributeBottom;
+    
   [self.view addConstraints:@[
     [NSLayoutConstraint constraintWithItem:self.rootView
                                  attribute:NSLayoutAttributeTop
                                  relatedBy:NSLayoutRelationEqual
-                                    toItem:self.topLayoutGuide
-                                 attribute:NSLayoutAttributeBottom
+                                    toItem:topConstrainedItem
+                                 attribute:topConstrainedAttribute
                                 multiplier:1
                                   constant:0],
     [NSLayoutConstraint constraintWithItem:self.rootView

@@ -5,9 +5,18 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ARComponentViewController : UIViewController
+@protocol ARComponentFullBleedViewSizing
+
+@property (nonatomic, assign) BOOL fullBleed;
+
+@end
+
+@interface ARComponentViewController : UIViewController <ARComponentFullBleedViewSizing>
 
 @property (nonatomic, strong) RCTRootView *rootView;
+
+// If set to true, the view controller will start under th status bar (iPhone X, iPad Pro, etc...)
+@property (nonatomic, assign) BOOL fullBleed;
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithNibName:(nullable NSString *)nibNameOrNil bundle:(nullable NSBundle *)nibBundleOrNil NS_UNAVAILABLE;
