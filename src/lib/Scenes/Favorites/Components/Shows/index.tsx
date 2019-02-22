@@ -54,7 +54,7 @@ export class SavedShows extends Component<Props, State> {
       <FlatList
         data={shows}
         keyExtractor={item => item.__id}
-        renderItem={item => <SavedShowItemRow {...item.item} relayEnvironment={this.props.relay} />}
+        renderItem={item => <SavedShowItemRow show={item.item} />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         ListFooterComponent={
@@ -75,23 +75,7 @@ export default createPaginationContainer(
           shows(first: $count, after: $cursor) @connection(key: "SavedShows_shows") {
             edges {
               node {
-                id
-                is_followed
-                _id
-                name
-                partner {
-                  ... on Partner {
-                    name
-                  }
-                  ... on ExternalPartner {
-                    name
-                  }
-                }
-                href
-                status
-                images(size: 1) {
-                  url
-                }
+                ...SavedShowItemRow_show
               }
             }
           }

@@ -1,6 +1,7 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { SavedShowItemRow_show$ref } from "./SavedShowItemRow_show.graphql";
 declare const _Shows_me$ref: unique symbol;
 export type Shows_me$ref = typeof _Shows_me$ref;
 export type Shows_me = {
@@ -8,18 +9,7 @@ export type Shows_me = {
         readonly shows: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
-                    readonly id: string;
-                    readonly is_followed: boolean | null;
-                    readonly _id: string;
-                    readonly name: string | null;
-                    readonly partner: ({
-                        readonly name?: string | null;
-                    }) | null;
-                    readonly href: string | null;
-                    readonly status: string | null;
-                    readonly images: ReadonlyArray<({
-                        readonly url: string | null;
-                    }) | null> | null;
+                    readonly " $fragmentRefs": SavedShowItemRow_show$ref;
                 }) | null;
             }) | null> | null;
         }) | null;
@@ -33,20 +23,10 @@ const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "__id",
   "args": null,
   "storageKey": null
-},
-v2 = [
-  v0
-];
+};
 return {
   "kind": "Fragment",
   "name": "Shows_me",
@@ -116,89 +96,11 @@ return {
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "id",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "is_followed",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "_id",
-                      "args": null,
-                      "storageKey": null
+                      "kind": "FragmentSpread",
+                      "name": "SavedShowItemRow_show",
+                      "args": null
                     },
                     v0,
-                    {
-                      "kind": "LinkedField",
-                      "alias": null,
-                      "name": "partner",
-                      "storageKey": null,
-                      "args": null,
-                      "concreteType": null,
-                      "plural": false,
-                      "selections": [
-                        v1,
-                        {
-                          "kind": "InlineFragment",
-                          "type": "ExternalPartner",
-                          "selections": v2
-                        },
-                        {
-                          "kind": "InlineFragment",
-                          "type": "Partner",
-                          "selections": v2
-                        }
-                      ]
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "href",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "status",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "LinkedField",
-                      "alias": null,
-                      "name": "images",
-                      "storageKey": "images(size:1)",
-                      "args": [
-                        {
-                          "kind": "Literal",
-                          "name": "size",
-                          "value": 1,
-                          "type": "Int"
-                        }
-                      ],
-                      "concreteType": "Image",
-                      "plural": true,
-                      "selections": [
-                        {
-                          "kind": "ScalarField",
-                          "alias": null,
-                          "name": "url",
-                          "args": null,
-                          "storageKey": null
-                        }
-                      ]
-                    },
-                    v1,
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -246,9 +148,9 @@ return {
         }
       ]
     },
-    v1
+    v0
   ]
 };
 })();
-(node as any).hash = 'e2d173a68137c3495bee68288df66c61';
+(node as any).hash = '94aec78434172289e20249c39e157e09';
 export default node;

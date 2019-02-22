@@ -34,28 +34,7 @@ fragment Shows_me_1G22uz on Me {
     shows(first: $count, after: $cursor) {
       edges {
         node {
-          id
-          is_followed
-          _id
-          name
-          partner {
-            __typename
-            ... on Partner {
-              name
-            }
-            ... on ExternalPartner {
-              name
-              __id
-            }
-            ... on Node {
-              __id
-            }
-          }
-          href
-          status
-          images(size: 1) {
-            url
-          }
+          ...SavedShowItemRow_show
           __id
           __typename
         }
@@ -68,6 +47,32 @@ fragment Shows_me_1G22uz on Me {
     }
   }
   __id
+}
+
+fragment SavedShowItemRow_show on Show {
+  id
+  _id
+  __id
+  is_followed
+  name
+  partner {
+    __typename
+    ... on Partner {
+      name
+    }
+    ... on ExternalPartner {
+      name
+      __id
+    }
+    ... on Node {
+      __id
+    }
+  }
+  href
+  status
+  images(size: 1) {
+    url
+  }
 }
 */
 
@@ -114,7 +119,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowsQuery",
-  "id": "cedf73be34d7e11c718439d396fbe608",
+  "id": "95aa2e370690b3d8e77b82bb39f8274c",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -229,14 +234,15 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "is_followed",
+                            "name": "_id",
                             "args": null,
                             "storageKey": null
                           },
+                          v1,
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "_id",
+                            "name": "is_followed",
                             "args": null,
                             "storageKey": null
                           },
@@ -303,7 +309,6 @@ return {
                               }
                             ]
                           },
-                          v1,
                           v3
                         ]
                       },
