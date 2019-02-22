@@ -1,6 +1,9 @@
+import SavedShowItemRow from "lib/Components/Lists/SavedShowItemRow"
+import Spinner from "lib/Components/Spinner"
 import ZeroState from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import React, { Component } from "react"
+import { FlatList } from "react-native"
 import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import { Shows_me } from "__generated__/Shows_me.graphql"
@@ -36,10 +39,27 @@ export class SavedShows extends Component<Props, State> {
   }
 
   render() {
+    const shows = this.props.me.followsAndSaves.shows.edges.map(edge => edge.node)
+
+    if (shows.length === 0 || !shows) {
+      return (
+        <ZeroState
+          title="You haven’t followed any shows yet"
+          subtitle="Follow shows to get notified about new shows that have been added to Artsy."
+        />
+      )
+    }
+
     return (
-      <ZeroState
-        title="You haven’t followed any shows yet"
-        subtitle="Follow shows to get notified about new shows that have been added to Artsy."
+      <FlatList
+        data={shows}
+        keyExtractor={item => item.__id}
+        renderItem={item => <SavedShowItemRow {...item.item} relayEnvironment={this.props.relay} />}
+        onEndReached={this.loadMore}
+        onEndReachedThreshold={0.2}
+        ListFooterComponent={
+          this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
+        }
       />
     )
   }
@@ -55,7 +75,23 @@ export default createPaginationContainer(
           shows(first: $count, after: $cursor) @connection(key: "SavedShows_shows") {
             edges {
               node {
+                id
+                is_followed
+                _id
                 name
+                partner {
+                  ... on Partner {
+                    name
+                  }
+                  ... on ExternalPartner {
+                    name
+                  }
+                }
+                href
+                status
+                images(size: 1) {
+                  url
+                }
               }
             }
           }
