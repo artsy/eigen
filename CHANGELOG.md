@@ -64,6 +64,8 @@
 - Adds Fair analytics - kieran
 - Refactor and style new filter header in map view - luc
 - Move filters down to city view - luc
+- Adds new map filter design to Map view - luc
+- Support full bleed view controllers - luc
 
 ### 1.8.2
 
