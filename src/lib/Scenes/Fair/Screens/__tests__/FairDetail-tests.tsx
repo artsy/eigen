@@ -2,7 +2,7 @@ import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
 import { renderUntil } from "lib/tests/renderUntil"
 import React from "react"
 import { graphql } from "react-relay"
-import { FairFixture } from "../../__fixtures__"
+import { fairFixture } from "../../__fixtures__"
 import { FairDetailContainer as FairDetail } from "../FairDetail"
 
 jest.unmock("react-relay")
@@ -23,7 +23,7 @@ describe("FairDetail", () => {
           }
         `}
         mockData={{
-          Fair: () => FairFixture,
+          Fair: () => fairFixture,
         }}
       />
     )

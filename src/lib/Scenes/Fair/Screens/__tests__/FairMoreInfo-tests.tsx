@@ -2,7 +2,7 @@ import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
 import { renderUntil } from "lib/tests/renderUntil"
 import React from "react"
 import { graphql } from "react-relay"
-import { FairFixture } from "../../__fixtures__"
+import { fairFixture } from "../../__fixtures__"
 import { FairMoreInfo } from "../FairMoreInfo"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -29,7 +29,7 @@ const renderTree = () =>
         }
       `}
       mockResolvers={{
-        Fair: () => FairFixture,
+        Fair: () => fairFixture,
       }}
     />
   )
@@ -41,7 +41,7 @@ describe("FairMoreInfo", () => {
   })
   it("renders fair about text", async () => {
     const tree = await renderTree()
-    expect(tree.text()).toContain(FairFixture.about)
+    expect(tree.text()).toContain(fairFixture.about)
   })
 
   it("opens fair ticketsLink url", async () => {
@@ -50,6 +50,6 @@ describe("FairMoreInfo", () => {
 
     button.props().onPress()
 
-    expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), FairFixture.ticketsLink)
+    expect(SwitchBoard.presentModalViewController).toHaveBeenCalledWith(expect.anything(), fairFixture.ticketsLink)
   })
 })
