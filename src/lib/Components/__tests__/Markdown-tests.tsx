@@ -92,3 +92,14 @@ describe("Markdown", () => {
     expect(markdown.root.findAllByType(Text)[0].props.testID).toBe("foobar")
   })
 })
+
+describe("defaultRules", () => {
+  Object.keys(defaultRules).forEach(key => {
+    if (key === "Array") {
+      return
+    }
+    it(`has a match rule for ${key}`, () => {
+      expect(defaultRules[key].match).toBeTruthy()
+    })
+  })
+})
