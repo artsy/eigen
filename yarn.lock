@@ -11071,9 +11071,10 @@ signedsource@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/signedsource/-/signedsource-1.0.0.tgz#1ddace4981798f93bd833973803d80d52e93ad6a"
 
-simple-markdown@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/simple-markdown/-/simple-markdown-0.4.0.tgz#86ec1344c7747a3ca120f5e4325be88cb4a67cc3"
+simple-markdown@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/simple-markdown/-/simple-markdown-0.4.2.tgz#98fd72bd4f8ced9705f3e72c4cb4a00261a5eca0"
+  integrity sha512-lysF/mIJ3Trv/QsxY5Q5XWupVLtyPH6AslxOxscWhUshQNAfHRd7ayuXHlXkXVnujHfIVa0okDw3ZGnzCroO7Q==
 
 simple-plist@^0.2.1:
   version "0.2.1"

@@ -43,6 +43,7 @@
 - Check for saleInfoLine before rendering sales info on artwork - kieran
 - Adds analytics to all Show screens and views - luc
 - Removes Fairs tab from Global Saves and Follows view -ashley
+- Fix rendering strong elements in markdown all over the app - orta
 - Fixes FairBooth routing - kieran
 - Fair exhibitors overview looks up to spec - orta
 - Adds Shows to Global Saves and Follows view -ashley
