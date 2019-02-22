@@ -76,7 +76,9 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
             Object {
               "marginLeft": 0.5,
             },
-            undefined,
+            Object {
+              "marginTop": 1.5,
+            },
           ]
         }
       >
@@ -310,7 +312,9 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
             Object {
               "marginLeft": 0.5,
             },
-            undefined,
+            Object {
+              "marginTop": 1.5,
+            },
           ]
         }
       >
@@ -544,7 +548,9 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
             Object {
               "marginLeft": 0.5,
             },
-            undefined,
+            Object {
+              "marginTop": 1.5,
+            },
           ]
         }
       >
