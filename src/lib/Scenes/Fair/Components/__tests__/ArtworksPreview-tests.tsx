@@ -2,7 +2,7 @@ import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
 import { renderUntil } from "lib/tests/renderUntil"
 import React from "react"
 import { graphql } from "react-relay"
-import { FairFixture } from "../../__fixtures__"
+import { fairFixture } from "../../__fixtures__"
 import { ArtworksPreviewContainer as ArtworksPreview } from "../ArtworksPreview"
 
 jest.unmock("react-relay")
@@ -22,7 +22,7 @@ it("renders properly", async () => {
         }
       `}
       mockResolvers={{
-        Fair: () => FairFixture,
+        Fair: () => fairFixture,
       }}
     />
   )

@@ -1,4 +1,4 @@
-export const FairFixture = {
+export const fairFixture = {
   id: "sofa-chicago-2018",
   name: "SOFA CHICAGO 2018",
   image: {
@@ -62,18 +62,24 @@ export const FairFixture = {
   exhibitors_grouped_by_name: [
     {
       letter: "3",
-      exhibitors: ["303 Gallery"],
+      exhibitors: [
+        {
+          name: "303 Gallery",
+          id: "303 Gallery",
+          profile_id: "303 Gallery",
+        },
+      ],
     },
     {
       letter: "A",
       exhibitors: [
-        "Acquavella Galleries",
-        "Alan Cristea Gallery",
-        "Alfonso Artiaco",
-        "Altman Siegel",
-        "Anat Ebgi",
-        "Annely Juda Fine Art",
-        "Anton Kern Gallery",
+        { name: "Acquavella Galleries", id: "Acquavella Galleries", profile_id: "Acquavella Galleries" },
+        { name: "Alan Cristea Gallery", id: "Alan Cristea Gallery", profile_id: "Alan Cristea Gallery" },
+        { name: "Alfonso Artiaco", id: "Alfonso Artiaco", profile_id: "Alfonso Artiaco" },
+        { name: "Altman Siegel", id: "Altman Siegel", profile_id: "Altman Siegel" },
+        { name: "Anat Ebgi", id: "Anat Ebgi", profile_id: "Anat Ebgi" },
+        { name: "Annely Juda Fine Art", id: "Annely Juda Fine Art", profile_id: "Annely Juda Fine Art" },
+        { name: "Anton Kern Gallery", id: "Anton Kern Gallery", profile_id: "Anton Kern Gallery" },
       ],
     },
     {

@@ -2,7 +2,7 @@ import { Theme } from "@artsy/palette"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { graphql } from "react-relay"
-import { FairFixture } from "../../../__fixtures__"
+import { fairFixture } from "../../../__fixtures__"
 import { FairHeaderContainer as FairHeader } from "../index"
 
 jest.unmock("react-relay")
@@ -23,7 +23,7 @@ describe("FairHeader", () => {
         }
       `,
       mockData: {
-        fair: FairFixture,
+        fair: fairFixture,
       },
     })
 

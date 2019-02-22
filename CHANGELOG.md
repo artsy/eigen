@@ -44,6 +44,7 @@
 - Adds analytics to all Show screens and views - luc
 - Removes Fairs tab from Global Saves and Follows view -ashley
 - Fixes FairBooth routing - kieran
+- Fair exhibitors overview looks up to spec - orta
 
 ### 1.8.2
 

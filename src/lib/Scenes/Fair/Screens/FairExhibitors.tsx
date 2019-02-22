@@ -1,4 +1,4 @@
-import { Box, Separator, Serif } from "@artsy/palette"
+import { Box, Sans, Separator, Serif } from "@artsy/palette"
 import { FairExhibitorsQuery } from "__generated__/FairExhibitorsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
@@ -76,7 +76,10 @@ export class FairExhibitors extends React.Component<Props, State> {
         }}
         renderSectionHeader={({ section: { title } }) => (
           <Box px={2} mb={2}>
-            <Serif size="4">{title}</Serif>
+            <Sans weight="medium" size="4">
+              {title}
+            </Sans>
+            <Separator />
           </Box>
         )}
         renderSectionFooter={({ section }) => {
