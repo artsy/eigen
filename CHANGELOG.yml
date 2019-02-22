@@ -1,7 +1,7 @@
 upcoming:
   version: 4.4.0
   date: TBD
-  emission_version: 1.8.0
+  emission_version: 1.8.3
   dev:
     - Not yet
   user_facing:
