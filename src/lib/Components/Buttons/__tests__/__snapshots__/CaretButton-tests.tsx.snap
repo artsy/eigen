@@ -49,7 +49,9 @@ exports[`CaretButton renders properly 1`] = `
         Object {
           "marginLeft": 0.5,
         },
-        undefined,
+        Object {
+          "marginTop": 1.5,
+        },
       ]
     }
   >
