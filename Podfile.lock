@@ -72,7 +72,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.5)
   - EDColor (1.0.0)
-  - Emission (1.8.1):
+  - Emission (1.8.3):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.5)
@@ -465,7 +465,7 @@ CHECKOUT OPTIONS:
     :commit: 9a2b842a1067785cf8af18276d4de4f0e3f0a17c
     :git: https://github.com/neilang/NAMapKit
   Pulley:
-    :commit: 216de069e31173c231b5cf88848dbbce5621b7a9
+    :commit: d1b6f0a1ef6fe0aa79847b6b46087510084f5067
     :git: https://github.com/l2succes/Pulley.git
   react-native-mapbox-gl:
     :commit: c86bdb8130525aeb2476c6584e11aa3408408992
@@ -504,7 +504,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 44b10a07f78a0a72aa40d6c679432cde3c859571
+  Emission: a3462df70441775be3f696a2202ce8a0b2051724
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
