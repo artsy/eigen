@@ -83,6 +83,7 @@ export class FairHeader extends React.Component<Props, State> {
           onItemSelected={this.handleWorksPress}
           onViewAllPressed={viewAllArtists}
         />
+        <Spacer mt={1} />
         <EntityList
           prefix="From"
           list={partnerList}

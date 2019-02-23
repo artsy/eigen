@@ -47,6 +47,7 @@
 - Fixes FairBooth routing - kieran
 - Fair exhibitors overview looks up to spec - orta
 - Adds Shows to Global Saves and Follows view -ashley
+- Adds seperator between fair entities - kieran
 
 ### 1.8.2
 
