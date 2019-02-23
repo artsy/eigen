@@ -27,7 +27,6 @@ export class ShowArtists extends React.Component<Props, State> {
 
   componentDidMount() {
     const { show } = this.props
-    console.log("props ????", this.props)
     const artistsGroupedByName = get(show, "artists_grouped_by_name", []) as any
 
     this.setState({ data: artistsGroupedByName.map(({ letter, items }, index) => ({ letter, data: items, index })) })
