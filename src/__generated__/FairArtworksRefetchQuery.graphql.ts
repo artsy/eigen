@@ -33,6 +33,7 @@ query FairArtworksRefetchQuery(
 
 fragment FairArtworks_fair_2UkO81 on Fair {
   __id
+  _id
   id
   artworks: filteredArtworks(size: 0, medium: $medium, price_range: $price_range, aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
@@ -203,7 +204,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairArtworksRefetchQuery",
-  "id": "5daa3653de8e0ca368dd0fc85a5a6f0b",
+  "id": "df7c0e1880a8b2dba2f41adc2e72c1c3",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -260,6 +261,13 @@ return {
         "plural": false,
         "selections": [
           v2,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "_id",
+            "args": null,
+            "storageKey": null
+          },
           v3,
           {
             "kind": "LinkedField",

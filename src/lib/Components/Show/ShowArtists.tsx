@@ -1,12 +1,12 @@
 import { Theme } from "@artsy/palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ShowArtists_show } from "__generated__/ShowArtists_show.graphql"
-import React from "react"
-import { createFragmentContainer, graphql } from "react-relay"
-
 import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { get } from "lodash"
+import React from "react"
 import { NavigatorIOS, ViewProperties } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props extends ViewProperties {
   navigator: NavigatorIOS
@@ -27,15 +27,22 @@ export class ShowArtists extends React.Component<Props, State> {
 
   componentDidMount() {
     const { show } = this.props
+    console.log("props ????", this.props)
     const artistsGroupedByName = get(show, "artists_grouped_by_name", []) as any
 
     this.setState({ data: artistsGroupedByName.map(({ letter, items }, index) => ({ letter, data: items, index })) })
   }
 
+  handleViewArtist = (context, artist) => {
+    console.log("artist", artist)
+    console.log("context", context)
+    SwitchBoard.presentNavigationViewController(context, artist)
+  }
+
   render() {
     return (
       <Theme>
-        <ArtistsGroupedByName data={this.state.data} />
+        <ArtistsGroupedByName data={this.state.data} Component={this} viewArtist={this.handleViewArtist.bind(this)} />
       </Theme>
     )
   }
@@ -49,6 +56,8 @@ export const ShowArtistsContainer = createFragmentContainer(
         letter
         items {
           ...ArtistListItem_artist
+          sortable_id
+          href
         }
       }
     }

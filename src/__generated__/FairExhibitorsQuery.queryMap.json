@@ -1,3 +1,3 @@
 {
-  "a80412e826e25b99ff2412e1d73fedfe": "query FairExhibitorsQuery(\n  $fairID: String!\n) {\n  fair(id: $fairID) {\n    exhibitors_grouped_by_name {\n      letter\n      exhibitors {\n        name\n        id\n        profile_id\n      }\n    }\n    __id\n  }\n}\n"
+  "0c078ac81109cf139b09ec767fc757fe": "query FairExhibitorsQuery(\n  $fairID: String!\n) {\n  fair(id: $fairID) {\n    id\n    _id\n    exhibitors_grouped_by_name {\n      letter\n      exhibitors {\n        name\n        id\n        profile_id\n      }\n    }\n    __id\n  }\n}\n"
 }

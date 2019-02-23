@@ -6,6 +6,8 @@ export type FairExhibitorsQueryVariables = {
 };
 export type FairExhibitorsQueryResponse = {
     readonly fair: ({
+        readonly id: string;
+        readonly _id: string;
         readonly exhibitors_grouped_by_name: ReadonlyArray<({
             readonly letter: string | null;
             readonly exhibitors: ReadonlyArray<({
@@ -28,6 +30,8 @@ query FairExhibitorsQuery(
   $fairID: String!
 ) {
   fair(id: $fairID) {
+    id
+    _id
     exhibitors_grouped_by_name {
       letter
       exhibitors {
@@ -50,7 +54,14 @@ var v0 = [
     "defaultValue": null
   }
 ],
-v1 = [
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v2 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -67,6 +78,14 @@ v1 = [
     "concreteType": "Fair",
     "plural": false,
     "selections": [
+      v1,
+      {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "_id",
+        "args": null,
+        "storageKey": null
+      },
       {
         "kind": "LinkedField",
         "alias": null,
@@ -99,13 +118,7 @@ v1 = [
                 "args": null,
                 "storageKey": null
               },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "id",
-                "args": null,
-                "storageKey": null
-              },
+              v1,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -131,7 +144,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairExhibitorsQuery",
-  "id": "a80412e826e25b99ff2412e1d73fedfe",
+  "id": "0c078ac81109cf139b09ec767fc757fe",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -140,15 +153,15 @@ return {
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": v0,
-    "selections": v1
+    "selections": v2
   },
   "operation": {
     "kind": "Operation",
     "name": "FairExhibitorsQuery",
     "argumentDefinitions": v0,
-    "selections": v1
+    "selections": v2
   }
 };
 })();
-(node as any).hash = '49d86459c44ccc08847c6ade7629cddf';
+(node as any).hash = 'd7412fab9d3f851670a3958b92d86f04';
 export default node;

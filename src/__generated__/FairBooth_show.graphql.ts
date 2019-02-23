@@ -9,6 +9,8 @@ import { ShowArtworks_show$ref } from "./ShowArtworks_show.graphql";
 declare const _FairBooth_show$ref: unique symbol;
 export type FairBooth_show$ref = typeof _FairBooth_show$ref;
 export type FairBooth_show = {
+    readonly id: string;
+    readonly _id: string;
     readonly " $fragmentRefs": FairBoothHeader_show$ref & ShowArtworksPreview_show$ref & ShowArtistsPreview_show$ref & ShowArtists_show$ref & ShowArtworks_show$ref;
     readonly " $refType": FairBooth_show$ref;
 };
@@ -22,6 +24,20 @@ const node: ConcreteFragment = {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "_id",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "FragmentSpread",
       "name": "FairBoothHeader_show",
@@ -56,5 +72,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = 'a09b925fec62958663d3153cbcbafdc4';
+(node as any).hash = 'c3f7eb9fec64671b280a285ead01de76';
 export default node;

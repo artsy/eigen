@@ -163,7 +163,11 @@ export class Detail extends React.Component<Props, State> {
         return <CaretButton onPress={() => data.onViewMoreInfoPressed()} text="View more information" />
       case "hours":
         return (
-          <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} onToggle={this.handleHoursToggled} />
+          <HoursCollapsible
+            {...data}
+            onAnimationFrame={this.handleAnimationFrame}
+            onToggle={() => this.handleHoursToggled()}
+          />
         )
       default:
         return null

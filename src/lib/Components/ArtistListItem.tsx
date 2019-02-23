@@ -106,7 +106,7 @@ export class ArtistListItem extends React.Component<Props, State> {
     action_type: Schema.ActionTypes.Success,
     owner_id: props.artist._id,
     owner_slug: props.artist.id,
-    owner_type: Schema.OwnerEntityTypes.Show,
+    owner_type: Schema.OwnerEntityTypes.Artist,
   }))
   handleShowSuccessfullyUpdated() {
     this.setState({

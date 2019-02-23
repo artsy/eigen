@@ -29,6 +29,7 @@ query FairArtistsRendererQuery(
 
 fragment FairArtists_fair on Fair {
   id
+  _id
   artists(first: 10) {
     pageInfo {
       hasNextPage
@@ -41,6 +42,8 @@ fragment FairArtists_fair on Fair {
         ...ArtistListItem_artist
         sortable_id
         href
+        _id
+        id
         __id
         __typename
       }
@@ -94,12 +97,19 @@ v3 = {
   "name": "id",
   "args": null,
   "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "_id",
+  "args": null,
+  "storageKey": null
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairArtistsRendererQuery",
-  "id": "f392804b040301701885ea395f245494",
+  "id": "b4b6e675653ae608f5c4f5492e6f8e85",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -143,6 +153,7 @@ return {
         "plural": false,
         "selections": [
           v3,
+          v4,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -246,13 +257,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "_id",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      v4,
                       {
                         "kind": "ScalarField",
                         "alias": null,

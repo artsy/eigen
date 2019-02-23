@@ -8,6 +8,7 @@ declare const _FairDetail_fair$ref: unique symbol;
 export type FairDetail_fair$ref = typeof _FairDetail_fair$ref;
 export type FairDetail_fair = {
     readonly id: string;
+    readonly _id: string;
     readonly name: string | null;
     readonly hours: string | null;
     readonly location: ({
@@ -30,6 +31,7 @@ export type FairDetail_fair = {
             readonly cursor: string;
             readonly node: ({
                 readonly id: string;
+                readonly _id: string;
                 readonly artworks_connection: ({
                     readonly edges: ReadonlyArray<({
                         readonly node: ({
@@ -58,11 +60,18 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
 v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
@@ -107,6 +116,7 @@ return {
     },
     v0,
     v1,
+    v2,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -153,7 +163,7 @@ return {
             }
           ]
         },
-        v2
+        v3
       ]
     },
     {
@@ -165,8 +175,8 @@ return {
       "concreteType": "Profile",
       "plural": false,
       "selections": [
-        v1,
-        v2
+        v2,
+        v3
       ]
     },
     {
@@ -236,6 +246,7 @@ return {
               "plural": false,
               "selections": [
                 v0,
+                v1,
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -271,7 +282,7 @@ return {
                           "plural": false,
                           "selections": [
                             v0,
-                            v2
+                            v3
                           ]
                         }
                       ]
@@ -283,7 +294,7 @@ return {
                   "name": "FairBoothPreview_show",
                   "args": null
                 },
-                v2,
+                v3,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -297,9 +308,9 @@ return {
         }
       ]
     },
-    v2
+    v3
   ]
 };
 })();
-(node as any).hash = '0919f2e7131809a5159b757b895d32a5';
+(node as any).hash = '831f9036f08b387f8a27660cebe4b1e3';
 export default node;

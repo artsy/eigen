@@ -33,6 +33,7 @@ fragment FairBoothHeader_show on Show {
     ... on Partner {
       name
       id
+      _id
       __id
       href
       profile {
@@ -91,12 +92,19 @@ v3 = {
   "name": "id",
   "args": null,
   "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "_id",
+  "args": null,
+  "storageKey": null
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairBoothHeaderTestsQuery",
-  "id": "2d24c82228cd758a847560957a1f8bed",
+  "id": "446c9d68b44f2713c25dcdd52190dff7",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -183,6 +191,7 @@ return {
                 "selections": [
                   v2,
                   v3,
+                  v4,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -199,13 +208,7 @@ return {
                     "concreteType": "Profile",
                     "plural": false,
                     "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "_id",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      v4,
                       {
                         "kind": "ScalarField",
                         "alias": null,

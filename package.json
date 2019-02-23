@@ -121,7 +121,6 @@
     "enzyme-adapter-react-16": "^1.0.2",
     "husky": "^0.14.3",
     "jest": "^23.6.0",
-    "jest-styled-components": "^4.10.0",
     "lint-staged": "^6.0.0",
     "patch-package": "^5.0.0",
     "postinstall-prepare": "^1.0.1",

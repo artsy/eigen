@@ -96,6 +96,10 @@ export namespace Schema {
     FairPage = "Fair",
     ShowPage = "Show",
     AboutTheShowPage = "AboutTheShow",
+    AboutTheFairPage = "AboutTheFair",
+    FairAllArtistsPage = "FairAllArtistsPage",
+    FairAllExhibitorsPage = "FairAllExhibitorsPage",
+    FairBoothPage = "FairBoothPage",
     InboxPage = "Inbox",
     InquiryPage = "Inquiry",
     HomeArtistsWorksForYou = "HomeArtistsWorksForYou",
@@ -108,6 +112,7 @@ export namespace Schema {
     Artist = "Artist",
     Artwork = "Artwork",
     Conversation = "Conversation",
+    Gallery = "Gallery",
     Gene = "Gene",
     Fair = "Fair",
     Show = "Show",
@@ -197,13 +202,31 @@ export namespace Schema {
     ShowAllArtworks = "showAllArtworks",
     SingleShowMap = "singleShowMap",
     CarouselSwipe = "carouselSwipe",
-    ContextualArtist = "contextualArtist",
-    GallerySite = "gallerySite",
-    ListArtist = "listArtist",
     SaveShow = "saveShow",
     UnsaveShow = "unsaveShow",
     ToggleHours = "toggleHours",
     NearbyShow = "nearbyShow",
+    GallerySite = "gallerySite",
+
+    /**
+     * Fair page events
+     */
+    ContextualGallery = "contextualGallery",
+    AllBoothWorks = "allBoothWorks",
+    BuyTickets = "buyTickets",
+    FairSite = "fairSite",
+    FilterMedium = "filterMedium",
+    FilterPrice = "filterPrice",
+    GalleryFollow = "galleryFollow",
+    GalleryUnfollow = "galleryUnfollow",
+    Search = "search",
+
+    /**
+     * Fair and show shared page events
+     */
+    ContextualArtist = "contextualArtist",
+    ListArtist = "listArtist",
+    ListGallery = "listGallery",
   }
 }
 

@@ -1,6 +1,7 @@
 import { Box, Sans, Separator, Serif } from "@artsy/palette"
 import { FairExhibitorsQuery } from "__generated__/FairExhibitorsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
 import { SectionList, TouchableOpacity, ViewProperties } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -20,6 +21,13 @@ interface State {
     data: any
   }>
 }
+
+@screenTrack<Props>(props => ({
+  context_screen: Schema.PageNames.FairAllExhibitorsPage,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+  context_screen_owner_slug: props.fair.id,
+  context_screen_owner_id: props.fair._id,
+}))
 export class FairExhibitors extends React.Component<Props, State> {
   state = {
     sections: [],
@@ -42,18 +50,33 @@ export class FairExhibitors extends React.Component<Props, State> {
     this.setState({ sections })
   }
 
+  @track((__, _, args) => {
+    const id = args[1]
+    // FIXME: _id missing
+    return {
+      action_name: Schema.ActionNames.ListGallery,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: "",
+      owner_slug: id,
+      owner_type: Schema.OwnerEntityTypes.Gallery,
+    } as any
+  })
+  handleOnPressName(profileID, _id) {
+    if (profileID) {
+      SwitchBoard.presentNavigationViewController(this, `show/${profileID}?entity=fair-booth`)
+    }
+  }
+
   renderExhibitor(data) {
     const { item, index, section } = data
     const { count } = section
-    const { name, profile_id } = item
+    const { name, profile_id, id } = item
     const generatedKey = count - index
     return (
       <Box mb={2} key={generatedKey}>
         <TouchableOpacity
           onPress={() => {
-            if (profile_id) {
-              SwitchBoard.presentNavigationViewController(this, `show/${profile_id}?entity=fair-booth`)
-            }
+            this.handleOnPressName(profile_id, id)
           }}
         >
           <Serif size="3">{name}</Serif>
@@ -104,6 +127,8 @@ export const FairExhibitorsRenderer: React.SFC<{ fairID: string }> = ({ fairID }
     query={graphql`
       query FairExhibitorsQuery($fairID: String!) {
         fair(id: $fairID) {
+          id
+          _id
           exhibitors_grouped_by_name {
             letter
             exhibitors {
