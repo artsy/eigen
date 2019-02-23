@@ -34,8 +34,6 @@ export class ShowArtists extends React.Component<Props, State> {
   }
 
   handleViewArtist = (context, artist) => {
-    console.log("artist", artist)
-    console.log("context", context)
     SwitchBoard.presentNavigationViewController(context, artist)
   }
 
