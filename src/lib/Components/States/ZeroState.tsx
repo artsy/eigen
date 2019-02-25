@@ -34,7 +34,7 @@ const Subtitle = styled.Text`
 
 interface ZeroStateProps {
   title: string
-  subtitle: string
+  subtitle?: string
   separators?: boolean
 }
 
