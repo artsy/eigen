@@ -97,6 +97,18 @@ export class Markdown extends React.Component<Props & FlexProps> {
     this.reactOutput = SimpleMarkdown.reactFor(SimpleMarkdown.ruleOutput(rules, "react"))
   }
 
+  // Be agressive with re-rendering this component
+  shouldComponentUpdate(newProps: Props & { children: any }) {
+    if (newProps.rules !== this.props.rules) {
+      return true
+    }
+
+    const oldChildrenText = _.isArray(this.props.children) ? this.props.children.join("") : this.props.children
+    const newChildrenText = _.isArray(newProps.children) ? newProps.children.join("") : newProps.children
+
+    return oldChildrenText !== newChildrenText
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.rules !== this.props.rules) {
       this.buildParser()
