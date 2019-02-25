@@ -697,10 +697,12 @@
 		7F45982C21F09EC0002932ED /* nav_map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F45982A21F09EC0002932ED /* nav_map@2x.png */; };
 		7F45982D21F09EC0002932ED /* nav_map@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F45982B21F09EC0002932ED /* nav_map@3x.png */; };
 		7F45A1682003C7100063D6B5 /* conversations.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 7F45A1672003C7100063D6B5 /* conversations.graphql */; };
+		7F9C7EF22221FE2900F6967E /* AREigenMapContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9C7EF12221FE2900F6967E /* AREigenMapContainerViewController.m */; };
 		7FB8852720A3704700DE5E82 /* checkbox_unselected@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8852420A3704600DE5E82 /* checkbox_unselected@3x.png */; };
 		7FB8852820A3704700DE5E82 /* checkbox_unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8852520A3704600DE5E82 /* checkbox_unselected@2x.png */; };
 		7FB8852920A3704700DE5E82 /* checkbox_unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = 7FB8852620A3704700DE5E82 /* checkbox_unselected.png */; };
 		7FC37D0A20A1F0FA0029296A /* ARAcceptConditionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FC37D0920A1F0FA0029296A /* ARAcceptConditionsView.m */; };
+		7FE2CE30221F074E00D0E779 /* AREigenFairComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FE2CE2F221F074E00D0E779 /* AREigenFairComponentViewController.m */; };
 		83071C79208DFE27006020DB /* record_artwork_view_mutation.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 83071C78208DFE27006020DB /* record_artwork_view_mutation.graphql */; };
 		837CEC841C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */; };
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
@@ -1928,11 +1930,15 @@
 		7F45982A21F09EC0002932ED /* nav_map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_map@2x.png"; sourceTree = "<group>"; };
 		7F45982B21F09EC0002932ED /* nav_map@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nav_map@3x.png"; sourceTree = "<group>"; };
 		7F45A1672003C7100063D6B5 /* conversations.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = conversations.graphql; sourceTree = "<group>"; };
+		7F9C7EF02221FE2900F6967E /* AREigenMapContainerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AREigenMapContainerViewController.h; sourceTree = "<group>"; };
+		7F9C7EF12221FE2900F6967E /* AREigenMapContainerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AREigenMapContainerViewController.m; sourceTree = "<group>"; };
 		7FB8852420A3704600DE5E82 /* checkbox_unselected@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox_unselected@3x.png"; sourceTree = "<group>"; };
 		7FB8852520A3704600DE5E82 /* checkbox_unselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkbox_unselected@2x.png"; sourceTree = "<group>"; };
 		7FB8852620A3704700DE5E82 /* checkbox_unselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkbox_unselected.png; sourceTree = "<group>"; };
 		7FC37D0820A1F0FA0029296A /* ARAcceptConditionsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAcceptConditionsView.h; sourceTree = "<group>"; };
 		7FC37D0920A1F0FA0029296A /* ARAcceptConditionsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAcceptConditionsView.m; sourceTree = "<group>"; };
+		7FE2CE2E221F06B300D0E779 /* AREigenFairComponentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AREigenFairComponentViewController.h; sourceTree = "<group>"; };
+		7FE2CE2F221F074E00D0E779 /* AREigenFairComponentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AREigenFairComponentViewController.m; sourceTree = "<group>"; };
 		83071C78208DFE27006020DB /* record_artwork_view_mutation.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = record_artwork_view_mutation.graphql; sourceTree = "<group>"; };
 		83282D751EB0D9F1006F30C2 /* ARRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRootViewController.h; sourceTree = "<group>"; };
 		837CEC821C876B7C00A7E0E1 /* ArtsyAPI+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Notifications.h"; sourceTree = "<group>"; };
@@ -2266,6 +2272,8 @@
 				5EFF52B91976CA6C00E2A563 /* ARSearchFieldButton.m */,
 				5EDB1209197E691100E241F0 /* ARParallaxHeaderViewController.h */,
 				5EDB120A197E691100E241F0 /* ARParallaxHeaderViewController.m */,
+				7FE2CE2E221F06B300D0E779 /* AREigenFairComponentViewController.h */,
+				7FE2CE2F221F074E00D0E779 /* AREigenFairComponentViewController.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3924,6 +3932,7 @@
 		608B2F5A1657CED10046956C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				7F9C7EEF2221FE0700F6967E /* Map */,
 				60BCE10A1FF2B24800071AA6 /* ARViewInRoom */,
 				606E58121D91633C00BAE371 /* Gene */,
 				83FF73BA1CB87D64002B53FA /* RefinementOptions */,
@@ -4662,6 +4671,15 @@
 				60647C781A95095800A45247 /* ARFairPopupViewController.xib */,
 			);
 			path = Fair;
+			sourceTree = "<group>";
+		};
+		7F9C7EEF2221FE0700F6967E /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				7F9C7EF02221FE2900F6967E /* AREigenMapContainerViewController.h */,
+				7F9C7EF12221FE2900F6967E /* AREigenMapContainerViewController.m */,
+			);
+			path = Map;
 			sourceTree = "<group>";
 		};
 		83FF73BA1CB87D64002B53FA /* RefinementOptions */ = {
@@ -5556,6 +5574,7 @@
 				4953E8381668179500A09726 /* PostImage.m in Sources */,
 				CB42B64F181092480069A801 /* ARCountdownView.m in Sources */,
 				5E8585F91CF743D800B2B487 /* LiveAuctionSaleLotsDataSource.swift in Sources */,
+				7FE2CE30221F074E00D0E779 /* AREigenFairComponentViewController.m in Sources */,
 				4953E83B16681A4200A09726 /* ContentLink.m in Sources */,
 				494332FD16692010005AB483 /* VideoContentLink.m in Sources */,
 				E676B2EB18D0CC330057B4E1 /* ARURLItemProvider.m in Sources */,
@@ -5720,6 +5739,7 @@
 				5E6CBB011DB54A5500988CDF /* AROnboardingPersonalizationGeneImageStateReconciler.m in Sources */,
 				3C35CC7B189FF05E00E3D8DE /* OrderedSet.m in Sources */,
 				5E5B841F1C52DEC40005CBC7 /* AuctionOrdering.swift in Sources */,
+				7F9C7EF22221FE2900F6967E /* AREigenMapContainerViewController.m in Sources */,
 				60903CC4175CE21A002AB800 /* AROptions.m in Sources */,
 				60903CCB175CE766002AB800 /* ARAdminSettingsViewController.m in Sources */,
 				5E47F3561C4435C100EC0751 /* AuctionTitleView.swift in Sources */,
