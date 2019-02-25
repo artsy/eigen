@@ -14,6 +14,7 @@ export type FairExhibitorsQueryResponse = {
                 readonly name: string | null;
                 readonly id: string | null;
                 readonly profile_id: string | null;
+                readonly partner_id: string | null;
             }) | null> | null;
         }) | null> | null;
     }) | null;
@@ -38,6 +39,7 @@ query FairExhibitorsQuery(
         name
         id
         profile_id
+        partner_id
       }
     }
     __id
@@ -125,6 +127,13 @@ v2 = [
                 "name": "profile_id",
                 "args": null,
                 "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "partner_id",
+                "args": null,
+                "storageKey": null
               }
             ]
           }
@@ -144,7 +153,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairExhibitorsQuery",
-  "id": "0c078ac81109cf139b09ec767fc757fe",
+  "id": "f03a01ac0a2474dab313dbfa5f5ef68c",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -163,5 +172,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'd7412fab9d3f851670a3958b92d86f04';
+(node as any).hash = 'eb93ace4d94f3c21f031c33caa59c4c1';
 export default node;

@@ -51,17 +51,17 @@ export class FairExhibitors extends React.Component<Props, State> {
   }
 
   @track((__, _, args) => {
-    const id = args[1]
-    // FIXME: _id missing
+    const slug = args[1]
+    const partnerID = args[2]
     return {
       action_name: Schema.ActionNames.ListGallery,
       action_type: Schema.ActionTypes.Tap,
-      owner_id: "",
-      owner_slug: id,
+      owner_id: partnerID,
+      owner_slug: slug,
       owner_type: Schema.OwnerEntityTypes.Gallery,
     } as any
   })
-  handleOnPressName(profileID, _id) {
+  handleOnPressName(profileID, _slug, _partnerID) {
     if (profileID) {
       SwitchBoard.presentNavigationViewController(this, `show/${profileID}?entity=fair-booth`)
     }
@@ -70,13 +70,13 @@ export class FairExhibitors extends React.Component<Props, State> {
   renderExhibitor(data) {
     const { item, index, section } = data
     const { count } = section
-    const { name, profile_id, id } = item
+    const { name, profile_id, id, partner_id } = item
     const generatedKey = count - index
     return (
       <Box mb={2} key={generatedKey}>
         <TouchableOpacity
           onPress={() => {
-            this.handleOnPressName(profile_id, id)
+            this.handleOnPressName(profile_id, id, partner_id)
           }}
         >
           <Serif size="3">{name}</Serif>
@@ -135,6 +135,7 @@ export const FairExhibitorsRenderer: React.SFC<{ fairID: string }> = ({ fairID }
               name
               id
               profile_id
+              partner_id
             }
           }
         }
