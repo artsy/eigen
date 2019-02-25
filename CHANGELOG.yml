@@ -3,7 +3,7 @@ upcoming:
   date: TBD
   emission_version: 1.8.3
   dev:
-    - Not yet
+    - Adds React Native developer menu + tools - luc
   user_facing:
     - Fixes to selection of fairs in Search - orta + matt
     - Make it obvious you can re-bid on upcoming lots - orta + sarah
