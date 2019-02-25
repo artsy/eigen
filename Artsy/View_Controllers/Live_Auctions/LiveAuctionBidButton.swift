@@ -153,7 +153,7 @@ class LiveAuctionBidButton: ARFlatButton {
 
     fileprivate func setupWithState(_ buttonState: LiveAuctionBidButtonState) {
         let highestBidderSetup = {
-            self.setupUI("You're the highest bidder", background: .white, border: green, textColor: green)
+            self.setupUI("You're currently the highest bidder", background: .white, border: green, textColor: green)
         }
 
         switch buttonState {
