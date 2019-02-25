@@ -9,6 +9,7 @@
 #import "ARNavigationController.h"
 
 #import "ARFairViewController.h"
+#import "AREigenFairComponentViewController.h"
 #import "ARInternalMobileWebViewController.h"
 
 #import "UIViewController+FullScreenLoading.h"
@@ -17,7 +18,6 @@
 
 #import <ReactiveObjC/ReactiveObjC.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <Emission/ARFairComponentViewController.h>
 
 
 @interface ARProfileViewController () <ARMenuAwareViewController>
@@ -86,7 +86,7 @@
 
 
                 if ([AROptions boolForOption:AROptionsModernShowFairPages]) {
-                    ARFairComponentViewController *viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
+                    AREigenFairComponentViewController *viewController = [[AREigenFairComponentViewController alloc] initWithFairID:fairID];
                     [self showViewController:viewController];
                     [(ARNavigationController *)self.navigationController didUpdateStatusBarForTopViewControllerAnimated:NO];
                 } else {

@@ -6,7 +6,7 @@
 
 #import "UIDevice-Hardware.h"
 
-@interface ARArtworkSetViewController ()
+@interface ARArtworkSetViewController () <ARMenuAwareViewController>
 
 @property (nonatomic, strong) Fair *fair;
 @property (nonatomic, strong) NSArray *artworks;
@@ -216,6 +216,14 @@
     }
 
     return nil;
+}
+
+#pragma mark -
+#pragma mark Menu aware controller
+
+- (BOOL)hidesStatusBarBackground
+{
+    return NO;
 }
 
 @end
