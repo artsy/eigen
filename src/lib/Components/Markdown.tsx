@@ -50,12 +50,14 @@ export const defaultRules = {
   },
 
   newline: {
+    ...SimpleMarkdown.defaultRules.newline,
     react: (_node, _output, state) => {
       return <Text key={state.key}>{"\n"}</Text>
     },
   },
 
   strong: {
+    ...SimpleMarkdown.defaultRules.strong,
     react: (node, output, state) => {
       return (
         <Sans size="3t" weight="medium" key={state.key}>
@@ -66,6 +68,7 @@ export const defaultRules = {
   },
 
   br: {
+    ...SimpleMarkdown.defaultRules.br,
     react: (_node, _output, state) => {
       return <Text key={state.key}>{"\n\n"}</Text>
     },
