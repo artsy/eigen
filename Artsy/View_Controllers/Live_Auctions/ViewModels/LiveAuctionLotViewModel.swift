@@ -82,7 +82,7 @@ extension LiveAuctionLotViewModelType {
             }
 
             return (
-                bid: "Current Bid: \(askingPrice.convertToDollarString(currencySymbol))",
+                bid: "Current Ask: \(askingPrice.convertToDollarString(currencySymbol))",
                 reserve: reserveString
             )
         }
