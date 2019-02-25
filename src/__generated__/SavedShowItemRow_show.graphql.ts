@@ -17,6 +17,8 @@ export type SavedShowItemRow_show = {
     readonly images: ReadonlyArray<({
         readonly url: string | null;
     }) | null> | null;
+    readonly start_at: string | null;
+    readonly end_at: string | null;
     readonly " $refType": SavedShowItemRow_show$ref;
 };
 
@@ -48,29 +50,6 @@ return {
   "argumentDefinitions": [],
   "selections": [
     {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "id",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "_id",
-      "args": null,
-      "storageKey": null
-    },
-    v0,
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "is_followed",
-      "args": null,
-      "storageKey": null
-    },
-    v1,
-    {
       "kind": "LinkedField",
       "alias": null,
       "name": "partner",
@@ -91,6 +70,29 @@ return {
           "selections": v2
         }
       ]
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    v0,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_followed",
+      "args": null,
+      "storageKey": null
+    },
+    v1,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "_id",
+      "args": null,
+      "storageKey": null
     },
     {
       "kind": "ScalarField",
@@ -130,9 +132,23 @@ return {
           "storageKey": null
         }
       ]
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "start_at",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "end_at",
+      "args": null,
+      "storageKey": null
     }
   ]
 };
 })();
-(node as any).hash = 'fc6653710752cacd708d4c5180bf27ea';
+(node as any).hash = '8e964a4d39905f689fb33a240251004c';
 export default node;

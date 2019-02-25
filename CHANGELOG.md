@@ -21,6 +21,7 @@
 - When there's only a website for the fair additional info, the app goes there - orta
 - Adds global saves&follows analytics - ash
 - The Markdown componeont is more cautious on re-rendering its content - orta
+- Adds dates of currently running saved shows to Saved and Followed Shows - ashley
 
 ### 1.8.3
 
