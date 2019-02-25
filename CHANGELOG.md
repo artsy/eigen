@@ -17,6 +17,7 @@
 ### Master
 
 - Adds global saves&follows analytics - ash
+- The Markdown componeont is more cautious on re-rendering its content - orta
 
 ### 1.8.3
 
