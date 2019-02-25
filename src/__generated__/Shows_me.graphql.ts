@@ -75,7 +75,7 @@ return {
         {
           "kind": "LinkedField",
           "alias": "shows",
-          "name": "__FollowedShows_shows_connection",
+          "name": "__SavedShows_shows_connection",
           "storageKey": null,
           "args": null,
           "concreteType": "FollowedShowConnection",
@@ -156,5 +156,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '762dd8cecf123b2ba8d80b97427514cd';
+(node as any).hash = 'c5ea393453d1899979e41b4621811399';
 export default node;

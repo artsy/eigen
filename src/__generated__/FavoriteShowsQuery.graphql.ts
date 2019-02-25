@@ -322,7 +322,7 @@ return {
                   }
                 ],
                 "handle": "connection",
-                "key": "FollowedShows_shows",
+                "key": "SavedShows_shows",
                 "filters": null
               }
             ]
