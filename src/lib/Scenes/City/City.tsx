@@ -1,4 +1,4 @@
-import { Box, color, Flex, Separator, Serif, Theme } from "@artsy/palette"
+import { Box, color, Flex, Serif, Theme } from "@artsy/palette"
 import React, { Component } from "react"
 import { ScrollView } from "react-native"
 import styled from "styled-components/native"

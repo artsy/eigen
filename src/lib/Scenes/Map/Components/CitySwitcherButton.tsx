@@ -18,9 +18,11 @@ export class CitySwitcherButton extends Component<any> {
       <Background
         flexDirection="row"
         alignItems="center"
-        style={{
-          shadowOffset: { height: 0, width: 0 },
-        }}
+        style={
+          {
+            shadowOffset: { height: 0, width: 0 },
+          } as any
+        }
       >
         <Sans size="3t" weight="medium" ml={3}>
           {this.props.city.name}

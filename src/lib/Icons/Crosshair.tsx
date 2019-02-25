@@ -2,7 +2,7 @@ import { color } from "@artsy/palette"
 import React from "react"
 import Svg, { Circle, G, Path } from "react-native-svg"
 
-const Crosshair = props => (
+const Crosshair: React.SFC<{ color?: string }> = props => (
   <Svg width={22} height={22} {...props}>
     <G fill="#000" fillRule="evenodd">
       <Circle cx={10.631} cy={10.631} r={2.858} />
