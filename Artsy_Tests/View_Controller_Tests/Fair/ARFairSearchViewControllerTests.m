@@ -14,7 +14,10 @@ describe(@"init", ^{
     __block Fair *fair = nil;
 
     beforeEach(^{
-        fair = [Fair modelWithJSON:@{ @"id" : @"fair-id", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } }];
+        id json = @{ @"id" : @"fair-id", @"name" : @"The Armory Show", @"organizer" : @{ @"profile_id" : @"fair-profile-id" } };
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/fair/fair-id" withResponse:json];
+        [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/fair/fair-id/shows" withResponse:@{}];
+        fair = [Fair modelWithJSON:json];
         fairSearchVC = [[ARFairSearchViewController alloc] initWithFair:fair];
         [fairSearchVC viewDidLoad];
     });

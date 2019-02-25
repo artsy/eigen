@@ -3,6 +3,7 @@
 #import "ArtsyAPI+Profiles.h"
 #import "Fair.h"
 #import "Profile.h"
+#import "AROptions.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARLogger.h"
 
@@ -15,6 +16,7 @@
 
 #import <ReactiveObjC/ReactiveObjC.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <Emission/ARFairComponentViewController.h>
 
 
 @interface ARProfileViewController () <ARMenuAwareViewController>
@@ -81,11 +83,14 @@
                 NSString * fairID = ((Fair *) profile.profileOwner).fairID;
                 Fair *fair = [[Fair alloc] initWithFairID:fairID];
 
-                ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:fair andProfile:profile];
-
-                RAC(self, hidesNavigationButtons) = RACObserve(viewController, hidesNavigationButtons);
-
-                [self showViewController:viewController];
+                if ([AROptions boolForOption:AROptionsModernShowFairPages]) {
+                    ARFairComponentViewController *viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
+                       [self showViewController:viewController];
+                } else {
+                    ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:fair andProfile:profile];
+                    RAC(self, hidesNavigationButtons) = RACObserve(viewController, hidesNavigationButtons);
+                    [self showViewController:viewController];
+                }
             }
 
             [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];

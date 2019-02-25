@@ -320,7 +320,7 @@
         __strong typeof (wself) sself = wself;
         if (!sself) { return; }
 
-        sself.resultsView.hidden = YES;
+        sself.resultsView.hidden = self.searchDataSource.searchResults.count == 0;
     }];
 }
 

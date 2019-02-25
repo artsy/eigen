@@ -25,6 +25,7 @@
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Sentry/SentryClient.h>
+#import <Emission/ARGraphQLQueryCache.h>
 
 #if DEBUG
 #import <VCRURLConnection/VCR.h>
@@ -444,8 +445,14 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         [SentryClient.sharedClient crash];
     }];
 
+    ARCellData *clearRelayCacheData = [self tappableCellDataWithTitle:@"Clear Relay Cache" selection:^{
+        [[ARGraphQLQueryCache new] clearAll];
+    }];
+
+
     [labsSectionData addCellDataFromArray:@[
         crashCellData,
+        clearRelayCacheData,
 #if !TARGET_IPHONE_SIMULATOR
         [self generateNotificationTokenPasteboardCopy],
         [self requestNotificationsAlert],

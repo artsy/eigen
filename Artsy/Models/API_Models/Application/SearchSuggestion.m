@@ -10,6 +10,7 @@
          ar_keypath(SearchSuggestion.new, isPublished) : @"published",
          ar_keypath(SearchSuggestion.new, imageURL) : @"image_url",
          ar_keypath(SearchSuggestion.new, model) : @"model",
+         ar_keypath(SearchSuggestion.new, profileID) : @"profile_id",
          ar_keypath(SearchSuggestion.new, modelID) : @"id",
     };
 }
@@ -30,9 +31,11 @@
 
 - (NSString *)href
 {
-    NSArray *prefixless = @[@"profile", @"page", @"fair"];
+    NSArray *prefixless = @[@"profile", @"page"];
     if ([prefixless containsObject:self.model]) {
         return self.modelID;
+    } else if ([self.model isEqualToString:@"fair"]) {
+        return self.profileID;
     } else if ([self.model isEqualToString:@"tag"] || [self.model isEqualToString:@"gene"]) {
         return NSStringWithFormat(@"/gene/%@", self.modelID);
     } else if ([self.model isEqualToString:@"artist"]) {

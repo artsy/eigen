@@ -112,6 +112,10 @@ private extension PrivateFunctions {
         let winningBidEventID = derivedState["winningBidEventId"] as? String
         lot.updateWinningBidEventID(winningBidEventID)
 
+        let floorWinningBidder = derivedState["floorWinningBidder"] as? [String: AnyObject]
+        let floorWinningBidderID = floorWinningBidder?["bidderId"] as? String
+        lot.updateFloorWinningBidderID(floorWinningBidderID)
+
         let bidder = derivedState["sellingToBidder"] as? [String: AnyObject]
         let bidderID = bidder?["bidderId"] as? String
         lot.updateSellingToBidder(bidderID)

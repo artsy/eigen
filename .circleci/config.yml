@@ -33,7 +33,7 @@ jobs:
 
     # Specify the Xcode version to use.
     macos:
-      xcode: "10.0.0"
+      xcode: "10.1.0"
 
     # Define the steps required to build the project.
     steps:

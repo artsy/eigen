@@ -110,11 +110,15 @@ lane :ship_beta do
   # upload_to_sentry.call('eigen-staging')
 
   # Send to the app store
-  pilot changelog: beta_readme, itc_provider: 'ArtsyInc'
+  pilot changelog: beta_readme,
+    itc_provider: 'ArtsyInc',
+    distribute_external: true,
+    groups: ["Artsy"]
 end
 
 lane :promote_beta do
-  Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
+  client = Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
+  client.team_id = "479887"
   app = Spaceship::Tunes::Application.find('net.artsy.artsy')
 
   # app.builds are listed most recently first; we are assuming that we're shipping the most recent beta.

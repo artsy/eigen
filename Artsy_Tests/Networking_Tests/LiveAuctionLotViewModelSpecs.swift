@@ -10,9 +10,11 @@ class LiveAuctionLotViewModelSpec: QuickSpec {
 
         var subject: LiveAuctionLotViewModel!
 
+        let userID = "98721314"
+
         beforeEach {
             let lot = LiveAuctionLot(json: [:])
-            let creds = BiddingCredentials(bidders: [], paddleNumber: "", userID: "")
+            let creds = BiddingCredentials(bidders: [], paddleNumber: "", userID: userID)
             subject = LiveAuctionLotViewModel(lot: lot!, bidderCredentials: creds)
         }
 
@@ -36,6 +38,23 @@ class LiveAuctionLotViewModelSpec: QuickSpec {
             subject.addEvents([event, floorUnderBid])
 
             expect(subject.winningBidEvent?.bidAmountCents) == 560_000_00
+        }
+
+
+        it("handles setting the right users top bid in cents") {
+            // Manually setting all this in here because we're going authed
+            // with bidder references for this auction
+            let lot = LiveAuctionLot(json: [:])
+            let creds = BiddingCredentials(bidders: [Bidder(json: ["id": userID, "qualified_for_bidding": true])], paddleNumber: "", userID: userID)
+            subject = LiveAuctionLotViewModel(lot: lot!, bidderCredentials: creds)
+
+            let floorUnderBid = bid(550_000, bidder: ["type": "OfflineBidder" as AnyObject])
+            let usersBid = bid(560_000, bidder: ["type": "ArtsyBidder" as AnyObject, "bidderId": userID as AnyObject])
+            let otherBid = bid(620_000, bidder: ["type": "ArtsyBidder" as AnyObject, "bidderId": "23424" as AnyObject])
+
+            subject.addEvents([otherBid, usersBid, floorUnderBid])
+
+            expect(subject.usersTopBidCents) == 560_000_00
         }
 
         it("exposes user facing events only via the eventCount") {

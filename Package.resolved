@@ -15,26 +15,17 @@
         "repositoryURL": "https://github.com/f-meloni/Logger",
         "state": {
           "branch": null,
-          "revision": "cdb2adb8aadfae75e2a0eb82318b5980b5d5eba5",
-          "version": "0.1.0"
+          "revision": "c1cb5a142b99687ecc55d8de101bf082889f5fd1",
+          "version": "0.2.2"
         }
       },
       {
         "package": "Marathon",
-        "repositoryURL": "https://github.com/JohnSundell/Marathon.git",
+        "repositoryURL": "https://github.com/JohnSundell/Marathon",
         "state": {
           "branch": null,
           "revision": "a06df8de0b79c1a3b69228ec5368acd52956d8ec",
           "version": "3.1.0"
-        }
-      },
-      {
-        "package": "Nimble",
-        "repositoryURL": "https://github.com/Quick/Nimble.git",
-        "state": {
-          "branch": null,
-          "revision": "cd6dfb86f496fcd96ce0bc6da962cd936bf41903",
-          "version": "7.3.1"
         }
       },
       {
@@ -44,15 +35,6 @@
           "branch": null,
           "revision": "b63f2ec1b55f26c8e94159d81ad695aeb92f3d4e",
           "version": "0.9.0"
-        }
-      },
-      {
-        "package": "Quick",
-        "repositoryURL": "https://github.com/Quick/Quick.git",
-        "state": {
-          "branch": null,
-          "revision": "5fbf13871d185526993130c3a1fad0b70bfe37ce",
-          "version": "1.3.2"
         }
       },
       {
@@ -84,11 +66,11 @@
       },
       {
         "package": "ShellOut",
-        "repositoryURL": "https://github.com/JohnSundell/ShellOut.git",
+        "repositoryURL": "https://github.com/JohnSundell/ShellOut",
         "state": {
           "branch": null,
-          "revision": "f1c253a34a40df4bfd268b09fdb101b059f6d52d",
-          "version": "2.1.0"
+          "revision": "d3d54ce662dfee7fef619330b71d251b8d4869f9",
+          "version": "2.2.0"
         }
       },
       {
@@ -96,17 +78,8 @@
         "repositoryURL": "https://github.com/danger/swift.git",
         "state": {
           "branch": null,
-          "revision": "9b252605721e1946f8007fade42a48fcb10b09bc",
-          "version": "0.8.0"
-        }
-      },
-      {
-        "package": "TestSpy",
-        "repositoryURL": "https://github.com/f-meloni/TestSpy",
-        "state": {
-          "branch": null,
-          "revision": "e0f1e9d4d10080762bb3b5256a94f347e74416f0",
-          "version": "0.3.1"
+          "revision": "ece72c9bc2d8b0719d74ba0377063288ca625ba7",
+          "version": "1.3.2"
         }
       },
       {
@@ -125,6 +98,15 @@
           "branch": null,
           "revision": "8085c925060b84a1fc0caef444c130da2c8154c3",
           "version": "3.0.1"
+        }
+      },
+      {
+        "package": "Yams",
+        "repositoryURL": "https://github.com/jpsim/Yams.git",
+        "state": {
+          "branch": null,
+          "revision": "26ab35f50ea891e8edefcc9d975db2f6b67e1d68",
+          "version": "1.0.1"
         }
       }
     ]
