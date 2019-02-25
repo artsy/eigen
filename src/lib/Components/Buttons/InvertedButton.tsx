@@ -18,6 +18,7 @@ export interface InvertedButtonProps extends React.Props<InvertedButton> {
   onPress?: React.TouchEventHandler<InvertedButton>
   onSelectionAnimationFinished?: Animated.EndCallback
   buttonSize?: string
+  disabled?: boolean
 }
 
 interface InvertedButtonState {
@@ -100,7 +101,12 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
       content = <AnimatedHeadline style={headlineStyles}>{this.props.text}</AnimatedHeadline>
     }
     return (
-      <AnimatedTouchable onPress={this.props.onPress} activeOpacity={1} disabled={this.props.inProgress} {...styling}>
+      <AnimatedTouchable
+        onPress={this.props.onPress}
+        activeOpacity={1}
+        disabled={this.props.inProgress || this.props.disabled}
+        {...styling}
+      >
         <View>{content}</View>
       </AnimatedTouchable>
     )
