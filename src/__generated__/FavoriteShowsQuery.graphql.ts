@@ -25,7 +25,11 @@ query FavoriteShowsQuery {
 
 fragment Shows_me on Me {
   followsAndSaves {
-    shows(first: 10, after: "") {
+    shows(first: 10) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
       edges {
         node {
           ...SavedShowItemRow_show
@@ -33,10 +37,6 @@ fragment Shows_me on Me {
           __typename
         }
         cursor
-      }
-      pageInfo {
-        endCursor
-        hasNextPage
       }
     }
   }
@@ -99,7 +99,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FavoriteShowsQuery",
-  "id": "ab5419b1104f9e8f746f73e5728c95fc",
+  "id": "a590555cd490d621c0fb392314717e24",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -155,14 +155,8 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "shows",
-                "storageKey": "shows(after:\"\",first:10)",
+                "storageKey": "shows(first:10)",
                 "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "after",
-                    "value": "",
-                    "type": "String"
-                  },
                   {
                     "kind": "Literal",
                     "name": "first",
@@ -173,6 +167,31 @@ return {
                 "concreteType": "FollowedShowConnection",
                 "plural": false,
                 "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "pageInfo",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "PageInfo",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "endCursor",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "hasNextPage",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  },
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -287,31 +306,6 @@ return {
                         "storageKey": null
                       }
                     ]
-                  },
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "pageInfo",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "PageInfo",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "endCursor",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "hasNextPage",
-                        "args": null,
-                        "storageKey": null
-                      }
-                    ]
                   }
                 ]
               },
@@ -320,12 +314,6 @@ return {
                 "alias": null,
                 "name": "shows",
                 "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "after",
-                    "value": "",
-                    "type": "String"
-                  },
                   {
                     "kind": "Literal",
                     "name": "first",
