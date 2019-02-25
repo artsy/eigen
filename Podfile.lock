@@ -200,12 +200,18 @@ PODS:
     - Folly (= 2016.09.26.00)
     - React/jschelpers
     - React/jsinspector
+  - React/DevSupport (0.54.4):
+    - React/Core
+    - React/RCTWebSocket
+  - React/fishhook (0.54.4)
   - React/jschelpers (0.54.4):
     - Folly (= 2016.09.26.00)
     - React/PrivateDatabase
   - React/jsinspector (0.54.4)
   - React/PrivateDatabase (0.54.4)
   - React/RCTAnimation (0.54.4):
+    - React/Core
+  - React/RCTBlob (0.54.4):
     - React/Core
   - React/RCTCameraRoll (0.54.4):
     - React/Core
@@ -221,6 +227,10 @@ PODS:
     - React/Core
   - React/RCTText (0.54.4):
     - React/Core
+  - React/RCTWebSocket (0.54.4):
+    - React/Core
+    - React/fishhook
+    - React/RCTBlob
   - ReactiveObjC (2.1.2)
   - RNSVG (9.0.4):
     - React
@@ -273,7 +283,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission (~> 1.8.0)
+  - Emission (from `../emission`)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -308,6 +318,7 @@ DEPENDENCIES:
   - Quick
   - react-native-mapbox-gl (from `https://github.com/orta/react-native-mapbox-gl.git`, branch `6_1_3_podspec_fix`)
   - React/Core
+  - React/DevSupport
   - ReactiveObjC
   - RNSVG (from `https://github.com/react-native-community/react-native-svg.git`, tag `v9.0.4`)
   - SDWebImage (>= 3.7.2)
@@ -331,7 +342,6 @@ SPEC REPOS:
     - "Artsy+UIFonts"
     - "Artsy+UILabels"
     - Artsy-UIButtons
-    - Emission
     - Extraction
     - React
   https://github.com/cocoapods/specs.git:
@@ -398,6 +408,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/dblock/ARTiledImageView
   CocoaLumberjack:
     :git: https://github.com/CocoaLumberjack/CocoaLumberjack.git
+  Emission:
+    :path: "../emission"
   FLKAutoLayout:
     :branch: v1
     :git: https://github.com/orta/FLKAutoLayout.git
@@ -504,7 +516,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: a3462df70441775be3f696a2202ce8a0b2051724
+  Emission: 2518da842760c0e8534cf278aa1004b6a8e71cfc
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
@@ -561,6 +573,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: de8782b10b9fdede33554bcad8a2a6653e0ebb30
 
-PODFILE CHECKSUM: 2970e5b6bfcb617015d1e53b7cc58263cfe80b16
+PODFILE CHECKSUM: 97066a6e8e1f84b0dbcc15d72d275c8af0d1983f
 
 COCOAPODS: 1.6.0.beta.1

@@ -83,7 +83,15 @@ target 'Artsy' do
 
   pod 'Emission', '~> 1.8.0'
   pod 'yoga', podspec: 'https://raw.githubusercontent.com/artsy/emission/v1.5.2/externals/yoga/yoga.podspec.json'
-  pod 'React/Core'
+
+  # Allow easily running Emission from Metro inside Eigen (see issue #2497)
+  if ENV['CIRCLE_BUILD_NUM']
+    # Production:
+    pod 'React', :subspecs => %w(Core)
+  else
+    # Development
+    pod 'React', :subspecs => %w(Core DevSupport)
+  end
 
   # Emission's dependencies
   # use `cat ~/.cocoapods/repos/artsy/Emission/1.x.x/Emission.podspec.json` to see the Podspec
@@ -186,7 +194,11 @@ post_install do |installer|
 
   react = installer.pods_project.targets.find { |target| target.name == 'React' }
   react.build_configurations.each do |config|
-    config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = '$(inherited) RCT_DEV=0'
+    if config.name == 'Debug'
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = '$(inherited) RCT_DEV=1'
+    else
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = '$(inherited) RCT_DEV=0'
+    end
   end
 
   # TODO:
