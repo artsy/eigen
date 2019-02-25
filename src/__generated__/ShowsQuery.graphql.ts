@@ -32,42 +32,47 @@ query ShowsQuery(
 fragment Shows_me_1G22uz on Me {
   followsAndSaves {
     shows(first: $count, after: $cursor) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
       edges {
         node {
-          id
-          is_followed
-          _id
-          name
-          partner {
-            __typename
-            ... on Partner {
-              name
-            }
-            ... on ExternalPartner {
-              name
-              __id
-            }
-            ... on Node {
-              __id
-            }
-          }
-          href
-          status
-          images(size: 1) {
-            url
-          }
+          ...SavedShowItemRow_show
           __id
           __typename
         }
         cursor
       }
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
     }
   }
   __id
+}
+
+fragment SavedShowItemRow_show on Show {
+  id
+  _id
+  __id
+  is_followed
+  name
+  partner {
+    __typename
+    ... on Partner {
+      name
+    }
+    ... on ExternalPartner {
+      name
+      __id
+    }
+    ... on Node {
+      __id
+    }
+  }
+  href
+  status
+  images(size: 1) {
+    url
+  }
 }
 */
 
@@ -114,7 +119,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowsQuery",
-  "id": "cedf73be34d7e11c718439d396fbe608",
+  "id": "88bb364259959842a538a8b26e60bc43",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -204,6 +209,31 @@ return {
                   {
                     "kind": "LinkedField",
                     "alias": null,
+                    "name": "pageInfo",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "PageInfo",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "endCursor",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "hasNextPage",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
                     "name": "edges",
                     "storageKey": null,
                     "args": null,
@@ -229,14 +259,15 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "is_followed",
+                            "name": "_id",
                             "args": null,
                             "storageKey": null
                           },
+                          v1,
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "_id",
+                            "name": "is_followed",
                             "args": null,
                             "storageKey": null
                           },
@@ -303,7 +334,6 @@ return {
                               }
                             ]
                           },
-                          v1,
                           v3
                         ]
                       },
@@ -311,31 +341,6 @@ return {
                         "kind": "ScalarField",
                         "alias": null,
                         "name": "cursor",
-                        "args": null,
-                        "storageKey": null
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "pageInfo",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "PageInfo",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "endCursor",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "hasNextPage",
                         "args": null,
                         "storageKey": null
                       }

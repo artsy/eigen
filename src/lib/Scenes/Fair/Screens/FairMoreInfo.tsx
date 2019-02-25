@@ -25,6 +25,20 @@ interface State {
   }>
 }
 
+interface ShowMoreMetadataForFairs {
+  organizer?: { website: string }
+  about?: string
+  ticketsLink?: string
+}
+
+export const shouldShowFairMoreInfo = (data: ShowMoreMetadataForFairs) => {
+  return data.ticketsLink || data.about
+}
+
+export const shouldGoStraightToWebsite = (data: ShowMoreMetadataForFairs) => {
+  return !shouldShowFairMoreInfo(data) && (data.organizer && data.organizer.website)
+}
+
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.AboutTheFairPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,

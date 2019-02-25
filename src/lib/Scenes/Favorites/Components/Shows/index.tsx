@@ -18,7 +18,7 @@ interface State {
   fetchingMoreData: boolean
 }
 
-export class SavedShows extends Component<Props, State> {
+export class Shows extends Component<Props, State> {
   state = {
     fetchingMoreData: false,
   }
@@ -54,7 +54,7 @@ export class SavedShows extends Component<Props, State> {
       <FlatList
         data={shows}
         keyExtractor={item => item.__id}
-        renderItem={item => <SavedShowItemRow {...item.item} relayEnvironment={this.props.relay} />}
+        renderItem={item => <SavedShowItemRow show={item.item} />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         ListFooterComponent={
@@ -66,32 +66,20 @@ export class SavedShows extends Component<Props, State> {
 }
 
 export default createPaginationContainer(
-  SavedShows,
+  Shows,
   {
     me: graphql`
       fragment Shows_me on Me
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
+        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
           shows(first: $count, after: $cursor) @connection(key: "SavedShows_shows") {
+            pageInfo {
+              endCursor
+              hasNextPage
+            }
             edges {
               node {
-                id
-                is_followed
-                _id
-                name
-                partner {
-                  ... on Partner {
-                    name
-                  }
-                  ... on ExternalPartner {
-                    name
-                  }
-                }
-                href
-                status
-                images(size: 1) {
-                  url
-                }
+                ...SavedShowItemRow_show
               }
             }
           }
