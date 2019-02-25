@@ -1,5 +1,63 @@
 # Troubleshooting
 
+## Installation Issues
+
+- Failed `make artsy` with
+
+```
+  You will need to run:
+    yarn install
+```
+
+make sure you are on proper node version and then do a
+
+```
+yarn install
+```
+
+- Failed `make artsy` with
+
+```
+  [!] CocoaPods could not find compatible versions for pod "Artsy+UIFonts":
+    In snapshot (Podfile.lock):
+      Artsy+UIFonts (= 3.2.0, >= 1.1.0, >= 3.0.0)
+
+    In Podfile:
+      Artsy+UIFonts
+
+      Emission (from `../`) was resolved to 1.8.3, which depends on
+        Artsy+UIFonts (>= 3.0.0)
+```
+
+you need to clone Artsy UI Fonts in your Emission root folder:
+
+```
+git clone https://github.com/artsy/Artsy-UIFonts.git
+```
+
+- Issue with installing `tipsi-stripe`
+
+```
+  [!] CocoaPods could not find compatible versions for pod "tipsi-stripe":
+```
+
+You need to run
+
+```
+bundle exec pod update tipsi-stripe
+```
+
+- Error during `bundle exec pod update tipsi-stripe`
+
+```
+  checking whether the C compiler works... no
+  xcrun: error: SDK "iphoneos" cannot be located
+  xcrun: error: SDK "iphoneos" cannot be located
+  xcrun: error: SDK "iphoneos" cannot be located
+```
+
+You need to go to Xcode -> Prreferences -> Locations and select Command Line Tools from the dropdown
+
 ### Working with local media assets
 
 When writing a component that refers to a local media asset
