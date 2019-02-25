@@ -132,6 +132,8 @@ describe(@"presenting pending operation layover", ^{
 describe(@"search", ^{
     before(^{
         navigationController.searchViewController = [ARAppSearchViewController new];
+        id mockTopViewController = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
+        [[[mockTopViewController stub] andReturn:navigationController] rootNavigationController];
     });
 
     it(@"presents the search VC", ^{

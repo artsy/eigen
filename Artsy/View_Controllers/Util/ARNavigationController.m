@@ -495,7 +495,7 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
 
 - (BOOL)isShowingSearch
 {
-    return self.ar_innermostTopViewController.navigationController.topViewController == self.searchViewController;
+    return [[[ARTopMenuViewController sharedController] rootNavigationController] topViewController] == self.searchViewController;
 }
 
 - (void)showSearch
@@ -504,9 +504,7 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
         self.searchViewController = [ARAppSearchViewController sharedSearchViewController];
     }
 
-    UINavigationController *navigationController = self.ar_innermostTopViewController.navigationController;
-    [navigationController pushViewController:self.searchViewController
-                                    animated:ARPerformWorkAsynchronously];
+    [[[ARTopMenuViewController sharedController] rootNavigationController] pushViewController:self.searchViewController animated:ARPerformWorkAsynchronously];
 }
 
 - (void)closeSearch
