@@ -36,6 +36,11 @@ fragment FairDetail_fair on Fair {
     }
     __id
   }
+  organizer {
+    website
+  }
+  about
+  ticketsLink
   profile {
     name
     __id
@@ -275,17 +280,18 @@ v2 = {
   "args": null,
   "storageKey": null
 },
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "href",
-  "args": null,
-  "storageKey": null
-},
+v3 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 2,
+    "type": "Int"
+  }
+],
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "__typename",
   "args": null,
   "storageKey": null
 },
@@ -296,36 +302,35 @@ v5 = {
   "args": null,
   "storageKey": null
 },
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_followed",
-  "args": null,
-  "storageKey": null
-},
-v7 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 2,
-    "type": "Int"
-  }
-],
-v8 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__typename",
-  "args": null,
-  "storageKey": null
-},
-v9 = [
+v6 = [
   v5,
   v1
 ],
-v10 = {
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "href",
+  "args": null,
+  "storageKey": null
+},
+v8 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "aspect_ratio",
+  "args": null,
+  "storageKey": null
+},
+v9 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "url",
+  "args": null,
+  "storageKey": null
+},
+v10 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_followed",
   "args": null,
   "storageKey": null
 },
@@ -350,7 +355,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairDetailTestsQuery",
-  "id": "144e528dc67bb6053c170274fd393f2d",
+  "id": "19bdd4e36db0b9fbe147040f057687a1",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -394,47 +399,11 @@ return {
         "plural": false,
         "selections": [
           {
-            "kind": "LinkedField",
+            "kind": "ScalarField",
             "alias": null,
-            "name": "profile",
-            "storageKey": null,
+            "name": "end_at",
             "args": null,
-            "concreteType": "Profile",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "icon",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "Image",
-                "plural": false,
-                "selections": [
-                  v2,
-                  v3,
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "height",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "width",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  v4
-                ]
-              },
-              v1,
-              v2,
-              v5,
-              v6
-            ]
+            "storageKey": null
           },
           v2,
           {
@@ -467,7 +436,7 @@ return {
             "alias": "partner_names",
             "name": "shows_connection",
             "storageKey": "shows_connection(first:2)",
-            "args": v7,
+            "args": v3,
             "concreteType": "ShowConnection",
             "plural": false,
             "selections": [
@@ -499,7 +468,7 @@ return {
                         "concreteType": null,
                         "plural": false,
                         "selections": [
-                          v8,
+                          v4,
                           v1,
                           {
                             "kind": "InlineFragment",
@@ -513,7 +482,7 @@ return {
                                 "args": null,
                                 "concreteType": "Profile",
                                 "plural": false,
-                                "selections": v9
+                                "selections": v6
                               }
                             ]
                           }
@@ -531,7 +500,7 @@ return {
             "alias": "artists_names",
             "name": "artists",
             "storageKey": "artists(first:2)",
-            "args": v7,
+            "args": v3,
             "concreteType": "ArtistConnection",
             "plural": false,
             "selections": [
@@ -554,7 +523,7 @@ return {
                     "plural": false,
                     "selections": [
                       v5,
-                      v3,
+                      v7,
                       v1
                     ]
                   }
@@ -578,11 +547,53 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v10,
-              v4
+              v8,
+              v9
             ]
           },
-          v5,
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "profile",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Profile",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "icon",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Image",
+                "plural": false,
+                "selections": [
+                  v2,
+                  v7,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "height",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "width",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  v9
+                ]
+              },
+              v1,
+              v2,
+              v5,
+              v10
+            ]
+          },
           {
             "kind": "ScalarField",
             "alias": null,
@@ -590,13 +601,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "end_at",
-            "args": null,
-            "storageKey": null
-          },
+          v5,
           v1,
           {
             "kind": "ScalarField",
@@ -709,6 +714,38 @@ return {
                 ]
               }
             ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "organizer",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "organizer",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "website",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "about",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "ticketsLink",
+            "args": null,
+            "storageKey": null
           },
           {
             "kind": "LinkedField",
@@ -835,7 +872,7 @@ return {
                                     "concreteType": "Image",
                                     "plural": false,
                                     "selections": [
-                                      v10,
+                                      v8,
                                       {
                                         "kind": "ScalarField",
                                         "alias": null,
@@ -1003,7 +1040,7 @@ return {
                                     ],
                                     "concreteType": "Artist",
                                     "plural": true,
-                                    "selections": v9
+                                    "selections": v6
                                   },
                                   {
                                     "kind": "LinkedField",
@@ -1013,9 +1050,9 @@ return {
                                     "args": null,
                                     "concreteType": "Partner",
                                     "plural": false,
-                                    "selections": v9
+                                    "selections": v6
                                   },
-                                  v3
+                                  v7
                                 ]
                               }
                             ]
@@ -1039,7 +1076,7 @@ return {
                         "concreteType": null,
                         "plural": false,
                         "selections": [
-                          v8,
+                          v4,
                           v1,
                           {
                             "kind": "InlineFragment",
@@ -1053,7 +1090,7 @@ return {
                             "type": "Partner",
                             "selections": [
                               v5,
-                              v3,
+                              v7,
                               v2,
                               {
                                 "kind": "LinkedField",
@@ -1071,7 +1108,7 @@ return {
                                     "args": null,
                                     "storageKey": null
                                   },
-                                  v6,
+                                  v10,
                                   v1
                                 ]
                               }
@@ -1087,7 +1124,7 @@ return {
                         "args": null,
                         "concreteType": "Fair",
                         "plural": false,
-                        "selections": v9
+                        "selections": v6
                       },
                       {
                         "kind": "LinkedField",
@@ -1098,7 +1135,7 @@ return {
                         "concreteType": "Image",
                         "plural": false,
                         "selections": [
-                          v4
+                          v9
                         ]
                       },
                       {
@@ -1115,7 +1152,7 @@ return {
                         ]
                       },
                       v1,
-                      v8
+                      v4
                     ]
                   }
                 ]

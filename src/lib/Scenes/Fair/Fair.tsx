@@ -10,7 +10,7 @@ import { FairArtistsRenderer as FairArtistsScreen } from "./Screens/FairArtists"
 import { FairArtworksRenderer as FairArtworksScreen } from "./Screens/FairArtworks"
 import { FairDetailContainer as FairDetailScreen } from "./Screens/FairDetail"
 import { FairExhibitorsRenderer as FairExhibitorsScreen } from "./Screens/FairExhibitors"
-import { FairMoreInfoRenderer as FairMoreInfoScreen } from "./Screens/FairMoreInfo"
+import { FairMoreInfoRenderer as FairMoreInfoScreen, shouldGoStraightToWebsite } from "./Screens/FairMoreInfo"
 
 import { Fair_fair } from "__generated__/Fair_fair.graphql"
 
@@ -67,9 +67,13 @@ export class Fair extends React.Component<Props> {
   }
 
   handleViewMoreInfoPressed = () => {
-    this.navigate({
-      component: FairMoreInfoScreen,
-    })
+    if (shouldGoStraightToWebsite(this.props.fair)) {
+      SwitchBoard.presentNavigationViewController(this, this.props.fair.organizer.website)
+    } else {
+      this.navigate({
+        component: FairMoreInfoScreen,
+      })
+    }
   }
 
   render() {
@@ -106,6 +110,12 @@ export const FairContainer = createFragmentContainer(
       id
       __id
       ...FairDetail_fair
+
+      organizer {
+        website
+      }
+      about
+      ticketsLink
     }
   `
 )
