@@ -16,6 +16,9 @@
 - (void)showBackButton:(BOOL)visible animated:(BOOL)animated;
 - (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated white:(BOOL)white;
 
+/// A view controller ARMenuAwareController status bar property
+- (void)didUpdateStatusBarForTopViewControllerAnimated:(BOOL)animated;
+
 - (IBAction)back:(id)sender;
 
 - (BOOL)isShowingSearch;
