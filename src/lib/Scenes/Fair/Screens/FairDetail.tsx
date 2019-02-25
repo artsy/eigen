@@ -72,12 +72,14 @@ export class FairDetail extends React.Component<Props, State> {
       })
     }
 
-    sections.push({
-      type: "information",
-      data: {
-        onViewMoreInfoPressed: () => onViewMoreInfoPressed(),
-      },
-    })
+    if (shouldGoStraightToWebsite(this.props.fair) || shouldShowFairMoreInfo(this.props.fair)) {
+      sections.push({
+        type: "information",
+        data: {
+          onViewMoreInfoPressed: () => onViewMoreInfoPressed(),
+        },
+      })
+    }
 
     if (fair.hours) {
       sections.push({
@@ -151,13 +153,10 @@ export class FairDetail extends React.Component<Props, State> {
         )
       case "information":
         return (
-          shouldGoStraightToWebsite(this.props.fair) ||
-          (shouldShowFairMoreInfo(this.props.fair) && (
-            <>
-              <CaretButton onPress={() => data.onViewMoreInfoPressed()} text="View more information" />
-              <Separator mt={2} />
-            </>
-          ))
+          <>
+            <CaretButton onPress={() => data.onViewMoreInfoPressed()} text="View more information" />
+            <Separator mt={2} />
+          </>
         )
       case "artists-exhibitors-works":
         return <ArtistsExhibitorsWorksLink {...data} />
