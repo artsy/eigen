@@ -28,28 +28,7 @@ fragment Shows_me on Me {
     shows(first: 10, after: "") {
       edges {
         node {
-          id
-          is_followed
-          _id
-          name
-          partner {
-            __typename
-            ... on Partner {
-              name
-            }
-            ... on ExternalPartner {
-              name
-              __id
-            }
-            ... on Node {
-              __id
-            }
-          }
-          href
-          status
-          images(size: 1) {
-            url
-          }
+          ...SavedShowItemRow_show
           __id
           __typename
         }
@@ -62,6 +41,32 @@ fragment Shows_me on Me {
     }
   }
   __id
+}
+
+fragment SavedShowItemRow_show on Show {
+  id
+  _id
+  __id
+  is_followed
+  name
+  partner {
+    __typename
+    ... on Partner {
+      name
+    }
+    ... on ExternalPartner {
+      name
+      __id
+    }
+    ... on Node {
+      __id
+    }
+  }
+  href
+  status
+  images(size: 1) {
+    url
+  }
 }
 */
 
@@ -94,7 +99,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FavoriteShowsQuery",
-  "id": "46a1193f8964df3cb9a70477d47b943d",
+  "id": "ab5419b1104f9e8f746f73e5728c95fc",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -196,14 +201,15 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "is_followed",
+                            "name": "_id",
                             "args": null,
                             "storageKey": null
                           },
+                          v0,
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "_id",
+                            "name": "is_followed",
                             "args": null,
                             "storageKey": null
                           },
@@ -270,7 +276,6 @@ return {
                               }
                             ]
                           },
-                          v0,
                           v2
                         ]
                       },

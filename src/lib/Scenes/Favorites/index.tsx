@@ -90,22 +90,25 @@ class Favorites extends React.Component<Props, null> {
   }
 
   fireTabSelectionAnalytics = selectedTab => {
-    let tabType
+    let eventDetails
 
     if (selectedTab.i === WorksTab) {
-      tabType = Schema.ActionNames.SavesAndFollowsWorks
+      eventDetails = { action_name: Schema.ActionNames.SavesAndFollowsWorks }
     } else if (selectedTab.i === ArtistsTab) {
-      tabType = Schema.ActionNames.SavesAndFollowsArtists
+      eventDetails = { action_name: Schema.ActionNames.SavesAndFollowsArtists }
     } else if (selectedTab.i === CategoriesTab) {
-      tabType = Schema.ActionNames.SavesAndFollowsCategories
+      eventDetails = { action_name: Schema.ActionNames.SavesAndFollowsCategories }
     } else if (selectedTab.i === ShowsTab) {
-      tabType = Schema.ActionNames.SavesAndFollowsShows
+      eventDetails = {
+        action_name: Schema.ActionNames.SavesAndFollowsShows,
+        context_screen: Schema.PageNames.SavesAndFollows,
+      }
     } else if (selectedTab.i === FairsTab) {
-      tabType = Schema.ActionNames.SavesAndFollowsFairs
+      eventDetails = { action_name: Schema.ActionNames.SavesAndFollowsFairs }
     }
 
     this.props.tracking.trackEvent({
-      action_name: tabType,
+      ...eventDetails,
       action_type: Schema.ActionTypes.Tap,
     })
   }

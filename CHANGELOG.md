@@ -16,6 +16,10 @@
 
 ### Master
 
+- Adds global saves&follows analytics - ash
+
+### 1.8.3
+
 - Updates show header gallery name to medium font weight - kieran
 - Checks in the view for fair.profile before rending profile values - kieran
 - Moves countdown timer higher on fair - kieran
