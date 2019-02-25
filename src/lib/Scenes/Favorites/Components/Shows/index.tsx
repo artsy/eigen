@@ -18,7 +18,7 @@ interface State {
   fetchingMoreData: boolean
 }
 
-export class SavedShows extends Component<Props, State> {
+export class Shows extends Component<Props, State> {
   state = {
     fetchingMoreData: false,
   }
@@ -66,13 +66,17 @@ export class SavedShows extends Component<Props, State> {
 }
 
 export default createPaginationContainer(
-  SavedShows,
+  Shows,
   {
     me: graphql`
       fragment Shows_me on Me
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
+        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
           shows(first: $count, after: $cursor) @connection(key: "SavedShows_shows") {
+            pageInfo {
+              endCursor
+              hasNextPage
+            }
             edges {
               node {
                 ...SavedShowItemRow_show

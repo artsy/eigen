@@ -7,6 +7,10 @@ export type Shows_me$ref = typeof _Shows_me$ref;
 export type Shows_me = {
     readonly followsAndSaves: ({
         readonly shows: ({
+            readonly pageInfo: {
+                readonly endCursor: string | null;
+                readonly hasNextPage: boolean;
+            };
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly " $fragmentRefs": SavedShowItemRow_show$ref;
@@ -55,7 +59,7 @@ return {
       "kind": "LocalArgument",
       "name": "cursor",
       "type": "String",
-      "defaultValue": ""
+      "defaultValue": null
     }
   ],
   "selections": [
@@ -71,12 +75,37 @@ return {
         {
           "kind": "LinkedField",
           "alias": "shows",
-          "name": "__SavedShows_shows_connection",
+          "name": "__FollowedShows_shows_connection",
           "storageKey": null,
           "args": null,
           "concreteType": "FollowedShowConnection",
           "plural": false,
           "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "pageInfo",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "PageInfo",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "endCursor",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "hasNextPage",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            },
             {
               "kind": "LinkedField",
               "alias": null,
@@ -118,31 +147,6 @@ return {
                   "storageKey": null
                 }
               ]
-            },
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "pageInfo",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "PageInfo",
-              "plural": false,
-              "selections": [
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "endCursor",
-                  "args": null,
-                  "storageKey": null
-                },
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "hasNextPage",
-                  "args": null,
-                  "storageKey": null
-                }
-              ]
             }
           ]
         }
@@ -152,5 +156,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '94aec78434172289e20249c39e157e09';
+(node as any).hash = '762dd8cecf123b2ba8d80b97427514cd';
 export default node;
