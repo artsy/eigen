@@ -708,9 +708,11 @@
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
 		83FF73B41CB87A74002B53FA /* RefinableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF73B31CB87A74002B53FA /* RefinableType.swift */; };
 		83FF73B91CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF73B81CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift */; };
+		9D38304F221F004E00DA8F23 /* UIViewController+Search.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D38304E221F004E00DA8F23 /* UIViewController+Search.m */; };
 		9D3ED24421ADAD8800A0318A /* ArtsyEcho+BNMO.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3ED24321ADAD8800A0318A /* ArtsyEcho+BNMO.m */; };
 		9D3ED24621ADB11B00A0318A /* ArtsyEchoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3ED24521ADB11B00A0318A /* ArtsyEchoTests.m */; };
 		9D3ED24821ADBB4900A0318A /* create_offer.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9D3ED24721ADBB4900A0318A /* create_offer.graphql */; };
+		9DBD8576221DDFDF00B435A5 /* ARFairComponentViewController+Eigen.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DBD8575221DDFDF00B435A5 /* ARFairComponentViewController+Eigen.m */; };
 		9DF23C0F2135C6D6008EAB9C /* create_order.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 9DF23C0E2135C6D6008EAB9C /* create_order.graphql */; };
 		B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */; };
 		B316E2F418170DF40086CCDB /* SaleArtwork.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F318170DF40086CCDB /* SaleArtwork.m */; };
@@ -1948,10 +1950,14 @@
 		83FF73B31CB87A74002B53FA /* RefinableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefinableType.swift; path = ../Views/RefinableType.swift; sourceTree = "<group>"; };
 		83FF73B81CB87B52002B53FA /* ARTopMenuViewController+SwiftDeveloperExtras.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ARTopMenuViewController+SwiftDeveloperExtras.swift"; sourceTree = "<group>"; };
 		9434A9843098609F9F092F0D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D38304D221F004E00DA8F23 /* UIViewController+Search.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Search.h"; sourceTree = "<group>"; };
+		9D38304E221F004E00DA8F23 /* UIViewController+Search.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Search.m"; sourceTree = "<group>"; };
 		9D3ED24221ADAD8800A0318A /* ArtsyEcho+BNMO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ArtsyEcho+BNMO.h"; sourceTree = "<group>"; };
 		9D3ED24321ADAD8800A0318A /* ArtsyEcho+BNMO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ArtsyEcho+BNMO.m"; sourceTree = "<group>"; };
 		9D3ED24521ADB11B00A0318A /* ArtsyEchoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArtsyEchoTests.m; sourceTree = "<group>"; };
 		9D3ED24721ADBB4900A0318A /* create_offer.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = create_offer.graphql; sourceTree = "<group>"; };
+		9DBD8574221DDFDF00B435A5 /* ARFairComponentViewController+Eigen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARFairComponentViewController+Eigen.h"; sourceTree = "<group>"; };
+		9DBD8575221DDFDF00B435A5 /* ARFairComponentViewController+Eigen.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ARFairComponentViewController+Eigen.m"; sourceTree = "<group>"; };
 		9DF23C0E2135C6D6008EAB9C /* create_order.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = create_order.graphql; sourceTree = "<group>"; };
 		B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBidButtonTests.m; sourceTree = "<group>"; };
 		B316E2F218170DF40086CCDB /* SaleArtwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaleArtwork.h; sourceTree = "<group>"; };
@@ -2625,6 +2631,8 @@
 				5E6CBB051DB668D100988CDF /* ARSearchViewControllerStyling.m */,
 				3C205ACB1908041700B3C2B4 /* ARSearchResultsDataSource.h */,
 				3C205ACC1908041700B3C2B4 /* ARSearchResultsDataSource.m */,
+				9D38304D221F004E00DA8F23 /* UIViewController+Search.h */,
+				9D38304E221F004E00DA8F23 /* UIViewController+Search.m */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -4669,6 +4677,8 @@
 				60647C761A95095800A45247 /* ARFairPopupViewController.h */,
 				60647C771A95095800A45247 /* ARFairPopupViewController.m */,
 				60647C781A95095800A45247 /* ARFairPopupViewController.xib */,
+				9DBD8574221DDFDF00B435A5 /* ARFairComponentViewController+Eigen.h */,
+				9DBD8575221DDFDF00B435A5 /* ARFairComponentViewController+Eigen.m */,
 			);
 			path = Fair;
 			sourceTree = "<group>";
@@ -5575,6 +5585,7 @@
 				CB42B64F181092480069A801 /* ARCountdownView.m in Sources */,
 				5E8585F91CF743D800B2B487 /* LiveAuctionSaleLotsDataSource.swift in Sources */,
 				7FE2CE30221F074E00D0E779 /* AREigenFairComponentViewController.m in Sources */,
+				9DBD8576221DDFDF00B435A5 /* ARFairComponentViewController+Eigen.m in Sources */,
 				4953E83B16681A4200A09726 /* ContentLink.m in Sources */,
 				494332FD16692010005AB483 /* VideoContentLink.m in Sources */,
 				E676B2EB18D0CC330057B4E1 /* ARURLItemProvider.m in Sources */,
@@ -5782,6 +5793,7 @@
 				6099F90A17904F9B0004EF04 /* ARModelCollectionViewModule.m in Sources */,
 				5E4E329A1E4E4A1C00C7F724 /* LotStanding.m in Sources */,
 				602C09BA1B5E5CE6003681D3 /* AFHTTPRequestOperation+JSON.m in Sources */,
+				9D38304F221F004E00DA8F23 /* UIViewController+Search.m in Sources */,
 				5E5F495E1D00BC7700E7CD6E /* LiveAuctionLotCollectionViewLayoutType.swift in Sources */,
 				5EBD44E21D074A7300C60F9F /* UILabel+Styling.swift in Sources */,
 				609B3C091761F80C00953CB2 /* ARSiteHeroUnitView.m in Sources */,

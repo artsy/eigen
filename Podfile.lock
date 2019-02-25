@@ -304,7 +304,7 @@ DEPENDENCIES:
   - OHHTTPStubs
   - ORKeyboardReactingApplication
   - ORStackView (= 2.0.3)
-  - Pulley (from `../Pulley`)
+  - Pulley (from `https://github.com/l2succes/Pulley.git`, branch `master`)
   - Quick
   - react-native-mapbox-gl (from `https://github.com/orta/react-native-mapbox-gl.git`, branch `6_1_3_podspec_fix`)
   - React/Core
@@ -414,7 +414,8 @@ EXTERNAL SOURCES:
   NAMapKit:
     :git: https://github.com/neilang/NAMapKit
   Pulley:
-    :path: "../Pulley"
+    :branch: master
+    :git: https://github.com/l2succes/Pulley.git
   react-native-mapbox-gl:
     :branch: 6_1_3_podspec_fix
     :git: https://github.com/orta/react-native-mapbox-gl.git
@@ -464,6 +465,9 @@ CHECKOUT OPTIONS:
   NAMapKit:
     :commit: 9a2b842a1067785cf8af18276d4de4f0e3f0a17c
     :git: https://github.com/neilang/NAMapKit
+  Pulley:
+    :commit: d1b6f0a1ef6fe0aa79847b6b46087510084f5067
+    :git: https://github.com/l2succes/Pulley.git
   react-native-mapbox-gl:
     :commit: c86bdb8130525aeb2476c6584e11aa3408408992
     :git: https://github.com/orta/react-native-mapbox-gl.git
@@ -535,7 +539,7 @@ SPEC CHECKSUMS:
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
-  Pulley: 88acb054e83e4cb2315795fc21d570a5f337ccd6
+  Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
   Quick: d17304d58d0d169dd0bd1c6e5c28e3318de32a1a
   React: e8b3cf60f93a0e64045862a003c1bf9408098cff
   react-native-mapbox-gl: 4ea0ec95bf8351b212d223c3bac4fbbf5f03fb14
@@ -558,6 +562,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: de8782b10b9fdede33554bcad8a2a6653e0ebb30
 
-PODFILE CHECKSUM: d2b9a82851a159458cac49184870284375c97f7d
+PODFILE CHECKSUM: 98577581afcd13aee67c53a728eeb1926dd9f672
 
 COCOAPODS: 1.6.0.beta.1

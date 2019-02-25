@@ -18,6 +18,7 @@
 #import "ARButtonWithCircularImage.h"
 #import "ARBrowseFeaturedLinksCollectionViewController.h"
 #import "ARFairSearchViewController.h"
+#import "UIViewController+Search.h"
 #import "ARSearchFieldButton.h"
 #import "UIViewController+SimpleChildren.h"
 #import "ARShowViewController.h"
@@ -353,34 +354,7 @@ NSString *const ARFairHighlightFavoritePartnersKey = @"ARFairHighlightFavoritePa
 
 - (void)selectedResult:(SearchResult *)result ofType:(NSString *)type fromQuery:(NSString *)query
 {
-    ARSwitchBoard *switchBoard = ARSwitchBoard.sharedInstance;
-    UIViewController *controller = nil;
-
-    if (result.model == [Artwork class]) {
-        controller = [switchBoard loadArtworkWithID:result.modelID inFair:self.fair];
-
-    } else if (result.model == [Artist class]) {
-        Artist *artist = [[Artist alloc] initWithArtistID:result.modelID];
-        controller = [switchBoard loadArtistWithID:artist.artistID inFair:self.fair];
-
-    } else if (result.model == [Gene class]) {
-        controller = [switchBoard loadGeneWithID:result.modelID];
-
-    } else if (result.model == [Profile class]) {
-        controller = [switchBoard loadProfileWithID:result.modelID];
-
-    } else if (result.model == [SiteFeature class]) {
-        NSString *path = NSStringWithFormat(@"/feature/%@", result.modelID);
-        controller = [switchBoard loadPath:path];
-
-    } else if (result.model == [PartnerShow class]) {
-        PartnerShow *partnerShow = [[PartnerShow alloc] initWithShowID:result.modelID];
-        controller = [switchBoard loadShowWithID:partnerShow.showID fair:self.fair];
-    }
-
-    if (controller) {
-        [self.ar_TopMenuViewController pushViewController:controller animated:ARPerformWorkAsynchronously];
-    }
+    [self presentSearchResult:result fair:self.fair];
 }
 
 - (void)cancelledSearch:(ARFairSearchViewController *)controller
