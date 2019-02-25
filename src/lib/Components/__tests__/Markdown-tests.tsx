@@ -103,3 +103,23 @@ describe("defaultRules", () => {
     })
   })
 })
+
+describe("should update", () => {
+  it("will update with diffferent rules", () => {
+    const rules = { a: {} }
+    const Component = new Markdown({ rules })
+    expect(Component.shouldComponentUpdate({ rules: { b: "bold" }, children: [] })).toBeTruthy()
+  })
+
+  it("won't update with the same rules and same children", () => {
+    const rules = { a: {} }
+    const Component = new Markdown({ rules, children: ["my md"] })
+    expect(Component.shouldComponentUpdate({ rules, children: ["my md"] })).toBeFalsy()
+  })
+
+  it("will update with the same rules and different children", () => {
+    const rules = { a: {} }
+    const Component = new Markdown({ rules, children: ["my md"] })
+    expect(Component.shouldComponentUpdate({ rules, children: ["your md"] })).toBeTruthy()
+  })
+})

@@ -20,6 +20,7 @@
 - Hides additional info when a fair doesn't have it - orta
 - When there's only a website for the fair additional info, the app goes there - orta
 - Adds global saves&follows analytics - ash
+- The Markdown componeont is more cautious on re-rendering its content - orta
 
 ### 1.8.3
 
