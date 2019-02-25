@@ -4,6 +4,8 @@ import { FairArtists_fair } from "__generated__/FairArtists_fair.graphql"
 import { FairArtistsRendererQuery } from "__generated__/FairArtistsRendererQuery.graphql"
 import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
 import { PAGE_SIZE } from "lib/data/constants"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema, screenTrack, track } from "lib/utils/track"
 import { groupBy, map, sortBy, toPairs } from "lodash"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -23,6 +25,12 @@ interface State {
   }>
 }
 
+@screenTrack<Props>(props => ({
+  context_screen: Schema.PageNames.FairAllArtistsPage,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+  context_screen_owner_slug: props.fair.id,
+  context_screen_owner_id: props.fair._id,
+}))
 export class FairArtists extends React.Component<Props, State> {
   state = {
     groupedArtists: [],
@@ -71,11 +79,31 @@ export class FairArtists extends React.Component<Props, State> {
     })
   }
 
+  @track((__, _, args) => {
+    const slug = args[2]
+    const id = args[3]
+    return {
+      action_name: Schema.ActionNames.ListArtist,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: id,
+      owner_slug: slug,
+      owner_type: Schema.OwnerEntityTypes.Artist,
+    } as any
+  })
+  handleViewArtist(context, href, _slug, _id) {
+    SwitchBoard.presentNavigationViewController(context, href)
+  }
+
   render() {
     const { groupedArtists } = this.state
     return (
       <Theme>
-        <ArtistsGroupedByName data={groupedArtists} onEndReached={this.fetchNextPage} Component={this} />
+        <ArtistsGroupedByName
+          viewArtist={this.handleViewArtist.bind(this)}
+          data={groupedArtists}
+          onEndReached={this.fetchNextPage}
+          Component={this}
+        />
       </Theme>
     )
   }
@@ -88,6 +116,7 @@ export const FairArtistsContainer = createPaginationContainer(
       fragment FairArtists_fair on Fair
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         id
+        _id
         artists(first: $count, after: $cursor) @connection(key: "Fair_artists") {
           pageInfo {
             hasNextPage
@@ -100,6 +129,8 @@ export const FairArtistsContainer = createPaginationContainer(
               ...ArtistListItem_artist
               sortable_id
               href
+              _id
+              id
             }
           }
         }

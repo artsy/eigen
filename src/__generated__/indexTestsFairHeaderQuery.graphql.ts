@@ -25,6 +25,7 @@ query indexTestsFairHeaderQuery {
 
 fragment FairHeader_fair on Fair {
   id
+  _id
   name
   counts {
     artists
@@ -39,6 +40,8 @@ fragment FairHeader_fair on Fair {
           ... on Partner {
             profile {
               name
+              id
+              _id
               __id
             }
           }
@@ -58,6 +61,8 @@ fragment FairHeader_fair on Fair {
       node {
         name
         href
+        id
+        _id
         __id
       }
     }
@@ -102,21 +107,7 @@ v1 = {
   "args": null,
   "storageKey": null
 },
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v4 = [
+v2 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -124,14 +115,35 @@ v4 = [
     "type": "Int"
   }
 ],
-v5 = {
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
 v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "_id",
+  "args": null,
+  "storageKey": null
+},
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
@@ -142,7 +154,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "indexTestsFairHeaderQuery",
-  "id": "f7356d0960d41a2f3174aec5819e817e",
+  "id": "6640e6cd267db564f0f8f8a7e4f2c4f3",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -185,7 +197,45 @@ return {
         "concreteType": "Fair",
         "plural": false,
         "selections": [
-          v2,
+          {
+            "kind": "LinkedField",
+            "alias": "artists_names",
+            "name": "artists",
+            "storageKey": "artists(first:2)",
+            "args": v2,
+            "concreteType": "ArtistConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ArtistEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Artist",
+                    "plural": false,
+                    "selections": [
+                      v3,
+                      v4,
+                      v5,
+                      v6,
+                      v1
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          v5,
           v3,
           {
             "kind": "LinkedField",
@@ -217,7 +267,7 @@ return {
             "alias": "partner_names",
             "name": "shows_connection",
             "storageKey": "shows_connection(first:2)",
-            "args": v4,
+            "args": v2,
             "concreteType": "ShowConnection",
             "plural": false,
             "selections": [
@@ -239,7 +289,7 @@ return {
                     "concreteType": "Show",
                     "plural": false,
                     "selections": [
-                      v2,
+                      v5,
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -271,6 +321,8 @@ return {
                                 "plural": false,
                                 "selections": [
                                   v3,
+                                  v5,
+                                  v6,
                                   v1
                                 ]
                               }
@@ -285,42 +337,7 @@ return {
               }
             ]
           },
-          {
-            "kind": "LinkedField",
-            "alias": "artists_names",
-            "name": "artists",
-            "storageKey": "artists(first:2)",
-            "args": v4,
-            "concreteType": "ArtistConnection",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "edges",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "ArtistEdge",
-                "plural": true,
-                "selections": [
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "node",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "Artist",
-                    "plural": false,
-                    "selections": [
-                      v3,
-                      v5,
-                      v1
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
+          v6,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -344,7 +361,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v6
+              v7
             ]
           },
           {
@@ -365,8 +382,8 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v2,
                   v5,
+                  v4,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -381,11 +398,11 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v6
+                  v7
                 ]
               },
               v1,
-              v2,
+              v5,
               v3,
               {
                 "kind": "ScalarField",

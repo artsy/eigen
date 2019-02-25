@@ -9,6 +9,8 @@ export type FairMoreInfoQueryResponse = {
         readonly organizer: ({
             readonly website: string | null;
         }) | null;
+        readonly id: string;
+        readonly _id: string;
         readonly about: string | null;
         readonly ticketsLink: string | null;
     }) | null;
@@ -28,6 +30,8 @@ query FairMoreInfoQuery(
     organizer {
       website
     }
+    id
+    _id
     about
     ticketsLink
     __id
@@ -82,6 +86,20 @@ v1 = [
       {
         "kind": "ScalarField",
         "alias": null,
+        "name": "id",
+        "args": null,
+        "storageKey": null
+      },
+      {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "_id",
+        "args": null,
+        "storageKey": null
+      },
+      {
+        "kind": "ScalarField",
+        "alias": null,
         "name": "about",
         "args": null,
         "storageKey": null
@@ -107,7 +125,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairMoreInfoQuery",
-  "id": "c9e29749e65ae24c75b581d0e97c7171",
+  "id": "d76e1151c63e4910fb8886bc6960380a",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -126,5 +144,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'b803554575aec82302903918192429ed';
+(node as any).hash = 'f88594a64df67812db5bef52a8d5ae5f';
 export default node;

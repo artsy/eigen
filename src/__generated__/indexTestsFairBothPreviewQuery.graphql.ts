@@ -25,6 +25,7 @@ query indexTestsFairBothPreviewQuery {
 
 fragment FairBoothPreview_show on Show {
   id
+  _id
   name
   is_fair_booth
   partner {
@@ -33,6 +34,7 @@ fragment FairBoothPreview_show on Show {
       name
       href
       id
+      _id
       __id
       profile {
         _id
@@ -153,43 +155,50 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v5 = [
-  v3,
+v6 = [
+  v4,
   v1
 ],
-v6 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "display",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v8 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v8 = [
-  v6
+v9 = [
+  v7
 ];
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "indexTestsFairBothPreviewQuery",
-  "id": "f0402c1c36997ad61634fa6b4ef9afa6",
+  "id": "622967512e68a65b816dfa80647efe35",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -234,6 +243,7 @@ return {
         "selections": [
           v2,
           v3,
+          v4,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -262,16 +272,17 @@ return {
                 "kind": "InlineFragment",
                 "type": "ExternalPartner",
                 "selections": [
-                  v3
+                  v4
                 ]
               },
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
-                  v3,
                   v4,
+                  v5,
                   v2,
+                  v3,
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -281,13 +292,7 @@ return {
                     "concreteType": "Profile",
                     "plural": false,
                     "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "_id",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      v3,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -310,7 +315,7 @@ return {
             "args": null,
             "concreteType": "Fair",
             "plural": false,
-            "selections": v5
+            "selections": v6
           },
           {
             "kind": "LinkedField",
@@ -339,7 +344,7 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
-              v6,
+              v7,
               v1
             ]
           },
@@ -490,7 +495,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v7,
+                          v8,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -518,7 +523,7 @@ return {
                             "args": null,
                             "concreteType": "SaleArtworkOpeningBid",
                             "plural": false,
-                            "selections": v8
+                            "selections": v9
                           },
                           {
                             "kind": "LinkedField",
@@ -528,7 +533,7 @@ return {
                             "args": null,
                             "concreteType": "SaleArtworkCurrentBid",
                             "plural": false,
-                            "selections": v8
+                            "selections": v9
                           },
                           {
                             "kind": "ScalarField",
@@ -546,7 +551,7 @@ return {
                             "concreteType": "Sale",
                             "plural": false,
                             "selections": [
-                              v7,
+                              v8,
                               v1
                             ]
                           },
@@ -568,7 +573,7 @@ return {
                         ],
                         "concreteType": "Artist",
                         "plural": true,
-                        "selections": v5
+                        "selections": v6
                       },
                       {
                         "kind": "LinkedField",
@@ -578,9 +583,9 @@ return {
                         "args": null,
                         "concreteType": "Partner",
                         "plural": false,
-                        "selections": v5
+                        "selections": v6
                       },
-                      v4
+                      v5
                     ]
                   }
                 ]

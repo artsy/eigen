@@ -1,6 +1,7 @@
 import { Box, Separator, Theme } from "@artsy/palette"
 import { FairBooth_show } from "__generated__/FairBooth_show.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -22,6 +23,12 @@ interface Props {
   onViewFairBoothArtistsPressed: (props: { show: FairBooth_show }) => void
 }
 
+@screenTrack<Props>(props => ({
+  context_screen: Schema.PageNames.FairBoothPage,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+  context_screen_owner_slug: props.show.id,
+  context_screen_owner_id: props.show._id,
+}))
 export class FairBooth extends React.Component<Props, State> {
   state = {
     sections: [],
@@ -95,6 +102,8 @@ export const FairBoothContainer = createFragmentContainer(
   FairBooth,
   graphql`
     fragment FairBooth_show on Show {
+      id
+      _id
       ...FairBoothHeader_show
       ...ShowArtworksPreview_show
       ...ShowArtistsPreview_show

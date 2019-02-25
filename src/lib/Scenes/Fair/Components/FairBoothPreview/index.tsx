@@ -3,6 +3,8 @@ import { FairBoothPreview_show } from "__generated__/FairBoothPreview_show.graph
 import { FairBoothPreviewMutation } from "__generated__/FairBoothPreviewMutation.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { FairBoothPreviewHeader } from "./Components/FairBoothPreviewHeader"
@@ -17,9 +19,35 @@ interface State {
   isFollowedChanging: boolean
 }
 
+const track: Track<Props, State> = _track
+
+@track()
 export class FairBoothPreview extends React.Component<Props, State> {
   state = {
     isFollowedChanging: false,
+  }
+
+  @track((props, _, args) => {
+    const partnerSlug = args[0]
+    const partnerID = args[1]
+    const {
+      show: {
+        partner: {
+          profile: { is_followed: partnerFollowed },
+        },
+      },
+    } = props
+    const actionName = partnerFollowed ? Schema.ActionNames.GalleryFollow : Schema.ActionNames.GalleryUnfollow
+    return {
+      action_name: actionName,
+      action_type: Schema.ActionTypes.Success,
+      owner_id: partnerID,
+      owner_slug: partnerSlug,
+      owner_type: Schema.OwnerEntityTypes.Gallery,
+    } as any
+  })
+  trackFollowPartner(_partnerSlug, _partnerID) {
+    return null
   }
 
   handleFollowPartner = () => {
@@ -27,6 +55,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
     const {
       partner: {
         id: partnerSlug,
+        _id: partnerID,
         __id: partnerRelayID,
         profile: { is_followed: partnerFollowed, _id: profileID },
       },
@@ -41,6 +70,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
             this.setState({
               isFollowedChanging: false,
             })
+            this.trackFollowPartner(partnerSlug, partnerID)
           },
           mutation: graphql`
             mutation FairBoothPreviewMutation($input: FollowProfileInput!) {
@@ -74,6 +104,20 @@ export class FairBoothPreview extends React.Component<Props, State> {
         })
       }
     )
+  }
+
+  @track(props => ({
+    action_name: Schema.ActionNames.AllBoothWorks,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: props.show._id,
+    owner_slug: props.show.id,
+    owner_type: Schema.OwnerEntityTypes.Gallery,
+  }))
+  trackOnViewFairBoothWorks() {
+    const {
+      show: { id: showID },
+    } = this.props
+    SwitchBoard.presentNavigationViewController(this, `show/${showID}?entity=fair-booth`)
   }
 
   render() {
@@ -110,7 +154,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
                 ? `View all ${artworks_connection.edges.length} works`
                 : `View 1 work`
             }
-            onPress={() => onViewFairBoothPressed()}
+            onPress={() => this.trackOnViewFairBoothWorks()}
           />
         </Box>
       </Box>
@@ -123,6 +167,7 @@ export const FairBoothPreviewContainer = createFragmentContainer(
   graphql`
     fragment FairBoothPreview_show on Show {
       id
+      _id
       name
       is_fair_booth
       partner {
@@ -130,6 +175,7 @@ export const FairBoothPreviewContainer = createFragmentContainer(
           name
           href
           id
+          _id
           __id
           profile {
             _id

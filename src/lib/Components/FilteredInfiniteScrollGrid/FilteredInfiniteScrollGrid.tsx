@@ -1,5 +1,6 @@
 import { Box, Serif, Spacer } from "@artsy/palette"
 import { PortalProvider } from "lib/Components/Portal"
+import { Schema, track } from "lib/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworksGridPaginationContainer } from "./ArtworksGridPaginationContainer"
@@ -8,6 +9,8 @@ import { FiltersContainer as Filters } from "./Filters"
 interface Props {
   onRefetch: (params: object) => any
   filteredArtworks: any
+  slug?: string
+  id?: string
 }
 
 interface State {
@@ -17,6 +20,7 @@ interface State {
   }
 }
 
+@track()
 export class FilteredInfiniteScrollGrid extends React.Component<Props, State> {
   state = {
     filters: {
@@ -25,7 +29,23 @@ export class FilteredInfiniteScrollGrid extends React.Component<Props, State> {
     },
   }
 
+  @track(eventProps(Schema.ActionNames.FilterMedium))
+  trackMediumChange() {
+    return null
+  }
+
+  @track(eventProps(Schema.ActionNames.FilterPrice))
+  trackPriceRangeChange() {
+    return null
+  }
+
   handleFilterChange = filter => selected => {
+    if (filter === "medium") {
+      this.trackMediumChange()
+    } else if (filter === "priceRange") {
+      this.trackPriceRangeChange()
+    }
+
     this.setState(
       {
         filters: {
@@ -78,6 +98,16 @@ export class FilteredInfiniteScrollGrid extends React.Component<Props, State> {
       </PortalProvider>
     )
   }
+}
+
+function eventProps(actionName: Schema.ActionNames) {
+  return props => ({
+    action_name: actionName,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: props.id,
+    owner_slug: props.slug,
+    owner_type: Schema.OwnerEntityTypes.Fair,
+  })
 }
 
 export const FilteredInfiniteScrollGridContainer = createFragmentContainer(

@@ -8,7 +8,7 @@ interface EntityListProps {
   list: ReadonlyArray<Item>
   displayedItems?: number
   count: number
-  onItemSelected?: (href: string) => void
+  onItemSelected?: (href: string, id: string) => void
   onViewAllPressed?: () => void
 }
 

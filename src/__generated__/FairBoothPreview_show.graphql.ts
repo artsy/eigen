@@ -6,12 +6,14 @@ declare const _FairBoothPreview_show$ref: unique symbol;
 export type FairBoothPreview_show$ref = typeof _FairBoothPreview_show$ref;
 export type FairBoothPreview_show = {
     readonly id: string;
+    readonly _id: string;
     readonly name: string | null;
     readonly is_fair_booth: boolean | null;
     readonly partner: ({
         readonly name?: string | null;
         readonly href?: string | null;
         readonly id?: string;
+        readonly _id?: string;
         readonly __id?: string;
         readonly profile?: ({
             readonly _id: string;
@@ -50,11 +52,18 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
 v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
@@ -70,6 +79,7 @@ return {
   "selections": [
     v0,
     v1,
+    v2,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -86,19 +96,19 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v2,
+        v3,
         {
           "kind": "InlineFragment",
           "type": "ExternalPartner",
           "selections": [
-            v1
+            v2
           ]
         },
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v1,
+            v2,
             {
               "kind": "ScalarField",
               "alias": null,
@@ -107,6 +117,7 @@ return {
               "storageKey": null
             },
             v0,
+            v1,
             {
               "kind": "LinkedField",
               "alias": null,
@@ -116,13 +127,7 @@ return {
               "concreteType": "Profile",
               "plural": false,
               "selections": [
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "_id",
-                  "args": null,
-                  "storageKey": null
-                },
+                v1,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -130,7 +135,7 @@ return {
                   "args": null,
                   "storageKey": null
                 },
-                v2
+                v3
               ]
             }
           ]
@@ -146,8 +151,8 @@ return {
       "concreteType": "Fair",
       "plural": false,
       "selections": [
-        v1,
-        v2
+        v2,
+        v3
       ]
     },
     {
@@ -184,7 +189,7 @@ return {
           "args": null,
           "storageKey": null
         },
-        v2
+        v3
       ]
     },
     {
@@ -226,16 +231,16 @@ return {
                   "name": "GenericGrid_artworks",
                   "args": null
                 },
-                v2
+                v3
               ]
             }
           ]
         }
       ]
     },
-    v2
+    v3
   ]
 };
 })();
-(node as any).hash = '6a097d77e1939b6c74bc91e32f9d0392';
+(node as any).hash = '923b0e0221c6a7d56c198686b6c57b3e';
 export default node;

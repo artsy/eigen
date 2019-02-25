@@ -1,3 +1,3 @@
 {
-  "c9e29749e65ae24c75b581d0e97c7171": "query FairMoreInfoQuery(\n  $fairID: String!\n) {\n  fair(id: $fairID) {\n    organizer {\n      website\n    }\n    about\n    ticketsLink\n    __id\n  }\n}\n"
+  "d76e1151c63e4910fb8886bc6960380a": "query FairMoreInfoQuery(\n  $fairID: String!\n) {\n  fair(id: $fairID) {\n    organizer {\n      website\n    }\n    id\n    _id\n    about\n    ticketsLink\n    __id\n  }\n}\n"
 }

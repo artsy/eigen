@@ -8,6 +8,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap, PartnerType } from "lib/Components/LocationMap"
 import { PAGE_SIZE } from "lib/data/constants"
+import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import { ArtistsExhibitorsWorksLink } from "../Components/ArtistsExhibitorsWorksLink"
 import { FairBoothPreviewContainer as FairBoothPreview } from "../Components/FairBoothPreview"
 import { FairHeaderContainer as FairHeader } from "../Components/FairHeader"
@@ -17,7 +18,7 @@ import { shouldGoStraightToWebsite, shouldShowFairMoreInfo } from "./FairMoreInf
 interface Props extends ViewProperties {
   fair: FairDetail_fair
   relay: RelayPaginationProp
-  onViewMoreInfoPressed: () => void
+  onViewMoreInfoPressed: (props: object) => void
   onViewAllArtworksPressed: () => void
   onViewAllExhibitorsPressed: () => void
   onViewAllArtistsPressed: () => void
@@ -32,7 +33,14 @@ interface State {
   boothCount: number
   extraData?: { animatedValue: { height: number } }
 }
+const track: Track<Props, State> = _track
 
+@screenTrack<Props>(props => ({
+  context_screen: Schema.PageNames.FairPage,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+  context_screen_owner_slug: props.fair.id,
+  context_screen_owner_id: props.fair._id,
+}))
 export class FairDetail extends React.Component<Props, State> {
   state: State = {
     sections: [],
@@ -55,7 +63,6 @@ export class FairDetail extends React.Component<Props, State> {
       onViewAllExhibitorsPressed,
       onViewAllArtworksPressed,
       onViewAllArtistsPressed,
-      onViewFairBoothPressed,
       onViewMoreInfoPressed,
     } = this.props
     const sections = []
@@ -76,7 +83,7 @@ export class FairDetail extends React.Component<Props, State> {
       sections.push({
         type: "information",
         data: {
-          onViewMoreInfoPressed: () => onViewMoreInfoPressed(),
+          onViewMoreInfoPressed: () => onViewMoreInfoPressed(this.props),
         },
       })
     }
@@ -106,7 +113,8 @@ export class FairDetail extends React.Component<Props, State> {
     sections.push({
       type: "search",
       data: {
-        fairID: fair.id,
+        id: fair.id,
+        _id: fair._id,
       },
     })
 
@@ -120,7 +128,7 @@ export class FairDetail extends React.Component<Props, State> {
           showIndex: boothCount,
           data: {
             show: showData.node,
-            onViewFairBoothPressed: () => onViewFairBoothPressed({ show: showData.node }),
+            onViewFairBoothPressed: () => this.handleViewFairBoothPressed({ show: showData.node }),
           },
         })
         boothCount++
@@ -130,6 +138,26 @@ export class FairDetail extends React.Component<Props, State> {
     this.setState({ sections, boothCount })
   }
 
+  @track((__, _, args) => {
+    const obj = args[0]
+    return {
+      action_name: Schema.ActionNames.ListGallery,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: obj.show._id,
+      owner_slug: obj.show.id,
+      owner_type: Schema.OwnerEntityTypes.Gallery,
+    } as any
+  })
+  handleViewFairBoothPressed(show) {
+    const { onViewFairBoothPressed } = this.props
+    onViewFairBoothPressed(show)
+  }
+
+  @track(eventProps(Schema.ActionNames.ToggleHours))
+  handleHoursToggled() {
+    return null
+  }
+
   renderItem = ({ item: { data, type, showIndex } }) => {
     switch (type) {
       case "location":
@@ -137,7 +165,11 @@ export class FairDetail extends React.Component<Props, State> {
       case "hours":
         return (
           <>
-            <HoursCollapsible {...data} onAnimationFrame={this.handleAnimationFrame} />
+            <HoursCollapsible
+              {...data}
+              onAnimationFrame={this.handleAnimationFrame}
+              onToggle={() => this.handleHoursToggled()}
+            />
             <Separator mt={2} />
           </>
         )
@@ -227,6 +259,16 @@ export class FairDetail extends React.Component<Props, State> {
   }
 }
 
+function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTypes = Schema.ActionTypes.Tap) {
+  return props => ({
+    action_name: actionName,
+    action_type: actionType,
+    owner_id: props.fair._id,
+    owner_slug: props.fair.id,
+    owner_type: Schema.OwnerEntityTypes.Fair,
+  })
+}
+
 export const FairDetailContainer = createPaginationContainer(
   FairDetail,
   {
@@ -235,6 +277,7 @@ export const FairDetailContainer = createPaginationContainer(
         @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String" }) {
         ...FairHeader_fair
         id
+        _id
         name
         hours
         location {
@@ -266,6 +309,7 @@ export const FairDetailContainer = createPaginationContainer(
             cursor
             node {
               id
+              _id
               artworks_connection(first: 4) {
                 edges {
                   node {

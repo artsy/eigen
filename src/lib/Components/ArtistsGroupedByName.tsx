@@ -1,7 +1,6 @@
 import { Box, Sans, Separator, Serif } from "@artsy/palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { SectionList, TouchableOpacity } from "react-native"
 
@@ -13,17 +12,14 @@ interface Props {
     index: number
   }>
   onEndReached?: () => void
+  viewArtist: (context: any, artist: string, id?: string, _id?: string) => void
 }
 
-const viewArtist = (context, artist) => {
-  SwitchBoard.presentNavigationViewController(context, artist)
-}
-
-export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached, Component }) => (
+export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached, Component, viewArtist }) => (
   <SectionList
     onEndReached={onEndReached}
     renderItem={({ item }) => (
-      <TouchableOpacity onPress={() => viewArtist(Component, item.href)}>
+      <TouchableOpacity onPress={() => viewArtist(Component, item.href, item.id, item._id)}>
         <Box px={2} mb={2}>
           <ArtistListItem artist={item} />
         </Box>

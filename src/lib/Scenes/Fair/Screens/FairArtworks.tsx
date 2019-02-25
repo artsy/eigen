@@ -31,9 +31,10 @@ export class FairArtworks extends React.Component<Props, State> {
 
   render() {
     const { fair } = this.props
+    const { id, _id, artworks } = fair
     return (
       <Theme>
-        <FilteredInfiniteScrollGrid filteredArtworks={fair.artworks} onRefetch={this.handleRefetch} />
+        <FilteredInfiniteScrollGrid id={id} slug={_id} filteredArtworks={artworks} onRefetch={this.handleRefetch} />
       </Theme>
     )
   }
@@ -48,6 +49,7 @@ export const FairArtworksContainer = createRefetchContainer(
         price_range: { type: "String", defaultValue: "*-*" }
       ) {
       __id
+      _id
       id
       artworks: filteredArtworks(
         size: 0

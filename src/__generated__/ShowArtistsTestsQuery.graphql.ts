@@ -28,6 +28,8 @@ fragment ShowArtists_show on Show {
     letter
     items {
       ...ArtistListItem_artist
+      sortable_id
+      href
       __id
     }
   }
@@ -69,7 +71,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowArtistsTestsQuery",
-  "id": "159a9268da083415c0d89fb8a5211bb9",
+  "id": "7cbf5a1b1b94f30972c51352c39df9a5",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -137,14 +139,14 @@ return {
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
-                  v1,
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "_id",
+                    "name": "nationality",
                     "args": null,
                     "storageKey": null
                   },
+                  v1,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -169,7 +171,7 @@ return {
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "nationality",
+                    "name": "_id",
                     "args": null,
                     "storageKey": null
                   },
@@ -204,6 +206,20 @@ return {
                         "storageKey": null
                       }
                     ]
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "sortable_id",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "href",
+                    "args": null,
+                    "storageKey": null
                   }
                 ]
               }
