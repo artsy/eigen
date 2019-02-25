@@ -9,6 +9,7 @@
 #import <Emission/ARMyProfileViewController.h>
 #import <Emission/ARMapContainerViewController.h>
 
+#import "AREigenMapContainerViewController.h"
 #import "ARTopMenuInternalMobileWebViewController.h"
 #import "ARFeedSubclasses.h"
 #import "FeaturedLink.h"
@@ -76,7 +77,7 @@
         return _localDiscoveryNavigationController;
     }
     
-    ARMapContainerViewController *mapVC = [[ARMapContainerViewController alloc] init];
+    AREigenMapContainerViewController *mapVC = [[AREigenMapContainerViewController alloc] init];
     _localDiscoveryNavigationController = [[ARNavigationController alloc] initWithRootViewController:mapVC];
     return _localDiscoveryNavigationController;
 }

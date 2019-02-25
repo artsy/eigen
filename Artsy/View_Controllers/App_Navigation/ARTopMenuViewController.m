@@ -108,6 +108,7 @@ static const CGFloat ARMenuButtonDimension = 50;
 @property (nonatomic, strong) NSLayoutConstraint *statusBarVerticalConstraint;
 
 @property (readwrite, nonatomic, assign) enum ARTopTabControllerIndex selectedTabIndex;
+@property (readwrite, nonatomic, strong) NSLayoutConstraint *tabContentViewTopConstraint;
 @property (readwrite, nonatomic, strong) NSLayoutConstraint *tabBottomConstraint;
 
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
@@ -136,7 +137,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     self.selectedTabIndex = -1;
 
     _statusBarView = [[UIView alloc] init];
-    _statusBarView.backgroundColor = UIColor.clearColor;
+    _statusBarView.backgroundColor = UIColor.blackColor;
 
     [self.view addSubview:_statusBarView];
 
@@ -169,8 +170,7 @@ static const CGFloat ARMenuButtonDimension = 50;
     [self.view addSubview:tabContentView];
 
     // Layout
-//    [tabContentView constrainTopSpaceToView:_statusBarView predicate:@"0"];
-    [tabContentView alignTopEdgeWithView:self.view predicate:@"0"];
+    self.tabContentViewTopConstraint = [tabContentView alignTopEdgeWithView:self.view predicate:@"0"];
     [tabContentView alignLeading:@"0" trailing:@"0" toView:self.view];
     [tabContentView constrainWidthToView:self.view predicate:@"0"];
     [tabContentView constrainBottomSpaceToView:self.tabContainer predicate:@"0"];
@@ -233,6 +233,7 @@ static const CGFloat ARMenuButtonDimension = 50;
         self.statusBarView.alpha = visible ? visibleAlpha : 0;
 
         self.statusBarVerticalConstraint.constant = visible ? [self statusBarHeight] : 0;
+        self.tabContentViewTopConstraint.constant = visible ? [self statusBarHeight] : 0;
 
         if (animated) { [self.view setNeedsLayout]; }
     }];
