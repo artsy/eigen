@@ -15,6 +15,7 @@
 -->
 
 ### Master
+- Add ellipsis to partner and event names - ashkan
 
 ### 1.8.4
 

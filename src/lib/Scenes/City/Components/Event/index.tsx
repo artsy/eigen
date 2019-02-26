@@ -74,7 +74,7 @@ export class Event extends React.Component<Props, State> {
         )}
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
           <TextContainer mb={2}>
-            <Sans size="3" weight="medium">
+            <Sans size="3" weight="medium" numberOfLines={1} ellipsizeMode="tail">
               {partnerName}
             </Sans>
             <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
