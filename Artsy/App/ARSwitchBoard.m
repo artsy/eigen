@@ -33,6 +33,7 @@
 #import <Emission/ARFairArtworksComponentViewController.h>
 #import <Emission/ARFairArtistsComponentViewController.h>
 #import <Emission/ARFairExhibitorsComponentViewController.h>
+#import <Emission/ARFairComponentViewController.h>
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -283,6 +284,9 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     // It doesn't need to run through echo, as it's pretty much here to stay forever.
     [self.routes addRoute:@"/:slug" priority:0 handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
+        if ([parameters[@"entity"] isEqualToString:@"fair"]) {
+            return [[ARFairComponentViewController alloc] initWithFairID:parameters[@"slug"]];
+        }
         return [sself loadUnknownPathWithID:parameters[@"slug"]];
     }];
 
