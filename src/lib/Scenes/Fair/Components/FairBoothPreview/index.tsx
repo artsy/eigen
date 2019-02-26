@@ -119,8 +119,14 @@ export class FairBoothPreview extends React.Component<Props, State> {
     SwitchBoard.presentNavigationViewController(this, `show/${showID}?entity=fair-booth`)
   }
 
+  @track(props => ({
+    action_name: Schema.ActionNames.ListGallery,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: props.show._id,
+    owner_slug: props.show.id,
+    owner_type: Schema.OwnerEntityTypes.Gallery,
+  }))
   viewFairBoothPressed() {
-    console.log("HI ASH")
     const {
       show: { id: showID },
     } = this.props

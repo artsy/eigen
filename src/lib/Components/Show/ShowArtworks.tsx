@@ -28,7 +28,6 @@ export class ShowArtworks extends React.Component<Props, State> {
 
   render() {
     const { show } = this.props
-    console.log("SHOWARTWORKS", { props: this.props, thing: show.filteredArtworks })
     return (
       <Theme>
         <FilteredInfiniteScrollGrid filteredArtworks={show.filteredArtworks} onRefetch={this.handleRefetch} />
