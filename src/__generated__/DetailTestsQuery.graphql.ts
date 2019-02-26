@@ -117,6 +117,8 @@ fragment ShowHeader_show on Show {
   artists {
     name
     href
+    id
+    _id
     __id
   }
 }
@@ -370,7 +372,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "43ccb26bf0d5e0505a86d05c83e7b396",
+  "id": "5dbda6503f4a51449dadaf1796cf2f8c",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -619,9 +621,9 @@ return {
             "selections": [
               v3,
               v13,
-              v1,
               v5,
               v2,
+              v1,
               v8,
               {
                 "kind": "ScalarField",

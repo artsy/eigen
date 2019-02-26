@@ -42,7 +42,9 @@ _Manual install_
 1. Install NPM modules: `$ yarn install`
 1. Install Pods: `$ cd Example && bundle && bundle exec pod install`
 
-   ### Running the project:
+Ran into issues? Try [troubleshoot](docs/troubleshooting.md).
+
+### Running the project:
 
 1. Run `$ yarn start` from the top directory, which will:
 

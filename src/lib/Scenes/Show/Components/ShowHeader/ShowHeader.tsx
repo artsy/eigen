@@ -28,6 +28,7 @@ const ButtonWrapper = styled(Box)`
 `
 
 const track: Track<Props, State> = _track
+
 @track()
 export class ShowHeader extends React.Component<Props, State> {
   state = { isFollowedSaving: false }
@@ -110,13 +111,17 @@ export class ShowHeader extends React.Component<Props, State> {
     return null
   }
 
-  @track(props => ({
-    action_name: Schema.ActionNames.ContextualArtist,
-    owner_id: props.show._id,
-    owner_slug: props.show.id,
-    owner_type: Schema.OwnerEntityTypes.Show,
-  }))
-  handleArtistSelected(url) {
+  @track((__, _, args) => {
+    const slug = args[1]
+    const id = args[2]
+    return {
+      action_name: Schema.ActionNames.ContextualArtist,
+      owner_id: id,
+      owner_slug: slug,
+      owner_type: Schema.OwnerEntityTypes.Artist,
+    } as any
+  })
+  handleArtistSelected(url, _slug, _id) {
     SwitchBoard.presentNavigationViewController(this, url)
   }
 
@@ -168,7 +173,7 @@ export class ShowHeader extends React.Component<Props, State> {
             list={artists}
             count={artists.length}
             displayedItems={2}
-            onItemSelected={url => this.handleArtistSelected(url)}
+            onItemSelected={this.handleArtistSelected.bind(this)}
             onViewAllPressed={onViewAllArtistsPressed}
           />
           <ButtonWrapper>
@@ -216,6 +221,8 @@ export const ShowHeaderContainer = createFragmentContainer(
       artists {
         name
         href
+        id
+        _id
       }
     }
   `

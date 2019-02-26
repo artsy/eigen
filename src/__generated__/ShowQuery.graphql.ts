@@ -108,6 +108,8 @@ fragment ShowArtists_show on Show {
     letter
     items {
       ...ArtistListItem_artist
+      sortable_id
+      href
       __id
     }
   }
@@ -280,6 +282,8 @@ fragment ShowHeader_show on Show {
   artists {
     name
     href
+    id
+    _id
     __id
   }
 }
@@ -715,7 +719,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowQuery",
-  "id": "3acf7229677f597389660f21c22cde34",
+  "id": "42f4ef431678517acb683ded89d48092",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -965,9 +969,9 @@ return {
             "selections": [
               v5,
               v15,
-              v2,
               v8,
               v4,
+              v2,
               v11,
               v16,
               v17,
@@ -1161,15 +1165,23 @@ return {
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
+                  v16,
                   v2,
-                  v4,
                   v8,
                   v5,
                   v11,
-                  v16,
+                  v4,
                   v17,
                   v18,
-                  v19
+                  v19,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "sortable_id",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  v15
                 ]
               }
             ]

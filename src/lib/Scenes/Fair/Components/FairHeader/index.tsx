@@ -3,6 +3,7 @@ import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
+import { Schema, Track, track as _track } from "lib/utils/track"
 import moment from "moment"
 import React from "react"
 import { Dimensions, Image } from "react-native"
@@ -54,11 +55,14 @@ const CountdownContainer = styled.View`
   width: 100%;
 `
 
+const track: Track<Props, State> = _track
+
+@track()
 export class FairHeader extends React.Component<Props, State> {
   state = { isSavedFairStateUpdating: false }
 
   getContextualDetails() {
-    const { viewAllArtists, viewAllExhibitors } = this.props
+    const { viewAllExhibitors, viewAllArtists } = this.props
     const { artists_names, counts, partner_names } = this.props.fair
 
     const artistList = artists_names.edges.map(i => i.node).filter(Boolean)
@@ -68,6 +72,8 @@ export class FairHeader extends React.Component<Props, State> {
           return {
             href: "/show/" + i.node.id,
             name: i.node.partner.profile.name,
+            id: i.node.partner.profile.id,
+            _id: i.node.partner.profile._id,
           }
         }
       })
@@ -80,7 +86,7 @@ export class FairHeader extends React.Component<Props, State> {
           list={artistList}
           count={counts.artists}
           displayedItems={2}
-          onItemSelected={this.handleWorksPress}
+          onItemSelected={this.handleArtistPress.bind(this)}
           onViewAllPressed={viewAllArtists}
         />
         <Spacer mt={1} />
@@ -89,19 +95,41 @@ export class FairHeader extends React.Component<Props, State> {
           list={partnerList}
           count={counts.partners}
           displayedItems={2}
-          onItemSelected={this.handleExhibitorPress}
+          onItemSelected={this.handleExhibitorPress.bind(this)}
           onViewAllPressed={viewAllExhibitors}
         />
       </>
     )
   }
 
-  handleExhibitorPress = item => {
-    Switchboard.presentNavigationViewController(this, `${item}?entity=fair-booth`)
+  @track((__, _, args) => {
+    const slug = args[1]
+    const id = args[2]
+    return {
+      action_name: Schema.ActionNames.ContextualGallery,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: id,
+      owner_slug: slug,
+      owner_type: Schema.OwnerEntityTypes.Gallery,
+    } as any
+  })
+  handleExhibitorPress(href, _slug, _id) {
+    Switchboard.presentNavigationViewController(this, `${href}?entity=fair-booth`)
   }
 
-  handleWorksPress = item => {
-    Switchboard.presentNavigationViewController(this, item)
+  @track((__, _, args) => {
+    const slug = args[1]
+    const id = args[2]
+    return {
+      action_name: Schema.ActionNames.ContextualArtist,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: id,
+      owner_slug: slug,
+      owner_type: Schema.OwnerEntityTypes.Artist,
+    } as any
+  })
+  handleArtistPress(href, _slug, _id) {
+    Switchboard.presentNavigationViewController(this, href)
   }
 
   render() {
@@ -145,6 +173,7 @@ export const FairHeaderContainer = createFragmentContainer(
   graphql`
     fragment FairHeader_fair on Fair {
       id
+      _id
       name
       counts {
         artists
@@ -158,6 +187,8 @@ export const FairHeaderContainer = createFragmentContainer(
               ... on Partner {
                 profile {
                   name
+                  id
+                  _id
                 }
               }
             }
@@ -169,6 +200,8 @@ export const FairHeaderContainer = createFragmentContainer(
           node {
             name
             href
+            id
+            _id
           }
         }
       }

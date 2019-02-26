@@ -16,7 +16,11 @@
 
 ### Master
 
+- Fair exhibitors overview looks up to spec - orta
+- Hides additional info when a fair doesn't have it - orta
+- When there's only a website for the fair additional info, the app goes there - orta
 - Adds global saves&follows analytics - ash
+- The Markdown componeont is more cautious on re-rendering its content - orta
 
 ### 1.8.3
 
@@ -46,6 +50,9 @@
 - Fixes scroll in artworks grid - kieran
 - Check for saleInfoLine before rendering sales info on artwork - kieran
 - Adds analytics to all Show screens and views - luc
+- Removes Fairs tab from Global Saves and Follows view - ashley
+- Fixes FairBooth routing - kieran
+- Adds Shows to Global Saves and Follows view - ashley
 - Removes Fairs tab from Global Saves and Follows view -ashley
 - Fix rendering strong elements in markdown all over the app - orta
 - Fixes FairBooth routing - kieran
@@ -53,6 +60,7 @@
 - Adds Shows to Global Saves and Follows view -ashley
 - Adds seperator between fair entities - kieran
 - Fixes FairBooth routes - luc
+- Adds Fair analytics - kieran
 
 ### 1.8.2
 

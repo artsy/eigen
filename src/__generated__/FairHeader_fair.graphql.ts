@@ -5,6 +5,7 @@ declare const _FairHeader_fair$ref: unique symbol;
 export type FairHeader_fair$ref = typeof _FairHeader_fair$ref;
 export type FairHeader_fair = {
     readonly id: string;
+    readonly _id: string;
     readonly name: string | null;
     readonly counts: ({
         readonly artists: any | null;
@@ -17,6 +18,8 @@ export type FairHeader_fair = {
                 readonly partner: ({
                     readonly profile?: ({
                         readonly name: string | null;
+                        readonly id: string;
+                        readonly _id: string;
                     }) | null;
                 }) | null;
             }) | null;
@@ -27,6 +30,8 @@ export type FairHeader_fair = {
             readonly node: ({
                 readonly name: string | null;
                 readonly href: string | null;
+                readonly id: string;
+                readonly _id: string;
             }) | null;
         }) | null> | null;
     }) | null;
@@ -56,21 +61,7 @@ export type FairHeader_fair = {
 
 
 const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v2 = [
+var v0 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -78,21 +69,42 @@ v2 = [
     "type": "Int"
   }
 ],
-v3 = {
+v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
-v4 = {
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "_id",
+  "args": null,
+  "storageKey": null
+},
 v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "__id",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
@@ -106,7 +118,45 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    v0,
+    {
+      "kind": "LinkedField",
+      "alias": "artists_names",
+      "name": "artists",
+      "storageKey": "artists(first:2)",
+      "args": v0,
+      "concreteType": "ArtistConnection",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ArtistEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Artist",
+              "plural": false,
+              "selections": [
+                v1,
+                v2,
+                v3,
+                v4,
+                v5
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    v3,
     v1,
     {
       "kind": "LinkedField",
@@ -138,7 +188,7 @@ return {
       "alias": "partner_names",
       "name": "shows_connection",
       "storageKey": "shows_connection(first:2)",
-      "args": v2,
+      "args": v0,
       "concreteType": "ShowConnection",
       "plural": false,
       "selections": [
@@ -160,7 +210,7 @@ return {
               "concreteType": "Show",
               "plural": false,
               "selections": [
-                v0,
+                v3,
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -170,7 +220,7 @@ return {
                   "concreteType": null,
                   "plural": false,
                   "selections": [
-                    v3,
+                    v5,
                     {
                       "kind": "InlineFragment",
                       "type": "Partner",
@@ -185,56 +235,23 @@ return {
                           "plural": false,
                           "selections": [
                             v1,
-                            v3
+                            v3,
+                            v4,
+                            v5
                           ]
                         }
                       ]
                     }
                   ]
                 },
-                v3
+                v5
               ]
             }
           ]
         }
       ]
     },
-    {
-      "kind": "LinkedField",
-      "alias": "artists_names",
-      "name": "artists",
-      "storageKey": "artists(first:2)",
-      "args": v2,
-      "concreteType": "ArtistConnection",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "edges",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "ArtistEdge",
-          "plural": true,
-          "selections": [
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "node",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "Artist",
-              "plural": false,
-              "selections": [
-                v1,
-                v4,
-                v3
-              ]
-            }
-          ]
-        }
-      ]
-    },
+    v4,
     {
       "kind": "LinkedField",
       "alias": null,
@@ -258,7 +275,7 @@ return {
           "args": null,
           "storageKey": null
         },
-        v5
+        v6
       ]
     },
     {
@@ -279,8 +296,8 @@ return {
           "concreteType": "Image",
           "plural": false,
           "selections": [
-            v0,
-            v4,
+            v3,
+            v2,
             {
               "kind": "ScalarField",
               "alias": null,
@@ -295,11 +312,11 @@ return {
               "args": null,
               "storageKey": null
             },
-            v5
+            v6
           ]
         },
+        v5,
         v3,
-        v0,
         v1,
         {
           "kind": "ScalarField",
@@ -324,9 +341,9 @@ return {
       "args": null,
       "storageKey": null
     },
-    v3
+    v5
   ]
 };
 })();
-(node as any).hash = '2e837ef608909764579ac0acc4530da4';
+(node as any).hash = '868e2deb992e1a067dabebe2add4a03f';
 export default node;

@@ -8,6 +8,7 @@ declare const _FairDetail_fair$ref: unique symbol;
 export type FairDetail_fair$ref = typeof _FairDetail_fair$ref;
 export type FairDetail_fair = {
     readonly id: string;
+    readonly _id: string;
     readonly name: string | null;
     readonly hours: string | null;
     readonly location: ({
@@ -17,6 +18,11 @@ export type FairDetail_fair = {
         }) | null;
         readonly " $fragmentRefs": LocationMap_location$ref;
     }) | null;
+    readonly organizer: ({
+        readonly website: string | null;
+    }) | null;
+    readonly about: string | null;
+    readonly ticketsLink: string | null;
     readonly profile: ({
         readonly name: string | null;
     }) | null;
@@ -30,6 +36,7 @@ export type FairDetail_fair = {
             readonly cursor: string;
             readonly node: ({
                 readonly id: string;
+                readonly _id: string;
                 readonly artworks_connection: ({
                     readonly edges: ReadonlyArray<({
                         readonly node: ({
@@ -51,7 +58,7 @@ const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
@@ -66,6 +73,13 @@ v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -100,6 +114,24 @@ return {
     }
   ],
   "selections": [
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "organizer",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "organizer",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "website",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
     {
       "kind": "FragmentSpread",
       "name": "FairHeader_fair",
@@ -155,6 +187,21 @@ return {
         },
         v2
       ]
+    },
+    v3,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "about",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "ticketsLink",
+      "args": null,
+      "storageKey": null
     },
     {
       "kind": "LinkedField",
@@ -235,6 +282,7 @@ return {
               "concreteType": "Show",
               "plural": false,
               "selections": [
+                v3,
                 v0,
                 {
                   "kind": "LinkedField",
@@ -270,7 +318,7 @@ return {
                           "concreteType": "Artwork",
                           "plural": false,
                           "selections": [
-                            v0,
+                            v3,
                             v2
                           ]
                         }
@@ -301,5 +349,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '0919f2e7131809a5159b757b895d32a5';
+(node as any).hash = '6cf4c1d34a7829446134360e9a11279e';
 export default node;

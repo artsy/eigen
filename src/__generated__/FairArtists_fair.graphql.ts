@@ -6,6 +6,7 @@ declare const _FairArtists_fair$ref: unique symbol;
 export type FairArtists_fair$ref = typeof _FairArtists_fair$ref;
 export type FairArtists_fair = {
     readonly id: string;
+    readonly _id: string;
     readonly artists: ({
         readonly pageInfo: {
             readonly hasNextPage: boolean;
@@ -17,6 +18,8 @@ export type FairArtists_fair = {
             readonly node: ({
                 readonly sortable_id: string | null;
                 readonly href: string | null;
+                readonly _id: string;
+                readonly id: string;
                 readonly " $fragmentRefs": ArtistListItem_artist$ref;
             }) | null;
         }) | null> | null;
@@ -28,6 +31,20 @@ export type FairArtists_fair = {
 
 const node: ConcreteFragment = (function(){
 var v0 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "_id",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
@@ -65,13 +82,8 @@ return {
     }
   ],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "id",
-      "args": null,
-      "storageKey": null
-    },
+    v0,
+    v1,
     {
       "kind": "LinkedField",
       "alias": "artists",
@@ -157,7 +169,9 @@ return {
                   "args": null,
                   "storageKey": null
                 },
+                v1,
                 v0,
+                v2,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -171,9 +185,9 @@ return {
         }
       ]
     },
-    v0
+    v2
   ]
 };
 })();
-(node as any).hash = '463231a052e05286c46a0c6721b908d7';
+(node as any).hash = 'bc2423b3205828936124cb5753054e23';
 export default node;

@@ -2,6 +2,7 @@ import { Box, Separator, Serif, Spacer } from "@artsy/palette"
 import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -24,6 +25,26 @@ interface State {
   }>
 }
 
+interface ShowMoreMetadataForFairs {
+  organizer?: { website: string }
+  about?: string
+  ticketsLink?: string
+}
+
+export const shouldShowFairMoreInfo = (data: ShowMoreMetadataForFairs) => {
+  return data.ticketsLink || data.about
+}
+
+export const shouldGoStraightToWebsite = (data: ShowMoreMetadataForFairs) => {
+  return !shouldShowFairMoreInfo(data) && (data.organizer && data.organizer.website)
+}
+
+@screenTrack<Props>(props => ({
+  context_screen: Schema.PageNames.AboutTheFairPage,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+  context_screen_owner_slug: props.fair.id,
+  context_screen_owner_id: props.fair._id,
+}))
 export class FairMoreInfo extends React.Component<Props, State> {
   state = {
     sections: [],
@@ -59,15 +80,37 @@ export class FairMoreInfo extends React.Component<Props, State> {
     this.setState({ sections })
   }
 
-  openUrl = url => {
-    SwitchBoard.presentModalViewController(this, url)
-  }
-
   renderItemSeparator = () => (
     <Box py={3} px={2}>
       <Separator />
     </Box>
   )
+
+  @track(props => {
+    return {
+      action_name: Schema.ActionNames.FairSite,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: props.fair._id,
+      owner_slug: props.fair.id,
+      owner_type: Schema.OwnerEntityTypes.Fair,
+    } as any
+  })
+  handleFairSitePress(website) {
+    SwitchBoard.presentModalViewController(this, website)
+  }
+
+  @track(props => {
+    return {
+      action_name: Schema.ActionNames.BuyTickets,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: props.fair._id,
+      owner_slug: props.fair.id,
+      owner_type: Schema.OwnerEntityTypes.Fair,
+    } as any
+  })
+  handleBuyTicketsPress(ticketsLink) {
+    SwitchBoard.presentModalViewController(this, ticketsLink)
+  }
 
   renderItem = ({ item: { data, type } }) => {
     switch (type) {
@@ -82,11 +125,13 @@ export class FairMoreInfo extends React.Component<Props, State> {
             {data.organizer &&
               data.organizer.website(
                 <>
-                  <CaretButton text="View fair site" onPress={() => this.openUrl(data.organizer.website)} />
+                  <CaretButton text="View fair site" onPress={() => this.handleFairSitePress(data.organizer.website)} />
                   <Spacer m={1} />
                 </>
               )}
-            {data.ticketsLink && <CaretButton text="Buy tickets" onPress={() => this.openUrl(data.ticketsLink)} />}
+            {data.ticketsLink && (
+              <CaretButton text="Buy tickets" onPress={() => this.handleBuyTicketsPress(data.ticketsLink)} />
+            )}
           </>
         )
     }
@@ -125,6 +170,8 @@ export const FairMoreInfoRenderer: React.SFC<{ fairID: string }> = ({ fairID }) 
           organizer {
             website
           }
+          id
+          _id
           about
           ticketsLink
         }
