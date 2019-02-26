@@ -10,20 +10,19 @@ export const bucketCityResults = (viewer: GlobalMap_viewer): BucketResults => {
   // TODO: Saved isn't supported yet, so we'll return nothing.
   const saved = []
 
+  const oneWeekFromNow = moment(new Date()).add(1, "week")
   const fairs = (viewer.city.fairs as unknown) as Tab[]
   const galleries = filter(viewer.city.shows.edges, e => e.node.partner.type === "Gallery")
   const museums = filter(viewer.city.shows.edges, e => e.node.partner.type === "Institution")
   const opening = filter(viewer.city.shows.edges, e => {
     if (e.node.start_at) {
       const momentToUse = moment(e.node.start_at)
-      const oneWeekFromNow = moment(new Date()).add(1, "week")
       return momentToUse <= oneWeekFromNow
     }
   })
   const closing = filter(viewer.city.shows.edges, e => {
     if (e.node.end_at) {
       const momentToUse = moment(e.node.end_at)
-      const oneWeekFromNow = moment(new Date()).add(1, "week")
       return momentToUse <= oneWeekFromNow
     }
   })
