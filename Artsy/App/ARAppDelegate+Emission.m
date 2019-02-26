@@ -36,6 +36,7 @@
 #import <Emission/ARFavoritesComponentViewController.h>
 
 #import <React/RCTUtils.h>
+#import <React/RCTDevSettings.h>
 #import <objc/runtime.h>
 #import <ARAnalytics/ARAnalytics.h>
 #import "ARAdminNetworkModel.h"
@@ -123,6 +124,10 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
                                                                                   options:options];
 
     AREmission *emission = [[AREmission alloc] initWithConfiguration:config packagerURL:packagerURL];
+    
+    // Disable default React Native dev menu shake motion handler
+    RCTSwapInstanceMethods([UIWindow class], @selector(RCT_motionEnded:withEvent:), @selector(motionEnded:withEvent:));
+    
     [AREmission setSharedInstance:emission];
 
 #pragma mark - Native Module: Follow status

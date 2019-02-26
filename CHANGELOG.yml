@@ -3,7 +3,7 @@ upcoming:
   date: TBD
   emission_version: 1.8.3
   dev:
-    - Not yet
+    - Adds React Native developer menu + tools - luc
   user_facing:
     - Uses React for the Show/Fairs by default - orta
     - Fixes to selection of fairs in Search - orta + matt
@@ -16,6 +16,7 @@ upcoming:
     - Fixes issue where non-fair routes would be sent to the new fair component - ash
     - Fixes search on Fair component - ash
     - Fixes crash with opening search on Fair/Show components - ash
+    - Add routes for Fair sub screens - luc
 
 releases:
   -

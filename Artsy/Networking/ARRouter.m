@@ -542,18 +542,6 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:url parameters:params];
 }
 
-+ (NSURLRequest *)newArtworksForYouRequestWithID:(NSString *)userID page:(NSInteger)page
-{
-    NSDictionary *params = @{
-        @"since" : @30,
-        @"page" : @(page),
-        @"sort" : @"-published_at",
-        @"type" : @"ArtworkPublished",
-        @"for_sale" : @YES,
-    };
-    return [self requestWithMethod:@"GET" path:ARWorksByArtistsYouFollowURL parameters:params];
-}
-
 + (NSURLRequest *)createBidderPositionsForSaleID:(NSString *)saleID artworkID:(NSString *)artworkID maxBidAmountCents:(NSInteger)maxBidAmountCents
 {
     NSDictionary *params = @{ @"sale_id" : saleID,
@@ -938,11 +926,6 @@ static NSString *hostFromString(NSString *string)
 
 #pragma mark - Recommendations
 
-+ (NSURLRequest *)suggestedHomepageArtworksRequest
-{
-    return [self requestWithMethod:@"GET" path:ARSuggestedHomepageArtworks parameters:nil];
-}
-
 + (NSURLRequest *)worksForYouRequest
 {
     return [ARRouter requestWithMethod:@"GET" path:ARNotificationsURL parameters:@{
@@ -950,18 +933,6 @@ static NSString *hostFromString(NSString *string)
         @"type" : @"ArtworkPublished",
         @"user_id" : [User currentUser].userID,
         @"size" : @(10)
-    }];
-}
-
-+ (NSURLRequest *)worksForYouCountRequest;
-{
-    return [ARRouter requestWithMethod:@"GET" path:ARNotificationsURL parameters:@{
-        @"page" : @1,
-        @"type" : @"ArtworkPublished",
-        @"user_id" : [User currentUser].userID,
-        @"size" : @(1), // This endpoint only works if at least 1 artwork is requested
-        @"total_count" : @1,
-        @"unread" : @"true"
     }];
 }
 
