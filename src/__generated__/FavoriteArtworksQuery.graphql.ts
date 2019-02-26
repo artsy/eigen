@@ -27,7 +27,9 @@ fragment Artworks_me on Me {
   saved_artworks {
     artworks_connection(private: true, first: 10, after: "") {
       pageInfo {
+        startCursor
         endCursor
+        hasPreviousPage
         hasNextPage
       }
       edges {
@@ -139,7 +141,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FavoriteArtworksQuery",
-  "id": "e8f99f1b37b86ad40bad2621bc9e09a0",
+  "id": "fdfe0becaf6cf87a50472c9f0865aa16",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -231,7 +233,21 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
+                        "name": "startCursor",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
                         "name": "endCursor",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "hasPreviousPage",
                         "args": null,
                         "storageKey": null
                       },

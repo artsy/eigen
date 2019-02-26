@@ -69,7 +69,9 @@ export default createPaginationContainer(
         followsAndSaves {
           shows(first: $count, after: $cursor) @connection(key: "SavedShows_shows") {
             pageInfo {
+              startCursor
               endCursor
+              hasPreviousPage
               hasNextPage
             }
             edges {

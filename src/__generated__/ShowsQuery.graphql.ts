@@ -33,7 +33,9 @@ fragment Shows_me_1G22uz on Me {
   followsAndSaves {
     shows(first: $count, after: $cursor) {
       pageInfo {
+        startCursor
         endCursor
+        hasPreviousPage
         hasNextPage
       }
       edges {
@@ -121,7 +123,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowsQuery",
-  "id": "1a83a39f883192497ec5b14f0ad702cb",
+  "id": "9fe74ccbfe678f1e312b49d72513f049",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -220,7 +222,21 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
+                        "name": "startCursor",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
                         "name": "endCursor",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "hasPreviousPage",
                         "args": null,
                         "storageKey": null
                       },

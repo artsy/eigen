@@ -81,7 +81,9 @@ export default createPaginationContainer(
           artworks_connection(private: true, first: $count, after: $cursor)
             @connection(key: "GenericGrid_artworks_connection") {
             pageInfo {
+              startCursor
               endCursor
+              hasPreviousPage
               hasNextPage
             }
             edges {

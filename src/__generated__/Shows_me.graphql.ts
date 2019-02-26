@@ -8,7 +8,9 @@ export type Shows_me = {
     readonly followsAndSaves: ({
         readonly shows: ({
             readonly pageInfo: {
+                readonly startCursor: string | null;
                 readonly endCursor: string | null;
+                readonly hasPreviousPage: boolean;
                 readonly hasNextPage: boolean;
             };
             readonly edges: ReadonlyArray<({
@@ -93,7 +95,21 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
+                  "name": "startCursor",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
                   "name": "endCursor",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "hasPreviousPage",
                   "args": null,
                   "storageKey": null
                 },
@@ -156,5 +172,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'c5ea393453d1899979e41b4621811399';
+(node as any).hash = 'b5eb7cddba52f67c5d0199b12ce69c97';
 export default node;
