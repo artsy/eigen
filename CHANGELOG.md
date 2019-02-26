@@ -52,6 +52,7 @@
 - Fair exhibitors overview looks up to spec - orta
 - Adds Shows to Global Saves and Follows view -ashley
 - Adds seperator between fair entities - kieran
+- Fixes FairBooth routes - luc
 
 ### 1.8.2
 
