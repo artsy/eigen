@@ -15,6 +15,7 @@
 -->
 
 ### Master
+- Add ellipsis to partner and event names - ashkan
 
 - Adds Sentry to the app - orta
 - Adds Sentry logger for users - orta
