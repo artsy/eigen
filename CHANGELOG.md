@@ -20,6 +20,7 @@
 - Adds Sentry logger for users - orta
 - Fix for the count of artworks in a show - orta
 - Nearby show previews use a better placeholder - orta
+- Adds clickable links for maps - orta
 
 ### 1.8.4
 
