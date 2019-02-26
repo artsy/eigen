@@ -28,6 +28,7 @@
 #import <Emission/AREventsModule.h>
 #import <Emission/ARTakeCameraPhotoModule.h>
 #import <Emission/ARRefineOptionsModule.h>
+#import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARWorksForYouModule.h>
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
@@ -336,13 +337,6 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 #pragma mark - ARMenuAwareViewController additions
 
-
-@interface ARArtistComponentViewController (ARMenuAwareViewController) <ARMenuAwareViewController>
-@end
-
-
-@implementation ARArtistComponentViewController (ARMenuAwareViewController)
-
 static UIScrollView *
 FindFirstScrollView(UIView *view)
 {
@@ -357,27 +351,33 @@ FindFirstScrollView(UIView *view)
     }
     return nil;
 }
-
-- (void)viewDidLayoutSubviews;
-{
-    [super viewDidLayoutSubviews];
-    self.menuAwareScrollView = FindFirstScrollView(self.view);
-}
-
 static char menuAwareScrollViewKey;
 
-- (void)setMenuAwareScrollView:(UIScrollView *)scrollView;
-{
-    if (scrollView != self.menuAwareScrollView) {
-        [self willChangeValueForKey:@"menuAwareScrollView"];
-        objc_setAssociatedObject(self, &menuAwareScrollViewKey, scrollView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        [self didChangeValueForKey:@"menuAwareScrollView"];
-    }
-}
-
-- (UIScrollView *)menuAwareScrollView;
-{
-    return objc_getAssociatedObject(self, &menuAwareScrollViewKey);
-}
-
+#define MakeMenuAware(ControllerClass) @interface ControllerClass (ARMenuAwareViewController) <ARMenuAwareViewController>\
+@end\
+@implementation ControllerClass (ARMenuAwareViewController)\
+- (void)viewDidLayoutSubviews {\
+    [super viewDidLayoutSubviews];\
+    self.menuAwareScrollView = FindFirstScrollView(self.view);\
+}\
+- (void)setMenuAwareScrollView:(UIScrollView *)scrollView {\
+    if (scrollView != self.menuAwareScrollView) {\
+        [self willChangeValueForKey:@"menuAwareScrollView"];\
+        objc_setAssociatedObject(self, &menuAwareScrollViewKey, scrollView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);\
+        [self didChangeValueForKey:@"menuAwareScrollView"];\
+    }\
+}\
+- (UIScrollView *)menuAwareScrollView {\
+    return objc_getAssociatedObject(self, &menuAwareScrollViewKey);\
+}\
 @end
+
+MakeMenuAware(ARArtistComponentViewController)
+MakeMenuAware(ARFairComponentViewController)
+
+/* TODO: Make the following Emission VC's menu aware with the above macro:
+ - ARShowArtworksComponentViewController
+ - ARShowArtistsComponentViewController
+ - ARShowMoreInfoComponentViewController
+ - ARFairMoreInfoComponentViewController
+ */
