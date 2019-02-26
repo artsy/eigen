@@ -1,6 +1,7 @@
 import { Flex, Sans, Serif } from "@artsy/palette"
 import { ShowItem_show } from "__generated__/ShowItem_show.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
+import { Pin } from "lib/Icons/Pin"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, track } from "lib/utils/track"
 import React from "react"
@@ -48,10 +49,14 @@ export class ShowItem extends React.Component<Props> {
       exhibition_period,
     } = show
 
+    const placeholder = this.imageURL ? null : <Pin color="white" />
+
     return (
       <TouchableOpacity onPress={() => this.onPress()}>
         <Flex my={15} mr={2} width={windowWidth - 100} height={200}>
-          <ImageView imageURL={this.imageURL} />
+          <ImageView imageURL={this.imageURL} style={{ alignItems: "center", justifyContent: "center" }}>
+            {placeholder}
+          </ImageView>
           <Flex my={2}>
             <Sans size="2" weight="medium" numberOfLines={1} mb={0.5}>
               {name}

@@ -17,6 +17,7 @@
 ### Master
 
 - Fix for the count of artworks in a show - orta
+- Nearby show previews use a better placeholder - orta
 
 ### 1.8.4
 
