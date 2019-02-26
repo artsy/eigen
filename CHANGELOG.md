@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fixes partner link on Fair Booth header - luc
+
 ### 1.8.4
 
 - Fair exhibitors overview looks up to spec - orta
