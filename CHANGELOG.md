@@ -22,6 +22,7 @@
 - Adds global saves & follows analytics - ash
 - Adds display date to CountDownTimer - kieran
 - The Markdown componeont is more cautious on re-rendering its content - orta
+- Adds dates of currently running saved shows to Saved and Followed Shows - ashley
 
 ### 1.8.3
 
