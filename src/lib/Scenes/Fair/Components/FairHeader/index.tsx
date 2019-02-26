@@ -38,8 +38,8 @@ const Overlay = styled.View`
 `
 
 const Logo = styled(Image)`
-  width: 150;
-  height: 150;
+  width: 140;
+  height: 140;
   margin-left: auto;
   margin-right: auto;
   background-color: transparent;
@@ -218,7 +218,7 @@ export const FairHeaderContainer = createFragmentContainer(
           href
           height
           width
-          url
+          url(version: "square140")
         }
         __id
         id

@@ -103,13 +103,6 @@ v5 = {
   "name": "__id",
   "args": null,
   "storageKey": null
-},
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "url",
-  "args": null,
-  "storageKey": null
 };
 return {
   "kind": "Fragment",
@@ -275,7 +268,13 @@ return {
           "args": null,
           "storageKey": null
         },
-        v6
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "url",
+          "args": null,
+          "storageKey": null
+        }
       ]
     },
     {
@@ -312,7 +311,20 @@ return {
               "args": null,
               "storageKey": null
             },
-            v6
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "url",
+              "args": [
+                {
+                  "kind": "Literal",
+                  "name": "version",
+                  "value": "square140",
+                  "type": "[String]"
+                }
+              ],
+              "storageKey": "url(version:\"square140\")"
+            }
           ]
         },
         v5,
@@ -345,5 +357,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '868e2deb992e1a067dabebe2add4a03f';
+(node as any).hash = '55b582fee5480881b85a1c790cdcb22a';
 export default node;
