@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.8.4
+
 - Fair exhibitors overview looks up to spec - orta
 - Hides additional info when a fair doesn't have it - orta
 - When there's only a website for the fair additional info, the app goes there - orta
