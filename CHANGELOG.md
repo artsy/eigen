@@ -17,6 +17,7 @@
 ### Master
 
 - Switches Fairs&Shows to use SwitchBoard routing instead of nested navigation controller - ash
+- Fix for the count of artworks in a show - orta
 
 ### 1.8.4
 

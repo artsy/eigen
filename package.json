@@ -1,7 +1,7 @@
 {
   "name": "emission",
   "version": "1.8.4",
-  "native-code-version": 17,
+  "native-code-version": 18,
   "description": "Artsy React(Native) components.",
   "engines": {
     "node": "10.x",
@@ -125,6 +125,7 @@
     "patch-package": "^5.0.0",
     "postinstall-prepare": "^1.0.1",
     "prettier": "^1.14",
+    "pull-lock": "^1.0.0",
     "react-dom": "^16.3.0-alpha.1",
     "react-native-storybook-loader": "^1.6.0",
     "react-native-typescript-transformer": "^1.2.3",
@@ -211,5 +212,10 @@
     "singleQuote": false,
     "trailingComma": "es5",
     "bracketSpacing": true
+  },
+  "pull-lock": {
+    "yarn.lock": "yarn install",
+    "Example/Gemfile.lock": "cd Example && bundle install",
+    "Example/Podfile.lock": "cd Example && bundle exec pod install"
   }
 }
