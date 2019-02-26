@@ -22,6 +22,8 @@
 - Adds global saves & follows analytics - ash
 - Adds display date to CountDownTimer - kieran
 - The Markdown componeont is more cautious on re-rendering its content - orta
+- Updates color of unsaved shows text indicator in global saves and follows - ashley
+- Changes copy in Shows global saves and follows when user has not followed any shows - ashley
 - Adds dates of currently running saved shows to Saved and Followed Shows - ashley
 - Fixes hours section animation - luc
 - Fixes FairBooth routes - luc

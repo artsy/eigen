@@ -42,12 +42,7 @@ export class Shows extends Component<Props, State> {
     const shows = this.props.me.followsAndSaves.shows.edges.map(edge => edge.node)
 
     if (shows.length === 0 || !shows) {
-      return (
-        <ZeroState
-          title="You haven’t followed any shows yet"
-          subtitle="Follow shows to get notified about new shows that have been added to Artsy."
-        />
-      )
+      return <ZeroState title="You haven’t followed any shows yet" />
     }
 
     return (
