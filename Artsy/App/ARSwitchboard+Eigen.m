@@ -5,7 +5,6 @@
 // View Controllers
 #import "ARAdminSettingsViewController.h"
 #import "ARArtworkSetViewController.h"
-#import "ARShowViewController.h"
 #import "ARArtworkInfoViewController.h"
 #import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
@@ -136,11 +135,7 @@
 
 - (UIViewController *)loadShow:(PartnerShow *)show fair:(Fair *)fair
 {
-    if ([AROptions boolForOption:AROptionsModernShowFairPages]) {
-        return [[ARShowComponentViewController alloc] initWithShowID:show.showID];
-    } else {
-        return [[ARShowViewController alloc] initWithShow:show fair:fair];
-    }
+    return [[ARShowComponentViewController alloc] initWithShowID:show.showID];
 }
 
 - (UIViewController *)loadShow:(PartnerShow *)show
@@ -150,11 +145,7 @@
 
 - (UIViewController *)loadShowWithID:(NSString *)showID fair:(Fair *)fair
 {
-    if ([AROptions boolForOption:AROptionsModernShowFairPages]) {
-        return [[ARShowComponentViewController alloc] initWithShowID:showID];
-    } else {
-        return [[ARShowViewController alloc] initWithShowID:showID fair:fair];
-    }
+    return [[ARShowComponentViewController alloc] initWithShowID:showID];
 }
 
 - (UIViewController *)loadShowWithID:(NSString *)showID

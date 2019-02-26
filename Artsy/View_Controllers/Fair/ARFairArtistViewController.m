@@ -7,7 +7,6 @@
 #import "ORStackView+ArtsyViews.h"
 #import "ARAppConstants.h"
 #import "ARNavigationButton.h"
-#import "ARShowViewController.h"
 #import "AREmbeddedModelsViewController.h"
 #import "ARFollowableNetworkModel.h"
 #import "ARFollowableButton.h"

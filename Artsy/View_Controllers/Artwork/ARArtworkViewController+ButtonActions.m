@@ -15,9 +15,7 @@
 #import "ARViewInRoomViewController.h"
 #import "ARSharingController.h"
 #import "ARArtworkPreviewImageView.h"
-#import "ARShowViewController.h"
 #import "ARHeartButton.h"
-#import "ARFairViewController.h"
 #import "ARRouter.h"
 #import "ARInternalMobileWebViewController.h"
 #import "ARFairMapViewController.h"
@@ -75,7 +73,7 @@
     [sender setHearted:hearted animated:YES];
 
     [self.artwork setFollowState:sender.isHearted success:^(id json) {
-        [NSNotificationCenter.defaultCenter postNotificationName:ARFairRefreshFavoritesNotification object:nil];
+        // NO-OP
     } failure:^(NSError *error) {
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to save artwork."];
         [sender setHearted:!hearted animated:YES];

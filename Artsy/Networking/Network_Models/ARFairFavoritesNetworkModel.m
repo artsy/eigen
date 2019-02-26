@@ -9,7 +9,6 @@
 #import "ARNavigationButtonsViewController.h"
 #import "ARArtworkSetViewController.h"
 #import "ARButtonWithImage.h"
-#import "ARShowViewController.h"
 #import "ARFairFavoritesNetworkModel+Private.h"
 #import "ARFonts.h"
 #import "ARPartnerShowFeedItem.h"

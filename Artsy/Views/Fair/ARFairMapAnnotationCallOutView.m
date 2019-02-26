@@ -1,7 +1,6 @@
 #import "ARFairMapAnnotationCallOutView.h"
 
 #import "ARFonts.h"
-#import "ARShowViewController.h"
 #import "PartnerShow.h"
 #import "ARTheme.h"
 #import "ARFairMapAnnotation.h"

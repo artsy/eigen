@@ -4,7 +4,7 @@
 #import "ARAnalyticsConstants.h"
 #import "UIViewController+SimpleChildren.h"
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import "ARFairViewController.h"
+#import <Emission/ARFairComponentViewController.h>
 #import "ARInternalMobileWebViewController.h"
 
 
@@ -93,7 +93,7 @@ describe(@"loadProfile", ^{
 
         it(@"loads a fairvc on iphone with a fair organizer", ^{
             [ARTestContext stubDevice:ARDeviceTypePhone5];
-            [[viewControllerMock reject] showViewController:[OCMArg checkForClass:[ARFairViewController class]]];
+            [[viewControllerMock reject] showViewController:[OCMArg checkForClass:[ARFairComponentViewController class]]];
             [[viewControllerMock expect] loadMartsyView];
             [[apiMock expect] getProfileForProfileID:profileID success:[OCMArg checkWithBlock:^BOOL(void (^obj)(Profile *profile)) {
                 Profile *profile = [Profile modelWithJSON:@{
@@ -126,7 +126,7 @@ describe(@"loadProfile", ^{
             // Removes the web view
             [[viewControllerMock expect] ar_removeChildViewController:OCMOCK_ANY];
 
-            [[viewControllerMock expect] showViewController:[OCMArg checkForClass:[ARFairViewController class]]];
+            [[viewControllerMock expect] showViewController:[OCMArg checkForClass:[ARFairComponentViewController class]]];
 
             [[apiMock expect] getProfileForProfileID:profileID success:[OCMArg checkWithBlock:^BOOL(void (^obj)(Profile *profile)) {
                 Profile *profile = [Profile modelWithJSON:@{
@@ -153,7 +153,7 @@ describe(@"loadProfile", ^{
 
         it(@"always loads martsy on ipad", ^{
             [ARTestContext stubDevice:ARDeviceTypePad];
-            [[viewControllerMock reject] showViewController:[OCMArg checkForClass:[ARFairViewController class]]];
+            [[viewControllerMock reject] showViewController:[OCMArg checkForClass:[ARFairComponentViewController class]]];
             [[viewControllerMock expect] loadMartsyView];
             [[apiMock reject] getProfileForProfileID:profileID success:OCMOCK_ANY failure:OCMOCK_ANY];
             
