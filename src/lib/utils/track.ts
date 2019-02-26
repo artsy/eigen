@@ -98,6 +98,7 @@ export namespace Schema {
     AboutTheShowPage = "AboutTheShow",
     AboutTheFairPage = "AboutTheFair",
     FairAllArtistsPage = "FairAllArtistsPage",
+    FairAllArtworksPage = "FairAllArtworksPage",
     FairAllExhibitorsPage = "FairAllExhibitorsPage",
     FairBoothPage = "FairBoothPage",
     InboxPage = "Inbox",

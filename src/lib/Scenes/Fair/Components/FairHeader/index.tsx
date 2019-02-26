@@ -70,7 +70,7 @@ export class FairHeader extends React.Component<Props, State> {
       .map(i => {
         if (i.node.partner && i.node.partner.profile && i.node.partner.profile.name) {
           return {
-            href: "show/" + i.node.id,
+            href: "/show/" + i.node.id,
             name: i.node.partner.profile.name,
             id: i.node.partner.profile.id,
             _id: i.node.partner.profile._id,

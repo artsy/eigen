@@ -23,6 +23,9 @@
 - Adds display date to CountDownTimer - kieran
 - The Markdown componeont is more cautious on re-rendering its content - orta
 - Adds dates of currently running saved shows to Saved and Followed Shows - ashley
+- Fixes hours section animation - luc
+- Fixes FairBooth routes - luc
+- Adds Component VCs for Artists, Artworks, Exhibitors screens - luc
 
 ### 1.8.3
 
@@ -60,7 +63,7 @@
 - Fixes FairBooth routing - kieran
 - Fair exhibitors overview looks up to spec - orta
 - Adds Shows to Global Saves and Follows view -ashley
-- Adds seperator between fair entities - kieran
+- Adds separator between fair entities - kieran
 - Adds Fair analytics - kieran
 - Refactor and style new filter header in map view - luc
 - Move filters down to city view - luc

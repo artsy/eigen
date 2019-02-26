@@ -165,11 +165,7 @@ export class FairDetail extends React.Component<Props, State> {
       case "hours":
         return (
           <>
-            <HoursCollapsible
-              {...data}
-              onAnimationFrame={this.handleAnimationFrame}
-              onToggle={() => this.handleHoursToggled()}
-            />
+            <HoursCollapsible {...data} onToggle={() => this.handleHoursToggled()} />
             <Separator mt={2} />
           </>
         )
@@ -214,19 +210,6 @@ export class FairDetail extends React.Component<Props, State> {
       if (!error) {
         this.updateSections()
       }
-    })
-  }
-
-  handleAnimationFrame = animatedValue => {
-    /**
-     * If children change their size on animation (e.g. HoursCollapsible), we need a sentinel value
-     * in state in order to trigger a re-render, as FlatList statically sizes child cells.
-     */
-    this.setState({
-      extraData: {
-        ...this.state.extraData,
-        animatedValue,
-      },
     })
   }
 

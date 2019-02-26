@@ -21,7 +21,7 @@ import {
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
 import { CityView } from "./Scenes/City"
-import { FairBoothRenderer } from "./Scenes/Fair/Screens/FairBooth"
+import { FairArtistsRenderer, FairArtworksRenderer, FairBoothRenderer, FairExhibitorsRenderer } from "./Scenes/Fair"
 import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
 import { MapContainer } from "./Scenes/Map"
@@ -172,6 +172,48 @@ const FairBooth: React.SFC<FairBoothProps> = track<FairBoothProps>(props => {
   return <FairBoothRenderer showID={fairBoothID} />
 })
 
+interface FairArtistsProps {
+  fairID: string
+}
+
+const FairArtists: React.SFC<FairArtistsProps> = track<FairArtistsProps>(props => {
+  return {
+    context_screen: Schema.PageNames.FairAllArtistsPage,
+    context_screen_owner_slug: props.fairID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+  }
+})(({ fairID }) => {
+  return <FairArtistsRenderer fairID={fairID} />
+})
+
+interface FairArtworksProps {
+  fairID: string
+}
+
+const FairArtworks: React.SFC<FairArtworksProps> = track<FairArtworksProps>(props => {
+  return {
+    context_screen: Schema.PageNames.FairAllArtworksPage,
+    context_screen_owner_slug: props.fairID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+  }
+})(({ fairID }) => {
+  return <FairArtworksRenderer fairID={fairID} />
+})
+
+interface FairExhibitorsProps {
+  fairID: string
+}
+
+const FairExhibitors: React.SFC<FairExhibitorsProps> = track<FairExhibitorsProps>(props => {
+  return {
+    context_screen: Schema.PageNames.FairAllExhibitorsPage,
+    context_screen_owner_slug: props.fairID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+  }
+})(({ fairID }) => {
+  return <FairExhibitorsRenderer fairID={fairID} />
+})
+
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Home", () => HomeScene)
@@ -188,6 +230,9 @@ AppRegistry.registerComponent("Favorites", () => FavoritesScene)
 AppRegistry.registerComponent("BidFlow", () => BidderFlow)
 AppRegistry.registerComponent("Fair", () => Fair)
 AppRegistry.registerComponent("FairBooth", () => FairBooth)
+AppRegistry.registerComponent("FairArtists", () => FairArtists)
+AppRegistry.registerComponent("FairArtworks", () => FairArtworks)
+AppRegistry.registerComponent("FairExhibitors", () => FairExhibitors)
 AppRegistry.registerComponent("Show", () => Show)
 AppRegistry.registerComponent("Map", () => MapContainer)
 AppRegistry.registerComponent("City", () => CityView)
