@@ -1,4 +1,4 @@
-import { Box, Sans, Separator, Serif } from "@artsy/palette"
+import { Box, Sans, Separator, Serif, Theme } from "@artsy/palette"
 import { FairExhibitorsQuery } from "__generated__/FairExhibitorsQuery.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack, track } from "lib/utils/track"
@@ -87,36 +87,38 @@ export class FairExhibitors extends React.Component<Props, State> {
 
   render() {
     return (
-      <SectionList
-        stickySectionHeadersEnabled={true}
-        renderItem={data => <Box px={2}>{this.renderExhibitor(data)}</Box>}
-        ListHeaderComponent={() => {
-          return (
-            <Box px={2} mb={2} pt={85}>
-              <Serif size="8">Exhibitors</Serif>
-            </Box>
-          )
-        }}
-        renderSectionHeader={({ section: { title } }) => (
-          <Box px={2} mb={2}>
-            <Sans weight="medium" size="4">
-              {title}
-            </Sans>
-            <Separator />
-          </Box>
-        )}
-        renderSectionFooter={({ section }) => {
-          if (section.index < this.state.sections.length - 1) {
+      <Theme>
+        <SectionList
+          stickySectionHeadersEnabled={true}
+          renderItem={data => <Box px={2}>{this.renderExhibitor(data)}</Box>}
+          ListHeaderComponent={() => {
             return (
-              <Box px={2} pb={2}>
-                <Separator />
+              <Box px={2} mb={2} pt={85}>
+                <Serif size="8">Exhibitors</Serif>
               </Box>
             )
-          }
-        }}
-        sections={this.state.sections}
-        keyExtractor={(item, index) => item + index}
-      />
+          }}
+          renderSectionHeader={({ section: { title } }) => (
+            <Box px={2} mb={2}>
+              <Sans weight="medium" size="4">
+                {title}
+              </Sans>
+              <Separator />
+            </Box>
+          )}
+          renderSectionFooter={({ section }) => {
+            if (section.index < this.state.sections.length - 1) {
+              return (
+                <Box px={2} pb={2}>
+                  <Separator />
+                </Box>
+              )
+            }
+          }}
+          sections={this.state.sections}
+          keyExtractor={(item, index) => item + index}
+        />
+      </Theme>
     )
   }
 }

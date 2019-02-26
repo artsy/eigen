@@ -13,7 +13,7 @@
     NSDictionary *variables = @{
                                 @"fairID": fairID,
                                 };
-    return @[[[ARGraphQLQuery alloc] initWithQueryName:@"FairExhibitorsQuery" variables:variables]];
+    return @[[[ARGraphQLQuery alloc] initWithQueryName:@"FairArtistsRendererQuery" variables:variables]];
 }
 
 - (instancetype)initWithFairID:(NSString *)fairID
