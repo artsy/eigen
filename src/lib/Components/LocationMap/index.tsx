@@ -4,7 +4,7 @@ import { LocationMap_location } from "__generated__/LocationMap_location.graphql
 import { Pin } from "lib/Icons/Pin"
 import { ArtsyMapStyleURL } from "lib/Scenes/Map/GlobalMap"
 import React from "react"
-import { NativeModules } from "react-native"
+import { ActionSheetIOS, Clipboard, Linking, NativeModules, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -103,23 +103,57 @@ export class LocationMap extends React.Component<Props> {
       }
     }
 
+    const tappedOnMap = () => {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          title: `${address}, ${postal_code}`,
+          options: ["Cancel", "Open in Apple Maps", "Open in City Mapper", "Open in Google Maps", "Copy Address"],
+          cancelButtonIndex: 0,
+        },
+        buttonIndex => {
+          if (buttonIndex === 1) {
+            // Apple Maps
+            // https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/MapLinks/MapLinks.html
+            Linking.openURL(`http://maps.apple.com/?addr="${address}, ${postal_code}"&near=${lat},${lng}`)
+          } else if (buttonIndex === 2) {
+            // City Mapper
+            // https://citymapper.com/tools/1053/launch-citymapper-for-directions
+            Linking.openURL(
+              `https://citymapper.com/directions?endcoord=${lat},${lng}&endname=${partnerName}&endaddress=${address}`
+            )
+          } else if (buttonIndex === 3) {
+            // Google Maps
+            // https://developers.google.com/maps/documentation/urls/guide
+            Linking.openURL(
+              `https://www.google.com/maps/dir/?api=1&map_action=map&destination=${partnerName}, ${address}`
+            )
+          } else if (buttonIndex === 4) {
+            // Copy to pasteboard
+            Clipboard.setString(`${address}, ${postal_code}`)
+          }
+        }
+      )
+    }
+
     return (
-      <MapWrapper>
-        <Map
-          key={lng}
-          styleURL={ArtsyMapStyleURL}
-          centerCoordinate={[lng, lat]}
-          zoomLevel={14}
-          logoEnabled={false}
-          scrollEnabled={false}
-          attributionEnabled={false}
-        >
-          <Mapbox.PointAnnotation id={id} coordinate={[lng, lat]}>
-            <Pin />
-          </Mapbox.PointAnnotation>
-        </Map>
-        {renderAddress()}
-      </MapWrapper>
+      <TouchableOpacity onPress={tappedOnMap}>
+        <MapWrapper>
+          <Map
+            key={lng}
+            styleURL={ArtsyMapStyleURL}
+            centerCoordinate={[lng, lat]}
+            zoomLevel={14}
+            logoEnabled={false}
+            scrollEnabled={false}
+            attributionEnabled={false}
+          >
+            <Mapbox.PointAnnotation id={id} coordinate={[lng, lat]}>
+              <Pin />
+            </Mapbox.PointAnnotation>
+          </Map>
+          {renderAddress()}
+        </MapWrapper>
+      </TouchableOpacity>
     )
   }
 }
