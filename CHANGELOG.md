@@ -24,6 +24,8 @@
 - The Markdown componeont is more cautious on re-rendering its content - orta
 - Adds dates of currently running saved shows to Saved and Followed Shows - ashley
 - Fixes hours section animation - luc
+- Fixes FairBooth routes - luc
+- Adds Component VCs for Artists, Artworks, Exhibitors screens - luc
 
 ### 1.8.3
 
@@ -61,10 +63,8 @@
 - Fixes FairBooth routing - kieran
 - Fair exhibitors overview looks up to spec - orta
 - Adds Shows to Global Saves and Follows view -ashley
-- Adds seperator between fair entities - kieran
-- Fixes FairBooth routes - luc
+- Adds separator between fair entities - kieran
 - Adds Fair analytics - kieran
-- Adds Component VCs for Artists, Artworks, Exhibitors screens - luc
 
 ### 1.8.2
 
