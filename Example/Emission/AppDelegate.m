@@ -23,6 +23,7 @@
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARShowComponentViewController.h>
 #import <Emission/ARConversationComponentViewController.h>
+#import <Emission/ARFairMoreInfoComponentViewController.h>
 #import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARFairBoothComponentViewController.h>
 #import <Emission/ARFairArtworksComponentViewController.h>
@@ -304,7 +305,9 @@ randomBOOL(void)
   } else if ([route hasPrefix:@"/fair"] && [route hasSuffix:@"/exhibitors"]) {
     NSString *fairID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARFairExhibitorsComponentViewController alloc] initWithFairID:fairID];
-    
+  } else if ([route hasPrefix:@"/fair"] && [route hasSuffix:@"/info"]) {
+    NSString *fairID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
+    viewController = [[ARFairMoreInfoComponentViewController alloc] initWithFairID:fairID];
   } else if ([route hasSuffix:@"entity=fair-booth"]) {
     NSString *fairBoothID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARFairBoothComponentViewController alloc] initWithFairBoothID:fairBoothID];

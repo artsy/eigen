@@ -21,7 +21,13 @@ import {
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
 import { CityView } from "./Scenes/City"
-import { FairArtistsRenderer, FairArtworksRenderer, FairBoothRenderer, FairExhibitorsRenderer } from "./Scenes/Fair"
+import {
+  FairArtistsRenderer,
+  FairArtworksRenderer,
+  FairBoothRenderer,
+  FairExhibitorsRenderer,
+  FairMoreInfoRenderer,
+} from "./Scenes/Fair"
 import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
 import { MapContainer } from "./Scenes/Map"
@@ -229,6 +235,7 @@ AppRegistry.registerComponent("Favorites", () => FavoritesScene)
 // TODO: Change everything to BidderFlow? AuctionAction?
 AppRegistry.registerComponent("BidFlow", () => BidderFlow)
 AppRegistry.registerComponent("Fair", () => Fair)
+AppRegistry.registerComponent("FairMoreInfo", () => FairMoreInfoRenderer)
 AppRegistry.registerComponent("FairBooth", () => FairBooth)
 AppRegistry.registerComponent("FairArtists", () => FairArtists)
 AppRegistry.registerComponent("FairArtworks", () => FairArtworks)
