@@ -28,7 +28,6 @@
 #import <Emission/ARGraphQLQueryCache.h>
 #import <React/RCTBridge.h>
 #import <React/RCTDevSettings.h>
-#import <React/RCTDevMenu.h>
 
 #if DEBUG
 #import <VCRURLConnection/VCR.h>
@@ -180,7 +179,8 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 - (ARCellData *)generateShowReactNativeDevMenu
 {
     return [self tappableCellDataWithTitle:@"Show React Native Dev Menu" selection:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:RCTShowDevMenuNotification object:nil];
+        // It'd be nice to use the constant here, but it won't compile on CI
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"RCTShowDevMenuNotification" object:nil];
     }];
 }
 
