@@ -24,6 +24,7 @@
 - Nearby show previews use a better placeholder - orta
 - Fixes to the fair icon - orta
 - Adds clickable links for maps - orta
+- Fixes follow gallery button on fair booth page - ash
 
 ### 1.8.4
 
