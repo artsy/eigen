@@ -24,6 +24,7 @@
 #import <Emission/ARShowComponentViewController.h>
 #import <Emission/ARShowArtworksComponentViewController.h>
 #import <Emission/ARShowArtistsComponentViewController.h>
+#import <Emission/ARShowMoreInfoComponentViewController.h>
 #import <Emission/ARConversationComponentViewController.h>
 #import <Emission/ARFairMoreInfoComponentViewController.h>
 #import <Emission/ARFairComponentViewController.h>
@@ -316,13 +317,16 @@ randomBOOL(void)
     NSString *fairBoothID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARFairBoothComponentViewController alloc] initWithFairBoothID:fairBoothID];
   } else if (isShow && [route hasSuffix:@"/artworks"]) {
-    NSString *showID = [[route componentsSeparatedByString:@"/"] lastObject];
+    NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARShowArtworksComponentViewController alloc] initWithShowID:showID];
   } else if (isShow && [route hasSuffix:@"/artists"]) {
-    NSString *showID = [[route componentsSeparatedByString:@"/"] lastObject];
+    NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARShowArtistsComponentViewController alloc] initWithShowID:showID];
+  } else if (isShow && [route hasSuffix:@"/info"]) {
+    NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
+    viewController = [[ARShowMoreInfoComponentViewController alloc] initWithShowID:showID];
   } else if (isShow) {
-    NSString *showID = [[route componentsSeparatedByString:@"/"] lastObject];
+    NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARShowComponentViewController alloc] initWithShowID:showID];
   } else {
     viewController = [[UnroutedViewController alloc] initWithRoute:route];

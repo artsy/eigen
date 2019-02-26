@@ -15,7 +15,7 @@ xit("renders properly", async () => {
     <MockRelayRenderer
       Component={({ show }) => (
         <Theme>
-          <FairBooth show={show} onViewFairBoothArtworksPressed={jest.fn()} onViewFairBoothArtistsPressed={jest.fn()} />
+          <FairBooth show={show} />
         </Theme>
       )}
       query={graphql`

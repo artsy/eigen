@@ -3,7 +3,7 @@ import { MoreInfo_show } from "__generated__/MoreInfo_show.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
-import { FlatList, Linking, NavigatorIOS, ViewProperties } from "react-native"
+import { FlatList, Linking, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { EventSectionContainer as EventSection } from "../Components/EventSection"
@@ -14,7 +14,6 @@ const ListHeaderText = styled(Serif)`
 `
 
 interface Props extends ViewProperties {
-  navigator: NavigatorIOS
   show: MoreInfo_show
 }
 

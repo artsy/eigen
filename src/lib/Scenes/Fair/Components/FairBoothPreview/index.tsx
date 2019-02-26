@@ -11,7 +11,6 @@ import { FairBoothPreviewHeader } from "./Components/FairBoothPreviewHeader"
 
 interface Props {
   show: FairBoothPreview_show
-  onViewFairBoothPressed: () => void
   relay: RelayProp
 }
 
@@ -120,6 +119,14 @@ export class FairBoothPreview extends React.Component<Props, State> {
     SwitchBoard.presentNavigationViewController(this, `show/${showID}?entity=fair-booth`)
   }
 
+  viewFairBoothPressed() {
+    console.log("HI ASH")
+    const {
+      show: { id: showID },
+    } = this.props
+    SwitchBoard.presentNavigationViewController(this, `/show/${showID}?entity=fair-booth`)
+  }
+
   render() {
     const {
       show: {
@@ -131,7 +138,6 @@ export class FairBoothPreview extends React.Component<Props, State> {
           profile: { is_followed: partnerFollowed },
         },
       },
-      onViewFairBoothPressed,
     } = this.props
     const display = !!location ? location.display : ""
 
@@ -144,7 +150,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
           isFollowed={partnerFollowed}
           isFollowedChanging={this.state.isFollowedChanging}
           url={cover_image && cover_image.url}
-          onViewFairBoothPressed={() => onViewFairBoothPressed()}
+          onViewFairBoothPressed={this.viewFairBoothPressed.bind(this)}
         />
         <Box mt={1}>{<GenericGrid artworks={artworks_connection.edges.map(a => a.node) as any} />}</Box>
         <Box mt={2}>

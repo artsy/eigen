@@ -16,6 +16,8 @@
 
 ### Master
 
+- Switches Fairs&Shows to use SwitchBoard routing instead of nested navigation controller - ash
+
 ### 1.8.4
 
 - Fair exhibitors overview looks up to spec - orta

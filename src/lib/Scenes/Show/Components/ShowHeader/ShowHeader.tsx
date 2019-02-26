@@ -14,7 +14,6 @@ import { Carousel } from "./Components/Carousel"
 
 interface Props {
   show: ShowHeader_show
-  onViewAllArtistsPressed: () => void
   relay: RelayProp
 }
 
@@ -125,11 +124,14 @@ export class ShowHeader extends React.Component<Props, State> {
     SwitchBoard.presentNavigationViewController(this, url)
   }
 
+  handleViewAllArtistsPressed() {
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}/artists`)
+  }
+
   render() {
     const { isFollowedSaving } = this.state
     const {
       show: { artists, images, is_followed, name, partner, exhibition_period },
-      onViewAllArtistsPressed,
     } = this.props
     const hasImages = !!images.length
     const singleImage = hasImages && images.length === 1
@@ -174,7 +176,7 @@ export class ShowHeader extends React.Component<Props, State> {
             count={artists.length}
             displayedItems={2}
             onItemSelected={this.handleArtistSelected.bind(this)}
-            onViewAllPressed={onViewAllArtistsPressed}
+            onViewAllPressed={this.handleViewAllArtistsPressed.bind(this)}
           />
           <ButtonWrapper>
             <Spacer m={1} mt={1} />

@@ -43,11 +43,10 @@ import { QueryRenderersRegistrationFlowQuery } from "__generated__/QueryRenderer
 import { QueryRenderersSaleQuery } from "__generated__/QueryRenderersSaleQuery.graphql"
 import { QueryRenderersShowArtistsQuery } from "__generated__/QueryRenderersShowArtistsQuery.graphql"
 import { QueryRenderersShowArtworksQuery } from "__generated__/QueryRenderersShowArtworksQuery.graphql"
+import { QueryRenderersShowMoreInfoQuery } from "__generated__/QueryRenderersShowMoreInfoQuery.graphql"
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
-import { ShowArtists } from "lib/Components/Show/ShowArtists"
 import createEnvironment from "./createEnvironment"
-import { QueryRenderersShowMoreInfoQuery } from "__generated__/QueryRenderersShowMoreInfoQuery.graphql"
 const environment = createEnvironment()
 
 export type RenderCallback = QueryRendererProps["render"]

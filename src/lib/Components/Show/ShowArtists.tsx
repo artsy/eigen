@@ -5,11 +5,10 @@ import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { get } from "lodash"
 import React from "react"
-import { NavigatorIOS, ViewProperties } from "react-native"
+import { ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props extends ViewProperties {
-  navigator: NavigatorIOS
   show: ShowArtists_show
 }
 

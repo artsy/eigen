@@ -167,6 +167,34 @@ const Show: React.SFC<ShowProps> = track<ShowProps>(props => {
   return <ShowRenderer showID={showID} render={renderWithLoadProgress(Containers.Show, { showID })} />
 })
 
+interface ShowArtistsProps {
+  showID: string
+}
+const ShowArtists: React.SFC<ShowArtistsProps> = ({ showID }) => {
+  return (
+    <ShowArtistsRenderer showID={showID} render={renderWithLoadProgress(Containers.ShowArtistsContainer, { showID })} />
+  )
+}
+
+interface ShowArtworksProps {
+  showID: string
+}
+const ShowArtworks: React.SFC<ShowArtworksProps> = ({ showID }) => {
+  return (
+    <ShowArtworksRenderer
+      showID={showID}
+      render={renderWithLoadProgress(Containers.ShowArtworksContainer, { showID })}
+    />
+  )
+}
+
+interface ShowMoreInfoProps {
+  showID: string
+}
+const ShowMoreInfo: React.SFC<ShowMoreInfoProps> = ({ showID }) => {
+  return <ShowMoreInfoRenderer showID={showID} render={renderWithLoadProgress(Containers.ShowMoreInfo, { showID })} />
+}
+
 interface FairBoothProps {
   fairBoothID: string
 }
@@ -244,8 +272,8 @@ AppRegistry.registerComponent("FairArtists", () => FairArtists)
 AppRegistry.registerComponent("FairArtworks", () => FairArtworks)
 AppRegistry.registerComponent("FairExhibitors", () => FairExhibitors)
 AppRegistry.registerComponent("Show", () => Show)
-AppRegistry.registerComponent("ShowArtists", () => ShowArtistsRenderer)
-AppRegistry.registerComponent("ShowArtworks", () => ShowArtworksRenderer)
-AppRegistry.registerComponent("ShowMoreInfo", () => ShowMoreInfoRenderer)
+AppRegistry.registerComponent("ShowArtists", () => ShowArtists)
+AppRegistry.registerComponent("ShowArtworks", () => ShowArtworks)
+AppRegistry.registerComponent("ShowMoreInfo", () => ShowMoreInfo)
 AppRegistry.registerComponent("Map", () => MapContainer)
 AppRegistry.registerComponent("City", () => CityView)
