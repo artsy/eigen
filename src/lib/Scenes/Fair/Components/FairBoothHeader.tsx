@@ -122,8 +122,6 @@ export class FairBoothHeader extends React.Component<Props, State> {
       partner: {
         name: partnerName,
         href: partnerHref,
-        id: partnerSlug,
-        _id: partnerID,
         profile: { is_followed: partnerFollowed },
       },
       fair: { name: fairName },
@@ -160,7 +158,6 @@ export class FairBoothHeader extends React.Component<Props, State> {
             selected={partnerFollowed}
             onPress={this.handleFollowPartner}
             grayBorder={true}
-            disabled={!!partnerSlug && !!partnerID}
           />
           <Spacer m={1} />
         </ButtonWrapper>

@@ -16,13 +16,13 @@
 
 ### Master
 - Add ellipsis to partner and event names - ashkan
-
 - Fixes partner link on Fair Booth header - luc
 - Adds Sentry to the app - orta
 - Adds Sentry logger for users - orta
 - Fix for the count of artworks in a show - orta
 - Nearby show previews use a better placeholder - orta
 - Adds clickable links for maps - orta
+- Fixes follow gallery button on fair booth page - ash
 
 ### 1.8.4
 
