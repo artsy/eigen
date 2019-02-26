@@ -100,10 +100,12 @@ export class Detail extends React.Component<Props, State> {
       },
     })
 
-    sections.push({
-      type: "shows",
-      data: show,
-    })
+    if (show.location) {
+      sections.push({
+        type: "shows",
+        data: show,
+      })
+    }
 
     this.setState({ sections })
   }

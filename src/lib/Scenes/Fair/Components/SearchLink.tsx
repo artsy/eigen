@@ -30,7 +30,7 @@ export class SearchLink extends React.Component<Props> {
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={() => this.handlePress}>
+      <TouchableWithoutFeedback onPress={() => this.handlePress()}>
         <Box background={color("black5")} height={46} px={2} py={1} mb={1}>
           <Flex alignItems="center" flexDirection="row" flexWrap="nowrap">
             <SearchIcon />
