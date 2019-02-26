@@ -17,6 +17,7 @@
 ### Master
 
 - Fixes partner link on Fair Booth header - luc
+- Fix for the count of artworks in a show - orta
 
 ### 1.8.4
 
