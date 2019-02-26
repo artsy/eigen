@@ -77,7 +77,9 @@ export class Event extends React.Component<Props, State> {
             <Sans size="3" weight="medium">
               {partnerName}
             </Sans>
-            <Serif size="3t">{name}</Serif>
+            <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
+              {name}
+            </Serif>
             <Sans size="2" color={color("black60")}>
               {formatDuration(start_at, end_at)}
             </Sans>
