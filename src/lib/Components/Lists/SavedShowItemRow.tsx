@@ -108,7 +108,13 @@ class SavedShowItemRow extends React.Component<Props> {
             </Flex>
             <TouchableWithoutFeedback onPress={() => this.handleSave()}>
               <Flex flexGrow="1">
-                <Sans weight="medium" mb="30" size="3" color={color("black60")} textAlign="right">
+                <Sans
+                  weight="medium"
+                  mb="30"
+                  size="3"
+                  color={show.is_followed ? color("black60") : color("purple100")}
+                  textAlign="right"
+                >
                   {show.is_followed ? "Saved" : "Save"}
                 </Sans>
               </Flex>

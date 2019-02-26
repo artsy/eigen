@@ -16,14 +16,20 @@
 
 ### Master
 
+### 1.8.4
+
 - Fair exhibitors overview looks up to spec - orta
 - Hides additional info when a fair doesn't have it - orta
 - When there's only a website for the fair additional info, the app goes there - orta
 - Adds global saves & follows analytics - ash
 - Adds display date to CountDownTimer - kieran
 - The Markdown componeont is more cautious on re-rendering its content - orta
+- Updates color of unsaved shows text indicator in global saves and follows - ashley
+- Changes copy in Shows global saves and follows when user has not followed any shows - ashley
 - Adds dates of currently running saved shows to Saved and Followed Shows - ashley
 - Fixes hours section animation - luc
+- Fixes FairBooth routes - luc
+- Adds Component VCs for Artists, Artworks, Exhibitors screens - luc
 
 ### 1.8.3
 
@@ -61,10 +67,12 @@
 - Fixes FairBooth routing - kieran
 - Fair exhibitors overview looks up to spec - orta
 - Adds Shows to Global Saves and Follows view -ashley
-- Adds seperator between fair entities - kieran
-- Fixes FairBooth routes - luc
+- Adds separator between fair entities - kieran
 - Adds Fair analytics - kieran
-- Adds Component VCs for Artists, Artworks, Exhibitors screens - luc
+- Refactor and style new filter header in map view - luc
+- Move filters down to city view - luc
+- Adds new map filter design to Map view - luc
+- Support full bleed view controllers - luc
 
 ### 1.8.2
 

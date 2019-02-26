@@ -5,9 +5,9 @@ import { graphql, QueryRenderer } from "react-relay"
 import { GlobalMapContainer as GlobalMap } from "./GlobalMap"
 import { Coordinates } from "./types"
 
-export const MapRenderer = ({ coords }: { coords: Coordinates }) => {
-  console.log("coords", coords)
+// Are you seeing "cannot read .fairs of null"? You might need to set your simulator location.
 
+export const MapRenderer = ({ coords }: { coords: Coordinates }) => {
   return (
     <QueryRenderer<MapRendererQuery>
       environment={defaultEnvironment}
