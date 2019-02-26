@@ -15,6 +15,7 @@ export type FairBoothHeader_show = {
         readonly href?: string | null;
         readonly profile?: ({
             readonly _id: string;
+            readonly id: string;
             readonly is_followed: boolean | null;
         }) | null;
     }) | null;
@@ -121,6 +122,7 @@ return {
               "plural": false,
               "selections": [
                 v3,
+                v2,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -183,5 +185,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'a395631eee04bbeb80729c46fbf88d5c';
+(node as any).hash = 'f219c2b9ce6971bc95ddb3075ce72dd5';
 export default node;

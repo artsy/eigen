@@ -185,6 +185,7 @@ export const FairBoothHeaderContainer = createFragmentContainer(
           href
           profile {
             _id
+            id
             is_followed
           }
         }

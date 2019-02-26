@@ -266,6 +266,7 @@ fragment ShowHeader_show on Show {
     ... on Partner {
       name
       id
+      href
     }
     ... on ExternalPartner {
       name
@@ -719,7 +720,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "c3daeb065db3e0ce0f9d84e3847f319a",
+  "id": "cfada8ab688ea390d900120c8dbe8ac4",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -940,6 +941,7 @@ return {
                 "selections": [
                   v5,
                   v8,
+                  v15,
                   {
                     "kind": "ScalarField",
                     "alias": null,
