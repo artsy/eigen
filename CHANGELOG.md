@@ -15,9 +15,15 @@
 -->
 
 ### Master
+- Add ellipsis to partner and event names - ashkan
 
 - Switches Fairs&Shows to use SwitchBoard routing instead of nested navigation controller - ash
+- Fixes partner link on Fair Booth header - luc
+- Adds Sentry to the app - orta
+- Adds Sentry logger for users - orta
 - Fix for the count of artworks in a show - orta
+- Nearby show previews use a better placeholder - orta
+- Adds clickable links for maps - orta
 
 ### 1.8.4
 

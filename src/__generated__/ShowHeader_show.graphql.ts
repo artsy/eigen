@@ -15,6 +15,7 @@ export type ShowHeader_show = {
     readonly partner: ({
         readonly name?: string | null;
         readonly id?: string;
+        readonly href?: string | null;
     }) | null;
     readonly images: ReadonlyArray<({
         readonly url: string | null;
@@ -57,6 +58,13 @@ v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "_id",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "href",
   "args": null,
   "storageKey": null
 };
@@ -121,7 +129,8 @@ return {
           "type": "Partner",
           "selections": [
             v2,
-            v0
+            v0,
+            v4
           ]
         }
       ]
@@ -161,13 +170,7 @@ return {
       "plural": true,
       "selections": [
         v2,
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "href",
-          "args": null,
-          "storageKey": null
-        },
+        v4,
         v0,
         v3,
         v1
@@ -176,5 +179,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'a12149eac67161a14bad4ffca2daff3a';
+(node as any).hash = 'd69900e0ca440890645085a1416c9b05';
 export default node;

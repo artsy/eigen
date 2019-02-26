@@ -36,7 +36,7 @@ export class ShowHeader extends React.Component<Props, State> {
     const {
       show: { partner },
     } = this.props
-    SwitchBoard.presentNavigationViewController(this, `/${partner.id}?entity=gallery`)
+    SwitchBoard.presentNavigationViewController(this, `${partner.href}?entity=gallery`)
   }
 
   handleFollowShow = () => {
@@ -211,6 +211,7 @@ export const ShowHeaderContainer = createFragmentContainer(
         ... on Partner {
           name
           id
+          href
         }
         ... on ExternalPartner {
           name
