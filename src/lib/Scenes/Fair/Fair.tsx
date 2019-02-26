@@ -55,7 +55,7 @@ export class Fair extends React.Component<Props> {
   }
 
   handleViewFairBoothPressed = props => {
-    SwitchBoard.presentNavigationViewController(this, `show/${props.show.id}?entity=fair-booth`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${props.show.id}?entity=fair-booth`)
   }
 
   handleViewFairBoothArtistsPressed = props => {
@@ -79,7 +79,8 @@ export class Fair extends React.Component<Props> {
           ref={ref => {
             this.navigator = ref as any
           }}
-          navigationBarHidden={true}
+          navigationBarHidden
+          interactivePopGestureEnabled
           initialRoute={{
             component: FairDetailScreen,
             title: "",

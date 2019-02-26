@@ -66,7 +66,7 @@ export class FairHeader extends React.Component<Props, State> {
       .map(i => {
         if (i.node.partner && i.node.partner.profile && i.node.partner.profile.name) {
           return {
-            href: "show/" + i.node.id,
+            href: "/show/" + i.node.id,
             name: i.node.partner.profile.name,
           }
         }
@@ -97,7 +97,7 @@ export class FairHeader extends React.Component<Props, State> {
   }
 
   handleExhibitorPress = item => {
-    Switchboard.presentNavigationViewController(this, `show/${item}?entity=fair-booth`)
+    Switchboard.presentNavigationViewController(this, `${item}?entity=fair-booth`)
   }
 
   handleWorksPress = item => {
