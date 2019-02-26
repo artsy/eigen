@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fix for the count of artworks in a show - orta
+
 ### 1.8.4
 
 - Fair exhibitors overview looks up to spec - orta

@@ -29,7 +29,7 @@ export class ShowArtworksPreview extends React.Component<Props> {
         {counts &&
           counts.artworks > artworks.length && (
             <Box mt={1}>
-              <CaretButton text={`View all ${artworks.length} works`} onPress={() => onViewAllArtworksPressed()} />
+              <CaretButton text={`View all ${counts.artworks} works`} onPress={() => onViewAllArtworksPressed()} />
             </Box>
           )}
       </>
