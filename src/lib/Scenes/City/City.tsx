@@ -1,4 +1,4 @@
-import { Box, color, Flex, Serif, Theme } from "@artsy/palette"
+import { Box, color, Flex, Theme } from "@artsy/palette"
 import React, { Component } from "react"
 import { ScrollView } from "react-native"
 import styled from "styled-components/native"
@@ -7,6 +7,7 @@ import { FiltersBar } from "../Map/Components/FiltersBar"
 import { EventEmitter } from "../Map/EventEmitter"
 import { Tab } from "../Map/types"
 import { AllEvents } from "./Components/AllEvents"
+import { CityTab } from "./Components/CityTab"
 
 interface Props {
   verticalMargin?: number
@@ -84,7 +85,7 @@ export class CityView extends Component<Props, State> {
                   case "all":
                     return <AllEvents currentBucket={filter.id as BucketKey} buckets={buckets} />
                   default:
-                    return <Serif size="3">Not implemented yet.</Serif>
+                    return <CityTab currentBucket={filter.id as BucketKey} buckets={buckets} type={filter.text} />
                 }
               })()}
             </ScrollView>

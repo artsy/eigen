@@ -37,6 +37,9 @@ export type GlobalMap_viewer = {
         readonly fairs: ReadonlyArray<({
             readonly id: string;
             readonly name: string | null;
+            readonly counts: ({
+                readonly partners: any | null;
+            }) | null;
             readonly location: ({
                 readonly coordinates: ({
                     readonly lat: number | null;
@@ -305,6 +308,24 @@ return {
           "selections": [
             v2,
             v0,
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "counts",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "FairCounts",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "partners",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            },
             v5,
             {
               "kind": "LinkedField",
@@ -390,5 +411,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '346718ea7f2a07238a1023a981e4f773';
+(node as any).hash = '2cb0d5c552c3bf46eed2d4cf65149c1f';
 export default node;

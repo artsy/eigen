@@ -258,6 +258,10 @@ export const GlobalMapContainer = createRefetchContainer(
           id
           name
 
+          counts {
+            partners
+          }
+
           location {
             coordinates {
               lat

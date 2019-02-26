@@ -77,6 +77,9 @@ fragment GlobalMap_viewer_279V1T on Viewer {
     fairs(size: 10) {
       id
       name
+      counts {
+        partners
+      }
       location {
         coordinates {
           lat
@@ -209,7 +212,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "GlobalMapTestsQuery",
-  "id": "c48cca08e3fcf643ad12de9e93fac7c9",
+  "id": "f2f7cf1142af8148acd7143d3a64d9c0",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -399,6 +402,24 @@ return {
                 "selections": [
                   v3,
                   v1,
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "counts",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "FairCounts",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "partners",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  },
                   v6,
                   {
                     "kind": "LinkedField",
