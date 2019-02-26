@@ -77,7 +77,6 @@
 + (NSURLRequest *)newAdditionalImagesRequestForArtworkWithID:(NSString *)artworkID;
 + (NSURLRequest *)newNewArtworksRequestWithParams:(NSDictionary *)params;
 + (NSURLRequest *)newArtistArtworksRequestWithParams:(NSDictionary *)params andArtistID:(NSString *)artistID;
-+ (NSURLRequest *)newArtworksForYouRequestWithID:(NSString *)userID page:(NSInteger)page;
 + (NSURLRequest *)recordArtworkViewRequest:(NSString *)artworkID;
 
 #pragma mark - Artwork Favorites (items in the saved-artwork collection)
@@ -196,9 +195,6 @@
 
 #pragma mark - Recommendations
 
-+ (NSURLRequest *)suggestedHomepageArtworksRequest;
-+ (NSURLRequest *)worksForYouRequest;
-+ (NSURLRequest *)worksForYouCountRequest;
 + (NSURLRequest *)markNotificationsAsReadRequest;
 
 #pragma mark - Misc Site
