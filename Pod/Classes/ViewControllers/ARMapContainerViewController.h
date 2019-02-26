@@ -1,10 +1,9 @@
-#import <UIKit/UIKit.h>
+#import "ARComponentViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ARMapContainerViewController : UIViewController
-
-
+/// Hosts a Map showing local shows and fairs
+@interface ARMapContainerViewController : UIViewController <ARComponentFullBleedViewSizing>
 @end
 
 NS_ASSUME_NONNULL_END

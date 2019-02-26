@@ -237,7 +237,7 @@ CHECKOUT OPTIONS:
     :commit: 1b582675598c999726d9edacd3b8559e01cf7c48
     :git: https://github.com/artsy/Artsy-Authentication.git
   Pulley:
-    :commit: 34b274c62823f005d6d6d8cf3cb726e3c7e419be
+    :commit: d1b6f0a1ef6fe0aa79847b6b46087510084f5067
     :git: https://github.com/l2succes/Pulley.git
   tipsi-stripe:
     :commit: efcbc49dc7cf472099d8aa8c3fb2b64441fc5ea1

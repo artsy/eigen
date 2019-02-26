@@ -28,7 +28,7 @@ export class FairEventSection extends Component<any> {
           </Serif>
         </Box>
         <FlatList
-          data={data}
+          data={data.filter(fair => Boolean(fair.image))}
           renderItem={this.renderItem}
           keyExtractor={item => item.id}
           contentContainerStyle={{ padding: space(2) }}

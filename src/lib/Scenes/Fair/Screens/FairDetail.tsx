@@ -236,6 +236,7 @@ export class FairDetail extends React.Component<Props, State> {
             </Box>
           )}
           onEndReached={this.fetchNextPage}
+          automaticallyAdjustContentInsets={false}
         />
       </Theme>
     )

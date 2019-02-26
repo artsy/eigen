@@ -1,8 +1,9 @@
-import { Box, color, Flex, Separator, Serif, Theme } from "@artsy/palette"
+import { Box, color, Flex, Serif, Theme } from "@artsy/palette"
 import React, { Component } from "react"
 import { ScrollView } from "react-native"
 import styled from "styled-components/native"
 import { BucketKey, BucketResults } from "../Map/Bucket"
+import { FiltersBar } from "../Map/Components/FiltersBar"
 import { EventEmitter } from "../Map/EventEmitter"
 import { Tab } from "../Map/types"
 import { AllEvents } from "./Components/AllEvents"
@@ -24,6 +25,14 @@ export class CityView extends Component<Props, State> {
   }
   scrollViewVerticalStart = 0
   scrollView: ScrollView = null
+
+  filters: Tab[] = [
+    { id: "all", text: "All" },
+    { id: "saved", text: "Saved" },
+    { id: "fairs", text: "Fairs" },
+    { id: "galleries", text: "Galleries" },
+    { id: "museums", text: "Museums" },
+  ]
 
   componentWillMount() {
     EventEmitter.subscribe("map:change", ({ filter, buckets }: { filter: Tab; buckets: BucketResults }) => {
@@ -64,11 +73,11 @@ export class CityView extends Component<Props, State> {
                 }
               }}
             >
-              <Box px={2}>
-                <Serif size="8" mb={1.5}>
-                  {filter.id === "all" ? "All events" : filter.text}
-                </Serif>
-                <Separator my={1} />
+              <Box>
+                <FiltersBar
+                  tabs={this.filters}
+                  goToPage={activeIndex => EventEmitter.dispatch("filters:change", activeIndex)}
+                />
               </Box>
               {(() => {
                 switch (filter && filter.id) {

@@ -1,11 +1,10 @@
-import { Box, color, Sans, Serif } from "@artsy/palette"
+import { color, Sans } from "@artsy/palette"
 import React from "react"
 import { Animated, Dimensions, LayoutRectangle, ScrollView, View } from "react-native"
 import styled from "styled-components/native"
-import { City, Tab } from "../types"
+import { Tab } from "../types"
 
 export interface FiltersBarProps {
-  currentCity: City
   goToPage?: (number) => void
   activeTab?: number
   tabs?: Tab[]
@@ -22,13 +21,15 @@ const Button = styled.TouchableWithoutFeedback`
 `
 
 const Tabs = styled.ScrollView`
-  height: 50px;
+  height: 40px;
+  border-bottom-width: 1px;
+  border-color: ${color("black10")};
 `
 
 const TabButton = styled(View)<{ isActive: boolean }>`
   align-items: center;
   justify-content: center;
-  height: 50;
+  height: 40;
   padding-left: 20px;
   padding-right: 20px;
   ${p =>
@@ -103,9 +104,6 @@ export class FiltersBar extends React.Component<FiltersBarProps, FiltersBarState
   render() {
     return (
       <View>
-        <Box pt={4} pb={2} px={3}>
-          <Serif size="8">{this.props.currentCity.name}</Serif>
-        </Box>
         <Tabs
           ref={(r: any) => {
             if (r) {

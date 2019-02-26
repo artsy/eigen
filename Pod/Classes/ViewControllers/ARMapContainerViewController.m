@@ -1,10 +1,13 @@
 #import "ARMapContainerViewController.h"
 #import "ARMapComponentViewController.h"
 #import "ARCityComponentViewController.h"
+#import "ARComponentViewController.h"
+
+#import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @import Pulley;
 
-@interface ARMapContainerViewController () <PulleyDelegate>
+@interface ARMapContainerViewController () <PulleyDelegate, PulleyDrawerViewControllerDelegate>
 
 @property (nonatomic, readwrite) PulleyViewController *bottomSheetVC;
 @property (nonatomic, readwrite) ARMapComponentViewController *mapVC;
@@ -14,9 +17,10 @@
 
 @implementation ARMapContainerViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    
+
     self.mapVC = [[ARMapComponentViewController alloc] init];
     self.cityVC = [[ARCityComponentViewController alloc] init];
 
@@ -44,8 +48,14 @@
     // position and we'll have the area unavailable for the scrollview, and we'll set it to the bottom content insets.
     CGFloat bottomInset = drawer.drawerTopInset + bottomSafeArea;
     [self.cityVC setProperty:@(bottomInset) forKey:@"verticalMargin"];
+
     BOOL isDrawerOpen = [drawer.drawerPosition isEqualToPosition:PulleyPosition.open];
     [self.cityVC setProperty:@(isDrawerOpen) forKey:@"isDrawerOpen"];
+}
+
+- (BOOL)fullBleed
+{
+    return YES;
 }
 
 @end

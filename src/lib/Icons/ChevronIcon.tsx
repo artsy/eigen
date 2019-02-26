@@ -7,7 +7,7 @@ interface ChevronIconProps extends React.Props<ChevronIconProps> {
   initialDirection?: string
   width?: number
   height?: number
-  fill?: string
+  color?: string
 }
 
 const ChevronIcon: React.SFC<ChevronIconProps> = props => {
@@ -25,7 +25,7 @@ const ChevronIcon: React.SFC<ChevronIconProps> = props => {
       <G transform={rotation}>
         <Path
           d="M18.192 7.92L32.498 27 18.192 46.08a1 1 0 0 0 .2 1.4l1.6 1.2a1 1 0 0 0 1.4-.2L36.597 28.2a2 2 0 0 0 0-2.4L21.392 5.52a1 1 0 0 0-1.4-.2l-1.6 1.2a1 1 0 0 0-.2 1.4z"
-          fill={props.fill}
+          fill={props.color}
           fillRule="evenodd"
         />
       </G>
@@ -36,7 +36,7 @@ const ChevronIcon: React.SFC<ChevronIconProps> = props => {
 ChevronIcon.defaultProps = {
   height: 16,
   width: 16,
-  fill: color("black30"),
+  color: color("black30"),
 }
 
 export default ChevronIcon
