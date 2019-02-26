@@ -11,7 +11,7 @@ const RoundedImage = styled(OpaqueImageView)`
   overflow: hidden;
 `
 
-const RoundedBox = styled(Box)`
+const RoundBox = styled(Box)`
   width: 62;
   height: 62;
   border-radius: 30;
@@ -43,68 +43,99 @@ export const formatDuration = (startAt, endAt) => {
   }
 }
 
-const renderImage = (image, type) => {
-  if (!!image && type === "Fairs") {
-    return <RoundedImage aspectRatio={1} imageURL={image.url} />
-  } else if (!!image) {
-    return <OpaqueImageView width={58} imageURL={image.url} />
+const renderImage = (url, type) => {
+  if (!!url && type === "Fairs") {
+    return <RoundedImage aspectRatio={1} imageURL={url} />
+  } else if (!!url) {
+    return <OpaqueImageView width={58} height={58} imageURL={url} />
   } else if (type === "Fairs") {
-    return <RoundedBox background={color("black30")} />
+    return <RoundBox background={color("black30")} />
   } else {
     return <SquareBox background={color("black30")} />
   }
 }
 
-const renderText = (item, type) => {
+const renderContent = (item, type) => {
+  const boxWidth = Dimensions.get("window").width - 62 - space(4) - space(1)
   console.log("item", item)
-  if (type === "Fairs") {
-    return (
-      <>
-        {item.name && (
-          <Sans weight="medium" size="3t" numberOfLines={1} ellipsizeMode="tail">
-            {item.name}
-          </Sans>
-        )}
-        {item.counts.partners && (
-          <Serif size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
-            {item.counts.partners > 1 ? `${item.counts.partners} Exhibitors` : `${item.counts.partners} Exhibitor`}
-          </Serif>
-        )}
-        {item.start_at &&
-          item.end_at && (
-            <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
-              {formatDuration(item.start_at, item.end_at)}
+  console.log("type", type)
+  switch (type) {
+    case "Fairs":
+      const fairImage = item.image ? item.image.url : null
+      return (
+        <>
+          {renderImage(fairImage, type)}
+          <Box width={boxWidth} pl={1}>
+            {item.name && (
+              <Sans weight="medium" size="3t" numberOfLines={1} ellipsizeMode="tail">
+                {item.name}
+              </Sans>
+            )}
+            {item.counts.partners && (
+              <Serif size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
+                {item.counts.partners > 1 ? `${item.counts.partners} Exhibitors` : `${item.counts.partners} Exhibitor`}
+              </Serif>
+            )}
+            {item.start_at &&
+              item.end_at && (
+                <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
+                  {formatDuration(item.start_at, item.end_at)}
+                </Sans>
+              )}
+          </Box>
+        </>
+      )
+    case "Galleries":
+      const galleryImage = item.node.cover_image ? item.node.cover_image.url : null
+      console.log("galleryImage", galleryImage)
+      return (
+        <>
+          {renderImage(galleryImage, type)}
+          <Box width={boxWidth} pl={1}>
+            {item.node.partner && (
+              <Sans weight="medium" size="3t" numberOfLines={1} ellipsizeMode="tail">
+                {item.node.partner.name}
+              </Sans>
+            )}
+            <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
+              {"b"}
+            </Serif>
+            {item.node.start_at &&
+              item.node.end_at && (
+                <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
+                  {formatDuration(item.node.start_at, item.node.end_at)}
+                </Sans>
+              )}
+          </Box>
+        </>
+      )
+
+    default:
+      return (
+        <>
+          {renderImage(item.image, type)}
+          <Box width={boxWidth} pl={1}>
+            <Sans weight="medium" size="3t" numberOfLines={1} ellipsizeMode="tail">
+              {"a"}
             </Sans>
-          )}
-      </>
-    )
-  } else {
-    return (
-      <>
-        <Sans weight="medium" size="3t" numberOfLines={1} ellipsizeMode="tail">
-          {"a"}
-        </Sans>
-        <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
-          {"b"}
-        </Serif>
-        <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
-          {"c"}
-        </Sans>
-      </>
-    )
+            <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
+              {"b"}
+            </Serif>
+            <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
+              {"c"}
+            </Sans>
+          </Box>
+        </>
+      )
   }
 }
 
 export const TabListItem: React.SFC<Props> = (props: Props) => {
   const { item, type } = props
-  const boxWidth = Dimensions.get("window").width - 62 - space(4) - space(1)
   return (
     <Box py={2}>
       <Flex flexWrap="nowrap" flexDirection="row" alignItems="center">
-        {renderImage(item.image, type)}
-        <Box width={boxWidth} pl={1}>
-          {renderText(item, type)}
-        </Box>
+        {renderContent(item, type)}
       </Flex>
     </Box>
   )

@@ -85,9 +85,7 @@ export class CityView extends Component<Props, State> {
                   case "all":
                     return <AllEvents currentBucket={filter.id as BucketKey} buckets={buckets} />
                   default:
-                    return (
-                      <CityTab currentBucket={filter.id as BucketKey} bucket={buckets[filter.id]} type={filter.text} />
-                    )
+                    return <CityTab bucket={buckets[filter.id]} type={filter.text} />
                 }
               })()}
             </ScrollView>

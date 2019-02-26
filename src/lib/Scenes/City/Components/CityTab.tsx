@@ -1,12 +1,10 @@
 import { Box, Separator, Theme } from "@artsy/palette"
-import { BucketKey, BucketResults } from "lib/Scenes/Map/Bucket"
 import React from "react"
 import { FlatList } from "react-native"
 import { TabListItem } from "./TabListItem"
 
 interface Props {
-  currentBucket: BucketKey
-  bucket: any
+  bucket: any[]
   type: string
 }
 
@@ -19,7 +17,7 @@ export class CityTab extends React.Component<Props> {
           <FlatList
             data={bucket}
             ItemSeparatorComponent={() => <Separator />}
-            keyExtractor={item => item.id}
+            keyExtractor={item => (item.node ? item.node.id : item.id)}
             renderItem={({ item }) => <TabListItem item={item} type={type} />}
             scrollEnabled={false}
           />
