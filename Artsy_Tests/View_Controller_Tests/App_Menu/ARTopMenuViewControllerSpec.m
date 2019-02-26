@@ -3,7 +3,6 @@
 #import "ARTestTopMenuNavigationDataSource.h"
 #import "ARTabContentView.h"
 #import "ARTopMenuNavigationDataSource.h"
-#import "ARFairViewController.h"
 #import "ARUserManager+Stubs.h"
 #import "AROnboardingViewController.h"
 #import "ARStubbedBrowseNetworkModel.h"
@@ -82,7 +81,7 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
         it(@"pops to root", ^{
             [OHHTTPStubs stubJSONResponseAtPath:@"/api/v1/collection/saved-artwork/artworks" withResponse:@{}];
 
-            [sut pushViewController:[[ARFairViewController alloc] init] animated:NO];
+            [sut pushViewController:[[UIViewController alloc] init] animated:NO];
             expect(sut.rootNavigationController.viewControllers.count).to.equal(2);
 
             [sut.tabContentView setCurrentViewIndex:tab animated:NO];
@@ -96,7 +95,7 @@ sharedExamplesFor(@"tab behavior", ^(NSDictionary *data) {
         __block id tabContentViewMock = nil;
 
         before(^{
-            [sut pushViewController:[[ARFairViewController alloc] init] animated:NO];
+            [sut pushViewController:[[UIViewController alloc] init] animated:NO];
 
             topMenuVCMock = [OCMockObject partialMockForObject:sut];
 

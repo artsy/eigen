@@ -30,7 +30,6 @@
 // View Controllers
 #import "ARFairGuideViewController.h"
 #import "ARFairArtistViewController.h"
-#import "ARShowViewController.h"
 #import "ARProfileViewController.h"
 #import "ARAppSearchViewController.h"
 #import "ARArtworkViewController.h"
@@ -40,7 +39,6 @@
 #import "AROnboardingPersonalizeTableViewController.h"
 #import "ARPriceRangeViewController.h"
 #import "ARViewInRoomViewController.h"
-#import "ARFairViewController.h"
 #import "ARFairSearchViewController.h"
 #import "ARSharingController.h"
 #import "ARBrowseCategoriesViewController.h"
@@ -177,30 +175,6 @@
                                     @"artist_id" : controller.artist.artistID ?: @"",
                                     @"profile_id" : organizer.fairOrganizerID ?: @"",
                                     @"fair_id" : controller.fair.fairID ?: @""
-                                };
-                            }
-                        },
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARShowViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsFairMapButtonTapped,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(handleMapButtonPress:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARShowViewController *controller, NSArray *_) {
-                                return controller.dictionaryForAnalytics;
-                            }
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsPartnerFollow,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(toggleFollowShow:)),
-                            ARAnalyticsShouldFire: ^BOOL(ARShowViewController *controller, NSArray *_) {
-                                return controller.isFollowing == YES;
-                            },
-                            ARAnalyticsProperties: ^NSDictionary*(ARShowViewController *controller, NSArray *_) {
-                                return @{
-                                    @"gallery_slug" : controller.show.partner.partnerID ?: @"",
                                 };
                             }
                         },
@@ -677,67 +651,6 @@
                     ],
                 },
                 @{
-                    ARAnalyticsClass: ARFairViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsProfileView,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(viewDidAppear:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARFairViewController *controller, NSArray *_){
-                                return @{
-                                    @"profile_id" : controller.fairProfile.profileID ?: @"",
-                                    @"fair_id" : controller.fair.fairID ?: @"",
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsFairFeaturedLinkSelected,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(didSelectFeaturedLink:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARFairViewController *controller, NSArray *parameters){
-                                FeaturedLink *featuredLink = parameters.firstObject;
-                                return @{
-                                    @"profile_id" : controller.fair.organizer.profileID ?: @"",
-                                    @"fair_id" : controller.fair.fairID ?: @"",
-                                    @"url" : featuredLink.href ?: @""
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsFairPostSelected,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(didSelectPost:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARFairViewController *controller, NSArray *parameters){
-                                NSString *postURL = parameters.firstObject;
-                                return @{
-                                    @"profile_id" : controller.fair.organizer.profileID ?: @"",
-                                    @"fair_id" : controller.fair.fairID ?: @"",
-                                    @"url" : postURL ?: @""
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsFairFeaturedLinkSelected,
-                            ARAnalyticsSelectorName: NSStringFromSelector(@selector(buttonPressed:)),
-                            ARAnalyticsProperties: ^NSDictionary*(ARFairViewController *controller, NSArray *parameters){
-                                ARButtonWithImage *button = parameters.firstObject;
-                                return @{
-                                    @"profile_id" : controller.fair.organizer.profileID ?: @"",
-                                    @"fair_id" : controller.fair.fairID ?: @"",
-                                    @"url" : button.targetURL ?: @""
-                                };
-                            },
-                        },
-                        @{
-                            ARAnalyticsEventName: ARAnalyticsFairOverviewSelection,
-                            ARAnalyticsSelectorName: ARAnalyticsSelector(buttonPressed:),
-                            ARAnalyticsProperties:  ^NSDictionary*(ARFairViewController *controller, NSArray *parameters){
-                                ARButtonWithImage *button = parameters.firstObject;
-                                return @{
-                                    @"button_text" : button.title ?: @"",
-                                };
-                            },
-                        }
-                    ]
-                },
-                @{
                     ARAnalyticsClass: ARSharingController.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -1058,28 +971,6 @@
                     ]
                 },
                 @{
-                    ARAnalyticsClass: ARShowViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsPageName: @"Show",
-                            ARAnalyticsSelectorName: @"showDidLoad",
-                            ARAnalyticsProperties:^NSDictionary *(ARShowViewController *controller, NSArray *_) {
-                                NSDictionary *basics =  @{
-                                      @"owner_type": @"partner_show",
-                                      @"owner_id": controller.show.showUUID ?: @"",
-                                      @"owner_slug": controller.show.showID ?: @"",
-                                };
-
-                                if (controller.show.fair.fairID) {
-                                    basics = [basics mtl_dictionaryByAddingEntriesFromDictionary:@{ @"fair_slug": controller.show.fair.fairID }];
-                                }
-
-                               return basics;
-                            }
-                        }
-                    ]
-                },
-                @{
                     ARAnalyticsClass: ARGeneComponentViewController.class,
                     ARAnalyticsDetails: @[
                         @{
@@ -1103,21 +994,6 @@
                             ARAnalyticsPageName: @"Fair artist",
                             ARAnalyticsSelectorName: @"artistDidLoad",
                             ARAnalyticsProperties: ^NSDictionary *(ARFairArtistViewController *controller, NSArray *_) {
-                                return @{ @"owner_type": @"fair",
-                                          @"owner_id" : controller.fair.fairUUID ?: @"",
-                                          @"owner_slug": controller.fair.fairID ?: @"",
-                                    };
-                            }
-                        }
-                    ]
-                },
-                @{
-                    ARAnalyticsClass: ARFairViewController.class,
-                    ARAnalyticsDetails: @[
-                        @{
-                            ARAnalyticsPageName: @"Fair",
-                            ARAnalyticsSelectorName: @"fairDidLoad",
-                            ARAnalyticsProperties: ^NSDictionary *(ARFairViewController *controller, NSArray *_) {
                                 return @{ @"owner_type": @"fair",
                                           @"owner_id" : controller.fair.fairUUID ?: @"",
                                           @"owner_slug": controller.fair.fairID ?: @"",

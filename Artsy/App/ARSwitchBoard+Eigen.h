@@ -4,7 +4,6 @@
 // View Controller forward declarations
 
 @class ARArtworkSetViewController,
-    ARShowViewController,
     ARFairArtistViewController,
     ARArtworkInfoViewController,
     ARAuctionArtworkResultsViewController,

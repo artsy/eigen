@@ -1,5 +1,6 @@
 #import "ARProfileViewController.h"
 
+#import "ARMenuAwareViewController.h"
 #import "ArtsyAPI+Profiles.h"
 #import "Fair.h"
 #import "Profile.h"
@@ -7,7 +8,6 @@
 #import "ARSwitchBoard+Eigen.h"
 #import "ARLogger.h"
 
-#import "ARFairViewController.h"
 #import "ARInternalMobileWebViewController.h"
 
 #import "UIViewController+FullScreenLoading.h"
@@ -83,14 +83,9 @@
                 NSString * fairID = ((Fair *) profile.profileOwner).fairID;
                 Fair *fair = [[Fair alloc] initWithFairID:fairID];
 
-                if ([AROptions boolForOption:AROptionsModernShowFairPages]) {
-                    ARFairComponentViewController *viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
+                ARFairComponentViewController *viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
                        [self showViewController:viewController];
-                } else {
-                    ARFairViewController *viewController = [[ARFairViewController alloc] initWithFair:fair andProfile:profile];
-                    RAC(self, hidesNavigationButtons) = RACObserve(viewController, hidesNavigationButtons);
-                    [self showViewController:viewController];
-                }
+
             }
 
             [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];

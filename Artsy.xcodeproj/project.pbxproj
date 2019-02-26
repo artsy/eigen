@@ -50,12 +50,10 @@
 		342F917E6CFBD49D6F43873D /* ARCollapsableTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F927CDF62DAE64F3A1AD7 /* ARCollapsableTextView.m */; };
 		342F91B952D170DCF5A0CDA4 /* UIImageView+AsyncImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9DA91638895F6A6A432C /* UIImageView+AsyncImageLoading.m */; };
 		342F91E3124D3E5EA18AB301 /* ARSplitStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F91131CCE3110E3E44E19 /* ARSplitStackView.m */; };
-		342F92546490FE42643B3060 /* ARFairViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9FD434A78C36B76A85B6 /* ARFairViewControllerTests.m */; };
 		342F925E34CAC3E5DB8E5F52 /* ARFairMapViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F92647D726C0DC289B1F3 /* ARFairMapViewControllerTests.m */; };
 		342F9272F2C534C1DFE2EB95 /* ARParallaxEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9A7210CFDD1C15CFBE3C /* ARParallaxEffect.m */; };
 		342F9276A48EA339833228D8 /* ARArtworkDetailViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9F3C689C41D4B941B665 /* ARArtworkDetailViewTests.m */; };
 		342F92E8397ACCA0D2EFF1CB /* MapPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F976360A7DAA65AF7D755 /* MapPoint.m */; };
-		342F9308EE5B3487AE62276D /* ARShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F966895F2D8BDFA7B39B1 /* ARShowViewController.m */; };
 		342F94077E27A45531E7A76F /* ARBidButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9629B03A1BEB6888BD4B /* ARBidButton.m */; };
 		342F949383329F78F589BE53 /* MTLModel+Dictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F98950528061D8AE370EA /* MTLModel+Dictionary.m */; };
 		342F953528DFA7BCEAC0552A /* ArtsyAPI+Shows.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9300791CEBAEC9D58AD0 /* ArtsyAPI+Shows.m */; };
@@ -67,7 +65,6 @@
 		342F9654C7AF4AEF8C21BC11 /* ARActionButtonsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F937DAA05F0E703D7A020 /* ARActionButtonsView.m */; };
 		342F9667FC693B47498549FE /* UIApplicationStateEnum.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9CDCE3E3D1674CA080AD /* UIApplicationStateEnum.m */; };
 		342F9715E899AC7D24E70734 /* ORStackViewArtsyCategoriesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9316E861BD2C6EBFA31A /* ORStackViewArtsyCategoriesTests.m */; };
-		342F971CCE09F6261F8460AF /* ARFairViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F951B04D7300332FF3DDB /* ARFairViewController.m */; };
 		342F97971D28FDC703392765 /* MTLModel+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F92D1AEEE18F719695548 /* MTLModel+JSON.m */; };
 		342F979DA15866BB8A70CC23 /* ORStackView+ArtsyViews.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9F32AB53EF2503473315 /* ORStackView+ArtsyViews.m */; };
 		342F97CF4D0BD118671622A0 /* ARFairMapAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9559FD6EB9419E3CEE68 /* ARFairMapAnnotationView.m */; };
@@ -154,7 +151,6 @@
 		3C6CB60518ABC7BB008DFE3B /* UserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6CB60418ABC7BB008DFE3B /* UserTests.m */; };
 		3C6CB60918ABD8D2008DFE3B /* ARPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6CB60818ABD8D2008DFE3B /* ARPostsViewController.m */; };
 		3C6CB61018ABFB8D008DFE3B /* ARRelatedArtistsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6CB60F18ABFB8D008DFE3B /* ARRelatedArtistsViewController.m */; };
-		3C7294CC196C3E660073663D /* ARShowViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7294CB196C3E660073663D /* ARShowViewControllerTests.m */; };
 		3C7880BC18B9081C00595E30 /* ARNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7880BB18B9081C00595E30 /* ARNotificationView.m */; };
 		3C7A7FA718C6EDAB00E8D336 /* ArtworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7A7FA618C6EDAB00E8D336 /* ArtworkTests.m */; };
 		3C8A916718A299BF0038A5B2 /* ARFairSectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8A916618A299BF0038A5B2 /* ARFairSectionViewController.m */; };
@@ -936,7 +932,6 @@
 		342F94A8E1109ABC367CB751 /* ARStandardDateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARStandardDateFormatter.h; sourceTree = "<group>"; };
 		342F94AB8EA7914F64F117AD /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
 		342F94F249E33303787DC61E /* MTLModel+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MTLModel+JSON.h"; sourceTree = "<group>"; };
-		342F951B04D7300332FF3DDB /* ARFairViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairViewController.m; sourceTree = "<group>"; };
 		342F954D3ABCF82AAC1640D9 /* ARSharingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSharingController.h; sourceTree = "<group>"; };
 		342F9559FD6EB9419E3CEE68 /* ARFairMapAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairMapAnnotationView.m; sourceTree = "<group>"; };
 		342F955C47585DAE288DCC7F /* ARScrollNavigationChief.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARScrollNavigationChief.h; sourceTree = "<group>"; };
@@ -945,7 +940,6 @@
 		342F96255EEC90B05A4FF213 /* ARFeedImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeedImageLoader.h; sourceTree = "<group>"; };
 		342F9629B03A1BEB6888BD4B /* ARBidButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBidButton.m; sourceTree = "<group>"; };
 		342F965F76AA25C6C700FE1C /* ARNavigationButtonsViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationButtonsViewControllerTests.m; sourceTree = "<group>"; };
-		342F966895F2D8BDFA7B39B1 /* ARShowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARShowViewController.m; sourceTree = "<group>"; };
 		342F966C989CF0BE97711FB6 /* ARFeedImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFeedImageLoader.m; sourceTree = "<group>"; };
 		342F9685CB5FB321D7FC7A2B /* NSString+StringSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+StringSize.h"; sourceTree = "<group>"; };
 		342F969D222D3AAD67B93FCE /* ARTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTextView.m; sourceTree = "<group>"; };
@@ -964,7 +958,6 @@
 		342F987C1CACE95AAD292717 /* UIImage+ImageFromColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageFromColor.m"; sourceTree = "<group>"; };
 		342F98950528061D8AE370EA /* MTLModel+Dictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MTLModel+Dictionary.m"; sourceTree = "<group>"; };
 		342F98A73E2E1162514B5A24 /* ARScrollNavigationChief.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARScrollNavigationChief.m; sourceTree = "<group>"; };
-		342F994893B9660BEA23C18D /* ARFairViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairViewController.h; sourceTree = "<group>"; };
 		342F995897B0B106E59A39A0 /* ARFairMapAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapAnnotationView.h; sourceTree = "<group>"; };
 		342F9983D46712773FC71FC3 /* Fair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fair.h; sourceTree = "<group>"; };
 		342F9A069BB0267F7BF6F260 /* UIView+HitTestExpansion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+HitTestExpansion.h"; sourceTree = "<group>"; };
@@ -974,7 +967,6 @@
 		342F9AC8BEBC76D655E34A8D /* ARFairMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFairMapViewController.h; sourceTree = "<group>"; };
 		342F9B088114B9396356A2FC /* ARSplitStackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSplitStackView.h; sourceTree = "<group>"; };
 		342F9B2379536051BE35B6D4 /* ARValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARValueTransformer.h; sourceTree = "<group>"; };
-		342F9B2B2ACEAEDFADE3E0B2 /* ARShowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARShowViewController.h; sourceTree = "<group>"; };
 		342F9BA51676376FB563BD00 /* ARActionButtonsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARActionButtonsView.h; sourceTree = "<group>"; };
 		342F9BBA54BBCF5FE29C8684 /* ARParallaxEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARParallaxEffect.h; sourceTree = "<group>"; };
 		342F9C11DC281B1C4DC1FB8C /* Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Map.m; sourceTree = "<group>"; };
@@ -999,7 +991,6 @@
 		342F9F6EDBFE4624755933EB /* UILabel+Typography.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Typography.m"; sourceTree = "<group>"; };
 		342F9F73EE9B1DBFE4E88BA3 /* ARTiledImageDataSourceWithImageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTiledImageDataSourceWithImageTests.m; sourceTree = "<group>"; };
 		342F9F752C66B13A43FD55DC /* StyledSubclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyledSubclasses.h; sourceTree = "<group>"; };
-		342F9FD434A78C36B76A85B6 /* ARFairViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFairViewControllerTests.m; sourceTree = "<group>"; };
 		342F9FEFF4A1B56EE307467B /* ARFileUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFileUtils.m; sourceTree = "<group>"; };
 		34B115192069AA7C0025D925 /* AuctionBuyNowTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuctionBuyNowTitleView.swift; path = ../View_Controllers/AuctionBuyNowTitleView.swift; sourceTree = "<group>"; };
 		3A179F5921BEB383007705F8 /* SearchResultable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchResultable.h; sourceTree = "<group>"; };
@@ -1077,7 +1068,6 @@
 		3C6CB60818ABD8D2008DFE3B /* ARPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPostsViewController.m; sourceTree = "<group>"; };
 		3C6CB60E18ABFB8D008DFE3B /* ARRelatedArtistsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRelatedArtistsViewController.h; sourceTree = "<group>"; };
 		3C6CB60F18ABFB8D008DFE3B /* ARRelatedArtistsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRelatedArtistsViewController.m; sourceTree = "<group>"; };
-		3C7294CB196C3E660073663D /* ARShowViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARShowViewControllerTests.m; sourceTree = "<group>"; };
 		3C7880BA18B9081C00595E30 /* ARNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNotificationView.h; sourceTree = "<group>"; };
 		3C7880BB18B9081C00595E30 /* ARNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNotificationView.m; sourceTree = "<group>"; };
 		3C7A7FA618C6EDAB00E8D336 /* ArtworkTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtworkTests.m; sourceTree = "<group>"; };
@@ -2732,7 +2722,6 @@
 			children = (
 				5EBDC94F19794D6C0082C514 /* Views */,
 				3CA4B73018B418F500256B33 /* Utils */,
-				342F9FD434A78C36B76A85B6 /* ARFairViewControllerTests.m */,
 				5E9A781F19068EDF00734E1B /* ARProfileViewControllerTests.m */,
 				3CCCC8931899676E008015DD /* ARFairPostsViewControllerTests.m */,
 				342F9E0324CE65C4B8969EE4 /* Maps */,
@@ -2740,7 +2729,6 @@
 				3C1266F018BE6CC700B5AE72 /* ARFairGuideViewControllerTests.m */,
 				3CBB03A7192BA94C00689F89 /* ARFairArtistViewControllerTests.m */,
 				5E71AFC6195C64C1000F6325 /* ARFairGuideContainerViewControllerTests.m */,
-				3C7294CB196C3E660073663D /* ARShowViewControllerTests.m */,
 				5EBDC95219794DF10082C514 /* ARPendingOperationViewControllerTests.m */,
 				5EB33E73197EBDE200706EB1 /* ARParallaxHeaderViewControllerTests.m */,
 				5EB33E75197EBFEB00706EB1 /* wide.jpg */,
@@ -4647,8 +4635,6 @@
 			children = (
 				606B6E3A1ADC14A400A12E08 /* Network Models */,
 				60D83DEF189EE9BF001672E9 /* Guides */,
-				342F994893B9660BEA23C18D /* ARFairViewController.h */,
-				342F951B04D7300332FF3DDB /* ARFairViewController.m */,
 				5EE5DE12190167A400040B84 /* ARProfileViewController.h */,
 				5EE5DE13190167A400040B84 /* ARProfileViewController.m */,
 				3CCCC88B1899657C008015DD /* ARFairPostsViewController.h */,
@@ -4661,8 +4647,6 @@
 				342F93B0E900CB6BC98011DE /* Views */,
 				3C33298B18AD3324006D28C0 /* ARFairSearchViewController.h */,
 				3C33298C18AD3324006D28C0 /* ARFairSearchViewController.m */,
-				342F966895F2D8BDFA7B39B1 /* ARShowViewController.m */,
-				342F9B2B2ACEAEDFADE3E0B2 /* ARShowViewController.h */,
 				5EFF52BC197916C800E2A563 /* ARPendingOperationViewController.h */,
 				5EFF52BD197916C800E2A563 /* ARPendingOperationViewController.m */,
 				60647C761A95095800A45247 /* ARFairPopupViewController.h */,
@@ -5781,7 +5765,6 @@
 				60026AF21BDE3EFB0040257C /* ARWebViewCacheHost.m in Sources */,
 				60ED312D1C8F776B0071DD89 /* LiveAuctionSalesPerson.swift in Sources */,
 				5EACFAC91C750E2F004112FF /* SaleArtworkViewModel.swift in Sources */,
-				342F971CCE09F6261F8460AF /* ARFairViewController.m in Sources */,
 				342F9CDD0CDC753B394F3CFC /* Fair.m in Sources */,
 				601E31B01C80E35600D09F73 /* LiveAuctionLot.m in Sources */,
 				342F9D3F000632CC30AC5260 /* ARNavigationButtonsViewController.m in Sources */,
@@ -5863,7 +5846,6 @@
 				60AF60C91CB2D8BD0041B430 /* LiveAuctionPlaceMaxBidViewController.swift in Sources */,
 				5E088DAE1C58072B00C448D7 /* RefinementOptionsViewController+Private.swift in Sources */,
 				342F996B2CF23951168534AD /* Follow.m in Sources */,
-				342F9308EE5B3487AE62276D /* ARShowViewController.m in Sources */,
 				342F953528DFA7BCEAC0552A /* ArtsyAPI+Shows.m in Sources */,
 				342F9C00DD759E6DEA845426 /* ARImagePageViewController.m in Sources */,
 				5E284609194A2E58007274AB /* ARFairGuideContainerViewController.m in Sources */,
@@ -6001,7 +5983,6 @@
 				0CAC95391BA9E1D0008E9848 /* ARUserActivityAndSpotlightTests.m in Sources */,
 				51D141B01AEA52E5000091CF /* AREmbeddedModelsViewControllerTests.m in Sources */,
 				60327DD21987BA830075B399 /* ARDeveloperOptionsSpec.m in Sources */,
-				3C7294CC196C3E660073663D /* ARShowViewControllerTests.m in Sources */,
 				D3BB62921AAE510F00BBF3D2 /* ARBrowseViewControllerTests.m in Sources */,
 				5E3816FF1CC1570A00477B17 /* LiveAuctionLotListViewControllerTests.swift in Sources */,
 				5157ECFF1F72766600C54345 /* ARPaymentRequestWebViewControllerTests.m in Sources */,
@@ -6020,7 +6001,6 @@
 				5108A7BC1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m in Sources */,
 				D37E4CFD1A92B29F00023E2C /* ARAnnotatedMapViewTests.m in Sources */,
 				E676B2F518D230A00057B4E1 /* ARURLItemProviderTests.m in Sources */,
-				342F92546490FE42643B3060 /* ARFairViewControllerTests.m in Sources */,
 				6030253E1CBBB7B500B93583 /* AuctionLotMetadataStackScrollViewTests.swift in Sources */,
 				3C35CC7D189FF14800E3D8DE /* OrderedSetTests.m in Sources */,
 				D39E87521AB0FBDF006B5BE9 /* ARStubbedBrowseNetworkModel.m in Sources */,

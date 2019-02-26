@@ -14,7 +14,6 @@
 
 // View Controllers
 #import "ARArtworkSetViewController.h"
-#import "ARShowViewController.h"
 #import "ARArtworkInfoViewController.h"
 #import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
