@@ -18,7 +18,7 @@
   if ((self = [super initWithNibName:nil bundle:nil])) {
     _emission = emission ?: [AREmission sharedInstance];
     _moduleName = moduleName;
-    
+
     NSMutableDictionary *properties = [NSMutableDictionary new];
     [properties addEntriesFromDictionary:initialProperties];
     [properties addEntriesFromDictionary:@{@"isVisible": @YES}];
@@ -39,10 +39,16 @@
   [self.view addSubview:self.rootView];
   self.rootView.reactViewController = self;
 
+  // We use AutoLayout to ensure the RCTView covers the whole view
   self.rootView.translatesAutoresizingMaskIntoConstraints = NO;
+
+  // Most of the time we want to respect the 'safe area' positioning provided by the
+  // OS, but in the cases where we have full bleed headers whiich should go behind
+  // the status bar, then the top layout constrain will need to work with the main
+  // view instead of the traditional topLayoutGuide
   id topConstrainedItem = self.fullBleed ? (id)self.view : self.topLayoutGuide;
   NSLayoutAttribute topConstrainedAttribute = self.fullBleed ? NSLayoutAttributeTop : NSLayoutAttributeBottom;
-    
+
   [self.view addConstraints:@[
     [NSLayoutConstraint constraintWithItem:self.rootView
                                  attribute:NSLayoutAttributeTop
