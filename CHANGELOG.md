@@ -15,12 +15,13 @@
 -->
 
 ### Master
-- Add ellipsis to partner and event names - ashkan
 
+- Add ellipsis to partner and event names - ashkan
 - Adds Sentry to the app - orta
 - Adds Sentry logger for users - orta
 - Fix for the count of artworks in a show - orta
 - Nearby show previews use a better placeholder - orta
+- Fixes to the fair icon - orta
 
 ### 1.8.4
 
