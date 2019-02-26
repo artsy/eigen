@@ -19,6 +19,7 @@ import {
   RegistrationFlowRenderer,
   ShowArtistsRenderer,
   ShowArtworksRenderer,
+  ShowMoreInfoRenderer,
   ShowRenderer,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
@@ -245,5 +246,6 @@ AppRegistry.registerComponent("FairExhibitors", () => FairExhibitors)
 AppRegistry.registerComponent("Show", () => Show)
 AppRegistry.registerComponent("ShowArtists", () => ShowArtistsRenderer)
 AppRegistry.registerComponent("ShowArtworks", () => ShowArtworksRenderer)
+AppRegistry.registerComponent("ShowMoreInfo", () => ShowMoreInfoRenderer)
 AppRegistry.registerComponent("Map", () => MapContainer)
 AppRegistry.registerComponent("City", () => CityView)

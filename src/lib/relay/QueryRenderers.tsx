@@ -47,6 +47,7 @@ import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.g
 import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
 import { ShowArtists } from "lib/Components/Show/ShowArtists"
 import createEnvironment from "./createEnvironment"
+import { QueryRenderersShowMoreInfoQuery } from "__generated__/QueryRenderersShowMoreInfoQuery.graphql"
 const environment = createEnvironment()
 
 export type RenderCallback = QueryRendererProps["render"]
@@ -407,6 +408,26 @@ export const ShowArtworksRenderer: React.SFC<ShowArtworksProps> = ({ render, sho
         query QueryRenderersShowArtworksQuery($showID: String!) {
           show(id: $showID) {
             ...ShowArtworks_show
+          }
+        }
+      `}
+      variables={{ showID }}
+      render={render}
+    />
+  )
+}
+
+interface ShowMoreInfoProps extends RendererProps {
+  showID: string
+}
+export const ShowMoreInfoRenderer: React.SFC<ShowMoreInfoProps> = ({ render, showID }) => {
+  return (
+    <QueryRenderer<QueryRenderersShowMoreInfoQuery>
+      environment={environment}
+      query={graphql`
+        query QueryRenderersShowMoreInfoQuery($showID: String!) {
+          show(id: $showID) {
+            ...MoreInfo_show
           }
         }
       `}
