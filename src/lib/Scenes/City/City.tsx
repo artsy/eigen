@@ -64,6 +64,10 @@ export class CityView extends Component<Props, State> {
             <Flex py={1} alignItems="center">
               <Handle />
             </Flex>
+            <FiltersBar
+              tabs={this.filters}
+              goToPage={activeIndex => EventEmitter.dispatch("filters:change", activeIndex)}
+            />
             <ScrollView
               contentInset={{ bottom: bottomInset }}
               onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
@@ -74,12 +78,6 @@ export class CityView extends Component<Props, State> {
                 }
               }}
             >
-              <Box>
-                <FiltersBar
-                  tabs={this.filters}
-                  goToPage={activeIndex => EventEmitter.dispatch("filters:change", activeIndex)}
-                />
-              </Box>
               {(() => {
                 switch (filter && filter.id) {
                   case "all":
