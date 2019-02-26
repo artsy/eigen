@@ -67,6 +67,8 @@ fragment SavedShowItemRow_show on Show {
   images(size: 1) {
     url
   }
+  start_at
+  end_at
 }
 */
 
@@ -99,7 +101,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FavoriteShowsQuery",
-  "id": "a590555cd490d621c0fb392314717e24",
+  "id": "183aa8e42d89478532cc307001b49d28",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -213,14 +215,14 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "id",
+                            "name": "href",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "_id",
+                            "name": "id",
                             "args": null,
                             "storageKey": null
                           },
@@ -259,7 +261,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "href",
+                            "name": "_id",
                             "args": null,
                             "storageKey": null
                           },
@@ -294,6 +296,20 @@ return {
                                 "storageKey": null
                               }
                             ]
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "start_at",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "end_at",
+                            "args": null,
+                            "storageKey": null
                           },
                           v2
                         ]
