@@ -6,10 +6,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { ShowArtistsContainer as ShowArtistsScreen } from "lib/Components/Show/ShowArtists"
 import { ShowArtworksContainer as ShowArtworksScreen } from "lib/Components/Show/ShowArtworks"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { FairArtistsRenderer as FairArtistsScreen } from "./Screens/FairArtists"
-import { FairArtworksRenderer as FairArtworksScreen } from "./Screens/FairArtworks"
 import { FairDetailContainer as FairDetailScreen } from "./Screens/FairDetail"
-import { FairExhibitorsRenderer as FairExhibitorsScreen } from "./Screens/FairExhibitors"
 import { FairMoreInfoRenderer as FairMoreInfoScreen, shouldGoStraightToWebsite } from "./Screens/FairMoreInfo"
 
 import { Fair_fair } from "__generated__/Fair_fair.graphql"
@@ -43,15 +40,15 @@ export class Fair extends React.Component<Props> {
   }
 
   handleViewAllExhibitorsPressed = () => {
-    this.navigate({ component: FairExhibitorsScreen })
+    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/exhibitors`)
   }
 
   handleViewAllArtworksPressed = () => {
-    this.navigate({ component: FairArtworksScreen })
+    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/artworks`)
   }
 
   handleViewAllArtistsPressed = () => {
-    this.navigate({ component: FairArtistsScreen })
+    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/artists`)
   }
 
   handleViewFairBoothPressed = props => {

@@ -1,1 +1,5 @@
 export { FairContainer as default } from "./Fair"
+export { FairBoothRenderer } from "./Screens/FairBooth"
+export { FairArtworksRenderer } from "./Screens/FairArtworks"
+export { FairArtistsRenderer } from "./Screens/FairArtists"
+export { FairExhibitorsRenderer } from "./Screens/FairExhibitors"
