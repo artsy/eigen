@@ -73,62 +73,6 @@ describe(@"stack manipulation", ^{
     });
 });
 
-describe(@"presenting pending operation layover", ^{
-    
-    it(@"should animate layover transitions", ^{
-        expect(navigationController.animatesLayoverChanges).to.beTruthy();
-    });
-    
-    it(@"should call through to nil when the message isn't included", ^{
-        id mock = [OCMockObject partialMockForObject:navigationController];
-        [[mock expect] presentPendingOperationLayoverWithMessage:[OCMArg isNil]];
-        
-        [mock presentPendingOperationLayover];
-        
-        [mock verify];
-    });
-    
-    describe(@"without animations", ^{
-        beforeEach(^{
-            navigationController.animatesLayoverChanges = NO;
-        });
-        
-        it(@"should present the new view controller", ^{
-            id mock = [OCMockObject partialMockForObject:navigationController];
-            [[mock expect] ar_addModernChildViewController:[OCMArg checkForClass:[ARPendingOperationViewController class]]];
-            
-            [mock presentPendingOperationLayover];
-            
-            [mock verify];
-        });
-        
-        it(@"should dismiss the view controller once the command's execution is completed", ^{
-            id mock = [OCMockObject partialMockForObject:navigationController];
-            [[mock expect] ar_removeChildViewController:[OCMArg checkForClass:[ARPendingOperationViewController class]]];
-            
-            RACCommand *command = [mock presentPendingOperationLayover];
-            [command execute:nil];
-            
-            [mock verify];
-        });
-        
-        describe(@"with a message", ^{
-            it(@"should present the new view controller", ^{
-                NSString *message = @"Hello fine sir or madam";
-                
-                id mock = [OCMockObject partialMockForObject:navigationController];
-                [[mock expect] ar_addModernChildViewController:[OCMArg checkWithBlock:^BOOL(ARPendingOperationViewController *obj) {
-                    return [obj.message isEqualToString:message];
-                }]];
-                
-                [mock presentPendingOperationLayoverWithMessage:message];
-                
-                [mock verify];
-            });
-        });
-    });
-});
-
 describe(@"search", ^{
     before(^{
         navigationController.searchViewController = [ARAppSearchViewController new];

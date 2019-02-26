@@ -25,13 +25,4 @@
 /// Removes the specified viewController from anywhere in the stack.
 - (void)removeViewControllerFromStack:(UIViewController *)viewController;
 
-/// Presents a pending operation overlay view controller.
-///
-/// @returns A RACCommand representing the work to remove the view controller.
-/// Subscribe to the completion of the command's execution to perform work after
-/// the pending operation view controller has been removed.
-
-- (RACCommand *)presentPendingOperationLayover;
-- (RACCommand *)presentPendingOperationLayoverWithMessage:(NSString *)message;
-
 @end

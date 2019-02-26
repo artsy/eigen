@@ -39,12 +39,6 @@
     
     // Call super.
     [super viewDidLoad];
-    
-    // Download local data for client-side search.
-    [self.fair updateFair:^{
-        [self.fair downloadShows];
-        NSLog(@"Updated fair.");
-    }];
 
     self.view.backgroundColor = [UIColor whiteColor];
     self.textField.textColor = [UIColor artsyGraySemibold];

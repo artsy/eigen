@@ -1,8 +1,8 @@
 #import "ARFeedSubclasses.h"
 #import "ARFeedTimeline.h"
 #import "Map.h"
-#import "ARFairNetworkModel.h"
 #import "ARSpotlight.h"
+#import "ARFairNetworkModel.h"
 
 #import <Mantle/Mantle.h>
 
@@ -14,11 +14,9 @@
 
 - (instancetype)initWithFairID:(NSString *)fairID;
 
-- (void)downloadShows;
 - (void)updateFair:(void (^)(void))success;
 - (void)getPosts:(void (^)(ARFeedTimeline *feedTimeline))success;
 - (void)getOrderedSets:(void (^)(NSMutableDictionary *orderedSets))success;
-- (void)getFairMaps:(void (^)(NSArray *))success;
 
 - (PartnerShow *)findShowForPartner:(Partner *)partner;
 

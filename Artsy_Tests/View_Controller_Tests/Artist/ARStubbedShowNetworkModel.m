@@ -20,12 +20,6 @@
     success(self.show);
 }
 
-- (void)getFairMaps:(void (^)(NSArray *maps))success
-{
-    self.fair.maps = self.maps;
-    success(self.maps);
-}
-
 - (void)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
     success(@[]);

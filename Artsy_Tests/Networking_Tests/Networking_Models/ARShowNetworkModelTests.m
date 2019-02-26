@@ -44,15 +44,7 @@ describe(@"network access", ^{
             expect(success).to.beTruthy();
         });
         
-        it(@"gets fair maps", ^{
-            [OHHTTPStubs stubJSONResponseAtPath:ARNewFairMapURL withResponse:@[@{}]];
-            
-            [model getFairMaps:^(NSArray *maps) {
-                success = maps.count == 1;
-            }];
-
-            expect(success).to.beTruthy();
-        });
+      
         
         it(@"gets artwork pages", ^{
             NSDictionary *params = @{ @"page" : @(3), @"published" : @YES, @"size" : @10 };
