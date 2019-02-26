@@ -206,8 +206,8 @@
       exit(0);
     }];
   }];
-  return autoSwitchCellData;
 
+  return autoSwitchCellData;
 }
 
 

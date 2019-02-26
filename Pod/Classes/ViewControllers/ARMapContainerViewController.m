@@ -17,7 +17,8 @@
 
 @implementation ARMapContainerViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     self.mapVC = [[ARMapComponentViewController alloc] init];
@@ -47,6 +48,7 @@
     // position and we'll have the area unavailable for the scrollview, and we'll set it to the bottom content insets.
     CGFloat bottomInset = drawer.drawerTopInset + bottomSafeArea;
     [self.cityVC setProperty:@(bottomInset) forKey:@"verticalMargin"];
+
     BOOL isDrawerOpen = [drawer.drawerPosition isEqualToPosition:PulleyPosition.open];
     [self.cityVC setProperty:@(isDrawerOpen) forKey:@"isDrawerOpen"];
 }

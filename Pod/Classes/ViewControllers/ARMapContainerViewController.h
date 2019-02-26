@@ -2,11 +2,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol ARComponentFullBleedViewSizing;
-
+/// Hosts a Map showing local shows and fairs
 @interface ARMapContainerViewController : UIViewController <ARComponentFullBleedViewSizing>
-
-
 @end
 
 NS_ASSUME_NONNULL_END
