@@ -84,7 +84,7 @@ target 'Artsy' do
   pod 'Emission', '~> 1.8.0'
   pod 'yoga', podspec: 'https://raw.githubusercontent.com/artsy/emission/v1.5.2/externals/yoga/yoga.podspec.json'
 
-  # Allow easily running Emission from Metro inside Eigen (see issue #2497)
+  # Enable running Emission from Metro inside Eigen when developing (see issue #2497)
   if ENV['CIRCLE_BUILD_NUM']
     # Production:
     pod 'React', :subspecs => %w(Core)
@@ -192,13 +192,11 @@ post_install do |installer|
     end
   end
 
+  # Support toggling the RCT_Dev build flag so that we can have it in dev, but not in prod
   react = installer.pods_project.targets.find { |target| target.name == 'React' }
   react.build_configurations.each do |config|
-    if config.name == 'Debug'
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = '$(inherited) RCT_DEV=1'
-    else
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = '$(inherited) RCT_DEV=0'
-    end
+    allow_react_native_debugging = config.name == 'Debug' ? '1' : '0'
+    config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = '$(inherited) RCT_DEV=' + allow_react_native_debugging
   end
 
   # TODO:

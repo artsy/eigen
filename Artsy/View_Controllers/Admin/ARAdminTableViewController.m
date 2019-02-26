@@ -9,7 +9,7 @@ NSString *const AROptionCell = @"OptionCell";
 NSString *const ARLabOptionCell = @"LabOptionCell";
 NSString *const ARReadOnlyOptionCell = @"ARReadOnlyOptionCell";
 NSString *const ARTwoLabelCell = @"ARTwoLabelCell";
-
+admin
 @implementation ARAdminTableViewController
 
 - (void)viewDidLoad

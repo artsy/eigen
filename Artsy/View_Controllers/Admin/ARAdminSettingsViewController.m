@@ -426,7 +426,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         if (isDevReact) { exit(0); }
 
         // Warn to see the docs
-        NSString *message = @"See the Emission docs on this, github.com/artsy/Emission/docs/running-emission-in-eigen.md";
+        NSString *message = @"See the Emission docs on this, github.com/artsy/Emission/docs/using_dev_emission.md";
         UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"Note" message:message preferredStyle:UIAlertControllerStyleAlert];
 
         [controller addAction:[UIAlertAction actionWithTitle:@"Got it" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
