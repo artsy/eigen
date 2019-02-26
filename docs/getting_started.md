@@ -4,7 +4,6 @@
 
 Follow the instructions in [the README](https://github.com/artsy/eigen#docs).
 
-
 ### Running Tests
 
 We can only run tests in one specific environment, today that is `10.3` on an iPhone 6. This is because we use visual snapshots for UI regressions.

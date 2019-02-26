@@ -30,6 +30,10 @@
 #import "ARSerifNavigationViewController.h"
 
 #import <Emission/ARShowConsignmentsFlowViewController.h>
+#import <Emission/ARFairBoothComponentViewController.h>
+#import <Emission/ARFairArtworksComponentViewController.h>
+#import <Emission/ARFairArtistsComponentViewController.h>
+#import <Emission/ARFairExhibitorsComponentViewController.h>
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -183,6 +187,9 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     }];
 
     [self registerEchoRouteForKey:@"ARShowRoute" handler:JLRouteParams {
+        if ([parameters[@"entity"] isEqualToString:@"fair-booth"]) {
+            return [[ARFairBoothComponentViewController alloc] initWithFairBoothID:parameters[@"id"]];
+        }
         __strong typeof (wself) sself = wself;
         return [sself loadShowWithID:parameters[@"id"]];
     }];
@@ -212,7 +219,18 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
             return nil;
         }
     }];
-
+    
+    [self.routes addRoute:@"/fair/:id/artworks" handler:JLRouteParams {
+        return [[ARFairArtworksComponentViewController alloc] initWithFairID:parameters[@"id"]];
+    }];
+    
+    [self.routes addRoute:@"/fair/:id/artists" handler:JLRouteParams {
+        return [[ARFairArtistsComponentViewController alloc] initWithFairID:parameters[@"id"]];
+    }];
+    
+    [self.routes addRoute:@"/fair/:id/exhibitors" handler:JLRouteParams {
+        return [[ARFairExhibitorsComponentViewController alloc] initWithFairID:parameters[@"id"]];
+    }];
 
     // We don't show a native fairs UI for iPad
     if (![UIDevice isPad]) {
