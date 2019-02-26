@@ -37,6 +37,8 @@
 #import "PRNetworkModel.h"
 #import "CommitNetworkModel.h"
 
+#import <Sentry/Sentry.h>
+
 // If you have the ID of a user and an access token for them, you can impersonate them by hardcoding those here.
 // Obviously you should *never* check these in!
 
@@ -126,9 +128,17 @@ randomBOOL(void)
 
   EmissionKeys *keys = [[EmissionKeys alloc] init];
 
+#if TARGET_IPHONE_SIMULATOR
+  NSString *sentryDSN = nil;
+#else
+  // Only use sentry when on a phone
+  NSString *sentryDSN = [keys sentryProductionDSN];
+  [self setupSentry:sentryDSN userID:userID];
+#endif
+
   AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
                                                                 authenticationToken:accessToken
-                                                                          sentryDSN:nil
+                                                                          sentryDSN:sentryDSN
                                                                stripePublishableKey:[keys stripePublishableKey]
                                                                    googleMapsAPIKey:nil
                                                                  mapBoxAPIClientKey:[keys mapBoxAPIClientKey]
@@ -363,6 +373,21 @@ randomBOOL(void)
   }];
 }
 
+- (void)setupSentry:(NSString *)sentryDSN userID:(NSString *)userID
+{
+  NSError *error = nil;
+  SentryClient *client = [[SentryClient alloc] initWithDsn:sentryDSN didFailWithError:&error];
+  NSAssert(error == nil, @"Unable to initialize a SentryClient SDK: %@", error);
+  error = nil;
+  [client startCrashHandlerWithError:&error];
+  NSAssert(error == nil, @"Unable to start the Sentry crash handler: %@", error);
+  [SentryClient setSharedClient:client];
+
+  // Log you in
+  SentryUser *user = [[SentryUser alloc] initWithUserId:userID];
+  SentryClient.sharedClient.user = user;
+
+}
 
 @end
 

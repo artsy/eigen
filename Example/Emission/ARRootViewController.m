@@ -37,6 +37,7 @@
 #import "InternalWebViewController.h"
 #import "EigenLikeNavigationController.h"
 #import <ISO8601DateFormatter/ISO8601DateFormatter.h>
+#import "ARAdminSentryBreadcrumbViewController.h"
 
 @implementation ARRootViewController
 
@@ -506,6 +507,7 @@
 {
   ARSectionData *sectionData = [[ARSectionData alloc] init];
   [self setupSection:sectionData withTitle:@"Admin"];
+  [sectionData addCellData:self.showSentryLogs];
 
   AppSetup *setup = [AppSetup ambientSetup];
   if (setup.inStaging) {
@@ -540,6 +542,13 @@
       [self.authenticationManager logOut];
       exit(0);
     }];
+  }];
+}
+
+- (ARCellData *)showSentryLogs
+{
+  return [self tappableCellDataWithTitle:@"Show Sentry Breadcrumbs" selection:^{
+    [self.navigationController pushViewController:[[ARAdminSentryBreadcrumbViewController alloc] init] animated:YES];
   }];
 }
 
