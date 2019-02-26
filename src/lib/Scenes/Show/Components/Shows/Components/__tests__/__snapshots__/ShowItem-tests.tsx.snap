@@ -43,7 +43,10 @@ exports[`looks correct when rendered 1`] = `
             "height": 120,
             "width": "100%",
           },
-          undefined,
+          Object {
+            "alignItems": "center",
+            "justifyContent": "center",
+          },
         ]
       }
     />

@@ -705,7 +705,10 @@ Array [
                     "height": 120,
                     "width": "100%",
                   },
-                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
                 ]
               }
             />
@@ -847,7 +850,10 @@ Array [
                     "height": 120,
                     "width": "100%",
                   },
-                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
                 ]
               }
             />
@@ -989,7 +995,10 @@ Array [
                     "height": 120,
                     "width": "100%",
                   },
-                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
                 ]
               }
             />
@@ -1131,7 +1140,10 @@ Array [
                     "height": 120,
                     "width": "100%",
                   },
-                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
                 ]
               }
             />
@@ -1273,7 +1285,10 @@ Array [
                     "height": 120,
                     "width": "100%",
                   },
-                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
                 ]
               }
             />
@@ -1415,7 +1430,10 @@ Array [
                     "height": 120,
                     "width": "100%",
                   },
-                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
                 ]
               }
             />
@@ -1557,7 +1575,10 @@ Array [
                     "height": 120,
                     "width": "100%",
                   },
-                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
                 ]
               }
             />
@@ -1699,7 +1720,10 @@ Array [
                     "height": 120,
                     "width": "100%",
                   },
-                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
                 ]
               }
             />
@@ -1841,7 +1865,10 @@ Array [
                     "height": 120,
                     "width": "100%",
                   },
-                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
                 ]
               }
             />
@@ -1983,7 +2010,10 @@ Array [
                     "height": 120,
                     "width": "100%",
                   },
-                  undefined,
+                  Object {
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                  },
                 ]
               }
             />

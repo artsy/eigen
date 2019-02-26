@@ -19,6 +19,7 @@
 - Adds Sentry to the app - orta
 - Adds Sentry logger for users - orta
 - Fix for the count of artworks in a show - orta
+- Nearby show previews use a better placeholder - orta
 
 ### 1.8.4
 
