@@ -61,6 +61,7 @@
 - Adds seperator between fair entities - kieran
 - Fixes FairBooth routes - luc
 - Adds Fair analytics - kieran
+- Adds Component VCs for Artists, Artworks, Exhibitors screens - luc
 
 ### 1.8.2
 
