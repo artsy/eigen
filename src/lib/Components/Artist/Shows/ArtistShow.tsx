@@ -21,7 +21,7 @@ class Show extends React.Component<Props> {
   handleTap() {
     const { is_fair_booth } = this.props.show
     is_fair_booth
-      ? SwitchBoard.presentNavigationViewController(this, `show/${this.props.show.href}?entity=fair-booth`)
+      ? SwitchBoard.presentNavigationViewController(this, `${this.props.show.href}?entity=fair-booth`)
       : SwitchBoard.presentNavigationViewController(this, this.props.show.href)
   }
 
