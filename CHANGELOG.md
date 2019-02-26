@@ -217,6 +217,7 @@
 - Adds MoreInfo screen to show detail view - javamonn
 - Clean up Jest log output, update relay-mock-network-layer - javamonn
 - Fair performance enhancements - ashley
+- Add start and end properties to Favorites Works and Shows page info queries -ashley
 
 ### 1.7.1
 
