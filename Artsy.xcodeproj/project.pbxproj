@@ -1436,7 +1436,6 @@
 		600A734217DE3F3F00E21233 /* ArtsyAPI+DeviceTokens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+DeviceTokens.m"; sourceTree = "<group>"; };
 		600B8B3C1C4FCEE000776F84 /* push_notifications.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = push_notifications.md; sourceTree = "<group>"; };
 		600B8B3D1C4FCEE000776F84 /* welcome_to_eigen_beta.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = welcome_to_eigen_beta.md; sourceTree = "<group>"; };
-		600B8B3E1C4FCEE000776F84 /* notifications.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = notifications.md; sourceTree = "<group>"; };
 		600B8B3F1C4FCEE000776F84 /* thanks.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = thanks.md; sourceTree = "<group>"; };
 		600B8B441C4FCEEC00776F84 /* CHANGELOG.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.yml; sourceTree = SOURCE_ROOT; };
 		600D55388EBA7E8A41AC0843 /* Pods-Artsy Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1799,7 +1798,6 @@
 		60E71A001B4C60AC008948FA /* Artsy_Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Artsy_Logo.png; sourceTree = "<group>"; };
 		60E7386F1C64AB8B00AC381B /* ARStubbedAnalyticsProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARStubbedAnalyticsProvider.h; sourceTree = "<group>"; };
 		60E738701C64AB8B00AC381B /* ARStubbedAnalyticsProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARStubbedAnalyticsProvider.m; sourceTree = "<group>"; };
-		60E738841C64B47300AC381B /* Dangerfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Dangerfile; path = ../Dangerfile; sourceTree = "<group>"; };
 		60ED311E1C8F73450071DD89 /* LiveAuctionLotViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotViewControllerTests.swift; path = Live_Auction/LiveAuctionLotViewControllerTests.swift; sourceTree = "<group>"; };
 		60ED31201C8F74670071DD89 /* FakeSalesPerson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FakeSalesPerson.swift; path = Live_Auction/FakeSalesPerson.swift; sourceTree = "<group>"; };
 		60ED31241C8F76800071DD89 /* LiveAuctionLotViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotViewModel.swift; path = Live_Auctions/ViewModels/LiveAuctionLotViewModel.swift; sourceTree = "<group>"; };
@@ -2538,13 +2536,6 @@
 			path = Favorites;
 			sourceTree = "<group>";
 		};
-		3CA4B73018B418F500256B33 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utils;
-			sourceTree = "<group>";
-		};
 		3CAA413018D8CC21000EE867 /* Networking Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -2605,7 +2596,6 @@
 				E6BC2C3A197EDBA80063ED3C /* Browse */,
 				603218C3195C92C2004E7A24 /* App Menu */,
 				3CA0A17B18EF632800C361E5 /* Artist */,
-				3CD0BB8718EB0CCB00A59910 /* Favorites */,
 				3C2E034B18DA7FD80001B7E5 /* Image */,
 				3CE75A0918B6366F00885355 /* Util */,
 				3CCCC8921899673C008015DD /* Embedded */,
@@ -2622,7 +2612,6 @@
 			isa = PBXGroup;
 			children = (
 				5EBDC94F19794D6C0082C514 /* Views */,
-				3CA4B73018B418F500256B33 /* Utils */,
 				5E9A781F19068EDF00734E1B /* ARProfileViewControllerTests.m */,
 				5EB33E75197EBFEB00706EB1 /* wide.jpg */,
 				5EB33E76197EBFEB00706EB1 /* square.png */,
@@ -2684,13 +2673,6 @@
 				60A309A11AC98BF3000783C1 /* Article.m */,
 			);
 			path = Posts;
-			sourceTree = "<group>";
-		};
-		3CD0BB8718EB0CCB00A59910 /* Favorites */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Favorites;
 			sourceTree = "<group>";
 		};
 		3CD36796189A9AD600285DF7 /* Post */ = {
@@ -4449,11 +4431,9 @@
 		60FFE3D5188E916C0012B485 /* Documentation */ = {
 			isa = PBXGroup;
 			children = (
-				60E738841C64B47300AC381B /* Dangerfile */,
 				600B8B441C4FCEEC00776F84 /* CHANGELOG.yml */,
 				600B8B3C1C4FCEE000776F84 /* push_notifications.md */,
 				600B8B3D1C4FCEE000776F84 /* welcome_to_eigen_beta.md */,
-				600B8B3E1C4FCEE000776F84 /* notifications.md */,
 				600B8B3F1C4FCEE000776F84 /* thanks.md */,
 				60FFE3D6188E91C50012B485 /* certs.md */,
 				60FFE3D7188E91C50012B485 /* deploy_to_app_store.md */,

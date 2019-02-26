@@ -82,8 +82,7 @@
 
                 NSString * fairID = ((Fair *) profile.profileOwner).fairID;
                 ARFairComponentViewController *viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
-                       [self showViewController:viewController];
-
+                [self showViewController:viewController];
             }
 
             [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];
