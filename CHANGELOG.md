@@ -16,6 +16,9 @@
 
 ### Master
 
+- Adds Sentry to the app - orta
+- Adds Sentry logger for users - orta
+
 ### 1.8.4
 
 - Fair exhibitors overview looks up to spec - orta

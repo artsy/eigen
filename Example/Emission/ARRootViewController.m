@@ -509,7 +509,6 @@
   [self setupSection:sectionData withTitle:@"Admin"];
   [sectionData addCellData:self.showSentryLogs];
 
-
   AppSetup *setup = [AppSetup ambientSetup];
   if (setup.inStaging) {
     [sectionData addCellDataFromArray:@[

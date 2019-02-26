@@ -31,7 +31,7 @@
 
     NSString *timestamp = breadcrumb[@"timestamp"];
     NSString *category = breadcrumb[@"category"];
-    NSString *message = @"";
+    NSString *message;
 
     // Is a console log message
     if ([category isEqualToString:@"console"]){
@@ -39,7 +39,7 @@
     }
 
     // Is the start of an API call
-    if ([category isEqualToString:@"fetch"]){
+    if (!message && [category isEqualToString:@"fetch"]){
       NSString *url =  breadcrumb[@"data"][@"url"];
       NSString *method = breadcrumb[@"data"][@"method"];
       NSString *status = @"START";
@@ -48,7 +48,7 @@
     }
 
     // Is the end of an API call
-    if ([category isEqualToString:@"xhr"]){
+    if (!message && [category isEqualToString:@"xhr"]){
       NSString *url =  breadcrumb[@"data"][@"url"];
       NSString *method = breadcrumb[@"data"][@"method"];
       NSString *status = breadcrumb[@"data"][@"status_code"];
@@ -57,11 +57,11 @@
     }
 
     // Is a generic API call
-    if (category) {
+    if (!message && category) {
       message = [NSString stringWithFormat:@"🕰 %@ \n🔎 %@ \n%@", timestamp, category, breadcrumb[@"data"]];
     }
 
-    if(message){
+    if (message){
       [messages addObject:message];
     }
   }

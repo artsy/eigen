@@ -88,8 +88,9 @@ plugin 'cocoapods-keys', {
   :keys => [
     'ArtsyAPIClientSecret',   # Authing to the Artsy API
     'ArtsyAPIClientKey',      #
-    'StripePublishableKey',
-    'MapBoxAPIClientKey',
+    'StripePublishableKey',   # Used in Auctions registration flow
+    'MapBoxAPIClientKey',     # Used in City Maps
+    'SentryProductionDSN'     # Used in the Emission betas
   ]
 }
 
