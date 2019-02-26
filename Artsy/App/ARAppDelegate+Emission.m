@@ -35,6 +35,10 @@
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
+#import <Emission/ARShowArtworksComponentViewController.h>
+#import <Emission/ARShowArtistsComponentViewController.h>
+#import <Emission/ARShowMoreInfoComponentViewController.h>
+#import <Emission/ARFairMoreInfoComponentViewController.h>
 
 #import <React/RCTUtils.h>
 #import <React/RCTDevSettings.h>
@@ -335,6 +339,9 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 @end
 
+/// Utilities to extend a view controller class to conform to ARMenuAwareViewController, with an
+/// implementation of menuAwareScrollView that uses UIViewController callbacks to work. This is
+/// helpful for Emission view controllers.
 #pragma mark - ARMenuAwareViewController additions
 
 static UIScrollView *
@@ -353,6 +360,7 @@ FindFirstScrollView(UIView *view)
 }
 static char menuAwareScrollViewKey;
 
+/// Macro to extend view controller classes to conform to ARMenuAwareViewController.
 #define MakeMenuAware(ControllerClass) @interface ControllerClass (ARMenuAwareViewController) <ARMenuAwareViewController>\
 @end\
 @implementation ControllerClass (ARMenuAwareViewController)\
@@ -374,10 +382,7 @@ static char menuAwareScrollViewKey;
 
 MakeMenuAware(ARArtistComponentViewController)
 MakeMenuAware(ARFairComponentViewController)
-
-/* TODO: Make the following Emission VC's menu aware with the above macro:
- - ARShowArtworksComponentViewController
- - ARShowArtistsComponentViewController
- - ARShowMoreInfoComponentViewController
- - ARFairMoreInfoComponentViewController
- */
+MakeMenuAware(ARShowArtworksComponentViewController)
+MakeMenuAware(ARShowArtistsComponentViewController)
+MakeMenuAware(ARShowMoreInfoComponentViewController)
+MakeMenuAware(ARFairMoreInfoComponentViewController)
