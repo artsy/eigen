@@ -19,10 +19,12 @@
 - Fair exhibitors overview looks up to spec - orta
 - Hides additional info when a fair doesn't have it - orta
 - When there's only a website for the fair additional info, the app goes there - orta
-- Adds global saves&follows analytics - ash
+- Adds global saves & follows analytics - ash
+- Adds display date to CountDownTimer - kieran
 - The Markdown componeont is more cautious on re-rendering its content - orta
 - Updates color of unsaved shows text indicator in global saves and follows - ashley
 - Changes copy in Shows global saves and follows when user has not followed any shows - ashley
+- Adds dates of currently running saved shows to Saved and Followed Shows - ashley
 
 ### 1.8.3
 

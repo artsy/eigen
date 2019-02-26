@@ -4,10 +4,10 @@ import { SavedShowItemRowMutation } from "__generated__/SavedShowItemRowMutation
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "lib/utils/track"
+import moment from "moment"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-
 interface Props {
   show: SavedShowItemRow_show
   relay: RelayProp
@@ -98,7 +98,11 @@ class SavedShowItemRow extends React.Component<Props> {
               )}
               {show.status && (
                 <Sans size="2" color={color("black60")} ml="13">
-                  {show.status.charAt(0).toUpperCase() + show.status.slice(1)}
+                  {show.status.includes("closed")
+                    ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
+                    : show.start_at &&
+                      show.end_at &&
+                      moment(show.start_at).format("MMM D") + " - " + moment(show.end_at).format("MMM D")}
                 </Sans>
               )}
             </Flex>
@@ -144,6 +148,8 @@ export default createFragmentContainer(SavedShowItemRow, {
       images(size: 1) {
         url
       }
+      start_at
+      end_at
     }
   `,
 })
