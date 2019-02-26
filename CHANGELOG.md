@@ -23,6 +23,7 @@
 - Adds display date to CountDownTimer - kieran
 - The Markdown componeont is more cautious on re-rendering its content - orta
 - Adds dates of currently running saved shows to Saved and Followed Shows - ashley
+- Fixes hours section animation - luc
 
 ### 1.8.3
 
