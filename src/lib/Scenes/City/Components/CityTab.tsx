@@ -6,21 +6,18 @@ import { TabListItem } from "./TabListItem"
 
 interface Props {
   currentBucket: BucketKey
-  buckets: BucketResults
+  bucket: any
   type: string
 }
 
 export class CityTab extends React.Component<Props> {
   render() {
-    const {
-      buckets: { fairs },
-      type,
-    } = this.props
+    const { bucket, type } = this.props
     return (
       <Theme>
         <Box px={2}>
           <FlatList
-            data={fairs}
+            data={bucket}
             ItemSeparatorComponent={() => <Separator />}
             keyExtractor={item => item.id}
             renderItem={({ item }) => <TabListItem item={item} type={type} />}

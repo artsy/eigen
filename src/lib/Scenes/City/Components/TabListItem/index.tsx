@@ -82,13 +82,13 @@ const renderText = (item, type) => {
     return (
       <>
         <Sans weight="medium" size="3t" numberOfLines={1} ellipsizeMode="tail">
-          {""}
+          {"a"}
         </Sans>
         <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
-          {""}
+          {"b"}
         </Serif>
         <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
-          {""}
+          {"c"}
         </Sans>
       </>
     )
