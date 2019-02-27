@@ -12,7 +12,6 @@
 
 #import "MTLModel+JSON.h"
 
-#import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
@@ -58,7 +57,6 @@
     [searchBoxBackgroundView alignLeadingEdgeWithView:self.view predicate:@"10"];
     [searchBoxBackgroundView alignTrailingEdgeWithView:self.closeButton predicate:@"-46"];
     [searchBoxBackgroundView alignCenterYWithView:self.closeButton predicate:@"0"];
-//    [searchBoxBackgroundView alignTopEdgeWithView:self.flk_topLayoutGuide predicate:@"10"];
     [searchBoxBackgroundView constrainHeight:@"44"];
 }
 
