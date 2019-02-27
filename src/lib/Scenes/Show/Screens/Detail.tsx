@@ -162,18 +162,20 @@ export class Detail extends React.Component<Props, State> {
     const { show } = this.props
     const { extraData, sections } = this.state
     return (
-      <FlatList
-        data={sections}
-        extraData={extraData}
-        ListHeaderComponent={<ShowHeader show={show} />}
-        ItemSeparatorComponent={this.renderItemSeparator}
-        renderItem={item => (
-          <Box px={2} pb={2}>
-            {this.renderItem(item)}
-          </Box>
-        )}
-        keyExtractor={(item, index) => item.type + String(index)}
-      />
+      <Box pt={2}>
+        <FlatList
+          data={sections}
+          extraData={extraData}
+          ListHeaderComponent={<ShowHeader show={show} />}
+          ItemSeparatorComponent={this.renderItemSeparator}
+          renderItem={item => (
+            <Box px={2} pb={2}>
+              {this.renderItem(item)}
+            </Box>
+          )}
+          keyExtractor={(item, index) => item.type + String(index)}
+        />
+      </Box>
     )
   }
 }

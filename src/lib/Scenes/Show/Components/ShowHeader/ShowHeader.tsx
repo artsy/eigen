@@ -138,7 +138,7 @@ export class ShowHeader extends React.Component<Props, State> {
 
     return (
       <>
-        <Box px={2} pt={3} pb={hasImages ? 0 : 4}>
+        <Box px={2} pt={5} pb={hasImages ? 0 : 4}>
           <Spacer m={2} />
           <TouchableWithoutFeedback onPress={this.handlePartnerTitleClick}>
             <Sans size="3" mb={0.5} weight="medium">

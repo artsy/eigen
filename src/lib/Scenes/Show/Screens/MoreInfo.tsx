@@ -97,6 +97,8 @@ export class MoreInfo extends React.Component<Props, State> {
   }
 
   render() {
+    const topMargin = 54 // Palette's space() is out of date.
+    console.log({ topMargin })
     return (
       <FlatList
         data={this.state.sections}
@@ -112,6 +114,8 @@ export class MoreInfo extends React.Component<Props, State> {
         ItemSeparatorComponent={this.renderItemSeparator}
         renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
         keyExtractor={(item, index) => item.type + String(index)}
+        contentInset={{ top: topMargin }}
+        contentOffset={{ x: 0, y: -topMargin }}
       />
     )
   }
