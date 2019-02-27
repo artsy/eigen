@@ -16,6 +16,10 @@
 
 ### Master
 
+- Fixes fair view crash on fairs with no profiles - ash
+
+### 1.8.7
+
 - Fixed the fairs thumbnails for a city, and makes the fairs clickable - orta
 - Fixed fair links - ash
 - Fixed various other edge-case broken links - ash
