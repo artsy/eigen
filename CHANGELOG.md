@@ -25,6 +25,7 @@
 - Fixes to the fair icon - orta
 - Adds clickable links for maps - orta
 - Fixes follow gallery button on fair booth page - ash
+- Fixes fairbooth artwork counts in fair view - kieran
 
 ### 1.8.4
 
