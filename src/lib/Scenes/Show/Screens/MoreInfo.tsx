@@ -98,7 +98,6 @@ export class MoreInfo extends React.Component<Props, State> {
 
   render() {
     const topMargin = 54 // Palette's space() is out of date.
-    console.log({ topMargin })
     return (
       <FlatList
         data={this.state.sections}
