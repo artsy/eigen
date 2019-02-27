@@ -1,7 +1,7 @@
 upcoming:
   version: 4.4.0
   date: TBD
-  emission_version: 1.8.3
+  emission_version: 1.8.6
   dev:
     - Adds React Native developer menu + tools - luc
   user_facing:
