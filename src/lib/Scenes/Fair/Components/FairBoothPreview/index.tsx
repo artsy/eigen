@@ -130,6 +130,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
           name: partnerName,
           profile: { is_followed: partnerFollowed },
         },
+        counts: { artworks: artworkCount },
       },
       onViewFairBoothPressed,
     } = this.props
@@ -149,11 +150,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
         <Box mt={1}>{<GenericGrid artworks={artworks_connection.edges.map(a => a.node) as any} />}</Box>
         <Box mt={2}>
           <CaretButton
-            text={
-              artworks_connection.edges.length > 1
-                ? `View all ${artworks_connection.edges.length} works`
-                : `View 1 work`
-            }
+            text={artworkCount > 1 ? `View all ${artworkCount} works` : `View 1 work`}
             onPress={() => this.trackOnViewFairBoothWorks()}
           />
         </Box>
@@ -170,6 +167,9 @@ export const FairBoothPreviewContainer = createFragmentContainer(
       _id
       name
       is_fair_booth
+      counts {
+        artworks
+      }
       partner {
         ... on Partner {
           name
