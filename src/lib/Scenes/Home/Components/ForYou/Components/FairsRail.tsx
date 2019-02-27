@@ -58,7 +58,7 @@ export class FairsRail extends Component<Props, null> {
       }
 
       const selectionHandler = () => {
-        Switchboard.presentNavigationViewController(this, `${fair.profile.href}?entity=fair`)
+        Switchboard.presentNavigationViewController(this, `${fair.id}?entity=fair`)
       }
 
       return (
@@ -97,7 +97,7 @@ export default createFragmentContainer(
         id
         name
         profile {
-          href
+          id
         }
         mobile_image {
           id
