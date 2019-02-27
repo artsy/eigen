@@ -15,6 +15,7 @@ export type GlobalMap_viewer = {
                 readonly node: ({
                     readonly id: string;
                     readonly name: string | null;
+                    readonly is_followed: boolean | null;
                     readonly cover_image: ({
                         readonly url: string | null;
                     }) | null;
@@ -241,6 +242,13 @@ return {
                     v2,
                     v0,
                     {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "is_followed",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
                       "kind": "LinkedField",
                       "alias": null,
                       "name": "cover_image",
@@ -411,5 +419,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2cb0d5c552c3bf46eed2d4cf65149c1f';
+(node as any).hash = '2c17f566fca207edec20d2557f1583f1';
 export default node;

@@ -37,7 +37,7 @@ export class CityView extends Component<Props, State> {
 
   componentWillMount() {
     EventEmitter.subscribe("map:change", ({ filter, buckets }: { filter: Tab; buckets: BucketResults }) => {
-      console.log(buckets)
+      console.log("buckets:", buckets)
 
       this.setState({
         buckets,

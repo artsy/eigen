@@ -7,9 +7,7 @@ export type BucketKey = "saved" | "fairs" | "galleries" | "museums" | "closing" 
 export type BucketResults = { [key in BucketKey]: any[] }
 
 export const bucketCityResults = (viewer: GlobalMap_viewer): BucketResults => {
-  // TODO: Saved isn't supported yet, so we'll return nothing.
-  const saved = []
-
+  const saved = filter(viewer.city.shows.edges, e => e.node.is_followed === true)
   const oneWeekFromNow = moment(new Date()).add(1, "week")
   const fairs = (viewer.city.fairs as unknown) as Tab[]
   const galleries = filter(viewer.city.shows.edges, e => e.node.partner.type === "Gallery")

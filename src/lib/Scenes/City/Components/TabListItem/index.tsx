@@ -5,28 +5,6 @@ import React from "react"
 import { Dimensions } from "react-native"
 import styled from "styled-components/native"
 
-const RoundedImage = styled(OpaqueImageView)`
-  width: 62;
-  border-radius: 30;
-  overflow: hidden;
-`
-
-const RoundBox = styled(Box)`
-  width: 62;
-  height: 62;
-  border-radius: 30;
-  overflow: hidden;
-`
-
-const SquareBox = styled(Box)`
-  width: 58;
-  height: 58;
-`
-
-const SerifTightened = styled(Serif)`
-  top: 3;
-`
-
 export interface Props {
   item: any
   type: string
@@ -61,8 +39,6 @@ const renderImage = (url, type) => {
 
 const renderContent = (item, type) => {
   const boxWidth = Dimensions.get("window").width - 62 - space(4) - space(1)
-  console.log("item", item)
-  console.log("type", type)
   switch (type) {
     case "Fairs":
       const fairImage = item.image ? item.image.url : null
@@ -89,10 +65,8 @@ const renderContent = (item, type) => {
           </Box>
         </>
       )
-    case "Galleries":
-    case "Museums":
+    default:
       const galleryImage = item.node.cover_image ? item.node.cover_image.url : null
-      console.log("galleryImage", galleryImage)
       return (
         <>
           {renderImage(galleryImage, type)}
@@ -116,24 +90,6 @@ const renderContent = (item, type) => {
           </Box>
         </>
       )
-
-    default:
-      return (
-        <>
-          {renderImage(item.image, type)}
-          <Box width={boxWidth} pl={1}>
-            <Sans weight="medium" size="3t" numberOfLines={1} ellipsizeMode="tail">
-              {"a"}
-            </Sans>
-            <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
-              {"b"}
-            </Serif>
-            <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
-              {"c"}
-            </Sans>
-          </Box>
-        </>
-      )
   }
 }
 
@@ -147,3 +103,25 @@ export const TabListItem: React.SFC<Props> = (props: Props) => {
     </Box>
   )
 }
+
+const RoundedImage = styled(OpaqueImageView)`
+  width: 62;
+  border-radius: 30;
+  overflow: hidden;
+`
+
+const RoundBox = styled(Box)`
+  width: 62;
+  height: 62;
+  border-radius: 30;
+  overflow: hidden;
+`
+
+const SquareBox = styled(Box)`
+  width: 58;
+  height: 58;
+`
+
+const SerifTightened = styled(Serif)`
+  top: 3;
+`

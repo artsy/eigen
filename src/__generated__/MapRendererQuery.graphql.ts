@@ -43,6 +43,7 @@ fragment GlobalMap_viewer_279V1T on Viewer {
         node {
           id
           name
+          is_followed
           cover_image {
             url
           }
@@ -212,7 +213,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MapRendererQuery",
-  "id": "0bd84bf6b2e866c49224e440458ce888",
+  "id": "c6e2f0fde0845574f2a0cf64e01166a3",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -327,6 +328,13 @@ return {
                         "selections": [
                           v3,
                           v1,
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_followed",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "LinkedField",
                             "alias": null,

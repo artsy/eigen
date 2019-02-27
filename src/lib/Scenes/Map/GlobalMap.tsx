@@ -229,6 +229,7 @@ export const GlobalMapContainer = createRefetchContainer(
             node {
               id
               name
+              is_followed
               cover_image {
                 url
               }
