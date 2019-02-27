@@ -31,6 +31,11 @@
 #import <Emission/ARFairArtworksComponentViewController.h>
 #import <Emission/ARFairArtistsComponentViewController.h>
 #import <Emission/ARFairExhibitorsComponentViewController.h>
+#import <Emission/ARFairComponentViewController.h>
+#import <Emission/ARShowArtworksComponentViewController.h>
+#import <Emission/ARShowArtistsComponentViewController.h>
+#import <Emission/ARShowMoreInfoComponentViewController.h>
+#import <Emission/ARFairMoreInfoComponentViewController.h>
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -190,6 +195,20 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
         __strong typeof (wself) sself = wself;
         return [sself loadShowWithID:parameters[@"id"]];
     }];
+    
+    // The follow show sub-routes are tightly coupled to Emission and don't exist on Force. Otherwise we would use
+    // something like ARShowRoute on Echo. See discussion in https://github.com/artsy/eigen/pull/2782
+    [self.routes addRoute:@"/show/:id/artworks" handler:JLRouteParams {
+        return [[ARShowArtworksComponentViewController alloc] initWithShowID:parameters[@"id"]];
+    }];
+    
+    [self.routes addRoute:@"/show/:id/artists" handler:JLRouteParams {
+        return [[ARShowArtistsComponentViewController alloc] initWithShowID:parameters[@"id"]];
+    }];
+    
+    [self.routes addRoute:@"/show/:id/info" handler:JLRouteParams {
+        return [[ARShowMoreInfoComponentViewController alloc] initWithShowID:parameters[@"id"]];
+    }];
 
     [self.routes addRoute:@"/conversation/:id" handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
@@ -227,6 +246,10 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     
     [self.routes addRoute:@"/fair/:id/exhibitors" handler:JLRouteParams {
         return [[ARFairExhibitorsComponentViewController alloc] initWithFairID:parameters[@"id"]];
+    }];
+    
+    [self.routes addRoute:@"/fair/:id/info" handler:JLRouteParams {
+        return [[ARFairMoreInfoComponentViewController alloc] initWithFairID:parameters[@"id"]];
     }];
 
     // We don't show a native fairs UI for iPad
@@ -269,6 +292,9 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     // It doesn't need to run through echo, as it's pretty much here to stay forever.
     [self.routes addRoute:@"/:slug" priority:0 handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
+        if ([parameters[@"entity"] isEqualToString:@"fair"]) {
+            return [[ARFairComponentViewController alloc] initWithFairID:parameters[@"slug"]];
+        }
         return [sself loadUnknownPathWithID:parameters[@"slug"]];
     }];
 

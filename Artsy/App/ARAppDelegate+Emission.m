@@ -28,12 +28,17 @@
 #import <Emission/AREventsModule.h>
 #import <Emission/ARTakeCameraPhotoModule.h>
 #import <Emission/ARRefineOptionsModule.h>
+#import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARWorksForYouModule.h>
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
+#import <Emission/ARShowArtworksComponentViewController.h>
+#import <Emission/ARShowArtistsComponentViewController.h>
+#import <Emission/ARShowMoreInfoComponentViewController.h>
+#import <Emission/ARFairMoreInfoComponentViewController.h>
 
 #import <React/RCTUtils.h>
 #import <React/RCTDevSettings.h>
@@ -334,14 +339,10 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
 
 @end
 
+/// Utilities to extend a view controller class to conform to ARMenuAwareViewController, with an
+/// implementation of menuAwareScrollView that uses UIViewController callbacks to work. This is
+/// helpful for Emission view controllers.
 #pragma mark - ARMenuAwareViewController additions
-
-
-@interface ARArtistComponentViewController (ARMenuAwareViewController) <ARMenuAwareViewController>
-@end
-
-
-@implementation ARArtistComponentViewController (ARMenuAwareViewController)
 
 static UIScrollView *
 FindFirstScrollView(UIView *view)
@@ -357,27 +358,31 @@ FindFirstScrollView(UIView *view)
     }
     return nil;
 }
-
-- (void)viewDidLayoutSubviews;
-{
-    [super viewDidLayoutSubviews];
-    self.menuAwareScrollView = FindFirstScrollView(self.view);
-}
-
 static char menuAwareScrollViewKey;
 
-- (void)setMenuAwareScrollView:(UIScrollView *)scrollView;
-{
-    if (scrollView != self.menuAwareScrollView) {
-        [self willChangeValueForKey:@"menuAwareScrollView"];
-        objc_setAssociatedObject(self, &menuAwareScrollViewKey, scrollView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        [self didChangeValueForKey:@"menuAwareScrollView"];
-    }
-}
-
-- (UIScrollView *)menuAwareScrollView;
-{
-    return objc_getAssociatedObject(self, &menuAwareScrollViewKey);
-}
-
+/// Macro to extend view controller classes to conform to ARMenuAwareViewController.
+#define MakeMenuAware(ControllerClass) @interface ControllerClass (ARMenuAwareViewController) <ARMenuAwareViewController>\
+@end\
+@implementation ControllerClass (ARMenuAwareViewController)\
+- (void)viewDidLayoutSubviews {\
+    [super viewDidLayoutSubviews];\
+    self.menuAwareScrollView = FindFirstScrollView(self.view);\
+}\
+- (void)setMenuAwareScrollView:(UIScrollView *)scrollView {\
+    if (scrollView != self.menuAwareScrollView) {\
+        [self willChangeValueForKey:@"menuAwareScrollView"];\
+        objc_setAssociatedObject(self, &menuAwareScrollViewKey, scrollView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);\
+        [self didChangeValueForKey:@"menuAwareScrollView"];\
+    }\
+}\
+- (UIScrollView *)menuAwareScrollView {\
+    return objc_getAssociatedObject(self, &menuAwareScrollViewKey);\
+}\
 @end
+
+MakeMenuAware(ARArtistComponentViewController)
+MakeMenuAware(ARFairComponentViewController)
+MakeMenuAware(ARShowArtworksComponentViewController)
+MakeMenuAware(ARShowArtistsComponentViewController)
+MakeMenuAware(ARShowMoreInfoComponentViewController)
+MakeMenuAware(ARFairMoreInfoComponentViewController)

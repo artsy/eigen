@@ -56,7 +56,7 @@
 
     [searchBoxBackgroundView alignLeadingEdgeWithView:self.view predicate:@"10"];
     [searchBoxBackgroundView alignTrailingEdgeWithView:self.closeButton predicate:@"-46"];
-    [searchBoxBackgroundView alignTopEdgeWithView:self.view predicate:@"10"];
+    [searchBoxBackgroundView alignCenterYWithView:self.closeButton predicate:@"0"];
     [searchBoxBackgroundView constrainHeight:@"44"];
 }
 

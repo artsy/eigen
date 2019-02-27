@@ -556,9 +556,12 @@ static const CGFloat ARMenuButtonDimension = 50;
     }
 
     if ([viewController isKindOfClass:[ARFairSearchViewController class]]) {
-        // This isn't great, but we need to support the legacy fair search behaviour until we
-        // implement a new fair search component view controller in React Native.
+        // This isn't great, but we need to support both ARFairComponentViewControllers _and_
+        // ARProfileViewControllers containing ARMutableLinkViewControllers containing ARFairComponentViewControllers.
         id parentViewController = [[[[[[self rootNavigationController] topViewController] childViewControllers] first] childViewControllers] first];
+        if (parentViewController == nil) {
+            parentViewController = [[self rootNavigationController] topViewController];
+        }
         if ([parentViewController isKindOfClass:[ARFairComponentViewController class]]) {
             [(ARFairComponentViewController *)parentViewController presentFairSearchViewController:(id)viewController completion:completion];
             return;
