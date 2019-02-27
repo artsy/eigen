@@ -336,7 +336,7 @@ randomBOOL(void)
     NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARShowMoreInfoComponentViewController alloc] initWithShowID:showID];
   } else if (isShow) {
-    NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
+    NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:1];
     viewController = [[ARShowComponentViewController alloc] initWithShowID:showID];
   } else {
     viewController = [[UnroutedViewController alloc] initWithRoute:route];

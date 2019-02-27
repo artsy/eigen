@@ -18,6 +18,7 @@
 
 - Fixed the fairs thumbnails for a city, and makes the fairs clickable - orta
 - Fixed fair links - ash
+- Fixed various other edge-case broken links - ash
 
 ### 1.8.5
 

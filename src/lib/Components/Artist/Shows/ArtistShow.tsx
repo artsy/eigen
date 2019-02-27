@@ -22,7 +22,7 @@ class Show extends React.Component<Props> {
     const { is_fair_booth } = this.props.show
     is_fair_booth
       ? SwitchBoard.presentNavigationViewController(this, `${this.props.show.id}?entity=fair-booth`)
-      : SwitchBoard.presentNavigationViewController(this, this.props.show.href)
+      : SwitchBoard.presentNavigationViewController(this, this.props.show.href || `show/${this.props.show.id}`)
   }
 
   render() {
