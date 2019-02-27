@@ -22,7 +22,11 @@
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARShowComponentViewController.h>
+#import <Emission/ARShowArtworksComponentViewController.h>
+#import <Emission/ARShowArtistsComponentViewController.h>
+#import <Emission/ARShowMoreInfoComponentViewController.h>
 #import <Emission/ARConversationComponentViewController.h>
+#import <Emission/ARFairMoreInfoComponentViewController.h>
 #import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARFairBoothComponentViewController.h>
 #import <Emission/ARFairArtworksComponentViewController.h>
@@ -36,6 +40,8 @@
 #import "LoadingSpinner.h"
 #import "PRNetworkModel.h"
 #import "CommitNetworkModel.h"
+
+#import <Sentry/Sentry.h>
 
 // If you have the ID of a user and an access token for them, you can impersonate them by hardcoding those here.
 // Obviously you should *never* check these in!
@@ -126,9 +132,17 @@ randomBOOL(void)
 
   EmissionKeys *keys = [[EmissionKeys alloc] init];
 
+#if TARGET_IPHONE_SIMULATOR
+  NSString *sentryDSN = nil;
+#else
+  // Only use sentry when on a phone
+  NSString *sentryDSN = [keys sentryProductionDSN];
+  [self setupSentry:sentryDSN userID:userID];
+#endif
+
   AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
                                                                 authenticationToken:accessToken
-                                                                          sentryDSN:nil
+                                                                          sentryDSN:sentryDSN
                                                                stripePublishableKey:[keys stripePublishableKey]
                                                                    googleMapsAPIKey:nil
                                                                  mapBoxAPIClientKey:[keys mapBoxAPIClientKey]
@@ -257,6 +271,8 @@ randomBOOL(void)
 {
   UIViewController *viewController = nil;
 
+  BOOL isShow = [route hasPrefix:@"/show/"] || [route hasPrefix:@"show/"];
+  
   if ([route hasPrefix:@"/artist/"] && [route componentsSeparatedByString:@"/"].count == 3) {
     NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
@@ -304,16 +320,24 @@ randomBOOL(void)
   } else if ([route hasPrefix:@"/fair"] && [route hasSuffix:@"/exhibitors"]) {
     NSString *fairID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARFairExhibitorsComponentViewController alloc] initWithFairID:fairID];
-    
+  } else if ([route hasPrefix:@"/fair"] && [route hasSuffix:@"/info"]) {
+    NSString *fairID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
+    viewController = [[ARFairMoreInfoComponentViewController alloc] initWithFairID:fairID];
   } else if ([route hasSuffix:@"entity=fair-booth"]) {
     NSString *fairBoothID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARFairBoothComponentViewController alloc] initWithFairBoothID:fairBoothID];
-    
-  }
-    else if ([route hasPrefix:@"/show/"] || [route hasPrefix:@"show/"]) {
-    NSString *showID = [[route componentsSeparatedByString:@"/"] lastObject];
+  } else if (isShow && [route hasSuffix:@"/artworks"]) {
+    NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
+    viewController = [[ARShowArtworksComponentViewController alloc] initWithShowID:showID];
+  } else if (isShow && [route hasSuffix:@"/artists"]) {
+    NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
+    viewController = [[ARShowArtistsComponentViewController alloc] initWithShowID:showID];
+  } else if (isShow && [route hasSuffix:@"/info"]) {
+    NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
+    viewController = [[ARShowMoreInfoComponentViewController alloc] initWithShowID:showID];
+  } else if (isShow) {
+    NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARShowComponentViewController alloc] initWithShowID:showID];
-    
   } else {
     viewController = [[UnroutedViewController alloc] initWithRoute:route];
   }
@@ -363,6 +387,21 @@ randomBOOL(void)
   }];
 }
 
+- (void)setupSentry:(NSString *)sentryDSN userID:(NSString *)userID
+{
+  NSError *error = nil;
+  SentryClient *client = [[SentryClient alloc] initWithDsn:sentryDSN didFailWithError:&error];
+  NSAssert(error == nil, @"Unable to initialize a SentryClient SDK: %@", error);
+  error = nil;
+  [client startCrashHandlerWithError:&error];
+  NSAssert(error == nil, @"Unable to start the Sentry crash handler: %@", error);
+  [SentryClient setSharedClient:client];
+
+  // Log you in
+  SentryUser *user = [[SentryUser alloc] initWithUserId:userID];
+  SentryClient.sharedClient.user = user;
+
+}
 
 @end
 

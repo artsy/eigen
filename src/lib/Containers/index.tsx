@@ -1,7 +1,10 @@
+import { ShowArtistsContainer } from "../Components/Show/ShowArtists"
+import { ShowArtworksContainer } from "../Components/Show/ShowArtworks"
 import Fair from "../Scenes/Fair"
 import Home from "../Scenes/Home"
 import MyProfile from "../Scenes/Settings/MyProfile"
 import Show from "../Scenes/Show"
+import { MoreInfoContainer as ShowMoreInfo } from "../Scenes/Show/Screens/MoreInfo"
 import Artist from "./Artist"
 import BidFlow from "./BidFlow"
 import Conversation from "./Conversation"
@@ -25,5 +28,8 @@ export default {
   RegistrationFlow,
   Sale,
   Show,
+  ShowMoreInfo,
+  ShowArtistsContainer,
+  ShowArtworksContainer,
   WorksForYou,
 }

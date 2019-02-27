@@ -33,7 +33,9 @@ fragment Artworks_me_1G22uz on Me {
   saved_artworks {
     artworks_connection(private: true, first: $count, after: $cursor) {
       pageInfo {
+        startCursor
         endCursor
+        hasPreviousPage
         hasNextPage
       }
       edges {
@@ -159,7 +161,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtworksQuery",
-  "id": "3fcf26ff6feed87c635780c1c0159a88",
+  "id": "6e9347a370a6c6dcfc79af45fd89d16b",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -264,7 +266,21 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
+                        "name": "startCursor",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
                         "name": "endCursor",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "hasPreviousPage",
                         "args": null,
                         "storageKey": null
                       },

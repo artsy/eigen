@@ -53,6 +53,7 @@ fragment FairBoothHeader_show on Show {
       href
       profile {
         _id
+        id
         is_followed
         __id
       }
@@ -566,7 +567,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairBoothQuery",
-  "id": "30996d5e2e880b95d7e7bd70ea08191a",
+  "id": "ea896c54ad6e1a9dfb9664333c06aebc",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -670,6 +671,7 @@ return {
                     "plural": false,
                     "selections": [
                       v8,
+                      v4,
                       v10,
                       v2
                     ]

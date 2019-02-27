@@ -129,7 +129,7 @@ fragment FairHeader_fair on Fair {
       href
       height
       width
-      url
+      url(version: "square140")
     }
     __id
     id
@@ -165,6 +165,9 @@ fragment FairBoothPreview_show on Show {
   _id
   name
   is_fair_booth
+  counts {
+    artworks
+  }
   partner {
     __typename
     ... on Partner {
@@ -371,7 +374,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairDetailTestsQuery",
-  "id": "9c18685021bdbffd5bbfd149e94c348a",
+  "id": "ffbbe606987b085fcdb151af90cf7987",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -609,7 +612,20 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v9
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "url",
+                    "args": [
+                      {
+                        "kind": "Literal",
+                        "name": "version",
+                        "value": "square140",
+                        "type": "[String]"
+                      }
+                    ],
+                    "storageKey": "url(version:\"square140\")"
+                  }
                 ]
               },
               v1,
@@ -1134,6 +1150,24 @@ return {
                         "name": "is_fair_booth",
                         "args": null,
                         "storageKey": null
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "counts",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "ShowCounts",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "artworks",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
                       },
                       v6,
                       {

@@ -1,6 +1,7 @@
 import { Box, Separator, Serif, Theme } from "@artsy/palette"
 import { FairDetail_fair } from "__generated__/FairDetail_fair.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -18,11 +19,6 @@ import { shouldGoStraightToWebsite, shouldShowFairMoreInfo } from "./FairMoreInf
 interface Props extends ViewProperties {
   fair: FairDetail_fair
   relay: RelayPaginationProp
-  onViewMoreInfoPressed: (props: object) => void
-  onViewAllArtworksPressed: () => void
-  onViewAllExhibitorsPressed: () => void
-  onViewAllArtistsPressed: () => void
-  onViewFairBoothPressed: (props: object) => void
 }
 
 interface State {
@@ -58,13 +54,7 @@ export class FairDetail extends React.Component<Props, State> {
   }
 
   updateSections = () => {
-    const {
-      fair,
-      onViewAllExhibitorsPressed,
-      onViewAllArtworksPressed,
-      onViewAllArtistsPressed,
-      onViewMoreInfoPressed,
-    } = this.props
+    const { fair } = this.props
     const sections = []
 
     const coords = fair.location.coordinates
@@ -82,9 +72,6 @@ export class FairDetail extends React.Component<Props, State> {
     if (shouldGoStraightToWebsite(this.props.fair) || shouldShowFairMoreInfo(this.props.fair)) {
       sections.push({
         type: "information",
-        data: {
-          onViewMoreInfoPressed: () => onViewMoreInfoPressed(this.props),
-        },
       })
     }
 
@@ -104,9 +91,7 @@ export class FairDetail extends React.Component<Props, State> {
     sections.push({
       type: "artists-exhibitors-works",
       data: {
-        onViewAllExhibitorsPressed,
-        onViewAllArtistsPressed,
-        onViewAllArtworksPressed,
+        fairID: fair.id,
       },
     })
 
@@ -128,7 +113,6 @@ export class FairDetail extends React.Component<Props, State> {
           showIndex: boothCount,
           data: {
             show: showData.node,
-            onViewFairBoothPressed: () => this.handleViewFairBoothPressed({ show: showData.node }),
           },
         })
         boothCount++
@@ -138,24 +122,17 @@ export class FairDetail extends React.Component<Props, State> {
     this.setState({ sections, boothCount })
   }
 
-  @track((__, _, args) => {
-    const obj = args[0]
-    return {
-      action_name: Schema.ActionNames.ListGallery,
-      action_type: Schema.ActionTypes.Tap,
-      owner_id: obj.show._id,
-      owner_slug: obj.show.id,
-      owner_type: Schema.OwnerEntityTypes.Gallery,
-    } as any
-  })
-  handleViewFairBoothPressed(show) {
-    const { onViewFairBoothPressed } = this.props
-    onViewFairBoothPressed(show)
-  }
-
   @track(eventProps(Schema.ActionNames.ToggleHours))
   handleHoursToggled() {
     return null
+  }
+
+  onViewMoreInfoPressed = () => {
+    if (shouldGoStraightToWebsite(this.props.fair)) {
+      SwitchBoard.presentNavigationViewController(this, this.props.fair.organizer.website)
+    } else {
+      SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/info`)
+    }
   }
 
   renderItem = ({ item: { data, type, showIndex } }) => {
@@ -182,7 +159,7 @@ export class FairDetail extends React.Component<Props, State> {
       case "information":
         return (
           <>
-            <CaretButton onPress={() => data.onViewMoreInfoPressed()} text="View more information" />
+            <CaretButton onPress={this.onViewMoreInfoPressed.bind(this)} text="View more information" />
             <Separator mt={2} />
           </>
         )
@@ -214,7 +191,7 @@ export class FairDetail extends React.Component<Props, State> {
   }
 
   render() {
-    const { fair, onViewAllExhibitorsPressed, onViewAllArtistsPressed } = this.props
+    const { fair } = this.props
     const { sections, extraData } = this.state
 
     return (
@@ -223,13 +200,7 @@ export class FairDetail extends React.Component<Props, State> {
           keyExtractor={(item, index) => item.type + String(index)}
           extraData={extraData}
           data={sections}
-          ListHeaderComponent={
-            <FairHeader
-              fair={fair}
-              viewAllExhibitors={onViewAllExhibitorsPressed}
-              viewAllArtists={onViewAllArtistsPressed}
-            />
-          }
+          ListHeaderComponent={<FairHeader fair={fair} />}
           renderItem={item => (
             <Box px={2} pb={2}>
               {this.renderItem(item)}

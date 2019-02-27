@@ -5,6 +5,7 @@ import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Components/Show/ShowArtistsPreview"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import { isEmpty } from "lodash"
 import React from "react"
@@ -15,10 +16,6 @@ import { ShowsContainer as Shows } from "../Components/Shows"
 
 interface Props {
   show: Detail_show
-  onMoreInformationPressed: () => void
-  onViewAllArtistsPressed: () => void
-  onViewAllArtworksPressed: () => void
-  onViewMoreInfoPressed: () => void
 }
 
 interface State {
@@ -42,7 +39,7 @@ export class Detail extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { show, onMoreInformationPressed } = this.props
+    const { show } = this.props
     const sections = []
 
     if (show.location) {
@@ -68,7 +65,7 @@ export class Detail extends React.Component<Props, State> {
     sections.push({
       type: "information",
       data: {
-        onViewMoreInfoPressed: onMoreInformationPressed,
+        onViewMoreInfoPressed: this.handleViewMoreInfoPressed.bind(this),
       },
     })
 
@@ -100,10 +97,12 @@ export class Detail extends React.Component<Props, State> {
       },
     })
 
-    sections.push({
-      type: "shows",
-      data: show,
-    })
+    if (show.location) {
+      sections.push({
+        type: "shows",
+        data: show,
+      })
+    }
 
     this.setState({ sections })
   }
@@ -121,12 +120,16 @@ export class Detail extends React.Component<Props, State> {
 
   @track(eventProps(Schema.ActionNames.ShowAllArtists))
   handleViewAllArtistsPressed() {
-    this.props.onViewAllArtistsPressed()
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}/artists`)
   }
 
   @track(eventProps(Schema.ActionNames.ShowAllArtworks))
   handleViewAllArtworksPressed() {
-    this.props.onViewAllArtworksPressed()
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}/artworks`)
+  }
+
+  handleViewMoreInfoPressed() {
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}/info`)
   }
 
   @track(eventProps(Schema.ActionNames.ToggleHours))
@@ -159,20 +162,20 @@ export class Detail extends React.Component<Props, State> {
     const { show } = this.props
     const { extraData, sections } = this.state
     return (
-      <FlatList
-        data={sections}
-        extraData={extraData}
-        ListHeaderComponent={
-          <ShowHeader show={show} onViewAllArtistsPressed={() => this.handleViewAllArtistsPressed()} />
-        }
-        ItemSeparatorComponent={this.renderItemSeparator}
-        renderItem={item => (
-          <Box px={2} pb={2}>
-            {this.renderItem(item)}
-          </Box>
-        )}
-        keyExtractor={(item, index) => item.type + String(index)}
-      />
+      <Box pt={2}>
+        <FlatList
+          data={sections}
+          extraData={extraData}
+          ListHeaderComponent={<ShowHeader show={show} />}
+          ItemSeparatorComponent={this.renderItemSeparator}
+          renderItem={item => (
+            <Box px={2} pb={2}>
+              {this.renderItem(item)}
+            </Box>
+          )}
+          keyExtractor={(item, index) => item.type + String(index)}
+        />
+      </Box>
     )
   }
 }

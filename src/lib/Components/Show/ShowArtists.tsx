@@ -4,13 +4,12 @@ import { ShowArtists_show } from "__generated__/ShowArtists_show.graphql"
 import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
 import { PAGE_SIZE } from "lib/data/constants"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { get, groupBy, map, sortBy, toPairs } from "lodash"
+import { groupBy, map, sortBy, toPairs } from "lodash"
 import React from "react"
-import { NavigatorIOS, ViewProperties } from "react-native"
+import { ViewProperties } from "react-native"
 import { createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 
 interface Props extends ViewProperties {
-  navigator: NavigatorIOS
   show: ShowArtists_show
   relay: RelayPaginationProp
 }

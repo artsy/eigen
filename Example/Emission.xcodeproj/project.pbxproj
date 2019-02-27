@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		34C566E6214C4AAA00479C22 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C566E5214C4AAA00479C22 /* AVFoundation.framework */; };
 		3A7D41FE213F3CAD009618F5 /* ARLabOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7D41FC213F3CAC009618F5 /* ARLabOptions.m */; };
+		3ACAE7B922258EAD009C2236 /* ARAdminSentryBreadcrumbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACAE7B722258EAD009C2236 /* ARAdminSentryBreadcrumbViewController.m */; };
 		402D55D24FAA1BC36FB4ED85 /* libPods-Emission.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B53B6F10A80F64A976B9F221 /* libPods-Emission.a */; };
 		510DCB121CCA69EC0075E8CB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB111CCA69EC0075E8CB /* main.m */; };
 		510DCB151CCA69EC0075E8CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 510DCB141CCA69EC0075E8CB /* AppDelegate.m */; };
@@ -77,6 +78,8 @@
 		34C566E5214C4AAA00479C22 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		3A7D41FC213F3CAC009618F5 /* ARLabOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLabOptions.m; sourceTree = "<group>"; };
 		3A7D41FD213F3CAD009618F5 /* ARLabOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLabOptions.h; sourceTree = "<group>"; };
+		3ACAE7B722258EAD009C2236 /* ARAdminSentryBreadcrumbViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAdminSentryBreadcrumbViewController.m; sourceTree = "<group>"; };
+		3ACAE7B822258EAD009C2236 /* ARAdminSentryBreadcrumbViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAdminSentryBreadcrumbViewController.h; sourceTree = "<group>"; };
 		3CA8129D4B3357E4EDA54CF0 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		510DCB0E1CCA69EC0075E8CB /* Emission.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Emission.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		510DCB111CCA69EC0075E8CB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -368,6 +371,8 @@
 		60F61A871DAF848E00A72101 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				3ACAE7B822258EAD009C2236 /* ARAdminSentryBreadcrumbViewController.h */,
+				3ACAE7B722258EAD009C2236 /* ARAdminSentryBreadcrumbViewController.m */,
 				6011C2391DAF5DD900CE54E5 /* ARRootViewController.h */,
 				6011C23A1DAF5DD900CE54E5 /* ARRootViewController.m */,
 				60DA49A61EE7CF70001FE871 /* ARRootViewController+PRs.h */,
@@ -743,6 +748,7 @@
 			files = (
 				6011C2511DAF7B6D00CE54E5 /* UnroutedViewController.m in Sources */,
 				6011C2451DAF61AF00CE54E5 /* ARAdminTableViewCell.m in Sources */,
+				3ACAE7B922258EAD009C2236 /* ARAdminSentryBreadcrumbViewController.m in Sources */,
 				3A7D41FE213F3CAD009618F5 /* ARLabOptions.m in Sources */,
 				608C6DBB1FA263290044E235 /* CommitNetworkModel.m in Sources */,
 				60B743B71D3EB12600E6B2A3 /* ARStorybookComponentViewController.m in Sources */,

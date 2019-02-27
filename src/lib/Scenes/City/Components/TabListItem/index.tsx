@@ -41,25 +41,27 @@ const renderContent = (item, type) => {
   const boxWidth = Dimensions.get("window").width - 62 - space(4) - space(1)
   switch (type) {
     case "Fairs":
-      const fairImage = item.image ? item.image.url : null
+      const fairImage = item.node.image ? item.node.image.url : null
       return (
         <>
           {renderImage(fairImage, type)}
           <Box width={boxWidth} pl={1}>
-            {item.name && (
+            {item.node.name && (
               <Sans weight="medium" size="3t" numberOfLines={1} ellipsizeMode="tail">
-                {item.name}
+                {item.node.name}
               </Sans>
             )}
-            {item.counts.partners && (
-              <Serif size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
-                {item.counts.partners > 1 ? `${item.counts.partners} Exhibitors` : `${item.counts.partners} Exhibitor`}
-              </Serif>
+            {item.node.counts.partners && (
+              <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
+                {item.node.counts.partners > 1
+                  ? `${item.node.counts.partners} Exhibitors`
+                  : `${item.node.counts.partners} Exhibitor`}
+              </Sans>
             )}
-            {item.start_at &&
-              item.end_at && (
+            {item.node.start_at &&
+              item.node.end_at && (
                 <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
-                  {formatDuration(item.start_at, item.end_at)}
+                  {formatDuration(item.node.start_at, item.node.end_at)}
                 </Sans>
               )}
           </Box>

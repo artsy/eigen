@@ -138,25 +138,26 @@ export class FairMoreInfo extends React.Component<Props, State> {
   }
 
   render() {
+    const topMargin = 54 // Palette's space() is out of date.
     return (
-      <Box mb={2}>
-        <FlatList
-          data={this.state.sections}
-          renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
-          ListHeaderComponent={
-            <>
-              <ListHeaderText size="8" mt={12} px={2}>
-                About the fair
-              </ListHeaderText>
-              <Box py={3} px={2}>
-                <Separator />
-              </Box>
-            </>
-          }
-          ItemSeparatorComponent={this.renderItemSeparator}
-          keyExtractor={(item, index) => item.type + String(index)}
-        />
-      </Box>
+      <FlatList
+        data={this.state.sections}
+        renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+        ListHeaderComponent={
+          <>
+            <ListHeaderText size="8" mt={12} px={2}>
+              About the fair
+            </ListHeaderText>
+            <Box py={3} px={2}>
+              <Separator />
+            </Box>
+          </>
+        }
+        ItemSeparatorComponent={this.renderItemSeparator}
+        keyExtractor={(item, index) => item.type + String(index)}
+        contentInset={{ top: topMargin }}
+        contentOffset={{ x: 0, y: -topMargin }}
+      />
     )
   }
 }

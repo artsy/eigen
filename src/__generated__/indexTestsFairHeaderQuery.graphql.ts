@@ -78,7 +78,7 @@ fragment FairHeader_fair on Fair {
       href
       height
       width
-      url
+      url(version: "square140")
     }
     __id
     id
@@ -142,19 +142,12 @@ v6 = {
   "name": "_id",
   "args": null,
   "storageKey": null
-},
-v7 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "url",
-  "args": null,
-  "storageKey": null
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "indexTestsFairHeaderQuery",
-  "id": "6640e6cd267db564f0f8f8a7e4f2c4f3",
+  "id": "2b909aec32b8ba9ac10d29e8490469d4",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -361,7 +354,13 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v7
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "url",
+                "args": null,
+                "storageKey": null
+              }
             ]
           },
           {
@@ -398,7 +397,20 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v7
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "url",
+                    "args": [
+                      {
+                        "kind": "Literal",
+                        "name": "version",
+                        "value": "square140",
+                        "type": "[String]"
+                      }
+                    ],
+                    "storageKey": "url(version:\"square140\")"
+                  }
                 ]
               },
               v1,

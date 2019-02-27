@@ -19,8 +19,6 @@ interface State {
 
 interface Props {
   show: FairBooth_show
-  onViewFairBoothArtworksPressed: (props: { show: FairBooth_show }) => void
-  onViewFairBoothArtistsPressed: (props: { show: FairBooth_show }) => void
 }
 
 @screenTrack<Props>(props => ({
@@ -34,15 +32,23 @@ export class FairBooth extends React.Component<Props, State> {
     sections: [],
   }
 
+  onViewFairBoothArtworksPressed() {
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}/artworks`)
+  }
+
+  onViewFairBoothArtistsPressed() {
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}/artists`)
+  }
+
   componentDidMount() {
-    const { show, onViewFairBoothArtworksPressed, onViewFairBoothArtistsPressed } = this.props
+    const { show } = this.props
     const sections = []
 
     sections.push({
       type: "artworks",
       data: {
         show,
-        onViewAllArtworksPressed: () => onViewFairBoothArtworksPressed({ show }),
+        onViewAllArtworksPressed: this.onViewFairBoothArtworksPressed.bind(this),
       },
     })
 
@@ -50,7 +56,7 @@ export class FairBooth extends React.Component<Props, State> {
       type: "artists",
       data: {
         show,
-        onViewAllArtistsPressed: () => onViewFairBoothArtistsPressed({ show }),
+        onViewAllArtistsPressed: this.onViewFairBoothArtistsPressed.bind(this),
       },
     })
     this.setState({ sections })
