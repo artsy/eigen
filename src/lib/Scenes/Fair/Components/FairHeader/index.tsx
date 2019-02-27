@@ -147,7 +147,7 @@ export class FairHeader extends React.Component<Props, State> {
     return (
       <>
         <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
-          <BackgroundImage imageURL={image.url} height={imageHeight} width={screenWidth} />
+          {image && <BackgroundImage imageURL={image.url} height={imageHeight} width={screenWidth} />}
           <Overlay />
           <Flex flexDirection="row" justifyContent="center" alignItems="center" px={2} height={imageHeight}>
             <Flex alignItems="center" flexDirection="column" flexGrow={1}>
