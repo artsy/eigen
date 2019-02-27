@@ -8,7 +8,9 @@ export type Artworks_me = {
     readonly saved_artworks: ({
         readonly artworks_connection: ({
             readonly pageInfo: {
+                readonly startCursor: string | null;
                 readonly endCursor: string | null;
+                readonly hasPreviousPage: boolean;
                 readonly hasNextPage: boolean;
             };
             readonly edges: ReadonlyArray<({
@@ -100,7 +102,21 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
+                  "name": "startCursor",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
                   "name": "endCursor",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "hasPreviousPage",
                   "args": null,
                   "storageKey": null
                 },
@@ -164,5 +180,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f484562e664cc89148f04ad77f24f405';
+(node as any).hash = 'a9ba4ada9a48438f4c411afa6ba9900c';
 export default node;

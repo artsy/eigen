@@ -36,8 +36,8 @@ const Overlay = styled.View`
 `
 
 const Logo = styled(Image)`
-  width: 150;
-  height: 150;
+  width: 140;
+  height: 140;
   margin-left: auto;
   margin-right: auto;
   background-color: transparent;
@@ -151,7 +151,7 @@ export class FairHeader extends React.Component<Props, State> {
           <Overlay />
           <Flex flexDirection="row" justifyContent="center" alignItems="center" px={2} height={imageHeight}>
             <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-              {profile && <Logo source={{ uri: profile.icon.url }} />}
+              {profile && <Logo source={{ uri: profile.icon.url }} resizeMode="contain" />}
               <Sans size="3t" weight="medium" textAlign="center" color="white100">
                 {name}
               </Sans>
@@ -223,7 +223,7 @@ export const FairHeaderContainer = createFragmentContainer(
           href
           height
           width
-          url
+          url(version: "square140")
         }
         __id
         id

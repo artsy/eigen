@@ -15,15 +15,17 @@
 -->
 
 ### Master
-- Add ellipsis to partner and event names - ashkan
 
 - Switches Fairs&Shows to use SwitchBoard routing instead of nested navigation controller - ash
+- Add ellipsis to partner and event names - ashkan
 - Fixes partner link on Fair Booth header - luc
 - Adds Sentry to the app - orta
 - Adds Sentry logger for users - orta
 - Fix for the count of artworks in a show - orta
 - Nearby show previews use a better placeholder - orta
+- Fixes to the fair icon - orta
 - Adds clickable links for maps - orta
+- Fixes follow gallery button on fair booth page - ash
 
 ### 1.8.4
 
@@ -218,6 +220,7 @@
 - Adds MoreInfo screen to show detail view - javamonn
 - Clean up Jest log output, update relay-mock-network-layer - javamonn
 - Fair performance enhancements - ashley
+- Add start and end properties to Favorites Works and Shows page info queries -ashley
 
 ### 1.7.1
 

@@ -27,7 +27,9 @@ fragment Shows_me on Me {
   followsAndSaves {
     shows(first: 10) {
       pageInfo {
+        startCursor
         endCursor
+        hasPreviousPage
         hasNextPage
       }
       edges {
@@ -101,7 +103,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FavoriteShowsQuery",
-  "id": "183aa8e42d89478532cc307001b49d28",
+  "id": "0902572fc6754f02e2386960fc7b3678",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -181,7 +183,21 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
+                        "name": "startCursor",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
                         "name": "endCursor",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "hasPreviousPage",
                         "args": null,
                         "storageKey": null
                       },
