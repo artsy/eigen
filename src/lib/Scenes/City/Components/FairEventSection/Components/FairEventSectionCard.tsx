@@ -14,7 +14,6 @@ export class FairEventSectionCard extends Component<Props> {
     const {
       fair: { image, name, profile, start_at, end_at },
     } = this.props
-
     return (
       <>
         <Container>
