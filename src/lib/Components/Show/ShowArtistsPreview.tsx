@@ -24,7 +24,7 @@ export class ShowArtistsPreview extends React.Component<Props> {
     owner_type: Schema.OwnerEntityTypes.Show,
   }))
   handlePress(url: string) {
-    Switchboard.presentNavigationViewController(this.props.Component, url)
+    Switchboard.presentNavigationViewController(this.props.Component || this, url)
   }
 
   render() {

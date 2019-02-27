@@ -5,6 +5,7 @@ import { Metadata_show$ref } from "./Metadata_show.graphql";
 declare const _ArtistShow_show$ref: unique symbol;
 export type ArtistShow_show$ref = typeof _ArtistShow_show$ref;
 export type ArtistShow_show = {
+    readonly id: string;
     readonly href: string | null;
     readonly is_fair_booth: boolean | null;
     readonly cover_image: ({
@@ -23,6 +24,13 @@ const node: ConcreteFragment = {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -76,5 +84,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = 'b63f406cdea558d9050c4b60249de870';
+(node as any).hash = 'c8834a74654abccca7fa4108e536062a';
 export default node;

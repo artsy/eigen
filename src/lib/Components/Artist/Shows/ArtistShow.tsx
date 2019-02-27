@@ -21,8 +21,8 @@ class Show extends React.Component<Props> {
   handleTap() {
     const { is_fair_booth } = this.props.show
     is_fair_booth
-      ? SwitchBoard.presentNavigationViewController(this, `${this.props.show.href}?entity=fair-booth`)
-      : SwitchBoard.presentNavigationViewController(this, this.props.show.href)
+      ? SwitchBoard.presentNavigationViewController(this, `${this.props.show.id}?entity=fair-booth`)
+      : SwitchBoard.presentNavigationViewController(this, this.props.show.href || `show/${this.props.show.id}`)
   }
 
   render() {
@@ -47,6 +47,7 @@ export default createFragmentContainer(
   Show,
   graphql`
     fragment ArtistShow_show on PartnerShow {
+      id
       href
       is_fair_booth
       cover_image {

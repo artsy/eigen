@@ -208,6 +208,7 @@ fragment SmallList_shows on PartnerShow {
 }
 
 fragment ArtistShow_show on PartnerShow {
+  id
   href
   is_fair_booth
   cover_image {
@@ -440,10 +441,11 @@ v18 = {
 v19 = [
   v5,
   v2,
+  v7,
   v11,
   v12,
   v13,
-  v7,
+  v6,
   v14,
   v15,
   v16,
@@ -752,7 +754,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersArtistQuery",
-  "id": "da6ff181035d83773a8a7d46e684a60a",
+  "id": "30a2ca7f4089ebfff083c92848e4bc8c",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -1103,11 +1105,12 @@ return {
                 "plural": true,
                 "selections": [
                   v14,
-                  v7,
+                  v6,
+                  v11,
                   v12,
                   v13,
                   v5,
-                  v11,
+                  v7,
                   v15,
                   v16,
                   v17,

@@ -8,7 +8,7 @@ export type FairsRail_fairs_module = {
         readonly id: string;
         readonly name: string | null;
         readonly profile: ({
-            readonly href: string | null;
+            readonly id: string;
         }) | null;
         readonly mobile_image: ({
             readonly id: string | null;
@@ -68,13 +68,7 @@ return {
           "concreteType": "Profile",
           "plural": false,
           "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "href",
-              "args": null,
-              "storageKey": null
-            },
+            v0,
             v1
           ]
         },
@@ -103,5 +97,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '85178fd988a5abdc9f3d3c9a166df3da';
+(node as any).hash = '848f3ef1e7d35f58ee3c2abed5401d8d';
 export default node;

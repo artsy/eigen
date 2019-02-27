@@ -18,7 +18,7 @@ const track: Track<Props, {}> = _track
 @track()
 class SavedShowItemRow extends React.Component<Props> {
   handleTap() {
-    Switchboard.presentNavigationViewController(this, this.props.show.href)
+    Switchboard.presentNavigationViewController(this, this.props.show.href || `show/${this.props.show.id}`)
   }
 
   @track(props => {

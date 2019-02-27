@@ -94,7 +94,7 @@ fragment FairsRail_fairs_module on HomePageFairsModule {
     id
     name
     profile {
-      href
+      id
       __id
     }
     mobile_image {
@@ -296,10 +296,6 @@ v10 = [
   v9
 ],
 v11 = [
-  v9,
-  v0
-],
-v12 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -308,10 +304,13 @@ v12 = [
     "args": null,
     "concreteType": "Artist",
     "plural": false,
-    "selections": v11
+    "selections": [
+      v9,
+      v0
+    ]
   }
 ],
-v13 = {
+v12 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
@@ -325,14 +324,14 @@ v13 = {
   ],
   "storageKey": "url(version:\"large\")"
 },
-v14 = {
+v13 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v15 = [
+v14 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -345,7 +344,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ForYouRefetchQuery",
-  "id": "11763db3bb4c8829856c99134f143f05",
+  "id": "c0e462a02e80dbe3cb8d249ca3e88d88",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -549,12 +548,12 @@ return {
                   {
                     "kind": "InlineFragment",
                     "type": "HomePageModuleContextRelatedArtist",
-                    "selections": v12
+                    "selections": v11
                   },
                   {
                     "kind": "InlineFragment",
                     "type": "HomePageModuleContextFollowedArtist",
-                    "selections": v12
+                    "selections": v11
                   }
                 ]
               },
@@ -591,7 +590,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v13
+                      v12
                     ]
                   },
                   v1,
@@ -661,7 +660,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v14,
+                      v13,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -689,7 +688,7 @@ return {
                         "args": null,
                         "concreteType": "SaleArtworkOpeningBid",
                         "plural": false,
-                        "selections": v15
+                        "selections": v14
                       },
                       {
                         "kind": "LinkedField",
@@ -699,7 +698,7 @@ return {
                         "args": null,
                         "concreteType": "SaleArtworkCurrentBid",
                         "plural": false,
-                        "selections": v15
+                        "selections": v14
                       },
                       {
                         "kind": "ScalarField",
@@ -717,7 +716,7 @@ return {
                         "concreteType": "Sale",
                         "plural": false,
                         "selections": [
-                          v14,
+                          v13,
                           v0
                         ]
                       },
@@ -804,7 +803,7 @@ return {
                     "concreteType": "Image",
                     "plural": false,
                     "selections": [
-                      v13
+                      v12
                     ]
                   }
                 ]
@@ -839,7 +838,10 @@ return {
                     "args": null,
                     "concreteType": "Profile",
                     "plural": false,
-                    "selections": v11
+                    "selections": [
+                      v5,
+                      v0
+                    ]
                   },
                   {
                     "kind": "LinkedField",

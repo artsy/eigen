@@ -12,9 +12,7 @@ interface Props {
 
 export class FairEventSectionCard extends Component<Props> {
   handleTap() {
-    const profileURL = this.props.fair.profile && this.props.fair.profile.href
-    const path = `${profileURL || this.props.fair.id}?entity=fair`
-
+    const path = `${this.props.fair.id}?entity=fair`
     SwitchBoard.presentNavigationViewController(this, path)
   }
 
