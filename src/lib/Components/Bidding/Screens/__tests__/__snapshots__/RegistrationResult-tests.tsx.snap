@@ -122,10 +122,7 @@ to bid on works in this sale.
           accessible={true}
           allowFontScaling={true}
           ellipsizeMode="tail"
-        >
-          
-
-        </Text>
+        />
       </View>
     </View>
   </View>
@@ -316,10 +313,7 @@ with any questions.
           accessible={true}
           allowFontScaling={true}
           ellipsizeMode="tail"
-        >
-          
-
-        </Text>
+        />
       </View>
     </View>
   </View>
@@ -511,10 +505,7 @@ more information.
           accessible={true}
           allowFontScaling={true}
           ellipsizeMode="tail"
-        >
-          
-
-        </Text>
+        />
       </View>
     </View>
   </View>
