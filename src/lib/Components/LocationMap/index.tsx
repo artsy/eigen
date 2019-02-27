@@ -104,9 +104,17 @@ export class LocationMap extends React.Component<Props> {
     }
 
     const tappedOnMap = () => {
+      // Fairs only have a "summary", so we need to
+      // be quite conservative about what parts of the address we
+      // send to the different services
+      const firstLineAddress = address || summary
+      const suffix = postal_code && !firstLineAddress.includes(postal_code) ? `, ${postal_code}` : ""
+      const title = `${firstLineAddress}${suffix}`
+      const addressOrName = address || partnerName
+
       ActionSheetIOS.showActionSheetWithOptions(
         {
-          title: `${address}, ${postal_code}`,
+          title,
           options: ["Cancel", "Open in Apple Maps", "Open in City Mapper", "Open in Google Maps", "Copy Address"],
           cancelButtonIndex: 0,
         },
@@ -114,7 +122,7 @@ export class LocationMap extends React.Component<Props> {
           if (buttonIndex === 1) {
             // Apple Maps
             // https://developer.apple.com/library/archive/featuredarticles/iPhoneURLScheme_Reference/MapLinks/MapLinks.html
-            Linking.openURL(`http://maps.apple.com/?addr="${address}, ${postal_code}"&near=${lat},${lng}`)
+            Linking.openURL(`http://maps.apple.com/?addr="${addressOrName}${suffix}"&near=${lat},${lng}`)
           } else if (buttonIndex === 2) {
             // City Mapper
             // https://citymapper.com/tools/1053/launch-citymapper-for-directions
@@ -124,12 +132,10 @@ export class LocationMap extends React.Component<Props> {
           } else if (buttonIndex === 3) {
             // Google Maps
             // https://developers.google.com/maps/documentation/urls/guide
-            Linking.openURL(
-              `https://www.google.com/maps/dir/?api=1&map_action=map&destination=${partnerName}, ${address}`
-            )
+            Linking.openURL(`https://www.google.com/maps/dir/?api=1&map_action=map&destination=${lat}, ${lng}`)
           } else if (buttonIndex === 4) {
             // Copy to pasteboard
-            Clipboard.setString(`${address}, ${postal_code}`)
+            Clipboard.setString(title)
           }
         }
       )
