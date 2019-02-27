@@ -43,5 +43,8 @@ storiesOf("Fairs")
   .add("Art Basel Miami 2018", () => {
     return <RootContainer Component={Fair} fairID="art-basel-in-miami-beach-2018" />
   })
+  .add("Tefaf NY Fall 2019", () => {
+    return <RootContainer Component={Fair} fairID="tefaf-new-york-fall-2019" />
+  })
 
 // art-basel-in-miami-beach-2018
