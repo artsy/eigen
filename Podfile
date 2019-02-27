@@ -63,7 +63,6 @@ target 'Artsy' do
   pod 'ARTiledImageView', git: 'https://github.com/dblock/ARTiledImageView'
   pod 'ORStackView', '2.0.3'
   pod 'UIView+BooleanAnimations'
-  pod 'NAMapKit', git: 'https://github.com/neilang/NAMapKit'
   pod 'Aerodramus'
 
   # Custom CollectionView Layouts

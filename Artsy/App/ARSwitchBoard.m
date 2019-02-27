@@ -18,9 +18,7 @@
 #import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
-#import "ARFairGuideContainerViewController.h"
 #import "ARAuctionWebViewController.h"
-#import "ARFairMapViewController.h"
 #import "ARFairSearchViewController.h"
 #import "ARTopMenuViewController.h"
 #import "ARMutableLinkViewController.h"
@@ -233,18 +231,6 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 
     // We don't show a native fairs UI for iPad
     if (![UIDevice isPad]) {
-        [self registerEchoRouteForKey:@"ARFairProfileForYouRoute" handler:JLRouteParams {
-            __strong typeof (wself) sself = wself;
-            Fair *fair = [parameters[@"fair"] isKindOfClass:Fair.class] ? parameters[@"fair"] : nil;
-            return [sself loadFairGuideWithFair:fair];
-        }];
-
-        [self registerEchoRouteForKey:@"ARFairBrowseArtistRoute" handler:JLRouteParams {
-            __strong typeof (wself) sself = wself;
-            Fair *fair = parameters[@"fair"] ?: [[Fair alloc] initWithFairID:parameters[@"profile_id"]];
-            return [sself loadArtistWithID:parameters[@"id"] inFair:fair];
-        }];
-
         [self.routes addRoute:@"/:fairID/search" handler:JLRouteParams {
             Fair *fair = [[Fair alloc] initWithFairID:parameters[@"fairID"]];
             return [[ARFairSearchViewController alloc] initWithFair:fair];

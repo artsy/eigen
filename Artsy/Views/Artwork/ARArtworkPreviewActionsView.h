@@ -9,7 +9,6 @@
 - (void)tappedArtworkFavorite:(id)sender;
 - (void)tappedArtworkShare:(id)sender;
 - (void)tappedArtworkViewInRoom;
-- (void)tappedArtworkViewInMap;
 
 @end
 

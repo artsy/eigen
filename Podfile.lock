@@ -168,9 +168,6 @@ PODS:
   - MARKRangeSlider (1.0.1)
   - MMMarkdown (0.4)
   - MultiDelegate (0.0.2)
-  - NAMapKit (3.2.0):
-    - ARTiledImageView
-    - SDWebImage
   - Nimble (7.3.0)
   - Nimble-Snapshots (6.3.0):
     - Nimble-Snapshots/Core (= 6.3.0)
@@ -308,7 +305,6 @@ DEPENDENCIES:
   - MARKRangeSlider
   - MMMarkdown
   - MultiDelegate
-  - NAMapKit (from `https://github.com/neilang/NAMapKit`)
   - Nimble
   - Nimble-Snapshots
   - NPKeyboardLayoutGuide
@@ -424,8 +420,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/orta/JLRoutes.git
   Keys:
     :path: Pods/CocoaPodsKeys
-  NAMapKit:
-    :git: https://github.com/neilang/NAMapKit
   Pulley:
     :branch: master
     :git: https://github.com/l2succes/Pulley.git
@@ -475,9 +469,6 @@ CHECKOUT OPTIONS:
   JLRoutes:
     :commit: 5a6df1a795766a4d3e586508e86ec9271d3ef3d9
     :git: https://github.com/orta/JLRoutes.git
-  NAMapKit:
-    :commit: 9a2b842a1067785cf8af18276d4de4f0e3f0a17c
-    :git: https://github.com/neilang/NAMapKit
   Pulley:
     :commit: d1b6f0a1ef6fe0aa79847b6b46087510084f5067
     :git: https://github.com/l2succes/Pulley.git
@@ -543,7 +534,6 @@ SPEC CHECKSUMS:
   MARKRangeSlider: dbf0878b03e921b52e4ef1e7766c1a8affb0c577
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
-  NAMapKit: bdcb666fa84122eed344661b132e1d93dbafac71
   Nimble: c8d6a1f463701921c46de965c673e13cafa09196
   Nimble-Snapshots: f5459b5b091678dc942d03ec4741cacb58ba4a52
   NPKeyboardLayoutGuide: fea27700582570c8825a97b5cb96579a57bf0b73
@@ -575,6 +565,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: de8782b10b9fdede33554bcad8a2a6653e0ebb30
 
-PODFILE CHECKSUM: de12e5eada37dd535226e86a116b6ea25fbafcc8
+PODFILE CHECKSUM: 0c7886a47eb9723a85f2b6c581fa9d5710ff9bfa
 
 COCOAPODS: 1.6.0.beta.1

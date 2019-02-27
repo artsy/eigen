@@ -18,7 +18,6 @@
 #import "ARHeartButton.h"
 #import "ARRouter.h"
 #import "ARInternalMobileWebViewController.h"
-#import "ARFairMapViewController.h"
 #import "ARBidButton.h"
 #import "ARAnalyticsConstants.h"
 #import "Fair.h"
@@ -136,18 +135,6 @@
         ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:self.artwork];
         [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
     }
-}
-
-- (void)tappedArtworkViewInMap
-{
-    [ArtsyAPI getShowsForArtworkID:self.artwork.artworkID inFairID:self.fair.fairID success:^(NSArray *shows) {
-        if (shows.count > 0) {
-            ARFairMapViewController *viewController = [ARSwitchBoard.sharedInstance loadMapInFair:self.fair title:self.artwork.partner.name selectedPartnerShows:shows];
-            [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
-        }
-    } failure:^(NSError *error){
-        // ignore
-    }];
 }
 
 #pragma mark - ARArtworkActionsViewButtonDelegate
