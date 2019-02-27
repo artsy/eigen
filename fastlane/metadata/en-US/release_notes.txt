@@ -1,1 +1,3 @@
-This release allows more of Artsy to be found in the Search tab, and has some smaller bug fixes.
+With this update, we’ve updated the design of our art fair and gallery show pages as well as added the ability to save shows.
+
+In addition, this release addresses minor bugs and improvements.
