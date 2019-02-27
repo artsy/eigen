@@ -176,6 +176,9 @@ fragment FairBoothPreview_show on Show {
   _id
   name
   is_fair_booth
+  counts {
+    artworks
+  }
   partner {
     __typename
     ... on Partner {
@@ -382,7 +385,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairTestsQuery",
-  "id": "2a1cb5ea756d8d4cbd07f2602988048b",
+  "id": "f53928f9b1479d08787db8234a15cf10",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -1158,6 +1161,24 @@ return {
                         "name": "is_fair_booth",
                         "args": null,
                         "storageKey": null
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "counts",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "ShowCounts",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "artworks",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
                       },
                       v6,
                       {

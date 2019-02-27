@@ -28,6 +28,9 @@ fragment FairBoothPreview_show on Show {
   _id
   name
   is_fair_booth
+  counts {
+    artworks
+  }
   partner {
     __typename
     ... on Partner {
@@ -148,33 +151,33 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
 v6 = [
-  v4,
+  v2,
   v1
 ],
 v7 = {
@@ -198,7 +201,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "indexTestsFairBothPreviewQuery",
-  "id": "622967512e68a65b816dfa80647efe35",
+  "id": "86dcfe94d4cb3030c1f2e9ca17d4ce46",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -241,16 +244,6 @@ return {
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          v2,
-          v3,
-          v4,
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "is_fair_booth",
-            "args": null,
-            "storageKey": null
-          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -272,17 +265,17 @@ return {
                 "kind": "InlineFragment",
                 "type": "ExternalPartner",
                 "selections": [
-                  v4
+                  v2
                 ]
               },
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
-                  v4,
-                  v5,
                   v2,
                   v3,
+                  v4,
+                  v5,
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -292,7 +285,7 @@ return {
                     "concreteType": "Profile",
                     "plural": false,
                     "selections": [
-                      v3,
+                      v5,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -307,6 +300,34 @@ return {
               }
             ]
           },
+          v4,
+          v2,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_fair_booth",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "counts",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ShowCounts",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "artworks",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          v5,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -450,7 +471,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v2,
+                      v4,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -585,7 +606,7 @@ return {
                         "plural": false,
                         "selections": v6
                       },
-                      v5
+                      v3
                     ]
                   }
                 ]
