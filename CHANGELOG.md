@@ -16,6 +16,10 @@
 
 ### Master
 
+- Fixewd the fairs thumbnails for a city, and makes the fairs clickable - orta
+
+### 1.8.5
+
 - Switches Fairs&Shows to use SwitchBoard routing instead of nested navigation controller - ash
 - Add ellipsis to partner and event names - ashkan
 - Fixes partner link on Fair Booth header - luc
