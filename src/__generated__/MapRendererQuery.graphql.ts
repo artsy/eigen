@@ -97,7 +97,7 @@ fragment GlobalMap_viewer_279V1T on Viewer {
               href
               height
               width
-              url
+              url(version: "square140")
             }
             __id
             id
@@ -213,7 +213,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MapRendererQuery",
-  "id": "b68718283d6288359bbbfd442a4d078c",
+  "id": "e0c6f940d13713aa930c100dc86ba875",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -488,7 +488,20 @@ return {
                                     "args": null,
                                     "storageKey": null
                                   },
-                                  v4
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "url",
+                                    "args": [
+                                      {
+                                        "kind": "Literal",
+                                        "name": "version",
+                                        "value": "square140",
+                                        "type": "[String]"
+                                      }
+                                    ],
+                                    "storageKey": "url(version:\"square140\")"
+                                  }
                                 ]
                               },
                               v5,
