@@ -284,7 +284,7 @@ export const GlobalMapContainer = createRefetchContainer(
                   href
                   height
                   width
-                  url
+                  url(version: "square140")
                 }
                 __id
                 id

@@ -1,8 +1,9 @@
 import { Box, color, Flex, Sans, space } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import moment from "moment"
 import React, { Component } from "react"
-import { Dimensions, Image } from "react-native"
+import { Dimensions, Image, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
 interface Props {
@@ -10,12 +11,19 @@ interface Props {
 }
 
 export class FairEventSectionCard extends Component<Props> {
+  handleTap() {
+    const profileURL = this.props.fair.profile && this.props.fair.profile.href
+    const path = `${profileURL || this.props.fair.id}?entity=fair`
+
+    SwitchBoard.presentNavigationViewController(this, path)
+  }
+
   render() {
     const {
       fair: { image, name, profile, start_at, end_at },
     } = this.props
     return (
-      <>
+      <TouchableOpacity onPress={this.handleTap.bind(this)}>
         <Container>
           {image && <BackgroundImage imageURL={image.url} />}
           <Overlay />
@@ -33,7 +41,7 @@ export class FairEventSectionCard extends Component<Props> {
             </Flex>
           </Box>
         </Container>
-      </>
+      </TouchableOpacity>
     )
   }
 }
