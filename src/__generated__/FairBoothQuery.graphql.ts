@@ -107,6 +107,8 @@ fragment ShowArtists_show on Show {
       ...ArtistListItem_artist
       sortable_id
       href
+      _id
+      id
       __id
     }
   }
@@ -564,7 +566,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairBoothQuery",
-  "id": "29c57f12cbdbf5742fe3bbe26dc5414a",
+  "id": "30996d5e2e880b95d7e7bd70ea08191a",
   "text": null,
   "metadata": {},
   "fragment": {

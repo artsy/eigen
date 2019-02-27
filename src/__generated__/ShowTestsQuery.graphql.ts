@@ -106,6 +106,8 @@ fragment ShowArtists_show on Show {
       ...ArtistListItem_artist
       sortable_id
       href
+      _id
+      id
       __id
     }
   }
@@ -707,7 +709,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
-  "id": "5537a0248710727aeeee111fa2025b65",
+  "id": "8384bff2bba7a9a9800892cb4636bf8a",
   "text": null,
   "metadata": {},
   "fragment": {

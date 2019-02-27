@@ -52,6 +52,7 @@ export const formatTombstoneText = (nationality, birthday, deathday) => {
     return "b. " + birthday
   }
 }
+
 @track()
 export class ArtistListItem extends React.Component<Props, State> {
   state = { isFollowedChanging: false }
@@ -150,7 +151,6 @@ export class ArtistListItem extends React.Component<Props, State> {
           {this.renderText()}
         </TextContainer>
         <Spacer m={1} />
-        {/* TODO: Convert the width and height to a padding */}
         <Box width={102} height={34}>
           <InvertedButton
             grayBorder={true}

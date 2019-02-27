@@ -23,6 +23,10 @@ const SquareBox = styled(Box)`
   height: 58;
 `
 
+const SerifTightened = styled(Serif)`
+  top: 3;
+`
+
 export interface Props {
   item: any
   type: string
@@ -86,6 +90,7 @@ const renderContent = (item, type) => {
         </>
       )
     case "Galleries":
+    case "Museums":
       const galleryImage = item.node.cover_image ? item.node.cover_image.url : null
       console.log("galleryImage", galleryImage)
       return (
@@ -97,9 +102,11 @@ const renderContent = (item, type) => {
                 {item.node.partner.name}
               </Sans>
             )}
-            <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
-              {"b"}
-            </Serif>
+            {item.node.name && (
+              <SerifTightened size="3t" numberOfLines={1} ellipsizeMode="tail">
+                {item.node.name}
+              </SerifTightened>
+            )}
             {item.node.start_at &&
               item.node.end_at && (
                 <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
