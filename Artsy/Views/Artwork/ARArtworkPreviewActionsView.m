@@ -109,8 +109,6 @@ const CGFloat ARArtworkActionButtonNoCircleSpacing = 30;
         [self.delegate tappedArtworkShare:sender];
     } else if (sender == self.favoriteButton) {
         [self.delegate tappedArtworkFavorite:sender];
-    } else if (sender == self.viewInMapButton) {
-        [self.delegate tappedArtworkViewInMap];
     } else if (sender == self.viewInRoomButton) {
         [self.delegate tappedArtworkViewInRoom];
     }
@@ -158,22 +156,6 @@ const CGFloat ARArtworkActionButtonNoCircleSpacing = 30;
     BOOL showViewInRoom = canDisplayViewInRoom && artwork.canViewInRoom;
 
     [self toggleViewInRoomButton:showViewInRoom];
-
-    BOOL canDisplayMap = [UIDevice isPhone];
-    if (fair && canDisplayMap) {
-        void (^revealMapButton)(NSArray *) = ^(NSArray *maps) {
-
-            BOOL showMapButton = maps.count > 0;
-            [self toggleMapButton:showMapButton];
-
-        };
-
-        if (fair.maps.count > 0) {
-            revealMapButton(fair.maps);
-        } else {
-            [fair getFairMaps:revealMapButton];
-        }
-    }
 }
 
 - (void)updateConstraints

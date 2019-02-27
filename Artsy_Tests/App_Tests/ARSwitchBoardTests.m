@@ -15,8 +15,6 @@
 #import "ARInternalMobileWebViewController.h"
 #import "ARPaymentRequestWebViewController.h"
 #import "ARProfileViewController.h"
-#import "ARFairArtistViewController.h"
-#import "ARFairGuideContainerViewController.h"
 #import "ARFairSearchViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARMutableLinkViewController.h"
@@ -288,18 +286,6 @@ describe(@"ARSwitchboard", ^{
 
                 after(^{
                     [ARTestContext stopStubbing];
-                });
-
-                it(@"routes fair guide", ^{
-                    Fair *fair = [OCMockObject mockForClass:[Fair class]];
-                    id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/fair-id/for-you"] fair:fair];
-                    expect(viewController).to.beKindOf(ARFairGuideContainerViewController.class);
-                });
-
-                it(@"routes fair artists", ^{
-                    Fair *fair = [OCMockObject mockForClass:[Fair class]];
-                    id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"/the-armory-show/browse/artist/artist-id"] fair:fair];
-                    expect(viewController).to.beKindOf(ARFairArtistViewController.class);
                 });
 
                 it(@"routes fair search", ^{

@@ -81,11 +81,8 @@
                 [self ar_removeChildViewController: self.childViewControllers.firstObject];
 
                 NSString * fairID = ((Fair *) profile.profileOwner).fairID;
-                Fair *fair = [[Fair alloc] initWithFairID:fairID];
-
                 ARFairComponentViewController *viewController = [[ARFairComponentViewController alloc] initWithFairID:fairID];
-                       [self showViewController:viewController];
-
+                [self showViewController:viewController];
             }
 
             [self ar_removeIndeterminateLoadingIndicatorAnimated:YES];

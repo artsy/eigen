@@ -7,9 +7,7 @@
     ARFairArtistViewController,
     ARArtworkInfoViewController,
     ARAuctionArtworkResultsViewController,
-    ARFairMapViewController,
     ARUserSettingsViewController,
-    ARFairGuideContainerViewController,
     AuctionViewController,
     ARMutableLinkViewController;
 
@@ -42,14 +40,8 @@
 
 #pragma mark - Fairs
 
-/// Load a Map VC
-- (ARFairMapViewController *)loadMapInFair:(Fair *)fair;
-- (ARFairMapViewController *)loadMapInFair:(Fair *)fair title:(NSString *)title selectedPartnerShows:(NSArray *)selectedPartnerShows;
-
 - (UIViewController *)loadArtistWithID:(NSString *)artistID;
 - (UIViewController<ARFairAwareObject> *)loadArtistWithID:(NSString *)artistID inFair:(Fair *)fair;
-
-- (ARFairGuideContainerViewController *)loadFairGuideWithFair:(Fair *)fair;
 
 #pragma mark - Auctions
 

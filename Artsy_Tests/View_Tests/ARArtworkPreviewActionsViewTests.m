@@ -55,15 +55,6 @@ describe(@"with a delegate set", ^{
 
         [delegateMock verify];
     });
-
-    it(@"invokes delegate for when view in map button is tapped", ^{
-        subject.viewInMapButton = (id)[NSObject new];
-        [[delegateMock expect] tappedArtworkViewInMap];
-
-        [subject buttonTapped:subject.viewInMapButton];
-
-        [delegateMock verify];
-    });
 });
 
 SpecEnd;
