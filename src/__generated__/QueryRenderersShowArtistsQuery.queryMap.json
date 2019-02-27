@@ -1,0 +1,3 @@
+{
+  "d17fba33989f8b0a4a2af3fc75d0aeee": "query QueryRenderersShowArtistsQuery(\n  $showID: String!\n) {\n  show(id: $showID) {\n    ...ShowArtists_show\n    __id\n  }\n}\n\nfragment ShowArtists_show on Show {\n  artists_grouped_by_name {\n    letter\n    items {\n      ...ArtistListItem_artist\n      sortable_id\n      href\n      __id\n    }\n  }\n  __id\n}\n\nfragment ArtistListItem_artist on Artist {\n  __id\n  _id\n  id\n  name\n  is_followed\n  nationality\n  birthday\n  deathday\n  image {\n    url\n  }\n}\n"
+}

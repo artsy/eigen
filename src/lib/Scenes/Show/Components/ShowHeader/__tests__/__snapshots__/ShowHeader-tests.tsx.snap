@@ -4,7 +4,7 @@ exports[`looks correct when rendered 1`] = `
 Array [
   <View
     pb={0}
-    pt={3}
+    pt={5}
     px={2}
     style={
       Array [
@@ -12,7 +12,7 @@ Array [
           "paddingBottom": 0,
           "paddingLeft": 8,
           "paddingRight": 8,
-          "paddingTop": 16,
+          "paddingTop": 64,
         },
         undefined,
       ]

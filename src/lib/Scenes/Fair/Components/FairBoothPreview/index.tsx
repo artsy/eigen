@@ -11,7 +11,6 @@ import { FairBoothPreviewHeader } from "./Components/FairBoothPreviewHeader"
 
 interface Props {
   show: FairBoothPreview_show
-  onViewFairBoothPressed: () => void
   relay: RelayProp
 }
 
@@ -120,6 +119,20 @@ export class FairBoothPreview extends React.Component<Props, State> {
     SwitchBoard.presentNavigationViewController(this, `show/${showID}?entity=fair-booth`)
   }
 
+  @track(props => ({
+    action_name: Schema.ActionNames.ListGallery,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: props.show._id,
+    owner_slug: props.show.id,
+    owner_type: Schema.OwnerEntityTypes.Gallery,
+  }))
+  viewFairBoothPressed() {
+    const {
+      show: { id: showID },
+    } = this.props
+    SwitchBoard.presentNavigationViewController(this, `/show/${showID}?entity=fair-booth`)
+  }
+
   render() {
     const {
       show: {
@@ -132,7 +145,6 @@ export class FairBoothPreview extends React.Component<Props, State> {
         },
         counts: { artworks: artworkCount },
       },
-      onViewFairBoothPressed,
     } = this.props
     const display = !!location ? location.display : ""
 
@@ -145,7 +157,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
           isFollowed={partnerFollowed}
           isFollowedChanging={this.state.isFollowedChanging}
           url={cover_image && cover_image.url}
-          onViewFairBoothPressed={() => onViewFairBoothPressed()}
+          onViewFairBoothPressed={this.viewFairBoothPressed.bind(this)}
         />
         <Box mt={1}>{<GenericGrid artworks={artworks_connection.edges.map(a => a.node) as any} />}</Box>
         <Box mt={2}>

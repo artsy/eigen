@@ -16,6 +16,7 @@
 
 ### Master
 
+- Switches Fairs&Shows to use SwitchBoard routing instead of nested navigation controller - ash
 - Add ellipsis to partner and event names - ashkan
 - Fixes partner link on Fair Booth header - luc
 - Adds Sentry to the app - orta

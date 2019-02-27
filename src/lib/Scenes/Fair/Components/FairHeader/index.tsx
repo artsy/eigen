@@ -2,7 +2,7 @@ import { Box, Flex, Sans, space, Spacer } from "@artsy/palette"
 import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
-import Switchboard from "lib/NativeModules/SwitchBoard"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import moment from "moment"
 import React from "react"
@@ -14,8 +14,6 @@ import { CountdownTimer } from "./CountdownTimer"
 interface Props {
   fair: FairHeader_fair
   onSaveShowPressed?: () => Promise<void>
-  viewAllExhibitors: () => void
-  viewAllArtists: () => void
   relay: RelayProp
 }
 
@@ -61,8 +59,15 @@ const track: Track<Props, State> = _track
 export class FairHeader extends React.Component<Props, State> {
   state = { isSavedFairStateUpdating: false }
 
+  viewAllArtists() {
+    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/artists`)
+  }
+
+  viewAllExhibitors() {
+    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/exhibitors`)
+  }
+
   getContextualDetails() {
-    const { viewAllExhibitors, viewAllArtists } = this.props
     const { artists_names, counts, partner_names } = this.props.fair
 
     const artistList = artists_names.edges.map(i => i.node).filter(Boolean)
@@ -87,7 +92,7 @@ export class FairHeader extends React.Component<Props, State> {
           count={counts.artists}
           displayedItems={2}
           onItemSelected={this.handleArtistPress.bind(this)}
-          onViewAllPressed={viewAllArtists}
+          onViewAllPressed={this.viewAllArtists.bind(this)}
         />
         <Spacer mt={1} />
         <EntityList
@@ -96,7 +101,7 @@ export class FairHeader extends React.Component<Props, State> {
           count={counts.partners}
           displayedItems={2}
           onItemSelected={this.handleExhibitorPress.bind(this)}
-          onViewAllPressed={viewAllExhibitors}
+          onViewAllPressed={this.viewAllExhibitors.bind(this)}
         />
       </>
     )
@@ -114,7 +119,7 @@ export class FairHeader extends React.Component<Props, State> {
     } as any
   })
   handleExhibitorPress(href, _slug, _id) {
-    Switchboard.presentNavigationViewController(this, `${href}?entity=fair-booth`)
+    SwitchBoard.presentNavigationViewController(this, `${href}?entity=fair-booth`)
   }
 
   @track((__, _, args) => {
@@ -129,7 +134,7 @@ export class FairHeader extends React.Component<Props, State> {
     } as any
   })
   handleArtistPress(href, _slug, _id) {
-    Switchboard.presentNavigationViewController(this, href)
+    SwitchBoard.presentNavigationViewController(this, href)
   }
 
   render() {

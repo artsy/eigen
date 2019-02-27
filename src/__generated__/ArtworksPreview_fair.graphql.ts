@@ -5,6 +5,7 @@ import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _ArtworksPreview_fair$ref: unique symbol;
 export type ArtworksPreview_fair$ref = typeof _ArtworksPreview_fair$ref;
 export type ArtworksPreview_fair = {
+    readonly id: string;
     readonly __id: string;
     readonly filteredArtworks: ({
         readonly artworks_connection: ({
@@ -38,6 +39,13 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
     v0,
     {
       "kind": "LinkedField",
@@ -133,5 +141,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'a190e2a45c073e1a5af90ce8e90eb6a8';
+(node as any).hash = 'd72dd4c325beb363ba42fc602a619eba';
 export default node;
