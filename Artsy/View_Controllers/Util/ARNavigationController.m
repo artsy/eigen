@@ -423,37 +423,6 @@ ShouldHideItem(UIViewController *viewController, SEL itemSelector, ...)
     }
 }
 
-- (RACCommand *)presentPendingOperationLayover
-{
-    return [self presentPendingOperationLayoverWithMessage:nil];
-}
-
-- (RACCommand *)presentPendingOperationLayoverWithMessage:(NSString *)message
-{
-    self.pendingOperationViewController = [[ARPendingOperationViewController alloc] init];
-    if (message) {
-        self.pendingOperationViewController.message = message;
-    }
-    [self ar_addModernChildViewController:self.pendingOperationViewController];
-
-    __weak typeof(self) wself = self;
-
-    return [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
-        __strong typeof (wself) sself = wself;
-        RACSubject *completionSubject = [RACSubject subject];
-
-        [UIView animateIf:sself.animatesLayoverChanges duration:ARAnimationDuration :^{
-            sself.pendingOperationViewController.view.alpha = 0.0;
-        } completion:^(BOOL finished) {
-            [sself ar_removeChildViewController:self.pendingOperationViewController];
-            sself.pendingOperationViewController = nil;
-            [completionSubject sendCompleted];
-        }];
-
-        return completionSubject;
-    }];
-}
-
 #pragma mark - KVO
 
 - (void)observeViewController:(BOOL)observe

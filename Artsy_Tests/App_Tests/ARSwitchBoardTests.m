@@ -15,10 +15,6 @@
 #import "ARInternalMobileWebViewController.h"
 #import "ARPaymentRequestWebViewController.h"
 #import "ARProfileViewController.h"
-#import "ARShowViewController.h"
-#import "ARFairViewController.h"
-#import "ARFairArtistViewController.h"
-#import "ARFairGuideContainerViewController.h"
 #import "ARFairSearchViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
 #import "ARMutableLinkViewController.h"
@@ -26,6 +22,7 @@
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
 #import <Emission/ARBidFlowViewController.h>
+#import <Emission/ARShowComponentViewController.h>
 
 #import "Artsy-Swift.h"
 
@@ -275,7 +272,7 @@ describe(@"ARSwitchboard", ^{
 
         it(@"routes shows", ^{
             id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/show/show-id"] fair:nil];
-            expect(viewController).to.beKindOf(ARShowViewController.class);
+            expect(viewController).to.beKindOf(ARShowComponentViewController.class);
         });
 
         context(@"fairs", ^{
@@ -289,18 +286,6 @@ describe(@"ARSwitchboard", ^{
 
                 after(^{
                     [ARTestContext stopStubbing];
-                });
-
-                it(@"routes fair guide", ^{
-                    Fair *fair = [OCMockObject mockForClass:[Fair class]];
-                    id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"http://artsy.net/fair-id/for-you"] fair:fair];
-                    expect(viewController).to.beKindOf(ARFairGuideContainerViewController.class);
-                });
-
-                it(@"routes fair artists", ^{
-                    Fair *fair = [OCMockObject mockForClass:[Fair class]];
-                    id viewController = [switchboard routeInternalURL:[[NSURL alloc] initWithString:@"/the-armory-show/browse/artist/artist-id"] fair:fair];
-                    expect(viewController).to.beKindOf(ARFairArtistViewController.class);
                 });
 
                 it(@"routes fair search", ^{
@@ -459,10 +444,10 @@ describe(@"ARSwitchboard", ^{
                 [switchboard loadPartnerWithID:@"myfairprofile"];
             });
 
-            it(@"routes fair profiles specially", ^{
-                [[mockProfileVC expect] showViewController:[OCMArg checkForClass:[ARFairViewController class]]];
-                [switchboard loadPartnerWithID:@"myfairprofile"];
-            });
+//            it(@"routes fair profiles specially", ^{
+//                [[mockProfileVC expect] showViewController:[OCMArg checkForClass:[ARFairViewController class]]];
+//                [switchboard loadPartnerWithID:@"myfairprofile"];
+//            });
         });
     });
 });

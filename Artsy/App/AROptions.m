@@ -27,7 +27,6 @@ NSString *const AROptionsBuyNow = @"enableBuyNowMakeOffer";
 
 NSString *const AROptionsMakeOffer = @"Enable Make Offer";
 NSString *const AROptionsLocalDiscovery = @"Enable Local Discovery";
-NSString *const AROptionsModernShowFairPages = @"Use new Fair/Show pages";
 
 @implementation AROptions
 
@@ -45,7 +44,6 @@ NSString *const AROptionsModernShowFairPages = @"Use new Fair/Show pages";
          AROptionsForceBuyNow: @"Enable Buy Now purchase flow via Force",
          AROptionsMakeOffer: @"Enable Make Offer via Force",
          AROptionsLocalDiscovery: @"Enable Local Discovery",
-         AROptionsModernShowFairPages: @"Use new Fair/Show pages",
          
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
         };
@@ -81,7 +79,6 @@ NSString *const AROptionsModernShowFairPages = @"Use new Fair/Show pages";
         AROptionsDisableNativeLiveAuctions,
         AROptionsForceBuyNow,
         AROptionsLocalDiscovery,
-        AROptionsModernShowFairPages
     ];
 }
 

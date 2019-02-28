@@ -15,12 +15,9 @@
 #import "ARViewInRoomViewController.h"
 #import "ARSharingController.h"
 #import "ARArtworkPreviewImageView.h"
-#import "ARShowViewController.h"
 #import "ARHeartButton.h"
-#import "ARFairViewController.h"
 #import "ARRouter.h"
 #import "ARInternalMobileWebViewController.h"
-#import "ARFairMapViewController.h"
 #import "ARBidButton.h"
 #import "ARAnalyticsConstants.h"
 #import "Fair.h"
@@ -75,7 +72,7 @@
     [sender setHearted:hearted animated:YES];
 
     [self.artwork setFollowState:sender.isHearted success:^(id json) {
-        [NSNotificationCenter.defaultCenter postNotificationName:ARFairRefreshFavoritesNotification object:nil];
+        // NO-OP
     } failure:^(NSError *error) {
         [ARNetworkErrorManager presentActiveError:error withMessage:@"Failed to save artwork."];
         [sender setHearted:!hearted animated:YES];
@@ -138,18 +135,6 @@
         ARViewInRoomViewController *viewInRoomVC = [[ARViewInRoomViewController alloc] initWithArtwork:self.artwork];
         [self.navigationController pushViewController:viewInRoomVC animated:ARPerformWorkAsynchronously];
     }
-}
-
-- (void)tappedArtworkViewInMap
-{
-    [ArtsyAPI getShowsForArtworkID:self.artwork.artworkID inFairID:self.fair.fairID success:^(NSArray *shows) {
-        if (shows.count > 0) {
-            ARFairMapViewController *viewController = [ARSwitchBoard.sharedInstance loadMapInFair:self.fair title:self.artwork.partner.name selectedPartnerShows:shows];
-            [self.navigationController pushViewController:viewController animated:ARPerformWorkAsynchronously];
-        }
-    } failure:^(NSError *error){
-        // ignore
-    }];
 }
 
 #pragma mark - ARArtworkActionsViewButtonDelegate

@@ -26,6 +26,8 @@
 #import <Emission/ARShowConsignmentsFlowViewController.h>
 #import <Sentry/SentryClient.h>
 #import <Emission/ARGraphQLQueryCache.h>
+#import <React/RCTBridge.h>
+#import <React/RCTDevSettings.h>
 
 #if DEBUG
 #import <VCRURLConnection/VCR.h>
@@ -147,6 +149,41 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return crashCellData;
 }
 
+- (ARCellData *)generateRemoteDebug
+{
+    RCTDevSettings *devSettings = [[[AREmission sharedInstance] bridge] devSettings];
+    devSettings.isShakeToShowDevMenuEnabled = YES;
+    
+    if (!devSettings.isRemoteDebuggingAvailable) {
+        return [self tappableCellDataWithTitle:@"Remote JS Debugger Unavailable" selection:^{
+            UIAlertController *alertController = [UIAlertController
+                                                  alertControllerWithTitle:@"Remote JS Debugger Unavailable"
+                                                  message:@"You need to include the RCTWebSocket library to enable remote JS debugging"
+                                                  preferredStyle:UIAlertControllerStyleAlert];
+            __weak typeof(alertController) weakAlertController = alertController;
+            [alertController addAction:
+             [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(__unused UIAlertAction *action){
+                [weakAlertController dismissViewControllerAnimated:YES completion:nil];
+            }]];
+        }];
+    } else {
+        NSString *title = devSettings.isDebuggingRemotely ? @"Stop Remote JS Debugging" : @"Debug JS Remotely";
+        
+        return [self tappableCellDataWithTitle:title selection:^{
+            devSettings.isDebuggingRemotely = !devSettings.isDebuggingRemotely;
+            exit(0);
+        }];
+    }
+}
+
+- (ARCellData *)generateShowReactNativeDevMenu
+{
+    return [self tappableCellDataWithTitle:@"Show React Native Dev Menu" selection:^{
+        // It'd be nice to use the constant here, but it won't compile on CI
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"RCTShowDevMenuNotification" object:nil];
+    }];
+}
+
 - (ARCellData *)generateQuicksilver
 {
     return [self tappableCellDataWithTitle:@"Quicksilver" selection:^{
@@ -247,6 +284,8 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     }
     if (!isStagingReact) {
         [sectionData addCellData:self.useDevReactNative];
+        [sectionData addCellData:[self generateRemoteDebug]];
+        [sectionData addCellData:[self generateShowReactNativeDevMenu]];
     }
     return sectionData;
 }
@@ -387,7 +426,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
         if (isDevReact) { exit(0); }
 
         // Warn to see the docs
-        NSString *message = @"See the Emission docs on this, github.com/artsy/Emission/docs/running-emission-in-eigen.md";
+        NSString *message = @"See the Emission docs on this, github.com/artsy/Emission/docs/using_dev_emission.md";
         UIAlertController *controller = [UIAlertController alertControllerWithTitle:@"Note" message:message preferredStyle:UIAlertControllerStyleAlert];
 
         [controller addAction:[UIAlertAction actionWithTitle:@"Got it" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {

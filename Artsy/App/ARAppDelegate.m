@@ -49,6 +49,7 @@
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
 #import <VCRURLConnection/VCR.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
+#import <React/RCTDevSettings.h>
 
 // demo
 #import "ARDemoSplashViewController.h"
@@ -442,6 +443,7 @@ static ARAppDelegate *_sharedInstance = nil;
         ARAdminSettingsViewController *adminSettings = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
         [navigationController pushViewController:adminSettings animated:YES];
     }
+    
 }
 
 - (void)showQuicksilver

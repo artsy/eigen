@@ -39,12 +39,6 @@
     
     // Call super.
     [super viewDidLoad];
-    
-    // Download local data for client-side search.
-    [self.fair updateFair:^{
-        [self.fair downloadShows];
-        NSLog(@"Updated fair.");
-    }];
 
     self.view.backgroundColor = [UIColor whiteColor];
     self.textField.textColor = [UIColor artsyGraySemibold];
@@ -62,7 +56,7 @@
 
     [searchBoxBackgroundView alignLeadingEdgeWithView:self.view predicate:@"10"];
     [searchBoxBackgroundView alignTrailingEdgeWithView:self.closeButton predicate:@"-46"];
-    [searchBoxBackgroundView alignTopEdgeWithView:self.view predicate:@"10"];
+    [searchBoxBackgroundView alignCenterYWithView:self.closeButton predicate:@"0"];
     [searchBoxBackgroundView constrainHeight:@"44"];
 }
 

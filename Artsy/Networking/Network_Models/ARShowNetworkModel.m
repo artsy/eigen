@@ -48,15 +48,6 @@
     }];
 }
 
-- (void)getFairMaps:(void (^)(NSArray *maps))success
-{
-    [self.fair getFairMaps:^(NSArray *maps) {
-        if (success) {
-            success(maps);
-        }
-    }];
-}
-
 - (void)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure
 {
     [ArtsyAPI getArtworksForShow:self.show atPage:page success:^(NSArray *artworks) {

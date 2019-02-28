@@ -124,35 +124,6 @@
     }];
 }
 
-- (void)downloadShows
-{
-    __weak typeof(self) wself = self;
-
-    NSString *path = self.pathForLocalShowStorage;
-
-    ar_dispatch_async(^{
-        NSMutableSet *shows = [[NSKeyedUnarchiver unarchiveObjectWithFile:path] mutableCopy];
-
-        ar_dispatch_main_queue(^{
-            __strong typeof (wself) sself = wself;
-            if (!sself) { return; }
-
-            [sself willChangeValueForKey:ar_keypath(Fair.new, shows)];
-            sself->_showsLoadedFromArchive = shows ? [NSMutableSet setWithSet:shows] : nil;
-            sself.shows = shows ?: [NSMutableSet set];
-            [sself didChangeValueForKey:ar_keypath(Fair.new, shows)];
-
-            // download once an hour at the most
-            NSError *error = nil;
-            NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:&error];
-            NSTimeInterval distanceBetweenDatesSeconds = error ? -1 : [[NSDate date] timeIntervalSinceDate:[attributes fileModificationDate]];
-            if (distanceBetweenDatesSeconds < 0 || distanceBetweenDatesSeconds / 3600.f > 1) {
-                [sself downloadPastShowSet];
-            }
-        });
-    });
-}
-
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
 {
     if ([key isEqualToString:ar_keypath(Fair.new, shows)]) {
@@ -162,80 +133,6 @@
     return [super automaticallyNotifiesObserversForKey:key];
 }
 
-// TODO: Could the show downloading etc move into it's own class on fair?
-
-- (void)downloadPastShowSet
-{
-    if (!self.showsFeed) {
-        _showsFeed = [[ARFairShowFeed alloc] initWithFair:self];
-    }
-
-    __weak typeof(self) wself = self;
-
-    [self.networkModel getShowFeedItems:self.showsFeed success:^(NSOrderedSet *items) {
-
-        __strong typeof (wself) sself = wself;
-        if(items.count > 0) {
-            [sself addFeedItemsToShows:items];
-            [sself downloadPastShowSet];
-        } else {
-            [sself finishedDownloadingShows];
-        }
-
-    } failure:^(NSError *error) {
-
-        __strong typeof (wself) sself = wself;
-        ARErrorLog(@"failed to get shows %@", error.localizedDescription);
-        [sself performSelector:@selector(downloadPastShowSet) withObject:nil afterDelay:0.5];
-    }];
-}
-
-- (NSString *)pathForLocalShowStorage
-{
-    return [ARFileUtils cachesPathWithFolder:@"Fairs" filename:NSStringWithFormat(@"%@.showdata", self.fairID)];
-}
-
-- (void)finishedDownloadingShows
-{
-    if (_showsLoadedFromArchive && _showsLoadedFromArchive.count > 0) {
-        [self willChangeValueForKey:ar_keypath(Fair.new, shows)];
-        // remove any shows that were loaded from archive, but not downloaded
-        [(NSMutableSet *)self.shows minusSet:_showsLoadedFromArchive];
-        [self didChangeValueForKey:ar_keypath(Fair.new, shows)];
-    }
-
-    if (!ARIsRunningInDemoMode) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            if(![NSKeyedArchiver archiveRootObject:self.shows toFile:self.pathForLocalShowStorage]){
-                ARErrorLog(@"Issue saving show data for fair %@", self.fairID);
-            }
-        });
-    }
-}
-
-- (void)addFeedItemsToShows:(NSOrderedSet *)feedItems
-{
-    [self willChangeValueForKey:ar_keypath(Fair.new, shows)];
-
-    __weak typeof(self) wself = self;
-    [feedItems enumerateObjectsUsingBlock:^(ARPartnerShowFeedItem *feedItem, NSUInteger idx, BOOL *stop) {
-        __strong typeof (wself) sself = wself;
-        if (!sself) { return; }
-
-        // So, you're asking, why is there C++ in my Obj-C?
-        // Well we want to be able to _update_ objects in a mutable set, which is a lower level API
-        // than just adding. Uses toll-free bridging to switch to CF and updates the set.        ./
-
-        if (feedItem.show) {
-            if (sself->_showsLoadedFromArchive) {
-                [sself->_showsLoadedFromArchive removeObject:feedItem.show];
-            }
-            CFSetSetValue((__bridge CFMutableSetRef)sself.shows, (__bridge const void *)feedItem.show);
-        }
-    }];
-
-    [self didChangeValueForKey:ar_keypath(Fair.new, shows)];
-}
 
 - (void)getOrderedSets:(void (^)(NSMutableDictionary *))success
 {

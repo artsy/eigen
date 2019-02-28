@@ -11,8 +11,6 @@
 
 - (void)getShowInfo:(void (^)(PartnerShow *show))success failure:(void (^)(NSError *error))failure;
 
-- (void)getFairMaps:(void (^)(NSArray *maps))success;
-
 - (void)getArtworksAtPage:(NSInteger)page success:(void (^)(NSArray *artworks))success failure:(void (^)(NSError *error))failure;
 
 - (void)getFairBoothArtworksAndInstallShots:(PartnerShow *)show gotInstallImages:(void (^)(NSArray *images))gotInstallImages noImages:(void (^)(void))noImages;

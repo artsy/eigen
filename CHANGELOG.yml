@@ -1,10 +1,11 @@
 upcoming:
   version: 4.4.0
   date: TBD
-  emission_version: 1.8.3
+  emission_version: 1.8.7
   dev:
-    - Not yet
+    - Adds React Native developer menu + tools - luc
   user_facing:
+    - Uses React for the Show/Fairs by default - orta
     - Fixes to selection of fairs in Search - orta + matt
     - Make it obvious you can re-bid on upcoming lots - orta + sarah
     - Show error messages from Causality in raising max bids - orta + sarah
@@ -15,6 +16,9 @@ upcoming:
     - Fixes issue where non-fair routes would be sent to the new fair component - ash
     - Fixes search on Fair component - ash
     - Fixes crash with opening search on Fair/Show components - ash
+    - Add routes for Fair sub screens - luc
+    - Eliminates API roundtrip for showing fairs in profile views - ash
+    - Fixes back button not hiding on Emission views - ash
 
 releases:
   -

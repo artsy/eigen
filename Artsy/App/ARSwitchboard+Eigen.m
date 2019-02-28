@@ -5,14 +5,11 @@
 // View Controllers
 #import "ARAdminSettingsViewController.h"
 #import "ARArtworkSetViewController.h"
-#import "ARShowViewController.h"
 #import "ARArtworkInfoViewController.h"
 #import "ARBrowseViewController.h"
 #import "ARBrowseCategoriesViewController.h"
 #import "ARInternalMobileWebViewController.h"
-#import "ARFairGuideContainerViewController.h"
 #import "ARAuctionWebViewController.h"
-#import "ARFairMapViewController.h"
 #import "ARProfileViewController.h"
 #import "ARMutableLinkViewController.h"
 
@@ -22,9 +19,6 @@
 #import <Emission/ARBidFlowViewController.h>
 #import <Emission/ARShowComponentViewController.h>
 #import <Emission/ARFairComponentViewController.h>
-
-// TODO This does not use the new React based VC yet.
-#import "ARFairArtistViewController.h"
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -136,11 +130,7 @@
 
 - (UIViewController *)loadShow:(PartnerShow *)show fair:(Fair *)fair
 {
-    if ([AROptions boolForOption:AROptionsModernShowFairPages]) {
-        return [[ARShowComponentViewController alloc] initWithShowID:show.showID];
-    } else {
-        return [[ARShowViewController alloc] initWithShow:show fair:fair];
-    }
+    return [[ARShowComponentViewController alloc] initWithShowID:show.showID];
 }
 
 - (UIViewController *)loadShow:(PartnerShow *)show
@@ -150,11 +140,7 @@
 
 - (UIViewController *)loadShowWithID:(NSString *)showID fair:(Fair *)fair
 {
-    if ([AROptions boolForOption:AROptionsModernShowFairPages]) {
-        return [[ARShowComponentViewController alloc] initWithShowID:showID];
-    } else {
-        return [[ARShowViewController alloc] initWithShowID:showID fair:fair];
-    }
+    return [[ARShowComponentViewController alloc] initWithShowID:showID];
 }
 
 - (UIViewController *)loadShowWithID:(NSString *)showID
@@ -193,25 +179,8 @@
 
 - (UIViewController<ARFairAwareObject> *)loadArtistWithID:(NSString *)artistID inFair:(Fair *)fair
 {
-    if (fair) {
-        return [[ARFairArtistViewController alloc] initWithArtistID:artistID fair:fair];
-    } else {
-        return (UIViewController<ARFairAwareObject> *)[[ARArtistComponentViewController alloc] initWithArtistID:artistID];
-    }
-}
 
-- (ARFairMapViewController *)loadMapInFair:(Fair *)fair
-{
-    return [[ARFairMapViewController alloc] initWithFair:fair];
-}
-
-- (ARFairMapViewController *)loadMapInFair:(Fair *)fair title:(NSString *)title selectedPartnerShows:(NSArray *)selectedPartnerShows
-{
-    ARFairMapViewController *viewController = [[ARFairMapViewController alloc] initWithFair:fair title:title selectedPartnerShows:selectedPartnerShows];
-    if (title) {
-        viewController.expandAnnotations = NO;
-    }
-    return viewController;
+    return (UIViewController<ARFairAwareObject> *)[[ARArtistComponentViewController alloc] initWithArtistID:artistID];
 }
 
 - (UIViewController *)loadArtistWithID:(NSString *)artistID
@@ -233,15 +202,6 @@
 {
     return [[ARProfileViewController alloc] initWithProfileID:profileID];
 }
-
-#pragma mark -
-#pragma mark Fair
-
-- (ARFairGuideContainerViewController *)loadFairGuideWithFair:(Fair *)fair
-{
-    return [[ARFairGuideContainerViewController alloc] initWithFair:fair];
-}
-
 
 - (UIViewController *)loadOrderUIForID:(NSString *)orderID resumeToken:(NSString *)resumeToken
 {
