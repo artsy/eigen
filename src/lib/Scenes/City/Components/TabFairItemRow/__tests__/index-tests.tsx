@@ -1,7 +1,7 @@
 import { Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
-import { TabListItem } from "../index"
+import { TabFairItemRow } from "../index"
 
 const fairData = {
   node: {
@@ -20,11 +20,11 @@ const fairData = {
   },
 }
 
-describe("TabListItem", () => {
+describe("TabFairItemRow", () => {
   it("renders Fair properly", () => {
     const comp = mount(
       <Theme>
-        <TabListItem item={fairData} type="Fairs" />
+        <TabFairItemRow item={fairData} />
       </Theme>
     )
 

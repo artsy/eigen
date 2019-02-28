@@ -72,8 +72,9 @@ fragment SavedShowItemRow_show on Show {
   }
   href
   status
-  images(size: 1) {
+  cover_image {
     url
+    aspect_ratio
   }
   start_at
   end_at
@@ -123,7 +124,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowsQuery",
-  "id": "9fe74ccbfe678f1e312b49d72513f049",
+  "id": "eff7016eb23bfb2c0f00c2f6fac12851",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -330,23 +331,23 @@ return {
                           {
                             "kind": "LinkedField",
                             "alias": null,
-                            "name": "images",
-                            "storageKey": "images(size:1)",
-                            "args": [
-                              {
-                                "kind": "Literal",
-                                "name": "size",
-                                "value": 1,
-                                "type": "Int"
-                              }
-                            ],
+                            "name": "cover_image",
+                            "storageKey": null,
+                            "args": null,
                             "concreteType": "Image",
-                            "plural": true,
+                            "plural": false,
                             "selections": [
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
                                 "name": "url",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "aspect_ratio",
                                 "args": null,
                                 "storageKey": null
                               }

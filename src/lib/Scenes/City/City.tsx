@@ -1,6 +1,7 @@
 import { Box, color, Flex, Theme } from "@artsy/palette"
 import React, { Component } from "react"
 import { ScrollView } from "react-native"
+import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { BucketKey, BucketResults } from "../Map/Bucket"
 import { FiltersBar } from "../Map/Components/FiltersBar"
@@ -17,12 +18,14 @@ interface Props {
 interface State {
   buckets?: BucketResults
   filter: Tab
+  relay: RelayProp
 }
 
 export class CityView extends Component<Props, State> {
   state = {
     buckets: null,
     filter: { id: "all", text: "All events" },
+    relay: null,
   }
   scrollViewVerticalStart = 0
   scrollView: ScrollView = null
@@ -36,12 +39,16 @@ export class CityView extends Component<Props, State> {
   ]
 
   componentWillMount() {
-    EventEmitter.subscribe("map:change", ({ filter, buckets }: { filter: Tab; buckets: BucketResults }) => {
-      this.setState({
-        buckets,
-        filter,
-      })
-    })
+    EventEmitter.subscribe(
+      "map:change",
+      ({ filter, buckets, relay }: { filter: Tab; buckets: BucketResults; relay: RelayProp }) => {
+        this.setState({
+          buckets,
+          filter,
+          relay,
+        })
+      }
+    )
   }
 
   componentDidUpdate() {
@@ -81,7 +88,7 @@ export class CityView extends Component<Props, State> {
                   case "all":
                     return <AllEvents currentBucket={filter.id as BucketKey} buckets={buckets} />
                   default:
-                    return <CityTab bucket={buckets[filter.id]} type={filter.text} />
+                    return <CityTab bucket={buckets[filter.id]} type={filter.text} relay={this.state.relay} />
                 }
               })()}
             </ScrollView>

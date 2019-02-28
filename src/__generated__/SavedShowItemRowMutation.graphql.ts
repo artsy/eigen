@@ -13,8 +13,8 @@ export type SavedShowItemRowMutationResponse = {
     readonly followShow: ({
         readonly show: ({
             readonly id: string;
-            readonly is_followed: boolean | null;
             readonly _id: string;
+            readonly is_followed: boolean | null;
         }) | null;
     }) | null;
 };
@@ -32,8 +32,8 @@ mutation SavedShowItemRowMutation(
   followShow(input: $input) {
     show {
       id
-      is_followed
       _id
+      is_followed
       __id
     }
   }
@@ -85,14 +85,14 @@ v1 = [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "is_followed",
+            "name": "_id",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "_id",
+            "name": "is_followed",
             "args": null,
             "storageKey": null
           },
@@ -112,7 +112,7 @@ return {
   "kind": "Request",
   "operationKind": "mutation",
   "name": "SavedShowItemRowMutation",
-  "id": "23c88d2f195e689fe3750d54294cebb4",
+  "id": "8c7f591802430a371781ea0f550f6dab",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -131,5 +131,5 @@ return {
   }
 };
 })();
-(node as any).hash = '1419b0a6bf4e1181ef01083d4c85bc43';
+(node as any).hash = 'ca179ed167491f3abe1b04be0a95d2e9';
 export default node;

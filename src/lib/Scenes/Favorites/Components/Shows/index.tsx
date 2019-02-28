@@ -1,4 +1,4 @@
-import SavedShowItemRow from "lib/Components/Lists/SavedShowItemRow"
+import { SavedShowItemRowContainer as SavedShowItemRow } from "lib/Components/Lists/SavedShowItemRow"
 import Spinner from "lib/Components/Spinner"
 import ZeroState from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
@@ -6,6 +6,7 @@ import React, { Component } from "react"
 import { FlatList } from "react-native"
 import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
+import { Box, Separator, Theme } from "@artsy/palette"
 import { Shows_me } from "__generated__/Shows_me.graphql"
 
 interface Props {
@@ -46,16 +47,21 @@ export class Shows extends Component<Props, State> {
     }
 
     return (
-      <FlatList
-        data={shows}
-        keyExtractor={item => item.__id}
-        renderItem={item => <SavedShowItemRow show={item.item} />}
-        onEndReached={this.loadMore}
-        onEndReachedThreshold={0.2}
-        ListFooterComponent={
-          this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
-        }
-      />
+      <Theme>
+        <Box px={2}>
+          <FlatList
+            data={shows}
+            keyExtractor={item => item.__id}
+            renderItem={item => <SavedShowItemRow show={item.item} />}
+            onEndReached={this.loadMore}
+            onEndReachedThreshold={0.2}
+            ItemSeparatorComponent={() => <Separator />}
+            ListFooterComponent={
+              this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
+            }
+          />
+        </Box>
+      </Theme>
     )
   }
 }

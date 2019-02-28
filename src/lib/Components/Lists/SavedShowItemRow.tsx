@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Separator } from "@artsy/palette"
+import { Box, color, Flex, Sans } from "@artsy/palette"
 import { SavedShowItemRow_show } from "__generated__/SavedShowItemRow_show.graphql"
 import { SavedShowItemRowMutation } from "__generated__/SavedShowItemRowMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
@@ -10,13 +10,21 @@ import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 interface Props {
   show: SavedShowItemRow_show
-  relay: RelayProp
+  relay?: RelayProp
+}
+
+interface State {
+  isFollowedSaving: boolean
 }
 
 const track: Track<Props, {}> = _track
 
 @track()
-class SavedShowItemRow extends React.Component<Props> {
+export class SavedShowItemRow extends React.Component<Props, State> {
+  state = {
+    isFollowedSaving: false,
+  }
+
   handleTap() {
     Switchboard.presentNavigationViewController(this, this.props.show.href)
   }
@@ -38,48 +46,64 @@ class SavedShowItemRow extends React.Component<Props> {
       show: { id: showSlug, __id: relayID, _id: showID, is_followed: isShowFollowed },
     } = this.props
 
-    if (showID && showSlug && relayID) {
-      return commitMutation<SavedShowItemRowMutation>(this.props.relay.environment, {
-        mutation: graphql`
-          mutation SavedShowItemRowMutation($input: FollowShowInput!) {
-            followShow(input: $input) {
-              show {
-                id
-                is_followed
-                _id
+    if (showID && showSlug && relayID && !this.state.isFollowedSaving) {
+      this.setState(
+        {
+          isFollowedSaving: true,
+        },
+        () => {
+          return commitMutation<SavedShowItemRowMutation>(this.props.relay.environment, {
+            onCompleted: () => this.handleShowSuccessfullyUpdated(),
+            mutation: graphql`
+              mutation SavedShowItemRowMutation($input: FollowShowInput!) {
+                followShow(input: $input) {
+                  show {
+                    id
+                    _id
+                    is_followed
+                  }
+                }
               }
-            }
-          }
-        `,
-        variables: {
-          input: {
-            partner_show_id: showID,
-            unfollow: isShowFollowed,
-          },
-        },
-        optimisticResponse: {
-          followShow: {
-            show: {
-              _id: showID,
-              is_followed: !isShowFollowed,
-              id: showSlug,
+            `,
+            variables: {
+              input: {
+                partner_show_id: showID,
+                unfollow: isShowFollowed,
+              },
             },
-          },
-        },
-        updater: store => {
-          store.get(relayID).setValue(!isShowFollowed, "is_followed")
-        },
-      })
+            optimisticResponse: {
+              followShow: {
+                show: {
+                  id: showSlug,
+                  _id: showID,
+                  is_followed: !isShowFollowed,
+                },
+              },
+            },
+            updater: store => {
+              store.get(relayID).setValue(!isShowFollowed, "is_followed")
+            },
+          })
+        }
+      )
     }
+  }
+
+  handleShowSuccessfullyUpdated() {
+    this.setState({
+      isFollowedSaving: false,
+    })
   }
 
   render() {
     const { show } = this.props
-    const imageURL = show.images[0] && show.images[0].url
+    const imageURL = show.cover_image && show.cover_image.url
+    console.log("SHOW ???", show)
+    console.log("this props", this.props)
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
-        <Box height="95" mx="20" mt="9">
+        <Box py={2}>
           <Flex flexGrow="1" flexDirection="row" alignItems="center">
             <Box height="50" width="50" style={{ overflow: "hidden" }}>
               <OpaqueImageView width={50} height={50} imageURL={imageURL} />
@@ -120,14 +144,12 @@ class SavedShowItemRow extends React.Component<Props> {
               </Flex>
             </TouchableWithoutFeedback>
           </Flex>
-          <Separator />
         </Box>
       </TouchableWithoutFeedback>
     )
   }
 }
-
-export default createFragmentContainer(SavedShowItemRow, {
+export const SavedShowItemRowContainer = createFragmentContainer(SavedShowItemRow, {
   show: graphql`
     fragment SavedShowItemRow_show on Show {
       id
@@ -145,8 +167,9 @@ export default createFragmentContainer(SavedShowItemRow, {
       }
       href
       status
-      images(size: 1) {
+      cover_image {
         url
+        aspect_ratio
       }
       start_at
       end_at
