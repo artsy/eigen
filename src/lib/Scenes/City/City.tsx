@@ -6,6 +6,7 @@ import { BucketKey, BucketResults } from "../Map/Bucket"
 import { FiltersBar } from "../Map/Components/FiltersBar"
 import { EventEmitter } from "../Map/EventEmitter"
 import { Tab } from "../Map/types"
+import { CityOverlay } from "./CityOverlay"
 import { AllEvents } from "./Components/AllEvents"
 
 interface Props {
@@ -59,36 +60,40 @@ export class CityView extends Component<Props, State> {
     return (
       buckets && (
         <Theme>
-          <Box>
-            <Flex py={1} alignItems="center">
-              <Handle />
-            </Flex>
-            <ScrollView
-              contentInset={{ bottom: bottomInset }}
-              onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
-              scrollEnabled={isDrawerOpen}
-              ref={r => {
-                if (r) {
-                  this.scrollView = r as any
-                }
-              }}
-            >
+          <>
+            <CityOverlay overlayVisible={true}>
               <Box>
-                <FiltersBar
-                  tabs={this.filters}
-                  goToPage={activeIndex => EventEmitter.dispatch("filters:change", activeIndex)}
-                />
+                <Flex py={1} alignItems="center">
+                  <Handle />
+                </Flex>
+                <ScrollView
+                  contentInset={{ bottom: bottomInset }}
+                  onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
+                  scrollEnabled={isDrawerOpen}
+                  ref={r => {
+                    if (r) {
+                      this.scrollView = r as any
+                    }
+                  }}
+                >
+                  <Box>
+                    <FiltersBar
+                      tabs={this.filters}
+                      goToPage={activeIndex => EventEmitter.dispatch("filters:change", activeIndex)}
+                    />
+                  </Box>
+                  {(() => {
+                    switch (filter && filter.id) {
+                      case "all":
+                        return <AllEvents currentBucket={filter.id as BucketKey} buckets={buckets} />
+                      default:
+                        return <Serif size="3">Not implemented yet.</Serif>
+                    }
+                  })()}
+                </ScrollView>
               </Box>
-              {(() => {
-                switch (filter && filter.id) {
-                  case "all":
-                    return <AllEvents currentBucket={filter.id as BucketKey} buckets={buckets} />
-                  default:
-                    return <Serif size="3">Not implemented yet.</Serif>
-                }
-              })()}
-            </ScrollView>
-          </Box>
+            </CityOverlay>
+          </>
         </Theme>
       )
     )
