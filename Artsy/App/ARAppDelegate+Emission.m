@@ -374,7 +374,10 @@ static char menuAwareScrollViewKey;
 @implementation ControllerClass (ARMenuAwareViewController)\
 - (void)viewDidLayoutSubviews {\
     [super viewDidLayoutSubviews];\
-    self.menuAwareScrollView = FindFirstScrollView(self.view);\
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{\
+        self.menuAwareScrollView = FindFirstScrollView(self.view);\
+        NSLog(@"Making menu-aware scroll view: %@", self.menuAwareScrollView);\
+    });\
 }\
 - (void)setMenuAwareScrollView:(UIScrollView *)scrollView {\
     if (scrollView != self.menuAwareScrollView) {\
