@@ -20,7 +20,7 @@ const track: Track<Props> = _track
 @track()
 export class ShowArtistsPreview extends React.Component<Props> {
   @track((_props, _state, args) => {
-    const [_, id, _id] = args
+    const [, id, _id] = args
     return {
       action_name: Schema.ActionNames.ListArtist,
       action_type: Schema.ActionTypes.Tap,
