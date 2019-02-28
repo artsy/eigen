@@ -16,4 +16,9 @@
     return YES;
 }
 
+- (BOOL)fullBleed
+{
+    return YES;
+}
+
 @end

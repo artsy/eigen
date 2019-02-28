@@ -216,6 +216,13 @@ static const CGFloat ARMenuButtonDimension = 50;
     }
 }
 
+- (BOOL)isShowingStatusBar
+{
+    CGFloat fullHeight = [self statusBarHeight];
+    CGFloat currentHeight = self.statusBarVerticalConstraint.constant;
+    return fullHeight == currentHeight;
+}
+
 - (CGFloat)statusBarHeight
 {
     // iPhone X support

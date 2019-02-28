@@ -2177,8 +2177,6 @@
 			children = (
 				5EFF52B81976CA6C00E2A563 /* ARSearchFieldButton.h */,
 				5EFF52B91976CA6C00E2A563 /* ARSearchFieldButton.m */,
-				5EDB1209197E691100E241F0 /* ARParallaxHeaderViewController.h */,
-				5EDB120A197E691100E241F0 /* ARParallaxHeaderViewController.m */,
 				7FE2CE2E221F06B300D0E779 /* AREigenFairComponentViewController.h */,
 				7FE2CE2F221F074E00D0E779 /* AREigenFairComponentViewController.m */,
 			);
@@ -5105,8 +5103,8 @@
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Regular.otf",
 				"${PODS_ROOT}/Artsy+UILabels/Pod/Assets/Chevron_Black.png",
 				"${PODS_ROOT}/Artsy+UILabels/Pod/Assets/Chevron_Black@2x.png",
-				"${PODS_ROOT}/../../Emission/Pod/Assets/Emission.js",
-				"${PODS_ROOT}/../../Emission/Pod/Assets/assets",
+				"${PODS_ROOT}/Emission/Pod/Assets/Emission.js",
+				"${PODS_ROOT}/Emission/Pod/Assets/assets",
 				"${PODS_ROOT}/Extraction/Extraction/Assets/ARLoadFailureRetryIcon@2x.png",
 				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/MARKRangeSlider/MARKRangeSlider.bundle",

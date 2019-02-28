@@ -136,13 +136,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     [self updateStatusBar:self.topViewController animated:animated];
 }
 
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    
-    [self updateBackButtonPositionForViewController:self.topViewController animated:YES];
-}
-
 #pragma mark - Rotation
 
 - (BOOL)shouldAutorotate
@@ -226,7 +219,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
     BOOL hideToolbar = [self shouldHideToolbarMenuForViewController:viewController];
     [[ARTopMenuViewController sharedController] hideToolbar:hideToolbar animated:NO];
-    [self updateBackButtonPositionForViewController:viewController animated:animated];
 
     if ((id)viewController != self.searchViewController) {
         [self removeViewControllerFromStack:self.searchViewController];
@@ -247,18 +239,29 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
-- (void)updateBackButtonPositionForViewController:(UIViewController*)viewController animated:(BOOL)animated
+- (void)updateBackButtonPositionForViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     CGFloat topMargin = 12;
-    
+
+    BOOL currentlyShowingStatusBar = [ARTopMenuViewController sharedController].isShowingStatusBar;
     if (@available(iOS 11.0, *)) {
-        topMargin = self.view.safeAreaInsets.top + 12;
+        if (currentlyShowingStatusBar) {
+            topMargin = 12;
+        } else {
+            topMargin = self.view.safeAreaInsets.top + 12;
+        }
     }
 
-    if ([viewController isKindOfClass:ARComponentViewController.class] &&
-        [viewController respondsToSelector:@selector(fullBleed)] &&
-        [(ARComponentViewController *)viewController fullBleed]) {
-            topMargin = 56;
+
+    BOOL fullBleed = [viewController isKindOfClass:ARComponentViewController.class] && [(ARComponentViewController *)viewController fullBleed];
+    if (fullBleed) {
+        if (@available(iOS 11.0, *)) {
+            // iPhone x
+            CGFloat topInsetMargin = [[ARTopMenuViewController sharedController].view safeAreaInsets].top;
+            topMargin = topInsetMargin + 12;
+        } else {
+            topMargin = 24;
+        }
     }
 
     [UIView animateIf:animated duration:ARAnimationDuration :^{
@@ -354,16 +357,9 @@ ChangeButtonVisibility(UIButton *button, BOOL visible, BOOL animated)
     }
 }
 
-//- (void)showBackButton:(BOOL)visible animated:(BOOL)animated
-//{
-//    ChangeButtonVisibility(self.backButton, visible, animated);
-//}
-
 - (void)showBackButton:(BOOL)visible animated:(BOOL)animated
 {
-    [UIView animateIf:animated duration:ARAnimationDuration :^{
-        self.backButton.alpha = visible ? 1 : 0;
-    }];
+    ChangeButtonVisibility(self.backButton, visible, animated);
 }
 
 - (void)showStatusBarBackground:(BOOL)visible animated:(BOOL)animated white:(BOOL)isWhite
