@@ -16,7 +16,8 @@ lane :ship_beta do
 
   latest_version = readme_data['upcoming']['version']
 
-  Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
+  client = Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
+  client.team_id = "479887"
   app = Spaceship::Tunes::Application.find('net.artsy.artsy')
 
   # Fail early if we need to make a new version on iTunes
