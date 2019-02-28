@@ -272,7 +272,7 @@ randomBOOL(void)
   UIViewController *viewController = nil;
 
   BOOL isShow = [route hasPrefix:@"/show/"] || [route hasPrefix:@"show/"];
-  
+
   if ([route hasPrefix:@"/artist/"] && [route componentsSeparatedByString:@"/"].count == 3) {
     NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
@@ -312,11 +312,11 @@ randomBOOL(void)
   } else if ([route hasPrefix:@"/fair"] && [route hasSuffix:@"/artworks"]) {
     NSString *fairID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARFairArtworksComponentViewController alloc] initWithFairID:fairID];
-    
+
   } else if ([route hasPrefix:@"/fair"] && [route hasSuffix:@"/artists"]) {
     NSString *fairID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARFairArtistsComponentViewController alloc] initWithFairID:fairID];
-    
+
   } else if ([route hasPrefix:@"/fair"] && [route hasSuffix:@"/exhibitors"]) {
     NSString *fairID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARFairExhibitorsComponentViewController alloc] initWithFairID:fairID];
@@ -336,7 +336,7 @@ randomBOOL(void)
     NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARShowMoreInfoComponentViewController alloc] initWithShowID:showID];
   } else if (isShow) {
-    NSString *showID = [[route componentsSeparatedByString:@"/"] lastObject];
+    NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:1];
     viewController = [[ARShowComponentViewController alloc] initWithShowID:showID];
   } else {
     viewController = [[UnroutedViewController alloc] initWithRoute:route];
