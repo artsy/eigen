@@ -29,6 +29,8 @@ query QueryRenderersShowArtworksQuery(
 
 fragment ShowArtworks_show on Show {
   __id
+  id
+  _id
   filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
     __id
@@ -186,7 +188,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowArtworksQuery",
-  "id": "9fc3682aa524de1adce13b951a1354b1",
+  "id": "87b37fe5ac84471b688ab4de332c7c3e",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -230,6 +232,14 @@ return {
         "plural": false,
         "selections": [
           v2,
+          v3,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "_id",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,

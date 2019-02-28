@@ -3,7 +3,7 @@ import { ShowArtistsPreview_show } from "__generated__/ShowArtistsPreview_show.g
 import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import Switchboard from "lib/NativeModules/SwitchBoard"
-import { Schema, track } from "lib/utils/track"
+import { Schema, Track, track as _track } from "lib/utils/track"
 import { get, take } from "lodash"
 import React from "react"
 import { TouchableOpacity } from "react-native"
@@ -14,16 +14,22 @@ interface Props {
   onViewAllArtistsPressed: () => void
   Component: any
 }
+
+const track: Track<Props> = _track
+
 @track()
 export class ShowArtistsPreview extends React.Component<Props> {
-  @track(props => ({
-    action_name: Schema.ActionNames.ListArtist,
-    action_type: Schema.ActionTypes.Tap,
-    owner_id: props.show._id,
-    owner_slug: props.show.id,
-    owner_type: Schema.OwnerEntityTypes.Show,
-  }))
-  handlePress(url: string) {
+  @track((_props, _state, args) => {
+    const [_, id, _id] = args
+    return {
+      action_name: Schema.ActionNames.ListArtist,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: _id,
+      owner_slug: id,
+      owner_type: Schema.OwnerEntityTypes.Artist,
+    } as any
+  })
+  handlePress(url: string, _slug: string, _id: string) {
     Switchboard.presentNavigationViewController(this.props.Component || this, url)
   }
 
@@ -38,9 +44,10 @@ export class ShowArtistsPreview extends React.Component<Props> {
         <Serif size="5">Artists</Serif>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
+          const { href, id, _id } = artist
           return (
-            <React.Fragment key={artist.id}>
-              <TouchableOpacity onPress={() => this.handlePress(artist.href)}>
+            <React.Fragment key={id}>
+              <TouchableOpacity onPress={() => this.handlePress(href, id, _id)}>
                 <ArtistListItem artist={artist} Component={Component} />
               </TouchableOpacity>
               {idx < arr.length - 1 && <Spacer m={1} />}
@@ -65,6 +72,7 @@ export const ShowArtistsPreviewContainer = createFragmentContainer(
       _id
       id
       artists {
+        _id
         id
         href
         ...ArtistListItem_artist

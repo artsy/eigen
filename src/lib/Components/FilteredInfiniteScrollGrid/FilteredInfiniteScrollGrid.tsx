@@ -11,6 +11,7 @@ interface Props {
   filteredArtworks: any
   slug?: string
   id?: string
+  type?: string
 }
 
 interface State {
@@ -106,7 +107,7 @@ function eventProps(actionName: Schema.ActionNames) {
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.id,
     owner_slug: props.slug,
-    owner_type: Schema.OwnerEntityTypes.Fair,
+    owner_type: props.type,
   })
 }
 

@@ -33,6 +33,8 @@ query ShowArtworksRefetchQuery(
 
 fragment ShowArtworks_show_2UkO81 on Show {
   __id
+  id
+  _id
   filteredArtworks(size: 0, medium: $medium, price_range: $price_range, aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
     __id
@@ -202,7 +204,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowArtworksRefetchQuery",
-  "id": "e375de787695900f5238c93c5c5fde8b",
+  "id": "074d4102f712d2a5185be12cd45671ff",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -259,6 +261,14 @@ return {
         "plural": false,
         "selections": [
           v2,
+          v3,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "_id",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,

@@ -3,6 +3,7 @@ import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graph
 import { ShowArtists_show } from "__generated__/ShowArtists_show.graphql"
 import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema, screenTrack, Track } from "lib/utils/track"
 import { get } from "lodash"
 import React from "react"
 import { ViewProperties } from "react-native"

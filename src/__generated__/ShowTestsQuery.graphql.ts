@@ -114,6 +114,8 @@ fragment ShowArtists_show on Show {
 
 fragment ShowArtworks_show on Show {
   __id
+  id
+  _id
   filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
     __id
@@ -300,6 +302,7 @@ fragment ShowArtistsPreview_show on Show {
   _id
   id
   artists {
+    _id
     id
     href
     ...ArtistListItem_artist
@@ -708,7 +711,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
-  "id": "119d521889d83c461db8a1bbfe7fd357",
+  "id": "863ab7132c7f75b650620764492dc6c9",
   "text": null,
   "metadata": {},
   "fragment": {

@@ -30,7 +30,13 @@ export class ShowArtworks extends React.Component<Props, State> {
     const { show } = this.props
     return (
       <Theme>
-        <FilteredInfiniteScrollGrid filteredArtworks={show.filteredArtworks} onRefetch={this.handleRefetch} />
+        <FilteredInfiniteScrollGrid
+          id={show._id}
+          slug={show.id}
+          type={"Show"}
+          filteredArtworks={show.filteredArtworks}
+          onRefetch={this.handleRefetch}
+        />
       </Theme>
     )
   }
@@ -45,6 +51,8 @@ export const ShowArtworksContainer = createRefetchContainer(
         price_range: { type: "String", defaultValue: "*-*" }
       ) {
       __id
+      id
+      _id
       filteredArtworks(
         size: 0
         medium: $medium

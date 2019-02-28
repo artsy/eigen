@@ -2,6 +2,7 @@ import { SavedShowItemRowContainer as SavedShowItemRow } from "lib/Components/Li
 import Spinner from "lib/Components/Spinner"
 import ZeroState from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
+import { Schema, screenTrack } from "lib/utils/track"
 import React, { Component } from "react"
 import { FlatList } from "react-native"
 import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -19,6 +20,10 @@ interface State {
   fetchingMoreData: boolean
 }
 
+@screenTrack({
+  context_screen: Schema.PageNames.SavesAndFollows,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Show,
+})
 export class Shows extends Component<Props, State> {
   state = {
     fetchingMoreData: false,
@@ -43,7 +48,7 @@ export class Shows extends Component<Props, State> {
     const shows = this.props.me.followsAndSaves.shows.edges.map(edge => edge.node)
 
     if (shows.length === 0 || !shows) {
-      return <ZeroState title="You haven’t followed any shows yet" />
+      return <ZeroState title="You haven’t followed any shows yet" subtitle="" />
     }
 
     return (
