@@ -24,6 +24,7 @@ import {
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
 import { CityView } from "./Scenes/City"
+import { CityOverlay } from "./Scenes/City/CityOverlay"
 import {
   FairArtistsRenderer,
   FairArtworksRenderer,
@@ -277,3 +278,4 @@ AppRegistry.registerComponent("ShowArtworks", () => ShowArtworks)
 AppRegistry.registerComponent("ShowMoreInfo", () => ShowMoreInfo)
 AppRegistry.registerComponent("Map", () => MapContainer)
 AppRegistry.registerComponent("City", () => CityView)
+AppRegistry.registerComponent("CityPicker", () => CityOverlay)

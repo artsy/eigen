@@ -1,25 +1,57 @@
 #import "ARMapContainerViewController.h"
 #import "ARMapComponentViewController.h"
 #import "ARCityComponentViewController.h"
+#import "ARCityPickerComponentViewController.h"
 #import "ARComponentViewController.h"
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @import Pulley;
+@import CoreLocation;
 
-@interface ARMapContainerViewController () <PulleyDelegate, PulleyDrawerViewControllerDelegate>
+@interface ARMapContainerViewController () <PulleyDelegate, PulleyDrawerViewControllerDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, readwrite) PulleyViewController *bottomSheetVC;
 @property (nonatomic, readwrite) ARMapComponentViewController *mapVC;
 @property (nonatomic, readwrite) ARCityComponentViewController *cityVC;
+@property (nonatomic, strong) CLLocationManager *locationManager;
 
 @end
+
+/*
+This is the top-level Local Discovery component, and should therefore be responsible for checking a user's location and
+displaying appropriate UI (did they accept the permissions prompt? are they need a city?). There are two cases:
+- Show the city picker (they didn't accept the prompt, or they're far away from a city).
+- Show the mapVC and cityVC with the appropriate city.
+We'll need to have an affordance for a user opening the city pciker UI, too. Maybe an NSNotification or something.
+*/
 
 @implementation ARMapContainerViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
+    [self.locationManager requestWhenInUseAuthorization];
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        UIViewController *viewController = [[ARCityPickerComponentViewController alloc] init];
+
+        [self addChildViewController:viewController];
+        [self.view addSubview:viewController.view];
+
+        viewController.view.frame = CGRectMake(20, 20, self.view.frame.size.width - 40, self.view.frame.size.height - 40);
+        viewController.view.layer.cornerRadius = 10;
+        viewController.view.clipsToBounds = YES;
+    });
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARAuctionArtworkBidUpdated" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        // TODO:
+//        note.userInfo
+    }];
 
     self.mapVC = [[ARMapComponentViewController alloc] init];
     self.cityVC = [[ARCityComponentViewController alloc] init];
@@ -36,6 +68,16 @@
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleDefault;
+}
+
+- (void)userSuppliedLocation:(CLLocation *)location
+{
+    // TODO: check if the location is sufficiently close to a city
+}
+
+- (void)userDeniedLocationRequest
+{
+    // TODO: Present city picker component
 }
 
 # pragma mark - PulleyDelegate Methods
@@ -56,6 +98,22 @@
 - (BOOL)fullBleed
 {
     return YES;
+}
+
+#pragma mark - CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        [manager startUpdatingLocation];
+    } else {
+        [self userDeniedLocationRequest];
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
+{
+    [self userSuppliedLocation:locations.lastObject];
 }
 
 @end
