@@ -4,8 +4,6 @@ import React, { Component } from "react"
 import { Modal, ScrollView, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
-// const isOverlayVisible = true // @TODO: add logic to check if current location + if user has saved city already
-
 interface State {
   overlayVisible: boolean
 }
@@ -19,23 +17,6 @@ export class CityOverlay extends Component<Props, State> {
     overlayVisible: null,
   }
   selectionView: any = null
-
-  // componentDidUpdate() {
-  // Use EventEmitter to do a pub sub to the MapContainer to save the user's geolocation in localStorage and publish it to MapContainer
-  // to handle user not having to select city everytime they visit the Map view
-
-  // When user first uses app: user has to authorize using location:
-  // If NO > Render CityPicker Modal
-  // If YES > Make request to Metaphysics to get determine if user is in/near a LocalDisco city
-  // IF Yes Do not show Modal, display map of user's location
-  // If No Render CityPicker Modal
-
-  // }
-
-  closeOverlay() {
-    console.log("overlay closed")
-    // @TODO: Handle logic for closing modal and saving current city in state
-  }
 
   selectCity() {
     this.setState({ overlayVisible: false })
