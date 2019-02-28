@@ -104,6 +104,8 @@ fragment MoreInfo_show on Show {
 }
 
 fragment ShowArtists_show on Show {
+  _id
+  id
   artists_grouped_by_name {
     letter
     items {
@@ -723,7 +725,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "a99cca757bfd68b13c2df5746d5c5724",
+  "id": "5b56b18970fa24b2fcd6c1d092f7f786",
   "text": null,
   "metadata": {},
   "fragment": {

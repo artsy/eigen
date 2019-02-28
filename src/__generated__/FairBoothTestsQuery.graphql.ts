@@ -99,6 +99,8 @@ fragment ShowArtistsPreview_show on Show {
 }
 
 fragment ShowArtists_show on Show {
+  _id
+  id
   artists_grouped_by_name {
     letter
     items {
@@ -556,7 +558,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairBoothTestsQuery",
-  "id": "0834a96258686d7f82227324e7822809",
+  "id": "97533b7489bffa28e892cc6919b4d3c8",
   "text": null,
   "metadata": {},
   "fragment": {
