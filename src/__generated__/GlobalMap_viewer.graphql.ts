@@ -14,7 +14,12 @@ export type GlobalMap_viewer = {
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly id: string;
+                    readonly _id: string;
+                    readonly __id: string;
                     readonly name: string | null;
+                    readonly status: string | null;
+                    readonly href: string | null;
+                    readonly is_followed: boolean | null;
                     readonly cover_image: ({
                         readonly url: string | null;
                     }) | null;
@@ -39,6 +44,9 @@ export type GlobalMap_viewer = {
                 readonly node: ({
                     readonly id: string;
                     readonly name: string | null;
+                    readonly counts: ({
+                        readonly partners: any | null;
+                    }) | null;
                     readonly location: ({
                         readonly coordinates: ({
                             readonly lat: number | null;
@@ -116,18 +124,25 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
 v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "url",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "location",
@@ -137,24 +152,24 @@ v5 = {
   "plural": false,
   "selections": [
     v1,
-    v4
+    v3
   ]
 },
-v6 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v8 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "start_at",
   "args": null,
   "storageKey": null
 },
-v8 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "end_at",
@@ -239,8 +254,31 @@ return {
                   "concreteType": "Show",
                   "plural": false,
                   "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "is_followed",
+                      "args": null,
+                      "storageKey": null
+                    },
                     v2,
+                    v3,
                     v0,
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "status",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    v4,
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "_id",
+                      "args": null,
+                      "storageKey": null
+                    },
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -250,13 +288,13 @@ return {
                       "concreteType": "Image",
                       "plural": false,
                       "selections": [
-                        v3
+                        v5
                       ]
                     },
-                    v5,
                     v6,
                     v7,
                     v8,
+                    v9,
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -266,7 +304,7 @@ return {
                       "concreteType": null,
                       "plural": false,
                       "selections": [
-                        v4,
+                        v3,
                         {
                           "kind": "InlineFragment",
                           "type": "ExternalPartner",
@@ -279,12 +317,11 @@ return {
                           "type": "Partner",
                           "selections": [
                             v0,
-                            v6
+                            v7
                           ]
                         }
                       ]
-                    },
-                    v4
+                    }
                   ]
                 }
               ]
@@ -327,7 +364,25 @@ return {
                   "selections": [
                     v2,
                     v0,
-                    v5,
+                    {
+                      "kind": "LinkedField",
+                      "alias": null,
+                      "name": "counts",
+                      "storageKey": null,
+                      "args": null,
+                      "concreteType": "FairCounts",
+                      "plural": false,
+                      "selections": [
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "partners",
+                          "args": null,
+                          "storageKey": null
+                        }
+                      ]
+                    },
+                    v6,
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -351,7 +406,7 @@ return {
                           "args": null,
                           "storageKey": null
                         },
-                        v3
+                        v5
                       ]
                     },
                     {
@@ -373,13 +428,7 @@ return {
                           "plural": false,
                           "selections": [
                             v2,
-                            {
-                              "kind": "ScalarField",
-                              "alias": null,
-                              "name": "href",
-                              "args": null,
-                              "storageKey": null
-                            },
+                            v4,
                             {
                               "kind": "ScalarField",
                               "alias": null,
@@ -410,14 +459,14 @@ return {
                             }
                           ]
                         },
-                        v4,
+                        v3,
                         v2,
                         v0
                       ]
                     },
-                    v7,
                     v8,
-                    v4
+                    v9,
+                    v3
                   ]
                 }
               ]
@@ -429,5 +478,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1a475e0bc765cba7d8fb4ce0df4f3f56';
+(node as any).hash = 'e71dd624a6aedb9e8c075ffddf15260d';
 export default node;

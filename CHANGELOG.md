@@ -52,6 +52,7 @@
 - Fixes hours section animation - luc
 - Fixes FairBooth routes - luc
 - Adds Component VCs for Artists, Artworks, Exhibitors screens - luc
+- Adds CityTabs - kieran
 
 ### 1.8.3
 

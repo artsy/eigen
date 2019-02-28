@@ -59,6 +59,20 @@ export class AllEvents extends React.Component<Props, State> {
       })
     }
 
+    if (buckets.closing && buckets.closing.length) {
+      sections.push({
+        type: "closing",
+        data: buckets.closing,
+      })
+    }
+
+    if (buckets.opening && buckets.opening.length) {
+      sections.push({
+        type: "opening",
+        data: buckets.opening,
+      })
+    }
+
     this.setState({ sections })
   }
 
@@ -78,6 +92,10 @@ export class AllEvents extends React.Component<Props, State> {
         return <EventSection title="Gallery shows" data={data} />
       case "museums":
         return <EventSection title="Museum shows" data={data} />
+      case "opening":
+        return <EventSection title="Opening shows" data={data} />
+      case "closing":
+        return <EventSection title="Closing shows" data={data} />
       case "saved":
         return <SavedEventSection data={data} />
       default:
