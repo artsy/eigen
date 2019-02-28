@@ -28,17 +28,25 @@
 #import <Emission/AREventsModule.h>
 #import <Emission/ARTakeCameraPhotoModule.h>
 #import <Emission/ARRefineOptionsModule.h>
-#import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARWorksForYouModule.h>
 #import <Emission/ARArtistComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
 #import <Emission/ARInboxComponentViewController.h>
 #import <Emission/ARFavoritesComponentViewController.h>
+
+// Fairs
+#import <Emission/ARFairComponentViewController.h>
+#import <Emission/ARFairMoreInfoComponentViewController.h>
+#import <Emission/ARFairArtistsComponentViewController.h>
+#import <Emission/ARFairArtworksComponentViewController.h>
+#import <Emission/ARFairExhibitorsComponentViewController.h>
+
+// Shows
+#import <Emission/ARShowComponentViewController.h>
 #import <Emission/ARShowArtworksComponentViewController.h>
 #import <Emission/ARShowArtistsComponentViewController.h>
 #import <Emission/ARShowMoreInfoComponentViewController.h>
-#import <Emission/ARFairMoreInfoComponentViewController.h>
 
 #import <React/RCTUtils.h>
 #import <React/RCTDevSettings.h>
@@ -381,8 +389,17 @@ static char menuAwareScrollViewKey;
 @end
 
 MakeMenuAware(ARArtistComponentViewController)
-MakeMenuAware(ARFairComponentViewController)
+
+// Make Shows menu-aware
+MakeMenuAware(ARShowComponentViewController)
 MakeMenuAware(ARShowArtworksComponentViewController)
 MakeMenuAware(ARShowArtistsComponentViewController)
 MakeMenuAware(ARShowMoreInfoComponentViewController)
+
+// Make Fairs menu-aware
+MakeMenuAware(ARFairComponentViewController)
 MakeMenuAware(ARFairMoreInfoComponentViewController)
+MakeMenuAware(ARFairArtistsComponentViewController)
+MakeMenuAware(ARFairArtworksComponentViewController)
+MakeMenuAware(ARFairExhibitorsComponentViewController)
+
