@@ -1,15 +1,8 @@
 import { Box, color, Flex, Sans, Separator, Serif, space } from "@artsy/palette"
 import { cityList } from "lib/Scenes/City/cities"
 import React, { Component } from "react"
-import { Image, Modal, PixelRatio, ScrollView, TouchableOpacity, View } from "react-native"
+import { Modal, ScrollView, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
-import { background } from "styled-system"
-
-// import { BucketKey, BucketResults } from "../Map/Bucket"
-// import { FiltersBar } from "../Map/Components/FiltersBar"
-// import { EventEmitter } from "../Map/EventEmitter"
-// import { Tab } from "../Map/types"
-// import { AllEvents } from "./Components/AllEvents"
 
 // const isOverlayVisible = true // @TODO: add logic to check if current location + if user has saved city already
 
@@ -30,6 +23,13 @@ export class CityOverlay extends Component<Props, State> {
   // componentDidUpdate() {
   // Use EventEmitter to do a pub sub to the MapContainer to save the user's geolocation in localStorage and publish it to MapContainer
   // to handle user not having to select city everytime they visit the Map view
+
+  // When user first uses app: user has to authorize using location:
+  // If NO > Render CityPicker Modal
+  // If YES > Make request to Metaphysics to get determine if user is in/near a LocalDisco city
+  // IF Yes Do not show Modal, display map of user's location
+  // If No Render CityPicker Modal
+
   // }
 
   closeOverlay() {
