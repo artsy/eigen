@@ -233,6 +233,7 @@ export const GlobalMapContainer = createRefetchContainer(
               __id
               name
               status
+              href
               is_followed
               cover_image {
                 url
@@ -255,7 +256,6 @@ export const GlobalMapContainer = createRefetchContainer(
                   name
                 }
               }
-              ...SavedShowItemRow_show
             }
           }
         }

@@ -98,9 +98,6 @@ export class SavedShowItemRow extends React.Component<Props, State> {
   render() {
     const { show } = this.props
     const imageURL = show.cover_image && show.cover_image.url
-    console.log("SHOW ???", show)
-    console.log("this props", this.props)
-
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <Box py={2}>
