@@ -209,29 +209,17 @@ interface FairArtworksProps {
   fairID: string
 }
 
-const FairArtworks: React.SFC<FairArtworksProps> = track<FairArtworksProps>(props => {
-  return {
-    context_screen: Schema.PageNames.FairAllArtworksPage,
-    context_screen_owner_slug: props.fairID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  }
-})(({ fairID }) => {
+const FairArtworks: React.SFC<FairArtworksProps> = ({ fairID }) => {
   return <FairArtworksRenderer fairID={fairID} />
-})
+}
 
 interface FairExhibitorsProps {
   fairID: string
 }
 
-const FairExhibitors: React.SFC<FairExhibitorsProps> = track<FairExhibitorsProps>(props => {
-  return {
-    context_screen: Schema.PageNames.FairAllExhibitorsPage,
-    context_screen_owner_slug: props.fairID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  }
-})(({ fairID }) => {
+const FairExhibitors: React.SFC<FairExhibitorsProps> = ({ fairID }) => {
   return <FairExhibitorsRenderer fairID={fairID} />
-})
+}
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
