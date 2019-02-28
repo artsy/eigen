@@ -1,6 +1,7 @@
 import { Theme } from "@artsy/palette"
 import { ShowArtworks_show } from "__generated__/ShowArtworks_show.graphql"
 import { FilteredInfiniteScrollGrid } from "lib/Components/FilteredInfiniteScrollGrid"
+import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
@@ -17,6 +18,12 @@ interface State {
   }
 }
 
+@screenTrack<Props>(props => ({
+  context_screen: Schema.PageNames.ShowAllArtists,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Show,
+  context_screen_owner_slug: props.show.id,
+  context_screen_owner_id: props.show._id,
+}))
 export class ShowArtworks extends React.Component<Props, State> {
   handleRefetch = params => {
     const { showID } = this.props

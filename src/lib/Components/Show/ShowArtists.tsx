@@ -3,7 +3,7 @@ import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graph
 import { ShowArtists_show } from "__generated__/ShowArtists_show.graphql"
 import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { Schema, screenTrack, Track } from "lib/utils/track"
+import { Schema, screenTrack } from "lib/utils/track"
 import { get } from "lodash"
 import React from "react"
 import { ViewProperties } from "react-native"
@@ -20,6 +20,12 @@ interface State {
   }>
 }
 
+@screenTrack<Props>(props => ({
+  context_screen: Schema.PageNames.ShowAllArtists,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Show,
+  context_screen_owner_slug: props.show.id,
+  context_screen_owner_id: props.show._id,
+}))
 export class ShowArtists extends React.Component<Props, State> {
   state = {
     data: [],
@@ -49,6 +55,8 @@ export const ShowArtistsContainer = createFragmentContainer(
   ShowArtists,
   graphql`
     fragment ShowArtists_show on Show {
+      _id
+      id
       artists_grouped_by_name {
         letter
         items {

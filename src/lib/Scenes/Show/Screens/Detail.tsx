@@ -118,12 +118,10 @@ export class Detail extends React.Component<Props, State> {
     )
   }
 
-  @track(eventProps(Schema.ActionNames.ShowAllArtists))
   handleViewAllArtistsPressed() {
     SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}/artists`)
   }
 
-  @track(eventProps(Schema.ActionNames.ShowAllArtworks))
   handleViewAllArtworksPressed() {
     SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}/artworks`)
   }
