@@ -17,6 +17,7 @@
 ### Master
 
 - Fixes fair view crash on fairs with no profiles - ash
+- Adds CityTab stying and passes CityName to AllEvents view - kieran
 
 ### 1.8.7
 
