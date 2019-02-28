@@ -34,7 +34,9 @@ export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached, Com
     }}
     renderSectionHeader={({ section: { letter } }) => (
       <Box px={2} mb={2}>
-        <Sans size="4">{letter}</Sans>
+        <Sans size="4" weight="medium">
+          {letter}
+        </Sans>
       </Box>
     )}
     renderSectionFooter={({ section }) => {
