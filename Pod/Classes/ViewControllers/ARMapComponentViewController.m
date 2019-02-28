@@ -12,4 +12,9 @@
     return UIStatusBarStyleDefault;
 }
 
+- (BOOL)fullBleed
+{
+   return YES;
+}
+
 @end

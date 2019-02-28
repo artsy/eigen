@@ -16,6 +16,7 @@
 
 ### Master
 
+- The map will show up as full bleed in Eigen - orta
 - Fixes fair view crash on fairs with no profiles - ash
 
 ### 1.8.7
