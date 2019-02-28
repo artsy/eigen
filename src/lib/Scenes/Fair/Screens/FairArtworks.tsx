@@ -2,6 +2,7 @@ import { Theme } from "@artsy/palette"
 import { FairArtworks_fair } from "__generated__/FairArtworks_fair.graphql"
 import { FairArtworksQuery } from "__generated__/FairArtworksQuery.graphql"
 import { FilteredInfiniteScrollGrid } from "lib/Components/FilteredInfiniteScrollGrid"
+import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
@@ -19,7 +20,12 @@ interface State {
     priceRange: string
   }
 }
-
+@screenTrack<Props>(props => ({
+  context_screen: Schema.PageNames.FairAllArtworksPage,
+  context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+  context_screen_owner_slug: props.fair.id,
+  context_screen_owner_id: props.fair._id,
+}))
 export class FairArtworks extends React.Component<Props, State> {
   handleRefetch = params => {
     const { id: fairID } = this.props.fair
@@ -34,7 +40,13 @@ export class FairArtworks extends React.Component<Props, State> {
     const { id, _id, artworks } = fair
     return (
       <Theme>
-        <FilteredInfiniteScrollGrid id={id} slug={_id} filteredArtworks={artworks} onRefetch={this.handleRefetch} />
+        <FilteredInfiniteScrollGrid
+          id={id}
+          slug={_id}
+          type="Fair"
+          filteredArtworks={artworks}
+          onRefetch={this.handleRefetch}
+        />
       </Theme>
     )
   }

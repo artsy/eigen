@@ -17,6 +17,7 @@
 ### Master
 
 - Fixes fair view crash on fairs with no profiles - ash
+- Fixes some analytics tracking events - luc
 
 ### 1.8.7
 

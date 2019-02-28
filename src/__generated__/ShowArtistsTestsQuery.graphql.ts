@@ -24,6 +24,8 @@ query ShowArtistsTestsQuery {
 }
 
 fragment ShowArtists_show on Show {
+  _id
+  id
   artists_grouped_by_name {
     letter
     items {
@@ -66,12 +68,26 @@ v1 = {
   "name": "__id",
   "args": null,
   "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "_id",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowArtistsTestsQuery",
-  "id": "7cbf5a1b1b94f30972c51352c39df9a5",
+  "id": "05f3ff5a25b31f8c9149f123f9f68b7f",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -114,6 +130,8 @@ return {
         "concreteType": "Show",
         "plural": false,
         "selections": [
+          v2,
+          v3,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -147,13 +165,7 @@ return {
                     "storageKey": null
                   },
                   v1,
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "id",
-                    "args": null,
-                    "storageKey": null
-                  },
+                  v3,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -168,13 +180,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "_id",
-                    "args": null,
-                    "storageKey": null
-                  },
+                  v2,
                   {
                     "kind": "ScalarField",
                     "alias": null,
