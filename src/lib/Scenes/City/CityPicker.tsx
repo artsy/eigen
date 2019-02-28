@@ -12,7 +12,7 @@ interface Props {
   overlayVisible: boolean
 }
 
-export class CityOverlay extends Component<Props, State> {
+export class CityPicker extends Component<Props, State> {
   state = {
     overlayVisible: null,
   }

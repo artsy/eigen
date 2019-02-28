@@ -7,7 +7,7 @@ import { BucketKey, BucketResults } from "../Map/Bucket"
 import { FiltersBar } from "../Map/Components/FiltersBar"
 import { EventEmitter } from "../Map/EventEmitter"
 import { Tab } from "../Map/types"
-import { CityOverlay } from "./CityOverlay"
+import { CityPicker } from "./CityPicker"
 import { AllEvents } from "./Components/AllEvents"
 import { CityTab } from "./Components/CityTab"
 
@@ -67,7 +67,7 @@ export class CityView extends Component<Props, State> {
       buckets && (
         <Theme>
           <>
-            <CityOverlay overlayVisible={true}>
+            <CityPicker overlayVisible={true}>
               <Box>
                 <Flex py={1} alignItems="center">
                   <Handle />
@@ -96,7 +96,7 @@ export class CityView extends Component<Props, State> {
                   })()}
                 </ScrollView>
               </Box>
-            </CityOverlay>
+            </CityPicker>
           </>
         </Theme>
       )
