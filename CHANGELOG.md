@@ -16,6 +16,7 @@
 
 ### Master
 
+- The Home tab bar is now consistent with the design system - orta
 - Order name of Fair's artists based on user's favorite artists - ashkan
 - Adds styled city picker modal - ashley
 - Adds CityTab stying and passes CityName to AllEvents view - kieran

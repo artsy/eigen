@@ -14,7 +14,7 @@ import { CitySwitcherButton } from "./Components/CitySwitcherButton"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { Show, Tab } from "./types"
+import { MapTab, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -72,7 +72,7 @@ export class GlobalMap extends React.Component<Props, State> {
   clusterEngine: Supercluster
   moveButtons: Animated.Value
 
-  filters: Tab[] = [
+  filters: MapTab[] = [
     { id: "all", text: "All" },
     { id: "saved", text: "Saved" },
     { id: "fairs", text: "Fairs" },

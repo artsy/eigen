@@ -6,7 +6,7 @@ import styled from "styled-components/native"
 import { BucketKey, BucketResults } from "../Map/Bucket"
 import { FiltersBar } from "../Map/Components/FiltersBar"
 import { EventEmitter } from "../Map/EventEmitter"
-import { Tab } from "../Map/types"
+import { MapTab as Tab } from "../Map/types"
 import { AllEvents } from "./Components/AllEvents"
 import { CityTab } from "./Components/CityTab"
 
