@@ -1,4 +1,5 @@
-import { Box, Sans, Serif } from "@artsy/palette"
+import { Box, Serif } from "@artsy/palette"
+import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { Event } from "lib/Scenes/City/Components/Event"
 import React from "react"
 
@@ -11,12 +12,17 @@ const renderEvents = events => {
   return events.map((event, i) => {
     if (i < 2) {
       return (
-        <Box key={i} mb={1}>
+        <Box key={i}>
           <Event event={event} />
         </Box>
       )
     }
   })
+}
+
+const viewAllPressed = () => {
+  // FIXME: Open city list view
+  console.log("All pressed")
 }
 
 export const EventSection: React.SFC<Props> = (props: Props) => {
@@ -28,9 +34,7 @@ export const EventSection: React.SFC<Props> = (props: Props) => {
       </Box>
       {renderEvents(data)}
       <Box px={2} mb={2}>
-        <Sans weight="medium" size="3">
-          View all {data.length} {props.title.toLowerCase()}
-        </Sans>
+        <CaretButton onPress={() => viewAllPressed()} text={`View all ${data.length} shows`} />
       </Box>
     </>
   )
