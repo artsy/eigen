@@ -1,10 +1,12 @@
 import { Box, color, Flex, Sans, Separator, Serif, space } from "@artsy/palette"
+import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
 import React, { Component } from "react"
 import { Modal, ScrollView, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
 interface State {
   overlayVisible: boolean
+  selectedCity: string
 }
 
 interface Props {
@@ -12,19 +14,21 @@ interface Props {
 }
 
 const cityList = ["New York", "Los Angeles", "London", "Berlin", "Paris", "Hong Kong"]
-
 export class CityPicker extends Component<Props, State> {
   state = {
     overlayVisible: null,
+    selectedCity: null,
   }
-  selectionView: any = null
 
-  selectCity() {
-    this.setState({ overlayVisible: false })
+  selectCity(city) {
+    this.setState({ selectedCity: city })
+    setTimeout(() => {
+      this.setState({ overlayVisible: false })
+    }, 1000)
   }
 
   render() {
-    const { overlayVisible } = this.state
+    const { overlayVisible, selectedCity } = this.state
 
     return (
       <Modal visible={overlayVisible} animationType="slide" transparent={true}>
@@ -37,18 +41,12 @@ export class CityPicker extends Component<Props, State> {
             </Box>
             {cityList.map((city, i) => (
               <Box key={i} mt={2} mx={2}>
-                <TouchableOpacity onPress={() => this.selectCity()}>
-                  <Flex
-                    flexDirection="row"
-                    ref={el => {
-                      if (el) {
-                        this.selectionView = el as any
-                      }
-                    }}
-                  >
-                    <Serif size="8" lineHeight="45">
+                <TouchableOpacity onPress={() => this.selectCity(city)}>
+                  <Flex flexDirection="row" justifyContent="space-between" alignItems="flex-start">
+                    <Serif size="8" lineHeight={45}>
                       {city}
                     </Serif>
+                    {selectedCity === city && <CircleWhiteCheckIcon width={26} height={26} />}
                   </Flex>
                 </TouchableOpacity>
                 <Separator />
