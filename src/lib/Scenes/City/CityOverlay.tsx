@@ -1,7 +1,7 @@
 import { Box, color, Flex, Sans, Separator, Serif, space } from "@artsy/palette"
 import { cityList } from "lib/Scenes/City/cities"
 import React, { Component } from "react"
-import { Modal, ScrollView, TouchableOpacity } from "react-native"
+import { Modal, NativeModules, ScrollView, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
 // const isOverlayVisible = true // @TODO: add logic to check if current location + if user has saved city already
@@ -37,8 +37,9 @@ export class CityOverlay extends Component<Props, State> {
     // @TODO: Handle logic for closing modal and saving current city in state
   }
 
-  selectCity() {
+  selectCity(index: number) {
     this.setState({ overlayVisible: false })
+    NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", { cityIndex: index })
   }
 
   render() {
@@ -53,7 +54,7 @@ export class CityOverlay extends Component<Props, State> {
             </Box>
             {cityList.map((city, i) => (
               <Box key={i} mt={2} mx={2}>
-                <TouchableOpacity onPress={() => this.selectCity()}>
+                <TouchableOpacity onPress={() => this.selectCity(i)}>
                   <Flex
                     flexDirection="row"
                     ref={el => {

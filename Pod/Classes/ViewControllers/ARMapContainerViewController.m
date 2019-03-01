@@ -93,19 +93,25 @@ Since this controller already has to do the above logic, having it handle the Ci
 
 - (void)showCityPicker
 {
-    // TODO: Present city picker component in a better way.
     self.cityPickerController = [[ARCityPickerComponentViewController alloc] init];
+    
+    [self.mapVC setProperty:@(YES) forKey:@"hideMapButtons"];
     
     [self addChildViewController:self.cityPickerController];
     [self.view addSubview:self.cityPickerController.view];
     
-    self.cityPickerController.view.frame = CGRectMake(20, 20, self.view.frame.size.width - 40, self.view.frame.size.height - 40);
+    const CGFloat MARGIN = 20;
+    self.cityPickerController.view.frame = CGRectMake(MARGIN, MARGIN, self.view.frame.size.width - MARGIN*2, self.view.frame.size.height - MARGIN*2);
     self.cityPickerController.view.layer.cornerRadius = 10;
     self.cityPickerController.view.clipsToBounds = YES;
     self.cityPickerController.view.alpha = 0;
+    self.cityPickerController.view.transform = CGAffineTransformMakeScale(0.8, 0.8);
     
     [UIView animateWithDuration:0.35 animations:^{
         self.cityPickerController.view.alpha = 1;
+        self.cityPickerController.view.transform = CGAffineTransformIdentity;
+        
+        self.cityVC.view.transform = CGAffineTransformMakeTranslation(0, self.cityVC.view.frame.size.height);
     }];
 }
 
@@ -114,8 +120,12 @@ Since this controller already has to do the above logic, having it handle the Ci
     ARCity *city = [[ARCity cities] objectAtIndex:cityIndex];
     [self.mapVC setProperty:@{ @"lat": @(city.epicenter.latitude), @"lng": @(city.epicenter.longitude) }
                      forKey:@"coordinates"];
+    [self.mapVC setProperty:@(NO) forKey:@"hideMapButtons"];
+    
     [UIView animateWithDuration:0.35 animations:^{
         self.cityPickerController.view.alpha = 0;
+        
+        self.cityVC.view.transform = CGAffineTransformIdentity;
     } completion:^(BOOL finished) {
         [self.cityPickerController removeFromParentViewController];
         [self.cityPickerController.view removeFromSuperview];
