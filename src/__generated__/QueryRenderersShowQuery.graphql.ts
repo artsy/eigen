@@ -104,6 +104,8 @@ fragment MoreInfo_show on Show {
 }
 
 fragment ShowArtists_show on Show {
+  _id
+  id
   artists_grouped_by_name {
     letter
     items {
@@ -118,6 +120,8 @@ fragment ShowArtists_show on Show {
 
 fragment ShowArtworks_show on Show {
   __id
+  id
+  _id
   filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
     __id
@@ -304,6 +308,7 @@ fragment ShowArtistsPreview_show on Show {
   _id
   id
   artists {
+    _id
     id
     href
     ...ArtistListItem_artist
@@ -720,7 +725,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "cfada8ab688ea390d900120c8dbe8ac4",
+  "id": "5b56b18970fa24b2fcd6c1d092f7f786",
   "text": null,
   "metadata": {},
   "fragment": {

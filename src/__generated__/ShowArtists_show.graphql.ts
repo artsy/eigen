@@ -5,6 +5,8 @@ import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
 declare const _ShowArtists_show$ref: unique symbol;
 export type ShowArtists_show$ref = typeof _ShowArtists_show$ref;
 export type ShowArtists_show = {
+    readonly _id: string;
+    readonly id: string;
     readonly artists_grouped_by_name: ReadonlyArray<({
         readonly letter: string | null;
         readonly items: ReadonlyArray<({
@@ -33,6 +35,20 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "_id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -86,5 +102,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2a4e87f98742f98d105aec484e356b92';
+(node as any).hash = '49bc2a087941cebe598c7ddbbab55362';
 export default node;

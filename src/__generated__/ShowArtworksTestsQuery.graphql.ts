@@ -25,6 +25,8 @@ query ShowArtworksTestsQuery {
 
 fragment ShowArtworks_show on Show {
   __id
+  id
+  _id
   filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
     __id
@@ -174,7 +176,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowArtworksTestsQuery",
-  "id": "f63078867e6e605e6b4d7e06d593bed3",
+  "id": "bbdc55f7188fa0c978b8188429f5798b",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -218,6 +220,14 @@ return {
         "plural": false,
         "selections": [
           v1,
+          v2,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "_id",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,

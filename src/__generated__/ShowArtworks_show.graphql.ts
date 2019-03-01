@@ -6,6 +6,8 @@ declare const _ShowArtworks_show$ref: unique symbol;
 export type ShowArtworks_show$ref = typeof _ShowArtworks_show$ref;
 export type ShowArtworks_show = {
     readonly __id: string;
+    readonly id: string;
+    readonly _id: string;
     readonly filteredArtworks: ({
         readonly " $fragmentRefs": FilteredInfiniteScrollGrid_filteredArtworks$ref;
     }) | null;
@@ -43,6 +45,20 @@ return {
   ],
   "selections": [
     v0,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "_id",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -92,5 +108,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1349ab70aad786c5e40b0f2961301703';
+(node as any).hash = 'a6acc525f7747926f2f9c109cb41365c';
 export default node;
