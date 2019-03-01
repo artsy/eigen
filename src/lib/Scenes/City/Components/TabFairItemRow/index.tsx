@@ -1,28 +1,13 @@
 import { Box, Flex, Sans, space } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import moment from "moment"
+import { dateRange } from "lib/utils/dateFormatter"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
 export interface Props {
   item: any
-}
-
-export const formatDuration = (startAt, endAt) => {
-  const momentStartAt = moment(startAt)
-  const momentEndAt = moment(endAt)
-  if (momentStartAt.dayOfYear() === momentEndAt.dayOfYear() && momentStartAt.year() === momentEndAt.year()) {
-    // duration is a time range within a single day
-    return `${momentStartAt.format("MMM D")}`
-  } else if (momentStartAt.month() === momentEndAt.month()) {
-    // duration is a time range within same month
-    return `${momentStartAt.format("MMM D")} - ` + momentEndAt.format("D")
-  } else {
-    // duration spans more than one day
-    return `${momentStartAt.format("MMM D")} - ` + momentEndAt.format("MMM D")
-  }
 }
 
 export class TabFairItemRow extends React.Component<Props> {
@@ -57,7 +42,7 @@ export class TabFairItemRow extends React.Component<Props> {
               {item.node.start_at &&
                 item.node.end_at && (
                   <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
-                    {formatDuration(item.node.start_at, item.node.end_at)}
+                    {dateRange(item.node.start_at, item.node.end_at)}
                   </Sans>
                 )}
             </Box>

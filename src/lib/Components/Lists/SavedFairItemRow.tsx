@@ -2,7 +2,7 @@ import { Box, color, Flex, Sans, Separator } from "@artsy/palette"
 import { SavedFairItemRowMutation } from "__generated__/SavedFairItemRowMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
-import moment from "moment"
+import { dateRange } from "lib/utils/dateFormatter"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, graphql, RelayProp } from "react-relay"
@@ -102,7 +102,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
               {item.start_at &&
                 item.end_at && (
                   <Sans size="2" color={color("black60")} ml="13">
-                    {moment(item.start_at).format("MMM D")} - {moment(item.end_at).format("D")}
+                    {dateRange(item.start_at, item.end_at)}
                   </Sans>
                 )}
             </Flex>

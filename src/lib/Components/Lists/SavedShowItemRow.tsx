@@ -3,8 +3,8 @@ import { SavedShowItemRow_show } from "__generated__/SavedShowItemRow_show.graph
 import { SavedShowItemRowMutation } from "__generated__/SavedShowItemRowMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
+import { dateRange } from "lib/utils/dateFormatter"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import moment from "moment"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -121,9 +121,7 @@ export class SavedShowItemRow extends React.Component<Props, State> {
                 <Sans size="3t" color={color("black60")} ml={15}>
                   {show.status.includes("closed")
                     ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                    : show.start_at &&
-                      show.end_at &&
-                      moment(show.start_at).format("MMM D") + " - " + moment(show.end_at).format("MMM D")}
+                    : show.start_at && show.end_at && dateRange(show.start_at, show.end_at)}
                 </Sans>
               )}
             </Flex>

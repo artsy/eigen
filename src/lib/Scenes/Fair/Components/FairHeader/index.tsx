@@ -3,8 +3,8 @@ import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { dateRange } from "lib/utils/dateFormatter"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import moment from "moment"
 import React from "react"
 import { Dimensions, Image } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -156,7 +156,7 @@ export class FairHeader extends React.Component<Props, State> {
                 {name}
               </Sans>
               <Sans size="3" textAlign="center" color="white100">
-                {moment(start_at).format("MMM Do")} - {moment(end_at).format("MMM Do")}
+                {dateRange(start_at, end_at)}
               </Sans>
             </Flex>
           </Flex>

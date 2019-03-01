@@ -1,7 +1,7 @@
 import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
 import Button from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
-import moment from "moment"
+import { dateRange } from "lib/utils/dateFormatter"
 import React from "react"
 import styled from "styled-components/native"
 
@@ -36,21 +36,6 @@ interface State {
   eventSaved: boolean
 }
 
-export const formatDuration = (startAt, endAt) => {
-  const momentStartAt = moment(startAt)
-  const momentEndAt = moment(endAt)
-  if (momentStartAt.dayOfYear() === momentEndAt.dayOfYear() && momentStartAt.year() === momentEndAt.year()) {
-    // duration is a time range within a single day
-    return `${momentStartAt.format("MMM D")}`
-  } else if (momentStartAt.month() === momentEndAt.month()) {
-    // duration is a time range within same month
-    return `${momentStartAt.format("MMM D")} - ` + momentEndAt.format("D")
-  } else {
-    // duration spans more than one day
-    return `${momentStartAt.format("MMM D")} - ` + momentEndAt.format("MMM D")
-  }
-}
-
 export class Event extends React.Component<Props, State> {
   state = {
     eventSaved: false,
@@ -81,7 +66,7 @@ export class Event extends React.Component<Props, State> {
               {name}
             </Serif>
             <Sans size="2" color={color("black60")}>
-              {formatDuration(start_at, end_at)}
+              {dateRange(start_at, end_at)}
             </Sans>
           </TextContainer>
           <ButtonWrapper>

@@ -1,7 +1,7 @@
 import { Box, color, Flex, Sans, space } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import moment from "moment"
+import { dateRange } from "lib/utils/dateFormatter"
 import React, { Component } from "react"
 import { Dimensions, Image, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -35,7 +35,7 @@ export class FairEventSectionCard extends Component<Props> {
                 {name}
               </Sans>
               <Sans size="3" color="white">
-                {moment(start_at).format("MMM Do")} - {moment(end_at).format("MMM Do")}
+                {dateRange(start_at, end_at)}
               </Sans>
             </Flex>
           </Box>
