@@ -20,6 +20,7 @@
 #import "ARInternalMobileWebViewController.h"
 #import "ARAuctionWebViewController.h"
 #import "ARFairSearchViewController.h"
+#import "AREigenFairComponentViewController.h"
 #import "ARTopMenuViewController.h"
 #import "ARMutableLinkViewController.h"
 #import "ARTopMenuNavigationDataSource.h"
@@ -27,6 +28,7 @@
 #import "ARSerifNavigationViewController.h"
 
 #import <Emission/ARShowConsignmentsFlowViewController.h>
+#import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARFairBoothComponentViewController.h>
 #import <Emission/ARFairArtworksComponentViewController.h>
 #import <Emission/ARFairArtistsComponentViewController.h>
@@ -287,14 +289,16 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
         [self registerPathCallbackForDomain:route.path callback:presentNativeAuctionsViewControllerBlock];
         [self registerPathCallbackForDomain:stagingDomain callback:presentNativeAuctionsViewControllerBlock];
     }
+    
 
     // This route will match any single path component and thus should be added last.
     // It doesn't need to run through echo, as it's pretty much here to stay forever.
     [self.routes addRoute:@"/:slug" priority:0 handler:JLRouteParams {
         __strong typeof (wself) sself = wself;
         if ([parameters[@"entity"] isEqualToString:@"fair"]) {
-            return [[ARFairComponentViewController alloc] initWithFairID:parameters[@"slug"]];
+            return [[AREigenFairComponentViewController alloc] initWithFairID:parameters[@"slug"]];
         }
+
         return [sself loadUnknownPathWithID:parameters[@"slug"]];
     }];
 

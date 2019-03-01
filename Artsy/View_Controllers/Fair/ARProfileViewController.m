@@ -7,7 +7,9 @@
 #import "AROptions.h"
 #import "ARSwitchBoard+Eigen.h"
 #import "ARLogger.h"
+#import "ARNavigationController.h"
 
+#import "AREigenFairComponentViewController.h"
 #import "ARInternalMobileWebViewController.h"
 
 #import "UIViewController+FullScreenLoading.h"
@@ -16,7 +18,6 @@
 
 #import <ReactiveObjC/ReactiveObjC.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <Emission/ARFairComponentViewController.h>
 
 
 @interface ARProfileViewController () <ARMenuAwareViewController>
@@ -112,5 +113,14 @@
 {
     return [UIDevice isPad];
 }
+
+- (BOOL)hidesStatusBarBackground
+{
+    if (self.childViewControllers.firstObject) {
+        return [self.childViewControllers.firstObject isKindOfClass:ARFairComponentViewController.class];
+    }
+    return NO;
+}
+
 
 @end

@@ -9,8 +9,9 @@
 #import "UIViewController+SimpleChildren.h"
 #import "ARProfileViewController.h"
 
+#import <Emission/ARFairComponentViewController.h>
 
-@interface ARMutableLinkViewController ()
+@interface ARMutableLinkViewController () <ARMenuAwareViewController>
 @property (nonatomic, strong, readonly) NSString *originalPath;
 @end
 
@@ -64,6 +65,14 @@
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
+}
+
+- (BOOL)hidesStatusBarBackground
+{
+    if (self.childViewControllers.firstObject) {
+        return [self.childViewControllers.firstObject isKindOfClass:ARFairComponentViewController.class];
+    }
+    return NO;
 }
 
 @end

@@ -15,6 +15,7 @@
 #import "ARMenuAwareViewController.h"
 #import "ARTopMenuViewController.h"
 #import "ARScrollNavigationChief.h"
+#import "AREigenMapContainerViewController.h"
 
 #import "ARMacros.h"
 #import "UIDevice-Hardware.h"
@@ -27,6 +28,7 @@
 #import <MultiDelegate/AIMultiDelegate.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARMapContainerViewController.h>
+#import <Emission/ARComponentViewController.h>
 
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;
@@ -35,12 +37,12 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
 @protocol ARMenuAwareViewController;
 
-
 @interface ARNavigationController () <UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, assign) BOOL isAnimatingTransition;
 @property (nonatomic, strong) UIView *statusBarView;
 @property (nonatomic, strong) NSLayoutConstraint *statusBarVerticalConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *backButtonTopConstraint;
 
 @property (readwrite, nonatomic, strong) ARPendingOperationViewController *pendingOperationViewController;
 @property (readwrite, nonatomic, strong) AIMultiDelegate *multiDelegate;
@@ -119,8 +121,9 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     _backButton.adjustsImageWhenDisabled = NO;
 
     [self.view addSubview:_backButton];
-    [_backButton alignTopEdgeWithView:self.view predicate:@"12"];
+
     [_backButton alignLeadingEdgeWithView:self.view predicate:@"12"];
+    self.backButtonTopConstraint = [_backButton alignTopEdgeWithView:self.view predicate:@"12"];
     _backButton.accessibilityIdentifier = @"Back";
     _backButton.alpha = 0;
 }
@@ -180,10 +183,6 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
 
 - (BOOL)shouldUseWhiteBackground:(UIViewController *)viewController
 {
-    if ([viewController isKindOfClass:ARMapContainerViewController.class]) {
-        return YES;
-    }
-
     return [viewController isKindOfClass:ARComponentViewController.class] && [viewController preferredStatusBarStyle] == UIStatusBarStyleDefault;
 }
 
@@ -196,6 +195,7 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     if (self.interactiveTransitionHandler == nil) {
         [self showBackButton:[self shouldShowBackButtonForViewController:viewController] animated:animated];
         [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:animated white:useWhite];
+        [self updateBackButtonPositionForViewController:viewController animated:animated];
         [self setNeedsStatusBarAppearanceUpdate];
 
         ar_dispatch_after(0.05, ^{
@@ -225,6 +225,11 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     }
 }
 
+- (void)didUpdateStatusBarForTopViewControllerAnimated:(BOOL)animated
+{
+    [self updateStatusBar:self.topViewController animated:animated];
+}
+
 - (void)updateStatusBar:(UIViewController *)viewController animated:(BOOL)animated
 {
     BOOL useWhite = [self shouldUseWhiteBackground:viewController];
@@ -232,6 +237,40 @@ static void *ARNavigationControllerMenuAwareScrollViewContext = &ARNavigationCon
     [self showBackButton:[self shouldShowBackButtonForViewController:viewController] animated:animated];
     [self showStatusBarBackground:[self shouldShowStatusBarBackgroundForViewController:viewController] animated:animated white:useWhite];
     [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (void)updateBackButtonPositionForViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    CGFloat topMargin = 12;
+
+    BOOL currentlyShowingStatusBar = [ARTopMenuViewController sharedController].isShowingStatusBar;
+    if (@available(iOS 11.0, *)) {
+        if (currentlyShowingStatusBar) {
+            topMargin = 12;
+        } else {
+            topMargin = self.view.safeAreaInsets.top + 12;
+        }
+    }
+
+
+    BOOL fullBleed = [viewController isKindOfClass:ARComponentViewController.class] && [(ARComponentViewController *)viewController fullBleed];
+    if (fullBleed) {
+        if (@available(iOS 11.0, *)) {
+            // iPhone x
+            CGFloat topInsetMargin = [[ARTopMenuViewController sharedController].view safeAreaInsets].top;
+            topMargin = topInsetMargin + 12;
+        } else {
+            topMargin = 24;
+        }
+    }
+
+    [UIView animateIf:animated duration:ARAnimationDuration :^{
+        self.backButtonTopConstraint.constant = topMargin;
+        if (animated) {
+            [self.backButton setNeedsLayout];
+            [self.backButton layoutIfNeeded];
+        }
+    }];
 }
 
 #pragma mark - UIGestureRecognizerDelegate

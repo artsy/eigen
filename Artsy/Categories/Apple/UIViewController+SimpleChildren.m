@@ -25,7 +25,7 @@
 - (void)ar_addAlignedModernChildViewController:(UIViewController *)controller
 {
     [self ar_addModernChildViewController:controller];
-
+    
     [controller.view constrainTopSpaceToView:self.flk_topLayoutGuide predicate:@"0"];
     [controller.view alignLeading:@"0" trailing:@"0" toView:self.view];
     [controller.view constrainBottomSpaceToView:self.flk_bottomLayoutGuide predicate:@"0"];
