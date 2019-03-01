@@ -3,6 +3,7 @@
 #import "ARCityComponentViewController.h"
 #import "ARCityPickerComponentViewController.h"
 #import "ARComponentViewController.h"
+#import "ARCity.h"
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
@@ -38,19 +39,13 @@ We'll need to have an affordance for a user opening the city pciker UI, too. May
     [self.locationManager requestWhenInUseAuthorization];
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        UIViewController *viewController = [[ARCityPickerComponentViewController alloc] init];
-
-        [self addChildViewController:viewController];
-        [self.view addSubview:viewController.view];
-
-        viewController.view.frame = CGRectMake(20, 20, self.view.frame.size.width - 40, self.view.frame.size.height - 40);
-        viewController.view.layer.cornerRadius = 10;
-        viewController.view.clipsToBounds = YES;
+        [self showCityPicker];
     });
 
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARAuctionArtworkBidUpdated" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        // TODO:
-//        note.userInfo
+    __weak typeof(self) sself = self;
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryUserSelectedCity" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        NSInteger cityIndex = [note.userInfo[@"cityIndex"] integerValue];
+        [sself userSelectedCityAtIndex:cityIndex];
     }];
 
     self.mapVC = [[ARMapComponentViewController alloc] init];
@@ -70,14 +65,49 @@ We'll need to have an affordance for a user opening the city pciker UI, too. May
     return UIStatusBarStyleDefault;
 }
 
-- (void)userSuppliedLocation:(CLLocation *)location
+- (void)userSuppliedLocation:(CLLocation *)userLocation
 {
-    // TODO: check if the location is sufficiently close to a city
+    const NSInteger CITY_RADIUS_M = 100 * 1000; // 100km
+    
+    ARCity *closestCity = [[[ARCity cities] sortedArrayUsingComparator:^NSComparisonResult(ARCity *_Nonnull lhs, ARCity *_Nonnull rhs) {
+        CLLocation *lhsLocation = [[CLLocation alloc] initWithLatitude:lhs.epicenter.latitude longitude:lhs.epicenter.longitude];
+        CLLocation *rhsLocation = [[CLLocation alloc] initWithLatitude:rhs.epicenter.latitude longitude:rhs.epicenter.longitude];
+        if ([lhsLocation distanceFromLocation:userLocation] < [rhsLocation distanceFromLocation:userLocation]) {
+            return NSOrderedAscending;
+        } else {
+            return NSOrderedDescending;
+        }
+    }] firstObject];
+    
+    CLLocation *closestCityLocation = [[CLLocation alloc] initWithLatitude:closestCity.epicenter.latitude longitude:closestCity.epicenter.longitude];
+    if ([closestCityLocation distanceFromLocation:userLocation] < CITY_RADIUS_M) {
+        // User is within radius to city.
+        [self.mapVC setProperty:@{ @"lat": @(closestCity.epicenter.latitude), @"lng": @(closestCity.epicenter.longitude) }
+                         forKey:@"coordinates"];
+    } else {
+        // User is too far away from any city.
+        [self showCityPicker];
+    }
 }
 
-- (void)userDeniedLocationRequest
+- (void)showCityPicker
 {
-    // TODO: Present city picker component
+    // TODO: Present city picker component in a better way.
+    UIViewController *viewController = [[ARCityPickerComponentViewController alloc] init];
+    
+    [self addChildViewController:viewController];
+    [self.view addSubview:viewController.view];
+    
+    viewController.view.frame = CGRectMake(20, 20, self.view.frame.size.width - 40, self.view.frame.size.height - 40);
+    viewController.view.layer.cornerRadius = 10;
+    viewController.view.clipsToBounds = YES;
+}
+
+- (void)userSelectedCityAtIndex:(NSInteger)cityIndex
+{
+    ARCity *city = [[ARCity cities] objectAtIndex:cityIndex];
+    [self.mapVC setProperty:@{ @"lat": @(city.epicenter.latitude), @"lng": @(city.epicenter.longitude) }
+                     forKey:@"coordinates"];
 }
 
 # pragma mark - PulleyDelegate Methods
@@ -107,13 +137,14 @@ We'll need to have an affordance for a user opening the city pciker UI, too. May
     if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         [manager startUpdatingLocation];
     } else {
-        [self userDeniedLocationRequest];
+        [self showCityPicker];
     }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
 {
     [self userSuppliedLocation:locations.lastObject];
+    [manager stopUpdatingLocation];
 }
 
 @end
