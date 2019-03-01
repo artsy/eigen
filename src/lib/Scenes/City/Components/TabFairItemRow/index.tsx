@@ -38,7 +38,9 @@ export class TabFairItemRow extends React.Component<Props> {
       <Box py={2}>
         <TouchableWithoutFeedback onPress={() => this.handleTap(item)}>
           <Flex flexWrap="nowrap" flexDirection="row" alignItems="center">
-            <RoundedImage aspectRatio={1} imageURL={fairImage} />
+            <RoundedImageWrapper>
+              <OpaqueImageView height={58} width={58} imageURL={fairImage} />
+            </RoundedImageWrapper>
             <Box width={boxWidth} pl={1}>
               {item.node.name && (
                 <Sans weight="medium" size="3t" numberOfLines={1} ellipsizeMode="tail">
@@ -66,7 +68,7 @@ export class TabFairItemRow extends React.Component<Props> {
   }
 }
 
-const RoundedImage = styled(OpaqueImageView)`
+const RoundedImageWrapper = styled(Box)`
   width: 58;
   border-radius: 30;
   overflow: hidden;
