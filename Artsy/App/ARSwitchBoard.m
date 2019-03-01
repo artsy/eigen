@@ -294,14 +294,11 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     // This route will match any single path component and thus should be added last.
     // It doesn't need to run through echo, as it's pretty much here to stay forever.
     [self.routes addRoute:@"/:slug" priority:0 handler:JLRouteParams {
-        if ([parameters[@"entity"] isEqualToString:@"fair"]) {
-            return [[AREigenFairComponentViewController alloc] initWithFairID:parameters[@"slug"]];
- 
-        }
         __strong typeof (wself) sself = wself;
         if ([parameters[@"entity"] isEqualToString:@"fair"]) {
-            return [[ARFairComponentViewController alloc] initWithFairID:parameters[@"slug"]];
+            return [[AREigenFairComponentViewController alloc] initWithFairID:parameters[@"slug"]];
         }
+
         return [sself loadUnknownPathWithID:parameters[@"slug"]];
     }];
 
