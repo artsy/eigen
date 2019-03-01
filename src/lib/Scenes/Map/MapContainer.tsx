@@ -3,20 +3,14 @@ import { MapRenderer } from "./MapRenderer"
 import { Coordinates } from "./types"
 
 interface Props {
-  coordinates?: Coordinates
+  coordinates: Coordinates
   hideMapButtons: boolean
 }
 
+// TODO: Do we even need this component any more?
 export class MapContainer extends Component<Props> {
-  watchId: any
-
   render() {
     const { coordinates, hideMapButtons } = this.props
-    if (!coordinates) {
-      // TODO: what even goes here?
-      return null
-    }
-
     return <MapRenderer coords={coordinates} hideMapButtons={hideMapButtons} />
   }
 }
