@@ -10,7 +10,6 @@ import { Tab } from "../Map/types"
 import { CityPicker } from "./CityPicker"
 import { AllEvents } from "./Components/AllEvents"
 import { CityTab } from "./Components/CityTab"
-
 interface Props {
   verticalMargin?: number
   isDrawerOpen?: boolean
@@ -20,6 +19,7 @@ interface State {
   buckets?: BucketResults
   filter: Tab
   relay: RelayProp
+  cityName: string
 }
 
 export class CityView extends Component<Props, State> {
@@ -27,6 +27,7 @@ export class CityView extends Component<Props, State> {
     buckets: null,
     filter: { id: "all", text: "All events" },
     relay: null,
+    cityName: "",
   }
   scrollViewVerticalStart = 0
   scrollView: ScrollView = null
@@ -42,10 +43,21 @@ export class CityView extends Component<Props, State> {
   componentWillMount() {
     EventEmitter.subscribe(
       "map:change",
-      ({ filter, buckets, relay }: { filter: Tab; buckets: BucketResults; relay: RelayProp }) => {
+      ({
+        filter,
+        buckets,
+        cityName,
+        relay,
+      }: {
+        filter: Tab
+        buckets: BucketResults
+        cityName: string
+        relay: RelayProp
+      }) => {
         this.setState({
           buckets,
           filter,
+          cityName,
           relay,
         })
       }
@@ -59,7 +71,7 @@ export class CityView extends Component<Props, State> {
   }
 
   render() {
-    const { buckets, filter } = this.state
+    const { buckets, filter, cityName } = this.state
     const { isDrawerOpen, verticalMargin } = this.props
     // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
@@ -89,7 +101,9 @@ export class CityView extends Component<Props, State> {
                   {(() => {
                     switch (filter && filter.id) {
                       case "all":
-                        return <AllEvents currentBucket={filter.id as BucketKey} buckets={buckets} />
+                        return (
+                          <AllEvents cityName={cityName} currentBucket={filter.id as BucketKey} buckets={buckets} />
+                        )
                       default:
                         return <CityTab bucket={buckets[filter.id]} type={filter.text} relay={this.state.relay} />
                     }

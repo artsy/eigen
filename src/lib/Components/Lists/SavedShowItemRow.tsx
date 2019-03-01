@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans } from "@artsy/palette"
+import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
 import { SavedShowItemRow_show } from "__generated__/SavedShowItemRow_show.graphql"
 import { SavedShowItemRowMutation } from "__generated__/SavedShowItemRowMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
@@ -8,6 +8,8 @@ import moment from "moment"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import styled from "styled-components/native"
+
 interface Props {
   show: SavedShowItemRow_show
   relay?: RelayProp
@@ -26,7 +28,7 @@ export class SavedShowItemRow extends React.Component<Props, State> {
   }
 
   handleTap() {
-    Switchboard.presentNavigationViewController(this, this.props.show.href || `show/${this.props.show.id}`)
+    Switchboard.presentNavigationViewController(this, `/show/${this.props.show.id}`)
   }
 
   @track(props => {
@@ -102,23 +104,21 @@ export class SavedShowItemRow extends React.Component<Props, State> {
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <Box py={2}>
           <Flex flexGrow="1" flexDirection="row" alignItems="center">
-            <Box height="50" width="50" style={{ overflow: "hidden" }}>
-              <OpaqueImageView width={50} height={50} imageURL={imageURL} />
-            </Box>
+            <OpaqueImageView width={58} height={58} imageURL={imageURL} />
             <Flex flexDirection="column" flexGrow="1" width="197">
               {show.partner &&
                 show.partner.name && (
-                  <Sans size="3" color="black" weight="medium" numberOfLines={1} ml="13">
+                  <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
                     {show.partner.name}
                   </Sans>
                 )}
               {show.name && (
-                <Sans size="2" color={color("black60")} ml="13" numberOfLines={1}>
+                <TightendSerif size="3t" color={color("black60")} ml={15} numberOfLines={1}>
                   {show.name}
-                </Sans>
+                </TightendSerif>
               )}
               {show.status && (
-                <Sans size="2" color={color("black60")} ml="13">
+                <Sans size="3t" color={color("black60")} ml={15}>
                   {show.status.includes("closed")
                     ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
                     : show.start_at &&
@@ -173,3 +173,7 @@ export const SavedShowItemRowContainer = createFragmentContainer(SavedShowItemRo
     }
   `,
 })
+
+const TightendSerif = styled(Serif)`
+  top: 3;
+`
