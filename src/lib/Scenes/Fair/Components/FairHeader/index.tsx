@@ -71,6 +71,7 @@ export class FairHeader extends React.Component<Props, State> {
     const { followed_content, artists_names, counts, partner_names } = this.props.fair
     const fairfollowedArtistList = (followed_content && followed_content.artists) || []
     const artistList = artists_names.edges.map(i => i.node).filter(Boolean)
+    const uniqArtistList = [...new Set(fairfollowedArtistList.concat(artistList))]
     const partnerList = partner_names.edges
       .map(i => {
         if (i.node.partner && i.node.partner.profile && i.node.partner.profile.name) {
@@ -88,7 +89,7 @@ export class FairHeader extends React.Component<Props, State> {
       <>
         <EntityList
           prefix="Works by"
-          list={fairfollowedArtistList.concat(artistList)}
+          list={uniqArtistList}
           count={counts.artists}
           displayedItems={2}
           onItemSelected={this.handleArtistPress.bind(this)}
