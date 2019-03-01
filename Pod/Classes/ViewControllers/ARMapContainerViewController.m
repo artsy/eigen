@@ -176,6 +176,8 @@ Since this controller already has to do the above logic, having it handle the Ci
 {
     if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         [manager startUpdatingLocation];
+    } else if (status == kCLAuthorizationStatusNotDetermined) {
+        // nop, don't show city picker.
     } else {
         [self showCityPicker];
     }
