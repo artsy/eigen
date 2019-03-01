@@ -14,9 +14,10 @@ export type SavedShowItemRow_show = {
     }) | null;
     readonly href: string | null;
     readonly status: string | null;
-    readonly images: ReadonlyArray<({
+    readonly cover_image: ({
         readonly url: string | null;
-    }) | null> | null;
+        readonly aspect_ratio: number;
+    }) | null;
     readonly start_at: string | null;
     readonly end_at: string | null;
     readonly " $refType": SavedShowItemRow_show$ref;
@@ -111,23 +112,23 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "images",
-      "storageKey": "images(size:1)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "size",
-          "value": 1,
-          "type": "Int"
-        }
-      ],
+      "name": "cover_image",
+      "storageKey": null,
+      "args": null,
       "concreteType": "Image",
-      "plural": true,
+      "plural": false,
       "selections": [
         {
           "kind": "ScalarField",
           "alias": null,
           "name": "url",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "aspect_ratio",
           "args": null,
           "storageKey": null
         }
@@ -150,5 +151,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '8e964a4d39905f689fb33a240251004c';
+(node as any).hash = '8b7da2fbff0acc6d785401299fe1615f';
 export default node;

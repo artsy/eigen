@@ -143,29 +143,17 @@ interface FairProps {
   fairID: string
 }
 
-const Fair: React.SFC<FairProps> = track<FairProps>(props => {
-  return {
-    context_screen: Schema.PageNames.FairPage,
-    context_screen_owner_slug: props.fairID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  }
-})(({ fairID }) => {
+const Fair: React.SFC<FairProps> = ({ fairID }) => {
   return <FairRenderer fairID={fairID} render={renderWithLoadProgress(Containers.Fair, { fairID })} />
-})
+}
 
 interface ShowProps {
   showID: string
 }
 
-const Show: React.SFC<ShowProps> = track<ShowProps>(props => {
-  return {
-    context_screen: Schema.PageNames.ShowPage,
-    context_screen_owner_slug: props.showID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Show,
-  }
-})(({ showID }) => {
+const Show: React.SFC<ShowProps> = ({ showID }) => {
   return <ShowRenderer showID={showID} render={renderWithLoadProgress(Containers.Show, { showID })} />
-})
+}
 
 interface ShowArtistsProps {
   showID: string
@@ -199,15 +187,9 @@ interface FairBoothProps {
   fairBoothID: string
 }
 
-const FairBooth: React.SFC<FairBoothProps> = track<FairBoothProps>(props => {
-  return {
-    context_screen: Schema.PageNames.ShowPage,
-    context_screen_owner_slug: props.fairBoothID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Show,
-  }
-})(({ fairBoothID }) => {
+const FairBooth: React.SFC<FairBoothProps> = ({ fairBoothID }) => {
   return <FairBoothRenderer showID={fairBoothID} />
-})
+}
 
 interface FairArtistsProps {
   fairID: string
@@ -227,29 +209,17 @@ interface FairArtworksProps {
   fairID: string
 }
 
-const FairArtworks: React.SFC<FairArtworksProps> = track<FairArtworksProps>(props => {
-  return {
-    context_screen: Schema.PageNames.FairAllArtworksPage,
-    context_screen_owner_slug: props.fairID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  }
-})(({ fairID }) => {
+const FairArtworks: React.SFC<FairArtworksProps> = ({ fairID }) => {
   return <FairArtworksRenderer fairID={fairID} />
-})
+}
 
 interface FairExhibitorsProps {
   fairID: string
 }
 
-const FairExhibitors: React.SFC<FairExhibitorsProps> = track<FairExhibitorsProps>(props => {
-  return {
-    context_screen: Schema.PageNames.FairAllExhibitorsPage,
-    context_screen_owner_slug: props.fairID,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  }
-})(({ fairID }) => {
+const FairExhibitors: React.SFC<FairExhibitorsProps> = ({ fairID }) => {
   return <FairExhibitorsRenderer fairID={fairID} />
-})
+}
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)

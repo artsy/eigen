@@ -11,9 +11,10 @@ const FairSectionBackground = styled(Box)`
 
 export class FairEventSection extends Component<any> {
   renderItem = ({ item }) => {
+    const { node } = item
     return (
       <Box pr={1}>
-        <FairEventSectionCard fair={item} />
+        <FairEventSectionCard fair={node} />
       </Box>
     )
   }
@@ -28,9 +29,9 @@ export class FairEventSection extends Component<any> {
           </Serif>
         </Box>
         <FlatList
-          data={data.filter(fair => Boolean(fair.image))}
+          data={data.filter(fair => Boolean(fair.node.image))}
           renderItem={this.renderItem}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.node.id}
           contentContainerStyle={{ padding: space(2) }}
           horizontal
         />

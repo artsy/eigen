@@ -10,19 +10,19 @@ export class SavedEventSection extends Component<any> {
     const { data } = this.props
     const hasSaves = data.length > 0
     const hasSavesComponent = (
-      <>
+      <Flex flexDirection="row" alignItems="center">
         <PinSavedOn width={30} height={30} />
-        <Sans size="3t" ml={1}>
+        <Sans size="3t" ml={24}>
           {data.length} saved events
         </Sans>
-      </>
+      </Flex>
     )
 
     const hasNoSavesComponent = (
       <>
         <Flex flexDirection="row" alignItems="center">
           <PinSavedOff width={30} height={30} />
-          <Flex ml={1}>
+          <Flex ml={24}>
             <Sans size="3t" color="black60" weight="medium">
               No saved events
             </Sans>
@@ -36,15 +36,15 @@ export class SavedEventSection extends Component<any> {
 
     return (
       <>
-        <Box mx={2}>
-          <Flex flexDirection="row" py={1} m={1} alignItems="center">
+        <Box mx={2} pb={3}>
+          <Flex flexDirection="row" alignItems="center">
             <Logo source={require("../../../../../../images/BMW-logo.jpg")} />
-            <Sans size="3" weight="medium" ml={1}>
+            <Sans size="3" ml={1}>
               Presented in Partnership with BMW
             </Sans>
           </Flex>
         </Box>
-        <Box mx={2} mb={1}>
+        <Box mx={2} mb={2}>
           <SavedBox p={1}>{hasSaves ? hasSavesComponent : hasNoSavesComponent}</SavedBox>
         </Box>
       </>
