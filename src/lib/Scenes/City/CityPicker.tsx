@@ -45,7 +45,7 @@ export class CityPicker extends Component<Props, State> {
   }
 
   render() {
-    const { overlayVisible, selectedCity } = this.state
+    const { selectedCity } = this.state
 
     return (
       <Modal visible={false} animationType="slide" transparent={true}>
