@@ -1,7 +1,7 @@
 import { Box, color, Flex, Sans, Separator, Serif, space } from "@artsy/palette"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
 import React, { Component } from "react"
-import { Modal, NativeModules, ScrollView, TouchableOpacity } from "react-native"
+import { NativeModules, ScrollView, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 import { cityList as cities } from "./cities"
 
