@@ -17,6 +17,8 @@
 @property (nonatomic, readwrite) ARCityComponentViewController *cityVC;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 
+@property (nonatomic, strong) ARCityPickerComponentViewController *cityPickerController;
+
 @end
 
 /*
@@ -24,7 +26,7 @@ This is the top-level Local Discovery component, and should therefore be respons
 displaying appropriate UI (did they accept the permissions prompt? are they need a city?). There are two cases:
 - Show the city picker (they didn't accept the prompt, or they're far away from a city).
 - Show the mapVC and cityVC with the appropriate city.
-We'll need to have an affordance for a user opening the city pciker UI, too. Maybe an NSNotification or something.
+Since this controller already has to do the above logic, having it handle the CityPicker interactions makes sense.
 */
 
 @implementation ARMapContainerViewController
@@ -38,11 +40,10 @@ We'll need to have an affordance for a user opening the city pciker UI, too. May
     self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
     [self.locationManager requestWhenInUseAuthorization];
 
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self showCityPicker];
-    });
-
     __weak typeof(self) sself = self;
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryOpenCityPicker" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        [sself showCityPicker];
+    }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryUserSelectedCity" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         NSInteger cityIndex = [note.userInfo[@"cityIndex"] integerValue];
         [sself userSelectedCityAtIndex:cityIndex];
@@ -93,14 +94,19 @@ We'll need to have an affordance for a user opening the city pciker UI, too. May
 - (void)showCityPicker
 {
     // TODO: Present city picker component in a better way.
-    UIViewController *viewController = [[ARCityPickerComponentViewController alloc] init];
+    self.cityPickerController = [[ARCityPickerComponentViewController alloc] init];
     
-    [self addChildViewController:viewController];
-    [self.view addSubview:viewController.view];
+    [self addChildViewController:self.cityPickerController];
+    [self.view addSubview:self.cityPickerController.view];
     
-    viewController.view.frame = CGRectMake(20, 20, self.view.frame.size.width - 40, self.view.frame.size.height - 40);
-    viewController.view.layer.cornerRadius = 10;
-    viewController.view.clipsToBounds = YES;
+    self.cityPickerController.view.frame = CGRectMake(20, 20, self.view.frame.size.width - 40, self.view.frame.size.height - 40);
+    self.cityPickerController.view.layer.cornerRadius = 10;
+    self.cityPickerController.view.clipsToBounds = YES;
+    self.cityPickerController.view.alpha = 0;
+    
+    [UIView animateWithDuration:0.35 animations:^{
+        self.cityPickerController.view.alpha = 1;
+    }];
 }
 
 - (void)userSelectedCityAtIndex:(NSInteger)cityIndex
@@ -108,6 +114,13 @@ We'll need to have an affordance for a user opening the city pciker UI, too. May
     ARCity *city = [[ARCity cities] objectAtIndex:cityIndex];
     [self.mapVC setProperty:@{ @"lat": @(city.epicenter.latitude), @"lng": @(city.epicenter.longitude) }
                      forKey:@"coordinates"];
+    [UIView animateWithDuration:0.35 animations:^{
+        self.cityPickerController.view.alpha = 0;
+    } completion:^(BOOL finished) {
+        [self.cityPickerController removeFromParentViewController];
+        [self.cityPickerController.view removeFromSuperview];
+        self.cityPickerController = nil;
+    }];
 }
 
 # pragma mark - PulleyDelegate Methods
