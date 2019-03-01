@@ -1,17 +1,19 @@
-import { Box, Flex } from "@artsy/palette"
+import { Box, Flex, Theme } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import React from "react"
-import { Animated, Dimensions, NativeModules, SafeAreaView } from "react-native"
+import { Animated, Dimensions, NativeModules, SafeAreaView, View } from "react-native"
 import { createRefetchContainer, graphql, RelayProp } from "react-relay"
+import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
 
 import { Pin } from "lib/Icons/Pin"
 import { bucketCityResults, BucketResults } from "./Bucket"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
+import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { Tab } from "./types"
+import { Show, Tab } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -21,6 +23,16 @@ const Map = styled(Mapbox.MapView)`
   height: ${Dimensions.get("window").height};
   width: 100%;
 `
+const AnimatedView = animated(View)
+
+const ShowCardContainer = styled(Box)`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 250;
+`
+
 interface Props {
   initialCoordinates?: { lat: number; lng: number }
   viewer: GlobalMap_viewer
@@ -36,7 +48,6 @@ interface State {
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
-
 export class GlobalMap extends React.Component<Props, State> {
   map: Mapbox.MapView
   scaleIn: Animated.Value
@@ -49,6 +60,7 @@ export class GlobalMap extends React.Component<Props, State> {
     { id: "galleries", text: "Galleries" },
     { id: "museums", text: "Museums" },
   ]
+  shows: { [id: string]: Show } = {}
 
   stylesheet = Mapbox.StyleSheet.create({
     symbol: {
@@ -103,19 +115,12 @@ export class GlobalMap extends React.Component<Props, State> {
     })
   }
 
-  onAnnotationSelected(showID: string, feature) {
+  onAnnotationSelected(showID: string) {
     if (this.state.activeShowID === showID) {
       return
     }
-    const previousShowID = this.state.activeShowID
-    this.scaleIn = new Animated.Value(0.6)
 
-    Animated.timing(this.scaleIn, { toValue: 1.0, duration: 200 }).start()
     this.setState({ activeShowID: showID })
-
-    if (previousShowID !== showID) {
-      this.map.moveTo(feature.geometry.coordinates, 500)
-    }
   }
 
   onAnnotationDeselected(showID: string) {
@@ -125,8 +130,6 @@ export class GlobalMap extends React.Component<Props, State> {
       nextState.activeShowID = null
     }
 
-    this.scaleOut = new Animated.Value(1)
-    Animated.timing(this.scaleOut, { toValue: 0.6, duration: 200 }).start()
     this.setState(nextState)
   }
 
@@ -142,29 +145,56 @@ export class GlobalMap extends React.Component<Props, State> {
             const { id, location } = node
             const { lat, lng } = location.coordinates
             const selected = id === this.state.activeShowID
-            const animationStyle = selected
-              ? {
-                  transform: [{ scale: this.scaleIn }],
-                }
-              : {}
+
+            this.shows[id] = node
 
             return (
               <Mapbox.PointAnnotation
                 key={id}
                 id={id}
                 selected={selected}
-                onSelected={feature => this.onAnnotationSelected(id, feature)}
+                onSelected={() => this.onAnnotationSelected(id)}
                 onDeselected={() => this.onAnnotationDeselected(id)}
                 coordinate={[lng, lat]}
               >
-                <Animated.View style={[animationStyle]}>
-                  <Pin selected={selected} />
-                </Animated.View>
+                <Pin selected={selected} />
               </Mapbox.PointAnnotation>
             )
           })
           .filter(Boolean)
       : []
+  }
+
+  renderShowCard() {
+    const id = this.state.activeShowID
+
+    const show = this.shows[id]
+
+    return (
+      <Spring
+        native
+        from={{ bottom: -150, progress: 0, opacity: 0 }}
+        to={!!id ? { bottom: 0, progress: 1, opacity: 1.0 } : { bottom: -150, progress: 0, opacity: 0 }}
+        config={config.stiff}
+        precision={1}
+      >
+        {({ bottom, opacity }) => (
+          <AnimatedView
+            style={{
+              bottom,
+              left: 0,
+              right: 0,
+              height: 106,
+              opacity,
+            }}
+          >
+            <Theme>
+              <ShowCard show={show as any} />
+            </Theme>
+          </AnimatedView>
+        )}
+      </Spring>
+    )
   }
 
   render() {
@@ -214,6 +244,7 @@ export class GlobalMap extends React.Component<Props, State> {
                 />
               </Box>
             </Flex>
+            <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
           </SafeAreaView>
           {this.renderAnnotations()}
         </Map>

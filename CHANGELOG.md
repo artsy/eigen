@@ -20,6 +20,7 @@
 - Fixes fair view crash on fairs with no profiles - ash
 - Adds CityTab stying and passes CityName to AllEvents view - kieran
 - Fixes some analytics tracking events - luc
+- Displays ShowCard when pin is tapped on Map view - luc
 
 ### 1.8.7
 
