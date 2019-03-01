@@ -31,6 +31,20 @@ fragment FairHeader_fair on Fair {
     artists
     partners
   }
+  followed_content {
+    artists {
+      name
+      href
+      id
+      _id
+      __id
+    }
+    galleries {
+      _id
+      name
+      __id
+    }
+  }
   partner_names: shows_connection(first: 2) {
     edges {
       node {
@@ -142,12 +156,19 @@ v6 = {
   "name": "_id",
   "args": null,
   "storageKey": null
-};
+},
+v7 = [
+  v3,
+  v4,
+  v5,
+  v6,
+  v1
+];
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "indexTestsFairHeaderQuery",
-  "id": "2b909aec32b8ba9ac10d29e8490469d4",
+  "id": "485f250cf4ac0645fb0dd8447519b485",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -216,13 +237,7 @@ return {
                     "args": null,
                     "concreteType": "Artist",
                     "plural": false,
-                    "selections": [
-                      v3,
-                      v4,
-                      v5,
-                      v6,
-                      v1
-                    ]
+                    "selections": v7
                   }
                 ]
               }
@@ -252,6 +267,41 @@ return {
                 "name": "partners",
                 "args": null,
                 "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "followed_content",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "FollowedContent",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "artists",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Artist",
+                "plural": true,
+                "selections": v7
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "galleries",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Partner",
+                "plural": true,
+                "selections": [
+                  v6,
+                  v3,
+                  v1
+                ]
               }
             ]
           },
