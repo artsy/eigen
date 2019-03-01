@@ -1,4 +1,4 @@
-import { Box, Separator, Serif, Spacer } from "@artsy/palette"
+import { Box, Separator, Serif, Spacer, Theme } from "@artsy/palette"
 import { MoreInfo_show } from "__generated__/MoreInfo_show.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { Schema, screenTrack, track } from "lib/utils/track"
@@ -97,25 +97,24 @@ export class MoreInfo extends React.Component<Props, State> {
   }
 
   render() {
-    const topMargin = 54 // Palette's space() is out of date.
     return (
-      <FlatList
-        data={this.state.sections}
-        ListHeaderComponent={
-          <>
-            <ListHeaderText size="8" mt={12} px={2}>
-              About the show
-            </ListHeaderText>
-            {this.renderItemSeparator()}
-          </>
-        }
-        ListFooterComponent={<Spacer pb={4} />}
-        ItemSeparatorComponent={this.renderItemSeparator}
-        renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
-        keyExtractor={(item, index) => item.type + String(index)}
-        contentInset={{ top: topMargin }}
-        contentOffset={{ x: 0, y: -topMargin }}
-      />
+      <Theme>
+        <FlatList
+          data={this.state.sections}
+          ListHeaderComponent={
+            <>
+              <ListHeaderText size="8" mt={12} px={2}>
+                About the show
+              </ListHeaderText>
+              {this.renderItemSeparator()}
+            </>
+          }
+          ListFooterComponent={<Spacer pb={4} />}
+          ItemSeparatorComponent={this.renderItemSeparator}
+          renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+          keyExtractor={(item, index) => item.type + String(index)}
+        />
+      </Theme>
     )
   }
 }

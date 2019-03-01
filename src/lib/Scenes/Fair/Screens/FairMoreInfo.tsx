@@ -1,4 +1,4 @@
-import { Box, Separator, Serif, Spacer } from "@artsy/palette"
+import { Box, Separator, Serif, Spacer, Theme } from "@artsy/palette"
 import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -138,26 +138,25 @@ export class FairMoreInfo extends React.Component<Props, State> {
   }
 
   render() {
-    const topMargin = 54 // Palette's space() is out of date.
     return (
-      <FlatList
-        data={this.state.sections}
-        renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
-        ListHeaderComponent={
-          <>
-            <ListHeaderText size="8" mt={12} px={2}>
-              About the fair
-            </ListHeaderText>
-            <Box py={3} px={2}>
-              <Separator />
-            </Box>
-          </>
-        }
-        ItemSeparatorComponent={this.renderItemSeparator}
-        keyExtractor={(item, index) => item.type + String(index)}
-        contentInset={{ top: topMargin }}
-        contentOffset={{ x: 0, y: -topMargin }}
-      />
+      <Theme>
+        <FlatList
+          data={this.state.sections}
+          renderItem={item => <Box px={2}>{this.renderItem(item)}</Box>}
+          ListHeaderComponent={
+            <>
+              <ListHeaderText size="8" mt={12} px={2}>
+                About the fair
+              </ListHeaderText>
+              <Box py={3} px={2}>
+                <Separator />
+              </Box>
+            </>
+          }
+          ItemSeparatorComponent={this.renderItemSeparator}
+          keyExtractor={(item, index) => item.type + String(index)}
+        />
+      </Theme>
     )
   }
 }

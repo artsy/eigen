@@ -89,6 +89,7 @@ fragment ShowArtistsPreview_show on Show {
   _id
   id
   artists {
+    _id
     id
     href
     ...ArtistListItem_artist
@@ -98,6 +99,8 @@ fragment ShowArtistsPreview_show on Show {
 }
 
 fragment ShowArtists_show on Show {
+  _id
+  id
   artists_grouped_by_name {
     letter
     items {
@@ -112,6 +115,8 @@ fragment ShowArtists_show on Show {
 
 fragment ShowArtworks_show on Show {
   __id
+  id
+  _id
   filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
     __id
@@ -553,7 +558,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairBoothTestsQuery",
-  "id": "516efdffeabec7bb2ede1094988f3c3b",
+  "id": "97533b7489bffa28e892cc6919b4d3c8",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -735,10 +740,10 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
+              v7,
               v3,
               v8,
               v1,
-              v7,
               v4,
               v9,
               v24,

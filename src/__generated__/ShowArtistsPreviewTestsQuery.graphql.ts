@@ -27,6 +27,7 @@ fragment ShowArtistsPreview_show on Show {
   _id
   id
   artists {
+    _id
     id
     href
     ...ArtistListItem_artist
@@ -84,7 +85,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowArtistsPreviewTestsQuery",
-  "id": "cb77cf332a729918d5455f909a2f17e5",
+  "id": "63a12274f0370ce118d65ba142e8f113",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -138,6 +139,7 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
+              v2,
               v3,
               {
                 "kind": "ScalarField",
@@ -147,7 +149,6 @@ return {
                 "storageKey": null
               },
               v1,
-              v2,
               {
                 "kind": "ScalarField",
                 "alias": null,

@@ -8,6 +8,7 @@ export type ShowArtistsPreview_show = {
     readonly _id: string;
     readonly id: string;
     readonly artists: ReadonlyArray<({
+        readonly _id: string;
         readonly id: string;
         readonly href: string | null;
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
@@ -21,11 +22,18 @@ const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
 v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
@@ -39,14 +47,8 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "_id",
-      "args": null,
-      "storageKey": null
-    },
     v0,
+    v1,
     {
       "kind": "LinkedField",
       "alias": null,
@@ -57,6 +59,7 @@ return {
       "plural": true,
       "selections": [
         v0,
+        v1,
         {
           "kind": "ScalarField",
           "alias": null,
@@ -69,12 +72,12 @@ return {
           "name": "ArtistListItem_artist",
           "args": null
         },
-        v1
+        v2
       ]
     },
-    v1
+    v2
   ]
 };
 })();
-(node as any).hash = '6e0235fdd0006f1a08ab7690b60eff86';
+(node as any).hash = '5d26e87b1a942e196813aa6888280b82';
 export default node;

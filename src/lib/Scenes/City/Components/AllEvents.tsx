@@ -1,4 +1,4 @@
-import { Box, Separator } from "@artsy/palette"
+import { Box, Separator, Serif } from "@artsy/palette"
 import { EventSection } from "lib/Scenes/City/Components/EventSection"
 import { BucketKey, BucketResults } from "lib/Scenes/Map/Bucket"
 import React from "react"
@@ -9,6 +9,7 @@ import { SavedEventSection } from "./SavedEventSection"
 interface Props {
   currentBucket: BucketKey
   buckets: BucketResults
+  cityName: string
 }
 
 interface State {
@@ -28,8 +29,13 @@ export class AllEvents extends React.Component<Props, State> {
   }
 
   updateSections = () => {
-    const { buckets } = this.props
+    const { buckets, cityName } = this.props
     const sections = []
+
+    sections.push({
+      type: "header",
+      data: `${cityName} City Guide`,
+    })
 
     if (buckets.saved) {
       sections.push({
@@ -59,15 +65,33 @@ export class AllEvents extends React.Component<Props, State> {
       })
     }
 
+    if (buckets.closing && buckets.closing.length) {
+      sections.push({
+        type: "closing",
+        data: buckets.closing,
+      })
+    }
+
+    if (buckets.opening && buckets.opening.length) {
+      sections.push({
+        type: "opening",
+        data: buckets.opening,
+      })
+    }
+
     this.setState({ sections })
   }
 
   renderItemSeparator = ({ leadingItem }) => {
-    return (
-      <Box py={1} px={2}>
-        {["fairs", "saved"].indexOf(leadingItem.type) === -1 && <Separator />}
-      </Box>
-    )
+    if (["fairs", "saved", "header"].indexOf(leadingItem.type) === -1) {
+      return (
+        <Box py={1} px={2}>
+          <Separator />
+        </Box>
+      )
+    } else {
+      return null
+    }
   }
 
   renderItem = ({ item: { data, type } }) => {
@@ -78,8 +102,18 @@ export class AllEvents extends React.Component<Props, State> {
         return <EventSection title="Gallery shows" data={data} />
       case "museums":
         return <EventSection title="Museum shows" data={data} />
+      case "opening":
+        return <EventSection title="Opening shows" data={data} />
+      case "closing":
+        return <EventSection title="Closing shows" data={data} />
       case "saved":
         return <SavedEventSection data={data} />
+      case "header":
+        return (
+          <Box px={2} pt={4}>
+            {data && <Serif size="8">{data}</Serif>}
+          </Box>
+        )
       default:
         return null
     }

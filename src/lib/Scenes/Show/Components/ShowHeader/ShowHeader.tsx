@@ -115,6 +115,7 @@ export class ShowHeader extends React.Component<Props, State> {
     const id = args[2]
     return {
       action_name: Schema.ActionNames.ContextualArtist,
+      action_type: Schema.ActionTypes.Tap,
       owner_id: id,
       owner_slug: slug,
       owner_type: Schema.OwnerEntityTypes.Artist,

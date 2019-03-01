@@ -1,14 +1,15 @@
-import { Box, color, Flex, Serif, Theme } from "@artsy/palette"
+import { Box, color, Flex, Theme } from "@artsy/palette"
 import React, { Component } from "react"
 import { ScrollView } from "react-native"
+import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { BucketKey, BucketResults } from "../Map/Bucket"
 import { FiltersBar } from "../Map/Components/FiltersBar"
 import { EventEmitter } from "../Map/EventEmitter"
 import { Tab } from "../Map/types"
-import { CityOverlay } from "./CityOverlay"
+import { CityPicker } from "./CityPicker"
 import { AllEvents } from "./Components/AllEvents"
-
+import { CityTab } from "./Components/CityTab"
 interface Props {
   verticalMargin?: number
   isDrawerOpen?: boolean
@@ -17,12 +18,16 @@ interface Props {
 interface State {
   buckets?: BucketResults
   filter: Tab
+  relay: RelayProp
+  cityName: string
 }
 
 export class CityView extends Component<Props, State> {
   state = {
     buckets: null,
     filter: { id: "all", text: "All events" },
+    relay: null,
+    cityName: "",
   }
   scrollViewVerticalStart = 0
   scrollView: ScrollView = null
@@ -36,14 +41,27 @@ export class CityView extends Component<Props, State> {
   ]
 
   componentWillMount() {
-    EventEmitter.subscribe("map:change", ({ filter, buckets }: { filter: Tab; buckets: BucketResults }) => {
-      console.log(buckets)
-
-      this.setState({
-        buckets,
+    EventEmitter.subscribe(
+      "map:change",
+      ({
         filter,
-      })
-    })
+        buckets,
+        cityName,
+        relay,
+      }: {
+        filter: Tab
+        buckets: BucketResults
+        cityName: string
+        relay: RelayProp
+      }) => {
+        this.setState({
+          buckets,
+          filter,
+          cityName,
+          relay,
+        })
+      }
+    )
   }
 
   componentDidUpdate() {
@@ -53,7 +71,7 @@ export class CityView extends Component<Props, State> {
   }
 
   render() {
-    const { buckets, filter } = this.state
+    const { buckets, filter, cityName } = this.state
     const { isDrawerOpen, verticalMargin } = this.props
     // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
@@ -61,11 +79,15 @@ export class CityView extends Component<Props, State> {
       buckets && (
         <Theme>
           <>
-            <CityOverlay overlayVisible={true}>
+            <CityPicker overlayVisible={true}>
               <Box>
                 <Flex py={1} alignItems="center">
                   <Handle />
                 </Flex>
+                <FiltersBar
+                  tabs={this.filters}
+                  goToPage={activeIndex => EventEmitter.dispatch("filters:change", activeIndex)}
+                />
                 <ScrollView
                   contentInset={{ bottom: bottomInset }}
                   onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
@@ -76,23 +98,19 @@ export class CityView extends Component<Props, State> {
                     }
                   }}
                 >
-                  <Box>
-                    <FiltersBar
-                      tabs={this.filters}
-                      goToPage={activeIndex => EventEmitter.dispatch("filters:change", activeIndex)}
-                    />
-                  </Box>
                   {(() => {
                     switch (filter && filter.id) {
                       case "all":
-                        return <AllEvents currentBucket={filter.id as BucketKey} buckets={buckets} />
+                        return (
+                          <AllEvents cityName={cityName} currentBucket={filter.id as BucketKey} buckets={buckets} />
+                        )
                       default:
-                        return <Serif size="3">Not implemented yet.</Serif>
+                        return <CityTab bucket={buckets[filter.id]} type={filter.text} relay={this.state.relay} />
                     }
                   })()}
                 </ScrollView>
               </Box>
-            </CityOverlay>
+            </CityPicker>
           </>
         </Theme>
       )

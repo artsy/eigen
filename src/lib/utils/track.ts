@@ -107,6 +107,8 @@ export namespace Schema {
     HomeForYou = "HomeForYou",
     HomeAuctions = "HomeAuctions",
     SavesAndFollows = "SavesAndFollows",
+    ShowAllArtists = "ShowAllArtists",
+    ShowAllArtworks = "ShowAllArtworks",
   }
 
   export enum OwnerEntityTypes {
@@ -199,8 +201,6 @@ export namespace Schema {
     /**
      * Show flow
      */
-    ShowAllArtists = "showAllArtists",
-    ShowAllArtworks = "showAllArtworks",
     SingleShowMap = "singleShowMap",
     CarouselSwipe = "carouselSwipe",
     SaveShow = "saveShow",

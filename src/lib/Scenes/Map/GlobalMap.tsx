@@ -2,8 +2,8 @@ import { Box, Flex } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import React from "react"
-import { Animated, Button, Dimensions, Easing, NativeModules, SafeAreaView } from "react-native"
-import { createRefetchContainer, graphql } from "react-relay"
+import { Animated, Dimensions, Easing, NativeModules, SafeAreaView } from "react-native"
+import { createRefetchContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
 import { Pin } from "lib/Icons/Pin"
@@ -25,6 +25,7 @@ interface Props {
   initialCoordinates?: { lat: number; lng: number }
   hideMapButtons: boolean
   viewer: GlobalMap_viewer
+  relay: RelayProp
 }
 interface State {
   activeIndex: number
@@ -121,7 +122,15 @@ export class GlobalMap extends React.Component<Props, State> {
   emitFilteredBucketResults() {
     // TODO: map region filtering can live here.
     const filter = this.filters[this.state.activeIndex]
-    EventEmitter.dispatch("map:change", { filter, buckets: this.state.bucketResults })
+    const {
+      city: { name: cityName },
+    } = this.props.viewer
+    EventEmitter.dispatch("map:change", {
+      filter,
+      buckets: this.state.bucketResults,
+      cityName,
+      relay: this.props.relay,
+    })
   }
 
   onAnnotationSelected(showID: string, feature) {
@@ -191,7 +200,6 @@ export class GlobalMap extends React.Component<Props, State> {
   render() {
     const { city } = this.props.viewer
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || city.coordinates
-    const { hideMapButtons } = this.props
 
     return (
       <Flex mb={0.5} flexDirection="column">
@@ -262,7 +270,12 @@ export const GlobalMapContainer = createRefetchContainer(
           edges {
             node {
               id
+              _id
+              __id
               name
+              status
+              href
+              is_followed
               cover_image {
                 url
               }
@@ -293,6 +306,10 @@ export const GlobalMapContainer = createRefetchContainer(
             node {
               id
               name
+
+              counts {
+                partners
+              }
 
               location {
                 coordinates {
