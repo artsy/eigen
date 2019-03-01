@@ -20,6 +20,7 @@
 - Fixes fair view crash on fairs with no profiles - ash
 - Adds CityTab stying and passes CityName to AllEvents view - kieran
 - Fixes some analytics tracking events - luc
+- Adds styled city picker modal - ashley
 
 ### 1.8.7
 
