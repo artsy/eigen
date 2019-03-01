@@ -111,7 +111,12 @@ Since this controller already has to do the above logic, having it handle the Ci
         self.cityPickerController.view.alpha = 1;
         self.cityPickerController.view.transform = CGAffineTransformIdentity;
         
-        self.cityVC.view.transform = CGAffineTransformMakeTranslation(0, self.cityVC.view.frame.size.height);
+        // PulleyViewController internally modifies the transform of its entire drawer view hierarchy, so we can't use it.
+        // To get the drawer to "slide down", we will move the entire PulleyViewController's view down and then move just
+        // its map view (its primaryContentViewController child) _up_ to offset the move _down_.
+        CGFloat heightDisplacement = self.cityVC.view.frame.size.height;
+        self.bottomSheetVC.view.transform = CGAffineTransformMakeTranslation(0, heightDisplacement);
+        self.bottomSheetVC.primaryContentViewController.view.transform = CGAffineTransformMakeTranslation(0, -heightDisplacement);
     }];
 }
 
@@ -125,7 +130,8 @@ Since this controller already has to do the above logic, having it handle the Ci
     [UIView animateWithDuration:0.35 animations:^{
         self.cityPickerController.view.alpha = 0;
         
-        self.cityVC.view.transform = CGAffineTransformIdentity;
+        self.bottomSheetVC.view.transform = CGAffineTransformIdentity;
+        self.bottomSheetVC.primaryContentViewController.view.transform = CGAffineTransformIdentity;
     } completion:^(BOOL finished) {
         [self.cityPickerController removeFromParentViewController];
         [self.cityPickerController.view removeFromSuperview];
