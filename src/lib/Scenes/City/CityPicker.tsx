@@ -11,6 +11,7 @@ interface State {
 
 interface Props {
   overlayVisible: boolean
+  _mounted: boolean
 }
 
 const cityList = ["New York", "Los Angeles", "London", "Berlin", "Paris", "Hong Kong"]
@@ -20,11 +21,28 @@ export class CityPicker extends Component<Props, State> {
     selectedCity: null,
   }
 
+  _mounted = null
+
+  componentDidMount() {
+    this._mounted = true
+  }
+
+  componentWillUnmount() {
+    this._mounted = false
+  }
+
   selectCity(city) {
+    const isCityPickerMounted = this._mounted
+
     this.setState({ selectedCity: city })
-    setTimeout(() => {
-      this.setState({ overlayVisible: false })
-    }, 1000)
+
+    // checks that comp is mounted before calling timeout method here to prevent timer
+    // from firing after component is unmounted
+    if (isCityPickerMounted) {
+      setTimeout(() => {
+        this.setState({ overlayVisible: false })
+      }, 1000)
+    }
   }
 
   render() {
