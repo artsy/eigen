@@ -18,6 +18,7 @@
 @property (nonatomic, strong) CLLocationManager *locationManager;
 
 @property (nonatomic, strong) ARCityPickerComponentViewController *cityPickerController;
+@property (nonatomic, strong) UIView *cityPickerContainerView; // Need a view to have its own shadow.
 
 @end
 
@@ -93,28 +94,37 @@ Since this controller already has to do the above logic, having it handle the Ci
 
 - (void)showCityPicker
 {
-    self.cityPickerController = [[ARCityPickerComponentViewController alloc] init];
-    
     [self.mapVC setProperty:@(YES) forKey:@"hideMapButtons"];
     
-    [self addChildViewController:self.cityPickerController];
-    [self.view addSubview:self.cityPickerController.view];
-    
     const CGFloat MARGIN = 20;
-    self.cityPickerController.view.frame = CGRectMake(MARGIN, MARGIN, self.view.frame.size.width - MARGIN*2, self.view.frame.size.height - MARGIN*2);
-    self.cityPickerController.view.layer.cornerRadius = 10;
+    
+    self.cityPickerContainerView = [[UIView alloc] initWithFrame:CGRectMake(MARGIN, MARGIN, self.view.frame.size.width - MARGIN*2, self.view.frame.size.height - MARGIN*2)];
+    [self.view addSubview:self.cityPickerContainerView];
+    self.cityPickerContainerView.alpha = 0;
+    self.cityPickerContainerView.transform = CGAffineTransformMakeScale(0.8, 0.8);
+    
+    self.cityPickerController = [[ARCityPickerComponentViewController alloc] init];
+    [self addChildViewController:self.cityPickerController];
+    [self.cityPickerContainerView addSubview:self.cityPickerController.view];
+    self.cityPickerController.view.frame = self.cityPickerContainerView.bounds;
     self.cityPickerController.view.clipsToBounds = YES;
-    self.cityPickerController.view.alpha = 0;
-    self.cityPickerController.view.transform = CGAffineTransformMakeScale(0.8, 0.8);
+    self.cityPickerController.view.layer.cornerRadius = 10;
+    
+    CALayer *layer = self.cityPickerContainerView.layer;
+    layer.masksToBounds = NO;
+    layer.shadowColor = UIColor.blackColor.CGColor;
+    layer.shadowRadius = 10;
+    layer.shadowOpacity = 0.3;
     
     [UIView animateWithDuration:0.35 animations:^{
-        self.cityPickerController.view.alpha = 1;
-        self.cityPickerController.view.transform = CGAffineTransformIdentity;
+        self.cityPickerContainerView.alpha = 1;
+        self.cityPickerContainerView.transform = CGAffineTransformIdentity;
         
         // PulleyViewController internally modifies the transform of its entire drawer view hierarchy, so we can't use it.
         // To get the drawer to "slide down", we will move the entire PulleyViewController's view down and then move just
         // its map view (its primaryContentViewController child) _up_ to offset the move _down_.
-        CGFloat heightDisplacement = self.cityVC.view.frame.size.height;
+        CGPoint drawerPosition =  [self.view convertPoint:self.cityVC.view.bounds.origin fromView:self.cityVC.view];
+        CGFloat heightDisplacement = self.view.bounds.size.height - drawerPosition.y;
         self.bottomSheetVC.view.transform = CGAffineTransformMakeTranslation(0, heightDisplacement);
         self.bottomSheetVC.primaryContentViewController.view.transform = CGAffineTransformMakeTranslation(0, -heightDisplacement);
     }];
@@ -128,14 +138,15 @@ Since this controller already has to do the above logic, having it handle the Ci
     [self.mapVC setProperty:@(NO) forKey:@"hideMapButtons"];
     
     [UIView animateWithDuration:0.35 animations:^{
-        self.cityPickerController.view.alpha = 0;
+        self.cityPickerContainerView.alpha = 0;
         
         self.bottomSheetVC.view.transform = CGAffineTransformIdentity;
         self.bottomSheetVC.primaryContentViewController.view.transform = CGAffineTransformIdentity;
     } completion:^(BOOL finished) {
         [self.cityPickerController removeFromParentViewController];
-        [self.cityPickerController.view removeFromSuperview];
+        [self.cityPickerContainerView removeFromSuperview];
         self.cityPickerController = nil;
+        self.cityPickerContainerView = nil;
     }];
 }
 
