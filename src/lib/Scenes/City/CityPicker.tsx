@@ -11,7 +11,6 @@ interface State {
 
 interface Props {
   overlayVisible: boolean
-  _mounted: boolean
 }
 
 const cityList = ["New York", "Los Angeles", "London", "Berlin", "Paris", "Hong Kong"]
