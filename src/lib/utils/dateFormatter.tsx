@@ -29,5 +29,3 @@ export const dateRange = (startAt, endAt) => {
     }
   }
 }
-
-// YYYY
