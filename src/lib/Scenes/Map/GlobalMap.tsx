@@ -258,6 +258,9 @@ export class GlobalMap extends React.Component<Props, State> {
             })
           }}
           onPress={async event => {
+            this.setState({
+              activeShowID: null,
+            })
             const { screenPointX, screenPointY } = event.properties
             const screenCoords = [screenPointX, screenPointY]
             const features = await this.map.queryRenderedFeaturesAtPoint(screenCoords, ["==", "type", "Cluster"])
