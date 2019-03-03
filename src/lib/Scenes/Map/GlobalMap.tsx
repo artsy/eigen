@@ -331,8 +331,15 @@ export class GlobalMap extends React.Component<Props, State> {
     })
     const zoom = await this.map.getZoom()
     const [lat, lng] = coordinates
-    const data = this.clusterEngine.getTile(zoom, lng, lat)
-    console.log(data)
+    try {
+      // Todo: finish setting getting points (shows) within a cluster
+      // In order to show multiple cards in scroll view when a user taps
+      // on a cluster
+      const data = this.clusterEngine.getTile(zoom, lng, lat)
+      console.log(data)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   updateDrawerPosition(position: DrawerPosition) {
