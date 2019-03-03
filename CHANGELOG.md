@@ -22,6 +22,7 @@
 - Fixes some analytics tracking events - luc
 - Displays ShowCard when pin is tapped on Map view - luc
 - Adds styled city picker modal - ashley
+- Implements clustering of nearby shows - luc
 
 ### 1.8.7
 
