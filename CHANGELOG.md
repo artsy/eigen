@@ -21,6 +21,7 @@
 - Adds CityTab stying and passes CityName to AllEvents view - kieran
 - Fixes some analytics tracking events - luc
 - Adds styled city picker modal - ashley
+- Adds BMW art guide to view - kieran
 
 ### 1.8.7
 
