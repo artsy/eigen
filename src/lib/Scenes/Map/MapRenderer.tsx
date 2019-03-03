@@ -7,7 +7,7 @@ import { Coordinates } from "./types"
 
 // Are you seeing "cannot read .fairs of null"? You might need to set your simulator location.
 
-export const MapRenderer = ({ coords }: { coords: Coordinates }) => {
+export const MapRenderer = ({ coords, hideMapButtons }: { coords: Coordinates; hideMapButtons: boolean }) => {
   return (
     <QueryRenderer<MapRendererQuery>
       environment={defaultEnvironment}
@@ -23,7 +23,7 @@ export const MapRenderer = ({ coords }: { coords: Coordinates }) => {
       }}
       render={({ props }) => {
         if (props) {
-          return <GlobalMap {...props as any} initialCoordinates={coords} />
+          return <GlobalMap {...props as any} initialCoordinates={coords} hideMapButtons={hideMapButtons} />
         }
 
         return null

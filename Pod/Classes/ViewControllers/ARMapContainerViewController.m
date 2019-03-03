@@ -1,25 +1,54 @@
 #import "ARMapContainerViewController.h"
 #import "ARMapComponentViewController.h"
 #import "ARCityComponentViewController.h"
+#import "ARCityPickerComponentViewController.h"
 #import "ARComponentViewController.h"
+#import "ARCity.h"
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @import Pulley;
+@import CoreLocation;
 
-@interface ARMapContainerViewController () <PulleyDelegate, PulleyDrawerViewControllerDelegate>
+@interface ARMapContainerViewController () <PulleyDelegate, PulleyDrawerViewControllerDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, readwrite) PulleyViewController *bottomSheetVC;
 @property (nonatomic, readwrite) ARMapComponentViewController *mapVC;
 @property (nonatomic, readwrite) ARCityComponentViewController *cityVC;
+@property (nonatomic, strong) CLLocationManager *locationManager;
+
+@property (nonatomic, strong) ARCityPickerComponentViewController *cityPickerController;
+@property (nonatomic, strong) UIView *cityPickerContainerView; // Need a view to have its own shadow.
 
 @end
+
+/*
+This is the top-level Local Discovery component, and should therefore be responsible for checking a user's location and
+displaying appropriate UI (did they accept the permissions prompt? are they need a city?). There are two cases:
+- Show the city picker (they didn't accept the prompt, or they're far away from a city).
+- Show the mapVC and cityVC with the appropriate city.
+Since this controller already has to do the above logic, having it handle the CityPicker interactions makes sense.
+*/
 
 @implementation ARMapContainerViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
+    [self.locationManager requestWhenInUseAuthorization];
+
+    __weak typeof(self) sself = self;
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryOpenCityPicker" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        [sself showCityPicker];
+    }];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryUserSelectedCity" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        NSInteger cityIndex = [note.userInfo[@"cityIndex"] integerValue];
+        [sself userSelectedCityAtIndex:cityIndex];
+    }];
 
     self.mapVC = [[ARMapComponentViewController alloc] init];
     self.cityVC = [[ARCityComponentViewController alloc] init];
@@ -36,6 +65,89 @@
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleDefault;
+}
+
+- (void)userSuppliedLocation:(CLLocation *)userLocation
+{
+    const NSInteger CITY_RADIUS_M = 100 * 1000; // 100km
+    
+    ARCity *closestCity = [[[ARCity cities] sortedArrayUsingComparator:^NSComparisonResult(ARCity *_Nonnull lhs, ARCity *_Nonnull rhs) {
+        CLLocation *lhsLocation = [[CLLocation alloc] initWithLatitude:lhs.epicenter.latitude longitude:lhs.epicenter.longitude];
+        CLLocation *rhsLocation = [[CLLocation alloc] initWithLatitude:rhs.epicenter.latitude longitude:rhs.epicenter.longitude];
+        if ([lhsLocation distanceFromLocation:userLocation] < [rhsLocation distanceFromLocation:userLocation]) {
+            return NSOrderedAscending;
+        } else {
+            return NSOrderedDescending;
+        }
+    }] firstObject];
+    
+    CLLocation *closestCityLocation = [[CLLocation alloc] initWithLatitude:closestCity.epicenter.latitude longitude:closestCity.epicenter.longitude];
+    if ([closestCityLocation distanceFromLocation:userLocation] < CITY_RADIUS_M) {
+        // User is within radius to city.
+        [self.mapVC setProperty:@{ @"lat": @(closestCity.epicenter.latitude), @"lng": @(closestCity.epicenter.longitude) }
+                         forKey:@"coordinates"];
+    } else {
+        // User is too far away from any city.
+        [self showCityPicker];
+    }
+}
+
+- (void)showCityPicker
+{
+    [self.mapVC setProperty:@(YES) forKey:@"hideMapButtons"];
+    
+    const CGFloat MARGIN = 20;
+    
+    self.cityPickerContainerView = [[UIView alloc] initWithFrame:CGRectMake(MARGIN, MARGIN, self.view.frame.size.width - MARGIN*2, self.view.frame.size.height - MARGIN*2)];
+    [self.view addSubview:self.cityPickerContainerView];
+    self.cityPickerContainerView.alpha = 0;
+    self.cityPickerContainerView.transform = CGAffineTransformMakeScale(0.8, 0.8);
+    
+    self.cityPickerController = [[ARCityPickerComponentViewController alloc] init];
+    [self addChildViewController:self.cityPickerController];
+    [self.cityPickerContainerView addSubview:self.cityPickerController.view];
+    self.cityPickerController.view.frame = self.cityPickerContainerView.bounds;
+    self.cityPickerController.view.clipsToBounds = YES;
+    self.cityPickerController.view.layer.cornerRadius = 10;
+    
+    CALayer *layer = self.cityPickerContainerView.layer;
+    layer.masksToBounds = NO;
+    layer.shadowColor = UIColor.blackColor.CGColor;
+    layer.shadowRadius = 10;
+    layer.shadowOpacity = 0.3;
+    
+    [UIView animateWithDuration:0.35 animations:^{
+        self.cityPickerContainerView.alpha = 1;
+        self.cityPickerContainerView.transform = CGAffineTransformIdentity;
+        
+        // PulleyViewController internally modifies the transform of its entire drawer view hierarchy, so we can't use it.
+        // To get the drawer to "slide down", we will move the entire PulleyViewController's view down and then move just
+        // its map view (its primaryContentViewController child) _up_ to offset the move _down_.
+        CGPoint drawerPosition =  [self.view convertPoint:self.cityVC.view.bounds.origin fromView:self.cityVC.view];
+        CGFloat heightDisplacement = self.view.bounds.size.height - drawerPosition.y;
+        self.bottomSheetVC.view.transform = CGAffineTransformMakeTranslation(0, heightDisplacement);
+        self.bottomSheetVC.primaryContentViewController.view.transform = CGAffineTransformMakeTranslation(0, -heightDisplacement);
+    }];
+}
+
+- (void)userSelectedCityAtIndex:(NSInteger)cityIndex
+{
+    ARCity *city = [[ARCity cities] objectAtIndex:cityIndex];
+    [self.mapVC setProperty:@{ @"lat": @(city.epicenter.latitude), @"lng": @(city.epicenter.longitude) }
+                     forKey:@"coordinates"];
+    [self.mapVC setProperty:@(NO) forKey:@"hideMapButtons"];
+    
+    [UIView animateWithDuration:0.35 animations:^{
+        self.cityPickerContainerView.alpha = 0;
+        
+        self.bottomSheetVC.view.transform = CGAffineTransformIdentity;
+        self.bottomSheetVC.primaryContentViewController.view.transform = CGAffineTransformIdentity;
+    } completion:^(BOOL finished) {
+        [self.cityPickerController removeFromParentViewController];
+        [self.cityPickerContainerView removeFromSuperview];
+        self.cityPickerController = nil;
+        self.cityPickerContainerView = nil;
+    }];
 }
 
 # pragma mark - PulleyDelegate Methods
@@ -56,6 +168,25 @@
 - (BOOL)fullBleed
 {
     return YES;
+}
+
+#pragma mark - CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        [manager startUpdatingLocation];
+    } else if (status == kCLAuthorizationStatusNotDetermined) {
+        // nop, don't show city picker.
+    } else {
+        [self showCityPicker];
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
+{
+    [self userSuppliedLocation:locations.lastObject];
+    [manager stopUpdatingLocation];
 }
 
 @end

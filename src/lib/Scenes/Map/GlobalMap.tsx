@@ -2,7 +2,7 @@ import { Box, Flex, Theme } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import React from "react"
-import { Animated, Dimensions, NativeModules, SafeAreaView, View } from "react-native"
+import { Animated, Dimensions, Easing, NativeModules, SafeAreaView, View } from "react-native"
 import { createRefetchContainer, graphql, RelayProp } from "react-relay"
 import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
@@ -36,6 +36,7 @@ const ShowCardContainer = styled(Box)`
 
 interface Props {
   initialCoordinates?: { lat: number; lng: number }
+  hideMapButtons: boolean
   viewer: GlobalMap_viewer
   relay: RelayProp
 }
@@ -50,9 +51,26 @@ interface State {
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
 
+const ButtonAnimation = {
+  yDelta: -200,
+  duration: 350,
+  easing: {
+    moveOut: Easing.in(Easing.cubic),
+    moveIn: Easing.out(Easing.cubic),
+  },
+}
+
+enum DrawerPosition {
+  open = "open",
+  closed = "closed",
+  collapsed = "collapsed",
+  partiallyRevealed = "partiallyRevealed",
+}
+
 export class GlobalMap extends React.Component<Props, State> {
   map: Mapbox.MapView
   clusterEngine: Supercluster
+  moveButtons: Animated.Value
 
   filters: Tab[] = [
     { id: "all", text: "All" },
@@ -112,15 +130,35 @@ export class GlobalMap extends React.Component<Props, State> {
     )
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps: Props) {
     this.emitFilteredBucketResults()
     this.updateShowIdMap()
     this.generateClusterMap()
+
+    if (nextProps.hideMapButtons !== this.props.hideMapButtons) {
+      if (nextProps.hideMapButtons) {
+        this.moveButtons = new Animated.Value(0)
+        Animated.timing(this.moveButtons, {
+          toValue: ButtonAnimation.yDelta,
+          duration: ButtonAnimation.duration,
+          easing: ButtonAnimation.easing.moveOut,
+          useNativeDriver: true,
+        }).start()
+      } else {
+        this.moveButtons = new Animated.Value(ButtonAnimation.yDelta)
+        Animated.timing(this.moveButtons, {
+          toValue: 0,
+          duration: ButtonAnimation.duration,
+          easing: ButtonAnimation.easing.moveIn,
+          useNativeDriver: true,
+        }).start()
+      }
+    }
   }
 
   generateClusterMap() {
     const { city } = this.props.viewer
-    this.featureCollection = convertCityToGeoJSON(city.shows.edges)
+    this.featureCollection = convertCityToGeoJSON(city.shows.edges.filter(({ node }) => node.type === "Show"))
     this.clusterEngine = new Supercluster({
       radius: 50,
       maxZoom: 13,
@@ -231,18 +269,20 @@ export class GlobalMap extends React.Component<Props, State> {
           }}
         >
           <SafeAreaView style={{ flex: 1 }}>
-            <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
-              <CitySwitcherButton city={city} />
-              <Box style={{ marginLeft: "auto" }}>
-                <UserPositionButton
-                  highlight={this.state.userLocation === this.state.currentLocation}
-                  onPress={() => {
-                    const { latitude, longitude } = this.state.userLocation.coords
-                    this.map.moveTo([longitude, latitude], 500)
-                  }}
-                />
-              </Box>
-            </Flex>
+            <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
+              <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
+                <CitySwitcherButton city={city} />
+                <Box style={{ marginLeft: "auto" }}>
+                  <UserPositionButton
+                    highlight={this.state.userLocation === this.state.currentLocation}
+                    onPress={() => {
+                      const { latitude, longitude } = this.state.userLocation.coords
+                      this.map.moveTo([longitude, latitude], 500)
+                    }}
+                  />
+                </Box>
+              </Flex>
+            </Animated.View>
             <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
           </SafeAreaView>
           <Mapbox.ShapeSource
@@ -270,13 +310,16 @@ export class GlobalMap extends React.Component<Props, State> {
     )
   }
 
-  private async handleFeaturePress(nativeEvent: any) {
+  async handleFeaturePress(nativeEvent: any) {
     const {
       payload: {
         properties: { id },
         geometry: { coordinates },
       },
     } = nativeEvent
+
+    this.updateDrawerPosition(DrawerPosition.collapsed)
+
     const pointInView = await this.map.getPointInView(coordinates)
     const features = await this.map.queryRenderedFeaturesAtPoint(pointInView)
     console.log(pointInView, coordinates, features)
@@ -287,6 +330,13 @@ export class GlobalMap extends React.Component<Props, State> {
     const [lat, lng] = coordinates
     const data = this.clusterEngine.getTile(zoom, lng, lat)
     console.log(data)
+  }
+
+  updateDrawerPosition(position: DrawerPosition) {
+    const notificationName = "ARLocalDiscoveryUpdateDrawerPosition"
+    NativeModules.ARNotificationsManager.postNotificationName(notificationName, {
+      position,
+    })
   }
 }
 
