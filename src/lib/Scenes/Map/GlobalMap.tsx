@@ -7,7 +7,7 @@ import { createRefetchContainer, graphql, RelayProp } from "react-relay"
 import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
 
-import { Pin } from "lib/Icons/Pin"
+import { convertCityToGeoJSON } from "lib/utils/convertCityToGeoJSON"
 import { bucketCityResults, BucketResults } from "./Bucket"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
 import { ShowCard } from "./Components/ShowCard"
@@ -48,6 +48,7 @@ interface State {
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
+
 export class GlobalMap extends React.Component<Props, State> {
   map: Mapbox.MapView
   scaleIn: Animated.Value
@@ -63,18 +64,28 @@ export class GlobalMap extends React.Component<Props, State> {
   shows: { [id: string]: Show } = {}
 
   stylesheet = Mapbox.StyleSheet.create({
-    symbol: {
+    singleShow: {
       iconImage: "pin",
-      iconSize: Mapbox.StyleSheet.composite(
-        {
-          0: [0, 0],
-          5: [0.5, 0.5],
-          12: [1, 1],
-        },
-        "",
+      iconSize: 0.8,
+    },
+
+    clusteredPoints: {
+      circlePitchAlignment: "map",
+      circleColor: "black",
+
+      circleRadius: Mapbox.StyleSheet.source(
+        [[0, 15], [5, 20], [30, 30]],
+        "point_count",
         Mapbox.InterpolationMode.Exponential
       ),
-      iconAllowOverlap: true,
+    },
+
+    clusterCount: {
+      textField: "{point_count}",
+      textSize: 14,
+      textColor: "white",
+      textFont: ["Unica77 LL Medium"],
+      textPitchAlignment: "map",
     },
   })
 
@@ -89,6 +100,8 @@ export class GlobalMap extends React.Component<Props, State> {
       bucketResults,
       trackUserLocation: false,
     }
+
+    this.updateShowIdMap()
   }
 
   componentDidMount() {
@@ -99,6 +112,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   componentWillReceiveProps() {
     this.emitFilteredBucketResults()
+    this.updateShowIdMap()
   }
 
   emitFilteredBucketResults() {
@@ -115,59 +129,21 @@ export class GlobalMap extends React.Component<Props, State> {
     })
   }
 
-  onAnnotationSelected(showID: string) {
-    if (this.state.activeShowID === showID) {
-      return
-    }
-
-    this.setState({ activeShowID: showID })
-  }
-
-  onAnnotationDeselected(showID: string) {
-    const nextState: State = { activeIndex: this.state.activeIndex, bucketResults: this.state.bucketResults }
-
-    if (this.state.activeShowID === showID) {
-      nextState.activeShowID = null
-    }
-
-    this.setState(nextState)
-  }
-
-  renderAnnotations() {
+  updateShowIdMap() {
     const { city } = this.props.viewer
-    return !!city
-      ? city.shows.edges
-          .map(({ node }) => {
-            if (!node || !node.location || !node.location.coordinates) {
-              return null
-            }
+    if (city) {
+      city.shows.edges.forEach(({ node }) => {
+        if (!node || !node.location || !node.location.coordinates) {
+          return null
+        }
 
-            const { id, location } = node
-            const { lat, lng } = location.coordinates
-            const selected = id === this.state.activeShowID
-
-            this.shows[id] = node
-
-            return (
-              <Mapbox.PointAnnotation
-                key={id}
-                id={id}
-                selected={selected}
-                onSelected={() => this.onAnnotationSelected(id)}
-                onDeselected={() => this.onAnnotationDeselected(id)}
-                coordinate={[lng, lat]}
-              >
-                <Pin selected={selected} />
-              </Mapbox.PointAnnotation>
-            )
-          })
-          .filter(Boolean)
-      : []
+        this.shows[node.id] = node
+      })
+    }
   }
 
   renderShowCard() {
     const id = this.state.activeShowID
-
     const show = this.shows[id]
 
     return (
@@ -200,6 +176,7 @@ export class GlobalMap extends React.Component<Props, State> {
   render() {
     const { city } = this.props.viewer
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || city.coordinates
+    const featureCollection = convertCityToGeoJSON(city.shows.edges)
 
     return (
       <Flex mb={0.5} flexDirection="column">
@@ -230,6 +207,14 @@ export class GlobalMap extends React.Component<Props, State> {
               trackUserLocation: true,
             })
           }}
+          onPress={async event => {
+            const { screenPointX, screenPointY } = event.properties
+            const features = await this.map.queryRenderedFeaturesAtPoint(
+              [screenPointX, screenPointY]
+              // ["==", "type", "Point"]
+            )
+            console.log(features)
+          }}
         >
           <SafeAreaView style={{ flex: 1 }}>
             <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
@@ -246,10 +231,44 @@ export class GlobalMap extends React.Component<Props, State> {
             </Flex>
             <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
           </SafeAreaView>
-          {this.renderAnnotations()}
+          <Mapbox.ShapeSource
+            id="shows"
+            shape={featureCollection}
+            cluster
+            clusterRadius={50}
+            clusterMaxZoom={14}
+            onPress={async ({ nativeEvent }) => {
+              await this.handleFeaturePress(nativeEvent)
+            }}
+          >
+            <Mapbox.SymbolLayer id="singleShow" filter={["!has", "point_count"]} style={this.stylesheet.singleShow} />
+            <Mapbox.SymbolLayer id="pointCount" style={this.stylesheet.clusterCount} />
+
+            <Mapbox.CircleLayer
+              id="clusteredPoints"
+              belowLayerID="pointCount"
+              filter={["has", "point_count"]}
+              style={this.stylesheet.clusteredPoints}
+            />
+          </Mapbox.ShapeSource>
         </Map>
       </Flex>
     )
+  }
+
+  private async handleFeaturePress(nativeEvent: any) {
+    const {
+      payload: {
+        properties: { id },
+        geometry: { coordinates },
+      },
+    } = nativeEvent
+    const pointInView = await this.map.getPointInView(coordinates)
+    const features = await this.map.queryRenderedFeaturesAtPoint(pointInView, ["==", "type", "Point"])
+    console.log(pointInView, coordinates, features)
+    this.setState({
+      activeShowID: id,
+    })
   }
 }
 
