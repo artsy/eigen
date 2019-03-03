@@ -6,6 +6,7 @@ import { Animated, Dimensions, NativeModules, SafeAreaView, View } from "react-n
 import { createRefetchContainer, graphql, RelayProp } from "react-relay"
 import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
+import Supercluster from "supercluster"
 
 import { convertCityToGeoJSON } from "lib/utils/convertCityToGeoJSON"
 import { bucketCityResults, BucketResults } from "./Bucket"
@@ -51,8 +52,7 @@ export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfo
 
 export class GlobalMap extends React.Component<Props, State> {
   map: Mapbox.MapView
-  scaleIn: Animated.Value
-  scaleOut: Animated.Value
+  clusterEngine: Supercluster
 
   filters: Tab[] = [
     { id: "all", text: "All" },
@@ -62,6 +62,7 @@ export class GlobalMap extends React.Component<Props, State> {
     { id: "museums", text: "Museums" },
   ]
   shows: { [id: string]: Show } = {}
+  featureCollection: any
 
   stylesheet = Mapbox.StyleSheet.create({
     singleShow: {
@@ -102,6 +103,7 @@ export class GlobalMap extends React.Component<Props, State> {
     }
 
     this.updateShowIdMap()
+    this.generateClusterMap()
   }
 
   componentDidMount() {
@@ -113,6 +115,17 @@ export class GlobalMap extends React.Component<Props, State> {
   componentWillReceiveProps() {
     this.emitFilteredBucketResults()
     this.updateShowIdMap()
+    this.generateClusterMap()
+  }
+
+  generateClusterMap() {
+    const { city } = this.props.viewer
+    this.featureCollection = convertCityToGeoJSON(city.shows.edges)
+    this.clusterEngine = new Supercluster({
+      radius: 50,
+      maxZoom: 13,
+    })
+    this.clusterEngine.load(this.featureCollection)
   }
 
   emitFilteredBucketResults() {
@@ -176,7 +189,6 @@ export class GlobalMap extends React.Component<Props, State> {
   render() {
     const { city } = this.props.viewer
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || city.coordinates
-    const featureCollection = convertCityToGeoJSON(city.shows.edges)
 
     return (
       <Flex mb={0.5} flexDirection="column">
@@ -192,7 +204,7 @@ export class GlobalMap extends React.Component<Props, State> {
           centerCoordinate={[centerLng, centerLat]}
           zoomLevel={13}
           logoEnabled={false}
-          attributionEnabled={false}
+          attributionEnabled={true}
           onRegionDidChange={location => {
             this.emitFilteredBucketResults()
             this.setState({
@@ -209,11 +221,13 @@ export class GlobalMap extends React.Component<Props, State> {
           }}
           onPress={async event => {
             const { screenPointX, screenPointY } = event.properties
-            const features = await this.map.queryRenderedFeaturesAtPoint(
-              [screenPointX, screenPointY]
-              // ["==", "type", "Point"]
-            )
+            const screenCoords = [screenPointX, screenPointY]
+            const features = await this.map.queryRenderedFeaturesAtPoint(screenCoords, ["==", "type", "Cluster"])
             console.log(features)
+            const zoom = await this.map.getZoom()
+            const [x, y] = await this.map.getCoordinateFromView(screenCoords)
+            const data = this.clusterEngine.getTile(zoom, x, y)
+            console.log(data)
           }}
         >
           <SafeAreaView style={{ flex: 1 }}>
@@ -233,7 +247,7 @@ export class GlobalMap extends React.Component<Props, State> {
           </SafeAreaView>
           <Mapbox.ShapeSource
             id="shows"
-            shape={featureCollection}
+            shape={this.featureCollection}
             cluster
             clusterRadius={50}
             clusterMaxZoom={14}
@@ -264,11 +278,15 @@ export class GlobalMap extends React.Component<Props, State> {
       },
     } = nativeEvent
     const pointInView = await this.map.getPointInView(coordinates)
-    const features = await this.map.queryRenderedFeaturesAtPoint(pointInView, ["==", "type", "Point"])
+    const features = await this.map.queryRenderedFeaturesAtPoint(pointInView)
     console.log(pointInView, coordinates, features)
     this.setState({
       activeShowID: id,
     })
+    const zoom = await this.map.getZoom()
+    const [lat, lng] = coordinates
+    const data = this.clusterEngine.getTile(zoom, lng, lat)
+    console.log(data)
   }
 }
 
