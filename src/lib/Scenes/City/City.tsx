@@ -54,6 +54,7 @@ export class CityView extends Component<Props, State> {
         cityName: string
         relay: RelayProp
       }) => {
+        console.log("got buckets", { buckets, cityName })
         this.setState({
           buckets,
           filter,
@@ -72,40 +73,57 @@ export class CityView extends Component<Props, State> {
 
   render() {
     const { buckets, filter, cityName } = this.state
+    console.log("rendering with ", cityName)
     const { isDrawerOpen, verticalMargin } = this.props
     // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
     return (
       buckets && (
         <Theme>
-          <Box>
-            <Flex py={1} alignItems="center">
-              <Handle />
-            </Flex>
-            <FiltersBar
-              tabs={this.filters}
-              goToPage={activeIndex => EventEmitter.dispatch("filters:change", activeIndex)}
-            />
-            <ScrollView
-              contentInset={{ bottom: bottomInset }}
-              onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
-              scrollEnabled={isDrawerOpen}
-              ref={r => {
-                if (r) {
-                  this.scrollView = r as any
-                }
-              }}
-            >
-              {(() => {
-                switch (filter && filter.id) {
-                  case "all":
-                    return <AllEvents cityName={cityName} currentBucket={filter.id as BucketKey} buckets={buckets} />
-                  default:
-                    return <CityTab bucket={buckets[filter.id]} type={filter.text} relay={this.state.relay} />
-                }
-              })()}
-            </ScrollView>
-          </Box>
+          <>
+            <Box>
+              <Flex py={1} alignItems="center">
+                <Handle />
+              </Flex>
+              <FiltersBar
+                tabs={this.filters}
+                goToPage={activeIndex => EventEmitter.dispatch("filters:change", activeIndex)}
+              />
+              <ScrollView
+                contentInset={{ bottom: bottomInset }}
+                onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
+                scrollEnabled={isDrawerOpen}
+                ref={r => {
+                  if (r) {
+                    this.scrollView = r as any
+                  }
+                }}
+              >
+                {(() => {
+                  switch (filter && filter.id) {
+                    case "all":
+                      return (
+                        <AllEvents
+                          cityName={cityName}
+                          key={cityName}
+                          currentBucket={filter.id as BucketKey}
+                          buckets={buckets}
+                        />
+                      )
+                    default:
+                      return (
+                        <CityTab
+                          key={cityName + filter.id}
+                          bucket={buckets[filter.id]}
+                          type={filter.text}
+                          relay={this.state.relay}
+                        />
+                      )
+                  }
+                })()}
+              </ScrollView>
+            </Box>
+          </>
         </Theme>
       )
     )

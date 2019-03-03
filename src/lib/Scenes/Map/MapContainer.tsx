@@ -2,44 +2,15 @@ import React, { Component } from "react"
 import { MapRenderer } from "./MapRenderer"
 import { Coordinates } from "./types"
 
-interface State {
+interface Props {
   coordinates: Coordinates
-  error: any
+  hideMapButtons: boolean
 }
 
-export class MapContainer extends Component<null, State> {
-  watchId: any
-  state = {
-    coordinates: null,
-    error: null,
-  }
-
-  componentDidMount() {
-    this.watchId = navigator.geolocation.watchPosition(
-      position => {
-        this.setState({
-          coordinates: {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          },
-        })
-      },
-      error => this.setState({ error: error.message }),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    )
-  }
-
-  componentWillUnmount() {
-    navigator.geolocation.clearWatch(this.watchId)
-  }
-
+// TODO: Do we even need this component any more?
+export class MapContainer extends Component<Props> {
   render() {
-    const { coordinates } = this.state
-    if (!coordinates) {
-      // Show spinner
-      return null
-    }
-
-    return <MapRenderer coords={coordinates} />
+    const { coordinates, hideMapButtons } = this.props
+    return <MapRenderer coords={coordinates} hideMapButtons={hideMapButtons} />
   }
 }
