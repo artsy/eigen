@@ -11,7 +11,7 @@ interface Props {
   relay: RelayProp
 }
 
-export class CityTab extends React.Component<Props> {
+export class EventList extends React.Component<Props> {
   renderItem = item => {
     const { type } = this.props
     if (type === "Fairs") {

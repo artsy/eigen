@@ -10,6 +10,7 @@ import {
   ArtistRenderer,
   BidderFlowRendererProps,
   BidFlowRenderer,
+  CitySectionListRenderer,
   ConversationRenderer,
   FairRenderer,
   GeneRenderer,
@@ -184,6 +185,19 @@ const ShowMoreInfo: React.SFC<ShowMoreInfoProps> = ({ showID }) => {
   return <ShowMoreInfoRenderer showID={showID} render={renderWithLoadProgress(Containers.ShowMoreInfo, { showID })} />
 }
 
+interface CitySectionListProps {
+  citySlug: string
+  section: string
+}
+const CitySectionList: React.SFC<CitySectionListProps> = ({ citySlug, section }) => {
+  return (
+    <CitySectionListRenderer
+      citySlug={citySlug}
+      render={renderWithLoadProgress(Containers.CitySectionList, { citySlug, section })}
+    />
+  )
+}
+
 interface FairBoothProps {
   fairBoothID: string
 }
@@ -249,3 +263,4 @@ AppRegistry.registerComponent("ShowMoreInfo", () => ShowMoreInfo)
 AppRegistry.registerComponent("Map", () => MapContainer)
 AppRegistry.registerComponent("City", () => CityView)
 AppRegistry.registerComponent("CityPicker", () => CityPicker)
+AppRegistry.registerComponent("CitySectionList", () => CitySectionList)

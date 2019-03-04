@@ -34,6 +34,7 @@ query MapRendererQuery(
 fragment GlobalMap_viewer_279V1T on Viewer {
   city(near: $near) {
     name
+    slug
     coordinates {
       lat
       lng
@@ -227,7 +228,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MapRendererQuery",
-  "id": "5c9023d3fa534cae679eecf14ca3ecf5",
+  "id": "4850a3f3bc48c6c9b94919e146aa189a",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -293,6 +294,13 @@ return {
             "plural": false,
             "selections": [
               v1,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "slug",
+                "args": null,
+                "storageKey": null
+              },
               v2,
               {
                 "kind": "LinkedField",

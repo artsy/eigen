@@ -8,7 +8,7 @@ import { FiltersBar } from "../Map/Components/FiltersBar"
 import { EventEmitter } from "../Map/EventEmitter"
 import { Tab } from "../Map/types"
 import { AllEvents } from "./Components/AllEvents"
-import { CityTab } from "./Components/CityTab"
+import { EventList } from "./Components/EventList"
 
 interface Props {
   verticalMargin?: number
@@ -20,6 +20,7 @@ interface State {
   filter: Tab
   relay: RelayProp
   cityName: string
+  citySlug: string
 }
 
 export class CityView extends Component<Props, State> {
@@ -28,6 +29,7 @@ export class CityView extends Component<Props, State> {
     filter: { id: "all", text: "All events" },
     relay: null,
     cityName: "",
+    citySlug: "",
   }
   scrollViewVerticalStart = 0
   scrollView: ScrollView = null
@@ -47,18 +49,20 @@ export class CityView extends Component<Props, State> {
         filter,
         buckets,
         cityName,
+        citySlug,
         relay,
       }: {
         filter: Tab
         buckets: BucketResults
         cityName: string
+        citySlug: string
         relay: RelayProp
       }) => {
-        console.log("got buckets", { buckets, cityName })
         this.setState({
           buckets,
           filter,
           cityName,
+          citySlug,
           relay,
         })
       }
@@ -72,8 +76,7 @@ export class CityView extends Component<Props, State> {
   }
 
   render() {
-    const { buckets, filter, cityName } = this.state
-    console.log("rendering with ", cityName)
+    const { buckets, filter, cityName, citySlug } = this.state
     const { isDrawerOpen, verticalMargin } = this.props
     // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
@@ -105,6 +108,7 @@ export class CityView extends Component<Props, State> {
                       return (
                         <AllEvents
                           cityName={cityName}
+                          citySlug={citySlug}
                           key={cityName}
                           currentBucket={filter.id as BucketKey}
                           buckets={buckets}
@@ -112,7 +116,7 @@ export class CityView extends Component<Props, State> {
                       )
                     default:
                       return (
-                        <CityTab
+                        <EventList
                           key={cityName + filter.id}
                           bucket={buckets[filter.id]}
                           type={filter.text}

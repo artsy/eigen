@@ -1,0 +1,3 @@
+{
+  "db0438d68d8155ec19615fd4133169f8": "query QueryRenderersCitySectionListQuery(\n  $citySlug: String!\n) {\n  city(slug: $citySlug) {\n    ...CitySectionList_city\n  }\n}\n\nfragment CitySectionList_city on City {\n  name\n  shows(discoverable: true, first: 50, sort: START_AT_ASC) {\n    edges {\n      node {\n        id\n        is_followed\n        start_at\n        end_at\n        status\n        href\n        type\n        partner {\n          __typename\n          ... on Partner {\n            name\n            type\n          }\n          ... on ExternalPartner {\n            name\n            __id\n          }\n          ... on Node {\n            __id\n          }\n        }\n        __id\n      }\n    }\n  }\n}\n"
+}
