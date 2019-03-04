@@ -91,6 +91,7 @@
     "remove-markdown": "0.1.0",
     "simple-markdown": "^0.4.2",
     "styled-components": "3.2.2",
+    "supercluster": "^6.0.1",
     "tipsi-stripe": "5.2.4"
   },
   "devDependencies": {
@@ -108,6 +109,7 @@
     "@types/react-tracking": "^5.0.0",
     "@types/relay-runtime": "1.3.7",
     "@types/styled-system": "^3.0.1",
+    "@types/supercluster": "^5.0.0",
     "awesome-typescript-loader": "^3.2.3",
     "babel-jest": "^23.6.0",
     "babel-plugin-relay": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/babel-plugin-relay-1.5.0-artsy.3.tgz",

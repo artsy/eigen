@@ -1,17 +1,20 @@
-import { Box, Flex } from "@artsy/palette"
+import { Box, Flex, Theme } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import React from "react"
-import { Animated, Dimensions, Easing, NativeModules, SafeAreaView } from "react-native"
+import { Animated, Dimensions, Easing, NativeModules, SafeAreaView, View } from "react-native"
 import { createRefetchContainer, graphql, RelayProp } from "react-relay"
+import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
+import Supercluster from "supercluster"
 
-import { Pin } from "lib/Icons/Pin"
+import { convertCityToGeoJSON } from "lib/utils/convertCityToGeoJSON"
 import { bucketCityResults, BucketResults } from "./Bucket"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
+import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { Tab } from "./types"
+import { Show, Tab } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -21,6 +24,16 @@ const Map = styled(Mapbox.MapView)`
   height: ${Dimensions.get("window").height};
   width: 100%;
 `
+const AnimatedView = animated(View)
+
+const ShowCardContainer = styled(Box)`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 250;
+`
+
 interface Props {
   initialCoordinates?: { lat: number; lng: number }
   hideMapButtons: boolean
@@ -47,10 +60,16 @@ const ButtonAnimation = {
   },
 }
 
+enum DrawerPosition {
+  open = "open",
+  closed = "closed",
+  collapsed = "collapsed",
+  partiallyRevealed = "partiallyRevealed",
+}
+
 export class GlobalMap extends React.Component<Props, State> {
   map: Mapbox.MapView
-  scaleIn: Animated.Value
-  scaleOut: Animated.Value
+  clusterEngine: Supercluster
   moveButtons: Animated.Value
 
   filters: Tab[] = [
@@ -60,20 +79,32 @@ export class GlobalMap extends React.Component<Props, State> {
     { id: "galleries", text: "Galleries" },
     { id: "museums", text: "Museums" },
   ]
+  shows: { [id: string]: Show } = {}
+  featureCollection: any
 
   stylesheet = Mapbox.StyleSheet.create({
-    symbol: {
+    singleShow: {
       iconImage: "pin",
-      iconSize: Mapbox.StyleSheet.composite(
-        {
-          0: [0, 0],
-          5: [0.5, 0.5],
-          12: [1, 1],
-        },
-        "",
+      iconSize: 0.8,
+    },
+
+    clusteredPoints: {
+      circlePitchAlignment: "map",
+      circleColor: "black",
+
+      circleRadius: Mapbox.StyleSheet.source(
+        [[0, 15], [5, 20], [30, 30]],
+        "point_count",
         Mapbox.InterpolationMode.Exponential
       ),
-      iconAllowOverlap: true,
+    },
+
+    clusterCount: {
+      textField: "{point_count}",
+      textSize: 14,
+      textColor: "white",
+      textFont: ["Unica77 LL Medium"],
+      textPitchAlignment: "map",
     },
   })
 
@@ -88,6 +119,9 @@ export class GlobalMap extends React.Component<Props, State> {
       bucketResults,
       trackUserLocation: false,
     }
+
+    this.updateShowIdMap()
+    this.generateClusterMap()
   }
 
   componentDidMount() {
@@ -98,6 +132,9 @@ export class GlobalMap extends React.Component<Props, State> {
 
   componentWillReceiveProps(nextProps: Props) {
     this.emitFilteredBucketResults()
+    this.updateShowIdMap()
+    this.generateClusterMap()
+
     if (nextProps.hideMapButtons !== this.props.hideMapButtons) {
       if (nextProps.hideMapButtons) {
         this.moveButtons = new Animated.Value(0)
@@ -119,6 +156,16 @@ export class GlobalMap extends React.Component<Props, State> {
     }
   }
 
+  generateClusterMap() {
+    const { city } = this.props.viewer
+    this.featureCollection = convertCityToGeoJSON(city.shows.edges.filter(({ node }) => node.type === "Show"))
+    this.clusterEngine = new Supercluster({
+      radius: 50,
+      maxZoom: 13,
+    })
+    this.clusterEngine.load(this.featureCollection)
+  }
+
   emitFilteredBucketResults() {
     // TODO: map region filtering can live here.
     const filter = this.filters[this.state.activeIndex]
@@ -133,68 +180,48 @@ export class GlobalMap extends React.Component<Props, State> {
     })
   }
 
-  onAnnotationSelected(showID: string, feature) {
-    if (this.state.activeShowID === showID) {
-      return
-    }
-    const previousShowID = this.state.activeShowID
-    this.scaleIn = new Animated.Value(0.6)
-
-    Animated.timing(this.scaleIn, { toValue: 1.0, duration: 200 }).start()
-    this.setState({ activeShowID: showID })
-
-    if (previousShowID !== showID) {
-      this.map.moveTo(feature.geometry.coordinates, 500)
-    }
-  }
-
-  onAnnotationDeselected(showID: string) {
-    const nextState: State = { activeIndex: this.state.activeIndex, bucketResults: this.state.bucketResults }
-
-    if (this.state.activeShowID === showID) {
-      nextState.activeShowID = null
-    }
-
-    this.scaleOut = new Animated.Value(1)
-    Animated.timing(this.scaleOut, { toValue: 0.6, duration: 200 }).start()
-    this.setState(nextState)
-  }
-
-  renderAnnotations() {
+  updateShowIdMap() {
     const { city } = this.props.viewer
-    return !!city
-      ? city.shows.edges
-          .map(({ node }) => {
-            if (!node || !node.location || !node.location.coordinates) {
-              return null
-            }
+    if (city) {
+      city.shows.edges.forEach(({ node }) => {
+        if (!node || !node.location || !node.location.coordinates) {
+          return null
+        }
 
-            const { id, location } = node
-            const { lat, lng } = location.coordinates
-            const selected = id === this.state.activeShowID
-            const animationStyle = selected
-              ? {
-                  transform: [{ scale: this.scaleIn }],
-                }
-              : {}
+        this.shows[node.id] = node
+      })
+    }
+  }
 
-            return (
-              <Mapbox.PointAnnotation
-                key={id}
-                id={id}
-                selected={selected}
-                onSelected={feature => this.onAnnotationSelected(id, feature)}
-                onDeselected={() => this.onAnnotationDeselected(id)}
-                coordinate={[lng, lat]}
-              >
-                <Animated.View style={[animationStyle]}>
-                  <Pin selected={selected} />
-                </Animated.View>
-              </Mapbox.PointAnnotation>
-            )
-          })
-          .filter(Boolean)
-      : []
+  renderShowCard() {
+    const id = this.state.activeShowID
+    const show = this.shows[id]
+
+    return (
+      <Spring
+        native
+        from={{ bottom: -150, progress: 0, opacity: 0 }}
+        to={!!id ? { bottom: 0, progress: 1, opacity: 1.0 } : { bottom: -150, progress: 0, opacity: 0 }}
+        config={config.stiff}
+        precision={1}
+      >
+        {({ bottom, opacity }) => (
+          <AnimatedView
+            style={{
+              bottom,
+              left: 0,
+              right: 0,
+              height: 106,
+              opacity,
+            }}
+          >
+            <Theme>
+              <ShowCard show={show as any} />
+            </Theme>
+          </AnimatedView>
+        )}
+      </Spring>
+    )
   }
 
   render() {
@@ -215,7 +242,7 @@ export class GlobalMap extends React.Component<Props, State> {
           centerCoordinate={[centerLng, centerLat]}
           zoomLevel={13}
           logoEnabled={false}
-          attributionEnabled={false}
+          attributionEnabled={true}
           onRegionDidChange={location => {
             this.emitFilteredBucketResults()
             this.setState({
@@ -228,6 +255,11 @@ export class GlobalMap extends React.Component<Props, State> {
               userLocation: location,
               currentLocation: location,
               trackUserLocation: true,
+            })
+          }}
+          onPress={() => {
+            this.setState({
+              activeShowID: null,
             })
           }}
         >
@@ -246,12 +278,56 @@ export class GlobalMap extends React.Component<Props, State> {
                 </Box>
               </Flex>
             </Animated.View>
+            <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
           </SafeAreaView>
+          <Mapbox.ShapeSource
+            id="shows"
+            shape={this.featureCollection}
+            cluster
+            clusterRadius={50}
+            clusterMaxZoom={14}
+            onPress={async ({ nativeEvent }) => {
+              await this.handleFeaturePress(nativeEvent)
+            }}
+          >
+            <Mapbox.SymbolLayer id="singleShow" filter={["!has", "point_count"]} style={this.stylesheet.singleShow} />
+            <Mapbox.SymbolLayer id="pointCount" style={this.stylesheet.clusterCount} />
 
-          {this.renderAnnotations()}
+            <Mapbox.CircleLayer
+              id="clusteredPoints"
+              belowLayerID="pointCount"
+              filter={["has", "point_count"]}
+              style={this.stylesheet.clusteredPoints}
+            />
+          </Mapbox.ShapeSource>
         </Map>
       </Flex>
     )
+  }
+
+  async handleFeaturePress(nativeEvent: any) {
+    const {
+      payload: {
+        properties: { id },
+      },
+    } = nativeEvent
+
+    this.updateDrawerPosition(DrawerPosition.collapsed)
+
+    this.setState({
+      activeShowID: id,
+    })
+
+    // TODO: finish setting getting points (shows) within a cluster
+    // In order to show multiple cards in scroll view when a user taps
+    // on a cluster
+  }
+
+  updateDrawerPosition(position: DrawerPosition) {
+    const notificationName = "ARLocalDiscoveryUpdateDrawerPosition"
+    NativeModules.ARNotificationsManager.postNotificationName(notificationName, {
+      position,
+    })
   }
 }
 
