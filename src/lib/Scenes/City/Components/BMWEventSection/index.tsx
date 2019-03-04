@@ -49,7 +49,7 @@ export const BMWEventSection: React.SFC<Props> = (props: Props) => {
       {renderEvents(data)}
       <Box px={2} mb={2}>
         <Sans weight="medium" size="3">
-          View all {data.length} {props.title.toLowerCase()}
+          <CaretButton onPress={() => getArtGuidePressed()} text={`View all ${data.length} shows`} />
         </Sans>
       </Box>
     </>
