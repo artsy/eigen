@@ -6,6 +6,7 @@ import React from "react"
 export interface Props {
   title: string
   data: any
+  cityName: string
 }
 
 const renderEvents = events => {
@@ -26,7 +27,7 @@ const getArtGuidePressed = () => {
 }
 
 export const BMWEventSection: React.SFC<Props> = (props: Props) => {
-  const { data } = props
+  const { data, cityName } = props
   return (
     <>
       <Box my={2} px={2}>
@@ -38,8 +39,7 @@ export const BMWEventSection: React.SFC<Props> = (props: Props) => {
         </Sans>
         <Box mt={1}>
           <Serif size="3" color={color("black60")}>
-            The BMW Art Guide is your go-to-guide to discover private collections of modern and contemporary art which
-            are accessible to the public. Please see below for collections in Hong Kong.
+            {`The BMW Art Guide is your go-to-guide to discover private collections of modern and contemporary art which are accessible to the public. Please see below for collections in ${cityName}.`}
           </Serif>
         </Box>
       </Box>
