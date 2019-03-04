@@ -2,9 +2,9 @@
 
 @implementation ARCityPickerComponentViewController
 
-- (instancetype)init
+- (instancetype)initWithSelectedCityName:(NSString *)selectedCityName
 {
-    return [super initWithEmission:nil moduleName:@"CityPicker" initialProperties:nil];
+    return [super initWithEmission:nil moduleName:@"CityPicker" initialProperties:@{ @"selectedCity": selectedCityName ?: @"" }];
 }
 
 @end

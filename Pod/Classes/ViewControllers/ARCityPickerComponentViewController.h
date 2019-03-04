@@ -4,7 +4,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ARCityPickerComponentViewController : ARComponentViewController
 
-- (instancetype)init NS_DESIGNATED_INITIALIZER;
+/// Initialize with an already-selected City name.
+- (instancetype)initWithSelectedCityName:(NSString * _Nullable)selectedCityName NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithEmission:(nullable AREmission *)emission
                       moduleName:(NSString *)moduleName

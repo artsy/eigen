@@ -10,6 +10,8 @@
 @import Pulley;
 @import CoreLocation;
 
+NSString * const __nonnull SelectedCityNameKey = @"SelectedCityName";
+
 @interface ARMapContainerViewController () <PulleyDelegate, PulleyDrawerViewControllerDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, readwrite) PulleyViewController *bottomSheetVC;
@@ -36,11 +38,6 @@ Since this controller already has to do the above logic, having it handle the Ci
 {
     [super viewDidLoad];
 
-    self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
-    [self.locationManager requestWhenInUseAuthorization];
-
     __weak typeof(self) sself = self;
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryOpenCityPicker" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         [sself showCityPicker];
@@ -59,6 +56,22 @@ Since this controller already has to do the above logic, having it handle the Ci
 
     self.bottomSheetVC = [[PulleyViewController alloc] initWithContentViewController:self.mapVC drawerViewController:self.cityVC];
     self.bottomSheetVC.delegate = self;
+
+    NSString *previouslySelectedCityName = [[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey];
+    ARCity *previouslySelectedCity = [[[ARCity cities] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [[evaluatedObject name] isEqualToString:previouslySelectedCityName];
+    }]] firstObject];
+    if (previouslySelectedCity) {
+        // Do this here, before we add to our view hierarchy, so that these are the _initial_ propertyies we do our first render with.
+        [self.mapVC setProperty:@{ @"lat": @(previouslySelectedCity.epicenter.latitude), @"lng": @(previouslySelectedCity.epicenter.longitude) }
+                         forKey:@"coordinates"];
+    } else {
+        // The user has no previously selected city, so let's try to determine their location.
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
+        [self.locationManager requestWhenInUseAuthorization];
+    }
 
     [self.view addSubview:self.bottomSheetVC.view];
     self.bottomSheetVC.view.frame = self.view.bounds;
@@ -106,8 +119,10 @@ Since this controller already has to do the above logic, having it handle the Ci
     [self.view addSubview:self.cityPickerContainerView];
     self.cityPickerContainerView.alpha = 0;
     self.cityPickerContainerView.transform = CGAffineTransformMakeScale(0.8, 0.8);
-    
-    self.cityPickerController = [[ARCityPickerComponentViewController alloc] init];
+
+    NSString *previouslySelectedCity = [[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey];
+
+    self.cityPickerController = [[ARCityPickerComponentViewController alloc] initWithSelectedCityName:previouslySelectedCity];
     [self addChildViewController:self.cityPickerController];
     [self.cityPickerContainerView addSubview:self.cityPickerController.view];
     self.cityPickerController.view.frame = self.cityPickerContainerView.bounds;
@@ -137,6 +152,9 @@ Since this controller already has to do the above logic, having it handle the Ci
 - (void)userSelectedCityAtIndex:(NSInteger)cityIndex
 {
     ARCity *city = [[ARCity cities] objectAtIndex:cityIndex];
+
+    [[NSUserDefaults standardUserDefaults] setObject:city.name forKey:SelectedCityNameKey];
+
     [self.mapVC setProperty:@{ @"lat": @(city.epicenter.latitude), @"lng": @(city.epicenter.longitude) }
                      forKey:@"coordinates"];
     [self.mapVC setProperty:@(NO) forKey:@"hideMapButtons"];
