@@ -21,6 +21,14 @@ export type ShowHeader_show = {
         readonly url: string | null;
         readonly aspect_ratio: number;
     }) | null> | null;
+    readonly followedContent: ({
+        readonly artists: ReadonlyArray<({
+            readonly name: string | null;
+            readonly href: string | null;
+            readonly id: string;
+            readonly _id: string;
+        }) | null> | null;
+    }) | null;
     readonly artists: ReadonlyArray<({
         readonly name: string | null;
         readonly href: string | null;
@@ -67,6 +75,22 @@ v4 = {
   "name": "href",
   "args": null,
   "storageKey": null
+},
+v5 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "artists",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "Artist",
+  "plural": true,
+  "selections": [
+    v2,
+    v4,
+    v0,
+    v3,
+    v1
+  ]
 };
 return {
   "kind": "Fragment",
@@ -78,7 +102,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "is_followed",
+      "name": "exhibition_period",
       "args": null,
       "storageKey": null
     },
@@ -92,14 +116,14 @@ return {
       "args": null,
       "storageKey": null
     },
-    v3,
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "exhibition_period",
+      "name": "is_followed",
       "args": null,
       "storageKey": null
     },
+    v3,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -163,21 +187,18 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "artists",
+      "name": "followedContent",
       "storageKey": null,
       "args": null,
-      "concreteType": "Artist",
-      "plural": true,
+      "concreteType": "ShowsFollowedContent",
+      "plural": false,
       "selections": [
-        v2,
-        v4,
-        v0,
-        v3,
-        v1
+        v5
       ]
-    }
+    },
+    v5
   ]
 };
 })();
-(node as any).hash = 'd69900e0ca440890645085a1416c9b05';
+(node as any).hash = '49f82bbdb6ff15474acca03a0f18aaad';
 export default node;

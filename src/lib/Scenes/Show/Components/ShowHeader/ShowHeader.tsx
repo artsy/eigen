@@ -132,8 +132,10 @@ export class ShowHeader extends React.Component<Props, State> {
   render() {
     const { isFollowedSaving } = this.state
     const {
-      show: { artists, images, is_followed, name, partner, exhibition_period },
+      show: { artists, images, is_followed, name, partner, exhibition_period, followedContent },
     } = this.props
+    const fairfollowedArtistList = (followedContent && followedContent.artists) || []
+    const uniqArtistList = [...new Set(fairfollowedArtistList.concat(artists))]
     const hasImages = !!images.length
     const singleImage = hasImages && images.length === 1
 
@@ -173,7 +175,7 @@ export class ShowHeader extends React.Component<Props, State> {
         <Box px={2}>
           <EntityList
             prefix="Works by"
-            list={artists}
+            list={uniqArtistList}
             count={artists.length}
             displayedItems={2}
             onItemSelected={this.handleArtistSelected.bind(this)}
@@ -221,6 +223,14 @@ export const ShowHeaderContainer = createFragmentContainer(
       images {
         url
         aspect_ratio
+      }
+      followedContent {
+        artists {
+          name
+          href
+          id
+          _id
+        }
       }
       artists {
         name

@@ -284,6 +284,15 @@ fragment ShowHeader_show on Show {
     url
     aspect_ratio
   }
+  followedContent {
+    artists {
+      name
+      href
+      id
+      _id
+      __id
+    }
+  }
   artists {
     name
     href
@@ -961,6 +970,33 @@ return {
                     "args": null,
                     "storageKey": null
                   }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "followedContent",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "ShowsFollowedContent",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "artists",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "Artist",
+                "plural": true,
+                "selections": [
+                  v5,
+                  v15,
+                  v8,
+                  v4,
+                  v2
                 ]
               }
             ]
