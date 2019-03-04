@@ -108,7 +108,8 @@ export class LocationMap extends React.Component<Props> {
       // be quite conservative about what parts of the address we
       // send to the different services
       const firstLineAddress = address || summary
-      const suffix = postal_code && !firstLineAddress.includes(postal_code) ? `, ${postal_code}` : ""
+      const lastLine = cityAndPostalCode()
+      const suffix = lastLine && !firstLineAddress.includes(lastLine) ? `, ${lastLine}` : ""
       const title = `${firstLineAddress}${suffix}`
       const addressOrName = address || partnerName
 

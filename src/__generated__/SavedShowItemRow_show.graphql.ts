@@ -18,6 +18,7 @@ export type SavedShowItemRow_show = {
         readonly url: string | null;
         readonly aspect_ratio: number;
     }) | null;
+    readonly is_fair_booth: boolean | null;
     readonly start_at: string | null;
     readonly end_at: string | null;
     readonly " $refType": SavedShowItemRow_show$ref;
@@ -51,6 +52,29 @@ return {
   "argumentDefinitions": [],
   "selections": [
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "href",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    v0,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_followed",
+      "args": null,
+      "storageKey": null
+    },
+    v1,
+    {
       "kind": "LinkedField",
       "alias": null,
       "name": "partner",
@@ -75,30 +99,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
-      "args": null,
-      "storageKey": null
-    },
-    v0,
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "is_followed",
-      "args": null,
-      "storageKey": null
-    },
-    v1,
-    {
-      "kind": "ScalarField",
-      "alias": null,
       "name": "_id",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "href",
       "args": null,
       "storageKey": null
     },
@@ -137,6 +138,13 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "is_fair_booth",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "start_at",
       "args": null,
       "storageKey": null
@@ -151,5 +159,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '8b7da2fbff0acc6d785401299fe1615f';
+(node as any).hash = '38b07ba64d0a02b8956c35dd7ae90dcc';
 export default node;
