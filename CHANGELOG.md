@@ -19,6 +19,7 @@
 - Order name of Fair's artists based on user's favorite artists - ashkan
 - Adds styled city picker modal - ashley
 - Adds CityTab stying and passes CityName to AllEvents view - kieran
+- Fixes render failure with missing city coords - ash
 
 ### 1.8.10
 
