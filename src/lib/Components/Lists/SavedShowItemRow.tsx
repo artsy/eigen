@@ -3,7 +3,8 @@ import { SavedShowItemRow_show } from "__generated__/SavedShowItemRow_show.graph
 import { SavedShowItemRowMutation } from "__generated__/SavedShowItemRowMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
-import Switchboard from "lib/NativeModules/SwitchBoard"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { hrefForPartialShow } from "lib/utils/router"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import moment from "moment"
 import React from "react"
@@ -29,7 +30,8 @@ export class SavedShowItemRow extends React.Component<Props, State> {
   }
 
   handleTap() {
-    Switchboard.presentNavigationViewController(this, `/show/${this.props.show.id}`)
+    const href = hrefForPartialShow(this.props.show)
+    SwitchBoard.presentNavigationViewController(this, href)
   }
 
   @track(props => {
@@ -169,6 +171,7 @@ export const SavedShowItemRowContainer = createFragmentContainer(SavedShowItemRo
         url
         aspect_ratio
       }
+      is_fair_booth
       start_at
       end_at
     }
