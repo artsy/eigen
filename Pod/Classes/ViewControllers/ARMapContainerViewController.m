@@ -186,6 +186,14 @@ Since this controller already has to do the above logic, having it handle the Ci
     [self.cityVC setProperty:@(isDrawerOpen) forKey:@"isDrawerOpen"];
 }
 
+- (void)drawerChangedDistanceFromBottomWithDrawer:(PulleyViewController *)drawer distance:(CGFloat)distance bottomSafeArea:(CGFloat)bottomSafeArea
+{
+    CGFloat drawerAbovePartialHeight = [drawer partialRevealDrawerHeightWithBottomSafeArea:bottomSafeArea];
+    
+    BOOL shouldHideButtons = distance > drawerAbovePartialHeight;
+    [self.mapVC setProperty:@(shouldHideButtons) forKey:@"hideMapButtons"];
+}
+
 - (BOOL)fullBleed
 {
     return YES;
