@@ -5,14 +5,22 @@ import { NativeModules, ScrollView, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 import { cityList as cities } from "./cities"
 
+interface Props {
+  selectedCity: string
+}
+
 interface State {
   selectedCity: string
 }
 
 const cityList = cities.map(city => city.name)
-export class CityPicker extends Component<{}, State> {
-  state = {
-    selectedCity: null,
+export class CityPicker extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+
+    this.state = {
+      selectedCity: props.selectedCity,
+    }
   }
 
   selectCity(city: string, index: number) {

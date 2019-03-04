@@ -103,6 +103,10 @@ Since this controller already has to do the above logic, having it handle the Ci
         // User is within radius to city.
         [self.mapVC setProperty:@{ @"lat": @(closestCity.epicenter.latitude), @"lng": @(closestCity.epicenter.longitude) }
                          forKey:@"coordinates"];
+
+        // Technically, the user hasn't selected this city. But we're going to remember it for them.
+        // Also, setting this affects showCityPicker's ability to pass the correct props in.
+        [[NSUserDefaults standardUserDefaults] setObject:closestCity.name forKey:SelectedCityNameKey];
     } else {
         // User is too far away from any city.
         [self showCityPicker];
