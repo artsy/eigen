@@ -34,6 +34,7 @@ function loadStories() {
   require('../src/lib/Components/__stories__/DottedLine.story.tsx');
   require('../src/lib/Components/__stories__/Markdown.story.tsx');
   require('../src/lib/Components/__stories__/Modal.story.tsx');
+  require('../src/lib/Components/__stories__/TabBar.story.tsx');
   require('../src/lib/Components/__stories__/Video.story.tsx');
   require('../src/lib/Containers/__stories__/Artist.story.tsx');
   require('../src/lib/Containers/__stories__/Gene.story.tsx');
@@ -43,6 +44,7 @@ function loadStories() {
   require('../src/lib/Scenes/Favorites/__stories__/Favorites.story.tsx');
   require('../src/lib/Scenes/Home/Components/Sales/Components/__stories__/LotsByFollowedArtists.story.tsx');
   require('../src/lib/Scenes/Home/__stories__/Home.story.tsx');
+  require('../src/lib/Scenes/Map/__stories__/Map.story.tsx');
   require('../src/lib/Scenes/Settings/__stories__/Settings.story.tsx');
   require('../src/lib/Scenes/Show/__stories__/Show.story.tsx');
   
@@ -78,6 +80,7 @@ const stories = [
   '../src/lib/Components/__stories__/DottedLine.story.tsx',
   '../src/lib/Components/__stories__/Markdown.story.tsx',
   '../src/lib/Components/__stories__/Modal.story.tsx',
+  '../src/lib/Components/__stories__/TabBar.story.tsx',
   '../src/lib/Components/__stories__/Video.story.tsx',
   '../src/lib/Containers/__stories__/Artist.story.tsx',
   '../src/lib/Containers/__stories__/Gene.story.tsx',
@@ -87,6 +90,7 @@ const stories = [
   '../src/lib/Scenes/Favorites/__stories__/Favorites.story.tsx',
   '../src/lib/Scenes/Home/Components/Sales/Components/__stories__/LotsByFollowedArtists.story.tsx',
   '../src/lib/Scenes/Home/__stories__/Home.story.tsx',
+  '../src/lib/Scenes/Map/__stories__/Map.story.tsx',
   '../src/lib/Scenes/Settings/__stories__/Settings.story.tsx',
   '../src/lib/Scenes/Show/__stories__/Show.story.tsx',
   

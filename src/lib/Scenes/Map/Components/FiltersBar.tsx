@@ -2,12 +2,12 @@ import { color, Sans } from "@artsy/palette"
 import React from "react"
 import { Animated, Dimensions, LayoutRectangle, ScrollView, View } from "react-native"
 import styled from "styled-components/native"
-import { Tab } from "../types"
+import { MapTab } from "../types"
 
 export interface FiltersBarProps {
   goToPage?: (number) => void
   activeTab?: number
-  tabs?: Tab[]
+  tabs?: MapTab[]
   containerWidth?: number
   scrollValue?: Animated.AnimatedInterpolation
 }
@@ -50,7 +50,7 @@ export class FiltersBar extends React.Component<FiltersBarProps, FiltersBarState
     activeTab: this.props.activeTab || 0,
   }
 
-  renderTab(tab: Tab, page: number, isTabActive: boolean, onPressHandler: (page: number) => void) {
+  renderTab(tab: MapTab, page: number, isTabActive: boolean, onPressHandler: (page: number) => void) {
     return (
       <Button
         key={tab.id}
