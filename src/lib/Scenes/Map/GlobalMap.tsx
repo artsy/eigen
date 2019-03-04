@@ -257,18 +257,10 @@ export class GlobalMap extends React.Component<Props, State> {
               trackUserLocation: true,
             })
           }}
-          onPress={async event => {
+          onPress={() => {
             this.setState({
               activeShowID: null,
             })
-            const { screenPointX, screenPointY } = event.properties
-            const screenCoords = [screenPointX, screenPointY]
-            const features = await this.map.queryRenderedFeaturesAtPoint(screenCoords, ["==", "type", "Cluster"])
-            console.log(features)
-            const zoom = await this.map.getZoom()
-            const [x, y] = await this.map.getCoordinateFromView(screenCoords)
-            const data = this.clusterEngine.getTile(zoom, x, y)
-            console.log(data)
           }}
         >
           <SafeAreaView style={{ flex: 1 }}>
@@ -317,29 +309,18 @@ export class GlobalMap extends React.Component<Props, State> {
     const {
       payload: {
         properties: { id },
-        geometry: { coordinates },
       },
     } = nativeEvent
 
     this.updateDrawerPosition(DrawerPosition.collapsed)
 
-    const pointInView = await this.map.getPointInView(coordinates)
-    const features = await this.map.queryRenderedFeaturesAtPoint(pointInView)
-    console.log(pointInView, coordinates, features)
     this.setState({
       activeShowID: id,
     })
-    const zoom = await this.map.getZoom()
-    const [lat, lng] = coordinates
-    try {
-      // Todo: finish setting getting points (shows) within a cluster
-      // In order to show multiple cards in scroll view when a user taps
-      // on a cluster
-      const data = this.clusterEngine.getTile(zoom, lng, lat)
-      console.log(data)
-    } catch (e) {
-      console.log(e)
-    }
+
+    // TODO: finish setting getting points (shows) within a cluster
+    // In order to show multiple cards in scroll view when a user taps
+    // on a cluster
   }
 
   updateDrawerPosition(position: DrawerPosition) {
