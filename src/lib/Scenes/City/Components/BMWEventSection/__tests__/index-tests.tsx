@@ -25,7 +25,7 @@ describe("CityEvent", () => {
   it("renders properly", () => {
     const comp = mount(
       <Theme>
-        <BMWEventSection title="BMW Art Guide" data={data} />
+        <BMWEventSection title="BMW Art Guide" data={data} cityName="New York" />
       </Theme>
     )
 
