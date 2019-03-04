@@ -11,6 +11,18 @@ export type FairHeader_fair = {
         readonly artists: any | null;
         readonly partners: any | null;
     }) | null;
+    readonly followed_content: ({
+        readonly artists: ReadonlyArray<({
+            readonly name: string | null;
+            readonly href: string | null;
+            readonly id: string;
+            readonly _id: string;
+        }) | null> | null;
+        readonly galleries: ReadonlyArray<({
+            readonly _id: string;
+            readonly name: string | null;
+        }) | null> | null;
+    }) | null;
     readonly partner_names: ({
         readonly edges: ReadonlyArray<({
             readonly node: ({
@@ -103,7 +115,14 @@ v5 = {
   "name": "__id",
   "args": null,
   "storageKey": null
-};
+},
+v6 = [
+  v1,
+  v2,
+  v3,
+  v4,
+  v5
+];
 return {
   "kind": "Fragment",
   "name": "FairHeader_fair",
@@ -137,13 +156,7 @@ return {
               "args": null,
               "concreteType": "Artist",
               "plural": false,
-              "selections": [
-                v1,
-                v2,
-                v3,
-                v4,
-                v5
-              ]
+              "selections": v6
             }
           ]
         }
@@ -173,6 +186,41 @@ return {
           "name": "partners",
           "args": null,
           "storageKey": null
+        }
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "followed_content",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "FollowedContent",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "artists",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Artist",
+          "plural": true,
+          "selections": v6
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "galleries",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "Partner",
+          "plural": true,
+          "selections": [
+            v4,
+            v1,
+            v5
+          ]
         }
       ]
     },
@@ -357,5 +405,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '55b582fee5480881b85a1c790cdcb22a';
+(node as any).hash = '124f47530ea26c94b1b822fefd36c19d';
 export default node;

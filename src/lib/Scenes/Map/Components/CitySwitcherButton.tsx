@@ -1,6 +1,7 @@
 import { Box, color, Flex, Sans } from "@artsy/palette"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import React, { Component } from "react"
+import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
 const Background = styled(Flex)`
@@ -15,22 +16,26 @@ const Background = styled(Flex)`
 export class CitySwitcherButton extends Component<any> {
   render() {
     return (
-      <Background
-        flexDirection="row"
-        alignItems="center"
-        style={
-          {
-            shadowOffset: { height: 0, width: 0 },
-          } as any
-        }
+      <TouchableWithoutFeedback
+        onPress={() => NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryOpenCityPicker", {})}
       >
-        <Sans size="3t" weight="medium" ml={3}>
-          {this.props.city.name}
-        </Sans>
-        <Box ml={2} mr={3}>
-          <ChevronIcon initialDirection="down" color={color("black100")} width={20} height={20} />
-        </Box>
-      </Background>
+        <Background
+          flexDirection="row"
+          alignItems="center"
+          style={
+            {
+              shadowOffset: { height: 0, width: 0 },
+            } as any
+          }
+        >
+          <Sans size="3t" weight="medium" ml={3}>
+            {this.props.city.name}
+          </Sans>
+          <Box ml={2} mr={3}>
+            <ChevronIcon initialDirection="down" color={color("black100")} width={20} height={20} />
+          </Box>
+        </Background>
+      </TouchableWithoutFeedback>
     )
   }
 }

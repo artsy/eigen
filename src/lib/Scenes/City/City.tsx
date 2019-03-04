@@ -9,6 +9,7 @@ import { EventEmitter } from "../Map/EventEmitter"
 import { Tab } from "../Map/types"
 import { AllEvents } from "./Components/AllEvents"
 import { CityTab } from "./Components/CityTab"
+
 interface Props {
   verticalMargin?: number
   isDrawerOpen?: boolean
@@ -53,6 +54,7 @@ export class CityView extends Component<Props, State> {
         cityName: string
         relay: RelayProp
       }) => {
+        console.log("got buckets", { buckets, cityName })
         this.setState({
           buckets,
           filter,
@@ -71,6 +73,7 @@ export class CityView extends Component<Props, State> {
 
   render() {
     const { buckets, filter, cityName } = this.state
+    console.log("rendering with ", cityName)
     const { isDrawerOpen, verticalMargin } = this.props
     // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
@@ -99,9 +102,23 @@ export class CityView extends Component<Props, State> {
                 {(() => {
                   switch (filter && filter.id) {
                     case "all":
-                      return <AllEvents cityName={cityName} currentBucket={filter.id as BucketKey} buckets={buckets} />
+                      return (
+                        <AllEvents
+                          cityName={cityName}
+                          key={cityName}
+                          currentBucket={filter.id as BucketKey}
+                          buckets={buckets}
+                        />
+                      )
                     default:
-                      return <CityTab bucket={buckets[filter.id]} type={filter.text} relay={this.state.relay} />
+                      return (
+                        <CityTab
+                          key={cityName + filter.id}
+                          bucket={buckets[filter.id]}
+                          type={filter.text}
+                          relay={this.state.relay}
+                        />
+                      )
                   }
                 })()}
               </ScrollView>

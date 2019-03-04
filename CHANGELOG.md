@@ -16,9 +16,14 @@
 
 ### Master
 
+- Order name of Fair's artists based on user's favorite artists - ashkan
+- Adds styled city picker modal - ashley
+- Adds CityTab stying and passes CityName to AllEvents view - kieran
+
+### 1.8.10
+
 - The map will show up as full bleed in Eigen - orta
 - Fixes fair view crash on fairs with no profiles - ash
-- Adds CityTab stying and passes CityName to AllEvents view - kieran
 - Fixes some analytics tracking events - luc
 - Adds styled city picker modal - ashley
 - Show save button now spins when saving - kieran

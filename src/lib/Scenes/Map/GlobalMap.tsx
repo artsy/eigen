@@ -2,7 +2,7 @@ import { Box, Flex } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import React from "react"
-import { Animated, Dimensions, NativeModules, SafeAreaView } from "react-native"
+import { Animated, Dimensions, Easing, NativeModules, SafeAreaView } from "react-native"
 import { createRefetchContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -23,6 +23,7 @@ const Map = styled(Mapbox.MapView)`
 `
 interface Props {
   initialCoordinates?: { lat: number; lng: number }
+  hideMapButtons: boolean
   viewer: GlobalMap_viewer
   relay: RelayProp
 }
@@ -37,10 +38,20 @@ interface State {
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
 
+const ButtonAnimation = {
+  yDelta: -200,
+  duration: 350,
+  easing: {
+    moveOut: Easing.in(Easing.cubic),
+    moveIn: Easing.out(Easing.cubic),
+  },
+}
+
 export class GlobalMap extends React.Component<Props, State> {
   map: Mapbox.MapView
   scaleIn: Animated.Value
   scaleOut: Animated.Value
+  moveButtons: Animated.Value
 
   filters: Tab[] = [
     { id: "all", text: "All" },
@@ -85,8 +96,27 @@ export class GlobalMap extends React.Component<Props, State> {
     )
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps: Props) {
     this.emitFilteredBucketResults()
+    if (nextProps.hideMapButtons !== this.props.hideMapButtons) {
+      if (nextProps.hideMapButtons) {
+        this.moveButtons = new Animated.Value(0)
+        Animated.timing(this.moveButtons, {
+          toValue: ButtonAnimation.yDelta,
+          duration: ButtonAnimation.duration,
+          easing: ButtonAnimation.easing.moveOut,
+          useNativeDriver: true,
+        }).start()
+      } else {
+        this.moveButtons = new Animated.Value(ButtonAnimation.yDelta)
+        Animated.timing(this.moveButtons, {
+          toValue: 0,
+          duration: ButtonAnimation.duration,
+          easing: ButtonAnimation.easing.moveIn,
+          useNativeDriver: true,
+        }).start()
+      }
+    }
   }
 
   emitFilteredBucketResults() {
@@ -202,19 +232,22 @@ export class GlobalMap extends React.Component<Props, State> {
           }}
         >
           <SafeAreaView style={{ flex: 1 }}>
-            <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
-              <CitySwitcherButton city={city} />
-              <Box style={{ marginLeft: "auto" }}>
-                <UserPositionButton
-                  highlight={this.state.userLocation === this.state.currentLocation}
-                  onPress={() => {
-                    const { latitude, longitude } = this.state.userLocation.coords
-                    this.map.moveTo([longitude, latitude], 500)
-                  }}
-                />
-              </Box>
-            </Flex>
+            <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
+              <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
+                <CitySwitcherButton city={city} />
+                <Box style={{ marginLeft: "auto" }}>
+                  <UserPositionButton
+                    highlight={this.state.userLocation === this.state.currentLocation}
+                    onPress={() => {
+                      const { latitude, longitude } = this.state.userLocation.coords
+                      this.map.moveTo([longitude, latitude], 500)
+                    }}
+                  />
+                </Box>
+              </Flex>
+            </Animated.View>
           </SafeAreaView>
+
           {this.renderAnnotations()}
         </Map>
       </Flex>
