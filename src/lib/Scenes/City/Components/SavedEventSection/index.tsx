@@ -1,4 +1,5 @@
 import { Box, color, Flex, Sans } from "@artsy/palette"
+import ChevronIcon from "lib/Icons/ChevronIcon"
 import PinSavedOff from "lib/Icons/PinSavedOff"
 import PinSavedOn from "lib/Icons/PinSavedOn"
 import React, { Component } from "react"
@@ -10,11 +11,14 @@ export class SavedEventSection extends Component<any> {
     const { data } = this.props
     const hasSaves = data.length > 0
     const hasSavesComponent = (
-      <Flex flexDirection="row" alignItems="center">
-        <PinSavedOn width={30} height={30} />
-        <Sans size="3t" ml={24}>
-          {data.length} saved events
-        </Sans>
+      <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+        <Flex flexDirection="row" alignItems="center">
+          <PinSavedOn width={30} height={30} />
+          <Sans size="3t" weight="medium" ml={24}>
+            {data.length} saved events
+          </Sans>
+        </Flex>
+        <ChevronIcon color="black" />
       </Flex>
     )
 
