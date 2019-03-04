@@ -19,6 +19,7 @@
 - Order name of Fair's artists based on user's favorite artists - ashkan
 - Adds styled city picker modal - ashley
 - Adds CityTab stying and passes CityName to AllEvents view - kieran
+- Fixes render failure with missing city coords - ash
 
 ### 1.8.10
 
@@ -27,6 +28,9 @@
 - Fixes some analytics tracking events - luc
 - Adds styled city picker modal - ashley
 - Adds BMW art guide to view - kieran
+- Displays ShowCard when pin is tapped on Map view - luc
+- Adds styled city picker modal - ashley
+- Implements clustering of nearby shows - luc
 
 ### 1.8.7
 

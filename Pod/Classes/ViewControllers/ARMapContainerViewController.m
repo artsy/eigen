@@ -49,6 +49,10 @@ Since this controller already has to do the above logic, having it handle the Ci
         NSInteger cityIndex = [note.userInfo[@"cityIndex"] integerValue];
         [sself userSelectedCityAtIndex:cityIndex];
     }];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryUpdateDrawerPosition" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        NSString *positionString = note.userInfo[@"position"];
+        [sself updateDrawerPosition:positionString];
+    }];
 
     self.mapVC = [[ARMapComponentViewController alloc] init];
     self.cityVC = [[ARCityComponentViewController alloc] init];
@@ -108,7 +112,7 @@ Since this controller already has to do the above logic, having it handle the Ci
     [self.cityPickerContainerView addSubview:self.cityPickerController.view];
     self.cityPickerController.view.frame = self.cityPickerContainerView.bounds;
     self.cityPickerController.view.clipsToBounds = YES;
-    self.cityPickerController.view.layer.cornerRadius = 10;
+    self.cityPickerController.view.layer.cornerRadius = 20;
     
     CALayer *layer = self.cityPickerContainerView.layer;
     layer.masksToBounds = NO;
@@ -150,6 +154,23 @@ Since this controller already has to do the above logic, having it handle the Ci
     }];
 }
 
+- (void)updateDrawerPosition:(NSString *)positionString
+{
+    PulleyPosition *position = nil;
+    
+    if ([positionString isEqualToString:@"closed"]) {
+        position = [PulleyPosition closed];
+    } else if ([positionString isEqualToString:@"open"]) {
+        position = [PulleyPosition open];
+    } else if ([positionString isEqualToString:@"partiallyRevealed"]) {
+        position = [PulleyPosition partiallyRevealed];
+    } else if ([positionString isEqualToString:@"collapsed"]) {
+        position = [PulleyPosition collapsed];
+    }
+    
+    [self.bottomSheetVC setDrawerPositionWithPosition:position animated:YES completion:nil];
+}
+
 # pragma mark - PulleyDelegate Methods
 
 - (void)drawerPositionDidChangeWithDrawer:(PulleyViewController *)drawer bottomSafeArea:(CGFloat)bottomSafeArea
@@ -163,6 +184,14 @@ Since this controller already has to do the above logic, having it handle the Ci
 
     BOOL isDrawerOpen = [drawer.drawerPosition isEqualToPosition:PulleyPosition.open];
     [self.cityVC setProperty:@(isDrawerOpen) forKey:@"isDrawerOpen"];
+}
+
+- (void)drawerChangedDistanceFromBottomWithDrawer:(PulleyViewController *)drawer distance:(CGFloat)distance bottomSafeArea:(CGFloat)bottomSafeArea
+{
+    CGFloat drawerAbovePartialHeight = [drawer partialRevealDrawerHeightWithBottomSafeArea:bottomSafeArea];
+    
+    BOOL shouldHideButtons = distance > drawerAbovePartialHeight;
+    [self.mapVC setProperty:@(shouldHideButtons) forKey:@"hideMapButtons"];
 }
 
 - (BOOL)fullBleed
