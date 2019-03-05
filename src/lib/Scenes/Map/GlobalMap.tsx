@@ -3,7 +3,7 @@ import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import React from "react"
 import { Animated, Dimensions, Easing, NativeModules, SafeAreaView, View } from "react-native"
-import { createRefetchContainer, graphql, RelayProp } from "react-relay"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
 import Supercluster from "supercluster"
@@ -331,7 +331,7 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 }
 
-export const GlobalMapContainer = createRefetchContainer(
+export const GlobalMapContainer = createFragmentContainer(
   GlobalMap,
   graphql`
     fragment GlobalMap_viewer on Viewer @argumentDefinitions(citySlug: { type: "String!" }, maxInt: { type: "Int!" }) {
@@ -418,13 +418,6 @@ export const GlobalMapContainer = createRefetchContainer(
             }
           }
         }
-      }
-    }
-  `,
-  graphql`
-    query GlobalMapRefetchQuery($citySlug: String!, $maxInt: Int!) {
-      viewer {
-        ...GlobalMap_viewer @arguments(citySlug: $citySlug, maxInt: $maxInt)
       }
     }
   `
