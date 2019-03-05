@@ -1,7 +1,8 @@
 import { Box, color, Flex, Sans, Separator, Serif, space } from "@artsy/palette"
+import { dimensions, screen } from "lib/data/ScreenSizes/screenSizes"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
 import React, { Component } from "react"
-import { NativeModules, ScrollView, TouchableOpacity } from "react-native"
+import { Dimensions, NativeModules, ScrollView, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
 import { cityList as cities } from "./cities"
 
@@ -28,8 +29,31 @@ export class CityPicker extends Component<Props, State> {
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", { cityIndex: index })
   }
 
+  handleLogo(screenHeight) {
+    return (
+      // @ts-ignore
+      <Sans size={dimensions(screenHeight)[screen(screenHeight)].logoFontSize} weight="medium" ml={2} mt={2}>
+        Presented in Partnership with BMW
+      </Sans>
+    )
+  }
+
+  handleCityList(screenHeight, city) {
+    return (
+      <Serif
+        mt={2}
+        // @ts-ignore
+        size={dimensions(screenHeight)[screen(screenHeight)].cityFontSize}
+        lineHeight={dimensions(screenHeight)[screen(screenHeight)].lineHeight}
+      >
+        {city}
+      </Serif>
+    )
+  }
+
   render() {
     const { selectedCity } = this.state
+    const { height: screenHeight } = Dimensions.get("window")
 
     return (
       <Overlay>
@@ -40,12 +64,10 @@ export class CityPicker extends Component<Props, State> {
             </Sans>
           </Box>
           {cityList.map((city, i) => (
-            <Box key={i} mt={2} mx={2}>
+            <Box key={i} mx={2}>
               <TouchableOpacity onPress={() => this.selectCity(city, i)}>
-                <Flex flexDirection="row" justifyContent="space-between" alignItems="flex-start">
-                  <Serif size="8" lineHeight={45}>
-                    {city}
-                  </Serif>
+                <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+                  {this.handleCityList(screenHeight, city)}
                   {selectedCity === city && <CircleWhiteCheckIcon width={26} height={26} />}
                 </Flex>
               </TouchableOpacity>
@@ -56,9 +78,7 @@ export class CityPicker extends Component<Props, State> {
         <LogoContainer>
           <Flex flexDirection="row" py={1} alignItems="center">
             <Logo source={require("../../../../Pod/Assets/assets/images/BMW-logo.jpg")} />
-            <Sans size="3" weight="medium" ml={1} mt={1}>
-              Presented in Partnership with BMW
-            </Sans>
+            {this.handleLogo(screenHeight)}
           </Flex>
         </LogoContainer>
       </Overlay>
@@ -78,10 +98,9 @@ const Overlay = styled.View`
   margin-bottom: ${space(4)};
   margin-left: ${space(2)};
   margin-right: ${space(2)};
-  border-radius: 25;
   flex-direction: column;
 `
 const LogoContainer = styled.View`
-  margin-left: ${space(2)};
-  margin-right: ${space(2)};
+  width: 100%;
+  flex: 2;
 `

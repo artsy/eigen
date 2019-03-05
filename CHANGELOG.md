@@ -24,6 +24,7 @@
 - Adds CityTab stying and passes CityName to AllEvents view - kieran
 - Fixes render failure with missing city coords - ash
 - Remembers user's last selected city - ash
+- Adds styling/sizing based on screen size to contents of CityPicker modal - ashley
 
 ### 1.8.10
 
