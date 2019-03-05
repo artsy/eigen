@@ -32,7 +32,6 @@ const ShowCardContainer = styled(Box)`
   left: 0;
   right: 0;
   height: 260;
-  margin-top: auto;
 `
 
 interface Props {
@@ -232,7 +231,6 @@ export class GlobalMap extends React.Component<Props, State> {
               bottom,
               left: 0,
               right: 0,
-              height: 106,
               opacity,
             }}
           >

@@ -65,7 +65,9 @@ export class ShowCard extends Component<ShowCardProps> {
         renderItem={this.renderItem}
         keyExtractor={item => item.id}
         showsHorizontalScrollIndicator={false}
-        snapToInterval={this.cardWidth}
+        snapToInterval={this.cardWidth + space(2)}
+        contentContainerStyle={{ padding: space(1) }}
+        overScrollMode="always"
         snapToAlignment="start"
         horizontal
       />
