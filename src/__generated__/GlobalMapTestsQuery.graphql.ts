@@ -9,6 +9,7 @@ export type Near = {
 };
 export type GlobalMapTestsQueryVariables = {
     readonly near: Near;
+    readonly maxInt: number;
 };
 export type GlobalMapTestsQueryResponse = {
     readonly viewer: ({
@@ -25,20 +26,21 @@ export type GlobalMapTestsQuery = {
 /*
 query GlobalMapTestsQuery(
   $near: Near!
+  $maxInt: Int!
 ) {
   viewer {
-    ...GlobalMap_viewer_279V1T
+    ...GlobalMap_viewer_3IPaQJ
   }
 }
 
-fragment GlobalMap_viewer_279V1T on Viewer {
+fragment GlobalMap_viewer_3IPaQJ on Viewer {
   city(near: $near) {
     name
     coordinates {
       lat
       lng
     }
-    shows(discoverable: true, first: 50, sort: START_AT_ASC) {
+    shows(discoverable: true, first: $maxInt, sort: START_AT_ASC) {
       edges {
         node {
           id
@@ -78,7 +80,7 @@ fragment GlobalMap_viewer_279V1T on Viewer {
         }
       }
     }
-    fairs(first: 10) {
+    fairs(first: $maxInt) {
       edges {
         node {
           id
@@ -127,6 +129,12 @@ var v0 = [
     "name": "near",
     "type": "Near!",
     "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "maxInt",
+    "type": "Int!",
+    "defaultValue": null
   }
 ],
 v1 = {
@@ -162,34 +170,40 @@ v2 = {
   ]
 },
 v3 = {
+  "kind": "Variable",
+  "name": "first",
+  "variableName": "maxInt",
+  "type": "Int"
+},
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v4 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v6 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v8 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "location",
@@ -199,24 +213,24 @@ v7 = {
   "plural": false,
   "selections": [
     v2,
-    v4
+    v5
   ]
 },
-v8 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
   "args": null,
   "storageKey": null
 },
-v9 = {
+v10 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "start_at",
   "args": null,
   "storageKey": null
 },
-v10 = {
+v11 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "end_at",
@@ -227,7 +241,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "GlobalMapTestsQuery",
-  "id": "dc76ee192f973fb168f1a25fb69e52d5",
+  "id": "28026c294dfd461ca1b5dd7f1d2250eb",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -250,6 +264,12 @@ return {
             "kind": "FragmentSpread",
             "name": "GlobalMap_viewer",
             "args": [
+              {
+                "kind": "Variable",
+                "name": "maxInt",
+                "variableName": "maxInt",
+                "type": null
+              },
               {
                 "kind": "Variable",
                 "name": "near",
@@ -298,7 +318,7 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "shows",
-                "storageKey": "shows(discoverable:true,first:50,sort:\"START_AT_ASC\")",
+                "storageKey": null,
                 "args": [
                   {
                     "kind": "Literal",
@@ -306,12 +326,7 @@ return {
                     "value": true,
                     "type": "Boolean"
                   },
-                  {
-                    "kind": "Literal",
-                    "name": "first",
-                    "value": 50,
-                    "type": "Int"
-                  },
+                  v3,
                   {
                     "kind": "Literal",
                     "name": "sort",
@@ -347,8 +362,8 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v3,
                           v4,
+                          v5,
                           v1,
                           {
                             "kind": "ScalarField",
@@ -357,7 +372,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v5,
+                          v6,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -374,13 +389,13 @@ return {
                             "concreteType": "Image",
                             "plural": false,
                             "selections": [
-                              v6
+                              v7
                             ]
                           },
-                          v7,
                           v8,
                           v9,
                           v10,
+                          v11,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -397,7 +412,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              v4,
+                              v5,
                               {
                                 "kind": "InlineFragment",
                                 "type": "ExternalPartner",
@@ -410,7 +425,7 @@ return {
                                 "type": "Partner",
                                 "selections": [
                                   v1,
-                                  v8
+                                  v9
                                 ]
                               }
                             ]
@@ -425,14 +440,9 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "fairs",
-                "storageKey": "fairs(first:10)",
+                "storageKey": null,
                 "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "first",
-                    "value": 10,
-                    "type": "Int"
-                  }
+                  v3
                 ],
                 "concreteType": "FairConnection",
                 "plural": false,
@@ -455,7 +465,7 @@ return {
                         "concreteType": "Fair",
                         "plural": false,
                         "selections": [
-                          v3,
+                          v4,
                           v1,
                           {
                             "kind": "LinkedField",
@@ -475,7 +485,7 @@ return {
                               }
                             ]
                           },
-                          v7,
+                          v8,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -499,7 +509,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              v6
+                              v7
                             ]
                           },
                           {
@@ -520,8 +530,8 @@ return {
                                 "concreteType": "Image",
                                 "plural": false,
                                 "selections": [
-                                  v3,
-                                  v5,
+                                  v4,
+                                  v6,
                                   {
                                     "kind": "ScalarField",
                                     "alias": null,
@@ -552,14 +562,14 @@ return {
                                   }
                                 ]
                               },
+                              v5,
                               v4,
-                              v3,
                               v1
                             ]
                           },
-                          v9,
                           v10,
-                          v4
+                          v11,
+                          v5
                         ]
                       }
                     ]
@@ -583,5 +593,5 @@ return {
   }
 };
 })();
-(node as any).hash = '46371233625c3101a751e49c7d15db5d';
+(node as any).hash = 'f94d00432bc10fddfbecdf8537d3c085';
 export default node;

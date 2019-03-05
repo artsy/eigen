@@ -115,34 +115,40 @@ v1 = {
   ]
 },
 v2 = {
+  "kind": "Variable",
+  "name": "first",
+  "variableName": "maxInt",
+  "type": "Int"
+},
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v3 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
   "args": null,
   "storageKey": null
 },
-v4 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
   "args": null,
   "storageKey": null
 },
-v6 = {
+v7 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "location",
@@ -152,24 +158,24 @@ v6 = {
   "plural": false,
   "selections": [
     v1,
-    v3
+    v4
   ]
 },
-v7 = {
+v8 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
   "args": null,
   "storageKey": null
 },
-v8 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "start_at",
   "args": null,
   "storageKey": null
 },
-v9 = {
+v10 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "end_at",
@@ -186,6 +192,12 @@ return {
       "kind": "LocalArgument",
       "name": "near",
       "type": "Near!",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "maxInt",
+      "type": "Int!",
       "defaultValue": null
     }
   ],
@@ -212,7 +224,7 @@ return {
           "kind": "LinkedField",
           "alias": null,
           "name": "shows",
-          "storageKey": "shows(discoverable:true,first:50,sort:\"START_AT_ASC\")",
+          "storageKey": null,
           "args": [
             {
               "kind": "Literal",
@@ -220,12 +232,7 @@ return {
               "value": true,
               "type": "Boolean"
             },
-            {
-              "kind": "Literal",
-              "name": "first",
-              "value": 50,
-              "type": "Int"
-            },
+            v2,
             {
               "kind": "Literal",
               "name": "sort",
@@ -261,8 +268,8 @@ return {
                       "args": null,
                       "storageKey": null
                     },
-                    v2,
                     v3,
+                    v4,
                     v0,
                     {
                       "kind": "ScalarField",
@@ -271,7 +278,7 @@ return {
                       "args": null,
                       "storageKey": null
                     },
-                    v4,
+                    v5,
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -288,13 +295,13 @@ return {
                       "concreteType": "Image",
                       "plural": false,
                       "selections": [
-                        v5
+                        v6
                       ]
                     },
-                    v6,
                     v7,
                     v8,
                     v9,
+                    v10,
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -304,7 +311,7 @@ return {
                       "concreteType": null,
                       "plural": false,
                       "selections": [
-                        v3,
+                        v4,
                         {
                           "kind": "InlineFragment",
                           "type": "ExternalPartner",
@@ -317,7 +324,7 @@ return {
                           "type": "Partner",
                           "selections": [
                             v0,
-                            v7
+                            v8
                           ]
                         }
                       ]
@@ -332,14 +339,9 @@ return {
           "kind": "LinkedField",
           "alias": null,
           "name": "fairs",
-          "storageKey": "fairs(first:10)",
+          "storageKey": null,
           "args": [
-            {
-              "kind": "Literal",
-              "name": "first",
-              "value": 10,
-              "type": "Int"
-            }
+            v2
           ],
           "concreteType": "FairConnection",
           "plural": false,
@@ -362,7 +364,7 @@ return {
                   "concreteType": "Fair",
                   "plural": false,
                   "selections": [
-                    v2,
+                    v3,
                     v0,
                     {
                       "kind": "LinkedField",
@@ -382,7 +384,7 @@ return {
                         }
                       ]
                     },
-                    v6,
+                    v7,
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -406,7 +408,7 @@ return {
                           "args": null,
                           "storageKey": null
                         },
-                        v5
+                        v6
                       ]
                     },
                     {
@@ -427,8 +429,8 @@ return {
                           "concreteType": "Image",
                           "plural": false,
                           "selections": [
-                            v2,
-                            v4,
+                            v3,
+                            v5,
                             {
                               "kind": "ScalarField",
                               "alias": null,
@@ -459,14 +461,14 @@ return {
                             }
                           ]
                         },
+                        v4,
                         v3,
-                        v2,
                         v0
                       ]
                     },
-                    v8,
                     v9,
-                    v3
+                    v10,
+                    v4
                   ]
                 }
               ]
@@ -478,5 +480,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'e71dd624a6aedb9e8c075ffddf15260d';
+(node as any).hash = '70a790e9d04bd9cfd439e25f2ad88236';
 export default node;

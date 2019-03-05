@@ -334,7 +334,7 @@ export class GlobalMap extends React.Component<Props, State> {
 export const GlobalMapContainer = createRefetchContainer(
   GlobalMap,
   graphql`
-    fragment GlobalMap_viewer on Viewer @argumentDefinitions(near: { type: "Near!" }) {
+    fragment GlobalMap_viewer on Viewer @argumentDefinitions(near: { type: "Near!" }, maxInt: { type: "Int!" }) {
       city(near: $near) {
         name
         coordinates {
@@ -342,7 +342,7 @@ export const GlobalMapContainer = createRefetchContainer(
           lng
         }
 
-        shows(discoverable: true, first: 50, sort: START_AT_ASC) {
+        shows(discoverable: true, first: $maxInt, sort: START_AT_ASC) {
           edges {
             node {
               id
@@ -377,7 +377,7 @@ export const GlobalMapContainer = createRefetchContainer(
           }
         }
 
-        fairs(first: 10) {
+        fairs(first: $maxInt) {
           edges {
             node {
               id
@@ -422,9 +422,9 @@ export const GlobalMapContainer = createRefetchContainer(
     }
   `,
   graphql`
-    query GlobalMapRefetchQuery($near: Near) {
+    query GlobalMapRefetchQuery($near: Near!, $maxInt: Int!) {
       viewer {
-        ...GlobalMap_viewer @arguments(near: $near)
+        ...GlobalMap_viewer @arguments(near: $near, maxInt: $maxInt)
       }
     }
   `

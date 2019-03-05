@@ -20,9 +20,9 @@ describe("GlobalMap", () => {
     const wrapper = await renderRelayTree({
       Component: GlobalMap,
       query: graphql`
-        query GlobalMapTestsQuery($near: Near!) {
+        query GlobalMapTestsQuery($near: Near!, $maxInt: Int!) {
           viewer {
-            ...GlobalMap_viewer @arguments(near: $near)
+            ...GlobalMap_viewer @arguments(near: $near, maxInt: $maxInt)
           }
         }
       `,
@@ -33,6 +33,7 @@ describe("GlobalMap", () => {
       },
       variables: {
         near: { lat: 48.8566, lng: 2.3522 },
+        maxInt: 42,
       },
     })
 
