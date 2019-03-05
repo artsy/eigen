@@ -23,6 +23,7 @@
 - Adds styled city picker modal - ashley
 - Adds CityTab stying and passes CityName to AllEvents view - kieran
 - Fixes render failure with missing city coords - ash
+- Remembers user's last selected city - ash
 
 ### 1.8.10
 
