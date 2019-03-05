@@ -115,37 +115,15 @@ export class SavedShowItemRow extends React.Component<Props, State> {
                       {show.partner.name}
                     </Sans>
                   )}
-                {show.name && (
-                  <TightendSerif size="3t" color={color("black60")} ml={15} numberOfLines={1}>
-                    {show.name}
-                  </TightendSerif>
-                )}
-                {show.status && (
-                  <Sans size="3t" color={color("black60")} ml={15}>
-                    {show.status.includes("closed")
-                      ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                      : show.start_at &&
-                        show.end_at &&
-                        moment(show.start_at).format("MMM D") + " - " + moment(show.end_at).format("MMM D")}
-                  </Sans>
-                )}
-<<<<<<< HEAD
-              {show.name && (
-                <TightendSerif size="3t" color={color("black60")} ml={15} numberOfLines={1}>
-                  {show.name}
-                </TightendSerif>
-              )}
-              {show.status &&
-                show.exhibition_period && (
-                  <Sans size="3t" color={color("black60")} ml={15}>
-                    {show.status.includes("closed")
-                      ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                      : show.exhibition_period}
-                  </Sans>
-                )}
-=======
+                {show.status &&
+                  show.exhibition_period && (
+                    <Sans size="3t" color={color("black60")} ml={15}>
+                      {show.status.includes("closed")
+                        ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
+                        : show.exhibition_period}
+                    </Sans>
+                  )}
               </Flex>
->>>>>>> 8f1b0f0200e498ff0f8f38ae0dd0720a47ba1cf4
             </Flex>
             <Box width="50">
               <Flex alignItems="flex-start" justifyContent="flex-end" flexDirection="row">

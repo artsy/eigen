@@ -47,18 +47,14 @@ export class Event extends React.Component<Props, State> {
     const { node } = this.props.event
     const { name, exhibition_period, partner, cover_image } = node
     const { name: partnerName } = partner
-<<<<<<< HEAD
-=======
     const url = cover_image ? cover_image.url : null
->>>>>>> 8f1b0f0200e498ff0f8f38ae0dd0720a47ba1cf4
     return (
       <Box mb={2} px={2}>
-        {cover_image &&
-          cover_image.url && (
-            <Box mb={2}>
-              <OpaqueImageView imageURL={cover_image.url} height={145} />
-            </Box>
-          )}
+        {url && (
+          <Box mb={2}>
+            <OpaqueImageView imageURL={url} height={145} />
+          </Box>
+        )}
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
           <TextContainer mb={2}>
             <Sans size="3" weight="medium" numberOfLines={1} ellipsizeMode="tail">
