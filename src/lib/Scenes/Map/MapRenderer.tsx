@@ -29,9 +29,14 @@ export const MapRenderer: React.SFC<{ citySlug: string; hideMapButtons: boolean 
         if (mapProps) {
           return <GlobalMap {...mapProps} {...props} />
         }
-
+        // TODO: Render some loading view
         return null
       }}
+      cacheConfig={
+        {
+          emissionCacheTTL: 86400, // 60 * 60 * 24 = 1 day
+        } as any
+      }
     />
   )
 }
