@@ -47,6 +47,7 @@ interface State {
   currentLocation?: any
   userLocation?: any
   trackUserLocation?: boolean
+  featureCollection: any
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
@@ -70,6 +71,7 @@ enum DrawerPosition {
 export class GlobalMap extends React.Component<Props, State> {
   map: Mapbox.MapView
   clusterEngine: Supercluster
+  featureCollection: any
   moveButtons: Animated.Value
 
   filters: MapTab[] = [
@@ -80,11 +82,10 @@ export class GlobalMap extends React.Component<Props, State> {
     { id: "museums", text: "Museums" },
   ]
   shows: { [id: string]: Show } = {}
-  featureCollection: any
 
   stylesheet = Mapbox.StyleSheet.create({
     singleShow: {
-      iconImage: "pin",
+      iconImage: Mapbox.StyleSheet.identity("icon"),
       iconSize: 0.8,
     },
 
@@ -108,6 +109,8 @@ export class GlobalMap extends React.Component<Props, State> {
     },
   })
 
+  getClusterOrPointFromFeature
+
   constructor(props) {
     super(props)
 
@@ -118,10 +121,15 @@ export class GlobalMap extends React.Component<Props, State> {
       currentLocation,
       bucketResults,
       trackUserLocation: false,
+      featureCollection: {},
     }
+    this.clusterEngine = new Supercluster({
+      radius: 50,
+      maxZoom: 13,
+    })
 
     this.updateShowIdMap()
-    this.generateClusterMap()
+    this.updateClusterMap(false)
   }
 
   componentDidMount() {
@@ -133,7 +141,7 @@ export class GlobalMap extends React.Component<Props, State> {
   componentWillReceiveProps(nextProps: Props) {
     this.emitFilteredBucketResults()
     this.updateShowIdMap()
-    this.generateClusterMap()
+    this.updateClusterMap()
 
     if (nextProps.hideMapButtons !== this.props.hideMapButtons) {
       if (nextProps.hideMapButtons) {
@@ -156,14 +164,57 @@ export class GlobalMap extends React.Component<Props, State> {
     }
   }
 
-  generateClusterMap() {
+  updateClusterMap(updateState: boolean = true) {
     const { city } = this.props.viewer
-    this.featureCollection = convertCityToGeoJSON(city.shows.edges.filter(({ node }) => node.type === "Show"))
-    this.clusterEngine = new Supercluster({
-      radius: 50,
-      maxZoom: 13,
+    const data = city.shows.edges.filter(a => a.node.type === "Show").map(({ node }) => {
+      const isSelected = node.id === this.state.activeShowID
+      let icon = isSelected ? "pin-selected" : "pin"
+
+      if (node.is_followed) {
+        icon = isSelected ? "pin-saved-selected" : "pin-saved"
+      }
+
+      return {
+        node: {
+          ...node,
+          icon,
+        },
+      }
     })
-    this.clusterEngine.load(this.featureCollection)
+
+    const featureCollection = convertCityToGeoJSON(data)
+
+    if (updateState) {
+      this.setState({
+        featureCollection,
+      })
+    }
+    this.featureCollection = featureCollection
+    this.clusterEngine.load(this.featureCollection.features)
+    return featureCollection
+  }
+
+  getNearestPointToLatLongInCollection(values: { lat: number; lng: number }, features: any[]) {
+    // https://stackoverflow.com/a/21623206
+    function distance(lat1, lon1, lat2, lon2) {
+      const p = 0.017453292519943295 // Math.PI / 180
+      const c = Math.cos
+      const a = 0.5 - c((lat2 - lat1) * p) / 2 + (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2
+
+      return 12742 * Math.asin(Math.sqrt(a)) // 2 * R; R = 6371 km
+    }
+
+    const distances = features
+      .map(feature => {
+        const [featureLng, featureLat] = feature.geometry.coordinates
+        return {
+          id: feature.properties.id,
+          distance: distance(values.lat, values.lng, featureLat, featureLng),
+        }
+      })
+      .sort((a, b) => b.distance - a.distance)
+
+    return this.shows[distances[0].id]
   }
 
   emitFilteredBucketResults() {
@@ -227,6 +278,7 @@ export class GlobalMap extends React.Component<Props, State> {
   render() {
     const { city } = this.props.viewer
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || city.coordinates
+    console.log("inside render", this.state.activeShowID)
 
     return (
       <Flex mb={0.5} flexDirection="column">
@@ -243,6 +295,7 @@ export class GlobalMap extends React.Component<Props, State> {
           zoomLevel={13}
           logoEnabled={false}
           attributionEnabled={true}
+          compassEnabled={false}
           onRegionDidChange={location => {
             this.emitFilteredBucketResults()
             this.setState({
@@ -258,6 +311,7 @@ export class GlobalMap extends React.Component<Props, State> {
             })
           }}
           onPress={() => {
+            this.updateClusterMap()
             this.setState({
               activeShowID: null,
             })
@@ -285,9 +339,9 @@ export class GlobalMap extends React.Component<Props, State> {
             shape={this.featureCollection}
             cluster
             clusterRadius={50}
-            clusterMaxZoom={14}
-            onPress={async ({ nativeEvent }) => {
-              await this.handleFeaturePress(nativeEvent)
+            clusterMaxZoom={13}
+            onPress={e => {
+              this.handleFeaturePress(e.nativeEvent)
             }}
           >
             <Mapbox.SymbolLayer id="singleShow" filter={["!has", "point_count"]} style={this.stylesheet.singleShow} />
@@ -305,22 +359,43 @@ export class GlobalMap extends React.Component<Props, State> {
     )
   }
 
+  /**
+   * This function is complicated, because the work we have to do is tricky.
+   * What's happening is that we have to replicate a subset of the map's clustering algorithm to get
+   * access to the shows that the user has tapped on.
+   */
   async handleFeaturePress(nativeEvent: any) {
     const {
       payload: {
         properties: { id },
+        geometry: { coordinates },
       },
     } = nativeEvent
 
     this.updateDrawerPosition(DrawerPosition.collapsed)
+    this.updateClusterMap()
 
     this.setState({
       activeShowID: id,
     })
 
-    // TODO: finish setting getting points (shows) within a cluster
-    // In order to show multiple cards in scroll view when a user taps
-    // on a cluster
+    // Get map zoom level and coordinates of where the user tapped
+    const zoom = await this.map.getZoom()
+    const [lat, lng] = coordinates
+
+    // Gives us the coordinates
+    const visibleBounds = await this.map.getVisibleBounds()
+    const [ne, sw] = visibleBounds
+    const [eastLng, northLat] = ne
+    const [westLng, southLat] = sw
+
+    const visibleFeatures = this.clusterEngine.getClusters([westLng, southLat, eastLng, northLat], zoom)
+    const nearestFeatureToPoint = this.getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
+    this.getClusterOrPointFromFeature(nearestFeatureToPoint)
+  }
+
+  getClusterOrPointInFeature(feature) {
+    console.log(feature)
   }
 
   updateDrawerPosition(position: DrawerPosition) {
@@ -428,4 +503,4 @@ export const GlobalMapContainer = createRefetchContainer(
       }
     }
   `
-)
+)()

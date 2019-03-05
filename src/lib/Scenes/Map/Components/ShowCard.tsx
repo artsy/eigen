@@ -28,6 +28,10 @@ export class ShowCard extends Component<ShowCardProps> {
   handleTap() {
     const path = this.props.show.href
     SwitchBoard.presentNavigationViewController(this, path)
+
+    if (this.props.onSave) {
+      this.props.onSave()
+    }
   }
 
   render() {
