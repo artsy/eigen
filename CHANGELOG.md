@@ -16,6 +16,9 @@
 
 ### Master
 
+- Handle rendering card for Clusters - luc
+- Refactor clustering engine to handle multiple zooms - luc
+
 ### 1.8.11
 
 - The Home tab bar is now consistent with the design system - orta
