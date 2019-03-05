@@ -24,6 +24,7 @@
 - Adds CityTab stying and passes CityName to AllEvents view - kieran
 - Fixes render failure with missing city coords - ash
 - Remembers user's last selected city - ash
+- Fetches all city (and associated shows + fairs) data and cache on-device for 1 day - alloy
 
 ### 1.8.10
 
