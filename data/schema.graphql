@@ -5206,7 +5206,7 @@ type Me implements Node {
   # A list of the current user’s artist follows
   follow_artists(page: Int, size: Int): FollowArtists
 
-  # A list of the current user’s inquiry requests
+  # A Connection of followed artists by current user
   followed_artists_connection(
     after: String
     first: Int
@@ -8402,7 +8402,14 @@ type Show implements Node {
 
   # Is it a fair booth or a show?
   type: String
-  followedContent: ShowsFollowedContent
+
+  # A Connection of followed artists by current user for this show
+  followedArtists(
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowFollowArtistConnection
 }
 
 # A connection to a list of items.
@@ -8438,8 +8445,26 @@ type ShowEdge {
   cursor: String!
 }
 
-type ShowsFollowedContent {
-  artists: [Artist]
+type ShowFollowArtist {
+  artist: Artist
+}
+
+# A connection to a list of items.
+type ShowFollowArtistConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ShowFollowArtistEdge]
+}
+
+# An edge in a connection.
+type ShowFollowArtistEdge {
+  # The item at the end of the edge
+  node: ShowFollowArtist
+
+  # A cursor for use in pagination
+  cursor: String!
 }
 
 enum ShowSort {

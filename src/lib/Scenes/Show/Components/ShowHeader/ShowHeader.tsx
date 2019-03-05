@@ -132,9 +132,11 @@ export class ShowHeader extends React.Component<Props, State> {
   render() {
     const { isFollowedSaving } = this.state
     const {
-      show: { artists, images, is_followed, name, partner, exhibition_period, followedContent },
+      show: { artists, images, is_followed, name, partner, exhibition_period, followedArtists },
     } = this.props
-    const fairfollowedArtistList = (followedContent && followedContent.artists) || []
+    const fairfollowedArtistList =
+      (followedArtists && followedArtists.edges && followedArtists.edges.map(fa => fa.node).map(fan => fan.artist)) ||
+      []
     const uniqArtistList = [...new Set(fairfollowedArtistList.concat(artists))]
     const hasImages = !!images.length
     const singleImage = hasImages && images.length === 1
@@ -224,12 +226,16 @@ export const ShowHeaderContainer = createFragmentContainer(
         url
         aspect_ratio
       }
-      followedContent {
-        artists {
-          name
-          href
-          id
-          _id
+      followedArtists {
+        edges {
+          node {
+            artist {
+              name
+              href
+              id
+              _id
+            }
+          }
         }
       }
       artists {

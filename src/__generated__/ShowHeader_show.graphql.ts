@@ -21,12 +21,16 @@ export type ShowHeader_show = {
         readonly url: string | null;
         readonly aspect_ratio: number;
     }) | null> | null;
-    readonly followedContent: ({
-        readonly artists: ReadonlyArray<({
-            readonly name: string | null;
-            readonly href: string | null;
-            readonly id: string;
-            readonly _id: string;
+    readonly followedArtists: ({
+        readonly edges: ReadonlyArray<({
+            readonly node: ({
+                readonly artist: ({
+                    readonly name: string | null;
+                    readonly href: string | null;
+                    readonly id: string;
+                    readonly _id: string;
+                }) | null;
+            }) | null;
         }) | null> | null;
     }) | null;
     readonly artists: ReadonlyArray<({
@@ -76,22 +80,13 @@ v4 = {
   "args": null,
   "storageKey": null
 },
-v5 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "artists",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "Artist",
-  "plural": true,
-  "selections": [
-    v2,
-    v4,
-    v0,
-    v3,
-    v1
-  ]
-};
+v5 = [
+  v2,
+  v4,
+  v0,
+  v3,
+  v1
+];
 return {
   "kind": "Fragment",
   "name": "ShowHeader_show",
@@ -187,18 +182,58 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "followedContent",
+      "name": "followedArtists",
       "storageKey": null,
       "args": null,
-      "concreteType": "ShowsFollowedContent",
+      "concreteType": "ShowFollowArtistConnection",
       "plural": false,
       "selections": [
-        v5
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ShowFollowArtistEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "ShowFollowArtist",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "artist",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Artist",
+                  "plural": false,
+                  "selections": v5
+                }
+              ]
+            }
+          ]
+        }
       ]
     },
-    v5
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "artists",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Artist",
+      "plural": true,
+      "selections": v5
+    }
   ]
 };
 })();
-(node as any).hash = '49f82bbdb6ff15474acca03a0f18aaad';
+(node as any).hash = '9b7566e055dd7853194e1d6178793604';
 export default node;
