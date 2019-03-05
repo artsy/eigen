@@ -64,7 +64,7 @@ export class Event extends React.Component<Props, State> {
     const { node } = this.props.event
     const { name, start_at, end_at, partner, cover_image } = node
     const { name: partnerName } = partner
-    const { url } = cover_image
+    const url = cover_image ? cover_image.url : null
     return (
       <Box mb={2} px={2}>
         {url && (

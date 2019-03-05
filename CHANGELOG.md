@@ -16,10 +16,14 @@
 
 ### Master
 
+### 1.8.11
+
+- The Home tab bar is now consistent with the design system - orta
 - Order name of Fair's artists based on user's favorite artists - ashkan
 - Adds styled city picker modal - ashley
 - Adds CityTab stying and passes CityName to AllEvents view - kieran
 - Fixes render failure with missing city coords - ash
+- Remembers user's last selected city - ash
 
 ### 1.8.10
 
@@ -28,6 +32,7 @@
 - Fixes some analytics tracking events - luc
 - Adds styled city picker modal - ashley
 - Adds BMW art guide to view - kieran
+- Show save button now spins when saving - kieran
 - Displays ShowCard when pin is tapped on Map view - luc
 - Adds styled city picker modal - ashley
 - Implements clustering of nearby shows - luc

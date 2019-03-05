@@ -4,13 +4,18 @@ import React, { Component } from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
+// Because it will raise errors in VS Code
+const shadowProps = `
+shadow-radius: 6;
+shadow-color: black;
+shadow-opacity: 0.3;
+`
+
 const Background = styled(Flex)`
   background: white;
   height: 40;
   border-radius: 20;
-  shadow-radius: 6;
-  shadow-color: black;
-  shadow-opacity: 0.3;
+  ${shadowProps};
 `
 
 export class CitySwitcherButton extends Component<any> {

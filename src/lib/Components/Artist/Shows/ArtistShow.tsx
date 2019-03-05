@@ -7,6 +7,7 @@ import OpaqueImageView from "../../OpaqueImageView"
 import Metadata from "./Metadata"
 
 import { ArtistShow_show } from "__generated__/ArtistShow_show.graphql"
+import { hrefForPartialShow } from "lib/utils/router"
 
 interface Props {
   show: ArtistShow_show
@@ -19,10 +20,8 @@ interface Props {
 
 class Show extends React.Component<Props> {
   handleTap() {
-    const { is_fair_booth } = this.props.show
-    is_fair_booth
-      ? SwitchBoard.presentNavigationViewController(this, `${this.props.show.id}?entity=fair-booth`)
-      : SwitchBoard.presentNavigationViewController(this, this.props.show.href || `show/${this.props.show.id}`)
+    const href = hrefForPartialShow(this.props.show)
+    SwitchBoard.presentNavigationViewController(this, href)
   }
 
   render() {

@@ -15,6 +15,7 @@ export interface InvertedButtonProps extends React.Props<InvertedButton> {
   selected?: boolean
   inProgress?: boolean
   grayBorder?: boolean
+  noBackground?: boolean
   onPress?: React.TouchEventHandler<InvertedButton>
   onSelectionAnimationFinished?: Animated.EndCallback
   buttonSize?: string
@@ -82,6 +83,11 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
         ],
       }
       textStyle = { color: this.props.selected ? "black" : "white" }
+    } else if (this.props.noBackground) {
+      textStyle = { color: this.props.selected ? colors["purple-regular"] : "black" }
+      styling = {
+        underlayColor: "transparent",
+      }
     } else {
       backgroundColor = this.state.backgroundColor.interpolate({
         inputRange: [0, 1],
@@ -92,9 +98,15 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
         style: [styles.button, { backgroundColor, height: ButtonSize[this.props.buttonSize] }],
       }
     }
+
     let content: JSX.Element = null
     if (this.props.inProgress) {
-      content = <Spinner spinnerColor="white" style={{ backgroundColor: "transparent" }} />
+      content = (
+        <Spinner
+          spinnerColor={this.props.noBackground ? "black" : "white"}
+          style={{ backgroundColor: "transparent" }}
+        />
+      )
     } else {
       textStyle = this.props.textStyle || textStyle
       const headlineStyles = [styles.text, textStyle, { opacity: this.state.textOpacity }]

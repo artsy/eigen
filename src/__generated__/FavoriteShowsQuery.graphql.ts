@@ -70,6 +70,7 @@ fragment SavedShowItemRow_show on Show {
     url
     aspect_ratio
   }
+  is_fair_booth
   start_at
   end_at
 }
@@ -104,7 +105,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FavoriteShowsQuery",
-  "id": "dbbdc9a93d26e5175a1a6851fdf98eae",
+  "id": "96860dbe513b7792d542fee9a1c69eb4",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -313,6 +314,13 @@ return {
                                 "storageKey": null
                               }
                             ]
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_fair_booth",
+                            "args": null,
+                            "storageKey": null
                           },
                           {
                             "kind": "ScalarField",

@@ -1,7 +1,7 @@
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import { filter } from "lodash"
 import moment from "moment"
-import { Tab } from "./types"
+import { MapTab } from "./types"
 
 export type BucketKey = "saved" | "fairs" | "galleries" | "museums" | "closing" | "opening"
 export type BucketResults = { [key in BucketKey]: any[] }
@@ -9,7 +9,7 @@ export type BucketResults = { [key in BucketKey]: any[] }
 export const bucketCityResults = (viewer: GlobalMap_viewer): BucketResults => {
   const saved = filter(viewer.city.shows.edges, e => e.node.is_followed === true)
   const oneWeekFromNow = moment(new Date()).add(1, "week")
-  const fairs = (viewer.city.fairs.edges as unknown) as Tab[]
+  const fairs = (viewer.city.fairs.edges as unknown) as MapTab[]
   const galleries = filter(viewer.city.shows.edges, e => e.node.partner.type === "Gallery")
   const museums = filter(viewer.city.shows.edges, e => e.node.partner.type === "Institution")
   const opening = filter(viewer.city.shows.edges, e => {

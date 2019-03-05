@@ -11,3 +11,19 @@ export enum Router {
   /** Artsy TOS */
   TermsOfService = "/terms",
 }
+
+export interface PartialShowForRouting {
+  is_fair_booth: boolean
+  id: string
+  href: string
+}
+
+/** Takes a subset of a Show and makes a linkable URL */
+export const hrefForPartialShow = (show: PartialShowForRouting) => {
+  const { is_fair_booth } = show
+  if (is_fair_booth) {
+    return `${show.id}?entity=fair-booth`
+  } else {
+    return show.href || `show/${show.id}`
+  }
+}

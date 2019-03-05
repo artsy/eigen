@@ -2,19 +2,31 @@ import React from "react"
 import { Animated, View } from "react-native"
 import styled from "styled-components/native"
 
+import { Sans } from "@artsy/palette"
 import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
 
+/**
+ * Nearly all props are given by the ScrollableTabView,
+ * these are prefixed with Auto:
+ */
 interface TabBarProps {
+  /** Auto: A list of strings for the buttons */
+  tabs: string[]
+  /** Auto:  A callback for usage in the tab buttons */
   goToPage?: () => null
+  /** Auto: The index of the currently active tab */
   activeTab?: number
-  tabs?: any[]
+  /** Auto: How much horiztonal space do you have */
   containerWidth?: number
+  /** Auto: Handled by ScrollableTabView */
   scrollValue?: Animated.AnimatedInterpolation
 }
+
 const Button = styled.TouchableWithoutFeedback`
   flex: 1;
 `
+
+const Underline = Animated.View
 
 const Tabs = styled.View`
   height: 50px;
@@ -35,18 +47,6 @@ interface TabProps {
   tabLabel: string
 }
 
-interface TabLabelProps {
-  active: boolean
-}
-
-const TabLabel: any = styled.Text`
-  font-family: ${fonts["avant-garde-regular"]};
-  font-size: 13px;
-  letter-spacing: 1.5;
-  text-align: center;
-  color: ${(props: TabLabelProps) => (props.active ? "black" : colors["gray-medium"])};
-`
-
 export const Tab: React.SFC<TabProps> = ({ children }) => (
   <View style={{ flex: 1, overflow: "hidden" }}>{children}</View>
 )
@@ -62,7 +62,15 @@ export default class TabBar extends React.Component<TabBarProps, null> {
         onPress={() => onPressHandler(page)}
       >
         <TabButton>
-          <TabLabel active={isTabActive}>{name.toUpperCase()}</TabLabel>
+          <Sans
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            weight="medium"
+            size="3"
+            color={isTabActive ? "black" : colors["gray-medium"]}
+          >
+            {name}
+          </Sans>
         </TabButton>
       </Button>
     )
@@ -83,7 +91,7 @@ export default class TabBar extends React.Component<TabBarProps, null> {
           const isTabActive = this.props.activeTab === page
           return this.renderTab(name, page, isTabActive, this.props.goToPage)
         })}
-        <Animated.View
+        <Underline
           style={[
             {
               position: "absolute",
