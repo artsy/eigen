@@ -115,6 +115,11 @@ export class SavedShowItemRow extends React.Component<Props, State> {
                       {show.partner.name}
                     </Sans>
                   )}
+                {show.name && (
+                  <TightendSerif size="3t" color={color("black60")} ml={15} numberOfLines={1}>
+                    {show.name}
+                  </TightendSerif>
+                )}
                 {show.status &&
                   show.exhibition_period && (
                     <Sans size="3t" color={color("black60")} ml={15}>
