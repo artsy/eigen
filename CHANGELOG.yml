@@ -4,7 +4,7 @@ master:
 upcoming:
   version: 4.4.1
   date: TBD
-  emission_version: 1.8.9
+  emission_version: 1.8.11
   dev:
     - 
   user_facing:
