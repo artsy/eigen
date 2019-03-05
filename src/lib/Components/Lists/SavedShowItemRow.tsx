@@ -48,10 +48,10 @@ export class SavedShowItemRow extends React.Component<Props, State> {
   })
   handleSave() {
     const {
-      show: { id: showSlug, __id: relayID, _id: showID, is_followed: isShowFollowed },
+      show: { id: showSlug, __id: nodeID, _id: showID, is_followed: isShowFollowed },
     } = this.props
 
-    if (showID && showSlug && relayID && !this.state.isFollowedSaving) {
+    if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
       this.setState(
         {
           isFollowedSaving: true,
@@ -86,7 +86,7 @@ export class SavedShowItemRow extends React.Component<Props, State> {
               },
             },
             updater: store => {
-              store.get(relayID).setValue(!isShowFollowed, "is_followed")
+              store.get(nodeID).setValue(!isShowFollowed, "is_followed")
             },
           })
         }
