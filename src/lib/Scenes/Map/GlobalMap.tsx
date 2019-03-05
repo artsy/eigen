@@ -334,8 +334,8 @@ export class GlobalMap extends React.Component<Props, State> {
 export const GlobalMapContainer = createRefetchContainer(
   GlobalMap,
   graphql`
-    fragment GlobalMap_viewer on Viewer @argumentDefinitions(near: { type: "Near!" }, maxInt: { type: "Int!" }) {
-      city(near: $near) {
+    fragment GlobalMap_viewer on Viewer @argumentDefinitions(citySlug: { type: "String!" }, maxInt: { type: "Int!" }) {
+      city(slug: $citySlug) {
         name
         coordinates {
           lat
@@ -422,9 +422,9 @@ export const GlobalMapContainer = createRefetchContainer(
     }
   `,
   graphql`
-    query GlobalMapRefetchQuery($near: Near!, $maxInt: Int!) {
+    query GlobalMapRefetchQuery($citySlug: String!, $maxInt: Int!) {
       viewer {
-        ...GlobalMap_viewer @arguments(near: $near, maxInt: $maxInt)
+        ...GlobalMap_viewer @arguments(citySlug: $citySlug, maxInt: $maxInt)
       }
     }
   `

@@ -190,8 +190,8 @@ return {
   "argumentDefinitions": [
     {
       "kind": "LocalArgument",
-      "name": "near",
-      "type": "Near!",
+      "name": "citySlug",
+      "type": "String!",
       "defaultValue": null
     },
     {
@@ -210,9 +210,9 @@ return {
       "args": [
         {
           "kind": "Variable",
-          "name": "near",
-          "variableName": "near",
-          "type": "Near"
+          "name": "slug",
+          "variableName": "citySlug",
+          "type": "String"
         }
       ],
       "concreteType": "City",
@@ -480,5 +480,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '70a790e9d04bd9cfd439e25f2ad88236';
+(node as any).hash = '5dc51c6994d54bd2bfc5daf2c3660675';
 export default node;

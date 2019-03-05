@@ -2,13 +2,8 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { GlobalMap_viewer$ref } from "./GlobalMap_viewer.graphql";
-export type Near = {
-    readonly lat: number;
-    readonly lng: number;
-    readonly max_distance?: number | null;
-};
 export type GlobalMapRefetchQueryVariables = {
-    readonly near: Near;
+    readonly citySlug: string;
     readonly maxInt: number;
 };
 export type GlobalMapRefetchQueryResponse = {
@@ -25,16 +20,16 @@ export type GlobalMapRefetchQuery = {
 
 /*
 query GlobalMapRefetchQuery(
-  $near: Near!
+  $citySlug: String!
   $maxInt: Int!
 ) {
   viewer {
-    ...GlobalMap_viewer_3IPaQJ
+    ...GlobalMap_viewer_3La17j
   }
 }
 
-fragment GlobalMap_viewer_3IPaQJ on Viewer {
-  city(near: $near) {
+fragment GlobalMap_viewer_3La17j on Viewer {
+  city(slug: $citySlug) {
     name
     coordinates {
       lat
@@ -126,8 +121,8 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "near",
-    "type": "Near!",
+    "name": "citySlug",
+    "type": "String!",
     "defaultValue": null
   },
   {
@@ -241,7 +236,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "GlobalMapRefetchQuery",
-  "id": "8374c8113748de8e517b53c5102b68c0",
+  "id": "74819ac2b6699ccf16694f9a502d1cb0",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -266,14 +261,14 @@ return {
             "args": [
               {
                 "kind": "Variable",
-                "name": "maxInt",
-                "variableName": "maxInt",
+                "name": "citySlug",
+                "variableName": "citySlug",
                 "type": null
               },
               {
                 "kind": "Variable",
-                "name": "near",
-                "variableName": "near",
+                "name": "maxInt",
+                "variableName": "maxInt",
                 "type": null
               }
             ]
@@ -304,9 +299,9 @@ return {
             "args": [
               {
                 "kind": "Variable",
-                "name": "near",
-                "variableName": "near",
-                "type": "Near"
+                "name": "slug",
+                "variableName": "citySlug",
+                "type": "String"
               }
             ],
             "concreteType": "City",
@@ -593,5 +588,5 @@ return {
   }
 };
 })();
-(node as any).hash = '7f210d9d3951e42df4683d6c8fb901d0';
+(node as any).hash = '3081eda079ab781c4037c9384fc056d5';
 export default node;
