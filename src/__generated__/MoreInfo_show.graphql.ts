@@ -7,6 +7,7 @@ export type MoreInfo_show$ref = typeof _MoreInfo_show$ref;
 export type MoreInfo_show = {
     readonly _id: string;
     readonly id: string;
+    readonly exhibition_period: string | null;
     readonly partner: ({
         readonly website?: string | null;
         readonly type?: string | null;
@@ -46,6 +47,13 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "exhibition_period",
       "args": null,
       "storageKey": null
     },
@@ -108,5 +116,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7e93467998ea34c5e1fc67c3994b3fd4';
+(node as any).hash = '7e038488dbad07937195628c1b8c6828';
 export default node;

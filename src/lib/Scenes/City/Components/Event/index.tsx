@@ -2,7 +2,6 @@ import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
 import Button from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import moment from "moment"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -22,11 +21,10 @@ interface Props {
       name: string
       __id: string
       id: string
+      exhibition_period: string
       cover_image: {
         url: string
       }
-      end_at: string
-      start_at: string
       partner: {
         name: string
       }
@@ -36,21 +34,6 @@ interface Props {
 
 interface State {
   eventSaved: boolean
-}
-
-export const formatDuration = (startAt, endAt) => {
-  const momentStartAt = moment(startAt)
-  const momentEndAt = moment(endAt)
-  if (momentStartAt.dayOfYear() === momentEndAt.dayOfYear() && momentStartAt.year() === momentEndAt.year()) {
-    // duration is a time range within a single day
-    return `${momentStartAt.format("MMM D")}`
-  } else if (momentStartAt.month() === momentEndAt.month()) {
-    // duration is a time range within same month
-    return `${momentStartAt.format("MMM D")} - ` + momentEndAt.format("D")
-  } else {
-    // duration spans more than one day
-    return `${momentStartAt.format("MMM D")} - ` + momentEndAt.format("MMM D")
-  }
 }
 
 export class Event extends React.Component<Props, State> {
@@ -71,7 +54,7 @@ export class Event extends React.Component<Props, State> {
 
   render() {
     const { node } = this.props.event
-    const { name, start_at, end_at, partner, cover_image } = node
+    const { name, exhibition_period, partner, cover_image } = node
     const { name: partnerName } = partner
     const url = cover_image ? cover_image.url : null
     return (
@@ -90,9 +73,11 @@ export class Event extends React.Component<Props, State> {
               <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
                 {name}
               </Serif>
-              <Sans size="2" color={color("black60")}>
-                {formatDuration(start_at, end_at)}
-              </Sans>
+              {exhibition_period && (
+                <Sans size="2" color={color("black60")}>
+                  {exhibition_period}
+                </Sans>
+              )}
             </TextContainer>
             <ButtonWrapper>
               <Button text="Save" selected={this.state.eventSaved} onPress={this.handleSaveChange}>

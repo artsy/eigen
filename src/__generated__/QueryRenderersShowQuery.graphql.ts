@@ -83,6 +83,7 @@ fragment Detail_show on Show {
 fragment MoreInfo_show on Show {
   _id
   id
+  exhibition_period
   partner {
     __typename
     ... on Partner {
@@ -233,8 +234,7 @@ fragment ArtistListItem_artist on Artist {
 fragment EventSection_event on PartnerShowEventType {
   event_type
   description
-  start_at
-  end_at
+  exhibitionPeriod
 }
 
 fragment LocationMap_location on Location {
@@ -725,7 +725,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "5b56b18970fa24b2fcd6c1d092f7f786",
+  "id": "dd5330bfdf991bbc24699126df3802f6",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -1134,14 +1134,7 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "start_at",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "end_at",
+                "name": "exhibitionPeriod",
                 "args": null,
                 "storageKey": null
               }

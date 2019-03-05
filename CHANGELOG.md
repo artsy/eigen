@@ -32,6 +32,7 @@
 - The map will show up as full bleed in Eigen - orta
 - Fixes fair view crash on fairs with no profiles - ash
 - Fixes some analytics tracking events - luc
+- Uses metaphysics exhibition_period field for date ranges - kieran
 - Adds styled city picker modal - ashley
 - Adds BMW art guide to view - kieran
 - Show save button now spins when saving - kieran
