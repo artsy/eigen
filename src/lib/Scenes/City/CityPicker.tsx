@@ -2,7 +2,7 @@ import { Box, color, Flex, Sans, Separator, Serif, space } from "@artsy/palette"
 import { dimensions, screen } from "lib/data/ScreenSizes/screenSizes"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
 import React, { Component } from "react"
-import { Dimensions, NativeModules, ScrollView, TouchableOpacity, View } from "react-native"
+import { Dimensions, NativeModules, ScrollView, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 import { cityList as cities } from "./cities"
 
