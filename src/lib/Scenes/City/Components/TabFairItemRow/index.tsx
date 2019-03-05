@@ -1,7 +1,7 @@
 import { Box, Flex, Sans, space } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { dateRange } from "lib/utils/dateFormatter"
+// import { dateRange } from "lib/utils/dateFormatter"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -39,12 +39,11 @@ export class TabFairItemRow extends React.Component<Props> {
                     : `${item.node.counts.partners} Exhibitor`}
                 </Sans>
               )}
-              {item.node.start_at &&
-                item.node.end_at && (
-                  <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
-                    {dateRange(item.node.start_at, item.node.end_at)}
-                  </Sans>
-                )}
+              {item.exhibition_period && (
+                <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
+                  {item.exhibition_period}
+                </Sans>
+              )}
             </Box>
           </Flex>
         </TouchableWithoutFeedback>

@@ -3,7 +3,6 @@ import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { dateRange } from "lib/utils/dateFormatter"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { Dimensions, Image } from "react-native"
@@ -139,7 +138,7 @@ export class FairHeader extends React.Component<Props, State> {
 
   render() {
     const {
-      fair: { image, name, profile, start_at, end_at },
+      fair: { image, name, profile, start_at, end_at, exhibition_period },
     } = this.props
     const { width: screenWidth } = Dimensions.get("window")
     const imageHeight = 567
@@ -155,14 +154,19 @@ export class FairHeader extends React.Component<Props, State> {
               <Sans size="3t" weight="medium" textAlign="center" color="white100">
                 {name}
               </Sans>
-              <Sans size="3" textAlign="center" color="white100">
-                {dateRange(start_at, end_at)}
-              </Sans>
+              {exhibition_period && (
+                <Sans size="3" textAlign="center" color="white100">
+                  {exhibition_period}
+                </Sans>
+              )}
             </Flex>
           </Flex>
-          <CountdownContainer>
-            <CountdownTimer startAt={start_at} endAt={end_at} />
-          </CountdownContainer>
+          {start_at &&
+            end_at && (
+              <CountdownContainer>
+                <CountdownTimer startAt={start_at} endAt={end_at} />
+              </CountdownContainer>
+            )}
         </Box>
         <Spacer mt={2} />
         <Box mx={2} mb={2}>
@@ -233,6 +237,7 @@ export const FairHeaderContainer = createFragmentContainer(
 
       start_at
       end_at
+      exhibition_period
     }
   `
 )
