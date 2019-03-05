@@ -39,6 +39,7 @@ fragment Fairs_me_1G22uz on Me {
             is_followed
             __id
           }
+          exhibition_period
           name
           counts {
             partners
@@ -90,7 +91,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairsQuery",
-  "id": "38f90615c9e1cf6fcdbb23ef868211d1",
+  "id": "e229fcb56557f40a10c7001df80ad9f8",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -220,6 +221,13 @@ return {
                               },
                               v1
                             ]
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "exhibition_period",
+                            "args": null,
+                            "storageKey": null
                           },
                           {
                             "kind": "ScalarField",

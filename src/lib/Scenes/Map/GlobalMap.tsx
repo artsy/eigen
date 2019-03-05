@@ -243,6 +243,7 @@ export const GlobalMapContainer = createRefetchContainer(
               status
               href
               is_followed
+              exhibition_period
               cover_image {
                 url
               }
@@ -273,7 +274,7 @@ export const GlobalMapContainer = createRefetchContainer(
             node {
               id
               name
-
+              exhibition_period
               counts {
                 partners
               }

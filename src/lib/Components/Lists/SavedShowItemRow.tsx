@@ -3,7 +3,6 @@ import { SavedShowItemRow_show } from "__generated__/SavedShowItemRow_show.graph
 import { SavedShowItemRowMutation } from "__generated__/SavedShowItemRowMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
-import { dateRange } from "lib/utils/dateFormatter"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -99,6 +98,7 @@ export class SavedShowItemRow extends React.Component<Props, State> {
 
   render() {
     const { show } = this.props
+    console.log("show ", show)
     const imageURL = show.cover_image && show.cover_image.url
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
@@ -117,13 +117,14 @@ export class SavedShowItemRow extends React.Component<Props, State> {
                   {show.name}
                 </TightendSerif>
               )}
-              {show.status && (
-                <Sans size="3t" color={color("black60")} ml={15}>
-                  {show.status.includes("closed")
-                    ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                    : show.start_at && show.end_at && dateRange(show.start_at, show.end_at)}
-                </Sans>
-              )}
+              {show.status &&
+                show.exhibition_period && (
+                  <Sans size="3t" color={color("black60")} ml={15}>
+                    {show.status.includes("closed")
+                      ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
+                      : show.exhibition_period}
+                  </Sans>
+                )}
             </Flex>
             <TouchableWithoutFeedback onPress={() => this.handleSave()}>
               <Flex flexGrow="1">
@@ -161,6 +162,7 @@ export const SavedShowItemRowContainer = createFragmentContainer(SavedShowItemRo
         }
       }
       href
+      exhibition_period
       status
       cover_image {
         url

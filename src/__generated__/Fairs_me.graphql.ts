@@ -13,6 +13,7 @@ export type Fairs_me = {
                         readonly is_followed: boolean | null;
                         readonly __id: string;
                     }) | null;
+                    readonly exhibition_period: string | null;
                     readonly name: string | null;
                     readonly counts: ({
                         readonly partners: any | null;
@@ -137,6 +138,13 @@ return {
                     {
                       "kind": "ScalarField",
                       "alias": null,
+                      "name": "exhibition_period",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
                       "name": "name",
                       "args": null,
                       "storageKey": null
@@ -250,5 +258,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '9c014cfc0a85e50704cc2a173318b2c4';
+(node as any).hash = '23ed5bd91071fac517df413e6d0c6a18';
 export default node;

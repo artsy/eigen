@@ -121,6 +121,7 @@ export class AllEvents extends React.Component<Props, State> {
 
   render() {
     const { sections } = this.state
+    console.log("sections", sections)
     return (
       <FlatList
         data={sections}

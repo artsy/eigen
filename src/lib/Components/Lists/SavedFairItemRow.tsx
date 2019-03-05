@@ -2,7 +2,6 @@ import { Box, color, Flex, Sans, Separator } from "@artsy/palette"
 import { SavedFairItemRowMutation } from "__generated__/SavedFairItemRowMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
-import { dateRange } from "lib/utils/dateFormatter"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, graphql, RelayProp } from "react-relay"
@@ -22,6 +21,7 @@ interface Props {
     image: {
       url: string | null
     }
+    exhibition_period: string
     square_image?: boolean | undefined
     counts: {
       partners: number
@@ -99,12 +99,11 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
                   {item.counts.partners + " Exhbitors"}
                 </Sans>
               )}
-              {item.start_at &&
-                item.end_at && (
-                  <Sans size="2" color={color("black60")} ml="13">
-                    {dateRange(item.start_at, item.end_at)}
-                  </Sans>
-                )}
+              {item.exhibition_period && (
+                <Sans size="2" color={color("black60")} ml="13">
+                  {item.exhibition_period}
+                </Sans>
+              )}
             </Flex>
             <TouchableWithoutFeedback onPress={() => this.handleSave(item.profile.__id, item.profile.id)}>
               <Flex flexGrow="1">

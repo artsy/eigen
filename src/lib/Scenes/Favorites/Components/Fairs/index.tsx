@@ -80,6 +80,7 @@ export default createPaginationContainer(
                   is_followed
                   __id
                 }
+                exhibition_period
                 name
                 counts {
                   partners
