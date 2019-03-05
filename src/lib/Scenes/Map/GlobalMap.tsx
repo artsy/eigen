@@ -31,7 +31,8 @@ const ShowCardContainer = styled(Box)`
   bottom: 0;
   left: 0;
   right: 0;
-  height: 250;
+  height: 260;
+  margin-top: auto;
 `
 
 interface Props {
@@ -42,7 +43,7 @@ interface Props {
 }
 interface State {
   activeIndex: number
-  activeShowID?: string
+  activeShows: Show[]
   bucketResults: BucketResults
   currentLocation?: any
   userLocation?: any
@@ -109,14 +110,13 @@ export class GlobalMap extends React.Component<Props, State> {
     },
   })
 
-  getClusterOrPointFromFeature
-
   constructor(props) {
     super(props)
 
     const currentLocation = this.props.initialCoordinates || this.props.viewer.city.coordinates
     const bucketResults = bucketCityResults(props.viewer)
     this.state = {
+      activeShows: [],
       activeIndex: 0,
       currentLocation,
       bucketResults,
@@ -167,17 +167,10 @@ export class GlobalMap extends React.Component<Props, State> {
   updateClusterMap(updateState: boolean = true) {
     const { city } = this.props.viewer
     const data = city.shows.edges.filter(a => a.node.type === "Show").map(({ node }) => {
-      const isSelected = node.id === this.state.activeShowID
-      let icon = isSelected ? "pin-selected" : "pin"
-
-      if (node.is_followed) {
-        icon = isSelected ? "pin-saved-selected" : "pin-saved"
-      }
-
       return {
         node: {
           ...node,
-          icon,
+          icon: node.is_followed ? "pin-saved" : "pin",
         },
       }
     })
@@ -192,29 +185,6 @@ export class GlobalMap extends React.Component<Props, State> {
     this.featureCollection = featureCollection
     this.clusterEngine.load(this.featureCollection.features)
     return featureCollection
-  }
-
-  getNearestPointToLatLongInCollection(values: { lat: number; lng: number }, features: any[]) {
-    // https://stackoverflow.com/a/21623206
-    function distance(lat1, lon1, lat2, lon2) {
-      const p = 0.017453292519943295 // Math.PI / 180
-      const c = Math.cos
-      const a = 0.5 - c((lat2 - lat1) * p) / 2 + (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2
-
-      return 12742 * Math.asin(Math.sqrt(a)) // 2 * R; R = 6371 km
-    }
-
-    const distances = features
-      .map(feature => {
-        const [featureLng, featureLat] = feature.geometry.coordinates
-        return {
-          id: feature.properties.id,
-          distance: distance(values.lat, values.lng, featureLat, featureLng),
-        }
-      })
-      .sort((a, b) => b.distance - a.distance)
-
-    return this.shows[distances[0].id]
   }
 
   emitFilteredBucketResults() {
@@ -245,14 +215,14 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   renderShowCard() {
-    const id = this.state.activeShowID
-    const show = this.shows[id]
+    const { activeShows } = this.state
+    const hasShows = activeShows.length > 0
 
     return (
       <Spring
         native
         from={{ bottom: -150, progress: 0, opacity: 0 }}
-        to={!!id ? { bottom: 0, progress: 1, opacity: 1.0 } : { bottom: -150, progress: 0, opacity: 0 }}
+        to={hasShows ? { bottom: 0, progress: 1, opacity: 1.0 } : { bottom: -150, progress: 0, opacity: 0 }}
         config={config.stiff}
         precision={1}
       >
@@ -266,9 +236,7 @@ export class GlobalMap extends React.Component<Props, State> {
               opacity,
             }}
           >
-            <Theme>
-              <ShowCard show={show as any} />
-            </Theme>
+            <Theme>{hasShows && <ShowCard shows={activeShows as any} />}</Theme>
           </AnimatedView>
         )}
       </Spring>
@@ -278,7 +246,6 @@ export class GlobalMap extends React.Component<Props, State> {
   render() {
     const { city } = this.props.viewer
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || city.coordinates
-    console.log("inside render", this.state.activeShowID)
 
     return (
       <Flex mb={0.5} flexDirection="column">
@@ -311,9 +278,8 @@ export class GlobalMap extends React.Component<Props, State> {
             })
           }}
           onPress={() => {
-            this.updateClusterMap()
             this.setState({
-              activeShowID: null,
+              activeShows: [],
             })
           }}
         >
@@ -367,35 +333,68 @@ export class GlobalMap extends React.Component<Props, State> {
   async handleFeaturePress(nativeEvent: any) {
     const {
       payload: {
-        properties: { id },
+        properties: { id, cluster },
         geometry: { coordinates },
       },
     } = nativeEvent
 
     this.updateDrawerPosition(DrawerPosition.collapsed)
-    this.updateClusterMap()
+
+    let activeShows: Show[] = []
+    // If the user only taps on the pin we can use the
+    // id directly to retrieve the corresponding show
+    if (!cluster) {
+      activeShows = [this.shows[id]]
+    }
+
+    // Otherwise the logic is as follows
+    // We use our clusterEngine which is map of our clusters
+    // 1. Fetch all features (pins, clusters) based on the current map visible bounds
+    // 2. Sort them by distance to the user tap coordinates
+    // 3. Retrieve points within the cluster and map them back to shows
+    else {
+      // Get map zoom level and coordinates of where the user tapped
+      const zoom = Math.floor(await this.map.getZoom())
+      const [lat, lng] = coordinates
+
+      // Get coordinates of the map's current viewport bounds
+      const visibleBounds = await this.map.getVisibleBounds()
+      const [ne, sw] = visibleBounds
+      const [eastLng, northLat] = ne
+      const [westLng, southLat] = sw
+
+      const visibleFeatures = this.clusterEngine.getClusters([westLng, southLat, eastLng, northLat], zoom)
+      const nearestFeature = this.getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
+      const points = this.clusterEngine.getLeaves(nearestFeature.properties.cluster_id, Infinity)
+      activeShows = points.map(a => a.properties) as any
+    }
 
     this.setState({
-      activeShowID: id,
+      activeShows,
     })
-
-    // Get map zoom level and coordinates of where the user tapped
-    const zoom = await this.map.getZoom()
-    const [lat, lng] = coordinates
-
-    // Gives us the coordinates
-    const visibleBounds = await this.map.getVisibleBounds()
-    const [ne, sw] = visibleBounds
-    const [eastLng, northLat] = ne
-    const [westLng, southLat] = sw
-
-    const visibleFeatures = this.clusterEngine.getClusters([westLng, southLat, eastLng, northLat], zoom)
-    const nearestFeatureToPoint = this.getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
-    this.getClusterOrPointFromFeature(nearestFeatureToPoint)
   }
 
-  getClusterOrPointInFeature(feature) {
-    console.log(feature)
+  getNearestPointToLatLongInCollection(values: { lat: number; lng: number }, features: any[]) {
+    // https://stackoverflow.com/a/21623206
+    function distance(lat1, lon1, lat2, lon2) {
+      const p = 0.017453292519943295 // Math.PI / 180
+      const c = Math.cos
+      const a = 0.5 - c((lat2 - lat1) * p) / 2 + (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2
+
+      return 12742 * Math.asin(Math.sqrt(a)) // 2 * R; R = 6371 km
+    }
+
+    const distances = features
+      .map(feature => {
+        const [featureLat, featureLng] = feature.geometry.coordinates
+        return {
+          ...feature,
+          distance: distance(values.lat, values.lng, featureLat, featureLng),
+        }
+      })
+      .sort((a, b) => a.distance - b.distance)
+
+    return distances[0]
   }
 
   updateDrawerPosition(position: DrawerPosition) {
@@ -503,4 +502,4 @@ export const GlobalMapContainer = createRefetchContainer(
       }
     }
   `
-)()
+)

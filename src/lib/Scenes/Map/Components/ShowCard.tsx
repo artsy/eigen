@@ -1,13 +1,13 @@
-import { Box, color } from "@artsy/palette"
+import { Box, color, space } from "@artsy/palette"
 import { SavedShowItemRow_show } from "__generated__/SavedShowItemRow_show.graphql"
 import { SavedShowItemRow } from "lib/Components/Lists/SavedShowItemRow"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { Component } from "react"
-import { TouchableOpacity } from "react-native"
+import { Dimensions, FlatList, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
 const shadowDetails: any = {
-  shadowRadius: 6,
+  shadowRadius: 4,
   shadowColor: "black",
   shadowOpacity: 0.3,
   shadowOffset: { height: 0, width: 0 },
@@ -20,13 +20,13 @@ const Background = styled(Box)`
 `
 
 interface ShowCardProps {
-  show: SavedShowItemRow_show
+  shows: SavedShowItemRow_show[]
   onSave?: () => void
 }
 
 export class ShowCard extends Component<ShowCardProps> {
-  handleTap() {
-    const path = this.props.show.href
+  handleTap(show) {
+    const path = show.href
     SwitchBoard.presentNavigationViewController(this, path)
 
     if (this.props.onSave) {
@@ -34,16 +34,41 @@ export class ShowCard extends Component<ShowCardProps> {
     }
   }
 
+  renderItem = ({ item }) => (
+    <Background ml={1} px={2} style={shadowDetails} width={this.cardWidth}>
+      <TouchableOpacity onPress={this.handleTap.bind(this, item)}>
+        <SavedShowItemRow show={item} />
+      </TouchableOpacity>
+    </Background>
+  )
+
+  get cardWidth() {
+    return Dimensions.get("window").width - 100
+  }
+
   render() {
-    const { show } = this.props
-    return (
-      <Background m={1} px={2} style={shadowDetails}>
-        {show && (
+    const { shows } = this.props
+    const hasOne = shows.length === 1
+    const show = hasOne && shows[0]
+
+    return hasOne ? (
+      show && (
+        <Background m={1} px={2} style={shadowDetails}>
           <TouchableOpacity onPress={this.handleTap.bind(this)}>
             <SavedShowItemRow show={show} />
           </TouchableOpacity>
-        )}
-      </Background>
+        </Background>
+      )
+    ) : (
+      <FlatList
+        data={shows}
+        renderItem={this.renderItem}
+        keyExtractor={item => item.id}
+        showsHorizontalScrollIndicator={false}
+        snapToInterval={this.cardWidth}
+        snapToAlignment="start"
+        horizontal
+      />
     )
   }
 }
