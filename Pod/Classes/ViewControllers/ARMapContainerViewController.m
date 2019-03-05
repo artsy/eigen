@@ -64,8 +64,7 @@ Since this controller already has to do the above logic, having it handle the Ci
     }]] firstObject];
     if (previouslySelectedCity) {
         // Do this here, before we add to our view hierarchy, so that these are the _initial_ propertyies we do our first render with.
-        [self.mapVC setProperty:@{ @"lat": @(previouslySelectedCity.epicenter.latitude), @"lng": @(previouslySelectedCity.epicenter.longitude) }
-                         forKey:@"coordinates"];
+        [self.mapVC setProperty:previouslySelectedCity.slug forKey:@"citySlug"];
     } else {
         // The user has no previously selected city, so let's try to determine their location.
         self.locationManager = [[CLLocationManager alloc] init];
@@ -147,7 +146,7 @@ Since this controller already has to do the above logic, having it handle the Ci
 
     [[NSUserDefaults standardUserDefaults] setObject:city.name forKey:SelectedCityNameKey];
 
-    [self.mapVC setProperty:city.slug forKey:@"coordinates"];
+    [self.mapVC setProperty:city.slug forKey:@"citySlug"];
     [self.mapVC setProperty:@(NO) forKey:@"hideMapButtons"];
 
     [UIView animateWithDuration:0.35 animations:^{
