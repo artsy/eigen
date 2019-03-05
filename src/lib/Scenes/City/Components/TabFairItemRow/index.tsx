@@ -1,7 +1,6 @@
 import { Box, Flex, Sans, space } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-// import { dateRange } from "lib/utils/dateFormatter"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
