@@ -1,8 +1,10 @@
 import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
 import Button from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import moment from "moment"
 import React from "react"
+import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
 const ButtonWrapper = styled(Box)`
@@ -60,37 +62,46 @@ export class Event extends React.Component<Props, State> {
     console.log("handleSaveChange")
   }
 
+  handleTap = () => {
+    const {
+      node: { id },
+    } = this.props.event
+    SwitchBoard.presentNavigationViewController(this, `/show/${id}`)
+  }
+
   render() {
     const { node } = this.props.event
     const { name, start_at, end_at, partner, cover_image } = node
     const { name: partnerName } = partner
     const url = cover_image ? cover_image.url : null
     return (
-      <Box mb={2} px={2}>
-        {url && (
-          <Box mb={2}>
-            <OpaqueImageView imageURL={url} height={145} />
-          </Box>
-        )}
-        <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
-          <TextContainer mb={2}>
-            <Sans size="3" weight="medium" numberOfLines={1} ellipsizeMode="tail">
-              {partnerName}
-            </Sans>
-            <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
-              {name}
-            </Serif>
-            <Sans size="2" color={color("black60")}>
-              {formatDuration(start_at, end_at)}
-            </Sans>
-          </TextContainer>
-          <ButtonWrapper>
-            <Button text="Save" selected={this.state.eventSaved} onPress={this.handleSaveChange}>
-              Save
-            </Button>
-          </ButtonWrapper>
-        </Flex>
-      </Box>
+      <TouchableWithoutFeedback onPress={() => this.handleTap()}>
+        <Box mb={2} px={2}>
+          {url && (
+            <Box mb={2}>
+              <OpaqueImageView imageURL={url} height={145} />
+            </Box>
+          )}
+          <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
+            <TextContainer mb={2}>
+              <Sans size="3" weight="medium" numberOfLines={1} ellipsizeMode="tail">
+                {partnerName}
+              </Sans>
+              <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
+                {name}
+              </Serif>
+              <Sans size="2" color={color("black60")}>
+                {formatDuration(start_at, end_at)}
+              </Sans>
+            </TextContainer>
+            <ButtonWrapper>
+              <Button text="Save" selected={this.state.eventSaved} onPress={this.handleSaveChange}>
+                Save
+              </Button>
+            </ButtonWrapper>
+          </Flex>
+        </Box>
+      </TouchableWithoutFeedback>
     )
   }
 }
