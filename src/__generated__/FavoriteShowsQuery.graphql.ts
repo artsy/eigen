@@ -71,6 +71,7 @@ fragment SavedShowItemRow_show on Show {
     url
     aspect_ratio
   }
+  is_fair_booth
   start_at
   end_at
 }
@@ -105,7 +106,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FavoriteShowsQuery",
-  "id": "4e610f6a40bfc362ac456dd77b877250",
+  "id": "b101f0dcdabc7ae58e06daf1bf0b9026",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -233,7 +234,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "href",
+                            "name": "exhibition_period",
                             "args": null,
                             "storageKey": null
                           },
@@ -279,14 +280,14 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "_id",
+                            "name": "href",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "exhibition_period",
+                            "name": "_id",
                             "args": null,
                             "storageKey": null
                           },
@@ -321,6 +322,13 @@ return {
                                 "storageKey": null
                               }
                             ]
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_fair_booth",
+                            "args": null,
+                            "storageKey": null
                           },
                           {
                             "kind": "ScalarField",

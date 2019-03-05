@@ -127,7 +127,7 @@ export default class Home extends React.Component<Props, State> {
               selectedArtist={this.props.selectedArtist}
             />
           </Tab>
-          <Tab tabLabel=" For You">
+          <Tab tabLabel=" For you">
             <ForYouRenderer render={renderWithLoadProgress(ForYou)} />
           </Tab>
           <Tab tabLabel=" Auctions">

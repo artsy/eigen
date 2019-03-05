@@ -67,9 +67,10 @@ export class FairHeader extends React.Component<Props, State> {
   }
 
   getContextualDetails() {
-    const { artists_names, counts, partner_names } = this.props.fair
-
+    const { followed_content, artists_names, counts, partner_names } = this.props.fair
+    const fairfollowedArtistList = (followed_content && followed_content.artists) || []
     const artistList = artists_names.edges.map(i => i.node).filter(Boolean)
+    const uniqArtistList = [...new Set(fairfollowedArtistList.concat(artistList))]
     const partnerList = partner_names.edges
       .map(i => {
         if (i.node.partner && i.node.partner.profile && i.node.partner.profile.name) {
@@ -87,7 +88,7 @@ export class FairHeader extends React.Component<Props, State> {
       <>
         <EntityList
           prefix="Works by"
-          list={artistList}
+          list={uniqArtistList}
           count={counts.artists}
           displayedItems={2}
           onItemSelected={this.handleArtistPress.bind(this)}
@@ -187,6 +188,18 @@ export const FairHeaderContainer = createFragmentContainer(
       counts {
         artists
         partners
+      }
+      followed_content {
+        artists {
+          name
+          href
+          id
+          _id
+        }
+        galleries {
+          _id
+          name
+        }
       }
       partner_names: shows_connection(first: 2) {
         edges {

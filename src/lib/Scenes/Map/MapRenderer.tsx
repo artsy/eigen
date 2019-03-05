@@ -7,23 +7,28 @@ import { Coordinates } from "./types"
 
 // Are you seeing "cannot read .fairs of null"? You might need to set your simulator location.
 
-export const MapRenderer = ({ coords }: { coords: Coordinates }) => {
+// This sentinel value essentially means, load /all/ records.
+// See https://github.com/artsy/metaphysics/pull/1533
+const MAX_GRAPHQL_INT = 2147483647
+
+export const MapRenderer = ({ coords, hideMapButtons }: { coords: Coordinates; hideMapButtons: boolean }) => {
   return (
     <QueryRenderer<MapRendererQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query MapRendererQuery($near: Near!) {
+        query MapRendererQuery($near: Near!, $maxInt: Int!) {
           viewer {
-            ...GlobalMap_viewer @arguments(near: $near)
+            ...GlobalMap_viewer @arguments(near: $near, maxInt: $maxInt)
           }
         }
       `}
       variables={{
         near: coords,
+        maxInt: MAX_GRAPHQL_INT,
       }}
       render={({ props }) => {
         if (props) {
-          return <GlobalMap {...props as any} initialCoordinates={coords} />
+          return <GlobalMap {...props as any} initialCoordinates={coords} hideMapButtons={hideMapButtons} />
         }
 
         return null

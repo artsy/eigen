@@ -2,11 +2,12 @@ import { Box, Separator, Serif } from "@artsy/palette"
 import { EventSection } from "lib/Scenes/City/Components/EventSection"
 import { BucketKey, BucketResults } from "lib/Scenes/Map/Bucket"
 import React from "react"
-import { FlatList } from "react-native"
+import { FlatList, ViewProperties } from "react-native"
+import { BMWEventSection } from "./BMWEventSection"
 import { FairEventSection } from "./FairEventSection"
 import { SavedEventSection } from "./SavedEventSection"
 
-interface Props {
+interface Props extends ViewProperties {
   currentBucket: BucketKey
   buckets: BucketResults
   cityName: string
@@ -65,6 +66,13 @@ export class AllEvents extends React.Component<Props, State> {
       })
     }
 
+    if (buckets.museums && buckets.museums.length) {
+      sections.push({
+        type: "bmw",
+        data: buckets.museums,
+      })
+    }
+
     if (buckets.closing && buckets.closing.length) {
       sections.push({
         type: "closing",
@@ -95,6 +103,7 @@ export class AllEvents extends React.Component<Props, State> {
   }
 
   renderItem = ({ item: { data, type } }) => {
+    const { cityName } = this.props
     switch (type) {
       case "fairs":
         return <FairEventSection data={data} />
@@ -106,6 +115,8 @@ export class AllEvents extends React.Component<Props, State> {
         return <EventSection title="Opening shows" data={data} />
       case "closing":
         return <EventSection title="Closing shows" data={data} />
+      case "bmw":
+        return <BMWEventSection title="BMW Art Guide" data={data} cityName={cityName} />
       case "saved":
         return <SavedEventSection data={data} />
       case "header":

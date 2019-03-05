@@ -9,6 +9,7 @@ export type Near = {
 };
 export type MapRendererQueryVariables = {
     readonly near: Near;
+    readonly maxInt: number;
 };
 export type MapRendererQueryResponse = {
     readonly viewer: ({
@@ -25,20 +26,21 @@ export type MapRendererQuery = {
 /*
 query MapRendererQuery(
   $near: Near!
+  $maxInt: Int!
 ) {
   viewer {
-    ...GlobalMap_viewer_279V1T
+    ...GlobalMap_viewer_3IPaQJ
   }
 }
 
-fragment GlobalMap_viewer_279V1T on Viewer {
+fragment GlobalMap_viewer_3IPaQJ on Viewer {
   city(near: $near) {
     name
     coordinates {
       lat
       lng
     }
-    shows(discoverable: true, first: 50, sort: START_AT_ASC) {
+    shows(discoverable: true, first: $maxInt, sort: START_AT_ASC) {
       edges {
         node {
           id
@@ -79,7 +81,7 @@ fragment GlobalMap_viewer_279V1T on Viewer {
         }
       }
     }
-    fairs(first: 10) {
+    fairs(first: $maxInt) {
       edges {
         node {
           id
@@ -129,6 +131,12 @@ var v0 = [
     "name": "near",
     "type": "Near!",
     "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "maxInt",
+    "type": "Int!",
+    "defaultValue": null
   }
 ],
 v1 = {
@@ -164,41 +172,47 @@ v2 = {
   ]
 },
 v3 = {
+  "kind": "Variable",
+  "name": "first",
+  "variableName": "maxInt",
+  "type": "Int"
+},
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "exhibition_period",
   "args": null,
   "storageKey": null
 },
-v4 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
   "args": null,
   "storageKey": null
 },
-v6 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v8 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
   "args": null,
   "storageKey": null
 },
-v8 = {
+v9 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "location",
@@ -208,24 +222,24 @@ v8 = {
   "plural": false,
   "selections": [
     v2,
-    v5
+    v6
   ]
 },
-v9 = {
+v10 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
   "args": null,
   "storageKey": null
 },
-v10 = {
+v11 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "start_at",
   "args": null,
   "storageKey": null
 },
-v11 = {
+v12 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "end_at",
@@ -236,7 +250,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MapRendererQuery",
-  "id": "d1edd5daaf71d482b78617f4dcd6fbb5",
+  "id": "15ed2853c8b7d098079ac9e7998647a3",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -259,6 +273,12 @@ return {
             "kind": "FragmentSpread",
             "name": "GlobalMap_viewer",
             "args": [
+              {
+                "kind": "Variable",
+                "name": "maxInt",
+                "variableName": "maxInt",
+                "type": null
+              },
               {
                 "kind": "Variable",
                 "name": "near",
@@ -307,7 +327,7 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "shows",
-                "storageKey": "shows(discoverable:true,first:50,sort:\"START_AT_ASC\")",
+                "storageKey": null,
                 "args": [
                   {
                     "kind": "Literal",
@@ -315,12 +335,7 @@ return {
                     "value": true,
                     "type": "Boolean"
                   },
-                  {
-                    "kind": "Literal",
-                    "name": "first",
-                    "value": 50,
-                    "type": "Int"
-                  },
+                  v3,
                   {
                     "kind": "Literal",
                     "name": "sort",
@@ -349,9 +364,9 @@ return {
                         "concreteType": "Show",
                         "plural": false,
                         "selections": [
-                          v3,
                           v4,
                           v5,
+                          v6,
                           v1,
                           {
                             "kind": "ScalarField",
@@ -360,7 +375,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v6,
+                          v7,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -384,13 +399,13 @@ return {
                             "concreteType": "Image",
                             "plural": false,
                             "selections": [
-                              v7
+                              v8
                             ]
                           },
-                          v8,
                           v9,
                           v10,
                           v11,
+                          v12,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -407,7 +422,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              v5,
+                              v6,
                               {
                                 "kind": "InlineFragment",
                                 "type": "ExternalPartner",
@@ -420,7 +435,7 @@ return {
                                 "type": "Partner",
                                 "selections": [
                                   v1,
-                                  v9
+                                  v10
                                 ]
                               }
                             ]
@@ -435,14 +450,9 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "fairs",
-                "storageKey": "fairs(first:10)",
+                "storageKey": null,
                 "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "first",
-                    "value": 10,
-                    "type": "Int"
-                  }
+                  v3
                 ],
                 "concreteType": "FairConnection",
                 "plural": false,
@@ -465,9 +475,9 @@ return {
                         "concreteType": "Fair",
                         "plural": false,
                         "selections": [
-                          v4,
+                          v5,
                           v1,
-                          v3,
+                          v4,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -486,7 +496,7 @@ return {
                               }
                             ]
                           },
-                          v8,
+                          v9,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -510,7 +520,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              v7
+                              v8
                             ]
                           },
                           {
@@ -531,8 +541,8 @@ return {
                                 "concreteType": "Image",
                                 "plural": false,
                                 "selections": [
-                                  v4,
-                                  v6,
+                                  v5,
+                                  v7,
                                   {
                                     "kind": "ScalarField",
                                     "alias": null,
@@ -563,14 +573,14 @@ return {
                                   }
                                 ]
                               },
+                              v6,
                               v5,
-                              v4,
                               v1
                             ]
                           },
-                          v10,
                           v11,
-                          v5
+                          v12,
+                          v6
                         ]
                       }
                     ]
@@ -594,5 +604,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'a924837874386dd66ef68c243edd0a54';
+(node as any).hash = 'ad949624e5179425bbeba9a51b3be0cc';
 export default node;

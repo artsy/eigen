@@ -19,6 +19,7 @@ export type SavedShowItemRow_show = {
         readonly url: string | null;
         readonly aspect_ratio: number;
     }) | null;
+    readonly is_fair_booth: boolean | null;
     readonly start_at: string | null;
     readonly end_at: string | null;
     readonly " $refType": SavedShowItemRow_show$ref;
@@ -145,6 +146,13 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "is_fair_booth",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "start_at",
       "args": null,
       "storageKey": null
@@ -159,5 +167,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'fec48929e8df8be2154d0504d4ba4a32';
+(node as any).hash = '60f26c0de1c0daa2adb1cc677ac9237f';
 export default node;
