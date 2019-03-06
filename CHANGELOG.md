@@ -17,6 +17,7 @@
 ### Master
 
 - Fixes rounded corners on city picker component - ash
+- Adds BMW sponsoredContent to all events in city view - kieran
 
 ### 1.8.12
 

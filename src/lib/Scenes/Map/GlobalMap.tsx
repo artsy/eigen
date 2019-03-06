@@ -190,12 +190,13 @@ export class GlobalMap extends React.Component<Props, State> {
     // TODO: map region filtering can live here.
     const filter = this.filters[this.state.activeIndex]
     const {
-      city: { name: cityName },
+      city: { name: cityName, sponsoredContent },
     } = this.props.viewer
     EventEmitter.dispatch("map:change", {
       filter,
       buckets: this.state.bucketResults,
       cityName,
+      sponsoredContent,
       relay: this.props.relay,
     })
   }
@@ -409,6 +410,10 @@ export const GlobalMapContainer = createFragmentContainer(
     fragment GlobalMap_viewer on Viewer @argumentDefinitions(citySlug: { type: "String!" }, maxInt: { type: "Int!" }) {
       city(slug: $citySlug) {
         name
+        sponsoredContent {
+          introText
+          artGuideUrl
+        }
         coordinates {
           lat
           lng

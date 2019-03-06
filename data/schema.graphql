@@ -1167,6 +1167,7 @@ type ArtworkContextFair {
     # When true, will only return exact keyword match
     keyword_match_exact: Boolean
   ): FilterArtworks
+  sponsoredContent: FairSponsoredContent
 }
 
 type ArtworkContextPartnerShow implements Node {
@@ -2379,6 +2380,12 @@ type City {
     last: Int
   ): ShowConnection
   fairs(sort: FairSorts, status: EventStatus, after: String, first: Int, before: String, last: Int): FairConnection
+  sponsoredContent: CitySponsoredContent
+}
+
+type CitySponsoredContent {
+  introText: String
+  artGuideUrl: String
 }
 
 type Collection implements Node {
@@ -3263,6 +3270,7 @@ type Fair {
     # When true, will only return exact keyword match
     keyword_match_exact: Boolean
   ): FilterArtworks
+  sponsoredContent: FairSponsoredContent
 }
 
 enum FairArtistSorts {
@@ -3342,6 +3350,11 @@ enum FairSorts {
   NAME_DESC
   START_AT_ASC
   START_AT_DESC
+}
+
+type FairSponsoredContent {
+  activationText: String
+  pressReleaseUrl: String
 }
 
 type FeaturedLinkItem {
@@ -4457,6 +4470,7 @@ type HomePageModuleContextFair {
     # When true, will only return exact keyword match
     keyword_match_exact: Boolean
   ): FilterArtworks
+  sponsoredContent: FairSponsoredContent
 }
 
 type HomePageModuleContextFollowArtists {
@@ -5042,7 +5056,7 @@ type Me implements Node {
   # A list of the current user’s artist follows
   follow_artists(page: Int, size: Int): FollowArtists
 
-  # A list of the current user’s inquiry requests
+  # A Connection of followed artists by current user
   followed_artists_connection(after: String, first: Int, before: String, last: Int): FollowArtistConnection
 
   # A list of the current user’s inquiry requests
@@ -8127,6 +8141,9 @@ type Show implements Node {
 
   # Is it a fair booth or a show?
   type: String
+
+  # A Connection of followed artists by current user for this show
+  followedArtists(after: String, first: Int, before: String, last: Int): ShowFollowArtistConnection
 }
 
 # A connection to a list of items.
@@ -8157,6 +8174,28 @@ type ShowCounts {
 type ShowEdge {
   # The item at the end of the edge
   node: Show
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+type ShowFollowArtist {
+  artist: Artist
+}
+
+# A connection to a list of items.
+type ShowFollowArtistConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ShowFollowArtistEdge]
+}
+
+# An edge in a connection.
+type ShowFollowArtistEdge {
+  # The item at the end of the edge
+  node: ShowFollowArtist
 
   # A cursor for use in pagination
   cursor: String!
