@@ -16,6 +16,7 @@
 
 ### Master
 
+- Adds order artists in a show based on user's favorite - ashkan
 - Adds styling/sizing based on screen size to contents of CityPicker modal - ashley
 - Handle rendering card for Clusters - luc
 - Refactor clustering engine to handle multiple zooms - luc
