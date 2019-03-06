@@ -142,17 +142,11 @@ Since this controller already has to do the above logic, having it handle the Ci
     layer.shadowRadius = 10;
     layer.shadowOpacity = 0.3;
 
+    [self.bottomSheetVC setDrawerPositionWithPosition:[PulleyPosition closed] animated:YES completion:nil];
+
     [UIView animateWithDuration:0.35 animations:^{
         self.cityPickerContainerView.alpha = 1;
         self.cityPickerContainerView.transform = CGAffineTransformIdentity;
-
-        // PulleyViewController internally modifies the transform of its entire drawer view hierarchy, so we can't use it.
-        // To get the drawer to "slide down", we will move the entire PulleyViewController's view down and then move just
-        // its map view (its primaryContentViewController child) _up_ to offset the move _down_.
-        CGPoint drawerPosition =  [self.view convertPoint:self.cityVC.view.bounds.origin fromView:self.cityVC.view];
-        CGFloat heightDisplacement = self.view.bounds.size.height - drawerPosition.y;
-        self.bottomSheetVC.view.transform = CGAffineTransformMakeTranslation(0, heightDisplacement);
-        self.bottomSheetVC.primaryContentViewController.view.transform = CGAffineTransformMakeTranslation(0, -heightDisplacement);
     }];
 }
 
@@ -160,16 +154,20 @@ Since this controller already has to do the above logic, having it handle the Ci
 {
     ARCity *city = [[ARCity cities] objectAtIndex:cityIndex];
 
+    NSString *previouslySelectedCityName = [[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey];
+    if ([previouslySelectedCityName isEqualToString:city.name]) {
+        [self.bottomSheetVC setDrawerPositionWithPosition:[PulleyPosition partiallyRevealed] animated:YES completion:nil];
+    } else {
+        [self.mapVC setProperty:city.slug forKey:@"citySlug"];
+        self.initialDataIsLoaded = NO;
+    }
+
     [[NSUserDefaults standardUserDefaults] setObject:city.name forKey:SelectedCityNameKey];
 
-    [self.mapVC setProperty:city.slug forKey:@"citySlug"];
     [self.mapVC setProperty:@(NO) forKey:@"hideMapButtons"];
 
     [UIView animateWithDuration:0.35 animations:^{
         self.cityPickerContainerView.alpha = 0;
-
-        self.bottomSheetVC.view.transform = CGAffineTransformIdentity;
-        self.bottomSheetVC.primaryContentViewController.view.transform = CGAffineTransformIdentity;
     } completion:^(BOOL finished) {
         [self.cityPickerController removeFromParentViewController];
         [self.cityPickerContainerView removeFromSuperview];

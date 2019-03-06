@@ -2,7 +2,7 @@ import { MapRendererQuery } from "__generated__/MapRendererQuery.graphql"
 import colors from "lib/data/colors"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
-import { NativeModules, View } from "react-native"
+import { View } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { GlobalMapContainer as GlobalMap } from "./GlobalMap"
 
@@ -15,7 +15,7 @@ const MAX_GRAPHQL_INT = 2147483647
 export const MapRenderer: React.SFC<{
   citySlug: string
   hideMapButtons: boolean
-  initialCoordinates: { lat: number; lng: number }
+  initialCoordinates?: { lat: number; lng: number }
 }> = props => {
   return (
     <QueryRenderer<MapRendererQuery>
