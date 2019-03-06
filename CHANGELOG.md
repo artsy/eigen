@@ -16,6 +16,7 @@
 
 ### Master
 
+- Adds order artists in a show based on user's favorite - ashkan
 - Fixes rounded corners on city picker component - ash
 
 ### 1.8.12
