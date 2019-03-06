@@ -17,6 +17,10 @@
 ### Master
 
 - Adds order artists in a show based on user's favorite - ashkan
+- Fixes rounded corners on city picker component - ash
+
+### 1.8.12
+
 - Adds styling/sizing based on screen size to contents of CityPicker modal - ashley
 - Handle rendering card for Clusters - luc
 - Refactor clustering engine to handle multiple zooms - luc
@@ -30,6 +34,7 @@
 - Adds CityTab stying and passes CityName to AllEvents view - kieran
 - Fixes render failure with missing city coords - ash
 - Remembers user's last selected city - ash
+- Adds default icon when there are no available images to display in saved shows thumbnail - ashley
 - Fetches all city (and associated shows + fairs) data and cache on-device for 1 day - alloy
 
 ### 1.8.10
