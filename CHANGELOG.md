@@ -24,6 +24,7 @@
 - Adds CityTab stying and passes CityName to AllEvents view - kieran
 - Fixes render failure with missing city coords - ash
 - Remembers user's last selected city - ash
+- Adds default icon when there is no installation shot to display in th saved shows thumbnail - ashley
 
 ### 1.8.10
 
