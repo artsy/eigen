@@ -16,6 +16,8 @@
 
 ### Master
 
+- Handle rendering card for Clusters - luc
+- Refactor clustering engine to handle multiple zooms - luc
 - All event section events now link to show - kieran
 
 ### 1.8.11
