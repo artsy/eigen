@@ -7,7 +7,6 @@
 #import "ARCity+GeospatialAdditions.h"
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
-#import <React/RCTRootView.h>
 
 @import Pulley;
 @import CoreLocation;
