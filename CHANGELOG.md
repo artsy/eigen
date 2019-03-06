@@ -16,6 +16,8 @@
 
 ### Master
 
+- All event section events now link to show - kieran
+
 ### 1.8.11
 
 - The Home tab bar is now consistent with the design system - orta
