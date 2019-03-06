@@ -6,6 +6,7 @@ import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "lib/utils/track"
+import { uniq } from "lodash"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -136,7 +137,7 @@ export class ShowHeader extends React.Component<Props, State> {
     } = this.props
     const fairfollowedArtistList =
       (followedArtists && followedArtists.edges && followedArtists.edges.map(fa => fa.node.artist)) || []
-    const uniqArtistList = [...new Set(fairfollowedArtistList.concat(artists))]
+    const uniqArtistList = uniq(fairfollowedArtistList.concat(artists))
     const hasImages = !!images.length
     const singleImage = hasImages && images.length === 1
 
