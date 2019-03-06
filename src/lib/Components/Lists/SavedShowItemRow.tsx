@@ -1,8 +1,10 @@
-import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
+import { Box, color, Flex, Sans, Serif, space } from "@artsy/palette"
 import { SavedShowItemRow_show } from "__generated__/SavedShowItemRow_show.graphql"
 import { SavedShowItemRowMutation } from "__generated__/SavedShowItemRowMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
+import colors from "lib/data/colors"
+import { Pin } from "lib/Icons/Pin"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { hrefForPartialShow } from "lib/utils/router"
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -102,12 +104,21 @@ export class SavedShowItemRow extends React.Component<Props, State> {
   render() {
     const { show } = this.props
     const imageURL = show.cover_image && show.cover_image.url
+
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <Box py={2}>
           <Flex flexDirection="row" flexGrow="1">
             <Flex flexGrow="1" flexDirection="row" alignItems="center">
-              <OpaqueImageView width={58} height={58} imageURL={imageURL} />
+              {!imageURL ? (
+                <DefaultImageContainer>
+                  <Box p={2}>
+                    <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
+                  </Box>
+                </DefaultImageContainer>
+              ) : (
+                <OpaqueImageView width={58} height={58} imageURL={imageURL} />
+              )}
               <Flex flexDirection="column" flexGrow="1" width="197">
                 {show.partner &&
                   show.partner.name && (
@@ -179,4 +190,11 @@ export const SavedShowItemRowContainer = createFragmentContainer(SavedShowItemRo
 
 const TightendSerif = styled(Serif)`
   top: 3;
+`
+
+const DefaultImageContainer = styled(Box)`
+  align-items: center;
+  background-color: ${colors["gray-regular"]};
+  height: 100%;
+  width: ${space(6)};
 `
