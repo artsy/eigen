@@ -3,7 +3,7 @@ import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import React from "react"
 import { Animated, Dimensions, Easing, NativeModules, SafeAreaView, View } from "react-native"
-import { createRefetchContainer, graphql, RelayProp } from "react-relay"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
 import Supercluster from "supercluster"
@@ -403,18 +403,18 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 }
 
-export const GlobalMapContainer = createRefetchContainer(
+export const GlobalMapContainer = createFragmentContainer(
   GlobalMap,
   graphql`
-    fragment GlobalMap_viewer on Viewer @argumentDefinitions(near: { type: "Near!" }) {
-      city(near: $near) {
+    fragment GlobalMap_viewer on Viewer @argumentDefinitions(citySlug: { type: "String!" }, maxInt: { type: "Int!" }) {
+      city(slug: $citySlug) {
         name
         coordinates {
           lat
           lng
         }
 
-        shows(discoverable: true, first: 50, sort: START_AT_ASC) {
+        shows(discoverable: true, first: $maxInt, sort: START_AT_ASC) {
           edges {
             node {
               id
@@ -424,6 +424,7 @@ export const GlobalMapContainer = createRefetchContainer(
               status
               href
               is_followed
+              exhibition_period
               cover_image {
                 url
               }
@@ -449,12 +450,12 @@ export const GlobalMapContainer = createRefetchContainer(
           }
         }
 
-        fairs(first: 10) {
+        fairs(first: $maxInt) {
           edges {
             node {
               id
               name
-
+              exhibition_period
               counts {
                 partners
               }
@@ -490,13 +491,6 @@ export const GlobalMapContainer = createRefetchContainer(
             }
           }
         }
-      }
-    }
-  `,
-  graphql`
-    query GlobalMapRefetchQuery($near: Near) {
-      viewer {
-        ...GlobalMap_viewer @arguments(near: $near)
       }
     }
   `

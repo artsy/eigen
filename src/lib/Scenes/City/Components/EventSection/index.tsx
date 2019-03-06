@@ -8,34 +8,40 @@ export interface Props {
   data: any
 }
 
-const renderEvents = events => {
-  return events.map((event, i) => {
-    if (i < 2) {
-      return (
-        <Box key={i}>
-          <Event event={event} />
+export class EventSection extends React.Component<Props> {
+  viewAllPressed = () => {
+    // FIXME: Open city list view
+    console.log("All pressed")
+  }
+
+  renderEvents = () => {
+    const { data } = this.props
+    return data.map((event, i) => {
+      if (i < 2) {
+        return (
+          <Box key={event.id}>
+            <Event event={event} />
+          </Box>
+        )
+      }
+    })
+  }
+
+  render() {
+    const { data, title } = this.props
+    return (
+      <>
+        <Box my={2} px={2}>
+          <Serif size="8">{title}</Serif>
         </Box>
-      )
-    }
-  })
-}
-
-const viewAllPressed = () => {
-  // FIXME: Open city list view
-  console.log("All pressed")
-}
-
-export const EventSection: React.SFC<Props> = (props: Props) => {
-  const { data } = props
-  return (
-    <>
-      <Box my={2} px={2}>
-        <Serif size="8">{props.title}</Serif>
-      </Box>
-      {renderEvents(data)}
-      <Box px={2} mb={2}>
-        <CaretButton onPress={() => viewAllPressed()} text={`View all ${data.length} shows`} />
-      </Box>
-    </>
-  )
+        {this.renderEvents()}
+        <Box px={2} mb={2}>
+          <CaretButton
+            onPress={() => this.viewAllPressed()}
+            text={data.length === 1 ? "View 1 show" : `View all ${data.length} shows`}
+          />
+        </Box>
+      </>
+    )
+  }
 }

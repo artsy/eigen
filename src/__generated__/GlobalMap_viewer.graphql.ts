@@ -20,6 +20,7 @@ export type GlobalMap_viewer = {
                     readonly status: string | null;
                     readonly href: string | null;
                     readonly is_followed: boolean | null;
+                    readonly exhibition_period: string | null;
                     readonly cover_image: ({
                         readonly url: string | null;
                     }) | null;
@@ -44,6 +45,7 @@ export type GlobalMap_viewer = {
                 readonly node: ({
                     readonly id: string;
                     readonly name: string | null;
+                    readonly exhibition_period: string | null;
                     readonly counts: ({
                         readonly partners: any | null;
                     }) | null;
@@ -115,34 +117,47 @@ v1 = {
   ]
 },
 v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
+  "kind": "Variable",
+  "name": "first",
+  "variableName": "maxInt",
+  "type": "Int"
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "exhibition_period",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "href",
+  "args": null,
+  "storageKey": null
+},
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "url",
+  "args": null,
+  "storageKey": null
+},
+v8 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "location",
@@ -152,24 +167,24 @@ v6 = {
   "plural": false,
   "selections": [
     v1,
-    v3
+    v5
   ]
 },
-v7 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
   "args": null,
   "storageKey": null
 },
-v8 = {
+v10 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "start_at",
   "args": null,
   "storageKey": null
 },
-v9 = {
+v11 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "end_at",
@@ -184,8 +199,14 @@ return {
   "argumentDefinitions": [
     {
       "kind": "LocalArgument",
-      "name": "near",
-      "type": "Near!",
+      "name": "citySlug",
+      "type": "String!",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "maxInt",
+      "type": "Int!",
       "defaultValue": null
     }
   ],
@@ -198,9 +219,9 @@ return {
       "args": [
         {
           "kind": "Variable",
-          "name": "near",
-          "variableName": "near",
-          "type": "Near"
+          "name": "slug",
+          "variableName": "citySlug",
+          "type": "String"
         }
       ],
       "concreteType": "City",
@@ -212,7 +233,7 @@ return {
           "kind": "LinkedField",
           "alias": null,
           "name": "shows",
-          "storageKey": "shows(discoverable:true,first:50,sort:\"START_AT_ASC\")",
+          "storageKey": null,
           "args": [
             {
               "kind": "Literal",
@@ -220,12 +241,7 @@ return {
               "value": true,
               "type": "Boolean"
             },
-            {
-              "kind": "Literal",
-              "name": "first",
-              "value": 50,
-              "type": "Int"
-            },
+            v2,
             {
               "kind": "Literal",
               "name": "sort",
@@ -254,15 +270,9 @@ return {
                   "concreteType": "Show",
                   "plural": false,
                   "selections": [
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "is_followed",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    v2,
                     v3,
+                    v4,
+                    v5,
                     v0,
                     {
                       "kind": "ScalarField",
@@ -271,7 +281,14 @@ return {
                       "args": null,
                       "storageKey": null
                     },
-                    v4,
+                    v6,
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "is_followed",
+                      "args": null,
+                      "storageKey": null
+                    },
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -288,13 +305,13 @@ return {
                       "concreteType": "Image",
                       "plural": false,
                       "selections": [
-                        v5
+                        v7
                       ]
                     },
-                    v6,
-                    v7,
                     v8,
                     v9,
+                    v10,
+                    v11,
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -304,7 +321,7 @@ return {
                       "concreteType": null,
                       "plural": false,
                       "selections": [
-                        v3,
+                        v5,
                         {
                           "kind": "InlineFragment",
                           "type": "ExternalPartner",
@@ -317,7 +334,7 @@ return {
                           "type": "Partner",
                           "selections": [
                             v0,
-                            v7
+                            v9
                           ]
                         }
                       ]
@@ -332,14 +349,9 @@ return {
           "kind": "LinkedField",
           "alias": null,
           "name": "fairs",
-          "storageKey": "fairs(first:10)",
+          "storageKey": null,
           "args": [
-            {
-              "kind": "Literal",
-              "name": "first",
-              "value": 10,
-              "type": "Int"
-            }
+            v2
           ],
           "concreteType": "FairConnection",
           "plural": false,
@@ -362,8 +374,9 @@ return {
                   "concreteType": "Fair",
                   "plural": false,
                   "selections": [
-                    v2,
+                    v4,
                     v0,
+                    v3,
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -382,7 +395,7 @@ return {
                         }
                       ]
                     },
-                    v6,
+                    v8,
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -406,7 +419,7 @@ return {
                           "args": null,
                           "storageKey": null
                         },
-                        v5
+                        v7
                       ]
                     },
                     {
@@ -427,8 +440,8 @@ return {
                           "concreteType": "Image",
                           "plural": false,
                           "selections": [
-                            v2,
                             v4,
+                            v6,
                             {
                               "kind": "ScalarField",
                               "alias": null,
@@ -459,14 +472,14 @@ return {
                             }
                           ]
                         },
-                        v3,
-                        v2,
+                        v5,
+                        v4,
                         v0
                       ]
                     },
-                    v8,
-                    v9,
-                    v3
+                    v10,
+                    v11,
+                    v5
                   ]
                 }
               ]
@@ -478,5 +491,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'e71dd624a6aedb9e8c075ffddf15260d';
+(node as any).hash = '5b76533d13e10fa9904cac72e79802bd';
 export default node;

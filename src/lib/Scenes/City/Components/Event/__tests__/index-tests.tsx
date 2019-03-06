@@ -13,6 +13,7 @@ const eventData = {
     },
     end_at: "2001-12-15T12:00:00+00:00",
     start_at: "2001-11-12T12:00:00+00:00",
+    exhibition_period: "Feb 11 - 12",
     partner: {
       name: "Pacita Abad Art Estate",
     },

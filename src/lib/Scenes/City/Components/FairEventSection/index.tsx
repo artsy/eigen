@@ -7,6 +7,7 @@ import { FairEventSectionCard } from "./Components/FairEventSectionCard"
 
 const FairSectionBackground = styled(Box)`
   background: black;
+  margin-bottom: ${space(1)};
 `
 
 export class FairEventSection extends Component<any> {
