@@ -7,6 +7,7 @@
 #import "ARCity+GeospatialAdditions.h"
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <React/RCTRootView.h>
 
 @import Pulley;
 @import CoreLocation;
@@ -105,8 +106,9 @@ Since this controller already has to do the above logic, having it handle the Ci
     [self.mapVC setProperty:@(YES) forKey:@"hideMapButtons"];
 
     const CGFloat MARGIN = 20;
+    CGFloat topLayoutMargin = self.topLayoutGuide.length;
 
-    self.cityPickerContainerView = [[UIView alloc] initWithFrame:CGRectMake(MARGIN, MARGIN, self.view.frame.size.width - MARGIN*2, self.view.frame.size.height - MARGIN*2)];
+    self.cityPickerContainerView = [[UIView alloc] initWithFrame:CGRectMake(MARGIN, MARGIN + topLayoutMargin, self.view.frame.size.width - MARGIN*2, self.view.frame.size.height - MARGIN*2 - topLayoutMargin)];
     [self.view addSubview:self.cityPickerContainerView];
     self.cityPickerContainerView.alpha = 0;
     self.cityPickerContainerView.transform = CGAffineTransformMakeScale(0.8, 0.8);

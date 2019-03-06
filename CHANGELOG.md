@@ -16,10 +16,15 @@
 
 ### Master
 
+- Fixes rounded corners on city picker component - ash
+
+### 1.18.12
+
 - Adds styling/sizing based on screen size to contents of CityPicker modal - ashley
 - Handle rendering card for Clusters - luc
 - Refactor clustering engine to handle multiple zooms - luc
 - All event section events now link to show - kieran
+- Fixes rounded corners on city picker component - ash
 
 ### 1.8.11
 
