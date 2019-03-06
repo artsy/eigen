@@ -29,7 +29,7 @@
 - Adds CityTab stying and passes CityName to AllEvents view - kieran
 - Fixes render failure with missing city coords - ash
 - Remembers user's last selected city - ash
-- Adds default icon when there is no installation shot to display in th saved shows thumbnail - ashley
+- Adds default icon when there are no available images to display in saved shows thumbnail - ashley
 - Fetches all city (and associated shows + fairs) data and cache on-device for 1 day - alloy
 
 ### 1.8.10
