@@ -11,13 +11,14 @@ export interface Props {
 
 export class TabFairItemRow extends React.Component<Props> {
   handleTap = item => {
-    SwitchBoard.presentNavigationViewController(this, `/show/${item.node.id}?entity=fair`)
+    SwitchBoard.presentNavigationViewController(this, `${item.node.id}?entity=fair`)
   }
 
   render() {
     const { item } = this.props
     const boxWidth = Dimensions.get("window").width - 62 - space(4) - space(1)
     const fairImage = item.node.image ? item.node.image.url : null
+    console.log("item?", item)
     return (
       <Box py={2}>
         <TouchableWithoutFeedback onPress={() => this.handleTap(item)}>
@@ -38,9 +39,9 @@ export class TabFairItemRow extends React.Component<Props> {
                     : `${item.node.counts.partners} Exhibitor`}
                 </Sans>
               )}
-              {item.exhibition_period && (
+              {item.node.exhibition_period && (
                 <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
-                  {item.exhibition_period}
+                  {item.node.exhibition_period}
                 </Sans>
               )}
             </Box>
