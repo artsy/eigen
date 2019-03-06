@@ -4,6 +4,7 @@ import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "lib/utils/track"
+import { uniq } from "lodash"
 import React from "react"
 import { Dimensions, Image } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -70,7 +71,7 @@ export class FairHeader extends React.Component<Props, State> {
     const { followed_content, artists_names, counts, partner_names } = this.props.fair
     const fairfollowedArtistList = (followed_content && followed_content.artists) || []
     const artistList = artists_names.edges.map(i => i.node).filter(Boolean)
-    const uniqArtistList = [...new Set(fairfollowedArtistList.concat(artistList))]
+    const uniqArtistList = uniq(fairfollowedArtistList.concat(artistList))
     const partnerList = partner_names.edges
       .map(i => {
         if (i.node.partner && i.node.partner.profile && i.node.partner.profile.name) {

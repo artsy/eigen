@@ -16,6 +16,7 @@
 
 ### Master
 
+- Adds order artists in a show based on user's favorite - ashkan
 - Fixes rounded corners on city picker component - ash
 - Adds BMW sponsoredContent to all events in city view - kieran
 

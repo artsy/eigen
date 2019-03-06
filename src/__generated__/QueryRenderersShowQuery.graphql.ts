@@ -284,6 +284,19 @@ fragment ShowHeader_show on Show {
     url
     aspect_ratio
   }
+  followedArtists(first: 2) {
+    edges {
+      node {
+        artist {
+          name
+          href
+          id
+          _id
+          __id
+        }
+      }
+    }
+  }
   artists {
     name
     href
@@ -725,7 +738,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "dd5330bfdf991bbc24699126df3802f6",
+  "id": "6eaebf5ce7cc151de25ebd8482d383c8",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -960,6 +973,62 @@ return {
                     "name": "website",
                     "args": null,
                     "storageKey": null
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "followedArtists",
+            "storageKey": "followedArtists(first:2)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 2,
+                "type": "Int"
+              }
+            ],
+            "concreteType": "ShowFollowArtistConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ShowFollowArtistEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "ShowFollowArtist",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "artist",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "plural": false,
+                        "selections": [
+                          v5,
+                          v15,
+                          v8,
+                          v4,
+                          v2
+                        ]
+                      }
+                    ]
                   }
                 ]
               }
