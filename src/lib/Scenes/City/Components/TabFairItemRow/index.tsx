@@ -18,7 +18,6 @@ export class TabFairItemRow extends React.Component<Props> {
     const { item } = this.props
     const boxWidth = Dimensions.get("window").width - 62 - space(4) - space(1)
     const fairImage = item.node.image ? item.node.image.url : null
-    console.log("item?", item)
     return (
       <Box py={2}>
         <TouchableWithoutFeedback onPress={() => this.handleTap(item)}>
