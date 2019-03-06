@@ -47,11 +47,13 @@ export const BMWEventSection: React.SFC<Props> = (props: Props) => {
         <CaretButton onPress={() => getArtGuidePressed()} text="Get the BMW Art Guide" />
       </Box>
       {renderEvents(data)}
-      <Box px={2} mb={2}>
-        <Sans weight="medium" size="3">
-          <CaretButton onPress={() => getArtGuidePressed()} text={`View all ${data.length} shows`} />
-        </Sans>
-      </Box>
+      {data.length > 2 && (
+        <Box px={2} mb={2}>
+          <Sans weight="medium" size="3">
+            <CaretButton onPress={() => getArtGuidePressed()} text={`View all ${data.length} shows`} />
+          </Sans>
+        </Box>
+      )}
     </>
   )
 }
