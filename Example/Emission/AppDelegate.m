@@ -27,6 +27,7 @@
 #import <Emission/ARShowMoreInfoComponentViewController.h>
 #import <Emission/ARConversationComponentViewController.h>
 #import <Emission/ARFairMoreInfoComponentViewController.h>
+#import <Emission/ARCityFairListComponentViewController.h>
 #import <Emission/ARFairComponentViewController.h>
 #import <Emission/ARFairBoothComponentViewController.h>
 #import <Emission/ARFairArtworksComponentViewController.h>
@@ -272,6 +273,8 @@ randomBOOL(void)
   UIViewController *viewController = nil;
 
   BOOL isShow = [route hasPrefix:@"/show/"] || [route hasPrefix:@"show/"];
+  BOOL isCityFairList = [route hasPrefix:@"/city-fair/"];
+
 
   if ([route hasPrefix:@"/artist/"] && [route componentsSeparatedByString:@"/"].count == 3) {
     NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
@@ -335,6 +338,9 @@ randomBOOL(void)
   } else if (isShow && [route hasSuffix:@"/info"]) {
     NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARShowMoreInfoComponentViewController alloc] initWithShowID:showID];
+  } else if (isCityFairList) {
+    NSString *citySlug = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
+    viewController = [[ARCityFairListComponentViewController alloc] initWithCitySlug:citySlug];
   } else if (isShow) {
     NSString *showID = [route componentsSeparatedByString:@"/"].lastObject;
     viewController = [[ARShowComponentViewController alloc] initWithShowID:showID];
