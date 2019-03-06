@@ -101,6 +101,7 @@ fragment FairHeader_fair on Fair {
   }
   start_at
   end_at
+  exhibition_period
   __id
 }
 */
@@ -168,7 +169,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "indexTestsFairHeaderQuery",
-  "id": "485f250cf4ac0645fb0dd8447519b485",
+  "id": "5d2f085d06f15cde2c0f8b44a0dbd33a",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -486,6 +487,13 @@ return {
             "kind": "ScalarField",
             "alias": null,
             "name": "end_at",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "exhibition_period",
             "args": null,
             "storageKey": null
           },

@@ -36,7 +36,7 @@ export const cacheMiddleware = () => {
 
     if (response.status >= 200 && response.status < 300) {
       if (isQuery) {
-        cache.set(queryID, req.variables, JSON.stringify(response.json))
+        cache.set(queryID, req.variables, JSON.stringify(response.json), req.cacheConfig.emissionCacheTTL)
       } else {
         cache.clearAll()
       }

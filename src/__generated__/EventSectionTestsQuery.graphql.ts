@@ -30,8 +30,7 @@ query EventSectionTestsQuery {
 fragment EventSection_event on PartnerShowEventType {
   event_type
   description
-  start_at
-  end_at
+  exhibitionPeriod
 }
 */
 
@@ -55,7 +54,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "EventSectionTestsQuery",
-  "id": "75e45e153d144984f152ba201f9ca9e7",
+  "id": "7737968272431d965fbeb56a6095b7c9",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -135,14 +134,7 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "start_at",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "end_at",
+                "name": "exhibitionPeriod",
                 "args": null,
                 "storageKey": null
               }

@@ -13,6 +13,7 @@ export type SavedShowItemRow_show = {
         readonly name?: string | null;
     }) | null;
     readonly href: string | null;
+    readonly exhibition_period: string | null;
     readonly status: string | null;
     readonly cover_image: ({
         readonly url: string | null;
@@ -106,6 +107,13 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "exhibition_period",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "status",
       "args": null,
       "storageKey": null
@@ -159,5 +167,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '38b07ba64d0a02b8956c35dd7ae90dcc';
+(node as any).hash = '60f26c0de1c0daa2adb1cc677ac9237f';
 export default node;
