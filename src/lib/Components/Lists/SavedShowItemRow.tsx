@@ -110,7 +110,7 @@ export class SavedShowItemRow extends React.Component<Props, State> {
         <Box py={2}>
           <Flex flexDirection="row" flexGrow="1">
             <Flex flexGrow="1" flexDirection="row" alignItems="center">
-              {imageURL ? (
+              {!imageURL ? (
                 <DefaultImageContainer>
                   <Box p={2}>
                     <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
