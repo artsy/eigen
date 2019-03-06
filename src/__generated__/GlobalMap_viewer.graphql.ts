@@ -20,6 +20,7 @@ export type GlobalMap_viewer = {
                     readonly status: string | null;
                     readonly href: string | null;
                     readonly is_followed: boolean | null;
+                    readonly exhibition_period: string | null;
                     readonly cover_image: ({
                         readonly url: string | null;
                     }) | null;
@@ -44,6 +45,7 @@ export type GlobalMap_viewer = {
                 readonly node: ({
                     readonly id: string;
                     readonly name: string | null;
+                    readonly exhibition_period: string | null;
                     readonly counts: ({
                         readonly partners: any | null;
                     }) | null;
@@ -123,32 +125,39 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "exhibition_period",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
 v7 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "url",
+  "args": null,
+  "storageKey": null
+},
+v8 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "location",
@@ -158,24 +167,24 @@ v7 = {
   "plural": false,
   "selections": [
     v1,
-    v4
+    v5
   ]
 },
-v8 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
   "args": null,
   "storageKey": null
 },
-v9 = {
+v10 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "start_at",
   "args": null,
   "storageKey": null
 },
-v10 = {
+v11 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "end_at",
@@ -261,15 +270,9 @@ return {
                   "concreteType": "Show",
                   "plural": false,
                   "selections": [
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "is_followed",
-                      "args": null,
-                      "storageKey": null
-                    },
                     v3,
                     v4,
+                    v5,
                     v0,
                     {
                       "kind": "ScalarField",
@@ -278,7 +281,14 @@ return {
                       "args": null,
                       "storageKey": null
                     },
-                    v5,
+                    v6,
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "is_followed",
+                      "args": null,
+                      "storageKey": null
+                    },
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -295,13 +305,13 @@ return {
                       "concreteType": "Image",
                       "plural": false,
                       "selections": [
-                        v6
+                        v7
                       ]
                     },
-                    v7,
                     v8,
                     v9,
                     v10,
+                    v11,
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -311,7 +321,7 @@ return {
                       "concreteType": null,
                       "plural": false,
                       "selections": [
-                        v4,
+                        v5,
                         {
                           "kind": "InlineFragment",
                           "type": "ExternalPartner",
@@ -324,7 +334,7 @@ return {
                           "type": "Partner",
                           "selections": [
                             v0,
-                            v8
+                            v9
                           ]
                         }
                       ]
@@ -364,8 +374,9 @@ return {
                   "concreteType": "Fair",
                   "plural": false,
                   "selections": [
-                    v3,
+                    v4,
                     v0,
+                    v3,
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -384,7 +395,7 @@ return {
                         }
                       ]
                     },
-                    v7,
+                    v8,
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -408,7 +419,7 @@ return {
                           "args": null,
                           "storageKey": null
                         },
-                        v6
+                        v7
                       ]
                     },
                     {
@@ -429,8 +440,8 @@ return {
                           "concreteType": "Image",
                           "plural": false,
                           "selections": [
-                            v3,
-                            v5,
+                            v4,
+                            v6,
                             {
                               "kind": "ScalarField",
                               "alias": null,
@@ -461,14 +472,14 @@ return {
                             }
                           ]
                         },
+                        v5,
                         v4,
-                        v3,
                         v0
                       ]
                     },
-                    v9,
                     v10,
-                    v4
+                    v11,
+                    v5
                   ]
                 }
               ]
@@ -480,5 +491,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '5dc51c6994d54bd2bfc5daf2c3660675';
+(node as any).hash = '5b76533d13e10fa9904cac72e79802bd';
 export default node;

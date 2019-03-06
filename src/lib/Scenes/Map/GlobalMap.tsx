@@ -352,6 +352,7 @@ export const GlobalMapContainer = createFragmentContainer(
               status
               href
               is_followed
+              exhibition_period
               cover_image {
                 url
               }
@@ -382,7 +383,7 @@ export const GlobalMapContainer = createFragmentContainer(
             node {
               id
               name
-
+              exhibition_period
               counts {
                 partners
               }

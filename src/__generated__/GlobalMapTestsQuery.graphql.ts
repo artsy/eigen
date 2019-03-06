@@ -45,6 +45,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
           status
           href
           is_followed
+          exhibition_period
           cover_image {
             url
           }
@@ -80,6 +81,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
         node {
           id
           name
+          exhibition_period
           counts {
             partners
           }
@@ -173,32 +175,39 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "exhibition_period",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
 v8 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "url",
+  "args": null,
+  "storageKey": null
+},
+v9 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "location",
@@ -208,24 +217,24 @@ v8 = {
   "plural": false,
   "selections": [
     v2,
-    v5
+    v6
   ]
 },
-v9 = {
+v10 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
   "args": null,
   "storageKey": null
 },
-v10 = {
+v11 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "start_at",
   "args": null,
   "storageKey": null
 },
-v11 = {
+v12 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "end_at",
@@ -236,7 +245,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "GlobalMapTestsQuery",
-  "id": "29e9bc575dbb12e725de61dd630410e9",
+  "id": "ab782b623e6ab1de817ebbc07aed87b4",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -350,15 +359,9 @@ return {
                         "concreteType": "Show",
                         "plural": false,
                         "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "is_followed",
-                            "args": null,
-                            "storageKey": null
-                          },
                           v4,
                           v5,
+                          v6,
                           v1,
                           {
                             "kind": "ScalarField",
@@ -367,7 +370,14 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v6,
+                          v7,
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_followed",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -384,13 +394,13 @@ return {
                             "concreteType": "Image",
                             "plural": false,
                             "selections": [
-                              v7
+                              v8
                             ]
                           },
-                          v8,
                           v9,
                           v10,
                           v11,
+                          v12,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -407,7 +417,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              v5,
+                              v6,
                               {
                                 "kind": "InlineFragment",
                                 "type": "ExternalPartner",
@@ -420,7 +430,7 @@ return {
                                 "type": "Partner",
                                 "selections": [
                                   v1,
-                                  v9
+                                  v10
                                 ]
                               }
                             ]
@@ -460,8 +470,9 @@ return {
                         "concreteType": "Fair",
                         "plural": false,
                         "selections": [
-                          v4,
+                          v5,
                           v1,
+                          v4,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -480,7 +491,7 @@ return {
                               }
                             ]
                           },
-                          v8,
+                          v9,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -504,7 +515,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              v7
+                              v8
                             ]
                           },
                           {
@@ -525,8 +536,8 @@ return {
                                 "concreteType": "Image",
                                 "plural": false,
                                 "selections": [
-                                  v4,
-                                  v6,
+                                  v5,
+                                  v7,
                                   {
                                     "kind": "ScalarField",
                                     "alias": null,
@@ -557,14 +568,14 @@ return {
                                   }
                                 ]
                               },
+                              v6,
                               v5,
-                              v4,
                               v1
                             ]
                           },
-                          v10,
                           v11,
-                          v5
+                          v12,
+                          v6
                         ]
                       }
                     ]

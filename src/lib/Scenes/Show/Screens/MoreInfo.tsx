@@ -125,6 +125,7 @@ export const MoreInfoContainer = createFragmentContainer(
     fragment MoreInfo_show on Show {
       _id
       id
+      exhibition_period
       partner {
         ... on Partner {
           website
