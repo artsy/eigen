@@ -1,3 +1,4 @@
+import CityFairList from "lib/Scenes/City/CityFairList"
 import { ShowArtistsContainer } from "../Components/Show/ShowArtists"
 import { ShowArtworksContainer } from "../Components/Show/ShowArtworks"
 import Fair from "../Scenes/Fair"
@@ -19,6 +20,7 @@ export default {
   Artist,
   BidFlow,
   Conversation,
+  CityFairList,
   Gene,
   Fair,
   Home,
