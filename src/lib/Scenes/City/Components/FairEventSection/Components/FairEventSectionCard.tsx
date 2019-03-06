@@ -1,7 +1,6 @@
 import { Box, color, Flex, Sans, space } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import moment from "moment"
 import React, { Component } from "react"
 import { Dimensions, Image, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -18,7 +17,7 @@ export class FairEventSectionCard extends Component<Props> {
 
   render() {
     const {
-      fair: { image, name, profile, start_at, end_at },
+      fair: { image, name, profile, exhibition_period },
     } = this.props
 
     return (
@@ -34,9 +33,11 @@ export class FairEventSectionCard extends Component<Props> {
               <Sans size="3t" weight="medium" color="white">
                 {name}
               </Sans>
-              <Sans size="3" color="white">
-                {moment(start_at).format("MMM Do")} - {moment(end_at).format("MMM Do")}
-              </Sans>
+              {exhibition_period && (
+                <Sans size="3" color="white">
+                  {exhibition_period}
+                </Sans>
+              )}
             </Flex>
           </Box>
         </Container>

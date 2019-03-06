@@ -65,6 +65,7 @@ fragment SavedShowItemRow_show on Show {
     }
   }
   href
+  exhibition_period
   status
   cover_image {
     url
@@ -105,7 +106,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FavoriteShowsQuery",
-  "id": "96860dbe513b7792d542fee9a1c69eb4",
+  "id": "b101f0dcdabc7ae58e06daf1bf0b9026",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -233,7 +234,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "href",
+                            "name": "exhibition_period",
                             "args": null,
                             "storageKey": null
                           },
@@ -275,6 +276,13 @@ return {
                                 "selections": v3
                               }
                             ]
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "href",
+                            "args": null,
+                            "storageKey": null
                           },
                           {
                             "kind": "ScalarField",

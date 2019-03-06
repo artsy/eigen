@@ -16,6 +16,9 @@
 
 ### Master
 
+- Adds styling/sizing based on screen size to contents of CityPicker modal - ashley
+- All event section events now link to show - kieran
+
 ### 1.8.11
 
 - The Home tab bar is now consistent with the design system - orta
@@ -24,13 +27,14 @@
 - Adds CityTab stying and passes CityName to AllEvents view - kieran
 - Fixes render failure with missing city coords - ash
 - Remembers user's last selected city - ash
-- Adds styling/sizing based on screen size to contents of CityPicker modal - ashley
+- Fetches all city (and associated shows + fairs) data and cache on-device for 1 day - alloy
 
 ### 1.8.10
 
 - The map will show up as full bleed in Eigen - orta
 - Fixes fair view crash on fairs with no profiles - ash
 - Fixes some analytics tracking events - luc
+- Uses metaphysics exhibition_period field for date ranges - kieran
 - Adds styled city picker modal - ashley
 - Adds BMW art guide to view - kieran
 - Show save button now spins when saving - kieran

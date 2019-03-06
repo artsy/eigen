@@ -10,7 +10,7 @@
   },
   "main": "index.ios.js",
   "scripts": {
-    "bundle": "yarn generate-graphql-query-map && react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
+    "bundle": "yarn generate-graphql-query-map && yarn generate-cities-objc && react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
     "bundle-for-native-ci": "yarn generate-graphql-query-map && react-native bundle --platform=ios --dev=false --entry-file=index.tests.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
     "bundle-with-storybooks": "yarn generate-graphql-query-map && react-native bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output  Pod/Assets/Emission.js --assets-dest Pod/Assets",
     "type-check": "tsc --noEmit --pretty",
@@ -34,7 +34,7 @@
     "relay": "relay-compiler --src ./src --schema data/schema.graphql --language typescript --artifactDirectory ./src/__generated__ --persist --persistOutput ./src/__generated__/complete.queryMap.json --exclude '**/node_modules/**,**/__mocks__/**,**/__generated__/**'",
     "release": "node scripts/release.js",
     "generate-graphql-query-map": "node scripts/generate-graphql-query-map.js > Pod/Classes/GraphQL/ARGraphQLQueryMap.generated.objc",
-    "generate-objc-cities": "ts-node -O '{\"module\": \"commonjs\"}' scripts/generate-cities-objc.ts",
+    "generate-cities-objc": "ts-node -O '{\"module\": \"commonjs\"}' scripts/generate-cities-objc.ts",
     "merge-graphql-query-map": "node scripts/merge-graphql-query-map.js",
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/_schema.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
     "version": "yarn install && yarn bundle && pushd Example && bundle install && bundle exec pod update Emission --no-repo-update && popd && git add Pod/Assets Example/Podfile.lock",

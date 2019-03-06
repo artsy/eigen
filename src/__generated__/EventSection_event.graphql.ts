@@ -6,8 +6,7 @@ export type EventSection_event$ref = typeof _EventSection_event$ref;
 export type EventSection_event = {
     readonly event_type: string | null;
     readonly description: string | null;
-    readonly start_at: string | null;
-    readonly end_at: string | null;
+    readonly exhibitionPeriod: string | null;
     readonly " $refType": EventSection_event$ref;
 };
 
@@ -37,18 +36,11 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "start_at",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "end_at",
+      "name": "exhibitionPeriod",
       "args": null,
       "storageKey": null
     }
   ]
 };
-(node as any).hash = 'bf16a4007c0c680ff3cbfdba7f621e81';
+(node as any).hash = 'a20a159a1f84fbbabdce3370d196fc42';
 export default node;
