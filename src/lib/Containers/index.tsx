@@ -1,3 +1,4 @@
+import CityBMWList from "lib/Scenes/City/CityBMWList"
 import { ShowArtistsContainer } from "../Components/Show/ShowArtists"
 import { ShowArtworksContainer } from "../Components/Show/ShowArtworks"
 import Fair from "../Scenes/Fair"
@@ -18,6 +19,7 @@ import WorksForYou from "./WorksForYou"
 export default {
   Artist,
   BidFlow,
+  CityBMWList,
   Conversation,
   Gene,
   Fair,

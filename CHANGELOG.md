@@ -18,6 +18,7 @@
 
 - Adds order artists in a show based on user's favorite - ashkan
 - Fixes rounded corners on city picker component - ash
+- Adds city bmw view controller - kieran
 
 ### 1.8.12
 
