@@ -11,7 +11,10 @@ function sh(command, cwd, opts) {
   if (task.status != 0) {
     throw new Error("[!] " + command)
   }
+  return task.stdout.toString()
 }
+
+const shMP = cmd => sh(cmd, mpDir)
 
 console.log(chalk.green("=> Cloning a temporary copy of Metaphysics."))
 
@@ -38,7 +41,9 @@ for (const key in queryMap) {
 
 fs.writeFileSync(mpQueryMapFilename, JSON.stringify(mpQueryMap, null, 2))
 
-if (JSON.stringify(queryMap) === JSON.stringify(mpQueryMap)) {
+const status = shMP("git status")
+const needsChanges = status.includes("nothing to commit")
+if (!needsChanges) {
   // There are no changes
   // Clean up tmp folder
   sh("rm -rf tmp")
@@ -48,7 +53,6 @@ if (JSON.stringify(queryMap) === JSON.stringify(mpQueryMap)) {
 
   // Make a random branch, and a quick func for scoping commands
   const branch = "query_" + Math.round(Math.random() * 100000)
-  const shMP = cmd => sh(cmd, mpDir)
 
   // Make a commit with the new querymap
   shMP("git add .")
