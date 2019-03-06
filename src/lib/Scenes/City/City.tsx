@@ -1,6 +1,6 @@
 import { Box, color, Flex, Theme } from "@artsy/palette"
 import React, { Component } from "react"
-import { ScrollView } from "react-native"
+import { NativeModules, ScrollView } from "react-native"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { BucketKey, BucketResults } from "../Map/Bucket"
@@ -68,6 +68,11 @@ export class CityView extends Component<Props, State> {
   componentDidUpdate() {
     if (!this.props.isDrawerOpen && this.scrollView) {
       this.scrollView.scrollTo({ x: 0, y: 0, animated: true })
+    }
+
+    if (this.state.buckets) {
+      // We have the Relay response; post a notification so that the ARMapContainerViewController can finalize the native UI.
+      NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryQueryResponseReceived", {})
     }
   }
 

@@ -1,6 +1,8 @@
 import { MapRendererQuery } from "__generated__/MapRendererQuery.graphql"
+import colors from "lib/data/colors"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
+import { NativeModules, View } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { GlobalMapContainer as GlobalMap } from "./GlobalMap"
 
@@ -10,7 +12,11 @@ import { GlobalMapContainer as GlobalMap } from "./GlobalMap"
 // See https://github.com/artsy/metaphysics/pull/1533
 const MAX_GRAPHQL_INT = 2147483647
 
-export const MapRenderer: React.SFC<{ citySlug: string; hideMapButtons: boolean }> = props => {
+export const MapRenderer: React.SFC<{
+  citySlug: string
+  hideMapButtons: boolean
+  initialCoordinates: { lat: number; lng: number }
+}> = props => {
   return (
     <QueryRenderer<MapRendererQuery>
       environment={defaultEnvironment}
@@ -26,11 +32,11 @@ export const MapRenderer: React.SFC<{ citySlug: string; hideMapButtons: boolean 
         maxInt: MAX_GRAPHQL_INT,
       }}
       render={({ props: mapProps }) => {
-        if (mapProps) {
+        // TODO: Handle error, see LD-318.
+        if (mapProps || props.initialCoordinates) {
           return <GlobalMap {...mapProps} {...props} />
         }
-        // TODO: Render some loading view
-        return null
+        return <View style={{ backgroundColor: colors["gray-light"] }} />
       }}
       cacheConfig={
         {

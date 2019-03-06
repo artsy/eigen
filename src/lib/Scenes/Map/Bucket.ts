@@ -34,3 +34,12 @@ export const bucketCityResults = (viewer: GlobalMap_viewer): BucketResults => {
     opening,
   }
 }
+
+export const emptyBucketResults: BucketResults = {
+  saved: [],
+  fairs: [],
+  galleries: [],
+  museums: [],
+  closing: [],
+  opening: [],
+}

@@ -17,6 +17,8 @@
 ### Master
 
 - Fixes rounded corners on city picker component - ash
+- Progressively loads map tiles ahead of Relay response - ash
+- Better initial LD view - ash
 
 ### 1.8.12
 
