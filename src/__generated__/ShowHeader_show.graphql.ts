@@ -183,8 +183,15 @@ return {
       "kind": "LinkedField",
       "alias": null,
       "name": "followedArtists",
-      "storageKey": null,
-      "args": null,
+      "storageKey": "followedArtists(first:2)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 2,
+          "type": "Int"
+        }
+      ],
       "concreteType": "ShowFollowArtistConnection",
       "plural": false,
       "selections": [
@@ -235,5 +242,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '9b7566e055dd7853194e1d6178793604';
+(node as any).hash = 'dde646b2826d130b631c77895bca57af';
 export default node;

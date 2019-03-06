@@ -135,8 +135,7 @@ export class ShowHeader extends React.Component<Props, State> {
       show: { artists, images, is_followed, name, partner, exhibition_period, followedArtists },
     } = this.props
     const fairfollowedArtistList =
-      (followedArtists && followedArtists.edges && followedArtists.edges.map(fa => fa.node).map(fan => fan.artist)) ||
-      []
+      (followedArtists && followedArtists.edges && followedArtists.edges.map(fa => fa.node.artist)) || []
     const uniqArtistList = [...new Set(fairfollowedArtistList.concat(artists))]
     const hasImages = !!images.length
     const singleImage = hasImages && images.length === 1
@@ -226,7 +225,7 @@ export const ShowHeaderContainer = createFragmentContainer(
         url
         aspect_ratio
       }
-      followedArtists {
+      followedArtists(first: 2) {
         edges {
           node {
             artist {
