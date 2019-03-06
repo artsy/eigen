@@ -242,7 +242,44 @@ Array [
             ]
           }
         >
-          David Hockney
+          David Hockney, 
+        </Text>
+      </View>
+      <View
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          accessible={true}
+          allowFontScaling={true}
+          className="sc-bdVaJa bDWFJH"
+          ellipsizeMode="tail"
+          fontFamily="Unica77LL-Medium"
+          fontSize="14px"
+          lineHeight="19"
+          style={
+            Array [
+              Object {
+                "fontFamily": "Unica77LL-Medium",
+                "fontSize": 14,
+                "lineHeight": 19,
+              },
+              undefined,
+            ]
+          }
+        >
+          Sam Francis
         </Text>
       </View>
       <Text
@@ -300,7 +337,7 @@ Array [
             ]
           }
         >
-          16 others
+          15 others
         </Text>
       </View>
     </View>

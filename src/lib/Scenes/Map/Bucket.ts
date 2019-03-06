@@ -11,7 +11,10 @@ export const bucketCityResults = (viewer: GlobalMap_viewer): BucketResults => {
   const oneWeekFromNow = moment(new Date()).add(1, "week")
   const fairs = (viewer.city.fairs.edges as unknown) as MapTab[]
   const galleries = filter(viewer.city.shows.edges, e => e.node.partner.type === "Gallery")
-  const museums = filter(viewer.city.shows.edges, e => e.node.partner.type === "Institution")
+  const museums = filter(
+    viewer.city.shows.edges,
+    e => e.node.partner.type === "Institution" || e.node.partner.type === "InstitutionSeller"
+  )
   const opening = filter(viewer.city.shows.edges, e => {
     if (e.node.start_at) {
       const momentToUse = moment(e.node.start_at)

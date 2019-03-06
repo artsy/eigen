@@ -54,7 +54,6 @@ export class CityView extends Component<Props, State> {
         cityName: string
         relay: RelayProp
       }) => {
-        console.log("got buckets", { buckets, cityName })
         this.setState({
           buckets,
           filter,
