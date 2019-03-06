@@ -1,5 +1,6 @@
-import { Box, color, space } from "@artsy/palette"
+import { Box, color } from "@artsy/palette"
 import { SavedShowItemRow_show } from "__generated__/SavedShowItemRow_show.graphql"
+import { space } from "lib/Components/Bidding/Elements/types"
 import { SavedShowItemRow } from "lib/Components/Lists/SavedShowItemRow"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { Component } from "react"
@@ -19,6 +20,12 @@ const Background = styled(Box)`
   border-radius: 2px;
 `
 
+const screenWidth = Dimensions.get("window").width
+const scrollViewWidth = Math.round(screenWidth * 0.9)
+const cardWidth = scrollViewWidth * 0.8
+const paddingCard = scrollViewWidth * 0.02
+const scrollViewPadding = scrollViewWidth * 0.08
+
 interface ShowCardProps {
   shows: SavedShowItemRow_show[]
   onSave?: () => void
@@ -35,15 +42,19 @@ export class ShowCard extends Component<ShowCardProps> {
   }
 
   renderItem = ({ item }) => (
-    <Background ml={1} px={2} style={shadowDetails} width={this.cardWidth}>
+    <Background mx={paddingCard} px={2} style={shadowDetails} width={cardWidth}>
       <TouchableOpacity onPress={this.handleTap.bind(this, item)}>
         <SavedShowItemRow show={item} />
       </TouchableOpacity>
     </Background>
   )
 
+  get scrollViewWidth() {
+    return Math.round(Dimensions.get("window").width * 0.9)
+  }
+
   get cardWidth() {
-    return Dimensions.get("window").width - 100
+    return Dimensions.get("window").width * 0.8
   }
 
   render() {
@@ -62,13 +73,17 @@ export class ShowCard extends Component<ShowCardProps> {
     ) : (
       <FlatList
         data={shows}
+        style={{ marginHorizontal: "auto" }}
         renderItem={this.renderItem}
         keyExtractor={item => item.id}
         showsHorizontalScrollIndicator={false}
-        snapToInterval={this.cardWidth + space(2)}
+        snapToInterval={cardWidth + 2 * paddingCard + 1}
         contentContainerStyle={{ padding: space(1) }}
+        scrollEventThrottle={299}
+        directionalLockEnabled={true}
         overScrollMode="always"
         snapToAlignment="start"
+        decelerationRate="fast"
         horizontal
       />
     )
