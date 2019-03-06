@@ -36,7 +36,10 @@ export class EventSection extends React.Component<Props> {
         </Box>
         {this.renderEvents()}
         <Box px={2} mb={2}>
-          <CaretButton onPress={() => this.viewAllPressed()} text={`View all ${data.length} shows`} />
+          <CaretButton
+            onPress={() => this.viewAllPressed()}
+            text={data.length === 1 ? "View 1 show" : `View all ${data.length} shows`}
+          />
         </Box>
       </>
     )

@@ -46,10 +46,7 @@ export class Event extends React.Component<Props, State> {
   }
 
   handleTap = () => {
-    const {
-      node: { id },
-    } = this.props.event
-    SwitchBoard.presentNavigationViewController(this, `/show/${id}`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.event.node.id}`)
   }
 
   render() {
