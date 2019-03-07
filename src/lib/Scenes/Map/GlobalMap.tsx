@@ -1,6 +1,7 @@
 import { Box, Flex, Theme } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import { get } from "lodash"
 import React from "react"
 import { Animated, Dimensions, Easing, NativeModules, SafeAreaView, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -8,8 +9,9 @@ import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
 import Supercluster from "supercluster"
 
+import colors from "lib/data/colors"
 import { convertCityToGeoJSON } from "lib/utils/convertCityToGeoJSON"
-import { bucketCityResults, BucketResults } from "./Bucket"
+import { bucketCityResults, BucketResults, emptyBucketResults } from "./Bucket"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
@@ -37,7 +39,7 @@ const ShowCardContainer = styled(Box)`
 interface Props {
   initialCoordinates?: { lat: number; lng: number }
   hideMapButtons: boolean
-  viewer: GlobalMap_viewer
+  viewer?: GlobalMap_viewer
   relay: RelayProp
 }
 interface State {
@@ -48,6 +50,7 @@ interface State {
   userLocation?: any
   trackUserLocation?: boolean
   featureCollection: any
+  mapLoaded: boolean
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
@@ -112,15 +115,15 @@ export class GlobalMap extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 
-    const currentLocation = this.props.initialCoordinates || this.props.viewer.city.coordinates
-    const bucketResults = bucketCityResults(props.viewer)
+    const currentLocation = this.props.initialCoordinates || get(this.props, "viewer.city.coordinates")
     this.state = {
       activeShows: [],
       activeIndex: 0,
       currentLocation,
-      bucketResults,
+      bucketResults: emptyBucketResults,
       trackUserLocation: false,
       featureCollection: {},
+      mapLoaded: false,
     }
     this.clusterEngine = new Supercluster({
       radius: 50,
@@ -138,9 +141,15 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    this.emitFilteredBucketResults()
-    this.updateShowIdMap()
-    this.updateClusterMap()
+    if (nextProps.viewer) {
+      const bucketResults = bucketCityResults(nextProps.viewer)
+
+      this.setState({ bucketResults }, () => {
+        this.emitFilteredBucketResults()
+        this.updateShowIdMap()
+        this.updateClusterMap()
+      })
+    }
 
     if (nextProps.hideMapButtons !== this.props.hideMapButtons) {
       if (nextProps.hideMapButtons) {
@@ -164,6 +173,9 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   updateClusterMap(updateState: boolean = true) {
+    if (!this.props.viewer) {
+      return
+    }
     const { city } = this.props.viewer
     const data = city.shows.edges.filter(a => a.node.type === "Show").map(({ node }) => {
       return {
@@ -187,6 +199,9 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   emitFilteredBucketResults() {
+    if (!this.props.viewer) {
+      return
+    }
     // TODO: map region filtering can live here.
     const filter = this.filters[this.state.activeIndex]
     const {
@@ -202,6 +217,9 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   updateShowIdMap() {
+    if (!this.props.viewer) {
+      return
+    }
     const { city } = this.props.viewer
     if (city) {
       city.shows.edges.forEach(({ node }) => {
@@ -243,17 +261,20 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   render() {
-    const { city } = this.props.viewer
-    const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || city.coordinates
+    const city = get(this.props, "viewer.city")
+    const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || get(city, "coordinates")
+    const { mapLoaded } = this.state
 
+    // TODO: Need to hide the map while showing the top buttons.
     return (
-      <Flex mb={0.5} flexDirection="column">
+      <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
         <Map
           ref={(c: any) => {
             if (c) {
               this.map = c.root
             }
           }}
+          style={{ opacity: mapLoaded && city ? 1 : 0 }} // TODO: Animate this opacity change.
           showUserLocation={true}
           styleURL={ArtsyMapStyleURL}
           userTrackingMode={Mapbox.UserTrackingModes.Follow}
@@ -276,49 +297,60 @@ export class GlobalMap extends React.Component<Props, State> {
               trackUserLocation: true,
             })
           }}
+          onDidFinishRenderingMapFully={() => this.setState({ mapLoaded: true })}
           onPress={() => {
             this.setState({
               activeShows: [],
             })
           }}
         >
-          <SafeAreaView style={{ flex: 1 }}>
-            <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
-              <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
-                <CitySwitcherButton city={city} />
-                <Box style={{ marginLeft: "auto" }}>
-                  <UserPositionButton
-                    highlight={this.state.userLocation === this.state.currentLocation}
-                    onPress={() => {
-                      const { latitude, longitude } = this.state.userLocation.coords
-                      this.map.moveTo([longitude, latitude], 500)
-                    }}
+          {city && (
+            <>
+              <SafeAreaView style={{ flex: 1 }}>
+                <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
+                  <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
+                    <CitySwitcherButton city={city} />
+                    <Box style={{ marginLeft: "auto" }}>
+                      <UserPositionButton
+                        highlight={this.state.userLocation === this.state.currentLocation}
+                        onPress={() => {
+                          const { latitude, longitude } = this.state.userLocation.coords
+                          this.map.moveTo([longitude, latitude], 500)
+                        }}
+                      />
+                    </Box>
+                  </Flex>
+                </Animated.View>
+                <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
+              </SafeAreaView>
+              {this.featureCollection && (
+                <Mapbox.ShapeSource
+                  id="shows"
+                  shape={this.featureCollection}
+                  cluster
+                  clusterRadius={50}
+                  clusterMaxZoom={13}
+                  onPress={e => {
+                    this.handleFeaturePress(e.nativeEvent)
+                  }}
+                >
+                  <Mapbox.SymbolLayer
+                    id="singleShow"
+                    filter={["!has", "point_count"]}
+                    style={this.stylesheet.singleShow}
                   />
-                </Box>
-              </Flex>
-            </Animated.View>
-            <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
-          </SafeAreaView>
-          <Mapbox.ShapeSource
-            id="shows"
-            shape={this.featureCollection}
-            cluster
-            clusterRadius={50}
-            clusterMaxZoom={13}
-            onPress={e => {
-              this.handleFeaturePress(e.nativeEvent)
-            }}
-          >
-            <Mapbox.SymbolLayer id="singleShow" filter={["!has", "point_count"]} style={this.stylesheet.singleShow} />
-            <Mapbox.SymbolLayer id="pointCount" style={this.stylesheet.clusterCount} />
+                  <Mapbox.SymbolLayer id="pointCount" style={this.stylesheet.clusterCount} />
 
-            <Mapbox.CircleLayer
-              id="clusteredPoints"
-              belowLayerID="pointCount"
-              filter={["has", "point_count"]}
-              style={this.stylesheet.clusteredPoints}
-            />
-          </Mapbox.ShapeSource>
+                  <Mapbox.CircleLayer
+                    id="clusteredPoints"
+                    belowLayerID="pointCount"
+                    filter={["has", "point_count"]}
+                    style={this.stylesheet.clusteredPoints}
+                  />
+                </Mapbox.ShapeSource>
+              )}
+            </>
+          )}
         </Map>
       </Flex>
     )

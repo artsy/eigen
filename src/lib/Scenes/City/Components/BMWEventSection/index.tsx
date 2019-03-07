@@ -56,11 +56,13 @@ export class BMWEventSection extends React.Component<Props> {
           <CaretButton onPress={() => this.getArtGuidePressed(artGuideUrl)} text="Get the BMW Art Guide" />
         </Box>
         {this.renderEvents(data)}
-        <Box px={2} mb={2}>
-          <Sans weight="medium" size="3">
-            <CaretButton onPress={() => this.viewAllBmwShows()} text={`View all ${data.length} shows`} />
-          </Sans>
-        </Box>
+        {data.length > 2 && (
+          <Box px={2} mb={2}>
+            <Sans weight="medium" size="3">
+              <CaretButton onPress={() => this.viewAllBmwShows()} text={`View all ${data.length} shows`} />
+            </Sans>
+          </Box>
+        )}
       </>
     )
   }
