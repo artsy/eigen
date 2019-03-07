@@ -70,17 +70,13 @@ export class FairDetail extends React.Component<Props, State> {
       })
     }
 
-    if (
-      shouldGoStraightToWebsite(this.props.fair) ||
-      shouldShowFairMoreInfo(this.props.fair) ||
-      shouldShowFairBMWArtActivationLink(this.props.fair)
-    ) {
+    if (shouldGoStraightToWebsite(this.props.fair) || shouldShowFairMoreInfo(this.props.fair)) {
       sections.push({
         type: "information",
       })
     }
 
-    if (fair.sponsoredContent) {
+    if (shouldShowFairBMWArtActivationLink(this.props.fair)) {
       sections.push({
         type: "bmw-art-activation",
       })
