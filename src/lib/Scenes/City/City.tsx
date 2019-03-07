@@ -53,6 +53,7 @@ export class CityView extends Component<Props, State> {
   ]
 
   componentWillMount() {
+    console.log("subscribing")
     EventEmitter.subscribe(
       "map:change",
       ({
@@ -84,11 +85,14 @@ export class CityView extends Component<Props, State> {
   }
 
   setSelectedTab(selectedTab) {
+    // this.setState({ selectedTab: selectedTab.i }, this.fireCityTabViewAnalytics)
+    console.log(selectedTab.i)
+
     EventEmitter.dispatch("filters:change", selectedTab.i)
-    this.setState({ selectedTab: selectedTab.i }, this.fireCityTabViewAnalytics)
   }
 
   fireCityTabViewAnalytics = () => {
+    console.log("Post")
     // this.props.tracking.trackEvent({
     //   context_screen: screenSchemaForCurrentTab(this.state.selectedTab),
     //   context_screen_owner_type: null,
@@ -105,6 +109,7 @@ export class CityView extends Component<Props, State> {
       buckets && (
         <Theme>
           <Flex py={1} alignItems="center" style={{ flex: 1 }}>
+            <Handle />
             <ScrollableTabView
               initialPage={this.props.initialTab || AllCityMetaTab}
               ref={tabView => (this.tabView = tabView)}
@@ -123,38 +128,19 @@ export class CityView extends Component<Props, State> {
                   buckets={buckets}
                 />
               </ScrollableTab>
-              <ScrollableTab tabLabel="Saved">
-                <CityTab
-                  key={cityName + filter.id}
-                  bucket={buckets[filter.id]}
-                  type={filter.text}
-                  relay={this.state.relay}
-                />
-              </ScrollableTab>
-              <ScrollableTab tabLabel="Fairs">
-                <CityTab
-                  key={cityName + filter.id}
-                  bucket={buckets[filter.id]}
-                  type={filter.text}
-                  relay={this.state.relay}
-                />
-              </ScrollableTab>
-              <ScrollableTab tabLabel="Galleries">
-                <CityTab
-                  key={cityName + filter.id}
-                  bucket={buckets[filter.id]}
-                  type={filter.text}
-                  relay={this.state.relay}
-                />
-              </ScrollableTab>
-              <ScrollableTab tabLabel="Museums">
-                <CityTab
-                  key={cityName + filter.id}
-                  bucket={buckets[filter.id]}
-                  type={filter.text}
-                  relay={this.state.relay}
-                />
-              </ScrollableTab>
+
+              {this.filters.filter(f => f.id !== "all").map(f => {
+                return (
+                  <ScrollableTab tabLabel={f.text}>
+                    <CityTab
+                      key={cityName + filter.id}
+                      bucket={buckets[filter.id]}
+                      type={filter.text}
+                      relay={this.state.relay}
+                    />
+                  </ScrollableTab>
+                )
+              })}
             </ScrollableTabView>
           </Flex>
         </Theme>

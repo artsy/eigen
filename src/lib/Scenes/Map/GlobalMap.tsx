@@ -187,6 +187,7 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   emitFilteredBucketResults() {
+    console.log("emitting")
     // TODO: map region filtering can live here.
     const filter = this.filters[this.state.activeIndex]
     const {

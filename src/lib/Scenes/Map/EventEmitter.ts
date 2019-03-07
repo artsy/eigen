@@ -6,7 +6,10 @@ export const EventEmitter = {
     } // no one is listening to this event
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this._events[event].length; i++) {
-      this._events[event][i](data)
+      setTimeout(() => {
+        console.log("Dispatch ")
+        this._events[event][i](data)
+      }, 100)
     }
   },
   subscribe(event, callback) {
