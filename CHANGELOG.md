@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.8.14
+
 - Adds order artists in a show based on user's favorite - ashkan
 - Fixes rounded corners on city picker component - ash
 - Progressively loads map tiles ahead of Relay response - ash
