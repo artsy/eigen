@@ -77,7 +77,6 @@ export class CityView extends Component<Props, State> {
 
   render() {
     const { buckets, filter, cityName } = this.state
-    console.log("rendering with ", cityName)
     const { isDrawerOpen, verticalMargin } = this.props
     // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
@@ -112,6 +111,7 @@ export class CityView extends Component<Props, State> {
                           key={cityName}
                           currentBucket={filter.id as BucketKey}
                           buckets={buckets}
+                          relay={this.state.relay}
                         />
                       )
                     default:
@@ -121,6 +121,7 @@ export class CityView extends Component<Props, State> {
                           bucket={buckets[filter.id]}
                           type={filter.text}
                           relay={this.state.relay}
+                          cityName={cityName}
                         />
                       )
                   }

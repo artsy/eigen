@@ -96,7 +96,7 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"SalesQuery": @"abb7733152ad905cc429c9253f30effc",
       @"SalesRendererQuery": @"4ed3ea4de467b5c14e9cab627318cfb6",
       @"SavedFairItemRowMutation": @"9cf2c5eb9b7d9b7d15a2ae33316c6205",
-      @"SavedShowItemRowMutation": @"8c7f591802430a371781ea0f550f6dab",
+      @"ShowItemRowMutation": @"8c7f591802430a371781ea0f550f6dab",
       @"SelectMaxBidRefetchQuery": @"add71fb5f4b666877f2e0b1415b2fb23",
       @"SendConversationMessageMutation": @"fafb72e0ce2a42a7b7eb5db013f1f6a5",
       @"ShowArtistsPreviewTestsQuery": @"63a12274f0370ce118d65ba142e8f113",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-import { SavedShowItemRow_show$ref } from "./SavedShowItemRow_show.graphql";
+import { ShowItemRow_show$ref } from "./ShowItemRow_show.graphql";
 declare const _Shows_me$ref: unique symbol;
 export type Shows_me$ref = typeof _Shows_me$ref;
 export type Shows_me = {
@@ -15,7 +15,7 @@ export type Shows_me = {
             };
             readonly edges: ReadonlyArray<({
                 readonly node: ({
-                    readonly " $fragmentRefs": SavedShowItemRow_show$ref;
+                    readonly " $fragmentRefs": ShowItemRow_show$ref;
                 }) | null;
             }) | null> | null;
         }) | null;
@@ -142,7 +142,7 @@ return {
                   "selections": [
                     {
                       "kind": "FragmentSpread",
-                      "name": "SavedShowItemRow_show",
+                      "name": "ShowItemRow_show",
                       "args": null
                     },
                     v0,
@@ -172,5 +172,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b5eb7cddba52f67c5d0199b12ce69c97';
+(node as any).hash = '395f36cb713a12f70d897253e9e4f3af';
 export default node;

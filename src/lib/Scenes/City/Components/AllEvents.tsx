@@ -3,6 +3,7 @@ import { EventSection } from "lib/Scenes/City/Components/EventSection"
 import { BucketKey, BucketResults } from "lib/Scenes/Map/Bucket"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
+import { RelayProp } from "react-relay"
 import { BMWEventSection } from "./BMWEventSection"
 import { FairEventSection } from "./FairEventSection"
 import { SavedEventSection } from "./SavedEventSection"
@@ -11,6 +12,7 @@ interface Props extends ViewProperties {
   currentBucket: BucketKey
   buckets: BucketResults
   cityName: string
+  relay: RelayProp
 }
 
 interface State {
@@ -108,15 +110,15 @@ export class AllEvents extends React.Component<Props, State> {
       case "fairs":
         return <FairEventSection data={data} />
       case "galleries":
-        return <EventSection title="Gallery shows" data={data} />
+        return <EventSection title="Gallery shows" data={data} relay={this.props.relay} />
       case "museums":
-        return <EventSection title="Museum shows" data={data} />
+        return <EventSection title="Museum shows" data={data} relay={this.props.relay} />
       case "opening":
-        return <EventSection title="Opening shows" data={data} />
+        return <EventSection title="Opening shows" data={data} relay={this.props.relay} />
       case "closing":
-        return <EventSection title="Closing shows" data={data} />
+        return <EventSection title="Closing shows" data={data} relay={this.props.relay} />
       case "bmw":
-        return <BMWEventSection title="BMW Art Guide" data={data} cityName={cityName} />
+        return <BMWEventSection title="BMW Art Guide" data={data} cityName={cityName} relay={this.props.relay} />
       case "saved":
         return <SavedEventSection data={data} />
       case "header":
