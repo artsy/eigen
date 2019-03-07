@@ -19,6 +19,7 @@
 - Fixes warning about missing viewer prop - ash
 - Fixes warning about duplicate keys in list - ash
 - Fixes top buttons re-appearing behind city picker - ash
+- Fixes map not re-centering on new city when changed - ash
 
 ### 1.8.14
 

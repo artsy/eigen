@@ -159,6 +159,7 @@ Since this controller already has to do the above logic, having it handle the Ci
         [self.bottomSheetVC setDrawerPositionWithPosition:[PulleyPosition partiallyRevealed] animated:YES completion:nil];
     } else {
         [self.mapVC setProperty:city.slug forKey:@"citySlug"];
+        [self.mapVC setProperty:@{ @"lat": @(city.epicenter.coordinate.latitude), @"lng": @(city.epicenter.coordinate.longitude) } forKey:@"initialCoordinates"];
         self.initialDataIsLoaded = NO;
     }
 
