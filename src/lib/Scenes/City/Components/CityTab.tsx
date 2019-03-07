@@ -42,7 +42,6 @@ export class CityTab extends React.Component<Props> {
 
   hasNoEventsComponent = () => {
     const { type, cityName } = this.props
-    console.log("type??", type)
     switch (type) {
       case "Saved":
         return (
