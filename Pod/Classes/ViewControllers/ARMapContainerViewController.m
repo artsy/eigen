@@ -213,7 +213,10 @@ Since this controller already has to do the above logic, having it handle the Ci
     CGFloat drawerAbovePartialHeight = [drawer partialRevealDrawerHeightWithBottomSafeArea:bottomSafeArea];
 
     BOOL shouldHideButtons = distance > drawerAbovePartialHeight;
-    [self.mapVC setProperty:@(shouldHideButtons) forKey:@"hideMapButtons"];
+    if (!self.cityPickerController) {
+        // We don't want to unhide buttons if the city picker is on screen.
+        [self.mapVC setProperty:@(shouldHideButtons) forKey:@"hideMapButtons"];
+    }
 }
 
 - (BOOL)fullBleed
