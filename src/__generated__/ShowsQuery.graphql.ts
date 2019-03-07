@@ -40,7 +40,7 @@ fragment Shows_me_1G22uz on Me {
       }
       edges {
         node {
-          ...SavedShowItemRow_show
+          ...ShowItemRow_show
           __id
           __typename
         }
@@ -51,7 +51,7 @@ fragment Shows_me_1G22uz on Me {
   __id
 }
 
-fragment SavedShowItemRow_show on Show {
+fragment ShowItemRow_show on Show {
   id
   _id
   __id
@@ -126,7 +126,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowsQuery",
-  "id": "3f53f0d88c51c3f7a5ee29cbe7e61778",
+  "id": "45bb30f19479436286bb6cdbbdb028cf",
   "text": null,
   "metadata": {},
   "fragment": {

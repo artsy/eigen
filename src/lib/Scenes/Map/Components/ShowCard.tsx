@@ -1,6 +1,6 @@
 import { Box, color, space } from "@artsy/palette"
-import { SavedShowItemRow_show } from "__generated__/SavedShowItemRow_show.graphql"
-import { SavedShowItemRow } from "lib/Components/Lists/SavedShowItemRow"
+import { ShowItemRow_show } from "__generated__/ShowItemRow_show.graphql"
+import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { Component } from "react"
 import { Dimensions, FlatList, TouchableOpacity } from "react-native"
@@ -20,7 +20,7 @@ const Background = styled(Box)`
 `
 
 interface ShowCardProps {
-  shows: SavedShowItemRow_show[]
+  shows: ShowItemRow_show[]
   onSave?: () => void
 }
 
@@ -37,7 +37,7 @@ export class ShowCard extends Component<ShowCardProps> {
   renderItem = ({ item }) => (
     <Background ml={1} px={2} style={shadowDetails} width={this.cardWidth}>
       <TouchableOpacity onPress={this.handleTap.bind(this, item)}>
-        <SavedShowItemRow show={item} />
+        <ShowItemRow show={item} />
       </TouchableOpacity>
     </Background>
   )
@@ -55,7 +55,7 @@ export class ShowCard extends Component<ShowCardProps> {
       show && (
         <Background m={1} px={2} style={shadowDetails}>
           <TouchableOpacity onPress={this.handleTap.bind(this)}>
-            <SavedShowItemRow show={show} />
+            <ShowItemRow show={show} />
           </TouchableOpacity>
         </Background>
       )

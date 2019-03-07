@@ -6,10 +6,10 @@ export type FollowShowInput = {
     readonly unfollow?: boolean | null;
     readonly clientMutationId?: string | null;
 };
-export type SavedShowItemRowMutationVariables = {
+export type ShowItemRowMutationVariables = {
     readonly input: FollowShowInput;
 };
-export type SavedShowItemRowMutationResponse = {
+export type ShowItemRowMutationResponse = {
     readonly followShow: ({
         readonly show: ({
             readonly id: string;
@@ -18,15 +18,15 @@ export type SavedShowItemRowMutationResponse = {
         }) | null;
     }) | null;
 };
-export type SavedShowItemRowMutation = {
-    readonly response: SavedShowItemRowMutationResponse;
-    readonly variables: SavedShowItemRowMutationVariables;
+export type ShowItemRowMutation = {
+    readonly response: ShowItemRowMutationResponse;
+    readonly variables: ShowItemRowMutationVariables;
 };
 
 
 
 /*
-mutation SavedShowItemRowMutation(
+mutation ShowItemRowMutation(
   $input: FollowShowInput!
 ) {
   followShow(input: $input) {
@@ -111,13 +111,13 @@ v1 = [
 return {
   "kind": "Request",
   "operationKind": "mutation",
-  "name": "SavedShowItemRowMutation",
-  "id": "8c7f591802430a371781ea0f550f6dab",
+  "name": "ShowItemRowMutation",
+  "id": "41099fe5256606887fd639535958740c",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "SavedShowItemRowMutation",
+    "name": "ShowItemRowMutation",
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -125,11 +125,11 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "SavedShowItemRowMutation",
+    "name": "ShowItemRowMutation",
     "argumentDefinitions": v0,
     "selections": v1
   }
 };
 })();
-(node as any).hash = 'ca179ed167491f3abe1b04be0a95d2e9';
+(node as any).hash = '54b6bed6b94620fd28756195eb00222f';
 export default node;

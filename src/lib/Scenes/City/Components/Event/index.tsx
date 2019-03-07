@@ -1,5 +1,5 @@
 import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
-import { CityEventItemRowMutation } from "__generated__/CityEventItemRowMutation.graphql"
+import { EventMutation } from "__generated__/EventMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -7,7 +7,6 @@ import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
-import { EventMutation } from "__generated__/EventMutation.graphql"
 
 const TextContainer = styled(Box)`
   width: 200;
@@ -50,6 +49,7 @@ export class Event extends React.Component<Props, State> {
 
   handleSaveChange = () => {
     const { node } = this.props.event
+    console.log("this.props ??", this.props)
     const { id: showSlug, __id: nodeID, _id: showID, is_followed: isShowFollowed } = node
 
     if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
