@@ -1,6 +1,5 @@
-import { Box, color } from "@artsy/palette"
+import { Box, color, space } from "@artsy/palette"
 import { SavedShowItemRow_show } from "__generated__/SavedShowItemRow_show.graphql"
-import { space } from "lib/Components/Bidding/Elements/types"
 import { SavedShowItemRow } from "lib/Components/Lists/SavedShowItemRow"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { Component } from "react"
@@ -21,10 +20,9 @@ const Background = styled(Box)`
 `
 
 const screenWidth = Dimensions.get("window").width
-const scrollViewWidth = Math.round(screenWidth * 0.9)
-const cardWidth = scrollViewWidth * 0.8
+const scrollViewWidth = screenWidth
+const cardWidth = scrollViewWidth * 0.9
 const paddingCard = scrollViewWidth * 0.02
-const scrollViewPadding = scrollViewWidth * 0.08
 
 interface ShowCardProps {
   shows: SavedShowItemRow_show[]

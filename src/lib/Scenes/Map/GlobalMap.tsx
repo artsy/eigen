@@ -26,12 +26,14 @@ const Map = styled(Mapbox.MapView)`
 `
 const AnimatedView = animated(View)
 
-const ShowCardContainer = styled(Box)`
+const ShowCardContainer = styled(Flex)`
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   height: 260;
+  flex-direction: row;
+  align-items: flex-end;
 `
 
 interface Props {
@@ -221,7 +223,7 @@ export class GlobalMap extends React.Component<Props, State> {
       <Spring
         native
         from={{ bottom: -150, progress: 0, opacity: 0 }}
-        to={hasShows ? { bottom: 0, progress: 1, opacity: 1.0 } : { bottom: -150, progress: 0, opacity: 0 }}
+        to={hasShows ? { bottom: -40, progress: 1, opacity: 1.0 } : { bottom: -150, progress: 0, opacity: 0 }}
         config={config.stiff}
         precision={1}
       >
@@ -232,6 +234,7 @@ export class GlobalMap extends React.Component<Props, State> {
               left: 0,
               right: 0,
               opacity,
+              paddingTop: "auto",
             }}
           >
             <Theme>{hasShows && <ShowCard shows={activeShows as any} />}</Theme>
