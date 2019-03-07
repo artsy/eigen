@@ -1,6 +1,7 @@
 import { Box, Separator, Serif } from "@artsy/palette"
 import { EventSection } from "lib/Scenes/City/Components/EventSection"
 import { BucketKey, BucketResults } from "lib/Scenes/Map/Bucket"
+import { isEqual } from "lodash"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
 import { RelayProp } from "react-relay"
@@ -28,11 +29,38 @@ export class AllEvents extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.updateSections()
+    this.updateSections(this.props)
   }
 
-  updateSections = () => {
-    const { buckets, cityName } = this.props
+  componentWillReceiveProps(nextProps) {
+    if (
+      !isEqual(
+        this.props.buckets.saved.map(g => g.node.is_followed),
+        nextProps.buckets.saved.map(g => g.is_followed)
+      ) ||
+      !isEqual(
+        this.props.buckets.closing.map(g => g.node.is_followed),
+        nextProps.buckets.closing.map(g => g.is_followed)
+      ) ||
+      !isEqual(
+        this.props.buckets.museums.map(g => g.node.is_followed),
+        nextProps.buckets.museums.map(g => g.is_followed)
+      ) ||
+      !isEqual(
+        this.props.buckets.opening.map(g => g.node.is_followed),
+        nextProps.buckets.opening.map(g => g.is_followed)
+      ) ||
+      !isEqual(
+        this.props.buckets.galleries.map(g => g.node.is_followed),
+        nextProps.buckets.galleries.map(g => g.is_followed)
+      )
+    ) {
+      this.updateSections(nextProps)
+    }
+  }
+
+  updateSections = props => {
+    const { buckets, cityName } = props
     const sections = []
 
     sections.push({
