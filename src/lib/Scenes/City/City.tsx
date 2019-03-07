@@ -1,9 +1,9 @@
 import { Box, color, Flex, Theme } from "@artsy/palette"
 import ScrollableTabBar, { ScrollableTab } from "lib/Components/ScrollableTabBar"
 import React, { Component } from "react"
-import { ScrollView, View } from "react-native"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 
+import { NativeModules, ScrollView } from "react-native"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -26,7 +26,9 @@ interface State {
   filter: MapTab
   relay: RelayProp
   cityName: string
+
   selectedTab: number
+  sponsoredContent: { introText: string; artGuideUrl: string }
 }
 
 const AllCityMetaTab = 0
@@ -37,6 +39,7 @@ export class CityView extends Component<Props, State> {
     relay: null,
     cityName: "",
     selectedTab: AllCityMetaTab,
+    sponsoredContent: null,
   }
 
   tabView?: ScrollableTabView | any
@@ -61,26 +64,34 @@ export class CityView extends Component<Props, State> {
         buckets,
         cityName,
         relay,
+        sponsoredContent,
       }: {
         filter: MapTab
         buckets: BucketResults
         cityName: string
         relay: RelayProp
+        sponsoredContent: { introText: string; artGuideUrl: string }
       }) => {
-        console.log("got buckets", { buckets, cityName })
         this.setState({
           buckets,
           filter,
           cityName,
           relay,
+          sponsoredContent,
         })
       }
     )
   }
 
   componentDidUpdate() {
-    if (!this.props.isDrawerOpen && this.scrollView) {
-      this.scrollView.scrollTo({ x: 0, y: 0, animated: true })
+    const scrollview = this.tabView._scrollView
+    if (!this.props.isDrawerOpen && scrollview) {
+      scrollview.scrollTo({ x: 0, y: 0, animated: true })
+    }
+
+    if (this.state.buckets) {
+      // We have the Relay response; post a notification so that the ARMapContainerViewController can finalize the native UI.
+      NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryQueryResponseReceived", {})
     }
   }
 
@@ -104,6 +115,7 @@ export class CityView extends Component<Props, State> {
     const { isDrawerOpen, verticalMargin } = this.props
     // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
+    const scrollview = this.tabView._scrollView
 
     return (
       buckets && (
@@ -125,7 +137,9 @@ export class CityView extends Component<Props, State> {
                   cityName={cityName}
                   key={cityName}
                   currentBucket={filter.id as BucketKey}
+                  sponsoredContent={this.state.sponsoredContent}
                   buckets={buckets}
+                  relay={this.state.relay}
                 />
               </ScrollableTab>
 
@@ -136,6 +150,7 @@ export class CityView extends Component<Props, State> {
                       key={cityName + filter.id}
                       bucket={buckets[filter.id]}
                       type={filter.text}
+                      cityName={cityName}
                       relay={this.state.relay}
                     />
                   </ScrollableTab>
@@ -148,6 +163,19 @@ export class CityView extends Component<Props, State> {
     )
   }
 }
+
+// <ScrollView
+//   contentInset={{ bottom: bottomInset }}
+//   onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
+//   scrollEnabled={isDrawerOpen}
+//   ref={r => {
+//     if (r) {
+//       this.scrollView = r as any
+//     }
+//   }}
+// >
+
+// </ScrollView>
 
 const Handle = styled.View`
   width: 40px;

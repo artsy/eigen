@@ -16,8 +16,22 @@
 
 ### Master
 
+- Fixes warning about missing viewer prop - ash
+- Fixes warning about duplicate keys in list - ash
+- Adds zero state to CityTab - kieran
+- Renames SavedShowItemRow to ShowItemRow - kieran
+- Adds Save button functionality to button in All tab - kieran
+- Fixes top buttons re-appearing behind city picker - ash
+- Fixes map not re-centering on new city when changed - ash
+
+### 1.8.14
+
 - Adds order artists in a show based on user's favorite - ashkan
 - Fixes rounded corners on city picker component - ash
+- Adds BMW sponsoredContent to all events in city view - kieran
+- Progressively loads map tiles ahead of Relay response - ash
+- Better initial LD view - ash
+- All tab - hide "view all" if there no more than 2 shows in a grouping - kieran
 
 ### 1.8.12
 
