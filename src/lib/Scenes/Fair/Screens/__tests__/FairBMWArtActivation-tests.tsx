@@ -1,4 +1,3 @@
-import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
 import { renderUntil } from "lib/tests/renderUntil"
 import React from "react"
