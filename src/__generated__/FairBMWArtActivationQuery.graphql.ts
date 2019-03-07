@@ -6,6 +6,8 @@ export type FairBMWArtActivationQueryVariables = {
 };
 export type FairBMWArtActivationQueryResponse = {
     readonly fair: ({
+        readonly id: string;
+        readonly _id: string;
         readonly sponsoredContent: ({
             readonly activationText: string | null;
             readonly pressReleaseUrl: string | null;
@@ -24,6 +26,8 @@ query FairBMWArtActivationQuery(
   $fairID: String!
 ) {
   fair(id: $fairID) {
+    id
+    _id
     sponsoredContent {
       activationText
       pressReleaseUrl
@@ -59,6 +63,20 @@ v1 = [
     "concreteType": "Fair",
     "plural": false,
     "selections": [
+      {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "id",
+        "args": null,
+        "storageKey": null
+      },
+      {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "_id",
+        "args": null,
+        "storageKey": null
+      },
       {
         "kind": "LinkedField",
         "alias": null,
@@ -98,7 +116,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairBMWArtActivationQuery",
-  "id": "2893f0a7d6b55ae1d63cacf3b143840b",
+  "id": "3d38512472e702bc62b341971a7eda55",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -117,5 +135,5 @@ return {
   }
 };
 })();
-(node as any).hash = '39f3553fef6f1ead1498988c5cb31c9b';
+(node as any).hash = '4ae1b4a57b61e1f7945a07675a1aa4c5';
 export default node;

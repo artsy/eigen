@@ -1,3 +1,3 @@
 {
-  "2893f0a7d6b55ae1d63cacf3b143840b": "query FairBMWArtActivationQuery(\n  $fairID: String!\n) {\n  fair(id: $fairID) {\n    sponsoredContent {\n      activationText\n      pressReleaseUrl\n    }\n    __id\n  }\n}\n"
+  "3d38512472e702bc62b341971a7eda55": "query FairBMWArtActivationQuery(\n  $fairID: String!\n) {\n  fair(id: $fairID) {\n    id\n    _id\n    sponsoredContent {\n      activationText\n      pressReleaseUrl\n    }\n    __id\n  }\n}\n"
 }

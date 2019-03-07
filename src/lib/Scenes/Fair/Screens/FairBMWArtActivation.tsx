@@ -2,6 +2,7 @@ import { Box, Flex, Sans, Serif, space, Theme } from "@artsy/palette"
 import { FairBMWArtActivationQuery } from "__generated__/FairBMWArtActivationQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
 import { FlatList, Image, ViewProperties } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -27,7 +28,28 @@ interface ShowMoreMetadataForFairs {
 export const shouldShowFairBMWArtActivationLink = (data: ShowMoreMetadataForFairs) => {
   return data.sponsoredContent
 }
+const Logo = styled(Image)`
+  height: 34;
+  width: 34;
+`
+const PressReleaseContainer = styled(Flex)`
+  flex-direction: row;
+  margin-top: ${space(9)};
+  padding-left: ${space(2)};
+  padding-right: ${space(2)};
+  margin-bottom: ${space(2)};
+  align-items: center;
+`
 
+@screenTrack<Props>(
+  props =>
+    ({
+      context_screen: Schema.PageNames.FairBMWArtActivationPage,
+      context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
+      context_screen_owner_slug: props.fair.id,
+      context_screen_owner_id: props.fair._id,
+    } as any)
+)
 export class FairBMWArtActivation extends React.Component<Props, State> {
   state = {
     sections: [],
@@ -62,6 +84,7 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
 
   renderItemSeparator = () => <Box py={3} px={2} />
 
+  @track(eventProps(Schema.ActionNames.ViewBMWPressRelease))
   handleViewPressRelease(url) {
     SwitchBoard.presentNavigationViewController(this, url)
   }
@@ -115,12 +138,24 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
   }
 }
 
+function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTypes = Schema.ActionTypes.Tap) {
+  return props => ({
+    action_name: actionName,
+    action_type: actionType,
+    owner_id: props.fair._id,
+    owner_slug: props.fair.id,
+    owner_type: Schema.OwnerEntityTypes.Fair,
+  })
+}
+
 export const FairBMWArtActivationRenderer: React.SFC<{ fairID: string }> = ({ fairID }) => (
   <QueryRenderer<FairBMWArtActivationQuery>
     environment={defaultEnvironment}
     query={graphql`
       query FairBMWArtActivationQuery($fairID: String!) {
         fair(id: $fairID) {
+          id
+          _id
           sponsoredContent {
             activationText
             pressReleaseUrl
@@ -132,16 +167,3 @@ export const FairBMWArtActivationRenderer: React.SFC<{ fairID: string }> = ({ fa
     render={renderWithLoadProgress<Props>(FairBMWArtActivation)}
   />
 )
-
-const Logo = styled.Image`
-  height: 34;
-  width: 34;
-`
-const PressReleaseContainer = styled(Flex)`
-  flex-direction: row;
-  margin-top: ${space(9)};
-  padding-left: ${space(2)};
-  padding-right: ${space(2)};
-  margin-bottom: ${space(2)};
-  align-items: center;
-`
