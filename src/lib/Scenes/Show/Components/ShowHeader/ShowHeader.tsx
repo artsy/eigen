@@ -34,10 +34,11 @@ export class ShowHeader extends React.Component<Props, State> {
   state = { isFollowedSaving: false }
 
   handlePartnerTitleClick = () => {
-    const {
-      show: { partner },
-    } = this.props
-    SwitchBoard.presentNavigationViewController(this, `${partner.href}?entity=gallery`)
+    const { show } = this.props
+    if (show.is_local_discovery) {
+      return
+    }
+    SwitchBoard.presentNavigationViewController(this, `${show.partner.href}?entity=gallery`)
   }
 
   handleFollowShow = () => {
@@ -212,6 +213,7 @@ export const ShowHeaderContainer = createFragmentContainer(
       is_followed
       exhibition_period
       status
+      is_local_discovery
       partner {
         ... on Partner {
           name
