@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fixes warning about missing viewer prop - ash
+
 ### 1.8.14
 
 - Adds order artists in a show based on user's favorite - ashkan
