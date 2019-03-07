@@ -132,6 +132,7 @@ export class AllEvents extends React.Component<Props, State> {
 
   render() {
     const { sections } = this.state
+    console.log("render all events", sections.length)
     return (
       <FlatList
         data={sections}
@@ -139,6 +140,7 @@ export class AllEvents extends React.Component<Props, State> {
         keyExtractor={item => item.type}
         renderItem={item => this.renderItem(item)}
         scrollEnabled={false}
+        style={{ flex: 1 }}
       />
     )
   }

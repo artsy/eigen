@@ -56,7 +56,7 @@ interface Props {
 class Favorites extends React.Component<Props, null> {
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "red" }}>
         <ScrollableTabView
           onChangeTab={selectedTab => this.fireTabSelectionAnalytics(selectedTab)}
           renderTabBar={props => (
