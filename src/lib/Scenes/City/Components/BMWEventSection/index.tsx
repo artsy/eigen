@@ -8,7 +8,6 @@ import { RelayProp } from "react-relay"
 export interface Props {
   title: string
   data: any
-  cityName: string
   relay: RelayProp
   sponsoredContent: { introText: string; artGuideUrl: string }
 }
@@ -39,7 +38,6 @@ export class BMWEventSection extends React.Component<Props> {
     const {
       data,
       sponsoredContent: { introText, artGuideUrl },
-      cityName,
       relay,
     } = this.props
     return (

@@ -34,7 +34,6 @@ describe("CityEvent", () => {
           }}
           relay={{ environment: {} } as RelayProp}
           data={data}
-          cityName="New York"
         />
       </Theme>
     )

@@ -106,7 +106,7 @@ export class AllEvents extends React.Component<Props, State> {
   }
 
   renderItem = ({ item: { data, type } }) => {
-    const { sponsoredContent, cityName } = this.props
+    const { sponsoredContent } = this.props
     switch (type) {
       case "fairs":
         return <FairEventSection data={data} />
@@ -124,7 +124,6 @@ export class AllEvents extends React.Component<Props, State> {
             title="BMW Art Guide"
             sponsoredContent={sponsoredContent}
             data={data}
-            cityName={cityName}
             relay={this.props.relay}
           />
         )
