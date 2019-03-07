@@ -18,6 +18,9 @@
 
 - Fixes warning about missing viewer prop - ash
 - Fixes warning about duplicate keys in list - ash
+- Adds zero state to CityTab - kieran
+- Renames SavedShowItemRow to ShowItemRow - kieran
+- Adds Save button functionality to button in All tab - kieran
 
 ### 1.8.14
 
