@@ -18,6 +18,8 @@
 
 - Adds order artists in a show based on user's favorite - ashkan
 - Fixes rounded corners on city picker component - ash
+- Progressively loads map tiles ahead of Relay response - ash
+- Better initial LD view - ash
 - All tab - hide "view all" if there no more than 2 shows in a grouping - kieran
 
 ### 1.8.12
