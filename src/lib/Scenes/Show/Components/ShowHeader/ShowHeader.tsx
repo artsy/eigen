@@ -179,7 +179,7 @@ export class ShowHeader extends React.Component<Props, State> {
             prefix="Works by"
             list={uniqArtistList}
             count={artists.length}
-            displayedItems={2}
+            displayedItems={3}
             onItemSelected={this.handleArtistSelected.bind(this)}
             onViewAllPressed={this.handleViewAllArtistsPressed.bind(this)}
           />

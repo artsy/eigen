@@ -1,6 +1,6 @@
 import { Box, color, Flex, Theme } from "@artsy/palette"
 import React, { Component } from "react"
-import { ScrollView } from "react-native"
+import { NativeModules, ScrollView } from "react-native"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { BucketKey, BucketResults } from "../Map/Bucket"
@@ -54,7 +54,6 @@ export class CityView extends Component<Props, State> {
         cityName: string
         relay: RelayProp
       }) => {
-        console.log("got buckets", { buckets, cityName })
         this.setState({
           buckets,
           filter,
@@ -69,11 +68,15 @@ export class CityView extends Component<Props, State> {
     if (!this.props.isDrawerOpen && this.scrollView) {
       this.scrollView.scrollTo({ x: 0, y: 0, animated: true })
     }
+
+    if (this.state.buckets) {
+      // We have the Relay response; post a notification so that the ARMapContainerViewController can finalize the native UI.
+      NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryQueryResponseReceived", {})
+    }
   }
 
   render() {
     const { buckets, filter, cityName } = this.state
-    console.log("rendering with ", cityName)
     const { isDrawerOpen, verticalMargin } = this.props
     // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
@@ -108,6 +111,7 @@ export class CityView extends Component<Props, State> {
                           key={cityName}
                           currentBucket={filter.id as BucketKey}
                           buckets={buckets}
+                          relay={this.state.relay}
                         />
                       )
                     default:
@@ -117,6 +121,7 @@ export class CityView extends Component<Props, State> {
                           bucket={buckets[filter.id]}
                           type={filter.text}
                           relay={this.state.relay}
+                          cityName={cityName}
                         />
                       )
                   }

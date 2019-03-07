@@ -1,6 +1,7 @@
 import { Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
+import { RelayProp } from "react-relay"
 import { BMWEventSection } from "../index"
 
 const data = [
@@ -25,7 +26,12 @@ describe("CityEvent", () => {
   it("renders properly", () => {
     const comp = mount(
       <Theme>
-        <BMWEventSection title="BMW Art Guide" data={data} cityName="New York" />
+        <BMWEventSection
+          title="BMW Art Guide"
+          relay={{ environment: {} } as RelayProp}
+          data={data}
+          cityName="New York"
+        />
       </Theme>
     )
 
