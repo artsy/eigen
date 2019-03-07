@@ -1,9 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-declare const _SavedShowItemRow_show$ref: unique symbol;
-export type SavedShowItemRow_show$ref = typeof _SavedShowItemRow_show$ref;
-export type SavedShowItemRow_show = {
+declare const _ShowItemRow_show$ref: unique symbol;
+export type ShowItemRow_show$ref = typeof _ShowItemRow_show$ref;
+export type ShowItemRow_show = {
     readonly id: string;
     readonly _id: string;
     readonly __id: string;
@@ -22,7 +22,7 @@ export type SavedShowItemRow_show = {
     readonly is_fair_booth: boolean | null;
     readonly start_at: string | null;
     readonly end_at: string | null;
-    readonly " $refType": SavedShowItemRow_show$ref;
+    readonly " $refType": ShowItemRow_show$ref;
 };
 
 
@@ -47,7 +47,7 @@ v2 = [
 ];
 return {
   "kind": "Fragment",
-  "name": "SavedShowItemRow_show",
+  "name": "ShowItemRow_show",
   "type": "Show",
   "metadata": null,
   "argumentDefinitions": [],
@@ -167,5 +167,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '60f26c0de1c0daa2adb1cc677ac9237f';
+(node as any).hash = 'd1735c0a8cbfe2b5027692c75a7d0de2';
 export default node;

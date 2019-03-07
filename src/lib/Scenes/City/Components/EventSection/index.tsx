@@ -2,9 +2,11 @@ import { Box, Serif } from "@artsy/palette"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { Event } from "lib/Scenes/City/Components/Event"
 import React from "react"
+import { RelayProp } from "react-relay"
 
 export interface Props {
   title: string
+  relay: RelayProp
   data: any
 }
 
@@ -20,7 +22,7 @@ export class EventSection extends React.Component<Props> {
       if (i < 2) {
         return (
           <Box key={event.node.id}>
-            <Event event={event} />
+            <Event event={event} relay={this.props.relay} />
           </Box>
         )
       }

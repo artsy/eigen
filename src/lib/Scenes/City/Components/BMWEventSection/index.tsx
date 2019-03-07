@@ -3,20 +3,23 @@ import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Event } from "lib/Scenes/City/Components/Event"
 import React from "react"
+import { RelayProp } from "react-relay"
 
 export interface Props {
   title: string
   data: any
+  cityName: string
+  relay: RelayProp
   sponsoredContent: { introText: string; artGuideUrl: string }
 }
 
 export class BMWEventSection extends React.Component<Props> {
-  renderEvents = events => {
+  renderEvents = (events, relay) => {
     return events.map((event, i) => {
       if (i < 2) {
         return (
           <Box key={i} mb={1}>
-            <Event event={event} />
+            <Event event={event} relay={relay} />
           </Box>
         )
       }
@@ -36,6 +39,8 @@ export class BMWEventSection extends React.Component<Props> {
     const {
       data,
       sponsoredContent: { introText, artGuideUrl },
+      cityName,
+      relay,
     } = this.props
     return (
       <>
@@ -55,7 +60,7 @@ export class BMWEventSection extends React.Component<Props> {
         <Box mb={3} px={2}>
           <CaretButton onPress={() => this.getArtGuidePressed(artGuideUrl)} text="Get the BMW Art Guide" />
         </Box>
-        {this.renderEvents(data)}
+        {this.renderEvents(data, relay)}
         {data.length > 2 && (
           <Box px={2} mb={2}>
             <Sans weight="medium" size="3">

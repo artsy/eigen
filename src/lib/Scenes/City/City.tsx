@@ -117,6 +117,7 @@ export class CityView extends Component<Props, State> {
                           currentBucket={filter.id as BucketKey}
                           buckets={buckets}
                           sponsoredContent={this.state.sponsoredContent}
+                          relay={this.state.relay}
                         />
                       )
                     default:
@@ -126,6 +127,7 @@ export class CityView extends Component<Props, State> {
                           bucket={buckets[filter.id]}
                           type={filter.text}
                           relay={this.state.relay}
+                          cityName={cityName}
                         />
                       )
                   }

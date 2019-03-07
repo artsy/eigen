@@ -1,6 +1,6 @@
 import { Box, color, Flex, Sans, Serif, space } from "@artsy/palette"
-import { SavedShowItemRow_show } from "__generated__/SavedShowItemRow_show.graphql"
-import { SavedShowItemRowMutation } from "__generated__/SavedShowItemRowMutation.graphql"
+import { ShowItemRow_show } from "__generated__/ShowItemRow_show.graphql"
+import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import colors from "lib/data/colors"
@@ -14,7 +14,7 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 import styled from "styled-components/native"
 
 interface Props {
-  show: SavedShowItemRow_show
+  show: ShowItemRow_show
   relay?: RelayProp
 }
 
@@ -25,7 +25,7 @@ interface State {
 const track: Track<Props, {}> = _track
 
 @track()
-export class SavedShowItemRow extends React.Component<Props, State> {
+export class ShowItemRow extends React.Component<Props, State> {
   state = {
     isFollowedSaving: false,
   }
@@ -58,10 +58,10 @@ export class SavedShowItemRow extends React.Component<Props, State> {
           isFollowedSaving: true,
         },
         () => {
-          return commitMutation<SavedShowItemRowMutation>(this.props.relay.environment, {
+          return commitMutation<ShowItemRowMutation>(this.props.relay.environment, {
             onCompleted: () => this.handleShowSuccessfullyUpdated(),
             mutation: graphql`
-              mutation SavedShowItemRowMutation($input: FollowShowInput!) {
+              mutation ShowItemRowMutation($input: FollowShowInput!) {
                 followShow(input: $input) {
                   show {
                     id
@@ -158,9 +158,9 @@ export class SavedShowItemRow extends React.Component<Props, State> {
     )
   }
 }
-export const SavedShowItemRowContainer = createFragmentContainer(SavedShowItemRow, {
+export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
   show: graphql`
-    fragment SavedShowItemRow_show on Show {
+    fragment ShowItemRow_show on Show {
       id
       _id
       __id
