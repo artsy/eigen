@@ -32,6 +32,7 @@
 - Progressively loads map tiles ahead of Relay response - ash
 - Better initial LD view - ash
 - All tab - hide "view all" if there no more than 2 shows in a grouping - kieran
+- Adds BMW Art Activations section to "About the Fair" section - ashley
 
 ### 1.8.12
 
