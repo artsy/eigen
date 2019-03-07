@@ -23,6 +23,7 @@
 - Adds Save button functionality to button in All tab - kieran
 - Fixes top buttons re-appearing behind city picker - ash
 - Fixes map not re-centering on new city when changed - ash
+- Fixes saving not updating props in city view - kieran
 
 ### 1.8.14
 
