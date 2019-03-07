@@ -8,14 +8,6 @@
 
 @implementation ARFairBMWArtActivationComponentViewController
 
-+ (NSArray<ARGraphQLQuery *> *)preloadQueriesWithFairID:(NSString *)fairID;
-{
-    NSDictionary *variables = @{
-                                @"fairID": fairID,
-                                };
-    return @[[[ARGraphQLQuery alloc] initWithQueryName:@"FairBMWArtActivationQuery" variables:variables]];
-}
-
 - (instancetype)initWithFairID:(NSString *)fairID
 {
     return [self initWithFairID:fairID emission:[AREmission sharedInstance]];

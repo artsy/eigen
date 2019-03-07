@@ -6,8 +6,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ARFairBMWArtActivationComponentViewController : ARComponentViewController
 
-+ (NSArray<ARGraphQLQuery *> *)preloadQueriesWithFairID:(NSString *)fairID;
-
 - (instancetype)initWithFairID:(NSString *)fairID;
 
 - (instancetype)initWithFairID:(NSString *)fairID
