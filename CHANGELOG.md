@@ -17,6 +17,7 @@
 ### Master
 
 - Fixes warning about missing viewer prop - ash
+- Fixes warning about duplicate keys in list - ash
 
 ### 1.8.14
 
