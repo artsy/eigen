@@ -12,6 +12,7 @@ interface Props extends ViewProperties {
   currentBucket: BucketKey
   buckets: BucketResults
   cityName: string
+  sponsoredContent: { introText: string; artGuideUrl: string }
   relay: RelayProp
 }
 
@@ -105,7 +106,7 @@ export class AllEvents extends React.Component<Props, State> {
   }
 
   renderItem = ({ item: { data, type } }) => {
-    const { cityName } = this.props
+    const { sponsoredContent } = this.props
     switch (type) {
       case "fairs":
         return <FairEventSection data={data} />
@@ -118,7 +119,14 @@ export class AllEvents extends React.Component<Props, State> {
       case "closing":
         return <EventSection title="Closing shows" data={data} relay={this.props.relay} />
       case "bmw":
-        return <BMWEventSection title="BMW Art Guide" data={data} cityName={cityName} relay={this.props.relay} />
+        return (
+          <BMWEventSection
+            title="BMW Art Guide"
+            sponsoredContent={sponsoredContent}
+            data={data}
+            relay={this.props.relay}
+          />
+        )
       case "saved":
         return <SavedEventSection data={data} />
       case "header":

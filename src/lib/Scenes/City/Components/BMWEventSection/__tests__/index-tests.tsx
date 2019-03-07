@@ -28,9 +28,12 @@ describe("CityEvent", () => {
       <Theme>
         <BMWEventSection
           title="BMW Art Guide"
+          sponsoredContent={{
+            introText: "Cras justo odio, dapibus ac facilisis in, egestas eget quam.",
+            artGuideUrl: "http://www.example.com",
+          }}
           relay={{ environment: {} } as RelayProp}
           data={data}
-          cityName="New York"
         />
       </Theme>
     )

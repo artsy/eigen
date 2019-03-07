@@ -20,6 +20,7 @@ interface State {
   filter: Tab
   relay: RelayProp
   cityName: string
+  sponsoredContent: { introText: string; artGuideUrl: string }
 }
 
 export class CityView extends Component<Props, State> {
@@ -28,6 +29,7 @@ export class CityView extends Component<Props, State> {
     filter: { id: "all", text: "All events" },
     relay: null,
     cityName: "",
+    sponsoredContent: null,
   }
   scrollViewVerticalStart = 0
   scrollView: ScrollView = null
@@ -48,17 +50,20 @@ export class CityView extends Component<Props, State> {
         buckets,
         cityName,
         relay,
+        sponsoredContent,
       }: {
         filter: Tab
         buckets: BucketResults
         cityName: string
         relay: RelayProp
+        sponsoredContent: { introText: string; artGuideUrl: string }
       }) => {
         this.setState({
           buckets,
           filter,
           cityName,
           relay,
+          sponsoredContent,
         })
       }
     )
@@ -111,6 +116,7 @@ export class CityView extends Component<Props, State> {
                           key={cityName}
                           currentBucket={filter.id as BucketKey}
                           buckets={buckets}
+                          sponsoredContent={this.state.sponsoredContent}
                           relay={this.state.relay}
                         />
                       )
