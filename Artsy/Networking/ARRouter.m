@@ -296,7 +296,7 @@ static NSString *hostFromString(NSString *string)
         @"grant_type" : @"credentials",
         @"scope" : @"offline_access"
     };
-    return [self requestWithMethod:@"GET" path:AROAuthURL parameters:params];
+    return [self requestWithMethod:@"POST" path:AROAuthURL parameters:params];
 }
 
 + (NSURLRequest *)newFacebookOAuthRequestWithToken:(NSString *)token
@@ -309,7 +309,7 @@ static NSString *hostFromString(NSString *string)
         @"grant_type" : @"oauth_token",
         @"scope" : @"offline_access"
     };
-    return [self requestWithMethod:@"GET" path:AROAuthURL parameters:params];
+    return [self requestWithMethod:@"POST" path:AROAuthURL parameters:params];
 }
 
 + (NSURLRequest *)newTwitterOAuthRequestWithToken:(NSString *)token andSecret:(NSString *)secret
@@ -323,7 +323,7 @@ static NSString *hostFromString(NSString *string)
         @"grant_type" : @"oauth_token",
         @"scope" : @"offline_access"
     };
-    return [self requestWithMethod:@"GET" path:AROAuthURL parameters:params];
+    return [self requestWithMethod:@"POST" path:AROAuthURL parameters:params];
 }
 
 

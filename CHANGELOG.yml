@@ -3,7 +3,7 @@ upcoming:
   date: TBD
   emission_version: 1.8.12
   dev:
-    - 
+    - Use posts for auth requests - orta
   user_facing:
     - Adds text content types to signup/login flow - ash
     - Support having fairs and the map view as full-bleed view controllers - luc + orta
