@@ -54,6 +54,10 @@ fragment FairDetail_fair_1G22uz on Fair {
     name
     __id
   }
+  sponsoredContent {
+    activationText
+    pressReleaseUrl
+  }
   shows: shows_connection(first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
@@ -424,7 +428,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairDetailShowsQuery",
-  "id": "0c231ddfa31723ddd9761693d21695be",
+  "id": "39b41738fd4bfcb00b216dbfa60a5333",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -483,7 +487,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "start_at",
+            "name": "end_at",
             "args": null,
             "storageKey": null
           },
@@ -726,14 +730,14 @@ return {
               v12
             ]
           },
-          v6,
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "end_at",
+            "name": "start_at",
             "args": null,
             "storageKey": null
           },
+          v6,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -885,6 +889,31 @@ return {
             "name": "ticketsLink",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "sponsoredContent",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "FairSponsoredContent",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "activationText",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "pressReleaseUrl",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           },
           {
             "kind": "LinkedField",

@@ -14,6 +14,7 @@ import { ArtistsExhibitorsWorksLink } from "../Components/ArtistsExhibitorsWorks
 import { FairBoothPreviewContainer as FairBoothPreview } from "../Components/FairBoothPreview"
 import { FairHeaderContainer as FairHeader } from "../Components/FairHeader"
 import { SearchLink } from "../Components/SearchLink"
+import { shouldShowFairBMWArtActivationLink } from "./FairBMWArtActivation"
 import { shouldGoStraightToWebsite, shouldShowFairMoreInfo } from "./FairMoreInfo"
 
 interface Props extends ViewProperties {
@@ -69,9 +70,19 @@ export class FairDetail extends React.Component<Props, State> {
       })
     }
 
-    if (shouldGoStraightToWebsite(this.props.fair) || shouldShowFairMoreInfo(this.props.fair)) {
+    if (
+      shouldGoStraightToWebsite(this.props.fair) ||
+      shouldShowFairMoreInfo(this.props.fair) ||
+      shouldShowFairBMWArtActivationLink(this.props.fair)
+    ) {
       sections.push({
         type: "information",
+      })
+    }
+
+    if (fair.sponsoredContent) {
+      sections.push({
+        type: "bmw-art-activation",
       })
     }
 
@@ -135,6 +146,10 @@ export class FairDetail extends React.Component<Props, State> {
     }
   }
 
+  onViewBMWArtActivationPressed = () => {
+    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/bmw-sponsored-content`)
+  }
+
   renderItem = ({ item: { data, type, showIndex } }) => {
     switch (type) {
       case "location":
@@ -170,6 +185,13 @@ export class FairDetail extends React.Component<Props, State> {
           <Box mt={1}>
             <Serif size={"6"}>Browse the fair</Serif>
           </Box>
+        )
+      case "bmw-art-activation":
+        return (
+          <>
+            <CaretButton onPress={this.onViewBMWArtActivationPressed.bind(this)} text="BMW art activations" />
+            <Separator mt={2} />
+          </>
         )
       default:
         return null
@@ -252,6 +274,11 @@ export const FairDetailContainer = createPaginationContainer(
 
         profile {
           name
+        }
+
+        sponsoredContent {
+          activationText
+          pressReleaseUrl
         }
 
         shows: shows_connection(first: $count, after: $cursor) @connection(key: "Fair_shows") {

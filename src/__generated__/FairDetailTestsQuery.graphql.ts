@@ -46,6 +46,10 @@ fragment FairDetail_fair on Fair {
     name
     __id
   }
+  sponsoredContent {
+    activationText
+    pressReleaseUrl
+  }
   shows: shows_connection(first: 5) {
     pageInfo {
       hasNextPage
@@ -396,7 +400,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairDetailTestsQuery",
-  "id": "7318d83bccb511dac64064ed645eebdb",
+  "id": "e51a68fdb8645631c1520c43e6d132bd",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -442,7 +446,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "start_at",
+            "name": "end_at",
             "args": null,
             "storageKey": null
           },
@@ -685,14 +689,14 @@ return {
               v11
             ]
           },
-          v5,
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "end_at",
+            "name": "start_at",
             "args": null,
             "storageKey": null
           },
+          v5,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -844,6 +848,31 @@ return {
             "name": "ticketsLink",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "sponsoredContent",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "FairSponsoredContent",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "activationText",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "pressReleaseUrl",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           },
           {
             "kind": "LinkedField",
