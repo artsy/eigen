@@ -9,7 +9,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { hrefForPartialShow } from "lib/utils/router"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -104,6 +104,8 @@ export class ShowItemRow extends React.Component<Props, State> {
   render() {
     const { show } = this.props
     const imageURL = show.cover_image && show.cover_image.url
+    const { width } = Dimensions.get("window")
+    const isScreenNarrow = width <= 320
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
@@ -119,7 +121,7 @@ export class ShowItemRow extends React.Component<Props, State> {
               ) : (
                 <OpaqueImageView width={58} height={58} imageURL={imageURL} />
               )}
-              <Flex flexDirection="column" flexGrow="1" width="197">
+              <Flex flexDirection="column" flexGrow="1" width={isScreenNarrow ? width / 7 : 197}>
                 {show.partner &&
                   show.partner.name && (
                     <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
@@ -141,7 +143,7 @@ export class ShowItemRow extends React.Component<Props, State> {
                   )}
               </Flex>
             </Flex>
-            <Box width="50">
+            <Box width={isScreenNarrow ? width / 8 : 50} ml={isScreenNarrow ? 10 : 0}>
               <Flex alignItems="flex-start" justifyContent="flex-end" flexDirection="row">
                 <InvertedButton
                   inProgress={this.state.isFollowedSaving}
