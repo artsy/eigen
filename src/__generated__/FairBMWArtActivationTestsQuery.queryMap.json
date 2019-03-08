@@ -1,0 +1,3 @@
+{
+  "67f3494bc95200964074abc58e819982": "query FairBMWArtActivationTestsQuery {\n  fair(id: \"art-basel-in-miami-beach-2018\") {\n    id\n    _id\n    sponsoredContent {\n      activationText\n      pressReleaseUrl\n    }\n    __id\n  }\n}\n"
+}

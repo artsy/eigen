@@ -20,7 +20,7 @@ interface Props extends ViewProperties {
 
 interface State {
   sections: Array<{
-    type: "about" | "art-activations" | "links"
+    type: "about" | "links"
     data: any
   }>
 }
@@ -60,12 +60,6 @@ export class FairMoreInfo extends React.Component<Props, State> {
         about: fair.about,
       },
     })
-
-    // TODO: wire up bmw art activations
-    // sections.push({
-    //  type: "art-activations",
-    //  data: {},
-    // })
 
     if (fair.organizer || fair.ticketsLink) {
       sections.push({
@@ -116,9 +110,6 @@ export class FairMoreInfo extends React.Component<Props, State> {
     switch (type) {
       case "about":
         return <Serif size="3">{data.about}</Serif>
-      case "art-activations":
-        // TODO: render bmw art activations
-        return null
       case "links":
         return (
           <>
