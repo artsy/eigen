@@ -1,5 +1,5 @@
-import { Box, color, Flex, Theme } from "@artsy/palette"
-import ScrollableTabBar, { ScrollableTab } from "lib/Components/ScrollableTabBar"
+import { color, Flex, Theme } from "@artsy/palette"
+import { ScrollableTab } from "lib/Components/ScrollableTabBar"
 import React, { Component } from "react"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 
@@ -9,7 +9,6 @@ import styled from "styled-components/native"
 
 import TabBar, { Tab } from "lib/Components/TabBar"
 import { BucketKey, BucketResults } from "../Map/Bucket"
-import { FiltersBar } from "../Map/Components/FiltersBar"
 import { EventEmitter } from "../Map/EventEmitter"
 import { MapTab } from "../Map/types"
 import { AllEvents } from "./Components/AllEvents"
@@ -56,7 +55,6 @@ export class CityView extends Component<Props, State> {
   ]
 
   componentWillMount() {
-    console.log("subscribing")
     EventEmitter.subscribe(
       "map:change",
       ({
@@ -84,7 +82,7 @@ export class CityView extends Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const scrollview = this.tabView._scrollView
+    const scrollview = this.tabView && this.tabView.scrollView
     if (!this.props.isDrawerOpen && scrollview) {
       scrollview.scrollTo({ x: 0, y: 0, animated: true })
     }
@@ -96,14 +94,11 @@ export class CityView extends Component<Props, State> {
   }
 
   setSelectedTab(selectedTab) {
-    // this.setState({ selectedTab: selectedTab.i }, this.fireCityTabViewAnalytics)
-    console.log(selectedTab.i)
-
+    this.setState({ selectedTab: selectedTab.i }, this.fireCityTabViewAnalytics)
     EventEmitter.dispatch("filters:change", selectedTab.i)
   }
 
   fireCityTabViewAnalytics = () => {
-    console.log("Post")
     // this.props.tracking.trackEvent({
     //   context_screen: screenSchemaForCurrentTab(this.state.selectedTab),
     //   context_screen_owner_type: null,
@@ -115,7 +110,7 @@ export class CityView extends Component<Props, State> {
     const { isDrawerOpen, verticalMargin } = this.props
     // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
-    const scrollview = this.tabView._scrollView
+    // const scrollview = this.tabView._scrollView
 
     return (
       buckets && (
@@ -131,6 +126,17 @@ export class CityView extends Component<Props, State> {
                   <TabBar {...props} />
                 </>
               )}
+              onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
+              // These are the ScrollView props for inside the scrollable tab view
+              contentProps={{
+                contentInset: { bottom: bottomInset },
+                scrollEnabled: isDrawerOpen,
+                ref: r => {
+                  if (r) {
+                    this.scrollView = r as any
+                  }
+                },
+              }}
             >
               <ScrollableTab tabLabel="All">
                 <AllEvents
@@ -183,41 +189,3 @@ const Handle = styled.View`
   border-radius: 2.5px;
   background-color: ${color("black30")};
 `
-
-// <FiltersBar
-//   tabs={this.filters}
-//   goToPage={activeIndex => EventEmitter.dispatch("filters:change", activeIndex)}
-// />
-// <ScrollView
-//   contentInset={{ bottom: bottomInset }}
-//   onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
-//   scrollEnabled={isDrawerOpen}
-//   ref={r => {
-//     if (r) {
-//       this.scrollView = r as any
-//     }
-//   }}
-// >
-//   {(() => {
-//     switch (filter && filter.id) {
-//       case "all":
-//         return (
-//           <AllEvents
-//             cityName={cityName}
-//             key={cityName}
-//             currentBucket={filter.id as BucketKey}
-//             buckets={buckets}
-//           />
-//         )
-//       default:
-//         return (
-//           <CityTab
-//             key={cityName + filter.id}
-//             bucket={buckets[filter.id]}
-//             type={filter.text}
-//             relay={this.state.relay}
-//           />
-//         )
-//     }
-//   })()}
-// </ScrollView>

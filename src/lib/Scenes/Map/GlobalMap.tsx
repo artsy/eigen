@@ -203,8 +203,6 @@ export class GlobalMap extends React.Component<Props, State> {
       return
     }
 
-    console.log("emitting")
-
     // TODO: map region filtering can live here.
     const filter = this.filters[this.state.activeIndex]
     const {
