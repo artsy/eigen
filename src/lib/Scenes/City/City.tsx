@@ -42,31 +42,34 @@ export class CityView extends Component<Props, State> {
     { id: "museums", text: "Museums" },
   ]
 
+  handleEvent = ({
+    filter,
+    buckets,
+    cityName,
+    relay,
+    sponsoredContent,
+  }: {
+    filter: Tab
+    buckets: BucketResults
+    cityName: string
+    relay: RelayProp
+    sponsoredContent: { introText: string; artGuideUrl: string }
+  }) => {
+    this.setState({
+      buckets,
+      filter,
+      cityName,
+      relay,
+      sponsoredContent,
+    })
+  }
+
   componentWillMount() {
-    EventEmitter.subscribe(
-      "map:change",
-      ({
-        filter,
-        buckets,
-        cityName,
-        relay,
-        sponsoredContent,
-      }: {
-        filter: Tab
-        buckets: BucketResults
-        cityName: string
-        relay: RelayProp
-        sponsoredContent: { introText: string; artGuideUrl: string }
-      }) => {
-        this.setState({
-          buckets,
-          filter,
-          cityName,
-          relay,
-          sponsoredContent,
-        })
-      }
-    )
+    EventEmitter.subscribe("map:change", this.handleEvent)
+  }
+
+  componentWillUnmount() {
+    EventEmitter.unsubscribe("map:change", this.handleEvent)
   }
 
   componentDidUpdate() {
