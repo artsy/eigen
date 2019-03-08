@@ -18,6 +18,7 @@
 
 - Update city coordinates (to fix Los Angeles bug) - anandaroop
 - Fixes warning about missing viewer prop - ash
+- Removes touchable feedback on fair cards - ash
 - Fixes warning about duplicate keys in list - ash
 - Adds zero state to CityTab - kieran
 - Renames SavedShowItemRow to ShowItemRow - kieran
@@ -28,7 +29,10 @@
 - Fixes saving not updating props in city view - kieran
 - Disables navigation to Gallery pages from Shows view on stub shows - ashley
 - Fixes memory leak by unsubscribing components from the EventEmitter - alloy
+- Adds city section list for museum/gallery shows - kieran & ash
+- Moves city list scroll view enabled-ness management to ObjC - ash
 - Updates styling for cluster and pin show cards - luc
+- Decrease likelihood of getting a blank view while scrolling fast in city tabs - alloy
 
 ### 1.8.14
 

@@ -26,7 +26,13 @@ describe("CityEvent", () => {
   it("renders properly", () => {
     const comp = mount(
       <Theme>
-        <EventSection title="Gallery shows" relay={{ environment: {} } as RelayProp} data={data} />
+        <EventSection
+          title="Gallery shows"
+          section="galleries"
+          citySlug="new-york"
+          relay={{ environment: {} } as RelayProp}
+          data={data}
+        />
       </Theme>
     )
 

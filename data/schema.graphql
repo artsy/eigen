@@ -2369,8 +2369,11 @@ type City {
   shows(
     sort: PartnerShowSorts
 
-    # By default we filter shows by current
+    # Filter shows by chronological event status
     status: EventStatus = CURRENT
+
+    # Filter shows by partner type
+    partnerType: PartnerShowPartnerType
 
     # Whether to include local discovery stubs as well as displayable shows
     discoverable: Boolean
@@ -6595,6 +6598,11 @@ type PartnerShowEventType {
 
   # A formatted description of the start to end dates
   exhibitionPeriod: String
+}
+
+enum PartnerShowPartnerType {
+  GALLERY
+  MUSEUM
 }
 
 enum PartnerShowSorts {
