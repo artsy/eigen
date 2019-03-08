@@ -34,6 +34,11 @@ export interface MapGeoFeature {
   type: string
 }
 
+export interface MapGeoFeatureCollection {
+  type: "FeatureCollection"
+  features: MapGeoFeature[]
+}
+
 /** Comes in from the OS via the MapBox onUserLocationUpdate */
 export interface OSCoordsUpdate {
   timestamp: number

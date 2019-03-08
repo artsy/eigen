@@ -38,6 +38,7 @@ export class EventList extends React.Component<Props> {
         renderItem={({ item }) => this.renderItem(item)}
         onScroll={onScroll}
         scrollIndicatorInsets={{ right: -10 }}
+        windowSize={50}
       />
     )
   }

@@ -29,6 +29,8 @@
 - Disables navigation to Gallery pages from Shows view on stub shows - ashley
 - Fixes memory leak by unsubscribing components from the EventEmitter - alloy
 - Adds city section list for museum/gallery shows - kieran & ash
+- Updates styling for cluster and pin show cards - luc
+- Decrease likelihood of getting a blank view while scrolling fast in city tabs - alloy
 
 ### 1.8.14
 

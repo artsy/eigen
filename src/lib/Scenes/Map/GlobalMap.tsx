@@ -33,7 +33,7 @@ const ShowCardContainer = styled(Box)`
   bottom: 0;
   left: 0;
   right: 0;
-  height: 260;
+  height: 200;
 `
 
 interface Props {
@@ -83,14 +83,13 @@ enum DrawerPosition {
   collapsed = "collapsed",
   partiallyRevealed = "partiallyRevealed",
 }
-
 export class GlobalMap extends React.Component<Props, State> {
   /** Makes sure we're consistently using { lat, lng } internally */
-  static coordArrayToLocation(arr: [number, number] | undefined) {
+  static lngLatArrayToLocation(arr: [number, number] | undefined) {
     if (!arr || arr.length !== 2) {
       return undefined
     }
-    return { lat: arr[1], lng: arr[0] }
+    return { lng: arr[0], lat: arr[1] }
   }
 
   /** Makes sure we're consistently using { lat, lng } internally */
@@ -153,7 +152,6 @@ export class GlobalMap extends React.Component<Props, State> {
     }
     this.clusterEngine = new Supercluster({
       radius: 50,
-      maxZoom: 13,
     })
 
     this.updateShowIdMap()
@@ -251,6 +249,7 @@ export class GlobalMap extends React.Component<Props, State> {
     if (!this.props.viewer) {
       return
     }
+
     const { city } = this.props.viewer
     if (city) {
       city.shows.edges.forEach(({ node }) => {
@@ -271,7 +270,7 @@ export class GlobalMap extends React.Component<Props, State> {
       <Spring
         native
         from={{ bottom: -150, progress: 0, opacity: 0 }}
-        to={hasShows ? { bottom: 0, progress: 1, opacity: 1.0 } : { bottom: -150, progress: 0, opacity: 0 }}
+        to={hasShows ? { bottom: 80, progress: 1, opacity: 1.0 } : { bottom: -150, progress: 0, opacity: 0 }}
         config={config.stiff}
         precision={1}
       >
@@ -282,6 +281,8 @@ export class GlobalMap extends React.Component<Props, State> {
               left: 0,
               right: 0,
               opacity,
+              position: "absolute",
+              height: 150,
             }}
           >
             <Theme>{hasShows && <ShowCard shows={activeShows as any} />}</Theme>
@@ -312,7 +313,7 @@ export class GlobalMap extends React.Component<Props, State> {
         this.emitFilteredBucketResults()
         this.setState({
           trackUserLocation: false,
-          currentLocation: GlobalMap.coordArrayToLocation(location.geometry.coordinates),
+          currentLocation: GlobalMap.lngLatArrayToLocation(location.geometry && location.geometry.coordinates),
         })
       },
       onUserLocationUpdate: (location: OSCoordsUpdate) => {
@@ -368,7 +369,6 @@ export class GlobalMap extends React.Component<Props, State> {
                   shape={this.featureCollection}
                   cluster
                   clusterRadius={50}
-                  clusterMaxZoom={13}
                   onPress={e => {
                     this.handleFeaturePress(e.nativeEvent)
                   }}
