@@ -1,4 +1,5 @@
 import { Box, Message, Separator, Theme } from "@artsy/palette"
+import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import React from "react"
 import { FlatList } from "react-native"
@@ -11,7 +12,7 @@ const StyledMessage = styled(Message)`
 `
 
 interface Props {
-  bucket: any[]
+  bucket: CitySectionList_city["shows"]["edges"]
   type: string
   cityName: string
   relay: RelayProp

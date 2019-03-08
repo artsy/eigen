@@ -2,33 +2,37 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { CitySectionList_city$ref } from "./CitySectionList_city.graphql";
-export type QueryRenderersCitySectionListQueryVariables = {
+export type CitySectionListQueryVariables = {
+    readonly count: number;
+    readonly cursor?: string | null;
     readonly citySlug: string;
 };
-export type QueryRenderersCitySectionListQueryResponse = {
+export type CitySectionListQueryResponse = {
     readonly city: ({
         readonly " $fragmentRefs": CitySectionList_city$ref;
     }) | null;
 };
-export type QueryRenderersCitySectionListQuery = {
-    readonly response: QueryRenderersCitySectionListQueryResponse;
-    readonly variables: QueryRenderersCitySectionListQueryVariables;
+export type CitySectionListQuery = {
+    readonly response: CitySectionListQueryResponse;
+    readonly variables: CitySectionListQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersCitySectionListQuery(
+query CitySectionListQuery(
+  $count: Int!
+  $cursor: String
   $citySlug: String!
 ) {
   city(slug: $citySlug) {
-    ...CitySectionList_city
+    ...CitySectionList_city_1G22uz
   }
 }
 
-fragment CitySectionList_city on City {
+fragment CitySectionList_city_1G22uz on City {
   name
-  shows(discoverable: true, first: 10, sort: START_AT_ASC, after: "") {
+  shows(discoverable: true, first: $count, sort: START_AT_ASC, after: $cursor) {
     edges {
       node {
         id
@@ -68,6 +72,18 @@ fragment CitySectionList_city on City {
 
 const node: ConcreteRequest = (function(){
 var v0 = [
+  {
+    "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "cursor",
+    "type": "String",
+    "defaultValue": null
+  },
   {
     "kind": "LocalArgument",
     "name": "citySlug",
@@ -114,13 +130,13 @@ v5 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "QueryRenderersCitySectionListQuery",
-  "id": "6fcdd04fc2562edc08a7dfe58a6cbc7e",
+  "name": "CitySectionListQuery",
+  "id": "6d0b12beffc1d72f240e250f695c121f",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersCitySectionListQuery",
+    "name": "CitySectionListQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -137,7 +153,20 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "CitySectionList_city",
-            "args": null
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "count",
+                "variableName": "count",
+                "type": null
+              },
+              {
+                "kind": "Variable",
+                "name": "cursor",
+                "variableName": "cursor",
+                "type": null
+              }
+            ]
           }
         ]
       }
@@ -145,7 +174,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersCitySectionListQuery",
+    "name": "CitySectionListQuery",
     "argumentDefinitions": v0,
     "selections": [
       {
@@ -162,12 +191,12 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "shows",
-            "storageKey": "shows(after:\"\",discoverable:true,first:10,sort:\"START_AT_ASC\")",
+            "storageKey": null,
             "args": [
               {
-                "kind": "Literal",
+                "kind": "Variable",
                 "name": "after",
-                "value": "",
+                "variableName": "cursor",
                 "type": "String"
               },
               {
@@ -177,9 +206,9 @@ return {
                 "type": "Boolean"
               },
               {
-                "kind": "Literal",
+                "kind": "Variable",
                 "name": "first",
-                "value": 10,
+                "variableName": "count",
                 "type": "Int"
               },
               {
@@ -334,9 +363,9 @@ return {
             "name": "shows",
             "args": [
               {
-                "kind": "Literal",
+                "kind": "Variable",
                 "name": "after",
-                "value": "",
+                "variableName": "cursor",
                 "type": "String"
               },
               {
@@ -346,9 +375,9 @@ return {
                 "type": "Boolean"
               },
               {
-                "kind": "Literal",
+                "kind": "Variable",
                 "name": "first",
-                "value": 10,
+                "variableName": "count",
                 "type": "Int"
               },
               {
@@ -371,5 +400,5 @@ return {
   }
 };
 })();
-(node as any).hash = '1d746f4ca943daab45d1396594605710';
+(node as any).hash = 'bfdd90b34aa5f6396e8ab1cc20bb23a2';
 export default node;
