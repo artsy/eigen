@@ -58,31 +58,32 @@ Since this controller already has to do the above logic, having it handle the Ci
 {
     [super viewDidLoad];
 
-    __weak typeof(self) sself = self;
+    __weak typeof(self) wself = self;
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryOpenCityPicker" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        [sself showCityPicker];
+        [wself showCityPicker];
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryUserSelectedCity" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         NSInteger cityIndex = [note.userInfo[@"cityIndex"] integerValue];
-        [sself userSelectedCityAtIndex:cityIndex];
+        [wself userSelectedCityAtIndex:cityIndex];
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryUpdateDrawerPosition" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         NSString *positionString = note.userInfo[@"position"];
-        [sself updateDrawerPosition:positionString];
+        [wself updateDrawerPosition:positionString];
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryQueryResponseReceived" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        if (sself.initialDataIsLoaded) {
+        if (wself.initialDataIsLoaded) {
             return;
         }
-        [sself.bottomSheetVC setDrawerPositionWithPosition:[PulleyPosition partiallyRevealed] animated:YES completion:nil];
-        sself.initialDataIsLoaded = YES;
+        [wself.bottomSheetVC setDrawerPositionWithPosition:[PulleyPosition partiallyRevealed] animated:YES completion:nil];
+        wself.initialDataIsLoaded = YES;
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryCityGotScrollView" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-            if (!self.rnScrollView) {
-                self.rnScrollView  = FindFirstVerticalScrollView(self.cityVC.view);
-                self.rnScrollView.scrollEnabled = NO;
-                if (self.rnScrollView) {
-                    [self.bottomSheetVC.drawerPanGestureRecognizer requireGestureRecognizerToFail:self.rnScrollView.panGestureRecognizer];
+            if (!wself.rnScrollView) {
+                UIScrollView *foundScrollView = FindFirstVerticalScrollView(wself.cityVC.view);
+                wself.rnScrollView = foundScrollView;
+                wself.rnScrollView.scrollEnabled = NO;
+                if (foundScrollView) {
+                    [wself.bottomSheetVC.drawerPanGestureRecognizer requireGestureRecognizerToFail:foundScrollView.panGestureRecognizer];
                 }
             }
     }];
