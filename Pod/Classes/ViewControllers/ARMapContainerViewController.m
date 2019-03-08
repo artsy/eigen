@@ -23,9 +23,26 @@ NSString * const __nonnull SelectedCityNameKey = @"SelectedCityName";
 @property (nonatomic, strong) ARCityPickerComponentViewController *cityPickerController;
 @property (nonatomic, strong) UIView *cityPickerContainerView; // Need a view to have its own shadow.
 
+@property (nonatomic, weak) UIScrollView *rnScrollView;
+
 @property (nonatomic, assign) BOOL initialDataIsLoaded;
 
 @end
+
+static UIScrollView *
+FindFirstVerticalScrollView(UIView *view)
+{
+    for (UIView *subview in view.subviews) {
+        if ([subview isKindOfClass:UIScrollView.class] && ([(UIScrollView *)subview contentSize].height > subview.frame.size.height)) {
+            return (UIScrollView *)subview;
+        }
+    }
+    for (UIView *subview in view.subviews) {
+        UIScrollView *result = FindFirstVerticalScrollView(subview);
+        if (result) return result;
+    }
+    return nil;
+}
 
 /*
 This is the top-level Local Discovery component, and should therefore be responsible for checking a user's location and
@@ -41,24 +58,34 @@ Since this controller already has to do the above logic, having it handle the Ci
 {
     [super viewDidLoad];
 
-    __weak typeof(self) sself = self;
+    __weak typeof(self) wself = self;
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryOpenCityPicker" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        [sself showCityPicker];
+        [wself showCityPicker];
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryUserSelectedCity" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         NSInteger cityIndex = [note.userInfo[@"cityIndex"] integerValue];
-        [sself userSelectedCityAtIndex:cityIndex];
+        [wself userSelectedCityAtIndex:cityIndex];
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryUpdateDrawerPosition" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         NSString *positionString = note.userInfo[@"position"];
-        [sself updateDrawerPosition:positionString];
+        [wself updateDrawerPosition:positionString];
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryQueryResponseReceived" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        if (sself.initialDataIsLoaded) {
+        if (wself.initialDataIsLoaded) {
             return;
         }
-        [sself.bottomSheetVC setDrawerPositionWithPosition:[PulleyPosition partiallyRevealed] animated:YES completion:nil];
-        sself.initialDataIsLoaded = YES;
+        [wself.bottomSheetVC setDrawerPositionWithPosition:[PulleyPosition partiallyRevealed] animated:YES completion:nil];
+        wself.initialDataIsLoaded = YES;
+    }];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryCityGotScrollView" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+            if (!wself.rnScrollView) {
+                UIScrollView *foundScrollView = FindFirstVerticalScrollView(wself.cityVC.view);
+                wself.rnScrollView = foundScrollView;
+                wself.rnScrollView.scrollEnabled = NO;
+                if (foundScrollView) {
+                    [wself.bottomSheetVC.drawerPanGestureRecognizer requireGestureRecognizerToFail:foundScrollView.panGestureRecognizer];
+                }
+            }
     }];
 
     self.mapVC = [[ARMapComponentViewController alloc] init];
@@ -212,6 +239,9 @@ Since this controller already has to do the above logic, having it handle the Ci
 - (void)drawerChangedDistanceFromBottomWithDrawer:(PulleyViewController *)drawer distance:(CGFloat)distance bottomSafeArea:(CGFloat)bottomSafeArea
 {
     CGFloat drawerAbovePartialHeight = [drawer partialRevealDrawerHeightWithBottomSafeArea:bottomSafeArea];
+
+    BOOL isDrawerOpen = [drawer.drawerPosition isEqualToPosition:PulleyPosition.open];
+    self.rnScrollView.scrollEnabled = isDrawerOpen;
 
     BOOL shouldHideButtons = distance > drawerAbovePartialHeight;
     if (!self.cityPickerController) {
