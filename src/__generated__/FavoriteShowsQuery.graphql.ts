@@ -34,7 +34,7 @@ fragment Shows_me on Me {
       }
       edges {
         node {
-          ...SavedShowItemRow_show
+          ...ShowItemRow_show
           __id
           __typename
         }
@@ -45,7 +45,7 @@ fragment Shows_me on Me {
   __id
 }
 
-fragment SavedShowItemRow_show on Show {
+fragment ShowItemRow_show on Show {
   id
   _id
   __id
@@ -65,11 +65,13 @@ fragment SavedShowItemRow_show on Show {
     }
   }
   href
+  exhibition_period
   status
   cover_image {
     url
     aspect_ratio
   }
+  is_fair_booth
   start_at
   end_at
 }
@@ -104,7 +106,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FavoriteShowsQuery",
-  "id": "dbbdc9a93d26e5175a1a6851fdf98eae",
+  "id": "65ff969424023e0114fda28dceb9b0f9",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -232,7 +234,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "href",
+                            "name": "exhibition_period",
                             "args": null,
                             "storageKey": null
                           },
@@ -278,6 +280,13 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
+                            "name": "href",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
                             "name": "_id",
                             "args": null,
                             "storageKey": null
@@ -313,6 +322,13 @@ return {
                                 "storageKey": null
                               }
                             ]
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_fair_booth",
+                            "args": null,
+                            "storageKey": null
                           },
                           {
                             "kind": "ScalarField",

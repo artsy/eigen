@@ -67,6 +67,7 @@ export type FairHeader_fair = {
     }) | null;
     readonly start_at: string | null;
     readonly end_at: string | null;
+    readonly exhibition_period: string | null;
     readonly " $refType": FairHeader_fair$ref;
 };
 
@@ -401,9 +402,16 @@ return {
       "args": null,
       "storageKey": null
     },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "exhibition_period",
+      "args": null,
+      "storageKey": null
+    },
     v5
   ]
 };
 })();
-(node as any).hash = '124f47530ea26c94b1b822fefd36c19d';
+(node as any).hash = 'e0781d9b1d8153d7ba30341ddcd9e0a1';
 export default node;

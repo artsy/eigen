@@ -1,20 +1,22 @@
 import { Box, Flex, Theme } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import { get } from "lodash"
 import React from "react"
 import { Animated, Dimensions, Easing, NativeModules, SafeAreaView, View } from "react-native"
-import { createRefetchContainer, graphql, RelayProp } from "react-relay"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
 import Supercluster from "supercluster"
 
+import colors from "lib/data/colors"
 import { convertCityToGeoJSON } from "lib/utils/convertCityToGeoJSON"
-import { bucketCityResults, BucketResults } from "./Bucket"
+import { bucketCityResults, BucketResults, emptyBucketResults } from "./Bucket"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { Show, Tab } from "./types"
+import { MapTab, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -31,22 +33,24 @@ const ShowCardContainer = styled(Box)`
   bottom: 0;
   left: 0;
   right: 0;
-  height: 250;
+  height: 260;
 `
 
 interface Props {
   initialCoordinates?: { lat: number; lng: number }
   hideMapButtons: boolean
-  viewer: GlobalMap_viewer
+  viewer?: GlobalMap_viewer
   relay: RelayProp
 }
 interface State {
   activeIndex: number
-  activeShowID?: string
+  activeShows: Show[]
   bucketResults: BucketResults
   currentLocation?: any
   userLocation?: any
   trackUserLocation?: boolean
+  featureCollection: any
+  mapLoaded: boolean
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
@@ -70,9 +74,10 @@ enum DrawerPosition {
 export class GlobalMap extends React.Component<Props, State> {
   map: Mapbox.MapView
   clusterEngine: Supercluster
+  featureCollection: any
   moveButtons: Animated.Value
 
-  filters: Tab[] = [
+  filters: MapTab[] = [
     { id: "all", text: "All" },
     { id: "saved", text: "Saved" },
     { id: "fairs", text: "Fairs" },
@@ -80,11 +85,10 @@ export class GlobalMap extends React.Component<Props, State> {
     { id: "museums", text: "Museums" },
   ]
   shows: { [id: string]: Show } = {}
-  featureCollection: any
 
   stylesheet = Mapbox.StyleSheet.create({
     singleShow: {
-      iconImage: "pin",
+      iconImage: Mapbox.StyleSheet.identity("icon"),
       iconSize: 0.8,
     },
 
@@ -111,17 +115,23 @@ export class GlobalMap extends React.Component<Props, State> {
   constructor(props) {
     super(props)
 
-    const currentLocation = this.props.initialCoordinates || this.props.viewer.city.coordinates
-    const bucketResults = bucketCityResults(props.viewer)
+    const currentLocation = this.props.initialCoordinates || get(this.props, "viewer.city.coordinates")
     this.state = {
+      activeShows: [],
       activeIndex: 0,
       currentLocation,
-      bucketResults,
+      bucketResults: emptyBucketResults,
       trackUserLocation: false,
+      featureCollection: {},
+      mapLoaded: false,
     }
+    this.clusterEngine = new Supercluster({
+      radius: 50,
+      maxZoom: 13,
+    })
 
     this.updateShowIdMap()
-    this.generateClusterMap()
+    this.updateClusterMap(false)
   }
 
   componentDidMount() {
@@ -131,9 +141,15 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    this.emitFilteredBucketResults()
-    this.updateShowIdMap()
-    this.generateClusterMap()
+    if (nextProps.viewer) {
+      const bucketResults = bucketCityResults(nextProps.viewer)
+
+      this.setState({ bucketResults }, () => {
+        this.emitFilteredBucketResults()
+        this.updateShowIdMap()
+        this.updateClusterMap()
+      })
+    }
 
     if (nextProps.hideMapButtons !== this.props.hideMapButtons) {
       if (nextProps.hideMapButtons) {
@@ -156,32 +172,55 @@ export class GlobalMap extends React.Component<Props, State> {
     }
   }
 
-  generateClusterMap() {
+  updateClusterMap(updateState: boolean = true) {
+    if (!this.props.viewer) {
+      return
+    }
     const { city } = this.props.viewer
-    this.featureCollection = convertCityToGeoJSON(city.shows.edges.filter(({ node }) => node.type === "Show"))
-    this.clusterEngine = new Supercluster({
-      radius: 50,
-      maxZoom: 13,
+    const data = city.shows.edges.filter(a => a.node.type === "Show").map(({ node }) => {
+      return {
+        node: {
+          ...node,
+          icon: node.is_followed ? "pin-saved" : "pin",
+        },
+      }
     })
-    this.clusterEngine.load(this.featureCollection)
+
+    const featureCollection = convertCityToGeoJSON(data)
+
+    if (updateState) {
+      this.setState({
+        featureCollection,
+      })
+    }
+    this.featureCollection = featureCollection
+    this.clusterEngine.load(this.featureCollection.features)
+    return featureCollection
   }
 
   emitFilteredBucketResults() {
+    if (!this.props.viewer) {
+      return
+    }
     // TODO: map region filtering can live here.
     const filter = this.filters[this.state.activeIndex]
     const {
-      city: { name: cityName, slug: citySlug },
+      city: { name: cityName, slug: citySlug, sponsoredContent },
     } = this.props.viewer
     EventEmitter.dispatch("map:change", {
       filter,
       buckets: this.state.bucketResults,
       cityName,
       citySlug,
+      sponsoredContent,
       relay: this.props.relay,
     })
   }
 
   updateShowIdMap() {
+    if (!this.props.viewer) {
+      return
+    }
     const { city } = this.props.viewer
     if (city) {
       city.shows.edges.forEach(({ node }) => {
@@ -195,14 +234,14 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   renderShowCard() {
-    const id = this.state.activeShowID
-    const show = this.shows[id]
+    const { activeShows } = this.state
+    const hasShows = activeShows.length > 0
 
     return (
       <Spring
         native
         from={{ bottom: -150, progress: 0, opacity: 0 }}
-        to={!!id ? { bottom: 0, progress: 1, opacity: 1.0 } : { bottom: -150, progress: 0, opacity: 0 }}
+        to={hasShows ? { bottom: 0, progress: 1, opacity: 1.0 } : { bottom: -150, progress: 0, opacity: 0 }}
         config={config.stiff}
         precision={1}
       >
@@ -212,13 +251,10 @@ export class GlobalMap extends React.Component<Props, State> {
               bottom,
               left: 0,
               right: 0,
-              height: 106,
               opacity,
             }}
           >
-            <Theme>
-              <ShowCard show={show as any} />
-            </Theme>
+            <Theme>{hasShows && <ShowCard shows={activeShows as any} />}</Theme>
           </AnimatedView>
         )}
       </Spring>
@@ -226,17 +262,20 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   render() {
-    const { city } = this.props.viewer
-    const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || city.coordinates
+    const city = get(this.props, "viewer.city")
+    const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || get(city, "coordinates")
+    const { mapLoaded } = this.state
 
+    // TODO: Need to hide the map while showing the top buttons.
     return (
-      <Flex mb={0.5} flexDirection="column">
+      <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
         <Map
           ref={(c: any) => {
             if (c) {
               this.map = c.root
             }
           }}
+          style={{ opacity: mapLoaded && city ? 1 : 0 }} // TODO: Animate this opacity change.
           showUserLocation={true}
           styleURL={ArtsyMapStyleURL}
           userTrackingMode={Mapbox.UserTrackingModes.Follow}
@@ -244,6 +283,7 @@ export class GlobalMap extends React.Component<Props, State> {
           zoomLevel={13}
           logoEnabled={false}
           attributionEnabled={true}
+          compassEnabled={false}
           onRegionDidChange={location => {
             this.emitFilteredBucketResults()
             this.setState({
@@ -258,70 +298,135 @@ export class GlobalMap extends React.Component<Props, State> {
               trackUserLocation: true,
             })
           }}
+          onDidFinishRenderingMapFully={() => this.setState({ mapLoaded: true })}
           onPress={() => {
             this.setState({
-              activeShowID: null,
+              activeShows: [],
             })
           }}
         >
-          <SafeAreaView style={{ flex: 1 }}>
-            <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
-              <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
-                <CitySwitcherButton city={city} />
-                <Box style={{ marginLeft: "auto" }}>
-                  <UserPositionButton
-                    highlight={this.state.userLocation === this.state.currentLocation}
-                    onPress={() => {
-                      const { latitude, longitude } = this.state.userLocation.coords
-                      this.map.moveTo([longitude, latitude], 500)
-                    }}
+          {city && (
+            <>
+              <SafeAreaView style={{ flex: 1 }}>
+                <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
+                  <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
+                    <CitySwitcherButton city={city} />
+                    <Box style={{ marginLeft: "auto" }}>
+                      <UserPositionButton
+                        highlight={this.state.userLocation === this.state.currentLocation}
+                        onPress={() => {
+                          const { latitude, longitude } = this.state.userLocation.coords
+                          this.map.moveTo([longitude, latitude], 500)
+                        }}
+                      />
+                    </Box>
+                  </Flex>
+                </Animated.View>
+                <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
+              </SafeAreaView>
+              {this.featureCollection && (
+                <Mapbox.ShapeSource
+                  id="shows"
+                  shape={this.featureCollection}
+                  cluster
+                  clusterRadius={50}
+                  clusterMaxZoom={13}
+                  onPress={e => {
+                    this.handleFeaturePress(e.nativeEvent)
+                  }}
+                >
+                  <Mapbox.SymbolLayer
+                    id="singleShow"
+                    filter={["!has", "point_count"]}
+                    style={this.stylesheet.singleShow}
                   />
-                </Box>
-              </Flex>
-            </Animated.View>
-            <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
-          </SafeAreaView>
-          <Mapbox.ShapeSource
-            id="shows"
-            shape={this.featureCollection}
-            cluster
-            clusterRadius={50}
-            clusterMaxZoom={14}
-            onPress={async ({ nativeEvent }) => {
-              await this.handleFeaturePress(nativeEvent)
-            }}
-          >
-            <Mapbox.SymbolLayer id="singleShow" filter={["!has", "point_count"]} style={this.stylesheet.singleShow} />
-            <Mapbox.SymbolLayer id="pointCount" style={this.stylesheet.clusterCount} />
+                  <Mapbox.SymbolLayer id="pointCount" style={this.stylesheet.clusterCount} />
 
-            <Mapbox.CircleLayer
-              id="clusteredPoints"
-              belowLayerID="pointCount"
-              filter={["has", "point_count"]}
-              style={this.stylesheet.clusteredPoints}
-            />
-          </Mapbox.ShapeSource>
+                  <Mapbox.CircleLayer
+                    id="clusteredPoints"
+                    belowLayerID="pointCount"
+                    filter={["has", "point_count"]}
+                    style={this.stylesheet.clusteredPoints}
+                  />
+                </Mapbox.ShapeSource>
+              )}
+            </>
+          )}
         </Map>
       </Flex>
     )
   }
 
+  /**
+   * This function is complicated, because the work we have to do is tricky.
+   * What's happening is that we have to replicate a subset of the map's clustering algorithm to get
+   * access to the shows that the user has tapped on.
+   */
   async handleFeaturePress(nativeEvent: any) {
     const {
       payload: {
-        properties: { id },
+        properties: { id, cluster },
+        geometry: { coordinates },
       },
     } = nativeEvent
 
     this.updateDrawerPosition(DrawerPosition.collapsed)
 
-    this.setState({
-      activeShowID: id,
-    })
+    let activeShows: Show[] = []
+    // If the user only taps on the pin we can use the
+    // id directly to retrieve the corresponding show
+    if (!cluster) {
+      activeShows = [this.shows[id]]
+    }
 
-    // TODO: finish setting getting points (shows) within a cluster
-    // In order to show multiple cards in scroll view when a user taps
-    // on a cluster
+    // Otherwise the logic is as follows
+    // We use our clusterEngine which is map of our clusters
+    // 1. Fetch all features (pins, clusters) based on the current map visible bounds
+    // 2. Sort them by distance to the user tap coordinates
+    // 3. Retrieve points within the cluster and map them back to shows
+    else {
+      // Get map zoom level and coordinates of where the user tapped
+      const zoom = Math.floor(await this.map.getZoom())
+      const [lat, lng] = coordinates
+
+      // Get coordinates of the map's current viewport bounds
+      const visibleBounds = await this.map.getVisibleBounds()
+      const [ne, sw] = visibleBounds
+      const [eastLng, northLat] = ne
+      const [westLng, southLat] = sw
+
+      const visibleFeatures = this.clusterEngine.getClusters([westLng, southLat, eastLng, northLat], zoom)
+      const nearestFeature = this.getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
+      const points = this.clusterEngine.getLeaves(nearestFeature.properties.cluster_id, Infinity)
+      activeShows = points.map(a => a.properties) as any
+    }
+
+    this.setState({
+      activeShows,
+    })
+  }
+
+  getNearestPointToLatLongInCollection(values: { lat: number; lng: number }, features: any[]) {
+    // https://stackoverflow.com/a/21623206
+    function distance(lat1, lon1, lat2, lon2) {
+      const p = 0.017453292519943295 // Math.PI / 180
+      const c = Math.cos
+      const a = 0.5 - c((lat2 - lat1) * p) / 2 + (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2
+
+      return 12742 * Math.asin(Math.sqrt(a)) // 2 * R; R = 6371 km
+    }
+
+    const distances = features
+      .map(feature => {
+        const [featureLat, featureLng] = feature.geometry.coordinates
+        return {
+          ...feature,
+          distance: distance(values.lat, values.lng, featureLat, featureLng),
+        }
+      })
+      .sort((a, b) => a.distance - b.distance)
+
+    return distances[0]
   }
 
   updateDrawerPosition(position: DrawerPosition) {
@@ -332,19 +437,23 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 }
 
-export const GlobalMapContainer = createRefetchContainer(
+export const GlobalMapContainer = createFragmentContainer(
   GlobalMap,
   graphql`
-    fragment GlobalMap_viewer on Viewer @argumentDefinitions(near: { type: "Near!" }) {
-      city(near: $near) {
+    fragment GlobalMap_viewer on Viewer @argumentDefinitions(citySlug: { type: "String!" }, maxInt: { type: "Int!" }) {
+      city(slug: $citySlug) {
         name
         slug
+        sponsoredContent {
+          introText
+          artGuideUrl
+        }
         coordinates {
           lat
           lng
         }
 
-        shows(discoverable: true, first: 50, sort: START_AT_ASC) {
+        shows(discoverable: true, first: $maxInt, sort: START_AT_ASC) {
           edges {
             node {
               id
@@ -354,6 +463,7 @@ export const GlobalMapContainer = createRefetchContainer(
               status
               href
               is_followed
+              exhibition_period
               cover_image {
                 url
               }
@@ -379,12 +489,12 @@ export const GlobalMapContainer = createRefetchContainer(
           }
         }
 
-        fairs(first: 10) {
+        fairs(first: $maxInt) {
           edges {
             node {
               id
               name
-
+              exhibition_period
               counts {
                 partners
               }
@@ -420,13 +530,6 @@ export const GlobalMapContainer = createRefetchContainer(
             }
           }
         }
-      }
-    }
-  `,
-  graphql`
-    query GlobalMapRefetchQuery($near: Near) {
-      viewer {
-        ...GlobalMap_viewer @arguments(near: $near)
       }
     }
   `

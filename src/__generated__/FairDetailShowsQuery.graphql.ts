@@ -54,6 +54,10 @@ fragment FairDetail_fair_1G22uz on Fair {
     name
     __id
   }
+  sponsoredContent {
+    activationText
+    pressReleaseUrl
+  }
   shows: shows_connection(first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
@@ -160,6 +164,7 @@ fragment FairHeader_fair on Fair {
   }
   start_at
   end_at
+  exhibition_period
   __id
 }
 
@@ -423,7 +428,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairDetailShowsQuery",
-  "id": "a47409192c31dbdf5aefb3bd1004bfc7",
+  "id": "39b41738fd4bfcb00b216dbfa60a5333",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -482,7 +487,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "start_at",
+            "name": "end_at",
             "args": null,
             "storageKey": null
           },
@@ -725,11 +730,18 @@ return {
               v12
             ]
           },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "start_at",
+            "args": null,
+            "storageKey": null
+          },
           v6,
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "end_at",
+            "name": "exhibition_period",
             "args": null,
             "storageKey": null
           },
@@ -877,6 +889,31 @@ return {
             "name": "ticketsLink",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "sponsoredContent",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "FairSponsoredContent",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "activationText",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "pressReleaseUrl",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           },
           {
             "kind": "LinkedField",

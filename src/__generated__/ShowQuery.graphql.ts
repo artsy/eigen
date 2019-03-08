@@ -83,6 +83,7 @@ fragment Detail_show on Show {
 fragment MoreInfo_show on Show {
   _id
   id
+  exhibition_period
   partner {
     __typename
     ... on Partner {
@@ -233,8 +234,7 @@ fragment ArtistListItem_artist on Artist {
 fragment EventSection_event on PartnerShowEventType {
   event_type
   description
-  start_at
-  end_at
+  exhibitionPeriod
 }
 
 fragment LocationMap_location on Location {
@@ -283,6 +283,19 @@ fragment ShowHeader_show on Show {
   images {
     url
     aspect_ratio
+  }
+  followedArtists(first: 2) {
+    edges {
+      node {
+        artist {
+          name
+          href
+          id
+          _id
+          __id
+        }
+      }
+    }
   }
   artists {
     name
@@ -725,7 +738,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowQuery",
-  "id": "89a7f0b0b604e624de7cc36b7f43b8f5",
+  "id": "feb51a4abfa480ee63e71780741bebb2",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -968,6 +981,62 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
+            "name": "followedArtists",
+            "storageKey": "followedArtists(first:2)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 2,
+                "type": "Int"
+              }
+            ],
+            "concreteType": "ShowFollowArtistConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ShowFollowArtistEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "ShowFollowArtist",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "artist",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "plural": false,
+                        "selections": [
+                          v5,
+                          v15,
+                          v8,
+                          v4,
+                          v2
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
             "name": "artists",
             "storageKey": null,
             "args": null,
@@ -1134,14 +1203,7 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "start_at",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "end_at",
+                "name": "exhibitionPeriod",
                 "args": null,
                 "storageKey": null
               }

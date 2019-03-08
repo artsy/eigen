@@ -1,12 +1,12 @@
 import { Box, color, Flex, Theme } from "@artsy/palette"
 import React, { Component } from "react"
-import { ScrollView } from "react-native"
+import { NativeModules, ScrollView } from "react-native"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { BucketKey, BucketResults } from "../Map/Bucket"
 import { FiltersBar } from "../Map/Components/FiltersBar"
 import { EventEmitter } from "../Map/EventEmitter"
-import { Tab } from "../Map/types"
+import { MapTab as Tab } from "../Map/types"
 import { AllEvents } from "./Components/AllEvents"
 import { EventList } from "./Components/EventList"
 
@@ -21,6 +21,7 @@ interface State {
   relay: RelayProp
   cityName: string
   citySlug: string
+  sponsoredContent: { introText: string; artGuideUrl: string }
 }
 
 export class CityView extends Component<Props, State> {
@@ -30,6 +31,7 @@ export class CityView extends Component<Props, State> {
     relay: null,
     cityName: "",
     citySlug: "",
+    sponsoredContent: null,
   }
   scrollViewVerticalStart = 0
   scrollView: ScrollView = null
@@ -51,12 +53,14 @@ export class CityView extends Component<Props, State> {
         cityName,
         citySlug,
         relay,
+        sponsoredContent,
       }: {
         filter: Tab
         buckets: BucketResults
         cityName: string
         citySlug: string
         relay: RelayProp
+        sponsoredContent: { introText: string; artGuideUrl: string }
       }) => {
         this.setState({
           buckets,
@@ -64,6 +68,7 @@ export class CityView extends Component<Props, State> {
           cityName,
           citySlug,
           relay,
+          sponsoredContent,
         })
       }
     )
@@ -72,6 +77,11 @@ export class CityView extends Component<Props, State> {
   componentDidUpdate() {
     if (!this.props.isDrawerOpen && this.scrollView) {
       this.scrollView.scrollTo({ x: 0, y: 0, animated: true })
+    }
+
+    if (this.state.buckets) {
+      // We have the Relay response; post a notification so that the ARMapContainerViewController can finalize the native UI.
+      NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryQueryResponseReceived", {})
     }
   }
 
@@ -112,6 +122,8 @@ export class CityView extends Component<Props, State> {
                           key={cityName}
                           currentBucket={filter.id as BucketKey}
                           buckets={buckets}
+                          sponsoredContent={this.state.sponsoredContent}
+                          relay={this.state.relay}
                         />
                       )
                     default:
@@ -121,6 +133,7 @@ export class CityView extends Component<Props, State> {
                           bucket={buckets[filter.id]}
                           type={filter.text}
                           relay={this.state.relay}
+                          cityName={cityName}
                         />
                       )
                   }

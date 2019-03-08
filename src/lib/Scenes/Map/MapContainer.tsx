@@ -1,17 +1,21 @@
 import React, { Component } from "react"
 import { View } from "react-native"
 import { MapRenderer } from "./MapRenderer"
-import { Coordinates } from "./types"
 
 interface Props {
-  coordinates?: Coordinates
+  citySlug?: string
+  initialCoordinates?: { lat: number; lng: number }
   hideMapButtons: boolean
 }
 
+/// This container is pretty simple, but it helps to have a simple component for the root of our ARMapContainerViewController.
 export class MapContainer extends Component<Props> {
   render() {
-    const { coordinates, hideMapButtons } = this.props
-    // TODO: If there are no coords, we should show something else instead.
-    return coordinates ? <MapRenderer coords={coordinates} hideMapButtons={hideMapButtons} /> : <View />
+    const { citySlug, hideMapButtons, initialCoordinates } = this.props
+    return citySlug ? (
+      <MapRenderer citySlug={citySlug} hideMapButtons={hideMapButtons} initialCoordinates={initialCoordinates} />
+    ) : (
+      <View />
+    )
   }
 }

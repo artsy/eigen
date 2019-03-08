@@ -16,17 +16,51 @@
 
 ### Master
 
+- Update city coordinates (to fix Los Angeles bug) - anandaroop
+- Fixes warning about missing viewer prop - ash
+- Fixes warning about duplicate keys in list - ash
+- Adds zero state to CityTab - kieran
+- Renames SavedShowItemRow to ShowItemRow - kieran
+- Adds Save button functionality to button in All tab - kieran
+- Fixes top buttons re-appearing behind city picker - ash
+- Fixes map not re-centering on new city when changed - ash
+
+### 1.8.14
+
+- Adds order artists in a show based on user's favorite - ashkan
+- Fixes rounded corners on city picker component - ash
+- Adds BMW sponsoredContent to all events in city view - kieran
+- Progressively loads map tiles ahead of Relay response - ash
+- Better initial LD view - ash
+- All tab - hide "view all" if there no more than 2 shows in a grouping - kieran
+- Adds BMW Art Activations section to "About the Fair" section - ashley
+
+### 1.8.12
+
+- Adds styling/sizing based on screen size to contents of CityPicker modal - ashley
+- Handle rendering card for Clusters - luc
+- Refactor clustering engine to handle multiple zooms - luc
+- All event section events now link to show - kieran
+
+### 1.8.11
+
+- The Home tab bar is now consistent with the design system - orta
 - Order name of Fair's artists based on user's favorite artists - ashkan
 - Adds styled city picker modal - ashley
 - Adds CityTab stying and passes CityName to AllEvents view - kieran
 - Fixes render failure with missing city coords - ash
+- Remembers user's last selected city - ash
+- Adds default icon when there are no available images to display in saved shows thumbnail - ashley
+- Fetches all city (and associated shows + fairs) data and cache on-device for 1 day - alloy
 
 ### 1.8.10
 
 - The map will show up as full bleed in Eigen - orta
 - Fixes fair view crash on fairs with no profiles - ash
 - Fixes some analytics tracking events - luc
+- Uses metaphysics exhibition_period field for date ranges - kieran
 - Adds styled city picker modal - ashley
+- Adds BMW art guide to view - kieran
 - Show save button now spins when saving - kieran
 - Displays ShowCard when pin is tapped on Map view - luc
 - Adds styled city picker modal - ashley

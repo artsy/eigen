@@ -3,6 +3,8 @@ import { EventSection } from "lib/Scenes/City/Components/EventSection"
 import { BucketKey, BucketResults } from "lib/Scenes/Map/Bucket"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
+import { RelayProp } from "react-relay"
+import { BMWEventSection } from "./BMWEventSection"
 import { FairEventSection } from "./FairEventSection"
 import { SavedEventSection } from "./SavedEventSection"
 
@@ -11,6 +13,8 @@ interface Props extends ViewProperties {
   buckets: BucketResults
   cityName: string
   citySlug: string
+  sponsoredContent: { introText: string; artGuideUrl: string }
+  relay: RelayProp
 }
 
 interface State {
@@ -66,6 +70,13 @@ export class AllEvents extends React.Component<Props, State> {
       })
     }
 
+    if (buckets.museums && buckets.museums.length) {
+      sections.push({
+        type: "bmw",
+        data: buckets.museums,
+      })
+    }
+
     if (buckets.closing && buckets.closing.length) {
       sections.push({
         type: "closing",
@@ -96,18 +107,59 @@ export class AllEvents extends React.Component<Props, State> {
   }
 
   renderItem = ({ item: { data, type } }) => {
-    const { citySlug } = this.props
+    const { sponsoredContent, citySlug } = this.props
     switch (type) {
       case "fairs":
         return <FairEventSection data={data} />
       case "galleries":
-        return <EventSection title="Gallery shows" data={data} section="galleries" citySlug={citySlug} />
+        return (
+          <EventSection
+            title="Gallery shows"
+            data={data}
+            section="galleries"
+            citySlug={citySlug}
+            relay={this.props.relay}
+          />
+        )
       case "museums":
-        return <EventSection title="Museum shows" data={data} section="museums" citySlug={citySlug} />
+        return (
+          <EventSection
+            title="Museum shows"
+            data={data}
+            section="museums"
+            citySlug={citySlug}
+            relay={this.props.relay}
+          />
+        )
       case "opening":
-        return <EventSection title="Opening shows" data={data} section="opening" citySlug={citySlug} />
+        return (
+          <EventSection
+            title="Opening shows"
+            data={data}
+            section="opening"
+            citySlug={citySlug}
+            relay={this.props.relay}
+          />
+        )
       case "closing":
-        return <EventSection title="Closing shows" data={data} section="closing" citySlug={citySlug} />
+        return (
+          <EventSection
+            title="Closing shows"
+            data={data}
+            section="closing"
+            citySlug={citySlug}
+            relay={this.props.relay}
+          />
+        )
+      case "bmw":
+        return (
+          <BMWEventSection
+            title="BMW Art Guide"
+            sponsoredContent={sponsoredContent}
+            data={data}
+            relay={this.props.relay}
+          />
+        )
       case "saved":
         return <SavedEventSection data={data} />
       case "header":

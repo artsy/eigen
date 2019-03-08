@@ -32,6 +32,7 @@
 #import <Emission/ARFairBoothComponentViewController.h>
 #import <Emission/ARFairArtworksComponentViewController.h>
 #import <Emission/ARFairExhibitorsComponentViewController.h>
+#import <Emission/ARFairBMWArtActivationComponentViewController.h>
 #import <Emission/ARFairArtistsComponentViewController.h>
 #import <Keys/EmissionKeys.h>
 
@@ -322,18 +323,27 @@ randomBOOL(void)
   } else if ([route hasPrefix:@"/fair"] && [route hasSuffix:@"/exhibitors"]) {
     NSString *fairID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARFairExhibitorsComponentViewController alloc] initWithFairID:fairID];
+
   } else if ([route hasPrefix:@"/fair"] && [route hasSuffix:@"/info"]) {
     NSString *fairID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARFairMoreInfoComponentViewController alloc] initWithFairID:fairID];
+
+  } else if ([route hasPrefix:@"/fair"] && [route hasSuffix:@"/bmw-sponsored-content"]) {
+    NSString *fairID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
+    viewController = [[ARFairBMWArtActivationComponentViewController alloc] initWithFairID:fairID];
+
   } else if ([route hasSuffix:@"entity=fair-booth"]) {
     NSString *fairBoothID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARFairBoothComponentViewController alloc] initWithFairBoothID:fairBoothID];
+
   } else if (isShow && [route hasSuffix:@"/artworks"]) {
     NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARShowArtworksComponentViewController alloc] initWithShowID:showID];
+
   } else if (isShow && [route hasSuffix:@"/artists"]) {
     NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARShowArtistsComponentViewController alloc] initWithShowID:showID];
+
   } else if (isShow && [route hasSuffix:@"/info"]) {
     NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     viewController = [[ARShowMoreInfoComponentViewController alloc] initWithShowID:showID];
@@ -341,9 +351,11 @@ randomBOOL(void)
     NSString *citySlug = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     NSString *section = [[route componentsSeparatedByString:@"/"] objectAtIndex:3];
     viewController = [[ARCitySectionListComponentViewController alloc] initWithCitySlug:citySlug section:section];
+
   } else if (isShow) {
-    NSString *showID = [[route componentsSeparatedByString:@"/"] objectAtIndex:1];
+    NSString *showID = [route componentsSeparatedByString:@"/"].lastObject;
     viewController = [[ARShowComponentViewController alloc] initWithShowID:showID];
+
   } else {
     viewController = [[UnroutedViewController alloc] initWithRoute:route];
   }

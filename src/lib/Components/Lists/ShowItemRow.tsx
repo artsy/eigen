@@ -1,18 +1,20 @@
-import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
-import { SavedShowItemRow_show } from "__generated__/SavedShowItemRow_show.graphql"
-import { SavedShowItemRowMutation } from "__generated__/SavedShowItemRowMutation.graphql"
+import { Box, color, Flex, Sans, Serif, space } from "@artsy/palette"
+import { ShowItemRow_show } from "__generated__/ShowItemRow_show.graphql"
+import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
-import Switchboard from "lib/NativeModules/SwitchBoard"
+import colors from "lib/data/colors"
+import { Pin } from "lib/Icons/Pin"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { hrefForPartialShow } from "lib/utils/router"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import moment from "moment"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
 interface Props {
-  show: SavedShowItemRow_show
+  show: ShowItemRow_show
   relay?: RelayProp
 }
 
@@ -23,13 +25,14 @@ interface State {
 const track: Track<Props, {}> = _track
 
 @track()
-export class SavedShowItemRow extends React.Component<Props, State> {
+export class ShowItemRow extends React.Component<Props, State> {
   state = {
     isFollowedSaving: false,
   }
 
   handleTap() {
-    Switchboard.presentNavigationViewController(this, `/show/${this.props.show.id}`)
+    const href = hrefForPartialShow(this.props.show)
+    SwitchBoard.presentNavigationViewController(this, href)
   }
 
   @track(props => {
@@ -46,19 +49,19 @@ export class SavedShowItemRow extends React.Component<Props, State> {
   })
   handleSave() {
     const {
-      show: { id: showSlug, __id: relayID, _id: showID, is_followed: isShowFollowed },
+      show: { id: showSlug, __id: nodeID, _id: showID, is_followed: isShowFollowed },
     } = this.props
 
-    if (showID && showSlug && relayID && !this.state.isFollowedSaving) {
+    if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
       this.setState(
         {
           isFollowedSaving: true,
         },
         () => {
-          return commitMutation<SavedShowItemRowMutation>(this.props.relay.environment, {
+          return commitMutation<ShowItemRowMutation>(this.props.relay.environment, {
             onCompleted: () => this.handleShowSuccessfullyUpdated(),
             mutation: graphql`
-              mutation SavedShowItemRowMutation($input: FollowShowInput!) {
+              mutation ShowItemRowMutation($input: FollowShowInput!) {
                 followShow(input: $input) {
                   show {
                     id
@@ -84,7 +87,7 @@ export class SavedShowItemRow extends React.Component<Props, State> {
               },
             },
             updater: store => {
-              store.get(relayID).setValue(!isShowFollowed, "is_followed")
+              store.get(nodeID).setValue(!isShowFollowed, "is_followed")
             },
           })
         }
@@ -101,12 +104,21 @@ export class SavedShowItemRow extends React.Component<Props, State> {
   render() {
     const { show } = this.props
     const imageURL = show.cover_image && show.cover_image.url
+
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <Box py={2}>
           <Flex flexDirection="row" flexGrow="1">
             <Flex flexGrow="1" flexDirection="row" alignItems="center">
-              <OpaqueImageView width={58} height={58} imageURL={imageURL} />
+              {!imageURL ? (
+                <DefaultImageContainer>
+                  <Box p={2}>
+                    <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
+                  </Box>
+                </DefaultImageContainer>
+              ) : (
+                <OpaqueImageView width={58} height={58} imageURL={imageURL} />
+              )}
               <Flex flexDirection="column" flexGrow="1" width="197">
                 {show.partner &&
                   show.partner.name && (
@@ -119,15 +131,14 @@ export class SavedShowItemRow extends React.Component<Props, State> {
                     {show.name}
                   </TightendSerif>
                 )}
-                {show.status && (
-                  <Sans size="3t" color={color("black60")} ml={15}>
-                    {show.status.includes("closed")
-                      ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                      : show.start_at &&
-                        show.end_at &&
-                        moment(show.start_at).format("MMM D") + " - " + moment(show.end_at).format("MMM D")}
-                  </Sans>
-                )}
+                {show.status &&
+                  show.exhibition_period && (
+                    <Sans size="3t" color={color("black60")} ml={15}>
+                      {show.status.includes("closed")
+                        ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
+                        : show.exhibition_period}
+                    </Sans>
+                  )}
               </Flex>
             </Flex>
             <Box width="50">
@@ -147,9 +158,9 @@ export class SavedShowItemRow extends React.Component<Props, State> {
     )
   }
 }
-export const SavedShowItemRowContainer = createFragmentContainer(SavedShowItemRow, {
+export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
   show: graphql`
-    fragment SavedShowItemRow_show on Show {
+    fragment ShowItemRow_show on Show {
       id
       _id
       __id
@@ -164,11 +175,13 @@ export const SavedShowItemRowContainer = createFragmentContainer(SavedShowItemRo
         }
       }
       href
+      exhibition_period
       status
       cover_image {
         url
         aspect_ratio
       }
+      is_fair_booth
       start_at
       end_at
     }
@@ -177,4 +190,11 @@ export const SavedShowItemRowContainer = createFragmentContainer(SavedShowItemRo
 
 const TightendSerif = styled(Serif)`
   top: 3;
+`
+
+const DefaultImageContainer = styled(Box)`
+  align-items: center;
+  background-color: ${colors["gray-regular"]};
+  height: 100%;
+  width: ${space(6)};
 `

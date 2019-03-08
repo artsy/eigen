@@ -1,9 +1,9 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-declare const _SavedShowItemRow_show$ref: unique symbol;
-export type SavedShowItemRow_show$ref = typeof _SavedShowItemRow_show$ref;
-export type SavedShowItemRow_show = {
+declare const _ShowItemRow_show$ref: unique symbol;
+export type ShowItemRow_show$ref = typeof _ShowItemRow_show$ref;
+export type ShowItemRow_show = {
     readonly id: string;
     readonly _id: string;
     readonly __id: string;
@@ -13,14 +13,16 @@ export type SavedShowItemRow_show = {
         readonly name?: string | null;
     }) | null;
     readonly href: string | null;
+    readonly exhibition_period: string | null;
     readonly status: string | null;
     readonly cover_image: ({
         readonly url: string | null;
         readonly aspect_ratio: number;
     }) | null;
+    readonly is_fair_booth: boolean | null;
     readonly start_at: string | null;
     readonly end_at: string | null;
-    readonly " $refType": SavedShowItemRow_show$ref;
+    readonly " $refType": ShowItemRow_show$ref;
 };
 
 
@@ -45,11 +47,34 @@ v2 = [
 ];
 return {
   "kind": "Fragment",
-  "name": "SavedShowItemRow_show",
+  "name": "ShowItemRow_show",
   "type": "Show",
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "href",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    v0,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_followed",
+      "args": null,
+      "storageKey": null
+    },
+    v1,
     {
       "kind": "LinkedField",
       "alias": null,
@@ -75,22 +100,6 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
-      "args": null,
-      "storageKey": null
-    },
-    v0,
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "is_followed",
-      "args": null,
-      "storageKey": null
-    },
-    v1,
-    {
-      "kind": "ScalarField",
-      "alias": null,
       "name": "_id",
       "args": null,
       "storageKey": null
@@ -98,7 +107,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "href",
+      "name": "exhibition_period",
       "args": null,
       "storageKey": null
     },
@@ -137,6 +146,13 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "is_fair_booth",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "start_at",
       "args": null,
       "storageKey": null
@@ -151,5 +167,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '8b7da2fbff0acc6d785401299fe1615f';
+(node as any).hash = 'd1735c0a8cbfe2b5027692c75a7d0de2';
 export default node;

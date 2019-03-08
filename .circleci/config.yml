@@ -58,9 +58,9 @@ jobs:
 
       - restore_cache:
           keys:
-            - v4-pods-{{ checksum "Example/Podfile.lock" }}
+            - v6-pods-{{ checksum "Example/Podfile.lock" }}
             # Fall back to using the latest cache if no exact match is found.
-            - v4-pods-
+            - v6-pods-
 
       - run:
           name: Install CocoaPods Specs If Necessary
@@ -71,7 +71,7 @@ jobs:
           command: cd Example ; bundle exec pod check --ignore-dev-pods || bundle exec pod install
 
       - save_cache:
-          key: v4-pods-{{ checksum "Example/Podfile.lock" }}
+          key: v6-pods-{{ checksum "Example/Podfile.lock" }}
           paths:
             - Example/Pods
 

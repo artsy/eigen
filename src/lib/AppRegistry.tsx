@@ -29,6 +29,7 @@ import { CityPicker } from "./Scenes/City/CityPicker"
 import {
   FairArtistsRenderer,
   FairArtworksRenderer,
+  FairBMWArtActivationRenderer,
   FairBoothRenderer,
   FairExhibitorsRenderer,
   FairMoreInfoRenderer,
@@ -236,6 +237,14 @@ const FairExhibitors: React.SFC<FairExhibitorsProps> = ({ fairID }) => {
   return <FairExhibitorsRenderer fairID={fairID} />
 }
 
+interface FairBMWArtActivationProps {
+  fairID: string
+}
+
+const FairBMWArtActivation: React.SFC<FairBMWArtActivationProps> = ({ fairID }) => {
+  return <FairBMWArtActivationRenderer fairID={fairID} />
+}
+
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Home", () => HomeScene)
@@ -256,6 +265,7 @@ AppRegistry.registerComponent("FairBooth", () => FairBooth)
 AppRegistry.registerComponent("FairArtists", () => FairArtists)
 AppRegistry.registerComponent("FairArtworks", () => FairArtworks)
 AppRegistry.registerComponent("FairExhibitors", () => FairExhibitors)
+AppRegistry.registerComponent("FairBMWArtActivation", () => FairBMWArtActivation)
 AppRegistry.registerComponent("Show", () => Show)
 AppRegistry.registerComponent("ShowArtists", () => ShowArtists)
 AppRegistry.registerComponent("ShowArtworks", () => ShowArtworks)

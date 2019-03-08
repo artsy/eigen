@@ -10,7 +10,7 @@ export interface City {
   epicenter: Coordinates
 }
 
-export interface Tab {
+export interface MapTab {
   id: string
   text: string
 }

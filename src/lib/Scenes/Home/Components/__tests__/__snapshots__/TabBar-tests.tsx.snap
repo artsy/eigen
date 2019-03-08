@@ -41,23 +41,27 @@ exports[`renders correctly 1`] = `
   >
     <Text
       accessible={true}
-      active={false}
       allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="#cccccc"
       ellipsizeMode="tail"
+      fontFamily="Unica77LL-Medium"
+      fontSize="14px"
+      lineHeight="24px"
+      numberOfLines={1}
       style={
         Array [
           Object {
             "color": "#cccccc",
-            "fontFamily": "AvantGardeGothicITC",
-            "fontSize": 13,
-            "letterSpacing": 1.5,
-            "textAlign": "center",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 14,
+            "lineHeight": 24,
           },
           undefined,
         ]
       }
     >
-      PAGE 1
+      Page 1
     </Text>
   </View>
   <View
@@ -86,23 +90,27 @@ exports[`renders correctly 1`] = `
   >
     <Text
       accessible={true}
-      active={false}
       allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="#cccccc"
       ellipsizeMode="tail"
+      fontFamily="Unica77LL-Medium"
+      fontSize="14px"
+      lineHeight="24px"
+      numberOfLines={1}
       style={
         Array [
           Object {
             "color": "#cccccc",
-            "fontFamily": "AvantGardeGothicITC",
-            "fontSize": 13,
-            "letterSpacing": 1.5,
-            "textAlign": "center",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 14,
+            "lineHeight": 24,
           },
           undefined,
         ]
       }
     >
-      PAGE 2
+      Page 2
     </Text>
   </View>
   <View
@@ -131,23 +139,27 @@ exports[`renders correctly 1`] = `
   >
     <Text
       accessible={true}
-      active={false}
       allowFontScaling={true}
+      className="sc-bdVaJa bDWFJH"
+      color="#cccccc"
       ellipsizeMode="tail"
+      fontFamily="Unica77LL-Medium"
+      fontSize="14px"
+      lineHeight="24px"
+      numberOfLines={1}
       style={
         Array [
           Object {
             "color": "#cccccc",
-            "fontFamily": "AvantGardeGothicITC",
-            "fontSize": 13,
-            "letterSpacing": 1.5,
-            "textAlign": "center",
+            "fontFamily": "Unica77LL-Medium",
+            "fontSize": 14,
+            "lineHeight": 24,
           },
           undefined,
         ]
       }
     >
-      PAGE 3
+      Page 3
     </Text>
   </View>
   <View

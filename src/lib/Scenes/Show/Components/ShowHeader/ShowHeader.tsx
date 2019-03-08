@@ -6,6 +6,7 @@ import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "lib/utils/track"
+import { uniq } from "lodash"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -132,8 +133,11 @@ export class ShowHeader extends React.Component<Props, State> {
   render() {
     const { isFollowedSaving } = this.state
     const {
-      show: { artists, images, is_followed, name, partner, exhibition_period },
+      show: { artists, images, is_followed, name, partner, exhibition_period, followedArtists },
     } = this.props
+    const fairfollowedArtistList =
+      (followedArtists && followedArtists.edges && followedArtists.edges.map(fa => fa.node.artist)) || []
+    const uniqArtistList = uniq(fairfollowedArtistList.concat(artists))
     const hasImages = !!images.length
     const singleImage = hasImages && images.length === 1
 
@@ -173,9 +177,9 @@ export class ShowHeader extends React.Component<Props, State> {
         <Box px={2}>
           <EntityList
             prefix="Works by"
-            list={artists}
+            list={uniqArtistList}
             count={artists.length}
-            displayedItems={2}
+            displayedItems={3}
             onItemSelected={this.handleArtistSelected.bind(this)}
             onViewAllPressed={this.handleViewAllArtistsPressed.bind(this)}
           />
@@ -221,6 +225,18 @@ export const ShowHeaderContainer = createFragmentContainer(
       images {
         url
         aspect_ratio
+      }
+      followedArtists(first: 2) {
+        edges {
+          node {
+            artist {
+              name
+              href
+              id
+              _id
+            }
+          }
+        }
       }
       artists {
         name

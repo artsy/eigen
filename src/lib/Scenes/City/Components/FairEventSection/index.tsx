@@ -7,6 +7,7 @@ import { FairEventSectionCard } from "./Components/FairEventSectionCard"
 
 const FairSectionBackground = styled(Box)`
   background: black;
+  margin-bottom: ${space(1)};
 `
 
 export class FairEventSection extends Component<any> {
@@ -35,11 +36,13 @@ export class FairEventSection extends Component<any> {
           contentContainerStyle={{ padding: space(2) }}
           horizontal
         />
-        <Box mx={2} mb={3}>
-          <Sans weight="medium" size="3" color="white" px={1}>
-            View all {data.length} fairs
-          </Sans>
-        </Box>
+        {data.length > 2 && (
+          <Box mx={2} mb={3}>
+            <Sans weight="medium" size="3" color="white" px={1}>
+              View all {data.length} fairs
+            </Sans>
+          </Box>
+        )}
       </FairSectionBackground>
     )
   }

@@ -40,6 +40,7 @@ function publishPodspec(podspec) {
     sh(
       "cd " +
         specRepo +
+        " && git pull " +
         " && git add " +
         relativeSpecPath +
         ' && git commit -m "' +

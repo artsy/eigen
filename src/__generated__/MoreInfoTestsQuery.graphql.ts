@@ -26,6 +26,7 @@ query MoreInfoTestsQuery {
 fragment MoreInfo_show on Show {
   _id
   id
+  exhibition_period
   partner {
     __typename
     ... on Partner {
@@ -49,8 +50,7 @@ fragment MoreInfo_show on Show {
 fragment EventSection_event on PartnerShowEventType {
   event_type
   description
-  start_at
-  end_at
+  exhibitionPeriod
 }
 */
 
@@ -74,7 +74,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MoreInfoTestsQuery",
-  "id": "e4b345d7270c225c0acf4669c6faa553",
+  "id": "113f4b713a1604536c237a00e1edbb4c",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -128,6 +128,13 @@ return {
             "kind": "ScalarField",
             "alias": null,
             "name": "id",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "exhibition_period",
             "args": null,
             "storageKey": null
           },
@@ -203,14 +210,7 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "start_at",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "end_at",
+                "name": "exhibitionPeriod",
                 "args": null,
                 "storageKey": null
               }

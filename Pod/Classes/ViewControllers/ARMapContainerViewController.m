@@ -4,11 +4,14 @@
 #import "ARCityPickerComponentViewController.h"
 #import "ARComponentViewController.h"
 #import "ARCity.h"
+#import "ARCity+GeospatialAdditions.h"
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @import Pulley;
 @import CoreLocation;
+
+NSString * const __nonnull SelectedCityNameKey = @"SelectedCityName";
 
 @interface ARMapContainerViewController () <PulleyDelegate, PulleyDrawerViewControllerDelegate, CLLocationManagerDelegate>
 
@@ -19,6 +22,8 @@
 
 @property (nonatomic, strong) ARCityPickerComponentViewController *cityPickerController;
 @property (nonatomic, strong) UIView *cityPickerContainerView; // Need a view to have its own shadow.
+
+@property (nonatomic, assign) BOOL initialDataIsLoaded;
 
 @end
 
@@ -36,11 +41,6 @@ Since this controller already has to do the above logic, having it handle the Ci
 {
     [super viewDidLoad];
 
-    self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
-    self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
-    [self.locationManager requestWhenInUseAuthorization];
-
     __weak typeof(self) sself = self;
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryOpenCityPicker" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         [sself showCityPicker];
@@ -53,15 +53,42 @@ Since this controller already has to do the above logic, having it handle the Ci
         NSString *positionString = note.userInfo[@"position"];
         [sself updateDrawerPosition:positionString];
     }];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryQueryResponseReceived" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        if (sself.initialDataIsLoaded) {
+            return;
+        }
+        [sself.bottomSheetVC setDrawerPositionWithPosition:[PulleyPosition partiallyRevealed] animated:YES completion:nil];
+        sself.initialDataIsLoaded = YES;
+    }];
 
     self.mapVC = [[ARMapComponentViewController alloc] init];
     self.cityVC = [[ARCityComponentViewController alloc] init];
 
+    NSString *previouslySelectedCityName = [[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey];
+    ARCity *previouslySelectedCity = [[[ARCity cities] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [[evaluatedObject name] isEqualToString:previouslySelectedCityName];
+    }]] firstObject];
+
+    if (previouslySelectedCity) {
+        // Do this here, before we add to our view hierarchy, so that these are the _initial_ propertyies we do our first render with.
+        [self.mapVC setProperty:previouslySelectedCity.slug forKey:@"citySlug"];
+        [self.mapVC setProperty:@{ @"lat": @(previouslySelectedCity.epicenter.coordinate.latitude), @"lng": @(previouslySelectedCity.epicenter.coordinate.longitude) } forKey:@"initialCoordinates"];
+    } else {
+        // The user has no previously selected city, so let's try to determine their location.
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+
     self.bottomSheetVC = [[PulleyViewController alloc] initWithContentViewController:self.mapVC drawerViewController:self.cityVC];
+    self.bottomSheetVC.animationDuration = 0.35;
+    self.bottomSheetVC.initialDrawerPosition = [PulleyPosition closed];
     self.bottomSheetVC.delegate = self;
 
-    [self.view addSubview:self.bottomSheetVC.view];
     self.bottomSheetVC.view.frame = self.view.bounds;
+    [self.view addSubview:self.bottomSheetVC.view];
+    [self.bottomSheetVC willMoveToParentViewController:self];
     [self addChildViewController:self.bottomSheetVC];
     [self.bottomSheetVC didMoveToParentViewController:self];
 }
@@ -73,23 +100,15 @@ Since this controller already has to do the above logic, having it handle the Ci
 
 - (void)userSuppliedLocation:(CLLocation *)userLocation
 {
-    const NSInteger CITY_RADIUS_M = 100 * 1000; // 100km
-    
-    ARCity *closestCity = [[[ARCity cities] sortedArrayUsingComparator:^NSComparisonResult(ARCity *_Nonnull lhs, ARCity *_Nonnull rhs) {
-        CLLocation *lhsLocation = [[CLLocation alloc] initWithLatitude:lhs.epicenter.latitude longitude:lhs.epicenter.longitude];
-        CLLocation *rhsLocation = [[CLLocation alloc] initWithLatitude:rhs.epicenter.latitude longitude:rhs.epicenter.longitude];
-        if ([lhsLocation distanceFromLocation:userLocation] < [rhsLocation distanceFromLocation:userLocation]) {
-            return NSOrderedAscending;
-        } else {
-            return NSOrderedDescending;
-        }
-    }] firstObject];
-    
-    CLLocation *closestCityLocation = [[CLLocation alloc] initWithLatitude:closestCity.epicenter.latitude longitude:closestCity.epicenter.longitude];
-    if ([closestCityLocation distanceFromLocation:userLocation] < CITY_RADIUS_M) {
+    ARCity *closestCity = [ARCity cityNearLocation:userLocation];
+    if (closestCity) {
         // User is within radius to city.
-        [self.mapVC setProperty:@{ @"lat": @(closestCity.epicenter.latitude), @"lng": @(closestCity.epicenter.longitude) }
-                         forKey:@"coordinates"];
+        [self.mapVC setProperty:closestCity.slug forKey:@"citySlug"];
+        [self.mapVC setProperty:@{ @"lat": @(closestCity.epicenter.coordinate.latitude), @"lng": @(closestCity.epicenter.coordinate.longitude) } forKey:@"initialCoordinates"];
+
+        // Technically, the user hasn't selected this city. But we're going to remember it for them.
+        // Also, setting this affects showCityPicker's ability to pass the correct props in.
+        [[NSUserDefaults standardUserDefaults] setObject:closestCity.name forKey:SelectedCityNameKey];
     } else {
         // User is too far away from any city.
         [self showCityPicker];
@@ -99,53 +118,57 @@ Since this controller already has to do the above logic, having it handle the Ci
 - (void)showCityPicker
 {
     [self.mapVC setProperty:@(YES) forKey:@"hideMapButtons"];
-    
+
     const CGFloat MARGIN = 20;
-    
-    self.cityPickerContainerView = [[UIView alloc] initWithFrame:CGRectMake(MARGIN, MARGIN, self.view.frame.size.width - MARGIN*2, self.view.frame.size.height - MARGIN*2)];
+    CGFloat topLayoutMargin = self.topLayoutGuide.length;
+
+    self.cityPickerContainerView = [[UIView alloc] initWithFrame:CGRectMake(MARGIN, MARGIN + topLayoutMargin, self.view.frame.size.width - MARGIN*2, self.view.frame.size.height - MARGIN*2 - topLayoutMargin)];
     [self.view addSubview:self.cityPickerContainerView];
     self.cityPickerContainerView.alpha = 0;
     self.cityPickerContainerView.transform = CGAffineTransformMakeScale(0.8, 0.8);
-    
-    self.cityPickerController = [[ARCityPickerComponentViewController alloc] init];
+
+    NSString *previouslySelectedCity = [[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey];
+
+    self.cityPickerController = [[ARCityPickerComponentViewController alloc] initWithSelectedCityName:previouslySelectedCity];
     [self addChildViewController:self.cityPickerController];
     [self.cityPickerContainerView addSubview:self.cityPickerController.view];
     self.cityPickerController.view.frame = self.cityPickerContainerView.bounds;
     self.cityPickerController.view.clipsToBounds = YES;
     self.cityPickerController.view.layer.cornerRadius = 20;
-    
+
     CALayer *layer = self.cityPickerContainerView.layer;
     layer.masksToBounds = NO;
     layer.shadowColor = UIColor.blackColor.CGColor;
     layer.shadowRadius = 10;
     layer.shadowOpacity = 0.3;
-    
+
+    [self.bottomSheetVC setDrawerPositionWithPosition:[PulleyPosition closed] animated:YES completion:nil];
+
     [UIView animateWithDuration:0.35 animations:^{
         self.cityPickerContainerView.alpha = 1;
         self.cityPickerContainerView.transform = CGAffineTransformIdentity;
-        
-        // PulleyViewController internally modifies the transform of its entire drawer view hierarchy, so we can't use it.
-        // To get the drawer to "slide down", we will move the entire PulleyViewController's view down and then move just
-        // its map view (its primaryContentViewController child) _up_ to offset the move _down_.
-        CGPoint drawerPosition =  [self.view convertPoint:self.cityVC.view.bounds.origin fromView:self.cityVC.view];
-        CGFloat heightDisplacement = self.view.bounds.size.height - drawerPosition.y;
-        self.bottomSheetVC.view.transform = CGAffineTransformMakeTranslation(0, heightDisplacement);
-        self.bottomSheetVC.primaryContentViewController.view.transform = CGAffineTransformMakeTranslation(0, -heightDisplacement);
     }];
 }
 
 - (void)userSelectedCityAtIndex:(NSInteger)cityIndex
 {
     ARCity *city = [[ARCity cities] objectAtIndex:cityIndex];
-    [self.mapVC setProperty:@{ @"lat": @(city.epicenter.latitude), @"lng": @(city.epicenter.longitude) }
-                     forKey:@"coordinates"];
+
+    NSString *previouslySelectedCityName = [[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey];
+    if ([previouslySelectedCityName isEqualToString:city.name]) {
+        [self.bottomSheetVC setDrawerPositionWithPosition:[PulleyPosition partiallyRevealed] animated:YES completion:nil];
+    } else {
+        [self.mapVC setProperty:city.slug forKey:@"citySlug"];
+        [self.mapVC setProperty:@{ @"lat": @(city.epicenter.coordinate.latitude), @"lng": @(city.epicenter.coordinate.longitude) } forKey:@"initialCoordinates"];
+        self.initialDataIsLoaded = NO;
+    }
+
+    [[NSUserDefaults standardUserDefaults] setObject:city.name forKey:SelectedCityNameKey];
+
     [self.mapVC setProperty:@(NO) forKey:@"hideMapButtons"];
-    
+
     [UIView animateWithDuration:0.35 animations:^{
         self.cityPickerContainerView.alpha = 0;
-        
-        self.bottomSheetVC.view.transform = CGAffineTransformIdentity;
-        self.bottomSheetVC.primaryContentViewController.view.transform = CGAffineTransformIdentity;
     } completion:^(BOOL finished) {
         [self.cityPickerController removeFromParentViewController];
         [self.cityPickerContainerView removeFromSuperview];
@@ -157,7 +180,7 @@ Since this controller already has to do the above logic, having it handle the Ci
 - (void)updateDrawerPosition:(NSString *)positionString
 {
     PulleyPosition *position = nil;
-    
+
     if ([positionString isEqualToString:@"closed"]) {
         position = [PulleyPosition closed];
     } else if ([positionString isEqualToString:@"open"]) {
@@ -167,7 +190,7 @@ Since this controller already has to do the above logic, having it handle the Ci
     } else if ([positionString isEqualToString:@"collapsed"]) {
         position = [PulleyPosition collapsed];
     }
-    
+
     [self.bottomSheetVC setDrawerPositionWithPosition:position animated:YES completion:nil];
 }
 
@@ -189,9 +212,12 @@ Since this controller already has to do the above logic, having it handle the Ci
 - (void)drawerChangedDistanceFromBottomWithDrawer:(PulleyViewController *)drawer distance:(CGFloat)distance bottomSafeArea:(CGFloat)bottomSafeArea
 {
     CGFloat drawerAbovePartialHeight = [drawer partialRevealDrawerHeightWithBottomSafeArea:bottomSafeArea];
-    
+
     BOOL shouldHideButtons = distance > drawerAbovePartialHeight;
-    [self.mapVC setProperty:@(shouldHideButtons) forKey:@"hideMapButtons"];
+    if (!self.cityPickerController) {
+        // We don't want to unhide buttons if the city picker is on screen.
+        [self.mapVC setProperty:@(shouldHideButtons) forKey:@"hideMapButtons"];
+    }
 }
 
 - (BOOL)fullBleed
