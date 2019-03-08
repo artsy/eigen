@@ -16,6 +16,7 @@
 
 ### Master
 
+- Update city coordinates (to fix Los Angeles bug) - anandaroop
 - Fixes warning about missing viewer prop - ash
 - Fixes warning about duplicate keys in list - ash
 - Adds zero state to CityTab - kieran
@@ -24,14 +25,17 @@
 - Fixes top buttons re-appearing behind city picker - ash
 - Fixes map not re-centering on new city when changed - ash
 - Fixes saving not updating props in city view - kieran
+- Fixes memory leak by unsubscribing components from the EventEmitter - alloy
 
 ### 1.8.14
 
 - Adds order artists in a show based on user's favorite - ashkan
 - Fixes rounded corners on city picker component - ash
+- Adds BMW sponsoredContent to all events in city view - kieran
 - Progressively loads map tiles ahead of Relay response - ash
 - Better initial LD view - ash
 - All tab - hide "view all" if there no more than 2 shows in a grouping - kieran
+- Adds BMW Art Activations section to "About the Fair" section - ashley
 
 ### 1.8.12
 
