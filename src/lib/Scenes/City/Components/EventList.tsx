@@ -5,12 +5,7 @@ import { BucketKey } from "lib/Scenes/Map/Bucket"
 import React from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { RelayProp } from "react-relay"
-import styled from "styled-components/native"
 import { TabFairItemRow } from "./TabFairItemRow"
-
-const StyledMessage = styled(Message)`
-  text-align: center;
-`
 
 interface Props {
   bucket: CitySectionList_city["shows"]["edges"]
@@ -50,19 +45,19 @@ export class EventList extends React.Component<Props> {
       case "saved":
         return (
           <Box py={2}>
-            <StyledMessage textSize="3t">{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</StyledMessage>
+            <Message textSize="3t">{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</Message>
           </Box>
         )
       case "fairs":
         return (
           <Box py={2}>
-            <StyledMessage textSize="3t">{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</StyledMessage>
+            <Message textSize="3t">{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</Message>
           </Box>
         )
       default:
         return (
           <Box py={2}>
-            <StyledMessage textSize="3t">{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</StyledMessage>
+            <Message textSize="3t">{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</Message>
           </Box>
         )
     }

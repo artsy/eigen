@@ -37,6 +37,7 @@ fragment Detail_show on Show {
   name
   description
   city
+  is_local_discovery
   location {
     id
     address
@@ -261,6 +262,7 @@ fragment ShowHeader_show on Show {
   is_followed
   exhibition_period
   status
+  is_local_discovery
   partner {
     __typename
     ... on Partner {
@@ -726,7 +728,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
-  "id": "82b76661232d584a5464a38c8cf3913a",
+  "id": "9e9979706b8c7efc2d40a167813af033",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -774,6 +776,13 @@ return {
           v4,
           v5,
           v6,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_local_discovery",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,

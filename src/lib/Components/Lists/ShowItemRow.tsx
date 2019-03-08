@@ -108,50 +108,46 @@ export class ShowItemRow extends React.Component<Props, State> {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <Box py={2}>
-          <Flex flexDirection="row" flexGrow="1">
-            <Flex flexGrow="1" flexDirection="row" alignItems="center">
-              {!imageURL ? (
-                <DefaultImageContainer>
-                  <Box p={2}>
-                    <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
-                  </Box>
-                </DefaultImageContainer>
-              ) : (
-                <OpaqueImageView width={58} height={58} imageURL={imageURL} />
-              )}
-              <Flex flexDirection="column" flexGrow="1" width="197">
-                {show.partner &&
-                  show.partner.name && (
-                    <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
-                      {show.partner.name}
-                    </Sans>
-                  )}
-                {show.name && (
-                  <TightendSerif size="3t" color={color("black60")} ml={15} numberOfLines={1}>
-                    {show.name}
-                  </TightendSerif>
+          <Flex flexDirection="row">
+            {!imageURL ? (
+              <DefaultImageContainer>
+                <Box p={2}>
+                  <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
+                </Box>
+              </DefaultImageContainer>
+            ) : (
+              <OpaqueImageView width={58} height={58} imageURL={imageURL} />
+            )}
+            <Flex flexDirection="column" flexGrow={1} width={180}>
+              {show.partner &&
+                show.partner.name && (
+                  <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
+                    {show.partner.name}
+                  </Sans>
                 )}
-                {show.status &&
-                  show.exhibition_period && (
-                    <Sans size="3t" color={color("black60")} ml={15}>
-                      {show.status.includes("closed")
-                        ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                        : show.exhibition_period}
-                    </Sans>
-                  )}
-              </Flex>
+              {show.name && (
+                <TightendSerif size="3t" color={color("black60")} ml={15} numberOfLines={1}>
+                  {show.name}
+                </TightendSerif>
+              )}
+              {show.status &&
+                show.exhibition_period && (
+                  <Sans size="3t" color={color("black60")} ml={15}>
+                    {show.status.includes("closed")
+                      ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
+                      : show.exhibition_period}
+                  </Sans>
+                )}
             </Flex>
-            <Box width="50">
-              <Flex alignItems="flex-start" justifyContent="flex-end" flexDirection="row">
-                <InvertedButton
-                  inProgress={this.state.isFollowedSaving}
-                  text={show.is_followed ? "Saved" : "Save"}
-                  selected={show.is_followed}
-                  onPress={() => this.handleSave()}
-                  noBackground={true}
-                />
-              </Flex>
-            </Box>
+            <Flex flexDirection="row">
+              <InvertedButton
+                inProgress={this.state.isFollowedSaving}
+                text={show.is_followed ? "Saved" : "Save"}
+                selected={show.is_followed}
+                onPress={() => this.handleSave()}
+                noBackground={true}
+              />
+            </Flex>
           </Flex>
         </Box>
       </TouchableWithoutFeedback>
