@@ -23,9 +23,26 @@ NSString * const __nonnull SelectedCityNameKey = @"SelectedCityName";
 @property (nonatomic, strong) ARCityPickerComponentViewController *cityPickerController;
 @property (nonatomic, strong) UIView *cityPickerContainerView; // Need a view to have its own shadow.
 
+@property (nonatomic, weak) UIScrollView *rnScrollView;
+
 @property (nonatomic, assign) BOOL initialDataIsLoaded;
 
 @end
+
+static UIScrollView *
+FindFirstVerticalScrollView(UIView *view)
+{
+    for (UIView *subview in view.subviews) {
+        if ([subview isKindOfClass:UIScrollView.class] && ([(UIScrollView *)subview contentSize].height > subview.frame.size.height)) {
+            return (UIScrollView *)subview;
+        }
+    }
+    for (UIView *subview in view.subviews) {
+        UIScrollView *result = FindFirstVerticalScrollView(subview);
+        if (result) return result;
+    }
+    return nil;
+}
 
 /*
 This is the top-level Local Discovery component, and should therefore be responsible for checking a user's location and
@@ -59,6 +76,15 @@ Since this controller already has to do the above logic, having it handle the Ci
         }
         [sself.bottomSheetVC setDrawerPositionWithPosition:[PulleyPosition partiallyRevealed] animated:YES completion:nil];
         sself.initialDataIsLoaded = YES;
+    }];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryCityGotScrollView" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+            if (!self.rnScrollView) {
+                self.rnScrollView  = FindFirstVerticalScrollView(self.cityVC.rootView);
+                self.rnScrollView.scrollEnabled = NO;
+                if (self.rnScrollView) {
+                    [self.bottomSheetVC.drawerPanGestureRecognizer requireGestureRecognizerToFail:self.rnScrollView.panGestureRecognizer];
+                }
+            }
     }];
 
     self.mapVC = [[ARMapComponentViewController alloc] init];
@@ -212,6 +238,9 @@ Since this controller already has to do the above logic, having it handle the Ci
 - (void)drawerChangedDistanceFromBottomWithDrawer:(PulleyViewController *)drawer distance:(CGFloat)distance bottomSafeArea:(CGFloat)bottomSafeArea
 {
     CGFloat drawerAbovePartialHeight = [drawer partialRevealDrawerHeightWithBottomSafeArea:bottomSafeArea];
+
+    BOOL isDrawerOpen = [drawer.drawerPosition isEqualToPosition:PulleyPosition.open];
+    self.rnScrollView.scrollEnabled = isDrawerOpen;
 
     BOOL shouldHideButtons = distance > drawerAbovePartialHeight;
     if (!self.cityPickerController) {

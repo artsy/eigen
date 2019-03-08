@@ -26,6 +26,7 @@
 - Fixes top buttons re-appearing behind city picker - ash
 - Fixes map not re-centering on new city when changed - ash
 - Fixes memory leak by unsubscribing components from the EventEmitter - alloy
+- Moves city list scroll view enabled-ness management to ObjC - ash
 
 ### 1.8.14
 
