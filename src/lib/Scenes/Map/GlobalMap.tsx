@@ -16,7 +16,7 @@ import { CitySwitcherButton } from "./Components/CitySwitcherButton"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { MapTab, Show } from "./types"
+import { MapGeoFeature, MapTab, OSCoordsUpdate, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -37,19 +37,32 @@ const ShowCardContainer = styled(Box)`
 `
 
 interface Props {
+  /** Where to center the map initially?  */
   initialCoordinates?: { lat: number; lng: number }
+  /** Should the map buttons be hidden...  */
   hideMapButtons: boolean
+  /** The map API entry-point */
   viewer?: GlobalMap_viewer
+  /** API stuff */
   relay: RelayProp
 }
+
 interface State {
+  /** The index from the City selector */
   activeIndex: number
+  /** Shows which are selected and should show as highlights above the map */
   activeShows: Show[]
+  /** An object of objects describing all the artsy elements we want to map */
   bucketResults: BucketResults
-  currentLocation?: any
-  userLocation?: any
+  /** The center location for the map right now */
+  currentLocation?: { lat: number; lng: number }
+  /** The users's location from core location */
+  userLocation?: { lat: number; lng: number }
+  /** True when we know that we can get location updates from the OS */
   trackUserLocation?: boolean
+  /** A set of GeoJSON features, which right now is our show clusters */
   featureCollection: any
+  /** Has the map fully rendered? */
   mapLoaded: boolean
 }
 
@@ -72,6 +85,19 @@ enum DrawerPosition {
 }
 
 export class GlobalMap extends React.Component<Props, State> {
+  /** Makes sure we're consistently using { lat, lng } internally */
+  static coordArrayToLocation(arr: [number, number] | undefined) {
+    if (!arr || arr.length !== 2) {
+      return undefined
+    }
+    return { lat: arr[1], lng: arr[0] }
+  }
+
+  /** Makes sure we're consistently using { lat, lng } internally */
+  static longCoordsToLocation(coords: { longitude: number; latitude: number }) {
+    return { lat: coords.latitude, lng: coords.longitude }
+  }
+
   map: Mapbox.MapView
   clusterEngine: Supercluster
   featureCollection: any
@@ -269,44 +295,52 @@ export class GlobalMap extends React.Component<Props, State> {
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || get(city, "coordinates")
     const { mapLoaded } = this.state
 
+    const mapProps = {
+      showUserLocation: true,
+      styleURL: ArtsyMapStyleURL,
+      userTrackingMode: Mapbox.UserTrackingModes.Follow,
+      centerCoordinate: [centerLng, centerLat],
+      zoomLevel: 13,
+      logoEnabled: false,
+      attributionEnabled: true,
+      compassEnabled: false,
+    }
+
+    const mapInteractions = {
+      onRegionDidChange: (location: MapGeoFeature) => {
+        this.emitFilteredBucketResults()
+        this.setState({
+          trackUserLocation: false,
+          currentLocation: GlobalMap.coordArrayToLocation(location.geometry.coordinates),
+        })
+      },
+      onUserLocationUpdate: (location: OSCoordsUpdate) => {
+        this.setState({
+          userLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
+          currentLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
+          trackUserLocation: true,
+        })
+      },
+      onDidFinishRenderingMapFully: () => this.setState({ mapLoaded: true }),
+      onPress: () => {
+        this.setState({
+          activeShows: [],
+        })
+      },
+    }
+
     // TODO: Need to hide the map while showing the top buttons.
     return (
       <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
         <Map
+          {...mapProps}
+          {...mapInteractions}
           ref={(c: any) => {
             if (c) {
               this.map = c.root
             }
           }}
           style={{ opacity: mapLoaded && city ? 1 : 0 }} // TODO: Animate this opacity change.
-          showUserLocation={true}
-          styleURL={ArtsyMapStyleURL}
-          userTrackingMode={Mapbox.UserTrackingModes.Follow}
-          centerCoordinate={[centerLng, centerLat]}
-          zoomLevel={13}
-          logoEnabled={false}
-          attributionEnabled={true}
-          compassEnabled={false}
-          onRegionDidChange={location => {
-            this.emitFilteredBucketResults()
-            this.setState({
-              trackUserLocation: false,
-              currentLocation: location.geometry.coordinate,
-            })
-          }}
-          onUserLocationUpdate={location => {
-            this.setState({
-              userLocation: location,
-              currentLocation: location,
-              trackUserLocation: true,
-            })
-          }}
-          onDidFinishRenderingMapFully={() => this.setState({ mapLoaded: true })}
-          onPress={() => {
-            this.setState({
-              activeShows: [],
-            })
-          }}
         >
           {city && (
             <>
@@ -318,8 +352,8 @@ export class GlobalMap extends React.Component<Props, State> {
                       <UserPositionButton
                         highlight={this.state.userLocation === this.state.currentLocation}
                         onPress={() => {
-                          const { latitude, longitude } = this.state.userLocation.coords
-                          this.map.moveTo([longitude, latitude], 500)
+                          const { lat, lng } = this.state.userLocation
+                          this.map.moveTo([lng, lat], 500)
                         }}
                       />
                     </Box>
