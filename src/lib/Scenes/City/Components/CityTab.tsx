@@ -31,6 +31,7 @@ export class CityTab extends React.Component<Props> {
         keyExtractor={item => item.node.id}
         renderItem={({ item }) => this.renderItem(item)}
         scrollEnabled={false}
+        windowSize={50}
       />
     )
   }
