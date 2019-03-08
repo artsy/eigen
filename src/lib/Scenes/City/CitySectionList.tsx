@@ -70,7 +70,6 @@ export default createPaginationContainer(
           partnerType: { type: "PartnerShowPartnerType" }
         ) {
         name
-        # TODO: Any way to exclude partnerType if it's not specified? When null it causes errors on MP.
         shows(discoverable: true, first: $count, sort: START_AT_ASC, after: $cursor, partnerType: $partnerType)
           @connection(key: "CitySectionList_shows") {
           pageInfo {
