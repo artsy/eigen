@@ -28,6 +28,7 @@
 - Fixes saving not updating props in city view - kieran
 - Disables navigation to Gallery pages from Shows view on stub shows - ashley
 - Fixes memory leak by unsubscribing components from the EventEmitter - alloy
+- Adds city section list for museum/gallery shows - kieran & ash
 
 ### 1.8.14
 
