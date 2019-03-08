@@ -109,7 +109,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
           <Sans size="1" weight="medium" px={0.5}>{`${currentPage} of ${shows.length}`}</Sans>
         </PageIndicator>
         <FlatList
-          ref={c => (this.list = c)}
+          ref={c => (this.list = c as any)}
           data={shows}
           style={{ marginHorizontal: "auto" }}
           renderItem={this.renderItem}
