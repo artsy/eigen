@@ -90,7 +90,7 @@ export class CityView extends Component<Props, State> {
 
   render() {
     const { buckets, filter, cityName, citySlug } = this.state
-    const { isDrawerOpen, verticalMargin } = this.props
+    const { verticalMargin } = this.props
     // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
     return (
@@ -107,8 +107,10 @@ export class CityView extends Component<Props, State> {
               />
               <ScrollView
                 contentInset={{ bottom: bottomInset }}
-                onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
-                scrollEnabled={isDrawerOpen}
+                onLayout={layout => {
+                  this.scrollViewVerticalStart = layout.nativeEvent.layout.y
+                  NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
+                }}
                 ref={r => {
                   if (r) {
                     this.scrollView = r as any

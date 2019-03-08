@@ -31,7 +31,7 @@ query QueryRenderersCitySectionListQuery(
 
 fragment CitySectionList_city_3XGJno on City {
   name
-  shows(discoverable: true, first: 10, sort: START_AT_ASC, after: "", partnerType: $partnerType) {
+  shows(discoverable: true, first: 20, sort: START_AT_ASC, after: "", partnerType: $partnerType) {
     pageInfo {
       endCursor
       hasNextPage
@@ -129,7 +129,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersCitySectionListQuery",
-  "id": "3103bceb76b6d6da8badb133f3814637",
+  "id": "9d4b430528cc36488dd204733bfdc028",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -200,7 +200,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "first",
-                "value": 10,
+                "value": 20,
                 "type": "Int"
               },
               {
@@ -401,7 +401,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "first",
-                "value": 10,
+                "value": 20,
                 "type": "Int"
               },
               {
