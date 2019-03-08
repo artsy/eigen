@@ -3,12 +3,7 @@ import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import React from "react"
 import { FlatList } from "react-native"
 import { RelayProp } from "react-relay"
-import styled from "styled-components/native"
 import { TabFairItemRow } from "./TabFairItemRow"
-
-const StyledMessage = styled(Message)`
-  text-align: center;
-`
 
 interface Props {
   bucket: any[]
@@ -46,19 +41,19 @@ export class CityTab extends React.Component<Props> {
       case "Saved":
         return (
           <Box py={2}>
-            <StyledMessage textSize="3t">{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</StyledMessage>
+            <Message textSize="3t">{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</Message>
           </Box>
         )
       case "Fairs":
         return (
           <Box py={2}>
-            <StyledMessage textSize="3t">{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</StyledMessage>
+            <Message textSize="3t">{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</Message>
           </Box>
         )
       default:
         return (
           <Box py={2}>
-            <StyledMessage textSize="3t">{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</StyledMessage>
+            <Message textSize="3t">{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</Message>
           </Box>
         )
     }
