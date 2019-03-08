@@ -79,7 +79,7 @@ Since this controller already has to do the above logic, having it handle the Ci
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryCityGotScrollView" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
             if (!self.rnScrollView) {
-                self.rnScrollView  = FindFirstVerticalScrollView(self.cityVC.rootView);
+                self.rnScrollView  = FindFirstVerticalScrollView(self.cityVC.view);
                 self.rnScrollView.scrollEnabled = NO;
                 if (self.rnScrollView) {
                     [self.bottomSheetVC.drawerPanGestureRecognizer requireGestureRecognizerToFail:self.rnScrollView.panGestureRecognizer];
