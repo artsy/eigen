@@ -269,44 +269,52 @@ export class GlobalMap extends React.Component<Props, State> {
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || get(city, "coordinates")
     const { mapLoaded } = this.state
 
+    const mapProps = {
+      showUserLocation: true,
+      styleURL: ArtsyMapStyleURL,
+      userTrackingMode: Mapbox.UserTrackingModes.Follow,
+      centerCoordinate: [centerLng, centerLat],
+      zoomLevel: 13,
+      logoEnabled: false,
+      attributionEnabled: true,
+      compassEnabled: false,
+    }
+
+    const mapInteractions = {
+      onRegionDidChange: location => {
+        this.emitFilteredBucketResults()
+        this.setState({
+          trackUserLocation: false,
+          currentLocation: location.geometry.coordinate,
+        })
+      },
+      onUserLocationUpdate: location => {
+        this.setState({
+          userLocation: location,
+          currentLocation: location,
+          trackUserLocation: true,
+        })
+      },
+      onDidFinishRenderingMapFully: () => this.setState({ mapLoaded: true }),
+      onPress: () => {
+        this.setState({
+          activeShows: [],
+        })
+      },
+    }
+
     // TODO: Need to hide the map while showing the top buttons.
     return (
       <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
         <Map
+          {...mapProps}
+          {...mapInteractions}
           ref={(c: any) => {
             if (c) {
               this.map = c.root
             }
           }}
           style={{ opacity: mapLoaded && city ? 1 : 0 }} // TODO: Animate this opacity change.
-          showUserLocation={true}
-          styleURL={ArtsyMapStyleURL}
-          userTrackingMode={Mapbox.UserTrackingModes.Follow}
-          centerCoordinate={[centerLng, centerLat]}
-          zoomLevel={13}
-          logoEnabled={false}
-          attributionEnabled={true}
-          compassEnabled={false}
-          onRegionDidChange={location => {
-            this.emitFilteredBucketResults()
-            this.setState({
-              trackUserLocation: false,
-              currentLocation: location.geometry.coordinate,
-            })
-          }}
-          onUserLocationUpdate={location => {
-            this.setState({
-              userLocation: location,
-              currentLocation: location,
-              trackUserLocation: true,
-            })
-          }}
-          onDidFinishRenderingMapFully={() => this.setState({ mapLoaded: true })}
-          onPress={() => {
-            this.setState({
-              activeShows: [],
-            })
-          }}
         >
           {city && (
             <>
