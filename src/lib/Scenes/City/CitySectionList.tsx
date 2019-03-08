@@ -65,7 +65,7 @@ export default createPaginationContainer(
     city: graphql`
       fragment CitySectionList_city on City
         @argumentDefinitions(
-          count: { type: "Int", defaultValue: 10 }
+          count: { type: "Int", defaultValue: 20 }
           cursor: { type: "String", defaultValue: "" }
           partnerType: { type: "PartnerShowPartnerType" }
         ) {
