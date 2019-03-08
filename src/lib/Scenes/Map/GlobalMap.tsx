@@ -16,7 +16,7 @@ import { CitySwitcherButton } from "./Components/CitySwitcherButton"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { MapTab, Show } from "./types"
+import { MapGeoFeature, MapTab, OSCoordsUpdate, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -85,6 +85,19 @@ enum DrawerPosition {
 }
 
 export class GlobalMap extends React.Component<Props, State> {
+  /** Makes sure we're consistently using { lat, lng } internally */
+  static coordArrayToLocation(arr: [number, number] | undefined) {
+    if (!arr || arr.length !== 2) {
+      return undefined
+    }
+    return { lat: arr[1], lng: arr[0] }
+  }
+
+  /** Makes sure we're consistently using { lat, lng } internally */
+  static longCoordsToLocation(coords: { longitude: number; latitude: number }) {
+    return { lat: coords.latitude, lng: coords.longitude }
+  }
+
   map: Mapbox.MapView
   clusterEngine: Supercluster
   featureCollection: any
@@ -294,17 +307,17 @@ export class GlobalMap extends React.Component<Props, State> {
     }
 
     const mapInteractions = {
-      onRegionDidChange: location => {
+      onRegionDidChange: (location: MapGeoFeature) => {
         this.emitFilteredBucketResults()
         this.setState({
           trackUserLocation: false,
-          currentLocation: location.geometry.coordinate,
+          currentLocation: GlobalMap.coordArrayToLocation(location.geometry.coordinates),
         })
       },
-      onUserLocationUpdate: location => {
+      onUserLocationUpdate: (location: OSCoordsUpdate) => {
         this.setState({
-          userLocation: location,
-          currentLocation: location,
+          userLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
+          currentLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
           trackUserLocation: true,
         })
       },
@@ -339,8 +352,8 @@ export class GlobalMap extends React.Component<Props, State> {
                       <UserPositionButton
                         highlight={this.state.userLocation === this.state.currentLocation}
                         onPress={() => {
-                          const { latitude, longitude } = this.state.userLocation.coords
-                          this.map.moveTo([longitude, latitude], 500)
+                          const { lat, lng } = this.state.userLocation
+                          this.map.moveTo([lng, lat], 500)
                         }}
                       />
                     </Box>
