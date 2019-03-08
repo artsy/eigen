@@ -25,6 +25,7 @@
 - Fixes top buttons re-appearing behind city picker - ash
 - Fixes map not re-centering on new city when changed - ash
 - Disables navigation to Gallery pages from Shows view on stub shows - ashley
+- Fixes memory leak by unsubscribing components from the EventEmitter - alloy
 
 ### 1.8.14
 
