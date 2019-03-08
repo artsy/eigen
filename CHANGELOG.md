@@ -24,6 +24,7 @@
 - Adds Save button functionality to button in All tab - kieran
 - Fixes top buttons re-appearing behind city picker - ash
 - Fixes map not re-centering on new city when changed - ash
+- Handles text spillover bug on narrow iphone screens in Saved Shows view - ashley
 - Fixes memory leak by unsubscribing components from the EventEmitter - alloy
 
 ### 1.8.14
