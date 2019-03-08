@@ -12,6 +12,7 @@ export type ShowHeader_show = {
     readonly is_followed: boolean | null;
     readonly exhibition_period: string | null;
     readonly status: string | null;
+    readonly is_local_discovery: boolean | null;
     readonly partner: ({
         readonly name?: string | null;
         readonly id?: string;
@@ -21,6 +22,18 @@ export type ShowHeader_show = {
         readonly url: string | null;
         readonly aspect_ratio: number;
     }) | null> | null;
+    readonly followedArtists: ({
+        readonly edges: ReadonlyArray<({
+            readonly node: ({
+                readonly artist: ({
+                    readonly name: string | null;
+                    readonly href: string | null;
+                    readonly id: string;
+                    readonly _id: string;
+                }) | null;
+            }) | null;
+        }) | null> | null;
+    }) | null;
     readonly artists: ReadonlyArray<({
         readonly name: string | null;
         readonly href: string | null;
@@ -67,7 +80,14 @@ v4 = {
   "name": "href",
   "args": null,
   "storageKey": null
-};
+},
+v5 = [
+  v2,
+  v4,
+  v0,
+  v3,
+  v1
+];
 return {
   "kind": "Fragment",
   "name": "ShowHeader_show",
@@ -78,7 +98,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "is_followed",
+      "name": "exhibition_period",
       "args": null,
       "storageKey": null
     },
@@ -92,18 +112,25 @@ return {
       "args": null,
       "storageKey": null
     },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_followed",
+      "args": null,
+      "storageKey": null
+    },
     v3,
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "exhibition_period",
+      "name": "status",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "status",
+      "name": "is_local_discovery",
       "args": null,
       "storageKey": null
     },
@@ -163,21 +190,65 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
+      "name": "followedArtists",
+      "storageKey": "followedArtists(first:2)",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 2,
+          "type": "Int"
+        }
+      ],
+      "concreteType": "ShowFollowArtistConnection",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "edges",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "ShowFollowArtistEdge",
+          "plural": true,
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "node",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "ShowFollowArtist",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "artist",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Artist",
+                  "plural": false,
+                  "selections": v5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
       "name": "artists",
       "storageKey": null,
       "args": null,
       "concreteType": "Artist",
       "plural": true,
-      "selections": [
-        v2,
-        v4,
-        v0,
-        v3,
-        v1
-      ]
+      "selections": v5
     }
   ]
 };
 })();
-(node as any).hash = 'd69900e0ca440890645085a1416c9b05';
+(node as any).hash = '6ad7e6838246d3f9d5e5123f3fc249b3';
 export default node;

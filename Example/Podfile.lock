@@ -11,7 +11,7 @@ PODS:
     - "UIView+BooleanAnimations"
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.5)
-  - Emission (1.8.13):
+  - Emission (1.8.14):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.5)
@@ -240,7 +240,7 @@ CHECKOUT OPTIONS:
     :commit: 1b582675598c999726d9edacd3b8559e01cf7c48
     :git: https://github.com/artsy/Artsy-Authentication.git
   Pulley:
-    :commit: 0ae1ec695966dcac4647d4e2bb8c610920dbe631
+    :commit: ff5e7e7157a8351dbc36b7165e3ae963c51752d5
     :git: https://github.com/l2succes/Pulley.git
   tipsi-stripe:
     :commit: efcbc49dc7cf472099d8aa8c3fb2b64441fc5ea1
@@ -254,7 +254,7 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: ebb6747c5b66026ad4f97b789c3ceac6f18e57a6
-  Emission: d063d6748ca3106c2c5b87b38bc6930c7344d8af
+  Emission: c8e440c9b748a308768fabaf9761f36c5c0a494a
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a

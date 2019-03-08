@@ -29,6 +29,7 @@ fragment Detail_show on Show {
   name
   description
   city
+  is_local_discovery
   location {
     id
     address
@@ -96,6 +97,7 @@ fragment ShowHeader_show on Show {
   is_followed
   exhibition_period
   status
+  is_local_discovery
   partner {
     __typename
     ... on Partner {
@@ -114,6 +116,19 @@ fragment ShowHeader_show on Show {
   images {
     url
     aspect_ratio
+  }
+  followedArtists(first: 2) {
+    edges {
+      node {
+        artist {
+          name
+          href
+          id
+          _id
+          __id
+        }
+      }
+    }
   }
   artists {
     name
@@ -374,7 +389,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "459561445240d580674681561c2b92c1",
+  "id": "6ff2de65ba39fd60a3d06d3223bff257",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -434,6 +449,13 @@ return {
             "storageKey": null
           },
           v4,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_local_discovery",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -608,6 +630,62 @@ return {
                     "name": "type",
                     "args": null,
                     "storageKey": null
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "followedArtists",
+            "storageKey": "followedArtists(first:2)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 2,
+                "type": "Int"
+              }
+            ],
+            "concreteType": "ShowFollowArtistConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ShowFollowArtistEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "ShowFollowArtist",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "artist",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "plural": false,
+                        "selections": [
+                          v3,
+                          v13,
+                          v5,
+                          v2,
+                          v1
+                        ]
+                      }
+                    ]
                   }
                 ]
               }

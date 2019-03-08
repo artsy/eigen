@@ -1,0 +1,3 @@
+{
+  "275170b9b83a34d5992948e65bc521be": "mutation EventMutation(\n  $input: FollowShowInput!\n) {\n  followShow(input: $input) {\n    show {\n      id\n      _id\n      is_followed\n      __id\n    }\n  }\n}\n"
+}
