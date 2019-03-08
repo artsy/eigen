@@ -37,19 +37,32 @@ const ShowCardContainer = styled(Box)`
 `
 
 interface Props {
+  /** Where to center the map initially?  */
   initialCoordinates?: { lat: number; lng: number }
+  /** Should the map buttons be hidden...  */
   hideMapButtons: boolean
+  /** The map API entry-point */
   viewer?: GlobalMap_viewer
+  /** API stuff */
   relay: RelayProp
 }
+
 interface State {
+  /** The index from the City selector */
   activeIndex: number
+  /** Shows which are selected and should show as highlights above the map */
   activeShows: Show[]
+  /** An object of objects describing all the artsy elements we want to map */
   bucketResults: BucketResults
-  currentLocation?: any
-  userLocation?: any
+  /** The center location for the map right now */
+  currentLocation?: { lat: number; lng: number }
+  /** The users's location from core location */
+  userLocation?: { lat: number; lng: number }
+  /** True when we know that we can get location updates from the OS */
   trackUserLocation?: boolean
+  /** A set of GeoJSON features, which right now is our show clusters */
   featureCollection: any
+  /** Has the map fully rendered? */
   mapLoaded: boolean
 }
 
