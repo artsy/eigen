@@ -13,18 +13,28 @@ interface Props {
   relay: RelayPaginationProp
 }
 
-class CitySectionList extends React.Component<Props> {
+interface State {
+  fetchingNextPage: boolean
+}
+
+class CitySectionList extends React.Component<Props, State> {
+  state = {
+    fetchingNextPage: false,
+  }
+
   fetchData = () => {
     const { relay } = this.props
 
     if (relay.isLoading()) {
       return
     }
+    this.setState({ fetchingNextPage: true })
     relay.loadMore(PAGE_SIZE, error => {
       if (error) {
         console.error("CitySectionList.tsx #fetchData", error.message)
         // FIXME: Handle error
       }
+      this.setState({ fetchingNextPage: false })
     })
   }
 
@@ -34,6 +44,7 @@ class CitySectionList extends React.Component<Props> {
       city: { name, shows },
       relay,
     } = this.props
+    const { fetchingNextPage } = this.state
     return (
       <EventList
         key={name + section}
@@ -42,6 +53,7 @@ class CitySectionList extends React.Component<Props> {
         type={section}
         relay={relay}
         onScroll={isCloseToBottom(this.fetchData)}
+        fetchingNextPage={fetchingNextPage}
       />
     )
   }

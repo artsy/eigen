@@ -1,6 +1,7 @@
 import { Box, Message, Separator, Theme } from "@artsy/palette"
 import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
+import Spinner from "lib/Components/Spinner"
 import { BucketKey } from "lib/Scenes/Map/Bucket"
 import React from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
@@ -13,6 +14,7 @@ interface Props {
   cityName: string
   relay: RelayProp
   onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void
+  fetchingNextPage?: boolean
 }
 
 export class EventList extends React.Component<Props> {
@@ -26,11 +28,12 @@ export class EventList extends React.Component<Props> {
   }
 
   hasEventsComponent = () => {
-    const { bucket, onScroll } = this.props
+    const { bucket, onScroll, fetchingNextPage } = this.props
     return (
       <FlatList
         data={bucket}
         ItemSeparatorComponent={() => <Separator />}
+        ListFooterComponent={fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
         keyExtractor={item => item.node.id}
         renderItem={({ item }) => this.renderItem(item)}
         onScroll={onScroll}
