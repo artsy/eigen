@@ -24,6 +24,7 @@
 - Adds Save button functionality to button in All tab - kieran
 - Fixes top buttons re-appearing behind city picker - ash
 - Fixes map not re-centering on new city when changed - ash
+- Disables navigation to Gallery pages from Shows view on stub shows - ashley
 
 ### 1.8.14
 
