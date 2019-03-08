@@ -27,6 +27,7 @@
 - Handles text spillover bug on narrow iphone screens in Saved Shows view - ashley
 - Fixes saving not updating props in city view - kieran
 - Fixes memory leak by unsubscribing components from the EventEmitter - alloy
+- Disables navigation to Gallery pages from Shows view on stub shows - ashley
 
 ### 1.8.14
 

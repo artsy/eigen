@@ -35,7 +35,7 @@ export class ShowHeader extends React.Component<Props, State> {
 
   handlePartnerTitleClick = () => {
     const { show } = this.props
-    if (show.is_local_discovery) {
+    if (!show.is_local_discovery) {
       return
     }
     SwitchBoard.presentNavigationViewController(this, `${show.partner.href}?entity=gallery`)
