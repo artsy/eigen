@@ -12,6 +12,7 @@ export type ShowHeader_show = {
     readonly is_followed: boolean | null;
     readonly exhibition_period: string | null;
     readonly status: string | null;
+    readonly is_local_discovery: boolean | null;
     readonly partner: ({
         readonly name?: string | null;
         readonly id?: string;
@@ -123,6 +124,13 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "status",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_local_discovery",
       "args": null,
       "storageKey": null
     },
@@ -242,5 +250,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'dde646b2826d130b631c77895bca57af';
+(node as any).hash = '6ad7e6838246d3f9d5e5123f3fc249b3';
 export default node;

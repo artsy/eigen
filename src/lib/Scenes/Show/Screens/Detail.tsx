@@ -197,6 +197,7 @@ export const DetailContainer = createFragmentContainer(
       name
       description
       city
+      is_local_discovery
       location {
         id
         address
