@@ -238,7 +238,7 @@ export class GlobalMap extends React.Component<Props, State> {
       <Spring
         native
         from={{ bottom: -150, progress: 0, opacity: 0 }}
-        to={hasShows ? { bottom: 40, progress: 1, opacity: 1.0 } : { bottom: -150, progress: 0, opacity: 0 }}
+        to={hasShows ? { bottom: 80, progress: 1, opacity: 1.0 } : { bottom: -150, progress: 0, opacity: 0 }}
         config={config.stiff}
         precision={1}
       >
