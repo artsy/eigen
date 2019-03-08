@@ -2,9 +2,11 @@ import { Box, color, Sans, space } from "@artsy/palette"
 import { ShowItemRow_show } from "__generated__/ShowItemRow_show.graphql"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { isEqual } from "lodash"
 import React, { Component } from "react"
-import { Dimensions, FlatList, ScrollView, TouchableOpacity } from "react-native"
+import { Dimensions, FlatList, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
+import { Show } from "../types"
 
 const shadowDetails: any = {
   shadowRadius: 4,
@@ -40,15 +42,15 @@ const PageIndicator = styled(Box)`
 `
 
 export class ShowCard extends Component<ShowCardProps, ShowCardState> {
-  list: ScrollView
+  list: FlatList<Show>
 
   state = {
     currentPage: 1,
   }
 
-  componentDidUpdate() {
-    if (this.list) {
-      // this.list.scrollTo({ x: 0, y: 0, animated: true })
+  componentDidUpdate(prevProps) {
+    if (!isEqual(prevProps, this.props) && this.list) {
+      this.list.scrollToIndex({ index: 0, animated: true })
     }
   }
 
