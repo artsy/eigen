@@ -6,6 +6,7 @@ export type GlobalMap_viewer$ref = typeof _GlobalMap_viewer$ref;
 export type GlobalMap_viewer = {
     readonly city: ({
         readonly name: string | null;
+        readonly slug: string | null;
         readonly sponsoredContent: ({
             readonly introText: string | null;
             readonly artGuideUrl: string | null;
@@ -232,6 +233,13 @@ return {
       "plural": false,
       "selections": [
         v0,
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "slug",
+          "args": null,
+          "storageKey": null
+        },
         {
           "kind": "LinkedField",
           "alias": null,
@@ -520,5 +528,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'e0f75901030c23581bc6428c3fcad166';
+(node as any).hash = '6ee441657aa6a50ea5094ff510073dda';
 export default node;
