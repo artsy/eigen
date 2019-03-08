@@ -3,12 +3,13 @@ import { get } from "lodash"
 import React from "react"
 import { createPaginationContainer, graphql } from "react-relay"
 import { RelayProp } from "react-relay"
+import { BucketKey } from "../Map/Bucket"
 import { EventList } from "./Components/EventList"
 
 interface Props {
   city: CitySectionList_city
   citySlug: string
-  section: string
+  section: BucketKey
 }
 
 interface State {
@@ -38,10 +39,18 @@ export default createPaginationContainer(
   {
     city: graphql`
       fragment CitySectionList_city on City
-        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
+        @argumentDefinitions(
+          count: { type: "Int", defaultValue: 10 }
+          cursor: { type: "String", defaultValue: "" }
+          partnerType: { type: "PartnerShowPartnerType" }
+        ) {
         name
-        shows(discoverable: true, first: $count, sort: START_AT_ASC, after: $cursor)
+        shows(discoverable: true, first: $count, sort: START_AT_ASC, after: $cursor, partnerType: $partnerType)
           @connection(key: "CitySectionList_shows") {
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
           edges {
             node {
               id
@@ -80,6 +89,7 @@ export default createPaginationContainer(
       }
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
+      console.log({ fragmentVariables })
       return {
         citySlug: props.citySlug,
         ...fragmentVariables,
@@ -88,9 +98,14 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query CitySectionListQuery($count: Int!, $cursor: String, $citySlug: String!) {
+      query CitySectionListQuery(
+        $count: Int!
+        $cursor: String
+        $citySlug: String!
+        $partnerType: PartnerShowPartnerType
+      ) {
         city(slug: $citySlug) {
-          ...CitySectionList_city @arguments(count: $count, cursor: $cursor)
+          ...CitySectionList_city @arguments(count: $count, cursor: $cursor, partnerType: $partnerType)
         }
       }
     `,

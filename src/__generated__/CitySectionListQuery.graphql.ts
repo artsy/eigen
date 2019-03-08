@@ -2,10 +2,12 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { CitySectionList_city$ref } from "./CitySectionList_city.graphql";
+export type PartnerShowPartnerType = "GALLERY" | "MUSEUM" | "%future added value";
 export type CitySectionListQueryVariables = {
     readonly count: number;
     readonly cursor?: string | null;
     readonly citySlug: string;
+    readonly partnerType?: PartnerShowPartnerType | null;
 };
 export type CitySectionListQueryResponse = {
     readonly city: ({
@@ -24,15 +26,20 @@ query CitySectionListQuery(
   $count: Int!
   $cursor: String
   $citySlug: String!
+  $partnerType: PartnerShowPartnerType
 ) {
   city(slug: $citySlug) {
-    ...CitySectionList_city_1G22uz
+    ...CitySectionList_city_1ZOk4i
   }
 }
 
-fragment CitySectionList_city_1G22uz on City {
+fragment CitySectionList_city_1ZOk4i on City {
   name
-  shows(discoverable: true, first: $count, sort: START_AT_ASC, after: $cursor) {
+  shows(discoverable: true, first: $count, sort: START_AT_ASC, after: $cursor, partnerType: $partnerType) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
     edges {
       node {
         id
@@ -62,10 +69,6 @@ fragment CitySectionList_city_1G22uz on City {
       }
       cursor
     }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
   }
 }
 */
@@ -88,6 +91,12 @@ var v0 = [
     "kind": "LocalArgument",
     "name": "citySlug",
     "type": "String!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "partnerType",
+    "type": "PartnerShowPartnerType",
     "defaultValue": null
   }
 ],
@@ -131,7 +140,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "CitySectionListQuery",
-  "id": "6d0b12beffc1d72f240e250f695c121f",
+  "id": "283dbcc939c62aa1847586bbc1d56b6c",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -164,6 +173,12 @@ return {
                 "kind": "Variable",
                 "name": "cursor",
                 "variableName": "cursor",
+                "type": null
+              },
+              {
+                "kind": "Variable",
+                "name": "partnerType",
+                "variableName": "partnerType",
                 "type": null
               }
             ]
@@ -212,6 +227,12 @@ return {
                 "type": "Int"
               },
               {
+                "kind": "Variable",
+                "name": "partnerType",
+                "variableName": "partnerType",
+                "type": "PartnerShowPartnerType"
+              },
+              {
                 "kind": "Literal",
                 "name": "sort",
                 "value": "START_AT_ASC",
@@ -221,6 +242,31 @@ return {
             "concreteType": "ShowConnection",
             "plural": false,
             "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "pageInfo",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "hasNextPage",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "endCursor",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -329,31 +375,6 @@ return {
                     "storageKey": null
                   }
                 ]
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "pageInfo",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "PageInfo",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "endCursor",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "hasNextPage",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
               }
             ]
           },
@@ -381,6 +402,12 @@ return {
                 "type": "Int"
               },
               {
+                "kind": "Variable",
+                "name": "partnerType",
+                "variableName": "partnerType",
+                "type": "PartnerShowPartnerType"
+              },
+              {
                 "kind": "Literal",
                 "name": "sort",
                 "value": "START_AT_ASC",
@@ -391,7 +418,8 @@ return {
             "key": "CitySectionList_shows",
             "filters": [
               "discoverable",
-              "sort"
+              "sort",
+              "partnerType"
             ]
           }
         ]
@@ -400,5 +428,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'bfdd90b34aa5f6396e8ab1cc20bb23a2';
+(node as any).hash = 'a310bbd670008103175e9c4544234c6d';
 export default node;

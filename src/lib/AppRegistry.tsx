@@ -37,6 +37,7 @@ import {
 import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
 import { MapContainer } from "./Scenes/Map"
+import { BucketKey } from "./Scenes/Map/Bucket"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
 
@@ -188,12 +189,13 @@ const ShowMoreInfo: React.SFC<ShowMoreInfoProps> = ({ showID }) => {
 
 interface CitySectionListProps {
   citySlug: string
-  section: string
+  section: BucketKey
 }
 const CitySectionList: React.SFC<CitySectionListProps> = ({ citySlug, section }) => {
   return (
     <CitySectionListRenderer
       citySlug={citySlug}
+      section={section}
       render={renderWithLoadProgress(Containers.CitySectionList, { citySlug, section })}
     />
   )

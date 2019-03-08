@@ -2,8 +2,10 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { CitySectionList_city$ref } from "./CitySectionList_city.graphql";
+export type PartnerShowPartnerType = "GALLERY" | "MUSEUM" | "%future added value";
 export type QueryRenderersCitySectionListQueryVariables = {
     readonly citySlug: string;
+    readonly partnerType?: PartnerShowPartnerType | null;
 };
 export type QueryRenderersCitySectionListQueryResponse = {
     readonly city: ({
@@ -20,15 +22,20 @@ export type QueryRenderersCitySectionListQuery = {
 /*
 query QueryRenderersCitySectionListQuery(
   $citySlug: String!
+  $partnerType: PartnerShowPartnerType
 ) {
   city(slug: $citySlug) {
-    ...CitySectionList_city
+    ...CitySectionList_city_3XGJno
   }
 }
 
-fragment CitySectionList_city on City {
+fragment CitySectionList_city_3XGJno on City {
   name
-  shows(discoverable: true, first: 10, sort: START_AT_ASC, after: "") {
+  shows(discoverable: true, first: 10, sort: START_AT_ASC, after: "", partnerType: $partnerType) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
     edges {
       node {
         id
@@ -58,10 +65,6 @@ fragment CitySectionList_city on City {
       }
       cursor
     }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
   }
 }
 */
@@ -72,6 +75,12 @@ var v0 = [
     "kind": "LocalArgument",
     "name": "citySlug",
     "type": "String!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "partnerType",
+    "type": "PartnerShowPartnerType",
     "defaultValue": null
   }
 ],
@@ -115,7 +124,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersCitySectionListQuery",
-  "id": "6fcdd04fc2562edc08a7dfe58a6cbc7e",
+  "id": "a710d4b8608e5c9610aab9f6b0d63b2b",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -137,7 +146,14 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "CitySectionList_city",
-            "args": null
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "partnerType",
+                "variableName": "partnerType",
+                "type": null
+              }
+            ]
           }
         ]
       }
@@ -162,7 +178,7 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "shows",
-            "storageKey": "shows(after:\"\",discoverable:true,first:10,sort:\"START_AT_ASC\")",
+            "storageKey": null,
             "args": [
               {
                 "kind": "Literal",
@@ -183,6 +199,12 @@ return {
                 "type": "Int"
               },
               {
+                "kind": "Variable",
+                "name": "partnerType",
+                "variableName": "partnerType",
+                "type": "PartnerShowPartnerType"
+              },
+              {
                 "kind": "Literal",
                 "name": "sort",
                 "value": "START_AT_ASC",
@@ -192,6 +214,31 @@ return {
             "concreteType": "ShowConnection",
             "plural": false,
             "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "pageInfo",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "hasNextPage",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "endCursor",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -300,31 +347,6 @@ return {
                     "storageKey": null
                   }
                 ]
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "pageInfo",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "PageInfo",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "endCursor",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "hasNextPage",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
               }
             ]
           },
@@ -352,6 +374,12 @@ return {
                 "type": "Int"
               },
               {
+                "kind": "Variable",
+                "name": "partnerType",
+                "variableName": "partnerType",
+                "type": "PartnerShowPartnerType"
+              },
+              {
                 "kind": "Literal",
                 "name": "sort",
                 "value": "START_AT_ASC",
@@ -362,7 +390,8 @@ return {
             "key": "CitySectionList_shows",
             "filters": [
               "discoverable",
-              "sort"
+              "sort",
+              "partnerType"
             ]
           }
         ]
@@ -371,5 +400,5 @@ return {
   }
 };
 })();
-(node as any).hash = '1d746f4ca943daab45d1396594605710';
+(node as any).hash = 'd48c8d1c2f6d11c09dcadd53eeda23c2';
 export default node;

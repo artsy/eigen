@@ -6,6 +6,10 @@ export type CitySectionList_city$ref = typeof _CitySectionList_city$ref;
 export type CitySectionList_city = {
     readonly name: string | null;
     readonly shows: ({
+        readonly pageInfo: {
+            readonly hasNextPage: boolean;
+            readonly endCursor: string | null;
+        };
         readonly edges: ReadonlyArray<({
             readonly node: ({
                 readonly id: string;
@@ -79,6 +83,12 @@ return {
       "name": "cursor",
       "type": "String",
       "defaultValue": ""
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "partnerType",
+      "type": "PartnerShowPartnerType",
+      "defaultValue": null
     }
   ],
   "selections": [
@@ -87,13 +97,19 @@ return {
       "kind": "LinkedField",
       "alias": "shows",
       "name": "__CitySectionList_shows_connection",
-      "storageKey": "__CitySectionList_shows_connection(discoverable:true,sort:\"START_AT_ASC\")",
+      "storageKey": null,
       "args": [
         {
           "kind": "Literal",
           "name": "discoverable",
           "value": true,
           "type": "Boolean"
+        },
+        {
+          "kind": "Variable",
+          "name": "partnerType",
+          "variableName": "partnerType",
+          "type": "PartnerShowPartnerType"
         },
         {
           "kind": "Literal",
@@ -105,6 +121,31 @@ return {
       "concreteType": "ShowConnection",
       "plural": false,
       "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "pageInfo",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "hasNextPage",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
         {
           "kind": "LinkedField",
           "alias": null,
@@ -218,36 +259,11 @@ return {
               "storageKey": null
             }
           ]
-        },
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "pageInfo",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "PageInfo",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "endCursor",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "hasNextPage",
-              "args": null,
-              "storageKey": null
-            }
-          ]
         }
       ]
     }
   ]
 };
 })();
-(node as any).hash = '7c5a5da4403c1efbb450586d1a9b5d95';
+(node as any).hash = '1d34d694245ae312c8dd283e2ab9226f';
 export default node;
