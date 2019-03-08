@@ -16,6 +16,7 @@
 
 ### Master
 
+- Update city coordinates (to fix Los Angeles bug) - anandaroop
 - Fixes warning about missing viewer prop - ash
 - Fixes warning about duplicate keys in list - ash
 - Adds zero state to CityTab - kieran
