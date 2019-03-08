@@ -28,6 +28,7 @@
 - Fixes saving not updating props in city view - kieran
 - Disables navigation to Gallery pages from Shows view on stub shows - ashley
 - Fixes memory leak by unsubscribing components from the EventEmitter - alloy
+- Updates styling for cluster and pin show cards - luc
 
 ### 1.8.14
 
