@@ -3,7 +3,7 @@ import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import { BucketKey } from "lib/Scenes/Map/Bucket"
 import React from "react"
-import { FlatList } from "react-native"
+import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { TabFairItemRow } from "./TabFairItemRow"
@@ -17,6 +17,7 @@ interface Props {
   type: BucketKey
   cityName: string
   relay: RelayProp
+  onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void
 }
 
 export class EventList extends React.Component<Props> {
@@ -30,14 +31,15 @@ export class EventList extends React.Component<Props> {
   }
 
   hasEventsComponent = () => {
-    const { bucket } = this.props
+    const { bucket, onScroll } = this.props
     return (
       <FlatList
         data={bucket}
         ItemSeparatorComponent={() => <Separator />}
         keyExtractor={item => item.node.id}
         renderItem={({ item }) => this.renderItem(item)}
-        scrollEnabled={false}
+        onScroll={onScroll}
+        scrollIndicatorInsets={{ right: -10 }}
       />
     )
   }

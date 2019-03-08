@@ -7,8 +7,8 @@ export type CitySectionList_city = {
     readonly name: string | null;
     readonly shows: ({
         readonly pageInfo: {
-            readonly hasNextPage: boolean;
             readonly endCursor: string | null;
+            readonly hasNextPage: boolean;
         };
         readonly edges: ReadonlyArray<({
             readonly node: ({
@@ -21,6 +21,11 @@ export type CitySectionList_city = {
                 readonly status: string | null;
                 readonly href: string | null;
                 readonly type: string | null;
+                readonly name: string | null;
+                readonly cover_image: ({
+                    readonly url: string | null;
+                }) | null;
+                readonly exhibition_period: string | null;
                 readonly partner: ({
                     readonly name?: string | null;
                     readonly type?: string | null;
@@ -133,14 +138,14 @@ return {
             {
               "kind": "ScalarField",
               "alias": null,
-              "name": "hasNextPage",
+              "name": "endCursor",
               "args": null,
               "storageKey": null
             },
             {
               "kind": "ScalarField",
               "alias": null,
-              "name": "endCursor",
+              "name": "hasNextPage",
               "args": null,
               "storageKey": null
             }
@@ -167,7 +172,7 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "end_at",
+                  "name": "href",
                   "args": null,
                   "storageKey": null
                 },
@@ -196,7 +201,7 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "_id",
+                  "name": "end_at",
                   "args": null,
                   "storageKey": null
                 },
@@ -210,11 +215,37 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "href",
+                  "name": "_id",
                   "args": null,
                   "storageKey": null
                 },
                 v2,
+                v0,
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "cover_image",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Image",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "url",
+                      "args": null,
+                      "storageKey": null
+                    }
+                  ]
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "exhibition_period",
+                  "args": null,
+                  "storageKey": null
+                },
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -265,5 +296,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1d34d694245ae312c8dd283e2ab9226f';
+(node as any).hash = '93c32aa4987c58a53dfd8572f159dd3a';
 export default node;

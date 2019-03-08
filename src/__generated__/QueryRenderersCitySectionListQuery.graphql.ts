@@ -33,8 +33,8 @@ fragment CitySectionList_city_3XGJno on City {
   name
   shows(discoverable: true, first: 10, sort: START_AT_ASC, after: "", partnerType: $partnerType) {
     pageInfo {
-      hasNextPage
       endCursor
+      hasNextPage
     }
     edges {
       node {
@@ -47,6 +47,11 @@ fragment CitySectionList_city_3XGJno on City {
         status
         href
         type
+        name
+        cover_image {
+          url
+        }
+        exhibition_period
         partner {
           __typename
           ... on Partner {
@@ -124,7 +129,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersCitySectionListQuery",
-  "id": "a710d4b8608e5c9610aab9f6b0d63b2b",
+  "id": "3103bceb76b6d6da8badb133f3814637",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -226,14 +231,14 @@ return {
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "hasNextPage",
+                    "name": "endCursor",
                     "args": null,
                     "storageKey": null
                   },
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "endCursor",
+                    "name": "hasNextPage",
                     "args": null,
                     "storageKey": null
                   }
@@ -260,7 +265,7 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "end_at",
+                        "name": "href",
                         "args": null,
                         "storageKey": null
                       },
@@ -289,7 +294,7 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "_id",
+                        "name": "end_at",
                         "args": null,
                         "storageKey": null
                       },
@@ -303,11 +308,37 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "href",
+                        "name": "_id",
                         "args": null,
                         "storageKey": null
                       },
                       v4,
+                      v2,
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "cover_image",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "url",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "exhibition_period",
+                        "args": null,
+                        "storageKey": null
+                      },
                       {
                         "kind": "LinkedField",
                         "alias": null,

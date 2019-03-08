@@ -1,8 +1,8 @@
 import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql"
-import { get } from "lodash"
+import { PAGE_SIZE } from "lib/data/constants"
+import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import React from "react"
-import { createPaginationContainer, graphql } from "react-relay"
-import { RelayProp } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { BucketKey } from "../Map/Bucket"
 import { EventList } from "./Components/EventList"
 
@@ -10,26 +10,39 @@ interface Props {
   city: CitySectionList_city
   citySlug: string
   section: BucketKey
+  relay: RelayPaginationProp
 }
 
-interface State {
-  relay: RelayProp
-}
+class CitySectionList extends React.Component<Props> {
+  fetchData = () => {
+    const { relay } = this.props
 
-class CitySectionList extends React.Component<Props, State> {
-  state = {
-    buckets: null,
-    relay: null,
+    if (relay.isLoading()) {
+      return
+    }
+    relay.loadMore(PAGE_SIZE, error => {
+      if (error) {
+        console.error("CitySectionList.tsx #fetchData", error.message)
+        // FIXME: Handle error
+      }
+    })
   }
 
   render() {
     const {
       section,
       city: { name, shows },
+      relay,
     } = this.props
-    console.log("this.props", this.props)
     return (
-      <EventList key={name + section} cityName={name} bucket={shows.edges} type={section} relay={this.state.relay} />
+      <EventList
+        key={name + section}
+        cityName={name}
+        bucket={shows.edges}
+        type={section}
+        relay={relay}
+        onScroll={isCloseToBottom(this.fetchData)}
+      />
     )
   }
 }
@@ -45,11 +58,12 @@ export default createPaginationContainer(
           partnerType: { type: "PartnerShowPartnerType" }
         ) {
         name
+        # TODO: Any way to exclude partnerType if it's not specified? When null it causes errors on MP.
         shows(discoverable: true, first: $count, sort: START_AT_ASC, after: $cursor, partnerType: $partnerType)
           @connection(key: "CitySectionList_shows") {
           pageInfo {
-            hasNextPage
             endCursor
+            hasNextPage
           }
           edges {
             node {
@@ -62,6 +76,11 @@ export default createPaginationContainer(
               status
               href
               type
+              name
+              cover_image {
+                url
+              }
+              exhibition_period
               partner {
                 ... on Partner {
                   name
@@ -80,7 +99,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return get(props, "props.city.shows")
+      return props.city && props.city.shows
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -89,7 +108,6 @@ export default createPaginationContainer(
       }
     },
     getVariables(props, { count, cursor }, fragmentVariables) {
-      console.log({ fragmentVariables })
       return {
         citySlug: props.citySlug,
         ...fragmentVariables,
