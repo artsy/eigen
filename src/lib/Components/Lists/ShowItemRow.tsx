@@ -16,6 +16,7 @@ import styled from "styled-components/native"
 interface Props {
   show: ShowItemRow_show
   relay?: RelayProp
+  noPadding?: boolean
 }
 
 interface State {
@@ -102,12 +103,12 @@ export class ShowItemRow extends React.Component<Props, State> {
   }
 
   render() {
-    const { show } = this.props
+    const { noPadding, show } = this.props
     const imageURL = show.cover_image && show.cover_image.url
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
-        <Box py={2}>
+        <Box py={noPadding ? 0 : 2}>
           <Flex flexDirection="row" flexGrow="1">
             <Flex flexGrow="1" flexDirection="row" alignItems="center">
               {!imageURL ? (
