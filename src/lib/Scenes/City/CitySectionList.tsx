@@ -2,7 +2,6 @@ import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { RelayProp } from "react-relay"
-import { CitySectionBucketResults } from "../Map/Bucket"
 import { EventList } from "./Components/EventList"
 
 interface Props {
@@ -11,7 +10,6 @@ interface Props {
 }
 
 interface State {
-  buckets: CitySectionBucketResults
   relay: RelayProp
 }
 
@@ -21,20 +19,13 @@ class CitySectionList extends React.Component<Props, State> {
     relay: null,
   }
 
-  componentWillMount() {
-    this.setState({
-      buckets: buckets as CitySectionBucketResults,
-    })
-  }
-
   render() {
     const {
       section,
-      city: { name },
+      city: { name, shows },
     } = this.props
-    const { buckets } = this.state
     console.log("this.props", this.props)
-    return <EventList key={name + section} bucket={buckets[section]} type={section} relay={this.state.relay} />
+    return <EventList key={name + section} bucket={shows} type={section} relay={this.state.relay} />
   }
 }
 
@@ -47,6 +38,8 @@ export default createFragmentContainer(
         edges {
           node {
             id
+            _id
+            __id
             is_followed
             start_at
             end_at

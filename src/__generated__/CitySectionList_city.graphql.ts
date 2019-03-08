@@ -9,6 +9,8 @@ export type CitySectionList_city = {
         readonly edges: ReadonlyArray<({
             readonly node: ({
                 readonly id: string;
+                readonly _id: string;
+                readonly __id: string;
                 readonly is_followed: boolean | null;
                 readonly start_at: string | null;
                 readonly end_at: string | null;
@@ -38,14 +40,14 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "type",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "type",
   "args": null,
   "storageKey": null
 };
@@ -113,6 +115,14 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
+                  "name": "_id",
+                  "args": null,
+                  "storageKey": null
+                },
+                v1,
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
                   "name": "is_followed",
                   "args": null,
                   "storageKey": null
@@ -145,7 +155,7 @@ return {
                   "args": null,
                   "storageKey": null
                 },
-                v1,
+                v2,
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -155,7 +165,7 @@ return {
                   "concreteType": null,
                   "plural": false,
                   "selections": [
-                    v2,
+                    v1,
                     {
                       "kind": "InlineFragment",
                       "type": "ExternalPartner",
@@ -168,12 +178,11 @@ return {
                       "type": "Partner",
                       "selections": [
                         v0,
-                        v1
+                        v2
                       ]
                     }
                   ]
-                },
-                v2
+                }
               ]
             }
           ]
@@ -183,5 +192,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1b9478efb9f9b7beda3104629a512186';
+(node as any).hash = '1ff2cdf9ac6cc36d299351c00f1632cb';
 export default node;

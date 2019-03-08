@@ -32,6 +32,8 @@ fragment CitySectionList_city on City {
     edges {
       node {
         id
+        _id
+        __id
         is_followed
         start_at
         end_at
@@ -52,7 +54,6 @@ fragment CitySectionList_city on City {
             __id
           }
         }
-        __id
       }
     }
   }
@@ -86,14 +87,14 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "type",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "type",
   "args": null,
   "storageKey": null
 };
@@ -101,7 +102,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersCitySectionListQuery",
-  "id": "db0438d68d8155ec19615fd4133169f8",
+  "id": "e29ad0b44354a03c6c955ddda50ccb50",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -200,6 +201,14 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
+                        "name": "_id",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      v3,
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
                         "name": "is_followed",
                         "args": null,
                         "storageKey": null
@@ -232,7 +241,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v3,
+                      v4,
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -249,7 +258,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v4,
+                          v3,
                           {
                             "kind": "InlineFragment",
                             "type": "ExternalPartner",
@@ -262,12 +271,11 @@ return {
                             "type": "Partner",
                             "selections": [
                               v2,
-                              v3
+                              v4
                             ]
                           }
                         ]
-                      },
-                      v4
+                      }
                     ]
                   }
                 ]
