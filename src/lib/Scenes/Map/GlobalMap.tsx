@@ -10,13 +10,13 @@ import styled from "styled-components/native"
 import Supercluster from "supercluster"
 
 import colors from "lib/data/colors"
-import { convertCityToGeoJSON } from "lib/utils/convertCityToGeoJSON"
+import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { bucketCityResults, BucketResults, emptyBucketResults } from "./Bucket"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { MapGeoFeature, MapTab, OSCoordsUpdate, Show } from "./types"
+import { MapGeoFeature, MapGeoFeatureCollection, MapTab, OSCoordsUpdate, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -61,7 +61,7 @@ interface State {
   /** True when we know that we can get location updates from the OS */
   trackUserLocation?: boolean
   /** A set of GeoJSON features, which right now is our show clusters */
-  featureCollection: any
+  showsGeoJSONFeature: MapGeoFeatureCollection
   /** Has the map fully rendered? */
   mapLoaded: boolean
 }
@@ -83,6 +83,7 @@ enum DrawerPosition {
   collapsed = "collapsed",
   partiallyRevealed = "partiallyRevealed",
 }
+
 export class GlobalMap extends React.Component<Props, State> {
   /** Makes sure we're consistently using { lat, lng } internally */
   static lngLatArrayToLocation(arr: [number, number] | undefined) {
@@ -99,7 +100,8 @@ export class GlobalMap extends React.Component<Props, State> {
 
   map: Mapbox.MapView
   clusterEngine: Supercluster
-  featureCollection: any
+  showsGeoJSONFeatureCollection: MapGeoFeatureCollection
+  fairsGeoJSONFeatureCollection: MapGeoFeatureCollection
   moveButtons: Animated.Value
 
   filters: MapTab[] = [
@@ -109,6 +111,7 @@ export class GlobalMap extends React.Component<Props, State> {
     { id: "galleries", text: "Galleries" },
     { id: "museums", text: "Museums" },
   ]
+
   shows: { [id: string]: Show } = {}
 
   stylesheet = Mapbox.StyleSheet.create({
@@ -147,9 +150,10 @@ export class GlobalMap extends React.Component<Props, State> {
       currentLocation,
       bucketResults: emptyBucketResults,
       trackUserLocation: false,
-      featureCollection: {},
+      showsGeoJSONFeature: undefined,
       mapLoaded: false,
     }
+
     this.clusterEngine = new Supercluster({
       radius: 50,
     })
@@ -205,25 +209,23 @@ export class GlobalMap extends React.Component<Props, State> {
       return
     }
     const { city } = this.props.viewer
-    const data = city.shows.edges.filter(a => a.node.type === "Show").map(({ node }) => {
-      return {
-        node: {
-          ...node,
-          icon: node.is_followed ? "pin-saved" : "pin",
-        },
-      }
-    })
 
-    const featureCollection = convertCityToGeoJSON(data)
+    const showData = showsToGeoCityShow(city.shows.edges)
+    const showsGeoJSONFeature = convertCityToGeoJSON(showData)
+
+    const fairData = fairToGeoCityFairs(city.fairs.edges)
+    const fairsGeoJSONFeature = convertCityToGeoJSON(fairData)
 
     if (updateState) {
       this.setState({
-        featureCollection,
+        showsGeoJSONFeature,
       })
     }
-    this.featureCollection = featureCollection
-    this.clusterEngine.load(this.featureCollection.features)
-    return featureCollection
+
+    this.fairsGeoJSONFeatureCollection = fairsGeoJSONFeature
+    this.showsGeoJSONFeatureCollection = showsGeoJSONFeature
+    // close but not enough yet
+    this.clusterEngine.load(this.showsGeoJSONFeatureCollection.features as any)
   }
 
   emitFilteredBucketResults() {
@@ -235,6 +237,7 @@ export class GlobalMap extends React.Component<Props, State> {
     const {
       city: { name: cityName, slug: citySlug, sponsoredContent },
     } = this.props.viewer
+
     EventEmitter.dispatch("map:change", {
       filter,
       buckets: this.state.bucketResults,
@@ -363,10 +366,10 @@ export class GlobalMap extends React.Component<Props, State> {
                 </Animated.View>
                 <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
               </SafeAreaView>
-              {this.featureCollection && (
+              {this.showsGeoJSONFeatureCollection && (
                 <Mapbox.ShapeSource
                   id="shows"
-                  shape={this.featureCollection}
+                  shape={this.showsGeoJSONFeatureCollection}
                   cluster
                   clusterRadius={50}
                   onPress={e => {
@@ -388,11 +391,27 @@ export class GlobalMap extends React.Component<Props, State> {
                   />
                 </Mapbox.ShapeSource>
               )}
+
+              {this.fairsGeoJSONFeatureCollection && (
+                <Mapbox.ShapeSource
+                  id="fairs"
+                  shape={this.fairsGeoJSONFeatureCollection}
+                  onPress={e => {
+                    this.handleFairPress(e.nativeEvent)
+                  }}
+                >
+                  <Mapbox.SymbolLayer id="fair" filter={["!has", "point_count"]} style={this.stylesheet.singleShow} />
+                </Mapbox.ShapeSource>
+              )}
             </>
           )}
         </Map>
       </Flex>
     )
+  }
+
+  async handleFairPress(_event: any) {
+    // NOOP for now
   }
 
   /**
