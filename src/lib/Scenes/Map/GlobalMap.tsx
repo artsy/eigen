@@ -134,10 +134,14 @@ export class GlobalMap extends React.Component<Props, State> {
     this.updateClusterMap(false)
   }
 
+  handleEvent = activeIndex => this.setState({ activeIndex }, () => this.emitFilteredBucketResults())
+
   componentDidMount() {
-    EventEmitter.subscribe("filters:change", activeIndex =>
-      this.setState({ activeIndex }, () => this.emitFilteredBucketResults())
-    )
+    EventEmitter.subscribe("filters:change", this.handleEvent)
+  }
+
+  componentWillUnmount() {
+    EventEmitter.unsubscribe("filters:change", this.handleEvent)
   }
 
   componentWillReceiveProps(nextProps: Props) {
