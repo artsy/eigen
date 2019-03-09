@@ -25,13 +25,15 @@ const Background = styled(Box)`
 const screenWidth = Dimensions.get("window").width
 
 interface ShowCardProps {
-  shows: ShowItemRow_show[]
-  onSave?: () => void
   relay: RelayProp
+  shows: ShowItemRow_show[]
+  onSaveStarted?: () => void
+  onSaveEnded?: () => void
 }
 
 interface ShowCardState {
   currentPage: number
+  isSaving: boolean
 }
 
 const PageIndicator = styled(Box)`
@@ -48,10 +50,11 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
 
   state = {
     currentPage: 1,
+    isSaving: false,
   }
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps, this.props) && this.list) {
+    if (!this.state.isSaving && !isEqual(prevProps, this.props) && this.list) {
       this.list.scrollToIndex({ index: 0, animated: true })
     }
   }
@@ -59,16 +62,18 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
   handleTap(show) {
     const path = show.href
     SwitchBoard.presentNavigationViewController(this, path)
-
-    if (this.props.onSave) {
-      this.props.onSave()
-    }
   }
 
   renderItem = ({ item }) => (
     <Background ml={1} p={1} style={shadowDetails} width={this.cardWidth}>
       <TouchableOpacity onPress={this.handleTap.bind(this, item)}>
-        <ShowItemRow show={item} relay={this.props.relay} noPadding />
+        <ShowItemRow
+          show={item}
+          relay={this.props.relay}
+          onSaveStarted={this.props.onSaveStarted}
+          onSaveEnded={this.props.onSaveEnded}
+          noPadding
+        />
       </TouchableOpacity>
     </Background>
   )
@@ -91,6 +96,26 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     return Dimensions.get("window").width - 40
   }
 
+  onSaveStarted = () => {
+    this.setState({
+      isSaving: true,
+    })
+
+    if (this.props.onSaveStarted) {
+      this.props.onSaveStarted()
+    }
+  }
+
+  onSaveEnded = () => {
+    this.setState({
+      isSaving: false,
+    })
+
+    if (this.props.onSaveEnded) {
+      this.props.onSaveEnded()
+    }
+  }
+
   render() {
     const { shows } = this.props
     const { currentPage } = this.state
@@ -101,7 +126,13 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
       show && (
         <Background m={1} p={1} style={shadowDetails}>
           <TouchableOpacity onPress={this.handleTap.bind(this)}>
-            <ShowItemRow show={show} relay={this.props.relay} noPadding />
+            <ShowItemRow
+              show={show}
+              relay={this.props.relay}
+              onSaveStarted={this.onSaveStarted}
+              onSaveEnded={this.onSaveEnded}
+              noPadding
+            />
           </TouchableOpacity>
         </Background>
       )

@@ -3,7 +3,7 @@ import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import { get } from "lodash"
 import React from "react"
-import { Animated, Dimensions, Easing, NativeModules, SafeAreaView, View } from "react-native"
+import { Animated, Dimensions, Easing, Image, NativeModules, SafeAreaView, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
@@ -64,6 +64,7 @@ interface State {
   featureCollection: any
   /** Has the map fully rendered? */
   mapLoaded: boolean
+  isSavingShow: boolean
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
@@ -149,6 +150,7 @@ export class GlobalMap extends React.Component<Props, State> {
       trackUserLocation: false,
       featureCollection: {},
       mapLoaded: false,
+      isSavingShow: false,
     }
     this.clusterEngine = new Supercluster({
       radius: 50,
@@ -285,7 +287,20 @@ export class GlobalMap extends React.Component<Props, State> {
               height: 150,
             }}
           >
-            <Theme>{hasShows && <ShowCard shows={activeShows as any} />}</Theme>
+            <Theme>
+              {hasShows && (
+                <ShowCard
+                  shows={activeShows as any}
+                  relay={this.props.relay}
+                  onSaveStarted={() => {
+                    this.setState({ isSavingShow: true })
+                  }}
+                  onSaveEnded={() => {
+                    this.setState({ isSavingShow: false })
+                  }}
+                />
+              )}
+            </Theme>
           </AnimatedView>
         )}
       </Spring>
@@ -325,9 +340,11 @@ export class GlobalMap extends React.Component<Props, State> {
       },
       onDidFinishRenderingMapFully: () => this.setState({ mapLoaded: true }),
       onPress: () => {
-        this.setState({
-          activeShows: [],
-        })
+        if (!this.state.isSavingShow) {
+          this.setState({
+            activeShows: [],
+          })
+        }
       },
     }
 

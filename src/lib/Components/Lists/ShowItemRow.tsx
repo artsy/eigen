@@ -8,7 +8,7 @@ import { Pin } from "lib/Icons/Pin"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { hrefForPartialShow } from "lib/utils/router"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import React from "react"
+import React, { TouchEvent } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
@@ -17,6 +17,8 @@ interface Props {
   show: ShowItemRow_show
   relay?: RelayProp
   noPadding?: boolean
+  onSaveStarted?: () => void
+  onSaveEnded?: () => void
 }
 
 interface State {
@@ -54,6 +56,10 @@ export class ShowItemRow extends React.Component<Props, State> {
     } = this.props
 
     if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
+      if (this.props.onSaveStarted) {
+        this.props.onSaveStarted()
+      }
+
       this.setState(
         {
           isFollowedSaving: true,
@@ -97,6 +103,10 @@ export class ShowItemRow extends React.Component<Props, State> {
   }
 
   handleShowSuccessfullyUpdated() {
+    if (this.props.onSaveEnded) {
+      this.props.onSaveEnded()
+    }
+
     this.setState({
       isFollowedSaving: false,
     })
@@ -111,10 +121,8 @@ export class ShowItemRow extends React.Component<Props, State> {
         <Box py={noPadding ? 0 : 2}>
           <Flex flexDirection="row">
             {!imageURL ? (
-              <DefaultImageContainer>
-                <Box p={2}>
-                  <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
-                </Box>
+              <DefaultImageContainer p={15}>
+                <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
               </DefaultImageContainer>
             ) : (
               <OpaqueImageView width={58} height={58} imageURL={imageURL} />
@@ -192,6 +200,6 @@ const TightendSerif = styled(Serif)`
 const DefaultImageContainer = styled(Box)`
   align-items: center;
   background-color: ${colors["gray-regular"]};
-  height: 100%;
+  height: ${space(6)};
   width: ${space(6)};
 `
