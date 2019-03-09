@@ -2,7 +2,7 @@ import { Box, color, Flex, Sans, Separator, Serif, space } from "@artsy/palette"
 import { dimensions, screen } from "lib/data/ScreenSizes/screenSizes"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
 import React, { Component } from "react"
-import { Dimensions, NativeModules, TouchableOpacity, View } from "react-native"
+import { Dimensions, NativeModules, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 import { cityList as cities } from "./cities"
 
@@ -27,6 +27,7 @@ export class CityPicker extends Component<Props, State> {
   selectCity(city: string, index: number) {
     this.setState({ selectedCity: city })
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", { cityIndex: index })
+    this.setState({ selectedCity: null })
   }
 
   handleLogo(screenHeight) {
