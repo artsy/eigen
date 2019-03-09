@@ -35,7 +35,7 @@ query CitySectionListQuery(
 
 fragment CitySectionList_city_1ZOk4i on City {
   name
-  shows(discoverable: true, first: $count, sort: START_AT_ASC, after: $cursor, partnerType: $partnerType) {
+  shows(includeStubShows: true, first: $count, sort: START_AT_ASC, after: $cursor, partnerType: $partnerType) {
     pageInfo {
       endCursor
       hasNextPage
@@ -145,7 +145,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "CitySectionListQuery",
-  "id": "b220de72bb95c2cf0e7e7b2feb916abf",
+  "id": "46fd30ad19b5acd507ec90fff52fdb9a",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -220,16 +220,16 @@ return {
                 "type": "String"
               },
               {
-                "kind": "Literal",
-                "name": "discoverable",
-                "value": true,
-                "type": "Boolean"
-              },
-              {
                 "kind": "Variable",
                 "name": "first",
                 "variableName": "count",
                 "type": "Int"
+              },
+              {
+                "kind": "Literal",
+                "name": "includeStubShows",
+                "value": true,
+                "type": "Boolean"
               },
               {
                 "kind": "Variable",
@@ -421,16 +421,16 @@ return {
                 "type": "String"
               },
               {
-                "kind": "Literal",
-                "name": "discoverable",
-                "value": true,
-                "type": "Boolean"
-              },
-              {
                 "kind": "Variable",
                 "name": "first",
                 "variableName": "count",
                 "type": "Int"
+              },
+              {
+                "kind": "Literal",
+                "name": "includeStubShows",
+                "value": true,
+                "type": "Boolean"
               },
               {
                 "kind": "Variable",
@@ -448,7 +448,7 @@ return {
             "handle": "connection",
             "key": "CitySectionList_shows",
             "filters": [
-              "discoverable",
+              "includeStubShows",
               "sort",
               "partnerType"
             ]
