@@ -27,25 +27,25 @@ interface State {
   sponsoredContent: { introText: string; artGuideUrl: string }
 }
 
-const screenSchemaForCurrentTabState = (currentSelectedTab, isDrawerOpen) => {
+const screenSchemaForCurrentTabState = currentSelectedTab => {
   switch (currentSelectedTab) {
     case "all":
-      return isDrawerOpen ? Schema.PageNames.CityGuideAllGuide : Schema.PageNames.CityGuideAllMap
+      return Schema.PageNames.CityGuideAllGuide
     case "saved":
-      return isDrawerOpen ? Schema.PageNames.CityGuideSavedGuide : Schema.PageNames.CityGuideSavedMap
+      return Schema.PageNames.CityGuideSavedGuide
     case "fairs":
-      return isDrawerOpen ? Schema.PageNames.CityGuideFairsGuide : Schema.PageNames.CityGuideFairsMap
+      return Schema.PageNames.CityGuideFairsGuide
     case "galleries":
-      return isDrawerOpen ? Schema.PageNames.CityGuideGalleriesGuide : Schema.PageNames.CityGuideGalleriesMap
+      return Schema.PageNames.CityGuideGalleriesGuide
     case "museums":
-      return isDrawerOpen ? Schema.PageNames.CityGuideMuseumsGuide : Schema.PageNames.CityGuideMuseumsMap
+      return Schema.PageNames.CityGuideMuseumsGuide
     default:
       return null
   }
 }
 
 @screenTrack<Props>(props => ({
-  context_screen: screenSchemaForCurrentTabState("all", props.isDrawerOpen),
+  context_screen: screenSchemaForCurrentTabState("all"),
   context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
   context_screen_owner_slug: props.citySlug,
   context_screen_owner_id: props.citySlug,
@@ -105,7 +105,7 @@ export class CityView extends Component<Props, State> {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.isDrawerOpen !== nextProps.isDrawerOpen) {
-      this.fireHomeScreenViewAnalytics(nextProps)
+      this.fireScreenViewAnalytics(nextProps)
     }
   }
 
@@ -120,9 +120,9 @@ export class CityView extends Component<Props, State> {
     }
   }
 
-  fireHomeScreenViewAnalytics = props => {
+  fireScreenViewAnalytics = props => {
     this.props.tracking.trackEvent({
-      context_screen: screenSchemaForCurrentTabState(this.state.filter.id, props.isDrawerOpen),
+      context_screen: screenSchemaForCurrentTabState(this.state.filter.id),
       context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
       context_screen_owner_slug: this.state.citySlug,
       context_screen_owner_id: this.state.citySlug,
