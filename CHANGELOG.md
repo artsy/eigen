@@ -34,6 +34,7 @@
 - Updates styling for cluster and pin show cards - luc
 - Decrease likelihood of getting a blank view while scrolling fast in city tabs - alloy
 - Hook up save functionality for show card - luc
+- Adds loading screen for Map view - luc
 
 ### 1.8.14
 
