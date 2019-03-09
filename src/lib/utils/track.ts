@@ -99,6 +99,8 @@ export namespace Schema {
     CityGuideMuseumsGuide = "CityGuideMuseumsGuide",
     CityGuideMuseumsMap = "CityGuideMuseumsMap",
     CityPicker = "CityPicker",
+    ClusteredMapPin = "ClusteredMapPin",
+    SingleMapPin = "SingleMapPin",
     ConversationPage = "Conversation",
     ConsignmentsWelcome = "ConsignmentsWelcome",
     ConsignmentsOverView = "ConsignmentsOverview",

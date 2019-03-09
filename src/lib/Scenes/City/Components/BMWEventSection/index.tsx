@@ -32,7 +32,6 @@ export class BMWEventSection extends React.Component<Props> {
 
   @track((__, _, args) => {
     const citySlug = args[1]
-    console.log("????? tracking", citySlug)
     return {
       action_name: Schema.ActionNames.GetBMWArtGuide,
       action_type: Schema.ActionTypes.Tap,
