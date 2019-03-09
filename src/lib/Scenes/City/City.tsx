@@ -120,7 +120,7 @@ export class CityView extends Component<Props, State> {
     }
   }
 
-  fireScreenViewAnalytics = props => {
+  fireScreenViewAnalytics = () => {
     this.props.tracking.trackEvent({
       context_screen: screenSchemaForCurrentTabState(this.state.filter.id),
       context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
