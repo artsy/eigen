@@ -16,6 +16,7 @@ export interface MapTab {
 }
 
 export type Show = GlobalMap_viewer["city"]["shows"]["edges"][0]["node"]
+export type Fair = GlobalMap_viewer["city"]["fairs"]["edges"][0]["node"]
 
 /** A GeoJSON feature used by MapBox internally */
 export interface MapGeoFeature {
@@ -31,7 +32,7 @@ export interface MapGeoFeature {
     pitch: number
     animated: boolean
   }
-  type: string
+  type: string | any
 }
 
 export interface MapGeoFeatureCollection {
