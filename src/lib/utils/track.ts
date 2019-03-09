@@ -88,6 +88,17 @@ export namespace Schema {
     BidFlowRegistrationResultConfirmed = "RegistrationConfirmed",
     BidFlowRegistrationResultPending = "RegistrationPending",
     BidFlowRegistrationResultError = "RegistrationError",
+    CityGuideAllGuide = "CityGuideAllGuide",
+    CityGuideAllMap = "CityGuideAllMap",
+    CityGuideSavedGuide = "CityGuideSavedGuide",
+    CityGuideSavedMap = "CityGuideSavedMap",
+    CityGuideFairsGuide = "CityGuideFairsGuide",
+    CityGuideFairsMap = "CityGuideFairsMap",
+    CityGuideGalleriesGuide = "CityGuideGalleriesGuide",
+    CityGuideGalleriesMap = "CityGuideGalleriesMap",
+    CityGuideMuseumsGuide = "CityGuideMuseumsGuide",
+    CityGuideMuseumsMap = "CityGuideMuseumsMap",
+    CityPicker = "CityPicker",
     ConversationPage = "Conversation",
     ConsignmentsWelcome = "ConsignmentsWelcome",
     ConsignmentsOverView = "ConsignmentsOverview",
@@ -115,6 +126,7 @@ export namespace Schema {
   export enum OwnerEntityTypes {
     Artist = "Artist",
     Artwork = "Artwork",
+    CityGuide = "CityGuide",
     Conversation = "Conversation",
     Gallery = "Gallery",
     Gene = "Gene",
@@ -149,6 +161,12 @@ export namespace Schema {
     ArtistUnfollow = "artistUnfollow",
     ArtistWorks = "artistWorks",
     ArtistShows = "artistShows",
+
+    /**
+     * City and Map Page Events
+     */
+
+    GetBMWArtGuide = "getBMWArtGuide",
 
     /**
      * Gene Page Events

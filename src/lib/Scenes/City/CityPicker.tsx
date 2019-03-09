@@ -1,6 +1,7 @@
 import { Box, color, Flex, Sans, Separator, Serif, space } from "@artsy/palette"
 import { dimensions, screen } from "lib/data/ScreenSizes/screenSizes"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
+import { Schema, screenTrack } from "lib/utils/track"
 import React, { Component } from "react"
 import { Dimensions, NativeModules, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -15,6 +16,13 @@ interface State {
 }
 
 const cityList = cities.map(city => city.name)
+
+@screenTrack(() => ({
+  context_screen: Schema.PageNames.CityPicker,
+  context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+  context_screen_owner_slug: "",
+  context_screen_owner_id: "",
+}))
 export class CityPicker extends Component<Props, State> {
   constructor(props: Props) {
     super(props)

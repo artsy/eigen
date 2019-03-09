@@ -1,4 +1,5 @@
 import { Box, color, Flex, Theme } from "@artsy/palette"
+import { Schema, screenTrack } from "lib/utils/track"
 import React, { Component } from "react"
 import { NativeModules, ScrollView } from "react-native"
 import { RelayProp } from "react-relay"
@@ -13,6 +14,7 @@ import { EventList } from "./Components/EventList"
 interface Props {
   verticalMargin?: number
   isDrawerOpen?: boolean
+  tracking: any
 }
 
 interface State {
@@ -24,6 +26,30 @@ interface State {
   sponsoredContent: { introText: string; artGuideUrl: string }
 }
 
+const screenSchemaForCurrentTabState = (currentSelectedTab, isDrawerOpen) => {
+  switch (currentSelectedTab) {
+    case "all":
+      return isDrawerOpen ? Schema.PageNames.CityGuideAllGuide : Schema.PageNames.CityGuideAllMap
+    case "saved":
+      return isDrawerOpen ? Schema.PageNames.CityGuideSavedGuide : Schema.PageNames.CityGuideSavedMap
+    case "fairs":
+      return isDrawerOpen ? Schema.PageNames.CityGuideFairsGuide : Schema.PageNames.CityGuideFairsMap
+    case "galleries":
+      return isDrawerOpen ? Schema.PageNames.CityGuideGalleriesGuide : Schema.PageNames.CityGuideGalleriesMap
+    case "museums":
+      return isDrawerOpen ? Schema.PageNames.CityGuideMuseumsGuide : Schema.PageNames.CityGuideMuseumsMap
+    default:
+      return null
+  }
+}
+
+// FIXME: city analytics: citySlug is missing on initial mount
+@screenTrack<Props>(props => ({
+  context_screen: screenSchemaForCurrentTabState("all", props.isDrawerOpen),
+  context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+  context_screen_owner_slug: "",
+  context_screen_owner_id: "",
+}))
 export class CityView extends Component<Props, State> {
   state = {
     buckets: null,
@@ -77,6 +103,12 @@ export class CityView extends Component<Props, State> {
     EventEmitter.unsubscribe("map:change", this.handleEvent)
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.isDrawerOpen !== nextProps.isDrawerOpen) {
+      this.fireHomeScreenViewAnalytics(nextProps)
+    }
+  }
+
   componentDidUpdate() {
     if (!this.props.isDrawerOpen && this.scrollView) {
       this.scrollView.scrollTo({ x: 0, y: 0, animated: true })
@@ -86,6 +118,15 @@ export class CityView extends Component<Props, State> {
       // We have the Relay response; post a notification so that the ARMapContainerViewController can finalize the native UI.
       NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryQueryResponseReceived", {})
     }
+  }
+
+  fireHomeScreenViewAnalytics = props => {
+    this.props.tracking.trackEvent({
+      context_screen: screenSchemaForCurrentTabState(this.state.filter.id, props.isDrawerOpen),
+      context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+      context_screen_owner_slug: this.state.citySlug,
+      context_screen_owner_id: this.state.citySlug,
+    })
   }
 
   render() {
