@@ -1,3 +1,8 @@
+// After any changes to this file you should run
+//
+// $ yarn generate-cities-objc
+//
+// to update the native side.
 export const cityList = [
   {
     name: "New York",

@@ -16,8 +16,10 @@
 
 ### Master
 
+- Shows fairs on the map - orta
 - Update city coordinates (to fix Los Angeles bug) - anandaroop
 - Fixes warning about missing viewer prop - ash
+- Removes touchable feedback on fair cards - ash
 - Fixes warning about duplicate keys in list - ash
 - Adds zero state to CityTab - kieran
 - Renames SavedShowItemRow to ShowItemRow - kieran
@@ -26,9 +28,14 @@
 - Fixes map not re-centering on new city when changed - ash
 - Handles text spillover bug on narrow iphone screens in Saved Shows view - ashley
 - Fixes saving not updating props in city view - kieran
+- Disables navigation to Gallery pages from Shows view on stub shows - ashley
 - Fixes memory leak by unsubscribing components from the EventEmitter - alloy
 - Disables navigation to Gallery pages from Shows view on stub shows - ashley
 - Adjusts styling on city picker - ashley
+- Adds city section list for museum/gallery shows - kieran & ash
+- Moves city list scroll view enabled-ness management to ObjC - ash
+- Updates styling for cluster and pin show cards - luc
+- Decrease likelihood of getting a blank view while scrolling fast in city tabs - alloy
 
 ### 1.8.14
 
@@ -46,6 +53,7 @@
 - Handle rendering card for Clusters - luc
 - Refactor clustering engine to handle multiple zooms - luc
 - All event section events now link to show - kieran
+- Adds CityFairList - kieran
 
 ### 1.8.11
 

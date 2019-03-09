@@ -1,26 +1,26 @@
 import { Box, Message, Separator, Theme } from "@artsy/palette"
+import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
+import Spinner from "lib/Components/Spinner"
+import { BucketKey } from "lib/Scenes/Map/Bucket"
 import React from "react"
-import { FlatList } from "react-native"
+import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { RelayProp } from "react-relay"
-import styled from "styled-components/native"
 import { TabFairItemRow } from "./TabFairItemRow"
 
-const StyledMessage = styled(Message)`
-  text-align: center;
-`
-
 interface Props {
-  bucket: any[]
-  type: string
+  bucket: CitySectionList_city["shows"]["edges"]
+  type: BucketKey
   cityName: string
   relay: RelayProp
+  onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void
+  fetchingNextPage?: boolean
 }
 
-export class CityTab extends React.Component<Props> {
+export class EventList extends React.Component<Props> {
   renderItem = item => {
     const { type } = this.props
-    if (type === "Fairs") {
+    if (type === "fairs") {
       return <TabFairItemRow item={item} />
     } else {
       return <ShowItemRow show={item.node} relay={this.props.relay} />
@@ -28,14 +28,17 @@ export class CityTab extends React.Component<Props> {
   }
 
   hasEventsComponent = () => {
-    const { bucket } = this.props
+    const { bucket, onScroll, fetchingNextPage } = this.props
     return (
       <FlatList
         data={bucket}
         ItemSeparatorComponent={() => <Separator />}
+        ListFooterComponent={fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
         keyExtractor={item => item.node.id}
         renderItem={({ item }) => this.renderItem(item)}
-        scrollEnabled={false}
+        onScroll={onScroll}
+        scrollIndicatorInsets={{ right: -10 }}
+        windowSize={50}
       />
     )
   }
@@ -43,22 +46,22 @@ export class CityTab extends React.Component<Props> {
   hasNoEventsComponent = () => {
     const { type, cityName } = this.props
     switch (type) {
-      case "Saved":
+      case "saved":
         return (
           <Box py={2}>
-            <StyledMessage textSize="3t">{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</StyledMessage>
+            <Message textSize="3t">{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</Message>
           </Box>
         )
-      case "Fairs":
+      case "fairs":
         return (
           <Box py={2}>
-            <StyledMessage textSize="3t">{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</StyledMessage>
+            <Message textSize="3t">{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</Message>
           </Box>
         )
       default:
         return (
           <Box py={2}>
-            <StyledMessage textSize="3t">{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</StyledMessage>
+            <Message textSize="3t">{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</Message>
           </Box>
         )
     }

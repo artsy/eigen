@@ -13,6 +13,7 @@ interface Props extends ViewProperties {
   currentBucket: BucketKey
   buckets: BucketResults
   cityName: string
+  citySlug: string
   sponsoredContent: { introText: string; artGuideUrl: string }
   relay: RelayProp
 }
@@ -122,18 +123,50 @@ export class AllEvents extends React.Component<Props, State> {
   }
 
   renderItem = ({ item: { data, type } }) => {
-    const { sponsoredContent } = this.props
+    const { sponsoredContent, citySlug } = this.props
     switch (type) {
       case "fairs":
-        return <FairEventSection data={data} />
+        return <FairEventSection citySlug={citySlug} data={data} />
       case "galleries":
-        return <EventSection title="Gallery shows" data={data} relay={this.props.relay} />
+        return (
+          <EventSection
+            title="Gallery shows"
+            data={data}
+            section="galleries"
+            citySlug={citySlug}
+            relay={this.props.relay}
+          />
+        )
       case "museums":
-        return <EventSection title="Museum shows" data={data} relay={this.props.relay} />
+        return (
+          <EventSection
+            title="Museum shows"
+            data={data}
+            section="museums"
+            citySlug={citySlug}
+            relay={this.props.relay}
+          />
+        )
       case "opening":
-        return <EventSection title="Opening shows" data={data} relay={this.props.relay} />
+        return (
+          <EventSection
+            title="Opening shows"
+            data={data}
+            section="opening"
+            citySlug={citySlug}
+            relay={this.props.relay}
+          />
+        )
       case "closing":
-        return <EventSection title="Closing shows" data={data} relay={this.props.relay} />
+        return (
+          <EventSection
+            title="Closing shows"
+            data={data}
+            section="closing"
+            citySlug={citySlug}
+            relay={this.props.relay}
+          />
+        )
       case "bmw":
         return (
           <BMWEventSection

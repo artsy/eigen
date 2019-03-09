@@ -29,12 +29,12 @@
     static NSArray <ARCity *> *_computedCities = nil;
     if (!_computedCities) {
         _computedCities = @[
-            [[ARCity alloc] initWithName:@"New York" slug:@"new-york-ny-usa" epicenter:[[CLLocation alloc] initWithLatitude:40.7128 longitude:-74.006]],
-            [[ARCity alloc] initWithName:@"Los Angeles" slug:@"los-angeles-ca-usa" epicenter:[[CLLocation alloc] initWithLatitude:34.0522 longitude:118.2437]],
-            [[ARCity alloc] initWithName:@"London" slug:@"london-united-kingdom" epicenter:[[CLLocation alloc] initWithLatitude:51.5074 longitude:0.1278]],
-            [[ARCity alloc] initWithName:@"Berlin" slug:@"berlin-germany" epicenter:[[CLLocation alloc] initWithLatitude:52.52 longitude:13.405]],
-            [[ARCity alloc] initWithName:@"Paris" slug:@"paris-france" epicenter:[[CLLocation alloc] initWithLatitude:48.8566 longitude:2.3522]],
-            [[ARCity alloc] initWithName:@"Hong Kong" slug:@"hong-kong-hong-kong" epicenter:[[CLLocation alloc] initWithLatitude:22.3964 longitude:114.1095]]
+            [[ARCity alloc] initWithName:@"New York" slug:@"new-york-ny-usa" epicenter:[[CLLocation alloc] initWithLatitude:40.71 longitude:-74.01]],
+            [[ARCity alloc] initWithName:@"Los Angeles" slug:@"los-angeles-ca-usa" epicenter:[[CLLocation alloc] initWithLatitude:34.05 longitude:-118.24]],
+            [[ARCity alloc] initWithName:@"London" slug:@"london-united-kingdom" epicenter:[[CLLocation alloc] initWithLatitude:51.51 longitude:-0.13]],
+            [[ARCity alloc] initWithName:@"Berlin" slug:@"berlin-germany" epicenter:[[CLLocation alloc] initWithLatitude:52.52 longitude:13.4]],
+            [[ARCity alloc] initWithName:@"Paris" slug:@"paris-france" epicenter:[[CLLocation alloc] initWithLatitude:48.86 longitude:2.35]],
+            [[ARCity alloc] initWithName:@"Hong Kong" slug:@"hong-kong-hong-kong" epicenter:[[CLLocation alloc] initWithLatitude:22.3 longitude:114.2]]
         ];
     }
     return _computedCities;

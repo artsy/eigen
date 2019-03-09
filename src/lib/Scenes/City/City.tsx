@@ -8,7 +8,7 @@ import { FiltersBar } from "../Map/Components/FiltersBar"
 import { EventEmitter } from "../Map/EventEmitter"
 import { MapTab as Tab } from "../Map/types"
 import { AllEvents } from "./Components/AllEvents"
-import { CityTab } from "./Components/CityTab"
+import { EventList } from "./Components/EventList"
 
 interface Props {
   verticalMargin?: number
@@ -20,6 +20,7 @@ interface State {
   filter: Tab
   relay: RelayProp
   cityName: string
+  citySlug: string
   sponsoredContent: { introText: string; artGuideUrl: string }
 }
 
@@ -29,6 +30,7 @@ export class CityView extends Component<Props, State> {
     filter: { id: "all", text: "All events" },
     relay: null,
     cityName: "",
+    citySlug: "",
     sponsoredContent: null,
   }
   scrollViewVerticalStart = 0
@@ -46,6 +48,7 @@ export class CityView extends Component<Props, State> {
     filter,
     buckets,
     cityName,
+    citySlug,
     relay,
     sponsoredContent,
   }: {
@@ -53,12 +56,14 @@ export class CityView extends Component<Props, State> {
     buckets: BucketResults
     cityName: string
     relay: RelayProp
+    citySlug: string
     sponsoredContent: { introText: string; artGuideUrl: string }
   }) => {
     this.setState({
       buckets,
       filter,
       cityName,
+      citySlug,
       relay,
       sponsoredContent,
     })
@@ -84,8 +89,8 @@ export class CityView extends Component<Props, State> {
   }
 
   render() {
-    const { buckets, filter, cityName } = this.state
-    const { isDrawerOpen, verticalMargin } = this.props
+    const { buckets, filter, cityName, citySlug } = this.state
+    const { verticalMargin } = this.props
     // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
     return (
@@ -102,8 +107,10 @@ export class CityView extends Component<Props, State> {
               />
               <ScrollView
                 contentInset={{ bottom: bottomInset }}
-                onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
-                scrollEnabled={isDrawerOpen}
+                onLayout={layout => {
+                  this.scrollViewVerticalStart = layout.nativeEvent.layout.y
+                  NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
+                }}
                 ref={r => {
                   if (r) {
                     this.scrollView = r as any
@@ -116,6 +123,7 @@ export class CityView extends Component<Props, State> {
                       return (
                         <AllEvents
                           cityName={cityName}
+                          citySlug={citySlug}
                           key={cityName}
                           currentBucket={filter.id as BucketKey}
                           buckets={buckets}
@@ -125,10 +133,10 @@ export class CityView extends Component<Props, State> {
                       )
                     default:
                       return (
-                        <CityTab
+                        <EventList
                           key={cityName + filter.id}
                           bucket={buckets[filter.id]}
-                          type={filter.text}
+                          type={filter.id as any}
                           relay={this.state.relay}
                           cityName={cityName}
                         />

@@ -2,7 +2,7 @@ import { Box, color, Flex, Sans, space } from "@artsy/palette"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { Component } from "react"
-import { Dimensions, Image, TouchableOpacity } from "react-native"
+import { Dimensions, Image, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
 interface Props {
@@ -21,7 +21,7 @@ export class FairEventSectionCard extends Component<Props> {
     } = this.props
 
     return (
-      <TouchableOpacity onPress={this.handleTap.bind(this)}>
+      <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <Container>
           {image && <BackgroundImage imageURL={image.url} />}
           <Overlay />
@@ -41,7 +41,7 @@ export class FairEventSectionCard extends Component<Props> {
             </Flex>
           </Box>
         </Container>
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     )
   }
 }
