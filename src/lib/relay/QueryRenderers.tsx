@@ -32,6 +32,7 @@ Inbox
 
 import { QueryRenderersArtistQuery } from "__generated__/QueryRenderersArtistQuery.graphql"
 import { QueryRenderersBidFlowQuery } from "__generated__/QueryRenderersBidFlowQuery.graphql"
+import { QueryRenderersCityFairListQuery } from "__generated__/QueryRenderersCityFairListQuery.graphql"
 import { PartnerShowPartnerType } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
 import { QueryRenderersCitySectionListQuery } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
 import { QueryRenderersConversationQuery } from "__generated__/QueryRenderersConversationQuery.graphql"
@@ -434,6 +435,26 @@ export const ShowMoreInfoRenderer: React.SFC<ShowMoreInfoProps> = ({ render, sho
         }
       `}
       variables={{ showID }}
+      render={render}
+    />
+  )
+}
+
+interface CityFairListProps extends RendererProps {
+  citySlug: string
+}
+export const CityFairListRenderer: React.SFC<CityFairListProps> = ({ render, citySlug }) => {
+  return (
+    <QueryRenderer<QueryRenderersCityFairListQuery>
+      environment={environment}
+      query={graphql`
+        query QueryRenderersCityFairListQuery($citySlug: String!) {
+          city(slug: $citySlug) {
+            ...CityFairList_city
+          }
+        }
+      `}
+      variables={{ citySlug }}
       render={render}
     />
   )
