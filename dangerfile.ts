@@ -61,29 +61,29 @@ const correspondingTestsForAppFiles = touchedAppOnlyFiles.map(f => {
   return `${newPath}/__tests__/${name}`
 })
 
-// New app files should get new test files
-// Allow warning instead of failing if you say "Skip New Tests" inside the body, make it explicit.
-const testFilesThatDontExist = correspondingTestsForAppFiles
-  .filter(f => !f.includes("Index-tests.tsx")) // skip indexes
-  .filter(f => !f.includes("types-tests.ts")) // skip type definitions
-  .filter(f => !f.includes("__stories__")) // skip stories
-  .filter(f => !f.includes("AppRegistry")) // skip registry, kinda untestable
-  .filter(f => !f.includes("Routes")) // skip routes, kinda untestable
-  .filter(f => !f.includes("NativeModules")) // skip modules that are native, they are untestable
-  .filter(f => !f.includes("lib/relay/")) // skip modules that are native, they are untestable
-  .filter(f => !f.includes("Storybooks/")) // skip modules that are native, they are untestable
-  .filter(f => !f.includes("fixtures")) // skip modules that are native, they are untestable
-  .filter(f => !fs.existsSync(f))
+// // New app files should get new test files
+// // Allow warning instead of failing if you say "Skip New Tests" inside the body, make it explicit.
+// const testFilesThatDontExist = correspondingTestsForAppFiles
+//   .filter(f => !f.includes("Index-tests.tsx")) // skip indexes
+//   .filter(f => !f.includes("types-tests.ts")) // skip type definitions
+//   .filter(f => !f.includes("__stories__")) // skip stories
+//   .filter(f => !f.includes("AppRegistry")) // skip registry, kinda untestable
+//   .filter(f => !f.includes("Routes")) // skip routes, kinda untestable
+//   .filter(f => !f.includes("NativeModules")) // skip modules that are native, they are untestable
+//   .filter(f => !f.includes("lib/relay/")) // skip modules that are native, they are untestable
+//   .filter(f => !f.includes("Storybooks/")) // skip modules that are native, they are untestable
+//   .filter(f => !f.includes("fixtures")) // skip modules that are native, they are untestable
+//   .filter(f => !fs.existsSync(f))
 
-if (testFilesThatDontExist.length > 0) {
-  const callout = acceptedNoTests ? warn : fail
-  const output = `Missing Test Files:
+// if (testFilesThatDontExist.length > 0) {
+//   const callout = acceptedNoTests ? warn : fail
+//   const output = `Missing Test Files:
 
-${testFilesThatDontExist.map(f => `- \`${f}\``).join("\n")}
+// ${testFilesThatDontExist.map(f => `- \`${f}\``).join("\n")}
 
-If these files are supposed to not exist, please update your PR body to include "#skip_new_tests".`
-  callout(output)
-}
+// If these files are supposed to not exist, please update your PR body to include "#skip_new_tests".`
+//   callout(output)
+// }
 
 // A component should have a corresponding story reference, so that we're consistent
 // with how the web create their components
