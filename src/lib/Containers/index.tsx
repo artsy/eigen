@@ -1,6 +1,6 @@
-import CityBMWList from "lib/Scenes/City/CityBMWList"
 import CityFairList from "lib/Scenes/City/CityFairList"
 import CitySectionList from "lib/Scenes/City/CitySectionList"
+import CityBMWList from "lib/Scenes/City/Components/CityBMWList"
 import { ShowArtistsContainer } from "../Components/Show/ShowArtists"
 import { ShowArtworksContainer } from "../Components/Show/ShowArtworks"
 import Fair from "../Scenes/Fair"

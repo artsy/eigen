@@ -15,8 +15,9 @@ class CityBMWList extends React.Component<Props> {
 export default createFragmentContainer(
   CityBMWList,
   graphql`
-    fragment CityBMWList_city on City @argumentDefinitions(citySlug: { type: "String!" }, maxInt: { type: "Int!" }) {
-      shows(discoverable: true, first: 10, sort: START_AT_ASC) {
+    fragment CityBMWList_city on City
+      @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
+      shows(discoverable: true, first: $count, after: $cursor, sort: START_AT_ASC) {
         edges {
           node {
             id
