@@ -268,6 +268,9 @@ export class GlobalMap extends React.Component<Props, State> {
     const { activeShows } = this.state
     const hasShows = activeShows.length > 0
 
+    // We need to update activeShows in case of a mutation (save show)
+    const updatedShows = activeShows.map(show => this.shows[show.id])
+
     return (
       <Spring
         native
