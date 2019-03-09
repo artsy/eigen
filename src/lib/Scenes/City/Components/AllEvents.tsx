@@ -173,6 +173,7 @@ export class AllEvents extends React.Component<Props, State> {
             title="BMW Art Guide"
             sponsoredContent={sponsoredContent}
             data={data}
+            citySlug={citySlug}
             relay={this.props.relay}
           />
         )

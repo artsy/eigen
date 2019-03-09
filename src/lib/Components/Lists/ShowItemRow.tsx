@@ -44,7 +44,6 @@ export class ShowItemRow extends React.Component<Props, State> {
     } = props
     return {
       action_name: is_followed ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow,
-      context_screen: Schema.PageNames.SavesAndFollows,
       owner_type: Schema.OwnerEntityTypes.Show,
       owner_id: _id,
       owner_slug: slug,

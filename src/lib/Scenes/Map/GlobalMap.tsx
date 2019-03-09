@@ -1,6 +1,7 @@
 import { Box, Flex, Theme } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import { Schema, screenTrack, track } from "lib/utils/track"
 import { get } from "lodash"
 import React from "react"
 import { Animated, Dimensions, Easing, Image, NativeModules, SafeAreaView, View } from "react-native"
@@ -53,6 +54,10 @@ interface Props {
   viewer?: GlobalMap_viewer
   /** API stuff */
   relay: RelayProp
+  /** Tracking */
+  tracking: any
+  citySlug: string
+  isDrawerOpen?: boolean
 }
 
 interface State {
@@ -93,6 +98,29 @@ enum DrawerPosition {
   partiallyRevealed = "partiallyRevealed",
 }
 
+const screenSchemaForCurrentTabState = currentSelectedTab => {
+  switch (currentSelectedTab) {
+    case "all":
+      return Schema.PageNames.CityGuideAllMap
+    case "saved":
+      return Schema.PageNames.CityGuideSavedMap
+    case "fairs":
+      return Schema.PageNames.CityGuideFairsMap
+    case "galleries":
+      return Schema.PageNames.CityGuideGalleriesMap
+    case "museums":
+      return Schema.PageNames.CityGuideMuseumsMap
+    default:
+      return null
+  }
+}
+
+@screenTrack<Props>(props => ({
+  context_screen: screenSchemaForCurrentTabState("all"),
+  context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+  context_screen_owner_slug: props.citySlug,
+  context_screen_owner_id: props.citySlug,
+}))
 export class GlobalMap extends React.Component<Props, State> {
   /** Makes sure we're consistently using { lat, lng } internally */
   static lngLatArrayToLocation(arr: [number, number] | undefined) {
@@ -182,6 +210,13 @@ export class GlobalMap extends React.Component<Props, State> {
     EventEmitter.unsubscribe("filters:change", this.handleEvent)
   }
 
+  componentDidUpdate(_, prevState) {
+    if (prevState.activeIndex !== this.state.activeIndex) {
+      console.log("updating here")
+      this.fireGlobalMapScreenViewAnalytics()
+    }
+  }
+
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.viewer) {
       const bucketResults = bucketCityResults(nextProps.viewer)
@@ -212,6 +247,21 @@ export class GlobalMap extends React.Component<Props, State> {
         }).start()
       }
     }
+  }
+
+  @track((__, _, args) => {
+    const actionName = args[0]
+    const show = args[1]
+    return {
+      action_name: actionName,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: !!show ? show[0]._id : "",
+      owner_slug: !!show ? show[0].id : "",
+      owner_type: !!show ? Schema.OwnerEntityTypes.Show : "",
+    } as any
+  })
+  trackPinTap(_actionName, _show) {
+    return null
   }
 
   updateClusterMap(updateState: boolean = true) {
@@ -255,6 +305,15 @@ export class GlobalMap extends React.Component<Props, State> {
       citySlug,
       sponsoredContent,
       relay: this.props.relay,
+    })
+  }
+
+  fireGlobalMapScreenViewAnalytics = () => {
+    this.props.tracking.trackEvent({
+      context_screen: screenSchemaForCurrentTabState(this.filters[this.state.activeIndex].id),
+      context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+      context_screen_owner_slug: this.props.citySlug,
+      context_screen_owner_id: this.props.citySlug,
     })
   }
 
