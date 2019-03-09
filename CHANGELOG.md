@@ -33,6 +33,7 @@
 - Moves city list scroll view enabled-ness management to ObjC - ash
 - Updates styling for cluster and pin show cards - luc
 - Decrease likelihood of getting a blank view while scrolling fast in city tabs - alloy
+- Hook up save functionality for show card - luc
 
 ### 1.8.14
 
