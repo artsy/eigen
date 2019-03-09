@@ -44,7 +44,6 @@ const screenSchemaForCurrentTabState = (currentSelectedTab, isDrawerOpen) => {
   }
 }
 
-// FIXME: city analytics: citySlug is missing on initial mount
 @screenTrack<Props>(props => ({
   context_screen: screenSchemaForCurrentTabState("all", props.isDrawerOpen),
   context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
