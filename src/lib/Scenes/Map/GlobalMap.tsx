@@ -36,6 +36,14 @@ const ShowCardContainer = styled(Box)`
   height: 200;
 `
 
+const LoadingScreen = styled(Image)`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+`
+
 interface Props {
   /** Where to center the map initially?  */
   initialCoordinates?: { lat: number; lng: number }
@@ -293,7 +301,7 @@ export class GlobalMap extends React.Component<Props, State> {
             <Theme>
               {hasShows && (
                 <ShowCard
-                  shows={activeShows as any}
+                  shows={updatedShows as any}
                   relay={this.props.relay}
                   onSaveStarted={() => {
                     this.setState({ isSavingShow: true })
@@ -354,6 +362,7 @@ export class GlobalMap extends React.Component<Props, State> {
     // TODO: Need to hide the map while showing the top buttons.
     return (
       <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
+        <LoadingScreen source={require("../../../../images/MapBG.png")} />
         <Map
           {...mapProps}
           {...mapInteractions}
