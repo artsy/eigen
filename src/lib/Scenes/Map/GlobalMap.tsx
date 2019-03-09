@@ -1,7 +1,7 @@
 import { Box, Flex, Theme } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
-import { Schema, screenTrack } from "lib/utils/track"
+import { Schema, screenTrack, track } from "lib/utils/track"
 import { get } from "lodash"
 import React from "react"
 import { Animated, Dimensions, Easing, Image, NativeModules, SafeAreaView, View } from "react-native"
@@ -247,6 +247,21 @@ export class GlobalMap extends React.Component<Props, State> {
         }).start()
       }
     }
+  }
+
+  @track((__, _, args) => {
+    const actionName = args[0]
+    const show = args[1]
+    return {
+      action_name: actionName,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: !!show ? show[0]._id : "",
+      owner_slug: !!show ? show[0].id : "",
+      owner_type: !!show ? Schema.OwnerEntityTypes.Show : "",
+    } as any
+  })
+  trackPinTap(_actionName, _show) {
+    return null
   }
 
   updateClusterMap(updateState: boolean = true) {
