@@ -2,7 +2,7 @@ import { Box, color, Flex, Sans, Separator, Serif, space } from "@artsy/palette"
 import { dimensions, screen } from "lib/data/ScreenSizes/screenSizes"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
 import React, { Component } from "react"
-import { Dimensions, NativeModules, ScrollView, TouchableOpacity } from "react-native"
+import { Dimensions, NativeModules, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 import { cityList as cities } from "./cities"
 
@@ -27,6 +27,7 @@ export class CityPicker extends Component<Props, State> {
   selectCity(city: string, index: number) {
     this.setState({ selectedCity: city })
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", { cityIndex: index })
+    this.setState({ selectedCity: null })
   }
 
   handleLogo(screenHeight) {
@@ -57,10 +58,10 @@ export class CityPicker extends Component<Props, State> {
 
     return (
       <Overlay>
-        <ScrollView>
-          <Box mt={2} ml={2}>
+        <Flex flexDirection="column" alignContent="stretch">
+          <Box ml={2}>
             <Sans size="3" weight="medium">
-              Select a city
+              Shows and fairs by city
             </Sans>
           </Box>
           {cityList.map((city, i) => (
@@ -68,19 +69,23 @@ export class CityPicker extends Component<Props, State> {
               <TouchableOpacity onPress={() => this.selectCity(city, i)}>
                 <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
                   {this.handleCityList(screenHeight, city)}
-                  {selectedCity === city && <CircleWhiteCheckIcon width={26} height={26} />}
+                  {selectedCity === city && (
+                    <Box mb={2}>
+                      <CircleWhiteCheckIcon width={26} height={26} />
+                    </Box>
+                  )}
                 </Flex>
               </TouchableOpacity>
               <Separator />
             </Box>
           ))}
-        </ScrollView>
-        <LogoContainer>
-          <Flex flexDirection="row" py={1} alignItems="center">
-            <Logo source={require("../../../../Pod/Assets/assets/images/BMW-logo.jpg")} />
-            {this.handleLogo(screenHeight)}
-          </Flex>
-        </LogoContainer>
+          <LogoContainer>
+            <Flex flexDirection="row" py={1} alignItems="center">
+              <Logo source={require("../../../../Pod/Assets/assets/images/BMW-logo.jpg")} />
+              {this.handleLogo(screenHeight)}
+            </Flex>
+          </LogoContainer>
+        </Flex>
       </Overlay>
     )
   }
@@ -94,13 +99,14 @@ const Logo = styled.Image`
 const Overlay = styled.View`
   flex: 1;
   background-color: ${color("white100")};
-  margin-top: ${space(4)};
+  margin-top: ${space(2)};
   margin-bottom: ${space(4)};
   margin-left: ${space(2)};
   margin-right: ${space(2)};
   flex-direction: column;
 `
-const LogoContainer = styled.View`
+const LogoContainer = styled(Flex)`
   width: 100%;
-  flex: 2;
+  margin-top: ${space(3)};
+  margin-left: ${space(0.3)};
 `
