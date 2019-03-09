@@ -3,6 +3,7 @@ import { EventMutation } from "__generated__/EventMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, graphql, RelayProp } from "react-relay"
@@ -36,6 +37,9 @@ interface State {
   isFollowedSaving: boolean
 }
 
+const track: Track<Props, {}> = _track
+
+@track()
 export class Event extends React.Component<Props, State> {
   state = {
     isFollowedSaving: false,
@@ -47,7 +51,19 @@ export class Event extends React.Component<Props, State> {
     })
   }
 
-  handleSaveChange = () => {
+  @track(props => {
+    const {
+      node: { id, _id, is_followed },
+    } = props.event
+    return {
+      action_name: is_followed ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow,
+      context_screen: Schema.PageNames.SavesAndFollows,
+      owner_type: Schema.OwnerEntityTypes.Show,
+      owner_id: _id,
+      owner_slug: id,
+    } as any
+  })
+  handleSaveChange() {
     const { node } = this.props.event
     const { id: showSlug, __id: nodeID, _id: showID, is_followed: isShowFollowed } = node
 
@@ -130,7 +146,7 @@ export class Event extends React.Component<Props, State> {
               <InvertedButton
                 grayBorder={true}
                 text={is_followed ? "Saved" : "Save"}
-                onPress={this.handleSaveChange}
+                onPress={() => this.handleSaveChange()}
                 selected={is_followed}
                 inProgress={isFollowedSaving}
               />

@@ -14,6 +14,7 @@ import { EventList } from "./Components/EventList"
 interface Props {
   verticalMargin?: number
   isDrawerOpen?: boolean
+  citySlug: string
   tracking: any
 }
 
@@ -47,8 +48,8 @@ const screenSchemaForCurrentTabState = (currentSelectedTab, isDrawerOpen) => {
 @screenTrack<Props>(props => ({
   context_screen: screenSchemaForCurrentTabState("all", props.isDrawerOpen),
   context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-  context_screen_owner_slug: "",
-  context_screen_owner_id: "",
+  context_screen_owner_slug: props.citySlug,
+  context_screen_owner_id: props.citySlug,
 }))
 export class CityView extends Component<Props, State> {
   state = {
