@@ -16,9 +16,34 @@
 
 ### Master
 
+- Update city coordinates (to fix Los Angeles bug) - anandaroop
+- Fixes warning about missing viewer prop - ash
+- Removes touchable feedback on fair cards - ash
+- Fixes warning about duplicate keys in list - ash
+- Adds zero state to CityTab - kieran
+- Renames SavedShowItemRow to ShowItemRow - kieran
+- Adds Save button functionality to button in All tab - kieran
+- Fixes top buttons re-appearing behind city picker - ash
+- Fixes map not re-centering on new city when changed - ash
+- Handles text spillover bug on narrow iphone screens in Saved Shows view - ashley
+- Fixes saving not updating props in city view - kieran
+- Disables navigation to Gallery pages from Shows view on stub shows - ashley
+- Fixes memory leak by unsubscribing components from the EventEmitter - alloy
+- Adds city section list for museum/gallery shows - kieran & ash
+- Moves city list scroll view enabled-ness management to ObjC - ash
+- Updates styling for cluster and pin show cards - luc
+- Decrease likelihood of getting a blank view while scrolling fast in city tabs - alloy
+
+### 1.8.14
+
 - Adds order artists in a show based on user's favorite - ashkan
 - Fixes rounded corners on city picker component - ash
 - Adds city bmw view controller - kieran
+- Adds BMW sponsoredContent to all events in city view - kieran
+- Progressively loads map tiles ahead of Relay response - ash
+- Better initial LD view - ash
+- All tab - hide "view all" if there no more than 2 shows in a grouping - kieran
+- Adds BMW Art Activations section to "About the Fair" section - ashley
 
 ### 1.8.12
 
@@ -26,6 +51,7 @@
 - Handle rendering card for Clusters - luc
 - Refactor clustering engine to handle multiple zooms - luc
 - All event section events now link to show - kieran
+- Adds CityFairList - kieran
 
 ### 1.8.11
 

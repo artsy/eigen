@@ -11,6 +11,8 @@ import {
   BidderFlowRendererProps,
   BidFlowRenderer,
   CityBMWListRenderer,
+  CityFairListRenderer,
+  CitySectionListRenderer,
   ConversationRenderer,
   FairRenderer,
   GeneRenderer,
@@ -29,6 +31,7 @@ import { CityPicker } from "./Scenes/City/CityPicker"
 import {
   FairArtistsRenderer,
   FairArtworksRenderer,
+  FairBMWArtActivationRenderer,
   FairBoothRenderer,
   FairExhibitorsRenderer,
   FairMoreInfoRenderer,
@@ -36,6 +39,7 @@ import {
 import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
 import { MapContainer } from "./Scenes/Map"
+import { BucketKey } from "./Scenes/Map/Bucket"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
 
@@ -185,6 +189,29 @@ const ShowMoreInfo: React.SFC<ShowMoreInfoProps> = ({ showID }) => {
   return <ShowMoreInfoRenderer showID={showID} render={renderWithLoadProgress(Containers.ShowMoreInfo, { showID })} />
 }
 
+interface CityFairListProps {
+  citySlug: string
+}
+const CityFairList: React.SFC<CityFairListProps> = ({ citySlug }) => {
+  return (
+    <CityFairListRenderer citySlug={citySlug} render={renderWithLoadProgress(Containers.CityFairList, { citySlug })} />
+  )
+}
+
+interface CitySectionListProps {
+  citySlug: string
+  section: BucketKey
+}
+const CitySectionList: React.SFC<CitySectionListProps> = ({ citySlug, section }) => {
+  return (
+    <CitySectionListRenderer
+      citySlug={citySlug}
+      section={section}
+      render={renderWithLoadProgress(Containers.CitySectionList, { citySlug, section })}
+    />
+  )
+}
+
 interface FairBoothProps {
   fairBoothID: string
 }
@@ -232,6 +259,13 @@ const CityBMWList: React.SFC<CityBMWListProps> = ({ citySlug }) => {
   )
 }
 
+interface FairBMWArtActivationProps {
+  fairID: string
+}
+const FairBMWArtActivation: React.SFC<FairBMWArtActivationProps> = ({ fairID }) => {
+  return <FairBMWArtActivationRenderer fairID={fairID} />
+}
+
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Home", () => HomeScene)
@@ -252,6 +286,7 @@ AppRegistry.registerComponent("FairBooth", () => FairBooth)
 AppRegistry.registerComponent("FairArtists", () => FairArtists)
 AppRegistry.registerComponent("FairArtworks", () => FairArtworks)
 AppRegistry.registerComponent("FairExhibitors", () => FairExhibitors)
+AppRegistry.registerComponent("FairBMWArtActivation", () => FairBMWArtActivation)
 AppRegistry.registerComponent("Show", () => Show)
 AppRegistry.registerComponent("ShowArtists", () => ShowArtists)
 AppRegistry.registerComponent("ShowArtworks", () => ShowArtworks)
@@ -260,3 +295,5 @@ AppRegistry.registerComponent("Map", () => MapContainer)
 AppRegistry.registerComponent("City", () => CityView)
 AppRegistry.registerComponent("CityPicker", () => CityPicker)
 AppRegistry.registerComponent("CityBMWList", () => CityBMWList)
+AppRegistry.registerComponent("CityFairList", () => CityFairList)
+AppRegistry.registerComponent("CitySectionList", () => CitySectionList)

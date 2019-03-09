@@ -1,6 +1,6 @@
 import { Box, color, Flex, Theme } from "@artsy/palette"
 import React, { Component } from "react"
-import { ScrollView } from "react-native"
+import { NativeModules, ScrollView } from "react-native"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { BucketKey, BucketResults } from "../Map/Bucket"
@@ -8,7 +8,7 @@ import { FiltersBar } from "../Map/Components/FiltersBar"
 import { EventEmitter } from "../Map/EventEmitter"
 import { MapTab as Tab } from "../Map/types"
 import { AllEvents } from "./Components/AllEvents"
-import { CityTab } from "./Components/CityTab"
+import { EventList } from "./Components/EventList"
 
 interface Props {
   verticalMargin?: number
@@ -20,6 +20,8 @@ interface State {
   filter: Tab
   relay: RelayProp
   cityName: string
+  citySlug: string
+  sponsoredContent: { introText: string; artGuideUrl: string }
 }
 
 export class CityView extends Component<Props, State> {
@@ -28,6 +30,8 @@ export class CityView extends Component<Props, State> {
     filter: { id: "all", text: "All events" },
     relay: null,
     cityName: "",
+    citySlug: "",
+    sponsoredContent: null,
   }
   scrollViewVerticalStart = 0
   scrollView: ScrollView = null
@@ -40,41 +44,53 @@ export class CityView extends Component<Props, State> {
     { id: "museums", text: "Museums" },
   ]
 
+  handleEvent = ({
+    filter,
+    buckets,
+    cityName,
+    citySlug,
+    relay,
+    sponsoredContent,
+  }: {
+    filter: Tab
+    buckets: BucketResults
+    cityName: string
+    relay: RelayProp
+    citySlug: string
+    sponsoredContent: { introText: string; artGuideUrl: string }
+  }) => {
+    this.setState({
+      buckets,
+      filter,
+      cityName,
+      citySlug,
+      relay,
+      sponsoredContent,
+    })
+  }
+
   componentWillMount() {
-    EventEmitter.subscribe(
-      "map:change",
-      ({
-        filter,
-        buckets,
-        cityName,
-        relay,
-      }: {
-        filter: Tab
-        buckets: BucketResults
-        cityName: string
-        relay: RelayProp
-      }) => {
-        console.log("got buckets", { buckets, cityName })
-        this.setState({
-          buckets,
-          filter,
-          cityName,
-          relay,
-        })
-      }
-    )
+    EventEmitter.subscribe("map:change", this.handleEvent)
+  }
+
+  componentWillUnmount() {
+    EventEmitter.unsubscribe("map:change", this.handleEvent)
   }
 
   componentDidUpdate() {
     if (!this.props.isDrawerOpen && this.scrollView) {
       this.scrollView.scrollTo({ x: 0, y: 0, animated: true })
     }
+
+    if (this.state.buckets) {
+      // We have the Relay response; post a notification so that the ARMapContainerViewController can finalize the native UI.
+      NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryQueryResponseReceived", {})
+    }
   }
 
   render() {
-    const { buckets, filter, cityName } = this.state
-    console.log("rendering with ", cityName)
-    const { isDrawerOpen, verticalMargin } = this.props
+    const { buckets, filter, cityName, citySlug } = this.state
+    const { verticalMargin } = this.props
     // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
     return (
@@ -91,8 +107,10 @@ export class CityView extends Component<Props, State> {
               />
               <ScrollView
                 contentInset={{ bottom: bottomInset }}
-                onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
-                scrollEnabled={isDrawerOpen}
+                onLayout={layout => {
+                  this.scrollViewVerticalStart = layout.nativeEvent.layout.y
+                  NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
+                }}
                 ref={r => {
                   if (r) {
                     this.scrollView = r as any
@@ -105,18 +123,22 @@ export class CityView extends Component<Props, State> {
                       return (
                         <AllEvents
                           cityName={cityName}
+                          citySlug={citySlug}
                           key={cityName}
                           currentBucket={filter.id as BucketKey}
                           buckets={buckets}
+                          sponsoredContent={this.state.sponsoredContent}
+                          relay={this.state.relay}
                         />
                       )
                     default:
                       return (
-                        <CityTab
+                        <EventList
                           key={cityName + filter.id}
                           bucket={buckets[filter.id]}
-                          type={filter.text}
+                          type={filter.id as any}
                           relay={this.state.relay}
+                          cityName={cityName}
                         />
                       )
                   }

@@ -31,6 +31,11 @@ query GlobalMapTestsQuery(
 fragment GlobalMap_viewer_3La17j on Viewer {
   city(slug: $citySlug) {
     name
+    slug
+    sponsoredContent {
+      introText
+      artGuideUrl
+    }
     coordinates {
       lat
       lng
@@ -245,7 +250,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "GlobalMapTestsQuery",
-  "id": "ab782b623e6ab1de817ebbc07aed87b4",
+  "id": "12868468ac5df1106b0ed514a9543c1c",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -317,6 +322,38 @@ return {
             "plural": false,
             "selections": [
               v1,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "slug",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "sponsoredContent",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "CitySponsoredContent",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "introText",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "artGuideUrl",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
               v2,
               {
                 "kind": "LinkedField",

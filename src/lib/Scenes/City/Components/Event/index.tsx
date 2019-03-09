@@ -1,26 +1,26 @@
 import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
-import Button from "lib/Components/Buttons/InvertedButton"
+import { EventMutation } from "__generated__/EventMutation.graphql"
+import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
+import { commitMutation, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
-
-const ButtonWrapper = styled(Box)`
-  height: 34;
-  width: 98;
-`
 
 const TextContainer = styled(Box)`
   width: 200;
 `
 
 interface Props {
+  relay: RelayProp
   event: {
     node: {
       name: string
       __id: string
+      _id: string
       id: string
+      is_followed: boolean
       exhibition_period: string
       cover_image: {
         url: string
@@ -33,16 +33,65 @@ interface Props {
 }
 
 interface State {
-  eventSaved: boolean
+  isFollowedSaving: boolean
 }
 
 export class Event extends React.Component<Props, State> {
   state = {
-    eventSaved: false,
+    isFollowedSaving: false,
+  }
+
+  handleShowSuccessfullyUpdated() {
+    this.setState({
+      isFollowedSaving: false,
+    })
   }
 
   handleSaveChange = () => {
-    console.log("handleSaveChange")
+    const { node } = this.props.event
+    const { id: showSlug, __id: nodeID, _id: showID, is_followed: isShowFollowed } = node
+
+    if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
+      this.setState(
+        {
+          isFollowedSaving: true,
+        },
+        () => {
+          return commitMutation<EventMutation>(this.props.relay.environment, {
+            onCompleted: () => this.handleShowSuccessfullyUpdated(),
+            mutation: graphql`
+              mutation EventMutation($input: FollowShowInput!) {
+                followShow(input: $input) {
+                  show {
+                    id
+                    _id
+                    is_followed
+                  }
+                }
+              }
+            `,
+            variables: {
+              input: {
+                partner_show_id: showID,
+                unfollow: isShowFollowed,
+              },
+            },
+            optimisticResponse: {
+              followShow: {
+                show: {
+                  id: showSlug,
+                  _id: showID,
+                  is_followed: !isShowFollowed,
+                },
+              },
+            },
+            updater: store => {
+              store.get(nodeID).setValue(!isShowFollowed, "is_followed")
+            },
+          })
+        }
+      )
+    }
   }
 
   handleTap = () => {
@@ -51,8 +100,9 @@ export class Event extends React.Component<Props, State> {
 
   render() {
     const { node } = this.props.event
-    const { name, exhibition_period, partner, cover_image } = node
+    const { name, exhibition_period, partner, cover_image, is_followed } = node
     const { name: partnerName } = partner
+    const { isFollowedSaving } = this.state
     const url = cover_image ? cover_image.url : null
     return (
       <TouchableWithoutFeedback onPress={() => this.handleTap()}>
@@ -76,11 +126,15 @@ export class Event extends React.Component<Props, State> {
                 </Sans>
               )}
             </TextContainer>
-            <ButtonWrapper>
-              <Button text="Save" selected={this.state.eventSaved} onPress={this.handleSaveChange}>
-                Save
-              </Button>
-            </ButtonWrapper>
+            <Box width={102} height={34}>
+              <InvertedButton
+                grayBorder={true}
+                text={is_followed ? "Saved" : "Save"}
+                onPress={this.handleSaveChange}
+                selected={is_followed}
+                inProgress={isFollowedSaving}
+              />
+            </Box>
           </Flex>
         </Box>
       </TouchableWithoutFeedback>

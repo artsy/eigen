@@ -6,6 +6,10 @@ export const fairFixture = {
     aspect_ratio: 1,
     url: "https://d32dm0rphc51dk.cloudfront.net/o0Zrtm-CgwbV1syD_33DuA/square.jpg",
   },
+  sponsoredContent: {
+    activationText: "This fair will be incroyable. Come check out why.",
+    pressReleaseUrl: "https://www.somefair.com",
+  },
   profile: {
     id: "art-basel-in-miami-beach-2018",
     _id: "dfdlfjfua7d8a0_",

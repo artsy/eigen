@@ -1,4 +1,4 @@
-import { SavedShowItemRowContainer as SavedShowItemRow } from "lib/Components/Lists/SavedShowItemRow"
+import { ShowItemRowContainer as ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import Spinner from "lib/Components/Spinner"
 import ZeroState from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
@@ -52,7 +52,7 @@ export class Shows extends Component<Props, State> {
           <FlatList
             data={shows}
             keyExtractor={item => item.__id}
-            renderItem={item => <SavedShowItemRow show={item.item} />}
+            renderItem={item => <ShowItemRow show={item.item} />}
             onEndReached={this.loadMore}
             onEndReachedThreshold={0.2}
             ItemSeparatorComponent={() => <Separator />}
@@ -82,7 +82,7 @@ export default createPaginationContainer(
             }
             edges {
               node {
-                ...SavedShowItemRow_show
+                ...ShowItemRow_show
               }
             }
           }

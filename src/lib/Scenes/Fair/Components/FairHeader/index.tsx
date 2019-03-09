@@ -91,7 +91,7 @@ export class FairHeader extends React.Component<Props, State> {
           prefix="Works by"
           list={uniqArtistList}
           count={counts.artists}
-          displayedItems={2}
+          displayedItems={3}
           onItemSelected={this.handleArtistPress.bind(this)}
           onViewAllPressed={this.viewAllArtists.bind(this)}
         />
