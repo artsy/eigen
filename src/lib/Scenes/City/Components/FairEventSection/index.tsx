@@ -1,4 +1,6 @@
 import { Box, Sans, Serif, space } from "@artsy/palette"
+import { CaretButton } from "lib/Components/Buttons/CaretButton"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Component } from "react"
 import React from "react"
 import { FlatList } from "react-native"
@@ -11,6 +13,11 @@ const FairSectionBackground = styled(Box)`
 `
 
 export class FairEventSection extends Component<any> {
+  viewAllPressed = () => {
+    const { citySlug } = this.props
+    SwitchBoard.presentNavigationViewController(this, `/city-fair/${citySlug}`)
+  }
+
   renderItem = ({ item }) => {
     const { node } = item
     return (
@@ -22,6 +29,7 @@ export class FairEventSection extends Component<any> {
 
   render() {
     const { data } = this.props
+    console.log({ props: this.props })
     return (
       <FairSectionBackground>
         <Box mx={2} mt={3}>
@@ -38,9 +46,11 @@ export class FairEventSection extends Component<any> {
         />
         {data.length > 2 && (
           <Box mx={2} mb={3}>
-            <Sans weight="medium" size="3" color="white" px={1}>
-              View all {data.length} fairs
-            </Sans>
+            <CaretButton
+              onPress={() => this.viewAllPressed()}
+              text={`View all ${data.length} fairs`}
+              textColor="white"
+            />
           </Box>
         )}
       </FairSectionBackground>
