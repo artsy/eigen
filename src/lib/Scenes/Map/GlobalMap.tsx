@@ -579,7 +579,6 @@ export class GlobalMap extends React.Component<Props, State> {
     NativeModules.ARNotificationsManager.postNotificationName(notificationName, {
       position,
     })
-    console.log("position?", position)
   }
 }
 

@@ -29,7 +29,6 @@ interface ShowCardProps {
   shows: ShowItemRow_show[]
   onSaveStarted?: () => void
   onSaveEnded?: () => void
-  onSave?: () => void
 }
 
 interface ShowCardState {
@@ -53,7 +52,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     currentPage: 1,
     isSaving: false,
   }
-  Background
+
   componentDidUpdate(prevProps) {
     if (!this.state.isSaving && !isEqual(prevProps, this.props) && this.list) {
       this.list.scrollToIndex({ index: 0, animated: true })
