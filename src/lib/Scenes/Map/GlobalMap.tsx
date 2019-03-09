@@ -3,7 +3,7 @@ import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import { get } from "lodash"
 import React from "react"
-import { Animated, Dimensions, Easing, NativeModules, SafeAreaView, View } from "react-native"
+import { Animated, Dimensions, Easing, Image, NativeModules, SafeAreaView, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
@@ -36,6 +36,14 @@ const ShowCardContainer = styled(Box)`
   height: 200;
 `
 
+const LoadingScreen = styled(Image)`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+`
+
 interface Props {
   /** Where to center the map initially?  */
   initialCoordinates?: { lat: number; lng: number }
@@ -64,6 +72,7 @@ interface State {
   showsGeoJSONFeature: MapGeoFeatureCollection
   /** Has the map fully rendered? */
   mapLoaded: boolean
+  isSavingShow: boolean
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
@@ -152,6 +161,7 @@ export class GlobalMap extends React.Component<Props, State> {
       trackUserLocation: false,
       showsGeoJSONFeature: undefined,
       mapLoaded: false,
+      isSavingShow: false,
     }
 
     this.clusterEngine = new Supercluster({
@@ -269,6 +279,9 @@ export class GlobalMap extends React.Component<Props, State> {
     const { activeShows } = this.state
     const hasShows = activeShows.length > 0
 
+    // We need to update activeShows in case of a mutation (save show)
+    const updatedShows = activeShows.map(show => this.shows[show.id])
+
     return (
       <Spring
         native
@@ -288,7 +301,20 @@ export class GlobalMap extends React.Component<Props, State> {
               height: 150,
             }}
           >
-            <Theme>{hasShows && <ShowCard shows={activeShows as any} />}</Theme>
+            <Theme>
+              {hasShows && (
+                <ShowCard
+                  shows={updatedShows as any}
+                  relay={this.props.relay}
+                  onSaveStarted={() => {
+                    this.setState({ isSavingShow: true })
+                  }}
+                  onSaveEnded={() => {
+                    this.setState({ isSavingShow: false })
+                  }}
+                />
+              )}
+            </Theme>
           </AnimatedView>
         )}
       </Spring>
@@ -328,15 +354,18 @@ export class GlobalMap extends React.Component<Props, State> {
       },
       onDidFinishRenderingMapFully: () => this.setState({ mapLoaded: true }),
       onPress: () => {
-        this.setState({
-          activeShows: [],
-        })
+        if (!this.state.isSavingShow) {
+          this.setState({
+            activeShows: [],
+          })
+        }
       },
     }
 
     // TODO: Need to hide the map while showing the top buttons.
     return (
       <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
+        <LoadingScreen source={require("../../../../images/MapBG.png")} />
         <Map
           {...mapProps}
           {...mapInteractions}
