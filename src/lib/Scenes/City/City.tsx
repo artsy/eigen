@@ -105,7 +105,7 @@ export class CityView extends Component<Props, State> {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.isDrawerOpen !== nextProps.isDrawerOpen) {
-      this.fireScreenViewAnalytics(nextProps)
+      this.fireScreenViewAnalytics()
     }
   }
 
