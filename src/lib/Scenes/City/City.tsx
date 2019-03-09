@@ -136,7 +136,7 @@ export class CityView extends Component<Props, State> {
                         <EventList
                           key={cityName + filter.id}
                           bucket={buckets[filter.id]}
-                          type={filter.text as any}
+                          type={filter.id as any}
                           relay={this.state.relay}
                           cityName={cityName}
                         />
