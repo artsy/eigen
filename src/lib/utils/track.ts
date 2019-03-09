@@ -111,7 +111,7 @@ export namespace Schema {
     FairAllArtistsPage = "FairAllArtistsPage",
     FairAllArtworksPage = "FairAllArtworksPage",
     FairAllExhibitorsPage = "FairAllExhibitorsPage",
-    FairBMWArtActivationPage = "FairBMWArtActivationPage",
+    BMWFairActivation = "BMWFairActivation",
     FairBoothPage = "FairBoothPage",
     InboxPage = "Inbox",
     InquiryPage = "Inquiry",
@@ -240,7 +240,7 @@ export namespace Schema {
     GalleryFollow = "galleryFollow",
     GalleryUnfollow = "galleryUnfollow",
     Search = "search",
-    ViewBMWPressRelease = "pressRelease",
+    PressRelease = "pressRelease",
 
     /**
      * Fair and show shared page events
