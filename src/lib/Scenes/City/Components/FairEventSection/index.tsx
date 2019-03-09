@@ -1,4 +1,4 @@
-import { Box, Sans, Serif, space } from "@artsy/palette"
+import { Box, Serif, space } from "@artsy/palette"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Component } from "react"
@@ -29,7 +29,6 @@ export class FairEventSection extends Component<any> {
 
   render() {
     const { data } = this.props
-    console.log({ props: this.props })
     return (
       <FairSectionBackground>
         <Box mx={2} mt={3}>

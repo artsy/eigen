@@ -351,7 +351,7 @@ randomBOOL(void)
     viewController = [[ARShowMoreInfoComponentViewController alloc] initWithShowID:showID];
 
   } else if (isCityFairList) {
-    NSString *citySlug = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
+    NSString *citySlug = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARCityFairListComponentViewController alloc] initWithCitySlug:citySlug];
 
   } else if (isCityList) {

@@ -1,20 +1,43 @@
 import { Box, Separator, Theme } from "@artsy/palette"
 import { CityFairList_city } from "__generated__/CityFairList_city.graphql"
+import Spinner from "lib/Components/Spinner"
+import { PAGE_SIZE } from "lib/data/constants"
+import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import React from "react"
 import { FlatList } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-import { RelayProp } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { TabFairItemRow } from "./Components/TabFairItemRow"
 
 interface Props {
   city: CityFairList_city
+  relay: RelayPaginationProp
 }
 
 interface State {
-  relay: RelayProp
+  fetchingNextPage: boolean
 }
 
 class CityFairList extends React.Component<Props, State> {
+  state = {
+    fetchingNextPage: false,
+  }
+
+  fetchData = () => {
+    const { relay } = this.props
+
+    if (relay.isLoading()) {
+      return
+    }
+    this.setState({ fetchingNextPage: true })
+    relay.loadMore(PAGE_SIZE, error => {
+      if (error) {
+        console.error("CityFairList.tsx #fetchData", error.message)
+        // FIXME: Handle error
+      }
+      this.setState({ fetchingNextPage: false })
+    })
+  }
+
   renderItem = item => {
     return <TabFairItemRow item={item} />
   }
@@ -25,6 +48,7 @@ class CityFairList extends React.Component<Props, State> {
         fairs: { edges },
       },
     } = this.props
+    const { fetchingNextPage } = this.state
     return (
       <Theme>
         <Box px={2}>
@@ -33,7 +57,10 @@ class CityFairList extends React.Component<Props, State> {
             ItemSeparatorComponent={() => <Separator />}
             keyExtractor={item => item.node.id}
             renderItem={({ item }) => this.renderItem(item)}
-            scrollEnabled={false}
+            onScroll={isCloseToBottom(this.fetchData)}
+            ListFooterComponent={fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
+            contentInset={{ top: 60 }}
+            contentOffset={{ y: -60, x: 0 }}
           />
         </Box>
       </Theme>
@@ -41,51 +68,77 @@ class CityFairList extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(
+export default createPaginationContainer(
   CityFairList,
-  graphql`
-    fragment CityFairList_city on City {
-      fairs(first: 100) {
-        edges {
-          node {
-            id
-            name
-            exhibition_period
-            counts {
-              partners
-            }
-
-            location {
-              coordinates {
-                lat
-                lng
-              }
-            }
-
-            image {
-              image_url
-              aspect_ratio
-              url
-            }
-
-            profile {
-              icon {
-                id
-                href
-                height
-                width
-                url(version: "square140")
-              }
-              __id
+  {
+    city: graphql`
+      fragment CityFairList_city on City
+        @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
+        fairs(first: $count, after: $cursor) @connection(key: "CityFairList_fairs") {
+          edges {
+            node {
               id
               name
+              exhibition_period
+              counts {
+                partners
+              }
+              location {
+                coordinates {
+                  lat
+                  lng
+                }
+              }
+              image {
+                image_url
+                aspect_ratio
+                url
+              }
+              profile {
+                icon {
+                  id
+                  href
+                  height
+                  width
+                  url(version: "square140")
+                }
+                __id
+                id
+                name
+              }
+              start_at
+              end_at
             }
-
-            start_at
-            end_at
           }
         }
       }
-    }
-  `
+    `,
+  },
+  {
+    direction: "forward",
+    getConnectionFromProps(props) {
+      return props.city && props.city.fairs
+    },
+    getFragmentVariables(prevVars, totalCount) {
+      return {
+        ...prevVars,
+        count: totalCount,
+      }
+    },
+    getVariables(props, { count, cursor }, fragmentVariables) {
+      return {
+        citySlug: props.citySlug,
+        ...fragmentVariables,
+        count,
+        cursor,
+      }
+    },
+    query: graphql`
+      query CityFairListQuery($count: Int!, $cursor: String, $citySlug: String!) {
+        city(slug: $citySlug) {
+          ...CityFairList_city @arguments(count: $count, cursor: $cursor)
+        }
+      }
+    `,
+  }
 )

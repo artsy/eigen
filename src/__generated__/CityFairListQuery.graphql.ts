@@ -2,32 +2,36 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { CityFairList_city$ref } from "./CityFairList_city.graphql";
-export type QueryRenderersCityFairListQueryVariables = {
+export type CityFairListQueryVariables = {
+    readonly count: number;
+    readonly cursor?: string | null;
     readonly citySlug: string;
 };
-export type QueryRenderersCityFairListQueryResponse = {
+export type CityFairListQueryResponse = {
     readonly city: ({
         readonly " $fragmentRefs": CityFairList_city$ref;
     }) | null;
 };
-export type QueryRenderersCityFairListQuery = {
-    readonly response: QueryRenderersCityFairListQueryResponse;
-    readonly variables: QueryRenderersCityFairListQueryVariables;
+export type CityFairListQuery = {
+    readonly response: CityFairListQueryResponse;
+    readonly variables: CityFairListQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersCityFairListQuery(
+query CityFairListQuery(
+  $count: Int!
+  $cursor: String
   $citySlug: String!
 ) {
   city(slug: $citySlug) {
-    ...CityFairList_city
+    ...CityFairList_city_1G22uz
   }
 }
 
-fragment CityFairList_city on City {
-  fairs(first: 20, after: "") {
+fragment CityFairList_city_1G22uz on City {
+  fairs(first: $count, after: $cursor) {
     edges {
       node {
         id
@@ -79,6 +83,18 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "cursor",
+    "type": "String",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
     "name": "citySlug",
     "type": "String!",
     "defaultValue": null
@@ -116,13 +132,13 @@ v4 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "QueryRenderersCityFairListQuery",
-  "id": "76877346857f37dd5957383a494fa3e0",
+  "name": "CityFairListQuery",
+  "id": "2d778299e376958a4dde459e41f7ffde",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersCityFairListQuery",
+    "name": "CityFairListQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -139,7 +155,20 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "CityFairList_city",
-            "args": null
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "count",
+                "variableName": "count",
+                "type": null
+              },
+              {
+                "kind": "Variable",
+                "name": "cursor",
+                "variableName": "cursor",
+                "type": null
+              }
+            ]
           }
         ]
       }
@@ -147,7 +176,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersCityFairListQuery",
+    "name": "CityFairListQuery",
     "argumentDefinitions": v0,
     "selections": [
       {
@@ -163,18 +192,18 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "fairs",
-            "storageKey": "fairs(after:\"\",first:20)",
+            "storageKey": null,
             "args": [
               {
-                "kind": "Literal",
+                "kind": "Variable",
                 "name": "after",
-                "value": "",
+                "variableName": "cursor",
                 "type": "String"
               },
               {
-                "kind": "Literal",
+                "kind": "Variable",
                 "name": "first",
-                "value": 20,
+                "variableName": "count",
                 "type": "Int"
               }
             ],
@@ -422,15 +451,15 @@ return {
             "name": "fairs",
             "args": [
               {
-                "kind": "Literal",
+                "kind": "Variable",
                 "name": "after",
-                "value": "",
+                "variableName": "cursor",
                 "type": "String"
               },
               {
-                "kind": "Literal",
+                "kind": "Variable",
                 "name": "first",
-                "value": 20,
+                "variableName": "count",
                 "type": "Int"
               }
             ],
@@ -444,5 +473,5 @@ return {
   }
 };
 })();
-(node as any).hash = '0c133553ee090f49b2897e3fe7cca243';
+(node as any).hash = '67a71dd0b56ee5d2552a6e45579f8921';
 export default node;

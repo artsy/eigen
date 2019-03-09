@@ -57,14 +57,14 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "name",
   "args": null,
   "storageKey": null
 };
@@ -72,22 +72,39 @@ return {
   "kind": "Fragment",
   "name": "CityFairList_city",
   "type": "City",
-  "metadata": null,
-  "argumentDefinitions": [],
+  "metadata": {
+    "connection": [
+      {
+        "count": "count",
+        "cursor": "cursor",
+        "direction": "forward",
+        "path": [
+          "fairs"
+        ]
+      }
+    ]
+  },
+  "argumentDefinitions": [
+    {
+      "kind": "LocalArgument",
+      "name": "count",
+      "type": "Int",
+      "defaultValue": 20
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "cursor",
+      "type": "String",
+      "defaultValue": ""
+    }
+  ],
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "fairs",
-      "storageKey": "fairs(first:100)",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "first",
-          "value": 100,
-          "type": "Int"
-        }
-      ],
+      "alias": "fairs",
+      "name": "__CityFairList_fairs_connection",
+      "storageKey": null,
+      "args": null,
       "concreteType": "FairConnection",
       "plural": false,
       "selections": [
@@ -109,8 +126,39 @@ return {
               "concreteType": "Fair",
               "plural": false,
               "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "image",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Image",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "image_url",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "aspect_ratio",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "url",
+                      "args": null,
+                      "storageKey": null
+                    }
+                  ]
+                },
                 v0,
-                v1,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -170,41 +218,10 @@ return {
                         }
                       ]
                     },
-                    v2
+                    v1
                   ]
                 },
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "image",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Image",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "image_url",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "aspect_ratio",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "url",
-                      "args": null,
-                      "storageKey": null
-                    }
-                  ]
-                },
+                v2,
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -261,9 +278,9 @@ return {
                         }
                       ]
                     },
-                    v2,
+                    v1,
                     v0,
-                    v1
+                    v2
                   ]
                 },
                 {
@@ -280,8 +297,47 @@ return {
                   "args": null,
                   "storageKey": null
                 },
-                v2
+                v1,
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "__typename",
+                  "args": null,
+                  "storageKey": null
+                }
               ]
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "cursor",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "pageInfo",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "hasNextPage",
+              "args": null,
+              "storageKey": null
             }
           ]
         }
@@ -290,5 +346,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1443f0c1270beeb31edf5275a016e0b8';
+(node as any).hash = '8fa164c04b77d6317a4e7c33b8e77196';
 export default node;

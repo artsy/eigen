@@ -126,7 +126,7 @@ export class AllEvents extends React.Component<Props, State> {
     const { sponsoredContent, citySlug } = this.props
     switch (type) {
       case "fairs":
-        return <FairEventSection data={data} />
+        return <FairEventSection citySlug={citySlug} data={data} />
       case "galleries":
         return (
           <EventSection
