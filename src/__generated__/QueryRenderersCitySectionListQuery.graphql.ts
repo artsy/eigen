@@ -31,7 +31,7 @@ query QueryRenderersCitySectionListQuery(
 
 fragment CitySectionList_city_3XGJno on City {
   name
-  shows(discoverable: true, first: 20, sort: START_AT_ASC, after: "", partnerType: $partnerType) {
+  shows(includeStubShows: true, first: 20, sort: START_AT_ASC, after: "", partnerType: $partnerType) {
     pageInfo {
       endCursor
       hasNextPage
@@ -129,7 +129,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersCitySectionListQuery",
-  "id": "9d4b430528cc36488dd204733bfdc028",
+  "id": "f99c7b4bf84dd392344f201848b9424d",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -193,15 +193,15 @@ return {
               },
               {
                 "kind": "Literal",
-                "name": "discoverable",
-                "value": true,
-                "type": "Boolean"
-              },
-              {
-                "kind": "Literal",
                 "name": "first",
                 "value": 20,
                 "type": "Int"
+              },
+              {
+                "kind": "Literal",
+                "name": "includeStubShows",
+                "value": true,
+                "type": "Boolean"
               },
               {
                 "kind": "Variable",
@@ -394,15 +394,15 @@ return {
               },
               {
                 "kind": "Literal",
-                "name": "discoverable",
-                "value": true,
-                "type": "Boolean"
-              },
-              {
-                "kind": "Literal",
                 "name": "first",
                 "value": 20,
                 "type": "Int"
+              },
+              {
+                "kind": "Literal",
+                "name": "includeStubShows",
+                "value": true,
+                "type": "Boolean"
               },
               {
                 "kind": "Variable",
@@ -420,7 +420,7 @@ return {
             "handle": "connection",
             "key": "CitySectionList_shows",
             "filters": [
-              "discoverable",
+              "includeStubShows",
               "sort",
               "partnerType"
             ]

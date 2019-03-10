@@ -598,7 +598,7 @@ export const GlobalMapContainer = createFragmentContainer(
           lng
         }
 
-        shows(discoverable: true, first: $maxInt, sort: START_AT_ASC) {
+        shows(includeStubShows: true, first: $maxInt, sort: START_AT_ASC) {
           edges {
             node {
               id

@@ -40,7 +40,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
       lat
       lng
     }
-    shows(discoverable: true, first: $maxInt, sort: START_AT_ASC) {
+    shows(includeStubShows: true, first: $maxInt, sort: START_AT_ASC) {
       edges {
         node {
           id
@@ -250,7 +250,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MapRendererQuery",
-  "id": "e770a63fb280561c7af1622c55d56d1b",
+  "id": "d12a8ae019a2b59a3f9890bf93c78ed8",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -361,13 +361,13 @@ return {
                 "name": "shows",
                 "storageKey": null,
                 "args": [
+                  v3,
                   {
                     "kind": "Literal",
-                    "name": "discoverable",
+                    "name": "includeStubShows",
                     "value": true,
                     "type": "Boolean"
                   },
-                  v3,
                   {
                     "kind": "Literal",
                     "name": "sort",

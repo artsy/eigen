@@ -70,7 +70,7 @@ export default createPaginationContainer(
           partnerType: { type: "PartnerShowPartnerType" }
         ) {
         name
-        shows(discoverable: true, first: $count, sort: START_AT_ASC, after: $cursor, partnerType: $partnerType)
+        shows(includeStubShows: true, first: $count, sort: START_AT_ASC, after: $cursor, partnerType: $partnerType)
           @connection(key: "CitySectionList_shows") {
           pageInfo {
             endCursor
