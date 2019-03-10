@@ -34,6 +34,7 @@
 - Disables navigation to Gallery pages from Shows view on stub shows - ashley
 - Adjusts styling on city picker - ashley
 - Adds city section list for museum/gallery shows - kieran & ash
+- Adds city section list support for upcoming/closing shows - ash
 - Moves city list scroll view enabled-ness management to ObjC - ash
 - Updates styling for cluster and pin show cards - luc
 - Decrease likelihood of getting a blank view while scrolling fast in city tabs - alloy

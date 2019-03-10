@@ -94,6 +94,18 @@ return {
       "name": "partnerType",
       "type": "PartnerShowPartnerType",
       "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "status",
+      "type": "EventStatus",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "dayThreshold",
+      "type": "Int",
+      "defaultValue": null
     }
   ],
   "selections": [
@@ -104,6 +116,12 @@ return {
       "name": "__CitySectionList_shows_connection",
       "storageKey": null,
       "args": [
+        {
+          "kind": "Variable",
+          "name": "dayThreshold",
+          "variableName": "dayThreshold",
+          "type": "Int"
+        },
         {
           "kind": "Literal",
           "name": "includeStubShows",
@@ -121,6 +139,12 @@ return {
           "name": "sort",
           "value": "START_AT_ASC",
           "type": "PartnerShowSorts"
+        },
+        {
+          "kind": "Variable",
+          "name": "status",
+          "variableName": "status",
+          "type": "EventStatus"
         }
       ],
       "concreteType": "ShowConnection",
@@ -296,5 +320,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '705866e45af75cdeb4bce66772a3bd26';
+(node as any).hash = '8a6d683d758fe886dab19e056f0f3b9f';
 export default node;

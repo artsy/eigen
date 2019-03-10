@@ -25,7 +25,7 @@ class CitySectionList extends React.Component<Props, State> {
   fetchData = () => {
     const { relay } = this.props
 
-    if (relay.isLoading()) {
+    if (!relay.hasMore() || relay.isLoading()) {
       return
     }
     this.setState({ fetchingNextPage: true })
@@ -68,10 +68,19 @@ export default createPaginationContainer(
           count: { type: "Int", defaultValue: 20 }
           cursor: { type: "String", defaultValue: "" }
           partnerType: { type: "PartnerShowPartnerType" }
+          status: { type: "EventStatus" }
+          dayThreshold: { type: "Int" }
         ) {
         name
-        shows(includeStubShows: true, first: $count, sort: START_AT_ASC, after: $cursor, partnerType: $partnerType)
-          @connection(key: "CitySectionList_shows") {
+        shows(
+          includeStubShows: true
+          first: $count
+          sort: START_AT_ASC
+          after: $cursor
+          partnerType: $partnerType
+          status: $status
+          dayThreshold: $dayThreshold
+        ) @connection(key: "CitySectionList_shows") {
           pageInfo {
             endCursor
             hasNextPage
@@ -121,6 +130,8 @@ export default createPaginationContainer(
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
         citySlug: props.citySlug,
+        status: props.status,
+        dayThreshold: props.dayThreshould,
         ...fragmentVariables,
         count,
         cursor,
@@ -132,9 +143,18 @@ export default createPaginationContainer(
         $cursor: String
         $citySlug: String!
         $partnerType: PartnerShowPartnerType
+        $status: EventStatus
+        $dayThreshold: Int
       ) {
         city(slug: $citySlug) {
-          ...CitySectionList_city @arguments(count: $count, cursor: $cursor, partnerType: $partnerType)
+          ...CitySectionList_city
+            @arguments(
+              count: $count
+              cursor: $cursor
+              partnerType: $partnerType
+              status: $status
+              dayThreshold: $dayThreshold
+            )
         }
       }
     `,
