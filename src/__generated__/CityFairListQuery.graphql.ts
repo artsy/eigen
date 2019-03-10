@@ -31,7 +31,7 @@ query CityFairListQuery(
 }
 
 fragment CityFairList_city_1G22uz on City {
-  fairs(first: $count, after: $cursor) {
+  fairs(first: $count, after: $cursor, status: CURRENT, sort: START_AT_ASC) {
     edges {
       node {
         id
@@ -133,7 +133,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "CityFairListQuery",
-  "id": "2d778299e376958a4dde459e41f7ffde",
+  "id": "8c6bbbbfe58b3f6ab33d2090dbbbb808",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -205,6 +205,18 @@ return {
                 "name": "first",
                 "variableName": "count",
                 "type": "Int"
+              },
+              {
+                "kind": "Literal",
+                "name": "sort",
+                "value": "START_AT_ASC",
+                "type": "FairSorts"
+              },
+              {
+                "kind": "Literal",
+                "name": "status",
+                "value": "CURRENT",
+                "type": "EventStatus"
               }
             ],
             "concreteType": "FairConnection",
@@ -461,11 +473,26 @@ return {
                 "name": "first",
                 "variableName": "count",
                 "type": "Int"
+              },
+              {
+                "kind": "Literal",
+                "name": "sort",
+                "value": "START_AT_ASC",
+                "type": "FairSorts"
+              },
+              {
+                "kind": "Literal",
+                "name": "status",
+                "value": "CURRENT",
+                "type": "EventStatus"
               }
             ],
             "handle": "connection",
             "key": "CityFairList_fairs",
-            "filters": null
+            "filters": [
+              "status",
+              "sort"
+            ]
           }
         ]
       }

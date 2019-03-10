@@ -27,7 +27,7 @@ query QueryRenderersCityFairListQuery(
 }
 
 fragment CityFairList_city on City {
-  fairs(first: 20, after: "") {
+  fairs(first: 20, after: "", status: CURRENT, sort: START_AT_ASC) {
     edges {
       node {
         id
@@ -117,7 +117,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersCityFairListQuery",
-  "id": "76877346857f37dd5957383a494fa3e0",
+  "id": "bfe8c6bb7845966a72300f363f1ac087",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -163,7 +163,7 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "fairs",
-            "storageKey": "fairs(after:\"\",first:20)",
+            "storageKey": "fairs(after:\"\",first:20,sort:\"START_AT_ASC\",status:\"CURRENT\")",
             "args": [
               {
                 "kind": "Literal",
@@ -176,6 +176,18 @@ return {
                 "name": "first",
                 "value": 20,
                 "type": "Int"
+              },
+              {
+                "kind": "Literal",
+                "name": "sort",
+                "value": "START_AT_ASC",
+                "type": "FairSorts"
+              },
+              {
+                "kind": "Literal",
+                "name": "status",
+                "value": "CURRENT",
+                "type": "EventStatus"
               }
             ],
             "concreteType": "FairConnection",
@@ -432,11 +444,26 @@ return {
                 "name": "first",
                 "value": 20,
                 "type": "Int"
+              },
+              {
+                "kind": "Literal",
+                "name": "sort",
+                "value": "START_AT_ASC",
+                "type": "FairSorts"
+              },
+              {
+                "kind": "Literal",
+                "name": "status",
+                "value": "CURRENT",
+                "type": "EventStatus"
               }
             ],
             "handle": "connection",
             "key": "CityFairList_fairs",
-            "filters": null
+            "filters": [
+              "status",
+              "sort"
+            ]
           }
         ]
       }

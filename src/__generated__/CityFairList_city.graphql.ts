@@ -103,8 +103,21 @@ return {
       "kind": "LinkedField",
       "alias": "fairs",
       "name": "__CityFairList_fairs_connection",
-      "storageKey": null,
-      "args": null,
+      "storageKey": "__CityFairList_fairs_connection(sort:\"START_AT_ASC\",status:\"CURRENT\")",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "sort",
+          "value": "START_AT_ASC",
+          "type": "FairSorts"
+        },
+        {
+          "kind": "Literal",
+          "name": "status",
+          "value": "CURRENT",
+          "type": "EventStatus"
+        }
+      ],
       "concreteType": "FairConnection",
       "plural": false,
       "selections": [
@@ -346,5 +359,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '8fa164c04b77d6317a4e7c33b8e77196';
+(node as any).hash = '60313dbb1c408a4ac14c13a3b0aa8964';
 export default node;

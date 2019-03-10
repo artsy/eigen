@@ -4,7 +4,7 @@ import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { isEqual } from "lodash"
 import React, { Component } from "react"
-import { Dimensions, FlatList, TouchableOpacity } from "react-native"
+import { Dimensions, FlatList, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { Show } from "../types"
@@ -66,7 +66,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
 
   renderItem = ({ item }) => (
     <Background ml={1} p={1} style={shadowDetails} width={this.cardWidth}>
-      <TouchableOpacity onPress={this.handleTap.bind(this, item)}>
+      <TouchableWithoutFeedback onPress={this.handleTap.bind(this, item)}>
         <ShowItemRow
           show={item}
           relay={this.props.relay}
@@ -74,7 +74,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
           onSaveEnded={this.props.onSaveEnded}
           noPadding
         />
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     </Background>
   )
 
