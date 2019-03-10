@@ -1,6 +1,10 @@
 import { Box, Flex, Theme } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import colors from "lib/data/colors"
+import { Pin } from "lib/Icons/Pin"
+import PinSavedSelected from "lib/Icons/PinSavedSelected"
+import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { get } from "lodash"
 import React from "react"
@@ -10,8 +14,6 @@ import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
 import Supercluster from "supercluster"
 
-import colors from "lib/data/colors"
-import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { cityTabs } from "../City/cityTabs"
 import { bucketCityResults, BucketResults, emptyBucketResults } from "./bucketCityResults"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
@@ -334,6 +336,27 @@ export class GlobalMap extends React.Component<Props, State> {
     }
   }
 
+  renderSelectedPin() {
+    const { activeShows } = this.state
+    const hasShows = activeShows.length > 0
+
+    const lat = get(activeShows, "[0].location.coordinates.lat")
+    const lng = get(activeShows, "[0].location.coordinates.lng")
+    const showId = get(activeShows, "[0].id")
+    const isSaved = get(activeShows, "[0].is_followed")
+
+    if (hasShows) {
+      return (
+        <Mapbox.PointAnnotation key={showId} id={showId} selected={true} coordinate={[lng, lat]}>
+          {isSaved ? (
+            <PinSavedSelected pinHeight={45} pinWidth={45} />
+          ) : (
+            <Pin pinHeight={45} pinWidth={45} selected={true} />
+          )}
+        </Mapbox.PointAnnotation>
+      )
+    }
+  }
   renderShowCard() {
     const { activeShows } = this.state
     const hasShows = activeShows.length > 0
@@ -454,6 +477,8 @@ export class GlobalMap extends React.Component<Props, State> {
                 </Animated.View>
                 <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
               </SafeAreaView>
+              {this.renderSelectedPin()}
+
               {this.showsGeoJSONFeatureCollection && (
                 <Mapbox.ShapeSource
                   id="shows"
@@ -469,8 +494,8 @@ export class GlobalMap extends React.Component<Props, State> {
                     filter={["!has", "point_count"]}
                     style={this.stylesheet.singleShow}
                   />
-                  <Mapbox.SymbolLayer id="pointCount" style={this.stylesheet.clusterCount} />
 
+                  <Mapbox.SymbolLayer id="pointCount" style={this.stylesheet.clusterCount} />
                   <Mapbox.CircleLayer
                     id="clusteredPoints"
                     belowLayerID="pointCount"
