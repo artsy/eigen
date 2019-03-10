@@ -72,7 +72,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.5)
   - EDColor (1.0.0)
-  - Emission (1.8.14):
+  - Emission (1.8.15):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.5)
@@ -470,7 +470,7 @@ CHECKOUT OPTIONS:
     :commit: 5a6df1a795766a4d3e586508e86ec9271d3ef3d9
     :git: https://github.com/orta/JLRoutes.git
   Pulley:
-    :commit: 1e23ad3b0ff8f5a2b35182b0666ce85c96f88ae8
+    :commit: ff5e7e7157a8351dbc36b7165e3ae963c51752d5
     :git: https://github.com/l2succes/Pulley.git
   react-native-mapbox-gl:
     :commit: c86bdb8130525aeb2476c6584e11aa3408408992
@@ -509,7 +509,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: e929d97dc2ec6feb37a4c7c2c133dc160e17d4ea
+  Emission: 4e12667c5efda692f0b161e496c1ebc016f6060f
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
