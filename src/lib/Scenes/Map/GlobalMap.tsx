@@ -12,12 +12,13 @@ import Supercluster from "supercluster"
 
 import colors from "lib/data/colors"
 import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
-import { bucketCityResults, BucketResults, emptyBucketResults } from "./Bucket"
+import { cityTabs } from "../City/cityTabs"
+import { bucketCityResults, BucketResults, emptyBucketResults } from "./bucketCityResults"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { MapGeoFeature, MapGeoFeatureCollection, MapTab, OSCoordsUpdate, Show } from "./types"
+import { MapGeoFeature, MapGeoFeatureCollection, OSCoordsUpdate, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -141,14 +142,6 @@ export class GlobalMap extends React.Component<Props, State> {
   fairsGeoJSONFeatureCollection: MapGeoFeatureCollection
   moveButtons: Animated.Value
 
-  filters: MapTab[] = [
-    { id: "all", text: "All" },
-    { id: "saved", text: "Saved" },
-    { id: "fairs", text: "Fairs" },
-    { id: "galleries", text: "Galleries" },
-    { id: "museums", text: "Museums" },
-  ]
-
   shows: { [id: string]: Show } = {}
 
   stylesheet = Mapbox.StyleSheet.create({
@@ -268,12 +261,15 @@ export class GlobalMap extends React.Component<Props, State> {
     if (!this.props.viewer) {
       return
     }
-    const { city } = this.props.viewer
 
-    const showData = showsToGeoCityShow(city.shows.edges)
+    const tab = cityTabs[this.state.activeIndex]
+    const shows = tab.getShows(this.state.bucketResults)
+    const fairs = tab.getFairs(this.state.bucketResults)
+
+    const showData = showsToGeoCityShow(shows)
     const showsGeoJSONFeature = convertCityToGeoJSON(showData)
 
-    const fairData = fairToGeoCityFairs(city.fairs.edges)
+    const fairData = fairToGeoCityFairs(fairs)
     const fairsGeoJSONFeature = convertCityToGeoJSON(fairData)
 
     if (updateState) {
@@ -292,11 +288,14 @@ export class GlobalMap extends React.Component<Props, State> {
     if (!this.props.viewer) {
       return
     }
+
     // TODO: map region filtering can live here.
-    const filter = this.filters[this.state.activeIndex]
+    const filter = cityTabs[this.state.activeIndex]
     const {
       city: { name: cityName, slug: citySlug, sponsoredContent },
     } = this.props.viewer
+
+    this.updateClusterMap(true)
 
     EventEmitter.dispatch("map:change", {
       filter,
@@ -310,7 +309,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   fireGlobalMapScreenViewAnalytics = () => {
     this.props.tracking.trackEvent({
-      context_screen: screenSchemaForCurrentTabState(this.filters[this.state.activeIndex].id),
+      context_screen: screenSchemaForCurrentTabState(cityTabs[this.state.activeIndex].id),
       context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
       context_screen_owner_slug: this.props.citySlug,
       context_screen_owner_id: this.props.citySlug,
@@ -604,6 +603,7 @@ export const GlobalMapContainer = createFragmentContainer(
               id
               _id
               __id
+
               name
               status
               href

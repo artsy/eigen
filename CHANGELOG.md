@@ -16,6 +16,7 @@
 
 ### Master
 
+- Support filtering the map based on the selected tab - orta
 - Shows fairs on the map - orta
 - Update city coordinates (to fix Los Angeles bug) - anandaroop
 - Fixes warning about missing viewer prop - ash

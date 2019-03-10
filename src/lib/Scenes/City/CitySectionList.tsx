@@ -3,7 +3,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { BucketKey } from "../Map/Bucket"
+import { BucketKey } from "../Map/bucketCityResults"
 import { EventList } from "./Components/EventList"
 
 interface Props {

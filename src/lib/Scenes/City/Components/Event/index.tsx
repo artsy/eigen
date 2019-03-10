@@ -3,6 +3,7 @@ import { EventMutation } from "__generated__/EventMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Show } from "lib/Scenes/Map/types"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -15,22 +16,7 @@ const TextContainer = styled(Box)`
 
 interface Props {
   relay: RelayProp
-  event: {
-    node: {
-      name: string
-      __id: string
-      _id: string
-      id: string
-      is_followed: boolean
-      exhibition_period: string
-      cover_image: {
-        url: string
-      }
-      partner: {
-        name: string
-      }
-    }
-  }
+  event: Show
 }
 
 interface State {
@@ -52,9 +38,7 @@ export class Event extends React.Component<Props, State> {
   }
 
   @track(props => {
-    const {
-      node: { id, _id, is_followed },
-    } = props.event
+    const { id, _id, is_followed } = props.event
     return {
       action_name: is_followed ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow,
       context_screen: Schema.PageNames.SavesAndFollows,
@@ -64,7 +48,7 @@ export class Event extends React.Component<Props, State> {
     } as any
   })
   handleSaveChange() {
-    const { node } = this.props.event
+    const node = this.props.event
     const { id: showSlug, __id: nodeID, _id: showID, is_followed: isShowFollowed } = node
 
     if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
@@ -111,11 +95,11 @@ export class Event extends React.Component<Props, State> {
   }
 
   handleTap = () => {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.event.node.id}`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.event.id}`)
   }
 
   render() {
-    const { node } = this.props.event
+    const node = this.props.event
     const { name, exhibition_period, partner, cover_image, is_followed } = node
     const { name: partnerName } = partner
     const { isFollowedSaving } = this.state

@@ -38,7 +38,7 @@ import {
 import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
 import { MapContainer } from "./Scenes/Map"
-import { BucketKey } from "./Scenes/Map/Bucket"
+import { BucketKey } from "./Scenes/Map/bucketCityResults"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
 
