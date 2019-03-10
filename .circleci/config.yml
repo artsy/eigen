@@ -58,7 +58,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - v9-pods-{{ checksum "Example/Podfile.lock" }}
+            - v9-pods-{{ checksum "Example/Pods/Pods.xcodeproj/project.pbxproj" }}
             # Fall back to using the latest cache if no exact match is found.
             - v9-pods-
 
@@ -71,7 +71,7 @@ jobs:
           command: cd Example ; bundle exec pod check --ignore-dev-pods || bundle exec pod install
 
       - save_cache:
-          key: v9-pods-{{ checksum "Example/Podfile.lock" }}
+          key: v9-pods-{{ checksum "Example/Pods/Pods.xcodeproj/project.pbxproj" }}
           paths:
             - Example/Pods
 
