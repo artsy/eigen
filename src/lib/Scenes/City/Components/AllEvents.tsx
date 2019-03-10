@@ -1,6 +1,6 @@
 import { Box, Separator, Serif } from "@artsy/palette"
 import { EventSection } from "lib/Scenes/City/Components/EventSection"
-import { BucketKey, BucketResults } from "lib/Scenes/Map/Bucket"
+import { BucketKey, BucketResults } from "lib/Scenes/Map/bucketCityResults"
 import { isEqual } from "lodash"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
@@ -37,10 +37,7 @@ export class AllEvents extends React.Component<Props, State> {
   componentWillReceiveProps(nextProps) {
     const shouldUpdate = ["saved", "closing", "museums", "opening", "closing"]
       .map(key => {
-        return !isEqual(
-          this.props.buckets[key].map(g => g.node.is_followed),
-          nextProps.buckets[key].map(g => g.is_followed)
-        )
+        return !isEqual(this.props.buckets[key].map(g => g.is_followed), nextProps.buckets[key].map(g => g.is_followed))
       })
       .some(a => a)
 
@@ -173,6 +170,7 @@ export class AllEvents extends React.Component<Props, State> {
             title="BMW Art Guide"
             sponsoredContent={sponsoredContent}
             data={data}
+            citySlug={citySlug}
             relay={this.props.relay}
           />
         )

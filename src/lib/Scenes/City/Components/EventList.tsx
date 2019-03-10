@@ -2,7 +2,7 @@ import { Box, Message, Separator, Theme } from "@artsy/palette"
 import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import Spinner from "lib/Components/Spinner"
-import { BucketKey } from "lib/Scenes/Map/Bucket"
+import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
 import React from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { RelayProp } from "react-relay"
@@ -23,7 +23,7 @@ export class EventList extends React.Component<Props> {
     if (type === "fairs") {
       return <TabFairItemRow item={item} />
     } else {
-      return <ShowItemRow show={item.node} relay={this.props.relay} />
+      return <ShowItemRow show={item} relay={this.props.relay} />
     }
   }
 
@@ -34,7 +34,7 @@ export class EventList extends React.Component<Props> {
         data={bucket}
         ItemSeparatorComponent={() => <Separator />}
         ListFooterComponent={fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
-        keyExtractor={item => item.node.id}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => this.renderItem(item)}
         onScroll={onScroll}
         scrollIndicatorInsets={{ right: -10 }}

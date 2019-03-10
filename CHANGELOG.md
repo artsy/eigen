@@ -16,6 +16,8 @@
 
 ### Master
 
+- Support filtering the map based on the selected tab - orta
+- Shows fairs on the map - orta
 - Update city coordinates (to fix Los Angeles bug) - anandaroop
 - Fixes warning about missing viewer prop - ash
 - Removes touchable feedback on fair cards - ash
@@ -29,10 +31,16 @@
 - Fixes saving not updating props in city view - kieran
 - Disables navigation to Gallery pages from Shows view on stub shows - ashley
 - Fixes memory leak by unsubscribing components from the EventEmitter - alloy
+- Disables navigation to Gallery pages from Shows view on stub shows - ashley
+- Adjusts styling on city picker - ashley
 - Adds city section list for museum/gallery shows - kieran & ash
+- Adds city section list support for upcoming/closing shows - ash
 - Moves city list scroll view enabled-ness management to ObjC - ash
 - Updates styling for cluster and pin show cards - luc
 - Decrease likelihood of getting a blank view while scrolling fast in city tabs - alloy
+- Hook up save functionality for show card - luc
+- Adds loading screen for Map view - luc
+- Adds analytics to map and city view - kieran
 
 ### 1.8.14
 

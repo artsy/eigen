@@ -24,7 +24,7 @@ export class EventSection extends React.Component<Props> {
     return data.map((event, i) => {
       if (i < 2) {
         return (
-          <Box key={event.node.id}>
+          <Box key={event.id}>
             <Event event={event} relay={this.props.relay} />
           </Box>
         )

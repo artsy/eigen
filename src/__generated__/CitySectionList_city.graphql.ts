@@ -94,6 +94,18 @@ return {
       "name": "partnerType",
       "type": "PartnerShowPartnerType",
       "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "status",
+      "type": "EventStatus",
+      "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "dayThreshold",
+      "type": "Int",
+      "defaultValue": null
     }
   ],
   "selections": [
@@ -105,8 +117,14 @@ return {
       "storageKey": null,
       "args": [
         {
+          "kind": "Variable",
+          "name": "dayThreshold",
+          "variableName": "dayThreshold",
+          "type": "Int"
+        },
+        {
           "kind": "Literal",
-          "name": "discoverable",
+          "name": "includeStubShows",
           "value": true,
           "type": "Boolean"
         },
@@ -121,6 +139,12 @@ return {
           "name": "sort",
           "value": "START_AT_ASC",
           "type": "PartnerShowSorts"
+        },
+        {
+          "kind": "Variable",
+          "name": "status",
+          "variableName": "status",
+          "type": "EventStatus"
         }
       ],
       "concreteType": "ShowConnection",
@@ -296,5 +320,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'e22a5835448dbdc10588bbfb13bef3c7';
+(node as any).hash = '8a6d683d758fe886dab19e056f0f3b9f';
 export default node;

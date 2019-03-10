@@ -35,7 +35,9 @@ playground.xcworkspace
 .DS_Store
 node_modules
 npm-debug.log
-Example/Pods
+Example/Pods/*
+!Example/Pods/Pods.xcodeproj
+!Example/Pods/Pods.xcodeproj/project.pbxproj
 Example/compile_commands.json
 Example/Emission/Configuration.h
 .vscode/launchReactNative.js

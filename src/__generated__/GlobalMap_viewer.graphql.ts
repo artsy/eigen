@@ -272,13 +272,13 @@ return {
           "name": "shows",
           "storageKey": null,
           "args": [
+            v2,
             {
               "kind": "Literal",
-              "name": "discoverable",
+              "name": "includeStubShows",
               "value": true,
               "type": "Boolean"
             },
-            v2,
             {
               "kind": "Literal",
               "name": "sort",
@@ -528,5 +528,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '6ee441657aa6a50ea5094ff510073dda';
+(node as any).hash = '4cb2dd5aecf92dc3c703ff69c20ae330';
 export default node;
