@@ -8,6 +8,7 @@ import { RelayProp } from "react-relay"
 
 export interface Props {
   title: string
+  // TODO: What is this data?
   data: any
   relay: RelayProp
   citySlug: string

@@ -12,17 +12,23 @@ const FairSectionBackground = styled(Box)`
   margin-bottom: ${space(1)};
 `
 
-export class FairEventSection extends Component<any> {
+interface Props {
+  citySlug: string
+  // Likely Fair[]
+  data: any[]
+}
+
+export class FairEventSection extends Component<Props> {
   viewAllPressed = () => {
     const { citySlug } = this.props
     SwitchBoard.presentNavigationViewController(this, `/city-fair/${citySlug}`)
   }
 
   renderItem = ({ item }) => {
-    const { node } = item
+    const fair = item
     return (
       <Box pr={1}>
-        <FairEventSectionCard fair={node} />
+        <FairEventSectionCard fair={fair} />
       </Box>
     )
   }
@@ -37,9 +43,9 @@ export class FairEventSection extends Component<any> {
           </Serif>
         </Box>
         <FlatList
-          data={data.filter(fair => Boolean(fair.node.image))}
+          data={data.filter(fair => Boolean(fair.image))}
           renderItem={this.renderItem}
-          keyExtractor={item => item.node.id}
+          keyExtractor={item => item.id}
           contentContainerStyle={{ padding: space(2) }}
           horizontal
         />

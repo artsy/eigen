@@ -49,7 +49,7 @@ import { QueryRenderersShowArtworksQuery } from "__generated__/QueryRenderersSho
 import { QueryRenderersShowMoreInfoQuery } from "__generated__/QueryRenderersShowMoreInfoQuery.graphql"
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
-import { BucketKey } from "lib/Scenes/Map/Bucket"
+import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
 import createEnvironment from "./createEnvironment"
 const environment = createEnvironment()
 
