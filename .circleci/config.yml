@@ -63,16 +63,16 @@ jobs:
       - run:
           name: List sims
           command: xcversion simulators
- 
+
       - run:
           name: List devices
-          command: instruments -s devices
+          command: instruments -s device
 
       - restore_cache:
           keys:
-          - v2-pods-{{ checksum "Podfile.lock" }}
+          - v3-pods-{{ checksum "Podfile.lock" }}
           # Fall back to using the latest cache if no exact match is found.
-          - v2-pods-
+          - v3-pods-
 
       - run:
           name: Install CocoaPods
@@ -82,8 +82,16 @@ jobs:
           name: Install Pods
           command: bundle exec pod check || bundle exec pod install
 
+      - run:
+          name: ls pods
+          command: ls Pods
+
+      - run:
+          name: ls Pods
+          command: ls "Pods/Local Podspecs"
+
       - save_cache:
-          key: v2-pods-{{ checksum "Podfile.lock" }}
+          key: v3-pods-{{ checksum "Podfile.lock" }}
           paths:
             - Pods
 
