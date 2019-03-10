@@ -25,7 +25,7 @@ class CityFairList extends React.Component<Props, State> {
   fetchData = () => {
     const { relay } = this.props
 
-    if (relay.isLoading()) {
+    if (!relay.hasMore() || relay.isLoading()) {
       return
     }
     this.setState({ fetchingNextPage: true })
