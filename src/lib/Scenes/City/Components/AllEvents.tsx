@@ -14,7 +14,14 @@ interface Props extends ViewProperties {
   buckets: BucketResults
   cityName: string
   citySlug: string
-  sponsoredContent: { introText: string; artGuideUrl: string }
+  sponsoredContent: {
+    introText: string
+    artGuideUrl: string
+    shows: {
+      totalCount: number
+      edges: any[]
+    }
+  }
   relay: RelayProp
 }
 
@@ -169,7 +176,6 @@ export class AllEvents extends React.Component<Props, State> {
           <BMWEventSection
             title="BMW Art Guide"
             sponsoredContent={sponsoredContent}
-            data={data}
             citySlug={citySlug}
             relay={this.props.relay}
           />
