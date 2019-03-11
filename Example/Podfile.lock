@@ -4,7 +4,7 @@ PODS:
     - ISO8601DateFormatter
     - "NSURL+QueryDictionary"
   - "Artsy+UIColors (3.1.0)"
-  - "Artsy+UIFonts (3.2.1)"
+  - "Artsy+UIFonts (3.2.0)"
   - Artsy-UIButtons (2.3.3):
     - "Artsy+UIColors (~> 3.0)"
     - "Artsy+UIFonts"
@@ -64,7 +64,7 @@ PODS:
   - FBSnapshotTestCase/Core (2.1.4)
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
-  - FLKAutoLayout (1.0.1)
+  - FLKAutoLayout (1.0.0)
   - Folly (2016.09.26.00):
     - boost-for-react-native
     - DoubleConversion
@@ -72,14 +72,14 @@ PODS:
   - glog (0.3.4)
   - ISO8601DateFormatter (0.8)
   - Keys (1.0.1)
-  - KSCrash/Core (1.15.18):
+  - KSCrash/Core (1.15.16):
     - KSCrash/Reporting/Filters/Basic
-  - KSCrash/Recording (1.15.18):
-    - KSCrash/Recording/Tools (= 1.15.18)
-  - KSCrash/Recording/Tools (1.15.18)
-  - KSCrash/Reporting/Filters/Base (1.15.18):
+  - KSCrash/Recording (1.15.16):
+    - KSCrash/Recording/Tools (= 1.15.16)
+  - KSCrash/Recording/Tools (1.15.16)
+  - KSCrash/Reporting/Filters/Base (1.15.16):
     - KSCrash/Recording
-  - KSCrash/Reporting/Filters/Basic (1.15.18):
+  - KSCrash/Reporting/Filters/Basic (1.15.16):
     - KSCrash/Recording
     - KSCrash/Reporting/Filters/Base
   - "NSURL+QueryDictionary (1.2.0)"
@@ -136,7 +136,7 @@ PODS:
     - React/RCTBlob
   - RNSVG (9.0.4):
     - React
-  - SAMKeychain (1.5.3)
+  - SAMKeychain (1.5.0)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
@@ -242,32 +242,35 @@ CHECKOUT OPTIONS:
   Pulley:
     :commit: ff5e7e7157a8351dbc36b7165e3ae963c51752d5
     :git: https://github.com/l2succes/Pulley.git
+  tipsi-stripe:
+    :commit: efcbc49dc7cf472099d8aa8c3fb2b64441fc5ea1
+    :git: https://github.com/erikdstock/tipsi-stripe.git
 
 SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   "Artsy+Authentication": 3bf11ceca61c52e9e31490535bf5798f625406fa
   "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  "Artsy+UIFonts": 3195e768ca4ca89c03fbddbd82e5f4af5168c5d8
+  "Artsy+UIFonts": d29579aa105e3709032651fb3145d24f8339e905
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: ebb6747c5b66026ad4f97b789c3ceac6f18e57a6
-  Emission: 47b0d4b8c7815509d5b460ad849b4e81eec6070a
+  Emission: 596ccecc15ab1c745652916e8dde362439555196
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  FLKAutoLayout: 37e1e09de6411dbee5526860d9f55d9063323ea8
+  FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   Folly: 211775e49d8da0ca658aebc8eab89d642935755c
   glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   Keys: 7e91fe066d4f94790fd35b5a9fc63e441cd3b6d2
-  KSCrash: 5394936f41e5c1ef7b79cf79b30d53299b0c160e
+  KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
   React: e8b3cf60f93a0e64045862a003c1bf9408098cff
   react-native-mapbox-gl: d0ac3b81a6cadbd7cadc80891da72e3e85379350
   RNSVG: 36f6615444ab569023444e09b01a1900d964e967
-  SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
+  SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   Sentry: e2707f9a6b498277d9620a48fcb1bd3b655c8473
   SentryReactNative: 3dff4e9bd82aa581dc64ff8d2524d7007cea076b
