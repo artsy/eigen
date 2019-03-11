@@ -16,8 +16,8 @@
 
 ### Master
 
+- Fixes safe area insets missing error on pre-iOS 11 devices - ash
 - Don't allow the map to rotate - orta
-
 - Only shows open, or upcoming fairs in the fairs tab - orta
 - Support filtering the map based on the selected tab - orta
 - Shows fairs on the map - orta
