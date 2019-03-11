@@ -1,4 +1,4 @@
-import { Box, Serif, Theme } from "@artsy/palette"
+import { Box, Theme } from "@artsy/palette"
 import { CitySavedList_city } from "__generated__/CitySavedList_city.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"

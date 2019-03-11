@@ -1,4 +1,4 @@
-import { Box, Message, Separator, Serif, Theme } from "@artsy/palette"
+import { Box, Message, Separator, Serif } from "@artsy/palette"
 import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import Spinner from "lib/Components/Spinner"

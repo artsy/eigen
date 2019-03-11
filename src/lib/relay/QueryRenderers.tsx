@@ -52,6 +52,7 @@ import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.g
 import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
 import createEnvironment from "./createEnvironment"
+import { QueryRenderersCitySavedListQuery } from "__generated__/QueryRenderersCitySavedListQuery.graphql"
 const environment = createEnvironment()
 
 export type RenderCallback = QueryRendererProps["render"]
