@@ -695,7 +695,6 @@ export const GlobalMapContainer = createFragmentContainer(
                 id
                 _id
                 __id
-
                 name
                 status
                 href
@@ -718,9 +717,6 @@ export const GlobalMapContainer = createFragmentContainer(
                     name
                     type
                   }
-                  ... on ExternalPartner {
-                    name
-                  }
                 }
               }
             }
@@ -731,13 +727,12 @@ export const GlobalMapContainer = createFragmentContainer(
           lng
         }
 
-        shows(includeStubShows: true, first: $maxInt, sort: START_AT_ASC) {
+        shows(includeStubShows: true, status: RUNNING, first: $maxInt, sort: PARTNER_ASC) {
           edges {
             node {
               id
               _id
               __id
-
               name
               status
               href
@@ -760,15 +755,12 @@ export const GlobalMapContainer = createFragmentContainer(
                   name
                   type
                 }
-                ... on ExternalPartner {
-                  name
-                }
               }
             }
           }
         }
 
-        fairs(first: $maxInt) {
+        fairs(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
           edges {
             node {
               id

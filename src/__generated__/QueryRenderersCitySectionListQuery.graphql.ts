@@ -36,7 +36,7 @@ query QueryRenderersCitySectionListQuery(
 
 fragment CitySectionList_city_1Rk2en on City {
   name
-  shows(includeStubShows: true, first: 20, sort: START_AT_ASC, after: "", partnerType: $partnerType, status: $status, dayThreshold: $dayThreshold) {
+  shows(includeStubShows: true, first: 20, sort: END_AT_ASC, after: "", partnerType: $partnerType, status: $status, dayThreshold: $dayThreshold) {
     pageInfo {
       endCursor
       hasNextPage
@@ -146,7 +146,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersCitySectionListQuery",
-  "id": "9d79350b3121f4477e7dd7b7a796a7df",
+  "id": "9584c0b7cd0b46ac7fd206bfa7fd6153",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -247,7 +247,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "sort",
-                "value": "START_AT_ASC",
+                "value": "END_AT_ASC",
                 "type": "PartnerShowSorts"
               },
               {
@@ -460,7 +460,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "sort",
-                "value": "START_AT_ASC",
+                "value": "END_AT_ASC",
                 "type": "PartnerShowSorts"
               },
               {

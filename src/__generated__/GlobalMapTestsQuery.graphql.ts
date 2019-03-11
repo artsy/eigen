@@ -82,7 +82,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
       lat
       lng
     }
-    shows(includeStubShows: true, first: $maxInt, sort: START_AT_ASC) {
+    shows(includeStubShows: true, status: RUNNING, first: $maxInt, sort: START_AT_ASC) {
       edges {
         node {
           id
@@ -123,7 +123,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
         }
       }
     }
-    fairs(first: $maxInt) {
+    fairs(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
       edges {
         node {
           id
@@ -396,7 +396,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "GlobalMapTestsQuery",
-  "id": "a32ecfe85a815b52bf47b85de9f8ceaf",
+  "id": "aa4a3755a4e7be0c62f53f827f76336b",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -541,7 +541,13 @@ return {
                     "value": true,
                     "type": "Boolean"
                   },
-                  v2
+                  v2,
+                  {
+                    "kind": "Literal",
+                    "name": "status",
+                    "value": "RUNNING",
+                    "type": "EventStatus"
+                  }
                 ],
                 "concreteType": "ShowConnection",
                 "plural": false,
@@ -555,7 +561,19 @@ return {
                 "name": "fairs",
                 "storageKey": null,
                 "args": [
-                  v14
+                  v14,
+                  {
+                    "kind": "Literal",
+                    "name": "sort",
+                    "value": "START_AT_ASC",
+                    "type": "FairSorts"
+                  },
+                  {
+                    "kind": "Literal",
+                    "name": "status",
+                    "value": "CURRENT",
+                    "type": "EventStatus"
+                  }
                 ],
                 "concreteType": "FairConnection",
                 "plural": false,

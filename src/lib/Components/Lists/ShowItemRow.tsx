@@ -174,9 +174,6 @@ export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
         ... on Partner {
           name
         }
-        ... on ExternalPartner {
-          name
-        }
       }
       href
       exhibition_period

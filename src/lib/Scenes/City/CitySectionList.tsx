@@ -75,7 +75,7 @@ export default createPaginationContainer(
         shows(
           includeStubShows: true
           first: $count
-          sort: START_AT_ASC
+          sort: END_AT_ASC
           after: $cursor
           partnerType: $partnerType
           status: $status
@@ -105,9 +105,6 @@ export default createPaginationContainer(
                 ... on Partner {
                   name
                   type
-                }
-                ... on ExternalPartner {
-                  name
                 }
               }
             }

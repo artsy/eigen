@@ -220,9 +220,6 @@ export const ShowHeaderContainer = createFragmentContainer(
           id
           href
         }
-        ... on ExternalPartner {
-          name
-        }
       }
       images {
         url

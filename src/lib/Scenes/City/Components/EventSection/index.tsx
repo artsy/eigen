@@ -21,6 +21,8 @@ export class EventSection extends React.Component<Props> {
 
   renderEvents = () => {
     const { data } = this.props
+    // FIXME: The first two shows should not be isStubShow and only if it has cover image
+    // and sort by start_date_desc for gallery or museum show
     return data.map((event, i) => {
       if (i < 2) {
         return (
