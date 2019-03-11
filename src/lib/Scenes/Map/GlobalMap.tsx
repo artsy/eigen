@@ -148,6 +148,7 @@ export class GlobalMap extends React.Component<Props, State> {
     singleShow: {
       iconImage: Mapbox.StyleSheet.identity("icon"),
       iconSize: 0.8,
+      iconOffset: [0, -21],
     },
 
     clusteredPoints: {
