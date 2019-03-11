@@ -261,7 +261,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     }];
 
     [self.routes addRoute:@"/city-fair/:city_slug" handler:JLRouteParams {
-        return [[ARCityFairListComponentViewController alloc] initWithCitySlug:parameters[@"city_slug"];
+        return [[ARCityFairListComponentViewController alloc] initWithCitySlug:parameters[@"city_slug"]];
     }];
     
     // We don't show a native fairs UI for iPad
