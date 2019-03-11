@@ -1,5 +1,6 @@
 #import "ArtsyEcho+LocalDisco.h"
 #import "ARAppStatus.h"
+#import "UIDevice-Hardware.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
 /// To be kept in lock-step with the corresponding echo value, and updated when there is a breaking Maps change.
@@ -16,6 +17,10 @@ NSInteger const ARLocalDiscoCurrentVersionCompatibility = 0;
 
 - (BOOL)isLocalDiscoCompatible
 {
+    if ([UIDevice isPad]) {
+        return NO;
+    }
+
     Message *localDiscoVersion = [[self.messages select:^BOOL(Message *message) {
         return [message.name isEqualToString:@"LocalDiscoveryCurrentVersion"];
     }] firstObject];

@@ -218,7 +218,7 @@ describe(@"navigation", ^{
                 // This will regenerate each time
                 } else if (tabIndex.integerValue == ARTopTabControllerIndexMessaging) {
 
-                    BOOL isFavouritesOrInbox = [viewcontroller isKindOfClass:ARFavoritesComponentViewController.class] | [viewcontroller isKindOfClass:ARFavoritesComponentViewController.class];
+                    BOOL isFavouritesOrInbox = [viewcontroller isKindOfClass:ARFavoritesComponentViewController.class] || [viewcontroller isKindOfClass:ARInboxComponentViewController.class];
                     expect(isFavouritesOrInbox).to.equal(YES);
 
                 } else {
