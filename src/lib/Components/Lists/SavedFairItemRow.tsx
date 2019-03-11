@@ -94,11 +94,12 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
               <Sans size="3" color="black" weight="medium" numberOfLines={1} ml="13">
                 {item.name}
               </Sans>
-              {item.counts && (
-                <Sans size="2" color={color("black60")} ml="13">
-                  {item.counts.partners + " Exhbitors"}
-                </Sans>
-              )}
+              {item.counts &&
+                item.counts.partners && (
+                  <Sans size="2" color={color("black60")} ml="13">
+                    {item.counts.partners + " Exhbitors"}
+                  </Sans>
+                )}
               {item.exhibition_period && (
                 <Sans size="2" color={color("black60")} ml="13">
                   {item.exhibition_period}

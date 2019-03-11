@@ -39,7 +39,7 @@ class CityFairList extends React.Component<Props, State> {
   }
 
   renderItem = item => {
-    return <TabFairItemRow item={item} />
+    return <TabFairItemRow item={item.node} />
   }
 
   render() {
@@ -51,7 +51,7 @@ class CityFairList extends React.Component<Props, State> {
     const { fetchingNextPage } = this.state
     return (
       <Theme>
-        <Box px={2}>
+        <Box px={2} pt={6}>
           <FlatList
             data={edges}
             ItemSeparatorComponent={() => <Separator />}
@@ -59,8 +59,6 @@ class CityFairList extends React.Component<Props, State> {
             renderItem={({ item }) => this.renderItem(item)}
             onScroll={isCloseToBottom(this.fetchData)}
             ListFooterComponent={fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
-            contentInset={{ top: 60 }}
-            contentOffset={{ y: -60, x: 0 }}
           />
         </Box>
       </Theme>

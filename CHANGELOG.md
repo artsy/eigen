@@ -47,6 +47,7 @@
 - Add safeAreaInsets to handle various screen sizes - luc
 - Set min zoom size on map - luc
 - Fixes map background sizing - luc
+- Adds styling on single map points and clusters to indicate selection - ashley
 
 ### 1.8.14
 
