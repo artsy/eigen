@@ -152,7 +152,7 @@ export class GlobalMap extends React.Component<Props, State> {
     singleShow: {
       iconImage: Mapbox.StyleSheet.identity("icon"),
       iconSize: 0.8,
-      iconOffset: [0, -21],
+      // iconOffset: [0, -21], @TODO: This property causes with the selected shows icon. Does this need to be here?
     },
 
     clusteredPoints: {
@@ -341,22 +341,19 @@ export class GlobalMap extends React.Component<Props, State> {
 
   renderSelectedPin() {
     const { activeShows } = this.state
+    console.log("TCL: renderSelectedPin -> activeShows", activeShows)
     const isCluster = activeShows.length > 1
     const isSingleShow = activeShows.length === 1
 
-    const lat = get(activeShows, "[0].location.coordinates.lat")
-    const lng = get(activeShows, "[0].location.coordinates.lng")
-    const showId = get(activeShows, "[0].id")
-    const isSaved = get(activeShows, "[0].is_followed")
-
     if (isCluster) {
+      console.log("TCL: renderSelectedPin -> isCluster", isCluster)
       const { nearestFeature } = this.state
       const activeClusterLat = get(nearestFeature, "geometry.coordinates[0]")
       const activeClusterLng = get(nearestFeature, "geometry.coordinates[1]")
       const clusterId = get(nearestFeature, "properties.cluster_id", "").toString()
       let pointCount = get(nearestFeature, "properties.point_count", "")
-      const width = pointCount < 5 ? 35 : pointCount < 20 ? 45 : 60
-      const height = pointCount < 5 ? 35 : pointCount < 20 ? 45 : 60
+      const width = pointCount < 5 ? 35 : pointCount < 21 ? 45 : 60
+      const height = pointCount < 5 ? 35 : pointCount < 21 ? 45 : 60
       pointCount = pointCount.toString()
 
       return (
@@ -380,14 +377,24 @@ export class GlobalMap extends React.Component<Props, State> {
       )
     }
     if (isSingleShow) {
+      console.log("TCL: renderSelectedPin -> isSingleShow", isSingleShow)
+      const lat = get(activeShows, "[0].location.coordinates.lat")
+      const lng = get(activeShows, "[0].location.coordinates.lng")
+      const showId = get(activeShows, "[0].id")
+      const isSaved = get(activeShows, "[0].is_followed")
+
       return (
-        <Mapbox.PointAnnotation key={showId} id={showId} selected={true} coordinate={[lng, lat]}>
-          {isSaved ? (
-            <PinSavedSelected pinHeight={45} pinWidth={45} />
-          ) : (
-            <Pin pinHeight={45} pinWidth={45} selected={true} />
-          )}
-        </Mapbox.PointAnnotation>
+        lat &&
+        lng &&
+        showId && (
+          <Mapbox.PointAnnotation key={showId} id={showId} selected={true} coordinate={[lng, lat]}>
+            {isSaved ? (
+              <PinSavedSelected pinHeight={45} pinWidth={45} />
+            ) : (
+              <Pin pinHeight={45} pinWidth={45} selected={true} />
+            )}
+          </Mapbox.PointAnnotation>
+        )
       )
     }
   }
