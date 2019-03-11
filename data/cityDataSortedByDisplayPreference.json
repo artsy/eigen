@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "new-york-ny-usa",
+    "name": "New York",
+    "coordinates": { "lat": 40.71, "lng": -74.01 }
+  },
+  {
+    "slug": "los-angeles-ca-usa",
+    "name": "Los Angeles",
+    "coordinates": { "lat": 34.05, "lng": -118.24 }
+  },
+  {
+    "slug": "london-united-kingdom",
+    "name": "London",
+    "coordinates": { "lat": 51.51, "lng": -0.13 }
+  },
+  {
+    "slug": "berlin-germany",
+    "name": "Berlin",
+    "coordinates": { "lat": 52.52, "lng": 13.4 }
+  },
+  {
+    "slug": "paris-france",
+    "name": "Paris",
+    "coordinates": { "lat": 48.86, "lng": 2.35 }
+  },
+  {
+    "slug": "hong-kong-hong-kong",
+    "name": "Hong Kong",
+    "coordinates": { "lat": 22.3, "lng": 114.2 }
+  }
+]
