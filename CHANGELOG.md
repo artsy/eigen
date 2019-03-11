@@ -16,6 +16,8 @@
 
 ### Master
 
+- Don't allow the map to rotate - orta
+
 - Only shows open, or upcoming fairs in the fairs tab - orta
 - Support filtering the map based on the selected tab - orta
 - Shows fairs on the map - orta
@@ -49,6 +51,7 @@
 - Set min zoom size on map - luc
 - Fixes map background sizing - luc
 - Adds styling on single map points and clusters to indicate selection - ashley
+- Adds pre-heated GraphQL cache ability, with just City cache for now - alloy
 
 ### 1.8.14
 
