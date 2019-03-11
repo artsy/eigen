@@ -44,6 +44,7 @@
 - Adds analytics to map and city view - kieran
 - Move ShapeLayers to PinsShapeLayer - luc
 - Add loading indicator when data is downloading - luc
+- Add safeAreaInsets to handle various screen sizes - luc
 
 ### 1.8.14
 
