@@ -67,9 +67,8 @@ export class BMWEventSection extends React.Component<Props> {
       sponsoredContent: {
         introText,
         artGuideUrl,
-        shows: { totalCount, edges },
+        shows: { totalCount },
       },
-      relay,
     } = this.props
     return (
       <>

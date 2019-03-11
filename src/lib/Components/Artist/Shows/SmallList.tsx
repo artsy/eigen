@@ -1,5 +1,5 @@
 import React from "react"
-import { ListView, ListViewDataSource, StyleSheet, View, ViewProperties } from "react-native"
+import { ListView, ListViewDataSource, StyleSheet, View, ViewProperties, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import ArtistShow from "./ArtistShow"
@@ -63,7 +63,11 @@ const showStyles = StyleSheet.create({
     marginTop: 20,
     marginRight: 15,
   },
-})
+}) as {
+  // TODO: This issue has been fixed in more recent versions of the RN typings, so we can remove this when we upgrade.
+  container: ViewStyle
+  image: ViewStyle
+}
 
 export default createFragmentContainer(
   SmallList,
