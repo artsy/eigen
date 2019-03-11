@@ -2,6 +2,7 @@ import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import moment from "moment"
 
 export const bucketCityResults = (viewer: GlobalMap_viewer) => {
+  // FIXME: The saved shows needs to be sorted by end_date_asc
   const saved = viewer.city.shows.edges.filter(e => e.node.is_followed === true).map(n => n.node)
   const thirtyDaysFromNow = moment(new Date()).add(30, "days")
   const fairs = viewer.city.fairs.edges.map(n => n.node)
