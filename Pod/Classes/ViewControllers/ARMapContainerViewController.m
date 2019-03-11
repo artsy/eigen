@@ -233,14 +233,16 @@ Since this controller already has to do the above logic, having it handle the Ci
 
 - (void)updateSafeAreaInsets
 {
-    UIEdgeInsets safeAreaInsets = self.view.safeAreaInsets;
-    [self.mapVC setProperty:@{
-                              @"top": @(safeAreaInsets.top),
-                              @"bottom": @(safeAreaInsets.bottom),
-                              @"left": @(safeAreaInsets.left),
-                              @"right": @(safeAreaInsets.right)
-                              }
-                     forKey:@"safeAreaInsets"];
+    if (@available(iOS 11.0, *)) {
+        UIEdgeInsets safeAreaInsets = self.view.safeAreaInsets;
+        [self.mapVC setProperty:@{
+                                  @"top": @(safeAreaInsets.top),
+                                  @"bottom": @(safeAreaInsets.bottom),
+                                  @"left": @(safeAreaInsets.left),
+                                  @"right": @(safeAreaInsets.right)
+                                  }
+                         forKey:@"safeAreaInsets"];
+    }
 }
 
 # pragma mark - PulleyDelegate Methods
