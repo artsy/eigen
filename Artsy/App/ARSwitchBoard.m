@@ -253,7 +253,18 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     [self.routes addRoute:@"/fair/:id/info" handler:JLRouteParams {
         return [[ARFairMoreInfoComponentViewController alloc] initWithFairID:parameters[@"id"]];
     }];
+    
+    [self.routes addRoute:@"/city/" handler:JLRouteParams {
+        NSString *citySlug = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
+        NSString *section = [[route componentsSeparatedByString:@"/"] objectAtIndex:3];
+        return [[ARCitySectionListComponentViewController alloc] initWithCitySlug:citySlug section:section];
+    }];
 
+    [self.routes addRoute:@"/city-fair/" handler:JLRouteParams {
+        NSString *citySlug = [[route componentsSeparatedByString:@"/"] lastObject];
+        return [[ARCityFairListComponentViewController alloc] initWithCitySlug:citySlug];
+    }];
+    
     // We don't show a native fairs UI for iPad
     if (![UIDevice isPad]) {
         [self.routes addRoute:@"/:fairID/search" handler:JLRouteParams {
