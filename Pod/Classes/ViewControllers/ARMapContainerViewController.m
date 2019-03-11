@@ -234,10 +234,10 @@ Since this controller already has to do the above logic, having it handle the Ci
 {
     UIEdgeInsets safeAreaInsets = self.view.safeAreaInsets;
     [self.mapVC setProperty:@{
-                              @"top": [NSNumber numberWithFloat:safeAreaInsets.top],
-                              @"bottom": [NSNumber numberWithFloat:safeAreaInsets.bottom],
-                              @"left": [NSNumber numberWithFloat:safeAreaInsets.left],
-                              @"right": [NSNumber numberWithFloat:safeAreaInsets.right]
+                              @"top": @(safeAreaInsets.top),
+                              @"bottom": @(safeAreaInsets.bottom),
+                              @"left": @(safeAreaInsets.left),
+                              @"right": @(safeAreaInsets.right)
                               }
                      forKey:@"safeAreaInsets"];
 }
@@ -285,6 +285,7 @@ Since this controller already has to do the above logic, having it handle the Ci
     } else if (status == kCLAuthorizationStatusNotDetermined) {
         // nop, don't show city picker.
     } else {
+        
         [self showCityPicker];
     }
 }

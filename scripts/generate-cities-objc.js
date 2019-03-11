@@ -1,18 +1,16 @@
 /**
  * Run this with: $ yarn generate-cities-objc
  */
-
-// tslint:disable:no-var-requires
 const fs = require("fs")
-const cities = require("../src/lib/Scenes/City/cities")
+const cities = require("../data/cityDataSortedByDisplayPreference.json")
 
 const filename = "./Pod/Classes/Data/ARCity.m"
 
-const citiesArray = cities.cityList.map(city => {
+const citiesArray = cities.map(city => {
   const {
     name,
     slug,
-    epicenter: { lat, lng },
+    coordinates: { lat, lng },
   } = city
   return `[[ARCity alloc] initWithName:@"${name}" slug:@"${slug}" epicenter:[[CLLocation alloc] initWithLatitude:${lat} longitude:${lng}]]`
 })
