@@ -64,9 +64,9 @@ interface Props {
   /** The map API entry-point */
   viewer?: GlobalMap_viewer
   /** API stuff */
-  relay: RelayProp
+  relay?: RelayProp
   /** Tracking */
-  tracking: any
+  tracking?: any
   /** city slug */
   citySlug: string
   /** Whether the bottom sheet drawer is opened */
@@ -353,7 +353,7 @@ export class GlobalMap extends React.Component<Props, State> {
     const hasShows = activeShows.length > 0
 
     // Check if it's an iPhone with ears (iPhone X, Xr, Xs, etc...)
-    const iPhoneHasEars = this.props.safeAreaInsets.top === 44
+    const iPhoneHasEars = this.props.safeAreaInsets.top > 20
 
     // We need to update activeShows in case of a mutation (save show)
     const updatedShows = activeShows.map(show => this.shows[show.id])
@@ -412,6 +412,7 @@ export class GlobalMap extends React.Component<Props, State> {
       userTrackingMode: Mapbox.UserTrackingModes.Follow,
       centerCoordinate: [centerLng, centerLat],
       zoomLevel: 13,
+      minZoomLevel: 11,
       logoEnabled: false,
       attributionEnabled: true,
       compassEnabled: false,
