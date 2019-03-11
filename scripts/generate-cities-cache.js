@@ -9,14 +9,17 @@ const queryMap = require("./queryMap")
 const cities = require("../data/cityDataSortedByDisplayPreference.json")
 
 const QUERY_NAME = "MapRendererQuery"
+const TTL = 3600 // 1 hour
+
 const MAX_GRAPHQL_INT = 2147483647
 
 const assetsDir = path.resolve(__dirname, "../Pod/Assets/PreHeatedGraphQLCache")
-const documentID = queryMap()[QUERY_NAME].ID
+const queryData = queryMap()[QUERY_NAME]
 
 cities.forEach(city => {
   const queryParams = {
-    documentID,
+    // We don't use the persisted ID here because the queries may not actually have been persisted yet.
+    query: queryData.query,
     variables: {
       maxInt: MAX_GRAPHQL_INT,
       citySlug: city.slug,
@@ -50,7 +53,12 @@ cities.forEach(city => {
       }
       fs.writeFile(
         path.join(assetsDir, `${QUERY_NAME}-${city.slug}.json`),
-        JSON.stringify({ queryParams, graphqlResponse }),
+        JSON.stringify({
+          // We fetched using the actual query, but we want to simulate a runtime query, which uses the persisted ID.
+          queryParams: { documentID: queryData.ID, variables: queryParams.variables },
+          graphqlResponse,
+          ttl: TTL,
+        }),
         "utf8",
         error => {
           if (error) throw error
