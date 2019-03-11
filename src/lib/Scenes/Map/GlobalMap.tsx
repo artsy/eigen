@@ -164,7 +164,6 @@ export class GlobalMap extends React.Component<Props, State> {
     singleShow: {
       iconImage: Mapbox.StyleSheet.identity("icon"),
       iconSize: 0.8,
-      // iconOffset: [0, -21], @TODO: This property causes with the selected shows icon. Does this need to be here?
     },
 
     clusteredPoints: {
@@ -390,7 +389,7 @@ export class GlobalMap extends React.Component<Props, State> {
             coordinate={[activeClusterLat, activeClusterLng]}
           >
             <SelectedCluster width={width} height={height}>
-              <Sans size="2" weight="medium" color={color("white100")}>
+              <Sans size="3" weight="medium" color={color("white100")}>
                 {pointCount}
               </Sans>
             </SelectedCluster>
