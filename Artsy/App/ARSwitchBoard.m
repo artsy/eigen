@@ -38,6 +38,8 @@
 #import <Emission/ARShowArtistsComponentViewController.h>
 #import <Emission/ARShowMoreInfoComponentViewController.h>
 #import <Emission/ARFairMoreInfoComponentViewController.h>
+#import <Emission/ARCitySectionListComponentViewController.h>
+#import <Emission/ARCityFairListComponentViewController.h>
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
