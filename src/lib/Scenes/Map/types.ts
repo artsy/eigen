@@ -1,4 +1,5 @@
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import { BucketResults } from "./bucketCityResults"
 
 export interface Coordinates {
   lat: number
@@ -10,12 +11,19 @@ export interface City {
   epicenter: Coordinates
 }
 
-export interface MapTab {
-  id: string
-  text: string
-}
-
 export type Show = GlobalMap_viewer["city"]["shows"]["edges"][0]["node"]
+export type Fair = GlobalMap_viewer["city"]["fairs"]["edges"][0]["node"]
+
+export interface MapTab {
+  /** UUID for the tab */
+  id: string
+  /** Display string */
+  text: string
+  /** A func to grab the right shows for this tab on the map */
+  getShows: (buckets: BucketResults) => Show[]
+  /** A func to grab the right ffairs for this tab on the map */
+  getFairs: (buckets: BucketResults) => Fair[]
+}
 
 /** A GeoJSON feature used by MapBox internally */
 export interface MapGeoFeature {
@@ -31,7 +39,7 @@ export interface MapGeoFeature {
     pitch: number
     animated: boolean
   }
-  type: string
+  type: string | any
 }
 
 export interface MapGeoFeatureCollection {

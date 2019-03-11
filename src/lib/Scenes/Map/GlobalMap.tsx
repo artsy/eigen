@@ -1,22 +1,24 @@
 import { Box, Flex, Theme } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import { Schema, screenTrack, track } from "lib/utils/track"
 import { get } from "lodash"
 import React from "react"
-import { Animated, Dimensions, Easing, NativeModules, SafeAreaView, View } from "react-native"
+import { Animated, Dimensions, Easing, Image, NativeModules, SafeAreaView, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
 import Supercluster from "supercluster"
 
 import colors from "lib/data/colors"
-import { convertCityToGeoJSON } from "lib/utils/convertCityToGeoJSON"
-import { bucketCityResults, BucketResults, emptyBucketResults } from "./Bucket"
+import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
+import { cityTabs } from "../City/cityTabs"
+import { bucketCityResults, BucketResults, emptyBucketResults } from "./bucketCityResults"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { MapGeoFeature, MapTab, OSCoordsUpdate, Show } from "./types"
+import { MapGeoFeature, MapGeoFeatureCollection, OSCoordsUpdate, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -36,6 +38,14 @@ const ShowCardContainer = styled(Box)`
   height: 200;
 `
 
+const LoadingScreen = styled(Image)`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+`
+
 interface Props {
   /** Where to center the map initially?  */
   initialCoordinates?: { lat: number; lng: number }
@@ -45,6 +55,10 @@ interface Props {
   viewer?: GlobalMap_viewer
   /** API stuff */
   relay: RelayProp
+  /** Tracking */
+  tracking: any
+  citySlug: string
+  isDrawerOpen?: boolean
 }
 
 interface State {
@@ -61,9 +75,10 @@ interface State {
   /** True when we know that we can get location updates from the OS */
   trackUserLocation?: boolean
   /** A set of GeoJSON features, which right now is our show clusters */
-  featureCollection: any
+  showsGeoJSONFeature: MapGeoFeatureCollection
   /** Has the map fully rendered? */
   mapLoaded: boolean
+  isSavingShow: boolean
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
@@ -83,6 +98,30 @@ enum DrawerPosition {
   collapsed = "collapsed",
   partiallyRevealed = "partiallyRevealed",
 }
+
+const screenSchemaForCurrentTabState = currentSelectedTab => {
+  switch (currentSelectedTab) {
+    case "all":
+      return Schema.PageNames.CityGuideAllMap
+    case "saved":
+      return Schema.PageNames.CityGuideSavedMap
+    case "fairs":
+      return Schema.PageNames.CityGuideFairsMap
+    case "galleries":
+      return Schema.PageNames.CityGuideGalleriesMap
+    case "museums":
+      return Schema.PageNames.CityGuideMuseumsMap
+    default:
+      return null
+  }
+}
+
+@screenTrack<Props>(props => ({
+  context_screen: screenSchemaForCurrentTabState("all"),
+  context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+  context_screen_owner_slug: props.citySlug,
+  context_screen_owner_id: props.citySlug,
+}))
 export class GlobalMap extends React.Component<Props, State> {
   /** Makes sure we're consistently using { lat, lng } internally */
   static lngLatArrayToLocation(arr: [number, number] | undefined) {
@@ -99,16 +138,10 @@ export class GlobalMap extends React.Component<Props, State> {
 
   map: Mapbox.MapView
   clusterEngine: Supercluster
-  featureCollection: any
+  showsGeoJSONFeatureCollection: MapGeoFeatureCollection
+  fairsGeoJSONFeatureCollection: MapGeoFeatureCollection
   moveButtons: Animated.Value
 
-  filters: MapTab[] = [
-    { id: "all", text: "All" },
-    { id: "saved", text: "Saved" },
-    { id: "fairs", text: "Fairs" },
-    { id: "galleries", text: "Galleries" },
-    { id: "museums", text: "Museums" },
-  ]
   shows: { [id: string]: Show } = {}
 
   stylesheet = Mapbox.StyleSheet.create({
@@ -148,9 +181,11 @@ export class GlobalMap extends React.Component<Props, State> {
       currentLocation,
       bucketResults: emptyBucketResults,
       trackUserLocation: false,
-      featureCollection: {},
+      showsGeoJSONFeature: undefined,
       mapLoaded: false,
+      isSavingShow: false,
     }
+
     this.clusterEngine = new Supercluster({
       radius: 50,
     })
@@ -167,6 +202,13 @@ export class GlobalMap extends React.Component<Props, State> {
 
   componentWillUnmount() {
     EventEmitter.unsubscribe("filters:change", this.handleEvent)
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (prevState.activeIndex !== this.state.activeIndex) {
+      console.log("updating here")
+      this.fireGlobalMapScreenViewAnalytics()
+    }
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -201,41 +243,61 @@ export class GlobalMap extends React.Component<Props, State> {
     }
   }
 
+  @track((__, _, args) => {
+    const actionName = args[0]
+    const show = args[1]
+    return {
+      action_name: actionName,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: !!show ? show[0]._id : "",
+      owner_slug: !!show ? show[0].id : "",
+      owner_type: !!show ? Schema.OwnerEntityTypes.Show : "",
+    } as any
+  })
+  trackPinTap(_actionName, _show) {
+    return null
+  }
+
   updateClusterMap(updateState: boolean = true) {
     if (!this.props.viewer) {
       return
     }
-    const { city } = this.props.viewer
-    const data = city.shows.edges.filter(a => a.node.type === "Show").map(({ node }) => {
-      return {
-        node: {
-          ...node,
-          icon: node.is_followed ? "pin-saved" : "pin",
-        },
-      }
-    })
 
-    const featureCollection = convertCityToGeoJSON(data)
+    const tab = cityTabs[this.state.activeIndex]
+    const shows = tab.getShows(this.state.bucketResults)
+    const fairs = tab.getFairs(this.state.bucketResults)
+
+    const showData = showsToGeoCityShow(shows)
+    const showsGeoJSONFeature = convertCityToGeoJSON(showData)
+
+    const fairData = fairToGeoCityFairs(fairs)
+    const fairsGeoJSONFeature = convertCityToGeoJSON(fairData)
 
     if (updateState) {
       this.setState({
-        featureCollection,
+        showsGeoJSONFeature,
       })
     }
-    this.featureCollection = featureCollection
-    this.clusterEngine.load(this.featureCollection.features)
-    return featureCollection
+
+    this.fairsGeoJSONFeatureCollection = fairsGeoJSONFeature
+    this.showsGeoJSONFeatureCollection = showsGeoJSONFeature
+    // close but not enough yet
+    this.clusterEngine.load(this.showsGeoJSONFeatureCollection.features as any)
   }
 
   emitFilteredBucketResults() {
     if (!this.props.viewer) {
       return
     }
+
     // TODO: map region filtering can live here.
-    const filter = this.filters[this.state.activeIndex]
+    const filter = cityTabs[this.state.activeIndex]
     const {
       city: { name: cityName, slug: citySlug, sponsoredContent },
     } = this.props.viewer
+
+    this.updateClusterMap(true)
+
     EventEmitter.dispatch("map:change", {
       filter,
       buckets: this.state.bucketResults,
@@ -243,6 +305,15 @@ export class GlobalMap extends React.Component<Props, State> {
       citySlug,
       sponsoredContent,
       relay: this.props.relay,
+    })
+  }
+
+  fireGlobalMapScreenViewAnalytics = () => {
+    this.props.tracking.trackEvent({
+      context_screen: screenSchemaForCurrentTabState(cityTabs[this.state.activeIndex].id),
+      context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+      context_screen_owner_slug: this.props.citySlug,
+      context_screen_owner_id: this.props.citySlug,
     })
   }
 
@@ -267,6 +338,9 @@ export class GlobalMap extends React.Component<Props, State> {
     const { activeShows } = this.state
     const hasShows = activeShows.length > 0
 
+    // We need to update activeShows in case of a mutation (save show)
+    const updatedShows = activeShows.map(show => this.shows[show.id])
+
     return (
       <Spring
         native
@@ -286,7 +360,20 @@ export class GlobalMap extends React.Component<Props, State> {
               height: 150,
             }}
           >
-            <Theme>{hasShows && <ShowCard shows={activeShows as any} />}</Theme>
+            <Theme>
+              {hasShows && (
+                <ShowCard
+                  shows={updatedShows as any}
+                  relay={this.props.relay}
+                  onSaveStarted={() => {
+                    this.setState({ isSavingShow: true })
+                  }}
+                  onSaveEnded={() => {
+                    this.setState({ isSavingShow: false })
+                  }}
+                />
+              )}
+            </Theme>
           </AnimatedView>
         )}
       </Spring>
@@ -326,15 +413,18 @@ export class GlobalMap extends React.Component<Props, State> {
       },
       onDidFinishRenderingMapFully: () => this.setState({ mapLoaded: true }),
       onPress: () => {
-        this.setState({
-          activeShows: [],
-        })
+        if (!this.state.isSavingShow) {
+          this.setState({
+            activeShows: [],
+          })
+        }
       },
     }
 
     // TODO: Need to hide the map while showing the top buttons.
     return (
       <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
+        <LoadingScreen source={require("../../../../images/MapBG.png")} />
         <Map
           {...mapProps}
           {...mapInteractions}
@@ -364,10 +454,10 @@ export class GlobalMap extends React.Component<Props, State> {
                 </Animated.View>
                 <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
               </SafeAreaView>
-              {this.featureCollection && (
+              {this.showsGeoJSONFeatureCollection && (
                 <Mapbox.ShapeSource
                   id="shows"
-                  shape={this.featureCollection}
+                  shape={this.showsGeoJSONFeatureCollection}
                   cluster
                   clusterRadius={50}
                   onPress={e => {
@@ -389,11 +479,27 @@ export class GlobalMap extends React.Component<Props, State> {
                   />
                 </Mapbox.ShapeSource>
               )}
+
+              {this.fairsGeoJSONFeatureCollection && (
+                <Mapbox.ShapeSource
+                  id="fairs"
+                  shape={this.fairsGeoJSONFeatureCollection}
+                  onPress={e => {
+                    this.handleFairPress(e.nativeEvent)
+                  }}
+                >
+                  <Mapbox.SymbolLayer id="fair" filter={["!has", "point_count"]} style={this.stylesheet.singleShow} />
+                </Mapbox.ShapeSource>
+              )}
             </>
           )}
         </Map>
       </Flex>
     )
+  }
+
+  async handleFairPress(_event: any) {
+    // NOOP for now
   }
 
   /**
@@ -492,12 +598,13 @@ export const GlobalMapContainer = createFragmentContainer(
           lng
         }
 
-        shows(discoverable: true, first: $maxInt, sort: START_AT_ASC) {
+        shows(includeStubShows: true, first: $maxInt, sort: START_AT_ASC) {
           edges {
             node {
               id
               _id
               __id
+
               name
               status
               href

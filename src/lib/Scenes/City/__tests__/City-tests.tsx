@@ -5,6 +5,6 @@ import { CityView } from "../City"
 
 describe(CityView, () => {
   it("renders empty without a city prop", () => {
-    expect(renderer.create(<CityView />)).toMatchInlineSnapshot(`null`)
+    expect(renderer.create(<CityView citySlug="new-york-us" tracking={null} />)).toMatchInlineSnapshot(`null`)
   })
 })
