@@ -41,6 +41,8 @@
 - Hook up save functionality for show card - luc
 - Adds loading screen for Map view - luc
 - Adds analytics to map and city view - kieran
+- Move ShapeLayers to PinsShapeLayer - luc
+- Add loading indicator when data is downloading - luc
 
 ### 1.8.14
 
