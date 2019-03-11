@@ -49,7 +49,7 @@ export class BidResult extends React.Component<BidResultProps> {
     }
 
     // fetch the latest increments for the select max bid screen
-    if (this.props.refreshSaleArtwork()) {
+    if (this.props.refreshSaleArtwork) {
       this.props.refreshSaleArtwork()
     }
 
