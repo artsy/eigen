@@ -29,7 +29,6 @@ export class EventList extends React.Component<Props> {
 
   hasEventsComponent = () => {
     const { bucket, onScroll, fetchingNextPage } = this.props
-    console.log({ bucket })
     return (
       <FlatList
         data={bucket}
