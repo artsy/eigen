@@ -77,7 +77,7 @@ interface State {
   /** The index from the City selector */
   activeIndex: number
   /** Shows which are selected and should show as highlights above the map */
-  activeShows: Show[]
+  activeShows: Array<Fair | Show>
   /** An object of objects describing all the artsy elements we want to map */
   bucketResults: BucketResults
   /** The center location for the map right now */
@@ -362,7 +362,14 @@ export class GlobalMap extends React.Component<Props, State> {
     const iPhoneHasEars = this.props.safeAreaInsets.top > 20
 
     // We need to update activeShows in case of a mutation (save show)
-    const updatedShows = activeShows.map(show => this.shows[show.id])
+    const updatedShows: Array<Fair | Show> = activeShows.map((item: any) => {
+      if (item.type === "Show") {
+        return this.shows[item.id]
+      } else if (item.type === "Fair") {
+        return this.fairs[item.id]
+      }
+      return item
+    })
 
     return (
       <Spring
@@ -538,18 +545,22 @@ export class GlobalMap extends React.Component<Props, State> {
   async handleFeaturePress(nativeEvent: any) {
     const {
       payload: {
-        properties: { id, cluster },
+        properties: { id, cluster, type },
         geometry: { coordinates },
       },
     } = nativeEvent
 
     this.updateDrawerPosition(DrawerPosition.collapsed)
 
-    let activeShows: Show[] = []
+    let activeShows: Array<Fair | Show> = []
     // If the user only taps on the pin we can use the
     // id directly to retrieve the corresponding show
     if (!cluster) {
-      activeShows = [this.shows[id]]
+      if (type === "Show") {
+        activeShows = [this.shows[id]]
+      } else if (type === "Fair") {
+        activeShows = [this.fairs[id]]
+      }
     }
 
     // Otherwise the logic is as follows

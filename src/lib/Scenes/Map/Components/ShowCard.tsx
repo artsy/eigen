@@ -2,12 +2,13 @@ import { Box, color, Sans, space } from "@artsy/palette"
 import { ShowItemRow_show } from "__generated__/ShowItemRow_show.graphql"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { TabFairItemRow } from "lib/Scenes/City/Components/TabFairItemRow"
 import { isEqual } from "lodash"
 import React, { Component } from "react"
 import { Dimensions, FlatList, TouchableOpacity } from "react-native"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
-import { Show } from "../types"
+import { Fair, Show } from "../types"
 
 const shadowDetails: any = {
   shadowRadius: 4,
@@ -46,7 +47,7 @@ const PageIndicator = styled(Box)`
 `
 
 export class ShowCard extends Component<ShowCardProps, ShowCardState> {
-  list: FlatList<Show>
+  list: FlatList<Show | Fair>
 
   state = {
     currentPage: 1,
@@ -59,21 +60,25 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     }
   }
 
-  handleTap(show) {
-    const path = show.href
+  handleTap(item) {
+    const path = item.type === "Show" ? item.href : `${item.node.id}?entity=fair`
     SwitchBoard.presentNavigationViewController(this, path)
   }
 
   renderItem = ({ item }) => (
     <Background ml={1} p={1} style={shadowDetails} width={this.cardWidth}>
       <TouchableOpacity onPress={this.handleTap.bind(this, item)}>
-        <ShowItemRow
-          show={item}
-          relay={this.props.relay}
-          onSaveStarted={this.props.onSaveStarted}
-          onSaveEnded={this.props.onSaveEnded}
-          noPadding
-        />
+        {item.type === "Show" ? (
+          <ShowItemRow
+            show={item}
+            relay={this.props.relay}
+            onSaveStarted={this.props.onSaveStarted}
+            onSaveEnded={this.props.onSaveEnded}
+            noPadding
+          />
+        ) : (
+          <TabFairItemRow item={item} noPadding />
+        )}
       </TouchableOpacity>
     </Background>
   )
@@ -123,19 +128,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     const show = hasOne ? shows[0] : null
 
     return hasOne ? (
-      show && (
-        <Background m={1} p={1} style={shadowDetails}>
-          <TouchableOpacity onPress={this.handleTap.bind(this)}>
-            <ShowItemRow
-              show={show}
-              relay={this.props.relay}
-              onSaveStarted={this.onSaveStarted}
-              onSaveEnded={this.onSaveEnded}
-              noPadding
-            />
-          </TouchableOpacity>
-        </Background>
-      )
+      show && this.renderItem({ item: show })
     ) : (
       <>
         <PageIndicator style={shadowDetails} mx={1} py={0.3} px={0.5} my={0.5}>
