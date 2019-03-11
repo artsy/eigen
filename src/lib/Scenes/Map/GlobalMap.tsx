@@ -69,7 +69,7 @@ interface Props {
   citySlug: string
   /** Whether the bottom sheet drawer is opened */
   isDrawerOpen?: boolean
-  /**  */
+  /** Reflects the area not covered by navigation bars, tab bars, toolbars, and other ancestors  */
   safeAreaInsets: SafeAreaInsets
 }
 
