@@ -11583,7 +11583,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/Emission/Emission-prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"USE_DYNAMIC_GRAPHQL_MAP='/Users/ortatherox/dev/projects/artsy/ios/emission/src/__generated__/complete.queryMap.json'",
+					"USE_DYNAMIC_GRAPHQL_MAP='../src/__generated__/complete.queryMap.json'",
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

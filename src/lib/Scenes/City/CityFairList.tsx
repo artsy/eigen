@@ -74,7 +74,8 @@ export default createPaginationContainer(
     city: graphql`
       fragment CityFairList_city on City
         @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
-        fairs(first: $count, after: $cursor) @connection(key: "CityFairList_fairs") {
+        fairs(first: $count, after: $cursor, status: CURRENT, sort: START_AT_ASC)
+          @connection(key: "CityFairList_fairs") {
           edges {
             node {
               id

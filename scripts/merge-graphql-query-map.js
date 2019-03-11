@@ -42,7 +42,7 @@ for (const key in queryMap) {
 fs.writeFileSync(mpQueryMapFilename, JSON.stringify(mpQueryMap, null, 2))
 
 const status = shMP("git status")
-const needsChanges = status.includes("nothing to commit")
+const needsChanges = !status.includes("nothing to commit")
 if (!needsChanges) {
   // There are no changes
   // Clean up tmp folder
