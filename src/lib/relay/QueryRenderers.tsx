@@ -461,6 +461,26 @@ export const CityFairListRenderer: React.SFC<CityFairListProps> = ({ render, cit
   )
 }
 
+interface CitySavedListProps extends RendererProps {
+  citySlug: string
+}
+export const CitySavedListRenderer: React.SFC<CitySavedListProps> = ({ render, citySlug }) => {
+  return (
+    <QueryRenderer<QueryRenderersCitySavedListQuery>
+      environment={environment}
+      query={graphql`
+        query QueryRenderersCitySavedListQuery($citySlug: String!) {
+          city(slug: $citySlug) {
+            ...CitySavedList_city
+          }
+        }
+      `}
+      variables={{ citySlug }}
+      render={render}
+    />
+  )
+}
+
 interface CitySectionListProps extends RendererProps {
   citySlug: string
   section: BucketKey

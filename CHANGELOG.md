@@ -42,6 +42,7 @@
 - Hook up save functionality for show card - luc
 - Adds loading screen for Map view - luc
 - Adds analytics to map and city view - kieran
+- Adds City save list view - kieran
 
 ### 1.8.14
 

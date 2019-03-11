@@ -1,4 +1,4 @@
-import { Box, Message, Separator, Theme } from "@artsy/palette"
+import { Box, Message, Separator, Serif, Theme } from "@artsy/palette"
 import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import Spinner from "lib/Components/Spinner"
@@ -12,6 +12,7 @@ interface Props {
   bucket: CitySectionList_city["shows"]["edges"]
   type: BucketKey
   cityName: string
+  header?: string
   relay: RelayProp
   onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void
   fetchingNextPage?: boolean
@@ -28,9 +29,20 @@ export class EventList extends React.Component<Props> {
   }
 
   hasEventsComponent = () => {
-    const { bucket, onScroll, fetchingNextPage } = this.props
+    const { bucket, onScroll, fetchingNextPage, header } = this.props
     return (
       <FlatList
+        ListHeaderComponent={() => {
+          if (!!header) {
+            return (
+              <Box my={3}>
+                <Serif size="8">{header}</Serif>
+              </Box>
+            )
+          } else {
+            return null
+          }
+        }}
         data={bucket}
         ItemSeparatorComponent={() => <Separator />}
         ListFooterComponent={fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
@@ -70,10 +82,6 @@ export class EventList extends React.Component<Props> {
   render() {
     const { bucket } = this.props
     const hasEvents = bucket.length > 0
-    return (
-      <Theme>
-        <Box px={2}>{hasEvents ? this.hasEventsComponent() : this.hasNoEventsComponent()}</Box>
-      </Theme>
-    )
+    return <Box px={2}>{hasEvents ? this.hasEventsComponent() : this.hasNoEventsComponent()}</Box>
   }
 }

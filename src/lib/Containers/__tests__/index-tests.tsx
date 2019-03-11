@@ -10,6 +10,7 @@ it("should export all components", () => {
     "CitySectionList",
     "Conversation",
     "CityFairList",
+    "CitySavedList",
     "Gene",
     "Fair",
     "Home",
