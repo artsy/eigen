@@ -11,7 +11,7 @@ import { TabFairItemRow } from "./TabFairItemRow"
 
 interface Props {
   bucket: Show[]
-  type: BucketKey
+  type: BucketKey | "BMW Art Guide"
   cityName: string
   relay: RelayProp
   onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void

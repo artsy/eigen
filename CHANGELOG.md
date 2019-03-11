@@ -44,11 +44,18 @@
 - Hook up save functionality for show card - luc
 - Adds loading screen for Map view - luc
 - Adds analytics to map and city view - kieran
+- Move ShapeLayers to PinsShapeLayer - luc
+- Add loading indicator when data is downloading - luc
+- Add safeAreaInsets to handle various screen sizes - luc
+- Set min zoom size on map - luc
+- Fixes map background sizing - luc
+- Adds styling on single map points and clusters to indicate selection - ashley
 
 ### 1.8.14
 
 - Adds order artists in a show based on user's favorite - ashkan
 - Fixes rounded corners on city picker component - ash
+- Adds city bmw view controller - kieran
 - Adds BMW sponsoredContent to all events in city view - kieran
 - Progressively loads map tiles ahead of Relay response - ash
 - Better initial LD view - ash

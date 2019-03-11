@@ -1,8 +1,10 @@
 import { Box, color, Flex, Sans } from "@artsy/palette"
+import Spinner from "lib/Components/Spinner"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import React, { Component } from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
+import { City } from "../types"
 
 // Because it will raise errors in VS Code
 const shadowProps = `
@@ -18,11 +20,22 @@ const Background = styled(Flex)`
   ${shadowProps};
 `
 
-export class CitySwitcherButton extends Component<any> {
+interface Props {
+  onPress?: () => void
+  city: City
+}
+
+export class CitySwitcherButton extends Component<Props> {
   render() {
+    const city = this.props.city
     return (
       <TouchableWithoutFeedback
-        onPress={() => NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryOpenCityPicker", {})}
+        onPress={() => {
+          if (this.props.onPress) {
+            this.props.onPress()
+          }
+          NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryOpenCityPicker", {})
+        }}
       >
         <Background
           flexDirection="row"
@@ -30,15 +43,29 @@ export class CitySwitcherButton extends Component<any> {
           style={
             {
               shadowOffset: { height: 0, width: 0 },
+              width: city ? "auto" : 40,
             } as any
           }
         >
-          <Sans size="3t" weight="medium" ml={3}>
-            {this.props.city.name}
-          </Sans>
-          <Box ml={2} mr={3}>
-            <ChevronIcon initialDirection="down" color={color("black100")} width={20} height={20} />
-          </Box>
+          {city ? (
+            <>
+              {" "}
+              <Sans size="3t" weight="medium" ml={3}>
+                {city.name}
+              </Sans>
+              <Box ml={2} mr={3}>
+                <ChevronIcon initialDirection="down" color={color("black100")} width={20} height={20} />
+              </Box>
+            </>
+          ) : (
+            <Flex alignItems="center" justifyContent="center" flexGrow={1}>
+              <Spinner
+                spinnerColor={color("black60")}
+                style={{ backgroundColor: "transparent" }}
+                size={{ width: 16, height: 16 }}
+              />
+            </Flex>
+          )}
         </Background>
       </TouchableWithoutFeedback>
     )

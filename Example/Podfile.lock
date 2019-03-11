@@ -11,7 +11,7 @@ PODS:
     - "UIView+BooleanAnimations"
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.5)
-  - Emission (1.8.15):
+  - Emission (1.8.18):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.5)
@@ -254,7 +254,7 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: ebb6747c5b66026ad4f97b789c3ceac6f18e57a6
-  Emission: b28a50aee7e54d272fedf2fd9bbd5a873418414c
+  Emission: b1f6ec620788687fedc6da4deaf7f0d984c9e5f8
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
@@ -280,6 +280,6 @@ SPEC CHECKSUMS:
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 4cf45c8bdb4d7e1a1f285e273009756314e6df53
 
-PODFILE CHECKSUM: b025c501cf278780a203463d71809b4cb0badc24
+PODFILE CHECKSUM: 1ccdde56e14a7d26fbc871fe040f9922f4385473
 
 COCOAPODS: 1.6.0

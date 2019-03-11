@@ -59,3 +59,10 @@ export interface OSCoordsUpdate {
     altitude: number
   }
 }
+
+export interface SafeAreaInsets {
+  top: number
+  bottom: number
+  left: number
+  right: number
+}

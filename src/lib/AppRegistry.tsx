@@ -10,6 +10,7 @@ import {
   ArtistRenderer,
   BidderFlowRendererProps,
   BidFlowRenderer,
+  CityBMWListRenderer,
   CityFairListRenderer,
   CitySectionListRenderer,
   ConversationRenderer,
@@ -249,10 +250,18 @@ const FairExhibitors: React.SFC<FairExhibitorsProps> = ({ fairID }) => {
   return <FairExhibitorsRenderer fairID={fairID} />
 }
 
+interface CityBMWListProps {
+  citySlug: string
+}
+const CityBMWList: React.SFC<CityBMWListProps> = ({ citySlug }) => {
+  return (
+    <CityBMWListRenderer citySlug={citySlug} render={renderWithLoadProgress(Containers.CityBMWList, { citySlug })} />
+  )
+}
+
 interface FairBMWArtActivationProps {
   fairID: string
 }
-
 const FairBMWArtActivation: React.SFC<FairBMWArtActivationProps> = ({ fairID }) => {
   return <FairBMWArtActivationRenderer fairID={fairID} />
 }
@@ -285,5 +294,6 @@ AppRegistry.registerComponent("ShowMoreInfo", () => ShowMoreInfo)
 AppRegistry.registerComponent("Map", () => MapContainer)
 AppRegistry.registerComponent("City", () => CityView)
 AppRegistry.registerComponent("CityPicker", () => CityPicker)
+AppRegistry.registerComponent("CityBMWList", () => CityBMWList)
 AppRegistry.registerComponent("CityFairList", () => CityFairList)
 AppRegistry.registerComponent("CitySectionList", () => CitySectionList)
