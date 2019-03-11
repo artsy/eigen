@@ -47,6 +47,10 @@ export class ShapeLayer extends Component<Props, any> {
     },
   })
 
+  componentDidMount() {
+    this.fadeInAnimations()
+  }
+
   componentWillReceiveProps(newProps: Props) {
     if (!isEqual(this.props.featureCollection.features, newProps.featureCollection.features)) {
       this.fadeInAnimations()
