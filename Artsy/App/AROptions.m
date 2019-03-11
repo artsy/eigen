@@ -26,7 +26,6 @@ NSString *const AROptionsForceBuyNow = @"Enable Buy Now Flow via Force";
 NSString *const AROptionsBuyNow = @"enableBuyNowMakeOffer";
 
 NSString *const AROptionsMakeOffer = @"Enable Make Offer";
-NSString *const AROptionsLocalDiscovery = @"Enable Local Discovery";
 
 @implementation AROptions
 
@@ -43,7 +42,6 @@ NSString *const AROptionsLocalDiscovery = @"Enable Local Discovery";
          AROptionsBuyNow: @"Enable Eigen/Emission Buy Now integration",
          AROptionsForceBuyNow: @"Enable Buy Now purchase flow via Force",
          AROptionsMakeOffer: @"Enable Make Offer via Force",
-         AROptionsLocalDiscovery: @"Enable Local Discovery",
          
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
         };
@@ -77,8 +75,7 @@ NSString *const AROptionsLocalDiscovery = @"Enable Local Discovery";
 {
     return @[
         AROptionsDisableNativeLiveAuctions,
-        AROptionsForceBuyNow,
-        AROptionsLocalDiscovery,
+        AROptionsForceBuyNow,   
     ];
 }
 
