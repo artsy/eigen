@@ -8,7 +8,7 @@ export interface TickerState {
 }
 
 interface Props {
-  CountdownComponent: React.ComponentClass | React.StatelessComponent<any>
+  CountdownComponent: React.ComponentType<{ label: string }>
   timeOffsetInMilliseconds?: number
   onCurrentTickerState: () => TickerState
   onNextTickerState: (currentState: TickerState) => TickerState
