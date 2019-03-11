@@ -379,6 +379,38 @@ export class GlobalMap extends React.Component<Props, State> {
     )
   }
 
+  mapShapeSources = () => {
+    return (
+      <>
+        {this.showsGeoJSONFeatureCollection && (
+          <Mapbox.Animated.ShapeSource
+            id="shows"
+            shape={this.showsGeoJSONFeatureCollection}
+            cluster
+            clusterRadius={50}
+            onPress={e => {
+              this.handleFeaturePress(e.nativeEvent)
+            }}
+          >
+            <Mapbox.Animated.SymbolLayer
+              id="singleShow"
+              filter={["!has", "point_count"]}
+              style={this.stylesheet.singleShow}
+            />
+            <Mapbox.Animated.SymbolLayer id="pointCount" style={this.stylesheet.clusterCount} />
+
+            <Mapbox.Animated.CircleLayer
+              id="clusteredPoints"
+              belowLayerID="pointCount"
+              filter={["has", "point_count"]}
+              style={this.stylesheet.clusteredPoints}
+            />
+          </Mapbox.Animated.ShapeSource>
+        )}
+      </>
+    )
+  }
+
   render() {
     const city = get(this.props, "viewer.city")
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || get(city, "coordinates")
@@ -424,75 +456,54 @@ export class GlobalMap extends React.Component<Props, State> {
     return (
       <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
         <LoadingScreen source={require("../../../../images/MapBG.png")} />
-        <Map
-          {...mapProps}
-          {...mapInteractions}
-          ref={(c: any) => {
-            if (c) {
-              this.map = c.root
-            }
+        <Box style={{ position: "absolute", top: 44, left: 0, right: 0, zIndex: 1, width: "100%", height: 100 }}>
+          <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
+            <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
+              <CitySwitcherButton city={city} />
+              <Box style={{ marginLeft: "auto" }}>
+                <UserPositionButton
+                  highlight={this.state.userLocation === this.state.currentLocation}
+                  onPress={() => {
+                    const { lat, lng } = this.state.userLocation
+                    this.map.moveTo([lng, lat], 500)
+                  }}
+                />
+              </Box>
+            </Flex>
+          </Animated.View>
+        </Box>
+        <Spring
+          native
+          from={{ opacity: 0 }}
+          to={mapLoaded ? { opacity: 1.0 } : { opacity: 0 }}
+          config={{
+            duration: 300,
           }}
-          style={{ opacity: mapLoaded && city ? 1 : 0 }} // TODO: Animate this opacity change.
+          precision={1}
         >
-          {city && (
-            <>
-              <SafeAreaView style={{ flex: 1 }}>
-                <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
-                  <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
-                    <CitySwitcherButton city={city} />
-                    <Box style={{ marginLeft: "auto" }}>
-                      <UserPositionButton
-                        highlight={this.state.userLocation === this.state.currentLocation}
-                        onPress={() => {
-                          const { lat, lng } = this.state.userLocation
-                          this.map.moveTo([lng, lat], 500)
-                        }}
-                      />
-                    </Box>
-                  </Flex>
-                </Animated.View>
-                <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
-              </SafeAreaView>
-              {this.showsGeoJSONFeatureCollection && (
-                <Mapbox.ShapeSource
-                  id="shows"
-                  shape={this.showsGeoJSONFeatureCollection}
-                  cluster
-                  clusterRadius={50}
-                  onPress={e => {
-                    this.handleFeaturePress(e.nativeEvent)
-                  }}
-                >
-                  <Mapbox.SymbolLayer
-                    id="singleShow"
-                    filter={["!has", "point_count"]}
-                    style={this.stylesheet.singleShow}
-                  />
-                  <Mapbox.SymbolLayer id="pointCount" style={this.stylesheet.clusterCount} />
-
-                  <Mapbox.CircleLayer
-                    id="clusteredPoints"
-                    belowLayerID="pointCount"
-                    filter={["has", "point_count"]}
-                    style={this.stylesheet.clusteredPoints}
-                  />
-                </Mapbox.ShapeSource>
-              )}
-
-              {this.fairsGeoJSONFeatureCollection && (
-                <Mapbox.ShapeSource
-                  id="fairs"
-                  shape={this.fairsGeoJSONFeatureCollection}
-                  onPress={e => {
-                    this.handleFairPress(e.nativeEvent)
-                  }}
-                >
-                  <Mapbox.SymbolLayer id="fair" filter={["!has", "point_count"]} style={this.stylesheet.singleShow} />
-                </Mapbox.ShapeSource>
-              )}
-            </>
+          {({ opacity }) => (
+            <AnimatedView style={{ flex: 1, opacity }}>
+              <Map
+                {...mapProps}
+                {...mapInteractions}
+                ref={(c: any) => {
+                  if (c) {
+                    this.map = c.root
+                  }
+                }}
+              >
+                {city && (
+                  <>
+                    <SafeAreaView style={{ flex: 1 }}>
+                      <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
+                    </SafeAreaView>
+                    {this.mapShapeSources()}
+                  </>
+                )}
+              </Map>
+            </AnimatedView>
           )}
-        </Map>
+        </Spring>
       </Flex>
     )
   }

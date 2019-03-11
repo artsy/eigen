@@ -20,6 +20,7 @@ const Background = styled(Flex)`
 
 export class CitySwitcherButton extends Component<any> {
   render() {
+    const city = this.props.city || { name: "New York" }
     return (
       <TouchableWithoutFeedback
         onPress={() => NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryOpenCityPicker", {})}
@@ -34,7 +35,7 @@ export class CitySwitcherButton extends Component<any> {
           }
         >
           <Sans size="3t" weight="medium" ml={3}>
-            {this.props.city.name}
+            {city.name}
           </Sans>
           <Box ml={2} mr={3}>
             <ChevronIcon initialDirection="down" color={color("black100")} width={20} height={20} />
