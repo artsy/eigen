@@ -299,4 +299,14 @@ Since this controller already has to do the above logic, having it handle the Ci
     [manager stopUpdatingLocation];
 }
 
+- (BOOL)shouldAutorotate;
+{
+    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations;
+{
+    return self.shouldAutorotate ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
+}
+
 @end
