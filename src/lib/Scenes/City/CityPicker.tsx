@@ -34,6 +34,7 @@ export class CityPicker extends Component<Props, State> {
 
   selectCity(city: string, index: number) {
     this.setState({ selectedCity: city })
+    // TODO: setState is asynchronous. Why are we doing this twice?
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", { cityIndex: index })
     this.setState({ selectedCity: null })
   }

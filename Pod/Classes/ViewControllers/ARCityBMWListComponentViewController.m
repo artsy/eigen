@@ -4,7 +4,7 @@
 
 - (instancetype)initWithCitySlug:(NSString *)citySlug
 {
-    return [super initWithEmission:nil moduleName:@"CitySectionList"];
+    return [super initWithEmission:nil moduleName:@"CityBMWList" initialProperties:@{ @"citySlug": citySlug }];
 }
 
 @end

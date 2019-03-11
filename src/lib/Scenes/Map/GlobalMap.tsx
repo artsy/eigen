@@ -592,6 +592,43 @@ export const GlobalMapContainer = createFragmentContainer(
         sponsoredContent {
           introText
           artGuideUrl
+          shows(first: 2, sort: START_AT_ASC) {
+            totalCount
+            edges {
+              node {
+                id
+                _id
+                __id
+
+                name
+                status
+                href
+                is_followed
+                exhibition_period
+                cover_image {
+                  url
+                }
+                location {
+                  coordinates {
+                    lat
+                    lng
+                  }
+                }
+                type
+                start_at
+                end_at
+                partner {
+                  ... on Partner {
+                    name
+                    type
+                  }
+                  ... on ExternalPartner {
+                    name
+                  }
+                }
+              }
+            }
+          }
         }
         coordinates {
           lat

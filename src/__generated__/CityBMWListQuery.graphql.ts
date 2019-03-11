@@ -2,34 +2,38 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { CityBMWList_city$ref } from "./CityBMWList_city.graphql";
-export type QueryRenderersCityBMWListQueryVariables = {
+export type CityBMWListQueryVariables = {
+    readonly count: number;
+    readonly cursor?: string | null;
     readonly citySlug: string;
 };
-export type QueryRenderersCityBMWListQueryResponse = {
+export type CityBMWListQueryResponse = {
     readonly city: ({
         readonly " $fragmentRefs": CityBMWList_city$ref;
     }) | null;
 };
-export type QueryRenderersCityBMWListQuery = {
-    readonly response: QueryRenderersCityBMWListQueryResponse;
-    readonly variables: QueryRenderersCityBMWListQueryVariables;
+export type CityBMWListQuery = {
+    readonly response: CityBMWListQueryResponse;
+    readonly variables: CityBMWListQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersCityBMWListQuery(
+query CityBMWListQuery(
+  $count: Int!
+  $cursor: String
   $citySlug: String!
 ) {
   city(slug: $citySlug) {
-    ...CityBMWList_city
+    ...CityBMWList_city_1G22uz
   }
 }
 
-fragment CityBMWList_city on City {
+fragment CityBMWList_city_1G22uz on City {
   name
   sponsoredContent {
-    shows(first: 20, after: "", sort: START_AT_ASC) {
+    shows(first: $count, after: $cursor, sort: START_AT_ASC) {
       edges {
         node {
           id
@@ -84,6 +88,18 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "cursor",
+    "type": "String",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
     "name": "citySlug",
     "type": "String!",
     "defaultValue": null
@@ -128,13 +144,13 @@ v5 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "QueryRenderersCityBMWListQuery",
-  "id": "007cde6ba301c9205b9cfb626d9a83c7",
+  "name": "CityBMWListQuery",
+  "id": "a0d862497957d5ef023a62a8d9deee93",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersCityBMWListQuery",
+    "name": "CityBMWListQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -151,7 +167,20 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "CityBMWList_city",
-            "args": null
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "count",
+                "variableName": "count",
+                "type": null
+              },
+              {
+                "kind": "Variable",
+                "name": "cursor",
+                "variableName": "cursor",
+                "type": null
+              }
+            ]
           }
         ]
       }
@@ -159,7 +188,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersCityBMWListQuery",
+    "name": "CityBMWListQuery",
     "argumentDefinitions": v0,
     "selections": [
       {
@@ -185,18 +214,18 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "shows",
-                "storageKey": "shows(after:\"\",first:20,sort:\"START_AT_ASC\")",
+                "storageKey": null,
                 "args": [
                   {
-                    "kind": "Literal",
+                    "kind": "Variable",
                     "name": "after",
-                    "value": "",
+                    "variableName": "cursor",
                     "type": "String"
                   },
                   {
-                    "kind": "Literal",
+                    "kind": "Variable",
                     "name": "first",
-                    "value": 20,
+                    "variableName": "count",
                     "type": "Int"
                   },
                   {
@@ -414,15 +443,15 @@ return {
                 "name": "shows",
                 "args": [
                   {
-                    "kind": "Literal",
+                    "kind": "Variable",
                     "name": "after",
-                    "value": "",
+                    "variableName": "cursor",
                     "type": "String"
                   },
                   {
-                    "kind": "Literal",
+                    "kind": "Variable",
                     "name": "first",
-                    "value": 20,
+                    "variableName": "count",
                     "type": "Int"
                   },
                   {
@@ -446,5 +475,5 @@ return {
   }
 };
 })();
-(node as any).hash = '7617b5ea5121adf4c2d8c05cc88c2828';
+(node as any).hash = '98cb9414ec7a4e9b18a815b66b00eb3e';
 export default node;

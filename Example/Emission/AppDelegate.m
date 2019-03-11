@@ -366,8 +366,8 @@ randomBOOL(void)
     viewController = [[ARShowComponentViewController alloc] initWithShowID:showID];
 
   } else if (isCityBMWList) {
-    NSString *citySlug = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
-    viewController = [[ARCityBMWListComponentViewController alloc] init];
+    NSString *citySlug = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARCityBMWListComponentViewController alloc] initWithCitySlug:citySlug];
 
   } else {
     viewController = [[UnroutedViewController alloc] initWithRoute:route];

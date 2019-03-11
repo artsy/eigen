@@ -8,23 +8,34 @@ import { RelayProp } from "react-relay"
 
 export interface Props {
   title: string
-  // TODO: What is this data?
-  data: any
   relay: RelayProp
   citySlug: string
-  sponsoredContent: { introText: string; artGuideUrl: string }
+  sponsoredContent: {
+    introText: string
+    artGuideUrl: string
+    shows: {
+      totalCount: number
+      edges: any[]
+    }
+  }
 }
 
 const track: Track<Props> = _track
 
 @track()
 export class BMWEventSection extends React.Component<Props> {
-  renderEvents = (events, relay) => {
-    return events.map((event, i) => {
+  renderEvents = () => {
+    const {
+      sponsoredContent: {
+        shows: { edges },
+      },
+      relay,
+    } = this.props
+    return edges.map((edge, i) => {
       if (i < 2) {
         return (
           <Box key={i} mb={1}>
-            <Event event={event} relay={relay} />
+            <Event event={edge.node} relay={relay} />
           </Box>
         )
       }
@@ -46,15 +57,18 @@ export class BMWEventSection extends React.Component<Props> {
   }
 
   viewAllBmwShows = () => {
-    // FIXME: link to all BMW shows
-    console.log("viewAllBmwShows")
+    const { citySlug } = this.props
+    SwitchBoard.presentNavigationViewController(this, `/city-bmw-list/${citySlug}`)
   }
 
   render() {
     const {
-      data,
       citySlug,
-      sponsoredContent: { introText, artGuideUrl },
+      sponsoredContent: {
+        introText,
+        artGuideUrl,
+        shows: { totalCount, edges },
+      },
       relay,
     } = this.props
     return (
@@ -75,11 +89,11 @@ export class BMWEventSection extends React.Component<Props> {
         <Box mb={3} px={2}>
           <CaretButton onPress={() => this.getArtGuidePressed(artGuideUrl, citySlug)} text="Get the BMW Art Guide" />
         </Box>
-        {this.renderEvents(data, relay)}
-        {data.length > 2 && (
+        {this.renderEvents()}
+        {totalCount > 2 && (
           <Box px={2} mb={2}>
             <Sans weight="medium" size="3">
-              <CaretButton onPress={() => this.viewAllBmwShows()} text={`View all ${data.length} shows`} />
+              <CaretButton onPress={() => this.viewAllBmwShows()} text={`View all ${totalCount} shows`} />
             </Sans>
           </Box>
         )}
