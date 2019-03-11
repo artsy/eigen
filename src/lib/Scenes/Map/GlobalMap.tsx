@@ -15,6 +15,7 @@ import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "li
 import { cityTabs } from "../City/cityTabs"
 import { bucketCityResults, BucketResults, emptyBucketResults } from "./bucketCityResults"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
+import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
@@ -143,32 +144,6 @@ export class GlobalMap extends React.Component<Props, State> {
   moveButtons: Animated.Value
 
   shows: { [id: string]: Show } = {}
-
-  stylesheet = Mapbox.StyleSheet.create({
-    singleShow: {
-      iconImage: Mapbox.StyleSheet.identity("icon"),
-      iconSize: 0.8,
-    },
-
-    clusteredPoints: {
-      circlePitchAlignment: "map",
-      circleColor: "black",
-
-      circleRadius: Mapbox.StyleSheet.source(
-        [[0, 15], [5, 20], [30, 30]],
-        "point_count",
-        Mapbox.InterpolationMode.Exponential
-      ),
-    },
-
-    clusterCount: {
-      textField: "{point_count}",
-      textSize: 14,
-      textColor: "white",
-      textFont: ["Unica77 LL Medium"],
-      textPitchAlignment: "map",
-    },
-  })
 
   constructor(props) {
     super(props)
@@ -379,38 +354,6 @@ export class GlobalMap extends React.Component<Props, State> {
     )
   }
 
-  mapShapeSources = () => {
-    return (
-      <>
-        {this.showsGeoJSONFeatureCollection && (
-          <Mapbox.Animated.ShapeSource
-            id="shows"
-            shape={this.showsGeoJSONFeatureCollection}
-            cluster
-            clusterRadius={50}
-            onPress={e => {
-              this.handleFeaturePress(e.nativeEvent)
-            }}
-          >
-            <Mapbox.Animated.SymbolLayer
-              id="singleShow"
-              filter={["!has", "point_count"]}
-              style={this.stylesheet.singleShow}
-            />
-            <Mapbox.Animated.SymbolLayer id="pointCount" style={this.stylesheet.clusterCount} />
-
-            <Mapbox.Animated.CircleLayer
-              id="clusteredPoints"
-              belowLayerID="pointCount"
-              filter={["has", "point_count"]}
-              style={this.stylesheet.clusteredPoints}
-            />
-          </Mapbox.Animated.ShapeSource>
-        )}
-      </>
-    )
-  }
-
   render() {
     const city = get(this.props, "viewer.city")
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || get(city, "coordinates")
@@ -497,7 +440,12 @@ export class GlobalMap extends React.Component<Props, State> {
                     <SafeAreaView style={{ flex: 1 }}>
                       <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
                     </SafeAreaView>
-                    {this.mapShapeSources()}
+                    {this.showsGeoJSONFeatureCollection && (
+                      <PinsShapeLayer
+                        featureCollection={this.showsGeoJSONFeatureCollection}
+                        onPress={e => this.handleFeaturePress(e.nativeEvent)}
+                      />
+                    )}
                   </>
                 )}
               </Map>
