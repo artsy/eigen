@@ -43,6 +43,7 @@
 - Adds loading screen for Map view - luc
 - Adds analytics to map and city view - kieran
 - Adds City save list view - kieran
+- Adds styling on single map points and clusters to indicate selection - ashley
 
 ### 1.8.14
 
