@@ -10,6 +10,7 @@ import {
   ArtistRenderer,
   BidderFlowRendererProps,
   BidFlowRenderer,
+  CityFairListRenderer,
   CitySectionListRenderer,
   ConversationRenderer,
   FairRenderer,
@@ -37,7 +38,7 @@ import {
 import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
 import { MapContainer } from "./Scenes/Map"
-import { BucketKey } from "./Scenes/Map/Bucket"
+import { BucketKey } from "./Scenes/Map/bucketCityResults"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
 
@@ -187,6 +188,15 @@ const ShowMoreInfo: React.SFC<ShowMoreInfoProps> = ({ showID }) => {
   return <ShowMoreInfoRenderer showID={showID} render={renderWithLoadProgress(Containers.ShowMoreInfo, { showID })} />
 }
 
+interface CityFairListProps {
+  citySlug: string
+}
+const CityFairList: React.SFC<CityFairListProps> = ({ citySlug }) => {
+  return (
+    <CityFairListRenderer citySlug={citySlug} render={renderWithLoadProgress(Containers.CityFairList, { citySlug })} />
+  )
+}
+
 interface CitySectionListProps {
   citySlug: string
   section: BucketKey
@@ -275,4 +285,5 @@ AppRegistry.registerComponent("ShowMoreInfo", () => ShowMoreInfo)
 AppRegistry.registerComponent("Map", () => MapContainer)
 AppRegistry.registerComponent("City", () => CityView)
 AppRegistry.registerComponent("CityPicker", () => CityPicker)
+AppRegistry.registerComponent("CityFairList", () => CityFairList)
 AppRegistry.registerComponent("CitySectionList", () => CitySectionList)

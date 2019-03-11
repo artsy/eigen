@@ -2,12 +2,15 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { CitySectionList_city$ref } from "./CitySectionList_city.graphql";
+export type EventStatus = "CLOSED" | "CLOSING_SOON" | "CURRENT" | "RUNNING" | "UPCOMING" | "closed" | "current" | "running" | "upcoming" | "%future added value";
 export type PartnerShowPartnerType = "GALLERY" | "MUSEUM" | "%future added value";
 export type CitySectionListQueryVariables = {
     readonly count: number;
     readonly cursor?: string | null;
     readonly citySlug: string;
     readonly partnerType?: PartnerShowPartnerType | null;
+    readonly status?: EventStatus | null;
+    readonly dayThreshold?: number | null;
 };
 export type CitySectionListQueryResponse = {
     readonly city: ({
@@ -27,15 +30,17 @@ query CitySectionListQuery(
   $cursor: String
   $citySlug: String!
   $partnerType: PartnerShowPartnerType
+  $status: EventStatus
+  $dayThreshold: Int
 ) {
   city(slug: $citySlug) {
-    ...CitySectionList_city_1ZOk4i
+    ...CitySectionList_city_15kLQ2
   }
 }
 
-fragment CitySectionList_city_1ZOk4i on City {
+fragment CitySectionList_city_15kLQ2 on City {
   name
-  shows(discoverable: true, first: $count, sort: START_AT_ASC, after: $cursor, partnerType: $partnerType) {
+  shows(includeStubShows: true, first: $count, sort: START_AT_ASC, after: $cursor, partnerType: $partnerType, status: $status, dayThreshold: $dayThreshold) {
     pageInfo {
       endCursor
       hasNextPage
@@ -103,6 +108,18 @@ var v0 = [
     "name": "partnerType",
     "type": "PartnerShowPartnerType",
     "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "status",
+    "type": "EventStatus",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "dayThreshold",
+    "type": "Int",
+    "defaultValue": null
   }
 ],
 v1 = [
@@ -145,7 +162,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "CitySectionListQuery",
-  "id": "b220de72bb95c2cf0e7e7b2feb916abf",
+  "id": "be35ad5bef2feddbb3be1574cda776c5",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -182,8 +199,20 @@ return {
               },
               {
                 "kind": "Variable",
+                "name": "dayThreshold",
+                "variableName": "dayThreshold",
+                "type": null
+              },
+              {
+                "kind": "Variable",
                 "name": "partnerType",
                 "variableName": "partnerType",
+                "type": null
+              },
+              {
+                "kind": "Variable",
+                "name": "status",
+                "variableName": "status",
                 "type": null
               }
             ]
@@ -220,16 +249,22 @@ return {
                 "type": "String"
               },
               {
-                "kind": "Literal",
-                "name": "discoverable",
-                "value": true,
-                "type": "Boolean"
+                "kind": "Variable",
+                "name": "dayThreshold",
+                "variableName": "dayThreshold",
+                "type": "Int"
               },
               {
                 "kind": "Variable",
                 "name": "first",
                 "variableName": "count",
                 "type": "Int"
+              },
+              {
+                "kind": "Literal",
+                "name": "includeStubShows",
+                "value": true,
+                "type": "Boolean"
               },
               {
                 "kind": "Variable",
@@ -242,6 +277,12 @@ return {
                 "name": "sort",
                 "value": "START_AT_ASC",
                 "type": "PartnerShowSorts"
+              },
+              {
+                "kind": "Variable",
+                "name": "status",
+                "variableName": "status",
+                "type": "EventStatus"
               }
             ],
             "concreteType": "ShowConnection",
@@ -421,16 +462,22 @@ return {
                 "type": "String"
               },
               {
-                "kind": "Literal",
-                "name": "discoverable",
-                "value": true,
-                "type": "Boolean"
+                "kind": "Variable",
+                "name": "dayThreshold",
+                "variableName": "dayThreshold",
+                "type": "Int"
               },
               {
                 "kind": "Variable",
                 "name": "first",
                 "variableName": "count",
                 "type": "Int"
+              },
+              {
+                "kind": "Literal",
+                "name": "includeStubShows",
+                "value": true,
+                "type": "Boolean"
               },
               {
                 "kind": "Variable",
@@ -443,14 +490,22 @@ return {
                 "name": "sort",
                 "value": "START_AT_ASC",
                 "type": "PartnerShowSorts"
+              },
+              {
+                "kind": "Variable",
+                "name": "status",
+                "variableName": "status",
+                "type": "EventStatus"
               }
             ],
             "handle": "connection",
             "key": "CitySectionList_shows",
             "filters": [
-              "discoverable",
+              "includeStubShows",
               "sort",
-              "partnerType"
+              "partnerType",
+              "status",
+              "dayThreshold"
             ]
           }
         ]
@@ -459,5 +514,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'a310bbd670008103175e9c4544234c6d';
+(node as any).hash = '2e40be5c67c90f9f1ceb100ae06e66cf';
 export default node;

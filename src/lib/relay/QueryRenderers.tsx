@@ -30,10 +30,12 @@ import Inbox from "../Containers/Inbox"
 Inbox
 // tslint:enable:no-unused-expression
 
+import { EventStatus } from "__generated__/CitySectionListQuery.graphql"
 import { QueryRenderersArtistQuery } from "__generated__/QueryRenderersArtistQuery.graphql"
 import { QueryRenderersBidFlowQuery } from "__generated__/QueryRenderersBidFlowQuery.graphql"
-import { PartnerShowPartnerType } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
+import { QueryRenderersCityFairListQuery } from "__generated__/QueryRenderersCityFairListQuery.graphql"
 import { QueryRenderersCitySectionListQuery } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
+import { PartnerShowPartnerType } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
 import { QueryRenderersConversationQuery } from "__generated__/QueryRenderersConversationQuery.graphql"
 import { QueryRenderersFairQuery } from "__generated__/QueryRenderersFairQuery.graphql"
 import { QueryRenderersForYouQuery } from "__generated__/QueryRenderersForYouQuery.graphql"
@@ -48,7 +50,7 @@ import { QueryRenderersShowArtworksQuery } from "__generated__/QueryRenderersSho
 import { QueryRenderersShowMoreInfoQuery } from "__generated__/QueryRenderersShowMoreInfoQuery.graphql"
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
-import { BucketKey } from "lib/Scenes/Map/Bucket"
+import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
 import createEnvironment from "./createEnvironment"
 const environment = createEnvironment()
 
@@ -439,12 +441,37 @@ export const ShowMoreInfoRenderer: React.SFC<ShowMoreInfoProps> = ({ render, sho
   )
 }
 
+interface CityFairListProps extends RendererProps {
+  citySlug: string
+}
+export const CityFairListRenderer: React.SFC<CityFairListProps> = ({ render, citySlug }) => {
+  return (
+    <QueryRenderer<QueryRenderersCityFairListQuery>
+      environment={environment}
+      query={graphql`
+        query QueryRenderersCityFairListQuery($citySlug: String!) {
+          city(slug: $citySlug) {
+            ...CityFairList_city
+          }
+        }
+      `}
+      variables={{ citySlug }}
+      render={render}
+    />
+  )
+}
+
 interface CitySectionListProps extends RendererProps {
   citySlug: string
   section: BucketKey
 }
 export const CitySectionListRenderer: React.SFC<CitySectionListProps> = ({ render, citySlug, section }) => {
-  const variables: { citySlug: string; partnerType?: PartnerShowPartnerType } = { citySlug }
+  const variables: {
+    citySlug: string
+    partnerType?: PartnerShowPartnerType
+    status?: EventStatus
+    dayThreshold?: number
+  } = { citySlug }
 
   switch (section) {
     case "museums":
@@ -453,15 +480,27 @@ export const CitySectionListRenderer: React.SFC<CitySectionListProps> = ({ rende
     case "galleries":
       variables.partnerType = "GALLERY"
       break
+    case "closing":
+      variables.status = "CLOSING_SOON"
+      variables.dayThreshold = 7
+      break
+    case "opening":
+      variables.status = "UPCOMING"
+      variables.dayThreshold = 7
   }
 
   return (
     <QueryRenderer<QueryRenderersCitySectionListQuery>
       environment={environment}
       query={graphql`
-        query QueryRenderersCitySectionListQuery($citySlug: String!, $partnerType: PartnerShowPartnerType) {
+        query QueryRenderersCitySectionListQuery(
+          $citySlug: String!
+          $partnerType: PartnerShowPartnerType
+          $status: EventStatus
+          $dayThreshold: Int
+        ) {
           city(slug: $citySlug) {
-            ...CitySectionList_city @arguments(partnerType: $partnerType)
+            ...CitySectionList_city @arguments(partnerType: $partnerType, status: $status, dayThreshold: $dayThreshold)
           }
         }
       `}

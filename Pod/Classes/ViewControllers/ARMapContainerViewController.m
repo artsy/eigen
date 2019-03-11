@@ -88,17 +88,18 @@ Since this controller already has to do the above logic, having it handle the Ci
             }
     }];
 
-    self.mapVC = [[ARMapComponentViewController alloc] init];
-    self.cityVC = [[ARCityComponentViewController alloc] init];
-
     NSString *previouslySelectedCityName = [[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey];
     ARCity *previouslySelectedCity = [[[ARCity cities] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
         return [[evaluatedObject name] isEqualToString:previouslySelectedCityName];
     }]] firstObject];
+    
+    self.mapVC = [[ARMapComponentViewController alloc] init];
+    self.cityVC = [[ARCityComponentViewController alloc] init];
 
     if (previouslySelectedCity) {
         // Do this here, before we add to our view hierarchy, so that these are the _initial_ propertyies we do our first render with.
         [self.mapVC setProperty:previouslySelectedCity.slug forKey:@"citySlug"];
+        [self.cityVC setProperty:previouslySelectedCity.slug forKey:@"citySlug"];
         [self.mapVC setProperty:@{ @"lat": @(previouslySelectedCity.epicenter.coordinate.latitude), @"lng": @(previouslySelectedCity.epicenter.coordinate.longitude) } forKey:@"initialCoordinates"];
     } else {
         // The user has no previously selected city, so let's try to determine their location.
@@ -131,6 +132,7 @@ Since this controller already has to do the above logic, having it handle the Ci
     if (closestCity) {
         // User is within radius to city.
         [self.mapVC setProperty:closestCity.slug forKey:@"citySlug"];
+        [self.cityVC setProperty:closestCity.slug forKey:@"citySlug"];
         [self.mapVC setProperty:@{ @"lat": @(closestCity.epicenter.coordinate.latitude), @"lng": @(closestCity.epicenter.coordinate.longitude) } forKey:@"initialCoordinates"];
 
         // Technically, the user hasn't selected this city. But we're going to remember it for them.
