@@ -42,9 +42,7 @@ const ShowCardContainer = styled(Box)`
 const LoadingScreen = styled(Image)`
   position: absolute;
   left: 0;
-  right: 0;
   top: 0;
-  bottom: 0;
 `
 
 const TopButtonsContainer = styled(Box)`
@@ -445,7 +443,11 @@ export class GlobalMap extends React.Component<Props, State> {
 
     return (
       <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
-        <LoadingScreen source={require("../../../../images/MapBG.png")} />
+        <LoadingScreen
+          source={require("../../../../images/map-bg.png")}
+          resizeMode="cover"
+          style={{ ...this.backgroundImageSize }}
+        />
         <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top }}>
           <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
             <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
@@ -506,6 +508,14 @@ export class GlobalMap extends React.Component<Props, State> {
         </Spring>
       </Flex>
     )
+  }
+
+  get backgroundImageSize() {
+    const { width, height } = Dimensions.get("window")
+    return {
+      width,
+      height,
+    }
   }
 
   async handleFairPress(_event: any) {

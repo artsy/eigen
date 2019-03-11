@@ -45,6 +45,8 @@
 - Move ShapeLayers to PinsShapeLayer - luc
 - Add loading indicator when data is downloading - luc
 - Add safeAreaInsets to handle various screen sizes - luc
+- Set min zoom size on map - luc
+- Fixes map background sizing - luc
 
 ### 1.8.14
 
