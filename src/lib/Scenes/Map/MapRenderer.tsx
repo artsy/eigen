@@ -23,6 +23,7 @@ export const MapRenderer: React.SFC<{
     <QueryRenderer<MapRendererQuery>
       environment={defaultEnvironment}
       query={graphql`
+        # Don't rename this query withou also updating the generate-cities-cache.js script.
         query MapRendererQuery($citySlug: String!, $maxInt: Int!) {
           viewer {
             ...GlobalMap_viewer @arguments(citySlug: $citySlug, maxInt: $maxInt)
