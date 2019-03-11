@@ -17,10 +17,6 @@ jobs:
       BUNDLE_PATH: vendor/bundle
 
     steps:
-      - run:
-          name: List Simulators
-          command: xcrun simctl list
-
       - checkout
 
       - restore_cache:
@@ -31,7 +27,7 @@ jobs:
 
       - run:
           name: Bundle install
-          command: cd Example ; bundle check || bundle install
+          command: cd Example ; yarn ci:skip-native-if-possible || bundle check || bundle install
           environment:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
@@ -49,7 +45,7 @@ jobs:
 
       - run:
           name: Install Yarn Dependencies
-          command: yarn install --ignore-engines
+          command: yarn ci:skip-native-if-possible || yarn install --ignore-engines
 
       - save_cache:
           key: v2-yarn-{{ checksum "yarn.lock" }}
@@ -62,11 +58,11 @@ jobs:
 
       - run:
           name: Install CocoaPods Specs If Necessary
-          command: cd Example ; bundle exec pod check --ignore-dev-pods || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+          command: cd Example ; yarn ci:skip-native-if-possible || bundle exec pod check --ignore-dev-pods || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
 
       - run:
           name: Install CocoaPods If Necessary
-          command: cd Example ; bundle exec pod check --ignore-dev-pods || bundle exec pod install
+          command: cd Example ; yarn ci:skip-native-if-possible || bundle exec pod check --ignore-dev-pods || bundle exec pod install
 
       - save_cache:
           key: v9-pods-{{ checksum "Example/Pods/Pods.xcodeproj/project.pbxproj" }}
@@ -75,7 +71,7 @@ jobs:
 
       - run:
           name: Package JavaScript for Testing
-          command: "yarn bundle-for-native-ci"
+          command: "yarn ci:skip-native-if-possible || yarn bundle-for-native-ci"
 
       - run:
           name: Set up build artefact directories
@@ -83,7 +79,7 @@ jobs:
 
       - run:
           name: Run Unit Tests
-          command: cd Example ; set -o pipefail && xcodebuild -workspace Emission.xcworkspace -scheme "Emission Example" -configuration Debug test -sdk iphonesimulator -destination "platform=iOS Simulator,OS=10.3.1,name=iPhone 6" GCC_PREPROCESSOR_DEFINITIONS="\$GCC_PREPROCESSOR_DEFINITIONS RUNNING_ON_CI=1" | tee /tmp/xcode_test_raw.log | xcpretty -c --test --report junit --output /tmp/test_results/xcode/results.xml
+          command: cd Example ; yarn ci:skip-native-if-possible || set -o pipefail && xcodebuild -workspace Emission.xcworkspace -scheme "Emission Example" -configuration Debug test -sdk iphonesimulator -destination "platform=iOS Simulator,OS=10.3.1,name=iPhone 6" GCC_PREPROCESSOR_DEFINITIONS="\$GCC_PREPROCESSOR_DEFINITIONS RUNNING_ON_CI=1" | tee /tmp/xcode_test_raw.log | xcpretty -c --test --report junit --output /tmp/test_results/xcode/results.xml
 
       - store_test_results:
           path: /tmp/test_results/
