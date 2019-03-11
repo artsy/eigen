@@ -33,7 +33,8 @@ export const fairToGeoCityFairs = (edges: Fair[]): Fair[] =>
   edges.map(node => {
     return {
       ...node,
-      icon: "pin",
+      icon: "pin-fair",
+      type: "Fair",
     }
   })
 
