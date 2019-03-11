@@ -257,7 +257,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     }];
     
     [self.routes addRoute:@"/city/:city_slug/:section" handler:JLRouteParams {
-        return [[ARCitySectionListComponentViewController alloc] initWithCitySlug:parameters[@"city_slug"] parameters[@"section"]];
+        return [[ARCitySectionListComponentViewController alloc] initWithCitySlug:parameters[@"city_slug"] section:parameters[@"section"]];
     }];
 
     [self.routes addRoute:@"/city-fair/:city_slug" handler:JLRouteParams {
