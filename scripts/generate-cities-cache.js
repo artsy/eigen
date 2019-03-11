@@ -2,7 +2,6 @@
  * Run this with: $ yarn generate-cities-cache
  */
 
-// tslint:disable:no-var-requires
 const fs = require("fs")
 const https = require("https")
 const path = require("path")
