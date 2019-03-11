@@ -145,6 +145,33 @@ export class GlobalMap extends React.Component<Props, State> {
 
   shows: { [id: string]: Show } = {}
 
+  stylesheet = Mapbox.StyleSheet.create({
+    singleShow: {
+      iconImage: Mapbox.StyleSheet.identity("icon"),
+      iconSize: 0.8,
+      iconOffset: [0, -21],
+    },
+
+    clusteredPoints: {
+      circlePitchAlignment: "map",
+      circleColor: "black",
+
+      circleRadius: Mapbox.StyleSheet.source(
+        [[0, 15], [5, 20], [30, 30]],
+        "point_count",
+        Mapbox.InterpolationMode.Exponential
+      ),
+    },
+
+    clusterCount: {
+      textField: "{point_count}",
+      textSize: 14,
+      textColor: "white",
+      textFont: ["Unica77 LL Medium"],
+      textPitchAlignment: "map",
+    },
+  })
+
   constructor(props) {
     super(props)
 

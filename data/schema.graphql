@@ -2395,6 +2395,14 @@ type City {
 type CitySponsoredContent {
   introText: String
   artGuideUrl: String
+  shows(
+    sort: PartnerShowSorts
+    status: EventStatus
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
 }
 
 type Collection implements Node {
@@ -8106,11 +8114,12 @@ type Show implements Node {
   # Does the show exist as a fair booth?
   is_fair_booth: Boolean
 
-  # Is it a stubbed show?
+  # Is it a show provided for historical reference?
   is_reference: Boolean
+  is_local_discovery: Boolean @deprecated(reason: "Prefer isStubShow")
 
   # Is it an outsourced local discovery stub show?
-  is_local_discovery: Boolean
+  isStubShow: Boolean
 
   # Whether the show is in a fair, group or solo
   kind: String
