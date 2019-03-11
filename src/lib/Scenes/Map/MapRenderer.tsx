@@ -5,6 +5,7 @@ import React from "react"
 import { View } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { GlobalMapContainer as GlobalMap } from "./GlobalMap"
+import { SafeAreaInsets } from "./types"
 
 // Are you seeing "cannot read .fairs of null"? You might need to set your simulator location.
 
@@ -16,6 +17,7 @@ export const MapRenderer: React.SFC<{
   citySlug: string
   hideMapButtons: boolean
   initialCoordinates?: { lat: number; lng: number }
+  safeAreaInsets: SafeAreaInsets
 }> = props => {
   return (
     <QueryRenderer<MapRendererQuery>

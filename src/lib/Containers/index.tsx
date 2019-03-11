@@ -1,6 +1,7 @@
 import CityFairList from "lib/Scenes/City/CityFairList"
 import CitySavedList from "lib/Scenes/City/CitySavedList"
 import CitySectionList from "lib/Scenes/City/CitySectionList"
+import CityBMWList from "lib/Scenes/City/Components/CityBMWList"
 import { ShowArtistsContainer } from "../Components/Show/ShowArtists"
 import { ShowArtworksContainer } from "../Components/Show/ShowArtworks"
 import Fair from "../Scenes/Fair"
@@ -22,6 +23,7 @@ export default {
   Artist,
   BidFlow,
   CitySavedList,
+  CityBMWList,
   CitySectionList,
   Conversation,
   CityFairList,
