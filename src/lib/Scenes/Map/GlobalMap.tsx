@@ -19,7 +19,7 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { MapGeoFeature, MapGeoFeatureCollection, OSCoordsUpdate, SafeAreaInsets, Show } from "./types"
+import { Fair, MapGeoFeature, MapGeoFeatureCollection, OSCoordsUpdate, SafeAreaInsets, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -87,7 +87,7 @@ interface State {
   /** True when we know that we can get location updates from the OS */
   trackUserLocation?: boolean
   /** A set of GeoJSON features, which right now is our show clusters */
-  showsGeoJSONFeature: MapGeoFeatureCollection
+  featureCollection: MapGeoFeatureCollection
   /** Has the map fully rendered? */
   mapLoaded: boolean
   isSavingShow: boolean
@@ -150,11 +150,11 @@ export class GlobalMap extends React.Component<Props, State> {
 
   map: Mapbox.MapView
   clusterEngine: Supercluster
-  showsGeoJSONFeatureCollection: MapGeoFeatureCollection
-  fairsGeoJSONFeatureCollection: MapGeoFeatureCollection
+  featureCollection: MapGeoFeatureCollection
   moveButtons: Animated.Value
 
   shows: { [id: string]: Show } = {}
+  fairs: { [id: string]: Fair } = {}
 
   stylesheet = Mapbox.StyleSheet.create({
     singleShow: {
@@ -193,7 +193,7 @@ export class GlobalMap extends React.Component<Props, State> {
       currentLocation,
       bucketResults: emptyBucketResults,
       trackUserLocation: false,
-      showsGeoJSONFeature: undefined,
+      featureCollection: undefined,
       mapLoaded: false,
       isSavingShow: false,
     }
@@ -280,21 +280,21 @@ export class GlobalMap extends React.Component<Props, State> {
     const fairs = tab.getFairs(this.state.bucketResults)
 
     const showData = showsToGeoCityShow(shows)
-    const showsGeoJSONFeature = convertCityToGeoJSON(showData)
-
     const fairData = fairToGeoCityFairs(fairs)
-    const fairsGeoJSONFeature = convertCityToGeoJSON(fairData)
+
+    const data = showData.concat((fairData as any) as Show[])
+    const geoJSONFeature = convertCityToGeoJSON(data)
+
+    this.featureCollection = geoJSONFeature
 
     if (updateState) {
       this.setState({
-        showsGeoJSONFeature,
+        featureCollection: geoJSONFeature,
       })
     }
 
-    this.fairsGeoJSONFeatureCollection = fairsGeoJSONFeature
-    this.showsGeoJSONFeatureCollection = showsGeoJSONFeature
     // close but not enough yet
-    this.clusterEngine.load(this.showsGeoJSONFeatureCollection.features as any)
+    this.clusterEngine.load(this.featureCollection.features as any)
   }
 
   emitFilteredBucketResults() {
@@ -342,6 +342,14 @@ export class GlobalMap extends React.Component<Props, State> {
         }
 
         this.shows[node.id] = node
+      })
+
+      city.fairs.edges.forEach(({ node }) => {
+        if (!node || !node.location || !node.location.coordinates) {
+          return null
+        }
+
+        this.fairs[node.id] = node
       })
     }
   }
@@ -493,9 +501,9 @@ export class GlobalMap extends React.Component<Props, State> {
               >
                 {city && (
                   <>
-                    {this.showsGeoJSONFeatureCollection && (
+                    {this.featureCollection && (
                       <PinsShapeLayer
-                        featureCollection={this.showsGeoJSONFeatureCollection}
+                        featureCollection={this.featureCollection}
                         onPress={e => this.handleFeaturePress(e.nativeEvent)}
                       />
                     )}
