@@ -3,13 +3,14 @@ import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import Spinner from "lib/Components/Spinner"
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
+import { Show } from "lib/Scenes/Map/types"
 import React from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { RelayProp } from "react-relay"
 import { TabFairItemRow } from "./TabFairItemRow"
 
 interface Props {
-  bucket: CitySectionList_city["shows"]["edges"]
+  bucket: Show[]
   type: BucketKey
   cityName: string
   relay: RelayProp
