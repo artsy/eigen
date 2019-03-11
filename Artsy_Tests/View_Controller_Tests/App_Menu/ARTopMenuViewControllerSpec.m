@@ -207,6 +207,7 @@ describe(@"navigation", ^{
             };
 
             ARSwitchBoard *switchboard = [ARSwitchBoard sharedInstance];
+
             for (NSNumber *tabIndex in menuToPaths.keyEnumerator) {
                 id viewcontroller = [switchboard loadPath:menuToPaths[tabIndex]];
 
@@ -217,14 +218,8 @@ describe(@"navigation", ^{
                 // This will regenerate each time
                 } else if (tabIndex.integerValue == ARTopTabControllerIndexMessaging) {
 
-                    // This gets pushed aside for the new navigation
-                    if (![AROptions boolForOption:AROptionsLocalDiscovery]) {
-                        expect(viewcontroller).to.beAKindOf(ARFavoritesComponentViewController.class);
-                    }
-
-                    if ([AROptions boolForOption:AROptionsLocalDiscovery]) {
-                        expect(viewcontroller).to.beAKindOf(ARInboxComponentViewController.class);
-                    }
+                    BOOL isFavouritesOrInbox = [viewcontroller isKindOfClass:ARFavoritesComponentViewController.class] | [viewcontroller isKindOfClass:ARFavoritesComponentViewController.class];
+                    expect(isFavouritesOrInbox).to.equal(YES);
 
                 } else {
                     expect(viewcontroller).to.equal([[ARTopMenuViewController sharedController] rootNavigationControllerAtIndex:tabIndex.integerValue].rootViewController);

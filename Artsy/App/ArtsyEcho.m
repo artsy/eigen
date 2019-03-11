@@ -3,14 +3,21 @@
 #import <Foundation/Foundation.h>
 #import "ARAppStatus.h"
 
+static ArtsyEcho *sharedInstance;
 
 @implementation ArtsyEcho
 
 - (instancetype)init
 {
-    ArtsyKeys *keys = [ArtsyKeys new];
-    NSURL *url = [[NSURL alloc] initWithString:@"https://echo-api-production.herokuapp.com/"];
-    self = [self initWithServerURL:url accountID:1 APIKey:[keys artsyEchoProductionToken] localFilename:@"Echo"];
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        ArtsyKeys *keys = [ArtsyKeys new];
+        NSURL *url = [[NSURL alloc] initWithString:@"https://echo-api-production.herokuapp.com/"];
+        sharedInstance = [self initWithServerURL:url accountID:1 APIKey:[keys artsyEchoProductionToken] localFilename:@"Echo"];
+    });
+
+    self = sharedInstance;
     return self;
 }
 
