@@ -125,6 +125,7 @@ Since this controller already has to do the above logic, having it handle the Ci
 
 -(void)viewSafeAreaInsetsDidChange
 {
+    [super viewSafeAreaInsetsDidChange];
     [self updateSafeAreaInsets];
 }
 
