@@ -4,6 +4,7 @@ import ChevronIcon from "lib/Icons/ChevronIcon"
 import React, { Component } from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
+import { City } from "../types"
 
 // Because it will raise errors in VS Code
 const shadowProps = `
@@ -19,12 +20,22 @@ const Background = styled(Flex)`
   ${shadowProps};
 `
 
-export class CitySwitcherButton extends Component<any> {
+interface Props {
+  onPress?: () => void
+  city: City
+}
+
+export class CitySwitcherButton extends Component<Props> {
   render() {
     const city = this.props.city
     return (
       <TouchableWithoutFeedback
-        onPress={() => NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryOpenCityPicker", {})}
+        onPress={() => {
+          if (this.props.onPress) {
+            this.props.onPress()
+          }
+          NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryOpenCityPicker", {})
+        }}
       >
         <Background
           flexDirection="row"

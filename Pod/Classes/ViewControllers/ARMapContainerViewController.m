@@ -108,6 +108,8 @@ Since this controller already has to do the above logic, having it handle the Ci
         self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
         [self.locationManager requestWhenInUseAuthorization];
     }
+    
+    [self updateSafeAreaInsets];
 
     self.bottomSheetVC = [[PulleyViewController alloc] initWithContentViewController:self.mapVC drawerViewController:self.cityVC];
     self.bottomSheetVC.animationDuration = 0.35;
@@ -119,6 +121,11 @@ Since this controller already has to do the above logic, having it handle the Ci
     [self.bottomSheetVC willMoveToParentViewController:self];
     [self addChildViewController:self.bottomSheetVC];
     [self.bottomSheetVC didMoveToParentViewController:self];
+}
+
+-(void)viewSafeAreaInsetsDidChange
+{
+    [self updateSafeAreaInsets];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -221,6 +228,18 @@ Since this controller already has to do the above logic, having it handle the Ci
     }
 
     [self.bottomSheetVC setDrawerPositionWithPosition:position animated:YES completion:nil];
+}
+
+- (void)updateSafeAreaInsets
+{
+    UIEdgeInsets safeAreaInsets = self.view.safeAreaInsets;
+    [self.mapVC setProperty:@{
+                              @"top": [NSNumber numberWithFloat:safeAreaInsets.top],
+                              @"bottom": [NSNumber numberWithFloat:safeAreaInsets.bottom],
+                              @"left": [NSNumber numberWithFloat:safeAreaInsets.left],
+                              @"right": [NSNumber numberWithFloat:safeAreaInsets.right]
+                              }
+                     forKey:@"safeAreaInsets"];
 }
 
 # pragma mark - PulleyDelegate Methods

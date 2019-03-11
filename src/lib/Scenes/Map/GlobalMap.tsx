@@ -4,7 +4,7 @@ import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { get } from "lodash"
 import React from "react"
-import { Animated, Dimensions, Easing, Image, NativeModules, SafeAreaView, View } from "react-native"
+import { Animated, Dimensions, Easing, Image, NativeModules, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
@@ -19,7 +19,7 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { MapGeoFeature, MapGeoFeatureCollection, OSCoordsUpdate, Show } from "./types"
+import { MapGeoFeature, MapGeoFeatureCollection, OSCoordsUpdate, SafeAreaInsets, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -47,6 +47,15 @@ const LoadingScreen = styled(Image)`
   bottom: 0;
 `
 
+const TopButtonsContainer = styled(Box)`
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100;
+`
+
 interface Props {
   /** Where to center the map initially?  */
   initialCoordinates?: { lat: number; lng: number }
@@ -58,8 +67,12 @@ interface Props {
   relay: RelayProp
   /** Tracking */
   tracking: any
+  /** city slug */
   citySlug: string
+  /** Whether the bottom sheet drawer is opened */
   isDrawerOpen?: boolean
+  /**  */
+  safeAreaInsets: SafeAreaInsets
 }
 
 interface State {
@@ -339,6 +352,9 @@ export class GlobalMap extends React.Component<Props, State> {
     const { activeShows } = this.state
     const hasShows = activeShows.length > 0
 
+    // Check if it's an iPhone with ears (iPhone X, Xr, Xs, etc...)
+    const iPhoneHasEars = this.props.safeAreaInsets.top === 44
+
     // We need to update activeShows in case of a mutation (save show)
     const updatedShows = activeShows.map(show => this.shows[show.id])
 
@@ -346,7 +362,11 @@ export class GlobalMap extends React.Component<Props, State> {
       <Spring
         native
         from={{ bottom: -150, progress: 0, opacity: 0 }}
-        to={hasShows ? { bottom: 80, progress: 1, opacity: 1.0 } : { bottom: -150, progress: 0, opacity: 0 }}
+        to={
+          hasShows
+            ? { bottom: iPhoneHasEars ? 80 : 45, progress: 1, opacity: 1.0 }
+            : { bottom: -150, progress: 0, opacity: 0 }
+        }
         config={config.stiff}
         precision={1}
       >
@@ -422,14 +442,20 @@ export class GlobalMap extends React.Component<Props, State> {
       },
     }
 
-    // TODO: Need to hide the map while showing the top buttons.
     return (
       <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
         <LoadingScreen source={require("../../../../images/MapBG.png")} />
-        <Box style={{ position: "absolute", top: 44, left: 0, right: 0, zIndex: 1, width: "100%", height: 100 }}>
+        <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top }}>
           <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
             <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
-              <CitySwitcherButton city={city} />
+              <CitySwitcherButton
+                city={city}
+                onPress={() => {
+                  this.setState({
+                    activeShows: [],
+                  })
+                }}
+              />
               <Box style={{ marginLeft: "auto" }}>
                 <UserPositionButton
                   highlight={this.state.userLocation === this.state.currentLocation}
@@ -441,7 +467,7 @@ export class GlobalMap extends React.Component<Props, State> {
               </Box>
             </Flex>
           </Animated.View>
-        </Box>
+        </TopButtonsContainer>
         <Spring
           native
           from={{ opacity: 0 }}
@@ -464,15 +490,13 @@ export class GlobalMap extends React.Component<Props, State> {
               >
                 {city && (
                   <>
-                    <SafeAreaView style={{ flex: 1 }}>
-                      <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
-                    </SafeAreaView>
                     {this.showsGeoJSONFeatureCollection && (
                       <PinsShapeLayer
                         featureCollection={this.showsGeoJSONFeatureCollection}
                         onPress={e => this.handleFeaturePress(e.nativeEvent)}
                       />
                     )}
+                    <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
                   </>
                 )}
               </Map>
