@@ -65,23 +65,27 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     SwitchBoard.presentNavigationViewController(this, path)
   }
 
-  renderItem = ({ item }) => (
-    <Background ml={1} p={1} style={shadowDetails} width={this.cardWidth}>
-      <TouchableOpacity onPress={this.handleTap.bind(this, item)}>
-        {item.type === "Show" ? (
-          <ShowItemRow
-            show={item}
-            relay={this.props.relay}
-            onSaveStarted={this.props.onSaveStarted}
-            onSaveEnded={this.props.onSaveEnded}
-            noPadding
-          />
-        ) : (
-          <TabFairItemRow item={item} noPadding />
-        )}
-      </TouchableOpacity>
-    </Background>
-  )
+  renderItem = ({ item }, noWidth = false) => {
+    const props = noWidth ? { mr: 1 } : { width: this.cardWidth }
+
+    return (
+      <Background ml={1} p={1} style={shadowDetails} {...props}>
+        <TouchableOpacity onPress={this.handleTap.bind(this, item)}>
+          {item.type === "Show" ? (
+            <ShowItemRow
+              show={item}
+              relay={this.props.relay}
+              onSaveStarted={this.props.onSaveStarted}
+              onSaveEnded={this.props.onSaveEnded}
+              noPadding
+            />
+          ) : (
+            <TabFairItemRow item={item} noPadding />
+          )}
+        </TouchableOpacity>
+      </Background>
+    )
+  }
 
   onScroll = e => {
     const newPageNum = Math.round(e.nativeEvent.contentOffset.x / screenWidth + 1)
@@ -128,7 +132,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     const show = hasOne ? shows[0] : null
 
     return hasOne ? (
-      show && this.renderItem({ item: show })
+      show && this.renderItem({ item: show }, true)
     ) : (
       <>
         <PageIndicator style={shadowDetails} mx={1} py={0.3} px={0.5} my={0.5}>
