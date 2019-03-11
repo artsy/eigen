@@ -5,7 +5,7 @@ import { Schema, screenTrack } from "lib/utils/track"
 import React, { Component } from "react"
 import { Dimensions, NativeModules, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
-import { cityList as cities } from "./cities"
+import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
 
 interface Props {
   selectedCity: string
