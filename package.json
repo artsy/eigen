@@ -35,6 +35,7 @@
     "release": "node scripts/release.js",
     "generate-graphql-query-map": "node scripts/generate-graphql-query-map.js > Pod/Classes/GraphQL/ARGraphQLQueryMap.generated.objc",
     "generate-cities-objc": "node scripts/generate-cities-objc.js",
+    "generate-cities-cache": "node scripts/generate-cities-cache.js",
     "merge-graphql-query-map": "node scripts/merge-graphql-query-map.js",
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/_schema.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
     "sync-cities": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/src/schema/city/cityDataSortedByDisplayPreference.json -o data/cityDataSortedByDisplayPreference.json",
