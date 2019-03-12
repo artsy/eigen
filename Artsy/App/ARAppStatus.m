@@ -46,7 +46,7 @@
 
 + (BOOL)isBetaDevOrAdmin;
 {
-    return [self isBetaOrDev] || [self isAdmin]
+    return [self isBetaOrDev] || [self isAdmin];
 }
 
 + (BOOL)isDemo;
