@@ -733,6 +733,7 @@ export const GlobalMapContainer = createFragmentContainer(
               id
               _id
               __id
+              isStubShow
               name
               status
               href
