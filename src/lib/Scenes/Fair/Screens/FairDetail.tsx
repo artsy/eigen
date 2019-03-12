@@ -94,10 +94,6 @@ export class FairDetail extends React.Component<Props, State> {
       })
     }
 
-    console.log("artists", artists)
-    console.log("artworks", artworks)
-    console.log("partners", partners)
-
     if (!!artists || !!artworks || !!partners) {
       sections.push({
         type: "title",
