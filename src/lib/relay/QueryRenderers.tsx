@@ -33,9 +33,11 @@ Inbox
 import { EventStatus } from "__generated__/CitySectionListQuery.graphql"
 import { QueryRenderersArtistQuery } from "__generated__/QueryRenderersArtistQuery.graphql"
 import { QueryRenderersBidFlowQuery } from "__generated__/QueryRenderersBidFlowQuery.graphql"
+import { QueryRenderersCityBMWListQuery } from "__generated__/QueryRenderersCityBMWListQuery.graphql"
 import { QueryRenderersCityFairListQuery } from "__generated__/QueryRenderersCityFairListQuery.graphql"
-import { QueryRenderersCitySectionListQuery } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
+import { QueryRenderersCitySavedListQuery } from "__generated__/QueryRenderersCitySavedListQuery.graphql"
 import { PartnerShowPartnerType } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
+import { QueryRenderersCitySectionListQuery } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
 import { QueryRenderersConversationQuery } from "__generated__/QueryRenderersConversationQuery.graphql"
 import { QueryRenderersFairQuery } from "__generated__/QueryRenderersFairQuery.graphql"
 import { QueryRenderersForYouQuery } from "__generated__/QueryRenderersForYouQuery.graphql"
@@ -441,6 +443,26 @@ export const ShowMoreInfoRenderer: React.SFC<ShowMoreInfoProps> = ({ render, sho
   )
 }
 
+interface CityBMWListProps extends RendererProps {
+  citySlug: string
+}
+export const CityBMWListRenderer: React.SFC<CityBMWListProps> = ({ render, citySlug }) => {
+  return (
+    <QueryRenderer<QueryRenderersCityBMWListQuery>
+      environment={environment}
+      query={graphql`
+        query QueryRenderersCityBMWListQuery($citySlug: String!) {
+          city(slug: $citySlug) {
+            ...CityBMWList_city
+          }
+        }
+      `}
+      variables={{ citySlug }}
+      render={render}
+    />
+  )
+}
+
 interface CityFairListProps extends RendererProps {
   citySlug: string
 }
@@ -452,6 +474,26 @@ export const CityFairListRenderer: React.SFC<CityFairListProps> = ({ render, cit
         query QueryRenderersCityFairListQuery($citySlug: String!) {
           city(slug: $citySlug) {
             ...CityFairList_city
+          }
+        }
+      `}
+      variables={{ citySlug }}
+      render={render}
+    />
+  )
+}
+
+interface CitySavedListProps extends RendererProps {
+  citySlug: string
+}
+export const CitySavedListRenderer: React.SFC<CitySavedListProps> = ({ render, citySlug }) => {
+  return (
+    <QueryRenderer<QueryRenderersCitySavedListQuery>
+      environment={environment}
+      query={graphql`
+        query QueryRenderersCitySavedListQuery($citySlug: String!) {
+          city(slug: $citySlug) {
+            ...CitySavedList_city
           }
         }
       `}

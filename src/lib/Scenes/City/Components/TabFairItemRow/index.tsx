@@ -12,7 +12,7 @@ export interface Props {
 }
 
 export class TabFairItemRow extends React.Component<Props> {
-  handleTap = item => {
+  handleTap = (item: Fair) => {
     SwitchBoard.presentNavigationViewController(this, `${item.id}?entity=fair`)
   }
 
@@ -33,13 +33,14 @@ export class TabFairItemRow extends React.Component<Props> {
                   {item.name}
                 </Sans>
               )}
-              {item.counts.partners && (
-                <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
-                  {item.counts.partners > 1
-                    ? `${item.counts.partners} Exhibitors`
-                    : `${item.counts.partners} Exhibitor`}
-                </Sans>
-              )}
+              {item.counts &&
+                item.counts.partners && (
+                  <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
+                    {item.counts.partners > 1
+                      ? `${item.counts.partners} Exhibitors`
+                      : `${item.counts.partners} Exhibitor`}
+                  </Sans>
+                )}
               {item.exhibition_period && (
                 <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
                   {item.exhibition_period}

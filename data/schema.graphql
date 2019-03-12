@@ -4865,7 +4865,10 @@ type Location {
 
   # Alternate Markdown-supporting free text representation of a location's opening hours
   day_schedule_text: String
-  displayDaySchedules: [FormattedDaySchedules]
+  displayDaySchedules: [FormattedDaySchedules] @deprecated(reason: "Use openingHours instead")
+
+  # Union returning opening hours in formatted structure or a string
+  openingHours: OpeningHoursUnion
   display: String
   phone: String
   postal_code: String
@@ -5778,6 +5781,16 @@ type OfferOrder implements Order {
   # List of submitted offers made on this order so far
   offers: OfferConnection
 }
+
+type OpeningHoursArray {
+  schedules: [FormattedDaySchedules]
+}
+
+type OpeningHoursText {
+  text: String
+}
+
+union OpeningHoursUnion = OpeningHoursArray | OpeningHoursText
 
 interface Order {
   # ID of the order

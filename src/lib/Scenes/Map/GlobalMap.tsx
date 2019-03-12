@@ -1,6 +1,10 @@
-import { Box, Flex, Theme } from "@artsy/palette"
+import { Box, color, Flex, Sans, Theme } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import colors from "lib/data/colors"
+import { Pin } from "lib/Icons/Pin"
+import PinSavedSelected from "lib/Icons/PinSavedSelected"
+import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { get } from "lodash"
 import React from "react"
@@ -10,8 +14,6 @@ import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
 import Supercluster from "supercluster"
 
-import colors from "lib/data/colors"
-import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { cityTabs } from "../City/cityTabs"
 import { bucketCityResults, BucketResults, emptyBucketResults } from "./bucketCityResults"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
@@ -91,6 +93,8 @@ interface State {
   /** Has the map fully rendered? */
   mapLoaded: boolean
   isSavingShow: boolean
+  /** Cluster map data used to populate selected cluster annotation */
+  nearestFeature: object
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
@@ -160,7 +164,7 @@ export class GlobalMap extends React.Component<Props, State> {
     singleShow: {
       iconImage: Mapbox.StyleSheet.identity("icon"),
       iconSize: 0.8,
-      iconOffset: [0, -21],
+      // iconOffset: [0, -21], @TODO: This property causes with the selected shows icon. Does this need to be here?
     },
 
     clusteredPoints: {
@@ -196,6 +200,7 @@ export class GlobalMap extends React.Component<Props, State> {
       featureCollection: undefined,
       mapLoaded: false,
       isSavingShow: false,
+      nearestFeature: null,
     }
 
     this.clusterEngine = new Supercluster({
@@ -354,6 +359,65 @@ export class GlobalMap extends React.Component<Props, State> {
     }
   }
 
+  renderSelectedPin() {
+    const { activeShows } = this.state
+    console.log("TCL: renderSelectedPin -> activeShows", activeShows)
+    const isCluster = activeShows.length > 1
+    const isSingleShow = activeShows.length === 1
+
+    if (isCluster) {
+      console.log("TCL: renderSelectedPin -> isCluster", isCluster)
+      const { nearestFeature } = this.state
+      const activeClusterLat = get(nearestFeature, "geometry.coordinates[0]")
+      const activeClusterLng = get(nearestFeature, "geometry.coordinates[1]")
+      const clusterId = get(nearestFeature, "properties.cluster_id", "").toString()
+      let pointCount = get(nearestFeature, "properties.point_count", "")
+      const width = pointCount < 5 ? 35 : pointCount < 21 ? 45 : 60
+      const height = pointCount < 5 ? 35 : pointCount < 21 ? 45 : 60
+      pointCount = pointCount.toString()
+
+      return (
+        clusterId &&
+        activeClusterLat &&
+        activeClusterLng &&
+        pointCount && (
+          <Mapbox.PointAnnotation
+            key={clusterId}
+            id={clusterId}
+            selected={true}
+            coordinate={[activeClusterLat, activeClusterLng]}
+          >
+            <SelectedCluster width={width} height={height}>
+              <Sans size="2" weight="medium" color={color("white100")}>
+                {pointCount}
+              </Sans>
+            </SelectedCluster>
+          </Mapbox.PointAnnotation>
+        )
+      )
+    }
+    if (isSingleShow) {
+      console.log("TCL: renderSelectedPin -> isSingleShow", isSingleShow)
+      const lat = get(activeShows, "[0].location.coordinates.lat")
+      const lng = get(activeShows, "[0].location.coordinates.lng")
+      const showId = get(activeShows, "[0].id")
+      const isSaved = get(activeShows, "[0].is_followed")
+
+      return (
+        lat &&
+        lng &&
+        showId && (
+          <Mapbox.PointAnnotation key={showId} id={showId} selected={true} coordinate={[lng, lat]}>
+            {isSaved ? (
+              <PinSavedSelected pinHeight={45} pinWidth={45} />
+            ) : (
+              <Pin pinHeight={45} pinWidth={45} selected={true} />
+            )}
+          </Mapbox.PointAnnotation>
+        )
+      )
+    }
+  }
   renderShowCard() {
     const { activeShows } = this.state
     const hasShows = activeShows.length > 0
@@ -417,7 +481,7 @@ export class GlobalMap extends React.Component<Props, State> {
   render() {
     const city = get(this.props, "viewer.city")
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || get(city, "coordinates")
-    const { mapLoaded } = this.state
+    const { mapLoaded, activeShows } = this.state
 
     const mapProps = {
       showUserLocation: true,
@@ -515,6 +579,7 @@ export class GlobalMap extends React.Component<Props, State> {
                       />
                     )}
                     <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
+                    {mapLoaded && activeShows && this.renderSelectedPin()}
                   </>
                 )}
               </Map>
@@ -583,6 +648,9 @@ export class GlobalMap extends React.Component<Props, State> {
       const nearestFeature = this.getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
       const points = this.clusterEngine.getLeaves(nearestFeature.properties.cluster_id, Infinity)
       activeShows = points.map(a => a.properties) as any
+      this.setState({
+        nearestFeature,
+      })
     }
 
     this.setState({
@@ -621,6 +689,14 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 }
 
+const SelectedCluster = styled(Flex)`
+  background-color: ${colors["purple-regular"]};
+  border-radius: 60;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`
+
 export const GlobalMapContainer = createFragmentContainer(
   GlobalMap,
   graphql`
@@ -631,6 +707,43 @@ export const GlobalMapContainer = createFragmentContainer(
         sponsoredContent {
           introText
           artGuideUrl
+          shows(first: 2, sort: START_AT_ASC) {
+            totalCount
+            edges {
+              node {
+                id
+                _id
+                __id
+
+                name
+                status
+                href
+                is_followed
+                exhibition_period
+                cover_image {
+                  url
+                }
+                location {
+                  coordinates {
+                    lat
+                    lng
+                  }
+                }
+                type
+                start_at
+                end_at
+                partner {
+                  ... on Partner {
+                    name
+                    type
+                  }
+                  ... on ExternalPartner {
+                    name
+                  }
+                }
+              }
+            }
+          }
         }
         coordinates {
           lat

@@ -35,6 +35,8 @@
 #import <Emission/ARFairExhibitorsComponentViewController.h>
 #import <Emission/ARFairBMWArtActivationComponentViewController.h>
 #import <Emission/ARFairArtistsComponentViewController.h>
+#import <Emission/ARCitySavedListComponentViewController.h>
+#import <Emission/ARCityBMWListComponentViewController.h>
 #import <Keys/EmissionKeys.h>
 
 #import <React/RCTUtils.h>
@@ -274,14 +276,16 @@ randomBOOL(void)
 {
   UIViewController *viewController = nil;
 
+
   BOOL isShow = [route hasPrefix:@"/show/"] || [route hasPrefix:@"show/"];
+  BOOL isCityBMWList = [route hasPrefix:@"/city-bmw-list"];
   BOOL isCityFairList = [route hasPrefix:@"/city-fair/"];
+  BOOL isCitySavedList = [route hasPrefix:@"/city-save/"];
   BOOL isCityList = [route hasPrefix:@"/city/"];
 
   if ([route hasPrefix:@"/artist/"] && [route componentsSeparatedByString:@"/"].count == 3) {
     NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
-
   } else if ([route hasPrefix:@"/gene/"] || [route hasPrefix:@"gene/"]) {
     NSString *geneID = [[[[route componentsSeparatedByString:@"/"] lastObject] componentsSeparatedByString:@"?"] firstObject];
     NSURLComponents *components = [NSURLComponents componentsWithString:route];
@@ -354,6 +358,10 @@ randomBOOL(void)
     NSString *citySlug = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARCityFairListComponentViewController alloc] initWithCitySlug:citySlug];
 
+  } else if (isCitySavedList) {
+    NSString *citySlug = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARCitySavedListComponentViewController alloc] initWithCitySlug:citySlug];
+
   } else if (isCityList) {
     NSString *citySlug = [[route componentsSeparatedByString:@"/"] objectAtIndex:2];
     NSString *section = [[route componentsSeparatedByString:@"/"] objectAtIndex:3];
@@ -362,6 +370,10 @@ randomBOOL(void)
   } else if (isShow) {
     NSString *showID = [route componentsSeparatedByString:@"/"].lastObject;
     viewController = [[ARShowComponentViewController alloc] initWithShowID:showID];
+
+  } else if (isCityBMWList) {
+    NSString *citySlug = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARCityBMWListComponentViewController alloc] initWithCitySlug:citySlug];
 
   } else {
     viewController = [[UnroutedViewController alloc] initWithRoute:route];
