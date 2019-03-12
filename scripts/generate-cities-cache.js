@@ -5,13 +5,17 @@
  */
 const queryMap = require("./queryMap")
 const preheatGraphQLCache = require("./preheatGraphQLCache")
+const moment = require("moment")
 
 // @ts-ignore
 const cities = require("../data/cityDataSortedByDisplayPreference.json")
 
 const QUERY_NAME = "MapRendererQuery"
-const TTL = 3600 // 1 hour
 const MAX_GRAPHQL_INT = 2147483647
+const TTL = 3600 // 1 hour
+const FRESHNESS = moment()
+  .add(1, "month")
+  .toDate()
 
 const queryData = queryMap()[QUERY_NAME]
 
@@ -25,5 +29,5 @@ cities.forEach(city => {
     },
   }
 
-  preheatGraphQLCache(queryParams, `${QUERY_NAME}-${city.slug}.json`, TTL)
+  preheatGraphQLCache(queryParams, `${QUERY_NAME}-${city.slug}.json`, FRESHNESS, TTL)
 })
