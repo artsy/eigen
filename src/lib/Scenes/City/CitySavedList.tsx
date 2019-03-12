@@ -115,7 +115,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.me && props.me.followsAndSaves && props.me.followsAndSaves.shows
+      return props.viewer.me && props.viewer.me.followsAndSaves && props.viewer.me.followsAndSaves.shows
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
