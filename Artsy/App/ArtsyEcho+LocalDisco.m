@@ -12,7 +12,7 @@ NSInteger const ARLocalDiscoCurrentVersionCompatibility = 0;
 
 - (BOOL)shouldShowLocalDiscovery
 {
-    return (self.features[@"AREnableLocalDiscovery"].state && self.isLocalDiscoCompatible) || [ARAppStatus isBetaDevOrAdmin];
+    return (self.features[@"AREnableLocalDiscovery"].state && self.isLocalDiscoCompatible) || [ARAppStatus isAdmin];
 }
 
 - (BOOL)isLocalDiscoCompatible
