@@ -52,32 +52,38 @@ static NSURL *_cacheDirectory = nil;
                                                                                               options:NSDirectoryEnumerationSkipsHiddenFiles
                                                                                                 error:&error];
             if (error) {
-                NSLog(@"Error while loading pre-heated GraphQL cache: %@", error);
+                NSLog(@"[ARGraphQLQueryCache] Error while loading pre-heated GraphQL cache: %@", error);
             } else {
                 for (NSURL *cacheEntryURL in cacheEntries) {
                     error = nil;
                     NSData *data = [NSData dataWithContentsOfURL:cacheEntryURL options:0 error:&error];
                     if (error) {
-                        NSLog(@"Error while loading pre-heated GraphQL cache entry `%@': %@", cacheEntryURL.path, error);
+                        NSLog(@"[ARGraphQLQueryCache] Error while loading pre-heated GraphQL cache entry `%@': %@", cacheEntryURL.path, error);
                     } else {
                         NSDictionary *cacheEntry = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
                         if (error) {
-                            NSLog(@"Error while loading pre-heated GraphQL cache entry `%@': %@", cacheEntryURL.path, error);
+                            NSLog(@"[ARGraphQLQueryCache] Error while loading pre-heated GraphQL cache entry `%@': %@", cacheEntryURL.path, error);
                         } else {
-                            NSDictionary *queryParams = cacheEntry[@"queryParams"];
-                            NSString *queryID = queryParams[@"documentID"];
-                            NSParameterAssert(queryID);
-                            NSDictionary *variables = queryParams[@"variables"];
-                            NSParameterAssert(variables);
-                            NSDictionary *graphqlResponse = cacheEntry[@"graphqlResponse"];
-                            NSParameterAssert(graphqlResponse);
-                            NSNumber *ttl = cacheEntry[@"ttl"] ?: @(0);
-                            
-                            NSData *responseData = [NSJSONSerialization dataWithJSONObject:graphqlResponse options:0 error:&error];
-                            if (error) {
-                                NSLog(@"Error while preparing pre-heated GraphQL cache entry `%@': %@", cacheEntryURL.path, error);
+                            NSNumber *freshness = cacheEntry[@"freshness"];
+                            NSParameterAssert(freshness);
+                            if ([[NSDate dateWithTimeIntervalSince1970:freshness.unsignedIntegerValue] compare:[NSDate date]] == NSOrderedDescending) {
+                                NSDictionary *queryParams = cacheEntry[@"queryParams"];
+                                NSString *queryID = queryParams[@"documentID"];
+                                NSParameterAssert(queryID);
+                                NSDictionary *variables = queryParams[@"variables"];
+                                NSParameterAssert(variables);
+                                NSDictionary *graphqlResponse = cacheEntry[@"graphqlResponse"];
+                                NSParameterAssert(graphqlResponse);
+                                NSNumber *ttl = cacheEntry[@"ttl"] ?: @(0);
+                                
+                                NSData *responseData = [NSJSONSerialization dataWithJSONObject:graphqlResponse options:0 error:&error];
+                                if (error) {
+                                    NSLog(@"[ARGraphQLQueryCache] Error while preparing pre-heated GraphQL cache entry `%@': %@", cacheEntryURL.path, error);
+                                } else {
+                                    PersistCacheEntry(CacheKey(queryID, variables), responseData, CacheExpirationDate(ttl.unsignedIntegerValue));
+                                }
                             } else {
-                                PersistCacheEntry(CacheKey(queryID, variables), responseData, CacheExpirationDate(ttl.integerValue));
+                                DLog(@"[ARGraphQLQueryCache] Stale pre-heated GraphQL cache entry will be ignored: %@", cacheEntryURL.path);
                             }
                         }
                     }

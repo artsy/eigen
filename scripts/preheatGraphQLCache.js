@@ -15,9 +15,10 @@ const assetsDir = path.resolve(__dirname, "../Pod/Assets/PreHeatedGraphQLCache")
 /**
  * @param {QueryParams} queryParams
  * @param {string} filename
- * @param {number} ttl
+ * @param {Date} freshness The date from when the pre-heated cache should be ignored.
+ * @param {number} ttl The TTL applied to the cache once put in place. Defaults to the default specified in `ARGraphQLQueryCache.m`.
  */
-module.exports = function preheatGraphQLCache(queryParams, filename, ttl = 0) {
+module.exports = function preheatGraphQLCache(queryParams, filename, freshness, ttl = 0) {
   // We don't use the persisted ID here because the queries may not actually have been persisted yet.
   const { documentID: _documentID, ...queryParamsForRequest } = queryParams
   // While we fetch using the actual query test, for the cache we want to simulate a runtime query, which uses the
@@ -52,10 +53,10 @@ module.exports = function preheatGraphQLCache(queryParams, filename, ttl = 0) {
       fs.writeFile(
         path.join(assetsDir, filename),
         JSON.stringify({
-          // We fetched using the actual query, but we want to simulate a runtime query, which uses the persisted ID.
-          queryParams: queryParamsForCache,
-          graphqlResponse,
           ttl,
+          graphqlResponse,
+          queryParams: queryParamsForCache,
+          freshness: freshness.getTime() / 1000, // Time since UNIX epoc in seconds.
         }),
         "utf8",
         error => {
