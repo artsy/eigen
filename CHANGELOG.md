@@ -58,6 +58,7 @@
 - Set min zoom size on map - luc
 - Fixes map background sizing - luc
 - Adds styling on single map points and clusters to indicate selection - ashley
+- Adds correct sort to city and museum tabs/lists/bricks - kieran
 - Adds pre-heated GraphQL cache ability, with just City cache for now - alloy
 
 ### 1.8.14

@@ -29,7 +29,7 @@ query QueryRenderersCityBMWListQuery(
 fragment CityBMWList_city on City {
   name
   sponsoredContent {
-    shows(first: 20, after: "", sort: START_AT_ASC) {
+    shows(first: 20, status: RUNNING, after: "", sort: PARTNER_ASC) {
       edges {
         node {
           id
@@ -59,11 +59,10 @@ fragment CityBMWList_city on City {
               name
               type
             }
-            ... on ExternalPartner {
-              name
+            ... on Node {
               __id
             }
-            ... on Node {
+            ... on ExternalPartner {
               __id
             }
           }
@@ -129,7 +128,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersCityBMWListQuery",
-  "id": "007cde6ba301c9205b9cfb626d9a83c7",
+  "id": "913984138aab4963500f149e5795e308",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -185,7 +184,7 @@ return {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "shows",
-                "storageKey": "shows(after:\"\",first:20,sort:\"START_AT_ASC\")",
+                "storageKey": "shows(after:\"\",first:20,sort:\"PARTNER_ASC\",status:\"RUNNING\")",
                 "args": [
                   {
                     "kind": "Literal",
@@ -202,8 +201,14 @@ return {
                   {
                     "kind": "Literal",
                     "name": "sort",
-                    "value": "START_AT_ASC",
+                    "value": "PARTNER_ASC",
                     "type": "PartnerShowSorts"
+                  },
+                  {
+                    "kind": "Literal",
+                    "name": "status",
+                    "value": "RUNNING",
+                    "type": "EventStatus"
                   }
                 ],
                 "concreteType": "ShowConnection",
@@ -354,13 +359,6 @@ return {
                               v3,
                               {
                                 "kind": "InlineFragment",
-                                "type": "ExternalPartner",
-                                "selections": [
-                                  v2
-                                ]
-                              },
-                              {
-                                "kind": "InlineFragment",
                                 "type": "Partner",
                                 "selections": [
                                   v2,
@@ -428,13 +426,20 @@ return {
                   {
                     "kind": "Literal",
                     "name": "sort",
-                    "value": "START_AT_ASC",
+                    "value": "PARTNER_ASC",
                     "type": "PartnerShowSorts"
+                  },
+                  {
+                    "kind": "Literal",
+                    "name": "status",
+                    "value": "RUNNING",
+                    "type": "EventStatus"
                   }
                 ],
                 "handle": "connection",
                 "key": "CityBMWList_shows",
                 "filters": [
+                  "status",
                   "sort"
                 ]
               }

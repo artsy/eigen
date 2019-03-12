@@ -186,10 +186,6 @@ export const FairBoothHeaderContainer = createFragmentContainer(
             is_followed
           }
         }
-        ... on ExternalPartner {
-          name
-          id
-        }
       }
       counts {
         artworks

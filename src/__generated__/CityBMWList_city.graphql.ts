@@ -110,13 +110,19 @@ return {
           "kind": "LinkedField",
           "alias": "shows",
           "name": "__CityBMWList_shows_connection",
-          "storageKey": "__CityBMWList_shows_connection(sort:\"START_AT_ASC\")",
+          "storageKey": "__CityBMWList_shows_connection(sort:\"PARTNER_ASC\",status:\"RUNNING\")",
           "args": [
             {
               "kind": "Literal",
               "name": "sort",
-              "value": "START_AT_ASC",
+              "value": "PARTNER_ASC",
               "type": "PartnerShowSorts"
+            },
+            {
+              "kind": "Literal",
+              "name": "status",
+              "value": "RUNNING",
+              "type": "EventStatus"
             }
           ],
           "concreteType": "ShowConnection",
@@ -266,13 +272,6 @@ return {
                         v1,
                         {
                           "kind": "InlineFragment",
-                          "type": "ExternalPartner",
-                          "selections": [
-                            v0
-                          ]
-                        },
-                        {
-                          "kind": "InlineFragment",
                           "type": "Partner",
                           "selections": [
                             v0,
@@ -331,5 +330,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'db27bdbe485a83b281c38a7df88e7823';
+(node as any).hash = '54791e85443b5804602ed6f1418bb1cd';
 export default node;
