@@ -4,6 +4,7 @@ import { Schema, screenTrack } from "lib/utils/track"
 import React, { Component } from "react"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 
+import TabBar from "lib/Components/TabBar"
 import { NativeModules, ScrollView } from "react-native"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
@@ -70,9 +71,7 @@ export class CityView extends Component<Props, State> {
   }
 
   tabView?: ScrollableTabView | any
-
   scrollViewVerticalStart = 0
-  scrollView: ScrollView = null
 
   handleEvent = ({
     filter,
@@ -116,7 +115,7 @@ export class CityView extends Component<Props, State> {
   componentDidUpdate() {
     const scrollview = this.tabView && this.tabView.scrollView
     if (!this.props.isDrawerOpen && scrollview) {
-      scrollview.scrollTo({ x: 0, y: 0, animated: true })
+      // scrollview.scrollTo({ x: 0, y: 0, animated: true })
     }
 
     if (this.state.buckets) {
@@ -144,111 +143,60 @@ export class CityView extends Component<Props, State> {
     const { verticalMargin } = this.props
     // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
-    // const scrollview = this.tabView._scrollView
 
-    /*
-     <Flex py={1} alignItems="center" style={{ flex: 1 }}>
-            <Handle />
-            <ScrollableTabView
-              initialPage={this.props.initialTab || AllCityMetaTab}
-              ref={tabView => (this.tabView = tabView)}
-              onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
-              renderTabBar={props => (
-                <>
-                  <TabBar {...props} />
-                </>
-              )}
-              onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
-              // These are the ScrollView props for inside the scrollable tab view
-              contentProps={{
-                contentInset: { bottom: bottomInset },
-                scrollEnabled: isDrawerOpen,
-                ref: r => {
-                  if (r) {
-                    this.scrollView = r as any
-                  }
-                },
-              }}
-            >
-              <ScrollableTab tabLabel="All">
-                <AllEvents
-                  cityName={cityName}
-                  key={cityName}
-                  currentBucket={filter.id as BucketKey}
-                  sponsoredContent={this.state.sponsoredContent}
-                  buckets={buckets}
-                  relay={this.state.relay}
-                />
-              </ScrollableTab>
-
-              {this.filters.filter(f => f.id !== "all").map(f => {
-                return (
-                  <ScrollableTab tabLabel={f.text}>
-                    <CityTab
-                      key={cityName + filter.id}
-                      bucket={buckets[filter.id]}
-                      type={filter.text}
-                      cityName={cityName}
-                      relay={this.state.relay}
-                    />
-                  </ScrollableTab>
-                )
-              })}
-            </ScrollableTabView>
-          </Flex>
-    */
     return (
       buckets && (
         <Theme>
           <>
-            <Box>
+            <Flex style={{ flex: 1 }}>
               <Flex py={1} alignItems="center">
                 <Handle />
               </Flex>
-              <FiltersBar
-                tabs={cityTabs}
-                goToPage={activeIndex => EventEmitter.dispatch("filters:change", activeIndex)}
-              />
-              <ScrollView
-                contentInset={{ bottom: bottomInset }}
-                onLayout={layout => {
-                  this.scrollViewVerticalStart = layout.nativeEvent.layout.y
-                  NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
-                }}
-                ref={r => {
-                  if (r) {
-                    this.scrollView = r as any
-                  }
+              <ScrollableTabView
+                initialPage={this.props.initialTab || AllCityMetaTab}
+                ref={tabView => (this.tabView = tabView)}
+                onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
+                renderTabBar={props => (
+                  <>
+                    <TabBar {...props} />
+                  </>
+                )}
+                onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
+                // These are the ScrollView props for inside the scrollable tab view
+                contentProps={{
+                  contentInset: { bottom: bottomInset },
+                  onLayout: layout => {
+                    this.scrollViewVerticalStart = layout.nativeEvent.layout.y
+                    NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
+                  },
                 }}
               >
-                {(() => {
-                  switch (filter && filter.id) {
-                    case "all":
-                      return (
-                        <AllEvents
-                          cityName={cityName}
-                          citySlug={citySlug}
-                          key={cityName}
-                          currentBucket={filter.id as BucketKey}
-                          buckets={buckets}
-                          sponsoredContent={this.state.sponsoredContent}
-                          relay={this.state.relay}
-                        />
-                      )
-                    default:
-                      return (
-                        <EventList
-                          key={cityName + filter.id}
-                          bucket={buckets[filter.id]}
-                          type={filter.id as any}
-                          relay={this.state.relay}
-                          cityName={cityName}
-                        />
-                      )
-                  }
-                })()}
-              </ScrollView>
-            </Box>
+                <ScrollableTab tabLabel="All" key="all">
+                  <AllEvents
+                    cityName={cityName}
+                    citySlug={citySlug}
+                    key={cityName}
+                    sponsoredContent={this.state.sponsoredContent}
+                    buckets={buckets}
+                    relay={this.state.relay}
+                  />
+                </ScrollableTab>
+
+                {cityTabs.filter(tab => tab.id !== "all").map(tab => {
+                  return (
+                    <ScrollableTab tabLabel={tab.text} key={tab.id}>
+                      <EventList
+                        key={cityName + tab.id}
+                        bucket={buckets[tab.id]}
+                        type={tab.id}
+                        cityName={cityName}
+                        relay={this.state.relay}
+                      />
+                    </ScrollableTab>
+                  )
+                })}
+              </ScrollableTabView>
+            </Flex>
           </>
         </Theme>
       )

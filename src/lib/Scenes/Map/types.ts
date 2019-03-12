@@ -16,7 +16,7 @@ export type Fair = GlobalMap_viewer["city"]["fairs"]["edges"][0]["node"]
 
 export interface MapTab {
   /** UUID for the tab */
-  id: string
+  id: BucketKey | "BMW Art Guide"
   /** Display string */
   text: string
   /** A func to grab the right shows for this tab on the map */
