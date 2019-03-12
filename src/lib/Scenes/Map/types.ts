@@ -12,7 +12,7 @@ export interface City {
 }
 
 export type Show = GlobalMap_viewer["city"]["shows"]["edges"][0]["node"]
-export type Fair = GlobalMap_viewer["city"]["fairs"]["edges"][0]["node"]
+export type Fair = GlobalMap_viewer["city"]["fairs"]["edges"][0]["node"] & { type: string }
 
 export interface MapTab {
   /** UUID for the tab */
@@ -38,6 +38,8 @@ export interface MapGeoFeature {
     heading: number
     pitch: number
     animated: boolean
+    cluster: boolean
+    type: string | any
   }
   type: string | any
 }
