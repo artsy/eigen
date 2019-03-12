@@ -16,6 +16,7 @@
 
 ### Master
 
+### 1.8.14 - 1.8.19
 
 - Fixes city section lists being empty - ash
 - Fixes safe area insets missing error on pre-iOS 11 devices - ash
