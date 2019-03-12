@@ -1,8 +1,5 @@
 {
-  "queryParams": {
-    "documentID": "812efa44cbf1f581982c5940d3472e87",
-    "variables": { "maxInt": 2147483647, "citySlug": "hong-kong-hong-kong" }
-  },
+  "ttl": 3600,
   "graphqlResponse": {
     "data": {
       "viewer": {
@@ -832,7 +829,7 @@
                   "id": "art-basel-hong-kong-2019",
                   "name": "Art Basel Hong Kong 2019",
                   "exhibition_period": "Mar 29 – 31",
-                  "counts": { "partners": 32 },
+                  "counts": { "partners": 37 },
                   "location": {
                     "coordinates": { "lat": 22.2810524, "lng": 114.1731035 },
                     "__id": "TG9jYXRpb246NWM0NmVmNjZlMTRlNzE2NjVhN2YzNGFk"
@@ -849,7 +846,7 @@
                   "id": "art-central-2019",
                   "name": "Art Central 2019",
                   "exhibition_period": "Mar 27 – 31",
-                  "counts": { "partners": 27 },
+                  "counts": { "partners": 28 },
                   "location": {
                     "coordinates": { "lat": 22.2854006, "lng": 114.162932 },
                     "__id": "TG9jYXRpb246NWMzNGY2MGQwMTU4ZmYwNWUyMzVmZGZm"
@@ -1063,5 +1060,9 @@
       }
     }
   },
-  "ttl": 3600
+  "queryParams": {
+    "documentID": "812efa44cbf1f581982c5940d3472e87",
+    "variables": { "maxInt": 2147483647, "citySlug": "hong-kong-hong-kong" }
+  },
+  "freshness": 1555089952.484
 }

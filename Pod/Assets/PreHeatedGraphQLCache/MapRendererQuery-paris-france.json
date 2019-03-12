@@ -1,8 +1,5 @@
 {
-  "queryParams": {
-    "documentID": "812efa44cbf1f581982c5940d3472e87",
-    "variables": { "maxInt": 2147483647, "citySlug": "paris-france" }
-  },
+  "ttl": 3600,
   "graphqlResponse": {
     "data": {
       "viewer": {
@@ -1167,7 +1164,7 @@
                   "_id": "5c59a412b680480029c1e917",
                   "__id": "U2hvdzp2bmgtZ2FsbGVyeS10YWwtci1waW5rLXJvYWQtdGhyb3VnaC1mb3Jlc3Q=",
                   "name": "TAL R - \"Pink road through forest\"",
-                  "status": "upcoming",
+                  "status": "running",
                   "href": "/show/vnh-gallery-tal-r-pink-road-through-forest",
                   "is_followed": null,
                   "exhibition_period": "Mar 12 – Apr 27",
@@ -1210,6 +1207,84 @@
                     "name": "Galerie Les filles du calvaire",
                     "type": "Gallery",
                     "__id": "UGFydG5lcjpnYWxlcmllLWxlcy1maWxsZXMtZHUtY2FsdmFpcmU="
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "galerie-lelong-and-co-solutions-imaginaires",
+                  "_id": "5c73d4787721ef5f7312d515",
+                  "__id": "U2hvdzpnYWxlcmllLWxlbG9uZy1hbmQtY28tc29sdXRpb25zLWltYWdpbmFpcmVz",
+                  "name": "Solutions imaginaires",
+                  "status": "upcoming",
+                  "href": "/show/galerie-lelong-and-co-solutions-imaginaires",
+                  "is_followed": null,
+                  "exhibition_period": "Mar 14 – May 11",
+                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/HMtFxWPannU70-n-lwDM-Q/medium.jpg" },
+                  "location": {
+                    "coordinates": { "lat": 48.8768741, "lng": 2.3125664 },
+                    "__id": "TG9jYXRpb246NTA4YjBjOTJmMDgyMmUwMDAyMDAwMjM0"
+                  },
+                  "type": "Show",
+                  "start_at": "2019-03-14T12:00:00+00:00",
+                  "end_at": "2019-05-11T12:00:00+00:00",
+                  "partner": {
+                    "__typename": "Partner",
+                    "name": "Galerie Lelong & Co.",
+                    "type": "Gallery",
+                    "__id": "UGFydG5lcjpnYWxlcmllLWxlbG9uZy1hbmQtY28="
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "galerie-lelong-and-co-the-warriors",
+                  "_id": "5c73e1dd93e6cf2ae07d6171",
+                  "__id": "U2hvdzpnYWxlcmllLWxlbG9uZy1hbmQtY28tdGhlLXdhcnJpb3Jz",
+                  "name": "The Warriors",
+                  "status": "upcoming",
+                  "href": "/show/galerie-lelong-and-co-the-warriors",
+                  "is_followed": null,
+                  "exhibition_period": "Mar 14 – May 11",
+                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/r7k3BhQmLi4w9RdfJJ-I7Q/larger.jpg" },
+                  "location": {
+                    "coordinates": { "lat": 48.8768741, "lng": 2.3125664 },
+                    "__id": "TG9jYXRpb246NTA4YjBjOTJmMDgyMmUwMDAyMDAwMjM0"
+                  },
+                  "type": "Show",
+                  "start_at": "2019-03-14T12:00:00+00:00",
+                  "end_at": "2019-05-11T12:00:00+00:00",
+                  "partner": {
+                    "__typename": "Partner",
+                    "name": "Galerie Lelong & Co.",
+                    "type": "Gallery",
+                    "__id": "UGFydG5lcjpnYWxlcmllLWxlbG9uZy1hbmQtY28="
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "galerie-lelong-and-co-estampes-1",
+                  "_id": "5c73e343e7559d128793c01b",
+                  "__id": "U2hvdzpnYWxlcmllLWxlbG9uZy1hbmQtY28tZXN0YW1wZXMtMQ==",
+                  "name": "Estampes",
+                  "status": "upcoming",
+                  "href": "/show/galerie-lelong-and-co-estampes-1",
+                  "is_followed": null,
+                  "exhibition_period": "Mar 14 – May 11",
+                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/D5CBjrirAANBNIklNzqyTA/larger.jpg" },
+                  "location": {
+                    "coordinates": { "lat": 48.8768741, "lng": 2.3125664 },
+                    "__id": "TG9jYXRpb246NTA4YjBjOTJmMDgyMmUwMDAyMDAwMjM0"
+                  },
+                  "type": "Show",
+                  "start_at": "2019-03-14T12:00:00+00:00",
+                  "end_at": "2019-05-11T12:00:00+00:00",
+                  "partner": {
+                    "__typename": "Partner",
+                    "name": "Galerie Lelong & Co.",
+                    "type": "Gallery",
+                    "__id": "UGFydG5lcjpnYWxlcmllLWxlbG9uZy1hbmQtY28="
                   }
                 }
               },
@@ -1410,7 +1485,7 @@
                   "id": "art-paris-2019",
                   "name": "Art Paris 2019",
                   "exhibition_period": "Apr 4 – 7",
-                  "counts": { "partners": 11 },
+                  "counts": { "partners": 13 },
                   "location": {
                     "coordinates": { "lat": 48.8661091, "lng": 2.3124544 },
                     "__id": "TG9jYXRpb246NWI2Yzc1YmVhNTkwY2EwMDJiNDM0N2U1"
@@ -1613,5 +1688,9 @@
       }
     }
   },
-  "ttl": 3600
+  "queryParams": {
+    "documentID": "812efa44cbf1f581982c5940d3472e87",
+    "variables": { "maxInt": 2147483647, "citySlug": "paris-france" }
+  },
+  "freshness": 1555089952.484
 }

@@ -1,8 +1,5 @@
 {
-  "queryParams": {
-    "documentID": "812efa44cbf1f581982c5940d3472e87",
-    "variables": { "maxInt": 2147483647, "citySlug": "new-york-ny-usa" }
-  },
+  "ttl": 3600,
   "graphqlResponse": {
     "data": {
       "viewer": {
@@ -2421,7 +2418,7 @@
                   "end_at": "2019-03-30T12:00:00+00:00",
                   "partner": {
                     "__typename": "Partner",
-                    "name": "Joanne Artman Gallery",
+                    "name": "JoAnne Artman Gallery",
                     "type": "Gallery",
                     "__id": "UGFydG5lcjpqb2FubmUtYXJ0bWFuLWdhbGxlcnk="
                   }
@@ -6935,9 +6932,7 @@
                   "href": "/show/howard-greenberg-gallery-james-van-der-zee-studio",
                   "is_followed": null,
                   "exhibition_period": "Mar 7 – Apr 27",
-                  "cover_image": {
-                    "url": "https://d32dm0rphc51dk.cloudfront.net/yFexAw73uGz_VWAtFcB11w/large_rectangle.jpg"
-                  },
+                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/Bpnvim__qFkmnmz4fFgfvg/larger.jpg" },
                   "location": {
                     "coordinates": { "lat": 40.7623691, "lng": -73.9719557 },
                     "__id": "TG9jYXRpb246NTA3NDg4NDVjMzBhM2IwMDAyMDAxODdm"
@@ -6950,6 +6945,58 @@
                     "name": "Howard Greenberg Gallery",
                     "type": "Gallery",
                     "__id": "UGFydG5lcjpob3dhcmQtZ3JlZW5iZXJnLWdhbGxlcnk="
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "chambers-fine-art-pixy-liao-open-kimono",
+                  "_id": "5c87c65de824f8121804e3f8",
+                  "__id": "U2hvdzpjaGFtYmVycy1maW5lLWFydC1waXh5LWxpYW8tb3Blbi1raW1vbm8=",
+                  "name": "Pixy Liao: Open Kimono",
+                  "status": "running",
+                  "href": "/show/chambers-fine-art-pixy-liao-open-kimono",
+                  "is_followed": null,
+                  "exhibition_period": "Mar 7 – Apr 27",
+                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/r3T9_1I0U-mmll6Te7K0ug/medium.jpg" },
+                  "location": {
+                    "coordinates": { "lat": 40.74556, "lng": -74.0071732 },
+                    "__id": "TG9jYXRpb246NGVhNmQyNDE5YjY3ZDgwMDAxMDAwOGYx"
+                  },
+                  "type": "Show",
+                  "start_at": "2019-03-07T12:00:00+00:00",
+                  "end_at": "2019-04-27T12:00:00+00:00",
+                  "partner": {
+                    "__typename": "Partner",
+                    "name": "Chambers Fine Art",
+                    "type": "Gallery",
+                    "__id": "UGFydG5lcjpjaGFtYmVycy1maW5lLWFydA=="
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "chambers-fine-art-taca-sui-grotto-heavens-1",
+                  "_id": "5c87c98c7604b214f1c5ef59",
+                  "__id": "U2hvdzpjaGFtYmVycy1maW5lLWFydC10YWNhLXN1aS1ncm90dG8taGVhdmVucy0x",
+                  "name": "Taca Sui: Grotto Heavens",
+                  "status": "running",
+                  "href": "/show/chambers-fine-art-taca-sui-grotto-heavens-1",
+                  "is_followed": null,
+                  "exhibition_period": "Mar 7 – Apr 27",
+                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/78_-c-upoYgh_5wNJ6pTDw/larger.jpg" },
+                  "location": {
+                    "coordinates": { "lat": 40.74556, "lng": -74.0071732 },
+                    "__id": "TG9jYXRpb246NGVhNmQyNDE5YjY3ZDgwMDAxMDAwOGYx"
+                  },
+                  "type": "Show",
+                  "start_at": "2019-03-07T12:00:00+00:00",
+                  "end_at": "2019-04-27T12:00:00+00:00",
+                  "partner": {
+                    "__typename": "Partner",
+                    "name": "Chambers Fine Art",
+                    "type": "Gallery",
+                    "__id": "UGFydG5lcjpjaGFtYmVycy1maW5lLWFydA=="
                   }
                 }
               },
@@ -7163,6 +7210,58 @@
               },
               {
                 "node": {
+                  "id": "deep-space-gallery-home-away",
+                  "_id": "5c87285dfaceae002c5121a4",
+                  "__id": "U2hvdzpkZWVwLXNwYWNlLWdhbGxlcnktaG9tZS1hd2F5",
+                  "name": "HOME AWAY",
+                  "status": "running",
+                  "href": "/show/deep-space-gallery-home-away",
+                  "is_followed": null,
+                  "exhibition_period": "Mar 9 – 30",
+                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/n-abLcAEFFkOcu375zzKWQ/medium.jpg" },
+                  "location": {
+                    "coordinates": { "lat": 40.7187444, "lng": -74.0655905 },
+                    "__id": "TG9jYXRpb246NWE2YjljOWQyYTg5M2E3ODM5OWMzMDVl"
+                  },
+                  "type": "Show",
+                  "start_at": "2019-03-09T12:00:00+00:00",
+                  "end_at": "2019-03-30T12:00:00+00:00",
+                  "partner": {
+                    "__typename": "Partner",
+                    "name": "Deep Space Gallery",
+                    "type": "Gallery",
+                    "__id": "UGFydG5lcjpkZWVwLXNwYWNlLWdhbGxlcnk="
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "deep-space-gallery-reminiscence",
+                  "_id": "5c873a3579df7503999573ae",
+                  "__id": "U2hvdzpkZWVwLXNwYWNlLWdhbGxlcnktcmVtaW5pc2NlbmNl",
+                  "name": "REMINISCENCE",
+                  "status": "running",
+                  "href": "/show/deep-space-gallery-reminiscence",
+                  "is_followed": null,
+                  "exhibition_period": "Mar 9 – 30",
+                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/g_WqZXafxI2SZaXslm-CpQ/larger.jpg" },
+                  "location": {
+                    "coordinates": { "lat": 40.7187444, "lng": -74.0655905 },
+                    "__id": "TG9jYXRpb246NWE2YjljOWQyYTg5M2E3ODM5OWMzMDVl"
+                  },
+                  "type": "Show",
+                  "start_at": "2019-03-09T12:00:00+00:00",
+                  "end_at": "2019-03-30T12:00:00+00:00",
+                  "partner": {
+                    "__typename": "Partner",
+                    "name": "Deep Space Gallery",
+                    "type": "Gallery",
+                    "__id": "UGFydG5lcjpkZWVwLXNwYWNlLWdhbGxlcnk="
+                  }
+                }
+              },
+              {
+                "node": {
                   "id": "baahng-gallery-circle-of-wisdom",
                   "_id": "5c82f83101ee0f0028bf08d5",
                   "__id": "U2hvdzpiYWFobmctZ2FsbGVyeS1jaXJjbGUtb2Ytd2lzZG9t",
@@ -7219,7 +7318,7 @@
                   "_id": "5c7992c733ba1c7df7f7f541",
                   "__id": "U2hvdzpuYWhtYWQtY29udGVtcG9yYXJ5LWplYW4tbWljaGVsLWJhc3F1aWF0LXhlcm94",
                   "name": "Jean-Michel Basquiat | Xerox",
-                  "status": "upcoming",
+                  "status": "running",
                   "href": "/show/nahmad-contemporary-jean-michel-basquiat-xerox",
                   "is_followed": null,
                   "exhibition_period": "Mar 12 – May 31",
@@ -8073,6 +8172,32 @@
               },
               {
                 "node": {
+                  "id": "soho-photo-gallery-behind-the-glass-wall",
+                  "_id": "5c86bfbefedbf754746bba04",
+                  "__id": "U2hvdzpzb2hvLXBob3RvLWdhbGxlcnktYmVoaW5kLXRoZS1nbGFzcy13YWxs",
+                  "name": "Behind the Glass Wall",
+                  "status": "upcoming",
+                  "href": "/show/soho-photo-gallery-behind-the-glass-wall",
+                  "is_followed": null,
+                  "exhibition_period": "Apr 3 – May 4",
+                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/DJtS4cpXoIvhyoQe3Z7tzw/medium.jpg" },
+                  "location": {
+                    "coordinates": { "lat": 40.7189735, "lng": -74.0056008 },
+                    "__id": "TG9jYXRpb246NTNjNmQ1YTg3MjYxNjk2ZmIzNDgwMDAw"
+                  },
+                  "type": "Show",
+                  "start_at": "2019-04-03T12:00:00+00:00",
+                  "end_at": "2019-05-04T12:00:00+00:00",
+                  "partner": {
+                    "__typename": "Partner",
+                    "name": "Soho Photo Gallery",
+                    "type": "Institution",
+                    "__id": "UGFydG5lcjpzb2hvLXBob3RvLWdhbGxlcnk="
+                  }
+                }
+              },
+              {
+                "node": {
                   "id": "jim-kempner-fine-art-paula-scher",
                   "_id": "5c649e194e05b0002bc4f8ac",
                   "__id": "U2hvdzpqaW0ta2VtcG5lci1maW5lLWFydC1wYXVsYS1zY2hlcg==",
@@ -8143,7 +8268,7 @@
                   "end_at": "2019-05-31T12:00:00+00:00",
                   "partner": {
                     "__typename": "Partner",
-                    "name": "Joanne Artman Gallery",
+                    "name": "JoAnne Artman Gallery",
                     "type": "Gallery",
                     "__id": "UGFydG5lcjpqb2FubmUtYXJ0bWFuLWdhbGxlcnk="
                   }
@@ -8299,7 +8424,7 @@
                   "end_at": "2019-05-05T12:00:00+00:00",
                   "partner": {
                     "__typename": "Partner",
-                    "name": "Joanne Artman Gallery",
+                    "name": "JoAnne Artman Gallery",
                     "type": "Gallery",
                     "__id": "UGFydG5lcjpqb2FubmUtYXJ0bWFuLWdhbGxlcnk="
                   }
@@ -8377,7 +8502,7 @@
                   "end_at": "2019-08-31T12:00:00+00:00",
                   "partner": {
                     "__typename": "Partner",
-                    "name": "Joanne Artman Gallery",
+                    "name": "JoAnne Artman Gallery",
                     "type": "Gallery",
                     "__id": "UGFydG5lcjpqb2FubmUtYXJ0bWFuLWdhbGxlcnk="
                   }
@@ -8403,7 +8528,7 @@
                   "end_at": "2019-10-26T12:00:00+00:00",
                   "partner": {
                     "__typename": "Partner",
-                    "name": "Joanne Artman Gallery",
+                    "name": "JoAnne Artman Gallery",
                     "type": "Gallery",
                     "__id": "UGFydG5lcjpqb2FubmUtYXJ0bWFuLWdhbGxlcnk="
                   }
@@ -8431,7 +8556,7 @@
                   "end_at": "2020-01-14T12:00:00+00:00",
                   "partner": {
                     "__typename": "Partner",
-                    "name": "Joanne Artman Gallery",
+                    "name": "JoAnne Artman Gallery",
                     "type": "Gallery",
                     "__id": "UGFydG5lcjpqb2FubmUtYXJ0bWFuLWdhbGxlcnk="
                   }
@@ -8499,7 +8624,7 @@
                   "id": "the-photography-show-2019-presented-by-aipad",
                   "name": "The Photography Show 2019, presented by AIPAD",
                   "exhibition_period": "Apr 4 – 7",
-                  "counts": { "partners": 18 },
+                  "counts": { "partners": 19 },
                   "location": {
                     "coordinates": { "lat": 40.7691055, "lng": -73.9964354 },
                     "__id": "TG9jYXRpb246NWM1MDdhYzVmODg1ZGYwMDJjYjFjN2Q5"
@@ -8601,7 +8726,7 @@
                   "id": "the-armory-show-2019",
                   "name": "The Armory Show 2019",
                   "exhibition_period": "Mar 7 – 10",
-                  "counts": { "partners": 131 },
+                  "counts": { "partners": 130 },
                   "location": {
                     "coordinates": { "lat": 40.7701554, "lng": -73.9951108 },
                     "__id": "TG9jYXRpb246NWI4ODI5NGZkNjkxYmIwMDI2NGMxOTg5"
@@ -10136,7 +10261,7 @@
                   "id": "affordable-art-fair-new-york-city-2014",
                   "name": "Affordable Art Fair New York City 2014",
                   "exhibition_period": "Sep 25 – 29, 2014",
-                  "counts": { "partners": 2 },
+                  "counts": { "partners": 1 },
                   "location": {
                     "coordinates": { "lat": 40.751733, "lng": -74.005061 },
                     "__id": "TG9jYXRpb246NTNlMjllZDE3MjYxNjk2MzBiM2IwMDAw"
@@ -10298,7 +10423,7 @@
                   "id": "the-armory-show-2013",
                   "name": "The Armory Show 2013",
                   "exhibition_period": "Mar 7 – 10, 2013",
-                  "counts": { "partners": 93 },
+                  "counts": { "partners": 92 },
                   "location": {
                     "coordinates": { "lat": 40.767494, "lng": -73.996035 },
                     "__id": "TG9jYXRpb246NTExYjFhYWFiMDVkMDk4Mjc5MDAwMDA2"
@@ -10331,5 +10456,9 @@
       }
     }
   },
-  "ttl": 3600
+  "queryParams": {
+    "documentID": "812efa44cbf1f581982c5940d3472e87",
+    "variables": { "maxInt": 2147483647, "citySlug": "new-york-ny-usa" }
+  },
+  "freshness": 1555089952.484
 }

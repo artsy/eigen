@@ -1,8 +1,5 @@
 {
-  "queryParams": {
-    "documentID": "812efa44cbf1f581982c5940d3472e87",
-    "variables": { "maxInt": 2147483647, "citySlug": "los-angeles-ca-usa" }
-  },
+  "ttl": 3600,
   "graphqlResponse": {
     "data": {
       "viewer": {
@@ -1350,7 +1347,7 @@
                   "__id": "U2hvdzpnYWxsZXJ5LTMwLXNvdXRoLW1vamRlaC1yZXphZWlwb3VyLW1lbW9yaWVzLWRyZWFtcy1yZWNsYW1hdGlvbnM=",
                   "name": "Mojdeh Rezaeipour: Memories, Dreams, Reclamations",
                   "status": "running",
-                  "href": "/show/gallery-30-south-mojdeh-rezaeipour-memories-dreams-reclamations",
+                  "href": null,
                   "is_followed": null,
                   "exhibition_period": "Mar 1 – 31",
                   "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/M7WKyU_LgZeWcOtkrstyUg/larger.jpg" },
@@ -1969,6 +1966,32 @@
               },
               {
                 "node": {
+                  "id": "instantdreams-instantdreams-at-the-other-art-fair-1",
+                  "_id": "5c86ec6b9b14431e7297f9b0",
+                  "__id": "U2hvdzppbnN0YW50ZHJlYW1zLWluc3RhbnRkcmVhbXMtYXQtdGhlLW90aGVyLWFydC1mYWlyLTE=",
+                  "name": "Instantdreams at The Other Art Fair",
+                  "status": "upcoming",
+                  "href": "/show/instantdreams-instantdreams-at-the-other-art-fair-1",
+                  "is_followed": null,
+                  "exhibition_period": "Mar 28 – 31",
+                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/qgFmevfjq6Y-QoQr1iOEZg/larger.jpg" },
+                  "location": {
+                    "coordinates": { "lat": 34.0312446, "lng": -118.2666406 },
+                    "__id": "TG9jYXRpb246NWM4NmVjMzc5YjE0NDMxZTcyOTdmOWE0"
+                  },
+                  "type": "Show",
+                  "start_at": "2019-03-28T12:00:00+00:00",
+                  "end_at": "2019-03-31T12:00:00+00:00",
+                  "partner": {
+                    "__typename": "Partner",
+                    "name": "Instantdreams",
+                    "type": "Gallery",
+                    "__id": "UGFydG5lcjppbnN0YW50ZHJlYW1z"
+                  }
+                }
+              },
+              {
+                "node": {
                   "id": "gallery-30-south-panik-collective-dancing-about-architecture-revisited",
                   "_id": "5c5c16b4656b9e1574e14d17",
                   "__id": "U2hvdzpnYWxsZXJ5LTMwLXNvdXRoLXBhbmlrLWNvbGxlY3RpdmUtZGFuY2luZy1hYm91dC1hcmNoaXRlY3R1cmUtcmV2aXNpdGVk",
@@ -2261,5 +2284,9 @@
       }
     }
   },
-  "ttl": 3600
+  "queryParams": {
+    "documentID": "812efa44cbf1f581982c5940d3472e87",
+    "variables": { "maxInt": 2147483647, "citySlug": "los-angeles-ca-usa" }
+  },
+  "freshness": 1555089952.484
 }

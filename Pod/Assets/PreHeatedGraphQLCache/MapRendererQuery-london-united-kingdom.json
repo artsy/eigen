@@ -1,8 +1,5 @@
 {
-  "queryParams": {
-    "documentID": "812efa44cbf1f581982c5940d3472e87",
-    "variables": { "maxInt": 2147483647, "citySlug": "london-united-kingdom" }
-  },
+  "ttl": 3600,
   "graphqlResponse": {
     "data": {
       "viewer": {
@@ -1634,7 +1631,7 @@
                   "href": "/show/rosenfeld-porcini-symmetries-of-the-oneiric",
                   "is_followed": null,
                   "exhibition_period": "Feb 27 – Apr 6",
-                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/VSJ5EvV8CgcVGi1ZlBugWg/larger.jpg" },
+                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/hT5nPN-A5up4Xf-RPls7jw/medium.jpg" },
                   "location": {
                     "coordinates": { "lat": 51.5174621, "lng": -0.133987 },
                     "__id": "TG9jYXRpb246NTMzNmY1OTlhMDlhNjc1ODU0MDAwMTU5"
@@ -1647,6 +1644,32 @@
                     "name": "rosenfeld porcini",
                     "type": "Gallery",
                     "__id": "UGFydG5lcjpyb3NlbmZlbGQtcG9yY2luaQ=="
+                  }
+                }
+              },
+              {
+                "node": {
+                  "id": "unit-london-signs",
+                  "_id": "5c87c75350065c1aaed5eae5",
+                  "__id": "U2hvdzp1bml0LWxvbmRvbi1zaWducw==",
+                  "name": "SIGNS",
+                  "status": "running",
+                  "href": "/show/unit-london-signs",
+                  "is_followed": null,
+                  "exhibition_period": "Feb 27 – Mar 23",
+                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/vMgGK9rHReXNFd7nSIJrFA/medium.jpg" },
+                  "location": {
+                    "coordinates": { "lat": 51.5134638, "lng": -0.1428616 },
+                    "__id": "TG9jYXRpb246NWIwNjhmYjQ1YjJmYmExMzg3ZTBhNzFk"
+                  },
+                  "type": "Show",
+                  "start_at": "2019-02-27T12:00:00+00:00",
+                  "end_at": "2019-03-23T12:00:00+00:00",
+                  "partner": {
+                    "__typename": "Partner",
+                    "name": "Unit London",
+                    "type": "Gallery",
+                    "__id": "UGFydG5lcjp1bml0LWxvbmRvbg=="
                   }
                 }
               },
@@ -2406,6 +2429,32 @@
               },
               {
                 "node": {
+                  "id": "sadie-coles-hq-jonathan-horowitz-pre-fall-17",
+                  "_id": "5c81225fcee7ca0027604051",
+                  "__id": "U2hvdzpzYWRpZS1jb2xlcy1ocS1qb25hdGhhbi1ob3Jvd2l0ei1wcmUtZmFsbC0xNw==",
+                  "name": "Jonathan Horowitz: Pre-Fall '17",
+                  "status": "running",
+                  "href": "/show/sadie-coles-hq-jonathan-horowitz-pre-fall-17",
+                  "is_followed": null,
+                  "exhibition_period": "Mar 7 – Apr 6",
+                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/9H2LD3RQd4SCGapQeP3DSQ/larger.jpg" },
+                  "location": {
+                    "coordinates": { "lat": 51.5121087, "lng": -0.1388241 },
+                    "__id": "TG9jYXRpb246NGUzYzcyNGVkZTUyYzgwMDA1MDA2NWZl"
+                  },
+                  "type": "Show",
+                  "start_at": "2019-03-07T12:00:00+00:00",
+                  "end_at": "2019-04-06T12:00:00+00:00",
+                  "partner": {
+                    "__typename": "Partner",
+                    "name": "Sadie Coles HQ",
+                    "type": "Gallery",
+                    "__id": "UGFydG5lcjpzYWRpZS1jb2xlcy1ocQ=="
+                  }
+                }
+              },
+              {
+                "node": {
                   "id": "purdy-hicks-gallery-chan-hyo-bae-jumping-into",
                   "_id": "5c6c2fd97892f60028217a02",
                   "__id": "U2hvdzpwdXJkeS1oaWNrcy1nYWxsZXJ5LWNoYW4taHlvLWJhZS1qdW1waW5nLWludG8=",
@@ -3012,7 +3061,7 @@
                   "href": "/show/ronchini-gallery-beverley-fishman",
                   "is_followed": null,
                   "exhibition_period": "Apr 3 – Jun 1",
-                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/COCE6o5ooy9yGlHpp6VnWA/medium.jpg" },
+                  "cover_image": { "url": "https://d32dm0rphc51dk.cloudfront.net/0ZMCFXKdkXfd49aqvdZvSQ/medium.jpg" },
                   "location": {
                     "coordinates": { "lat": 51.5142765, "lng": -0.1456144 },
                     "__id": "TG9jYXRpb246NTUwNmI1NTQ3MjYxNjk1NTkxNzU3MTAw"
@@ -3526,7 +3575,7 @@
                   "id": "sunday-2018",
                   "name": "SUNDAY 2018",
                   "exhibition_period": "Oct 4 – 7, 2018",
-                  "counts": { "partners": 27 },
+                  "counts": { "partners": 26 },
                   "location": {
                     "coordinates": { "lat": 51.5224304, "lng": -0.1554705 },
                     "__id": "TG9jYXRpb246NWIyOTUyMWE2NmZkMWMxMzgyMzRmOWNl"
@@ -3654,7 +3703,7 @@
                   "id": "sunday-2017",
                   "name": "SUNDAY 2017",
                   "exhibition_period": "Oct 5 – 8, 2017",
-                  "counts": { "partners": 24 },
+                  "counts": { "partners": 23 },
                   "location": {
                     "coordinates": { "lat": 51.5223851, "lng": -0.1556663 },
                     "__id": "TG9jYXRpb246NTk2ZTE5NWY4YjBjMTQ0Y2UxNjRiNTNi"
@@ -4199,5 +4248,9 @@
       }
     }
   },
-  "ttl": 3600
+  "queryParams": {
+    "documentID": "812efa44cbf1f581982c5940d3472e87",
+    "variables": { "maxInt": 2147483647, "citySlug": "london-united-kingdom" }
+  },
+  "freshness": 1555089952.484
 }

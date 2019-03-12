@@ -1,8 +1,5 @@
 {
-  "queryParams": {
-    "documentID": "812efa44cbf1f581982c5940d3472e87",
-    "variables": { "maxInt": 2147483647, "citySlug": "berlin-germany" }
-  },
+  "ttl": 3600,
   "graphqlResponse": {
     "data": {
       "viewer": {
@@ -881,7 +878,7 @@
                   "_id": "5c7e5e1941247c1ce42098e7",
                   "__id": "U2hvdzpjaXJjbGUtY3VsdHVyZS1sdXppYS1zaW1vbnMtaHVtYm9sZHQtaXN0LW5pZW1hbHMtZGEtZ2V3ZXNlbg==",
                   "name": "Luzia Simons – Humboldt ist niemals da gewesen",
-                  "status": "upcoming",
+                  "status": "running",
                   "href": "/show/circle-culture-luzia-simons-humboldt-ist-niemals-da-gewesen",
                   "is_followed": null,
                   "exhibition_period": "Mar 12 – Apr 20",
@@ -1116,5 +1113,9 @@
       }
     }
   },
-  "ttl": 3600
+  "queryParams": {
+    "documentID": "812efa44cbf1f581982c5940d3472e87",
+    "variables": { "maxInt": 2147483647, "citySlug": "berlin-germany" }
+  },
+  "freshness": 1555089952.484
 }
