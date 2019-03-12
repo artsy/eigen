@@ -82,14 +82,6 @@ jobs:
           name: Install Pods
           command: bundle exec pod check || bundle exec pod install
 
-      - run:
-          name: ls pods
-          command: ls Pods
-
-      - run:
-          name: ls Pods
-          command: ls "Pods/Local Podspecs"
-
       - save_cache:
           key: v3-pods-{{ checksum "Podfile.lock" }}
           paths:
