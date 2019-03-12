@@ -547,9 +547,11 @@ export const CitySectionListRenderer: React.SFC<CitySectionListProps> = ({ rende
           $partnerType: PartnerShowPartnerType
           $status: EventStatus
           $dayThreshold: Int
+          $sort: PartnerShowSorts
         ) {
           city(slug: $citySlug) {
-            ...CitySectionList_city @arguments(partnerType: $partnerType, status: $status, dayThreshold: $dayThreshold)
+            ...CitySectionList_city
+              @arguments(partnerType: $partnerType, status: $status, sort: $sort, dayThreshold: $dayThreshold)
           }
         }
       `}

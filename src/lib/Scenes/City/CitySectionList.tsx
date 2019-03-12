@@ -70,12 +70,13 @@ export default createPaginationContainer(
           partnerType: { type: "PartnerShowPartnerType" }
           status: { type: "EventStatus" }
           dayThreshold: { type: "Int" }
+          sort: { type: "PartnerShowSorts", defaultValue: "PARTNER_ASC" }
         ) {
         name
         shows(
           includeStubShows: true
           first: $count
-          sort: END_AT_ASC
+          sort: $sort
           after: $cursor
           partnerType: $partnerType
           status: $status
@@ -142,6 +143,7 @@ export default createPaginationContainer(
         $partnerType: PartnerShowPartnerType
         $status: EventStatus
         $dayThreshold: Int
+        $sort: PartnerShowSorts
       ) {
         city(slug: $citySlug) {
           ...CitySectionList_city
@@ -150,6 +152,7 @@ export default createPaginationContainer(
               cursor: $cursor
               partnerType: $partnerType
               status: $status
+              sort: $sort
               dayThreshold: $dayThreshold
             )
         }

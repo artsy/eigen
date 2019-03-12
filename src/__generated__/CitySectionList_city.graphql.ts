@@ -106,6 +106,12 @@ return {
       "name": "dayThreshold",
       "type": "Int",
       "defaultValue": null
+    },
+    {
+      "kind": "LocalArgument",
+      "name": "sort",
+      "type": "PartnerShowSorts",
+      "defaultValue": "PARTNER_ASC"
     }
   ],
   "selections": [
@@ -135,9 +141,9 @@ return {
           "type": "PartnerShowPartnerType"
         },
         {
-          "kind": "Literal",
+          "kind": "Variable",
           "name": "sort",
-          "value": "END_AT_ASC",
+          "variableName": "sort",
           "type": "PartnerShowSorts"
         },
         {
@@ -313,5 +319,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '9721bae0209746c4adfa791227defce7';
+(node as any).hash = '483d30b3d8f874df1daeefd6cdedd642';
 export default node;
