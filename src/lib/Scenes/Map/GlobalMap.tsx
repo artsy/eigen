@@ -361,12 +361,10 @@ export class GlobalMap extends React.Component<Props, State> {
 
   renderSelectedPin() {
     const { activeShows } = this.state
-    console.log("TCL: renderSelectedPin -> activeShows", activeShows)
     const isCluster = activeShows.length > 1
     const isSingleShow = activeShows.length === 1
 
     if (isCluster) {
-      console.log("TCL: renderSelectedPin -> isCluster", isCluster)
       const { nearestFeature } = this.state
       const activeClusterLat = get(nearestFeature, "geometry.coordinates[0]")
       const activeClusterLng = get(nearestFeature, "geometry.coordinates[1]")
@@ -397,7 +395,6 @@ export class GlobalMap extends React.Component<Props, State> {
       )
     }
     if (isSingleShow) {
-      console.log("TCL: renderSelectedPin -> isSingleShow", isSingleShow)
       const lat = get(activeShows, "[0].location.coordinates.lat")
       const lng = get(activeShows, "[0].location.coordinates.lng")
       const showId = get(activeShows, "[0].id")
