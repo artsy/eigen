@@ -513,7 +513,7 @@ export const CitySectionListRenderer: React.SFC<CitySectionListProps> = ({ rende
     partnerType?: PartnerShowPartnerType
     status?: EventStatus
     dayThreshold?: number
-    sort?: string
+    sort?: any
   } = { citySlug }
 
   switch (section) {
