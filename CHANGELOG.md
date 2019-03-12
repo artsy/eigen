@@ -19,6 +19,7 @@
 - Moves to new scrollable tab - orta & ash
 - Adds freshness to GraphQL pre-heated cache after which it won’t be used anymore, which is 1 month for City - alloy
 - Updates is_local_discovery to isStubShow to conditionally disable Partner page navigation - ashley
+- Removes Save button from Show Card/disables Saving/Unsaving shows from Show Card - ashley
 
 ### 1.8.14 - 1.8.19
 
