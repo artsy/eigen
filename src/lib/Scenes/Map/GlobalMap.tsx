@@ -3,6 +3,7 @@ import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
+import PinFairSelected from "lib/Icons/PinFairSelected"
 import PinSavedSelected from "lib/Icons/PinSavedSelected"
 import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { Schema, screenTrack, track } from "lib/utils/track"
@@ -95,6 +96,8 @@ interface State {
   isSavingShow: boolean
   /** Cluster map data used to populate selected cluster annotation */
   nearestFeature: object
+  /** Active fairs tracks selected fairs to indicate which map to render */
+  activeFairs: Fair[]
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
@@ -191,6 +194,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
     const currentLocation = this.props.initialCoordinates || get(this.props, "viewer.city.coordinates")
     this.state = {
+      activeFairs: [],
       activeShows: [],
       activeIndex: 0,
       currentLocation,
@@ -363,9 +367,26 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   renderSelectedPin() {
-    const { activeShows } = this.state
+    const { activeShows, activeFairs } = this.state
     const isCluster = activeShows.length > 1
     const isSingleShow = activeShows.length === 1
+    const isFair = activeFairs.length === 1
+
+    if (isFair) {
+      console.log("TCL: renderSelectedPin -> activeFairs", activeFairs)
+      const lat = get(activeFairs, "[0].location.coordinates.lat")
+      const lng = get(activeFairs, "[0].location.coordinates.lng")
+      const fairID = get(activeFairs, "[0].id")
+      return (
+        lat &&
+        lng &&
+        fairID && (
+          <Mapbox.PointAnnotation key={fairID} id={fairID} coordinate={[lng, lat]}>
+            <PinFairSelected />
+          </Mapbox.PointAnnotation>
+        )
+      )
+    }
 
     if (isCluster) {
       const { nearestFeature } = this.state
@@ -373,8 +394,8 @@ export class GlobalMap extends React.Component<Props, State> {
       const activeClusterLng = get(nearestFeature, "geometry.coordinates[1]")
       const clusterId = get(nearestFeature, "properties.cluster_id", "").toString()
       let pointCount = get(nearestFeature, "properties.point_count", "")
-      const width = pointCount < 5 ? 35 : pointCount < 21 ? 45 : 60
-      const height = pointCount < 5 ? 35 : pointCount < 21 ? 45 : 60
+      const width = pointCount < 3 ? 38 : pointCount < 21 ? 45 : 60
+      const height = pointCount < 3 ? 38 : pointCount < 21 ? 45 : 60
       pointCount = pointCount.toString()
 
       return (
@@ -618,13 +639,18 @@ export class GlobalMap extends React.Component<Props, State> {
     this.updateDrawerPosition(DrawerPosition.collapsed)
 
     let activeShows: Array<Fair | Show> = []
+    let activeFairs: Fair[] = []
     // If the user only taps on the pin we can use the
     // id directly to retrieve the corresponding show
+    // @TODO: Adding active Fairs to state only to handle Selecting Fairs
+    // The rest of the logic for displaying active show shows and fairs in the
+    // maps pins and cards will remain the same for now.
     if (!cluster) {
       if (type === "Show") {
         activeShows = [this.shows[id]]
       } else if (type === "Fair") {
         activeShows = [this.fairs[id]]
+        activeFairs = [this.fairs[id]]
       }
     }
 
@@ -655,6 +681,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
     this.setState({
       activeShows,
+      activeFairs,
     })
   }
 

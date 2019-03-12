@@ -63,6 +63,7 @@
 - Adds freshness to GraphQL pre-heated cache after which it won’t be used anymore, which is 1 month for City - alloy
 - Updates is_local_discovery to isStubShow to conditionally disable Partner page navigation - ashley
 - Updates show and fair SVG map pin icons - ashley
+- Adds saved fair icon to city map and fixes SVG styling on map pins - ashley
 
 ### 1.8.14
 
