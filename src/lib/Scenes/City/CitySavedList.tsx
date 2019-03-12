@@ -48,7 +48,6 @@ class CitySavedList extends React.Component<Props, State> {
       },
       relay,
     } = this.props
-    console.log("this.props", this.props)
     const { fetchingNextPage } = this.state
     return (
       <Theme>
@@ -105,9 +104,6 @@ export default createPaginationContainer(
                     name
                     type
                   }
-                  ... on ExternalPartner {
-                    name
-                  }
                 }
               }
             }
@@ -137,8 +133,8 @@ export default createPaginationContainer(
     },
     query: graphql`
       query CitySavedListQuery($count: Int!, $cursor: String, $citySlug: String!) {
-        me {
-          ...CitySavedList_me @arguments(city: $citySlug, count: $count, cursor: $cursor)
+        viewer {
+          ...CitySavedList_viewer @arguments(city: $citySlug, count: $count, cursor: $cursor)
         }
       }
     `,
