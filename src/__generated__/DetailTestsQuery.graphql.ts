@@ -97,7 +97,7 @@ fragment ShowHeader_show on Show {
   is_followed
   exhibition_period
   status
-  is_local_discovery
+  isStubShow
   partner {
     __typename
     ... on Partner {
@@ -290,49 +290,49 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "is_followed",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "city",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "city",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "aspect_ratio",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v8 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_followed",
+  "name": "aspect_ratio",
   "args": null,
   "storageKey": null
 },
@@ -351,7 +351,7 @@ v10 = {
   "storageKey": null
 },
 v11 = [
-  v3
+  v4
 ],
 v12 = {
   "kind": "InlineFragment",
@@ -382,14 +382,14 @@ v15 = [
   }
 ],
 v16 = [
-  v3,
+  v4,
   v1
 ];
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "6ff2de65ba39fd60a3d06d3223bff257",
+  "id": "d22b49acbafc82cc25fb7a4936e0f196",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -432,15 +432,9 @@ return {
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "press_release",
-            "args": null,
-            "storageKey": null
-          },
           v2,
           v3,
+          v4,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -448,7 +442,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          v4,
+          v5,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -465,7 +459,7 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
-              v5,
+              v6,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -506,7 +500,7 @@ return {
                 ]
               },
               v1,
-              v4,
+              v5,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -589,19 +583,32 @@ return {
             "concreteType": "Image",
             "plural": true,
             "selections": [
-              v5,
               v6,
-              v7
+              v7,
+              v8
             ]
           },
           v1,
-          v5,
-          v8,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "press_release",
+            "args": null,
+            "storageKey": null
+          },
+          v6,
           v9,
           {
             "kind": "ScalarField",
             "alias": null,
             "name": "status",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isStubShow",
             "args": null,
             "storageKey": null
           },
@@ -621,8 +628,8 @@ return {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
-                  v3,
-                  v5,
+                  v4,
+                  v6,
                   v13,
                   {
                     "kind": "ScalarField",
@@ -678,10 +685,10 @@ return {
                         "concreteType": "Artist",
                         "plural": false,
                         "selections": [
-                          v3,
+                          v4,
                           v13,
-                          v5,
-                          v2,
+                          v6,
+                          v3,
                           v1
                         ]
                       }
@@ -700,12 +707,12 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              v3,
+              v4,
               v13,
-              v5,
-              v2,
+              v6,
+              v3,
               v1,
-              v8,
+              v2,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -736,7 +743,7 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v6
+                  v7
                 ]
               }
             ]
@@ -774,7 +781,7 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v7,
+                  v8,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -819,7 +826,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v5,
+              v6,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -1009,9 +1016,9 @@ return {
                     "concreteType": "Show",
                     "plural": false,
                     "selections": [
-                      v2,
-                      v5,
                       v3,
+                      v6,
+                      v4,
                       v9,
                       {
                         "kind": "LinkedField",
@@ -1022,8 +1029,8 @@ return {
                         "concreteType": "Image",
                         "plural": true,
                         "selections": [
-                          v6,
-                          v7
+                          v7,
+                          v8
                         ]
                       },
                       {
