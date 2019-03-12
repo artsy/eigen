@@ -38,6 +38,8 @@
 #import <Emission/ARShowArtistsComponentViewController.h>
 #import <Emission/ARShowMoreInfoComponentViewController.h>
 #import <Emission/ARFairMoreInfoComponentViewController.h>
+#import <Emission/ARCitySectionListComponentViewController.h>
+#import <Emission/ARCityFairListComponentViewController.h>
 
 #import "ArtsyEcho.h"
 #import "Artsy-Swift.h"
@@ -253,7 +255,15 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
     [self.routes addRoute:@"/fair/:id/info" handler:JLRouteParams {
         return [[ARFairMoreInfoComponentViewController alloc] initWithFairID:parameters[@"id"]];
     }];
+    
+    [self.routes addRoute:@"/city/:city_slug/:section" handler:JLRouteParams {
+        return [[ARCitySectionListComponentViewController alloc] initWithCitySlug:parameters[@"city_slug"] section:parameters[@"section"]];
+    }];
 
+    [self.routes addRoute:@"/city-fair/:city_slug" handler:JLRouteParams {
+        return [[ARCityFairListComponentViewController alloc] initWithCitySlug:parameters[@"city_slug"]];
+    }];
+    
     // We don't show a native fairs UI for iPad
     if (![UIDevice isPad]) {
         [self.routes addRoute:@"/:fairID/search" handler:JLRouteParams {

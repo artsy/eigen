@@ -17,6 +17,8 @@
 #import "AROptions.h"
 #import "ARDefaults.h"
 #import "ARSwitchBoard.h"
+#import "ArtsyEcho.h"
+#import "ArtsyEcho+LocalDisco.h"
 
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
@@ -25,8 +27,9 @@
 @interface ARTopMenuNavigationDataSource ()
 
 @property (nonatomic, assign, readwrite) NSInteger currentIndex;
-
 @property (nonatomic, assign, readonly) NSUInteger *badgeCounts;
+
+@property (readonly, nonatomic, strong) ArtsyEcho *echo;
 
 @property (readonly, nonatomic, strong) ARNavigationController *feedNavigationController;
 @property (nonatomic, strong) ARNavigationController *favoritesNavigationController;
@@ -47,6 +50,8 @@
 - (instancetype)init
 {
     self = [super init];
+
+    _echo = [[ArtsyEcho alloc] init];
 
     _badgeCounts = malloc(sizeof(NSUInteger) * ARTopTabControllerIndexDelimiter);
     for (int i = 0; i < ARTopTabControllerIndexDelimiter; i++) {
@@ -120,6 +125,8 @@
 
 - (ARNavigationController *)navigationControllerAtIndex:(NSInteger)index parameters:(NSDictionary *)params;
 {
+    BOOL showLocalDiscovery = [self.echo shouldShowLocalDiscovery];
+
     switch (index) {
         case ARTopTabControllerIndexHome:
             if (params && params[@"artist_id"]) {
@@ -129,13 +136,13 @@
             }
 
         case ARTopTabControllerIndexMessaging:
-            if ([AROptions boolForOption:AROptionsLocalDiscovery]) {
+            if (showLocalDiscovery) {
                 return [self messagingNavigationController];
             }
             return [self favoritesNavigationController];
         
         case ARTopTabControllerIndexLocalDiscovery:
-            if ([AROptions boolForOption:AROptionsLocalDiscovery]) {
+            if (showLocalDiscovery) {
                 return [self localDiscoveryNavigationController];
             }
             return [self messagingNavigationController];

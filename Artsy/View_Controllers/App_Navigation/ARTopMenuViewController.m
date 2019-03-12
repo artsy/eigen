@@ -1,6 +1,7 @@
 #import "ARTopMenuViewController+DeveloperExtras.h"
 #import "ARContentViewControllers.h"
 #import "ARAppStatus.h"
+#import "ArtsyEcho+LocalDisco.h"
 
 #import "UIViewController+FullScreenLoading.h"
 #import "ARTabContentView.h"
@@ -116,6 +117,8 @@ static const CGFloat ARMenuButtonDimension = 50;
 @property (readwrite, nonatomic, strong) ARTopMenuNavigationDataSource *navigationDataSource;
 @property (readwrite, nonatomic, strong) UIView *tabContainer;
 @property (readwrite, nonatomic, strong) UIView *buttonContainer;
+
+@property (readonly, nonatomic, strong) ArtsyEcho *echo;
 @end
 
 
@@ -134,6 +137,8 @@ static const CGFloat ARMenuButtonDimension = 50;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    _echo = [[ArtsyEcho alloc] init];
 
     self.view.backgroundColor = [UIColor whiteColor];
     self.selectedTabIndex = -1;
@@ -404,7 +409,7 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 - (NSArray *)buttons
 {
-    if ([AROptions boolForOption:AROptionsLocalDiscovery]) {
+    if ([self.echo shouldShowLocalDiscovery]) {
         return @[
              [self tabButtonWithName:@"nav_home" accessibilityName:@"Home"],
              [self tabButtonWithName:@"nav_search" accessibilityName:@"Search"],

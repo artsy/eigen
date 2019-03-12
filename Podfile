@@ -154,6 +154,10 @@ def edit_pod_file(file, old_code, new_code)
 end
 
 post_install do |installer|
+  # So we can show some of this stuff in the Admin panel
+  emission_podspec_json = installer.pod_targets.find { |f| f.name == "Emission" }.specs[0].to_json
+  File.write("Pods/Local Podspecs/Emission.podspec.json", emission_podspec_json)
+
   # Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
