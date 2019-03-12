@@ -12,6 +12,7 @@ import {
   BidFlowRenderer,
   CityBMWListRenderer,
   CityFairListRenderer,
+  CitySavedListRenderer,
   CitySectionListRenderer,
   ConversationRenderer,
   FairRenderer,
@@ -266,6 +267,18 @@ const FairBMWArtActivation: React.SFC<FairBMWArtActivationProps> = ({ fairID }) 
   return <FairBMWArtActivationRenderer fairID={fairID} />
 }
 
+interface CitySavedListProps {
+  citySlug: string
+}
+const CitySavedList: React.SFC<CitySavedListProps> = ({ citySlug }) => {
+  return (
+    <CitySavedListRenderer
+      citySlug={citySlug}
+      render={renderWithLoadProgress(Containers.CitySavedList, { citySlug })}
+    />
+  )
+}
+
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
 AppRegistry.registerComponent("Home", () => HomeScene)
@@ -275,6 +288,7 @@ AppRegistry.registerComponent("MyProfile", () => MyProfile)
 AppRegistry.registerComponent("MySellingProfile", () => () => <View />)
 AppRegistry.registerComponent("MyProfileEdit", () => () => <View />)
 AppRegistry.registerComponent("Inbox", () => Inbox)
+AppRegistry.registerComponent("CitySavedList", () => CitySavedList)
 AppRegistry.registerComponent("Conversation", () => Conversation)
 AppRegistry.registerComponent("Inquiry", () => Inquiry)
 AppRegistry.registerComponent("Favorites", () => FavoritesScene)

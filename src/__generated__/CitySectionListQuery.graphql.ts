@@ -67,11 +67,10 @@ fragment CitySectionList_city_15kLQ2 on City {
             name
             type
           }
-          ... on ExternalPartner {
-            name
+          ... on Node {
             __id
           }
-          ... on Node {
+          ... on ExternalPartner {
             __id
           }
         }
@@ -162,7 +161,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "CitySectionListQuery",
-  "id": "e8dc22c717d78f697f373f3f0e90883a",
+  "id": "a54de29691f7984309fc34ecf6108c25",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -419,13 +418,6 @@ return {
                         "selections": [
                           v5,
                           v3,
-                          {
-                            "kind": "InlineFragment",
-                            "type": "ExternalPartner",
-                            "selections": [
-                              v2
-                            ]
-                          },
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",

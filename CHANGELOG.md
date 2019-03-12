@@ -16,6 +16,10 @@
 
 ### Master
 
+
+- Fixes city section lists being empty - ash
+- Fixes safe area insets missing error on pre-iOS 11 devices - ash
+- Don't allow the map to rotate - orta
 - Only shows open, or upcoming fairs in the fairs tab - orta
 - Support filtering the map based on the selected tab - orta
 - Shows fairs on the map - orta
@@ -42,6 +46,7 @@
 - Hook up save functionality for show card - luc
 - Adds loading screen for Map view - luc
 - Adds analytics to map and city view - kieran
+- Adds City save list view - kieran
 - Move ShapeLayers to PinsShapeLayer - luc
 - Add loading indicator when data is downloading - luc
 - Add safeAreaInsets to handle various screen sizes - luc
@@ -49,6 +54,7 @@
 - Fixes map background sizing - luc
 - Adds styling on single map points and clusters to indicate selection - ashley
 - Adds correct sort to city and museum tabs/lists/bricks - kieran
+- Adds pre-heated GraphQL cache ability, with just City cache for now - alloy
 
 ### 1.8.14
 

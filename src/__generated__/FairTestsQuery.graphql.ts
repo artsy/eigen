@@ -212,11 +212,10 @@ fragment FairBoothPreview_show on Show {
         __id
       }
     }
-    ... on ExternalPartner {
-      name
+    ... on Node {
       __id
     }
-    ... on Node {
+    ... on ExternalPartner {
       __id
     }
   }
@@ -411,7 +410,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairTestsQuery",
-  "id": "7372993d715bc7fac5369c31dbdb649c",
+  "id": "c250a9b82e21adb47e5dfc8b713331ae",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -969,13 +968,6 @@ return {
                         "selections": [
                           v8,
                           v1,
-                          {
-                            "kind": "InlineFragment",
-                            "type": "ExternalPartner",
-                            "selections": [
-                              v4
-                            ]
-                          },
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",

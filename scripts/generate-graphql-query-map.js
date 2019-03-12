@@ -1,22 +1,5 @@
-const { BREAK, parse, visit } = require("graphql")
-
-const queryMap = require("../src/__generated__/complete.queryMap.json")
-
-const entries = Object.keys(queryMap).map(ID => {
-  const query = queryMap[ID]
-  const ast = parse(query)
-  let queryName = null
-  visit(ast, {
-    OperationDefinition(node) {
-      queryName = node.name.value
-      return BREAK
-    },
-  })
-  if (!queryName) {
-    throw new Error(`Unable to find query name for ID ${ID}`)
-  }
-  return `@"${queryName}": @"${ID}"`
-})
+const queryMap = require("./queryMap")()
+const entries = Object.keys(queryMap).map(queryName => `@"${queryName}": @"${queryMap[queryName].ID}"`)
 
 const content = `
 static

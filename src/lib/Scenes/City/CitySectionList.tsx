@@ -49,7 +49,7 @@ class CitySectionList extends React.Component<Props, State> {
       <EventList
         key={name + section}
         cityName={name}
-        bucket={shows.edges}
+        bucket={shows.edges.map(e => e.node) as any}
         type={section}
         relay={relay}
         onScroll={isCloseToBottom(this.fetchData)}

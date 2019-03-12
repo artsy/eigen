@@ -21,7 +21,7 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { MapGeoFeature, MapGeoFeatureCollection, OSCoordsUpdate, SafeAreaInsets, Show } from "./types"
+import { Fair, MapGeoFeature, MapGeoFeatureCollection, OSCoordsUpdate, SafeAreaInsets, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -79,7 +79,7 @@ interface State {
   /** The index from the City selector */
   activeIndex: number
   /** Shows which are selected and should show as highlights above the map */
-  activeShows: Show[]
+  activeShows: Array<Fair | Show>
   /** An object of objects describing all the artsy elements we want to map */
   bucketResults: BucketResults
   /** The center location for the map right now */
@@ -89,7 +89,7 @@ interface State {
   /** True when we know that we can get location updates from the OS */
   trackUserLocation?: boolean
   /** A set of GeoJSON features, which right now is our show clusters */
-  showsGeoJSONFeature: MapGeoFeatureCollection
+  featureCollection: MapGeoFeatureCollection
   /** Has the map fully rendered? */
   mapLoaded: boolean
   isSavingShow: boolean
@@ -154,11 +154,11 @@ export class GlobalMap extends React.Component<Props, State> {
 
   map: Mapbox.MapView
   clusterEngine: Supercluster
-  showsGeoJSONFeatureCollection: MapGeoFeatureCollection
-  fairsGeoJSONFeatureCollection: MapGeoFeatureCollection
+  featureCollection: MapGeoFeatureCollection
   moveButtons: Animated.Value
 
   shows: { [id: string]: Show } = {}
+  fairs: { [id: string]: Fair } = {}
 
   stylesheet = Mapbox.StyleSheet.create({
     singleShow: {
@@ -197,7 +197,7 @@ export class GlobalMap extends React.Component<Props, State> {
       currentLocation,
       bucketResults: emptyBucketResults,
       trackUserLocation: false,
-      showsGeoJSONFeature: undefined,
+      featureCollection: undefined,
       mapLoaded: false,
       isSavingShow: false,
       nearestFeature: null,
@@ -285,21 +285,21 @@ export class GlobalMap extends React.Component<Props, State> {
     const fairs = tab.getFairs(this.state.bucketResults)
 
     const showData = showsToGeoCityShow(shows)
-    const showsGeoJSONFeature = convertCityToGeoJSON(showData)
-
     const fairData = fairToGeoCityFairs(fairs)
-    const fairsGeoJSONFeature = convertCityToGeoJSON(fairData)
+
+    const data = showData.concat((fairData as any) as Show[])
+    const geoJSONFeature = convertCityToGeoJSON(data)
+
+    this.featureCollection = geoJSONFeature
 
     if (updateState) {
       this.setState({
-        showsGeoJSONFeature,
+        featureCollection: geoJSONFeature,
       })
     }
 
-    this.fairsGeoJSONFeatureCollection = fairsGeoJSONFeature
-    this.showsGeoJSONFeatureCollection = showsGeoJSONFeature
     // close but not enough yet
-    this.clusterEngine.load(this.showsGeoJSONFeatureCollection.features as any)
+    this.clusterEngine.load(this.featureCollection.features as any)
   }
 
   emitFilteredBucketResults() {
@@ -347,6 +347,14 @@ export class GlobalMap extends React.Component<Props, State> {
         }
 
         this.shows[node.id] = node
+      })
+
+      city.fairs.edges.forEach(({ node }) => {
+        if (!node || !node.location || !node.location.coordinates) {
+          return null
+        }
+
+        this.fairs[node.id] = node
       })
     }
   }
@@ -418,7 +426,14 @@ export class GlobalMap extends React.Component<Props, State> {
     const iPhoneHasEars = this.props.safeAreaInsets.top > 20
 
     // We need to update activeShows in case of a mutation (save show)
-    const updatedShows = activeShows.map(show => this.shows[show.id])
+    const updatedShows: Array<Fair | Show> = activeShows.map((item: any) => {
+      if (item.type === "Show") {
+        return this.shows[item.id]
+      } else if (item.type === "Fair") {
+        return this.fairs[item.id]
+      }
+      return item
+    })
 
     return (
       <Spring
@@ -557,9 +572,9 @@ export class GlobalMap extends React.Component<Props, State> {
               >
                 {city && (
                   <>
-                    {this.showsGeoJSONFeatureCollection && (
+                    {this.featureCollection && (
                       <PinsShapeLayer
-                        featureCollection={this.showsGeoJSONFeatureCollection}
+                        featureCollection={this.featureCollection}
                         onPress={e => this.handleFeaturePress(e.nativeEvent)}
                       />
                     )}
@@ -595,18 +610,22 @@ export class GlobalMap extends React.Component<Props, State> {
   async handleFeaturePress(nativeEvent: any) {
     const {
       payload: {
-        properties: { id, cluster },
+        properties: { id, cluster, type },
         geometry: { coordinates },
       },
     } = nativeEvent
 
     this.updateDrawerPosition(DrawerPosition.collapsed)
 
-    let activeShows: Show[] = []
+    let activeShows: Array<Fair | Show> = []
     // If the user only taps on the pin we can use the
     // id directly to retrieve the corresponding show
     if (!cluster) {
-      activeShows = [this.shows[id]]
+      if (type === "Show") {
+        activeShows = [this.shows[id]]
+      } else if (type === "Fair") {
+        activeShows = [this.fairs[id]]
+      }
     }
 
     // Otherwise the logic is as follows

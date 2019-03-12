@@ -43,12 +43,10 @@ fragment FairBoothHeader_show on Show {
         __id
       }
     }
-    ... on ExternalPartner {
-      name
-      id
+    ... on Node {
       __id
     }
-    ... on Node {
+    ... on ExternalPartner {
       __id
     }
   }
@@ -105,7 +103,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairBoothHeaderTestsQuery",
-  "id": "f56ccbcf3beef7c1f261b3f2b8dec2e6",
+  "id": "ae72185480770495b6fdacf6b37ebf13",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -178,14 +176,6 @@ return {
                 "storageKey": null
               },
               v1,
-              {
-                "kind": "InlineFragment",
-                "type": "ExternalPartner",
-                "selections": [
-                  v2,
-                  v3
-                ]
-              },
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
