@@ -154,7 +154,7 @@ export class AllEvents extends React.Component<Props, State> {
       case "opening":
         return (
           <EventSection
-            title="Opening shows"
+            title="Opening soon"
             data={data}
             section="opening"
             citySlug={citySlug}
@@ -164,7 +164,7 @@ export class AllEvents extends React.Component<Props, State> {
       case "closing":
         return (
           <EventSection
-            title="Closing shows"
+            title="Closing soon"
             data={data}
             section="closing"
             citySlug={citySlug}
