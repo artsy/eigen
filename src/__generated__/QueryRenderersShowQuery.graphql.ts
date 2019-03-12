@@ -265,7 +265,7 @@ fragment ShowHeader_show on Show {
   is_followed
   exhibition_period
   status
-  is_local_discovery
+  isStubShow
   partner {
     __typename
     ... on Partner {
@@ -729,7 +729,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "73d16f9d9df4226c5d676b6084ef83a3",
+  "id": "89a9d4037210cec8aede4d283ef4da10",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -936,6 +936,13 @@ return {
             "kind": "ScalarField",
             "alias": null,
             "name": "status",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isStubShow",
             "args": null,
             "storageKey": null
           },
