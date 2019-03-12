@@ -19,6 +19,7 @@
 - Moves to new scrollable tab - orta & ash
 - Adds freshness to GraphQL pre-heated cache after which it won’t be used anymore, which is 1 month for City - alloy
 - Updates is_local_discovery to isStubShow to conditionally disable Partner page navigation - ashley
+- Make user location indicator on map tinted with purple100 - alloy
 - Bump iOS deployment target to iOS 9 to match Eigen and avoid adding more deprecated method usage - alloy
 
 ### 1.8.14 - 1.8.19
