@@ -35,11 +35,20 @@
 
 NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
+@interface ARAdminSettingsViewController()
+@property (nonatomic) NSDictionary *emissionPodspec;
+@end
+
 @implementation ARAdminSettingsViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    NSString *emissionPodspecURL = [[NSBundle mainBundle] pathForResource:@"Emission.podspec" ofType:@"json"];
+    NSData *data = [NSData dataWithContentsOfFile:emissionPodspecURL];
+    self.emissionPodspec = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:NULL];
+
 
     ARTableViewData *tableViewData = [[ARTableViewData alloc] init];
 
@@ -270,7 +279,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 - (ARSectionData *)createReactNativeSection
 {
     ARSectionData *sectionData = [[ARSectionData alloc] init];
-    sectionData.headerTitle = @"React Native";
+    sectionData.headerTitle = [NSString stringWithFormat:@"Emission v%@", self.emissionPodspec[@"version"]];
 
     BOOL isStagingReact = [AROptions boolForOption:AROptionsStagingReactEnv];
     BOOL isDevReact = [AROptions boolForOption:AROptionsDevReactEnv];
