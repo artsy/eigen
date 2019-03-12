@@ -257,6 +257,9 @@ Since this controller already has to do the above logic, having it handle the Ci
 
     BOOL isDrawerOpen = [drawer.drawerPosition isEqualToPosition:PulleyPosition.open];
     [self.cityVC setProperty:@(isDrawerOpen) forKey:@"isDrawerOpen"];
+    if (!isDrawerOpen) {
+        [self.rnScrollView setContentOffset:CGPointZero animated:YES];
+    }
 }
 
 - (void)drawerChangedDistanceFromBottomWithDrawer:(PulleyViewController *)drawer distance:(CGFloat)distance bottomSafeArea:(CGFloat)bottomSafeArea
