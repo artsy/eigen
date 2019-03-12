@@ -2,8 +2,6 @@ import { Box, Serif } from "@artsy/palette"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Event } from "lib/Scenes/City/Components/Event"
-import { sortBy } from "lodash"
-import moment from "moment"
 import React from "react"
 import { RelayProp } from "react-relay"
 
