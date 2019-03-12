@@ -54,9 +54,13 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     isSaving: false,
   }
 
-  componentDidUpdate(prevProps) {
-    if (!this.state.isSaving && !isEqual(prevProps, this.props) && this.list) {
-      this.list.scrollToIndex({ index: 0, animated: true })
+  componentDidUpdate(prevProps: ShowCardProps) {
+    const previousIds = prevProps.shows.map(show => show.id)
+    const currentIds = this.props.shows.map(show => show.id)
+    const equal = isEqual(previousIds, currentIds)
+
+    if (!this.state.isSaving && !equal && this.list) {
+      setTimeout(() => this.list.scrollToOffset({ offset: 0, animated: true }), 500)
     }
   }
 
@@ -88,7 +92,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
   }
 
   onScroll = e => {
-    const newPageNum = Math.round(e.nativeEvent.contentOffset.x / screenWidth + 1)
+    const newPageNum = Math.round(e.nativeEvent.contentOffset.x / this.cardWidth + 1)
 
     if (newPageNum !== this.state.currentPage) {
       this.setState({
@@ -146,8 +150,8 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
           keyExtractor={item => item.id}
           onScroll={this.onScroll}
           showsHorizontalScrollIndicator={false}
-          snapToInterval={this.cardWidth + space(1) + 1}
-          contentContainerStyle={{ padding: space(0.5) }}
+          snapToInterval={this.cardWidth + space(1)}
+          contentContainerStyle={{ paddingLeft: space(0.5), paddingRight: space(2) + space(0.3) }}
           scrollEventThrottle={299}
           directionalLockEnabled={true}
           overScrollMode="always"
