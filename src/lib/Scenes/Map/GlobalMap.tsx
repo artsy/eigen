@@ -6,7 +6,7 @@ import { Pin } from "lib/Icons/Pin"
 import PinSavedSelected from "lib/Icons/PinSavedSelected"
 import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { Schema, screenTrack, track } from "lib/utils/track"
-import { get } from "lodash"
+import { get, uniq } from "lodash"
 import React from "react"
 import { Animated, Dimensions, Easing, Image, NativeModules, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -341,7 +341,11 @@ export class GlobalMap extends React.Component<Props, State> {
 
     const { city } = this.props.viewer
     if (city) {
-      city.shows.edges.forEach(({ node }) => {
+      const savedUpcomingShows = city.upcomingShows.edges.filter(e => e.node.is_followed === true)
+      const shows = city.shows.edges
+      const concatedShows = uniq(shows.concat(savedUpcomingShows))
+
+      concatedShows.forEach(({ node }) => {
         if (!node || !node.location || !node.location.coordinates) {
           return null
         }
@@ -711,7 +715,6 @@ export const GlobalMapContainer = createFragmentContainer(
                 id
                 _id
                 __id
-
                 name
                 status
                 href
@@ -734,9 +737,6 @@ export const GlobalMapContainer = createFragmentContainer(
                     name
                     type
                   }
-                  ... on ExternalPartner {
-                    name
-                  }
                 }
               }
             }
@@ -747,13 +747,19 @@ export const GlobalMapContainer = createFragmentContainer(
           lng
         }
 
-        shows(includeStubShows: true, first: $maxInt, sort: START_AT_ASC) {
+        upcomingShows: shows(
+          includeStubShows: true
+          status: UPCOMING
+          dayThreshold: 30
+          first: $maxInt
+          sort: START_AT_ASC
+        ) {
           edges {
             node {
               id
               _id
               __id
-
+              isStubShow
               name
               status
               href
@@ -776,15 +782,46 @@ export const GlobalMapContainer = createFragmentContainer(
                   name
                   type
                 }
-                ... on ExternalPartner {
+              }
+            }
+          }
+        }
+
+        shows(includeStubShows: true, status: RUNNING, first: $maxInt, sort: PARTNER_ASC) {
+          edges {
+            node {
+              id
+              _id
+              __id
+              isStubShow
+              name
+              status
+              href
+              is_followed
+              exhibition_period
+              cover_image {
+                url
+              }
+              location {
+                coordinates {
+                  lat
+                  lng
+                }
+              }
+              type
+              start_at
+              end_at
+              partner {
+                ... on Partner {
                   name
+                  type
                 }
               }
             }
           }
         }
 
-        fairs(first: $maxInt) {
+        fairs(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
           edges {
             node {
               id

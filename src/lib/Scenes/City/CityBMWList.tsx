@@ -67,7 +67,8 @@ export default createPaginationContainer(
         @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
         name
         sponsoredContent {
-          shows(first: $count, after: $cursor, sort: START_AT_ASC) @connection(key: "CityBMWList_shows") {
+          shows(first: $count, status: RUNNING, after: $cursor, sort: PARTNER_ASC)
+            @connection(key: "CityBMWList_shows") {
             edges {
               node {
                 id
@@ -94,9 +95,6 @@ export default createPaginationContainer(
                   ... on Partner {
                     name
                     type
-                  }
-                  ... on ExternalPartner {
-                    name
                   }
                 }
               }

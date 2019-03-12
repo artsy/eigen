@@ -146,13 +146,6 @@ return {
         v1,
         {
           "kind": "InlineFragment",
-          "type": "ExternalPartner",
-          "selections": [
-            v2
-          ]
-        },
-        {
-          "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
             v2,
@@ -250,5 +243,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '5431d73d8296f7ca4a84aec4ae95aa94';
+(node as any).hash = '02781adc37f4b72db60a52d9d35dbd7d';
 export default node;

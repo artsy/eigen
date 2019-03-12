@@ -1,5 +1,5 @@
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
-import { BucketResults } from "./bucketCityResults"
+import { BucketKey, BucketResults } from "./bucketCityResults"
 
 export interface Coordinates {
   lat: number
@@ -16,7 +16,7 @@ export type Fair = GlobalMap_viewer["city"]["fairs"]["edges"][0]["node"]
 
 export interface MapTab {
   /** UUID for the tab */
-  id: string
+  id: BucketKey | "all" | "BMW Art Guide"
   /** Display string */
   text: string
   /** A func to grab the right shows for this tab on the map */

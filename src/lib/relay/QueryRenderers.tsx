@@ -30,7 +30,7 @@ import Inbox from "../Containers/Inbox"
 Inbox
 // tslint:enable:no-unused-expression
 
-import { EventStatus } from "__generated__/CitySectionListQuery.graphql"
+import { EventStatus, PartnerShowSorts } from "__generated__/CitySectionListQuery.graphql"
 import { QueryRenderersArtistQuery } from "__generated__/QueryRenderersArtistQuery.graphql"
 import { QueryRenderersBidFlowQuery } from "__generated__/QueryRenderersBidFlowQuery.graphql"
 import { QueryRenderersCityBMWListQuery } from "__generated__/QueryRenderersCityBMWListQuery.graphql"
@@ -513,22 +513,29 @@ export const CitySectionListRenderer: React.SFC<CitySectionListProps> = ({ rende
     partnerType?: PartnerShowPartnerType
     status?: EventStatus
     dayThreshold?: number
+    sort?: PartnerShowSorts
   } = { citySlug }
 
   switch (section) {
     case "museums":
       variables.partnerType = "MUSEUM"
+      variables.status = "RUNNING"
+      variables.sort = "PARTNER_ASC"
       break
     case "galleries":
       variables.partnerType = "GALLERY"
+      variables.status = "RUNNING"
+      variables.sort = "PARTNER_ASC"
       break
     case "closing":
       variables.status = "CLOSING_SOON"
-      variables.dayThreshold = 7
+      variables.sort = "END_AT_ASC"
+      variables.dayThreshold = 30
       break
     case "opening":
       variables.status = "UPCOMING"
-      variables.dayThreshold = 7
+      variables.sort = "START_AT_ASC"
+      variables.dayThreshold = 30
   }
 
   return (
@@ -540,9 +547,11 @@ export const CitySectionListRenderer: React.SFC<CitySectionListProps> = ({ rende
           $partnerType: PartnerShowPartnerType
           $status: EventStatus
           $dayThreshold: Int
+          $sort: PartnerShowSorts
         ) {
           city(slug: $citySlug) {
-            ...CitySectionList_city @arguments(partnerType: $partnerType, status: $status, dayThreshold: $dayThreshold)
+            ...CitySectionList_city
+              @arguments(partnerType: $partnerType, status: $status, sort: $sort, dayThreshold: $dayThreshold)
           }
         }
       `}

@@ -194,9 +194,6 @@ export const FairBoothPreviewContainer = createFragmentContainer(
             is_followed
           }
         }
-        ... on ExternalPartner {
-          name
-        }
       }
       fair {
         name

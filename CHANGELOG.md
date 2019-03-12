@@ -16,6 +16,7 @@
 
 ### Master
 
+- Moves to new scrollable tab - orta & ash
 - Adds freshness to GraphQL pre-heated cache after which it won’t be used anymore, which is 1 month for City - alloy
 - Updates is_local_discovery to isStubShow to conditionally disable Partner page navigation - ashley
 
@@ -57,6 +58,7 @@
 - Set min zoom size on map - luc
 - Fixes map background sizing - luc
 - Adds styling on single map points and clusters to indicate selection - ashley
+- Adds correct sort to city and museum tabs/lists/bricks - kieran
 - Adds pre-heated GraphQL cache ability, with just City cache for now - alloy
 
 ### 1.8.14
