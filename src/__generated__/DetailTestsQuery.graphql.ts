@@ -117,7 +117,7 @@ fragment ShowHeader_show on Show {
     url
     aspect_ratio
   }
-  followedArtists(first: 2) {
+  followedArtists(first: 3) {
     edges {
       node {
         artist {
@@ -389,7 +389,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "d22b49acbafc82cc25fb7a4936e0f196",
+  "id": "9c8dbd5eb5f46b5c5aec444a34ac5ea0",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -646,12 +646,12 @@ return {
             "kind": "LinkedField",
             "alias": null,
             "name": "followedArtists",
-            "storageKey": "followedArtists(first:2)",
+            "storageKey": "followedArtists(first:3)",
             "args": [
               {
                 "kind": "Literal",
                 "name": "first",
-                "value": 2,
+                "value": 3,
                 "type": "Int"
               }
             ],
