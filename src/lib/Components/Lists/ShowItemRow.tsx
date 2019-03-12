@@ -16,6 +16,9 @@ import styled from "styled-components/native"
 interface Props {
   show: ShowItemRow_show
   relay?: RelayProp
+  noPadding?: boolean
+  onSaveStarted?: () => void
+  onSaveEnded?: () => void
 }
 
 interface State {
@@ -41,7 +44,6 @@ export class ShowItemRow extends React.Component<Props, State> {
     } = props
     return {
       action_name: is_followed ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow,
-      context_screen: Schema.PageNames.SavesAndFollows,
       owner_type: Schema.OwnerEntityTypes.Show,
       owner_id: _id,
       owner_slug: slug,
@@ -53,6 +55,10 @@ export class ShowItemRow extends React.Component<Props, State> {
     } = this.props
 
     if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
+      if (this.props.onSaveStarted) {
+        this.props.onSaveStarted()
+      }
+
       this.setState(
         {
           isFollowedSaving: true,
@@ -96,24 +102,26 @@ export class ShowItemRow extends React.Component<Props, State> {
   }
 
   handleShowSuccessfullyUpdated() {
+    if (this.props.onSaveEnded) {
+      this.props.onSaveEnded()
+    }
+
     this.setState({
       isFollowedSaving: false,
     })
   }
 
   render() {
-    const { show } = this.props
+    const { noPadding, show } = this.props
     const imageURL = show.cover_image && show.cover_image.url
 
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
-        <Box py={2}>
+        <Box py={noPadding ? 0 : 2}>
           <Flex flexDirection="row">
             {!imageURL ? (
-              <DefaultImageContainer>
-                <Box p={2}>
-                  <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
-                </Box>
+              <DefaultImageContainer p={15}>
+                <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
               </DefaultImageContainer>
             ) : (
               <OpaqueImageView width={58} height={58} imageURL={imageURL} />
@@ -191,6 +199,6 @@ const TightendSerif = styled(Serif)`
 const DefaultImageContainer = styled(Box)`
   align-items: center;
   background-color: ${colors["gray-regular"]};
-  height: 100%;
+  height: ${space(6)};
   width: ${space(6)};
 `

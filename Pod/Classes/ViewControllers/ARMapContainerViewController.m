@@ -23,9 +23,26 @@ NSString * const __nonnull SelectedCityNameKey = @"SelectedCityName";
 @property (nonatomic, strong) ARCityPickerComponentViewController *cityPickerController;
 @property (nonatomic, strong) UIView *cityPickerContainerView; // Need a view to have its own shadow.
 
+@property (nonatomic, weak) UIScrollView *rnScrollView;
+
 @property (nonatomic, assign) BOOL initialDataIsLoaded;
 
 @end
+
+static UIScrollView *
+FindFirstVerticalScrollView(UIView *view)
+{
+    for (UIView *subview in view.subviews) {
+        if ([subview isKindOfClass:UIScrollView.class] && ([(UIScrollView *)subview contentSize].height > subview.frame.size.height)) {
+            return (UIScrollView *)subview;
+        }
+    }
+    for (UIView *subview in view.subviews) {
+        UIScrollView *result = FindFirstVerticalScrollView(subview);
+        if (result) return result;
+    }
+    return nil;
+}
 
 /*
 This is the top-level Local Discovery component, and should therefore be responsible for checking a user's location and
@@ -41,37 +58,48 @@ Since this controller already has to do the above logic, having it handle the Ci
 {
     [super viewDidLoad];
 
-    __weak typeof(self) sself = self;
+    __weak typeof(self) wself = self;
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryOpenCityPicker" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        [sself showCityPicker];
+        [wself showCityPicker];
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryUserSelectedCity" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         NSInteger cityIndex = [note.userInfo[@"cityIndex"] integerValue];
-        [sself userSelectedCityAtIndex:cityIndex];
+        [wself userSelectedCityAtIndex:cityIndex];
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryUpdateDrawerPosition" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         NSString *positionString = note.userInfo[@"position"];
-        [sself updateDrawerPosition:positionString];
+        [wself updateDrawerPosition:positionString];
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryQueryResponseReceived" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-        if (sself.initialDataIsLoaded) {
+        if (wself.initialDataIsLoaded) {
             return;
         }
-        [sself.bottomSheetVC setDrawerPositionWithPosition:[PulleyPosition partiallyRevealed] animated:YES completion:nil];
-        sself.initialDataIsLoaded = YES;
+        [wself.bottomSheetVC setDrawerPositionWithPosition:[PulleyPosition partiallyRevealed] animated:YES completion:nil];
+        wself.initialDataIsLoaded = YES;
     }];
-
-    self.mapVC = [[ARMapComponentViewController alloc] init];
-    self.cityVC = [[ARCityComponentViewController alloc] init];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryCityGotScrollView" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+            if (!wself.rnScrollView) {
+                UIScrollView *foundScrollView = FindFirstVerticalScrollView(wself.cityVC.view);
+                wself.rnScrollView = foundScrollView;
+                wself.rnScrollView.scrollEnabled = NO;
+                if (foundScrollView) {
+                    [wself.bottomSheetVC.drawerPanGestureRecognizer requireGestureRecognizerToFail:foundScrollView.panGestureRecognizer];
+                }
+            }
+    }];
 
     NSString *previouslySelectedCityName = [[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey];
     ARCity *previouslySelectedCity = [[[ARCity cities] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
         return [[evaluatedObject name] isEqualToString:previouslySelectedCityName];
     }]] firstObject];
+    
+    self.mapVC = [[ARMapComponentViewController alloc] init];
+    self.cityVC = [[ARCityComponentViewController alloc] init];
 
     if (previouslySelectedCity) {
         // Do this here, before we add to our view hierarchy, so that these are the _initial_ propertyies we do our first render with.
         [self.mapVC setProperty:previouslySelectedCity.slug forKey:@"citySlug"];
+        [self.cityVC setProperty:previouslySelectedCity.slug forKey:@"citySlug"];
         [self.mapVC setProperty:@{ @"lat": @(previouslySelectedCity.epicenter.coordinate.latitude), @"lng": @(previouslySelectedCity.epicenter.coordinate.longitude) } forKey:@"initialCoordinates"];
     } else {
         // The user has no previously selected city, so let's try to determine their location.
@@ -80,6 +108,8 @@ Since this controller already has to do the above logic, having it handle the Ci
         self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
         [self.locationManager requestWhenInUseAuthorization];
     }
+    
+    [self updateSafeAreaInsets];
 
     self.bottomSheetVC = [[PulleyViewController alloc] initWithContentViewController:self.mapVC drawerViewController:self.cityVC];
     self.bottomSheetVC.animationDuration = 0.35;
@@ -93,6 +123,12 @@ Since this controller already has to do the above logic, having it handle the Ci
     [self.bottomSheetVC didMoveToParentViewController:self];
 }
 
+-(void)viewSafeAreaInsetsDidChange
+{
+    [super viewSafeAreaInsetsDidChange];
+    [self updateSafeAreaInsets];
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleDefault;
@@ -104,6 +140,7 @@ Since this controller already has to do the above logic, having it handle the Ci
     if (closestCity) {
         // User is within radius to city.
         [self.mapVC setProperty:closestCity.slug forKey:@"citySlug"];
+        [self.cityVC setProperty:closestCity.slug forKey:@"citySlug"];
         [self.mapVC setProperty:@{ @"lat": @(closestCity.epicenter.coordinate.latitude), @"lng": @(closestCity.epicenter.coordinate.longitude) } forKey:@"initialCoordinates"];
 
         // Technically, the user hasn't selected this city. But we're going to remember it for them.
@@ -194,6 +231,19 @@ Since this controller already has to do the above logic, having it handle the Ci
     [self.bottomSheetVC setDrawerPositionWithPosition:position animated:YES completion:nil];
 }
 
+- (void)updateSafeAreaInsets
+{
+    UIEdgeInsets safeAreaInsets = UIEdgeInsetsZero;
+    if (@available(iOS 11.0, *)) {
+        safeAreaInsets = self.view.safeAreaInsets;
+    }
+    [self.mapVC setProperty:@{ @"top": @(safeAreaInsets.top),
+                               @"bottom": @(safeAreaInsets.bottom),
+                               @"left": @(safeAreaInsets.left),
+                               @"right": @(safeAreaInsets.right) }
+                     forKey:@"safeAreaInsets"];
+}
+
 # pragma mark - PulleyDelegate Methods
 
 - (void)drawerPositionDidChangeWithDrawer:(PulleyViewController *)drawer bottomSafeArea:(CGFloat)bottomSafeArea
@@ -212,6 +262,9 @@ Since this controller already has to do the above logic, having it handle the Ci
 - (void)drawerChangedDistanceFromBottomWithDrawer:(PulleyViewController *)drawer distance:(CGFloat)distance bottomSafeArea:(CGFloat)bottomSafeArea
 {
     CGFloat drawerAbovePartialHeight = [drawer partialRevealDrawerHeightWithBottomSafeArea:bottomSafeArea];
+
+    BOOL isDrawerOpen = [drawer.drawerPosition isEqualToPosition:PulleyPosition.open];
+    self.rnScrollView.scrollEnabled = isDrawerOpen;
 
     BOOL shouldHideButtons = distance > drawerAbovePartialHeight;
     if (!self.cityPickerController) {
@@ -234,6 +287,7 @@ Since this controller already has to do the above logic, having it handle the Ci
     } else if (status == kCLAuthorizationStatusNotDetermined) {
         // nop, don't show city picker.
     } else {
+        
         [self showCityPicker];
     }
 }
@@ -242,6 +296,16 @@ Since this controller already has to do the above logic, having it handle the Ci
 {
     [self userSuppliedLocation:locations.lastObject];
     [manager stopUpdatingLocation];
+}
+
+- (BOOL)shouldAutorotate;
+{
+    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations;
+{
+    return self.shouldAutorotate ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
 @end

@@ -2369,10 +2369,19 @@ type City {
   shows(
     sort: PartnerShowSorts
 
-    # By default we filter shows by current
+    # Filter shows by chronological event status
     status: EventStatus = CURRENT
 
-    # Whether to include local discovery stubs as well as displayable shows
+    # Filter shows by partner type
+    partnerType: PartnerShowPartnerType
+
+    # Only used when status is CLOSING_SOON or UPCOMING. Number of days used to filter upcoming and closing soon shows
+    dayThreshold: Int
+
+    # Whether to include local discovery stubs
+    includeStubShows: Boolean
+
+    # Whether to include stub shows or not
     discoverable: Boolean
     after: String
     first: Int
@@ -2386,6 +2395,14 @@ type City {
 type CitySponsoredContent {
   introText: String
   artGuideUrl: String
+  shows(
+    sort: PartnerShowSorts
+    status: EventStatus
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): ShowConnection
 }
 
 type Collection implements Node {
@@ -3139,6 +3156,9 @@ enum EventStatus {
 
   # Start date is in the future
   UPCOMING
+
+  # End date is in near future
+  CLOSING_SOON
 }
 
 type ExternalPartner {
@@ -4845,7 +4865,10 @@ type Location {
 
   # Alternate Markdown-supporting free text representation of a location's opening hours
   day_schedule_text: String
-  displayDaySchedules: [FormattedDaySchedules]
+  displayDaySchedules: [FormattedDaySchedules] @deprecated(reason: "Use openingHours instead")
+
+  # Union returning opening hours in formatted structure or a string
+  openingHours: OpeningHoursUnion
   display: String
   phone: String
   postal_code: String
@@ -5759,6 +5782,16 @@ type OfferOrder implements Order {
   offers: OfferConnection
 }
 
+type OpeningHoursArray {
+  schedules: [FormattedDaySchedules]
+}
+
+type OpeningHoursText {
+  text: String
+}
+
+union OpeningHoursUnion = OpeningHoursArray | OpeningHoursText
+
 interface Order {
   # ID of the order
   id: ID
@@ -6595,6 +6628,11 @@ type PartnerShowEventType {
 
   # A formatted description of the start to end dates
   exhibitionPeriod: String
+}
+
+enum PartnerShowPartnerType {
+  GALLERY
+  MUSEUM
 }
 
 enum PartnerShowSorts {
@@ -8089,11 +8127,12 @@ type Show implements Node {
   # Does the show exist as a fair booth?
   is_fair_booth: Boolean
 
-  # Is it a stubbed show?
+  # Is it a show provided for historical reference?
   is_reference: Boolean
+  is_local_discovery: Boolean @deprecated(reason: "Prefer isStubShow")
 
   # Is it an outsourced local discovery stub show?
-  is_local_discovery: Boolean
+  isStubShow: Boolean
 
   # Whether the show is in a fair, group or solo
   kind: String

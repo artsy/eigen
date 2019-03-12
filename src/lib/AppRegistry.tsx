@@ -10,6 +10,10 @@ import {
   ArtistRenderer,
   BidderFlowRendererProps,
   BidFlowRenderer,
+  CityBMWListRenderer,
+  CityFairListRenderer,
+  CitySavedListRenderer,
+  CitySectionListRenderer,
   ConversationRenderer,
   FairRenderer,
   GeneRenderer,
@@ -36,6 +40,7 @@ import {
 import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
 import { MapContainer } from "./Scenes/Map"
+import { BucketKey } from "./Scenes/Map/bucketCityResults"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
 
@@ -185,6 +190,29 @@ const ShowMoreInfo: React.SFC<ShowMoreInfoProps> = ({ showID }) => {
   return <ShowMoreInfoRenderer showID={showID} render={renderWithLoadProgress(Containers.ShowMoreInfo, { showID })} />
 }
 
+interface CityFairListProps {
+  citySlug: string
+}
+const CityFairList: React.SFC<CityFairListProps> = ({ citySlug }) => {
+  return (
+    <CityFairListRenderer citySlug={citySlug} render={renderWithLoadProgress(Containers.CityFairList, { citySlug })} />
+  )
+}
+
+interface CitySectionListProps {
+  citySlug: string
+  section: BucketKey
+}
+const CitySectionList: React.SFC<CitySectionListProps> = ({ citySlug, section }) => {
+  return (
+    <CitySectionListRenderer
+      citySlug={citySlug}
+      section={section}
+      render={renderWithLoadProgress(Containers.CitySectionList, { citySlug, section })}
+    />
+  )
+}
+
 interface FairBoothProps {
   fairBoothID: string
 }
@@ -223,12 +251,32 @@ const FairExhibitors: React.SFC<FairExhibitorsProps> = ({ fairID }) => {
   return <FairExhibitorsRenderer fairID={fairID} />
 }
 
+interface CityBMWListProps {
+  citySlug: string
+}
+const CityBMWList: React.SFC<CityBMWListProps> = ({ citySlug }) => {
+  return (
+    <CityBMWListRenderer citySlug={citySlug} render={renderWithLoadProgress(Containers.CityBMWList, { citySlug })} />
+  )
+}
+
 interface FairBMWArtActivationProps {
   fairID: string
 }
-
 const FairBMWArtActivation: React.SFC<FairBMWArtActivationProps> = ({ fairID }) => {
   return <FairBMWArtActivationRenderer fairID={fairID} />
+}
+
+interface CitySavedListProps {
+  citySlug: string
+}
+const CitySavedList: React.SFC<CitySavedListProps> = ({ citySlug }) => {
+  return (
+    <CitySavedListRenderer
+      citySlug={citySlug}
+      render={renderWithLoadProgress(Containers.CitySavedList, { citySlug })}
+    />
+  )
 }
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
@@ -240,6 +288,7 @@ AppRegistry.registerComponent("MyProfile", () => MyProfile)
 AppRegistry.registerComponent("MySellingProfile", () => () => <View />)
 AppRegistry.registerComponent("MyProfileEdit", () => () => <View />)
 AppRegistry.registerComponent("Inbox", () => Inbox)
+AppRegistry.registerComponent("CitySavedList", () => CitySavedList)
 AppRegistry.registerComponent("Conversation", () => Conversation)
 AppRegistry.registerComponent("Inquiry", () => Inquiry)
 AppRegistry.registerComponent("Favorites", () => FavoritesScene)
@@ -259,3 +308,6 @@ AppRegistry.registerComponent("ShowMoreInfo", () => ShowMoreInfo)
 AppRegistry.registerComponent("Map", () => MapContainer)
 AppRegistry.registerComponent("City", () => CityView)
 AppRegistry.registerComponent("CityPicker", () => CityPicker)
+AppRegistry.registerComponent("CityBMWList", () => CityBMWList)
+AppRegistry.registerComponent("CityFairList", () => CityFairList)
+AppRegistry.registerComponent("CitySectionList", () => CitySectionList)

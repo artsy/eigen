@@ -1,4 +1,5 @@
 require 'json'
+require 'date'
 
 root = ENV["EMISSION_ROOT"] || __dir__
 pkg_version = lambda do |dir_from_root = '', version = 'version'|
@@ -16,20 +17,19 @@ podspec = Pod::Spec.new do |s|
   s.summary        = 'React Native Components used by Eigen.'
   s.homepage       = 'https://github.com/artsy/emission'
   s.license        = 'MIT'
-  s.author         = { 'Eloy Durán' => 'eloy@artsy.net',
-                       'Maxim Cramer' => 'maxim@artsy.net',
-                       'Sarah Scott' => 'sarah.scott@artsy.net' }
+  s.author         = { 'Artsy Mobile' => 'mobile@artsy.net' }
   s.source         = { :git => 'https://github.com/artsy/emission.git', :tag => "v#{s.version}" }
   s.platform       = :ios, '8.0'
   s.source_files   = 'Pod/Classes/**/*.{h,m}'
   s.preserve_paths = 'Pod/Classes/**/*.generated.objc'
-  s.resources      = 'Pod/Assets/{Emission.js,assets}'
+  s.resources      = 'Pod/Assets/{Emission.js,assets,PreHeatedGraphQLCache}'
 
   # Artsy UI dependencies
   s.dependency 'Artsy+UIColors'
   s.dependency 'Artsy+UIFonts', '>= 3.0.0'
   s.dependency 'Extraction', '>= 1.2.1'
 
+  # Used in City Guides
   s.dependency 'Pulley'
 
   # To ensure a consistent image cache between app/lib
@@ -72,6 +72,11 @@ podspec = Pod::Spec.new do |s|
   end
 end
 
-# Attach the native version info into the podspec
+# Attach the useful metadata to the podspec, which can be used in admin tools
 podspec.attributes_hash['native_version'] = emission_native_version
+podspec.attributes_hash['release_date'] = DateTime.now.strftime("%h %d, %Y")
+podspec.attributes_hash['sha'] = `git rev-parse HEAD`.strip
+podspec.attributes_hash['react_native_version'] = react_native_version
+podspec.attributes_hash['app_registry'] = File.read("./src/lib/AppRegistry.tsx").scan(/AppRegistry.registerComponent\(\"(.*)\"/).flatten
+
 podspec

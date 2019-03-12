@@ -1,5 +1,6 @@
 import { Box, Serif } from "@artsy/palette"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Event } from "lib/Scenes/City/Components/Event"
 import React from "react"
 import { RelayProp } from "react-relay"
@@ -8,12 +9,14 @@ export interface Props {
   title: string
   relay: RelayProp
   data: any
+  section: string
+  citySlug: string
 }
 
 export class EventSection extends React.Component<Props> {
   viewAllPressed = () => {
-    // FIXME: Open city list view
-    console.log("All pressed")
+    const { citySlug, section } = this.props
+    SwitchBoard.presentNavigationViewController(this, `/city/${citySlug}/${section}`)
   }
 
   renderEvents = () => {
@@ -21,7 +24,7 @@ export class EventSection extends React.Component<Props> {
     return data.map((event, i) => {
       if (i < 2) {
         return (
-          <Box key={event.node.id}>
+          <Box key={event.id}>
             <Event event={event} relay={this.props.relay} />
           </Box>
         )

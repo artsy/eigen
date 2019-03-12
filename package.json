@@ -1,7 +1,7 @@
 {
   "name": "emission",
-  "version": "1.8.14",
-  "native-code-version": 21,
+  "version": "1.8.19",
+  "native-code-version": 24,
   "description": "Artsy React(Native) components.",
   "engines": {
     "node": "10.x",
@@ -10,7 +10,7 @@
   },
   "main": "index.ios.js",
   "scripts": {
-    "bundle": "yarn generate-graphql-query-map && yarn generate-cities-objc && react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
+    "bundle": "yarn generate-graphql-query-map && yarn generate-cities-objc && yarn generate-cities-cache && react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
     "bundle-for-native-ci": "yarn generate-graphql-query-map && react-native bundle --platform=ios --dev=false --entry-file=index.tests.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
     "bundle-with-storybooks": "yarn generate-graphql-query-map && react-native bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output  Pod/Assets/Emission.js --assets-dest Pod/Assets",
     "type-check": "tsc --noEmit --pretty",
@@ -20,6 +20,7 @@
     "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx}'",
     "stylelint-project": " stylelint -- 'src/**/*.{ts,tsx}'",
     "ci": "yarn type-check && yarn lint && yarn prettier-project -l && yarn relay && yarn test:ci",
+    "ci:skip-native-if-possible": "node scripts/ci-skip-native-if-possible.js",
     "danger": "danger",
     "start": "yarn start-servers",
     "start-servers": "concurrently --kill-others 'yarn start-packager' 'yarn relay --watch' 'yarn storybook'",
@@ -34,9 +35,11 @@
     "relay": "relay-compiler --src ./src --schema data/schema.graphql --language typescript --artifactDirectory ./src/__generated__ --persist --persistOutput ./src/__generated__/complete.queryMap.json --exclude '**/node_modules/**,**/__mocks__/**,**/__generated__/**'",
     "release": "node scripts/release.js",
     "generate-graphql-query-map": "node scripts/generate-graphql-query-map.js > Pod/Classes/GraphQL/ARGraphQLQueryMap.generated.objc",
-    "generate-cities-objc": "ts-node -O '{\"module\": \"commonjs\"}' scripts/generate-cities-objc.ts",
+    "generate-cities-objc": "node scripts/generate-cities-objc.js",
+    "generate-cities-cache": "node scripts/generate-cities-cache.js",
     "merge-graphql-query-map": "node scripts/merge-graphql-query-map.js",
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/_schema.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
+    "sync-cities": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/src/schema/city/cityDataSortedByDisplayPreference.json -o data/cityDataSortedByDisplayPreference.json",
     "version": "yarn install && yarn bundle && pushd Example && bundle install && bundle exec pod update Emission --no-repo-update && popd && git add Pod/Assets Example/Podfile.lock",
     "postinstall": "prettier --write package.json",
     "prestorybook": "rnstl",
@@ -147,11 +150,10 @@
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-processor-styled-components": "^1.5.1",
     "ts-jest": "^22.0.2",
-    "ts-node": "^8.0.2",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.6.0",
     "tslint-plugin-relay": "^0.0.2",
-    "typescript": "^3.0.3",
+    "typescript": "^3.1.5",
     "typescript-styled-plugin": "^0.13.0"
   },
   "jest": {

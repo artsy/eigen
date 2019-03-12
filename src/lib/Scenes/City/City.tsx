@@ -1,23 +1,26 @@
-import { color, Flex, Theme } from "@artsy/palette"
+import { Box, color, Flex, Theme } from "@artsy/palette"
 import { ScrollableTab } from "lib/Components/ScrollableTabBar"
+import { Schema, screenTrack } from "lib/utils/track"
 import React, { Component } from "react"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 
 import { NativeModules, ScrollView } from "react-native"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
-
-import TabBar, { Tab } from "lib/Components/TabBar"
-import { BucketKey, BucketResults } from "../Map/Bucket"
+import { BucketKey, BucketResults } from "../Map/bucketCityResults"
+import { FiltersBar } from "../Map/Components/FiltersBar"
 import { EventEmitter } from "../Map/EventEmitter"
 import { MapTab } from "../Map/types"
+import { cityTabs } from "./cityTabs"
 import { AllEvents } from "./Components/AllEvents"
-import { CityTab } from "./Components/CityTab"
+import { EventList } from "./Components/EventList"
 
 interface Props {
   verticalMargin?: number
   isDrawerOpen?: boolean
   initialTab?: number
+  citySlug: string
+  tracking: any
 }
 
 interface State {
@@ -25,19 +28,44 @@ interface State {
   filter: MapTab
   relay: RelayProp
   cityName: string
+  citySlug: string
 
   selectedTab: number
   sponsoredContent: { introText: string; artGuideUrl: string }
 }
-
 const AllCityMetaTab = 0
+
+const screenSchemaForCurrentTabState = currentSelectedTab => {
+  switch (currentSelectedTab) {
+    case "all":
+      return Schema.PageNames.CityGuideAllGuide
+    case "saved":
+      return Schema.PageNames.CityGuideSavedGuide
+    case "fairs":
+      return Schema.PageNames.CityGuideFairsGuide
+    case "galleries":
+      return Schema.PageNames.CityGuideGalleriesGuide
+    case "museums":
+      return Schema.PageNames.CityGuideMuseumsGuide
+    default:
+      return null
+  }
+}
+
+@screenTrack<Props>(props => ({
+  context_screen: screenSchemaForCurrentTabState("all"),
+  context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+  context_screen_owner_slug: props.citySlug,
+  context_screen_owner_id: props.citySlug,
+}))
 export class CityView extends Component<Props, State> {
   state = {
     buckets: null,
-    filter: { id: "all", text: "All events" },
+    filter: cityTabs[0],
     relay: null,
     cityName: "",
     selectedTab: AllCityMetaTab,
+    citySlug: "",
     sponsoredContent: null,
   }
 
@@ -46,18 +74,11 @@ export class CityView extends Component<Props, State> {
   scrollViewVerticalStart = 0
   scrollView: ScrollView = null
 
-  filters: MapTab[] = [
-    { id: "all", text: "All" },
-    { id: "saved", text: "Saved" },
-    { id: "fairs", text: "Fairs" },
-    { id: "galleries", text: "Galleries" },
-    { id: "museums", text: "Museums" },
-  ]
-
   handleEvent = ({
     filter,
     buckets,
     cityName,
+    citySlug,
     relay,
     sponsoredContent,
   }: {
@@ -65,12 +86,14 @@ export class CityView extends Component<Props, State> {
     buckets: BucketResults
     cityName: string
     relay: RelayProp
+    citySlug: string
     sponsoredContent: { introText: string; artGuideUrl: string }
   }) => {
     this.setState({
       buckets,
       filter,
       cityName,
+      citySlug,
       relay,
       sponsoredContent,
     })
@@ -82,6 +105,12 @@ export class CityView extends Component<Props, State> {
 
   componentWillUnmount() {
     EventEmitter.unsubscribe("map:change", this.handleEvent)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.isDrawerOpen !== nextProps.isDrawerOpen) {
+      this.fireScreenViewAnalytics()
+    }
   }
 
   componentDidUpdate() {
@@ -97,28 +126,28 @@ export class CityView extends Component<Props, State> {
   }
 
   setSelectedTab(selectedTab) {
-    this.setState({ selectedTab: selectedTab.i }, this.fireCityTabViewAnalytics)
+    this.setState({ selectedTab: selectedTab.i }, this.fireScreenViewAnalytics)
     EventEmitter.dispatch("filters:change", selectedTab.i)
   }
 
-  fireCityTabViewAnalytics = () => {
-    // this.props.tracking.trackEvent({
-    //   context_screen: screenSchemaForCurrentTab(this.state.selectedTab),
-    //   context_screen_owner_type: null,
-    // })
+  fireScreenViewAnalytics = () => {
+    this.props.tracking.trackEvent({
+      context_screen: screenSchemaForCurrentTabState(this.state.filter.id),
+      context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+      context_screen_owner_slug: this.state.citySlug,
+      context_screen_owner_id: this.state.citySlug,
+    })
   }
 
   render() {
-    const { buckets, filter, cityName } = this.state
-    const { isDrawerOpen, verticalMargin } = this.props
+    const { buckets, filter, cityName, citySlug } = this.state
+    const { verticalMargin } = this.props
     // bottomInset is used for the ScrollView's contentInset. See the note in ARMapContainerViewController.m for context.
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
     // const scrollview = this.tabView._scrollView
 
-    return (
-      buckets && (
-        <Theme>
-          <Flex py={1} alignItems="center" style={{ flex: 1 }}>
+    /*
+     <Flex py={1} alignItems="center" style={{ flex: 1 }}>
             <Handle />
             <ScrollableTabView
               initialPage={this.props.initialTab || AllCityMetaTab}
@@ -167,24 +196,65 @@ export class CityView extends Component<Props, State> {
               })}
             </ScrollableTabView>
           </Flex>
+    */
+    return (
+      buckets && (
+        <Theme>
+          <>
+            <Box>
+              <Flex py={1} alignItems="center">
+                <Handle />
+              </Flex>
+              <FiltersBar
+                tabs={cityTabs}
+                goToPage={activeIndex => EventEmitter.dispatch("filters:change", activeIndex)}
+              />
+              <ScrollView
+                contentInset={{ bottom: bottomInset }}
+                onLayout={layout => {
+                  this.scrollViewVerticalStart = layout.nativeEvent.layout.y
+                  NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
+                }}
+                ref={r => {
+                  if (r) {
+                    this.scrollView = r as any
+                  }
+                }}
+              >
+                {(() => {
+                  switch (filter && filter.id) {
+                    case "all":
+                      return (
+                        <AllEvents
+                          cityName={cityName}
+                          citySlug={citySlug}
+                          key={cityName}
+                          currentBucket={filter.id as BucketKey}
+                          buckets={buckets}
+                          sponsoredContent={this.state.sponsoredContent}
+                          relay={this.state.relay}
+                        />
+                      )
+                    default:
+                      return (
+                        <EventList
+                          key={cityName + filter.id}
+                          bucket={buckets[filter.id]}
+                          type={filter.id as any}
+                          relay={this.state.relay}
+                          cityName={cityName}
+                        />
+                      )
+                  }
+                })()}
+              </ScrollView>
+            </Box>
+          </>
         </Theme>
       )
     )
   }
 }
-
-// <ScrollView
-//   contentInset={{ bottom: bottomInset }}
-//   onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
-//   scrollEnabled={isDrawerOpen}
-//   ref={r => {
-//     if (r) {
-//       this.scrollView = r as any
-//     }
-//   }}
-// >
-
-// </ScrollView>
 
 const Handle = styled.View`
   width: 40px;

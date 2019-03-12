@@ -44,7 +44,7 @@ const PressReleaseContainer = styled(Flex)`
 @screenTrack<Props>(
   props =>
     ({
-      context_screen: Schema.PageNames.FairBMWArtActivationPage,
+      context_screen: Schema.PageNames.BMWFairActivation,
       context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
       context_screen_owner_slug: props.fair.id,
       context_screen_owner_id: props.fair._id,
@@ -84,7 +84,7 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
 
   renderItemSeparator = () => <Box py={3} px={2} />
 
-  @track(eventProps(Schema.ActionNames.ViewBMWPressRelease))
+  @track(eventProps(Schema.ActionNames.PressRelease))
   handleViewPressRelease(url) {
     SwitchBoard.presentNavigationViewController(this, url)
   }
