@@ -1,13 +1,13 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { CitySavedList_city$ref } from "./CitySavedList_city.graphql";
+import { CitySavedList_me$ref } from "./CitySavedList_me.graphql";
 export type QueryRenderersCitySavedListQueryVariables = {
     readonly citySlug: string;
 };
 export type QueryRenderersCitySavedListQueryResponse = {
-    readonly city: ({
-        readonly " $fragmentRefs": CitySavedList_city$ref;
+    readonly me: ({
+        readonly " $fragmentRefs": CitySavedList_me$ref;
     }) | null;
 };
 export type QueryRenderersCitySavedListQuery = {
@@ -21,15 +21,15 @@ export type QueryRenderersCitySavedListQuery = {
 query QueryRenderersCitySavedListQuery(
   $citySlug: String!
 ) {
-  city(slug: $citySlug) {
-    ...CitySavedList_city
+  me {
+    ...CitySavedList_me
+    __id
   }
 }
 
-fragment CitySavedList_city on City {
-  name
-  sponsoredContent {
-    shows(first: 20, after: "", sort: START_AT_ASC) {
+fragment CitySavedList_me on Me {
+  followsAndSaves {
+    shows(first: 20, city: $citySlug, after: "") {
       edges {
         node {
           id
@@ -77,6 +77,7 @@ fragment CitySavedList_city on City {
       }
     }
   }
+  __id
 }
 */
 
@@ -89,14 +90,13 @@ var v0 = [
     "defaultValue": null
   }
 ],
-v1 = [
-  {
-    "kind": "Variable",
-    "name": "slug",
-    "variableName": "citySlug",
-    "type": "String"
-  }
-],
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "__id",
+  "args": null,
+  "storageKey": null
+},
 v2 = {
   "kind": "ScalarField",
   "alias": null,
@@ -107,18 +107,11 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "type",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
@@ -129,7 +122,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersCitySavedListQuery",
-  "id": "1b1c17f6b98a15b39c907efba4763f8b",
+  "id": "658714bec86f88875c72ab4a9ba81964",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -142,17 +135,18 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "city",
+        "name": "me",
         "storageKey": null,
-        "args": v1,
-        "concreteType": "City",
+        "args": null,
+        "concreteType": "Me",
         "plural": false,
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "CitySavedList_city",
+            "name": "CitySavedList_me",
             "args": null
-          }
+          },
+          v1
         ]
       }
     ]
@@ -165,27 +159,26 @@ return {
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "city",
+        "name": "me",
         "storageKey": null,
-        "args": v1,
-        "concreteType": "City",
+        "args": null,
+        "concreteType": "Me",
         "plural": false,
         "selections": [
-          v2,
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "sponsoredContent",
+            "name": "followsAndSaves",
             "storageKey": null,
             "args": null,
-            "concreteType": "CitySponsoredContent",
+            "concreteType": "FollowsAndSaves",
             "plural": false,
             "selections": [
               {
                 "kind": "LinkedField",
                 "alias": null,
                 "name": "shows",
-                "storageKey": "shows(after:\"\",first:20,sort:\"START_AT_ASC\")",
+                "storageKey": null,
                 "args": [
                   {
                     "kind": "Literal",
@@ -194,19 +187,19 @@ return {
                     "type": "String"
                   },
                   {
+                    "kind": "Variable",
+                    "name": "city",
+                    "variableName": "citySlug",
+                    "type": "String"
+                  },
+                  {
                     "kind": "Literal",
                     "name": "first",
                     "value": 20,
                     "type": "Int"
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "sort",
-                    "value": "START_AT_ASC",
-                    "type": "PartnerShowSorts"
                   }
                 ],
-                "concreteType": "ShowConnection",
+                "concreteType": "FollowedShowConnection",
                 "plural": false,
                 "selections": [
                   {
@@ -215,7 +208,7 @@ return {
                     "name": "edges",
                     "storageKey": null,
                     "args": null,
-                    "concreteType": "ShowEdge",
+                    "concreteType": "FollowedShowEdge",
                     "plural": true,
                     "selections": [
                       {
@@ -241,7 +234,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v3,
+                          v1,
                           v2,
                           {
                             "kind": "ScalarField",
@@ -323,10 +316,10 @@ return {
                                   }
                                 ]
                               },
-                              v3
+                              v1
                             ]
                           },
-                          v4,
+                          v3,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -350,8 +343,8 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
-                              v5,
-                              v3,
+                              v4,
+                              v1,
                               {
                                 "kind": "InlineFragment",
                                 "type": "ExternalPartner",
@@ -364,12 +357,12 @@ return {
                                 "type": "Partner",
                                 "selections": [
                                   v2,
-                                  v4
+                                  v3
                                 ]
                               }
                             ]
                           },
-                          v5
+                          v4
                         ]
                       },
                       {
@@ -420,31 +413,32 @@ return {
                     "type": "String"
                   },
                   {
+                    "kind": "Variable",
+                    "name": "city",
+                    "variableName": "citySlug",
+                    "type": "String"
+                  },
+                  {
                     "kind": "Literal",
                     "name": "first",
                     "value": 20,
                     "type": "Int"
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "sort",
-                    "value": "START_AT_ASC",
-                    "type": "PartnerShowSorts"
                   }
                 ],
                 "handle": "connection",
                 "key": "CitySavedList_shows",
                 "filters": [
-                  "sort"
+                  "city"
                 ]
               }
             ]
-          }
+          },
+          v1
         ]
       }
     ]
   }
 };
 })();
-(node as any).hash = '16d2285fac72ec906988398f7cb43674';
+(node as any).hash = 'a065a7bc66cdb0d60d63baa90ae28c25';
 export default node;

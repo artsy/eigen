@@ -1,5 +1,5 @@
 import { Box, Theme } from "@artsy/palette"
-import { CitySavedList_city } from "__generated__/CitySavedList_city.graphql"
+import { CitySavedList_me } from "__generated__/CitySavedList_me.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import React from "react"
@@ -7,7 +7,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import { EventList } from "./Components/EventList"
 
 interface Props {
-  city: CitySavedList_city
+  me: CitySavedList_me
   relay: RelayPaginationProp
 }
 
@@ -38,27 +38,27 @@ class CitySavedList extends React.Component<Props, State> {
 
   render() {
     const {
-      city: {
-        name,
-        sponsoredContent: { shows },
+      me: {
+        followsAndSaves: {
+          shows: { edges },
+        },
       },
       relay,
     } = this.props
+    console.log("this props ?????", this.props)
     const { fetchingNextPage } = this.state
     return (
       <Theme>
-        <Box pt={6}>
-          <EventList
-            header="Saved shows"
-            key={name + "save"}
-            cityName={name}
-            bucket={shows.edges.map(e => e.node) as any}
-            type={"saved"}
-            relay={relay}
-            onScroll={isCloseToBottom(this.fetchData)}
-            fetchingNextPage={fetchingNextPage}
-          />
-        </Box>
+        <EventList
+          header="Saved shows"
+          key={"??" + "save"}
+          cityName={"??"}
+          bucket={edges.map(e => e.node) as any}
+          type="saved"
+          relay={relay}
+          onScroll={isCloseToBottom(this.fetchData)}
+          fetchingNextPage={fetchingNextPage}
+        />
       </Theme>
     )
   }
@@ -67,12 +67,12 @@ class CitySavedList extends React.Component<Props, State> {
 export default createPaginationContainer(
   CitySavedList,
   {
-    city: graphql`
-      fragment CitySavedList_city on City
+    me: graphql`
+      fragment CitySavedList_me on Me
         @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
-        name
-        sponsoredContent {
-          shows(first: $count, after: $cursor, sort: START_AT_ASC) @connection(key: "CitySavedList_shows") {
+        followsAndSaves {
+          shows(first: $count, status: CURRENT, city: $citySlug, after: $cursor)
+            @connection(key: "CitySavedList_shows") {
             edges {
               node {
                 id
@@ -114,7 +114,7 @@ export default createPaginationContainer(
   {
     direction: "forward",
     getConnectionFromProps(props) {
-      return props.city && props.city.sponsoredContent && props.city.sponsoredContent.shows
+      return props.me && props.me.followsAndSaves && props.me.followsAndSaves.shows
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -132,8 +132,8 @@ export default createPaginationContainer(
     },
     query: graphql`
       query CitySavedListQuery($count: Int!, $cursor: String, $citySlug: String!) {
-        city(slug: $citySlug) {
-          ...CitySavedList_city @arguments(count: $count, cursor: $cursor)
+        me {
+          ...CitySavedList_me @arguments(city: $citySlug, count: $count, cursor: $cursor)
         }
       }
     `,

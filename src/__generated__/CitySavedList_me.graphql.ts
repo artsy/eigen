@@ -1,11 +1,10 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-declare const _CitySavedList_city$ref: unique symbol;
-export type CitySavedList_city$ref = typeof _CitySavedList_city$ref;
-export type CitySavedList_city = {
-    readonly name: string | null;
-    readonly sponsoredContent: ({
+declare const _CitySavedList_me$ref: unique symbol;
+export type CitySavedList_me$ref = typeof _CitySavedList_me$ref;
+export type CitySavedList_me = {
+    readonly followsAndSaves: ({
         readonly shows: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
@@ -37,7 +36,7 @@ export type CitySavedList_city = {
             }) | null> | null;
         }) | null;
     }) | null;
-    readonly " $refType": CitySavedList_city$ref;
+    readonly " $refType": CitySavedList_me$ref;
 };
 
 
@@ -46,14 +45,14 @@ const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
@@ -66,8 +65,8 @@ v2 = {
 };
 return {
   "kind": "Fragment",
-  "name": "CitySavedList_city",
-  "type": "City",
+  "name": "CitySavedList_me",
+  "type": "Me",
   "metadata": {
     "connection": [
       {
@@ -75,7 +74,7 @@ return {
         "cursor": "cursor",
         "direction": "forward",
         "path": [
-          "sponsoredContent",
+          "followsAndSaves",
           "shows"
         ]
       }
@@ -93,33 +92,37 @@ return {
       "name": "cursor",
       "type": "String",
       "defaultValue": ""
+    },
+    {
+      "kind": "RootArgument",
+      "name": "citySlug",
+      "type": "String"
     }
   ],
   "selections": [
-    v0,
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "sponsoredContent",
+      "name": "followsAndSaves",
       "storageKey": null,
       "args": null,
-      "concreteType": "CitySponsoredContent",
+      "concreteType": "FollowsAndSaves",
       "plural": false,
       "selections": [
         {
           "kind": "LinkedField",
           "alias": "shows",
           "name": "__CitySavedList_shows_connection",
-          "storageKey": "__CitySavedList_shows_connection(sort:\"START_AT_ASC\")",
+          "storageKey": null,
           "args": [
             {
-              "kind": "Literal",
-              "name": "sort",
-              "value": "START_AT_ASC",
-              "type": "PartnerShowSorts"
+              "kind": "Variable",
+              "name": "city",
+              "variableName": "citySlug",
+              "type": "String"
             }
           ],
-          "concreteType": "ShowConnection",
+          "concreteType": "FollowedShowConnection",
           "plural": false,
           "selections": [
             {
@@ -128,7 +131,7 @@ return {
               "name": "edges",
               "storageKey": null,
               "args": null,
-              "concreteType": "ShowEdge",
+              "concreteType": "FollowedShowEdge",
               "plural": true,
               "selections": [
                 {
@@ -154,8 +157,8 @@ return {
                       "args": null,
                       "storageKey": null
                     },
-                    v1,
                     v0,
+                    v1,
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -236,7 +239,7 @@ return {
                             }
                           ]
                         },
-                        v1
+                        v0
                       ]
                     },
                     v2,
@@ -263,19 +266,19 @@ return {
                       "concreteType": null,
                       "plural": false,
                       "selections": [
-                        v1,
+                        v0,
                         {
                           "kind": "InlineFragment",
                           "type": "ExternalPartner",
                           "selections": [
-                            v0
+                            v1
                           ]
                         },
                         {
                           "kind": "InlineFragment",
                           "type": "Partner",
                           "selections": [
-                            v0,
+                            v1,
                             v2
                           ]
                         }
@@ -327,9 +330,10 @@ return {
           ]
         }
       ]
-    }
+    },
+    v0
   ]
 };
 })();
-(node as any).hash = '310f44a30f6bfb2f8a2c1936415c55df';
+(node as any).hash = '7017ffe2b7b32fbc9f93ccbd03beb445';
 export default node;

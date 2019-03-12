@@ -492,8 +492,8 @@ export const CitySavedListRenderer: React.SFC<CitySavedListProps> = ({ render, c
       environment={environment}
       query={graphql`
         query QueryRenderersCitySavedListQuery($citySlug: String!) {
-          city(slug: $citySlug) {
-            ...CitySavedList_city
+          me {
+            ...CitySavedList_me
           }
         }
       `}
