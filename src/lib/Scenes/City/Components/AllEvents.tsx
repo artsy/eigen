@@ -1,4 +1,4 @@
-import { Box, Separator, Serif } from "@artsy/palette"
+import { Box, Separator, Serif, Spacer } from "@artsy/palette"
 import { EventSection } from "lib/Scenes/City/Components/EventSection"
 import { BucketResults } from "lib/Scenes/Map/bucketCityResults"
 import { isEqual } from "lodash"
@@ -202,6 +202,7 @@ export class AllEvents extends React.Component<Props, State> {
           keyExtractor={item => item.type}
           renderItem={item => this.renderItem(item)}
           scrollEnabled={false}
+          ListFooterComponent={() => <Spacer mb={2} />}
         />
       </Box>
     )
