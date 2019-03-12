@@ -46,6 +46,37 @@ export type GlobalMap_viewer = {
             readonly lat: number | null;
             readonly lng: number | null;
         }) | null;
+        readonly upcomingShows: ({
+            readonly edges: ReadonlyArray<({
+                readonly node: ({
+                    readonly id: string;
+                    readonly _id: string;
+                    readonly __id: string;
+                    readonly isStubShow: boolean | null;
+                    readonly name: string | null;
+                    readonly status: string | null;
+                    readonly href: string | null;
+                    readonly is_followed: boolean | null;
+                    readonly exhibition_period: string | null;
+                    readonly cover_image: ({
+                        readonly url: string | null;
+                    }) | null;
+                    readonly location: ({
+                        readonly coordinates: ({
+                            readonly lat: number | null;
+                            readonly lng: number | null;
+                        }) | null;
+                    }) | null;
+                    readonly type: string | null;
+                    readonly start_at: string | null;
+                    readonly end_at: string | null;
+                    readonly partner: ({
+                        readonly name?: string | null;
+                        readonly type?: string | null;
+                    }) | null;
+                }) | null;
+            }) | null> | null;
+        }) | null;
         readonly shows: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
@@ -129,62 +160,68 @@ var v0 = {
   "storageKey": null
 },
 v1 = {
+  "kind": "Literal",
+  "name": "sort",
+  "value": "START_AT_ASC",
+  "type": "PartnerShowSorts"
+},
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "exhibition_period",
   "args": null,
   "storageKey": null
 },
-v2 = {
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v3 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
   "args": null,
   "storageKey": null
 },
-v4 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "status",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v6 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_followed",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v8 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "_id",
   "args": null,
   "storageKey": null
 },
-v8 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
   "args": null,
   "storageKey": null
 },
-v9 = {
+v10 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "cover_image",
@@ -193,10 +230,10 @@ v9 = {
   "concreteType": "Image",
   "plural": false,
   "selections": [
-    v8
+    v9
   ]
 },
-v10 = {
+v11 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "coordinates",
@@ -221,7 +258,7 @@ v10 = {
     }
   ]
 },
-v11 = {
+v12 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "location",
@@ -230,32 +267,32 @@ v11 = {
   "concreteType": "Location",
   "plural": false,
   "selections": [
-    v10,
-    v3
+    v11,
+    v4
   ]
 },
-v12 = {
+v13 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
   "args": null,
   "storageKey": null
 },
-v13 = {
+v14 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "start_at",
   "args": null,
   "storageKey": null
 },
-v14 = {
+v15 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "end_at",
   "args": null,
   "storageKey": null
 },
-v15 = {
+v16 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "partner",
@@ -264,23 +301,74 @@ v15 = {
   "concreteType": null,
   "plural": false,
   "selections": [
-    v3,
+    v4,
     {
       "kind": "InlineFragment",
       "type": "Partner",
       "selections": [
         v0,
-        v12
+        v13
       ]
     }
   ]
 },
-v16 = {
+v17 = {
   "kind": "Variable",
   "name": "first",
   "variableName": "maxInt",
   "type": "Int"
-};
+},
+v18 = {
+  "kind": "Literal",
+  "name": "includeStubShows",
+  "value": true,
+  "type": "Boolean"
+},
+v19 = [
+  {
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "edges",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "ShowEdge",
+    "plural": true,
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "node",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Show",
+        "plural": false,
+        "selections": [
+          v7,
+          v3,
+          v4,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isStubShow",
+            "args": null,
+            "storageKey": null
+          },
+          v0,
+          v5,
+          v6,
+          v8,
+          v2,
+          v10,
+          v12,
+          v13,
+          v14,
+          v15,
+          v16
+        ]
+      }
+    ]
+  }
+];
 return {
   "kind": "Fragment",
   "name": "GlobalMap_viewer",
@@ -360,12 +448,7 @@ return {
                   "value": 2,
                   "type": "Int"
                 },
-                {
-                  "kind": "Literal",
-                  "name": "sort",
-                  "value": "START_AT_ASC",
-                  "type": "PartnerShowSorts"
-                }
+                v1
               ],
               "concreteType": "ShowConnection",
               "plural": false,
@@ -395,20 +478,20 @@ return {
                       "concreteType": "Show",
                       "plural": false,
                       "selections": [
-                        v1,
                         v2,
                         v3,
-                        v0,
                         v4,
+                        v0,
                         v5,
                         v6,
                         v7,
-                        v9,
-                        v11,
+                        v8,
+                        v10,
                         v12,
                         v13,
                         v14,
-                        v15
+                        v15,
+                        v16
                       ]
                     }
                   ]
@@ -417,20 +500,41 @@ return {
             }
           ]
         },
-        v10,
+        v11,
+        {
+          "kind": "LinkedField",
+          "alias": "upcomingShows",
+          "name": "shows",
+          "storageKey": null,
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "dayThreshold",
+              "value": 30,
+              "type": "Int"
+            },
+            v17,
+            v18,
+            v1,
+            {
+              "kind": "Literal",
+              "name": "status",
+              "value": "UPCOMING",
+              "type": "EventStatus"
+            }
+          ],
+          "concreteType": "ShowConnection",
+          "plural": false,
+          "selections": v19
+        },
         {
           "kind": "LinkedField",
           "alias": null,
           "name": "shows",
           "storageKey": null,
           "args": [
-            v16,
-            {
-              "kind": "Literal",
-              "name": "includeStubShows",
-              "value": true,
-              "type": "Boolean"
-            },
+            v17,
+            v18,
             {
               "kind": "Literal",
               "name": "sort",
@@ -446,51 +550,7 @@ return {
           ],
           "concreteType": "ShowConnection",
           "plural": false,
-          "selections": [
-            {
-              "kind": "LinkedField",
-              "alias": null,
-              "name": "edges",
-              "storageKey": null,
-              "args": null,
-              "concreteType": "ShowEdge",
-              "plural": true,
-              "selections": [
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "node",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Show",
-                  "plural": false,
-                  "selections": [
-                    v6,
-                    v2,
-                    v3,
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "isStubShow",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    v0,
-                    v4,
-                    v5,
-                    v7,
-                    v1,
-                    v9,
-                    v11,
-                    v12,
-                    v13,
-                    v14,
-                    v15
-                  ]
-                }
-              ]
-            }
-          ]
+          "selections": v19
         },
         {
           "kind": "LinkedField",
@@ -498,7 +558,7 @@ return {
           "name": "fairs",
           "storageKey": null,
           "args": [
-            v16,
+            v17,
             {
               "kind": "Literal",
               "name": "sort",
@@ -533,9 +593,9 @@ return {
                   "concreteType": "Fair",
                   "plural": false,
                   "selections": [
-                    v2,
+                    v3,
                     v0,
-                    v1,
+                    v2,
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -554,7 +614,7 @@ return {
                         }
                       ]
                     },
-                    v11,
+                    v12,
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -578,7 +638,7 @@ return {
                           "args": null,
                           "storageKey": null
                         },
-                        v8
+                        v9
                       ]
                     },
                     {
@@ -599,8 +659,8 @@ return {
                           "concreteType": "Image",
                           "plural": false,
                           "selections": [
-                            v2,
-                            v5,
+                            v3,
+                            v6,
                             {
                               "kind": "ScalarField",
                               "alias": null,
@@ -631,14 +691,14 @@ return {
                             }
                           ]
                         },
+                        v4,
                         v3,
-                        v2,
                         v0
                       ]
                     },
-                    v13,
                     v14,
-                    v3
+                    v15,
+                    v4
                   ]
                 }
               ]
@@ -650,5 +710,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '5658de84a7de40e09db602f38ff3c082';
+(node as any).hash = '90e16c598d8859b8d1b9747f992c1de0';
 export default node;

@@ -196,13 +196,15 @@ export class AllEvents extends React.Component<Props, State> {
   render() {
     const { sections } = this.state
     return (
-      <FlatList
-        data={sections}
-        ItemSeparatorComponent={this.renderItemSeparator}
-        keyExtractor={item => item.type}
-        renderItem={item => this.renderItem(item)}
-        scrollEnabled={false}
-      />
+      <Box pb={2}>
+        <FlatList
+          data={sections}
+          ItemSeparatorComponent={this.renderItemSeparator}
+          keyExtractor={item => item.type}
+          renderItem={item => this.renderItem(item)}
+          scrollEnabled={false}
+        />
+      </Box>
     )
   }
 }
