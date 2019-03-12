@@ -23,8 +23,6 @@ const Background = styled(Box)`
   border-radius: 2px;
 `
 
-const screenWidth = Dimensions.get("window").width
-
 interface ShowCardProps {
   relay: RelayProp
   shows: ShowItemRow_show[]
