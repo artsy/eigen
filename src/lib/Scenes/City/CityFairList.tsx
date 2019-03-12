@@ -1,4 +1,4 @@
-import { Box, Separator, Theme } from "@artsy/palette"
+import { Box, Separator, Serif, Theme } from "@artsy/palette"
 import { CityFairList_city } from "__generated__/CityFairList_city.graphql"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
@@ -51,8 +51,15 @@ class CityFairList extends React.Component<Props, State> {
     const { fetchingNextPage } = this.state
     return (
       <Theme>
-        <Box px={2} pt={6}>
+        <Box mx={2}>
           <FlatList
+            ListHeaderComponent={() => {
+              return (
+                <Box pt={6} mt={3} mb={2}>
+                  <Serif size="8">Fairs</Serif>
+                </Box>
+              )
+            }}
             data={edges}
             ItemSeparatorComponent={() => <Separator />}
             keyExtractor={item => item.node.id}
