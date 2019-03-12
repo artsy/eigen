@@ -54,6 +54,7 @@
 - Adds styling on single map points and clusters to indicate selection - ashley
 - Adds pre-heated GraphQL cache ability, with just City cache for now - alloy
 - Adds freshness to GraphQL pre-heated cache after which it won’t be used anymore, which is 1 month for City - alloy
+- Updates is_local_discovery to isStubShow to conditionally disable Partner page navigation - ashley
 
 ### 1.8.14
 
