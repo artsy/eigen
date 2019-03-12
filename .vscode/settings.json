@@ -68,5 +68,6 @@
   "typescript.format.enable": false,
   "[json]": {
     "editor.formatOnSave": false
-  }
+  },
+  "javascript.validate.enable": true
 }
