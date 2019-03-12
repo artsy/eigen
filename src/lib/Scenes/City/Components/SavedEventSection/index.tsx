@@ -43,7 +43,7 @@ export class SavedEventSection extends Component<any> {
               No saved events
             </Sans>
             <Sans size="3t" color="black60">
-              Save a show or fair to find it later
+              Save a show to find it later
             </Sans>
           </Flex>
         </Flex>
