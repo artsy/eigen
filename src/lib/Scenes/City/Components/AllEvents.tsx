@@ -1,6 +1,6 @@
 import { Box, Separator, Serif } from "@artsy/palette"
 import { EventSection } from "lib/Scenes/City/Components/EventSection"
-import { BucketKey, BucketResults } from "lib/Scenes/Map/bucketCityResults"
+import { BucketResults } from "lib/Scenes/Map/bucketCityResults"
 import { isEqual } from "lodash"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
@@ -10,7 +10,6 @@ import { FairEventSection } from "./FairEventSection"
 import { SavedEventSection } from "./SavedEventSection"
 
 interface Props extends ViewProperties {
-  currentBucket: BucketKey
   buckets: BucketResults
   cityName: string
   citySlug: string
@@ -202,6 +201,7 @@ export class AllEvents extends React.Component<Props, State> {
         keyExtractor={item => item.type}
         renderItem={item => this.renderItem(item)}
         scrollEnabled={false}
+        style={{ flex: 1 }}
       />
     )
   }
