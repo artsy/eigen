@@ -1,7 +1,7 @@
 upcoming:
   version: 4.4.1
   date: TBD
-  emission_version: 1.8.12
+  emission_version: 1.8.19
   dev:
     - Use posts for auth requests - orta
     - Uses echo to manage showing the show guides tab - orta
