@@ -58,11 +58,11 @@ jobs:
 
       - run:
           name: Install CocoaPods Specs If Necessary
-          command: yarn ci:skip-native-if-possible || cd Example && bundle exec pod check --ignore-dev-pods || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+          command: yarn ci:skip-native-if-possible || { cd Example ; bundle exec pod check --ignore-dev-pods || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf }
 
       - run:
           name: Install CocoaPods If Necessary
-          command: yarn ci:skip-native-if-possible || cd Example && bundle exec pod check --ignore-dev-pods || bundle exec pod install
+          command: yarn ci:skip-native-if-possible || { cd Example ; bundle exec pod check --ignore-dev-pods || bundle exec pod install }
 
       - save_cache:
           key: v9-pods-{{ checksum "Example/Pods/Pods.xcodeproj/project.pbxproj" }}
@@ -79,7 +79,7 @@ jobs:
 
       - run:
           name: Run Unit Tests
-          command: yarn ci:skip-native-if-possible || cd Example && set -o pipefail && xcodebuild -workspace Emission.xcworkspace -scheme "Emission Example" -configuration Debug test -sdk iphonesimulator -destination "platform=iOS Simulator,OS=10.3.1,name=iPhone 6" GCC_PREPROCESSOR_DEFINITIONS="\$GCC_PREPROCESSOR_DEFINITIONS RUNNING_ON_CI=1" | tee /tmp/xcode_test_raw.log | xcpretty -c --test --report junit --output /tmp/test_results/xcode/results.xml
+          command: yarn ci:skip-native-if-possible || { cd Example ; set -o pipefail && xcodebuild -workspace Emission.xcworkspace -scheme "Emission Example" -configuration Debug test -sdk iphonesimulator -destination "platform=iOS Simulator,OS=10.3.1,name=iPhone 6" GCC_PREPROCESSOR_DEFINITIONS="\$GCC_PREPROCESSOR_DEFINITIONS RUNNING_ON_CI=1" | tee /tmp/xcode_test_raw.log | xcpretty -c --test --report junit --output /tmp/test_results/xcode/results.xml }
 
       - store_test_results:
           path: /tmp/test_results/
