@@ -16,7 +16,6 @@
 
 ### Master
 
-
 - Fixes city section lists being empty - ash
 - Fixes safe area insets missing error on pre-iOS 11 devices - ash
 - Don't allow the map to rotate - orta
@@ -54,6 +53,7 @@
 - Fixes map background sizing - luc
 - Adds styling on single map points and clusters to indicate selection - ashley
 - Adds pre-heated GraphQL cache ability, with just City cache for now - alloy
+- Adds freshness to GraphQL pre-heated cache after which it won’t be used anymore, which is 1 month for City - alloy
 
 ### 1.8.14
 
