@@ -23,4 +23,7 @@
 /// Is the app running tests?
 + (BOOL)isRunningTests;
 
+/// Do they have an artsymail email?
++ (BOOL)isAdmin;
+
 @end

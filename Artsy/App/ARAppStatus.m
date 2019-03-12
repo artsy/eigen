@@ -37,14 +37,16 @@
     return [self isDev] || [self isBeta];
 }
 
-+ (BOOL)isBetaDevOrAdmin;
++ (BOOL)isAdmin;
 {
-    if ([self isBetaOrDev]) {
-        return YES;
-    }
     NSString *email = [User currentUser].email;
     BOOL isArtsyEmail = [email hasSuffix:@"@artsymail.com"] || [email hasSuffix:@"@artsy.net"];
     return isArtsyEmail;
+}
+
++ (BOOL)isBetaDevOrAdmin;
+{
+    return [self isBetaOrDev] || [self isAdmin];
 }
 
 + (BOOL)isDemo;
