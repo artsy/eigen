@@ -95,7 +95,7 @@ interface State {
   mapLoaded: boolean
   isSavingShow: boolean
   /** Cluster map data used to populate selected cluster annotation */
-  nearestFeature: object
+  nearestFeature: MapGeoFeature
   /** Cluster map data used currently in view window */
   activePin: MapGeoFeature
 }
@@ -378,10 +378,10 @@ export class GlobalMap extends React.Component<Props, State> {
 
     if (cluster) {
       const { nearestFeature } = this.state
-      const clusterLat = get(nearestFeature, "geometry.coordinates[0]")
-      const clusterLng = get(nearestFeature, "geometry.coordinates[1]")
-      const clusterId = get(nearestFeature, "properties.cluster_id", "").toString()
-      let pointCount = get(nearestFeature, "properties.point_count", "")
+      const clusterLat = nearestFeature.geometry.coordinates[0]
+      const clusterLng = nearestFeature.geometry.coordinates[1]
+      const clusterId = nearestFeature.properties.cluster_id.toString()
+      let pointCount = nearestFeature.properties.point_count
       const width = pointCount < 3 ? 38 : pointCount < 21 ? 45 : 60
       const height = pointCount < 3 ? 38 : pointCount < 21 ? 45 : 60
       pointCount = pointCount.toString()
@@ -401,34 +401,28 @@ export class GlobalMap extends React.Component<Props, State> {
         )
       )
     }
+    const lat = activeShows[0].location.coordinates.lat
+    const lng = activeShows[0].location.coordinates.lng
+    const id = activeShows[0].id
 
     if (type === "Fair") {
-      const lat = get(activeShows, "[0].location.coordinates.lat")
-      const lng = get(activeShows, "[0].location.coordinates.lng")
-      const fairID = get(activeShows, "[0].id")
-
       return (
         lat &&
         lng &&
-        fairID && (
-          <Mapbox.PointAnnotation key={fairID} id={fairID} coordinate={[lng, lat]}>
+        id && (
+          <Mapbox.PointAnnotation key={id} id={id} coordinate={[lng, lat]}>
             <PinFairSelected />
           </Mapbox.PointAnnotation>
         )
       )
-    }
-
-    if (type === "Show") {
-      const lat = get(activeShows, "[0].location.coordinates.lat")
-      const lng = get(activeShows, "[0].location.coordinates.lng")
-      const showId = get(activeShows, "[0].id")
-      const isSaved = get(activeShows, "[0].is_followed")
+    } else if (type === "Show") {
+      const isSaved = (activeShows[0] as Show).is_followed
 
       return (
         lat &&
         lng &&
-        showId && (
-          <Mapbox.PointAnnotation key={showId} id={showId} selected={true} coordinate={[lng, lat]}>
+        id && (
+          <Mapbox.PointAnnotation key={id} id={id} selected={true} coordinate={[lng, lat]}>
             {isSaved ? (
               <PinSavedSelected pinHeight={45} pinWidth={45} />
             ) : (
