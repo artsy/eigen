@@ -1,3 +1,4 @@
+import { Theme } from "@artsy/palette"
 import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
@@ -45,16 +46,34 @@ class CitySectionList extends React.Component<Props, State> {
       relay,
     } = this.props
     const { fetchingNextPage } = this.state
+    let headerText
+    switch (section) {
+      case "galleries":
+        headerText = "Gallery shows"
+        break
+      case "museums":
+        headerText = "Museum shows"
+        break
+      case "closing":
+        headerText = "Closing soon"
+        break
+      case "opening":
+        headerText = "Opening soon"
+        break
+    }
     return (
-      <EventList
-        key={name + section}
-        cityName={name}
-        bucket={shows.edges.map(e => e.node) as any}
-        type={section}
-        relay={relay}
-        onScroll={isCloseToBottom(this.fetchData)}
-        fetchingNextPage={fetchingNextPage}
-      />
+      <Theme>
+        <EventList
+          key={name + section}
+          cityName={name}
+          header={headerText}
+          bucket={shows.edges.map(e => e.node) as any}
+          type={section}
+          relay={relay}
+          onScroll={isCloseToBottom(this.fetchData)}
+          fetchingNextPage={fetchingNextPage}
+        />
+      </Theme>
     )
   }
 }

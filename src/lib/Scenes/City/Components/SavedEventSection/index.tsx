@@ -24,9 +24,9 @@ export class SavedEventSection extends Component<any> {
       <TouchableWithoutFeedback onPress={this.handleTap}>
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
           <Flex flexDirection="row" alignItems="center">
-            <PinSavedOn width={30} height={30} />
+            <PinSavedOn pinWidth={30} pinHeight={30} />
             <Sans size="3t" weight="medium" ml={24}>
-              {data.length} saved events
+              {data.length > 1 ? data.length + " saved events" : data.length + " saved event"}
             </Sans>
           </Flex>
           <ChevronIcon color="black" />
