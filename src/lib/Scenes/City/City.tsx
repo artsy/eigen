@@ -1,11 +1,10 @@
 import { color, Flex, Theme } from "@artsy/palette"
-import { ScrollableTab } from "lib/Components/ScrollableTabBar"
+import ScrollableTabBar, { ScrollableTab } from "lib/Components/ScrollableTabBar"
 import { Schema, screenTrack } from "lib/utils/track"
 import React, { Component } from "react"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 
-import TabBar from "lib/Components/TabBar"
-import { NativeModules } from "react-native"
+import { NativeModules, View } from "react-native"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { BucketResults } from "../Map/bucketCityResults"
@@ -149,9 +148,9 @@ export class CityView extends Component<Props, State> {
                 initialPage={this.props.initialTab || AllCityMetaTab}
                 onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
                 renderTabBar={props => (
-                  <>
-                    <TabBar {...props} />
-                  </>
+                  <View>
+                    <ScrollableTabBar {...props} />
+                  </View>
                 )}
                 onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
                 // These are the ScrollView props for inside the scrollable tab view
