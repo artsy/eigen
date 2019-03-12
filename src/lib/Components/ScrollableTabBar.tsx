@@ -1,10 +1,7 @@
-import { color, Flex } from "@artsy/palette"
+import { color, Flex, Sans } from "@artsy/palette"
 import React from "react"
 import { Animated, Dimensions, LayoutRectangle, ScrollView, View } from "react-native"
 import styled from "styled-components/native"
-
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
 
 export interface Tab {
   id: string
@@ -25,7 +22,8 @@ const Button = styled.TouchableWithoutFeedback`
 const Tabs = styled.ScrollView`
   height: 50px;
   flex-direction: row;
-  border-color: ${colors["gray-medium"]};
+  border-bottom-width: 1px;
+  border-color: ${color("black10")};
 `
 
 const TabButton = styled(Flex)<{ active: boolean }>`
@@ -46,15 +44,8 @@ interface ScrollableTabProps {
   tabLabel: string
 }
 
-interface ScrollableTabLabelProps {
-  active: boolean
-}
-
-const TabLabel: any = styled.Text`
-  font-family: ${fonts["unica77ll-regular"]};
-  font-size: 13px;
-  text-align: center;
-  color: ${(props: ScrollableTabLabelProps) => (props.active ? "black" : colors["gray-medium"])};
+const TabLabel = styled(Sans)<{ isActive: boolean }>`
+  color: ${p => (p.isActive ? color("black100") : color("black30"))};
 `
 
 export const ScrollableTab: React.SFC<ScrollableTabProps> = ({ children }) => (
@@ -92,7 +83,9 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
         }}
       >
         <TabButton active={isTabActive}>
-          <TabLabel active={isTabActive}>{name}</TabLabel>
+          <TabLabel size="3" isActive={isTabActive}>
+            {name}
+          </TabLabel>
         </TabButton>
       </Button>
     )
@@ -114,14 +107,6 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
   }
 
   render() {
-    const containerWidth = this.props.containerWidth
-    const numberOfTabs = this.props.tabs.length
-
-    const translateX = this.props.scrollValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, containerWidth / numberOfTabs],
-    })
-
     return (
       <Tabs
         ref={(r: any) => {
@@ -140,22 +125,6 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
           const isTabActive = this.props.activeTab === page
           return this.renderTab(name, page, isTabActive, this.props.goToPage)
         })}
-        <Animated.View
-          style={[
-            {
-              position: "absolute",
-              width: containerWidth / numberOfTabs,
-              height: 1,
-              backgroundColor: "black",
-              bottom: -1,
-              left: 0,
-              right: 0,
-            },
-            {
-              transform: [{ translateX }],
-            },
-          ]}
-        />
       </Tabs>
     )
   }
