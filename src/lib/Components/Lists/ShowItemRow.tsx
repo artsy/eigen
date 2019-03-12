@@ -147,15 +147,6 @@ export class ShowItemRow extends React.Component<Props, State> {
                   </Sans>
                 )}
             </Flex>
-            <Flex flexDirection="row">
-              <InvertedButton
-                inProgress={this.state.isFollowedSaving}
-                text={show.is_followed ? "Saved" : "Save"}
-                selected={show.is_followed}
-                onPress={() => this.handleSave()}
-                noBackground={true}
-              />
-            </Flex>
           </Flex>
         </Box>
       </TouchableWithoutFeedback>
