@@ -1,5 +1,5 @@
-import { Box, Theme } from "@artsy/palette"
-import { CitySavedList_me } from "__generated__/CitySavedList_me.graphql"
+import { Theme } from "@artsy/palette"
+import { CitySavedList_viewer } from "__generated__/CitySavedList_viewer.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import React from "react"
@@ -7,7 +7,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import { EventList } from "./Components/EventList"
 
 interface Props {
-  me: CitySavedList_me
+  viewer: CitySavedList_viewer
   relay: RelayPaginationProp
 }
 
@@ -38,21 +38,23 @@ class CitySavedList extends React.Component<Props, State> {
 
   render() {
     const {
-      me: {
-        followsAndSaves: {
-          shows: { edges },
+      viewer: {
+        me: {
+          followsAndSaves: {
+            shows: { edges },
+          },
         },
+        city: { name },
       },
       relay,
     } = this.props
-    console.log("this props ?????", this.props)
+    console.log("this.props", this.props)
     const { fetchingNextPage } = this.state
     return (
       <Theme>
         <EventList
           header="Saved shows"
-          key={"??" + "save"}
-          cityName={"??"}
+          cityName={name}
           bucket={edges.map(e => e.node) as any}
           type="saved"
           relay={relay}
@@ -66,10 +68,13 @@ class CitySavedList extends React.Component<Props, State> {
 
 export default createPaginationContainer(
   CitySavedList,
-  {
-    me: graphql`
-      fragment CitySavedList_me on Me
-        @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
+  graphql`
+    fragment CitySavedList_viewer on Viewer
+      @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
+      city(slug: $citySlug) {
+        name
+      }
+      me {
         followsAndSaves {
           shows(first: $count, status: CURRENT, city: $citySlug, after: $cursor)
             @connection(key: "CitySavedList_shows") {
@@ -109,8 +114,8 @@ export default createPaginationContainer(
           }
         }
       }
-    `,
-  },
+    }
+  `,
   {
     direction: "forward",
     getConnectionFromProps(props) {
