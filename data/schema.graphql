@@ -6656,6 +6656,7 @@ enum PartnerShowSorts {
   PUBLISH_AT_DESC
   START_AT_ASC
   START_AT_DESC
+  PARTNER_ASC
 }
 
 enum PartnersSortType {
