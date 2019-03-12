@@ -146,13 +146,27 @@
     
     self.nameField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     self.nameField.returnKeyType = UIReturnKeyNext;
-    
+
+    if (@available(iOS 10.0, *)) {
+        self.nameField.textContentType = UITextContentTypeName;
+    }
+
     self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
     self.emailField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.emailField.returnKeyType = UIReturnKeyNext;
-    
+
+    if (@available(iOS 10.0, *)) {
+        self.emailField.textContentType = UITextContentTypeEmailAddress;
+    }
+
     self.passwordField.returnKeyType = UIReturnKeyNext;
     self.passwordField.secureTextEntry = YES;
+
+    if (@available(iOS 12.0, *)) {
+        self.passwordField.textContentType = UITextContentTypeNewPassword;
+    } else if (@available(iOS 11.0, *)) {
+        self.passwordField.textContentType = UITextContentTypePassword;
+    }
 }
 
 - (void)toggleShowPassword:(id)sender
