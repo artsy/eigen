@@ -108,6 +108,8 @@ Since this controller already has to do the above logic, having it handle the Ci
         self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
         [self.locationManager requestWhenInUseAuthorization];
     }
+    
+    [self updateSafeAreaInsets];
 
     self.bottomSheetVC = [[PulleyViewController alloc] initWithContentViewController:self.mapVC drawerViewController:self.cityVC];
     self.bottomSheetVC.animationDuration = 0.35;
@@ -119,6 +121,12 @@ Since this controller already has to do the above logic, having it handle the Ci
     [self.bottomSheetVC willMoveToParentViewController:self];
     [self addChildViewController:self.bottomSheetVC];
     [self.bottomSheetVC didMoveToParentViewController:self];
+}
+
+-(void)viewSafeAreaInsetsDidChange
+{
+    [super viewSafeAreaInsetsDidChange];
+    [self updateSafeAreaInsets];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -223,6 +231,19 @@ Since this controller already has to do the above logic, having it handle the Ci
     [self.bottomSheetVC setDrawerPositionWithPosition:position animated:YES completion:nil];
 }
 
+- (void)updateSafeAreaInsets
+{
+    UIEdgeInsets safeAreaInsets = UIEdgeInsetsZero;
+    if (@available(iOS 11.0, *)) {
+        safeAreaInsets = self.view.safeAreaInsets;
+    }
+    [self.mapVC setProperty:@{ @"top": @(safeAreaInsets.top),
+                               @"bottom": @(safeAreaInsets.bottom),
+                               @"left": @(safeAreaInsets.left),
+                               @"right": @(safeAreaInsets.right) }
+                     forKey:@"safeAreaInsets"];
+}
+
 # pragma mark - PulleyDelegate Methods
 
 - (void)drawerPositionDidChangeWithDrawer:(PulleyViewController *)drawer bottomSafeArea:(CGFloat)bottomSafeArea
@@ -266,6 +287,7 @@ Since this controller already has to do the above logic, having it handle the Ci
     } else if (status == kCLAuthorizationStatusNotDetermined) {
         // nop, don't show city picker.
     } else {
+        
         [self showCityPicker];
     }
 }
@@ -274,6 +296,16 @@ Since this controller already has to do the above logic, having it handle the Ci
 {
     [self userSuppliedLocation:locations.lastObject];
     [manager stopUpdatingLocation];
+}
+
+- (BOOL)shouldAutorotate;
+{
+    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations;
+{
+    return self.shouldAutorotate ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
 @end

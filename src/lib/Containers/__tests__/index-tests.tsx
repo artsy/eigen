@@ -7,6 +7,8 @@ it("should export all components", () => {
   expect(Object.keys(exportsFromIndex)).toEqual([
     "Artist",
     "BidFlow",
+    "CitySavedList",
+    "CityBMWList",
     "CitySectionList",
     "Conversation",
     "CityFairList",

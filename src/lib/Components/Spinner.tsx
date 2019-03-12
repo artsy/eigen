@@ -3,6 +3,10 @@ import { ColorPropType, processColor, requireNativeComponent, StyleSheet, View, 
 
 interface SpinnerProps extends ViewProperties {
   spinnerColor?: string
+  size?: {
+    width: number
+    height: number
+  }
 }
 
 export default class Spinner extends React.Component<SpinnerProps, any> {
@@ -10,10 +14,17 @@ export default class Spinner extends React.Component<SpinnerProps, any> {
     spinnerColor: ColorPropType,
   }
 
+  static defaultProps = {
+    size: {
+      width: 22,
+      height: 22,
+    },
+  }
+
   render() {
     return (
       <View style={[this.props.style, styles.container]} testID={this.props.testID}>
-        <NativeSpinner spinnerColor={processColor(this.props.spinnerColor)} style={styles.spinner} />
+        <NativeSpinner spinnerColor={processColor(this.props.spinnerColor)} style={{ size: this.props.size }} />
       </View>
     )
   }
@@ -23,10 +34,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-  },
-  spinner: {
-    width: 22,
-    height: 22,
   },
 })
 
