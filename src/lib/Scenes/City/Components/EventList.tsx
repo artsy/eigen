@@ -80,7 +80,6 @@ export class EventList extends React.Component<Props> {
 
   render() {
     const { bucket } = this.props
-    // debugger
     const hasEvents = bucket.length > 0
     return <Box px={2}>{hasEvents ? this.hasEventsComponent() : this.hasNoEventsComponent()}</Box>
   }
