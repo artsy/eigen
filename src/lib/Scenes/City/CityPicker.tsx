@@ -33,7 +33,6 @@ export class CityPicker extends Component<Props, State> {
   }
 
   clearSelectedCityState() {
-    console.log("TCL: CityPicker -> clearSelectedCityState -> clearSelectedCityState")
     this.setState({ selectedCity: null })
   }
 
