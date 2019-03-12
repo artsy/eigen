@@ -62,16 +62,18 @@ class CitySectionList extends React.Component<Props, State> {
         break
     }
     return (
-      <EventList
-        key={name + section}
-        cityName={name}
-        header={headerText}
-        bucket={shows.edges.map(e => e.node) as any}
-        type={section}
-        relay={relay}
-        onScroll={isCloseToBottom(this.fetchData)}
-        fetchingNextPage={fetchingNextPage}
-      />
+      <Theme>
+        <EventList
+          key={name + section}
+          cityName={name}
+          header={headerText}
+          bucket={shows.edges.map(e => e.node) as any}
+          type={section}
+          relay={relay}
+          onScroll={isCloseToBottom(this.fetchData)}
+          fetchingNextPage={fetchingNextPage}
+        />
+      </Theme>
     )
   }
 }
