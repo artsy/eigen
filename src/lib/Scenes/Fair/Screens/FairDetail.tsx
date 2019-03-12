@@ -56,6 +56,9 @@ export class FairDetail extends React.Component<Props, State> {
 
   updateSections = () => {
     const { fair } = this.props
+    const {
+      counts: { artists, artworks, partners },
+    } = fair
     const sections = []
 
     const coords = fair.location.coordinates
@@ -91,24 +94,28 @@ export class FairDetail extends React.Component<Props, State> {
       })
     }
 
-    sections.push({
-      type: "title",
-    })
+    console.log("artists", artists)
+    console.log("artworks", artworks)
+    console.log("partners", partners)
 
-    sections.push({
-      type: "artists-exhibitors-works",
-      data: {
-        fairID: fair.id,
-      },
-    })
-
-    sections.push({
-      type: "search",
-      data: {
-        id: fair.id,
-        _id: fair._id,
-      },
-    })
+    if (!!artists || !!artworks || !!partners) {
+      sections.push({
+        type: "title",
+      })
+      sections.push({
+        type: "artists-exhibitors-works",
+        data: {
+          fairID: fair.id,
+        },
+      })
+      sections.push({
+        type: "search",
+        data: {
+          id: fair.id,
+          _id: fair._id,
+        },
+      })
+    }
 
     let boothCount = 0
 
@@ -260,23 +267,24 @@ export const FairDetailContainer = createPaginationContainer(
             lng
           }
         }
-
+        counts {
+          artists
+          artworks
+          partners
+        }
         # so that we know whether to show more info
         organizer {
           website
         }
         about
         ticketsLink
-
         profile {
           name
         }
-
         sponsoredContent {
           activationText
           pressReleaseUrl
         }
-
         shows: shows_connection(first: $count, after: $cursor) @connection(key: "Fair_shows") {
           pageInfo {
             hasNextPage
