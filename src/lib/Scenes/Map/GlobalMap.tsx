@@ -373,7 +373,6 @@ export class GlobalMap extends React.Component<Props, State> {
     const isFair = activeFairs.length === 1
 
     if (isFair) {
-      console.log("TCL: renderSelectedPin -> activeFairs", activeFairs)
       const lat = get(activeFairs, "[0].location.coordinates.lat")
       const lng = get(activeFairs, "[0].location.coordinates.lng")
       const fairID = get(activeFairs, "[0].id")
