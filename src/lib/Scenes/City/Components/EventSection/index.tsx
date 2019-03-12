@@ -20,16 +20,27 @@ export class EventSection extends React.Component<Props> {
   }
 
   renderEvents = () => {
-    const { data } = this.props
-    return data.map((event, i) => {
-      if (i < 2) {
+    const { data, section } = this.props
+    let finalShowsForPreviewBricks
+    if (section === "galleries" || section === "musuems") {
+      const eligibleForBrick = data.filter(s => !s.isStubShow && !!s.cover_image && !!s.cover_image.url)
+      const sortedByStartDesc = [...eligibleForBrick]
+        .sort((a, b) => ((a.start_at as any) > b.start_at) as any)
+        .reverse()
+      finalShowsForPreviewBricks = sortedByStartDesc.slice(0, 2)
+    } else {
+      finalShowsForPreviewBricks = data.slice(0, 2)
+    }
+
+    if (!!finalShowsForPreviewBricks) {
+      return finalShowsForPreviewBricks.map(event => {
         return (
           <Box key={event.id}>
             <Event event={event} relay={this.props.relay} />
           </Box>
         )
-      }
-    })
+      })
+    }
   }
 
   render() {

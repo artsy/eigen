@@ -238,13 +238,6 @@ return {
               "storageKey": null
             }
           ]
-        },
-        {
-          "kind": "InlineFragment",
-          "type": "ExternalPartner",
-          "selections": [
-            v0
-          ]
         }
       ]
     },
@@ -252,5 +245,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '40f1f68d88df1e0e9db91c323d613d62';
+(node as any).hash = '1bf6ac686e5e1a4802b112cc6d58bd80';
 export default node;

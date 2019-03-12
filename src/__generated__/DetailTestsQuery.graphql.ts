@@ -54,15 +54,14 @@ fragment Detail_show on Show {
   status
   partner {
     __typename
-    ... on ExternalPartner {
-      name
-      __id
-    }
     ... on Partner {
       name
       type
     }
     ... on Node {
+      __id
+    }
+    ... on ExternalPartner {
       __id
     }
   }
@@ -105,11 +104,10 @@ fragment ShowHeader_show on Show {
       id
       href
     }
-    ... on ExternalPartner {
-      name
+    ... on Node {
       __id
     }
-    ... on Node {
+    ... on ExternalPartner {
       __id
     }
   }
@@ -186,14 +184,13 @@ fragment ShowItem_show on Show {
   }
   partner {
     __typename
-    ... on ExternalPartner {
-      name
-      __id
-    }
     ... on Partner {
       name
     }
     ... on Node {
+      __id
+    }
+    ... on ExternalPartner {
       __id
     }
   }
@@ -350,29 +347,21 @@ v10 = {
   "args": null,
   "storageKey": null
 },
-v11 = [
-  v4
-],
-v12 = {
-  "kind": "InlineFragment",
-  "type": "ExternalPartner",
-  "selections": v11
-},
-v13 = {
+v11 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v14 = {
+v12 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v15 = [
+v13 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -381,7 +370,7 @@ v15 = [
     "storageKey": null
   }
 ],
-v16 = [
+v14 = [
   v4,
   v1
 ];
@@ -389,7 +378,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "d22b49acbafc82cc25fb7a4936e0f196",
+  "id": "66fcc4a8a64d192d7aa235a28c789afa",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -623,14 +612,13 @@ return {
             "selections": [
               v10,
               v1,
-              v12,
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
                   v4,
                   v6,
-                  v13,
+                  v11,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -686,7 +674,7 @@ return {
                         "plural": false,
                         "selections": [
                           v4,
-                          v13,
+                          v11,
                           v6,
                           v3,
                           v1
@@ -708,7 +696,7 @@ return {
             "plural": true,
             "selections": [
               v4,
-              v13,
+              v11,
               v6,
               v3,
               v1,
@@ -871,7 +859,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v14,
+                  v12,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -899,7 +887,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkOpeningBid",
                     "plural": false,
-                    "selections": v15
+                    "selections": v13
                   },
                   {
                     "kind": "LinkedField",
@@ -909,7 +897,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkCurrentBid",
                     "plural": false,
-                    "selections": v15
+                    "selections": v13
                   },
                   {
                     "kind": "ScalarField",
@@ -927,7 +915,7 @@ return {
                     "concreteType": "Sale",
                     "plural": false,
                     "selections": [
-                      v14,
+                      v12,
                       v1
                     ]
                   },
@@ -949,7 +937,7 @@ return {
                 ],
                 "concreteType": "Artist",
                 "plural": true,
-                "selections": v16
+                "selections": v14
               },
               {
                 "kind": "LinkedField",
@@ -959,9 +947,9 @@ return {
                 "args": null,
                 "concreteType": "Partner",
                 "plural": false,
-                "selections": v16
+                "selections": v14
               },
-              v13
+              v11
             ]
           },
           {
@@ -1047,9 +1035,10 @@ return {
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",
-                            "selections": v11
-                          },
-                          v12
+                            "selections": [
+                              v4
+                            ]
+                          }
                         ]
                       },
                       v1
