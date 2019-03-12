@@ -58,7 +58,7 @@ jobs:
 
       - run:
           name: Install CocoaPods Specs If Necessary
-          command: yarn ci:skip-native-if-possible || { cd Example ; bundle exec pod check --ignore-dev-pods || curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf }
+          command: yarn ci:skip-native-if-possible || { cd Example ; bundle exec pod check --ignore-dev-pods || { curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf } }
 
       - run:
           name: Install CocoaPods If Necessary
