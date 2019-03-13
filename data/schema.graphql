@@ -3665,10 +3665,9 @@ type FollowsAndSaves {
   # A list of the current user’s currently followed shows
   shows(
     status: EventStatus
-    sort: PartnerShowSorts
 
     # Number of days which will be used to filter upcoming and closing soon shows
-    dayThreshold: String
+    dayThreshold: Int
 
     # A string representing one of the supported cities in the City Guide, which
     # are: new-york-ny-usa, los-angeles-ca-usa, london-united-kingdom,
