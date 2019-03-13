@@ -30,6 +30,7 @@
 - Make content size of event list known upfront to prevent scroller from jumping - alloy
 - Update ScrollableTabBar styling - luc
 - Delay applying filters to speed up animation - luc
+- Fixes bug where saved button was removed from all Show Item rows + removes Save button only from Show card - ashley
 
 ### 1.8.14 - 1.8.19
 
