@@ -429,7 +429,7 @@ static const CGFloat ARMenuButtonDimension = 50;
 
 - (void)updateButtons;
 {
-    NSArray *buttons = self.buttons;
+    NSArray *buttons = [self buttons];
     
     self.tabContentView.buttons = buttons;
     [self.tabContentView setCurrentViewIndex:ARTopTabControllerIndexHome animated:NO];
@@ -705,6 +705,39 @@ static const CGFloat ARMenuButtonDimension = 50;
 - (void)tabContentView:(ARTabContentView *)tabContentView didChangeSelectedIndex:(NSInteger)index
 {
     self.selectedTabIndex = index;
+}
+
+- (NSString *)descriptionForNavIndex:(NSInteger)index
+{
+    if ([self.echo shouldShowLocalDiscovery]) {
+        switch (index) {
+            case 0:
+                return @"home";
+            case 2:
+                return @"search";
+            case 3:
+                return @"cityGuide";
+            case 4:
+                return @"messages";
+            case 5:
+                return @"favorites";
+            default:
+                return @"unknown";
+        }
+    } else {
+        switch (index) {
+            case 0:
+                return @"home";
+            case 2:
+                return @"search";
+            case 3:
+                return @"messages";
+            case 4:
+                return @"favorites";
+            default:
+                return @"unknown";
+        }
+    }
 }
 
 - (BOOL)tabContentView:(ARTabContentView *)tabContentView shouldChangeToIndex:(NSInteger)index

@@ -122,6 +122,21 @@
         ARAnalyticsTrackedEvents:
             @[
                 @{
+                    ARAnalyticsClass: ARTopMenuViewController.class,
+                    ARAnalyticsDetails: @[
+                            @{
+                                ARAnalyticsEventName: ARAnalyticsProfileView,
+                                ARAnalyticsSelectorName: NSStringFromSelector(@selector(tabContentView:didChangeSelectedIndex:)),
+                                ARAnalyticsProperties: ^NSDictionary*(ARTopMenuViewController *controller, NSArray *args) {
+                                        return @{
+                                                 @"tab" : args.count > 1 ? [controller descriptionForNavIndex: [args[1] integerValue]] : @"unknown",
+                                             };
+                                        }
+                                }
+                            ]
+                    },
+
+                @{
                     ARAnalyticsClass: ARProfileViewController.class,
                     ARAnalyticsDetails: @[
                         @{
