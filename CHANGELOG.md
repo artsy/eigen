@@ -16,6 +16,8 @@
 
 ### Master
 
+- Adds retry screen to map view - ash
+
 ### 1.8.20
 
 - Only ever show one city picker at a time - ash
