@@ -1,11 +1,11 @@
-import { danger, fail, markdown, schedule, warn } from "danger"
+import { danger, fail, markdown, warn } from "danger"
 import { compact, includes, uniq } from "lodash"
 
 // TypeScript thinks we're in React Native,
 // so the node API gives us errors:
-import * as child_process from "child_process"
 import * as fs from "fs"
 import * as path from "path"
+import * as stripAnsi from "strip-ansi"
 
 import * as recurseSync from "recursive-readdir-sync"
 const allFiles = recurseSync("./src")
@@ -160,12 +160,14 @@ if (pr.body.replace(neuterMarkdownTicks, "-") !== newBody.replace(neuterMarkdown
   // danger.github.api.pullRequests.update({...danger.github.thisPR, body: newBody })
 }
 
+if (fs.existsSync("tsc_raw.log")) {
+  fail("TypeScript hasn't passed, see below for full logs")
+  markdown(`### TypeScript Fails\n\n${stripAnsi(fs.readFileSync("tsc_raw.log"))}`)
+}
+
 // Show TSLint errors inline
 // Yes, this is a bit lossy, we run the linter twice now, but its still a short amount of time
 // Perhaps we could indicate that tslint failed somehow the first time?
-
-// This process should always fail, so needs the `|| true` so it won't raise.
-child_process.execSync(`npm run lint -- -- --format json --out tslint-errors.json || true`)
 if (fs.existsSync("tslint-errors.json")) {
   const tslintErrors = JSON.parse(fs.readFileSync("tslint-errors.json", "utf8")) as any[]
   if (tslintErrors.length) {
@@ -185,7 +187,9 @@ if (fs.existsSync("tslint-errors.json")) {
 
 // Show Jest fails in the PR
 import jest from "danger-plugin-jest"
-jest()
+if (fs.existsSync("test-results.json")) {
+  jest({ testResultsJsonPath: "test-results.json" })
+}
 
 // Raise when native code changes are made, but the package.json does not
 // have a bump for the native code version

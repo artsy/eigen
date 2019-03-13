@@ -36,14 +36,8 @@ export const MapRenderer: React.SFC<{
       }}
       render={({ props: mapProps }) => {
         // TODO: Handle error, see LD-318.
-        if (mapProps || props.initialCoordinates) {
-          // viewer={null} is to handle the case where we want to render the map with initialCoordinates but the Relay
-          // response hasn't arrived yet. Relay requires us to pass an explicit null if the missing data is intentional.
-          return <GlobalMap viewer={null} {...mapProps} {...props} />
-        }
-        return <View style={{ backgroundColor: colors["gray-light"] }} />
-      }}
-      cacheConfig={
+        if (mapProps ||
+      cacheConfig {={ }
         {
           emissionCacheTTL: 86400, // 60 * 60 * 24 = 1 day
         } as any
