@@ -16,19 +16,20 @@ interface ScrollableTabBarProps {
   scrollValue?: Animated.AnimatedInterpolation
 }
 const Button = styled.TouchableWithoutFeedback`
+  height: 50px;
   flex: 1;
 `
 
 const Tabs = styled.ScrollView`
   height: 50px;
-  flex-direction: row;
   border-bottom-width: 1px;
   border-color: ${color("black10")};
 `
 
-const TabButton = styled(Flex)<{ active: boolean }>`
+const TabButton = styled(View)<{ active: boolean }>`
   align-items: center;
   justify-content: center;
+  height: 50px;
   padding-left: 20px;
   padding-right: 20px;
   flex-grow: 1;
