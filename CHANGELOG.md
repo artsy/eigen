@@ -21,6 +21,7 @@
 - Updates is_local_discovery to isStubShow to conditionally disable Partner page navigation - ashley
 - Make user location indicator on map tinted with purple100 - alloy
 - Bump iOS deployment target to iOS 9 to match Eigen and avoid adding more deprecated method usage - alloy
+- Make pre-heated GraphQL cache work for people that upgrade the app - alloy
 
 ### 1.8.14 - 1.8.19
 
