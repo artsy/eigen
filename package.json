@@ -188,20 +188,17 @@
     "cacheDirectory": ".jest/cache"
   },
   "lint-staged": {
-    "*.@(ts|tsx)": [
-      "tslint --fix",
-      "yarn run prettier-write --",
-      "git add"
-    ],
-    "*.json": [
-      "yarn run prettier-write --",
-      "git add"
-    ],
-    "*.md": [
-      "yarn run prettier-write --",
-      "git add"
-    ]
-  },
+    "lint-staged": {
+      "*.@(ts|tsx)": [
+        "tslint -c tslint.json --fix",
+        "yarn prettier-write --",
+        "git add"
+      ],
+      "*.@(json|md)": [
+        "yarn prettier-write --"
+      ]
+    },
+
   "config": {
     "react-native-storybook-loader": {
       "searchDir": [
@@ -220,7 +217,9 @@
   },
   "husky": {
     "hooks": {
-      "post-merge": "pull-lock"
+      "post-merge": "pull-lock",
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn run type-check"
     }
   },
   "pull-lock": {
