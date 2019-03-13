@@ -483,9 +483,9 @@
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@emmetio/extract-abbreviation/-/extract-abbreviation-0.1.6.tgz#e4a9856c1057f0aff7d443b8536477c243abe28c"
 
-"@mapbox/react-native-mapbox-gl@https://github.com/l2succes/react-native-mapbox-gl":
+"@mapbox/react-native-mapbox-gl@l2succes/react-native-mapbox-gl#fix-gesture-recognizer":
   version "6.1.4"
-  resolved "https://github.com/l2succes/react-native-mapbox-gl#91cf086986c5b69cd06373d31a99d3dd37468168"
+  resolved "https://codeload.github.com/l2succes/react-native-mapbox-gl/tar.gz/91cf086986c5b69cd06373d31a99d3dd37468168"
   dependencies:
     "@turf/helpers" "4.6.0"
     underscore "^1.8.3"
@@ -10008,9 +10008,9 @@ react-native-iphone-x-helper@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.0.1.tgz#950dbdaca66f458689a7e9697c5beb9bd53f98f2"
 
-"react-native-parallax-scroll-view@https://github.com/orta/react-native-parallax-scroll-view":
+react-native-parallax-scroll-view@orta/react-native-parallax-scroll-view:
   version "0.18.2"
-  resolved "https://github.com/orta/react-native-parallax-scroll-view#3c4c94ec493b64a6e10840c7457515e37762a5dc"
+  resolved "https://codeload.github.com/orta/react-native-parallax-scroll-view/tar.gz/3c4c94ec493b64a6e10840c7457515e37762a5dc"
 
 react-native-scrollable-tab-view@^0.8.0:
   version "0.8.0"

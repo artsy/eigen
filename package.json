@@ -74,7 +74,7 @@
   },
   "dependencies": {
     "@artsy/palette": "^2.23.0",
-    "@mapbox/react-native-mapbox-gl": "https://github.com/l2succes/react-native-mapbox-gl",
+    "@mapbox/react-native-mapbox-gl": "l2succes/react-native-mapbox-gl#fix-gesture-recognizer",
     "lodash": "^4.17.4",
     "moment": "^2.19.4",
     "moment-timezone": "^0.5.17",
@@ -83,7 +83,7 @@
     "react": "^16.3.0-alpha.1",
     "react-native": "0.54.4",
     "react-native-hyperlink": "0.0.11",
-    "react-native-parallax-scroll-view": "https://github.com/orta/react-native-parallax-scroll-view",
+    "react-native-parallax-scroll-view": "orta/react-native-parallax-scroll-view",
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-sentry": "^0.30.2",
     "react-native-svg": "^9.0.4",
