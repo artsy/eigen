@@ -215,14 +215,16 @@ export class GlobalMap extends React.Component<Props, State> {
     this.updateClusterMap(false)
   }
 
-  handleEvent = activeIndex => this.setState({ activeIndex }, () => this.emitFilteredBucketResults())
+  handleFilterChange = activeIndex => {
+    this.setState({ activeIndex, activePin: null, activeShows: [] }, () => this.emitFilteredBucketResults())
+  }
 
   componentDidMount() {
-    EventEmitter.subscribe("filters:change", this.handleEvent)
+    EventEmitter.subscribe("filters:change", this.handleFilterChange)
   }
 
   componentWillUnmount() {
-    EventEmitter.unsubscribe("filters:change", this.handleEvent)
+    EventEmitter.unsubscribe("filters:change", this.handleFilterChange)
   }
 
   componentDidUpdate(_, prevState) {
@@ -376,11 +378,14 @@ export class GlobalMap extends React.Component<Props, State> {
     } = activePin
 
     if (cluster) {
-      const { nearestFeature } = this.state
-      const clusterLat = nearestFeature.geometry.coordinates[0]
-      const clusterLng = nearestFeature.geometry.coordinates[1]
-      const clusterId = nearestFeature.properties.cluster_id.toString()
-      let pointCount = nearestFeature.properties.point_count
+      const {
+        nearestFeature: { properties, geometry },
+      } = this.state
+      const [clusterLat, clusterLng] = geometry.coordinates
+
+      const clusterId = properties.cluster_id.toString()
+      let pointCount = properties.point_count
+
       const width = pointCount < 3 ? 38 : pointCount < 21 ? 45 : 60
       const height = pointCount < 3 ? 38 : pointCount < 21 ? 45 : 60
       pointCount = pointCount.toString()
@@ -439,6 +444,7 @@ export class GlobalMap extends React.Component<Props, State> {
       )
     }
   }
+
   renderShowCard() {
     const { activeShows } = this.state
     const hasShows = activeShows.length > 0
@@ -511,8 +517,8 @@ export class GlobalMap extends React.Component<Props, State> {
       centerCoordinate: [centerLng, centerLat],
       zoomLevel: 13,
       minZoomLevel: 11,
-      logoEnabled: false,
-      attributionEnabled: true,
+      logoEnabled: !!city,
+      attributionEnabled: false,
       compassEnabled: false,
     }
 
@@ -524,16 +530,13 @@ export class GlobalMap extends React.Component<Props, State> {
           this.currentZoom = zoom
         }
 
-        const isCluster = get(this.state, "activePin.properties.cluster")
-
-        if (this.currentZoom !== zoom && isCluster) {
+        if (this.currentZoom !== zoom) {
           this.setState({
             activePin: null,
           })
         }
       },
       onRegionDidChange: (location: MapGeoFeature) => {
-        this.emitFilteredBucketResults()
         this.setState({
           trackUserLocation: false,
           currentLocation: GlobalMap.lngLatArrayToLocation(location.geometry && location.geometry.coordinates),
@@ -546,11 +549,15 @@ export class GlobalMap extends React.Component<Props, State> {
           trackUserLocation: true,
         })
       },
-      onDidFinishRenderingMapFully: () => this.setState({ mapLoaded: true }),
+      onDidFinishRenderingMapFully: () => {
+        NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryMapHasRendered", {})
+        this.setState({ mapLoaded: true })
+      },
       onPress: () => {
         if (!this.state.isSavingShow) {
           this.setState({
             activeShows: [],
+            activePin: null,
           })
         }
       },
@@ -572,6 +579,7 @@ export class GlobalMap extends React.Component<Props, State> {
                 onPress={() => {
                   this.setState({
                     activeShows: [],
+                    activePin: null,
                   })
                 }}
               />
@@ -747,7 +755,7 @@ export const GlobalMapContainer = createFragmentContainer(
         sponsoredContent {
           introText
           artGuideUrl
-          shows(first: 2, sort: START_AT_ASC) {
+          shows(first: 20, sort: START_AT_ASC) {
             totalCount
             edges {
               node {

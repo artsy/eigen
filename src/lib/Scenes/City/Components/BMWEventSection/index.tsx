@@ -31,7 +31,10 @@ export class BMWEventSection extends React.Component<Props> {
       },
       relay,
     } = this.props
-    return edges.map((edge, i) => {
+    const eligibleForBrick = edges.filter(s => !!s.node.cover_image && !!s.node.cover_image.url)
+    const finalShowsForPreviewBricks = eligibleForBrick.length ? eligibleForBrick : edges
+
+    return finalShowsForPreviewBricks.map((edge, i) => {
       if (i < 2) {
         return (
           <Box key={i} mb={1}>

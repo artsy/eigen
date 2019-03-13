@@ -440,12 +440,12 @@ return {
               "kind": "LinkedField",
               "alias": null,
               "name": "shows",
-              "storageKey": "shows(first:2,sort:\"START_AT_ASC\")",
+              "storageKey": "shows(first:20,sort:\"START_AT_ASC\")",
               "args": [
                 {
                   "kind": "Literal",
                   "name": "first",
-                  "value": 2,
+                  "value": 20,
                   "type": "Int"
                 },
                 v1
@@ -710,5 +710,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '90e16c598d8859b8d1b9747f992c1de0';
+(node as any).hash = 'e4e0a425a1859163e8913bbf33d4940d';
 export default node;
