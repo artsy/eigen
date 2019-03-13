@@ -48,8 +48,8 @@ export class EventList extends React.Component<Props> {
         keyExtractor={item => item.id}
         renderItem={({ item }) => this.renderItem(item)}
         onScroll={onScroll}
-        scrollIndicatorInsets={{ right: -10 }}
         windowSize={50}
+        contentContainerStyle={{ paddingLeft: 20, paddingRight: 20 }}
       />
     )
   }
@@ -81,6 +81,6 @@ export class EventList extends React.Component<Props> {
   render() {
     const { bucket } = this.props
     const hasEvents = bucket.length > 0
-    return <Box px={2}>{hasEvents ? this.hasEventsComponent() : this.hasNoEventsComponent()}</Box>
+    return hasEvents ? this.hasEventsComponent() : this.hasNoEventsComponent()
   }
 }
