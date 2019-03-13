@@ -7,7 +7,6 @@ import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Component
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
-import { isEmpty } from "lodash"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -69,7 +68,7 @@ export class Detail extends React.Component<Props, State> {
       },
     })
 
-    if (show.location && !isEmpty(show.location)) {
+    if (show.location) {
       const { openingHours } = show.location
       if ((openingHours.text && openingHours.text !== "") || openingHours.schedules) {
         sections.push({
