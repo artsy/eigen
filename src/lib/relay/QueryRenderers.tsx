@@ -30,12 +30,14 @@ import Inbox from "../Containers/Inbox"
 Inbox
 // tslint:enable:no-unused-expression
 
-import { EventStatus } from "__generated__/CitySectionListQuery.graphql"
+import { EventStatus, PartnerShowSorts } from "__generated__/CitySectionListQuery.graphql"
 import { QueryRenderersArtistQuery } from "__generated__/QueryRenderersArtistQuery.graphql"
 import { QueryRenderersBidFlowQuery } from "__generated__/QueryRenderersBidFlowQuery.graphql"
+import { QueryRenderersCityBMWListQuery } from "__generated__/QueryRenderersCityBMWListQuery.graphql"
 import { QueryRenderersCityFairListQuery } from "__generated__/QueryRenderersCityFairListQuery.graphql"
-import { QueryRenderersCitySectionListQuery } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
+import { QueryRenderersCitySavedListQuery } from "__generated__/QueryRenderersCitySavedListQuery.graphql"
 import { PartnerShowPartnerType } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
+import { QueryRenderersCitySectionListQuery } from "__generated__/QueryRenderersCitySectionListQuery.graphql"
 import { QueryRenderersConversationQuery } from "__generated__/QueryRenderersConversationQuery.graphql"
 import { QueryRenderersFairQuery } from "__generated__/QueryRenderersFairQuery.graphql"
 import { QueryRenderersForYouQuery } from "__generated__/QueryRenderersForYouQuery.graphql"
@@ -441,6 +443,26 @@ export const ShowMoreInfoRenderer: React.SFC<ShowMoreInfoProps> = ({ render, sho
   )
 }
 
+interface CityBMWListProps extends RendererProps {
+  citySlug: string
+}
+export const CityBMWListRenderer: React.SFC<CityBMWListProps> = ({ render, citySlug }) => {
+  return (
+    <QueryRenderer<QueryRenderersCityBMWListQuery>
+      environment={environment}
+      query={graphql`
+        query QueryRenderersCityBMWListQuery($citySlug: String!) {
+          city(slug: $citySlug) {
+            ...CityBMWList_city
+          }
+        }
+      `}
+      variables={{ citySlug }}
+      render={render}
+    />
+  )
+}
+
 interface CityFairListProps extends RendererProps {
   citySlug: string
 }
@@ -461,6 +483,26 @@ export const CityFairListRenderer: React.SFC<CityFairListProps> = ({ render, cit
   )
 }
 
+interface CitySavedListProps extends RendererProps {
+  citySlug: string
+}
+export const CitySavedListRenderer: React.SFC<CitySavedListProps> = ({ render, citySlug }) => {
+  return (
+    <QueryRenderer<QueryRenderersCitySavedListQuery>
+      environment={environment}
+      query={graphql`
+        query QueryRenderersCitySavedListQuery($citySlug: String!) {
+          city(slug: $citySlug) {
+            ...CitySavedList_city
+          }
+        }
+      `}
+      variables={{ citySlug }}
+      render={render}
+    />
+  )
+}
+
 interface CitySectionListProps extends RendererProps {
   citySlug: string
   section: BucketKey
@@ -471,22 +513,29 @@ export const CitySectionListRenderer: React.SFC<CitySectionListProps> = ({ rende
     partnerType?: PartnerShowPartnerType
     status?: EventStatus
     dayThreshold?: number
+    sort?: PartnerShowSorts
   } = { citySlug }
 
   switch (section) {
     case "museums":
       variables.partnerType = "MUSEUM"
+      variables.status = "RUNNING"
+      variables.sort = "PARTNER_ASC"
       break
     case "galleries":
       variables.partnerType = "GALLERY"
+      variables.status = "RUNNING"
+      variables.sort = "PARTNER_ASC"
       break
     case "closing":
       variables.status = "CLOSING_SOON"
-      variables.dayThreshold = 7
+      variables.sort = "END_AT_ASC"
+      variables.dayThreshold = 30
       break
     case "opening":
       variables.status = "UPCOMING"
-      variables.dayThreshold = 7
+      variables.sort = "START_AT_ASC"
+      variables.dayThreshold = 30
   }
 
   return (
@@ -498,9 +547,11 @@ export const CitySectionListRenderer: React.SFC<CitySectionListProps> = ({ rende
           $partnerType: PartnerShowPartnerType
           $status: EventStatus
           $dayThreshold: Int
+          $sort: PartnerShowSorts
         ) {
           city(slug: $citySlug) {
-            ...CitySectionList_city @arguments(partnerType: $partnerType, status: $status, dayThreshold: $dayThreshold)
+            ...CitySectionList_city
+              @arguments(partnerType: $partnerType, status: $status, sort: $sort, dayThreshold: $dayThreshold)
           }
         }
       `}

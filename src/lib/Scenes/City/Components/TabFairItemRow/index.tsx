@@ -8,19 +8,20 @@ import styled from "styled-components/native"
 
 export interface Props {
   item: Fair
+  noPadding?: boolean
 }
 
 export class TabFairItemRow extends React.Component<Props> {
-  handleTap = item => {
-    SwitchBoard.presentNavigationViewController(this, `${item.node.id}?entity=fair`)
+  handleTap = (item: Fair) => {
+    SwitchBoard.presentNavigationViewController(this, `${item.id}?entity=fair`)
   }
 
   render() {
-    const { item } = this.props
+    const { item, noPadding } = this.props
     const boxWidth = Dimensions.get("window").width - 62 - space(4) - space(1)
     const fairImage = item.image ? item.image.url : null
     return (
-      <Box py={2}>
+      <Box py={noPadding ? 0 : 2}>
         <TouchableWithoutFeedback onPress={() => this.handleTap(item)}>
           <Flex flexWrap="nowrap" flexDirection="row" alignItems="center">
             <RoundedImageWrapper>

@@ -87,9 +87,6 @@ export const ShowItemContainer = createFragmentContainer(
         aspect_ratio
       }
       partner {
-        ... on ExternalPartner {
-          name
-        }
         ... on Partner {
           name
         }

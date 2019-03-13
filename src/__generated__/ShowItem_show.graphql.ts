@@ -34,10 +34,7 @@ v1 = {
   "name": "__id",
   "args": null,
   "storageKey": null
-},
-v2 = [
-  v0
-];
+};
 return {
   "kind": "Fragment",
   "name": "ShowItem_show",
@@ -105,12 +102,9 @@ return {
         {
           "kind": "InlineFragment",
           "type": "Partner",
-          "selections": v2
-        },
-        {
-          "kind": "InlineFragment",
-          "type": "ExternalPartner",
-          "selections": v2
+          "selections": [
+            v0
+          ]
         }
       ]
     },
@@ -118,5 +112,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '664ddf4b9b8c1e6752afbfe34f43c7e8';
+(node as any).hash = '7ac020d2e64a923c6c62e86f5d21e57e';
 export default node;

@@ -1,17 +1,17 @@
-import { Box, Message, Separator, Theme } from "@artsy/palette"
-import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql"
+import { Box, Message, Separator, Serif } from "@artsy/palette"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import Spinner from "lib/Components/Spinner"
-import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
+import { MapTab, Show } from "lib/Scenes/Map/types"
 import React from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { RelayProp } from "react-relay"
 import { TabFairItemRow } from "./TabFairItemRow"
 
 interface Props {
-  bucket: CitySectionList_city["shows"]["edges"]
-  type: BucketKey
+  bucket: Show[]
+  type: MapTab["id"]
   cityName: string
+  header?: string
   relay: RelayProp
   onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void
   fetchingNextPage?: boolean
@@ -28,9 +28,20 @@ export class EventList extends React.Component<Props> {
   }
 
   hasEventsComponent = () => {
-    const { bucket, onScroll, fetchingNextPage } = this.props
+    const { bucket, onScroll, fetchingNextPage, header } = this.props
     return (
       <FlatList
+        ListHeaderComponent={() => {
+          if (!!header) {
+            return (
+              <Box pt={6} mt={3} mb={2}>
+                <Serif size="8">{header}</Serif>
+              </Box>
+            )
+          } else {
+            return null
+          }
+        }}
         data={bucket}
         ItemSeparatorComponent={() => <Separator />}
         ListFooterComponent={fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
@@ -70,10 +81,6 @@ export class EventList extends React.Component<Props> {
   render() {
     const { bucket } = this.props
     const hasEvents = bucket.length > 0
-    return (
-      <Theme>
-        <Box px={2}>{hasEvents ? this.hasEventsComponent() : this.hasNoEventsComponent()}</Box>
-      </Theme>
-    )
+    return <Box px={2}>{hasEvents ? this.hasEventsComponent() : this.hasNoEventsComponent()}</Box>
   }
 }

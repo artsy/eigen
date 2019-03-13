@@ -30,15 +30,15 @@ NSString * const __nonnull SelectedCityNameKey = @"SelectedCityName";
 @end
 
 static UIScrollView *
-FindFirstVerticalScrollView(UIView *view)
+FindFirstScrollView(UIView *view)
 {
     for (UIView *subview in view.subviews) {
-        if ([subview isKindOfClass:UIScrollView.class] && ([(UIScrollView *)subview contentSize].height > subview.frame.size.height)) {
+        if ([subview isKindOfClass:UIScrollView.class]) {
             return (UIScrollView *)subview;
         }
     }
     for (UIView *subview in view.subviews) {
-        UIScrollView *result = FindFirstVerticalScrollView(subview);
+        UIScrollView *result = FindFirstScrollView(subview);
         if (result) return result;
     }
     return nil;
@@ -79,7 +79,7 @@ Since this controller already has to do the above logic, having it handle the Ci
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryCityGotScrollView" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
             if (!wself.rnScrollView) {
-                UIScrollView *foundScrollView = FindFirstVerticalScrollView(wself.cityVC.view);
+                UIScrollView *foundScrollView = FindFirstScrollView(wself.cityVC.view);
                 wself.rnScrollView = foundScrollView;
                 wself.rnScrollView.scrollEnabled = NO;
                 if (foundScrollView) {
@@ -108,6 +108,8 @@ Since this controller already has to do the above logic, having it handle the Ci
         self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
         [self.locationManager requestWhenInUseAuthorization];
     }
+    
+    [self updateSafeAreaInsets];
 
     self.bottomSheetVC = [[PulleyViewController alloc] initWithContentViewController:self.mapVC drawerViewController:self.cityVC];
     self.bottomSheetVC.animationDuration = 0.35;
@@ -119,6 +121,12 @@ Since this controller already has to do the above logic, having it handle the Ci
     [self.bottomSheetVC willMoveToParentViewController:self];
     [self addChildViewController:self.bottomSheetVC];
     [self.bottomSheetVC didMoveToParentViewController:self];
+}
+
+-(void)viewSafeAreaInsetsDidChange
+{
+    [super viewSafeAreaInsetsDidChange];
+    [self updateSafeAreaInsets];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -223,6 +231,19 @@ Since this controller already has to do the above logic, having it handle the Ci
     [self.bottomSheetVC setDrawerPositionWithPosition:position animated:YES completion:nil];
 }
 
+- (void)updateSafeAreaInsets
+{
+    UIEdgeInsets safeAreaInsets = UIEdgeInsetsZero;
+    if (@available(iOS 11.0, *)) {
+        safeAreaInsets = self.view.safeAreaInsets;
+    }
+    [self.mapVC setProperty:@{ @"top": @(safeAreaInsets.top),
+                               @"bottom": @(safeAreaInsets.bottom),
+                               @"left": @(safeAreaInsets.left),
+                               @"right": @(safeAreaInsets.right) }
+                     forKey:@"safeAreaInsets"];
+}
+
 # pragma mark - PulleyDelegate Methods
 
 - (void)drawerPositionDidChangeWithDrawer:(PulleyViewController *)drawer bottomSafeArea:(CGFloat)bottomSafeArea
@@ -236,14 +257,15 @@ Since this controller already has to do the above logic, having it handle the Ci
 
     BOOL isDrawerOpen = [drawer.drawerPosition isEqualToPosition:PulleyPosition.open];
     [self.cityVC setProperty:@(isDrawerOpen) forKey:@"isDrawerOpen"];
+    self.rnScrollView.scrollEnabled = isDrawerOpen;
+    if (!isDrawerOpen) {
+        [self.rnScrollView setContentOffset:CGPointZero animated:YES];
+    }
 }
 
 - (void)drawerChangedDistanceFromBottomWithDrawer:(PulleyViewController *)drawer distance:(CGFloat)distance bottomSafeArea:(CGFloat)bottomSafeArea
 {
     CGFloat drawerAbovePartialHeight = [drawer partialRevealDrawerHeightWithBottomSafeArea:bottomSafeArea];
-
-    BOOL isDrawerOpen = [drawer.drawerPosition isEqualToPosition:PulleyPosition.open];
-    self.rnScrollView.scrollEnabled = isDrawerOpen;
 
     BOOL shouldHideButtons = distance > drawerAbovePartialHeight;
     if (!self.cityPickerController) {
@@ -266,6 +288,7 @@ Since this controller already has to do the above logic, having it handle the Ci
     } else if (status == kCLAuthorizationStatusNotDetermined) {
         // nop, don't show city picker.
     } else {
+        
         [self showCityPicker];
     }
 }
@@ -274,6 +297,16 @@ Since this controller already has to do the above logic, having it handle the Ci
 {
     [self userSuppliedLocation:locations.lastObject];
     [manager stopUpdatingLocation];
+}
+
+- (BOOL)shouldAutorotate;
+{
+    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations;
+{
+    return self.shouldAutorotate ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
 @end

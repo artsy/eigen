@@ -32,10 +32,13 @@ export class CityPicker extends Component<Props, State> {
     }
   }
 
-  selectCity(city: string, index: number) {
-    this.setState({ selectedCity: city })
-    NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", { cityIndex: index })
+  clearSelectedCityState() {
     this.setState({ selectedCity: null })
+  }
+
+  selectCity(city: string, index: number) {
+    this.setState({ selectedCity: city }, this.clearSelectedCityState)
+    NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", { cityIndex: index })
   }
 
   handleLogo(screenHeight) {

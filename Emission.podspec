@@ -19,10 +19,10 @@ podspec = Pod::Spec.new do |s|
   s.license        = 'MIT'
   s.author         = { 'Artsy Mobile' => 'mobile@artsy.net' }
   s.source         = { :git => 'https://github.com/artsy/emission.git', :tag => "v#{s.version}" }
-  s.platform       = :ios, '8.0'
+  s.platform       = :ios, '9.0'
   s.source_files   = 'Pod/Classes/**/*.{h,m}'
   s.preserve_paths = 'Pod/Classes/**/*.generated.objc'
-  s.resources      = 'Pod/Assets/{Emission.js,assets}'
+  s.resources      = 'Pod/Assets/{Emission.js,assets,PreHeatedGraphQLCache}'
 
   # Artsy UI dependencies
   s.dependency 'Artsy+UIColors'

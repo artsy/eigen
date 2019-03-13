@@ -12,7 +12,7 @@ export type ShowHeader_show = {
     readonly is_followed: boolean | null;
     readonly exhibition_period: string | null;
     readonly status: string | null;
-    readonly is_local_discovery: boolean | null;
+    readonly isStubShow: boolean | null;
     readonly partner: ({
         readonly name?: string | null;
         readonly id?: string;
@@ -130,7 +130,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "is_local_discovery",
+      "name": "isStubShow",
       "args": null,
       "storageKey": null
     },
@@ -144,13 +144,6 @@ return {
       "plural": false,
       "selections": [
         v1,
-        {
-          "kind": "InlineFragment",
-          "type": "ExternalPartner",
-          "selections": [
-            v2
-          ]
-        },
         {
           "kind": "InlineFragment",
           "type": "Partner",
@@ -191,12 +184,12 @@ return {
       "kind": "LinkedField",
       "alias": null,
       "name": "followedArtists",
-      "storageKey": "followedArtists(first:2)",
+      "storageKey": "followedArtists(first:3)",
       "args": [
         {
           "kind": "Literal",
           "name": "first",
-          "value": 2,
+          "value": 3,
           "type": "Int"
         }
       ],
@@ -250,5 +243,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '6ad7e6838246d3f9d5e5123f3fc249b3';
+(node as any).hash = '0b51ea9a40d471771b9fef3a018bc62b';
 export default node;

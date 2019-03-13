@@ -16,6 +16,17 @@
 
 ### Master
 
+- Moves to new scrollable tab - orta & ash
+- Adds freshness to GraphQL pre-heated cache after which it won’t be used anymore, which is 1 month for City - alloy
+- Updates is_local_discovery to isStubShow to conditionally disable Partner page navigation - ashley
+- Make user location indicator on map tinted with purple100 - alloy
+- Bump iOS deployment target to iOS 9 to match Eigen and avoid adding more deprecated method usage - alloy
+
+### 1.8.14 - 1.8.19
+
+- Fixes city section lists being empty - ash
+- Fixes safe area insets missing error on pre-iOS 11 devices - ash
+- Don't allow the map to rotate - orta
 - Only shows open, or upcoming fairs in the fairs tab - orta
 - Support filtering the map based on the selected tab - orta
 - Shows fairs on the map - orta
@@ -42,11 +53,25 @@
 - Hook up save functionality for show card - luc
 - Adds loading screen for Map view - luc
 - Adds analytics to map and city view - kieran
+- Adds City save list view - kieran
+- Move ShapeLayers to PinsShapeLayer - luc
+- Add loading indicator when data is downloading - luc
+- Add safeAreaInsets to handle various screen sizes - luc
+- Set min zoom size on map - luc
+- Fixes map background sizing - luc
+- Adds styling on single map points and clusters to indicate selection - ashley
+- Adds correct sort to city and museum tabs/lists/bricks - kieran
+- Adds pre-heated GraphQL cache ability, with just City cache for now - alloy
+- Adds freshness to GraphQL pre-heated cache after which it won’t be used anymore, which is 1 month for City - alloy
+- Updates is_local_discovery to isStubShow to conditionally disable Partner page navigation - ashley
+- Updates show and fair SVG map pin icons - ashley
+- Adds saved fair icon to city map and fixes SVG styling on map pins - ashley
 
 ### 1.8.14
 
 - Adds order artists in a show based on user's favorite - ashkan
 - Fixes rounded corners on city picker component - ash
+- Adds city bmw view controller - kieran
 - Adds BMW sponsoredContent to all events in city view - kieran
 - Progressively loads map tiles ahead of Relay response - ash
 - Better initial LD view - ash

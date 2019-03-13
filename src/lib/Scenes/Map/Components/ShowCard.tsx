@@ -2,12 +2,13 @@ import { Box, color, Sans, space } from "@artsy/palette"
 import { ShowItemRow_show } from "__generated__/ShowItemRow_show.graphql"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { TabFairItemRow } from "lib/Scenes/City/Components/TabFairItemRow"
 import { isEqual } from "lodash"
 import React, { Component } from "react"
 import { Dimensions, FlatList, TouchableOpacity } from "react-native"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
-import { Show } from "../types"
+import { Fair, Show } from "../types"
 
 const shadowDetails: any = {
   shadowRadius: 4,
@@ -21,8 +22,6 @@ const Background = styled(Box)`
   height: 82;
   border-radius: 2px;
 `
-
-const screenWidth = Dimensions.get("window").width
 
 interface ShowCardProps {
   relay: RelayProp
@@ -46,40 +45,52 @@ const PageIndicator = styled(Box)`
 `
 
 export class ShowCard extends Component<ShowCardProps, ShowCardState> {
-  list: FlatList<Show>
+  list: FlatList<Show | Fair>
 
   state = {
     currentPage: 1,
     isSaving: false,
   }
 
-  componentDidUpdate(prevProps) {
-    if (!this.state.isSaving && !isEqual(prevProps, this.props) && this.list) {
-      this.list.scrollToIndex({ index: 0, animated: true })
+  componentDidUpdate(prevProps: ShowCardProps) {
+    const previousIds = prevProps.shows.map(show => show.id)
+    const currentIds = this.props.shows.map(show => show.id)
+    const equal = isEqual(previousIds, currentIds)
+
+    if (!this.state.isSaving && !equal && this.list) {
+      setTimeout(() => this.list.scrollToOffset({ offset: 0, animated: true }), 500)
     }
   }
 
-  handleTap(show) {
-    const path = show.href
+  handleTap(item) {
+    const path = item.type === "Show" ? item.href : `${item.node.id}?entity=fair`
     SwitchBoard.presentNavigationViewController(this, path)
   }
 
-  renderItem = ({ item }) => (
-    <Background ml={1} p={1} style={shadowDetails} width={this.cardWidth}>
-      <TouchableOpacity onPress={this.handleTap.bind(this, item)}>
-        <ShowItemRow
-          show={item}
-          relay={this.props.relay}
-          onSaveStarted={this.props.onSaveStarted}
-          onSaveEnded={this.props.onSaveEnded}
-          noPadding
-        />
-      </TouchableOpacity>
-    </Background>
-  )
+  renderItem = ({ item }, noWidth = false) => {
+    const props = noWidth ? { mr: 1 } : { width: this.cardWidth }
+
+    return (
+      <Background ml={1} p={1} style={shadowDetails} {...props}>
+        <TouchableOpacity onPress={this.handleTap.bind(this, item)}>
+          {item.type === "Show" ? (
+            <ShowItemRow
+              show={item}
+              relay={this.props.relay}
+              onSaveStarted={this.props.onSaveStarted}
+              onSaveEnded={this.props.onSaveEnded}
+              noPadding
+            />
+          ) : (
+            <TabFairItemRow item={item} noPadding />
+          )}
+        </TouchableOpacity>
+      </Background>
+    )
+  }
 
   onScroll = e => {
-    const newPageNum = Math.round(e.nativeEvent.contentOffset.x / screenWidth + 1)
+    const newPageNum = Math.round(e.nativeEvent.contentOffset.x / this.cardWidth + 1)
 
     if (newPageNum !== this.state.currentPage) {
       this.setState({
@@ -123,19 +134,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     const show = hasOne ? shows[0] : null
 
     return hasOne ? (
-      show && (
-        <Background m={1} p={1} style={shadowDetails}>
-          <TouchableOpacity onPress={this.handleTap.bind(this)}>
-            <ShowItemRow
-              show={show}
-              relay={this.props.relay}
-              onSaveStarted={this.onSaveStarted}
-              onSaveEnded={this.onSaveEnded}
-              noPadding
-            />
-          </TouchableOpacity>
-        </Background>
-      )
+      show && this.renderItem({ item: show }, true)
     ) : (
       <>
         <PageIndicator style={shadowDetails} mx={1} py={0.3} px={0.5} my={0.5}>
@@ -149,8 +148,8 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
           keyExtractor={item => item.id}
           onScroll={this.onScroll}
           showsHorizontalScrollIndicator={false}
-          snapToInterval={this.cardWidth + space(1) + 1}
-          contentContainerStyle={{ padding: space(0.5) }}
+          snapToInterval={this.cardWidth + space(1)}
+          contentContainerStyle={{ paddingLeft: space(0.5), paddingRight: space(2) + space(0.3) }}
           scrollEventThrottle={299}
           directionalLockEnabled={true}
           overScrollMode="always"

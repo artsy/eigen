@@ -2,24 +2,36 @@ import { Box, color, Flex, Sans } from "@artsy/palette"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import PinSavedOff from "lib/Icons/PinSavedOff"
 import PinSavedOn from "lib/Icons/PinSavedOn"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { Component } from "react"
-import { Image } from "react-native"
+import { Image, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
+export interface Props {
+  data: any
+  citySlug: string
+}
+
 export class SavedEventSection extends Component<any> {
+  handleTap = () => {
+    SwitchBoard.presentNavigationViewController(this, `/city-save/${this.props.citySlug}`)
+  }
+
   render() {
     const { data } = this.props
     const hasSaves = data.length > 0
     const hasSavesComponent = (
-      <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-        <Flex flexDirection="row" alignItems="center">
-          <PinSavedOn width={30} height={30} />
-          <Sans size="3t" weight="medium" ml={24}>
-            {data.length} saved events
-          </Sans>
+      <TouchableWithoutFeedback onPress={this.handleTap}>
+        <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+          <Flex flexDirection="row" alignItems="center">
+            <PinSavedOn pinWidth={30} pinHeight={30} />
+            <Sans size="3t" weight="medium" ml={24}>
+              {data.length > 1 ? data.length + " saved events" : data.length + " saved event"}
+            </Sans>
+          </Flex>
+          <ChevronIcon color="black" />
         </Flex>
-        <ChevronIcon color="black" />
-      </Flex>
+      </TouchableWithoutFeedback>
     )
 
     const hasNoSavesComponent = (
@@ -31,7 +43,7 @@ export class SavedEventSection extends Component<any> {
               No saved events
             </Sans>
             <Sans size="3t" color="black60">
-              Save a show or fair to find it later
+              Save a show to find it later
             </Sans>
           </Flex>
         </Flex>

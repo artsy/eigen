@@ -35,7 +35,7 @@ export class ShowHeader extends React.Component<Props, State> {
 
   handlePartnerTitleClick = () => {
     const { show } = this.props
-    if (!show.is_local_discovery) {
+    if (show.isStubShow) {
       return
     }
     SwitchBoard.presentNavigationViewController(this, `${show.partner.href}?entity=gallery`)
@@ -213,22 +213,19 @@ export const ShowHeaderContainer = createFragmentContainer(
       is_followed
       exhibition_period
       status
-      is_local_discovery
+      isStubShow
       partner {
         ... on Partner {
           name
           id
           href
         }
-        ... on ExternalPartner {
-          name
-        }
       }
       images {
         url
         aspect_ratio
       }
-      followedArtists(first: 2) {
+      followedArtists(first: 3) {
         edges {
           node {
             artist {

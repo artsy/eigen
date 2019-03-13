@@ -1,6 +1,6 @@
-import { Box, Separator, Serif } from "@artsy/palette"
+import { Box, Separator, Serif, Spacer } from "@artsy/palette"
 import { EventSection } from "lib/Scenes/City/Components/EventSection"
-import { BucketKey, BucketResults } from "lib/Scenes/Map/bucketCityResults"
+import { BucketResults } from "lib/Scenes/Map/bucketCityResults"
 import { isEqual } from "lodash"
 import React from "react"
 import { FlatList, ViewProperties } from "react-native"
@@ -10,11 +10,17 @@ import { FairEventSection } from "./FairEventSection"
 import { SavedEventSection } from "./SavedEventSection"
 
 interface Props extends ViewProperties {
-  currentBucket: BucketKey
   buckets: BucketResults
   cityName: string
   citySlug: string
-  sponsoredContent: { introText: string; artGuideUrl: string }
+  sponsoredContent: {
+    introText: string
+    artGuideUrl: string
+    shows: {
+      totalCount: number
+      edges: any[]
+    }
+  }
   relay: RelayProp
 }
 
@@ -147,7 +153,7 @@ export class AllEvents extends React.Component<Props, State> {
       case "opening":
         return (
           <EventSection
-            title="Opening shows"
+            title="Opening soon"
             data={data}
             section="opening"
             citySlug={citySlug}
@@ -157,7 +163,7 @@ export class AllEvents extends React.Component<Props, State> {
       case "closing":
         return (
           <EventSection
-            title="Closing shows"
+            title="Closing soon"
             data={data}
             section="closing"
             citySlug={citySlug}
@@ -169,13 +175,12 @@ export class AllEvents extends React.Component<Props, State> {
           <BMWEventSection
             title="BMW Art Guide"
             sponsoredContent={sponsoredContent}
-            data={data}
             citySlug={citySlug}
             relay={this.props.relay}
           />
         )
       case "saved":
-        return <SavedEventSection data={data} />
+        return <SavedEventSection data={data} citySlug={citySlug} />
       case "header":
         return (
           <Box px={2} pt={4}>
@@ -190,13 +195,16 @@ export class AllEvents extends React.Component<Props, State> {
   render() {
     const { sections } = this.state
     return (
-      <FlatList
-        data={sections}
-        ItemSeparatorComponent={this.renderItemSeparator}
-        keyExtractor={item => item.type}
-        renderItem={item => this.renderItem(item)}
-        scrollEnabled={false}
-      />
+      <Box pb={2}>
+        <FlatList
+          data={sections}
+          ItemSeparatorComponent={this.renderItemSeparator}
+          keyExtractor={item => item.type}
+          renderItem={item => this.renderItem(item)}
+          scrollEnabled={false}
+          ListFooterComponent={() => <Spacer mb={2} />}
+        />
+      </Box>
     )
   }
 }

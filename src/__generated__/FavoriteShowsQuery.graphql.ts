@@ -56,11 +56,10 @@ fragment ShowItemRow_show on Show {
     ... on Partner {
       name
     }
-    ... on ExternalPartner {
-      name
+    ... on Node {
       __id
     }
-    ... on Node {
+    ... on ExternalPartner {
       __id
     }
   }
@@ -98,15 +97,12 @@ v2 = {
   "name": "__typename",
   "args": null,
   "storageKey": null
-},
-v3 = [
-  v1
-];
+};
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FavoriteShowsQuery",
-  "id": "65ff969424023e0114fda28dceb9b0f9",
+  "id": "a0786a6d6f5305248123525e63b1530e",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -267,13 +263,10 @@ return {
                               v0,
                               {
                                 "kind": "InlineFragment",
-                                "type": "ExternalPartner",
-                                "selections": v3
-                              },
-                              {
-                                "kind": "InlineFragment",
                                 "type": "Partner",
-                                "selections": v3
+                                "selections": [
+                                  v1
+                                ]
                               }
                             ]
                           },
