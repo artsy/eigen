@@ -1,3 +1,4 @@
+import { Theme } from "@artsy/palette"
 import { CityBMWList_city } from "__generated__/CityBMWList_city.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
@@ -45,16 +46,18 @@ class CityBMWList extends React.Component<Props, State> {
     } = this.props
     const { fetchingNextPage } = this.state
     return (
-      <EventList
-        key={name + "bmw"}
-        cityName={name}
-        bucket={shows.edges.map(e => e.node) as any}
-        header="BMW Art Guide"
-        type="BMW Art Guide"
-        relay={relay}
-        onScroll={isCloseToBottom(this.fetchData)}
-        fetchingNextPage={fetchingNextPage}
-      />
+      <Theme>
+        <EventList
+          key={name + "bmw"}
+          cityName={name}
+          bucket={shows.edges.map(e => e.node) as any}
+          header="BMW Art Guide"
+          type="BMW Art Guide"
+          relay={relay}
+          onScroll={isCloseToBottom(this.fetchData)}
+          fetchingNextPage={fetchingNextPage}
+        />
+      </Theme>
     )
   }
 }
