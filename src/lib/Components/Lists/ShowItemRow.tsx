@@ -162,13 +162,15 @@ export class ShowItemRow extends React.Component<Props, State> {
             </Flex>
             {!shouldHideSaveButton && (
               <Flex flexDirection="row">
-                <InvertedButton
-                  inProgress={this.state.isFollowedSaving}
-                  text={show.is_followed ? "Saved" : "Save"}
-                  selected={show.is_followed}
-                  onPress={() => this.handleSave()}
-                  noBackground={true}
-                />
+                <Box width={50} height={20}>
+                  <InvertedButton
+                    inProgress={this.state.isFollowedSaving}
+                    text={show.is_followed ? "Saved" : "Save"}
+                    selected={show.is_followed}
+                    onPress={() => this.handleSave()}
+                    noBackground={true}
+                  />
+                </Box>
               </Flex>
             )}
           </Flex>

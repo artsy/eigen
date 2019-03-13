@@ -87,6 +87,7 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
       textStyle = { color: this.props.selected ? colors["purple-regular"] : "black" }
       styling = {
         underlayColor: "transparent",
+        style: [styles.button, { backgroundColor, height: ButtonSize[this.props.buttonSize] }],
       }
     } else {
       backgroundColor = this.state.backgroundColor.interpolate({
