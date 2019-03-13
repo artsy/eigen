@@ -160,8 +160,11 @@ if (pr.body.replace(neuterMarkdownTicks, "-") !== newBody.replace(neuterMarkdown
 }
 
 if (fs.existsSync("tsc_raw.log")) {
-  fail("TypeScript hasn't passed, see below for full logs")
-  markdown(`### TypeScript Fails\n\n\`\`\`${fs.readFileSync("tsc_raw.log")}\`\`\``)
+  const log = fs.readFileSync("tsc_raw.log")
+  if (log.length) {
+    fail("TypeScript hasn't passed, see below for full logs")
+    markdown(`### TypeScript Fails\n\n\`\`\`${log}\`\`\``)
+  }
 }
 
 // Show TSLint errors inline
