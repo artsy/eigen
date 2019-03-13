@@ -41,6 +41,7 @@ export const MapRenderer: React.SFC<{
         const computedProps: any = { viewer: null, ...mapProps, ...props }
 
         if (error) {
+          // Error indicates this is the first render with the error.
           return (
             <GlobalMap
               {...computedProps}
@@ -56,6 +57,8 @@ export const MapRenderer: React.SFC<{
             />
           )
         } else if (isRetrying) {
+          // isRetrying that the user hit the retry button on the last render. The next time we render, the request will
+          // have completed (with success or error).
           isRetrying = false
           return <GlobalMap {...computedProps} viewer={null} relayErrorState={{ isRetrying: true }} />
         } else if (mapProps || props.initialCoordinates) {
