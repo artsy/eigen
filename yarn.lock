@@ -483,9 +483,9 @@
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@emmetio/extract-abbreviation/-/extract-abbreviation-0.1.6.tgz#e4a9856c1057f0aff7d443b8536477c243abe28c"
 
-"@mapbox/react-native-mapbox-gl@^6.1.3":
-  version "6.1.3"
-  resolved "https://registry.yarnpkg.com/@mapbox/react-native-mapbox-gl/-/react-native-mapbox-gl-6.1.3.tgz#b1105b86a54e6a9994870b23b177561f18e632f8"
+"@mapbox/react-native-mapbox-gl@https://github.com/l2succes/react-native-mapbox-gl":
+  version "6.1.4"
+  resolved "https://github.com/l2succes/react-native-mapbox-gl#6a6209887b999b581a31df47c2ce3fe11a68442e"
   dependencies:
     "@turf/helpers" "4.6.0"
     underscore "^1.8.3"
@@ -695,6 +695,7 @@
 "@turf/helpers@4.6.0":
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/@turf/helpers/-/helpers-4.6.0.tgz#12398733b8ae28420df6166fa44c7ee8ffd6414c"
+  integrity sha1-EjmHM7iuKEIN9hZvpEx+6P/WQUw=
 
 "@types/geojson@*":
   version "7946.0.6"
@@ -12195,6 +12196,7 @@ ultron@~1.1.0:
 underscore@^1.8.3:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.1.tgz#06dce34a0e68a7babc29b365b8e74b8925203961"
+  integrity sha512-5/4etnCkd9c8gwgowi5/om/mYO5ajCaOgdzj/oW+0eQV9WxKBDZw5+ycmKmeaTXjInS/W0BzpGLo2xR2aBwZdg==
 
 underscore@~1.4.4:
   version "1.4.4"
