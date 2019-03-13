@@ -29,6 +29,7 @@
 - Make pre-heated GraphQL cache work for people that upgrade the app - alloy
 - Make content size of event list known upfront to prevent scroller from jumping - alloy
 - Fixes bug where saved button was removed from all Show Item rows + removes Save button only from Show card - ashley
+- Adds external navigation to BMW Art Guide website from BMW logos on City Picker and City Tab - ashley
 
 ### 1.8.14 - 1.8.19
 
