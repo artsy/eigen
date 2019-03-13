@@ -49,12 +49,14 @@ export const fairFixture = {
     cached: null,
     day_schedules: null,
     day_schedule_text: null,
-    displayDaySchedules: [
-      {
-        days: "Monday–Sunday",
-        hours: "Closed",
-      },
-    ],
+    openingHours: {
+      schedules: [
+        {
+          days: "Monday–Sunday",
+          hours: "Closed",
+        },
+      ],
+    },
     display: "25.794890, -80.134550",
   },
   counts: {

@@ -43,15 +43,11 @@ fragment Detail_show on Show {
   city
   is_local_discovery
   location {
+    ...LocationMap_location
     id
     address
     address_2
-    displayDaySchedules {
-      days
-      hours
-    }
     __id
-    ...LocationMap_location
   }
   images {
     id
@@ -254,6 +250,18 @@ fragment LocationMap_location on Location {
     end_time
     day_of_week
   }
+  openingHours {
+    __typename
+    ... on OpeningHoursArray {
+      schedules {
+        days
+        hours
+      }
+    }
+    ... on OpeningHoursText {
+      text
+    }
+  }
 }
 
 fragment ShowHeader_show on Show {
@@ -445,28 +453,28 @@ v8 = {
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "__typename",
   "args": null,
   "storageKey": null
 },
 v10 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "aspect_ratio",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v11 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_followed",
+  "name": "aspect_ratio",
   "args": null,
   "storageKey": null
 },
 v12 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__typename",
+  "name": "is_followed",
   "args": null,
   "storageKey": null
 },
@@ -507,7 +515,7 @@ v17 = {
   "concreteType": "Image",
   "plural": false,
   "selections": [
-    v9
+    v10
   ]
 },
 v18 = {
@@ -526,7 +534,7 @@ v19 = {
   "concreteType": "Image",
   "plural": false,
   "selections": [
-    v10,
+    v11,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -729,7 +737,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "0caedc289ff581e1ae3957fdb064cf05",
+  "id": "26c6ba3f0df3f1f129f1a6426a80f2fb",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -793,7 +801,9 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
+              v2,
               v8,
+              v7,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -808,33 +818,6 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "displayDaySchedules",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "FormattedDaySchedules",
-                "plural": true,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "days",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "hours",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              },
-              v2,
-              v7,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -905,6 +888,62 @@ return {
                     "storageKey": null
                   }
                 ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "openingHours",
+                "storageKey": null,
+                "args": null,
+                "concreteType": null,
+                "plural": false,
+                "selections": [
+                  v9,
+                  {
+                    "kind": "InlineFragment",
+                    "type": "OpeningHoursText",
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "text",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "type": "OpeningHoursArray",
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "schedules",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "FormattedDaySchedules",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "days",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "hours",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           },
@@ -918,8 +957,8 @@ return {
             "plural": true,
             "selections": [
               v8,
-              v9,
-              v10
+              v10,
+              v11
             ]
           },
           v2,
@@ -930,7 +969,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          v11,
+          v12,
           v8,
           {
             "kind": "ScalarField",
@@ -955,7 +994,7 @@ return {
             "concreteType": null,
             "plural": false,
             "selections": [
-              v12,
+              v9,
               v2,
               {
                 "kind": "InlineFragment",
@@ -1052,7 +1091,7 @@ return {
               v8,
               v4,
               v2,
-              v11,
+              v12,
               v14,
               v15,
               v16,
@@ -1157,8 +1196,8 @@ return {
                         "concreteType": "Image",
                         "plural": true,
                         "selections": [
-                          v9,
-                          v10
+                          v10,
+                          v11
                         ]
                       },
                       {
@@ -1170,7 +1209,7 @@ return {
                         "concreteType": null,
                         "plural": false,
                         "selections": [
-                          v12,
+                          v9,
                           v2,
                           {
                             "kind": "InlineFragment",
@@ -1243,7 +1282,7 @@ return {
                   v2,
                   v8,
                   v5,
-                  v11,
+                  v12,
                   v4,
                   v15,
                   v16,
@@ -1412,7 +1451,7 @@ return {
                           v31,
                           v32,
                           v13,
-                          v12
+                          v9
                         ]
                       },
                       {

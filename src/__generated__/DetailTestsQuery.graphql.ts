@@ -31,15 +31,11 @@ fragment Detail_show on Show {
   city
   is_local_discovery
   location {
+    ...LocationMap_location
     id
     address
     address_2
-    displayDaySchedules {
-      days
-      hours
-    }
     __id
-    ...LocationMap_location
   }
   images {
     id
@@ -84,6 +80,18 @@ fragment LocationMap_location on Location {
     start_time
     end_time
     day_of_week
+  }
+  openingHours {
+    __typename
+    ... on OpeningHoursArray {
+      schedules {
+        days
+        hours
+      }
+    }
+    ... on OpeningHoursText {
+      text
+    }
   }
 }
 
@@ -322,28 +330,28 @@ v6 = {
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "__typename",
   "args": null,
   "storageKey": null
 },
 v8 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "aspect_ratio",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "exhibition_period",
+  "name": "aspect_ratio",
   "args": null,
   "storageKey": null
 },
 v10 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__typename",
+  "name": "exhibition_period",
   "args": null,
   "storageKey": null
 },
@@ -378,7 +386,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "dafbd4becd94e882093abd54e9a0063a",
+  "id": "07d011c0af404b5004835ba9ebb5554b",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -448,7 +456,9 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
+              v1,
               v6,
+              v5,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -463,33 +473,6 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "displayDaySchedules",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "FormattedDaySchedules",
-                "plural": true,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "days",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "hours",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              },
-              v1,
-              v5,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -560,6 +543,62 @@ return {
                     "storageKey": null
                   }
                 ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "openingHours",
+                "storageKey": null,
+                "args": null,
+                "concreteType": null,
+                "plural": false,
+                "selections": [
+                  v7,
+                  {
+                    "kind": "InlineFragment",
+                    "type": "OpeningHoursText",
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "text",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "type": "OpeningHoursArray",
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "schedules",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "FormattedDaySchedules",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "days",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "hours",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           },
@@ -573,8 +612,8 @@ return {
             "plural": true,
             "selections": [
               v6,
-              v7,
-              v8
+              v8,
+              v9
             ]
           },
           v1,
@@ -586,7 +625,7 @@ return {
             "storageKey": null
           },
           v6,
-          v9,
+          v10,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -610,7 +649,7 @@ return {
             "concreteType": null,
             "plural": false,
             "selections": [
-              v10,
+              v7,
               v1,
               {
                 "kind": "InlineFragment",
@@ -731,7 +770,7 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v7
+                  v8
                 ]
               }
             ]
@@ -769,7 +808,7 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v8,
+                  v9,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -1007,7 +1046,7 @@ return {
                       v3,
                       v6,
                       v4,
-                      v9,
+                      v10,
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -1017,8 +1056,8 @@ return {
                         "concreteType": "Image",
                         "plural": true,
                         "selections": [
-                          v7,
-                          v8
+                          v8,
+                          v9
                         ]
                       },
                       {
@@ -1030,7 +1069,7 @@ return {
                         "concreteType": null,
                         "plural": false,
                         "selections": [
-                          v10,
+                          v7,
                           v1,
                           {
                             "kind": "InlineFragment",

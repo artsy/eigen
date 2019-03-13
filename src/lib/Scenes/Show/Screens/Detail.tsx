@@ -199,13 +199,10 @@ export const DetailContainer = createFragmentContainer(
       city
       is_local_discovery
       location {
+        ...LocationMap_location
         id
         address
         address_2
-        displayDaySchedules {
-          days
-          hours
-        }
       }
       images {
         id
