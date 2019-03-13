@@ -88,14 +88,16 @@ export class Detail extends React.Component<Props, State> {
       })
     }
 
-    sections.push({
-      type: "artists",
-      data: {
-        show,
-        onViewAllArtistsPressed: this.handleViewAllArtistsPressed.bind(this),
-        Component: this,
-      },
-    })
+    if (show.counts && show.counts.artists) {
+      sections.push({
+        type: "artists",
+        data: {
+          show,
+          onViewAllArtistsPressed: this.handleViewAllArtistsPressed.bind(this),
+          Component: this,
+        },
+      })
+    }
 
     if (show.location) {
       sections.push({
@@ -221,6 +223,7 @@ export const DetailContainer = createFragmentContainer(
       }
       counts {
         artworks
+        artists
       }
       status
       partner {

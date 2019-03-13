@@ -67,6 +67,7 @@ fragment Detail_show on Show {
   }
   counts {
     artworks
+    artists
   }
   status
   partner {
@@ -746,7 +747,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowQuery",
-  "id": "19efe28f5abc741de1e40331eb6cd51c",
+  "id": "1063b43901f4915adfca9e4748274b35",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -998,6 +999,13 @@ return {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "artworks",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "artists",
                 "args": null,
                 "storageKey": null
               }

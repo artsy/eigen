@@ -30,6 +30,7 @@ export type Detail_show = {
     }) | null;
     readonly counts: ({
         readonly artworks: number | null;
+        readonly artists: number | null;
     }) | null;
     readonly status: string | null;
     readonly partner: ({
@@ -220,6 +221,13 @@ return {
           "name": "artworks",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "artists",
+          "args": null,
+          "storageKey": null
         }
       ]
     },
@@ -260,5 +268,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b49de195158bdebf0bc5aa06d89f52cd';
+(node as any).hash = '1577984fcf142a98ae35b71a8de0dd99';
 export default node;
