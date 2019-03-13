@@ -1,6 +1,6 @@
 {
   "name": "emission",
-  "version": "1.8.20",
+  "version": "1.8.21",
   "native-code-version": 27,
   "description": "Artsy React(Native) components.",
   "engines": {
@@ -22,7 +22,7 @@
     "ci": "yarn ci:type-check && yarn ci:lint && yarn prettier-project -l && yarn relay && yarn ci:test",
     "ci:skip-native-if-possible": "node scripts/ci-skip-native-if-possible.js",
     "ci:type-check": "tsc --pretty false | tee tsc_raw.log",
-    "ci:lint":"yarn lint --format json --out tslint-errors.json ",
+    "ci:lint": "yarn lint --format json --out tslint-errors.json ",
     "ci:test": "jest --outputFile test-results.json --json --ci --forceExit",
     "danger": "danger",
     "start": "yarn start-servers",
