@@ -32,6 +32,7 @@
 - Delay applying filters to speed up animation - luc
 - Fixes bug where saved button was removed from all Show Item rows + removes Save button only from Show card - ashley
 - Fix tabs rendering blank in city view - luc
+- Adds external navigation to BMW Art Guide website from BMW logos on City Picker and City Tab - ashley
 
 ### 1.8.14 - 1.8.19
 

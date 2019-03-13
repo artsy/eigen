@@ -157,7 +157,11 @@ Since this controller already has to do the above logic, having it handle the Ci
     }
 }
 
-- (void)showCityPicker
+- (void)showCityPicker {
+    [self showCityPicker:nil];
+}
+
+- (void)showCityPicker:(NSString *)sponsoredContentUrl
 {
     if (self.cityPickerContainerView) {
         // Only ever allow one city picker on screen at once.
@@ -177,6 +181,9 @@ Since this controller already has to do the above logic, having it handle the Ci
     NSString *previouslySelectedCity = [[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey];
 
     self.cityPickerController = [[ARCityPickerComponentViewController alloc] initWithSelectedCityName:previouslySelectedCity];
+    if (sponsoredContentUrl) {
+        [self.cityPickerController setProperty:sponsoredContentUrl forKey:@"sponsoredContentUrl"];
+    }
     [self addChildViewController:self.cityPickerController];
     [self.cityPickerContainerView addSubview:self.cityPickerController.view];
     self.cityPickerController.view.frame = self.cityPickerContainerView.bounds;
