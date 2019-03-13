@@ -19,6 +19,7 @@
 ### 1.8.20
 
 - Only ever show one city picker at a time - ash
+- Switch to openingHours for Fairs and Shows - ashkan
 - Moves to new scrollable tab - orta & ash
 - Adds freshness to GraphQL pre-heated cache after which it won’t be used anymore, which is 1 month for City - alloy
 - Use a fork of react-native-mapbox-gl with better tap support - luc

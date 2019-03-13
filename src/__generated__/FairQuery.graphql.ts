@@ -197,6 +197,18 @@ fragment LocationMap_location on Location {
     end_time
     day_of_week
   }
+  openingHours {
+    __typename
+    ... on OpeningHoursArray {
+      schedules {
+        days
+        hours
+      }
+    }
+    ... on OpeningHoursText {
+      text
+    }
+  }
 }
 
 fragment FairBoothPreview_show on Show {
@@ -404,21 +416,28 @@ v12 = {
 v13 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_closed",
+  "name": "hours",
   "args": null,
   "storageKey": null
 },
 v14 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "is_closed",
+  "args": null,
+  "storageKey": null
+},
+v15 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "display",
   "args": null,
   "storageKey": null
 },
-v15 = [
-  v14
-],
 v16 = [
+  v15
+],
+v17 = [
   v5,
   v2
 ];
@@ -426,7 +445,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairQuery",
-  "id": "1497219907f74354d9aca0aa3ea91436",
+  "id": "97e5a8761be503ebe73ba3a4f8e9a877",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -746,13 +765,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "hours",
-            "args": null,
-            "storageKey": null
-          },
+          v13,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -853,6 +866,56 @@ return {
                     "name": "day_of_week",
                     "args": null,
                     "storageKey": null
+                  }
+                ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "openingHours",
+                "storageKey": null,
+                "args": null,
+                "concreteType": null,
+                "plural": false,
+                "selections": [
+                  v9,
+                  {
+                    "kind": "InlineFragment",
+                    "type": "OpeningHoursText",
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "text",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "type": "OpeningHoursArray",
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "schedules",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "FormattedDaySchedules",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "days",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          v13
+                        ]
+                      }
+                    ]
                   }
                 ]
               }
@@ -1167,7 +1230,7 @@ return {
                                         "args": null,
                                         "storageKey": null
                                       },
-                                      v13,
+                                      v14,
                                       {
                                         "kind": "ScalarField",
                                         "alias": null,
@@ -1195,7 +1258,7 @@ return {
                                         "args": null,
                                         "concreteType": "SaleArtworkOpeningBid",
                                         "plural": false,
-                                        "selections": v15
+                                        "selections": v16
                                       },
                                       {
                                         "kind": "LinkedField",
@@ -1205,7 +1268,7 @@ return {
                                         "args": null,
                                         "concreteType": "SaleArtworkCurrentBid",
                                         "plural": false,
-                                        "selections": v15
+                                        "selections": v16
                                       },
                                       {
                                         "kind": "ScalarField",
@@ -1223,7 +1286,7 @@ return {
                                         "concreteType": "Sale",
                                         "plural": false,
                                         "selections": [
-                                          v13,
+                                          v14,
                                           v2
                                         ]
                                       },
@@ -1245,7 +1308,7 @@ return {
                                     ],
                                     "concreteType": "Artist",
                                     "plural": true,
-                                    "selections": v16
+                                    "selections": v17
                                   },
                                   {
                                     "kind": "LinkedField",
@@ -1255,7 +1318,7 @@ return {
                                     "args": null,
                                     "concreteType": "Partner",
                                     "plural": false,
-                                    "selections": v16
+                                    "selections": v17
                                   },
                                   v7
                                 ]
@@ -1293,7 +1356,7 @@ return {
                         "args": null,
                         "concreteType": "Fair",
                         "plural": false,
-                        "selections": v16
+                        "selections": v17
                       },
                       {
                         "kind": "LinkedField",
@@ -1316,7 +1379,7 @@ return {
                         "concreteType": "Location",
                         "plural": false,
                         "selections": [
-                          v14,
+                          v15,
                           v2
                         ]
                       },

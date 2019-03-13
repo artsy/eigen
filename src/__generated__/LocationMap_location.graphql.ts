@@ -20,6 +20,13 @@ export type LocationMap_location = {
         readonly end_time: number | null;
         readonly day_of_week: string | null;
     }) | null> | null;
+    readonly openingHours: ({
+        readonly schedules?: ReadonlyArray<({
+            readonly days: string | null;
+            readonly hours: string | null;
+        }) | null> | null;
+        readonly text?: string | null;
+    }) | null;
     readonly " $refType": LocationMap_location$ref;
 };
 
@@ -137,8 +144,63 @@ const node: ConcreteFragment = {
           "storageKey": null
         }
       ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "openingHours",
+      "storageKey": null,
+      "args": null,
+      "concreteType": null,
+      "plural": false,
+      "selections": [
+        {
+          "kind": "InlineFragment",
+          "type": "OpeningHoursText",
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "text",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        {
+          "kind": "InlineFragment",
+          "type": "OpeningHoursArray",
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "schedules",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "FormattedDaySchedules",
+              "plural": true,
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "days",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "hours",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 };
-(node as any).hash = 'e1c9c49cac63aaaa08ff3a09f279f4e2';
+(node as any).hash = '8bea99f3ffcfca7cba12fb79ea897d0f';
 export default node;
