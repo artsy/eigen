@@ -20,10 +20,7 @@ export class SavedEventSection extends Component<any> {
 
   navigateToBMWArtGuide() {
     const { sponsoredContentUrl } = this.props
-    SwitchBoard.presentNavigationViewController(
-      this,
-      sponsoredContentUrl || "https://www.bmw-arts-design.com/bmw_art_guide"
-    )
+    SwitchBoard.presentNavigationViewController(this, sponsoredContentUrl)
   }
 
   render() {

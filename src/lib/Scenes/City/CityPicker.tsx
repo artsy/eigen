@@ -68,6 +68,9 @@ export class CityPicker extends Component<Props, State> {
   navigateToBMWArtGuide() {
     const { sponsoredContentUrl } = this.props
 
+    /** Here we default to the hardcoded url as on the City Picker's inital load City is undefined
+     *  and therefore does not have a sponsoredContentUrl property on City
+     */
     SwitchBoard.presentNavigationViewController(
       this,
       sponsoredContentUrl || "https://www.bmw-arts-design.com/bmw_art_guide"
