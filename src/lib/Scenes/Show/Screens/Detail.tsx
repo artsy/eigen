@@ -7,7 +7,6 @@ import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "lib/Component
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "lib/Components/Show/ShowArtworksPreview"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
-import { isEmpty } from "lodash"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -69,13 +68,14 @@ export class Detail extends React.Component<Props, State> {
       },
     })
 
-    if (show.location && !isEmpty(show.location)) {
-      sections.push({
-        type: "hours",
-        data: {
-          hours: show.location,
-        },
-      })
+    if (show.location) {
+      const { openingHours } = show.location
+      if ((openingHours.text && openingHours.text !== "") || openingHours.schedules) {
+        sections.push({
+          type: "hours",
+          data: openingHours,
+        })
+      }
     }
 
     if (show.counts && show.counts.artworks) {
@@ -150,8 +150,7 @@ export class Detail extends React.Component<Props, State> {
       case "information":
         return <CaretButton onPress={() => data.onViewMoreInfoPressed()} text="View more information" />
       case "hours":
-        const { openingHours } = data
-        return <HoursCollapsible openingHours={openingHours} onToggle={() => this.handleHoursToggled()} />
+        return <HoursCollapsible openingHours={data} onToggle={() => this.handleHoursToggled()} />
       default:
         return null
     }
@@ -208,6 +207,17 @@ export const DetailContainer = createFragmentContainer(
       ...Shows_show
       location {
         ...LocationMap_location
+        openingHours {
+          ... on OpeningHoursArray {
+            schedules {
+              days
+              hours
+            }
+          }
+          ... on OpeningHoursText {
+            text
+          }
+        }
       }
       counts {
         artworks
