@@ -32,6 +32,8 @@ export namespace Schema {
      */
     action_name: ActionNames
 
+    session_length: number
+
     /**
      * OPTIONAL: Additional properties of the action
      */
@@ -151,6 +153,8 @@ export namespace Schema {
      */
     Tap = "tap",
 
+    Session = "session",
+
     /**
      * Events / results
      */
@@ -176,6 +180,7 @@ export namespace Schema {
      */
 
     GetBMWArtGuide = "getBMWArtGuide",
+    CityGuideSessionLength = "cityGuideSessionLength",
 
     /**
      * Gene Page Events
@@ -212,6 +217,11 @@ export namespace Schema {
     SavesAndFollowsCategories = "savesAndFollowsCategories",
     SavesAndFollowsFairs = "savesAndFollowsFairs",
     SavesAndFollowsShows = "savesAndFollowsShows",
+
+    /**
+     *  City guide
+     */
+    OpenShow = "openShow",
 
     /**
      *  Consignment flow

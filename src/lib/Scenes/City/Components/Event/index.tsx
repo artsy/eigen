@@ -41,7 +41,7 @@ export class Event extends React.Component<Props, State> {
     const { id, _id, is_followed } = props.event
     return {
       action_name: is_followed ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow,
-      context_screen: Schema.PageNames.SavesAndFollows,
+      action_type: Schema.ActionTypes.Success,
       owner_type: Schema.OwnerEntityTypes.Show,
       owner_id: _id,
       owner_slug: id,

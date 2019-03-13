@@ -34,6 +34,12 @@ export class ShowItemRow extends React.Component<Props, State> {
     isFollowedSaving: false,
   }
 
+  @track(() => {
+    return {
+      action_name: Schema.ActionNames.OpenShow,
+      action_type: Schema.ActionTypes.Tap,
+    } as any
+  })
   handleTap() {
     const href = hrefForPartialShow(this.props.show)
     SwitchBoard.presentNavigationViewController(this, href)
@@ -45,6 +51,7 @@ export class ShowItemRow extends React.Component<Props, State> {
     } = props
     return {
       action_name: is_followed ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow,
+      action_type: Schema.ActionTypes.Success,
       owner_type: Schema.OwnerEntityTypes.Show,
       owner_id: _id,
       owner_slug: slug,

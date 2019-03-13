@@ -1,6 +1,6 @@
 import { color, Flex, Theme } from "@artsy/palette"
 import ScrollableTabBar, { ScrollableTab } from "lib/Components/ScrollableTabBar"
-import { Schema, screenTrack } from "lib/utils/track"
+import { Schema, screenTrack, track } from "lib/utils/track"
 import React, { Component } from "react"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 
@@ -67,6 +67,7 @@ export class CityView extends Component<Props, State> {
     citySlug: "",
     sponsoredContent: null,
   }
+  sessionStart: number
 
   scrollViewVerticalStart = 0
 
@@ -95,18 +96,27 @@ export class CityView extends Component<Props, State> {
     })
   }
 
+  @track({
+    action_type: Schema.ActionTypes.Session,
+    action_name: Schema.ActionNames.CityGuideSessionLength,
+    session_length: this.sessionStart - Date.now(),
+  })
+  trackSession() {
+    console.log("duration", this.sessionStart - Date.now())
+    return null
+  }
+
+  componentDidMount() {
+    this.sessionStart = Date.now()
+  }
+
   componentWillMount() {
     EventEmitter.subscribe("map:change", this.handleEvent)
   }
 
   componentWillUnmount() {
     EventEmitter.unsubscribe("map:change", this.handleEvent)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.isDrawerOpen !== nextProps.isDrawerOpen) {
-      this.fireScreenViewAnalytics()
-    }
+    this.trackSession()
   }
 
   componentDidUpdate() {

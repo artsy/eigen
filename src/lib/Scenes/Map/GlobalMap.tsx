@@ -227,7 +227,6 @@ export class GlobalMap extends React.Component<Props, State> {
 
   componentDidUpdate(_, prevState) {
     if (prevState.activeIndex !== this.state.activeIndex) {
-      console.log("updating here")
       this.fireGlobalMapScreenViewAnalytics()
     }
   }
