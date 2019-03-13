@@ -7,6 +7,17 @@ import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { RelayProp } from "react-relay"
 import { TabFairItemRow } from "./TabFairItemRow"
 
+/**
+ * This hard value is needed so we can tell the FlatList upfront what rows will look like and the FlatList can ahead of
+ * time calculate the total content size.
+ *
+ * Currently the fair row renders at 100 height and the show row renders at 103.33. We can’t make this value smaller
+ * than either, becuase then the content would keep growing as the actual content gets laid out.
+ *
+ * FIXME: Should /probably/ be 100, but this needs to be fixed first: https://artsyproduct.atlassian.net/browse/LD-446
+ */
+const ROW_HEIGHT = 104
+
 interface Props {
   bucket: Show[]
   type: MapTab["id"]
@@ -20,11 +31,11 @@ interface Props {
 export class EventList extends React.Component<Props> {
   renderItem = item => {
     const { type } = this.props
-    if (type === "fairs") {
-      return <TabFairItemRow item={item} />
-    } else {
-      return <ShowItemRow show={item} relay={this.props.relay} />
-    }
+    return (
+      <Box height={ROW_HEIGHT}>
+        {type === "fairs" ? <TabFairItemRow item={item} /> : <ShowItemRow show={item} relay={this.props.relay} />}
+      </Box>
+    )
   }
 
   hasEventsComponent = () => {
@@ -50,6 +61,7 @@ export class EventList extends React.Component<Props> {
         onScroll={onScroll}
         windowSize={50}
         contentContainerStyle={{ paddingLeft: 20, paddingRight: 20 }}
+        getItemLayout={(_, index) => ({ length: ROW_HEIGHT, offset: index * ROW_HEIGHT, index })}
       />
     )
   }
