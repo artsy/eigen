@@ -27,6 +27,8 @@ NSString * const __nonnull SelectedCityNameKey = @"SelectedCityName";
 @property (nonatomic, weak) UIScrollView *rnScrollView;
 
 @property (nonatomic, assign) BOOL initialDataIsLoaded;
+@property (nonatomic, assign) BOOL attributionViewsConstraintsAdded;
+
 
 @end
 
@@ -230,8 +232,11 @@ Since this controller already has to do the above logic, having it handle the Ci
 {
     RCTMGLMapView *mapView = FindMapView(self.mapVC.view);
     
-    [mapView.attributionButton alignBottomEdgeWithView:self.mapVC.view predicate:@"-50"];
-    [mapView.logoView alignBottomEdgeWithView:self.mapVC.view predicate:@"-50"];
+    if (!self.attributionViewsConstraintsAdded) {
+        [mapView.attributionButton alignBottomEdgeWithView:self.mapVC.view predicate:@"-50"];
+        [mapView.logoView alignBottomEdgeWithView:self.mapVC.view predicate:@"-50"];
+        self.attributionViewsConstraintsAdded = YES;
+    }
 }
 
 - (void)userSelectedCityAtIndex:(NSInteger)cityIndex
