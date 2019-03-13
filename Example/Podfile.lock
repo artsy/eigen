@@ -19,7 +19,7 @@ PODS:
     - Folly (= 2016.09.26.00)
     - glog (= 0.3.4)
     - Pulley
-    - react-native-mapbox-gl (= 6.1.3)
+    - react-native-mapbox-gl (= 6.1.4)
     - React/Core (= 0.54.4)
     - React/CxxBridge (= 0.54.4)
     - React/RCTActionSheet (= 0.54.4)
@@ -88,7 +88,7 @@ PODS:
   - Pulley (2.6.2)
   - React (0.54.4):
     - React/Core (= 0.54.4)
-  - react-native-mapbox-gl (6.1.3):
+  - react-native-mapbox-gl (6.1.4):
     - React
   - React/Core (0.54.4):
     - yoga (= 0.54.4.React)
@@ -254,7 +254,7 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: ebb6747c5b66026ad4f97b789c3ceac6f18e57a6
-  Emission: 3ed81bb55326256056d1517d8de1d780ef694177
+  Emission: fc2e4dfc6585763e90d1ff8ff35cf50210c4472d
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
@@ -268,7 +268,7 @@ SPEC CHECKSUMS:
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
   React: e8b3cf60f93a0e64045862a003c1bf9408098cff
-  react-native-mapbox-gl: d0ac3b81a6cadbd7cadc80891da72e3e85379350
+  react-native-mapbox-gl: b7309e99290963cc7fe0e34db86c6e16890cfcee
   RNSVG: 36f6615444ab569023444e09b01a1900d964e967
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c

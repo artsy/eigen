@@ -401,9 +401,16 @@ export class GlobalMap extends React.Component<Props, State> {
         )
       )
     }
-    const lat = activeShows[0].location.coordinates.lat
-    const lng = activeShows[0].location.coordinates.lng
-    const id = activeShows[0].id
+
+    const item = activeShows[0]
+
+    if (!item || !item.location) {
+      return null
+    }
+
+    const lat = item.location.coordinates.lat
+    const lng = item.location.coordinates.lng
+    const id = item.id
 
     if (type === "Fair") {
       return (
@@ -416,7 +423,7 @@ export class GlobalMap extends React.Component<Props, State> {
         )
       )
     } else if (type === "Show") {
-      const isSaved = (activeShows[0] as Show).is_followed
+      const isSaved = (item as Show).is_followed
 
       return (
         lat &&
