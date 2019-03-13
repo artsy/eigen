@@ -34,7 +34,12 @@ FindFirstScrollView(UIView *view)
 {
     for (UIView *subview in view.subviews) {
         if ([subview isKindOfClass:UIScrollView.class]) {
-            return (UIScrollView *)subview;
+            CGSize size = [(UIScrollView *)subview contentSize];
+             // The tab bar on the City guide is a scrollview, so we need to make sure we hit
+            //  the main scrollview instead.
+            if (size.height > size.width ) {
+                return (UIScrollView *)subview;
+            }
         }
     }
     for (UIView *subview in view.subviews) {
