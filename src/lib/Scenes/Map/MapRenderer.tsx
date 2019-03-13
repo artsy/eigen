@@ -19,6 +19,7 @@ export const MapRenderer: React.SFC<{
   initialCoordinates?: { lat: number; lng: number }
   safeAreaInsets: SafeAreaInsets
 }> = props => {
+  let isRetrying = false
   return (
     <QueryRenderer<MapRendererQuery>
       environment={defaultEnvironment}
@@ -34,14 +35,35 @@ export const MapRenderer: React.SFC<{
         citySlug: props.citySlug,
         maxInt: MAX_GRAPHQL_INT,
       }}
-      render={({ props: mapProps }) => {
-        // TODO: Handle error, see LD-318.
-        if (mapProps || props.initialCoordinates) {
-          // viewer={null} is to handle the case where we want to render the map with initialCoordinates but the Relay
-          // response hasn't arrived yet. Relay requires us to pass an explicit null if the missing data is intentional.
-          return <GlobalMap viewer={null} {...mapProps} {...props} />
+      render={({ props: mapProps, error, retry }) => {
+        // viewer={null} is to handle the case where we want to render the map with initialCoordinates but the Relay
+        // response hasn't arrived yet. Relay requires us to pass an explicit null if the missing data is intentional.
+        const computedProps: any = { viewer: null, ...mapProps, ...props }
+
+        if (error) {
+          return (
+            <GlobalMap
+              {...computedProps}
+              viewer={null}
+              relayErrorState={{
+                error,
+                retry: () => {
+                  isRetrying = true
+                  retry()
+                },
+                isRetrying,
+              }}
+            />
+          )
+        } else if (isRetrying) {
+          isRetrying = false
+          return <GlobalMap {...computedProps} viewer={null} relayErrorState={{ isRetrying: true }} />
+        } else if (mapProps || props.initialCoordinates) {
+          return <GlobalMap {...computedProps} />
+        } else {
+          // TODO: Loading screen, someday.
+          return <View style={{ backgroundColor: colors["gray-light"] }} />
         }
-        return <View style={{ backgroundColor: colors["gray-light"] }} />
       }}
       cacheConfig={
         {

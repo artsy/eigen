@@ -22,7 +22,15 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { Fair, MapGeoFeature, MapGeoFeatureCollection, OSCoordsUpdate, SafeAreaInsets, Show } from "./types"
+import {
+  Fair,
+  MapGeoFeature,
+  MapGeoFeatureCollection,
+  OSCoordsUpdate,
+  RelayErrorState,
+  SafeAreaInsets,
+  Show,
+} from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -74,6 +82,8 @@ interface Props {
   isDrawerOpen?: boolean
   /** Reflects the area not covered by navigation bars, tab bars, toolbars, and other ancestors  */
   safeAreaInsets: SafeAreaInsets
+  /** Error from Relay (MapRenderer.tsx). Needed here to send over the EventEmitter. */
+  relayErrorState?: RelayErrorState
 }
 
 interface State {
@@ -233,14 +243,16 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.viewer) {
-      const bucketResults = bucketCityResults(nextProps.viewer)
-
+    const { relayErrorState, viewer } = nextProps
+    if (viewer) {
+      const bucketResults = bucketCityResults(viewer)
       this.setState({ bucketResults }, () => {
         this.emitFilteredBucketResults()
         this.updateShowIdMap()
         this.updateClusterMap()
       })
+    } else if (relayErrorState) {
+      EventEmitter.dispatch("map:error", { relayErrorState })
     }
 
     if (nextProps.hideMapButtons !== this.props.hideMapButtons) {
@@ -495,6 +507,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   render() {
     const city = get(this.props, "viewer.city")
+    const { relayErrorState } = this.props
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || get(city, "coordinates")
     const { mapLoaded, activeShows, activePin } = this.state
 
@@ -562,6 +575,7 @@ export class GlobalMap extends React.Component<Props, State> {
             <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
               <CitySwitcherButton
                 city={city}
+                isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
                 onPress={() => {
                   this.setState({
                     activeShows: [],

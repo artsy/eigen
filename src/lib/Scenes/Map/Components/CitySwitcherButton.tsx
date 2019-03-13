@@ -23,12 +23,13 @@ const Background = styled(Flex)`
 interface Props {
   onPress?: () => void
   city: City
+  isLoading: boolean
 }
 
 export class CitySwitcherButton extends Component<Props> {
   render() {
-    const city = this.props.city
-    return (
+    const { city, isLoading } = this.props
+    return isLoading || city ? (
       <TouchableWithoutFeedback
         onPress={() => {
           if (this.props.onPress) {
@@ -68,6 +69,6 @@ export class CitySwitcherButton extends Component<Props> {
           )}
         </Background>
       </TouchableWithoutFeedback>
-    )
+    ) : null
   }
 }

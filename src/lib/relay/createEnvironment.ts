@@ -10,7 +10,7 @@ const Emission = NativeModules.Emission || {}
 
 export default function createEnvironment() {
   const network = new RelayNetworkLayer([
-    cacheMiddleware(),
+    // cacheMiddleware(),
     urlMiddleware({
       url: metaphysicsURL,
       headers: {
@@ -21,9 +21,10 @@ export default function createEnvironment() {
       },
     }),
     loggerMiddleware(),
-    errorMiddleware({
-      disableServerMiddlewareTip: true,
-    }),
+    // TODO: Add this back before merging.
+    // errorMiddleware({
+    //   disableServerMiddlewareTip: true,
+    // }),
     metaphysicsExtensionsLoggerMiddleware(),
   ])
 
