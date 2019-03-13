@@ -16,6 +16,9 @@
 
 ### Master
 
+### 1.8.21}
+
+
 - Adds retry screen to map view - ash
 - Fixes no image state for artist lists - kieran
 - Adds Mapbox logo and attribution for licensing - luc
