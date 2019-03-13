@@ -30,13 +30,6 @@ fragment Detail_show on Show {
   description
   city
   is_local_discovery
-  location {
-    ...LocationMap_location
-    id
-    address
-    address_2
-    __id
-  }
   images {
     id
   }
@@ -44,6 +37,10 @@ fragment Detail_show on Show {
   ...ShowArtworksPreview_show
   ...ShowArtistsPreview_show
   ...Shows_show
+  location {
+    ...LocationMap_location
+    __id
+  }
   counts {
     artworks
   }
@@ -62,37 +59,6 @@ fragment Detail_show on Show {
     }
   }
   __id
-}
-
-fragment LocationMap_location on Location {
-  __id
-  id
-  city
-  address
-  address_2
-  postal_code
-  summary
-  coordinates {
-    lat
-    lng
-  }
-  day_schedules {
-    start_time
-    end_time
-    day_of_week
-  }
-  openingHours {
-    __typename
-    ... on OpeningHoursArray {
-      schedules {
-        days
-        hours
-      }
-    }
-    ... on OpeningHoursText {
-      text
-    }
-  }
 }
 
 fragment ShowHeader_show on Show {
@@ -179,6 +145,37 @@ fragment Shows_show on Show {
     }
   }
   __id
+}
+
+fragment LocationMap_location on Location {
+  __id
+  id
+  city
+  address
+  address_2
+  postal_code
+  summary
+  coordinates {
+    lat
+    lng
+  }
+  day_schedules {
+    start_time
+    end_time
+    day_of_week
+  }
+  openingHours {
+    __typename
+    ... on OpeningHoursArray {
+      schedules {
+        days
+        hours
+      }
+    }
+    ... on OpeningHoursText {
+      text
+    }
+  }
 }
 
 fragment ShowItem_show on Show {
@@ -295,7 +292,7 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_followed",
+  "name": "exhibition_period",
   "args": null,
   "storageKey": null
 },
@@ -330,28 +327,28 @@ v6 = {
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__typename",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v8 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "aspect_ratio",
   "args": null,
   "storageKey": null
 },
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "aspect_ratio",
+  "name": "is_followed",
   "args": null,
   "storageKey": null
 },
 v10 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "exhibition_period",
+  "name": "__typename",
   "args": null,
   "storageKey": null
 },
@@ -386,7 +383,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "07d011c0af404b5004835ba9ebb5554b",
+  "id": "abbb1199f4b7e9dbbae9873a4b959e0d",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -450,161 +447,6 @@ return {
           {
             "kind": "LinkedField",
             "alias": null,
-            "name": "location",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Location",
-            "plural": false,
-            "selections": [
-              v1,
-              v6,
-              v5,
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "address",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "address_2",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "postal_code",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "summary",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "coordinates",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "LatLng",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "lat",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "lng",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "day_schedules",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "DaySchedule",
-                "plural": true,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "start_time",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "end_time",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "day_of_week",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "openingHours",
-                "storageKey": null,
-                "args": null,
-                "concreteType": null,
-                "plural": false,
-                "selections": [
-                  v7,
-                  {
-                    "kind": "InlineFragment",
-                    "type": "OpeningHoursText",
-                    "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "text",
-                        "args": null,
-                        "storageKey": null
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "InlineFragment",
-                    "type": "OpeningHoursArray",
-                    "selections": [
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "schedules",
-                        "storageKey": null,
-                        "args": null,
-                        "concreteType": "FormattedDaySchedules",
-                        "plural": true,
-                        "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "days",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "hours",
-                            "args": null,
-                            "storageKey": null
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
             "name": "images",
             "storageKey": null,
             "args": null,
@@ -612,8 +454,8 @@ return {
             "plural": true,
             "selections": [
               v6,
-              v8,
-              v9
+              v7,
+              v8
             ]
           },
           v1,
@@ -624,8 +466,8 @@ return {
             "args": null,
             "storageKey": null
           },
+          v9,
           v6,
-          v10,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -649,7 +491,7 @@ return {
             "concreteType": null,
             "plural": false,
             "selections": [
-              v7,
+              v10,
               v1,
               {
                 "kind": "InlineFragment",
@@ -739,7 +581,7 @@ return {
               v6,
               v3,
               v1,
-              v2,
+              v9,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -770,7 +612,7 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v8
+                  v7
                 ]
               }
             ]
@@ -808,7 +650,7 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v9,
+                  v8,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -1046,7 +888,7 @@ return {
                       v3,
                       v6,
                       v4,
-                      v10,
+                      v2,
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -1056,8 +898,8 @@ return {
                         "concreteType": "Image",
                         "plural": true,
                         "selections": [
-                          v8,
-                          v9
+                          v7,
+                          v8
                         ]
                       },
                       {
@@ -1069,7 +911,7 @@ return {
                         "concreteType": null,
                         "plural": false,
                         "selections": [
-                          v7,
+                          v10,
                           v1,
                           {
                             "kind": "InlineFragment",
@@ -1081,6 +923,161 @@ return {
                         ]
                       },
                       v1
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "location",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Location",
+            "plural": false,
+            "selections": [
+              v1,
+              v6,
+              v5,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "address",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "address_2",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "postal_code",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "summary",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "coordinates",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "LatLng",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "lat",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "lng",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "day_schedules",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "DaySchedule",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "start_time",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "end_time",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "day_of_week",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "openingHours",
+                "storageKey": null,
+                "args": null,
+                "concreteType": null,
+                "plural": false,
+                "selections": [
+                  v10,
+                  {
+                    "kind": "InlineFragment",
+                    "type": "OpeningHoursText",
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "text",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "type": "OpeningHoursArray",
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "schedules",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "FormattedDaySchedules",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "days",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "hours",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      }
                     ]
                   }
                 ]

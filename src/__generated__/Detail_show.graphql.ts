@@ -15,15 +15,12 @@ export type Detail_show = {
     readonly description: string | null;
     readonly city: string | null;
     readonly is_local_discovery: boolean | null;
-    readonly location: ({
-        readonly id: string;
-        readonly address: string | null;
-        readonly address_2: string | null;
-        readonly " $fragmentRefs": LocationMap_location$ref;
-    }) | null;
     readonly images: ReadonlyArray<({
         readonly id: string | null;
     }) | null> | null;
+    readonly location: ({
+        readonly " $fragmentRefs": LocationMap_location$ref;
+    }) | null;
     readonly counts: ({
         readonly artworks: number | null;
     }) | null;
@@ -69,7 +66,7 @@ return {
   "selections": [
     {
       "kind": "FragmentSpread",
-      "name": "ShowHeader_show",
+      "name": "ShowArtworksPreview_show",
       "args": null
     },
     {
@@ -104,6 +101,34 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
+      "name": "images",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Image",
+      "plural": true,
+      "selections": [
+        v1
+      ]
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "ShowHeader_show",
+      "args": null
+    },
+    v1,
+    {
+      "kind": "FragmentSpread",
+      "name": "ShowArtistsPreview_show",
+      "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "Shows_show",
+      "args": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
       "name": "location",
       "storageKey": null,
       "args": null,
@@ -115,51 +140,8 @@ return {
           "name": "LocationMap_location",
           "args": null
         },
-        v1,
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "address",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "address_2",
-          "args": null,
-          "storageKey": null
-        },
         v2
       ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "images",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "Image",
-      "plural": true,
-      "selections": [
-        v1
-      ]
-    },
-    v1,
-    {
-      "kind": "FragmentSpread",
-      "name": "ShowArtworksPreview_show",
-      "args": null
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "ShowArtistsPreview_show",
-      "args": null
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "Shows_show",
-      "args": null
     },
     {
       "kind": "LinkedField",
@@ -216,5 +198,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '583786c3f7a87eba5bbf2200631a5dab';
+(node as any).hash = '220b0de35947b4713c23e11c05b09834';
 export default node;

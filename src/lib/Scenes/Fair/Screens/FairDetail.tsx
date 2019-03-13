@@ -258,10 +258,6 @@ export const FairDetailContainer = createPaginationContainer(
         hours
         location {
           ...LocationMap_location
-          coordinates {
-            lat
-            lng
-          }
         }
         counts {
           artists

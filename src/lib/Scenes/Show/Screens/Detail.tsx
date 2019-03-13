@@ -69,11 +69,11 @@ export class Detail extends React.Component<Props, State> {
       },
     })
 
-    if (show.location && !isEmpty(show.location.displayDaySchedules)) {
+    if (show.location && !isEmpty(show.location.openingHours)) {
       sections.push({
         type: "hours",
         data: {
-          hours: show.location.displayDaySchedules,
+          hours: show.location.openingHours,
         },
       })
     }
@@ -198,12 +198,6 @@ export const DetailContainer = createFragmentContainer(
       description
       city
       is_local_discovery
-      location {
-        ...LocationMap_location
-        id
-        address
-        address_2
-      }
       images {
         id
       }

@@ -12,10 +12,6 @@ export type FairDetail_fair = {
     readonly name: string | null;
     readonly hours: string | null;
     readonly location: ({
-        readonly coordinates: ({
-            readonly lat: number | null;
-            readonly lng: number | null;
-        }) | null;
         readonly " $fragmentRefs": LocationMap_location$ref;
     }) | null;
     readonly counts: ({
@@ -168,31 +164,6 @@ return {
           "kind": "FragmentSpread",
           "name": "LocationMap_location",
           "args": null
-        },
-        {
-          "kind": "LinkedField",
-          "alias": null,
-          "name": "coordinates",
-          "storageKey": null,
-          "args": null,
-          "concreteType": "LatLng",
-          "plural": false,
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "lat",
-              "args": null,
-              "storageKey": null
-            },
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "lng",
-              "args": null,
-              "storageKey": null
-            }
-          ]
         },
         v2
       ]
@@ -415,5 +386,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '426a43ef6bf1e35f998086d346e4d1c1';
+(node as any).hash = 'bc66c8cc2c0c0d7927596d20cf3218ac';
 export default node;
