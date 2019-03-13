@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fixes spinner on save button on ShowItemRow - kieran
+
 ### 1.8.20
 
 - Only ever show one city picker at a time - ash
