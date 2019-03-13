@@ -53,7 +53,7 @@ export class AllEvents extends React.Component<Props, State> {
   }
 
   updateSections = props => {
-    const { buckets, cityName, sponsoredContent } = props
+    const { buckets, cityName } = props
     const sections = []
 
     sections.push({
