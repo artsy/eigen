@@ -39,6 +39,18 @@ fragment Detail_show on Show {
   ...Shows_show
   location {
     ...LocationMap_location
+    openingHours {
+      __typename
+      ... on OpeningHoursArray {
+        schedules {
+          days
+          hours
+        }
+      }
+      ... on OpeningHoursText {
+        text
+      }
+    }
     __id
   }
   counts {
@@ -383,7 +395,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "abbb1199f4b7e9dbbae9873a4b959e0d",
+  "id": "13288f143a185e77ee09057de11e3297",
   "text": null,
   "metadata": {},
   "fragment": {

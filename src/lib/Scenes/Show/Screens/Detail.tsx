@@ -70,12 +70,13 @@ export class Detail extends React.Component<Props, State> {
     })
 
     if (show.location && !isEmpty(show.location)) {
-      sections.push({
-        type: "hours",
-        data: {
-          hours: show.location,
-        },
-      })
+      const { openingHours } = show.location
+      if ((openingHours.text && openingHours.text !== "") || openingHours.schedules) {
+        sections.push({
+          type: "hours",
+          data: openingHours,
+        })
+      }
     }
 
     if (show.counts && show.counts.artworks) {
@@ -150,8 +151,7 @@ export class Detail extends React.Component<Props, State> {
       case "information":
         return <CaretButton onPress={() => data.onViewMoreInfoPressed()} text="View more information" />
       case "hours":
-        const { openingHours } = data
-        return <HoursCollapsible openingHours={openingHours} onToggle={() => this.handleHoursToggled()} />
+        return <HoursCollapsible openingHours={data} onToggle={() => this.handleHoursToggled()} />
       default:
         return null
     }
@@ -208,6 +208,17 @@ export const DetailContainer = createFragmentContainer(
       ...Shows_show
       location {
         ...LocationMap_location
+        openingHours {
+          ... on OpeningHoursArray {
+            schedules {
+              days
+              hours
+            }
+          }
+          ... on OpeningHoursText {
+            text
+          }
+        }
       }
       counts {
         artworks
