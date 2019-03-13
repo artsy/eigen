@@ -2,7 +2,7 @@ import { Box, color, Flex, Sans, Separator, Serif, space } from "@artsy/palette"
 import { dimensions, screen } from "lib/data/ScreenSizes/screenSizes"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
-import { Schema, screenTrack } from "lib/utils/track"
+import { Schema, screenTrack, track } from "lib/utils/track"
 import React, { Component } from "react"
 import { Dimensions, NativeModules, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -63,6 +63,12 @@ export class CityPicker extends Component<Props, State> {
     )
   }
 
+  @track(() => {
+    return {
+      action_name: Schema.ActionNames.BMWLogo,
+      action_type: Schema.ActionTypes.Tap,
+    } as any
+  })
   navigateToBMWArtGuide() {
     const { sponsoredContentUrl } = this.props
 

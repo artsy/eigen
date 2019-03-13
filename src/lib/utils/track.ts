@@ -221,6 +221,7 @@ export namespace Schema {
     /**
      *  City guide
      */
+    BMWLogo = "BMWLogo",
     OpenShow = "openShow",
     OpenBMWShow = "openBMWShow",
     UnsaveBMWShow = "unsaveBMWShow",

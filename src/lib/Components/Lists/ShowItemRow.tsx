@@ -34,17 +34,18 @@ export class ShowItemRow extends React.Component<Props, State> {
     isFollowedSaving: false,
   }
 
-  // FIXME: map analytics add ids
-  @track(() => {
+  @track((__, _, args) => {
+    const slug = args[0]
+    const id = args[1]
     return {
       action_name: Schema.ActionNames.OpenShow,
       action_type: Schema.ActionTypes.Tap,
-      context_screen_owner_type: "",
-      context_screen_owner_slug: "",
-      context_screen_owner_id: "",
+      context_screen_owner_type: Schema.OwnerEntityTypes.Show,
+      context_screen_owner_slug: slug,
+      context_screen_owner_id: id,
     } as any
   })
-  handleTap() {
+  handleTap(_slug, _id) {
     const href = hrefForPartialShow(this.props.show)
     SwitchBoard.presentNavigationViewController(this, href)
   }
@@ -128,7 +129,7 @@ export class ShowItemRow extends React.Component<Props, State> {
     const imageURL = show.cover_image && show.cover_image.url
 
     return (
-      <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
+      <TouchableWithoutFeedback onPress={() => this.handleTap(show.id, show._id)}>
         <Box py={noPadding ? 0 : 2}>
           <Flex flexDirection="row">
             {!imageURL ? (

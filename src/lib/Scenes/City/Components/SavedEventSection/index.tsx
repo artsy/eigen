@@ -3,6 +3,7 @@ import ChevronIcon from "lib/Icons/ChevronIcon"
 import PinSavedOff from "lib/Icons/PinSavedOff"
 import PinSavedOn from "lib/Icons/PinSavedOn"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { Schema, Track, track as _track } from "lib/utils/track"
 import React, { Component } from "react"
 import { Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -13,11 +14,20 @@ export interface Props {
   sponsoredContentUrl: string
 }
 
+const track: Track<Props, {}> = _track
+
+@track()
 export class SavedEventSection extends Component<any> {
   handleTap = () => {
     SwitchBoard.presentNavigationViewController(this, `/city-save/${this.props.citySlug}`)
   }
 
+  @track(() => {
+    return {
+      action_name: Schema.ActionNames.BMWLogo,
+      action_type: Schema.ActionTypes.Tap,
+    } as any
+  })
   navigateToBMWArtGuide() {
     const { sponsoredContentUrl } = this.props
     SwitchBoard.presentNavigationViewController(this, sponsoredContentUrl)
