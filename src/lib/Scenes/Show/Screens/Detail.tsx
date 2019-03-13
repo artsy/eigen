@@ -69,11 +69,11 @@ export class Detail extends React.Component<Props, State> {
       },
     })
 
-    if (show.location && !isEmpty(show.location.displayDaySchedules)) {
+    if (show.location && !isEmpty(show.location)) {
       sections.push({
         type: "hours",
         data: {
-          hours: show.location.displayDaySchedules,
+          hours: show.location,
         },
       })
     }
@@ -150,7 +150,8 @@ export class Detail extends React.Component<Props, State> {
       case "information":
         return <CaretButton onPress={() => data.onViewMoreInfoPressed()} text="View more information" />
       case "hours":
-        return <HoursCollapsible {...data} onToggle={() => this.handleHoursToggled()} />
+        const { openingHours } = data
+        return <HoursCollapsible openingHours={openingHours} onToggle={() => this.handleHoursToggled()} />
       default:
         return null
     }
@@ -198,15 +199,6 @@ export const DetailContainer = createFragmentContainer(
       description
       city
       is_local_discovery
-      location {
-        id
-        address
-        address_2
-        displayDaySchedules {
-          days
-          hours
-        }
-      }
       images {
         id
       }

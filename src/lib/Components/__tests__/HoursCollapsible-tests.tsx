@@ -6,12 +6,14 @@ import { TouchableWithoutFeedback } from "react-native"
 import { HoursCollapsible } from "../HoursCollapsible"
 
 describe("HoursCollapsible", () => {
-  const hours = "Monday: Foo - Bar\nTuesday: Bar - Baz\nWednesday - Friday: Closed"
+  const hours = {
+    text: "Monday: Foo - Bar\nTuesday: Bar - Baz\nWednesday - Friday: Closed",
+  }
 
   it("renders properly", () => {
     const comp = mount(
       <Theme>
-        <HoursCollapsible hours={hours} />
+        <HoursCollapsible openingHours={hours} />
       </Theme>
     )
 
@@ -21,7 +23,7 @@ describe("HoursCollapsible", () => {
   it("expands when pressed", () => {
     const comp = mount(
       <Theme>
-        <HoursCollapsible hours={hours} />
+        <HoursCollapsible openingHours={hours} />
       </Theme>
     )
 
@@ -30,16 +32,17 @@ describe("HoursCollapsible", () => {
       .props()
       .onPress()
 
-    expect(comp.text()).toContain(hours)
+    expect(comp.text()).toContain(hours.text)
   })
 
   it("renders markdown", () => {
-    const markdownHours =
-      "**Collectors Preview**\r\nNovember 8 Thursday 14:00 to 20:00\r\n [November 9th](http://foo.bar)"
+    const markdownHours = {
+      text: "**Collectors Preview**\r\nNovember 8 Thursday 14:00 to 20:00\r\n [November 9th](http://foo.bar)",
+    }
 
     const comp = mount(
       <Theme>
-        <HoursCollapsible hours={markdownHours} />
+        <HoursCollapsible openingHours={markdownHours} />
       </Theme>
     )
 

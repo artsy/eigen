@@ -128,7 +128,12 @@ export class CityView extends Component<Props, State> {
 
   setSelectedTab(selectedTab) {
     this.setState({ selectedTab: selectedTab.i }, this.fireScreenViewAnalytics)
-    EventEmitter.dispatch("filters:change", selectedTab.i)
+
+    // Delay applying filters would slow down animations as it's running on the
+    // expensive task running on the main thread
+    setTimeout(() => {
+      EventEmitter.dispatch("filters:change", selectedTab.i)
+    }, 500)
   }
 
   fireScreenViewAnalytics = () => {
@@ -157,6 +162,7 @@ export class CityView extends Component<Props, State> {
               <ScrollableTabView
                 initialPage={this.props.initialTab || AllCityMetaTab}
                 onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
+                prerenderingSiblingsNumber={2}
                 renderTabBar={props => (
                   <View>
                     <ScrollableTabBar {...props} />

@@ -4,17 +4,23 @@ import PinSavedOff from "lib/Icons/PinSavedOff"
 import PinSavedOn from "lib/Icons/PinSavedOn"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React, { Component } from "react"
-import { Image, TouchableWithoutFeedback } from "react-native"
+import { Image, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
 export interface Props {
   data: any
   citySlug: string
+  sponsoredContentUrl: string
 }
 
 export class SavedEventSection extends Component<any> {
   handleTap = () => {
     SwitchBoard.presentNavigationViewController(this, `/city-save/${this.props.citySlug}`)
+  }
+
+  navigateToBMWArtGuide() {
+    const { sponsoredContentUrl } = this.props
+    SwitchBoard.presentNavigationViewController(this, sponsoredContentUrl)
   }
 
   render() {
@@ -54,10 +60,14 @@ export class SavedEventSection extends Component<any> {
       <>
         <Box mx={2} pb={3}>
           <Flex flexDirection="row" alignItems="center">
-            <Logo source={require("../../../../../../images/BMW-logo.jpg")} />
-            <Sans size="3" ml={1}>
-              Presented in Partnership with BMW
-            </Sans>
+            <TouchableOpacity onPress={() => this.navigateToBMWArtGuide()}>
+              <Flex flexDirection="row">
+                <Logo source={require("../../../../../../images/BMW-logo.jpg")} />
+                <Sans size="3" ml={1}>
+                  Presented in Partnership with BMW
+                </Sans>
+              </Flex>
+            </TouchableOpacity>
           </Flex>
         </Box>
         <Box mx={2} mb={2}>

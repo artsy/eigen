@@ -16,7 +16,10 @@
 
 ### Master
 
+### 1.8.20
+
 - Only ever show one city picker at a time - ash
+- Switch to openingHours for Fairs and Shows - ashkan
 - Moves to new scrollable tab - orta & ash
 - Adds freshness to GraphQL pre-heated cache after which it won’t be used anymore, which is 1 month for City - alloy
 - Use a fork of react-native-mapbox-gl with better tap support - luc
@@ -25,10 +28,15 @@
 - Removes Save button from Show Card/disables Saving/Unsaving shows from Show Card - ashley
 - Make user location indicator on map tinted with purple100 - alloy
 - Bump iOS deployment target to iOS 9 to match Eigen and avoid adding more deprecated method usage - alloy
+- Adds husky - orta
 - Adds saved shows page - Kieran
 - Make pre-heated GraphQL cache work for people that upgrade the app - alloy
 - Make content size of event list known upfront to prevent scroller from jumping - alloy
+- Update ScrollableTabBar styling - luc
+- Delay applying filters to speed up animation - luc
 - Fixes bug where saved button was removed from all Show Item rows + removes Save button only from Show card - ashley
+- Fix tabs rendering blank in city view - luc
+- Adds external navigation to BMW Art Guide website from BMW logos on City Picker and City Tab - ashley
 
 ### 1.8.14 - 1.8.19
 

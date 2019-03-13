@@ -1,7 +1,7 @@
 import { Box, Collapse as _Collapse, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import { defaultRules, Markdown } from "lib/Components/Markdown"
 import ChevronIcon from "lib/Icons/ChevronIcon"
-import { isArray, isString } from "lodash"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 
@@ -11,8 +11,10 @@ import { TouchableWithoutFeedback } from "react-native"
  */
 const Collapse = _Collapse as React.ComponentClass<any>
 
+type OpeningHours = LocationMap_location["openingHours"]
+
 interface Props {
-  hours: string | Array<{ hours: string; days: string }>
+  openingHours: OpeningHours
   onToggle?: (isExpanded: boolean) => void
 }
 
@@ -45,11 +47,11 @@ export class HoursCollapsible extends React.Component<Props, State> {
   }
 
   renderHours() {
-    const { hours } = this.props
-    if (isString(hours)) {
-      return <Markdown rules={markdownRules}>{hours}</Markdown>
-    } else if (isArray(hours)) {
-      return hours.map((daySchedule, idx, arr) => {
+    const { openingHours } = this.props
+    if (openingHours.text) {
+      return <Markdown rules={markdownRules}>{openingHours.text}</Markdown>
+    } else if (openingHours.schedules) {
+      return openingHours.schedules.map((daySchedule, idx, arr) => {
         return (
           <Box key={daySchedule.days}>
             <Sans size="3t" weight="medium">

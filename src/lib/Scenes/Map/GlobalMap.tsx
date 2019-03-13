@@ -567,6 +567,7 @@ export class GlobalMap extends React.Component<Props, State> {
           <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
             <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
               <CitySwitcherButton
+                sponsoredContentUrl={this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl}
                 city={city}
                 onPress={() => {
                   this.setState({

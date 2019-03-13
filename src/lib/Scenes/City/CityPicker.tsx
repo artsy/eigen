@@ -1,6 +1,7 @@
 import { Box, color, Flex, Sans, Separator, Serif, space } from "@artsy/palette"
 import { dimensions, screen } from "lib/data/ScreenSizes/screenSizes"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack } from "lib/utils/track"
 import React, { Component } from "react"
 import { Dimensions, NativeModules, TouchableOpacity } from "react-native"
@@ -9,6 +10,7 @@ import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
 
 interface Props {
   selectedCity: string
+  sponsoredContentUrl?: string
 }
 
 interface State {
@@ -61,6 +63,18 @@ export class CityPicker extends Component<Props, State> {
     )
   }
 
+  navigateToBMWArtGuide() {
+    const { sponsoredContentUrl } = this.props
+
+    /** Here we default to the hardcoded url as on the City Picker's inital load City is undefined
+     *  and therefore does not have a sponsoredContentUrl property on City
+     */
+    SwitchBoard.presentNavigationViewController(
+      this,
+      sponsoredContentUrl || "https://www.bmw-arts-design.com/bmw_art_guide"
+    )
+  }
+
   render() {
     const { selectedCity } = this.state
     const { height: screenHeight } = Dimensions.get("window")
@@ -90,8 +104,12 @@ export class CityPicker extends Component<Props, State> {
           ))}
           <LogoContainer>
             <Flex flexDirection="row" py={1} alignItems="center">
-              <Logo source={require("../../../../Pod/Assets/assets/images/BMW-logo.jpg")} />
-              {this.handleLogo(screenHeight)}
+              <TouchableOpacity onPress={() => this.navigateToBMWArtGuide()}>
+                <Flex flexDirection="row">
+                  <Logo source={require("../../../../Pod/Assets/assets/images/BMW-logo.jpg")} />
+                  {this.handleLogo(screenHeight)}
+                </Flex>
+              </TouchableOpacity>
             </Flex>
           </LogoContainer>
         </Flex>
@@ -103,7 +121,7 @@ export class CityPicker extends Component<Props, State> {
 const Logo = styled.Image`
   height: 32;
   width: 32;
-  margin-top: ${space(1)};
+  margin-top: ${space(0.3)};
 `
 const Overlay = styled.View`
   flex: 1;
