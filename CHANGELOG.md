@@ -29,6 +29,7 @@
 - Make pre-heated GraphQL cache work for people that upgrade the app - alloy
 - Make content size of event list known upfront to prevent scroller from jumping - alloy
 - Update ScrollableTabBar styling - luc
+- Delay applying filters to speed up animation - luc
 
 ### 1.8.14 - 1.8.19
 
