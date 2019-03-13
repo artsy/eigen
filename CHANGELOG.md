@@ -16,6 +16,9 @@
 
 ### Master
 
+- Adds Mapbox logo and attribution for licensing - luc
+- Fix bug with selected pin and clusters not deselecting - luc
+
 ### 1.8.20
 
 - Only ever show one city picker at a time - ash
