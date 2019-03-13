@@ -35,7 +35,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
     sponsoredContent {
       introText
       artGuideUrl
-      shows(first: 2, sort: START_AT_ASC) {
+      shows(first: 20, sort: START_AT_ASC) {
         totalCount
         edges {
           node {
@@ -449,7 +449,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "GlobalMapTestsQuery",
-  "id": "0b84c0a8f3be81e4fa9dfa55ff831c57",
+  "id": "c0cad1e276b28a15bdf2a5c7d4c78d9d",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -555,12 +555,12 @@ return {
                     "kind": "LinkedField",
                     "alias": null,
                     "name": "shows",
-                    "storageKey": "shows(first:2,sort:\"START_AT_ASC\")",
+                    "storageKey": "shows(first:20,sort:\"START_AT_ASC\")",
                     "args": [
                       {
                         "kind": "Literal",
                         "name": "first",
-                        "value": 2,
+                        "value": 20,
                         "type": "Int"
                       },
                       v2
