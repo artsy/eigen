@@ -512,8 +512,8 @@ export class GlobalMap extends React.Component<Props, State> {
       centerCoordinate: [centerLng, centerLat],
       zoomLevel: 13,
       minZoomLevel: 11,
-      logoEnabled: false,
-      attributionEnabled: true,
+      logoEnabled: !!city,
+      attributionEnabled: false,
       compassEnabled: false,
     }
 
@@ -547,7 +547,10 @@ export class GlobalMap extends React.Component<Props, State> {
           trackUserLocation: true,
         })
       },
-      onDidFinishRenderingMapFully: () => this.setState({ mapLoaded: true }),
+      onDidFinishRenderingMapFully: () => {
+        NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryMapHasRendered", {})
+        this.setState({ mapLoaded: true })
+      },
       onPress: () => {
         if (!this.state.isSavingShow) {
           this.setState({
