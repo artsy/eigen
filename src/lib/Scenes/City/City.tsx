@@ -159,28 +159,28 @@ export class CityView extends Component<Props, State> {
             <Flex py={1} alignItems="center">
               <Handle />
             </Flex>
-            <ScrollableTabView
-              initialPage={this.props.initialTab || AllCityMetaTab}
-              onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
-              prerenderingSiblingsNumber={2}
-              renderTabBar={props => (
-                <View>
-                  <ScrollableTabBar {...props} />
-                </View>
-              )}
-              onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
-              // These are the ScrollView props for inside the scrollable tab view
-              contentProps={{
-                contentInset: { bottom: bottomInset },
-                onLayout: layout => {
-                  this.scrollViewVerticalStart = layout.nativeEvent.layout.y
-                  NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
-                },
-              }}
-            >
-              {relayErrorState ? (
-                <ErrorScreen relayErrorState={relayErrorState} />
-              ) : (
+            {relayErrorState ? (
+              <ErrorScreen relayErrorState={relayErrorState} key="error" />
+            ) : (
+              <ScrollableTabView
+                initialPage={this.props.initialTab || AllCityMetaTab}
+                onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
+                prerenderingSiblingsNumber={2}
+                renderTabBar={props => (
+                  <View>
+                    <ScrollableTabBar {...props} />
+                  </View>
+                )}
+                onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
+                // These are the ScrollView props for inside the scrollable tab view
+                contentProps={{
+                  contentInset: { bottom: bottomInset },
+                  onLayout: layout => {
+                    this.scrollViewVerticalStart = layout.nativeEvent.layout.y
+                    NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
+                  },
+                }}
+              >
                 <>
                   <ScrollableTab tabLabel="All" key="all">
                     <AllEvents
@@ -207,8 +207,8 @@ export class CityView extends Component<Props, State> {
                     )
                   })}
                 </>
-              )}
-            </ScrollableTabView>
+              </ScrollableTabView>
+            )}
           </Flex>
         </>
       </Theme>

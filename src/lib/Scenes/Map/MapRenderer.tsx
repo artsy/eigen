@@ -61,7 +61,7 @@ export const MapRenderer: React.SFC<{
         } else if (mapProps || props.initialCoordinates) {
           return <GlobalMap {...computedProps} />
         } else {
-          // TODO: Loading screen, someday.
+          // This shouldn't happen in practice, but let's return something in case it does.
           return <View style={{ backgroundColor: colors["gray-light"] }} />
         }
       }}
