@@ -65,6 +65,7 @@
     return self;
 }
 
+
 - (ARNavigationController *)messagingNavigationController
 {
     if (_messagingNavigationController) {

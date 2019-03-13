@@ -73,6 +73,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)shouldPresentViewControllerAsModal:(UIViewController *)viewController;
 
 - (BOOL)isShowingStatusBar;
+
+/// Used by analytics to get the tab name for a particular idnex
+- (NSString *)descriptionForNavIndex:(NSInteger)index;
+
 @end
 
 NS_ASSUME_NONNULL_END
