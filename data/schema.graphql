@@ -3663,7 +3663,19 @@ type FollowsAndSaves {
   ): FollowedArtistsArtworksGroupConnection
 
   # A list of the current user’s currently followed shows
-  shows(after: String, first: Int, before: String, last: Int): FollowedShowConnection
+  shows(
+    status: EventStatus
+    sort: PartnerShowSorts
+
+    # A string representing one of the supported cities in the City Guide, which
+    # are: new-york-ny-usa, los-angeles-ca-usa, london-united-kingdom,
+    # berlin-germany, paris-france, hong-kong-hong-kong
+    city: String
+    after: String
+    first: Int
+    before: String
+    last: Int
+  ): FollowedShowConnection
 
   # A list of the current user’s currently followed fair profiles
   fairs(after: String, first: Int, before: String, last: Int): FollowedFairConnection
