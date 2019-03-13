@@ -188,17 +188,15 @@
     "cacheDirectory": ".jest/cache"
   },
   "lint-staged": {
-    "lint-staged": {
-      "*.@(ts|tsx)": [
-        "tslint -c tslint.json --fix",
-        "yarn prettier-write --",
-        "git add"
-      ],
-      "*.@(json|md)": [
-        "yarn prettier-write --"
-      ]
-    },
-
+    "*.@(ts|tsx)": [
+      "tslint -c tslint.json --fix",
+      "yarn prettier-write --",
+      "git add"
+    ],
+    "*.@(json|md)": [
+      "yarn prettier-write --"
+    ]
+  },
   "config": {
     "react-native-storybook-loader": {
       "searchDir": [
