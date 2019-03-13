@@ -16,6 +16,7 @@
 
 ### Master
 
+- Only ever show one city picker at a time - ash
 - Moves to new scrollable tab - orta & ash
 - Adds freshness to GraphQL pre-heated cache after which it won’t be used anymore, which is 1 month for City - alloy
 - Updates is_local_discovery to isStubShow to conditionally disable Partner page navigation - ashley
