@@ -45,6 +45,11 @@ fragment FairDetail_fair_1G22uz on Fair {
     }
     __id
   }
+  counts {
+    artists
+    artworks
+    partners
+  }
   organizer {
     website
   }
@@ -133,7 +138,7 @@ fragment FairHeader_fair on Fair {
       }
     }
   }
-  artists_names: artists(first: 2) {
+  artists_names: artists(first: 3) {
     edges {
       node {
         name
@@ -348,31 +353,30 @@ v4 = {
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "artworks",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "href",
+  "args": null,
+  "storageKey": null
+},
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "_id",
   "args": null,
   "storageKey": null
 },
-v7 = [
-  v4,
-  v5,
-  v3,
-  v6,
-  v2
-],
 v8 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 2,
-    "type": "Int"
-  }
+  v4,
+  v6,
+  v3,
+  v7,
+  v2
 ],
 v9 = {
   "kind": "ScalarField",
@@ -427,7 +431,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairDetailShowsQuery",
-  "id": "30d4a92de34fb8e9e7d64243533954f5",
+  "id": "4ac7ef797ac257bcc9977b71ccb2e8ac",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -514,7 +518,8 @@ return {
                 "name": "partners",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              v5
             ]
           },
           {
@@ -534,7 +539,7 @@ return {
                 "args": null,
                 "concreteType": "Artist",
                 "plural": true,
-                "selections": v7
+                "selections": v8
               },
               {
                 "kind": "LinkedField",
@@ -545,7 +550,7 @@ return {
                 "concreteType": "Partner",
                 "plural": true,
                 "selections": [
-                  v6,
+                  v7,
                   v4,
                   v2
                 ]
@@ -557,7 +562,14 @@ return {
             "alias": "partner_names",
             "name": "shows_connection",
             "storageKey": "shows_connection(first:2)",
-            "args": v8,
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 2,
+                "type": "Int"
+              }
+            ],
             "concreteType": "ShowConnection",
             "plural": false,
             "selections": [
@@ -606,7 +618,7 @@ return {
                                 "selections": [
                                   v4,
                                   v3,
-                                  v6,
+                                  v7,
                                   v2
                                 ]
                               }
@@ -625,8 +637,15 @@ return {
             "kind": "LinkedField",
             "alias": "artists_names",
             "name": "artists",
-            "storageKey": "artists(first:2)",
-            "args": v8,
+            "storageKey": "artists(first:3)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 3,
+                "type": "Int"
+              }
+            ],
             "concreteType": "ArtistConnection",
             "plural": false,
             "selections": [
@@ -647,7 +666,7 @@ return {
                     "args": null,
                     "concreteType": "Artist",
                     "plural": false,
-                    "selections": v7
+                    "selections": v8
                   }
                 ]
               }
@@ -692,7 +711,7 @@ return {
                 "plural": false,
                 "selections": [
                   v3,
-                  v5,
+                  v6,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -736,7 +755,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          v6,
+          v7,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -1009,9 +1028,9 @@ return {
                             "type": "Partner",
                             "selections": [
                               v4,
-                              v5,
-                              v3,
                               v6,
+                              v3,
+                              v7,
                               {
                                 "kind": "LinkedField",
                                 "alias": null,
@@ -1021,7 +1040,7 @@ return {
                                 "concreteType": "Profile",
                                 "plural": false,
                                 "selections": [
-                                  v6,
+                                  v7,
                                   v12,
                                   v2
                                 ]
@@ -1262,7 +1281,7 @@ return {
                                     "plural": false,
                                     "selections": v16
                                   },
-                                  v5
+                                  v6
                                 ]
                               }
                             ]
@@ -1286,16 +1305,10 @@ return {
                         "concreteType": "ShowCounts",
                         "plural": false,
                         "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "artworks",
-                            "args": null,
-                            "storageKey": null
-                          }
+                          v5
                         ]
                       },
-                      v6,
+                      v7,
                       {
                         "kind": "LinkedField",
                         "alias": null,

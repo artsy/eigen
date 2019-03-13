@@ -11,7 +11,7 @@ const PinSavedOn = (props: PinProps) => (
   <Svg
     width={props.pinWidth ? props.pinWidth : 45}
     height={props.pinHeight ? props.pinHeight : 45}
-    viewBox="0 0 54 54"
+    viewBox="0 0 18 24"
     {...props}
   >
     <G fillRule="nonzero" fill="none">

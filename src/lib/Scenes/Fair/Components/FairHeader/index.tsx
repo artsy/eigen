@@ -218,7 +218,7 @@ export const FairHeaderContainer = createFragmentContainer(
           }
         }
       }
-      artists_names: artists(first: 2) {
+      artists_names: artists(first: 3) {
         edges {
           node {
             name

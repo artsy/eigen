@@ -18,6 +18,11 @@ export type FairDetail_fair = {
         }) | null;
         readonly " $fragmentRefs": LocationMap_location$ref;
     }) | null;
+    readonly counts: ({
+        readonly artists: any | null;
+        readonly artworks: any | null;
+        readonly partners: any | null;
+    }) | null;
     readonly organizer: ({
         readonly website: string | null;
     }) | null;
@@ -190,6 +195,38 @@ return {
           ]
         },
         v2
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "counts",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "FairCounts",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "artists",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "artworks",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "partners",
+          "args": null,
+          "storageKey": null
+        }
       ]
     },
     v3,
@@ -378,5 +415,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'a3c553dbd5845ed92a14dc117a3edaab';
+(node as any).hash = '426a43ef6bf1e35f998086d346e4d1c1';
 export default node;

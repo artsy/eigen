@@ -16,9 +16,17 @@
 
 ### Master
 
+- Only ever show one city picker at a time - ash
 - Moves to new scrollable tab - orta & ash
 - Adds freshness to GraphQL pre-heated cache after which it won’t be used anymore, which is 1 month for City - alloy
 - Updates is_local_discovery to isStubShow to conditionally disable Partner page navigation - ashley
+- Removes user location button when user hasn't supplied locaiton - ash
+- Removes Save button from Show Card/disables Saving/Unsaving shows from Show Card - ashley
+- Make user location indicator on map tinted with purple100 - alloy
+- Bump iOS deployment target to iOS 9 to match Eigen and avoid adding more deprecated method usage - alloy
+- Adds saved shows page - Kieran
+- Make pre-heated GraphQL cache work for people that upgrade the app - alloy
+- Make content size of event list known upfront to prevent scroller from jumping - alloy
 
 ### 1.8.14 - 1.8.19
 
@@ -60,6 +68,10 @@
 - Adds styling on single map points and clusters to indicate selection - ashley
 - Adds correct sort to city and museum tabs/lists/bricks - kieran
 - Adds pre-heated GraphQL cache ability, with just City cache for now - alloy
+- Adds freshness to GraphQL pre-heated cache after which it won’t be used anymore, which is 1 month for City - alloy
+- Updates is_local_discovery to isStubShow to conditionally disable Partner page navigation - ashley
+- Updates show and fair SVG map pin icons - ashley
+- Adds saved fair icon to city map and fixes SVG styling on map pins - ashley
 
 ### 1.8.14
 

@@ -133,7 +133,7 @@ export class LocationMap extends React.Component<Props> {
           } else if (buttonIndex === 3) {
             // Google Maps
             // https://developers.google.com/maps/documentation/urls/guide
-            Linking.openURL(`https://www.google.com/maps/dir/?api=1&map_action=map&destination=${lat}, ${lng}`)
+            Linking.openURL(`https://www.google.com/maps/dir/?api=1&map_action=map&destination=${lat},${lng}`)
           } else if (buttonIndex === 4) {
             // Copy to pasteboard
             Clipboard.setString(title)

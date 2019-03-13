@@ -34,8 +34,6 @@ static NSURL *_cacheDirectory = nil;
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     _cacheDirectory = [NSURL fileURLWithPath:[paths[0] stringByAppendingPathComponent:@"RelayResponseCache"]];
-    
-    BOOL firstLaunch = ![[NSFileManager defaultManager] fileExistsAtPath:_cacheDirectory.path];
 
     // Ensure the cache directory exists
     [[NSFileManager defaultManager] createDirectoryAtURL:_cacheDirectory
@@ -43,54 +41,61 @@ static NSURL *_cacheDirectory = nil;
                                               attributes:nil
                                                    error:nil];
 
-    if (firstLaunch) {
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0), ^{
-            NSURL *preHeatedCache = [[NSBundle mainBundle] URLForResource:@"PreHeatedGraphQLCache" withExtension:nil];
-            NSError *error = nil;
-            NSArray<NSURL *> *cacheEntries = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:preHeatedCache
-                                                                           includingPropertiesForKeys:@[(__bridge NSString *)kCFURLNameKey]
-                                                                                              options:NSDirectoryEnumerationSkipsHiddenFiles
-                                                                                                error:&error];
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0), ^{
+        NSError *error = nil;
+
+        NSURL *preHeatedCacheDirectory = [[NSBundle mainBundle] URLForResource:@"PreHeatedGraphQLCache" withExtension:nil];
+        NSArray<NSURL *> *preHeatedCacheEntries = ReadCacheEntries(preHeatedCacheDirectory, &error);
+        NSArray<NSURL *> *existingCacheEntries = error ? nil : ReadCacheEntries(_cacheDirectory, &error);
+        if (error) {
+            NSLog(@"[ARGraphQLQueryCache] Error while loading pre-heated GraphQL cache: %@", error);
+            return;
+        }
+
+        NSArray<NSString *> *existingCacheEntryKeys = [existingCacheEntries valueForKey:@"lastPathComponent"];
+
+        for (NSURL *cacheEntryURL in preHeatedCacheEntries) {
+            error = nil;
+
+            NSDictionary *cacheEntry = ReadCacheEntry(cacheEntryURL, &error);
             if (error) {
-                NSLog(@"[ARGraphQLQueryCache] Error while loading pre-heated GraphQL cache: %@", error);
-            } else {
-                for (NSURL *cacheEntryURL in cacheEntries) {
-                    error = nil;
-                    NSData *data = [NSData dataWithContentsOfURL:cacheEntryURL options:0 error:&error];
-                    if (error) {
-                        NSLog(@"[ARGraphQLQueryCache] Error while loading pre-heated GraphQL cache entry `%@': %@", cacheEntryURL.path, error);
-                    } else {
-                        NSDictionary *cacheEntry = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                        if (error) {
-                            NSLog(@"[ARGraphQLQueryCache] Error while loading pre-heated GraphQL cache entry `%@': %@", cacheEntryURL.path, error);
-                        } else {
-                            NSNumber *freshness = cacheEntry[@"freshness"];
-                            NSParameterAssert(freshness);
-                            if ([[NSDate dateWithTimeIntervalSince1970:freshness.unsignedIntegerValue] compare:[NSDate date]] == NSOrderedDescending) {
-                                NSDictionary *queryParams = cacheEntry[@"queryParams"];
-                                NSString *queryID = queryParams[@"documentID"];
-                                NSParameterAssert(queryID);
-                                NSDictionary *variables = queryParams[@"variables"];
-                                NSParameterAssert(variables);
-                                NSDictionary *graphqlResponse = cacheEntry[@"graphqlResponse"];
-                                NSParameterAssert(graphqlResponse);
-                                NSNumber *ttl = cacheEntry[@"ttl"] ?: @(0);
-                                
-                                NSData *responseData = [NSJSONSerialization dataWithJSONObject:graphqlResponse options:0 error:&error];
-                                if (error) {
-                                    NSLog(@"[ARGraphQLQueryCache] Error while preparing pre-heated GraphQL cache entry `%@': %@", cacheEntryURL.path, error);
-                                } else {
-                                    PersistCacheEntry(CacheKey(queryID, variables), responseData, CacheExpirationDate(ttl.unsignedIntegerValue));
-                                }
-                            } else {
-                                DLog(@"[ARGraphQLQueryCache] Stale pre-heated GraphQL cache entry will be ignored: %@", cacheEntryURL.path);
-                            }
-                        }
-                    }
-                }
+                NSLog(@"[ARGraphQLQueryCache] Error while loading pre-heated GraphQL cache entry `%@': %@", cacheEntryURL.path, error);
+                continue;
             }
-        });
-    }
+
+            NSNumber *freshness = cacheEntry[@"freshness"];
+            NSParameterAssert(freshness);
+            // Skip pre-heated cache that is considered out-of-date.
+            if (!IsCacheValid([NSDate dateWithTimeIntervalSince1970:freshness.unsignedIntegerValue])) {
+                DLog(@"[ARGraphQLQueryCache] Stale pre-heated GraphQL cache entry will be ignored: %@", cacheEntryURL.path);
+                continue;
+            }
+
+            NSDictionary *queryParams = cacheEntry[@"queryParams"];
+            NSParameterAssert(queryParams);
+            NSString *queryID = queryParams[@"documentID"];
+            NSParameterAssert(queryID);
+            NSDictionary *variables = queryParams[@"variables"];
+            NSParameterAssert(variables);
+            NSString *cacheKey = CacheKey(queryID, variables);
+
+            // Skip pre-heated cache entries that already exist.
+            if ([existingCacheEntryKeys indexOfObject:cacheKey] != NSNotFound) {
+                DLog(@"[ARGraphQLQueryCache] Existing pre-heated GraphQL cache entry will be ignored: %@", cacheEntryURL.path);
+                continue;
+            }
+
+            NSDictionary *graphqlResponse = cacheEntry[@"graphqlResponse"];
+            NSParameterAssert(graphqlResponse);
+            NSData *responseData = [NSJSONSerialization dataWithJSONObject:graphqlResponse options:0 error:&error];
+            if (error) {
+                NSLog(@"[ARGraphQLQueryCache] Error while preparing pre-heated GraphQL cache entry `%@': %@", cacheEntryURL.path, error);
+            } else {
+                NSDate *ttl = CacheExpirationDate(cacheEntry[@"ttl"] ? [cacheEntry[@"ttl"] unsignedIntegerValue] : 0);
+                PersistCacheEntry(cacheKey, responseData, ttl);
+            }
+        }
+    });
 }
 
 // RN ceremony
@@ -110,6 +115,23 @@ static NSURL *_cacheDirectory = nil;
 }
 
 #pragma mark Utilities
+
+static NSArray<NSURL *> *
+ReadCacheEntries(NSURL *directory, NSError * __autoreleasing *error) {
+    return [[NSFileManager defaultManager] contentsOfDirectoryAtURL:directory
+                                         includingPropertiesForKeys:@[(__bridge NSString *)kCFURLNameKey]
+                                                            options:NSDirectoryEnumerationSkipsHiddenFiles
+                                                              error:error];
+}
+
+static NSDictionary *
+ReadCacheEntry(NSURL *cacheEntryURL, NSError * __autoreleasing *error) {
+    NSData *data = [NSData dataWithContentsOfURL:cacheEntryURL options:0 error:error];
+    if (*error == nil) {
+        return [NSJSONSerialization JSONObjectWithData:data options:0 error:error];
+    }
+    return nil;
+}
 
 static NSString *
 CacheKey(NSString *queryID, NSDictionary *variables) {
