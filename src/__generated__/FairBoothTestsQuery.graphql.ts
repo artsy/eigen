@@ -93,6 +93,13 @@ fragment ShowArtistsPreview_show on Show {
     ...ArtistListItem_artist
     __id
   }
+  artists_without_artworks {
+    _id
+    id
+    href
+    ...ArtistListItem_artist
+    __id
+  }
   __id
 }
 
@@ -252,53 +259,53 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "display",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v5 = [
-  v4,
+v4 = [
+  v3,
   v1
 ],
-v6 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "_id",
   "args": null,
   "storageKey": null
 },
-v8 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v9 = {
+v8 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_followed",
+  "args": null,
+  "storageKey": null
+},
+v9 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "display",
   "args": null,
   "storageKey": null
 },
@@ -432,7 +439,7 @@ v19 = {
   ]
 },
 v20 = [
-  v2
+  v9
 ],
 v21 = {
   "kind": "LinkedField",
@@ -501,7 +508,7 @@ v22 = {
   ],
   "concreteType": "Artist",
   "plural": true,
-  "selections": v5
+  "selections": v4
 },
 v23 = {
   "kind": "LinkedField",
@@ -511,7 +518,7 @@ v23 = {
   "args": null,
   "concreteType": "Partner",
   "plural": false,
-  "selections": v5
+  "selections": v4
 },
 v24 = {
   "kind": "ScalarField",
@@ -551,12 +558,24 @@ v27 = {
       "storageKey": null
     }
   ]
-};
+},
+v28 = [
+  v6,
+  v2,
+  v7,
+  v1,
+  v3,
+  v8,
+  v24,
+  v25,
+  v26,
+  v27
+];
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairBoothTestsQuery",
-  "id": "5dce0fc8648aaf6066193c91063c0f74",
+  "id": "ee2eec9249d492a66f891aca2d4a3e84",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -599,20 +618,8 @@ return {
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "location",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Location",
-            "plural": false,
-            "selections": [
-              v2,
-              v1
-            ]
-          },
-          v3,
+          v1,
+          v2,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -621,7 +628,7 @@ return {
             "args": null,
             "concreteType": "Fair",
             "plural": false,
-            "selections": v5
+            "selections": v4
           },
           {
             "kind": "LinkedField",
@@ -632,16 +639,16 @@ return {
             "concreteType": null,
             "plural": false,
             "selections": [
-              v6,
+              v5,
               v1,
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
-                  v4,
                   v3,
+                  v2,
+                  v6,
                   v7,
-                  v8,
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -651,9 +658,9 @@ return {
                     "concreteType": "Profile",
                     "plural": false,
                     "selections": [
-                      v7,
-                      v3,
-                      v9,
+                      v6,
+                      v2,
+                      v8,
                       v1
                     ]
                   }
@@ -686,8 +693,20 @@ return {
               }
             ]
           },
-          v7,
-          v1,
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "location",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Location",
+            "plural": false,
+            "selections": [
+              v9,
+              v1
+            ]
+          },
+          v6,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -711,14 +730,14 @@ return {
               v13,
               v14,
               v15,
-              v3,
+              v2,
               v16,
               v17,
               v19,
               v21,
               v22,
               v23,
-              v8
+              v7
             ]
           },
           {
@@ -729,18 +748,17 @@ return {
             "args": null,
             "concreteType": "Artist",
             "plural": true,
-            "selections": [
-              v7,
-              v3,
-              v8,
-              v1,
-              v4,
-              v9,
-              v24,
-              v25,
-              v26,
-              v27
-            ]
+            "selections": v28
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artists_without_artworks",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artist",
+            "plural": true,
+            "selections": v28
           },
           {
             "kind": "LinkedField",
@@ -769,10 +787,10 @@ return {
                 "selections": [
                   v24,
                   v1,
+                  v2,
                   v3,
-                  v4,
-                  v9,
-                  v7,
+                  v8,
+                  v6,
                   v25,
                   v26,
                   v27,
@@ -783,7 +801,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v8
+                  v7
                 ]
               }
             ]
@@ -851,8 +869,8 @@ return {
                     "concreteType": "AggregationCount",
                     "plural": true,
                     "selections": [
+                      v2,
                       v3,
-                      v4,
                       v1
                     ]
                   }
@@ -926,7 +944,7 @@ return {
                         "plural": false,
                         "selections": [
                           v16,
-                          v3,
+                          v2,
                           v11,
                           v12,
                           v13,
@@ -939,8 +957,8 @@ return {
                           v21,
                           v22,
                           v23,
-                          v8,
-                          v6
+                          v7,
+                          v5
                         ]
                       },
                       {

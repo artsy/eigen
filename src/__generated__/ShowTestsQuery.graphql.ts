@@ -61,8 +61,13 @@ fragment Detail_show on Show {
     }
     __id
   }
+  artists_without_artworks {
+    id
+    __id
+  }
   counts {
     artworks
+    artists
   }
   status
   partner {
@@ -303,6 +308,13 @@ fragment ShowArtistsPreview_show on Show {
   _id
   id
   artists {
+    _id
+    id
+    href
+    ...ArtistListItem_artist
+    __id
+  }
+  artists_without_artworks {
     _id
     id
     href
@@ -734,7 +746,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
-  "id": "54d57e596dec8c769a75ec831dff9ef1",
+  "id": "1334af9dcd583992a99752f52209a559",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -780,7 +792,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "status",
+            "name": "isStubShow",
             "args": null,
             "storageKey": null
           },
@@ -819,14 +831,14 @@ return {
           },
           v9,
           v10,
-          v6,
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "isStubShow",
+            "name": "status",
             "args": null,
             "storageKey": null
           },
+          v6,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -988,7 +1000,35 @@ return {
                 "name": "artworks",
                 "args": null,
                 "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "artists",
+                "args": null,
+                "storageKey": null
               }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artists_without_artworks",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artist",
+            "plural": true,
+            "selections": [
+              v2,
+              v6,
+              v12,
+              v1,
+              v3,
+              v9,
+              v13,
+              v14,
+              v15,
+              v16
             ]
           },
           {
