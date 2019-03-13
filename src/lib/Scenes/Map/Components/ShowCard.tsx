@@ -80,6 +80,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
               onSaveStarted={this.props.onSaveStarted}
               onSaveEnded={this.props.onSaveEnded}
               noPadding
+              shouldHideSaveButton={true}
             />
           ) : (
             <TabFairItemRow item={item} noPadding />

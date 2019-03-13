@@ -74,7 +74,7 @@
   },
   "dependencies": {
     "@artsy/palette": "^2.23.0",
-    "@mapbox/react-native-mapbox-gl": "^6.1.3",
+    "@mapbox/react-native-mapbox-gl": "https://github.com/l2succes/react-native-mapbox-gl",
     "lodash": "^4.17.4",
     "moment": "^2.19.4",
     "moment-timezone": "^0.5.17",
