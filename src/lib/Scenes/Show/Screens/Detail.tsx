@@ -69,11 +69,11 @@ export class Detail extends React.Component<Props, State> {
       },
     })
 
-    if (show.location && !isEmpty(show.location.openingHours)) {
+    if (show.location && !isEmpty(show.location)) {
       sections.push({
         type: "hours",
         data: {
-          hours: show.location.openingHours,
+          hours: show.location,
         },
       })
     }
@@ -150,7 +150,8 @@ export class Detail extends React.Component<Props, State> {
       case "information":
         return <CaretButton onPress={() => data.onViewMoreInfoPressed()} text="View more information" />
       case "hours":
-        return <HoursCollapsible {...data} onToggle={() => this.handleHoursToggled()} />
+        const { openingHours } = data
+        return <HoursCollapsible openingHours={openingHours} onToggle={() => this.handleHoursToggled()} />
       default:
         return null
     }

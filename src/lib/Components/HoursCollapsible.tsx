@@ -1,5 +1,5 @@
 import { Box, Collapse as _Collapse, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
-import { Detail_show } from "__generated__/Detail_show.graphql"
+import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
 import { defaultRules, Markdown } from "lib/Components/Markdown"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import React from "react"
@@ -11,7 +11,7 @@ import { TouchableWithoutFeedback } from "react-native"
  */
 const Collapse = _Collapse as React.ComponentClass<any>
 
-type OpeningHours = Detail_show["location"]["openingHours"]
+type OpeningHours = LocationMap_location["openingHours"]
 
 interface Props {
   openingHours: OpeningHours

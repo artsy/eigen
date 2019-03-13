@@ -39,6 +39,10 @@ fragment FairDetail_fair_1G22uz on Fair {
   hours
   location {
     ...LocationMap_location
+    coordinates {
+      lat
+      lng
+    }
     __id
   }
   counts {
@@ -446,7 +450,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairDetailShowsQuery",
-  "id": "4c5fa8c184c590b6f62c352e5b62830d",
+  "id": "9bf3d61f2b53e8386d1eb220cb828a34",
   "text": null,
   "metadata": {},
   "fragment": {
