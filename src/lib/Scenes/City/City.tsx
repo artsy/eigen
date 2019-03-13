@@ -181,32 +181,30 @@ export class CityView extends Component<Props, State> {
                   },
                 }}
               >
-                <>
-                  <ScrollableTab tabLabel="All" key="all">
-                    <AllEvents
-                      cityName={cityName}
-                      citySlug={citySlug}
-                      key={cityName}
-                      sponsoredContent={this.state.sponsoredContent}
-                      buckets={buckets}
-                      relay={this.state.relay}
-                    />
-                  </ScrollableTab>
+                <ScrollableTab tabLabel="All" key="all">
+                  <AllEvents
+                    cityName={cityName}
+                    citySlug={citySlug}
+                    key={cityName}
+                    sponsoredContent={this.state.sponsoredContent}
+                    buckets={buckets}
+                    relay={this.state.relay}
+                  />
+                </ScrollableTab>
 
-                  {cityTabs.filter(tab => tab.id !== "all").map(tab => {
-                    return (
-                      <ScrollableTab tabLabel={tab.text} key={tab.id}>
-                        <EventList
-                          key={cityName + tab.id}
-                          bucket={buckets[tab.id]}
-                          type={tab.id}
-                          cityName={cityName}
-                          relay={this.state.relay}
-                        />
-                      </ScrollableTab>
-                    )
-                  })}
-                </>
+                {cityTabs.filter(tab => tab.id !== "all").map(tab => {
+                  return (
+                    <ScrollableTab tabLabel={tab.text} key={tab.id}>
+                      <EventList
+                        key={cityName + tab.id}
+                        bucket={buckets[tab.id]}
+                        type={tab.id}
+                        cityName={cityName}
+                        relay={this.state.relay}
+                      />
+                    </ScrollableTab>
+                  )
+                })}
               </ScrollableTabView>
             )}
           </Flex>
