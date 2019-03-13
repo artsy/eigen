@@ -31,6 +31,7 @@
 - Update ScrollableTabBar styling - luc
 - Delay applying filters to speed up animation - luc
 - Fixes bug where saved button was removed from all Show Item rows + removes Save button only from Show card - ashley
+- Fix tabs rendering blank in city view - luc
 
 ### 1.8.14 - 1.8.19
 

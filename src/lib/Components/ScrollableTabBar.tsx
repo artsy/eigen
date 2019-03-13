@@ -118,7 +118,7 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
         alwaysBounceVertical={false}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}
+        contentContainerStyle={{ flexDirection: "row", justifyContent: "space-between" }}
         onContentSizeChange={width => (this.scrollViewWidth = width)}
         horizontal
       >

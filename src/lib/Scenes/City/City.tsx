@@ -152,6 +152,7 @@ export class CityView extends Component<Props, State> {
               <ScrollableTabView
                 initialPage={this.props.initialTab || AllCityMetaTab}
                 onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
+                prerenderingSiblingsNumber={2}
                 renderTabBar={props => (
                   <View>
                     <ScrollableTabBar {...props} />
