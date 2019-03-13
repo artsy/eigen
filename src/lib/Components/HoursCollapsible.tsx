@@ -48,9 +48,9 @@ export class HoursCollapsible extends React.Component<Props, State> {
 
   renderHours() {
     const { openingHours } = this.props
-    if (openingHours.text) {
+    if (openingHours && openingHours.text) {
       return <Markdown rules={markdownRules}>{openingHours.text}</Markdown>
-    } else if (openingHours.schedules) {
+    } else if (openingHours && openingHours.schedules) {
       return openingHours.schedules.map((daySchedule, idx, arr) => {
         return (
           <Box key={daySchedule.days}>

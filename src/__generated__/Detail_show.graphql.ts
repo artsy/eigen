@@ -19,6 +19,13 @@ export type Detail_show = {
         readonly id: string | null;
     }) | null> | null;
     readonly location: ({
+        readonly openingHours: ({
+            readonly schedules?: ReadonlyArray<({
+                readonly days: string | null;
+                readonly hours: string | null;
+            }) | null> | null;
+            readonly text?: string | null;
+        }) | null;
         readonly " $fragmentRefs": LocationMap_location$ref;
     }) | null;
     readonly counts: ({
@@ -140,6 +147,61 @@ return {
           "name": "LocationMap_location",
           "args": null
         },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "openingHours",
+          "storageKey": null,
+          "args": null,
+          "concreteType": null,
+          "plural": false,
+          "selections": [
+            {
+              "kind": "InlineFragment",
+              "type": "OpeningHoursText",
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "text",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            },
+            {
+              "kind": "InlineFragment",
+              "type": "OpeningHoursArray",
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "schedules",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "FormattedDaySchedules",
+                  "plural": true,
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "days",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "hours",
+                      "args": null,
+                      "storageKey": null
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
         v2
       ]
     },
@@ -198,5 +260,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '220b0de35947b4713c23e11c05b09834';
+(node as any).hash = 'b49de195158bdebf0bc5aa06d89f52cd';
 export default node;
