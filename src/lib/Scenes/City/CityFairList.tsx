@@ -3,6 +3,7 @@ import { CityFairList_city } from "__generated__/CityFairList_city.graphql"
 import Spinner from "lib/Components/Spinner"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
+import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -17,6 +18,12 @@ interface State {
   fetchingNextPage: boolean
 }
 
+@screenTrack((props: Props) => ({
+  context_screen: Schema.PageNames.CityGuideFairsList,
+  context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+  context_screen_owner_slug: props.city.slug,
+  context_screen_owner_id: props.city.slug,
+}))
 class CityFairList extends React.Component<Props, State> {
   state = {
     fetchingNextPage: false,
@@ -79,6 +86,7 @@ export default createPaginationContainer(
     city: graphql`
       fragment CityFairList_city on City
         @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
+        slug
         fairs(first: $count, after: $cursor, status: CURRENT, sort: START_AT_ASC)
           @connection(key: "CityFairList_fairs") {
           edges {

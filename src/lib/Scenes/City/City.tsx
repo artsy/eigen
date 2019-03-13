@@ -28,11 +28,12 @@ interface State {
   relay: RelayProp
   cityName: string
   citySlug: string
-
   selectedTab: number
   sponsoredContent: { introText: string; artGuideUrl: string }
 }
 const AllCityMetaTab = 0
+
+// let sessionStart
 
 const screenSchemaForCurrentTabState = currentSelectedTab => {
   switch (currentSelectedTab) {
@@ -95,18 +96,27 @@ export class CityView extends Component<Props, State> {
     })
   }
 
+  // @track({
+  //   action_type: Schema.ActionTypes.Session,
+  //   action_name: Schema.ActionNames.CityGuideSessionLength,
+  //   session_length: sessionStart - Date.now(),
+  // })
+  // trackSession() {
+  //   console.log("duration", sessionStart - Date.now())
+  //   return null
+  // }
+
+  // componentDidMount() {
+  //   sessionStart = Date.now()
+  // }
+
   componentWillMount() {
     EventEmitter.subscribe("map:change", this.handleEvent)
   }
 
   componentWillUnmount() {
     EventEmitter.unsubscribe("map:change", this.handleEvent)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.isDrawerOpen !== nextProps.isDrawerOpen) {
-      this.fireScreenViewAnalytics()
-    }
+    // this.trackSession()
   }
 
   componentDidUpdate() {
@@ -117,11 +127,10 @@ export class CityView extends Component<Props, State> {
   }
 
   setSelectedTab(selectedTab) {
-    this.setState({ selectedTab: selectedTab.i }, this.fireScreenViewAnalytics)
-
     // Delay applying filters would slow down animations as it's running on the
     // expensive task running on the main thread
     setTimeout(() => {
+      this.setState({ selectedTab: selectedTab.i }, this.fireScreenViewAnalytics)
       EventEmitter.dispatch("filters:change", selectedTab.i)
     }, 500)
   }

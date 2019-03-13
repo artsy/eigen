@@ -16,7 +16,11 @@
 
 ### Master
 
+- Fixes no image state for artist lists - kieran
+- Adds Mapbox logo and attribution for licensing - luc
 - Fixes spinner on save button on ShowItemRow - kieran
+- Fix bug with selected pin and clusters not deselecting - luc
+
 
 ### 1.8.20
 

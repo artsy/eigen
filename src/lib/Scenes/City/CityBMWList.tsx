@@ -2,6 +2,7 @@ import { Theme } from "@artsy/palette"
 import { CityBMWList_city } from "__generated__/CityBMWList_city.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
+import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { EventList } from "./Components/EventList"
@@ -15,6 +16,12 @@ interface State {
   fetchingNextPage: boolean
 }
 
+@screenTrack((props: Props) => ({
+  context_screen: Schema.PageNames.CityGuideBMWList,
+  context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+  context_screen_owner_slug: props.city.slug,
+  context_screen_owner_id: props.city.slug,
+}))
 class CityBMWList extends React.Component<Props, State> {
   state = {
     fetchingNextPage: false,
@@ -69,6 +76,7 @@ export default createPaginationContainer(
       fragment CityBMWList_city on City
         @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
         name
+        slug
         sponsoredContent {
           shows(first: $count, status: RUNNING, after: $cursor, sort: PARTNER_ASC)
             @connection(key: "CityBMWList_shows") {
