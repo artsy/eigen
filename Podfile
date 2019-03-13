@@ -97,9 +97,7 @@ target 'Artsy' do
 
   # For Stripe integration with Emission
   pod 'tipsi-stripe', git: 'https://github.com/tipsi/tipsi-stripe.git', tag: '5.2.4'
-  # Note: There is a post-install step for this podspec, which downloads the mapbox compiled framework
-  # my fork let's the scripts folder exist inside the repo so that it can be executed in the post_install below
-  pod 'react-native-mapbox-gl', git: 'https://github.com/orta/react-native-mapbox-gl.git', branch: '6_1_3_podspec_fix'
+  pod 'react-native-mapbox-gl', git: 'https://github.com/l2succes/react-native-mapbox-gl', branch: 'fix-gesture-recognizer'
   pod 'SentryReactNative', git: 'https://github.com/getsentry/react-native-sentry.git', tag: 'v0.30.3'
   pod 'Pulley', :git => 'https://github.com/l2succes/Pulley.git', :branch => 'master'
   pod 'RNSVG', git: 'https://github.com/react-native-community/react-native-svg.git', tag: 'v9.0.4'
