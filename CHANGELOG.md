@@ -28,6 +28,7 @@
 - Removes Save button from Show Card/disables Saving/Unsaving shows from Show Card - ashley
 - Make user location indicator on map tinted with purple100 - alloy
 - Bump iOS deployment target to iOS 9 to match Eigen and avoid adding more deprecated method usage - alloy
+- Adds husky - orta
 - Adds saved shows page - Kieran
 - Make pre-heated GraphQL cache work for people that upgrade the app - alloy
 - Make content size of event list known upfront to prevent scroller from jumping - alloy

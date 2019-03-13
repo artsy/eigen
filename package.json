@@ -126,7 +126,7 @@
     "danger-plugin-jest": "^1.1.0",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
-    "husky": "^0.14.3",
+    "husky": "^1.3.1",
     "jest": "^23.6.0",
     "lint-staged": "^6.0.0",
     "patch-package": "^5.0.0",
@@ -191,17 +191,12 @@
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
-      "tslint --fix",
-      "yarn run prettier-write --",
+      "tslint -c tslint.json --fix",
+      "yarn prettier-write --",
       "git add"
     ],
-    "*.json": [
-      "yarn run prettier-write --",
-      "git add"
-    ],
-    "*.md": [
-      "yarn run prettier-write --",
-      "git add"
+    "*.@(json|md)": [
+      "yarn prettier-write --"
     ]
   },
   "config": {
@@ -219,6 +214,13 @@
     "singleQuote": false,
     "trailingComma": "es5",
     "bracketSpacing": true
+  },
+  "husky": {
+    "hooks": {
+      "post-merge": "pull-lock",
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn run type-check"
+    }
   },
   "pull-lock": {
     "yarn.lock": "yarn install",
