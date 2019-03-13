@@ -46,6 +46,13 @@ export interface MapGeoFeature {
   type: string | any
 }
 
+/** Interface for the current state of Relay queries/errors. */
+export interface RelayErrorState {
+  isRetrying: boolean
+  retry: () => void
+  error: Error
+}
+
 export interface MapGeoFeatureCollection {
   type: "FeatureCollection"
   features: MapGeoFeature[]
