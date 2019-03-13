@@ -413,9 +413,16 @@ export class GlobalMap extends React.Component<Props, State> {
         )
       )
     }
-    const lat = activeShows[0].location.coordinates.lat
-    const lng = activeShows[0].location.coordinates.lng
-    const id = activeShows[0].id
+
+    const item = activeShows[0]
+
+    if (!item || !item.location) {
+      return null
+    }
+
+    const lat = item.location.coordinates.lat
+    const lng = item.location.coordinates.lng
+    const id = item.id
 
     if (type === "Fair") {
       return (
@@ -428,7 +435,7 @@ export class GlobalMap extends React.Component<Props, State> {
         )
       )
     } else if (type === "Show") {
-      const isSaved = (activeShows[0] as Show).is_followed
+      const isSaved = (item as Show).is_followed
 
       return (
         lat &&
@@ -574,6 +581,7 @@ export class GlobalMap extends React.Component<Props, State> {
           <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
             <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
               <CitySwitcherButton
+                sponsoredContentUrl={this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl}
                 city={city}
                 isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
                 onPress={() => {
@@ -582,15 +590,17 @@ export class GlobalMap extends React.Component<Props, State> {
                   })
                 }}
               />
-              <Box style={{ marginLeft: "auto" }}>
-                <UserPositionButton
-                  highlight={this.state.userLocation === this.state.currentLocation}
-                  onPress={() => {
-                    const { lat, lng } = this.state.userLocation
-                    this.map.moveTo([lng, lat], 500)
-                  }}
-                />
-              </Box>
+              {this.state.userLocation && (
+                <Box style={{ marginLeft: "auto" }}>
+                  <UserPositionButton
+                    highlight={this.state.userLocation === this.state.currentLocation}
+                    onPress={() => {
+                      const { lat, lng } = this.state.userLocation
+                      this.map.moveTo([lng, lat], 500)
+                    }}
+                  />
+                </Box>
+              )}
             </Flex>
           </Animated.View>
         </TopButtonsContainer>

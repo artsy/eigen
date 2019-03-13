@@ -180,7 +180,7 @@ export class AllEvents extends React.Component<Props, State> {
           />
         )
       case "saved":
-        return <SavedEventSection data={data} citySlug={citySlug} />
+        return <SavedEventSection data={data} citySlug={citySlug} sponsoredContentUrl={sponsoredContent.artGuideUrl} />
       case "header":
         return (
           <Box px={2} pt={4}>
@@ -195,16 +195,13 @@ export class AllEvents extends React.Component<Props, State> {
   render() {
     const { sections } = this.state
     return (
-      <Box pb={2}>
-        <FlatList
-          data={sections}
-          ItemSeparatorComponent={this.renderItemSeparator}
-          keyExtractor={item => item.type}
-          renderItem={item => this.renderItem(item)}
-          scrollEnabled={false}
-          ListFooterComponent={() => <Spacer mb={2} />}
-        />
-      </Box>
+      <FlatList
+        data={sections}
+        ItemSeparatorComponent={this.renderItemSeparator}
+        keyExtractor={item => item.type}
+        renderItem={item => this.renderItem(item)}
+        ListFooterComponent={() => <Spacer mb={2} />}
+      />
     )
   }
 }

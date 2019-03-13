@@ -34,7 +34,12 @@ FindFirstScrollView(UIView *view)
 {
     for (UIView *subview in view.subviews) {
         if ([subview isKindOfClass:UIScrollView.class]) {
-            return (UIScrollView *)subview;
+            CGSize size = [(UIScrollView *)subview contentSize];
+             // The tab bar on the City guide is a scrollview, so we need to make sure we hit
+            //  the main scrollview instead.
+            if (size.height > size.width ) {
+                return (UIScrollView *)subview;
+            }
         }
     }
     for (UIView *subview in view.subviews) {
@@ -152,8 +157,16 @@ Since this controller already has to do the above logic, having it handle the Ci
     }
 }
 
-- (void)showCityPicker
+- (void)showCityPicker {
+    [self showCityPicker:nil];
+}
+
+- (void)showCityPicker:(NSString *)sponsoredContentUrl
 {
+    if (self.cityPickerContainerView) {
+        // Only ever allow one city picker on screen at once.
+        return;
+    }
     [self.mapVC setProperty:@(YES) forKey:@"hideMapButtons"];
 
     const CGFloat MARGIN = 20;
@@ -161,12 +174,16 @@ Since this controller already has to do the above logic, having it handle the Ci
 
     self.cityPickerContainerView = [[UIView alloc] initWithFrame:CGRectMake(MARGIN, MARGIN + topLayoutMargin, self.view.frame.size.width - MARGIN*2, self.view.frame.size.height - MARGIN*2 - topLayoutMargin)];
     [self.view addSubview:self.cityPickerContainerView];
+    self.cityPickerContainerView.userInteractionEnabled = NO;
     self.cityPickerContainerView.alpha = 0;
     self.cityPickerContainerView.transform = CGAffineTransformMakeScale(0.8, 0.8);
 
     NSString *previouslySelectedCity = [[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey];
 
     self.cityPickerController = [[ARCityPickerComponentViewController alloc] initWithSelectedCityName:previouslySelectedCity];
+    if (sponsoredContentUrl) {
+        [self.cityPickerController setProperty:sponsoredContentUrl forKey:@"sponsoredContentUrl"];
+    }
     [self addChildViewController:self.cityPickerController];
     [self.cityPickerContainerView addSubview:self.cityPickerController.view];
     self.cityPickerController.view.frame = self.cityPickerContainerView.bounds;
@@ -184,6 +201,8 @@ Since this controller already has to do the above logic, having it handle the Ci
     [UIView animateWithDuration:0.35 animations:^{
         self.cityPickerContainerView.alpha = 1;
         self.cityPickerContainerView.transform = CGAffineTransformIdentity;
+    } completion:^(BOOL finished) {
+        self.cityPickerContainerView.userInteractionEnabled = YES;
     }];
 }
 

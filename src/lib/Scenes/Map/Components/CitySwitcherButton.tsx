@@ -24,18 +24,21 @@ interface Props {
   onPress?: () => void
   city: City
   isLoading: boolean
+  sponsoredContentUrl?: string
 }
 
 export class CitySwitcherButton extends Component<Props> {
   render() {
-    const { city, isLoading } = this.props
+    const { city, isLoading, sponsoredContentUrl } = this.props
     return isLoading || city ? (
       <TouchableWithoutFeedback
         onPress={() => {
           if (this.props.onPress) {
             this.props.onPress()
           }
-          NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryOpenCityPicker", {})
+          NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryOpenCityPicker", {
+            ...(sponsoredContentUrl && { sponsoredContentUrl }),
+          })
         }}
       >
         <Background

@@ -104,9 +104,9 @@ export class CityView extends Component<Props, State> {
     )
   }
 
-  handleError = (stuff: any) => {
+  handleError = ({ relayErrorState }: { relayErrorState: RelayErrorState }) => {
     // We have a Relay error; post a notification so that the ARMapContainerViewController can finalize the native UI (ie: show the drawer partially).
-    this.setState({ relayErrorState: stuff.relayErrorState }, () => {
+    this.setState({ relayErrorState }, () => {
       NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryQueryResponseReceived", {})
     })
   }
@@ -129,7 +129,12 @@ export class CityView extends Component<Props, State> {
 
   setSelectedTab(selectedTab) {
     this.setState({ selectedTab: selectedTab.i }, this.fireScreenViewAnalytics)
-    EventEmitter.dispatch("filters:change", selectedTab.i)
+
+    // Delay applying filters would slow down animations as it's running on the
+    // expensive task running on the main thread
+    setTimeout(() => {
+      EventEmitter.dispatch("filters:change", selectedTab.i)
+    }, 500)
   }
 
   fireScreenViewAnalytics = () => {
@@ -157,6 +162,7 @@ export class CityView extends Component<Props, State> {
             <ScrollableTabView
               initialPage={this.props.initialTab || AllCityMetaTab}
               onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
+              prerenderingSiblingsNumber={2}
               renderTabBar={props => (
                 <View>
                   <ScrollableTabBar {...props} />
@@ -186,6 +192,7 @@ export class CityView extends Component<Props, State> {
                       relay={this.state.relay}
                     />
                   </ScrollableTab>
+
                   {cityTabs.filter(tab => tab.id !== "all").map(tab => {
                     return (
                       <ScrollableTab tabLabel={tab.text} key={tab.id}>
@@ -217,7 +224,6 @@ const Handle = styled.View`
 `
 
 const ErrorScreen: React.SFC<{ relayErrorState: RelayErrorState }> = ({ relayErrorState: { retry, isRetrying } }) => {
-  console.log("HI ASHERROR", { isRetrying })
   return (
     <Box py={2}>
       <Sans size="3t" textAlign="center" mx={2}>
