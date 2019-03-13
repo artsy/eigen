@@ -53,3 +53,6 @@ storiesOf("Shows")
   .add("Out of the Vault & New Acquisitions (Many Artists)", () => {
     return <RootContainer Component={Show} showID="david-barnett-gallery-out-of-the-vault-and-new-acquisitions" />
   })
+  .add("Stubbed show: Erik Olson: Deep Field", () => {
+    return <RootContainer Component={Show} showID="bravinlee-programs-erik-olson-deep-field" />
+  })

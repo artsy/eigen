@@ -28,6 +28,9 @@ export type Detail_show = {
         }) | null;
         readonly " $fragmentRefs": LocationMap_location$ref;
     }) | null;
+    readonly artists_without_artworks: ReadonlyArray<({
+        readonly id: string;
+    }) | null> | null;
     readonly counts: ({
         readonly artworks: number | null;
         readonly artists: number | null;
@@ -209,6 +212,19 @@ return {
     {
       "kind": "LinkedField",
       "alias": null,
+      "name": "artists_without_artworks",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Artist",
+      "plural": true,
+      "selections": [
+        v1,
+        v2
+      ]
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
       "name": "counts",
       "storageKey": null,
       "args": null,
@@ -268,5 +284,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '1577984fcf142a98ae35b71a8de0dd99';
+(node as any).hash = '767be19eb77e1ed0386c8e9181071043';
 export default node;

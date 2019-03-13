@@ -36,7 +36,7 @@ export class ShowArtistsPreview extends React.Component<Props> {
   render() {
     const { show, onViewAllArtistsPressed, Component } = this.props
     const artistsShown = 5
-    const artists = get(show, "artists", [])
+    const artists = get(show, "artists", []).concat(get(show, "artists_without_artworks", []))
     const items: ShowArtistsPreview_show["artists"] = take(artists, artistsShown)
 
     return (
@@ -71,7 +71,17 @@ export const ShowArtistsPreviewContainer = createFragmentContainer(
     fragment ShowArtistsPreview_show on Show {
       _id
       id
+
+      # Comes from CMS
       artists {
+        _id
+        id
+        href
+        ...ArtistListItem_artist
+      }
+
+      # Comes from stubbed data
+      artists_without_artworks {
         _id
         id
         href

@@ -33,6 +33,13 @@ fragment ShowArtistsPreview_show on Show {
     ...ArtistListItem_artist
     __id
   }
+  artists_without_artworks {
+    _id
+    id
+    href
+    ...ArtistListItem_artist
+    __id
+  }
   __id
 }
 
@@ -80,12 +87,77 @@ v3 = {
   "name": "id",
   "args": null,
   "storageKey": null
-};
+},
+v4 = [
+  v2,
+  v3,
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "href",
+    "args": null,
+    "storageKey": null
+  },
+  v1,
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "name",
+    "args": null,
+    "storageKey": null
+  },
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "is_followed",
+    "args": null,
+    "storageKey": null
+  },
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "nationality",
+    "args": null,
+    "storageKey": null
+  },
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "birthday",
+    "args": null,
+    "storageKey": null
+  },
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "deathday",
+    "args": null,
+    "storageKey": null
+  },
+  {
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "image",
+    "storageKey": null,
+    "args": null,
+    "concreteType": "Image",
+    "plural": false,
+    "selections": [
+      {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "url",
+        "args": null,
+        "storageKey": null
+      }
+    ]
+  }
+];
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowArtistsPreviewTestsQuery",
-  "id": "63a12274f0370ce118d65ba142e8f113",
+  "id": "d9cca615ce67b2598f4ec00bd0044d80",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -138,71 +210,17 @@ return {
             "args": null,
             "concreteType": "Artist",
             "plural": true,
-            "selections": [
-              v2,
-              v3,
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "href",
-                "args": null,
-                "storageKey": null
-              },
-              v1,
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "name",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "is_followed",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "nationality",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "birthday",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "deathday",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "image",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "Image",
-                "plural": false,
-                "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "url",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              }
-            ]
+            "selections": v4
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artists_without_artworks",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artist",
+            "plural": true,
+            "selections": v4
           },
           v1
         ]
