@@ -16,6 +16,8 @@
 
 ### Master
 
+- Adds Mapbox logo and attribution for licensing - luc
+
 ### 1.8.20
 
 - Only ever show one city picker at a time - ash
