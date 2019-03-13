@@ -220,15 +220,12 @@ export const ShowHeaderContainer = createFragmentContainer(
           id
           href
         }
-        ... on ExternalPartner {
-          name
-        }
       }
       images {
         url
         aspect_ratio
       }
-      followedArtists(first: 2) {
+      followedArtists(first: 3) {
         edges {
           node {
             artist {

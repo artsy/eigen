@@ -222,9 +222,6 @@ export const DetailContainer = createFragmentContainer(
       }
       status
       partner {
-        ... on ExternalPartner {
-          name
-        }
         ... on Partner {
           name
           type

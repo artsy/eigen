@@ -1,3 +1,4 @@
+import { Theme } from "@artsy/palette"
 import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
@@ -45,16 +46,34 @@ class CitySectionList extends React.Component<Props, State> {
       relay,
     } = this.props
     const { fetchingNextPage } = this.state
+    let headerText
+    switch (section) {
+      case "galleries":
+        headerText = "Gallery shows"
+        break
+      case "museums":
+        headerText = "Museum shows"
+        break
+      case "closing":
+        headerText = "Closing soon"
+        break
+      case "opening":
+        headerText = "Opening soon"
+        break
+    }
     return (
-      <EventList
-        key={name + section}
-        cityName={name}
-        bucket={shows.edges.map(e => e.node) as any}
-        type={section}
-        relay={relay}
-        onScroll={isCloseToBottom(this.fetchData)}
-        fetchingNextPage={fetchingNextPage}
-      />
+      <Theme>
+        <EventList
+          key={name + section}
+          cityName={name}
+          header={headerText}
+          bucket={shows.edges.map(e => e.node) as any}
+          type={section}
+          relay={relay}
+          onScroll={isCloseToBottom(this.fetchData)}
+          fetchingNextPage={fetchingNextPage}
+        />
+      </Theme>
     )
   }
 }
@@ -70,12 +89,13 @@ export default createPaginationContainer(
           partnerType: { type: "PartnerShowPartnerType" }
           status: { type: "EventStatus" }
           dayThreshold: { type: "Int" }
+          sort: { type: "PartnerShowSorts", defaultValue: "PARTNER_ASC" }
         ) {
         name
         shows(
           includeStubShows: true
           first: $count
-          sort: START_AT_ASC
+          sort: $sort
           after: $cursor
           partnerType: $partnerType
           status: $status
@@ -105,9 +125,6 @@ export default createPaginationContainer(
                 ... on Partner {
                   name
                   type
-                }
-                ... on ExternalPartner {
-                  name
                 }
               }
             }
@@ -145,6 +162,7 @@ export default createPaginationContainer(
         $partnerType: PartnerShowPartnerType
         $status: EventStatus
         $dayThreshold: Int
+        $sort: PartnerShowSorts
       ) {
         city(slug: $citySlug) {
           ...CitySectionList_city
@@ -153,6 +171,7 @@ export default createPaginationContainer(
               cursor: $cursor
               partnerType: $partnerType
               status: $status
+              sort: $sort
               dayThreshold: $dayThreshold
             )
         }

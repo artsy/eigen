@@ -3,10 +3,11 @@ import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
+import PinFairSelected from "lib/Icons/PinFairSelected"
 import PinSavedSelected from "lib/Icons/PinSavedSelected"
 import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { Schema, screenTrack, track } from "lib/utils/track"
-import { get } from "lodash"
+import { get, uniq } from "lodash"
 import React from "react"
 import { Animated, Dimensions, Easing, Image, NativeModules, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -94,7 +95,9 @@ interface State {
   mapLoaded: boolean
   isSavingShow: boolean
   /** Cluster map data used to populate selected cluster annotation */
-  nearestFeature: object
+  nearestFeature: MapGeoFeature
+  /** Cluster map data used currently in view window */
+  activePin: MapGeoFeature
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
@@ -156,6 +159,7 @@ export class GlobalMap extends React.Component<Props, State> {
   clusterEngine: Supercluster
   featureCollection: MapGeoFeatureCollection
   moveButtons: Animated.Value
+  currentZoom: number
 
   shows: { [id: string]: Show } = {}
   fairs: { [id: string]: Fair } = {}
@@ -164,7 +168,6 @@ export class GlobalMap extends React.Component<Props, State> {
     singleShow: {
       iconImage: Mapbox.StyleSheet.identity("icon"),
       iconSize: 0.8,
-      // iconOffset: [0, -21], @TODO: This property causes with the selected shows icon. Does this need to be here?
     },
 
     clusteredPoints: {
@@ -201,6 +204,7 @@ export class GlobalMap extends React.Component<Props, State> {
       mapLoaded: false,
       isSavingShow: false,
       nearestFeature: null,
+      activePin: null,
     }
 
     this.clusterEngine = new Supercluster({
@@ -341,7 +345,11 @@ export class GlobalMap extends React.Component<Props, State> {
 
     const { city } = this.props.viewer
     if (city) {
-      city.shows.edges.forEach(({ node }) => {
+      const savedUpcomingShows = city.upcomingShows.edges.filter(e => e.node.is_followed === true)
+      const shows = city.shows.edges
+      const concatedShows = uniq(shows.concat(savedUpcomingShows))
+
+      concatedShows.forEach(({ node }) => {
         if (!node || !node.location || !node.location.coordinates) {
           return null
         }
@@ -354,39 +362,38 @@ export class GlobalMap extends React.Component<Props, State> {
           return null
         }
 
-        this.fairs[node.id] = node
+        this.fairs[node.id] = {
+          ...node,
+          type: "Fair",
+        }
       })
     }
   }
 
   renderSelectedPin() {
-    const { activeShows } = this.state
-    const isCluster = activeShows.length > 1
-    const isSingleShow = activeShows.length === 1
+    const { activeShows, activePin } = this.state
+    const {
+      properties: { cluster, type },
+    } = activePin
 
-    if (isCluster) {
+    if (cluster) {
       const { nearestFeature } = this.state
-      const activeClusterLat = get(nearestFeature, "geometry.coordinates[0]")
-      const activeClusterLng = get(nearestFeature, "geometry.coordinates[1]")
-      const clusterId = get(nearestFeature, "properties.cluster_id", "").toString()
-      let pointCount = get(nearestFeature, "properties.point_count", "")
-      const width = pointCount < 5 ? 35 : pointCount < 21 ? 45 : 60
-      const height = pointCount < 5 ? 35 : pointCount < 21 ? 45 : 60
+      const clusterLat = nearestFeature.geometry.coordinates[0]
+      const clusterLng = nearestFeature.geometry.coordinates[1]
+      const clusterId = nearestFeature.properties.cluster_id.toString()
+      let pointCount = nearestFeature.properties.point_count
+      const width = pointCount < 3 ? 38 : pointCount < 21 ? 45 : 60
+      const height = pointCount < 3 ? 38 : pointCount < 21 ? 45 : 60
       pointCount = pointCount.toString()
 
       return (
         clusterId &&
-        activeClusterLat &&
-        activeClusterLng &&
+        clusterLat &&
+        clusterLng &&
         pointCount && (
-          <Mapbox.PointAnnotation
-            key={clusterId}
-            id={clusterId}
-            selected={true}
-            coordinate={[activeClusterLat, activeClusterLng]}
-          >
+          <Mapbox.PointAnnotation key={clusterId} id={clusterId} selected={true} coordinate={[clusterLat, clusterLng]}>
             <SelectedCluster width={width} height={height}>
-              <Sans size="2" weight="medium" color={color("white100")}>
+              <Sans size="3" weight="medium" color={color("white100")}>
                 {pointCount}
               </Sans>
             </SelectedCluster>
@@ -394,17 +401,28 @@ export class GlobalMap extends React.Component<Props, State> {
         )
       )
     }
-    if (isSingleShow) {
-      const lat = get(activeShows, "[0].location.coordinates.lat")
-      const lng = get(activeShows, "[0].location.coordinates.lng")
-      const showId = get(activeShows, "[0].id")
-      const isSaved = get(activeShows, "[0].is_followed")
+    const lat = activeShows[0].location.coordinates.lat
+    const lng = activeShows[0].location.coordinates.lng
+    const id = activeShows[0].id
+
+    if (type === "Fair") {
+      return (
+        lat &&
+        lng &&
+        id && (
+          <Mapbox.PointAnnotation key={id} id={id} coordinate={[lng, lat]}>
+            <PinFairSelected />
+          </Mapbox.PointAnnotation>
+        )
+      )
+    } else if (type === "Show") {
+      const isSaved = (activeShows[0] as Show).is_followed
 
       return (
         lat &&
         lng &&
-        showId && (
-          <Mapbox.PointAnnotation key={showId} id={showId} selected={true} coordinate={[lng, lat]}>
+        id && (
+          <Mapbox.PointAnnotation key={id} id={id} selected={true} coordinate={[lng, lat]}>
             {isSaved ? (
               <PinSavedSelected pinHeight={45} pinWidth={45} />
             ) : (
@@ -478,7 +496,7 @@ export class GlobalMap extends React.Component<Props, State> {
   render() {
     const city = get(this.props, "viewer.city")
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || get(city, "coordinates")
-    const { mapLoaded, activeShows } = this.state
+    const { mapLoaded, activeShows, activePin } = this.state
 
     const mapProps = {
       showUserLocation: true,
@@ -493,6 +511,21 @@ export class GlobalMap extends React.Component<Props, State> {
     }
 
     const mapInteractions = {
+      onRegionIsChanging: async () => {
+        const zoom = Math.floor(await this.map.getZoom())
+
+        if (!this.currentZoom) {
+          this.currentZoom = zoom
+        }
+
+        const isCluster = get(this.state, "activePin.properties.cluster")
+
+        if (this.currentZoom !== zoom && isCluster) {
+          this.setState({
+            activePin: null,
+          })
+        }
+      },
       onRegionDidChange: (location: MapGeoFeature) => {
         this.emitFilteredBucketResults()
         this.setState({
@@ -578,7 +611,7 @@ export class GlobalMap extends React.Component<Props, State> {
                       />
                     )}
                     <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
-                    {mapLoaded && activeShows && this.renderSelectedPin()}
+                    {mapLoaded && activeShows && activePin && this.renderSelectedPin()}
                   </>
                 )}
               </Map>
@@ -597,10 +630,6 @@ export class GlobalMap extends React.Component<Props, State> {
     }
   }
 
-  async handleFairPress(_event: any) {
-    // NOOP for now
-  }
-
   /**
    * This function is complicated, because the work we have to do is tricky.
    * What's happening is that we have to replicate a subset of the map's clustering algorithm to get
@@ -617,8 +646,12 @@ export class GlobalMap extends React.Component<Props, State> {
     this.updateDrawerPosition(DrawerPosition.collapsed)
 
     let activeShows: Array<Fair | Show> = []
+
     // If the user only taps on the pin we can use the
     // id directly to retrieve the corresponding show
+    // @TODO: Adding active Fairs to state only to handle Selecting Fairs
+    // The rest of the logic for displaying active show shows and fairs in the
+    // maps pins and cards will remain the same for now.
     if (!cluster) {
       if (type === "Show") {
         activeShows = [this.shows[id]]
@@ -654,6 +687,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
     this.setState({
       activeShows,
+      activePin: nativeEvent.payload,
     })
   }
 
@@ -713,7 +747,6 @@ export const GlobalMapContainer = createFragmentContainer(
                 id
                 _id
                 __id
-
                 name
                 status
                 href
@@ -736,9 +769,6 @@ export const GlobalMapContainer = createFragmentContainer(
                     name
                     type
                   }
-                  ... on ExternalPartner {
-                    name
-                  }
                 }
               }
             }
@@ -749,13 +779,19 @@ export const GlobalMapContainer = createFragmentContainer(
           lng
         }
 
-        shows(includeStubShows: true, first: $maxInt, sort: START_AT_ASC) {
+        upcomingShows: shows(
+          includeStubShows: true
+          status: UPCOMING
+          dayThreshold: 30
+          first: $maxInt
+          sort: START_AT_ASC
+        ) {
           edges {
             node {
               id
               _id
               __id
-
+              isStubShow
               name
               status
               href
@@ -778,15 +814,46 @@ export const GlobalMapContainer = createFragmentContainer(
                   name
                   type
                 }
-                ... on ExternalPartner {
+              }
+            }
+          }
+        }
+
+        shows(includeStubShows: true, status: RUNNING, first: $maxInt, sort: PARTNER_ASC) {
+          edges {
+            node {
+              id
+              _id
+              __id
+              isStubShow
+              name
+              status
+              href
+              is_followed
+              exhibition_period
+              cover_image {
+                url
+              }
+              location {
+                coordinates {
+                  lat
+                  lng
+                }
+              }
+              type
+              start_at
+              end_at
+              partner {
+                ... on Partner {
                   name
+                  type
                 }
               }
             }
           }
         }
 
-        fairs(first: $maxInt) {
+        fairs(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
           edges {
             node {
               id

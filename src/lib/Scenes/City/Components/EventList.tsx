@@ -1,8 +1,7 @@
 import { Box, Message, Separator, Serif } from "@artsy/palette"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import Spinner from "lib/Components/Spinner"
-import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
-import { Show } from "lib/Scenes/Map/types"
+import { MapTab, Show } from "lib/Scenes/Map/types"
 import React from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { RelayProp } from "react-relay"
@@ -10,7 +9,7 @@ import { TabFairItemRow } from "./TabFairItemRow"
 
 interface Props {
   bucket: Show[]
-  type: BucketKey | "BMW Art Guide"
+  type: MapTab["id"]
   cityName: string
   header?: string
   relay: RelayProp
@@ -35,7 +34,7 @@ export class EventList extends React.Component<Props> {
         ListHeaderComponent={() => {
           if (!!header) {
             return (
-              <Box my={3}>
+              <Box pt={6} mt={3} mb={2}>
                 <Serif size="8">{header}</Serif>
               </Box>
             )

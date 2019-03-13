@@ -146,13 +146,6 @@ return {
         v1,
         {
           "kind": "InlineFragment",
-          "type": "ExternalPartner",
-          "selections": [
-            v2
-          ]
-        },
-        {
-          "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
             v2,
@@ -191,12 +184,12 @@ return {
       "kind": "LinkedField",
       "alias": null,
       "name": "followedArtists",
-      "storageKey": "followedArtists(first:2)",
+      "storageKey": "followedArtists(first:3)",
       "args": [
         {
           "kind": "Literal",
           "name": "first",
-          "value": 2,
+          "value": 3,
           "type": "Int"
         }
       ],
@@ -250,5 +243,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '5431d73d8296f7ca4a84aec4ae95aa94';
+(node as any).hash = '0b51ea9a40d471771b9fef3a018bc62b';
 export default node;

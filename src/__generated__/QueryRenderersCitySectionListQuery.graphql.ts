@@ -4,11 +4,13 @@ import { ConcreteRequest } from "relay-runtime";
 import { CitySectionList_city$ref } from "./CitySectionList_city.graphql";
 export type EventStatus = "CLOSED" | "CLOSING_SOON" | "CURRENT" | "RUNNING" | "UPCOMING" | "closed" | "current" | "running" | "upcoming" | "%future added value";
 export type PartnerShowPartnerType = "GALLERY" | "MUSEUM" | "%future added value";
+export type PartnerShowSorts = "CREATED_AT_ASC" | "CREATED_AT_DESC" | "END_AT_ASC" | "END_AT_DESC" | "NAME_ASC" | "NAME_DESC" | "PARTNER_ASC" | "PUBLISH_AT_ASC" | "PUBLISH_AT_DESC" | "START_AT_ASC" | "START_AT_DESC" | "created_at_asc" | "created_at_desc" | "end_at_asc" | "end_at_desc" | "name_asc" | "name_desc" | "publish_at_asc" | "publish_at_desc" | "start_at_asc" | "start_at_desc" | "%future added value";
 export type QueryRenderersCitySectionListQueryVariables = {
     readonly citySlug: string;
     readonly partnerType?: PartnerShowPartnerType | null;
     readonly status?: EventStatus | null;
     readonly dayThreshold?: number | null;
+    readonly sort?: PartnerShowSorts | null;
 };
 export type QueryRenderersCitySectionListQueryResponse = {
     readonly city: ({
@@ -28,15 +30,16 @@ query QueryRenderersCitySectionListQuery(
   $partnerType: PartnerShowPartnerType
   $status: EventStatus
   $dayThreshold: Int
+  $sort: PartnerShowSorts
 ) {
   city(slug: $citySlug) {
-    ...CitySectionList_city_1Rk2en
+    ...CitySectionList_city_2xWq6T
   }
 }
 
-fragment CitySectionList_city_1Rk2en on City {
+fragment CitySectionList_city_2xWq6T on City {
   name
-  shows(includeStubShows: true, first: 20, sort: START_AT_ASC, after: "", partnerType: $partnerType, status: $status, dayThreshold: $dayThreshold) {
+  shows(includeStubShows: true, first: 20, sort: $sort, after: "", partnerType: $partnerType, status: $status, dayThreshold: $dayThreshold) {
     pageInfo {
       endCursor
       hasNextPage
@@ -63,11 +66,10 @@ fragment CitySectionList_city_1Rk2en on City {
             name
             type
           }
-          ... on ExternalPartner {
-            name
+          ... on Node {
             __id
           }
-          ... on Node {
+          ... on ExternalPartner {
             __id
           }
         }
@@ -103,6 +105,12 @@ var v0 = [
     "kind": "LocalArgument",
     "name": "dayThreshold",
     "type": "Int",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "sort",
+    "type": "PartnerShowSorts",
     "defaultValue": null
   }
 ],
@@ -146,7 +154,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersCitySectionListQuery",
-  "id": "9d79350b3121f4477e7dd7b7a796a7df",
+  "id": "bfe5e5e4517946defd3eae66938bb76f",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -179,6 +187,12 @@ return {
                 "kind": "Variable",
                 "name": "partnerType",
                 "variableName": "partnerType",
+                "type": null
+              },
+              {
+                "kind": "Variable",
+                "name": "sort",
+                "variableName": "sort",
                 "type": null
               },
               {
@@ -245,9 +259,9 @@ return {
                 "type": "PartnerShowPartnerType"
               },
               {
-                "kind": "Literal",
+                "kind": "Variable",
                 "name": "sort",
-                "value": "START_AT_ASC",
+                "variableName": "sort",
                 "type": "PartnerShowSorts"
               },
               {
@@ -393,13 +407,6 @@ return {
                           v3,
                           {
                             "kind": "InlineFragment",
-                            "type": "ExternalPartner",
-                            "selections": [
-                              v2
-                            ]
-                          },
-                          {
-                            "kind": "InlineFragment",
                             "type": "Partner",
                             "selections": [
                               v2,
@@ -458,9 +465,9 @@ return {
                 "type": "PartnerShowPartnerType"
               },
               {
-                "kind": "Literal",
+                "kind": "Variable",
                 "name": "sort",
-                "value": "START_AT_ASC",
+                "variableName": "sort",
                 "type": "PartnerShowSorts"
               },
               {
@@ -486,5 +493,5 @@ return {
   }
 };
 })();
-(node as any).hash = '6ca46f4d774de864f492c21a747ecaa9';
+(node as any).hash = 'f07f6ad80ab324291f3478267765ff36';
 export default node;
