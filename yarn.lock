@@ -485,7 +485,7 @@
 
 "@mapbox/react-native-mapbox-gl@https://github.com/l2succes/react-native-mapbox-gl":
   version "6.1.4"
-  resolved "https://github.com/l2succes/react-native-mapbox-gl#6a6209887b999b581a31df47c2ce3fe11a68442e"
+  resolved "https://github.com/l2succes/react-native-mapbox-gl#91cf086986c5b69cd06373d31a99d3dd37468168"
   dependencies:
     "@turf/helpers" "4.6.0"
     underscore "^1.8.3"
