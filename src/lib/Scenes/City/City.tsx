@@ -28,11 +28,12 @@ interface State {
   relay: RelayProp
   cityName: string
   citySlug: string
-
   selectedTab: number
   sponsoredContent: { introText: string; artGuideUrl: string }
 }
 const AllCityMetaTab = 0
+
+// let sessionStart
 
 const screenSchemaForCurrentTabState = currentSelectedTab => {
   switch (currentSelectedTab) {
@@ -67,7 +68,6 @@ export class CityView extends Component<Props, State> {
     citySlug: "",
     sponsoredContent: null,
   }
-  sessionStart: number
 
   scrollViewVerticalStart = 0
 
@@ -96,19 +96,19 @@ export class CityView extends Component<Props, State> {
     })
   }
 
-  @track({
-    action_type: Schema.ActionTypes.Session,
-    action_name: Schema.ActionNames.CityGuideSessionLength,
-    session_length: this.sessionStart - Date.now(),
-  })
-  trackSession() {
-    console.log("duration", this.sessionStart - Date.now())
-    return null
-  }
+  // @track({
+  //   action_type: Schema.ActionTypes.Session,
+  //   action_name: Schema.ActionNames.CityGuideSessionLength,
+  //   session_length: sessionStart - Date.now(),
+  // })
+  // trackSession() {
+  //   console.log("duration", sessionStart - Date.now())
+  //   return null
+  // }
 
-  componentDidMount() {
-    this.sessionStart = Date.now()
-  }
+  // componentDidMount() {
+  //   sessionStart = Date.now()
+  // }
 
   componentWillMount() {
     EventEmitter.subscribe("map:change", this.handleEvent)
@@ -116,7 +116,7 @@ export class CityView extends Component<Props, State> {
 
   componentWillUnmount() {
     EventEmitter.unsubscribe("map:change", this.handleEvent)
-    this.trackSession()
+    // this.trackSession()
   }
 
   componentDidUpdate() {
