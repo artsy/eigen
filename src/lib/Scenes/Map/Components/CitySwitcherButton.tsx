@@ -23,18 +23,22 @@ const Background = styled(Flex)`
 interface Props {
   onPress?: () => void
   city: City
+  sponsoredContentUrl?: string
 }
 
 export class CitySwitcherButton extends Component<Props> {
   render() {
-    const city = this.props.city
+    const { city, sponsoredContentUrl } = this.props
+
     return (
       <TouchableWithoutFeedback
         onPress={() => {
           if (this.props.onPress) {
             this.props.onPress()
           }
-          NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryOpenCityPicker", {})
+          NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryOpenCityPicker", {
+            ...(sponsoredContentUrl && { sponsoredContentUrl }),
+          })
         }}
       >
         <Background

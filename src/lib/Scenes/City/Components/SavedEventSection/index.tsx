@@ -10,6 +10,7 @@ import styled from "styled-components/native"
 export interface Props {
   data: any
   citySlug: string
+  sponsoredContentUrl: string
 }
 
 export class SavedEventSection extends Component<any> {
@@ -18,7 +19,11 @@ export class SavedEventSection extends Component<any> {
   }
 
   navigateToBMWArtGuide() {
-    SwitchBoard.presentNavigationViewController(this, "https://www.bmw-arts-design.com/bmw_art_guide")
+    const { sponsoredContentUrl } = this.props
+    SwitchBoard.presentNavigationViewController(
+      this,
+      sponsoredContentUrl || "https://www.bmw-arts-design.com/bmw_art_guide"
+    )
   }
 
   render() {

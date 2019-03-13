@@ -10,6 +10,7 @@ import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
 
 interface Props {
   selectedCity: string
+  sponsoredContentUrl?: string
 }
 
 interface State {
@@ -65,7 +66,12 @@ export class CityPicker extends Component<Props, State> {
   }
 
   navigateToBMWArtGuide() {
-    SwitchBoard.presentNavigationViewController(this, "https://www.bmw-arts-design.com/bmw_art_guide")
+    const { sponsoredContentUrl } = this.props
+
+    SwitchBoard.presentNavigationViewController(
+      this,
+      sponsoredContentUrl || "https://www.bmw-arts-design.com/bmw_art_guide"
+    )
   }
 
   render() {
