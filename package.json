@@ -13,14 +13,17 @@
     "bundle": "yarn generate-graphql-query-map && yarn generate-cities-objc && yarn generate-cities-cache && react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
     "bundle-for-native-ci": "yarn generate-graphql-query-map && react-native bundle --platform=ios --dev=false --entry-file=index.tests.ios.js --bundle-output Pod/Assets/Emission.js --sourcemap-output Pod/Assets/Emission.js.map --assets-dest Pod/Assets && rm -rf Pod/Assets/assets/node_modules",
     "bundle-with-storybooks": "yarn generate-graphql-query-map && react-native bundle --platform=ios --dev=true --entry-file=Example/Emission/index.ios.js --bundle-output  Pod/Assets/Emission.js --assets-dest Pod/Assets",
-    "type-check": "tsc --noEmit --pretty",
+    "type-check": "tsc",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "lint-fix": "yarn lint -- --fix",
     "prettier-write": "prettier --write",
     "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx}'",
     "stylelint-project": " stylelint -- 'src/**/*.{ts,tsx}'",
-    "ci": "yarn type-check && yarn lint && yarn prettier-project -l && yarn relay && yarn test:ci",
+    "ci": "yarn ci:type-check && yarn ci:lint && yarn prettier-project -l && yarn relay && yarn ci:test",
     "ci:skip-native-if-possible": "node scripts/ci-skip-native-if-possible.js",
+    "ci:type-check": "tsc --pretty false | tee tsc_raw.log",
+    "ci:lint":"yarn lint --format json --out tslint-errors.json ",
+    "ci:test": "jest --outputFile test-results.json --json --ci --forceExit",
     "danger": "danger",
     "start": "yarn start-servers",
     "start-servers": "concurrently --kill-others 'yarn start-packager' 'yarn relay --watch' 'yarn storybook'",
@@ -30,7 +33,6 @@
     "open-sim": "open -a Simulator",
     "open-emission": "xcrun simctl launch booted net.artsy.Emission",
     "test": "jest",
-    "test:ci": "jest --outputFile test-results.json --json --ci --forceExit",
     "testing": "jest --watch",
     "relay": "relay-compiler --src ./src --schema data/schema.graphql --language typescript --artifactDirectory ./src/__generated__ --persist --persistOutput ./src/__generated__/complete.queryMap.json --exclude '**/node_modules/**,**/__mocks__/**,**/__generated__/**'",
     "release": "node scripts/release.js",
@@ -126,7 +128,7 @@
     "danger-plugin-jest": "^1.1.0",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.2",
-    "husky": "^0.14.3",
+    "husky": "^1.3.1",
     "jest": "^23.6.0",
     "lint-staged": "^6.0.0",
     "patch-package": "^5.0.0",
@@ -191,17 +193,12 @@
   },
   "lint-staged": {
     "*.@(ts|tsx)": [
-      "tslint --fix",
-      "yarn run prettier-write --",
+      "tslint -c tslint.json --fix",
+      "yarn prettier-write --",
       "git add"
     ],
-    "*.json": [
-      "yarn run prettier-write --",
-      "git add"
-    ],
-    "*.md": [
-      "yarn run prettier-write --",
-      "git add"
+    "*.@(json|md)": [
+      "yarn prettier-write --"
     ]
   },
   "config": {
@@ -219,6 +216,13 @@
     "singleQuote": false,
     "trailingComma": "es5",
     "bracketSpacing": true
+  },
+  "husky": {
+    "hooks": {
+      "post-merge": "pull-lock",
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn run type-check"
+    }
   },
   "pull-lock": {
     "yarn.lock": "yarn install",
