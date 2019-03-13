@@ -7,6 +7,7 @@
 #import "ARCity+GeospatialAdditions.h"
 
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import <react-native-mapbox-gl/RCTMGLMapView.h>
 
 @import Pulley;
 @import CoreLocation;
@@ -30,24 +31,39 @@ NSString * const __nonnull SelectedCityNameKey = @"SelectedCityName";
 @end
 
 static UIScrollView *
-FindFirstScrollView(UIView *view)
+FindCityScrollView(UIView *view)
 {
     for (UIView *subview in view.subviews) {
         if ([subview isKindOfClass:UIScrollView.class]) {
             CGSize size = [(UIScrollView *)subview contentSize];
              // The tab bar on the City guide is a scrollview, so we need to make sure we hit
             //  the main scrollview instead.
-            if (size.height > size.width ) {
+            if (size.height > size.width) {
                 return (UIScrollView *)subview;
             }
         }
     }
     for (UIView *subview in view.subviews) {
-        UIScrollView *result = FindFirstScrollView(subview);
+        UIScrollView *result = FindCityScrollView(subview);
         if (result) return result;
     }
     return nil;
 }
+
+static RCTMGLMapView *
+FindMapView(UIView *view)
+{
+    for (UIView *subview in view.subviews) {
+        if ([subview isKindOfClass:RCTMGLMapView.class]) {
+            return (RCTMGLMapView *)subview;
+        }
+
+        RCTMGLMapView *result = FindMapView(subview);
+        if (result) return result;
+    }
+    return nil;
+}
+
 
 /*
 This is the top-level Local Discovery component, and should therefore be responsible for checking a user's location and
@@ -75,6 +91,9 @@ Since this controller already has to do the above logic, having it handle the Ci
         NSString *positionString = note.userInfo[@"position"];
         [wself updateDrawerPosition:positionString];
     }];
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryMapHasRendered" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        [wself displayLicensingViews];
+    }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryQueryResponseReceived" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         if (wself.initialDataIsLoaded) {
             return;
@@ -84,7 +103,7 @@ Since this controller already has to do the above logic, having it handle the Ci
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryCityGotScrollView" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
             if (!wself.rnScrollView) {
-                UIScrollView *foundScrollView = FindFirstScrollView(wself.cityVC.view);
+                UIScrollView *foundScrollView = FindCityScrollView(wself.cityVC.view);
                 wself.rnScrollView = foundScrollView;
                 wself.rnScrollView.scrollEnabled = NO;
                 if (foundScrollView) {
@@ -92,6 +111,7 @@ Since this controller already has to do the above logic, having it handle the Ci
                 }
             }
     }];
+    
 
     NSString *previouslySelectedCityName = [[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey];
     ARCity *previouslySelectedCity = [[[ARCity cities] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
@@ -204,6 +224,14 @@ Since this controller already has to do the above logic, having it handle the Ci
     } completion:^(BOOL finished) {
         self.cityPickerContainerView.userInteractionEnabled = YES;
     }];
+}
+
+- (void)displayLicensingViews
+{
+    RCTMGLMapView *mapView = FindMapView(self.mapVC.view);
+    
+    [mapView.attributionButton alignBottomEdgeWithView:self.mapVC.view predicate:@"-50"];
+    [mapView.logoView alignBottomEdgeWithView:self.mapVC.view predicate:@"-50"];
 }
 
 - (void)userSelectedCityAtIndex:(NSInteger)cityIndex

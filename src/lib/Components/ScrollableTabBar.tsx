@@ -66,6 +66,10 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
     activeTab: this.props.activeTab || 0,
   }
 
+  componentWillReceiveProps(newProps: ScrollableTabBarProps) {
+    this.centerOnTab(newProps.activeTab)
+  }
+
   renderTab(name, page, isTabActive, onPressHandler) {
     return (
       <Button
@@ -74,14 +78,6 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
         accessibilityLabel={name}
         accessibilityTraits="button"
         onPress={() => onPressHandler(page)}
-        onLayout={e => {
-          const layout = e.nativeEvent.layout
-          this.els[page] = layout
-
-          if (page === this.state.activeTab) {
-            this.centerOnTab(page)
-          }
-        }}
       >
         <TabButton active={isTabActive}>
           <TabLabel size="3" isActive={isTabActive}>
@@ -93,6 +89,10 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
   }
 
   centerOnTab = (index: number) => {
+    if (!this.els[index]) {
+      return
+    }
+
     const { x, width } = this.els[index]
     const { width: screenWidth } = Dimensions.get("window")
     const maxOffset = this.scrollViewWidth - screenWidth
