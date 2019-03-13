@@ -28,6 +28,7 @@ query QueryRenderersCityBMWListQuery(
 
 fragment CityBMWList_city on City {
   name
+  slug
   sponsoredContent {
     shows(first: 20, status: RUNNING, after: "", sort: PARTNER_ASC) {
       edges {
@@ -128,7 +129,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersCityBMWListQuery",
-  "id": "913984138aab4963500f149e5795e308",
+  "id": "d70f3481100b48844b8c8e7076101c23",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -171,6 +172,13 @@ return {
         "plural": false,
         "selections": [
           v2,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "slug",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,

@@ -20,8 +20,6 @@ const cityList = cities.map(city => city.name)
 @screenTrack(() => ({
   context_screen: Schema.PageNames.CityPicker,
   context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-  context_screen_owner_slug: "",
-  context_screen_owner_id: "",
 }))
 export class CityPicker extends Component<Props, State> {
   constructor(props: Props) {

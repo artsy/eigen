@@ -4,6 +4,7 @@ import { ConcreteFragment } from "relay-runtime";
 declare const _CityFairList_city$ref: unique symbol;
 export type CityFairList_city$ref = typeof _CityFairList_city$ref;
 export type CityFairList_city = {
+    readonly slug: string | null;
     readonly fairs: ({
         readonly edges: ReadonlyArray<({
             readonly node: ({
@@ -99,6 +100,13 @@ return {
     }
   ],
   "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": "fairs",
@@ -359,5 +367,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '60313dbb1c408a4ac14c13a3b0aa8964';
+(node as any).hash = 'a34e802023d89b8b86d006cf473405d2';
 export default node;

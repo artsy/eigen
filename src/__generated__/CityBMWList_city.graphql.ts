@@ -5,6 +5,7 @@ declare const _CityBMWList_city$ref: unique symbol;
 export type CityBMWList_city$ref = typeof _CityBMWList_city$ref;
 export type CityBMWList_city = {
     readonly name: string | null;
+    readonly slug: string | null;
     readonly sponsoredContent: ({
         readonly shows: ({
             readonly edges: ReadonlyArray<({
@@ -97,6 +98,13 @@ return {
   ],
   "selections": [
     v0,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "slug",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -330,5 +338,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '54791e85443b5804602ed6f1418bb1cd';
+(node as any).hash = '5bed032f150e37e70f8e5c4fa2324b65';
 export default node;
