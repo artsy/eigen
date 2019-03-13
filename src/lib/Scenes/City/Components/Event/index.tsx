@@ -17,6 +17,7 @@ const TextContainer = styled(Box)`
 interface Props {
   relay: RelayProp
   event: Show
+  section?: string
 }
 
 interface State {
@@ -39,8 +40,15 @@ export class Event extends React.Component<Props, State> {
 
   @track(props => {
     const { id, _id, is_followed } = props.event
+    const { section } = props
+    let actionName
+    if (!!section && section === "bmw") {
+      actionName = is_followed ? Schema.ActionNames.UnsaveBMWShow : Schema.ActionNames.SaveBMWShow
+    } else {
+      actionName = is_followed ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow
+    }
     return {
-      action_name: is_followed ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow,
+      action_name: actionName,
       action_type: Schema.ActionTypes.Success,
       owner_type: Schema.OwnerEntityTypes.Show,
       owner_id: _id,
@@ -94,8 +102,31 @@ export class Event extends React.Component<Props, State> {
     }
   }
 
+  @track((__, _, args) => {
+    const actionName = args[0]
+    const slug = args[1]
+    const id = args[2]
+    return {
+      action_name: actionName,
+      action_type: Schema.ActionTypes.Tap,
+      owner_type: Schema.OwnerEntityTypes.Show,
+      owner_id: id,
+      owner_slug: slug,
+    } as any
+  })
+  trackShowTap(_actionName, _slug, _id) {
+    return null
+  }
+
   handleTap = () => {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.event.id}`)
+    const { section } = this.props
+    const { id, _id } = this.props.event
+    if (section === "bmw") {
+      this.trackShowTap(Schema.ActionNames.OpenBMWShow, id, _id)
+    } else {
+      this.trackShowTap(Schema.ActionNames.OpenShow, id, _id)
+    }
+    SwitchBoard.presentNavigationViewController(this, `/show/${id}`)
   }
 
   render() {

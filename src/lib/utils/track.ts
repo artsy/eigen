@@ -222,6 +222,9 @@ export namespace Schema {
      *  City guide
      */
     OpenShow = "openShow",
+    OpenBMWShow = "openBMWShow",
+    UnsaveBMWShow = "unsaveBMWShow",
+    SaveBMWShow = "saveBMWShow",
 
     /**
      *  Consignment flow

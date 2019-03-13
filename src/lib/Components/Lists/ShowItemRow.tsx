@@ -34,10 +34,14 @@ export class ShowItemRow extends React.Component<Props, State> {
     isFollowedSaving: false,
   }
 
+  // FIXME: map analytics add ids
   @track(() => {
     return {
       action_name: Schema.ActionNames.OpenShow,
       action_type: Schema.ActionTypes.Tap,
+      context_screen_owner_type: "",
+      context_screen_owner_slug: "",
+      context_screen_owner_id: "",
     } as any
   })
   handleTap() {
