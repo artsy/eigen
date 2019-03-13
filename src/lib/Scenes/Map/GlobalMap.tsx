@@ -568,15 +568,17 @@ export class GlobalMap extends React.Component<Props, State> {
                   })
                 }}
               />
-              <Box style={{ marginLeft: "auto" }}>
-                <UserPositionButton
-                  highlight={this.state.userLocation === this.state.currentLocation}
-                  onPress={() => {
-                    const { lat, lng } = this.state.userLocation
-                    this.map.moveTo([lng, lat], 500)
-                  }}
-                />
-              </Box>
+              {this.state.userLocation && (
+                <Box style={{ marginLeft: "auto" }}>
+                  <UserPositionButton
+                    highlight={this.state.userLocation === this.state.currentLocation}
+                    onPress={() => {
+                      const { lat, lng } = this.state.userLocation
+                      this.map.moveTo([lng, lat], 500)
+                    }}
+                  />
+                </Box>
+              )}
             </Flex>
           </Animated.View>
         </TopButtonsContainer>
