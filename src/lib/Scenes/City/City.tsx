@@ -1,6 +1,6 @@
 import { color, Flex, Theme } from "@artsy/palette"
 import ScrollableTabBar, { ScrollableTab } from "lib/Components/ScrollableTabBar"
-import { Schema, screenTrack, track } from "lib/utils/track"
+import { Schema, screenTrack } from "lib/utils/track"
 import React, { Component } from "react"
 import ScrollableTabView from "react-native-scrollable-tab-view"
 
