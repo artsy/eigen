@@ -2,6 +2,7 @@ import { Theme } from "@artsy/palette"
 import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
+import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { BucketKey } from "../Map/bucketCityResults"
@@ -18,6 +19,29 @@ interface State {
   fetchingNextPage: boolean
 }
 
+@screenTrack((props: Props) => {
+  let contextScreen
+  switch (props.section) {
+    case "opening":
+      contextScreen = Schema.PageNames.CityGuideOpeningSoonList
+      break
+    case "museums":
+      contextScreen = Schema.PageNames.CityGuideMuseumsList
+      break
+    case "closing":
+      contextScreen = Schema.PageNames.CityGuideClosingSoonList
+      break
+    case "galleries":
+      contextScreen = Schema.PageNames.CityGuideGalleriesList
+      break
+  }
+  return {
+    context_screen: contextScreen,
+    context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+    context_screen_owner_slug: props.citySlug,
+    context_screen_owner_id: props.citySlug,
+  }
+})
 class CitySectionList extends React.Component<Props, State> {
   state = {
     fetchingNextPage: false,

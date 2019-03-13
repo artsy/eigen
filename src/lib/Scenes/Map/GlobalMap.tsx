@@ -769,7 +769,7 @@ export const GlobalMapContainer = createFragmentContainer(
         sponsoredContent {
           introText
           artGuideUrl
-          shows(first: 2, sort: START_AT_ASC) {
+          shows(first: 20, sort: START_AT_ASC) {
             totalCount
             edges {
               node {

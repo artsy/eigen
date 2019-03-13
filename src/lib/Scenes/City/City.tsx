@@ -29,12 +29,13 @@ interface State {
   relay: RelayProp
   cityName: string
   citySlug: string
-
   selectedTab: number
   sponsoredContent: { introText: string; artGuideUrl: string }
   relayErrorState?: RelayErrorState
 }
 const AllCityMetaTab = 0
+
+// let sessionStart
 
 const screenSchemaForCurrentTabState = currentSelectedTab => {
   switch (currentSelectedTab) {
@@ -110,6 +111,20 @@ export class CityView extends Component<Props, State> {
       NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryQueryResponseReceived", {})
     })
   }
+
+  // @track({
+  //   action_type: Schema.ActionTypes.Session,
+  //   action_name: Schema.ActionNames.CityGuideSessionLength,
+  //   session_length: sessionStart - Date.now(),
+  // })
+  // trackSession() {
+  //   console.log("duration", sessionStart - Date.now())
+  //   return null
+  // }
+
+  // componentDidMount() {
+  //   sessionStart = Date.now()
+  // }
 
   componentWillMount() {
     EventEmitter.subscribe("map:change", this.handleEvent)
