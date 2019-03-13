@@ -16,6 +16,7 @@
 
 ### Master
 
+- Only ever show one city picker at a time - ash
 - Moves to new scrollable tab - orta & ash
 - Adds freshness to GraphQL pre-heated cache after which it won’t be used anymore, which is 1 month for City - alloy
 - Use a fork of react-native-mapbox-gl with better tap support - luc
@@ -26,6 +27,7 @@
 - Bump iOS deployment target to iOS 9 to match Eigen and avoid adding more deprecated method usage - alloy
 - Adds saved shows page - Kieran
 - Make pre-heated GraphQL cache work for people that upgrade the app - alloy
+- Make content size of event list known upfront to prevent scroller from jumping - alloy
 
 ### 1.8.14 - 1.8.19
 
