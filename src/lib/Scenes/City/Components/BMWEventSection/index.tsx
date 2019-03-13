@@ -38,7 +38,7 @@ export class BMWEventSection extends React.Component<Props> {
       if (i < 2) {
         return (
           <Box key={i} mb={1}>
-            <Event event={edge.node} relay={relay} />
+            <Event section="bmw" event={edge.node} relay={relay} />
           </Box>
         )
       }

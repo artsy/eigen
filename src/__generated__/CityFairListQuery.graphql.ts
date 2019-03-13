@@ -31,6 +31,7 @@ query CityFairListQuery(
 }
 
 fragment CityFairList_city_1G22uz on City {
+  slug
   fairs(first: $count, after: $cursor, status: CURRENT, sort: START_AT_ASC) {
     edges {
       node {
@@ -133,7 +134,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "CityFairListQuery",
-  "id": "8c6bbbbfe58b3f6ab33d2090dbbbb808",
+  "id": "cb8e53ca5d098612db7e8d308ade3963",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -188,6 +189,13 @@ return {
         "concreteType": "City",
         "plural": false,
         "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "slug",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,

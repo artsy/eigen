@@ -32,6 +32,8 @@ export namespace Schema {
      */
     action_name: ActionNames
 
+    session_length: number
+
     /**
      * OPTIONAL: Additional properties of the action
      */
@@ -92,12 +94,19 @@ export namespace Schema {
     CityGuideAllMap = "CityGuideAllMap",
     CityGuideSavedGuide = "CityGuideSavedGuide",
     CityGuideSavedMap = "CityGuideSavedMap",
+    CityGuideSavedList = "CityGuideSavedList",
     CityGuideFairsGuide = "CityGuideFairsGuide",
     CityGuideFairsMap = "CityGuideFairsMap",
+    CityGuideFairsList = "CityGuideFairsList",
+    CityGuideGalleriesList = "CityGuideGalleriesList",
     CityGuideGalleriesGuide = "CityGuideGalleriesGuide",
+    CityGuideMuseumsList = "CityGuideMuseumsList",
     CityGuideGalleriesMap = "CityGuideGalleriesMap",
     CityGuideMuseumsGuide = "CityGuideMuseumsGuide",
     CityGuideMuseumsMap = "CityGuideMuseumsMap",
+    CityGuideClosingSoonList = "CityGuideClosingSoonList",
+    CityGuideOpeningSoonList = "CityGuideOpeningSoonList",
+    CityGuideBMWList = "CityGuideBMWList",
     CityPicker = "CityPicker",
     ClusteredMapPin = "ClusteredMapPin",
     SingleMapPin = "SingleMapPin",
@@ -144,6 +153,8 @@ export namespace Schema {
      */
     Tap = "tap",
 
+    Session = "session",
+
     /**
      * Events / results
      */
@@ -169,6 +180,7 @@ export namespace Schema {
      */
 
     GetBMWArtGuide = "getBMWArtGuide",
+    CityGuideSessionLength = "cityGuideSessionLength",
 
     /**
      * Gene Page Events
@@ -205,6 +217,15 @@ export namespace Schema {
     SavesAndFollowsCategories = "savesAndFollowsCategories",
     SavesAndFollowsFairs = "savesAndFollowsFairs",
     SavesAndFollowsShows = "savesAndFollowsShows",
+
+    /**
+     *  City guide
+     */
+    BMWLogo = "bmwLogo",
+    OpenShow = "openShow",
+    OpenBMWShow = "openBMWShow",
+    UnsaveBMWShow = "unsaveBMWShow",
+    SaveBMWShow = "saveBMWShow",
 
     /**
      *  Consignment flow
