@@ -62,6 +62,20 @@ sh('git add . && git commit -m "[Pod] Update JS bundle."', true)
 
 console.log(chalk.green("=> Creating version bump commit and tag."))
 sh("npm version " + versionChange)
+
+console.log(chalk.green("=> Updating Changelog"))
+const changelog = fs.readFileSync("CHANGELOG.md", "utf8")
+const newCHANGELOG = changelog.replace(
+  "### Master",
+  `### Master
+
+### ${JSON.parse(fs.readFileSync("package.json", "utf8")).version}}
+`
+)
+fs.writeFileSync("CHANGELOG.md", newCHANGELOG, "utf8")
+sh("git add CHANGELOG.md")
+sh("git commit -m 'Updated CHANGELOG for new release'")
+
 sh("git push")
 sh("git push --tags")
 
