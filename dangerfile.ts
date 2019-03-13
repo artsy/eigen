@@ -5,7 +5,6 @@ import { compact, includes, uniq } from "lodash"
 // so the node API gives us errors:
 import * as fs from "fs"
 import * as path from "path"
-import * as stripAnsi from "strip-ansi"
 
 import * as recurseSync from "recursive-readdir-sync"
 const allFiles = recurseSync("./src")
@@ -162,7 +161,7 @@ if (pr.body.replace(neuterMarkdownTicks, "-") !== newBody.replace(neuterMarkdown
 
 if (fs.existsSync("tsc_raw.log")) {
   fail("TypeScript hasn't passed, see below for full logs")
-  markdown(`### TypeScript Fails\n\n${stripAnsi(fs.readFileSync("tsc_raw.log"))}`)
+  markdown(`### TypeScript Fails\n\n\`\`\`${fs.readFileSync("tsc_raw.log")}\`\`\``)
 }
 
 // Show TSLint errors inline
@@ -174,7 +173,7 @@ if (fs.existsSync("tslint-errors.json")) {
     const errors = tslintErrors.map(error => {
       const format = error.ruleSeverity === "ERROR" ? ":no_entry_sign:" : ":warning:"
       const linkToFile = danger.github.utils.fileLinks([error.name])
-      return `* ${format} ${linkToFile} - ${error.ruleName} - ${error.failure}`
+      return `* ${format} ${linkToFile} - ${error.ruleName} -${error.failure}`
     })
     const tslintMarkdown = `
   ## TSLint Issues:
