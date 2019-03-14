@@ -2395,6 +2395,7 @@ type City {
 type CitySponsoredContent {
   introText: String
   artGuideUrl: String
+  featuredShows: [Show]
   shows(
     sort: PartnerShowSorts
     status: EventStatus

@@ -766,48 +766,46 @@ export const GlobalMapContainer = createFragmentContainer(
       city(slug: $citySlug) {
         name
         slug
-        sponsoredContent {
-          introText
-          artGuideUrl
-          shows(first: 20, sort: START_AT_ASC) {
-            totalCount
-            edges {
-              node {
-                id
-                _id
-                __id
-                name
-                status
-                href
-                is_followed
-                exhibition_period
-                cover_image {
-                  url
-                }
-                location {
-                  coordinates {
-                    lat
-                    lng
-                  }
-                }
-                type
-                start_at
-                end_at
-                partner {
-                  ... on Partner {
-                    name
-                    type
-                  }
-                }
-              }
-            }
-          }
-        }
         coordinates {
           lat
           lng
         }
-
+        sponsoredContent {
+          introText
+          artGuideUrl
+          featuredShows {
+            id
+            _id
+            __id
+            name
+            status
+            isStubShow
+            href
+            is_followed
+            exhibition_period
+            cover_image {
+              url
+            }
+            location {
+              coordinates {
+                lat
+                lng
+              }
+            }
+            type
+            start_at
+            end_at
+            partner {
+              ... on Partner {
+                name
+                type
+              }
+            }
+          }
+          shows(first: 1, sort: START_AT_ASC) {
+            totalCount
+          }
+        }
         upcomingShows: shows(
           includeStubShows: true
           status: UPCOMING
