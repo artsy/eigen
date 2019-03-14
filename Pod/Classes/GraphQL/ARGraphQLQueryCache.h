@@ -1,13 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
 
-/**
- * The TTL applied to responses that are stored with a TTL of `0`.
- *
- * This equals 1 day (60 * 60 * 24).
- */
-extern const NSTimeInterval ARGraphQLQueryCacheDefaultTTL;
-
 @interface ARGraphQLQueryCache : NSObject <RCTBridgeModule>
 
 /**

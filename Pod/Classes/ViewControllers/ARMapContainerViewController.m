@@ -125,13 +125,13 @@ Since this controller already has to do the above logic, having it handle the Ci
                 self.scrollableTabView.userInteractionEnabled = NO;
             }
     }];
-    
+
 
     NSString *previouslySelectedCityName = [[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey];
     ARCity *previouslySelectedCity = [[[ARCity cities] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
         return [[evaluatedObject name] isEqualToString:previouslySelectedCityName];
     }]] firstObject];
-    
+
     self.mapVC = [[ARMapComponentViewController alloc] init];
     self.cityVC = [[ARCityComponentViewController alloc] init];
 
@@ -147,7 +147,7 @@ Since this controller already has to do the above logic, having it handle the Ci
         self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
         [self.locationManager requestWhenInUseAuthorization];
     }
-    
+
     [self updateSafeAreaInsets];
 
     self.bottomSheetVC = [[PulleyViewController alloc] initWithContentViewController:self.mapVC drawerViewController:self.cityVC];
@@ -243,7 +243,7 @@ Since this controller already has to do the above logic, having it handle the Ci
 - (void)displayLicensingViews
 {
     RCTMGLMapView *mapView = FindMapView(self.mapVC.view);
-    
+
     if (!self.attributionViewsConstraintsAdded) {
         [mapView.attributionButton alignBottomEdgeWithView:self.mapVC.view predicate:@"-50"];
         [mapView.logoView alignBottomEdgeWithView:self.mapVC.view predicate:@"-50"];
@@ -353,7 +353,7 @@ Since this controller already has to do the above logic, having it handle the Ci
     } else if (status == kCLAuthorizationStatusNotDetermined) {
         // nop, don't show city picker.
     } else {
-        
+
         [self showCityPicker];
     }
 }

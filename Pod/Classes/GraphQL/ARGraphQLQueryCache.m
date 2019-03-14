@@ -1,120 +1,36 @@
 #import "ARGraphQLQueryCache.h"
 
 #import <CommonCrypto/CommonDigest.h>
+#import <ISO8601DateFormatter/ISO8601DateFormatter.h>
+
+#pragma mark Constants
+
+// We (ab)use the file creation date as a date beyond which a on-disk cache entry is expired.
+#define CacheValidUntil NSFileCreationDate
+
+typedef NSMutableArray<NSDictionary *> PromiseQueue;
+
+/**
+ * The TTL applied to responses that are stored with a TTL of `0`.
+ *
+ * This equals 1 day (60 * 60 * 24).
+ */
+static const NSTimeInterval ARGraphQLQueryCacheDefaultTTL = 3600;
+
+static NSString * const ARGraphQLQueryCacheDirname = @"RelayResponseCache";
+static NSString * const ARGraphQLQueryCachePreheatedCacheDirname = @"PreHeatedGraphQLCache";
+static NSString * const ARGraphQLQueryCachePreheatedCacheCreatedAtFilename = @"PreheatedCacheCreatedAt.txt";
+static NSString * const ARGraphQLQueryCachePreheatedCacheCreatedAtKey = @"ARGraphQLQueryCachePreheatedCacheCreatedAt";
+
+static NSURL *_cacheDirectory = nil;
+
+#pragma mark Utilities
 
 #ifdef DEBUG
 #define DLog(...) NSLog(__VA_ARGS__)
 #else
 #define DLog(...) /* */
 #endif
-
-const NSTimeInterval ARGraphQLQueryCacheDefaultTTL = 3600;
-
-typedef NSMutableArray<NSDictionary *> PromiseQueue;
-
-// We (ab)use the file creation date as a date beyond which a on-disk cache entry is expired.
-#define CacheValidUntil NSFileCreationDate
-
-@interface ARGraphQLQueryCache ()
-@property (nonatomic, strong, nonnull) NSCache *inMemoryCache;
-@property (nonatomic, strong, nonnull) NSMutableDictionary<NSString *, PromiseQueue *> *inFlightRequests;
-@end
-
-@implementation ARGraphQLQueryCache
-
-@synthesize methodQueue = _methodQueue;
-
-static NSURL *_cacheDirectory = nil;
-
-+ (void)load;
-{
-    // RN ceremony
-    RCT_EXTERN void RCTRegisterModule(Class);
-    RCTRegisterModule(self);
-
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    _cacheDirectory = [NSURL fileURLWithPath:[paths[0] stringByAppendingPathComponent:@"RelayResponseCache"]];
-
-    // Ensure the cache directory exists
-    [[NSFileManager defaultManager] createDirectoryAtURL:_cacheDirectory
-                             withIntermediateDirectories:YES
-                                              attributes:nil
-                                                   error:nil];
-
-    dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0), ^{
-        NSError *error = nil;
-
-        NSURL *preHeatedCacheDirectory = [[NSBundle mainBundle] URLForResource:@"PreHeatedGraphQLCache" withExtension:nil];
-        NSArray<NSURL *> *preHeatedCacheEntries = ReadCacheEntries(preHeatedCacheDirectory, &error);
-        NSArray<NSURL *> *existingCacheEntries = error ? nil : ReadCacheEntries(_cacheDirectory, &error);
-        if (error) {
-            NSLog(@"[ARGraphQLQueryCache] Error while loading pre-heated GraphQL cache: %@", error);
-            return;
-        }
-
-        NSArray<NSString *> *existingCacheEntryKeys = [existingCacheEntries valueForKey:@"lastPathComponent"];
-
-        for (NSURL *cacheEntryURL in preHeatedCacheEntries) {
-            error = nil;
-
-            NSDictionary *cacheEntry = ReadCacheEntry(cacheEntryURL, &error);
-            if (error) {
-                NSLog(@"[ARGraphQLQueryCache] Error while loading pre-heated GraphQL cache entry `%@': %@", cacheEntryURL.path, error);
-                continue;
-            }
-
-            NSNumber *freshness = cacheEntry[@"freshness"];
-            NSParameterAssert(freshness);
-            // Skip pre-heated cache that is considered out-of-date.
-            if (!IsCacheValid([NSDate dateWithTimeIntervalSince1970:freshness.unsignedIntegerValue])) {
-                DLog(@"[ARGraphQLQueryCache] Stale pre-heated GraphQL cache entry will be ignored: %@", cacheEntryURL.path);
-                continue;
-            }
-
-            NSDictionary *queryParams = cacheEntry[@"queryParams"];
-            NSParameterAssert(queryParams);
-            NSString *queryID = queryParams[@"documentID"];
-            NSParameterAssert(queryID);
-            NSDictionary *variables = queryParams[@"variables"];
-            NSParameterAssert(variables);
-            NSString *cacheKey = CacheKey(queryID, variables);
-
-            // Skip pre-heated cache entries that already exist.
-            if ([existingCacheEntryKeys indexOfObject:cacheKey] != NSNotFound) {
-                DLog(@"[ARGraphQLQueryCache] Existing pre-heated GraphQL cache entry will be ignored: %@", cacheEntryURL.path);
-                continue;
-            }
-
-            NSDictionary *graphqlResponse = cacheEntry[@"graphqlResponse"];
-            NSParameterAssert(graphqlResponse);
-            NSData *responseData = [NSJSONSerialization dataWithJSONObject:graphqlResponse options:0 error:&error];
-            if (error) {
-                NSLog(@"[ARGraphQLQueryCache] Error while preparing pre-heated GraphQL cache entry `%@': %@", cacheEntryURL.path, error);
-            } else {
-                NSDate *ttl = CacheExpirationDate(cacheEntry[@"ttl"] ? [cacheEntry[@"ttl"] unsignedIntegerValue] : 0);
-                PersistCacheEntry(cacheKey, responseData, ttl);
-            }
-        }
-    });
-}
-
-// RN ceremony
-+ (NSString *)moduleName
-{
-    return @"ARGraphQLQueryCache";
-}
-
-- (instancetype)init;
-{
-    if ((self = [super init])) {
-        _inMemoryCache = [NSCache new];
-        _inFlightRequests = [NSMutableDictionary new];
-        _methodQueue = dispatch_queue_create("net.artsy.emission.ARGraphQLQueryCache", DISPATCH_QUEUE_SERIAL);
-    }
-    return self;
-}
-
-#pragma mark Utilities
 
 static NSArray<NSURL *> *
 ReadCacheEntries(NSURL *directory, NSError * __autoreleasing *error) {
@@ -133,6 +49,30 @@ ReadCacheEntry(NSURL *cacheEntryURL, NSError * __autoreleasing *error) {
     return nil;
 }
 
+static NSDate *
+PreheatedCacheCreatedAt(NSURL *preHeatedCacheDirectory, NSError * __autoreleasing *error) {
+    NSURL *preheatedCacheCreatedAtURL = [preHeatedCacheDirectory URLByAppendingPathComponent:ARGraphQLQueryCachePreheatedCacheCreatedAtFilename];
+    NSDate *preheatedCacheCreatedAt = [[ISO8601DateFormatter new] dateFromString:[NSString stringWithContentsOfURL:preheatedCacheCreatedAtURL
+                                                                                                          encoding:NSUTF8StringEncoding
+                                                                                                             error:error]];
+    NSCParameterAssert(preheatedCacheCreatedAt);
+    return preheatedCacheCreatedAt;
+}
+
+static BOOL
+CacheHasBeenPreheated(NSDate *preheatedCacheCreatedAt) {
+    NSDate *lastUsedPreheatedCacheCreatedAt = [[NSUserDefaults standardUserDefaults] objectForKey:ARGraphQLQueryCachePreheatedCacheCreatedAtKey];
+    if (lastUsedPreheatedCacheCreatedAt == nil) {
+        return NO;
+    }
+    return [preheatedCacheCreatedAt compare:lastUsedPreheatedCacheCreatedAt] != NSOrderedDescending;
+}
+
+static void
+MarkCacheAsPreheated(NSDate *preheatedCacheCreatedAt) {
+    [[NSUserDefaults standardUserDefaults] setObject:preheatedCacheCreatedAt forKey:ARGraphQLQueryCachePreheatedCacheCreatedAtKey];
+}
+
 static NSString *
 CacheKey(NSString *queryID, NSDictionary *variables) {
     // THe variables dictionary may come from anywhere and that may influence the order in many ways,
@@ -140,21 +80,21 @@ CacheKey(NSString *queryID, NSDictionary *variables) {
     NSArray *sortedKeys = [[variables allKeys] sortedArrayUsingSelector:@selector(compare:)];
     NSArray *sortedValues = [variables objectsForKeys:sortedKeys notFoundMarker:@""];
     NSArray *sortedVariables = [sortedKeys arrayByAddingObjectsFromArray:sortedValues];
-
+    
     NSData *variablesJSONData = [NSJSONSerialization dataWithJSONObject:sortedVariables options:0 error:nil];
     NSString *variablesJSON = [[NSString alloc] initWithData:variablesJSONData encoding:NSUTF8StringEncoding];
     NSString *longCacheKey = [queryID stringByAppendingString:variablesJSON];
-
+    
     const char *pointer = longCacheKey.UTF8String;
     unsigned char md5Buffer[CC_MD5_DIGEST_LENGTH];
-
+    
     CC_MD5(pointer, (CC_LONG)strlen(pointer), md5Buffer);
-
+    
     NSMutableString *encodedCacheKey = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
     for (int i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
         [encodedCacheKey appendFormat:@"%02x", md5Buffer[i]];
     }
-
+    
     return encodedCacheKey;
 }
 
@@ -208,7 +148,108 @@ PersistCacheEntry(NSString *cacheKey, NSData *responseData, NSDate *validUntil) 
                                           attributes:@{ CacheValidUntil: validUntil }];
 }
 
+static void
+PreheatCache() {
+    NSError *error = nil;
+    NSURL *preHeatedCacheDirectory = [[NSBundle mainBundle] URLForResource:ARGraphQLQueryCachePreheatedCacheDirname withExtension:nil];
+    
+    NSDate *preheatedCacheCreatedAt = PreheatedCacheCreatedAt(preHeatedCacheDirectory, &error);
+    if (error == nil && CacheHasBeenPreheated(preheatedCacheCreatedAt)) {
+        DLog(@"[ARGraphQLQueryCache] Cache has already been pre-heated before");
+        return;
+    }
+    
+    NSArray<NSURL *> *preHeatedCacheEntries = error != nil ? nil : ReadCacheEntries(preHeatedCacheDirectory, &error);
+    
+    if (error) {
+        NSLog(@"[ARGraphQLQueryCache] Error while loading pre-heated GraphQL cache: %@", error);
+        return;
+    }
+    
+    for (NSURL *cacheEntryURL in preHeatedCacheEntries) {
+        error = nil;
+        
+        NSDictionary *cacheEntry = ReadCacheEntry(cacheEntryURL, &error);
+        if (error) {
+            NSLog(@"[ARGraphQLQueryCache] Error while loading pre-heated GraphQL cache entry `%@': %@", cacheEntryURL.path, error);
+            continue;
+        }
+        
+        NSNumber *freshness = cacheEntry[@"freshness"];
+        NSCParameterAssert(freshness);
+        // Skip pre-heated cache that is considered out-of-date.
+        if (!IsCacheValid([NSDate dateWithTimeIntervalSince1970:freshness.unsignedIntegerValue])) {
+            DLog(@"[ARGraphQLQueryCache] Stale pre-heated GraphQL cache entry will be ignored: %@", cacheEntryURL.path);
+            continue;
+        }
+        
+        NSDictionary *graphqlResponse = cacheEntry[@"graphqlResponse"];
+        NSCParameterAssert(graphqlResponse);
+        NSData *responseData = [NSJSONSerialization dataWithJSONObject:graphqlResponse options:0 error:&error];
+        if (error) {
+            NSLog(@"[ARGraphQLQueryCache] Error while preparing pre-heated GraphQL cache entry `%@': %@", cacheEntryURL.path, error);
+        } else {
+            NSDictionary *queryParams = cacheEntry[@"queryParams"];
+            NSCParameterAssert(queryParams);
+            NSString *queryID = queryParams[@"documentID"];
+            NSCParameterAssert(queryID);
+            NSDictionary *variables = queryParams[@"variables"];
+            NSCParameterAssert(variables);
+            NSString *cacheKey = CacheKey(queryID, variables);
+            NSDate *ttl = CacheExpirationDate(cacheEntry[@"ttl"] ? [cacheEntry[@"ttl"] unsignedIntegerValue] : 0);
+            PersistCacheEntry(cacheKey, responseData, ttl);
+        }
+    }
+    
+    MarkCacheAsPreheated(preheatedCacheCreatedAt);
+}
+
 #pragma mark Objective-C API
+
+@interface ARGraphQLQueryCache ()
+@property (nonatomic, strong, nonnull) NSCache *inMemoryCache;
+@property (nonatomic, strong, nonnull) NSMutableDictionary<NSString *, PromiseQueue *> *inFlightRequests;
+@end
+
+@implementation ARGraphQLQueryCache
+
+@synthesize methodQueue = _methodQueue;
+
++ (void)load;
+{
+    // RN ceremony
+    RCT_EXTERN void RCTRegisterModule(Class);
+    RCTRegisterModule(self);
+
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    _cacheDirectory = [NSURL fileURLWithPath:[paths[0] stringByAppendingPathComponent:ARGraphQLQueryCacheDirname]];
+
+    // Ensure the cache directory exists
+    [[NSFileManager defaultManager] createDirectoryAtURL:_cacheDirectory
+                             withIntermediateDirectories:YES
+                                              attributes:nil
+                                                   error:nil];
+
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0), ^{
+        PreheatCache();
+    });
+}
+
+// RN ceremony
++ (NSString *)moduleName
+{
+    return @"ARGraphQLQueryCache";
+}
+
+- (instancetype)init;
+{
+    if ((self = [super init])) {
+        _inMemoryCache = [NSCache new];
+        _inFlightRequests = [NSMutableDictionary new];
+        _methodQueue = dispatch_queue_create("net.artsy.emission.ARGraphQLQueryCache", DISPATCH_QUEUE_SERIAL);
+    }
+    return self;
+}
 
 - (void)setResponse:(nullable NSString *)response
          forQueryID:(nonnull NSString *)queryID

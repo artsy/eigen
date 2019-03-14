@@ -16,6 +16,12 @@
 
 ### Master
 
+### 1.8.23
+
+
+- Fix using wrong field for fair hours - ashkan
+- Fix re-instating pre-heated cache after invalidating it once - alloy
+
 - Fix using wrong field for fair hours - ashkan
 - Uses featured shows for BMW bricks - kieran
 - Fixes drawer behaviour - ash
@@ -29,6 +35,10 @@
 - Adds Mapbox logo and attribution for licensing - luc
 - Fixes spinner on save button on ShowItemRow - kieran
 - Fix bug with selected pin and clusters not deselecting - luc
+
+- Adds Mapbox logo and attribution for licensing - luc
+- Fix bug with selected pin and clusters not deselecting - luc
+- Reset zoom level after switching city or filter - luc
 
 ### 1.8.20
 
