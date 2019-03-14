@@ -126,7 +126,10 @@ export class ShowItemRow extends React.Component<Props, State> {
 
   render() {
     const { noPadding, show, shouldHideSaveButton } = this.props
-    const imageURL = show.cover_image && show.cover_image.url
+    const mainCoverImageURL = show.cover_image && show.cover_image.url
+    const galleryProfileIcon = show.isStubShow && show.partner && show.partner.profile && show.partner.profile.image.url
+
+    const imageURL = mainCoverImageURL || galleryProfileIcon
 
     return (
       <TouchableWithoutFeedback onPress={() => this.handleTap(show.id, show._id)}>
@@ -179,6 +182,10 @@ export class ShowItemRow extends React.Component<Props, State> {
     )
   }
 }
+
+/// NOTE: To make sure that this is consistent across all places where we
+///       show it (e.g. Favs, inside the City Map tray ) - you need to make
+///       sure that any data changes are included in GlobalMap's query.
 export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
   show: graphql`
     fragment ShowItemRow_show on Show {
@@ -187,9 +194,17 @@ export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
       __id
       is_followed
       name
+      isStubShow
       partner {
         ... on Partner {
           name
+
+          profile {
+            # This is only used for stubbed shows
+            image {
+              url(version: "square")
+            }
+          }
         }
       }
       href

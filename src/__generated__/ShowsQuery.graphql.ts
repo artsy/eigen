@@ -57,10 +57,17 @@ fragment ShowItemRow_show on Show {
   __id
   is_followed
   name
+  isStubShow
   partner {
     __typename
     ... on Partner {
       name
+      profile {
+        image {
+          url(version: "square")
+        }
+        __id
+      }
     }
     ... on Node {
       __id
@@ -122,7 +129,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowsQuery",
-  "id": "a2fe8417ec30fc6aecd50a4299c742b0",
+  "id": "fa46ea34ba73f4fd8d30d67d9a41b41b",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -269,7 +276,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "exhibition_period",
+                            "name": "href",
                             "args": null,
                             "storageKey": null
                           },
@@ -290,6 +297,13 @@ return {
                           },
                           v2,
                           {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "isStubShow",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
                             "kind": "LinkedField",
                             "alias": null,
                             "name": "partner",
@@ -304,7 +318,44 @@ return {
                                 "kind": "InlineFragment",
                                 "type": "Partner",
                                 "selections": [
-                                  v2
+                                  v2,
+                                  {
+                                    "kind": "LinkedField",
+                                    "alias": null,
+                                    "name": "profile",
+                                    "storageKey": null,
+                                    "args": null,
+                                    "concreteType": "Profile",
+                                    "plural": false,
+                                    "selections": [
+                                      {
+                                        "kind": "LinkedField",
+                                        "alias": null,
+                                        "name": "image",
+                                        "storageKey": null,
+                                        "args": null,
+                                        "concreteType": "Image",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "kind": "ScalarField",
+                                            "alias": null,
+                                            "name": "url",
+                                            "args": [
+                                              {
+                                                "kind": "Literal",
+                                                "name": "version",
+                                                "value": "square",
+                                                "type": "[String]"
+                                              }
+                                            ],
+                                            "storageKey": "url(version:\"square\")"
+                                          }
+                                        ]
+                                      },
+                                      v1
+                                    ]
+                                  }
                                 ]
                               }
                             ]
@@ -312,14 +363,14 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "href",
+                            "name": "_id",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "_id",
+                            "name": "exhibition_period",
                             "args": null,
                             "storageKey": null
                           },
