@@ -13,6 +13,12 @@ export type ShowArtistsPreview_show = {
         readonly href: string | null;
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
     }) | null> | null;
+    readonly artists_without_artworks: ReadonlyArray<({
+        readonly _id: string;
+        readonly id: string;
+        readonly href: string | null;
+        readonly " $fragmentRefs": ArtistListItem_artist$ref;
+    }) | null> | null;
     readonly " $refType": ShowArtistsPreview_show$ref;
 };
 
@@ -39,7 +45,24 @@ v2 = {
   "name": "__id",
   "args": null,
   "storageKey": null
-};
+},
+v3 = [
+  v0,
+  v1,
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "href",
+    "args": null,
+    "storageKey": null
+  },
+  {
+    "kind": "FragmentSpread",
+    "name": "ArtistListItem_artist",
+    "args": null
+  },
+  v2
+];
 return {
   "kind": "Fragment",
   "name": "ShowArtistsPreview_show",
@@ -57,27 +80,21 @@ return {
       "args": null,
       "concreteType": "Artist",
       "plural": true,
-      "selections": [
-        v0,
-        v1,
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "href",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "FragmentSpread",
-          "name": "ArtistListItem_artist",
-          "args": null
-        },
-        v2
-      ]
+      "selections": v3
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "artists_without_artworks",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "Artist",
+      "plural": true,
+      "selections": v3
     },
     v2
   ]
 };
 })();
-(node as any).hash = '5d26e87b1a942e196813aa6888280b82';
+(node as any).hash = '211fd0417d1988d3ea260f0d2fd2300a';
 export default node;

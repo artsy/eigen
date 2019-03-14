@@ -88,14 +88,18 @@ export class Detail extends React.Component<Props, State> {
       })
     }
 
-    sections.push({
-      type: "artists",
-      data: {
-        show,
-        onViewAllArtistsPressed: this.handleViewAllArtistsPressed.bind(this),
-        Component: this,
-      },
-    })
+    const hasArtsyArtists = show.counts && show.counts.artists
+    const hasStubbedArtists = show.artists_without_artworks.length > 0
+    if (hasStubbedArtists || hasArtsyArtists) {
+      sections.push({
+        type: "artists",
+        data: {
+          show,
+          onViewAllArtistsPressed: this.handleViewAllArtistsPressed.bind(this),
+          Component: this,
+        },
+      })
+    }
 
     if (show.location) {
       sections.push({
@@ -219,8 +223,17 @@ export const DetailContainer = createFragmentContainer(
           }
         }
       }
+
+      # These artists don't show up in artists count alas
+      # and so we need to request them back here to verify if we
+      # should show the artists section at all
+      artists_without_artworks {
+        id
+      }
+
       counts {
         artworks
+        artists
       }
       status
       partner {

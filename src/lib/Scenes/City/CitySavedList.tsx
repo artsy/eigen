@@ -2,6 +2,7 @@ import { Theme } from "@artsy/palette"
 import { CitySavedList_viewer } from "__generated__/CitySavedList_viewer.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
+import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { EventList } from "./Components/EventList"
@@ -9,12 +10,19 @@ import { EventList } from "./Components/EventList"
 interface Props {
   viewer: CitySavedList_viewer
   relay: RelayPaginationProp
+  citySlug: string
 }
 
 interface State {
   fetchingNextPage: boolean
 }
 
+@screenTrack((props: Props) => ({
+  context_screen: Schema.PageNames.CityGuideSavedList,
+  context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+  context_screen_owner_slug: props.citySlug,
+  context_screen_owner_id: props.citySlug,
+}))
 class CitySavedList extends React.Component<Props, State> {
   state = {
     fetchingNextPage: false,
@@ -75,7 +83,7 @@ export default createPaginationContainer(
       }
       me {
         followsAndSaves {
-          shows(first: $count, status: CURRENT, city: $citySlug, after: $cursor)
+          shows(first: $count, status: CURRENT, dayThreshold: 30, city: $citySlug, after: $cursor)
             @connection(key: "CitySavedList_shows") {
             edges {
               node {

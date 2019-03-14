@@ -32,7 +32,7 @@ fragment CitySavedList_viewer on Viewer {
   }
   me {
     followsAndSaves {
-      shows(first: 20, status: CURRENT, city: $citySlug, after: "") {
+      shows(first: 20, status: CURRENT, dayThreshold: 30, city: $citySlug, after: "") {
         edges {
           node {
             id
@@ -125,7 +125,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersCitySavedListQuery",
-  "id": "15f9a818d3dfc7c522abb40f87c184f2",
+  "id": "d20d1ab49b42dc8c4316a4fc7d5f5187",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -221,6 +221,12 @@ return {
                         "name": "city",
                         "variableName": "citySlug",
                         "type": "String"
+                      },
+                      {
+                        "kind": "Literal",
+                        "name": "dayThreshold",
+                        "value": 30,
+                        "type": "Int"
                       },
                       {
                         "kind": "Literal",
@@ -449,6 +455,12 @@ return {
                       },
                       {
                         "kind": "Literal",
+                        "name": "dayThreshold",
+                        "value": 30,
+                        "type": "Int"
+                      },
+                      {
+                        "kind": "Literal",
                         "name": "first",
                         "value": 20,
                         "type": "Int"
@@ -464,6 +476,7 @@ return {
                     "key": "CitySavedList_shows",
                     "filters": [
                       "status",
+                      "dayThreshold",
                       "city"
                     ]
                   }

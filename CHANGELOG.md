@@ -16,6 +16,20 @@
 
 ### Master
 
+- Fix using wrong field for fair hours - ashkan
+
+- Fixes drawer behaviour - ash
+
+### 1.8.22
+
+### 1.8.21
+
+- Adds retry screen to map view - ash
+- Fixes no image state for artist lists - kieran
+- Adds Mapbox logo and attribution for licensing - luc
+- Fixes spinner on save button on ShowItemRow - kieran
+- Fix bug with selected pin and clusters not deselecting - luc
+
 - Adds Mapbox logo and attribution for licensing - luc
 - Fix bug with selected pin and clusters not deselecting - luc
 - Reset zoom level after switching city or filter - luc

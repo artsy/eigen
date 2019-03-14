@@ -22,7 +22,15 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { Fair, MapGeoFeature, MapGeoFeatureCollection, OSCoordsUpdate, SafeAreaInsets, Show } from "./types"
+import {
+  Fair,
+  MapGeoFeature,
+  MapGeoFeatureCollection,
+  OSCoordsUpdate,
+  RelayErrorState,
+  SafeAreaInsets,
+  Show,
+} from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -74,6 +82,8 @@ interface Props {
   isDrawerOpen?: boolean
   /** Reflects the area not covered by navigation bars, tab bars, toolbars, and other ancestors  */
   safeAreaInsets: SafeAreaInsets
+  /** Error from Relay (MapRenderer.tsx). Needed here to send over the EventEmitter. */
+  relayErrorState?: RelayErrorState
 }
 
 interface State {
@@ -105,7 +115,7 @@ interface State {
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
 
-const DefauftZoomLevel = 13
+const DefaultZoomLevel = 13
 
 const ButtonAnimation = {
   yDelta: -200,
@@ -210,7 +220,7 @@ export class GlobalMap extends React.Component<Props, State> {
       isSavingShow: false,
       nearestFeature: null,
       activePin: null,
-      currentZoom: DefauftZoomLevel,
+      currentZoom: DefaultZoomLevel,
     }
 
     this.clusterEngine = new Supercluster({
@@ -224,7 +234,7 @@ export class GlobalMap extends React.Component<Props, State> {
   handleFilterChange = activeIndex => {
     this.setState({ activeIndex, activePin: null, activeShows: [] }, () => this.emitFilteredBucketResults())
     // Reset zoom level
-    this.map.zoomTo(DefauftZoomLevel)
+    this.map.zoomTo(DefaultZoomLevel)
   }
 
   componentDidMount() {
@@ -242,11 +252,11 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    const { citySlug } = this.props
+    const { citySlug, relayErrorState } = this.props
     console.log("current city: ", citySlug, " next city: ", nextProps.citySlug)
     if (citySlug && citySlug !== nextProps.citySlug) {
       // Reset zoom level after switching cities
-      this.map.zoomTo(DefauftZoomLevel, 200)
+      setTimeout(() => this.map.zoomTo(DefaultZoomLevel, 200), 500)
     }
 
     if (nextProps.viewer) {
@@ -257,6 +267,8 @@ export class GlobalMap extends React.Component<Props, State> {
         this.updateShowIdMap()
         this.updateClusterMap()
       })
+    } else if (relayErrorState) {
+      EventEmitter.dispatch("map:error", { relayErrorState })
     }
 
     if (nextProps.hideMapButtons !== this.props.hideMapButtons) {
@@ -522,6 +534,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   render() {
     const city = get(this.props, "viewer.city")
+    const { relayErrorState } = this.props
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || get(city, "coordinates")
     const { mapLoaded, activeShows, activePin } = this.state
 
@@ -530,7 +543,7 @@ export class GlobalMap extends React.Component<Props, State> {
       styleURL: ArtsyMapStyleURL,
       userTrackingMode: Mapbox.UserTrackingModes.Follow,
       centerCoordinate: [centerLng, centerLat],
-      zoomLevel: DefauftZoomLevel,
+      zoomLevel: DefaultZoomLevel,
       minZoomLevel: 10,
       logoEnabled: !!city,
       attributionEnabled: false,
@@ -591,6 +604,7 @@ export class GlobalMap extends React.Component<Props, State> {
               <CitySwitcherButton
                 sponsoredContentUrl={this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl}
                 city={city}
+                isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
                 onPress={() => {
                   this.setState({
                     activeShows: [],
@@ -770,7 +784,7 @@ export const GlobalMapContainer = createFragmentContainer(
         sponsoredContent {
           introText
           artGuideUrl
-          shows(first: 2, sort: START_AT_ASC) {
+          shows(first: 20, sort: START_AT_ASC) {
             totalCount
             edges {
               node {

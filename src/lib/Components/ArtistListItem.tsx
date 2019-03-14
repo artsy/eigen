@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, color, Flex, Sans, Serif, Spacer } from "@artsy/palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
@@ -15,6 +15,14 @@ const RoundedImage = styled(OpaqueImageView)`
   overflow: hidden;
 `
 
+const RoundedBox = styled(Box)`
+  height: 45;
+  width: 45;
+  border-radius: 25;
+  background-color: ${color("black10")};
+  overflow: hidden;
+`
+
 const TightendSerif = styled(Serif)`
   position: relative;
   top: 2;
@@ -23,6 +31,11 @@ const TightendSerif = styled(Serif)`
 const TightendSans = styled(Sans)`
   position: relative;
   top: -2;
+`
+
+const StyledSerif = styled(Serif)`
+  position: relative;
+  top: 3;
 `
 
 const TextContainer = styled(Flex)`
@@ -134,18 +147,33 @@ export class ArtistListItem extends React.Component<Props, State> {
     }
   }
 
+  getInitials = string => {
+    const names = string.split(" ")
+    let initials = names[0].substring(0, 1)
+    if (names.length > 1) {
+      initials += names[1].substring(0, 1)
+    }
+    return initials
+  }
+
   render() {
     const { isFollowedChanging } = this.state
-    const {
-      artist: {
-        is_followed,
-        image: { url },
-      },
-    } = this.props
+    const { artist } = this.props
+    const { image, name } = artist
+    const { is_followed } = artist
 
     return (
       <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
-        <RoundedImage imageURL={url} aspectRatio={1} />
+        {image && <RoundedImage imageURL={image.url} aspectRatio={1} />}
+        {!image && (
+          <RoundedBox>
+            <Flex justifyContent="center" alignItems="center" flexGrow={1} alignContent="center" flexDirection="column">
+              <StyledSerif color="black80" size="3">
+                {this.getInitials(name)}
+              </StyledSerif>
+            </Flex>
+          </RoundedBox>
+        )}
         <Spacer m={1} />
         <TextContainer flexDirection="column" alignItems="flex-start">
           {this.renderText()}

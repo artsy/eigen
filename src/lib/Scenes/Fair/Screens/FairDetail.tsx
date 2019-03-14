@@ -150,14 +150,13 @@ export class FairDetail extends React.Component<Props, State> {
   }
 
   renderItem = ({ item: { data, type, showIndex } }) => {
-    const { openingHours } = data
     switch (type) {
       case "location":
         return <LocationMap partnerType="Fair" {...data} />
       case "hours":
         return (
           <>
-            <HoursCollapsible openingHours={openingHours} onToggle={() => this.handleHoursToggled()} />
+            <HoursCollapsible openingHours={{ text: data }} onToggle={() => this.handleHoursToggled()} />
             <Separator mt={2} />
           </>
         )
