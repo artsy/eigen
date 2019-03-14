@@ -119,7 +119,6 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 - (void)setupEcho
 {
     Aerodramus *aero = self.echo;
-    [aero setup];
 
     NSArray *currentRoutes = self.echo.routes.allValues.copy;
     __weak typeof(self) wself = self;
@@ -145,9 +144,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 - (void)updateRoutes
 {
     // Allow lazy grabbing of local JSON etc, so that we can DI echo.
-    if (self.echo.name == nil) {
-        [self setupEcho];
-    }
+    [self setupEcho];
 
     __weak typeof(self) wself = self;
 

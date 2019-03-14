@@ -26,6 +26,8 @@ beforeEach(^{
     
     // This is the mutation to say "we have seen this artwork"
     [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:@{ }];
+    // ?
+    [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:@{ }];
 
     // This is the artwork request
     [OHHTTPStubs stubJSONResponseForHost:@"metaphysics-staging.artsy.net" withResponse:@{ @"data": @{ @"artwork" : @{ @"id": @"some-artwork", @"title": @"Some Title" } } }];

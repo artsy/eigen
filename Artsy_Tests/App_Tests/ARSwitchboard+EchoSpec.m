@@ -11,6 +11,11 @@
 
 @implementation ARStubbedEcho
 
+- (NSString *)name
+{
+    return @"ARStubbedEcho";
+}
+
 // NOP. doesn't try grab a JSON file for parsing
 - (void)setup {}
 
