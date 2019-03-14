@@ -8,6 +8,7 @@ import { Pin } from "lib/Icons/Pin"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { hrefForPartialShow } from "lib/utils/router"
 import { Schema, Track, track as _track } from "lib/utils/track"
+import { get } from "lodash"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -127,7 +128,7 @@ export class ShowItemRow extends React.Component<Props, State> {
   render() {
     const { noPadding, show, shouldHideSaveButton } = this.props
     const mainCoverImageURL = show.cover_image && show.cover_image.url
-    const galleryProfileIcon = show.isStubShow && show.partner && show.partner.profile && show.partner.profile.image.url
+    const galleryProfileIcon = show.isStubShow && get(show, "partner.profile.image.url")
 
     const imageURL = mainCoverImageURL || galleryProfileIcon
 

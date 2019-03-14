@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fixes crash on sub shows with no profile image - ash
+
 ### 1.8.24
 
 
