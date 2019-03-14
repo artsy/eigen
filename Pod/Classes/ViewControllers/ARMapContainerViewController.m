@@ -61,7 +61,7 @@ FindParentScrollView(UIView *view)
         // There is no parent scroll view
         return nil;
     }if ([view.superview isKindOfClass:[UIScrollView class]]) {
-        return view.superview;
+        return (UIScrollView *)view.superview;
     } else {
         return FindParentScrollView(view.superview);
     }
