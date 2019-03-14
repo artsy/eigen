@@ -24,7 +24,8 @@ NSString * const __nonnull SelectedCityNameKey = @"SelectedCityName";
 @property (nonatomic, strong) ARCityPickerComponentViewController *cityPickerController;
 @property (nonatomic, strong) UIView *cityPickerContainerView; // Need a view to have its own shadow.
 
-@property (nonatomic, weak) UIScrollView *rnScrollView;
+/// ScrollableTabView contains all the other scroll views.
+@property (nonatomic, weak) UIScrollView *scrollableTabView;
 
 @property (nonatomic, assign) BOOL initialDataIsLoaded;
 @property (nonatomic, assign) BOOL attributionViewsConstraintsAdded;
@@ -50,6 +51,20 @@ FindCityScrollView(UIView *view)
         if (result) return result;
     }
     return nil;
+}
+
+/// Finds the closest parent in the view hiearchy that's a scroll view.
+static UIScrollView *
+FindParentScrollView(UIView *view)
+{
+    if (!view.superview) {
+        // There is no parent scroll view
+        return nil;
+    }if ([view.superview isKindOfClass:[UIScrollView class]]) {
+        return view.superview;
+    } else {
+        return FindParentScrollView(view.superview);
+    }
 }
 
 static RCTMGLMapView *
@@ -104,13 +119,10 @@ Since this controller already has to do the above logic, having it handle the Ci
         wself.initialDataIsLoaded = YES;
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryCityGotScrollView" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-            if (!wself.rnScrollView) {
+            if (!wself.scrollableTabView) {
                 UIScrollView *foundScrollView = FindCityScrollView(wself.cityVC.view);
-                wself.rnScrollView = foundScrollView;
-                wself.rnScrollView.scrollEnabled = NO;
-                if (foundScrollView) {
-                    [wself.bottomSheetVC.drawerPanGestureRecognizer requireGestureRecognizerToFail:foundScrollView.panGestureRecognizer];
-                }
+                self.scrollableTabView = FindParentScrollView(foundScrollView);
+                self.scrollableTabView.userInteractionEnabled = NO;
             }
     }];
     
@@ -309,9 +321,10 @@ Since this controller already has to do the above logic, having it handle the Ci
 
     BOOL isDrawerOpen = [drawer.drawerPosition isEqualToPosition:PulleyPosition.open];
     [self.cityVC setProperty:@(isDrawerOpen) forKey:@"isDrawerOpen"];
-    self.rnScrollView.scrollEnabled = isDrawerOpen;
+    self.scrollableTabView.userInteractionEnabled = isDrawerOpen;
     if (!isDrawerOpen) {
-        [self.rnScrollView setContentOffset:CGPointZero animated:YES];
+        UIScrollView *cityScrollView = FindCityScrollView(self.cityVC.view);
+        [cityScrollView setContentOffset:CGPointZero animated:YES];
     }
 }
 

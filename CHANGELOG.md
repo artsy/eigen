@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fixes drawer behaviour - ash
+
 ### 1.8.22
 
 
