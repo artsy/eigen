@@ -18,8 +18,8 @@ jobs:
 
     steps:
       - run:
-        name: List Simulators
-        command: xcrun simctl list
+          name: List Simulators
+          command: xcrun simctl list
 
       - checkout
 
