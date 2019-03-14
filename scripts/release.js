@@ -58,7 +58,7 @@ sh("npm --version")
 
 console.log(chalk.green("=> Creating release bundle."))
 sh("npm run bundle")
-sh('git add . && git commit -m "[Pod] Update JS bundle."', true)
+sh('git add . && git commit -m "[Pod] Update release artefacts."', true)
 
 console.log(chalk.green("=> Creating version bump commit and tag."))
 sh("npm version " + versionChange)
