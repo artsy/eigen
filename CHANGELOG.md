@@ -28,6 +28,7 @@
 
 - Fix using wrong field for fair hours - ashkan
 - Uses featured shows for BMW bricks - kieran
+- Fixes zoom outs when switching cities and fix cluster crash - luc
 - Fixes drawer behaviour - ash
 
 ### 1.8.22

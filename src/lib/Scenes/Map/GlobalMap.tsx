@@ -115,7 +115,7 @@ interface State {
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
 
-const DefaultZoomLevel = 13
+const DefaultZoomLevel = 12
 
 const ButtonAnimation = {
   yDelta: -200,
@@ -218,8 +218,6 @@ export class GlobalMap extends React.Component<Props, State> {
 
   handleFilterChange = activeIndex => {
     this.setState({ activeIndex, activePin: null, activeShows: [] }, () => this.emitFilteredBucketResults())
-    // Reset zoom level
-    this.map.zoomTo(DefaultZoomLevel)
   }
 
   componentDidMount() {
@@ -235,7 +233,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
     if (citySlug && citySlug !== nextProps.citySlug) {
       // Reset zoom level after switching cities
-      setTimeout(() => this.map.zoomTo(DefaultZoomLevel, 200), 500)
+      setTimeout(() => this.map.zoomTo(10, 100), 500)
     }
 
     if (nextProps.viewer) {
