@@ -93,14 +93,19 @@ interface State {
   featureCollection: MapGeoFeatureCollection
   /** Has the map fully rendered? */
   mapLoaded: boolean
+  /** In the process of saving a show */
   isSavingShow: boolean
   /** Cluster map data used to populate selected cluster annotation */
   nearestFeature: MapGeoFeature
   /** Cluster map data used currently in view window */
   activePin: MapGeoFeature
+  /** Current map zoom level */
+  currentZoom: number
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
+
+const DefauftZoomLevel = 13
 
 const ButtonAnimation = {
   yDelta: -200,
@@ -205,6 +210,7 @@ export class GlobalMap extends React.Component<Props, State> {
       isSavingShow: false,
       nearestFeature: null,
       activePin: null,
+      currentZoom: DefauftZoomLevel,
     }
 
     this.clusterEngine = new Supercluster({
@@ -217,6 +223,8 @@ export class GlobalMap extends React.Component<Props, State> {
 
   handleFilterChange = activeIndex => {
     this.setState({ activeIndex, activePin: null, activeShows: [] }, () => this.emitFilteredBucketResults())
+    // Reset zoom level
+    this.map.zoomTo(DefauftZoomLevel)
   }
 
   componentDidMount() {
@@ -234,6 +242,13 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: Props) {
+    const { citySlug } = this.props
+    console.log("current city: ", citySlug, " next city: ", nextProps.citySlug)
+    if (citySlug && citySlug !== nextProps.citySlug) {
+      // Reset zoom level after switching cities
+      this.map.zoomTo(DefauftZoomLevel, 200)
+    }
+
     if (nextProps.viewer) {
       const bucketResults = bucketCityResults(nextProps.viewer)
 
@@ -386,8 +401,8 @@ export class GlobalMap extends React.Component<Props, State> {
       const clusterId = properties.cluster_id.toString()
       let pointCount = properties.point_count
 
-      const width = pointCount < 3 ? 38 : pointCount < 21 ? 45 : 60
-      const height = pointCount < 3 ? 38 : pointCount < 21 ? 45 : 60
+      const width = pointCount < 3 ? 35 : pointCount < 21 ? 50 : 60
+      const height = pointCount < 3 ? 35 : pointCount < 21 ? 50 : 60
       pointCount = pointCount.toString()
 
       return (
@@ -515,8 +530,8 @@ export class GlobalMap extends React.Component<Props, State> {
       styleURL: ArtsyMapStyleURL,
       userTrackingMode: Mapbox.UserTrackingModes.Follow,
       centerCoordinate: [centerLng, centerLat],
-      zoomLevel: 13,
-      minZoomLevel: 11,
+      zoomLevel: DefauftZoomLevel,
+      minZoomLevel: 10,
       logoEnabled: !!city,
       attributionEnabled: false,
       compassEnabled: false,

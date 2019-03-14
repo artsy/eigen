@@ -18,6 +18,7 @@
 
 - Adds Mapbox logo and attribution for licensing - luc
 - Fix bug with selected pin and clusters not deselecting - luc
+- Reset zoom level after switching city or filter - luc
 
 ### 1.8.20
 
