@@ -201,7 +201,6 @@ export class CityView extends Component<Props, State> {
                       key={cityName + tab.id}
                       bucket={buckets[tab.id]}
                       type={tab.id}
-                      citySlug={citySlug}
                       cityName={cityName}
                       relay={this.state.relay}
                     />
