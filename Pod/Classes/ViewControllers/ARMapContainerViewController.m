@@ -53,6 +53,22 @@ FindCityScrollView(UIView *view)
     return nil;
 }
 
+/// Goes through all the children of a view and makes sure they can or can't scroll
+static void
+RecurseThroughScrollViewsSettingScrollEnabled(UIView *view, BOOL scrollEnabled)
+{
+    for (UIView *subview in view.subviews) {
+        if ([subview isKindOfClass:UIScrollView.class]) {
+            UIScrollView *scrollView = (UIScrollView *)subview;
+            scrollView.scrollEnabled = scrollEnabled;
+        }
+    }
+    for (UIView *subview in view.subviews) {
+        RecurseThroughScrollViewsSettingScrollEnabled(subview, scrollEnabled);
+    }
+}
+
+
 /// Finds the closest parent in the view hiearchy that's a scroll view.
 static UIScrollView *
 FindParentScrollView(UIView *view)
@@ -122,7 +138,7 @@ Since this controller already has to do the above logic, having it handle the Ci
             if (!wself.scrollableTabView) {
                 UIScrollView *foundScrollView = FindCityScrollView(wself.cityVC.view);
                 self.scrollableTabView = FindParentScrollView(foundScrollView);
-                self.scrollableTabView.userInteractionEnabled = NO;
+                RecurseThroughScrollViewsSettingScrollEnabled(wself.scrollableTabView.superview, NO);
             }
     }];
 
@@ -321,7 +337,8 @@ Since this controller already has to do the above logic, having it handle the Ci
 
     BOOL isDrawerOpen = [drawer.drawerPosition isEqualToPosition:PulleyPosition.open];
     [self.cityVC setProperty:@(isDrawerOpen) forKey:@"isDrawerOpen"];
-    self.scrollableTabView.userInteractionEnabled = isDrawerOpen;
+        RecurseThroughScrollViewsSettingScrollEnabled(self.scrollableTabView.superview, isDrawerOpen);
+
     if (!isDrawerOpen) {
         UIScrollView *cityScrollView = FindCityScrollView(self.cityVC.view);
         [cityScrollView setContentOffset:CGPointZero animated:YES];
