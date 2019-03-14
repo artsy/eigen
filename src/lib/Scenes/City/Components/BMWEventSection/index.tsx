@@ -2,6 +2,7 @@ import { Box, color, Sans, Serif } from "@artsy/palette"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Event } from "lib/Scenes/City/Components/Event"
+import { Show } from "lib/Scenes/Map/types"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
 import { RelayProp } from "react-relay"
@@ -15,8 +16,8 @@ export interface Props {
     artGuideUrl: string
     shows: {
       totalCount: number
-      edges: any[]
     }
+    featuredShows: [Show]
   }
 }
 
@@ -26,22 +27,16 @@ const track: Track<Props> = _track
 export class BMWEventSection extends React.Component<Props> {
   renderEvents = () => {
     const {
-      sponsoredContent: {
-        shows: { edges },
-      },
+      sponsoredContent: { featuredShows },
       relay,
     } = this.props
-    const eligibleForBrick = edges.filter(s => !!s.node.cover_image && !!s.node.cover_image.url)
-    const finalShowsForPreviewBricks = eligibleForBrick.length ? eligibleForBrick : edges
 
-    return finalShowsForPreviewBricks.map((edge, i) => {
-      if (i < 2) {
-        return (
-          <Box key={i} mb={1}>
-            <Event section="bmw" event={edge.node} relay={relay} />
-          </Box>
-        )
-      }
+    return featuredShows.map((show, i) => {
+      return (
+        <Box key={i} mb={1}>
+          <Event section="bmw" event={show} relay={relay} />
+        </Box>
+      )
     })
   }
 
@@ -50,7 +45,7 @@ export class BMWEventSection extends React.Component<Props> {
     return {
       action_name: Schema.ActionNames.GetBMWArtGuide,
       action_type: Schema.ActionTypes.Tap,
-      owner_id: "CityGuide",
+      owner_id: Schema.OwnerEntityTypes.CityGuide,
       owner_slug: citySlug,
       owner_type: citySlug,
     } as any

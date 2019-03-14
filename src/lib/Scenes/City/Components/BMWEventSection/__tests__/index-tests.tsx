@@ -29,8 +29,8 @@ describe("CityEvent", () => {
             artGuideUrl: "http://www.example.com",
             shows: {
               totalCount: 2,
-              edges: [{ node: show }],
             },
+            featuredShows: [show as any],
           }}
           relay={{ environment: {} } as RelayProp}
           citySlug={"new-york-us"}
