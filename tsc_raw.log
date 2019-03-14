@@ -1,0 +1,2 @@
+src/lib/Scenes/City/City.tsx(200,22): error TS2322: Type '{ key: string; bucket: any; type: "all" | "closing" | "fairs" | "galleries" | "saved" | "museums" | "opening" | "BMW Art Guide"; citySlug: string; cityName: string; relay: any; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<EventList> & Readonly<{ children?: ReactNode; }> & Readonly<Props>'.
+  Property 'citySlug' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<EventList> & Readonly<{ children?: ReactNode; }> & Readonly<Props>'.

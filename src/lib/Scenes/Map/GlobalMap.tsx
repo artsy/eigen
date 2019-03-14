@@ -133,29 +133,14 @@ enum DrawerPosition {
   partiallyRevealed = "partiallyRevealed",
 }
 
-const screenSchemaForCurrentTabState = currentSelectedTab => {
-  switch (currentSelectedTab) {
-    case "all":
-      return Schema.PageNames.CityGuideAllMap
-    case "saved":
-      return Schema.PageNames.CityGuideSavedMap
-    case "fairs":
-      return Schema.PageNames.CityGuideFairsMap
-    case "galleries":
-      return Schema.PageNames.CityGuideGalleriesMap
-    case "museums":
-      return Schema.PageNames.CityGuideMuseumsMap
-    default:
-      return null
+@screenTrack<Props>(props => {
+  return {
+    context_screen: Schema.PageNames.CityGuideMap,
+    context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+    context_screen_owner_slug: props.citySlug,
+    context_screen_owner_id: props.citySlug,
   }
-}
-
-@screenTrack<Props>(props => ({
-  context_screen: screenSchemaForCurrentTabState("all"),
-  context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-  context_screen_owner_slug: props.citySlug,
-  context_screen_owner_id: props.citySlug,
-}))
+})
 export class GlobalMap extends React.Component<Props, State> {
   /** Makes sure we're consistently using { lat, lng } internally */
   static lngLatArrayToLocation(arr: [number, number] | undefined) {
@@ -245,12 +230,6 @@ export class GlobalMap extends React.Component<Props, State> {
     EventEmitter.unsubscribe("filters:change", this.handleFilterChange)
   }
 
-  componentDidUpdate(_, prevState) {
-    if (prevState.activeIndex !== this.state.activeIndex) {
-      this.fireGlobalMapScreenViewAnalytics()
-    }
-  }
-
   componentWillReceiveProps(nextProps: Props) {
     const { citySlug, relayErrorState } = this.props
 
@@ -295,15 +274,16 @@ export class GlobalMap extends React.Component<Props, State> {
   @track((__, _, args) => {
     const actionName = args[0]
     const show = args[1]
+    const type = args[2]
     return {
       action_name: actionName,
       action_type: Schema.ActionTypes.Tap,
       owner_id: !!show ? show[0]._id : "",
       owner_slug: !!show ? show[0].id : "",
-      owner_type: !!show ? Schema.OwnerEntityTypes.Show : "",
+      owner_type: !!type ? type : "",
     } as any
   })
-  trackPinTap(_actionName, _show) {
+  trackPinTap(_actionName, _show, _type) {
     return null
   }
 
@@ -354,15 +334,6 @@ export class GlobalMap extends React.Component<Props, State> {
       citySlug,
       sponsoredContent,
       relay: this.props.relay,
-    })
-  }
-
-  fireGlobalMapScreenViewAnalytics = () => {
-    this.props.tracking.trackEvent({
-      context_screen: screenSchemaForCurrentTabState(cityTabs[this.state.activeIndex].id),
-      context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-      context_screen_owner_slug: this.props.citySlug,
-      context_screen_owner_id: this.props.citySlug,
     })
   }
 
@@ -699,8 +670,10 @@ export class GlobalMap extends React.Component<Props, State> {
     if (!cluster) {
       if (type === "Show") {
         activeShows = [this.shows[id]]
+        this.trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Show)
       } else if (type === "Fair") {
         activeShows = [this.fairs[id]]
+        this.trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Fair)
       }
     }
 
@@ -710,6 +683,7 @@ export class GlobalMap extends React.Component<Props, State> {
     // 2. Sort them by distance to the user tap coordinates
     // 3. Retrieve points within the cluster and map them back to shows
     else {
+      this.trackPinTap(Schema.ActionNames.ClusteredMapPin, null, Schema.OwnerEntityTypes.Show)
       // Get map zoom level and coordinates of where the user tapped
       const zoom = Math.floor(await this.map.getZoom())
       const [lat, lng] = coordinates

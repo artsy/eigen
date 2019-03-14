@@ -2395,6 +2395,7 @@ type City {
 type CitySponsoredContent {
   introText: String
   artGuideUrl: String
+  featuredShows: [Show]
   shows(
     sort: PartnerShowSorts
     status: EventStatus
@@ -3159,6 +3160,9 @@ enum EventStatus {
 
   # End date is in near future
   CLOSING_SOON
+
+  # Special filtering option which is used to show running and upcoming shows
+  RUNNING_AND_UPCOMING
 }
 
 type ExternalPartner {
