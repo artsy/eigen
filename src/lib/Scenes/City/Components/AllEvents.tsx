@@ -1,4 +1,4 @@
-import { Box, Separator, Serif, Spacer } from "@artsy/palette"
+import { Box, Separator, Serif, Spacer, Theme } from "@artsy/palette"
 import { EventSection } from "lib/Scenes/City/Components/EventSection"
 import { BucketResults } from "lib/Scenes/Map/bucketCityResults"
 import { isEqual } from "lodash"
@@ -195,13 +195,15 @@ export class AllEvents extends React.Component<Props, State> {
   render() {
     const { sections } = this.state
     return (
-      <FlatList
-        data={sections}
-        ItemSeparatorComponent={this.renderItemSeparator}
-        keyExtractor={item => item.type}
-        renderItem={item => this.renderItem(item)}
-        ListFooterComponent={() => <Spacer mb={2} />}
-      />
+      <Theme>
+        <FlatList
+          data={sections}
+          ItemSeparatorComponent={this.renderItemSeparator}
+          keyExtractor={item => item.type}
+          renderItem={item => this.renderItem(item)}
+          ListFooterComponent={() => <Spacer m={3} />}
+        />
+      </Theme>
     )
   }
 }
