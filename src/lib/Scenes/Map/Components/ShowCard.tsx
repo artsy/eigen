@@ -58,7 +58,11 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     const equal = isEqual(previousIds, currentIds)
 
     if (!this.state.isSaving && !equal && this.list) {
-      setTimeout(() => this.list.scrollToOffset({ offset: 0, animated: true }), 500)
+      setTimeout(() => {
+        if (this.list) {
+          this.list.scrollToOffset({ offset: 0, animated: true })
+        }
+      }, 500)
     }
   }
 

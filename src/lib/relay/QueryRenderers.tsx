@@ -53,7 +53,7 @@ import { QueryRenderersShowMoreInfoQuery } from "__generated__/QueryRenderersSho
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
-import createEnvironment from "./createEnvironment"
+import createEnvironment, { defaultEnvironment } from "./createEnvironment"
 const environment = createEnvironment()
 
 export type RenderCallback = QueryRendererProps["render"]
@@ -369,7 +369,7 @@ interface ShowRendererProps extends RendererProps {
 export const ShowRenderer: React.SFC<ShowRendererProps> = ({ render, showID }) => {
   return (
     <QueryRenderer<QueryRenderersShowQuery>
-      environment={environment}
+      environment={defaultEnvironment}
       query={graphql`
         query QueryRenderersShowQuery($showID: String!) {
           show(id: $showID) {

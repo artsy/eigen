@@ -21,14 +21,16 @@
 - Removes gallery context from fair page - ash
 - Only shows shows with images in all bricks - kieran
 - Adds support for falling back to the partner profile image on a stubbed show - orta
+- Fixes missing "view all shows" link in sponsored content sections - ash & ashley
+- Fixes saved shows/fairs not updating state in other query renderer hierarchies - alloy
 
 ### 1.8.23
 
 - Fix using wrong field for fair hours - ashkan
 - Fix re-instating pre-heated cache after invalidating it once - alloy
-
 - Fix using wrong field for fair hours - ashkan
 - Uses featured shows for BMW bricks - kieran
+- Fixes zoom outs when switching cities and fix cluster crash - luc
 - Fixes drawer behaviour - ash
 
 ### 1.8.22
