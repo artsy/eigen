@@ -129,8 +129,6 @@ export class ShowItemRow extends React.Component<Props, State> {
     const mainCoverImageURL = show.cover_image && show.cover_image.url
     const galleryProfileIcon = show.isStubShow && show.partner && show.partner.profile && show.partner.profile.image.url
 
-    console.log(show.id, mainCoverImageURL, galleryProfileIcon, this.props)
-
     const imageURL = mainCoverImageURL || galleryProfileIcon
 
     return (
