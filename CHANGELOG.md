@@ -20,6 +20,7 @@
 - Fixes C compiler error - ash
 - Removes gallery context from fair page - ash
 - Only shows shows with images in all bricks - kieran
+- Fixes missing "view all shows" link in sponsored content sections - ash&ashley
 
 ### 1.8.23
 
