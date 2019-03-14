@@ -20,6 +20,7 @@
 
 
 - Fix using wrong field for fair hours - ashkan
+- Fix re-instating pre-heated cache after invalidating it once - alloy
 
 - Fixes drawer behaviour - ash
 
