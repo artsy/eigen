@@ -16,6 +16,9 @@
 
 ### Master
 
+### 1.8.22
+
+
 ### 1.8.21
 
 - Adds retry screen to map view - ash
