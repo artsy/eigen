@@ -25,7 +25,7 @@ Now you should have it say something like:
 > Provisioning Profile: Xcode Managed Profile
 > Signing Certificate: iPhone Developer: Caroline Lau
 
-That means you can sign builds.
+That means you can sign builds. If you don't see it, double check the "Users" section of AppStore Connect to make sure the "Developer Resources – Access to Certificates, Identifiers & Profiles" checkbox is selected.
 
 ### Building for a Device
 
