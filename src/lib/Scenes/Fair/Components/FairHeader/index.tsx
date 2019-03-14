@@ -68,22 +68,10 @@ export class FairHeader extends React.Component<Props, State> {
   }
 
   getContextualDetails() {
-    const { followed_content, artists_names, counts, partner_names } = this.props.fair
+    const { followed_content, artists_names, counts } = this.props.fair
     const fairfollowedArtistList = (followed_content && followed_content.artists) || []
     const artistList = artists_names.edges.map(i => i.node).filter(Boolean)
     const uniqArtistList = uniq(fairfollowedArtistList.concat(artistList))
-    const partnerList = partner_names.edges
-      .map(i => {
-        if (i.node.partner && i.node.partner.profile && i.node.partner.profile.name) {
-          return {
-            href: "/show/" + i.node.id,
-            name: i.node.partner.profile.name,
-            id: i.node.partner.profile.id,
-            _id: i.node.partner.profile._id,
-          }
-        }
-      })
-      .filter(Boolean)
 
     return (
       <>
@@ -94,15 +82,6 @@ export class FairHeader extends React.Component<Props, State> {
           displayedItems={3}
           onItemSelected={this.handleArtistPress.bind(this)}
           onViewAllPressed={this.viewAllArtists.bind(this)}
-        />
-        <Spacer mt={1} />
-        <EntityList
-          prefix="From"
-          list={partnerList}
-          count={counts.partners}
-          displayedItems={2}
-          onItemSelected={this.handleExhibitorPress.bind(this)}
-          onViewAllPressed={this.viewAllExhibitors.bind(this)}
         />
       </>
     )
