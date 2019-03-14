@@ -19,6 +19,7 @@
 - Adds RUNNING_AND_UPCOMING to CitySavedList - kieran
 - Fixes C compiler error - ash
 - Removes gallery context from fair page - ash
+- Only shows shows with images in all bricks - kieran
 
 ### 1.8.23
 
