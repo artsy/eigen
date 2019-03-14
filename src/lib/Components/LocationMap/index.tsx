@@ -127,13 +127,21 @@ export class LocationMap extends React.Component<Props> {
           } else if (buttonIndex === 2) {
             // City Mapper
             // https://citymapper.com/tools/1053/launch-citymapper-for-directions
+
             Linking.openURL(
               `https://citymapper.com/directions?endcoord=${lat},${lng}&endname=${partnerName}&endaddress=${address}`
             )
           } else if (buttonIndex === 3) {
             // Google Maps
             // https://developers.google.com/maps/documentation/urls/guide
-            Linking.openURL(`https://www.google.com/maps/dir/?api=1&map_action=map&destination=${lat},${lng}`)
+            const appDirectionsURL = `comgooglemaps-x-callback://?daddr=${addressOrName}${suffix}&x-success=artsy://?resume=true&x-source=Artsy`
+            // https://developers.google.com/maps/documentation/urls/ios-urlscheme
+            const googleSearchHrefURL = `https://www.google.com/maps/search/?api=1&query=${addressOrName},${lat}%2C${lng}`
+            if (Linking.canOpenURL(appDirectionsURL)) {
+              Linking.openURL(appDirectionsURL)
+            } else {
+              Linking.openURL(googleSearchHrefURL)
+            }
           } else if (buttonIndex === 4) {
             // Copy to pasteboard
             Clipboard.setString(title)
