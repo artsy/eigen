@@ -15,12 +15,12 @@
 -->
 
 ### Master
-- Fix using wrong field for fair hours - ashkan
 
+- Fix using wrong field for fair hours - ashkan
+- Uses featured shows for BMW bricks - kieran
 - Fixes drawer behaviour - ash
 
 ### 1.8.22
-
 
 ### 1.8.21
 
