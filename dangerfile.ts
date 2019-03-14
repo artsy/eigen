@@ -196,7 +196,7 @@ if (fs.existsSync("test-results.json")) {
 // Raise when native code changes are made, but the package.json does not
 // have a bump for the native code version
 //
-const hasNativeCodeChanges = modified.find(p => p.includes("Pod/Classes"))
+const hasNativeCodeChanges = modified.find(p => p.includes("Pod/Classes") && p.includes(".h"))
 const hasPackageJSONChanges = modified.find(p => p === "package.json")
 if (hasNativeCodeChanges && !hasPackageJSONChanges && !acceptedNoNativeChanges) {
   fail(

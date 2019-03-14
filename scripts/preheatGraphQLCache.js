@@ -3,7 +3,8 @@ const fs = require("fs")
 const https = require("https")
 const path = require("path")
 
-const assetsDir = path.resolve(__dirname, "../Pod/Assets/PreHeatedGraphQLCache")
+const ASSETS_DIR = path.resolve(__dirname, "../Pod/Assets/PreHeatedGraphQLCache")
+const CREATED_AT_FILENAME = "PreheatedCacheCreatedAt.txt"
 
 /**
  * @typedef {Object} QueryParams
@@ -51,7 +52,7 @@ module.exports = function preheatGraphQLCache(queryParams, filename, freshness, 
         throw new Error(`Failed with GraphQL errors: ${JSON.stringify(graphqlResponse.errors)}`)
       }
       fs.writeFile(
-        path.join(assetsDir, filename),
+        path.join(ASSETS_DIR, filename),
         JSON.stringify({
           ttl,
           graphqlResponse,
@@ -63,6 +64,9 @@ module.exports = function preheatGraphQLCache(queryParams, filename, freshness, 
           if (error) throw error
         }
       )
+      fs.writeFile(path.join(ASSETS_DIR, CREATED_AT_FILENAME), new Date().toISOString(), "utf8", error => {
+        if (error) throw error
+      })
     })
   })
 

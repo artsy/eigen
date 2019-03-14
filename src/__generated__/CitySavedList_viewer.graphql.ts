@@ -157,14 +157,8 @@ return {
                 },
                 {
                   "kind": "Literal",
-                  "name": "dayThreshold",
-                  "value": 30,
-                  "type": "Int"
-                },
-                {
-                  "kind": "Literal",
                   "name": "status",
-                  "value": "CURRENT",
+                  "value": "RUNNING_AND_UPCOMING",
                   "type": "EventStatus"
                 }
               ],
@@ -376,5 +370,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b79bd30e4b06855a212da4b77392003f';
+(node as any).hash = '070f7d85fa05905e4ec0126103679355';
 export default node;

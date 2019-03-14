@@ -16,11 +16,20 @@
 
 ### Master
 
+- Adds RUNNING_AND_UPCOMING to CitySavedList - kieran
+- Fixes C compiler error - ash
+- Removes gallery context from fair page - ash
+- Only shows shows with images in all bricks - kieran
+- Fixes missing "view all shows" link in sponsored content sections - ash&ashley
+
 ### 1.8.23
 
+- Fix using wrong field for fair hours - ashkan
+- Fix re-instating pre-heated cache after invalidating it once - alloy
 
 - Fix using wrong field for fair hours - ashkan
-
+- Uses featured shows for BMW bricks - kieran
+- Fixes zoom outs when switching cities and fix cluster crash - luc
 - Fixes drawer behaviour - ash
 
 ### 1.8.22
