@@ -16,8 +16,9 @@
 
 ### Master
 
-### 1.8.23
+- Adds RUNNING_AND_UPCOMING to CitySavedList - kieran
 
+### 1.8.23
 
 - Fix using wrong field for fair hours - ashkan
 - Fix re-instating pre-heated cache after invalidating it once - alloy
