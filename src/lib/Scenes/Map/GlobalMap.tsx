@@ -256,7 +256,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
     if (citySlug && citySlug !== nextProps.citySlug) {
       // Reset zoom level after switching cities
-      setTimeout(() => this.map.zoomTo(DefaultZoomLevel, 200), 500)
+      setTimeout(() => this.map.zoomTo(DefaultZoomLevel), 500)
     }
 
     if (nextProps.viewer) {
