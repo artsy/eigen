@@ -9,8 +9,14 @@ export type ShowItemRow_show = {
     readonly __id: string;
     readonly is_followed: boolean | null;
     readonly name: string | null;
+    readonly isStubShow: boolean | null;
     readonly partner: ({
         readonly name?: string | null;
+        readonly profile?: ({
+            readonly image: ({
+                readonly url: string | null;
+            }) | null;
+        }) | null;
     }) | null;
     readonly href: string | null;
     readonly exhibition_period: string | null;
@@ -73,6 +79,13 @@ return {
     },
     v1,
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isStubShow",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "LinkedField",
       "alias": null,
       "name": "partner",
@@ -86,7 +99,44 @@ return {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v1
+            v1,
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "profile",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "Profile",
+              "plural": false,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "image",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Image",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "url",
+                      "args": [
+                        {
+                          "kind": "Literal",
+                          "name": "version",
+                          "value": "square",
+                          "type": "[String]"
+                        }
+                      ],
+                      "storageKey": "url(version:\"square\")"
+                    }
+                  ]
+                },
+                v0
+              ]
+            }
           ]
         }
       ]
@@ -161,5 +211,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '5d9e7fb7296abc42f97b395e226cc54e';
+(node as any).hash = 'd7be6d385f44f7723e8345b9f653425f';
 export default node;

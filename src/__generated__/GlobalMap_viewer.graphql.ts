@@ -103,6 +103,11 @@ export type GlobalMap_viewer = {
                     readonly partner: ({
                         readonly name?: string | null;
                         readonly type?: string | null;
+                        readonly profile?: ({
+                            readonly image: ({
+                                readonly url: string | null;
+                            }) | null;
+                        }) | null;
                     }) | null;
                 }) | null;
             }) | null> | null;
@@ -329,46 +334,7 @@ v19 = {
   "name": "includeStubShows",
   "value": true,
   "type": "Boolean"
-},
-v20 = [
-  {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "edges",
-    "storageKey": null,
-    "args": null,
-    "concreteType": "ShowEdge",
-    "plural": true,
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "node",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Show",
-        "plural": false,
-        "selections": [
-          v2,
-          v3,
-          v4,
-          v6,
-          v0,
-          v5,
-          v7,
-          v8,
-          v9,
-          v11,
-          v12,
-          v13,
-          v14,
-          v15,
-          v16
-        ]
-      }
-    ]
-  }
-];
+};
 return {
   "kind": "Fragment",
   "name": "GlobalMap_viewer",
@@ -515,7 +481,45 @@ return {
           ],
           "concreteType": "ShowConnection",
           "plural": false,
-          "selections": v20
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "edges",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "ShowEdge",
+              "plural": true,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "node",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Show",
+                  "plural": false,
+                  "selections": [
+                    v2,
+                    v3,
+                    v4,
+                    v6,
+                    v0,
+                    v5,
+                    v7,
+                    v8,
+                    v9,
+                    v11,
+                    v12,
+                    v13,
+                    v14,
+                    v15,
+                    v16
+                  ]
+                }
+              ]
+            }
+          ]
         },
         {
           "kind": "LinkedField",
@@ -540,7 +544,101 @@ return {
           ],
           "concreteType": "ShowConnection",
           "plural": false,
-          "selections": v20
+          "selections": [
+            {
+              "kind": "LinkedField",
+              "alias": null,
+              "name": "edges",
+              "storageKey": null,
+              "args": null,
+              "concreteType": "ShowEdge",
+              "plural": true,
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "node",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Show",
+                  "plural": false,
+                  "selections": [
+                    v2,
+                    v3,
+                    v4,
+                    v6,
+                    v0,
+                    v5,
+                    v7,
+                    v8,
+                    v9,
+                    v11,
+                    v12,
+                    v13,
+                    v14,
+                    v15,
+                    {
+                      "kind": "LinkedField",
+                      "alias": null,
+                      "name": "partner",
+                      "storageKey": null,
+                      "args": null,
+                      "concreteType": null,
+                      "plural": false,
+                      "selections": [
+                        v4,
+                        {
+                          "kind": "InlineFragment",
+                          "type": "Partner",
+                          "selections": [
+                            v0,
+                            v13,
+                            {
+                              "kind": "LinkedField",
+                              "alias": null,
+                              "name": "profile",
+                              "storageKey": null,
+                              "args": null,
+                              "concreteType": "Profile",
+                              "plural": false,
+                              "selections": [
+                                {
+                                  "kind": "LinkedField",
+                                  "alias": null,
+                                  "name": "image",
+                                  "storageKey": null,
+                                  "args": null,
+                                  "concreteType": "Image",
+                                  "plural": false,
+                                  "selections": [
+                                    {
+                                      "kind": "ScalarField",
+                                      "alias": null,
+                                      "name": "url",
+                                      "args": [
+                                        {
+                                          "kind": "Literal",
+                                          "name": "version",
+                                          "value": "square",
+                                          "type": "[String]"
+                                        }
+                                      ],
+                                      "storageKey": "url(version:\"square\")"
+                                    }
+                                  ]
+                                },
+                                v4
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         },
         {
           "kind": "LinkedField",
@@ -700,5 +798,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'bb9645662bc311a1814ea4107f42c604';
+(node as any).hash = '3af456f9388dc63b6f49421dee47df3f';
 export default node;
