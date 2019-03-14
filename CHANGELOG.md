@@ -16,6 +16,9 @@
 
 ### Master
 
+### 1.8.23
+
+
 - Fix using wrong field for fair hours - ashkan
 
 - Fixes drawer behaviour - ash
