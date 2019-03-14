@@ -2,13 +2,12 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 
 import { FavoriteFairsQuery } from "__generated__/FavoriteFairsQuery.graphql"
-import createEnvironment from "lib/relay/createEnvironment"
-const environment = createEnvironment()
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 
 export default ({ render }) => {
   return (
     <QueryRenderer<FavoriteFairsQuery>
-      environment={environment}
+      environment={defaultEnvironment}
       query={graphql`
         query FavoriteFairsQuery {
           me {
@@ -20,7 +19,6 @@ export default ({ render }) => {
         count: 10,
       }}
       render={render}
-      cacheConfig={{ force: true }}
     />
   )
 }

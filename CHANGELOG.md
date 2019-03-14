@@ -21,6 +21,7 @@
 - Removes gallery context from fair page - ash
 - Only shows shows with images in all bricks - kieran
 - Fixes missing "view all shows" link in sponsored content sections - ash&ashley
+- Fixes saved shows/fairs not updating state in other query renderer hierarchies - alloy
 
 ### 1.8.23
 
