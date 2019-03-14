@@ -863,6 +863,12 @@ export const GlobalMapContainer = createFragmentContainer(
                 ... on Partner {
                   name
                   type
+                  profile {
+                    # This is only used for stubbed shows
+                    image {
+                      url(version: "square")
+                    }
+                  }
                 }
               }
             }
