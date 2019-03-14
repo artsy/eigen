@@ -20,6 +20,7 @@
 - Fixes C compiler error - ash
 - Removes gallery context from fair page - ash
 - Only shows shows with images in all bricks - kieran
+- Adds support for falling back to the partner profile image on a stubbed show - orta
 
 ### 1.8.23
 
