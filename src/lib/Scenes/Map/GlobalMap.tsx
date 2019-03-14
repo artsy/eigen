@@ -253,7 +253,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   componentWillReceiveProps(nextProps: Props) {
     const { citySlug, relayErrorState } = this.props
-    console.log("current city: ", citySlug, " next city: ", nextProps.citySlug)
+
     if (citySlug && citySlug !== nextProps.citySlug) {
       // Reset zoom level after switching cities
       setTimeout(() => this.map.zoomTo(DefaultZoomLevel, 200), 500)
