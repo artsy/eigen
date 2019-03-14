@@ -16,10 +16,10 @@
 
 ### Master
 
+- Adds RUNNING_AND_UPCOMING to CitySavedList - kieran
 - Fixes C compiler error - ash
 
 ### 1.8.23
-
 
 - Fix using wrong field for fair hours - ashkan
 - Fix re-instating pre-heated cache after invalidating it once - alloy

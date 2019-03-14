@@ -36,7 +36,7 @@ fragment CitySavedList_viewer_40VqxQ on Viewer {
   }
   me {
     followsAndSaves {
-      shows(first: $count, status: CURRENT, dayThreshold: 30, city: $citySlug, after: $cursor) {
+      shows(first: $count, status: RUNNING_AND_UPCOMING, city: $citySlug, after: $cursor) {
         edges {
           node {
             id
@@ -141,7 +141,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "CitySavedListQuery",
-  "id": "3bf003260850b30b835fbfb8813b3c80",
+  "id": "0d8b3c139184b636f0e89510a6999b7c",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -258,12 +258,6 @@ return {
                         "type": "String"
                       },
                       {
-                        "kind": "Literal",
-                        "name": "dayThreshold",
-                        "value": 30,
-                        "type": "Int"
-                      },
-                      {
                         "kind": "Variable",
                         "name": "first",
                         "variableName": "count",
@@ -272,7 +266,7 @@ return {
                       {
                         "kind": "Literal",
                         "name": "status",
-                        "value": "CURRENT",
+                        "value": "RUNNING_AND_UPCOMING",
                         "type": "EventStatus"
                       }
                     ],
@@ -489,12 +483,6 @@ return {
                         "type": "String"
                       },
                       {
-                        "kind": "Literal",
-                        "name": "dayThreshold",
-                        "value": 30,
-                        "type": "Int"
-                      },
-                      {
                         "kind": "Variable",
                         "name": "first",
                         "variableName": "count",
@@ -503,7 +491,7 @@ return {
                       {
                         "kind": "Literal",
                         "name": "status",
-                        "value": "CURRENT",
+                        "value": "RUNNING_AND_UPCOMING",
                         "type": "EventStatus"
                       }
                     ],
@@ -511,7 +499,6 @@ return {
                     "key": "CitySavedList_shows",
                     "filters": [
                       "status",
-                      "dayThreshold",
                       "city"
                     ]
                   }

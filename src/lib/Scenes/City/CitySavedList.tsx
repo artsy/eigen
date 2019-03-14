@@ -83,7 +83,7 @@ export default createPaginationContainer(
       }
       me {
         followsAndSaves {
-          shows(first: $count, status: CURRENT, dayThreshold: 30, city: $citySlug, after: $cursor)
+          shows(first: $count, status: RUNNING_AND_UPCOMING, city: $citySlug, after: $cursor)
             @connection(key: "CitySavedList_shows") {
             edges {
               node {
