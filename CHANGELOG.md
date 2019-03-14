@@ -16,6 +16,9 @@
 
 ### Master
 
+### 1.8.24
+
+
 - Adds RUNNING_AND_UPCOMING to CitySavedList - kieran
 - Fixes C compiler error - ash
 - Removes gallery context from fair page - ash
