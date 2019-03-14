@@ -1,6 +1,11 @@
 export const CityFixture = {
   name: "Paris",
   coordinates: { lat: 48.86, lng: 2.35 },
+  sponsoredContent: {
+    introText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.",
+    artGuideUlr: "https//example.com",
+  },
   shows: {
     edges: [
       {

@@ -376,7 +376,7 @@
 - (ARCellData *)jumpToFair
 {
   return [self tappableCellDataWithTitle:@"Fair" selection:^{
-    id viewController = [[ARFairComponentViewController alloc] initWithFairID:@"british-art-fair-2019"];
+    id viewController = [[ARFairComponentViewController alloc] initWithFairID:@"art-basel-in-hong-kong-2018"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
