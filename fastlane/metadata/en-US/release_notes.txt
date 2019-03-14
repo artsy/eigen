@@ -1,3 +1,1 @@
-With this update, we’ve updated the design of our art fair and gallery show pages as well as added the ability to save shows.
-
-In addition, this release addresses minor bugs and improvements.
+This release contains minor bug fixes and improvements.
