@@ -2,9 +2,15 @@ import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { find, isEqual } from "lodash"
 import React, { Component } from "react"
 import { Animated, Easing } from "react-native"
+import { MapGeoFeatureCollection } from "../types"
 
 interface Props {
-  featureCollections: any
+  featureCollections: [
+    {
+      shapes: MapGeoFeatureCollection
+      id: string
+    }
+  ]
   onPress?: (nativeEvent) => void
   duration: number
   filterID: string

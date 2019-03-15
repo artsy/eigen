@@ -14,7 +14,6 @@ import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
 import Supercluster from "supercluster"
-
 import { cityTabs } from "../City/cityTabs"
 import { bucketCityResults, BucketResults, emptyBucketResults } from "./bucketCityResults"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
@@ -22,6 +21,7 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
+import { MapGeoFeatureCollection } from "./types"
 import { Fair, MapGeoFeature, OSCoordsUpdate, RelayErrorState, SafeAreaInsets, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
@@ -92,7 +92,12 @@ interface State {
   /** True when we know that we can get location updates from the OS */
   trackUserLocation?: boolean
   /** A set of GeoJSON features, which right now is our show clusters */
-  featureCollectionsGroup: any
+  featureCollections: [
+    {
+      shapes: MapGeoFeatureCollection
+      id: string
+    }
+  ]
   /** Has the map fully rendered? */
   mapLoaded: boolean
   /** In the process of saving a show */
@@ -149,7 +154,12 @@ export class GlobalMap extends React.Component<Props, State> {
 
   map: Mapbox.MapView
   clusterEngine: Supercluster
-  featureCollectionsGroup: any
+  featureCollections: [
+    {
+      shapes: MapGeoFeatureCollection
+      id: string
+    }
+  ]
   moveButtons: Animated.Value
   currentZoom: number
 
@@ -192,7 +202,7 @@ export class GlobalMap extends React.Component<Props, State> {
       currentLocation,
       bucketResults: emptyBucketResults,
       trackUserLocation: false,
-      featureCollectionsGroup: [],
+      featureCollections: [],
       mapLoaded: false,
       isSavingShow: false,
       nearestFeature: null,
@@ -313,11 +323,11 @@ export class GlobalMap extends React.Component<Props, State> {
       collections.push(featureCollection)
     })
 
-    this.featureCollectionsGroup = collections
+    this.featureCollections = collections
 
     if (updateState) {
       this.setState({
-        featureCollectionsGroup: collections,
+        featureCollections: collections,
       })
     }
   }
@@ -625,10 +635,10 @@ export class GlobalMap extends React.Component<Props, State> {
               >
                 {city && (
                   <>
-                    {this.featureCollectionsGroup && (
+                    {this.featureCollections && (
                       <PinsShapeLayer
                         filterID={cityTabs[this.state.activeIndex].id}
-                        featureCollections={this.featureCollectionsGroup}
+                        featureCollections={this.featureCollections}
                         onPress={e => this.handleFeaturePress(e.nativeEvent)}
                       />
                     )}
