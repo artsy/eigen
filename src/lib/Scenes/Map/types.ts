@@ -61,9 +61,7 @@ export interface MapGeoFeatureCollectionArray {
 
 export interface MapGeoFeatureCollection {
   type: "FeatureCollection"
-  shapes: {
-    features: MapGeoFeature[]
-  }
+  features: MapGeoFeature[]
   filter: string
 }
 
