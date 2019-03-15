@@ -60,6 +60,7 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
   scrollView: ScrollView = null
   // Default to screen width under first render
   scrollViewWidth: number = Dimensions.get("window").width
+  delayPressTimeout: any
   els: LayoutRectangle[] = []
 
   state = {
@@ -70,14 +71,23 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
     this.centerOnTab(newProps.activeTab)
   }
 
-  renderTab(name, page, isTabActive, onPressHandler) {
+  renderTab = (name, page, isTabActive, onPressHandler) => {
     return (
       <Button
         key={name}
         accessible={true}
         accessibilityLabel={name}
         accessibilityTraits="button"
-        onPress={() => onPressHandler(page)}
+        onPress={() => {
+          this.setState({
+            activeTab: page,
+          })
+
+          clearTimeout(this.delayPressTimeout)
+          this.delayPressTimeout = setTimeout(() => {
+            onPressHandler(page)
+          }, 500)
+        }}
       >
         <TabButton active={isTabActive}>
           <TabLabel size="3" isActive={isTabActive}>

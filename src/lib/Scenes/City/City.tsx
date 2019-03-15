@@ -103,12 +103,8 @@ export class CityView extends Component<Props, State> {
   }
 
   setSelectedTab(selectedTab) {
-    // Delay applying filters would slow down animations as it's running on the
-    // expensive task running on the main thread
-    setTimeout(() => {
-      this.setState({ selectedTab: selectedTab.i })
-      EventEmitter.dispatch("filters:change", selectedTab.i)
-    }, 500)
+    this.setState({ selectedTab: selectedTab.i })
+    EventEmitter.dispatch("filters:change", selectedTab.i)
   }
 
   @track((__, _, args) => {

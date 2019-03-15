@@ -19,7 +19,9 @@
 - Fixes crash on sub shows with no profile image - ash
 
 ### 1.8.24
+- Clear out setTimeout wheen user selects multiple tabs - luc
 
+### 1.8.24
 
 - Adds RUNNING_AND_UPCOMING to CitySavedList - kieran
 - Fixes C compiler error - ash
