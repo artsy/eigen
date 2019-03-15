@@ -17,6 +17,7 @@
 ### Master
 
 - Map clustering data now doesn't recreate geo data on tab change - kieran
+- Deploy script syncs local data with Metaphysics - ash
 
 ### 1.8.25
 
