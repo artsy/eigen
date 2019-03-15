@@ -17,6 +17,7 @@
 ### Master
 
 - Deploy script syncs local data with Metaphysics - ash
+- Updates drawer sub-scrollview enabled state when tabs change - ash
 
 ### 1.8.25
 
