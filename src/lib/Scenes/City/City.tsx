@@ -106,6 +106,7 @@ export class CityView extends Component<Props, State> {
   setSelectedTab(selectedTab) {
     this.setState({ selectedTab: selectedTab.i })
     EventEmitter.dispatch("filters:change", selectedTab.i)
+    NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
   }
 
   @track((__, _, args) => {

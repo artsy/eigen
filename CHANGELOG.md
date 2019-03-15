@@ -16,6 +16,9 @@
 
 ### Master
 
+- Deploy script syncs local data with Metaphysics - ash
+- Updates drawer sub-scrollview enabled state when tabs change - ash
+
 ### 1.8.25
 
 - Fixes crash on sub shows with no profile image - ash
