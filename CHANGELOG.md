@@ -23,6 +23,7 @@
 
 - Fixes crash on sub shows with no profile image - ash
 - Clear out setTimeout wheen user selects multiple tabs - luc
+- Swap scrollable tab bar for fixed width tab bar - luc
 
 ### 1.8.24
 

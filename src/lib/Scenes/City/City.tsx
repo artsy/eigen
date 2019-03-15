@@ -1,6 +1,7 @@
 import { Box, color, Flex, Sans, Theme } from "@artsy/palette"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
-import ScrollableTabBar, { ScrollableTab } from "lib/Components/ScrollableTabBar"
+import { ScrollableTab } from "lib/Components/ScrollableTabBar"
+import TabBar from "lib/Components/TabBar"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React, { Component } from "react"
 import { NativeModules, View } from "react-native"
@@ -167,7 +168,7 @@ export class CityView extends Component<Props, State> {
               prerenderingSiblingsNumber={2}
               renderTabBar={props => (
                 <View>
-                  <ScrollableTabBar {...props} />
+                  <TabBar {...props} spaceEvenly={false} />
                 </View>
               )}
               onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
