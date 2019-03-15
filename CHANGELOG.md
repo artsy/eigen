@@ -16,9 +16,9 @@
 
 ### Master
 
-- Fixes crash on sub shows with no profile image - ash
+### 1.8.25
 
-### 1.8.24
+- Fixes crash on sub shows with no profile image - ash
 - Clear out setTimeout wheen user selects multiple tabs - luc
 
 ### 1.8.24
