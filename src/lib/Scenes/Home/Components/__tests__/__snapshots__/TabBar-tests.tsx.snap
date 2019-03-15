@@ -19,6 +19,7 @@ exports[`renders correctly 1`] = `
     accessibilityLabel="Page 1"
     accessibilityTraits="button"
     accessible={true}
+    active={false}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -29,9 +30,7 @@ exports[`renders correctly 1`] = `
       Array [
         Object {
           "alignItems": "center",
-          "flexBasis": 0,
           "flexGrow": 1,
-          "flexShrink": 1,
           "justifyContent": "center",
           "paddingTop": 5,
         },
@@ -68,6 +67,7 @@ exports[`renders correctly 1`] = `
     accessibilityLabel="Page 2"
     accessibilityTraits="button"
     accessible={true}
+    active={false}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -78,9 +78,7 @@ exports[`renders correctly 1`] = `
       Array [
         Object {
           "alignItems": "center",
-          "flexBasis": 0,
           "flexGrow": 1,
-          "flexShrink": 1,
           "justifyContent": "center",
           "paddingTop": 5,
         },
@@ -117,6 +115,7 @@ exports[`renders correctly 1`] = `
     accessibilityLabel="Page 3"
     accessibilityTraits="button"
     accessible={true}
+    active={false}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
@@ -127,9 +126,7 @@ exports[`renders correctly 1`] = `
       Array [
         Object {
           "alignItems": "center",
-          "flexBasis": 0,
           "flexGrow": 1,
-          "flexShrink": 1,
           "justifyContent": "center",
           "paddingTop": 5,
         },
@@ -162,23 +159,5 @@ exports[`renders correctly 1`] = `
       Page 3
     </Text>
   </View>
-  <View
-    style={
-      Object {
-        "backgroundColor": "black",
-        "bottom": -1,
-        "height": 1,
-        "left": 0,
-        "position": "absolute",
-        "right": 0,
-        "transform": Array [
-          Object {
-            "translateX": NaN,
-          },
-        ],
-        "width": NaN,
-      }
-    }
-  />
 </View>
 `;
