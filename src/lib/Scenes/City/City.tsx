@@ -1,6 +1,7 @@
 import { Box, color, Flex, Sans, Theme } from "@artsy/palette"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { ScrollableTab } from "lib/Components/ScrollableTabBar"
+import TabBar from "lib/Components/TabBar"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React, { Component } from "react"
 import { NativeModules, View } from "react-native"
@@ -12,7 +13,6 @@ import { EventEmitter } from "../Map/EventEmitter"
 import { MapTab, RelayErrorState } from "../Map/types"
 import { cityTabs } from "./cityTabs"
 import { AllEvents } from "./Components/AllEvents"
-import CityTabBar from "./Components/CityTabBar"
 import { EventList } from "./Components/EventList"
 
 interface Props {
@@ -167,7 +167,7 @@ export class CityView extends Component<Props, State> {
               prerenderingSiblingsNumber={2}
               renderTabBar={props => (
                 <View>
-                  <CityTabBar {...props} spaceEvenly={false} />
+                  <TabBar {...props} spaceEvenly={false} />
                 </View>
               )}
               onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
