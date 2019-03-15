@@ -16,6 +16,8 @@
 
 ### Master
 
+- Map clustering data now doesn't recreate geo data on tab change - kieran
+
 ### 1.8.25
 
 - Fixes crash on sub shows with no profile image - ash
