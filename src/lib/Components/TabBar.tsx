@@ -2,7 +2,7 @@ import React from "react"
 import { Animated, View } from "react-native"
 import styled from "styled-components/native"
 
-import { Sans } from "@artsy/palette"
+import { color, Sans } from "@artsy/palette"
 import colors from "lib/data/colors"
 
 /**
@@ -20,6 +20,8 @@ interface TabBarProps {
   containerWidth?: number
   /** Auto: Handled by ScrollableTabView */
   scrollValue?: Animated.AnimatedInterpolation
+  /** Should space tabs evenly */
+  spaceEvenly?: boolean
 }
 
 const Button = styled.TouchableWithoutFeedback`
@@ -36,11 +38,20 @@ const Tabs = styled.View`
   border-bottom-width: 1px;
 `
 
-const TabButton = styled.View`
+const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
   align-items: center;
   justify-content: center;
   padding-top: 5;
-  flex: 1;
+  flex-grow: 1;
+  ${p => p.spaceEvenly && `flex: 1;`};
+  ${p =>
+    !p.spaceEvenly &&
+    p.active &&
+    `
+    border-color: ${color("black100")};
+    border-bottom-width: 1px;
+    margin-bottom: -1px;
+  `};
 `
 
 interface TabProps {
@@ -61,7 +72,7 @@ export default class TabBar extends React.Component<TabBarProps, null> {
         accessibilityTraits="button"
         onPress={() => onPressHandler(page)}
       >
-        <TabButton>
+        <TabButton spaceEvenly={this.props.spaceEvenly} active={isTabActive}>
           <Sans
             numberOfLines={1}
             ellipsizeMode="tail"
@@ -91,22 +102,24 @@ export default class TabBar extends React.Component<TabBarProps, null> {
           const isTabActive = this.props.activeTab === page
           return this.renderTab(name, page, isTabActive, this.props.goToPage)
         })}
-        <Underline
-          style={[
-            {
-              position: "absolute",
-              width: containerWidth / numberOfTabs,
-              height: 1,
-              backgroundColor: "black",
-              bottom: -1,
-              left: 0,
-              right: 0,
-            },
-            {
-              transform: [{ translateX }],
-            },
-          ]}
-        />
+        {this.props.spaceEvenly ? (
+          <Underline
+            style={[
+              {
+                position: "absolute",
+                width: containerWidth / numberOfTabs,
+                height: 1,
+                backgroundColor: "black",
+                bottom: -1,
+                left: 0,
+                right: 0,
+              },
+              {
+                transform: [{ translateX }],
+              },
+            ]}
+          />
+        ) : null}
       </Tabs>
     )
   }
