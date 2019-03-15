@@ -18,6 +18,7 @@
 
 - Map clustering data now doesn't recreate geo data on tab change - kieran
 - Deploy script syncs local data with Metaphysics - ash
+- Updates drawer sub-scrollview enabled state when tabs change - ash
 
 ### 1.8.25
 

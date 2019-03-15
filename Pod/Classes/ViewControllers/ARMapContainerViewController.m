@@ -135,11 +135,12 @@ Since this controller already has to do the above logic, having it handle the Ci
         wself.initialDataIsLoaded = YES;
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryCityGotScrollView" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-            if (!wself.scrollableTabView) {
-                UIScrollView *foundScrollView = FindCityScrollView(wself.cityVC.view);
-                self.scrollableTabView = FindParentScrollView(foundScrollView);
-                RecurseThroughScrollViewsSettingScrollEnabled(wself.scrollableTabView.superview, NO);
-            }
+        if (!wself.scrollableTabView) {
+            UIScrollView *foundScrollView = FindCityScrollView(wself.cityVC.view);
+            self.scrollableTabView = FindParentScrollView(foundScrollView);
+        }
+        BOOL isDrawerOpen = [self.bottomSheetVC.drawerPosition isEqualToPosition:PulleyPosition.open];
+        RecurseThroughScrollViewsSettingScrollEnabled(wself.scrollableTabView.superview, isDrawerOpen);
     }];
 
 
