@@ -22,15 +22,7 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import {
-  Fair,
-  MapGeoFeature,
-  MapGeoFeatureCollection,
-  OSCoordsUpdate,
-  RelayErrorState,
-  SafeAreaInsets,
-  Show,
-} from "./types"
+import { Fair, MapGeoFeature, OSCoordsUpdate, RelayErrorState, SafeAreaInsets, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
