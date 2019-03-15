@@ -30,9 +30,8 @@ exports[`renders correctly 1`] = `
       Array [
         Object {
           "alignItems": "center",
+          "flexGrow": 1,
           "justifyContent": "center",
-          "paddingLeft": 20,
-          "paddingRight": 20,
           "paddingTop": 5,
         },
         undefined,
@@ -79,9 +78,8 @@ exports[`renders correctly 1`] = `
       Array [
         Object {
           "alignItems": "center",
+          "flexGrow": 1,
           "justifyContent": "center",
-          "paddingLeft": 20,
-          "paddingRight": 20,
           "paddingTop": 5,
         },
         undefined,
@@ -128,9 +126,8 @@ exports[`renders correctly 1`] = `
       Array [
         Object {
           "alignItems": "center",
+          "flexGrow": 1,
           "justifyContent": "center",
-          "paddingLeft": 20,
-          "paddingRight": 20,
           "paddingTop": 5,
         },
         undefined,
