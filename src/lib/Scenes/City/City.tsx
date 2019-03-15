@@ -29,7 +29,6 @@ interface State {
   relay: RelayProp
   cityName: string
   citySlug: string
-  selectedTab: number
   sponsoredContent: { introText: string; artGuideUrl: string }
   relayErrorState?: RelayErrorState
 }
@@ -47,7 +46,6 @@ export class CityView extends Component<Props, State> {
     filter: cityTabs[0],
     relay: null,
     cityName: "",
-    selectedTab: AllCityMetaTab,
     citySlug: "",
     sponsoredContent: null,
     relayErrorState: null,
@@ -104,7 +102,6 @@ export class CityView extends Component<Props, State> {
   }
 
   setSelectedTab(selectedTab) {
-    this.setState({ selectedTab: selectedTab.i })
     EventEmitter.dispatch("filters:change", selectedTab.i)
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
   }
@@ -164,7 +161,7 @@ export class CityView extends Component<Props, State> {
           ) : (
             <ScrollableTabView
               initialPage={this.props.initialTab || AllCityMetaTab}
-              onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
+              onChangeTab={this.setSelectedTab}
               prerenderingSiblingsNumber={2}
               renderTabBar={props => (
                 <View>
