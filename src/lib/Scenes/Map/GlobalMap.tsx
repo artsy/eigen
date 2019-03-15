@@ -100,7 +100,7 @@ interface State {
   /** True when we know that we can get location updates from the OS */
   trackUserLocation?: boolean
   /** A set of GeoJSON features, which right now is our show clusters */
-  featureCollection: MapGeoFeatureCollection
+  featureCollectionsGroup: any
   /** Has the map fully rendered? */
   mapLoaded: boolean
   /** In the process of saving a show */
@@ -157,7 +157,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   map: Mapbox.MapView
   clusterEngine: Supercluster
-  featureCollection: MapGeoFeatureCollection
+  featureCollectionsGroup: any
   moveButtons: Animated.Value
   currentZoom: number
 
@@ -200,7 +200,7 @@ export class GlobalMap extends React.Component<Props, State> {
       currentLocation,
       bucketResults: emptyBucketResults,
       trackUserLocation: false,
-      featureCollection: undefined,
+      featureCollectionsGroup: [],
       mapLoaded: false,
       isSavingShow: false,
       nearestFeature: null,
@@ -290,26 +290,32 @@ export class GlobalMap extends React.Component<Props, State> {
       return
     }
 
-    const tab = cityTabs[this.state.activeIndex]
-    const shows = tab.getShows(this.state.bucketResults)
-    const fairs = tab.getFairs(this.state.bucketResults)
+    const collections = []
+    cityTabs.forEach(tab => {
+      const shows = tab.getShows(this.state.bucketResults)
+      const fairs = tab.getFairs(this.state.bucketResults)
+      const showData = showsToGeoCityShow(shows)
+      const fairData = fairToGeoCityFairs(fairs)
+      const data = showData.concat((fairData as any) as Show[])
+      const geoJSONFeature = convertCityToGeoJSON(data)
+      const featureCollection = {
+        shapes: geoJSONFeature,
+        filter: tab.id,
+      }
+      // this.clusterEngine.load(featureCollections.shapes.features as any)
+      collections.push(featureCollection)
+    })
+    // const tab = cityTabs[this.state.activeIndex]
 
-    const showData = showsToGeoCityShow(shows)
-    const fairData = fairToGeoCityFairs(fairs)
-
-    const data = showData.concat((fairData as any) as Show[])
-    const geoJSONFeature = convertCityToGeoJSON(data)
-
-    this.featureCollection = geoJSONFeature
+    this.featureCollectionsGroup = collections
 
     if (updateState) {
       this.setState({
-        featureCollection: geoJSONFeature,
+        featureCollectionsGroup: collections,
       })
     }
 
     // close but not enough yet
-    this.clusterEngine.load(this.featureCollection.features as any)
   }
 
   emitFilteredBucketResults() {
@@ -617,9 +623,9 @@ export class GlobalMap extends React.Component<Props, State> {
               >
                 {city && (
                   <>
-                    {this.featureCollection && (
+                    {this.featureCollectionsGroup && (
                       <PinsShapeLayer
-                        featureCollection={this.featureCollection}
+                        featureCollections={this.featureCollectionsGroup}
                         onPress={e => this.handleFeaturePress(e.nativeEvent)}
                       />
                     )}

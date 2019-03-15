@@ -55,7 +55,10 @@ export interface RelayErrorState {
 
 export interface MapGeoFeatureCollection {
   type: "FeatureCollection"
-  features: MapGeoFeature[]
+  shapes: {
+    features: MapGeoFeature[]
+  }
+  filter: string
 }
 
 /** Comes in from the OS via the MapBox onUserLocationUpdate */
