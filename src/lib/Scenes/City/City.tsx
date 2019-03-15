@@ -29,7 +29,6 @@ interface State {
   relay: RelayProp
   cityName: string
   citySlug: string
-  selectedTab: number
   sponsoredContent: { introText: string; artGuideUrl: string }
   relayErrorState?: RelayErrorState
 }
@@ -47,7 +46,6 @@ export class CityView extends Component<Props, State> {
     filter: cityTabs[0],
     relay: null,
     cityName: "",
-    selectedTab: AllCityMetaTab,
     citySlug: "",
     sponsoredContent: null,
     relayErrorState: null,
@@ -104,7 +102,6 @@ export class CityView extends Component<Props, State> {
   }
 
   setSelectedTab(selectedTab) {
-    this.setState({ selectedTab: selectedTab.i })
     EventEmitter.dispatch("filters:change", selectedTab.i)
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
   }
@@ -147,6 +144,23 @@ export class CityView extends Component<Props, State> {
     }
   }
 
+  renderTabBar(props) {
+    return (
+      <View>
+        <TabBar {...props} spaceEvenly={false} />
+      </View>
+    )
+  }
+
+  // TODO: Is it correct that we have these two similar ones?
+  onScrollableTabViewLayout = layout => {
+    this.scrollViewVerticalStart = layout.nativeEvent.layout.y
+  }
+  onScrollViewLayout = layout => {
+    this.scrollViewVerticalStart = layout.nativeEvent.layout.y
+    NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
+  }
+
   render() {
     const { buckets, cityName, citySlug, relayErrorState } = this.state
     const { verticalMargin } = this.props
@@ -164,21 +178,14 @@ export class CityView extends Component<Props, State> {
           ) : (
             <ScrollableTabView
               initialPage={this.props.initialTab || AllCityMetaTab}
-              onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
+              onChangeTab={this.setSelectedTab}
               prerenderingSiblingsNumber={2}
-              renderTabBar={props => (
-                <View>
-                  <TabBar {...props} spaceEvenly={false} />
-                </View>
-              )}
-              onLayout={layout => (this.scrollViewVerticalStart = layout.nativeEvent.layout.y)}
+              renderTabBar={this.renderTabBar}
+              onLayout={this.onScrollableTabViewLayout}
               // These are the ScrollView props for inside the scrollable tab view
               contentProps={{
                 contentInset: { bottom: bottomInset },
-                onLayout: layout => {
-                  this.scrollViewVerticalStart = layout.nativeEvent.layout.y
-                  NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
-                },
+                onLayout: this.onScrollViewLayout,
               }}
             >
               <ScrollableTab tabLabel="All" key="all">
