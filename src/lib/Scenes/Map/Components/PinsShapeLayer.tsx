@@ -1,5 +1,5 @@
 import Mapbox from "@mapbox/react-native-mapbox-gl"
-import { isEqual } from "lodash"
+// import { isEqual } from "lodash"
 import React, { Component } from "react"
 import { Animated, Easing } from "react-native"
 import { MapGeoFeatureCollection } from "../types"
@@ -53,11 +53,11 @@ export class ShapeLayer extends Component<Props, any> {
     this.fadeInAnimations()
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    // if (!isEqual(this.props.featureCollections.shapes.features, newProps.featureCollection.shapes.features)) {
-    //   this.fadeInAnimations()
-    // }
-  }
+  // componentWillReceiveProps(newProps: Props) {
+  // if (!isEqual(this.props.featureCollections.shapes.features, newProps.featureCollection.shapes.features)) {
+  //   this.fadeInAnimations()
+  // }
+  // }
 
   fadeInAnimations() {
     this.setState(
