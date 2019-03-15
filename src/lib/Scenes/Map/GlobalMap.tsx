@@ -236,7 +236,6 @@ export class GlobalMap extends React.Component<Props, State> {
         )
       })
       if (shouldUpdate) {
-        console.log("updating 2")
         this.updateClusterMap(true)
       }
     }
@@ -247,7 +246,6 @@ export class GlobalMap extends React.Component<Props, State> {
 
     if (citySlug && citySlug !== nextProps.citySlug) {
       // Reset zoom level after switching cities
-      console.log("updating 3")
       this.updateClusterMap(true)
       setTimeout(() => this.map.zoomTo(10, 100), 500)
     }
@@ -256,7 +254,6 @@ export class GlobalMap extends React.Component<Props, State> {
       const bucketResults = bucketCityResults(nextProps.viewer)
 
       this.setState({ bucketResults }, () => {
-        console.log("updating 1")
         this.emitFilteredBucketResults()
         this.updateShowIdMap()
         this.updateClusterMap(true)
