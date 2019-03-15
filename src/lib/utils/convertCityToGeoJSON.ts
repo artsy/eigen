@@ -61,5 +61,5 @@ export const convertCityToGeoJSON = data => {
           },
         }
       }),
-  } as MapGeoFeatureCollection
+  } as any
 }
