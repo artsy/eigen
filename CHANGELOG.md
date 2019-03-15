@@ -16,6 +16,8 @@
 
 ### Master
 
+- Deploy script syncs local data with Metaphysics - ash
+
 ### 1.8.25
 
 - Fixes crash on sub shows with no profile image - ash
