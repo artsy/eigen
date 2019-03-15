@@ -7,7 +7,7 @@ import PinFairSelected from "lib/Icons/PinFairSelected"
 import PinSavedSelected from "lib/Icons/PinSavedSelected"
 import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { Schema, screenTrack, track } from "lib/utils/track"
-import { get, uniq } from "lodash"
+import { get, isEqual, uniq } from "lodash"
 import React from "react"
 import { Animated, Dimensions, Easing, Image, NativeModules, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -205,7 +205,6 @@ export class GlobalMap extends React.Component<Props, State> {
     })
 
     this.updateShowIdMap()
-    this.updateClusterMap(false)
   }
 
   handleFilterChange = activeIndex => {
@@ -213,6 +212,7 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   componentDidMount() {
+    this.updateClusterMap(true)
     EventEmitter.subscribe("filters:change", this.handleFilterChange)
   }
 
@@ -220,11 +220,27 @@ export class GlobalMap extends React.Component<Props, State> {
     EventEmitter.unsubscribe("filters:change", this.handleFilterChange)
   }
 
+  componentDidUpdate(_, prevState) {
+    // Update the clusterMap if new bucket results
+    if (this.state.bucketResults) {
+      const shouldUpdate = ["saved"].some(key => {
+        return !isEqual(
+          prevState.bucketResults[key].map(g => g.is_followed),
+          this.state.bucketResults[key].map(g => g.is_followed)
+        )
+      })
+      if (shouldUpdate) {
+        this.updateClusterMap(true)
+      }
+    }
+  }
+
   componentWillReceiveProps(nextProps: Props) {
     const { citySlug, relayErrorState } = this.props
 
     if (citySlug && citySlug !== nextProps.citySlug) {
       // Reset zoom level after switching cities
+      this.updateClusterMap(true)
       setTimeout(() => this.map.zoomTo(10, 100), 500)
     }
 
@@ -234,7 +250,6 @@ export class GlobalMap extends React.Component<Props, State> {
       this.setState({ bucketResults }, () => {
         this.emitFilteredBucketResults()
         this.updateShowIdMap()
-        this.updateClusterMap()
       })
     } else if (relayErrorState) {
       EventEmitter.dispatch("map:error", { relayErrorState })
@@ -292,12 +307,11 @@ export class GlobalMap extends React.Component<Props, State> {
       const geoJSONFeature = convertCityToGeoJSON(data)
       const featureCollection = {
         shapes: geoJSONFeature,
-        filter: tab.id,
+        id: tab.id,
       }
-      // this.clusterEngine.load(featureCollections.shapes.features as any)
+      this.clusterEngine.load(featureCollection.shapes.features as any)
       collections.push(featureCollection)
     })
-    // const tab = cityTabs[this.state.activeIndex]
 
     this.featureCollectionsGroup = collections
 
@@ -306,8 +320,6 @@ export class GlobalMap extends React.Component<Props, State> {
         featureCollectionsGroup: collections,
       })
     }
-
-    // close but not enough yet
   }
 
   emitFilteredBucketResults() {
@@ -320,8 +332,6 @@ export class GlobalMap extends React.Component<Props, State> {
     const {
       city: { name: cityName, slug: citySlug, sponsoredContent },
     } = this.props.viewer
-
-    this.updateClusterMap(true)
 
     EventEmitter.dispatch("map:change", {
       filter,
@@ -617,6 +627,7 @@ export class GlobalMap extends React.Component<Props, State> {
                   <>
                     {this.featureCollectionsGroup && (
                       <PinsShapeLayer
+                        filterID={cityTabs[this.state.activeIndex].id}
                         featureCollections={this.featureCollectionsGroup}
                         onPress={e => this.handleFeaturePress(e.nativeEvent)}
                       />
