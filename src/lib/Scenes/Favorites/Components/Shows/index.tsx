@@ -43,7 +43,12 @@ export class Shows extends Component<Props, State> {
     const shows = this.props.me.followsAndSaves.shows.edges.map(edge => edge.node)
 
     if (shows.length === 0 || !shows) {
-      return <ZeroState title="You haven’t followed any shows yet" />
+      return (
+        <ZeroState
+          title="You haven’t saved any shows yet"
+          subtitle="When you save shows, they will show up here for future use."
+        />
+      )
     }
 
     return (
