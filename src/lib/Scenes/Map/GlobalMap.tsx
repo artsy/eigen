@@ -21,7 +21,7 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { MapGeoFeatureCollection } from "./types"
+import { MapGeoFeatureCollectionArray } from "./types"
 import { Fair, MapGeoFeature, OSCoordsUpdate, RelayErrorState, SafeAreaInsets, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
@@ -92,12 +92,7 @@ interface State {
   /** True when we know that we can get location updates from the OS */
   trackUserLocation?: boolean
   /** A set of GeoJSON features, which right now is our show clusters */
-  featureCollections: [
-    {
-      shapes: MapGeoFeatureCollection
-      id: string
-    }
-  ]
+  featureCollections: MapGeoFeatureCollectionArray[]
   /** Has the map fully rendered? */
   mapLoaded: boolean
   /** In the process of saving a show */
@@ -154,12 +149,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   map: Mapbox.MapView
   clusterEngine: Supercluster
-  featureCollections: [
-    {
-      shapes: MapGeoFeatureCollection
-      id: string
-    }
-  ]
+  featureCollections: MapGeoFeatureCollectionArray[]
   moveButtons: Animated.Value
   currentZoom: number
 

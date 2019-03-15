@@ -53,6 +53,14 @@ export interface RelayErrorState {
   error: Error
 }
 
+export interface MapGeoFeatureCollectionArray {
+  type: "FeatureCollectionArray"
+  shapes: {
+    shapes: MapGeoFeatureCollection[]
+  }
+  id: string
+}
+
 export interface MapGeoFeatureCollection {
   type: "FeatureCollection"
   shapes: {
