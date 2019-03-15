@@ -15,7 +15,7 @@ import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
 import Supercluster from "supercluster"
 import { cityTabs } from "../City/cityTabs"
-import { bucketCityResults, BucketResults, emptyBucketResults } from "./bucketCityResults"
+import { bucketCityResults, BucketKey, BucketResults, emptyBucketResults } from "./bucketCityResults"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
 import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
@@ -23,8 +23,12 @@ import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
 import {
   Fair,
+  FilterData,
+  FilterTypes,
   MapGeoFeature,
+  MapGeoFeatureCollection,
   MapGeoFeatureCollectionArray,
+  MapTab,
   OSCoordsUpdate,
   RelayErrorState,
   SafeAreaInsets,
@@ -155,8 +159,7 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   map: Mapbox.MapView
-  clusterEngine: Supercluster
-  featureCollections: MapGeoFeatureCollectionArray[]
+  filters: { [key: string]: FilterData }
   moveButtons: Animated.Value
   currentZoom: number
 
@@ -206,10 +209,6 @@ export class GlobalMap extends React.Component<Props, State> {
       activePin: null,
       currentZoom: DefaultZoomLevel,
     }
-
-    this.clusterEngine = new Supercluster({
-      radius: 50,
-    })
 
     this.updateShowIdMap()
   }
@@ -299,12 +298,11 @@ export class GlobalMap extends React.Component<Props, State> {
     return null
   }
 
-  updateClusterMap(updateState: boolean = true) {
+  updateClusterMap() {
     if (!this.props.viewer) {
       return
     }
 
-    const collections = []
     cityTabs.forEach(tab => {
       const shows = tab.getShows(this.state.bucketResults)
       const fairs = tab.getFairs(this.state.bucketResults)
@@ -312,21 +310,19 @@ export class GlobalMap extends React.Component<Props, State> {
       const fairData = fairToGeoCityFairs(fairs)
       const data = showData.concat((fairData as any) as Show[])
       const geoJSONFeature = convertCityToGeoJSON(data)
-      const featureCollection = {
-        shapes: geoJSONFeature,
-        id: tab.id,
-      }
-      this.clusterEngine.load(featureCollection.shapes.features as any)
-      collections.push(featureCollection)
-    })
 
-    this.featureCollections = collections
-
-    if (updateState) {
-      this.setState({
-        featureCollections: collections,
+      const clusterEngine = new Supercluster({
+        radius: 50,
       })
-    }
+
+      clusterEngine.load(geoJSONFeature.features as any)
+
+      this.filters[tab.id] = {
+        featureCollection: geoJSONFeature,
+        filter: tab.id,
+        clusterEngine,
+      }
+    })
   }
 
   emitFilteredBucketResults() {
