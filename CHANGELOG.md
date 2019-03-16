@@ -16,8 +16,9 @@
 
 ### Master
 
-### 1.8.26
+- Adds a hitslop to the save button for shows - orta
 
+### 1.8.26
 
 - Deploy script syncs local data with Metaphysics - ash
 - Updates drawer sub-scrollview enabled state when tabs change - ash

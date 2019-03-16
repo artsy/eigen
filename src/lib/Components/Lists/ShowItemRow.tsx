@@ -173,6 +173,7 @@ export class ShowItemRow extends React.Component<Props, State> {
                     selected={show.is_followed}
                     onPress={() => this.handleSave()}
                     noBackground={true}
+                    hitSlop={{ top: 10, bottom: 10, left: 0, right: 0 }}
                   />
                 </Box>
               </Flex>
