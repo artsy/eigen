@@ -74,6 +74,7 @@ const newCHANGELOG = changelog.replace(
 `
 )
 fs.writeFileSync("CHANGELOG.md", newCHANGELOG, "utf8")
+sh("yarn prettier --write CHANGELOG.md")
 sh("git add CHANGELOG.md")
 sh("git commit -m 'Updated CHANGELOG for new release'")
 
