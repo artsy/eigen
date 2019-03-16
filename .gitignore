@@ -63,3 +63,6 @@ haul-debug.log
 test-results.json
 head_metadata.json
 .vscode/*.sql
+
+# TypeScript Logs
+tsc_raw.log

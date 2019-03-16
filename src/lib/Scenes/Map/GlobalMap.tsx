@@ -115,7 +115,7 @@ interface State {
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
 
-const DefaultZoomLevel = 13
+const DefaultZoomLevel = 12
 
 const ButtonAnimation = {
   yDelta: -200,
@@ -133,29 +133,14 @@ enum DrawerPosition {
   partiallyRevealed = "partiallyRevealed",
 }
 
-const screenSchemaForCurrentTabState = currentSelectedTab => {
-  switch (currentSelectedTab) {
-    case "all":
-      return Schema.PageNames.CityGuideAllMap
-    case "saved":
-      return Schema.PageNames.CityGuideSavedMap
-    case "fairs":
-      return Schema.PageNames.CityGuideFairsMap
-    case "galleries":
-      return Schema.PageNames.CityGuideGalleriesMap
-    case "museums":
-      return Schema.PageNames.CityGuideMuseumsMap
-    default:
-      return null
+@screenTrack<Props>(props => {
+  return {
+    context_screen: Schema.PageNames.CityGuideMap,
+    context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+    context_screen_owner_slug: props.citySlug,
+    context_screen_owner_id: props.citySlug,
   }
-}
-
-@screenTrack<Props>(props => ({
-  context_screen: screenSchemaForCurrentTabState("all"),
-  context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-  context_screen_owner_slug: props.citySlug,
-  context_screen_owner_id: props.citySlug,
-}))
+})
 export class GlobalMap extends React.Component<Props, State> {
   /** Makes sure we're consistently using { lat, lng } internally */
   static lngLatArrayToLocation(arr: [number, number] | undefined) {
@@ -233,8 +218,6 @@ export class GlobalMap extends React.Component<Props, State> {
 
   handleFilterChange = activeIndex => {
     this.setState({ activeIndex, activePin: null, activeShows: [] }, () => this.emitFilteredBucketResults())
-    // Reset zoom level
-    this.map.zoomTo(DefaultZoomLevel)
   }
 
   componentDidMount() {
@@ -245,18 +228,12 @@ export class GlobalMap extends React.Component<Props, State> {
     EventEmitter.unsubscribe("filters:change", this.handleFilterChange)
   }
 
-  componentDidUpdate(_, prevState) {
-    if (prevState.activeIndex !== this.state.activeIndex) {
-      this.fireGlobalMapScreenViewAnalytics()
-    }
-  }
-
   componentWillReceiveProps(nextProps: Props) {
     const { citySlug, relayErrorState } = this.props
 
     if (citySlug && citySlug !== nextProps.citySlug) {
       // Reset zoom level after switching cities
-      setTimeout(() => this.map.zoomTo(DefaultZoomLevel, 200), 500)
+      setTimeout(() => this.map.zoomTo(10, 100), 500)
     }
 
     if (nextProps.viewer) {
@@ -295,15 +272,16 @@ export class GlobalMap extends React.Component<Props, State> {
   @track((__, _, args) => {
     const actionName = args[0]
     const show = args[1]
+    const type = args[2]
     return {
       action_name: actionName,
       action_type: Schema.ActionTypes.Tap,
       owner_id: !!show ? show[0]._id : "",
       owner_slug: !!show ? show[0].id : "",
-      owner_type: !!show ? Schema.OwnerEntityTypes.Show : "",
+      owner_type: !!type ? type : "",
     } as any
   })
-  trackPinTap(_actionName, _show) {
+  trackPinTap(_actionName, _show, _type) {
     return null
   }
 
@@ -354,15 +332,6 @@ export class GlobalMap extends React.Component<Props, State> {
       citySlug,
       sponsoredContent,
       relay: this.props.relay,
-    })
-  }
-
-  fireGlobalMapScreenViewAnalytics = () => {
-    this.props.tracking.trackEvent({
-      context_screen: screenSchemaForCurrentTabState(cityTabs[this.state.activeIndex].id),
-      context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-      context_screen_owner_slug: this.props.citySlug,
-      context_screen_owner_id: this.props.citySlug,
     })
   }
 
@@ -532,6 +501,69 @@ export class GlobalMap extends React.Component<Props, State> {
     )
   }
 
+  onRegionIsChanging = async () => {
+    const zoom = Math.floor(await this.map.getZoom())
+
+    if (!this.currentZoom) {
+      this.currentZoom = zoom
+    }
+
+    if (this.currentZoom !== zoom) {
+      this.setState({
+        activePin: null,
+      })
+    }
+  }
+
+  onRegionDidChange = (location: MapGeoFeature) => {
+    this.setState({
+      trackUserLocation: false,
+      currentLocation: GlobalMap.lngLatArrayToLocation(location.geometry && location.geometry.coordinates),
+    })
+  }
+
+  onUserLocationUpdate = (location: OSCoordsUpdate) => {
+    this.setState({
+      userLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
+      currentLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
+      trackUserLocation: true,
+    })
+  }
+
+  onDidFinishRenderingMapFully = () => {
+    NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryMapHasRendered", {})
+    this.setState({ mapLoaded: true })
+  }
+
+  onPressMap = () => {
+    if (!this.state.isSavingShow) {
+      this.setState({
+        activeShows: [],
+        activePin: null,
+      })
+    }
+  }
+
+  onPressCitySwitcherButton = () => {
+    this.setState({
+      activeShows: [],
+      activePin: null,
+    })
+  }
+
+  onPressUserPositionButton = () => {
+    const { lat, lng } = this.state.userLocation
+    this.map.moveTo([lng, lat], 500)
+  }
+
+  onPressPinShapeLayer = e => this.handleFeaturePress(e.nativeEvent)
+
+  storeMapRef = (c: any) => {
+    if (c) {
+      this.map = c.root
+    }
+  }
+
   render() {
     const city = get(this.props, "viewer.city")
     const { relayErrorState } = this.props
@@ -550,47 +582,6 @@ export class GlobalMap extends React.Component<Props, State> {
       compassEnabled: false,
     }
 
-    const mapInteractions = {
-      onRegionIsChanging: async () => {
-        const zoom = Math.floor(await this.map.getZoom())
-
-        if (!this.currentZoom) {
-          this.currentZoom = zoom
-        }
-
-        if (this.currentZoom !== zoom) {
-          this.setState({
-            activePin: null,
-          })
-        }
-      },
-      onRegionDidChange: (location: MapGeoFeature) => {
-        this.setState({
-          trackUserLocation: false,
-          currentLocation: GlobalMap.lngLatArrayToLocation(location.geometry && location.geometry.coordinates),
-        })
-      },
-      onUserLocationUpdate: (location: OSCoordsUpdate) => {
-        this.setState({
-          userLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
-          currentLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
-          trackUserLocation: true,
-        })
-      },
-      onDidFinishRenderingMapFully: () => {
-        NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryMapHasRendered", {})
-        this.setState({ mapLoaded: true })
-      },
-      onPress: () => {
-        if (!this.state.isSavingShow) {
-          this.setState({
-            activeShows: [],
-            activePin: null,
-          })
-        }
-      },
-    }
-
     return (
       <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
         <LoadingScreen
@@ -605,21 +596,13 @@ export class GlobalMap extends React.Component<Props, State> {
                 sponsoredContentUrl={this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl}
                 city={city}
                 isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
-                onPress={() => {
-                  this.setState({
-                    activeShows: [],
-                    activePin: null,
-                  })
-                }}
+                onPress={this.onPressCitySwitcherButton}
               />
               {this.state.userLocation && (
                 <Box style={{ marginLeft: "auto" }}>
                   <UserPositionButton
                     highlight={this.state.userLocation === this.state.currentLocation}
-                    onPress={() => {
-                      const { lat, lng } = this.state.userLocation
-                      this.map.moveTo([lng, lat], 500)
-                    }}
+                    onPress={this.onPressUserPositionButton}
                   />
                 </Box>
               )}
@@ -639,20 +622,17 @@ export class GlobalMap extends React.Component<Props, State> {
             <AnimatedView style={{ flex: 1, opacity }}>
               <Map
                 {...mapProps}
-                {...mapInteractions}
-                ref={(c: any) => {
-                  if (c) {
-                    this.map = c.root
-                  }
-                }}
+                onRegionIsChanging={this.onRegionIsChanging}
+                onRegionDidChange={this.onRegionDidChange}
+                onUserLocationUpdate={this.onUserLocationUpdate}
+                onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
+                onPress={this.onPressMap}
+                ref={this.storeMapRef}
               >
                 {city && (
                   <>
                     {this.featureCollection && (
-                      <PinsShapeLayer
-                        featureCollection={this.featureCollection}
-                        onPress={e => this.handleFeaturePress(e.nativeEvent)}
-                      />
+                      <PinsShapeLayer featureCollection={this.featureCollection} onPress={this.onPressPinShapeLayer} />
                     )}
                     <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
                     {mapLoaded && activeShows && activePin && this.renderSelectedPin()}
@@ -699,8 +679,10 @@ export class GlobalMap extends React.Component<Props, State> {
     if (!cluster) {
       if (type === "Show") {
         activeShows = [this.shows[id]]
+        this.trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Show)
       } else if (type === "Fair") {
         activeShows = [this.fairs[id]]
+        this.trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Fair)
       }
     }
 
@@ -710,6 +692,7 @@ export class GlobalMap extends React.Component<Props, State> {
     // 2. Sort them by distance to the user tap coordinates
     // 3. Retrieve points within the cluster and map them back to shows
     else {
+      this.trackPinTap(Schema.ActionNames.ClusteredMapPin, null, Schema.OwnerEntityTypes.Show)
       // Get map zoom level and coordinates of where the user tapped
       const zoom = Math.floor(await this.map.getZoom())
       const [lat, lng] = coordinates
@@ -781,48 +764,46 @@ export const GlobalMapContainer = createFragmentContainer(
       city(slug: $citySlug) {
         name
         slug
-        sponsoredContent {
-          introText
-          artGuideUrl
-          shows(first: 20, sort: START_AT_ASC) {
-            totalCount
-            edges {
-              node {
-                id
-                _id
-                __id
-                name
-                status
-                href
-                is_followed
-                exhibition_period
-                cover_image {
-                  url
-                }
-                location {
-                  coordinates {
-                    lat
-                    lng
-                  }
-                }
-                type
-                start_at
-                end_at
-                partner {
-                  ... on Partner {
-                    name
-                    type
-                  }
-                }
-              }
-            }
-          }
-        }
         coordinates {
           lat
           lng
         }
-
+        sponsoredContent {
+          introText
+          artGuideUrl
+          featuredShows {
+            id
+            _id
+            __id
+            name
+            status
+            isStubShow
+            href
+            is_followed
+            exhibition_period
+            cover_image {
+              url
+            }
+            location {
+              coordinates {
+                lat
+                lng
+              }
+            }
+            type
+            start_at
+            end_at
+            partner {
+              ... on Partner {
+                name
+                type
+              }
+            }
+          }
+          shows(first: 1, sort: START_AT_ASC) {
+            totalCount
+          }
+        }
         upcomingShows: shows(
           includeStubShows: true
           status: UPCOMING
@@ -891,6 +872,12 @@ export const GlobalMapContainer = createFragmentContainer(
                 ... on Partner {
                   name
                   type
+                  profile {
+                    # This is only used for stubbed shows
+                    image {
+                      url(version: "square")
+                    }
+                  }
                 }
               }
             }

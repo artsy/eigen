@@ -16,14 +16,36 @@
 
 ### Master
 
+### 1.8.26
+
+
+- Deploy script syncs local data with Metaphysics - ash
+- Updates drawer sub-scrollview enabled state when tabs change - ash
+- Get rid of unneeded City render pass and potential further deep renders by unstable inline function props - alloy
+
+### 1.8.25
+
+- Fixes crash on sub shows with no profile image - ash
+- Clear out setTimeout wheen user selects multiple tabs - luc
+- Swap scrollable tab bar for fixed width tab bar - luc
+
+### 1.8.24
+
 - Adds RUNNING_AND_UPCOMING to CitySavedList - kieran
 - Fixes C compiler error - ash
+- Removes gallery context from fair page - ash
+- Only shows shows with images in all bricks - kieran
+- Adds support for falling back to the partner profile image on a stubbed show - orta
+- Fixes missing "view all shows" link in sponsored content sections - ash & ashley
+- Fixes saved shows/fairs not updating state in other query renderer hierarchies - alloy
 
 ### 1.8.23
 
 - Fix using wrong field for fair hours - ashkan
 - Fix re-instating pre-heated cache after invalidating it once - alloy
-
+- Fix using wrong field for fair hours - ashkan
+- Uses featured shows for BMW bricks - kieran
+- Fixes zoom outs when switching cities and fix cluster crash - luc
 - Fixes drawer behaviour - ash
 
 ### 1.8.22

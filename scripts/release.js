@@ -58,6 +58,7 @@ sh("npm --version")
 
 console.log(chalk.green("=> Creating release bundle."))
 sh("npm run bundle")
+sh("cd Example && bundle exec pod install && cd ..")
 sh('git add . && git commit -m "[Pod] Update release artefacts."', true)
 
 console.log(chalk.green("=> Creating version bump commit and tag."))

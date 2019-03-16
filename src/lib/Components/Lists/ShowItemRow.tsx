@@ -8,6 +8,7 @@ import { Pin } from "lib/Icons/Pin"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { hrefForPartialShow } from "lib/utils/router"
 import { Schema, Track, track as _track } from "lib/utils/track"
+import { get } from "lodash"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -126,7 +127,10 @@ export class ShowItemRow extends React.Component<Props, State> {
 
   render() {
     const { noPadding, show, shouldHideSaveButton } = this.props
-    const imageURL = show.cover_image && show.cover_image.url
+    const mainCoverImageURL = show.cover_image && show.cover_image.url
+    const galleryProfileIcon = show.isStubShow && get(show, "partner.profile.image.url")
+
+    const imageURL = mainCoverImageURL || galleryProfileIcon
 
     return (
       <TouchableWithoutFeedback onPress={() => this.handleTap(show.id, show._id)}>
@@ -139,7 +143,7 @@ export class ShowItemRow extends React.Component<Props, State> {
             ) : (
               <OpaqueImageView width={58} height={58} imageURL={imageURL} />
             )}
-            <Flex flexDirection="column" flexGrow={1} width={180}>
+            <Flex flexDirection="column" flexGrow={1} width={180} mr={10}>
               {show.partner &&
                 show.partner.name && (
                   <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
@@ -179,6 +183,10 @@ export class ShowItemRow extends React.Component<Props, State> {
     )
   }
 }
+
+/// NOTE: To make sure that this is consistent across all places where we
+///       show it (e.g. Favs, inside the City Map tray ) - you need to make
+///       sure that any data changes are included in GlobalMap's query.
 export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
   show: graphql`
     fragment ShowItemRow_show on Show {
@@ -187,9 +195,17 @@ export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
       __id
       is_followed
       name
+      isStubShow
       partner {
         ... on Partner {
           name
+
+          profile {
+            # This is only used for stubbed shows
+            image {
+              url(version: "square")
+            }
+          }
         }
       }
       href

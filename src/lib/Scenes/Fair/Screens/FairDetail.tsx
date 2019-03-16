@@ -84,13 +84,10 @@ export class FairDetail extends React.Component<Props, State> {
         type: "bmw-art-activation",
       })
     }
-
     if (fair.hours) {
       sections.push({
         type: "hours",
-        data: {
-          hours: fair.hours,
-        },
+        data: fair.hours,
       })
     }
 

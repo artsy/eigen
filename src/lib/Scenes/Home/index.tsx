@@ -114,7 +114,7 @@ export default class Home extends React.Component<Props, State> {
           onChangeTab={selectedTab => this.setSelectedTab(selectedTab)}
           renderTabBar={props => (
             <TabBarContainer>
-              <TabBar {...props} />
+              <TabBar spaceEvenly {...props} />
             </TabBarContainer>
           )}
         >
