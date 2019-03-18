@@ -125,9 +125,6 @@ export class FairDetail extends React.Component<Props, State> {
     } else {
       sections.push({
         type: "notActive",
-        data: {
-          name: fair.name,
-        },
       })
     }
 
