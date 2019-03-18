@@ -1,16 +1,24 @@
 upcoming:
-  version: 4.4.1
+  version: 5.0.0
   date: TBD
-  emission_version: 1.8.19
+  emission_version: 1.8.26
   dev:
-    - Use posts for auth requests - orta
-    - Uses echo to manage showing the show guides tab - orta
-    - Echo works again - orta
+    - 
   user_facing:
-    - Adds text content types to signup/login flow - ash
-    - Support having fairs and the map view as full-bleed view controllers - luc + orta
+    - 
 
 releases:
+  - version: 4.4.1
+    date: Mar 18, 2019
+    emission_version: 1.8.26
+    dev:
+      - Use posts for auth requests - orta
+      - Uses echo to manage showing the show guides tab - orta
+      - Echo works again - orta
+    user_facing:
+      - Adds text content types to signup/login flow - ash
+      - Support having fairs and the map view as full-bleed view controllers - luc + orta
+
   - version: 4.4.0
     date: Feb 28, 2019
     emission_version: 1.8.9
