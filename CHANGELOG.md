@@ -19,6 +19,7 @@
 - Adds a hitslop to the save button for shows - orta
 - Updates copy in Global Saves and Follows Shows tab - ashley
 - Adds message if fair is not active and hides fair details - kieran
+- Fixes LD saving events inconsistencies - ash
 
 ### 1.8.26
 
