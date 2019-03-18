@@ -51,7 +51,8 @@ lane :ship_beta do
 
   build_ios_app(configuration: 'Store')
 
-  tag_and_push(tag: "#{latest_version}-#{latest_testflight_build_number}")
+  bundle_version = `/usr/libexec/PlistBuddy -c "Print CFBundleVersion" Artsy/App_Resources/Artsy-Info.plist`.strip
+  tag_and_push(tag: "#{latest_version}-#{bundle_version}")
 
   # First make individual dSYM archives available to the sentry-cli tool.
   root = File.expand_path('../..', __FILE__)
