@@ -195,7 +195,6 @@ export class FairDetail extends React.Component<Props, State> {
           </>
         )
       case "notActive":
-        console.log("data.name", data)
         return <Message textSize="3t">Check back soon for more details</Message>
       default:
         return null
