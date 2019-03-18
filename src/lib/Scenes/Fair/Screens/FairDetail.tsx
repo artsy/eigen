@@ -192,7 +192,12 @@ export class FairDetail extends React.Component<Props, State> {
           </>
         )
       case "notActive":
-        return <Message textSize="3t">Check back soon for more details</Message>
+        return (
+          <Message textSize="3t">
+            Check back closer to the fair for a first look at works for sale and to learn more about this year’s
+            exhibiting galleries and artists.
+          </Message>
+        )
       default:
         return null
     }
