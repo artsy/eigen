@@ -16,6 +16,8 @@
 
 ### Master
 
+- Updates copy in Global Saves and Follows Shows tab - ashley
+
 ### 1.8.26
 
 - Deploy script syncs local data with Metaphysics - ash
