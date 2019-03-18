@@ -11,17 +11,13 @@ export type FairDetail_fair = {
     readonly _id: string;
     readonly name: string | null;
     readonly hours: string | null;
+    readonly is_active: boolean | null;
     readonly location: ({
         readonly coordinates: ({
             readonly lat: number | null;
             readonly lng: number | null;
         }) | null;
         readonly " $fragmentRefs": LocationMap_location$ref;
-    }) | null;
-    readonly counts: ({
-        readonly artists: any | null;
-        readonly artworks: any | null;
-        readonly partners: any | null;
     }) | null;
     readonly organizer: ({
         readonly website: string | null;
@@ -156,6 +152,13 @@ return {
       "storageKey": null
     },
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "is_active",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "LinkedField",
       "alias": null,
       "name": "location",
@@ -195,38 +198,6 @@ return {
           ]
         },
         v2
-      ]
-    },
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "counts",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "FairCounts",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "artists",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "artworks",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "partners",
-          "args": null,
-          "storageKey": null
-        }
       ]
     },
     v3,
@@ -415,5 +386,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '426a43ef6bf1e35f998086d346e4d1c1';
+(node as any).hash = '9dad77d0479f54b25c24629c1adaf163';
 export default node;

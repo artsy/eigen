@@ -56,9 +56,7 @@ export class FairDetail extends React.Component<Props, State> {
 
   updateSections = () => {
     const { fair } = this.props
-    const {
-      counts: { artists, artworks, partners },
-    } = fair
+    const { is_active } = fair
     const sections = []
 
     const coords = fair.location.coordinates
@@ -91,7 +89,9 @@ export class FairDetail extends React.Component<Props, State> {
       })
     }
 
-    if (!!artists || !!artworks || !!partners) {
+    let boothCount = 0
+
+    if (is_active) {
       sections.push({
         type: "title",
       })
@@ -108,23 +108,21 @@ export class FairDetail extends React.Component<Props, State> {
           _id: fair._id,
         },
       })
+
+      fair.shows.edges.forEach(showData => {
+        const showArtworks = showData.node.artworks_connection
+        if (showArtworks && showArtworks.edges.length) {
+          sections.push({
+            type: "booth",
+            showIndex: boothCount,
+            data: {
+              show: showData.node,
+            },
+          })
+          boothCount++
+        }
+      })
     }
-
-    let boothCount = 0
-
-    fair.shows.edges.forEach(showData => {
-      const showArtworks = showData.node.artworks_connection
-      if (showArtworks && showArtworks.edges.length) {
-        sections.push({
-          type: "booth",
-          showIndex: boothCount,
-          data: {
-            show: showData.node,
-          },
-        })
-        boothCount++
-      }
-    })
 
     this.setState({ sections, boothCount })
   }
@@ -253,17 +251,13 @@ export const FairDetailContainer = createPaginationContainer(
         _id
         name
         hours
+        is_active
         location {
           ...LocationMap_location
           coordinates {
             lat
             lng
           }
-        }
-        counts {
-          artists
-          artworks
-          partners
         }
         # so that we know whether to show more info
         organizer {
