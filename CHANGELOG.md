@@ -17,8 +17,13 @@
 ### Master
 
 - Map clustering data now doesn't recreate geo data on tab change - kieran
+- Updates copy in Global Saves and Follows Shows tab - ashley
+
+### 1.8.26
+
 - Deploy script syncs local data with Metaphysics - ash
 - Updates drawer sub-scrollview enabled state when tabs change - ash
+- Get rid of unneeded City render pass and potential further deep renders by unstable inline function props - alloy
 
 ### 1.8.25
 

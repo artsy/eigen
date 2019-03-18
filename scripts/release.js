@@ -36,7 +36,7 @@ function publishPodspec(podspec) {
   if (!fs.existsSync(specPath)) {
     console.log("=> Pushing " + name + " podspec to spec-repo.")
     sh("mkdir -p " + path.dirname(specPath))
-    sh("cd " + podspecDir + " && pod ipc spec " + podspecFilename + " > " + specPath)
+    sh("cd " + podspecDir + ' && INCLUDE_METADATA="true" pod ipc spec ' + podspecFilename + " > " + specPath)
     sh(
       "cd " +
         specRepo +
@@ -58,7 +58,7 @@ sh("npm --version")
 
 console.log(chalk.green("=> Creating release bundle."))
 sh("npm run bundle")
-sh("cd Example && bundle pod install && cd ..")
+sh("cd Example && bundle exec pod install && cd ..")
 sh('git add . && git commit -m "[Pod] Update release artefacts."', true)
 
 console.log(chalk.green("=> Creating version bump commit and tag."))
@@ -74,6 +74,7 @@ const newCHANGELOG = changelog.replace(
 `
 )
 fs.writeFileSync("CHANGELOG.md", newCHANGELOG, "utf8")
+sh("yarn prettier --write CHANGELOG.md")
 sh("git add CHANGELOG.md")
 sh("git commit -m 'Updated CHANGELOG for new release'")
 

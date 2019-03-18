@@ -235,7 +235,7 @@ export class GlobalMap extends React.Component<Props, State> {
         )
       })
       if (shouldUpdate) {
-        this.updateClusterMap(true)
+        this.updateClusterMap()
       }
     }
   }
@@ -245,7 +245,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
     if (citySlug && citySlug !== nextProps.citySlug) {
       // Reset zoom level after switching cities
-      this.updateClusterMap(true)
+      this.updateClusterMap()
       setTimeout(() => this.map.zoomTo(10, 100), 500)
     }
 
@@ -255,7 +255,7 @@ export class GlobalMap extends React.Component<Props, State> {
       this.setState({ bucketResults }, () => {
         this.emitFilteredBucketResults()
         this.updateShowIdMap()
-        this.updateClusterMap(true)
+        this.updateClusterMap()
       })
     } else if (relayErrorState) {
       EventEmitter.dispatch("map:error", { relayErrorState })
@@ -512,6 +512,69 @@ export class GlobalMap extends React.Component<Props, State> {
     )
   }
 
+  onRegionIsChanging = async () => {
+    const zoom = Math.floor(await this.map.getZoom())
+
+    if (!this.currentZoom) {
+      this.currentZoom = zoom
+    }
+
+    if (this.currentZoom !== zoom) {
+      this.setState({
+        activePin: null,
+      })
+    }
+  }
+
+  onRegionDidChange = (location: MapGeoFeature) => {
+    this.setState({
+      trackUserLocation: false,
+      currentLocation: GlobalMap.lngLatArrayToLocation(location.geometry && location.geometry.coordinates),
+    })
+  }
+
+  onUserLocationUpdate = (location: OSCoordsUpdate) => {
+    this.setState({
+      userLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
+      currentLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
+      trackUserLocation: true,
+    })
+  }
+
+  onDidFinishRenderingMapFully = () => {
+    NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryMapHasRendered", {})
+    this.setState({ mapLoaded: true })
+  }
+
+  onPressMap = () => {
+    if (!this.state.isSavingShow) {
+      this.setState({
+        activeShows: [],
+        activePin: null,
+      })
+    }
+  }
+
+  onPressCitySwitcherButton = () => {
+    this.setState({
+      activeShows: [],
+      activePin: null,
+    })
+  }
+
+  onPressUserPositionButton = () => {
+    const { lat, lng } = this.state.userLocation
+    this.map.moveTo([lng, lat], 500)
+  }
+
+  onPressPinShapeLayer = e => this.handleFeaturePress(e.nativeEvent)
+
+  storeMapRef = (c: any) => {
+    if (c) {
+      this.map = c.root
+    }
+  }
+
   render() {
     const city = get(this.props, "viewer.city")
     const { relayErrorState } = this.props
@@ -530,47 +593,6 @@ export class GlobalMap extends React.Component<Props, State> {
       compassEnabled: false,
     }
 
-    const mapInteractions = {
-      onRegionIsChanging: async () => {
-        const zoom = Math.floor(await this.map.getZoom())
-
-        if (!this.currentZoom) {
-          this.currentZoom = zoom
-        }
-
-        if (this.currentZoom !== zoom) {
-          this.setState({
-            activePin: null,
-          })
-        }
-      },
-      onRegionDidChange: (location: MapGeoFeature) => {
-        this.setState({
-          trackUserLocation: false,
-          currentLocation: GlobalMap.lngLatArrayToLocation(location.geometry && location.geometry.coordinates),
-        })
-      },
-      onUserLocationUpdate: (location: OSCoordsUpdate) => {
-        this.setState({
-          userLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
-          currentLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
-          trackUserLocation: true,
-        })
-      },
-      onDidFinishRenderingMapFully: () => {
-        NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryMapHasRendered", {})
-        this.setState({ mapLoaded: true })
-      },
-      onPress: () => {
-        if (!this.state.isSavingShow) {
-          this.setState({
-            activeShows: [],
-            activePin: null,
-          })
-        }
-      },
-    }
-
     return (
       <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
         <LoadingScreen
@@ -585,21 +607,13 @@ export class GlobalMap extends React.Component<Props, State> {
                 sponsoredContentUrl={this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl}
                 city={city}
                 isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
-                onPress={() => {
-                  this.setState({
-                    activeShows: [],
-                    activePin: null,
-                  })
-                }}
+                onPress={this.onPressCitySwitcherButton}
               />
               {this.state.userLocation && (
                 <Box style={{ marginLeft: "auto" }}>
                   <UserPositionButton
                     highlight={this.state.userLocation === this.state.currentLocation}
-                    onPress={() => {
-                      const { lat, lng } = this.state.userLocation
-                      this.map.moveTo([lng, lat], 500)
-                    }}
+                    onPress={this.onPressUserPositionButton}
                   />
                 </Box>
               )}
@@ -619,19 +633,19 @@ export class GlobalMap extends React.Component<Props, State> {
             <AnimatedView style={{ flex: 1, opacity }}>
               <Map
                 {...mapProps}
-                {...mapInteractions}
-                ref={(c: any) => {
-                  if (c) {
-                    this.map = c.root
-                  }
-                }}
+                onRegionIsChanging={this.onRegionIsChanging}
+                onRegionDidChange={this.onRegionDidChange}
+                onUserLocationUpdate={this.onUserLocationUpdate}
+                onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
+                onPress={this.onPressMap}
+                ref={this.storeMapRef}
               >
                 {city && (
                   <>
-                    {this.featureCollections && (
+                    {this.state.featureCollections && (
                       <PinsShapeLayer
                         filterID={cityTabs[this.state.activeIndex].id}
-                        featureCollections={this.featureCollections}
+                        featureCollections={this.state.featureCollections}
                         onPress={e => this.handleFeaturePress(e.nativeEvent)}
                       />
                     )}
