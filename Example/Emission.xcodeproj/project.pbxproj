@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		34C566E6214C4AAA00479C22 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34C566E5214C4AAA00479C22 /* AVFoundation.framework */; };
+		3A484741223AC736002E657B /* docs in Resources */ = {isa = PBXBuildFile; fileRef = 3A484740223AC736002E657B /* docs */; };
 		3A7D41FE213F3CAD009618F5 /* ARLabOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A7D41FC213F3CAC009618F5 /* ARLabOptions.m */; };
 		3ACAE7B922258EAD009C2236 /* ARAdminSentryBreadcrumbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ACAE7B722258EAD009C2236 /* ARAdminSentryBreadcrumbViewController.m */; };
 		402D55D24FAA1BC36FB4ED85 /* libPods-Emission.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B53B6F10A80F64A976B9F221 /* libPods-Emission.a */; };
@@ -76,6 +77,7 @@
 		163341760E6AD3C2BD2501B6 /* Pods-Emission.deploy.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Emission.deploy.xcconfig"; path = "Pods/Target Support Files/Pods-Emission/Pods-Emission.deploy.xcconfig"; sourceTree = "<group>"; };
 		17DDC2B5E27740D462B9B1E4 /* Pods-EmissionTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmissionTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EmissionTests/Pods-EmissionTests.debug.xcconfig"; sourceTree = "<group>"; };
 		34C566E5214C4AAA00479C22 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		3A484740223AC736002E657B /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = docs; path = ../docs; sourceTree = "<group>"; };
 		3A7D41FC213F3CAC009618F5 /* ARLabOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLabOptions.m; sourceTree = "<group>"; };
 		3A7D41FD213F3CAD009618F5 /* ARLabOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLabOptions.h; sourceTree = "<group>"; };
 		3ACAE7B722258EAD009C2236 /* ARAdminSentryBreadcrumbViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAdminSentryBreadcrumbViewController.m; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				3A484740223AC736002E657B /* docs */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				510DCB0F1CCA69EC0075E8CB /* Emission */,
 				510DCB291CCA69EC0075E8CB /* EmissionTests */,
@@ -513,7 +516,7 @@
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = 23KMWZ572J;
 						LastSwiftMigration = 0830;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -568,6 +571,7 @@
 				60A1A7801DA3A23C005E3357 /* BackArrowBlack@2x.png in Resources */,
 				510DCB1D1CCA69EC0075E8CB /* Assets.xcassets in Resources */,
 				7F4FEE4321A36F7F00B8766A /* Back@2x.png in Resources */,
+				3A484741223AC736002E657B /* docs in Resources */,
 				7F4FEE4521A36F7F00B8766A /* Back@3x.png in Resources */,
 				60A1A77E1DA3A23C005E3357 /* BackArrow@2x.png in Resources */,
 			);
@@ -831,9 +835,11 @@
 				CC = "${SRCROOT}/compile_commands_emitting_clang";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Emission/Emission.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 23KMWZ572J;
+				DEVELOPMENT_TEAM = "";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_PEDANTIC = YES;
 				INFOPLIST_FILE = Emission/Info.plist;
@@ -845,7 +851,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Artsy Dev Wildcard";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Emission/Emission-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
@@ -861,8 +867,10 @@
 				CC = "${SRCROOT}/compile_commands_emitting_clang";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Emission/Emission.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = 23KMWZ572J;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_PEDANTIC = YES;
 				INFOPLIST_FILE = Emission/Info.plist;
@@ -874,7 +882,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.Emission";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1114,9 +1122,11 @@
 				CC = "${SRCROOT}/compile_commands_emitting_clang";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Emission/Emission.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 23KMWZ572J;
+				DEVELOPMENT_TEAM = "";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_PEDANTIC = YES;
 				INFOPLIST_FILE = Emission/Info.plist;
@@ -1128,7 +1138,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.Emission;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.Emission";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Emission/Emission-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;

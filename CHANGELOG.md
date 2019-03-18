@@ -17,6 +17,7 @@
 ### Master
 
 - Adds a hitslop to the save button for shows - orta
+- Updates copy in Global Saves and Follows Shows tab - ashley
 
 ### 1.8.26
 
