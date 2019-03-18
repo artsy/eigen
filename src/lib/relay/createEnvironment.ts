@@ -8,6 +8,8 @@ import { metaphysicsExtensionsLoggerMiddleware } from "./middlewares/metaphysics
 
 const Emission = NativeModules.Emission || {}
 
+/// WARNING: Creates a whole new, separate Relay environment. Useful for testing and in Storybooks.
+/// Use `defaultEnvironment` for production code.
 export default function createEnvironment() {
   const network = new RelayNetworkLayer([
     cacheMiddleware(),
