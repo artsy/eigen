@@ -36,7 +36,7 @@ function publishPodspec(podspec) {
   if (!fs.existsSync(specPath)) {
     console.log("=> Pushing " + name + " podspec to spec-repo.")
     sh("mkdir -p " + path.dirname(specPath))
-    sh("cd " + podspecDir + " && pod ipc spec " + podspecFilename + " > " + specPath)
+    sh("cd " + podspecDir + ' && INCLUDE_METADATA="true" pod ipc spec ' + podspecFilename + " > " + specPath)
     sh(
       "cd " +
         specRepo +
