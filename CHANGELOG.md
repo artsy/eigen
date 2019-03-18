@@ -17,6 +17,7 @@
 ### Master
 
 - Updates copy in Global Saves and Follows Shows tab - ashley
+- Adds message if fair is not active and hides fair details - kieran
 
 ### 1.8.26
 

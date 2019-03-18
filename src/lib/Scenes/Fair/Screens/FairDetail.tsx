@@ -1,4 +1,4 @@
-import { Box, Separator, Serif, Theme } from "@artsy/palette"
+import { Box, Message, Separator, Serif, Theme } from "@artsy/palette"
 import { FairDetail_fair } from "__generated__/FairDetail_fair.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -56,9 +56,7 @@ export class FairDetail extends React.Component<Props, State> {
 
   updateSections = () => {
     const { fair } = this.props
-    const {
-      counts: { artists, artworks, partners },
-    } = fair
+    const { is_active } = fair
     const sections = []
 
     const coords = fair.location.coordinates
@@ -81,7 +79,7 @@ export class FairDetail extends React.Component<Props, State> {
 
     if (shouldShowFairBMWArtActivationLink(this.props.fair)) {
       sections.push({
-        type: "bmw-art-activation",
+        type: "bmwArtActivation",
       })
     }
     if (fair.hours) {
@@ -91,12 +89,14 @@ export class FairDetail extends React.Component<Props, State> {
       })
     }
 
-    if (!!artists || !!artworks || !!partners) {
+    let boothCount = 0
+
+    if (is_active) {
       sections.push({
         type: "title",
       })
       sections.push({
-        type: "artists-exhibitors-works",
+        type: "artistsExhibitorsWorks",
         data: {
           fairID: fair.id,
         },
@@ -108,23 +108,25 @@ export class FairDetail extends React.Component<Props, State> {
           _id: fair._id,
         },
       })
+
+      fair.shows.edges.forEach(showData => {
+        const showArtworks = showData.node.artworks_connection
+        if (showArtworks && showArtworks.edges.length) {
+          sections.push({
+            type: "booth",
+            showIndex: boothCount,
+            data: {
+              show: showData.node,
+            },
+          })
+          boothCount++
+        }
+      })
+    } else {
+      sections.push({
+        type: "notActive",
+      })
     }
-
-    let boothCount = 0
-
-    fair.shows.edges.forEach(showData => {
-      const showArtworks = showData.node.artworks_connection
-      if (showArtworks && showArtworks.edges.length) {
-        sections.push({
-          type: "booth",
-          showIndex: boothCount,
-          data: {
-            show: showData.node,
-          },
-        })
-        boothCount++
-      }
-    })
 
     this.setState({ sections, boothCount })
   }
@@ -174,7 +176,7 @@ export class FairDetail extends React.Component<Props, State> {
             <Separator mt={2} />
           </>
         )
-      case "artists-exhibitors-works":
+      case "artistsExhibitorsWorks":
         return <ArtistsExhibitorsWorksLink {...data} />
       case "title":
         return (
@@ -182,12 +184,19 @@ export class FairDetail extends React.Component<Props, State> {
             <Serif size={"6"}>Browse the fair</Serif>
           </Box>
         )
-      case "bmw-art-activation":
+      case "bmwArtActivation":
         return (
           <>
             <CaretButton onPress={this.onViewBMWArtActivationPressed.bind(this)} text="BMW art activations" />
             <Separator mt={2} />
           </>
+        )
+      case "notActive":
+        return (
+          <Message textSize="3t">
+            Check back closer to the fair for a first look at works for sale and to learn more about this year’s
+            exhibiting galleries and artists.
+          </Message>
         )
       default:
         return null
@@ -253,17 +262,13 @@ export const FairDetailContainer = createPaginationContainer(
         _id
         name
         hours
+        is_active
         location {
           ...LocationMap_location
           coordinates {
             lat
             lng
           }
-        }
-        counts {
-          artists
-          artworks
-          partners
         }
         # so that we know whether to show more info
         organizer {
