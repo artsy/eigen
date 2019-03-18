@@ -1,4 +1,4 @@
-import { Box, Separator, Serif, Theme } from "@artsy/palette"
+import { Box, Message, Separator, Serif, Theme } from "@artsy/palette"
 import { FairDetail_fair } from "__generated__/FairDetail_fair.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
@@ -79,7 +79,7 @@ export class FairDetail extends React.Component<Props, State> {
 
     if (shouldShowFairBMWArtActivationLink(this.props.fair)) {
       sections.push({
-        type: "bmw-art-activation",
+        type: "bmwArtActivation",
       })
     }
     if (fair.hours) {
@@ -96,7 +96,7 @@ export class FairDetail extends React.Component<Props, State> {
         type: "title",
       })
       sections.push({
-        type: "artists-exhibitors-works",
+        type: "artistsExhibitorsWorks",
         data: {
           fairID: fair.id,
         },
@@ -121,6 +121,13 @@ export class FairDetail extends React.Component<Props, State> {
           })
           boothCount++
         }
+      })
+    } else {
+      sections.push({
+        type: "notActive",
+        data: {
+          name: fair.name,
+        },
       })
     }
 
@@ -172,7 +179,7 @@ export class FairDetail extends React.Component<Props, State> {
             <Separator mt={2} />
           </>
         )
-      case "artists-exhibitors-works":
+      case "artistsExhibitorsWorks":
         return <ArtistsExhibitorsWorksLink {...data} />
       case "title":
         return (
@@ -180,13 +187,16 @@ export class FairDetail extends React.Component<Props, State> {
             <Serif size={"6"}>Browse the fair</Serif>
           </Box>
         )
-      case "bmw-art-activation":
+      case "bmwArtActivation":
         return (
           <>
             <CaretButton onPress={this.onViewBMWArtActivationPressed.bind(this)} text="BMW art activations" />
             <Separator mt={2} />
           </>
         )
+      case "notActive":
+        console.log("data.name", data)
+        return <Message textSize="3t">Check back soon for more details</Message>
       default:
         return null
     }
