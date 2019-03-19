@@ -10,6 +10,7 @@ export type ShowHeader_show = {
     readonly name: string | null;
     readonly press_release: string | null;
     readonly is_followed: boolean | null;
+    readonly end_at: string | null;
     readonly exhibition_period: string | null;
     readonly status: string | null;
     readonly isStubShow: boolean | null;
@@ -116,6 +117,13 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "is_followed",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "end_at",
       "args": null,
       "storageKey": null
     },
@@ -243,5 +251,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '0b51ea9a40d471771b9fef3a018bc62b';
+(node as any).hash = '5089558909caacd4b4f76aa018c3c302';
 export default node;
