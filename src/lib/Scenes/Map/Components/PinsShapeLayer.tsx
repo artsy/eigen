@@ -1,16 +1,12 @@
 import Mapbox from "@mapbox/react-native-mapbox-gl"
-import { find, isEqual } from "lodash"
+import { isEqual } from "lodash"
 import React, { Component } from "react"
 import { Animated, Easing } from "react-native"
-import { MapGeoFeatureCollection } from "../types"
+import { BucketKey } from "../bucketCityResults"
+import { FilterData, MapGeoFeatureCollection } from "../types"
 
 interface Props {
-  featureCollections: [
-    {
-      shapes: MapGeoFeatureCollection
-      id: string
-    }
-  ]
+  featureCollections: { [key in BucketKey]: FilterData }
   onPress?: (nativeEvent) => void
   duration: number
   filterID: string
@@ -58,7 +54,8 @@ export class ShapeLayer extends Component<Props, any> {
   }
 
   componentWillReceiveProps(newProps: Props) {
-    if (!isEqual(this.props.featureCollections[0].shapes.features, newProps.featureCollections[0].shapes.features)) {
+    const { filterID, featureCollections } = this.props
+    if (!isEqual(featureCollections[filterID].features, newProps.featureCollections[filterID].features)) {
       this.fadeInAnimations()
     }
   }
@@ -92,13 +89,13 @@ export class ShapeLayer extends Component<Props, any> {
 
   render() {
     const { featureCollections, filterID } = this.props
-    const collection = find(featureCollections, obj => {
-      return obj.id === filterID
-    })
+    const collection: MapGeoFeatureCollection = featureCollections[filterID].featureCollection
+    console.log("filterID: ", filterID, collection)
+
     return (
       <Mapbox.Animated.ShapeSource
         id="shows"
-        shape={collection.shapes}
+        shape={collection}
         cluster
         clusterRadius={50}
         onPress={this.props.onPress}

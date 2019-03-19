@@ -1,6 +1,7 @@
 import { Box, color, Flex, Sans, Theme } from "@artsy/palette"
 import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import { FeatureCollection } from "geojson"
 import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
 import PinFairSelected from "lib/Icons/PinFairSelected"
@@ -21,19 +22,7 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import {
-  Fair,
-  FilterData,
-  FilterTypes,
-  MapGeoFeature,
-  MapGeoFeatureCollection,
-  MapGeoFeatureCollectionArray,
-  MapTab,
-  OSCoordsUpdate,
-  RelayErrorState,
-  SafeAreaInsets,
-  Show,
-} from "./types"
+import { Fair, FilterData, MapGeoFeature, OSCoordsUpdate, RelayErrorState, SafeAreaInsets, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -103,7 +92,7 @@ interface State {
   /** True when we know that we can get location updates from the OS */
   trackUserLocation?: boolean
   /** A set of GeoJSON features, which right now is our show clusters */
-  featureCollections: MapGeoFeatureCollectionArray[]
+  featureCollections: { [key in BucketKey]?: FilterData }
   /** Has the map fully rendered? */
   mapLoaded: boolean
   /** In the process of saving a show */
@@ -202,7 +191,7 @@ export class GlobalMap extends React.Component<Props, State> {
       currentLocation,
       bucketResults: emptyBucketResults,
       trackUserLocation: false,
-      featureCollections: [],
+      featureCollections: null,
       mapLoaded: false,
       isSavingShow: false,
       nearestFeature: null,
@@ -303,6 +292,7 @@ export class GlobalMap extends React.Component<Props, State> {
       return
     }
 
+    const featureCollections: State["featureCollections"] = {}
     cityTabs.forEach(tab => {
       const shows = tab.getShows(this.state.bucketResults)
       const fairs = tab.getFairs(this.state.bucketResults)
@@ -317,11 +307,15 @@ export class GlobalMap extends React.Component<Props, State> {
 
       clusterEngine.load(geoJSONFeature.features as any)
 
-      this.filters[tab.id] = {
+      featureCollections[tab.id] = {
         featureCollection: geoJSONFeature,
         filter: tab.id,
         clusterEngine,
       }
+    })
+
+    this.setState({
+      featureCollections,
     })
   }
 
@@ -573,6 +567,11 @@ export class GlobalMap extends React.Component<Props, State> {
     if (c) {
       this.map = c.root
     }
+  }
+
+  get currentFeatureCollection(): FeatureCollection {
+    const filterID = cityTabs[this.state.activeIndex].id
+    return this.state.featureCollections[filterID]
   }
 
   render() {
