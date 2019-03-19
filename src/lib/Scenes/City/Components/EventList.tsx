@@ -25,7 +25,7 @@ const MaxRowCount = 25
 interface Props {
   bucket: Show[]
   type: MapTab["id"]
-  citySlug: string
+  citySlug?: string
   cityName: string
   header?: string
   relay: RelayProp
