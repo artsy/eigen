@@ -21,6 +21,7 @@
 - Adds message if fair is not active and hides fair details - kieran
 - Fixes LD saving events inconsistencies - ash
 - Changes order of Favorites tabs and re-centers Favorites content when a new tab is selected - ashley
+- Adds pressReleaseUrl to show moreInfo - kieran
 
 ### 1.8.26
 
