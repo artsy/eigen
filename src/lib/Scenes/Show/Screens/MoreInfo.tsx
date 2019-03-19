@@ -48,12 +48,10 @@ export class MoreInfo extends React.Component<Props, State> {
     })
 
     if (show.openingReceptionText) {
-      if (show.press_release) {
-        sections.push({
-          type: "receptionText",
-          data: show.openingReceptionText,
-        })
-      }
+      sections.push({
+        type: "receptionText",
+        data: show.openingReceptionText,
+      })
     }
 
     if (show.press_release) {
