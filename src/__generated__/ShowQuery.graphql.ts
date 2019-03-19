@@ -94,6 +94,7 @@ fragment MoreInfo_show on Show {
   _id
   id
   exhibition_period
+  pressReleaseUrl
   partner {
     __typename
     ... on Partner {
@@ -758,7 +759,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowQuery",
-  "id": "e3ffd1809feaadacc6eeff286fe217e9",
+  "id": "d6b0312e3ddd23bed26343329fb1b4c2",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -1275,6 +1276,13 @@ return {
                 ]
               }
             ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "pressReleaseUrl",
+            "args": null,
+            "storageKey": null
           },
           {
             "kind": "LinkedField",

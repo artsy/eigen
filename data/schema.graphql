@@ -7980,6 +7980,7 @@ enum SearchEntity {
   FEATURE
   GALLERY
   GENE
+  INSTITUTION
   PROFILE
   SALE
   SHOW
@@ -8375,6 +8376,9 @@ type Show implements Node {
 
   # The press release for this show
   press_release(format: Format): String
+
+  # Link to the press release for this show
+  pressReleaseUrl: String
 
   # When this show starts
   start_at(
