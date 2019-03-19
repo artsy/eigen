@@ -11,17 +11,13 @@ export type FairDetail_fair = {
     readonly _id: string;
     readonly name: string | null;
     readonly hours: string | null;
+    readonly isActive: boolean | null;
     readonly location: ({
         readonly coordinates: ({
             readonly lat: number | null;
             readonly lng: number | null;
         }) | null;
         readonly " $fragmentRefs": LocationMap_location$ref;
-    }) | null;
-    readonly counts: ({
-        readonly artists: any | null;
-        readonly artworks: any | null;
-        readonly partners: any | null;
     }) | null;
     readonly organizer: ({
         readonly website: string | null;
@@ -67,28 +63,28 @@ const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "__id",
   "args": null,
   "storageKey": null
 };
@@ -124,34 +120,24 @@ return {
   ],
   "selections": [
     {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "organizer",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "organizer",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "website",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
-    {
       "kind": "FragmentSpread",
       "name": "FairHeader_fair",
       "args": null
     },
     v0,
     v1,
+    v2,
     {
       "kind": "ScalarField",
       "alias": null,
       "name": "hours",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isActive",
       "args": null,
       "storageKey": null
     },
@@ -194,42 +180,27 @@ return {
             }
           ]
         },
-        v2
+        v3
       ]
     },
     {
       "kind": "LinkedField",
       "alias": null,
-      "name": "counts",
+      "name": "organizer",
       "storageKey": null,
       "args": null,
-      "concreteType": "FairCounts",
+      "concreteType": "organizer",
       "plural": false,
       "selections": [
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "artists",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "artworks",
-          "args": null,
-          "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "partners",
+          "name": "website",
           "args": null,
           "storageKey": null
         }
       ]
     },
-    v3,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -253,8 +224,8 @@ return {
       "concreteType": "Profile",
       "plural": false,
       "selections": [
-        v1,
-        v2
+        v2,
+        v3
       ]
     },
     {
@@ -348,8 +319,8 @@ return {
               "concreteType": "Show",
               "plural": false,
               "selections": [
-                v3,
                 v0,
+                v1,
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -384,8 +355,8 @@ return {
                           "concreteType": "Artwork",
                           "plural": false,
                           "selections": [
-                            v3,
-                            v2
+                            v0,
+                            v3
                           ]
                         }
                       ]
@@ -397,7 +368,7 @@ return {
                   "name": "FairBoothPreview_show",
                   "args": null
                 },
-                v2,
+                v3,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -411,9 +382,9 @@ return {
         }
       ]
     },
-    v2
+    v3
   ]
 };
 })();
-(node as any).hash = '426a43ef6bf1e35f998086d346e4d1c1';
+(node as any).hash = 'd82de16039d531467008dc6530845f72';
 export default node;

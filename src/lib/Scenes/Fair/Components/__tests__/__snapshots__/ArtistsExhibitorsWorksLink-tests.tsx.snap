@@ -84,9 +84,9 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
       >
         <RNSVGSvgView
           align="xMidYMid"
-          bbHeight={16}
-          bbWidth={16}
-          height={16}
+          bbHeight={14}
+          bbWidth={14}
+          height={14}
           meetOrSlice={0}
           minX={0}
           minY={0}
@@ -102,14 +102,14 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
               false,
               Object {
                 "flex": 0,
-                "height": 16,
-                "width": 16,
+                "height": 14,
+                "width": 14,
               },
             ]
           }
           vbHeight={54}
           vbWidth={54}
-          width={16}
+          width={14}
         >
           <RNSVGGroup
             fill={
@@ -320,9 +320,9 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
       >
         <RNSVGSvgView
           align="xMidYMid"
-          bbHeight={16}
-          bbWidth={16}
-          height={16}
+          bbHeight={14}
+          bbWidth={14}
+          height={14}
           meetOrSlice={0}
           minX={0}
           minY={0}
@@ -338,14 +338,14 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
               false,
               Object {
                 "flex": 0,
-                "height": 16,
-                "width": 16,
+                "height": 14,
+                "width": 14,
               },
             ]
           }
           vbHeight={54}
           vbWidth={54}
-          width={16}
+          width={14}
         >
           <RNSVGGroup
             fill={
@@ -556,9 +556,9 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
       >
         <RNSVGSvgView
           align="xMidYMid"
-          bbHeight={16}
-          bbWidth={16}
-          height={16}
+          bbHeight={14}
+          bbWidth={14}
+          height={14}
           meetOrSlice={0}
           minX={0}
           minY={0}
@@ -574,14 +574,14 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
               false,
               Object {
                 "flex": 0,
-                "height": 16,
-                "width": 16,
+                "height": 14,
+                "width": 14,
               },
             ]
           }
           vbHeight={54}
           vbWidth={54}
-          width={16}
+          width={14}
         >
           <RNSVGGroup
             fill={

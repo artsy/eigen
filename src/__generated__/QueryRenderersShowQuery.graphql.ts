@@ -94,6 +94,7 @@ fragment MoreInfo_show on Show {
   _id
   id
   exhibition_period
+  pressReleaseUrl
   partner {
     __typename
     ... on Partner {
@@ -439,28 +440,28 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "description",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "city",
+  "name": "description",
   "args": null,
   "storageKey": null
 },
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "city",
   "args": null,
   "storageKey": null
 },
@@ -540,13 +541,6 @@ v17 = {
   ]
 },
 v18 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_biddable",
-  "args": null,
-  "storageKey": null
-},
-v19 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -572,31 +566,38 @@ v19 = {
     }
   ]
 },
-v20 = {
+v19 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "title",
   "args": null,
   "storageKey": null
 },
-v21 = {
+v20 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "date",
   "args": null,
   "storageKey": null
 },
-v22 = {
+v21 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "sale_message",
   "args": null,
   "storageKey": null
 },
-v23 = {
+v22 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_in_auction",
+  "args": null,
+  "storageKey": null
+},
+v23 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_biddable",
   "args": null,
   "storageKey": null
 },
@@ -724,7 +725,7 @@ v29 = {
   ]
 },
 v30 = [
-  v4,
+  v5,
   v2
 ],
 v31 = {
@@ -758,7 +759,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "a9f336a4d905e59b40be8298f678ede1",
+  "id": "09b727b942b7e24bdf5aa061f911a30d",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -801,17 +802,11 @@ return {
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isStubShow",
-            "args": null,
-            "storageKey": null
-          },
           v3,
           v4,
           v5,
           v6,
+          v7,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -828,7 +823,7 @@ return {
             "concreteType": "Image",
             "plural": true,
             "selections": [
-              v7,
+              v4,
               v8,
               v9
             ]
@@ -850,7 +845,13 @@ return {
             "args": null,
             "storageKey": null
           },
-          v7,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isStubShow",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -866,8 +867,8 @@ return {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
+                  v5,
                   v4,
-                  v7,
                   v13,
                   {
                     "kind": "ScalarField",
@@ -930,9 +931,9 @@ return {
                         "concreteType": "Artist",
                         "plural": false,
                         "selections": [
-                          v4,
+                          v5,
                           v13,
-                          v7,
+                          v4,
                           v3,
                           v2
                         ]
@@ -952,9 +953,9 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              v4,
+              v5,
               v13,
-              v7,
+              v4,
               v3,
               v2,
               v10,
@@ -980,14 +981,14 @@ return {
             "concreteType": "Artwork",
             "plural": true,
             "selections": [
-              v18,
               v2,
+              v4,
+              v18,
               v19,
               v20,
               v21,
               v22,
               v23,
-              v7,
               v24,
               v25,
               v27,
@@ -1032,10 +1033,10 @@ return {
             "plural": true,
             "selections": [
               v3,
-              v7,
+              v4,
               v13,
               v2,
-              v4,
+              v5,
               v10,
               v14,
               v15,
@@ -1078,8 +1079,8 @@ return {
                     "plural": false,
                     "selections": [
                       v3,
-                      v7,
                       v4,
+                      v5,
                       v11,
                       {
                         "kind": "LinkedField",
@@ -1109,7 +1110,7 @@ return {
                             "kind": "InlineFragment",
                             "type": "Partner",
                             "selections": [
-                              v4
+                              v5
                             ]
                           }
                         ]
@@ -1131,8 +1132,8 @@ return {
             "plural": false,
             "selections": [
               v2,
+              v4,
               v7,
-              v6,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -1230,19 +1231,6 @@ return {
                   v12,
                   {
                     "kind": "InlineFragment",
-                    "type": "OpeningHoursText",
-                    "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "text",
-                        "args": null,
-                        "storageKey": null
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "InlineFragment",
                     "type": "OpeningHoursArray",
                     "selections": [
                       {
@@ -1271,10 +1259,30 @@ return {
                         ]
                       }
                     ]
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "type": "OpeningHoursText",
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "text",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
                   }
                 ]
               }
             ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "pressReleaseUrl",
+            "args": null,
+            "storageKey": null
           },
           {
             "kind": "LinkedField",
@@ -1292,7 +1300,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v5,
+              v6,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -1327,12 +1335,12 @@ return {
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
-                  v14,
                   v2,
-                  v7,
-                  v4,
-                  v10,
                   v3,
+                  v4,
+                  v5,
+                  v10,
+                  v14,
                   v15,
                   v16,
                   v17,
@@ -1411,8 +1419,8 @@ return {
                     "concreteType": "AggregationCount",
                     "plural": true,
                     "selections": [
-                      v7,
                       v4,
+                      v5,
                       v2
                     ]
                   }
@@ -1485,15 +1493,15 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          v24,
-                          v7,
+                          v4,
+                          v2,
+                          v18,
                           v19,
                           v20,
                           v21,
                           v22,
                           v23,
-                          v18,
-                          v2,
+                          v24,
                           v25,
                           v27,
                           v29,

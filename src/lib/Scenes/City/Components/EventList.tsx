@@ -64,7 +64,11 @@ export class EventList extends React.Component<Props> {
   }
 
   shouldComponentUpdate(nextProps: Props) {
-    return !isEqual(this.props.type, nextProps.type) || this.props.bucket.length !== nextProps.bucket.length
+    return (
+      !isEqual(this.props.type, nextProps.type) ||
+      this.props.bucket.length !== nextProps.bucket.length ||
+      !isEqual(this.props.bucket.map(g => g.is_followed), nextProps.bucket.map(g => g.is_followed))
+    )
   }
 
   viewAllPressed() {

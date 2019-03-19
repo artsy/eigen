@@ -156,19 +156,6 @@ const node: ConcreteFragment = {
       "selections": [
         {
           "kind": "InlineFragment",
-          "type": "OpeningHoursText",
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "text",
-              "args": null,
-              "storageKey": null
-            }
-          ]
-        },
-        {
-          "kind": "InlineFragment",
           "type": "OpeningHoursArray",
           "selections": [
             {
@@ -195,6 +182,19 @@ const node: ConcreteFragment = {
                   "storageKey": null
                 }
               ]
+            }
+          ]
+        },
+        {
+          "kind": "InlineFragment",
+          "type": "OpeningHoursText",
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "text",
+              "args": null,
+              "storageKey": null
             }
           ]
         }

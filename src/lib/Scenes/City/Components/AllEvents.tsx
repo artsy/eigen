@@ -185,7 +185,7 @@ export class AllEvents extends React.Component<Props, State> {
       case "bmw":
         return (
           <BMWEventSection
-            title="BMW Art Guide"
+            title="BMW Art Guide by Independent Collectors"
             sponsoredContent={sponsoredContent}
             citySlug={citySlug}
             relay={this.props.relay}

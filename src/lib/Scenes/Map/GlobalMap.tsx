@@ -71,6 +71,8 @@ interface Props {
   citySlug: string
   /** Whether the bottom sheet drawer is opened */
   isDrawerOpen?: boolean
+  /** Whether the user is geographically within the city we're currently rendering. */
+  userLocationWithinCity: boolean
   /** Reflects the area not covered by navigation bars, tab bars, toolbars, and other ancestors  */
   safeAreaInsets: SafeAreaInsets
   /** Error from Relay (MapRenderer.tsx). Needed here to send over the EventEmitter. */
@@ -104,7 +106,9 @@ interface State {
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
 
-const DefaultZoomLevel = 12
+const DefaultZoomLevel = 11
+const MinZoomLevel = 9
+const MaxZoomLevel = 17.5
 
 const ButtonAnimation = {
   yDelta: -200,
@@ -230,8 +234,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
     if (citySlug && citySlug !== nextProps.citySlug) {
       // Reset zoom level after switching cities
-      this.updateClusterMap()
-      setTimeout(() => this.map.zoomTo(10, 100), 500)
+      setTimeout(() => this.map.zoomTo(DefaultZoomLevel, 100), 500)
     }
 
     if (nextProps.viewer && !this.props.viewer) {
@@ -299,6 +302,8 @@ export class GlobalMap extends React.Component<Props, State> {
 
       const clusterEngine = new Supercluster({
         radius: 50,
+        minZoom: Math.floor(MinZoomLevel),
+        maxZoom: Math.floor(MaxZoomLevel),
       })
 
       clusterEngine.load(geoJSONFeature.features as any)
@@ -383,8 +388,8 @@ export class GlobalMap extends React.Component<Props, State> {
       const clusterId = properties.cluster_id.toString()
       let pointCount = properties.point_count
 
-      const width = pointCount < 3 ? 35 : pointCount < 21 ? 50 : 60
-      const height = pointCount < 3 ? 35 : pointCount < 21 ? 50 : 60
+      const width = pointCount < 6 ? 35 : pointCount < 21 ? 50 : 60
+      const height = pointCount < 6 ? 35 : pointCount < 21 ? 50 : 60
       pointCount = pointCount.toString()
 
       return (
@@ -557,7 +562,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   render() {
     const city = get(this.props, "viewer.city")
-    const { relayErrorState } = this.props
+    const { relayErrorState, userLocationWithinCity } = this.props
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || get(city, "coordinates")
     const { mapLoaded, activeShows, activePin } = this.state
 
@@ -567,7 +572,8 @@ export class GlobalMap extends React.Component<Props, State> {
       userTrackingMode: Mapbox.UserTrackingModes.Follow,
       centerCoordinate: [centerLng, centerLat],
       zoomLevel: DefaultZoomLevel,
-      minZoomLevel: 10,
+      minZoomLevel: MinZoomLevel,
+      maxZoomLevel: MaxZoomLevel,
       logoEnabled: !!city,
       attributionEnabled: false,
       compassEnabled: false,
@@ -589,14 +595,15 @@ export class GlobalMap extends React.Component<Props, State> {
                 isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
                 onPress={this.onPressCitySwitcherButton}
               />
-              {this.state.userLocation && (
-                <Box style={{ marginLeft: "auto" }}>
-                  <UserPositionButton
-                    highlight={this.state.userLocation === this.state.currentLocation}
-                    onPress={this.onPressUserPositionButton}
-                  />
-                </Box>
-              )}
+              {this.state.userLocation &&
+                userLocationWithinCity && (
+                  <Box style={{ marginLeft: "auto" }}>
+                    <UserPositionButton
+                      highlight={this.state.userLocation === this.state.currentLocation}
+                      onPress={this.onPressUserPositionButton}
+                    />
+                  </Box>
+                )}
             </Flex>
           </Animated.View>
         </TopButtonsContainer>
@@ -801,7 +808,7 @@ export const GlobalMapContainer = createFragmentContainer(
         upcomingShows: shows(
           includeStubShows: true
           status: UPCOMING
-          dayThreshold: 30
+          dayThreshold: 14
           first: $maxInt
           sort: START_AT_ASC
         ) {

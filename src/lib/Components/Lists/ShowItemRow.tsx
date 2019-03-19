@@ -34,6 +34,7 @@ export class ShowItemRow extends React.Component<Props, State> {
   state = {
     isFollowedSaving: false,
   }
+  isTapped: boolean
 
   @track((__, _, args) => {
     const slug = args[0]
@@ -47,8 +48,12 @@ export class ShowItemRow extends React.Component<Props, State> {
     } as any
   })
   handleTap(_slug, _id) {
+    this.isTapped = true
     const href = hrefForPartialShow(this.props.show)
     SwitchBoard.presentNavigationViewController(this, href)
+    setTimeout(() => {
+      this.isTapped = false
+    }, 300)
   }
 
   @track(props => {
@@ -133,7 +138,7 @@ export class ShowItemRow extends React.Component<Props, State> {
     const imageURL = mainCoverImageURL || galleryProfileIcon
 
     return (
-      <TouchableWithoutFeedback onPress={() => this.handleTap(show.id, show._id)}>
+      <TouchableWithoutFeedback onPress={() => (!this.isTapped ? this.handleTap(show.id, show._id) : null)}>
         <Box py={noPadding ? 0 : 2}>
           <Flex flexDirection="row">
             {!imageURL ? (
@@ -143,7 +148,7 @@ export class ShowItemRow extends React.Component<Props, State> {
             ) : (
               <OpaqueImageView width={58} height={58} imageURL={imageURL} />
             )}
-            <Flex flexDirection="column" flexGrow={1} width={180} mr={10}>
+            <Flex flexDirection="column" flexGrow={1} width={165} mr={10}>
               {show.partner &&
                 show.partner.name && (
                   <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
@@ -173,6 +178,7 @@ export class ShowItemRow extends React.Component<Props, State> {
                     selected={show.is_followed}
                     onPress={() => this.handleSave()}
                     noBackground={true}
+                    hitSlop={{ top: 10, bottom: 10, left: 0, right: 0 }}
                   />
                 </Box>
               </Flex>

@@ -139,36 +139,6 @@ return {
             v1,
             {
               "kind": "InlineFragment",
-              "type": "Show",
-              "selections": [
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "fair",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Fair",
-                  "plural": false,
-                  "selections": [
-                    v0,
-                    v1
-                  ]
-                },
-                v0,
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "cover_image",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Image",
-                  "plural": false,
-                  "selections": v2
-                }
-              ]
-            },
-            {
-              "kind": "InlineFragment",
               "type": "Artwork",
               "selections": [
                 {
@@ -196,6 +166,36 @@ return {
                   "kind": "LinkedField",
                   "alias": null,
                   "name": "image",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Image",
+                  "plural": false,
+                  "selections": v2
+                }
+              ]
+            },
+            {
+              "kind": "InlineFragment",
+              "type": "Show",
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "fair",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Fair",
+                  "plural": false,
+                  "selections": [
+                    v0,
+                    v1
+                  ]
+                },
+                v0,
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "cover_image",
                   "storageKey": null,
                   "args": null,
                   "concreteType": "Image",

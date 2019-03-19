@@ -20,6 +20,15 @@
 - Updates copy in Global Saves and Follows Shows tab - ashley
 - Add shouldComponentUpdate checks across City and Map components to avoid re-renders - luc
 - Cap show list tabs in City view and add view all link - luc
+- Adds a hitslop to the save button for shows - orta
+- Updates copy in Global Saves and Follows Shows tab - ashley
+- Adds message if fair is not active and hides fair details - kieran
+- Fixes LD saving events inconsistencies - ash
+- Relay no longer caches GraphQL responses which contain `errors` field - ash
+- Changes order of Favorites tabs and re-centers Favorites content when a new tab is selected - ashley
+- Adds pressReleaseUrl to show moreInfo - kieran
+- Updates dayThresholds for opening/closing shows to be 14/7 respectively - kieran
+- User location button hides when user is outside of currently selected city - ash
 
 ### 1.8.26
 

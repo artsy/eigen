@@ -67,11 +67,13 @@ export class BMWEventSection extends React.Component<Props> {
         artGuideUrl,
         shows: { totalCount },
       },
+      title,
     } = this.props
+
     return (
       <>
         <Box my={2} px={2}>
-          <Serif size="8">{this.props.title}</Serif>
+          <Serif size="8">{title}</Serif>
         </Box>
         <Box mb={2} px={2}>
           <Sans weight="medium" size="3">
