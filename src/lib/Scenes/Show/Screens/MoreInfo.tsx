@@ -20,7 +20,7 @@ interface Props extends ViewProperties {
 
 interface State {
   sections: Array<{
-    type: "event" | "pressRelease" | "galleryWebsite"
+    type: "event" | "pressRelease" | "galleryWebsite" | "pressReleaseUrl"
     data: any
   }>
 }
