@@ -5,6 +5,7 @@ type Mockify<T> = { [P in keyof T]: jest.MockInstance<T[P]> }
 
 const cache: Mockify<typeof _cache> = _cache as any
 
+import { NetworkError } from "lib/utils/errors"
 import { cacheMiddleware } from "../cacheMiddleware"
 
 describe("cacheMiddleware", () => {
@@ -23,7 +24,7 @@ describe("cacheMiddleware", () => {
     variables,
     cacheConfig,
   }
-  const response = { data: { artist: { name: "Banksy" } }, status: 200 }
+  const response = { json: { artist: { name: "Banksy" } }, status: 200, statusText: "OK" }
 
   beforeEach(() => {
     cache.clear.mockClear()
@@ -55,6 +56,53 @@ describe("cacheMiddleware", () => {
 
       expect(cache.set.mock.calls.length).toEqual(2)
       expect(cache.set.mock.calls[0][0]).toEqual(operation.id)
+    })
+
+    describe("a response with errors", async () => {
+      it("clears the cache and throws an error", async () => {
+        const mockedErrorsNext = () => {
+          return new Promise(resolve => {
+            resolve({
+              ...response,
+              json: {
+                ...response.json,
+                errors: [{ errorCode: 1234 }],
+              },
+            })
+          })
+        }
+
+        await expect(cacheMiddleware()(mockedErrorsNext)(request)).rejects.toEqual(new NetworkError("OK"))
+
+        // 1 cache call means we set request as in-flight.
+        expect(cache.set).toHaveBeenCalledTimes(1)
+        expect(cache.set).toHaveBeenCalledWith(operation.id, variables, null)
+
+        expect(cache.clear).toHaveBeenCalledWith(operation.id, variables)
+      })
+    })
+  })
+
+  describe("a 500 response from metaphysics", () => {
+    it("clears the cache and throws an error", async () => {
+      const mockedErrorsNext = () => {
+        return new Promise(resolve => {
+          resolve({
+            status: 500,
+            statusText: "some weird 500 HTML page or something",
+          })
+        })
+      }
+
+      await expect(cacheMiddleware()(mockedErrorsNext)(request)).rejects.toEqual(
+        new NetworkError("some weird 500 HTML page or something")
+      )
+
+      // 1 cache call means we set request as in-flight.
+      expect(cache.set).toHaveBeenCalledTimes(1)
+      expect(cache.set).toHaveBeenCalledWith(operation.id, variables, null)
+
+      expect(cache.clear).toHaveBeenCalledWith(operation.id, variables)
     })
   })
 
