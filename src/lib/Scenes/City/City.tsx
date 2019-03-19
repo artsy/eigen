@@ -206,6 +206,7 @@ export class CityView extends Component<Props, State> {
                       bucket={buckets[tab.id]}
                       type={tab.id}
                       cityName={cityName}
+                      citySlug={citySlug}
                       relay={this.state.relay}
                     />
                   </ScrollableTab>

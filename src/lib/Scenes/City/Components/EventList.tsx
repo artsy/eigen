@@ -1,6 +1,8 @@
 import { Box, Message, Separator, Serif } from "@artsy/palette"
+import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import Spinner from "lib/Components/Spinner"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { MapTab, Show } from "lib/Scenes/Map/types"
 import { isEqual } from "lodash"
 import React from "react"
@@ -23,6 +25,7 @@ const MaxRowCount = 25
 interface Props {
   bucket: Show[]
   type: MapTab["id"]
+  citySlug: string
   cityName: string
   header?: string
   relay: RelayProp
@@ -40,12 +43,37 @@ export class EventList extends React.Component<Props> {
     )
   }
 
+  renderFooter = () => {
+    const { bucket, fetchingNextPage, type } = this.props
+    if (fetchingNextPage) {
+      return <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
+    }
+
+    if (bucket.length > MaxRowCount) {
+      return (
+        <>
+          <Separator />
+          <Box mt={2} mb={3}>
+            <CaretButton onPress={() => this.viewAllPressed()} text={`View all ${type} shows`} />
+          </Box>
+        </>
+      )
+    }
+
+    return null
+  }
+
   shouldComponentUpdate(nextProps: Props) {
     return !isEqual(this.props.type, nextProps.type) || this.props.bucket.length !== nextProps.bucket.length
   }
 
+  viewAllPressed() {
+    const { citySlug, type } = this.props
+    SwitchBoard.presentNavigationViewController(this, `/city/${citySlug}/${type}`)
+  }
+
   hasEventsComponent = () => {
-    const { bucket, onScroll, fetchingNextPage, header } = this.props
+    const { bucket, onScroll, header } = this.props
     return (
       <FlatList
         ListHeaderComponent={() => {
@@ -63,7 +91,7 @@ export class EventList extends React.Component<Props> {
         initialNumToRender={6}
         removeClippedSubviews={true}
         ItemSeparatorComponent={() => <Separator />}
-        ListFooterComponent={fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
+        ListFooterComponent={this.renderFooter()}
         keyExtractor={item => item.id}
         renderItem={({ item }) => this.renderItem(item)}
         onScroll={onScroll}
