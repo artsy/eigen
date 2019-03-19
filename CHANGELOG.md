@@ -24,6 +24,7 @@
 - Changes order of Favorites tabs and re-centers Favorites content when a new tab is selected - ashley
 - Adds pressReleaseUrl to show moreInfo - kieran
 - User location button hides when user is outside of currently selected city - ash
+- Adds "Ongoing" to shows running 2+ years beyond the present - ashley
 
 ### 1.8.26
 
