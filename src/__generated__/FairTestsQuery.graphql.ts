@@ -40,7 +40,7 @@ fragment FairDetail_fair on Fair {
   _id
   name
   hours
-  is_active
+  isActive
   location {
     ...LocationMap_location
     coordinates {
@@ -422,7 +422,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairTestsQuery",
-  "id": "5c6117dccafdccbe33ed770f6d28957f",
+  "id": "be1bdd589f57faa3a70ed129d7db7f13",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -745,7 +745,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "is_active",
+            "name": "isActive",
             "args": null,
             "storageKey": null
           },

@@ -56,7 +56,7 @@ export class FairDetail extends React.Component<Props, State> {
 
   updateSections = () => {
     const { fair } = this.props
-    const { is_active } = fair
+    const { isActive } = fair
     const sections = []
 
     const coords = fair.location.coordinates
@@ -91,7 +91,7 @@ export class FairDetail extends React.Component<Props, State> {
 
     let boothCount = 0
 
-    if (is_active) {
+    if (isActive) {
       sections.push({
         type: "title",
       })
@@ -262,7 +262,7 @@ export const FairDetailContainer = createPaginationContainer(
         _id
         name
         hours
-        is_active
+        isActive
         location {
           ...LocationMap_location
           coordinates {

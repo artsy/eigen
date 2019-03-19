@@ -37,7 +37,7 @@ fragment FairDetail_fair_1G22uz on Fair {
   _id
   name
   hours
-  is_active
+  isActive
   location {
     ...LocationMap_location
     coordinates {
@@ -439,7 +439,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairDetailShowsQuery",
-  "id": "16d1c8f1aceead342cea9c2f17e4a5bb",
+  "id": "68462ffdfe7c26f6c1f5d36de2e394af",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -775,7 +775,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "is_active",
+            "name": "isActive",
             "args": null,
             "storageKey": null
           },
