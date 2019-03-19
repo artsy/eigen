@@ -7,6 +7,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { uniq } from "lodash"
+import moment from "moment"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -131,10 +132,26 @@ export class ShowHeader extends React.Component<Props, State> {
     SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}/artists`)
   }
 
+  getExhibitionPeriod() {
+    const {
+      show: { exhibition_period, end_at },
+    } = this.props
+    const twoYearsFromToday = moment()
+      .add(2, "years")
+      .utc()
+    const exhibitionEndDate = moment(end_at).utc()
+    const shouldDisplayOngoing = moment(exhibitionEndDate).isSameOrAfter(twoYearsFromToday)
+
+    if (shouldDisplayOngoing) {
+      return "Ongoing"
+    }
+    return exhibition_period
+  }
+
   render() {
     const { isFollowedSaving } = this.state
     const {
-      show: { artists, images, is_followed, name, partner, exhibition_period, followedArtists },
+      show: { artists, images, is_followed, name, partner, followedArtists },
     } = this.props
     const fairfollowedArtistList =
       (followedArtists && followedArtists.edges && followedArtists.edges.map(fa => fa.node.artist)) || []
@@ -154,7 +171,7 @@ export class ShowHeader extends React.Component<Props, State> {
           <Serif size="8" lineHeight={34}>
             {name}
           </Serif>
-          <Sans size="3">{exhibition_period}</Sans>
+          <Sans size="3">{this.getExhibitionPeriod()}</Sans>
         </Box>
         {hasImages &&
           !singleImage && (
@@ -211,6 +228,7 @@ export const ShowHeaderContainer = createFragmentContainer(
       name
       press_release
       is_followed
+      end_at
       exhibition_period
       status
       isStubShow

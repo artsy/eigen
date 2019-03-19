@@ -9,6 +9,7 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { hrefForPartialShow } from "lib/utils/router"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { get } from "lodash"
+import moment from "moment"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -130,6 +131,26 @@ export class ShowItemRow extends React.Component<Props, State> {
     })
   }
 
+  getExhibitionPeriod() {
+    const {
+      show: { exhibition_period, status, end_at },
+    } = this.props
+    const twoYearsFromToday = moment()
+      .add(2, "years")
+      .utc()
+    const exhibitionEndDate = moment(end_at).utc()
+    const shouldDisplayOngoing = moment(exhibitionEndDate).isSameOrAfter(twoYearsFromToday)
+
+    if (shouldDisplayOngoing) {
+      return "Ongoing"
+    }
+    return (
+      status &&
+      exhibition_period &&
+      (status.includes("closed") ? status.charAt(0).toUpperCase() + status.slice(1) : exhibition_period)
+    )
+  }
+
   render() {
     const { noPadding, show, shouldHideSaveButton } = this.props
     const mainCoverImageURL = show.cover_image && show.cover_image.url
@@ -160,14 +181,9 @@ export class ShowItemRow extends React.Component<Props, State> {
                   {show.name}
                 </TightendSerif>
               )}
-              {show.status &&
-                show.exhibition_period && (
-                  <Sans size="3t" color={color("black60")} ml={15}>
-                    {show.status.includes("closed")
-                      ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                      : show.exhibition_period}
-                  </Sans>
-                )}
+              <Sans size="3t" color={color("black60")} ml={15}>
+                {this.getExhibitionPeriod()}
+              </Sans>
             </Flex>
             {!shouldHideSaveButton && (
               <Flex flexDirection="row">

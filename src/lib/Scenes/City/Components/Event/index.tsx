@@ -5,6 +5,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Show } from "lib/Scenes/Map/types"
 import { Schema, Track, track as _track } from "lib/utils/track"
+import moment from "moment"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, graphql, RelayProp } from "react-relay"
@@ -129,6 +130,22 @@ export class Event extends React.Component<Props, State> {
     SwitchBoard.presentNavigationViewController(this, `/show/${id}`)
   }
 
+  getExhibitionPeriod() {
+    const {
+      event: { exhibition_period, end_at },
+    } = this.props
+    const twoYearsFromToday = moment()
+      .add(2, "years")
+      .utc()
+    const exhibitionEndDate = moment(end_at).utc()
+    const shouldDisplayOngoing = moment(exhibitionEndDate).isSameOrAfter(twoYearsFromToday)
+
+    if (shouldDisplayOngoing) {
+      return "Ongoing"
+    }
+    return exhibition_period
+  }
+
   render() {
     const node = this.props.event
     const { name, exhibition_period, partner, cover_image, is_followed } = node
@@ -153,7 +170,7 @@ export class Event extends React.Component<Props, State> {
               </Serif>
               {exhibition_period && (
                 <Sans size="2" color={color("black60")}>
-                  {exhibition_period}
+                  {this.getExhibitionPeriod()}
                 </Sans>
               )}
             </TextContainer>
