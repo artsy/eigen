@@ -57,7 +57,11 @@ export class Shows extends Component<Props, State> {
           <FlatList
             data={shows}
             keyExtractor={item => item.__id}
-            renderItem={item => <ShowItemRow show={item.item} />}
+            renderItem={item => (
+              <Box py={2}>
+                <ShowItemRow show={item.item} />
+              </Box>
+            )}
             onEndReached={this.loadMore}
             onEndReachedThreshold={0.2}
             ItemSeparatorComponent={() => <Separator />}

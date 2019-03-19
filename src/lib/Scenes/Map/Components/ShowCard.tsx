@@ -78,19 +78,15 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
       <Background ml={1} p={1} style={shadowDetails} {...props}>
         <TouchableOpacity onPress={this.handleTap.bind(this, item)}>
           {item.type === "Show" ? (
-            <Box py={-2}>
-              <ShowItemRow
-                show={item}
-                relay={this.props.relay}
-                onSaveStarted={this.props.onSaveStarted}
-                onSaveEnded={this.props.onSaveEnded}
-                shouldHideSaveButton={true}
-              />
-            </Box>
+            <ShowItemRow
+              show={item}
+              relay={this.props.relay}
+              onSaveStarted={this.props.onSaveStarted}
+              onSaveEnded={this.props.onSaveEnded}
+              shouldHideSaveButton={true}
+            />
           ) : (
-            <Box py={-2}>
-              <TabFairItemRow item={item} />
-            </Box>
+            <TabFairItemRow item={item} />
           )}
         </TouchableOpacity>
       </Background>

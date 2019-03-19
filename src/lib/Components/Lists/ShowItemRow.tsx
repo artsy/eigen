@@ -138,52 +138,50 @@ export class ShowItemRow extends React.Component<Props, State> {
 
     return (
       <TouchableWithoutFeedback onPress={() => (!this.isTapped ? this.handleTap(show.id, show._id) : null)}>
-        <Box py={2}>
-          <Flex flexDirection="row">
-            {!imageURL ? (
-              <DefaultImageContainer p={15}>
-                <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
-              </DefaultImageContainer>
-            ) : (
-              <OpaqueImageView width={58} height={58} imageURL={imageURL} />
-            )}
-            <Flex flexDirection="column" flexGrow={1} width={165} mr={10}>
-              {show.partner &&
-                show.partner.name && (
-                  <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
-                    {show.partner.name}
-                  </Sans>
-                )}
-              {show.name && (
-                <TightendSerif size="3t" color={color("black60")} ml={15} numberOfLines={1}>
-                  {show.name}
-                </TightendSerif>
+        <Flex flexDirection="row">
+          {!imageURL ? (
+            <DefaultImageContainer p={15}>
+              <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
+            </DefaultImageContainer>
+          ) : (
+            <OpaqueImageView width={58} height={58} imageURL={imageURL} />
+          )}
+          <Flex flexDirection="column" flexGrow={1} width={165} mr={10}>
+            {show.partner &&
+              show.partner.name && (
+                <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
+                  {show.partner.name}
+                </Sans>
               )}
-              {show.status &&
-                show.exhibition_period && (
-                  <Sans size="3t" color={color("black60")} ml={15}>
-                    {show.status.includes("closed")
-                      ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                      : show.exhibition_period}
-                  </Sans>
-                )}
-            </Flex>
-            {!shouldHideSaveButton && (
-              <Flex flexDirection="row">
-                <Box width={50} height={20}>
-                  <InvertedButton
-                    inProgress={this.state.isFollowedSaving}
-                    text={show.is_followed ? "Saved" : "Save"}
-                    selected={show.is_followed}
-                    onPress={() => this.handleSave()}
-                    noBackground={true}
-                    hitSlop={{ top: 10, bottom: 10, left: 0, right: 0 }}
-                  />
-                </Box>
-              </Flex>
+            {show.name && (
+              <TightendSerif size="3t" color={color("black60")} ml={15} numberOfLines={1}>
+                {show.name}
+              </TightendSerif>
             )}
+            {show.status &&
+              show.exhibition_period && (
+                <Sans size="3t" color={color("black60")} ml={15}>
+                  {show.status.includes("closed")
+                    ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
+                    : show.exhibition_period}
+                </Sans>
+              )}
           </Flex>
-        </Box>
+          {!shouldHideSaveButton && (
+            <Flex flexDirection="row">
+              <Box width={50} height={20}>
+                <InvertedButton
+                  inProgress={this.state.isFollowedSaving}
+                  text={show.is_followed ? "Saved" : "Save"}
+                  selected={show.is_followed}
+                  onPress={() => this.handleSave()}
+                  noBackground={true}
+                  hitSlop={{ top: 10, bottom: 10, left: 0, right: 0 }}
+                />
+              </Box>
+            </Flex>
+          )}
+        </Flex>
       </TouchableWithoutFeedback>
     )
   }
