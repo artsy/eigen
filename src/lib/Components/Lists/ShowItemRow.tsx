@@ -148,7 +148,7 @@ export class ShowItemRow extends React.Component<Props, State> {
             ) : (
               <OpaqueImageView width={58} height={58} imageURL={imageURL} />
             )}
-            <Flex flexDirection="column" flexGrow={1} width={180} mr={10}>
+            <Flex flexDirection="column" flexGrow={1} width={165} mr={10}>
               {show.partner &&
                 show.partner.name && (
                   <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
