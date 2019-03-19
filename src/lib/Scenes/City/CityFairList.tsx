@@ -46,7 +46,11 @@ class CityFairList extends React.Component<Props, State> {
   }
 
   renderItem = item => {
-    return <TabFairItemRow item={item.node} />
+    return (
+      <Box py={2}>
+        <TabFairItemRow item={item.node} />
+      </Box>
+    )
   }
 
   render() {
