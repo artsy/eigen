@@ -3,8 +3,8 @@ import { ShowItem_show } from "__generated__/ShowItem_show.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import { Pin } from "lib/Icons/Pin"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { ExhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { Schema, track } from "lib/utils/track"
-import moment from "moment"
 import React from "react"
 import { Dimensions, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -40,27 +40,15 @@ export class ShowItem extends React.Component<Props> {
   onPress() {
     SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}`)
   }
-  getExhibitionPeriod() {
-    const {
-      show: { exhibition_period, end_at },
-    } = this.props
-    const twoYearsFromToday = moment()
-      .add(2, "years")
-      .utc()
-    const exhibitionEndDate = moment(end_at).utc()
-    const shouldDisplayOngoing = moment(exhibitionEndDate).isSameOrAfter(twoYearsFromToday)
 
-    if (shouldDisplayOngoing) {
-      return "Ongoing"
-    }
-    return exhibition_period
-  }
   render() {
     const { show } = this.props
 
     const {
       name,
       partner: { name: galleryName },
+      exhibition_period,
+      end_at,
     } = show
 
     const placeholder = this.imageURL ? null : <Pin color="white" />
@@ -79,7 +67,7 @@ export class ShowItem extends React.Component<Props> {
               {galleryName}
             </Serif>
             <Serif size="2" color="black60">
-              {this.getExhibitionPeriod()}
+              {ExhibitionDates(exhibition_period, end_at)}
             </Serif>
           </Flex>
         </Flex>
