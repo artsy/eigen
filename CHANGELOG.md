@@ -23,6 +23,7 @@
 - Relay no longer caches GraphQL responses which contain `errors` field - ash
 - Changes order of Favorites tabs and re-centers Favorites content when a new tab is selected - ashley
 - Adds pressReleaseUrl to show moreInfo - kieran
+- Adds correct formatting and data for show event sections - kieran
 
 ### 1.8.26
 
