@@ -6,7 +6,7 @@ import React, { Component } from "react"
 import { FlatList } from "react-native"
 import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-import { Separator, Theme } from "@artsy/palette"
+import { Box, Separator, Theme } from "@artsy/palette"
 import { Shows_me } from "__generated__/Shows_me.graphql"
 
 interface Props {
@@ -56,7 +56,11 @@ export class Shows extends Component<Props, State> {
         <FlatList
           data={shows}
           keyExtractor={item => item.__id}
-          renderItem={item => <ShowItemRow addMargin={true} show={item.item} />}
+          renderItem={item => (
+            <Box mx={2}>
+              <ShowItemRow show={item.item} />
+            </Box>
+          )}
           onEndReached={this.loadMore}
           onEndReachedThreshold={0.2}
           ItemSeparatorComponent={() => <Separator />}
