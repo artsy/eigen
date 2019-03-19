@@ -17,7 +17,6 @@ import styled from "styled-components/native"
 interface Props {
   show: ShowItemRow_show
   relay?: RelayProp
-  noPadding?: boolean
   onSaveStarted?: () => void
   onSaveEnded?: () => void
   shouldHideSaveButton?: boolean
@@ -131,7 +130,7 @@ export class ShowItemRow extends React.Component<Props, State> {
   }
 
   render() {
-    const { noPadding, show, shouldHideSaveButton } = this.props
+    const { show, shouldHideSaveButton } = this.props
     const mainCoverImageURL = show.cover_image && show.cover_image.url
     const galleryProfileIcon = show.isStubShow && get(show, "partner.profile.image.url")
 
@@ -139,7 +138,7 @@ export class ShowItemRow extends React.Component<Props, State> {
 
     return (
       <TouchableWithoutFeedback onPress={() => (!this.isTapped ? this.handleTap(show.id, show._id) : null)}>
-        <Box py={noPadding ? 0 : 2}>
+        <Box py={2}>
           <Flex flexDirection="row">
             {!imageURL ? (
               <DefaultImageContainer p={15}>
