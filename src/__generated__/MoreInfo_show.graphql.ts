@@ -8,6 +8,7 @@ export type MoreInfo_show = {
     readonly _id: string;
     readonly id: string;
     readonly exhibition_period: string | null;
+    readonly pressReleaseUrl: string | null;
     readonly partner: ({
         readonly website?: string | null;
         readonly type?: string | null;
@@ -54,6 +55,13 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "exhibition_period",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "pressReleaseUrl",
       "args": null,
       "storageKey": null
     },
@@ -116,5 +124,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7e038488dbad07937195628c1b8c6828';
+(node as any).hash = '1283a6d3a7592d033c1f537cfa563f8b';
 export default node;

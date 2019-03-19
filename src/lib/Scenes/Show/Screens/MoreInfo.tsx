@@ -1,6 +1,7 @@
 import { Box, Separator, Serif, Spacer, Theme } from "@artsy/palette"
 import { MoreInfo_show } from "__generated__/MoreInfo_show.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
 import { FlatList, Linking, ViewProperties } from "react-native"
@@ -19,7 +20,7 @@ interface Props extends ViewProperties {
 
 interface State {
   sections: Array<{
-    type: "event" | "press-release" | "gallery-website"
+    type: "event" | "pressRelease" | "galleryWebsite"
     data: any
   }>
 }
@@ -48,14 +49,21 @@ export class MoreInfo extends React.Component<Props, State> {
 
     if (show.press_release) {
       sections.push({
-        type: "press-release",
+        type: "pressRelease",
+        data: show,
+      })
+    }
+
+    if (show.pressReleaseUrl) {
+      sections.push({
+        type: "pressReleaseUrl",
         data: show,
       })
     }
 
     if (show.partner.website) {
       sections.push({
-        type: "gallery-website",
+        type: "galleryWebsite",
         data: show,
       })
     }
@@ -80,18 +88,24 @@ export class MoreInfo extends React.Component<Props, State> {
     Linking.openURL(url).catch(err => console.error("An error occurred opening gallery link", err))
   }
 
+  openPressReleaseLink = () => {
+    SwitchBoard.presentNavigationViewController(this, this.props.show.pressReleaseUrl)
+  }
+
   renderItem = ({ item: { data, type } }) => {
     switch (type) {
-      case "gallery-website":
+      case "galleryWebsite":
         return (
           <CaretButton
             onPress={() => this.renderGalleryWebsite(data.partner.website)}
             text={data.partner.type === "Gallery" ? "Visit gallery site" : "Visit institution site"}
           />
         )
+      case "pressReleaseUrl":
+        return <CaretButton onPress={() => this.openPressReleaseLink()} text="View press release" />
       case "event":
         return <EventSection {...data} />
-      case "press-release":
+      case "pressRelease":
         return <TextSection title="Press Release" text={data.press_release} />
     }
   }
@@ -126,6 +140,7 @@ export const MoreInfoContainer = createFragmentContainer(
       _id
       id
       exhibition_period
+      pressReleaseUrl
       partner {
         ... on Partner {
           website
