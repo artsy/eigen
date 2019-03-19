@@ -382,8 +382,8 @@ export class GlobalMap extends React.Component<Props, State> {
       const clusterId = properties.cluster_id.toString()
       let pointCount = properties.point_count
 
-      const width = pointCount < 3 ? 35 : pointCount < 21 ? 50 : 60
-      const height = pointCount < 3 ? 35 : pointCount < 21 ? 50 : 60
+      const width = pointCount < 6 ? 35 : pointCount < 21 ? 50 : 60
+      const height = pointCount < 6 ? 35 : pointCount < 21 ? 50 : 60
       pointCount = pointCount.toString()
 
       return (
