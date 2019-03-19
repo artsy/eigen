@@ -1,12 +1,12 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { EventSection_event$ref } from "./EventSection_event.graphql";
+import { ShowEventSection_event$ref } from "./ShowEventSection_event.graphql";
 export type EventSectionTestsQueryVariables = {};
 export type EventSectionTestsQueryResponse = {
     readonly show: ({
         readonly events: ReadonlyArray<({
-            readonly " $fragmentRefs": EventSection_event$ref;
+            readonly " $fragmentRefs": ShowEventSection_event$ref;
         }) | null> | null;
     }) | null;
 };
@@ -21,16 +21,17 @@ export type EventSectionTestsQuery = {
 query EventSectionTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     events {
-      ...EventSection_event
+      ...ShowEventSection_event
     }
     __id
   }
 }
 
-fragment EventSection_event on PartnerShowEventType {
+fragment ShowEventSection_event on PartnerShowEventType {
   event_type
   description
-  exhibitionPeriod
+  start_at
+  end_at
 }
 */
 
@@ -54,7 +55,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "EventSectionTestsQuery",
-  "id": "7737968272431d965fbeb56a6095b7c9",
+  "id": "8350ed20d922e0a716a54dc8c81e5109",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -84,7 +85,7 @@ return {
             "selections": [
               {
                 "kind": "FragmentSpread",
-                "name": "EventSection_event",
+                "name": "ShowEventSection_event",
                 "args": null
               }
             ]
@@ -134,7 +135,14 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "exhibitionPeriod",
+                "name": "start_at",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "end_at",
                 "args": null,
                 "storageKey": null
               }
@@ -147,5 +155,5 @@ return {
   }
 };
 })();
-(node as any).hash = '2ecb8e3dba5e94545b9ac457a7eb30c9';
+(node as any).hash = '8f9be413eb817a88adf53011749a1b5a';
 export default node;
