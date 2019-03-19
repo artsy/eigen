@@ -117,7 +117,9 @@ interface State {
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
 
-const DefaultZoomLevel = 12
+const DefaultZoomLevel = 11
+const MinZoomLevel = 9
+const MaxZoomLevel = 17.5
 
 const ButtonAnimation = {
   yDelta: -200,
@@ -212,6 +214,8 @@ export class GlobalMap extends React.Component<Props, State> {
 
     this.clusterEngine = new Supercluster({
       radius: 50,
+      minZoom: Math.floor(MinZoomLevel),
+      maxZoom: Math.floor(MaxZoomLevel),
     })
 
     this.updateShowIdMap()
@@ -235,7 +239,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
     if (citySlug && citySlug !== nextProps.citySlug) {
       // Reset zoom level after switching cities
-      setTimeout(() => this.map.zoomTo(10, 100), 500)
+      setTimeout(() => this.map.zoomTo(DefaultZoomLevel, 100), 500)
     }
 
     if (nextProps.viewer) {
@@ -578,7 +582,8 @@ export class GlobalMap extends React.Component<Props, State> {
       userTrackingMode: Mapbox.UserTrackingModes.Follow,
       centerCoordinate: [centerLng, centerLat],
       zoomLevel: DefaultZoomLevel,
-      minZoomLevel: 10,
+      minZoomLevel: MinZoomLevel,
+      maxZoomLevel: MaxZoomLevel,
       logoEnabled: !!city,
       attributionEnabled: false,
       compassEnabled: false,
@@ -810,7 +815,7 @@ export const GlobalMapContainer = createFragmentContainer(
         upcomingShows: shows(
           includeStubShows: true
           status: UPCOMING
-          dayThreshold: 30
+          dayThreshold: 14
           first: $maxInt
           sort: START_AT_ASC
         ) {
