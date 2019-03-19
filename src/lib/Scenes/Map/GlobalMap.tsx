@@ -810,7 +810,7 @@ export const GlobalMapContainer = createFragmentContainer(
         upcomingShows: shows(
           includeStubShows: true
           status: UPCOMING
-          dayThreshold: 30
+          dayThreshold: 14
           first: $maxInt
           sort: START_AT_ASC
         ) {
