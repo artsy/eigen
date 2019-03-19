@@ -18,6 +18,7 @@ export const MapRenderer: React.SFC<{
   hideMapButtons: boolean
   initialCoordinates?: { lat: number; lng: number }
   safeAreaInsets: SafeAreaInsets
+  userLocationWithinCity: boolean
 }> = props => {
   let isRetrying = false
   return (

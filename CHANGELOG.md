@@ -23,6 +23,7 @@
 - Relay no longer caches GraphQL responses which contain `errors` field - ash
 - Changes order of Favorites tabs and re-centers Favorites content when a new tab is selected - ashley
 - Adds pressReleaseUrl to show moreInfo - kieran
+- User location button hides when user is outside of currently selected city - ash
 
 ### 1.8.26
 

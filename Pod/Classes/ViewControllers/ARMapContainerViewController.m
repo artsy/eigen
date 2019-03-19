@@ -21,6 +21,13 @@ NSString * const __nonnull SelectedCityNameKey = @"SelectedCityName";
 @property (nonatomic, readwrite) ARCityComponentViewController *cityVC;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 
+/// User location received from Core Location. Only set once.
+@property (nonatomic, strong) CLLocation *userLocation;
+
+/// Whether or not our update to self.userLocation should also set the map's location. You want to avoid doing that
+/// if the map already has a location (from a previous city selection).
+@property (nonatomic, assign) BOOL mapNeedsUserLocation;
+
 @property (nonatomic, strong) ARCityPickerComponentViewController *cityPickerController;
 @property (nonatomic, strong) UIView *cityPickerContainerView; // Need a view to have its own shadow.
 
@@ -143,14 +150,10 @@ Since this controller already has to do the above logic, having it handle the Ci
         RecurseThroughScrollViewsSettingScrollEnabled(wself.scrollableTabView.superview, isDrawerOpen);
     }];
 
-
-    NSString *previouslySelectedCityName = [[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey];
-    ARCity *previouslySelectedCity = [[[ARCity cities] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return [[evaluatedObject name] isEqualToString:previouslySelectedCityName];
-    }]] firstObject];
-
     self.mapVC = [[ARMapComponentViewController alloc] init];
     self.cityVC = [[ARCityComponentViewController alloc] init];
+
+    ARCity *previouslySelectedCity = [self previouslySelectedCity];
 
     if (previouslySelectedCity) {
         // Do this here, before we add to our view hierarchy, so that these are the _initial_ propertyies we do our first render with.
@@ -158,12 +161,14 @@ Since this controller already has to do the above logic, having it handle the Ci
         [self.cityVC setProperty:previouslySelectedCity.slug forKey:@"citySlug"];
         [self.mapVC setProperty:@{ @"lat": @(previouslySelectedCity.epicenter.coordinate.latitude), @"lng": @(previouslySelectedCity.epicenter.coordinate.longitude) } forKey:@"initialCoordinates"];
     } else {
-        // The user has no previously selected city, so let's try to determine their location.
-        self.locationManager = [[CLLocationManager alloc] init];
-        self.locationManager.delegate = self;
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
-        [self.locationManager requestWhenInUseAuthorization];
+        self.mapNeedsUserLocation = YES;
     }
+
+    // Regardless of a previously-selected city, we need to find out if the user is close enough to show the location button.
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
+    [self.locationManager requestWhenInUseAuthorization];
 
     [self updateSafeAreaInsets];
 
@@ -190,18 +195,34 @@ Since this controller already has to do the above logic, having it handle the Ci
     return UIStatusBarStyleDefault;
 }
 
+- (ARCity *)previouslySelectedCity
+{
+    NSString *previouslySelectedCityName = [[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey];
+    ARCity *previouslySelectedCity = [[[ARCity cities] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [[evaluatedObject name] isEqualToString:previouslySelectedCityName];
+    }]] firstObject];
+    return previouslySelectedCity;
+}
+
 - (void)userSuppliedLocation:(CLLocation *)userLocation
 {
+    self.userLocation = userLocation;
     ARCity *closestCity = [ARCity cityNearLocation:userLocation];
     if (closestCity) {
-        // User is within radius to city.
-        [self.mapVC setProperty:closestCity.slug forKey:@"citySlug"];
-        [self.cityVC setProperty:closestCity.slug forKey:@"citySlug"];
-        [self.mapVC setProperty:@{ @"lat": @(closestCity.epicenter.coordinate.latitude), @"lng": @(closestCity.epicenter.coordinate.longitude) } forKey:@"initialCoordinates"];
+        if (self.mapNeedsUserLocation) {
+            // User is within radius to city.
+            [self.mapVC setProperty:closestCity.slug forKey:@"citySlug"];
+            [self.cityVC setProperty:closestCity.slug forKey:@"citySlug"];
+            [self.mapVC setProperty:@{ @"lat": @(closestCity.epicenter.coordinate.latitude), @"lng": @(closestCity.epicenter.coordinate.longitude) } forKey:@"initialCoordinates"];
+            [self.mapVC setProperty:@(YES) forKey:@"userLocationWithinCity"];
 
-        // Technically, the user hasn't selected this city. But we're going to remember it for them.
-        // Also, setting this affects showCityPicker's ability to pass the correct props in.
-        [[NSUserDefaults standardUserDefaults] setObject:closestCity.name forKey:SelectedCityNameKey];
+            // Technically, the user hasn't selected this city. But we're going to remember it for them.
+            // Also, setting this affects showCityPicker's ability to pass the correct props in.
+            [[NSUserDefaults standardUserDefaults] setObject:closestCity.name forKey:SelectedCityNameKey];
+        } else {
+            ARCity *previouslySelectedCity = [self previouslySelectedCity];
+            [self.mapVC setProperty:@([previouslySelectedCity.name isEqualToString:closestCity.name]) forKey:@"userLocationWithinCity"];
+        }
     } else {
         // User is too far away from any city.
         [self showCityPicker];
@@ -279,6 +300,11 @@ Since this controller already has to do the above logic, having it handle the Ci
         [self.mapVC setProperty:city.slug forKey:@"citySlug"];
         [self.mapVC setProperty:@{ @"lat": @(city.epicenter.coordinate.latitude), @"lng": @(city.epicenter.coordinate.longitude) } forKey:@"initialCoordinates"];
         self.initialDataIsLoaded = NO;
+
+        if (self.userLocation) {
+            ARCity *closestCity = [ARCity cityNearLocation:self.userLocation];
+            [self.mapVC setProperty:@([closestCity.name isEqualToString:city.name]) forKey:@"userLocationWithinCity"];
+        }
     }
 
     [[NSUserDefaults standardUserDefaults] setObject:city.name forKey:SelectedCityNameKey];
@@ -371,8 +397,10 @@ Since this controller already has to do the above logic, having it handle the Ci
     } else if (status == kCLAuthorizationStatusNotDetermined) {
         // nop, don't show city picker.
     } else {
-
-        [self showCityPicker];
+        // Don't show the city picker for failed location load if the user has already selected a city.
+        if (![[NSUserDefaults standardUserDefaults] stringForKey:SelectedCityNameKey]) {
+            [self showCityPicker];
+        }
     }
 }
 
