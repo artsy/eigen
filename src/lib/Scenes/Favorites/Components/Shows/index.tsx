@@ -6,7 +6,7 @@ import React, { Component } from "react"
 import { FlatList } from "react-native"
 import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
-import { Box, Separator, Theme } from "@artsy/palette"
+import { Separator, Theme } from "@artsy/palette"
 import { Shows_me } from "__generated__/Shows_me.graphql"
 
 interface Props {
