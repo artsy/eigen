@@ -34,19 +34,28 @@ export const cacheMiddleware = () => {
 
     const response: RelayResponsePayload = await next(req)
 
-    if (response.status >= 200 && response.status < 300) {
-      if (isQuery) {
-        cache.set(queryID, req.variables, JSON.stringify(response.json), req.cacheConfig.emissionCacheTTL)
-      } else {
-        cache.clearAll()
-      }
-      return response
-    } else {
+    const clearCacheAndThrowError = () => {
       cache.clear(queryID, req.variables)
 
       const error = new NetworkError(response.statusText)
       error.response = response
       throw error
+    }
+
+    if (response.status >= 200 && response.status < 300) {
+      if (isQuery) {
+        // Don't cache responses with errors in them (GraphQL responses are always 200, even if they contain errors).
+        if (response.json.errors === undefined) {
+          cache.set(queryID, req.variables, JSON.stringify(response.json), req.cacheConfig.emissionCacheTTL)
+        } else {
+          clearCacheAndThrowError()
+        }
+      } else {
+        cache.clearAll()
+      }
+      return response
+    } else {
+      clearCacheAndThrowError()
     }
   }
 }
