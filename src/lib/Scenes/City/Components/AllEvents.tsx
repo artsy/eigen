@@ -42,15 +42,26 @@ export class AllEvents extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps) {
-    const shouldUpdate = ["saved", "closing", "museums", "opening", "closing"]
-      .map(key => {
-        return !isEqual(this.props.buckets[key].map(g => g.is_followed), nextProps.buckets[key].map(g => g.is_followed))
-      })
-      .some(a => a)
+    const shouldUpdate = this.shouldUpdate(nextProps)
 
     if (shouldUpdate) {
       this.updateSections(nextProps)
     }
+  }
+
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    return this.shouldUpdate(nextProps) || this.state.sections.length !== nextState.sections.length
+  }
+
+  shouldUpdate(otherProps: Props): boolean {
+    return ["saved", "closing", "museums", "opening", "closing"]
+      .map(key => {
+        return !isEqual(
+          this.props.buckets[key].map(g => g.is_followed),
+          otherProps.buckets[key].map(g => g.is_followed)
+        )
+      })
+      .some(a => a)
   }
 
   updateSections = props => {

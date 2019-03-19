@@ -2,6 +2,7 @@ import { Box, Message, Separator, Serif } from "@artsy/palette"
 import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import Spinner from "lib/Components/Spinner"
 import { MapTab, Show } from "lib/Scenes/Map/types"
+import { isEqual } from "lodash"
 import React from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { RelayProp } from "react-relay"
@@ -16,7 +17,8 @@ import { TabFairItemRow } from "./TabFairItemRow"
  *
  * FIXME: Should /probably/ be 100, but this needs to be fixed first: https://artsyproduct.atlassian.net/browse/LD-446
  */
-const ROW_HEIGHT = 104
+const RowHeight = 104
+const MaxRowCount = 25
 
 interface Props {
   bucket: Show[]
@@ -32,10 +34,14 @@ export class EventList extends React.Component<Props> {
   renderItem = item => {
     const { type } = this.props
     return (
-      <Box height={ROW_HEIGHT}>
+      <Box height={RowHeight}>
         {type === "fairs" ? <TabFairItemRow item={item} /> : <ShowItemRow show={item} relay={this.props.relay} />}
       </Box>
     )
+  }
+
+  shouldComponentUpdate(nextProps: Props) {
+    return !isEqual(this.props.type, nextProps.type) || this.props.bucket.length !== nextProps.bucket.length
   }
 
   hasEventsComponent = () => {
@@ -53,7 +59,9 @@ export class EventList extends React.Component<Props> {
             return null
           }
         }}
-        data={bucket}
+        data={bucket.slice(0, MaxRowCount)}
+        initialNumToRender={6}
+        removeClippedSubviews={true}
         ItemSeparatorComponent={() => <Separator />}
         ListFooterComponent={fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
         keyExtractor={item => item.id}
@@ -61,7 +69,7 @@ export class EventList extends React.Component<Props> {
         onScroll={onScroll}
         windowSize={50}
         contentContainerStyle={{ paddingLeft: 20, paddingRight: 20 }}
-        getItemLayout={(_, index) => ({ length: ROW_HEIGHT, offset: index * ROW_HEIGHT, index })}
+        getItemLayout={(_, index) => ({ length: RowHeight, offset: index * RowHeight, index })}
       />
     )
   }

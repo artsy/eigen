@@ -12,7 +12,14 @@ interface Props {
   filterID: string
 }
 
-export class ShapeLayer extends Component<Props, any> {
+interface State {
+  pinOpacity: Animated.Value
+  clusterOpacity: Animated.Value
+  clusterRadius: Animated.Value
+  rendered: boolean
+}
+
+export class ShapeLayer extends Component<Props, State> {
   static defaultProps = {
     duration: 300,
   }
@@ -21,6 +28,7 @@ export class ShapeLayer extends Component<Props, any> {
     pinOpacity: new Animated.Value(0),
     clusterOpacity: new Animated.Value(0),
     clusterRadius: new Animated.Value(0),
+    rendered: false,
   }
 
   stylesheet = Mapbox.StyleSheet.create({
@@ -53,11 +61,17 @@ export class ShapeLayer extends Component<Props, any> {
     this.fadeInAnimations()
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    const { filterID, featureCollections } = this.props
-    if (!isEqual(featureCollections[filterID].features, newProps.featureCollections[filterID].features)) {
-      this.fadeInAnimations()
-    }
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    const { filterID } = this.props
+
+    const getFeatures = (props: Props) =>
+      props.featureCollections[filterID].featureCollection.features.map(g => g.is_followed)
+
+    return (
+      !isEqual(getFeatures(nextProps), getFeatures(this.props)) ||
+      this.state.rendered !== nextState.rendered ||
+      this.props.filterID !== nextProps.filterID
+    )
   }
 
   fadeInAnimations() {
@@ -66,6 +80,7 @@ export class ShapeLayer extends Component<Props, any> {
         pinOpacity: new Animated.Value(0),
         clusterOpacity: new Animated.Value(0),
         clusterRadius: new Animated.Value(0),
+        rendered: true,
       },
       () => {
         Animated.timing(this.state.pinOpacity, {
@@ -90,7 +105,6 @@ export class ShapeLayer extends Component<Props, any> {
   render() {
     const { featureCollections, filterID } = this.props
     const collection: MapGeoFeatureCollection = featureCollections[filterID].featureCollection
-    console.log("filterID: ", filterID, collection)
 
     return (
       <Mapbox.Animated.ShapeSource

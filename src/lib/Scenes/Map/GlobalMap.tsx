@@ -89,8 +89,6 @@ interface State {
   currentLocation?: { lat: number; lng: number }
   /** The users's location from core location */
   userLocation?: { lat: number; lng: number }
-  /** True when we know that we can get location updates from the OS */
-  trackUserLocation?: boolean
   /** A set of GeoJSON features, which right now is our show clusters */
   featureCollections: { [key in BucketKey]?: FilterData }
   /** Has the map fully rendered? */
@@ -190,7 +188,6 @@ export class GlobalMap extends React.Component<Props, State> {
       activeIndex: 0,
       currentLocation,
       bucketResults: emptyBucketResults,
-      trackUserLocation: false,
       featureCollections: null,
       mapLoaded: false,
       isSavingShow: false,
@@ -203,7 +200,7 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   handleFilterChange = activeIndex => {
-    this.setState({ activeIndex, activePin: null, activeShows: [] }, () => this.emitFilteredBucketResults())
+    this.setState({ activeIndex, activePin: null, activeShows: [] })
   }
 
   componentDidMount() {
@@ -520,21 +517,6 @@ export class GlobalMap extends React.Component<Props, State> {
     }
   }
 
-  onRegionDidChange = (location: MapGeoFeature) => {
-    this.setState({
-      trackUserLocation: false,
-      currentLocation: GlobalMap.lngLatArrayToLocation(location.geometry && location.geometry.coordinates),
-    })
-  }
-
-  onUserLocationUpdate = (location: OSCoordsUpdate) => {
-    this.setState({
-      userLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
-      currentLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
-      trackUserLocation: true,
-    })
-  }
-
   onDidFinishRenderingMapFully = () => {
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryMapHasRendered", {})
     this.setState({ mapLoaded: true })
@@ -569,7 +551,7 @@ export class GlobalMap extends React.Component<Props, State> {
     }
   }
 
-  get currentFeatureCollection(): FeatureCollection {
+  get currentFeatureCollection(): FilterData {
     const filterID = cityTabs[this.state.activeIndex].id
     return this.state.featureCollections[filterID]
   }
@@ -633,8 +615,6 @@ export class GlobalMap extends React.Component<Props, State> {
               <Map
                 {...mapProps}
                 onRegionIsChanging={this.onRegionIsChanging}
-                onRegionDidChange={this.onRegionDidChange}
-                onUserLocationUpdate={this.onUserLocationUpdate}
                 onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
                 onPress={this.onPressMap}
                 ref={this.storeMapRef}
@@ -717,9 +697,10 @@ export class GlobalMap extends React.Component<Props, State> {
       const [eastLng, northLat] = ne
       const [westLng, southLat] = sw
 
-      const visibleFeatures = this.clusterEngine.getClusters([westLng, southLat, eastLng, northLat], zoom)
+      const clusterEngine = this.currentFeatureCollection.clusterEngine
+      const visibleFeatures = clusterEngine.getClusters([westLng, southLat, eastLng, northLat], zoom)
       const nearestFeature = this.getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
-      const points = this.clusterEngine.getLeaves(nearestFeature.properties.cluster_id, Infinity)
+      const points = clusterEngine.getLeaves(nearestFeature.properties.cluster_id, Infinity)
       activeShows = points.map(a => a.properties) as any
       this.setState({
         nearestFeature,
