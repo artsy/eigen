@@ -80,6 +80,8 @@ interface Props {
   citySlug: string
   /** Whether the bottom sheet drawer is opened */
   isDrawerOpen?: boolean
+  /** Whether the user is geographically within the city we're currently rendering. */
+  userLocationWithinCity: boolean
   /** Reflects the area not covered by navigation bars, tab bars, toolbars, and other ancestors  */
   safeAreaInsets: SafeAreaInsets
   /** Error from Relay (MapRenderer.tsx). Needed here to send over the EventEmitter. */
@@ -566,7 +568,7 @@ export class GlobalMap extends React.Component<Props, State> {
 
   render() {
     const city = get(this.props, "viewer.city")
-    const { relayErrorState } = this.props
+    const { relayErrorState, userLocationWithinCity } = this.props
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || get(city, "coordinates")
     const { mapLoaded, activeShows, activePin } = this.state
 
@@ -598,14 +600,15 @@ export class GlobalMap extends React.Component<Props, State> {
                 isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
                 onPress={this.onPressCitySwitcherButton}
               />
-              {this.state.userLocation && (
-                <Box style={{ marginLeft: "auto" }}>
-                  <UserPositionButton
-                    highlight={this.state.userLocation === this.state.currentLocation}
-                    onPress={this.onPressUserPositionButton}
-                  />
-                </Box>
-              )}
+              {this.state.userLocation &&
+                userLocationWithinCity && (
+                  <Box style={{ marginLeft: "auto" }}>
+                    <UserPositionButton
+                      highlight={this.state.userLocation === this.state.currentLocation}
+                      onPress={this.onPressUserPositionButton}
+                    />
+                  </Box>
+                )}
             </Flex>
           </Animated.View>
         </TopButtonsContainer>
