@@ -11,7 +11,7 @@ export type FairDetail_fair = {
     readonly _id: string;
     readonly name: string | null;
     readonly hours: string | null;
-    readonly is_active: boolean | null;
+    readonly isActive: boolean | null;
     readonly location: ({
         readonly coordinates: ({
             readonly lat: number | null;
@@ -154,7 +154,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "is_active",
+      "name": "isActive",
       "args": null,
       "storageKey": null
     },
@@ -386,5 +386,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '9dad77d0479f54b25c24629c1adaf163';
+(node as any).hash = 'd82de16039d531467008dc6530845f72';
 export default node;
