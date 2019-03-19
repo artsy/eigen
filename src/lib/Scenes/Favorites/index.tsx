@@ -72,6 +72,9 @@ class Favorites extends React.Component<Props, null> {
           <ScrollableTab tabLabel="Artists">
             <ArtistsRenderer render={renderWithLoadProgress(Artists)} />
           </ScrollableTab>
+          <ScrollableTab tabLabel="Shows">
+            <ShowsRenderer render={renderWithLoadProgress(Shows)} />
+          </ScrollableTab>
           <ScrollableTab tabLabel="Categories">
             <CategoriesRenderer render={renderWithLoadProgress(Categories)} />
           </ScrollableTab>
@@ -80,9 +83,6 @@ class Favorites extends React.Component<Props, null> {
               <FairsRenderer render={renderWithLoadProgress(Fairs)} />
             </ScrollableTab>
           )}
-          <ScrollableTab tabLabel="Shows">
-            <ShowsRenderer render={renderWithLoadProgress(Shows)} />
-          </ScrollableTab>
         </ScrollableTabView>
         {isStaging && <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />}
       </View>

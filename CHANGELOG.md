@@ -20,6 +20,7 @@
 - Updates copy in Global Saves and Follows Shows tab - ashley
 - Adds message if fair is not active and hides fair details - kieran
 - Fixes LD saving events inconsistencies - ash
+- Changes order of Favorites tabs and re-centers Favorites content when a new tab is selected - ashley
 
 ### 1.8.26
 
