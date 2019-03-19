@@ -53,19 +53,17 @@ export class Shows extends Component<Props, State> {
 
     return (
       <Theme>
-        <Box px={2}>
-          <FlatList
-            data={shows}
-            keyExtractor={item => item.__id}
-            renderItem={item => <ShowItemRow show={item.item} />}
-            onEndReached={this.loadMore}
-            onEndReachedThreshold={0.2}
-            ItemSeparatorComponent={() => <Separator />}
-            ListFooterComponent={
-              this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
-            }
-          />
-        </Box>
+        <FlatList
+          data={shows}
+          keyExtractor={item => item.__id}
+          renderItem={item => <ShowItemRow addMargin={true} show={item.item} />}
+          onEndReached={this.loadMore}
+          onEndReachedThreshold={0.2}
+          ItemSeparatorComponent={() => <Separator />}
+          ListFooterComponent={
+            this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
+          }
+        />
       </Theme>
     )
   }
