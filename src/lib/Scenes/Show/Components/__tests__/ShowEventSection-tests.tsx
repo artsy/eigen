@@ -9,7 +9,7 @@ import { ShowEventSectionContainer as ShowEventSection } from "../ShowEventSecti
 
 jest.unmock("react-relay")
 
-describe("EventSection", () => {
+describe("ShowEventSection", () => {
   it("renders", async () => {
     const tree = await renderUntil(
       wrapper => wrapper.text().length > 0,
@@ -20,7 +20,7 @@ describe("EventSection", () => {
           </Theme>
         )}
         query={graphql`
-          query EventSectionTestsQuery {
+          query ShowEventSectionTestsQuery {
             show(id: "anderson-fine-art-gallery-flickinger-collection") {
               events {
                 ...ShowEventSection_event

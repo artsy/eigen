@@ -2,23 +2,23 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { ShowEventSection_event$ref } from "./ShowEventSection_event.graphql";
-export type EventSectionTestsQueryVariables = {};
-export type EventSectionTestsQueryResponse = {
+export type ShowEventSectionTestsQueryVariables = {};
+export type ShowEventSectionTestsQueryResponse = {
     readonly show: ({
         readonly events: ReadonlyArray<({
             readonly " $fragmentRefs": ShowEventSection_event$ref;
         }) | null> | null;
     }) | null;
 };
-export type EventSectionTestsQuery = {
-    readonly response: EventSectionTestsQueryResponse;
-    readonly variables: EventSectionTestsQueryVariables;
+export type ShowEventSectionTestsQuery = {
+    readonly response: ShowEventSectionTestsQueryResponse;
+    readonly variables: ShowEventSectionTestsQueryVariables;
 };
 
 
 
 /*
-query EventSectionTestsQuery {
+query ShowEventSectionTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     events {
       ...ShowEventSection_event
@@ -54,13 +54,13 @@ v1 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "EventSectionTestsQuery",
-  "id": "8350ed20d922e0a716a54dc8c81e5109",
+  "name": "ShowEventSectionTestsQuery",
+  "id": "f5649cf493d89ce52a968cb3d78033a9",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "EventSectionTestsQuery",
+    "name": "ShowEventSectionTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -97,7 +97,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "EventSectionTestsQuery",
+    "name": "ShowEventSectionTestsQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -155,5 +155,5 @@ return {
   }
 };
 })();
-(node as any).hash = '8f9be413eb817a88adf53011749a1b5a';
+(node as any).hash = '491aa923b8d9aaf54ec5b6b9277b9a5e';
 export default node;
