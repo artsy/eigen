@@ -33,7 +33,15 @@ export class EventList extends React.Component<Props> {
     const { type } = this.props
     return (
       <Box height={ROW_HEIGHT}>
-        {type === "fairs" ? <TabFairItemRow item={item} /> : <ShowItemRow show={item} relay={this.props.relay} />}
+        {type === "fairs" ? (
+          <Box py={2}>
+            <TabFairItemRow item={item} />
+          </Box>
+        ) : (
+          <Box py={2}>
+            <ShowItemRow show={item} relay={this.props.relay} />
+          </Box>
+        )}
       </Box>
     )
   }

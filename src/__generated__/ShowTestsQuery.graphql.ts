@@ -91,6 +91,7 @@ fragment MoreInfo_show on Show {
   id
   exhibition_period
   pressReleaseUrl
+  openingReceptionText
   partner {
     __typename
     ... on Partner {
@@ -106,7 +107,7 @@ fragment MoreInfo_show on Show {
   }
   press_release
   events {
-    ...EventSection_event
+    ...ShowEventSection_event
   }
   __id
 }
@@ -238,10 +239,11 @@ fragment ArtistListItem_artist on Artist {
   }
 }
 
-fragment EventSection_event on PartnerShowEventType {
+fragment ShowEventSection_event on PartnerShowEventType {
   event_type
   description
-  exhibitionPeriod
+  start_at
+  end_at
 }
 
 fragment ShowHeader_show on Show {
@@ -756,7 +758,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowTestsQuery",
-  "id": "0ea78644a0086c5b2c46829c215ef8dd",
+  "id": "35f061a339070d46199bd6b7b9ad2765",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -1284,6 +1286,13 @@ return {
             "storageKey": null
           },
           {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "openingReceptionText",
+            "args": null,
+            "storageKey": null
+          },
+          {
             "kind": "LinkedField",
             "alias": null,
             "name": "events",
@@ -1303,10 +1312,11 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "exhibitionPeriod",
+                "name": "start_at",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              v10
             ]
           },
           {

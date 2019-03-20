@@ -1,11 +1,11 @@
 import moment from "moment"
 
 export const ExhibitionDates = (dateRange: string, endDate: string) => {
-  const twoYearsFromToday = moment()
-    .add(2, "years")
+  const oneYearFromToday = moment()
+    .add(1, "years")
     .utc()
   const exhibitionEndDate = moment(endDate).utc()
-  const shouldDisplayOngoing = moment(exhibitionEndDate).isSameOrAfter(twoYearsFromToday)
+  const shouldDisplayOngoing = moment(exhibitionEndDate).isSameOrAfter(oneYearFromToday)
 
   if (shouldDisplayOngoing) {
     return "Ongoing"
