@@ -44,7 +44,7 @@ export class EventList extends React.Component<Props> {
   }
 
   renderFooter = () => {
-    const { bucket, fetchingNextPage, type } = this.props
+    const { bucket, fetchingNextPage } = this.props
     if (fetchingNextPage) {
       return <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
     }
@@ -54,7 +54,7 @@ export class EventList extends React.Component<Props> {
         <>
           <Separator />
           <Box mt={2} mb={3}>
-            <CaretButton onPress={() => this.viewAllPressed()} text={`View all ${type} shows`} />
+            <CaretButton onPress={() => this.viewAllPressed()} text={`View all ${bucket.length} shows`} />
           </Box>
         </>
       )
@@ -92,15 +92,13 @@ export class EventList extends React.Component<Props> {
           }
         }}
         data={bucket.slice(0, MaxRowCount)}
-        initialNumToRender={6}
-        removeClippedSubviews={true}
         ItemSeparatorComponent={() => <Separator />}
         ListFooterComponent={this.renderFooter()}
         keyExtractor={item => item.id}
         renderItem={({ item }) => this.renderItem(item)}
         onScroll={onScroll}
         windowSize={50}
-        contentContainerStyle={{ paddingLeft: 20, paddingRight: 20 }}
+        contentContainerStyle={{ paddingLeft: 20, paddingRight: 20, paddingBottom: 20 }}
         getItemLayout={(_, index) => ({ length: RowHeight, offset: index * RowHeight, index })}
       />
     )

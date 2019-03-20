@@ -180,6 +180,7 @@ export class CityView extends Component<Props, State> {
               initialPage={this.props.initialTab || AllCityMetaTab}
               onChangeTab={this.setSelectedTab}
               renderTabBar={this.renderTabBar}
+              prerenderingSiblingsNumber={2}
               onLayout={this.onScrollableTabViewLayout}
               // These are the ScrollView props for inside the scrollable tab view
               contentProps={{

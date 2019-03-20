@@ -217,12 +217,11 @@ export class GlobalMap extends React.Component<Props, State> {
   componentDidUpdate(_, prevState) {
     // Update the clusterMap if new bucket results
     if (this.state.bucketResults) {
-      const shouldUpdate = ["saved"].some(key => {
-        return !isEqual(
-          prevState.bucketResults[key].map(g => g.is_followed),
-          this.state.bucketResults[key].map(g => g.is_followed)
-        )
-      })
+      const shouldUpdate = !isEqual(
+        prevState.bucketResults.saved.map(g => g.is_followed),
+        this.state.bucketResults.saved.map(g => g.is_followed)
+      )
+
       if (shouldUpdate) {
         this.updateClusterMap()
       }
@@ -237,13 +236,12 @@ export class GlobalMap extends React.Component<Props, State> {
       setTimeout(() => this.map.zoomTo(DefaultZoomLevel, 100), 500)
     }
 
-    if (nextProps.viewer && !this.props.viewer) {
+    if (nextProps.viewer) {
       const bucketResults = bucketCityResults(nextProps.viewer)
 
       this.setState({ bucketResults }, () => {
         this.emitFilteredBucketResults()
         this.updateShowIdMap()
-        this.updateClusterMap()
       })
     } else if (relayErrorState) {
       EventEmitter.dispatch("map:error", { relayErrorState })
@@ -325,7 +323,6 @@ export class GlobalMap extends React.Component<Props, State> {
       return
     }
 
-    // TODO: map region filtering can live here.
     const filter = cityTabs[this.state.activeIndex]
     const {
       city: { name: cityName, slug: citySlug, sponsoredContent },
