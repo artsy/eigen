@@ -36,7 +36,7 @@ NSString * const __nonnull SelectedCityNameKey = @"SelectedCityName";
 
 @property (nonatomic, assign) BOOL initialDataIsLoaded;
 @property (nonatomic, assign) BOOL attributionViewsConstraintsAdded;
-
+@property (nonatomic, assign) BOOL mapViewSafeAreaInsetsSet;
 
 @end
 
@@ -340,10 +340,23 @@ Since this controller already has to do the above logic, having it handle the Ci
 
 - (void)updateSafeAreaInsets
 {
+    if (self.mapViewSafeAreaInsetsSet) {
+        return;
+    }
+    
     UIEdgeInsets safeAreaInsets = UIEdgeInsetsZero;
     if (@available(iOS 11.0, *)) {
         safeAreaInsets = self.view.safeAreaInsets;
+    
+        // Once we receive the correct top inset value it gets resetted to 0 after the VC gets hidden
+        // So let's not reset it afterwards
+        if (self.view.safeAreaInsets.top > 0) {
+            self.mapViewSafeAreaInsetsSet = YES;
+        }
+    } else {
+        self.mapViewSafeAreaInsetsSet = YES;
     }
+    
     [self.mapVC setProperty:@{ @"top": @(safeAreaInsets.top),
                                @"bottom": @(safeAreaInsets.bottom),
                                @"left": @(safeAreaInsets.left),

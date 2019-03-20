@@ -16,6 +16,8 @@
 
 ### Master
 
+- Do no reset safeAreaInsets back to 0 - luc
+
 ### 1.9.0
 
 - Add cover images to stub shows in full list - luc
