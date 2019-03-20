@@ -95,6 +95,7 @@ export default createPaginationContainer(
                 status
                 href
                 is_followed
+                isStubShow
                 exhibition_period
                 cover_image {
                   url
