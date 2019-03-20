@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.9.1
+
 - Do no reset safeAreaInsets back to 0 - luc
 
 ### 1.9.0
