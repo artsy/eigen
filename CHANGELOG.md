@@ -17,6 +17,8 @@
 ### Master
 
 - Reset zoom, pitch and heading upon city switch - roop
+- Fixes map intermittenly not render pins - luc
+- User location button would not render for users in cities - luc
 
 ### 1.8.27
 
