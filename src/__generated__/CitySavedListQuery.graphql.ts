@@ -294,14 +294,14 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "id",
+                                "name": "exhibition_period",
                                 "args": null,
                                 "storageKey": null
                               },
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "_id",
+                                "name": "id",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -331,7 +331,7 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "exhibition_period",
+                                "name": "_id",
                                 "args": null,
                                 "storageKey": null
                               },
