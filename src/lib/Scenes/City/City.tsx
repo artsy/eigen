@@ -209,6 +209,7 @@ export class CityView extends Component<Props, State> {
                       cityName={cityName}
                       citySlug={citySlug}
                       relay={this.state.relay}
+                      renderedInTab
                     />
                   </ScrollableTab>
                 )

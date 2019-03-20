@@ -31,6 +31,7 @@ interface Props {
   relay: RelayProp
   onScroll?: (event?: NativeSyntheticEvent<NativeScrollEvent>) => void
   fetchingNextPage?: boolean
+  renderedInTab?: boolean
 }
 
 export class EventList extends React.Component<Props> {
@@ -44,12 +45,12 @@ export class EventList extends React.Component<Props> {
   }
 
   renderFooter = () => {
-    const { bucket, fetchingNextPage } = this.props
+    const { bucket, fetchingNextPage, renderedInTab } = this.props
     if (fetchingNextPage) {
       return <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
     }
 
-    if (bucket.length > MaxRowCount) {
+    if (renderedInTab && bucket.length > MaxRowCount) {
       return (
         <>
           <Separator />
@@ -65,6 +66,7 @@ export class EventList extends React.Component<Props> {
 
   shouldComponentUpdate(nextProps: Props) {
     return (
+      !isEqual(this.props.fetchingNextPage, nextProps.fetchingNextPage) ||
       !isEqual(this.props.type, nextProps.type) ||
       this.props.bucket.length !== nextProps.bucket.length ||
       !isEqual(this.props.bucket.map(g => g.is_followed), nextProps.bucket.map(g => g.is_followed))
@@ -77,7 +79,7 @@ export class EventList extends React.Component<Props> {
   }
 
   hasEventsComponent = () => {
-    const { bucket, onScroll, header } = this.props
+    const { bucket, onScroll, header, renderedInTab } = this.props
     return (
       <FlatList
         ListHeaderComponent={() => {
@@ -91,7 +93,7 @@ export class EventList extends React.Component<Props> {
             return null
           }
         }}
-        data={bucket.slice(0, MaxRowCount)}
+        data={renderedInTab ? bucket.slice(0, MaxRowCount) : bucket}
         ItemSeparatorComponent={() => <Separator />}
         ListFooterComponent={this.renderFooter()}
         keyExtractor={item => item.id}
