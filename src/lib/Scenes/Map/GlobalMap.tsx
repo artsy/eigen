@@ -217,6 +217,16 @@ export class GlobalMap extends React.Component<Props, State> {
     })
   }
 
+  resetZoomAndCamera = () => {
+    this.map.setCamera({
+      mode: DefaultCameraMode,
+      zoom: DefaultZoomLevel,
+      pitch: 0,
+      heading: 0,
+      duration: 2000,
+    })
+  }
+
   componentDidMount() {
     EventEmitter.subscribe("filters:change", this.handleFilterChange)
   }
