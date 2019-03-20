@@ -91,14 +91,14 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "title",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "date",
+      "name": "title",
       "args": null,
       "storageKey": null
     },
@@ -140,7 +140,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "date",
       "args": null,
       "storageKey": null
     },

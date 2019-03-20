@@ -311,28 +311,28 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "artworks",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "artworks",
+  "name": "for_sale_artworks",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "for_sale_artworks",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -361,7 +361,7 @@ v9 = [
   v8
 ],
 v10 = [
-  v6,
+  v5,
   v2
 ],
 v11 = {
@@ -439,8 +439,8 @@ v18 = {
   ]
 },
 v19 = [
+  v5,
   v2,
-  v3,
   v7,
   v11,
   v12,
@@ -531,8 +531,14 @@ v24 = [
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
-          v3,
-          v2,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_acquireable",
+            "args": null,
+            "storageKey": null
+          },
+          v6,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -587,13 +593,7 @@ v24 = [
             "args": null,
             "storageKey": null
           },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "is_acquireable",
-            "args": null,
-            "storageKey": null
-          },
+          v2,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -800,11 +800,17 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
+            "name": "bio",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
             "name": "_id",
             "args": null,
             "storageKey": null
           },
-          v3,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -821,7 +827,7 @@ return {
             "concreteType": "ArtistCounts",
             "plural": false,
             "selections": [
-              v4,
+              v3,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -850,10 +856,10 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v5
+              v4
             ]
           },
-          v6,
+          v5,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -876,13 +882,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "bio",
-            "args": null,
-            "storageKey": null
-          },
+          v6,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -908,7 +908,7 @@ return {
             "selections": [
               v2,
               v7,
-              v6,
+              v5,
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -918,8 +918,8 @@ return {
                 "concreteType": "ArtistCounts",
                 "plural": false,
                 "selections": [
-                  v5,
-                  v4
+                  v4,
+                  v3
                 ]
               },
               {
@@ -1104,13 +1104,13 @@ return {
                 "concreteType": "PartnerShow",
                 "plural": true,
                 "selections": [
-                  v3,
-                  v7,
+                  v14,
+                  v6,
                   v11,
                   v12,
                   v13,
-                  v6,
-                  v14,
+                  v5,
+                  v7,
                   v15,
                   v16,
                   v17,

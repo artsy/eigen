@@ -58,14 +58,14 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "name",
   "args": null,
   "storageKey": null
 };
@@ -147,8 +147,39 @@ return {
               "concreteType": "Fair",
               "plural": false,
               "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "image",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Image",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "image_url",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "aspect_ratio",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "url",
+                      "args": null,
+                      "storageKey": null
+                    }
+                  ]
+                },
                 v0,
-                v1,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -208,41 +239,10 @@ return {
                         }
                       ]
                     },
-                    v2
+                    v1
                   ]
                 },
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "image",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Image",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "image_url",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "aspect_ratio",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "url",
-                      "args": null,
-                      "storageKey": null
-                    }
-                  ]
-                },
+                v2,
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -299,9 +299,9 @@ return {
                         }
                       ]
                     },
-                    v2,
+                    v1,
                     v0,
-                    v1
+                    v2
                   ]
                 },
                 {
@@ -318,7 +318,7 @@ return {
                   "args": null,
                   "storageKey": null
                 },
-                v2,
+                v1,
                 {
                   "kind": "ScalarField",
                   "alias": null,

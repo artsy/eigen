@@ -91,6 +91,7 @@ export default createPaginationContainer(
                 _id
                 __id
                 name
+                isStubShow
                 status
                 href
                 is_followed

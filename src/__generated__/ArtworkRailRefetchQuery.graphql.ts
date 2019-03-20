@@ -202,18 +202,21 @@ v4 = {
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v7 = [
+v6 = [
+  v5
+],
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v8 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -222,9 +225,6 @@ v7 = [
     "storageKey": null
   },
   v2
-],
-v8 = [
-  v6
 ],
 v9 = {
   "kind": "ScalarField",
@@ -323,38 +323,13 @@ return {
                   v2,
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextRelatedArtist",
-                    "selections": [
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "artist",
-                        "storageKey": null,
-                        "args": null,
-                        "concreteType": "Artist",
-                        "plural": false,
-                        "selections": [
-                          v5,
-                          v2,
-                          v6
-                        ]
-                      },
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "based_on",
-                        "storageKey": null,
-                        "args": null,
-                        "concreteType": "Artist",
-                        "plural": false,
-                        "selections": v7
-                      }
-                    ]
+                    "type": "HomePageModuleContextSale",
+                    "selections": v6
                   },
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextFair",
-                    "selections": v8
+                    "type": "HomePageModuleContextGene",
+                    "selections": v6
                   },
                   {
                     "kind": "InlineFragment",
@@ -369,7 +344,7 @@ return {
                         "concreteType": "Artist",
                         "plural": false,
                         "selections": [
-                          v6,
+                          v5,
                           v2
                         ]
                       }
@@ -377,13 +352,38 @@ return {
                   },
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextGene",
-                    "selections": v8
+                    "type": "HomePageModuleContextFair",
+                    "selections": v6
                   },
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextSale",
-                    "selections": v8
+                    "type": "HomePageModuleContextRelatedArtist",
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "artist",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "plural": false,
+                        "selections": [
+                          v7,
+                          v2,
+                          v5
+                        ]
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "based_on",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "plural": false,
+                        "selections": v8
+                      }
+                    ]
                   }
                 ]
               },
@@ -433,8 +433,14 @@ return {
                     "concreteType": "Artwork",
                     "plural": true,
                     "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "is_biddable",
+                        "args": null,
+                        "storageKey": null
+                      },
                       v2,
-                      v5,
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -489,13 +495,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "is_biddable",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      v7,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -618,7 +618,7 @@ return {
                         ],
                         "concreteType": "Artist",
                         "plural": true,
-                        "selections": v7
+                        "selections": v8
                       },
                       {
                         "kind": "LinkedField",
@@ -628,9 +628,9 @@ return {
                         "args": null,
                         "concreteType": "Partner",
                         "plural": false,
-                        "selections": v7
+                        "selections": v8
                       },
-                      v6
+                      v5
                     ]
                   }
                 ]
