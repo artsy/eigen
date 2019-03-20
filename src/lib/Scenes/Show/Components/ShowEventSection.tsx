@@ -11,25 +11,22 @@ interface Props {
 const formatTime = (startAt, endAt) => {
   const startMoment = moment(startAt)
   const endMoment = moment(endAt)
-  const startDayFormat = "dddd"
-  const endDayFormat = "dddd"
-  let startMonthFormat = "MMMM D"
-  let endMonthFormat = "MMMM D"
+  const dayFormat = "dddd"
+  let monthFormat = "MMMM D"
 
   const startHour = startMoment.format("ha")
   const endHour = endMoment.format("ha")
 
   if (startMoment.year() !== endMoment.year()) {
     // Adds years if the dates are not the same year
-    startMonthFormat = startMonthFormat.concat(", YYYY")
-    endMonthFormat = endMonthFormat.concat(", YYYY")
+    monthFormat = monthFormat.concat(", YYYY")
   }
 
   if (startMoment.dayOfYear() === endMoment.dayOfYear() && startMoment.year() === endMoment.year()) {
     // Duration is the same day
     return (
       <>
-        <Sans size="3t">{`${endMoment.format(endDayFormat)}, ${endMoment.format(endMonthFormat)}`}</Sans>
+        <Sans size="3t">{`${endMoment.format(dayFormat)}, ${endMoment.format(monthFormat)}`}</Sans>
         <Sans size="3t">{`${startHour} – ${endHour}`}</Sans>
       </>
     )
@@ -37,8 +34,8 @@ const formatTime = (startAt, endAt) => {
     // Show date range if not the same day
     return (
       <>
-        <Sans size="3t">{`${startDayFormat}, ${startMonthFormat}, ${startHour} –`}</Sans>
-        <Sans size="3t">{`${endMoment.format(endDayFormat)}, ${endMoment.format(endMonthFormat)}, ${endHour}`}</Sans>
+        <Sans size="3t">{`${startMoment.format(dayFormat)}, ${startMoment.format(monthFormat)}, ${startHour} –`}</Sans>
+        <Sans size="3t">{`${endMoment.format(dayFormat)}, ${endMoment.format(monthFormat)}, ${endHour}`}</Sans>
       </>
     )
   }
