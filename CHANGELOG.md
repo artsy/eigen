@@ -30,6 +30,7 @@
 - Adds correct formatting and data for show event sections - kieran
 - Updates dayThresholds for opening/closing shows to be 14/7 respectively - kieran
 - User location button hides when user is outside of currently selected city - ash
+- Adds "Ongoing" to shows running 2+ years beyond the present - ashley
 
 ### 1.8.26
 

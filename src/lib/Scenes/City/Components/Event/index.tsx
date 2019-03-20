@@ -3,6 +3,7 @@ import { EventMutation } from "__generated__/EventMutation.graphql"
 import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { ExhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { Show } from "lib/Scenes/Map/types"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import React from "react"
@@ -131,7 +132,7 @@ export class Event extends React.Component<Props, State> {
 
   render() {
     const node = this.props.event
-    const { name, exhibition_period, partner, cover_image, is_followed } = node
+    const { name, exhibition_period, partner, cover_image, is_followed, end_at } = node
     const { name: partnerName } = partner
     const { isFollowedSaving } = this.state
     const url = cover_image ? cover_image.url : null
@@ -153,7 +154,7 @@ export class Event extends React.Component<Props, State> {
               </Serif>
               {exhibition_period && (
                 <Sans size="2" color={color("black60")}>
-                  {exhibition_period}
+                  {ExhibitionDates(exhibition_period, end_at)}
                 </Sans>
               )}
             </TextContainer>

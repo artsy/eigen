@@ -85,6 +85,7 @@ fragment ShowHeader_show on Show {
   name
   press_release
   is_followed
+  end_at
   exhibition_period
   status
   isStubShow
@@ -207,6 +208,7 @@ fragment ShowItem_show on Show {
   id
   name
   exhibition_period
+  end_at
   images {
     url
     aspect_ratio
@@ -365,46 +367,53 @@ v8 = {
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "exhibition_period",
+  "name": "end_at",
   "args": null,
   "storageKey": null
 },
 v10 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__typename",
+  "name": "exhibition_period",
   "args": null,
   "storageKey": null
 },
 v11 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "__typename",
   "args": null,
   "storageKey": null
 },
 v12 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "nationality",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
 v13 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "birthday",
+  "name": "nationality",
   "args": null,
   "storageKey": null
 },
 v14 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "deathday",
+  "name": "birthday",
   "args": null,
   "storageKey": null
 },
 v15 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "deathday",
+  "args": null,
+  "storageKey": null
+},
+v16 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -416,14 +425,14 @@ v15 = {
     v6
   ]
 },
-v16 = {
+v17 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v17 = [
+v18 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -432,7 +441,7 @@ v17 = [
     "storageKey": null
   }
 ],
-v18 = [
+v19 = [
   v4,
   v1
 ];
@@ -440,7 +449,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "2327b679eee60fae66a050cd174380b5",
+  "id": "eef8db4899e9c85616959ea1ce828fa9",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -525,6 +534,7 @@ return {
           },
           v8,
           v9,
+          v10,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -548,7 +558,7 @@ return {
             "concreteType": null,
             "plural": false,
             "selections": [
-              v10,
+              v11,
               v1,
               {
                 "kind": "InlineFragment",
@@ -556,7 +566,7 @@ return {
                 "selections": [
                   v4,
                   v3,
-                  v11,
+                  v12,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -612,7 +622,7 @@ return {
                         "plural": false,
                         "selections": [
                           v4,
-                          v11,
+                          v12,
                           v3,
                           v2,
                           v1
@@ -634,15 +644,15 @@ return {
             "plural": true,
             "selections": [
               v4,
-              v11,
+              v12,
               v3,
               v2,
               v1,
               v8,
-              v12,
               v13,
               v14,
-              v15
+              v15,
+              v16
             ]
           },
           {
@@ -768,7 +778,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v16,
+                  v17,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -796,7 +806,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkOpeningBid",
                     "plural": false,
-                    "selections": v17
+                    "selections": v18
                   },
                   {
                     "kind": "LinkedField",
@@ -806,7 +816,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkCurrentBid",
                     "plural": false,
-                    "selections": v17
+                    "selections": v18
                   },
                   {
                     "kind": "ScalarField",
@@ -824,7 +834,7 @@ return {
                     "concreteType": "Sale",
                     "plural": false,
                     "selections": [
-                      v16,
+                      v17,
                       v1
                     ]
                   },
@@ -846,7 +856,7 @@ return {
                 ],
                 "concreteType": "Artist",
                 "plural": true,
-                "selections": v18
+                "selections": v19
               },
               {
                 "kind": "LinkedField",
@@ -856,9 +866,9 @@ return {
                 "args": null,
                 "concreteType": "Partner",
                 "plural": false,
-                "selections": v18
+                "selections": v19
               },
-              v11
+              v12
             ]
           },
           {
@@ -897,14 +907,14 @@ return {
             "selections": [
               v2,
               v3,
-              v11,
+              v12,
               v1,
               v4,
               v8,
-              v12,
               v13,
               v14,
-              v15
+              v15,
+              v16
             ]
           },
           {
@@ -944,6 +954,7 @@ return {
                       v2,
                       v3,
                       v4,
+                      v10,
                       v9,
                       {
                         "kind": "LinkedField",
@@ -967,7 +978,7 @@ return {
                         "concreteType": null,
                         "plural": false,
                         "selections": [
-                          v10,
+                          v11,
                           v1,
                           {
                             "kind": "InlineFragment",
@@ -1091,7 +1102,7 @@ return {
                 "concreteType": null,
                 "plural": false,
                 "selections": [
-                  v10,
+                  v11,
                   {
                     "kind": "InlineFragment",
                     "type": "OpeningHoursArray",

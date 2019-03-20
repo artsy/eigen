@@ -6,6 +6,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView"
 import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { ExhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { hrefForPartialShow } from "lib/utils/router"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { get } from "lodash"
@@ -158,12 +159,12 @@ export class ShowItemRow extends React.Component<Props, State> {
                 {show.name}
               </TightendSerif>
             )}
-            {show.status &&
-              show.exhibition_period && (
+            {show.exhibition_period &&
+              show.status && (
                 <Sans size="3t" color={color("black60")} ml={15}>
                   {show.status.includes("closed")
                     ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                    : show.exhibition_period}
+                    : ExhibitionDates(show.exhibition_period, show.end_at)}
                 </Sans>
               )}
           </Flex>
