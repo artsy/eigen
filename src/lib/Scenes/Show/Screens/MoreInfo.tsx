@@ -103,6 +103,7 @@ export class MoreInfo extends React.Component<Props, State> {
   }
 
   openPressReleaseLink = () => {
+    console.log("this.props.show.pressReleaseUrl", this.props.show.pressReleaseUrl)
     SwitchBoard.presentNavigationViewController(this, this.props.show.pressReleaseUrl)
   }
 
