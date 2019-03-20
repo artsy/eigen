@@ -5,7 +5,7 @@ import moment from "moment"
 export const bucketCityResults = (viewer: GlobalMap_viewer) => {
   // The saved shows needs to be sorted by end_date_asc
   const now = moment()
-  const thirtyDaysFromNow = moment(new Date()).add(30, "days")
+  const oneWeekFromNow = moment(new Date()).add(7, "days")
   const savedShows = viewer.city.shows.edges.filter(e => e.node.is_followed === true)
   const savedUpcomingShows = viewer.city.upcomingShows.edges.filter(e => e.node.is_followed === true)
   const savedFiltered = uniq(savedShows.concat(savedUpcomingShows)).map(n => n.node)
@@ -25,7 +25,7 @@ export const bucketCityResults = (viewer: GlobalMap_viewer) => {
     .filter(e => {
       if (e.node.end_at) {
         const showClosingTime = moment(e.node.end_at)
-        return showClosingTime <= thirtyDaysFromNow && showClosingTime >= now
+        return showClosingTime <= oneWeekFromNow && showClosingTime >= now
       }
     })
     .map(n => n.node)

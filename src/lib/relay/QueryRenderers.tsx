@@ -529,12 +529,12 @@ export const CitySectionListRenderer: React.SFC<CitySectionListProps> = ({ rende
     case "closing":
       variables.status = "CLOSING_SOON"
       variables.sort = "END_AT_ASC"
-      variables.dayThreshold = 30
+      variables.dayThreshold = 7
       break
     case "opening":
       variables.status = "UPCOMING"
       variables.sort = "START_AT_ASC"
-      variables.dayThreshold = 30
+      variables.dayThreshold = 14
   }
 
   return (
