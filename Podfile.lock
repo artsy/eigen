@@ -72,7 +72,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.5)
   - EDColor (1.0.0)
-  - Emission (1.8.26):
+  - Emission (1.8.27):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.5)
@@ -474,7 +474,7 @@ CHECKOUT OPTIONS:
     :commit: 23f1c0e8cad5a72d03176fe33535c14726e7a160
     :git: https://github.com/l2succes/Pulley.git
   react-native-mapbox-gl:
-    :commit: 91cf086986c5b69cd06373d31a99d3dd37468168
+    :commit: 8ad2d3a2207da62024c82624c71df5bf5dabc126
     :git: https://github.com/l2succes/react-native-mapbox-gl
   RNSVG:
     :git: https://github.com/react-native-community/react-native-svg.git
@@ -510,7 +510,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 97ca019fb9ece70e46eab44ed011dd1125eb2df9
+  Emission: c822e837346481f6ab2b3441cda2898219031539
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
