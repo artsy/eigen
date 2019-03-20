@@ -83,11 +83,10 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
               relay={this.props.relay}
               onSaveStarted={this.props.onSaveStarted}
               onSaveEnded={this.props.onSaveEnded}
-              noPadding
               shouldHideSaveButton={true}
             />
           ) : (
-            <TabFairItemRow item={item} noPadding />
+            <TabFairItemRow item={item} />
           )}
         </TouchableOpacity>
       </Background>
