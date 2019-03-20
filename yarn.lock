@@ -485,7 +485,7 @@
 
 "@mapbox/react-native-mapbox-gl@l2succes/react-native-mapbox-gl#fix-gesture-recognizer":
   version "6.1.4"
-  resolved "https://codeload.github.com/l2succes/react-native-mapbox-gl/tar.gz/91cf086986c5b69cd06373d31a99d3dd37468168"
+  resolved "https://codeload.github.com/l2succes/react-native-mapbox-gl/tar.gz/8ad2d3a2207da62024c82624c71df5bf5dabc126"
   dependencies:
     "@turf/helpers" "4.6.0"
     underscore "^1.8.3"

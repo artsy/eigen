@@ -293,9 +293,6 @@ v9 = {
   "storageKey": null
 },
 v10 = [
-  v9
-],
-v11 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -309,6 +306,9 @@ v11 = [
       v0
     ]
   }
+],
+v11 = [
+  v9
 ],
 v12 = {
   "kind": "ScalarField",
@@ -532,27 +532,27 @@ return {
                   v0,
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextSale",
-                    "selections": v10
-                  },
-                  {
-                    "kind": "InlineFragment",
-                    "type": "HomePageModuleContextGene",
-                    "selections": v10
-                  },
-                  {
-                    "kind": "InlineFragment",
-                    "type": "HomePageModuleContextFair",
+                    "type": "HomePageModuleContextFollowedArtist",
                     "selections": v10
                   },
                   {
                     "kind": "InlineFragment",
                     "type": "HomePageModuleContextRelatedArtist",
+                    "selections": v10
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "type": "HomePageModuleContextFair",
                     "selections": v11
                   },
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextFollowedArtist",
+                    "type": "HomePageModuleContextGene",
+                    "selections": v11
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "type": "HomePageModuleContextSale",
                     "selections": v11
                   }
                 ]
@@ -566,14 +566,8 @@ return {
                 "concreteType": "Artwork",
                 "plural": true,
                 "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "is_biddable",
-                    "args": null,
-                    "storageKey": null
-                  },
                   v0,
+                  v5,
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -615,7 +609,13 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v5,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "is_biddable",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,

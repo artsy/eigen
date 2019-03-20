@@ -2,15 +2,24 @@ import Mapbox from "@mapbox/react-native-mapbox-gl"
 import { isEqual } from "lodash"
 import React, { Component } from "react"
 import { Animated, Easing } from "react-native"
-import { MapGeoFeatureCollection } from "../types"
+import { BucketKey } from "../bucketCityResults"
+import { FilterData, MapGeoFeatureCollection } from "../types"
 
 interface Props {
-  featureCollection: MapGeoFeatureCollection
+  featureCollections: { [key in BucketKey]: FilterData }
   onPress?: (nativeEvent) => void
   duration: number
+  filterID: string
 }
 
-export class ShapeLayer extends Component<Props, any> {
+interface State {
+  pinOpacity: Animated.Value
+  clusterOpacity: Animated.Value
+  clusterRadius: Animated.Value
+  rendered: boolean
+}
+
+export class ShapeLayer extends Component<Props, State> {
   static defaultProps = {
     duration: 300,
   }
@@ -19,6 +28,7 @@ export class ShapeLayer extends Component<Props, any> {
     pinOpacity: new Animated.Value(0),
     clusterOpacity: new Animated.Value(0),
     clusterRadius: new Animated.Value(0),
+    rendered: false,
   }
 
   stylesheet = Mapbox.StyleSheet.create({
@@ -51,10 +61,17 @@ export class ShapeLayer extends Component<Props, any> {
     this.fadeInAnimations()
   }
 
-  componentWillReceiveProps(newProps: Props) {
-    if (!isEqual(this.props.featureCollection.features, newProps.featureCollection.features)) {
-      this.fadeInAnimations()
-    }
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    const { filterID } = this.props
+
+    const getFeatures = (props: Props) =>
+      props.featureCollections[filterID].featureCollection.features.map(g => g.is_followed)
+
+    return (
+      !isEqual(getFeatures(nextProps), getFeatures(this.props)) ||
+      this.state.rendered !== nextState.rendered ||
+      this.props.filterID !== nextProps.filterID
+    )
   }
 
   fadeInAnimations() {
@@ -63,6 +80,7 @@ export class ShapeLayer extends Component<Props, any> {
         pinOpacity: new Animated.Value(0),
         clusterOpacity: new Animated.Value(0),
         clusterRadius: new Animated.Value(0),
+        rendered: true,
       },
       () => {
         Animated.timing(this.state.pinOpacity, {
@@ -85,10 +103,13 @@ export class ShapeLayer extends Component<Props, any> {
   }
 
   render() {
+    const { featureCollections, filterID } = this.props
+    const collection: MapGeoFeatureCollection = featureCollections[filterID].featureCollection
+
     return (
       <Mapbox.Animated.ShapeSource
         id="shows"
-        shape={this.props.featureCollection}
+        shape={collection}
         cluster
         clusterRadius={50}
         onPress={this.props.onPress}
@@ -99,7 +120,6 @@ export class ShapeLayer extends Component<Props, any> {
           style={[this.stylesheet.singleShow, { iconOpacity: this.state.pinOpacity }]}
         />
         <Mapbox.Animated.SymbolLayer id="pointCount" style={this.stylesheet.clusterCount} />
-
         <Mapbox.Animated.CircleLayer
           id="clusteredPoints"
           belowLayerID="pointCount"

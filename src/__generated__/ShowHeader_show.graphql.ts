@@ -57,21 +57,21 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
@@ -83,11 +83,11 @@ v4 = {
   "storageKey": null
 },
 v5 = [
-  v2,
+  v3,
   v4,
   v0,
-  v3,
-  v1
+  v1,
+  v2
 ];
 return {
   "kind": "Fragment",
@@ -96,16 +96,10 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "exhibition_period",
-      "args": null,
-      "storageKey": null
-    },
     v0,
     v1,
     v2,
+    v3,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -127,7 +121,13 @@ return {
       "args": null,
       "storageKey": null
     },
-    v3,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "exhibition_period",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -151,12 +151,12 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v1,
+        v2,
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v2,
+            v3,
             v0,
             v4
           ]
