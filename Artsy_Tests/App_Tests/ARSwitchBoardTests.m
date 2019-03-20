@@ -377,6 +377,19 @@ describe(@"ARSwitchboard", ^{
             expect(classString).to.contain(@"SerifModalWeb");
         });
 
+        it(@"only sets up its echo instance once", ^{
+            switchboard = [[ARSwitchBoard alloc] init];
+            id echoMock = [OCMockObject partialMockForObject:switchboard.echo];
+            [[echoMock expect] checkForUpdates:OCMOCK_ANY];
+
+            [switchboard updateRoutes];
+
+            [echoMock verify];
+
+            [[echoMock reject] checkForUpdates:OCMOCK_ANY];
+            [switchboard updateRoutes];
+        });
+
         it(@"falls back to web views when websocket becomes outdated", ^{
             switchboard = [[ARSwitchBoard alloc] init];
             id echoMock = [OCMockObject partialMockForObject:switchboard.echo];

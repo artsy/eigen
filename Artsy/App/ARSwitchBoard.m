@@ -74,6 +74,8 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 @property (nonatomic, readwrite, strong) Aerodramus *echo;
 @property (nonatomic, strong) NSArray<ARSwitchBoardDomain *> *domains;
 
+@property (nonatomic, assign) BOOL isEchoSetup;
+
 @end
 
 
@@ -118,6 +120,10 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 
 - (void)setupEcho
 {
+    // Only allow Echo to get set up once per instance.
+    if (self.isEchoSetup) { return; }
+    self.isEchoSetup = YES;
+
     Aerodramus *aero = self.echo;
 
     NSArray *currentRoutes = self.echo.routes.allValues.copy;
