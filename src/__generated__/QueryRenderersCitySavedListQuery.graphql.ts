@@ -39,6 +39,7 @@ fragment CitySavedList_viewer on Viewer {
             _id
             __id
             name
+            isStubShow
             status
             href
             is_followed
@@ -61,6 +62,12 @@ fragment CitySavedList_viewer on Viewer {
               ... on Partner {
                 name
                 type
+                profile {
+                  image {
+                    url(version: "square")
+                  }
+                  __id
+                }
               }
               ... on Node {
                 __id
@@ -125,7 +132,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersCitySavedListQuery",
-  "id": "318c00611bc96975920567e7f84ac214",
+  "id": "579d75ef85c9c0dd7603ccc9751a5236",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -275,6 +282,13 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
+                                "name": "isStubShow",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
                                 "name": "status",
                                 "args": null,
                                 "storageKey": null
@@ -386,7 +400,44 @@ return {
                                     "type": "Partner",
                                     "selections": [
                                       v1,
-                                      v3
+                                      v3,
+                                      {
+                                        "kind": "LinkedField",
+                                        "alias": null,
+                                        "name": "profile",
+                                        "storageKey": null,
+                                        "args": null,
+                                        "concreteType": "Profile",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "kind": "LinkedField",
+                                            "alias": null,
+                                            "name": "image",
+                                            "storageKey": null,
+                                            "args": null,
+                                            "concreteType": "Image",
+                                            "plural": false,
+                                            "selections": [
+                                              {
+                                                "kind": "ScalarField",
+                                                "alias": null,
+                                                "name": "url",
+                                                "args": [
+                                                  {
+                                                    "kind": "Literal",
+                                                    "name": "version",
+                                                    "value": "square",
+                                                    "type": "[String]"
+                                                  }
+                                                ],
+                                                "storageKey": "url(version:\"square\")"
+                                              }
+                                            ]
+                                          },
+                                          v2
+                                        ]
+                                      }
                                     ]
                                   }
                                 ]

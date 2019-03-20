@@ -16,6 +16,10 @@
 
 ### Master
 
+- Reset zoom, pitch and heading upon city switch - roop
+- Fixes map intermittenly not render pins - luc
+- User location button would not render for users in cities - luc
+
 ### 1.8.27
 
 - Map clustering data now doesn't recreate geo data on tab change - kieran & luc
@@ -33,6 +37,7 @@
 - Updates dayThresholds for opening/closing shows to be 14/7 respectively - kieran
 - User location button hides when user is outside of currently selected city - ash
 - Adds "Ongoing" to shows running 2+ years beyond the present - ashley
+- Reset zoom, heading and pitch upon city change - roop
 
 ### 1.8.26
 

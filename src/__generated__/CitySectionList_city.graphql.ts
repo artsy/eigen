@@ -15,6 +15,7 @@ export type CitySectionList_city = {
                 readonly id: string;
                 readonly _id: string;
                 readonly __id: string;
+                readonly isStubShow: boolean | null;
                 readonly is_followed: boolean | null;
                 readonly start_at: string | null;
                 readonly end_at: string | null;
@@ -29,6 +30,11 @@ export type CitySectionList_city = {
                 readonly partner: ({
                     readonly name?: string | null;
                     readonly type?: string | null;
+                    readonly profile?: ({
+                        readonly image: ({
+                            readonly url: string | null;
+                        }) | null;
+                    }) | null;
                 }) | null;
             }) | null;
         }) | null> | null;
@@ -202,7 +208,7 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "href",
+                  "name": "status",
                   "args": null,
                   "storageKey": null
                 },
@@ -214,6 +220,13 @@ return {
                   "storageKey": null
                 },
                 v1,
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "isStubShow",
+                  "args": null,
+                  "storageKey": null
+                },
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -238,14 +251,14 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "status",
+                  "name": "_id",
                   "args": null,
                   "storageKey": null
                 },
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "_id",
+                  "name": "href",
                   "args": null,
                   "storageKey": null
                 },
@@ -291,7 +304,44 @@ return {
                       "type": "Partner",
                       "selections": [
                         v0,
-                        v2
+                        v2,
+                        {
+                          "kind": "LinkedField",
+                          "alias": null,
+                          "name": "profile",
+                          "storageKey": null,
+                          "args": null,
+                          "concreteType": "Profile",
+                          "plural": false,
+                          "selections": [
+                            {
+                              "kind": "LinkedField",
+                              "alias": null,
+                              "name": "image",
+                              "storageKey": null,
+                              "args": null,
+                              "concreteType": "Image",
+                              "plural": false,
+                              "selections": [
+                                {
+                                  "kind": "ScalarField",
+                                  "alias": null,
+                                  "name": "url",
+                                  "args": [
+                                    {
+                                      "kind": "Literal",
+                                      "name": "version",
+                                      "value": "square",
+                                      "type": "[String]"
+                                    }
+                                  ],
+                                  "storageKey": "url(version:\"square\")"
+                                }
+                              ]
+                            },
+                            v1
+                          ]
+                        }
                       ]
                     }
                   ]
@@ -319,5 +369,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '483d30b3d8f874df1daeefd6cdedd642';
+(node as any).hash = 'cc1090732a1066a4fdcad9948aa89604';
 export default node;

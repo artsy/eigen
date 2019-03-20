@@ -21,7 +21,7 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { Fair, FilterData, MapGeoFeature, RelayErrorState, SafeAreaInsets, Show } from "./types"
+import { Fair, FilterData, MapGeoFeature, OSCoordsUpdate, RelayErrorState, SafeAreaInsets, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -109,6 +109,7 @@ export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfo
 const DefaultZoomLevel = 11
 const MinZoomLevel = 9
 const MaxZoomLevel = 17.5
+const DefaultCameraMode = 1 // https://github.com/nitaliano/react-native-mapbox-gl/blob/master/ios/RCTMGL/CameraMode.m
 
 const ButtonAnimation = {
   yDelta: -200,
@@ -206,6 +207,16 @@ export class GlobalMap extends React.Component<Props, State> {
     this.setState({ activeIndex, activePin: null, activeShows: [] })
   }
 
+  resetZoomAndCamera = () => {
+    this.map.setCamera({
+      mode: DefaultCameraMode,
+      zoom: DefaultZoomLevel,
+      pitch: 0,
+      heading: 0,
+      duration: 1000,
+    })
+  }
+
   componentDidMount() {
     EventEmitter.subscribe("filters:change", this.handleFilterChange)
   }
@@ -232,8 +243,7 @@ export class GlobalMap extends React.Component<Props, State> {
     const { citySlug, relayErrorState } = this.props
 
     if (citySlug && citySlug !== nextProps.citySlug) {
-      // Reset zoom level after switching cities
-      setTimeout(() => this.map.zoomTo(DefaultZoomLevel, 100), 500)
+      setTimeout(this.resetZoomAndCamera, 500)
     }
 
     if (nextProps.viewer) {
@@ -242,6 +252,7 @@ export class GlobalMap extends React.Component<Props, State> {
       this.setState({ bucketResults }, () => {
         this.emitFilteredBucketResults()
         this.updateShowIdMap()
+        this.updateClusterMap()
       })
     } else if (relayErrorState) {
       EventEmitter.dispatch("map:error", { relayErrorState })
@@ -504,6 +515,12 @@ export class GlobalMap extends React.Component<Props, State> {
     )
   }
 
+  onUserLocationUpdate = (location: OSCoordsUpdate) => {
+    this.setState({
+      userLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
+    })
+  }
+
   onRegionIsChanging = async () => {
     const zoom = Math.floor(await this.map.getZoom())
 
@@ -618,6 +635,7 @@ export class GlobalMap extends React.Component<Props, State> {
               <Map
                 {...mapProps}
                 onRegionIsChanging={this.onRegionIsChanging}
+                onUserLocationUpdate={this.onUserLocationUpdate}
                 onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
                 onPress={this.onPressMap}
                 ref={this.storeMapRef}
@@ -836,6 +854,12 @@ export const GlobalMapContainer = createFragmentContainer(
                 ... on Partner {
                   name
                   type
+                  profile {
+                    # This is only used for stubbed shows
+                    image {
+                      url(version: "square")
+                    }
+                  }
                 }
               }
             }

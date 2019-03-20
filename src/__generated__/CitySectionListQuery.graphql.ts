@@ -53,6 +53,7 @@ fragment CitySectionList_city_3BpxDU on City {
         id
         _id
         __id
+        isStubShow
         is_followed
         start_at
         end_at
@@ -69,6 +70,12 @@ fragment CitySectionList_city_3BpxDU on City {
           ... on Partner {
             name
             type
+            profile {
+              image {
+                url(version: "square")
+              }
+              __id
+            }
           }
           ... on Node {
             __id
@@ -170,7 +177,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "CitySectionListQuery",
-  "id": "e3b9da18ae23f2ccf9134f1a28b6e1dd",
+  "id": "5c51590292a769f6cf512f2208b81d37",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -348,7 +355,7 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "href",
+                        "name": "status",
                         "args": null,
                         "storageKey": null
                       },
@@ -360,6 +367,13 @@ return {
                         "storageKey": null
                       },
                       v3,
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "isStubShow",
+                        "args": null,
+                        "storageKey": null
+                      },
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -384,14 +398,14 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "status",
+                        "name": "_id",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "_id",
+                        "name": "href",
                         "args": null,
                         "storageKey": null
                       },
@@ -438,7 +452,44 @@ return {
                             "type": "Partner",
                             "selections": [
                               v2,
-                              v4
+                              v4,
+                              {
+                                "kind": "LinkedField",
+                                "alias": null,
+                                "name": "profile",
+                                "storageKey": null,
+                                "args": null,
+                                "concreteType": "Profile",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "kind": "LinkedField",
+                                    "alias": null,
+                                    "name": "image",
+                                    "storageKey": null,
+                                    "args": null,
+                                    "concreteType": "Image",
+                                    "plural": false,
+                                    "selections": [
+                                      {
+                                        "kind": "ScalarField",
+                                        "alias": null,
+                                        "name": "url",
+                                        "args": [
+                                          {
+                                            "kind": "Literal",
+                                            "name": "version",
+                                            "value": "square",
+                                            "type": "[String]"
+                                          }
+                                        ],
+                                        "storageKey": "url(version:\"square\")"
+                                      }
+                                    ]
+                                  },
+                                  v3
+                                ]
+                              }
                             ]
                           }
                         ]

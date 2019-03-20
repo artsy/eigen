@@ -4,7 +4,7 @@ export const cityTabs: MapTab[] = [
   {
     id: "all",
     text: "All",
-    getShows: bucket => bucket.museums.concat(bucket.galleries),
+    getShows: bucket => (bucket.museums ? bucket.museums.concat(bucket.galleries) : bucket.galleries),
     getFairs: bucket => bucket.fairs,
   },
   {
