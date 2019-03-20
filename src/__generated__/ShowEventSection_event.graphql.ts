@@ -1,20 +1,21 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-declare const _EventSection_event$ref: unique symbol;
-export type EventSection_event$ref = typeof _EventSection_event$ref;
-export type EventSection_event = {
+declare const _ShowEventSection_event$ref: unique symbol;
+export type ShowEventSection_event$ref = typeof _ShowEventSection_event$ref;
+export type ShowEventSection_event = {
     readonly event_type: string | null;
     readonly description: string | null;
-    readonly exhibitionPeriod: string | null;
-    readonly " $refType": EventSection_event$ref;
+    readonly start_at: string | null;
+    readonly end_at: string | null;
+    readonly " $refType": ShowEventSection_event$ref;
 };
 
 
 
 const node: ConcreteFragment = {
   "kind": "Fragment",
-  "name": "EventSection_event",
+  "name": "ShowEventSection_event",
   "type": "PartnerShowEventType",
   "metadata": null,
   "argumentDefinitions": [],
@@ -36,11 +37,18 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "exhibitionPeriod",
+      "name": "start_at",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "end_at",
       "args": null,
       "storageKey": null
     }
   ]
 };
-(node as any).hash = 'a20a159a1f84fbbabdce3370d196fc42';
+(node as any).hash = '0b1484a3d0f0941058a1e2f71dc2aa0e';
 export default node;

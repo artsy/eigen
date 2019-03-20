@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`EventSection renders 1`] = `"<text font-family=\\"Unica77LL-Medium\\" font-size=\\"14px\\" lineheight=\\"20px\\" class=\\"sc-bdVaJa bDWFJH\\" mb=\\"2\\" ellipsizemode=\\"tail\\">Opening Reception</text>"`;
