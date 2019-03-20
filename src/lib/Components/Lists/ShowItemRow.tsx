@@ -145,7 +145,9 @@ export class ShowItemRow extends React.Component<Props, State> {
               <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
             </DefaultImageContainer>
           ) : (
-            <OpaqueImageView width={58} height={58} imageURL={imageURL} />
+            <DefaultImageContainer>
+              <OpaqueImageView width={58} height={58} imageURL={imageURL} />
+            </DefaultImageContainer>
           )}
           <Flex flexDirection="column" flexGrow={1} width={165} mr={10}>
             {show.partner &&
