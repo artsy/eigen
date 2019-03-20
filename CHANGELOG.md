@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.9.0
+
 - Add cover images to stub shows in full list - luc
 - Reset zoom, pitch and heading upon city switch - roop
 - Fixes map intermittenly not render pins - luc
