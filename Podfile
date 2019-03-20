@@ -80,7 +80,7 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission', '~> 1.8.0'
+  pod 'Emission', '~> 1.9.0'
   pod 'yoga', podspec: 'https://raw.githubusercontent.com/artsy/emission/v1.5.2/externals/yoga/yoga.podspec.json'
 
   # Enable running Emission from Metro inside Eigen when developing (see issue #2497)
