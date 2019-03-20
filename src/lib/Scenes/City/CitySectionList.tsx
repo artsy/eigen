@@ -134,6 +134,7 @@ export default createPaginationContainer(
               id
               _id
               __id
+              isStubShow
               is_followed
               start_at
               end_at
@@ -149,6 +150,12 @@ export default createPaginationContainer(
                 ... on Partner {
                   name
                   type
+                  profile {
+                    # This is only used for stubbed shows
+                    image {
+                      url(version: "square")
+                    }
+                  }
                 }
               }
             }

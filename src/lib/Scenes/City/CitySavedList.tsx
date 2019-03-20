@@ -91,6 +91,7 @@ export default createPaginationContainer(
                 _id
                 __id
                 name
+                isStubShow
                 status
                 href
                 is_followed
@@ -111,6 +112,12 @@ export default createPaginationContainer(
                   ... on Partner {
                     name
                     type
+                    profile {
+                      # This is only used for stubbed shows
+                      image {
+                        url(version: "square")
+                      }
+                    }
                   }
                 }
               }
