@@ -57,7 +57,7 @@ export class Shows extends Component<Props, State> {
           data={shows}
           keyExtractor={item => item.__id}
           renderItem={item => (
-            <Box mx={2}>
+            <Box m={2}>
               <ShowItemRow show={item.item} />
             </Box>
           )}
