@@ -377,10 +377,23 @@ describe(@"ARSwitchboard", ^{
             expect(classString).to.contain(@"SerifModalWeb");
         });
 
+        it(@"only sets up its echo instance once", ^{
+            switchboard = [[ARSwitchBoard alloc] init];
+            id echoMock = [OCMockObject partialMockForObject:switchboard.echo];
+            [[echoMock expect] checkForUpdates:OCMOCK_ANY];
+
+            [switchboard updateRoutes];
+
+            [echoMock verify];
+
+            [[echoMock reject] checkForUpdates:OCMOCK_ANY];
+            [switchboard updateRoutes];
+        });
+
         it(@"falls back to web views when websocket becomes outdated", ^{
             switchboard = [[ARSwitchBoard alloc] init];
             id echoMock = [OCMockObject partialMockForObject:switchboard.echo];
-            [[[echoMock stub] andReturn:@[[[Message alloc] initWithName:@"LiveAuctionsCurrentWebSocketVersion" content:@"1000000"]]] messages]; // A really big version we won't actually hit for... a while.
+            [[[echoMock stub] andReturn:@{@"LiveAuctionsCurrentWebSocketVersion": [[Message alloc] initWithName:@"LiveAuctionsCurrentWebSocketVersion" content:@"1000000"]}] messages]; // A really big version we won't actually hit for... a while.
             [switchboard updateRoutes];
 
             id subject = [switchboard loadURL:[NSURL URLWithString:@"https://live.artsy.net/live_auction"]];

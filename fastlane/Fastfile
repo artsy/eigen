@@ -51,13 +51,12 @@ lane :ship_beta do
 
   build_ios_app(configuration: 'Store')
 
-  bundle_version = `/usr/libexec/PlistBuddy -c "Print CFBundleVersion" Artsy/App_Resources/Artsy-Info.plist`.strip
+  root = File.expand_path('../..', __FILE__)
+  bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'Artsy/App_Resources/Artsy-Info.plist')}`.strip
   tag_and_push(tag: "#{latest_version}-#{bundle_version}")
 
   # First make individual dSYM archives available to the sentry-cli tool.
-  root = File.expand_path('../..', __FILE__)
   sentry_version = latest_version
-  sentry_dist = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'Artsy/App_Resources/Artsy-Info.plist')}`.strip
   dsym_archive = File.join(root, 'Artsy.app.dSYM.zip')
   dsyms_path = File.join(root, 'dSYMs')
   sh "unzip -d #{dsyms_path} #{dsym_archive}"
@@ -85,7 +84,7 @@ lane :ship_beta do
       org_slug: org_slug,
       project_slug: project_slug,
       version: sentry_version,
-      dist: sentry_dist,
+      dist: bundle_version,
       file: 'Pods/Emission/Pod/Assets/Emission.js'
       puts "Uploaded Emission.js for #{project_slug}"
 
@@ -93,7 +92,7 @@ lane :ship_beta do
       org_slug: org_slug,
       project_slug: project_slug,
       version: sentry_version,
-      dist: sentry_dist,
+      dist: bundle_version,
       sourcemap: 'Pods/Emission/Pod/Assets/Emission.js.map',
       rewrite: true
       puts "Uploaded Emission.js.map for #{project_slug}"

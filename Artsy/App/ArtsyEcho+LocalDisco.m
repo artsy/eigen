@@ -22,9 +22,7 @@ NSInteger const ARLocalDiscoCurrentVersionCompatibility = 1;
         return NO;
     }
 
-    Message *localDiscoVersion = [[self.messages select:^BOOL(Message *message) {
-        return [message.name isEqualToString:@"LocalDiscoveryCurrentVersion"];
-    }] firstObject];
+    Message *localDiscoVersion = self.messages[@"LocalDiscoveryCurrentVersion"];
 
     return localDiscoVersion.content.integerValue >= ARLocalDiscoCurrentVersionCompatibility;
 }
@@ -32,9 +30,7 @@ NSInteger const ARLocalDiscoCurrentVersionCompatibility = 1;
 - (BOOL)userIsAllowListed
 {
     BOOL userInAllowList = NO;
-    Message *allowListMessage = [self.messages find:^BOOL(Message *message) {
-        return [message.name isEqualToString:@"LocalDiscoveryAllowListCSV"];
-    }];
+    Message *allowListMessage = self.messages[@"LocalDiscoveryAllowListCSV"];
 
     if (allowListMessage) {
         User *user = [User currentUser];

@@ -283,7 +283,7 @@ describe(@"with Echo config that has BNMO enabled", ^{
     beforeEach(^{
         view.echo = [[ArtsyEcho alloc] init];
         view.echo.features = @{ @"AREnableMakeOfferFlow": [[Feature alloc] initWithName:@"AREnableMakeOfferFlow" state:@(YES)] };
-        view.echo.messages = @[[[Message alloc] initWithName:@"ExchangeCurrentVersion" content:@"1"]];
+        view.echo.messages = @{@"ExchangeCurrentVersion": [[Message alloc] initWithName:@"ExchangeCurrentVersion" content:@"1"]};
     });
 
     it(@"displays make offer and buy buttons", ^{

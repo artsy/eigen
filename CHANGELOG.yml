@@ -3,9 +3,9 @@ upcoming:
   date: TBD
   emission_version: 1.8.26
   dev:
-    - 
+    - Updates Aerodramus - ash
   user_facing:
-    - 
+    - Fixes extraneous calls to Echo setup - ash
 
 releases:
   - version: 4.4.1

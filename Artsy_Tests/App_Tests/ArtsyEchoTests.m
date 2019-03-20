@@ -9,20 +9,20 @@ describe(@"an empty Echo object", ^{
     beforeEach(^{
         subject = [[ArtsyEcho alloc] init];
         subject.features = @{};
-        subject.messages = @[];
+        subject.messages = @{};
     });
 
     describe(@"buy now", ^{
         it(@"isBuyNowAccessible returns YES for compatible versions", ^{
-            subject.messages = @[
-                                 [[Message alloc] initWithName:@"ExchangeCurrentVersion" content:@"1"]
-                                 ];
+            subject.messages = @{
+                                 @"ExchangeCurrentVersion": [[Message alloc] initWithName:@"ExchangeCurrentVersion" content:@"1"]
+                                 };
             expect(subject.isBuyNowAccessible).to.beTruthy();
         });
         it(@"isBuyNowAccessible returns NO for older versions", ^{
-            subject.messages = @[
-                                 [[Message alloc] initWithName:@"ExchangeCurrentVersion" content:@"10000000"]
-                                 ];
+            subject.messages = @{
+                                 @"ExchangeCurrentVersion": [[Message alloc] initWithName:@"ExchangeCurrentVersion" content:@"10000000"]
+                                 };
             expect(subject.isBuyNowAccessible).to.beFalsy();
         });
     });
@@ -30,9 +30,9 @@ describe(@"an empty Echo object", ^{
     describe(@"make offer", ^{
         describe(@"with compatible Exchange version", ^{
             beforeEach(^{
-                subject.messages = @[
-                                     [[Message alloc] initWithName:@"ExchangeCurrentVersion" content:@"1"]
-                                     ];
+                subject.messages = @{
+                                     @"ExchangeCurrentVersion": [[Message alloc] initWithName:@"ExchangeCurrentVersion" content:@"1"]
+                                      };
             });
 
             it(@"returns NO for isMakeOfferAccessible", ^{
@@ -47,9 +47,9 @@ describe(@"an empty Echo object", ^{
 
         describe(@"with outdated Exchange version", ^{
             beforeEach(^{
-                subject.messages = @[
-                                     [[Message alloc] initWithName:@"ExchangeCurrentVersion" content:@"10000000"]
-                                     ];
+                subject.messages = @{
+                                     @"ExchangeCurrentVersion": [[Message alloc] initWithName:@"ExchangeCurrentVersion" content:@"10000000"]
+                                     };
             });
 
             it(@"returns NO for isMakeOfferAccessible", ^{

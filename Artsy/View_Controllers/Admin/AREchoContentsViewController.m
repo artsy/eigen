@@ -17,6 +17,7 @@ static NSString *CellIdentifier = @"Cell";
 @interface AREchoContentsViewController ()
 
 @property (nonatomic, strong) Aerodramus *echo;
+@property (nonatomic, strong) NSArrayOf(Message *) *messages; // Cache messages to ensure deterministic ordering
 @property (nonatomic, strong) NSArrayOf(NSString *) * routeKeys;
 @property (nonatomic, strong) NSArrayOf(NSString *) * featureKeys;
 
@@ -40,6 +41,7 @@ static NSString *CellIdentifier = @"Cell";
     [super viewDidLoad];
 
     self.echo = [[ARSwitchBoard sharedInstance] echo];
+    self.messages = self.echo.messages.allValues;
     self.routeKeys = self.echo.routes.allKeys;
     self.featureKeys = self.echo.features.allKeys;
 }
@@ -64,7 +66,7 @@ static NSString *CellIdentifier = @"Cell";
         case Features:
             return self.echo.features.count;
         case Messages:
-            return self.echo.messages.count;
+            return self.messages.count;
     }
     return 0;
 }
@@ -110,7 +112,7 @@ static NSString *CellIdentifier = @"Cell";
             cell.detailTextLabel.text = feature.state ? @"On" : @"Off";
         } break;
         case Messages: {
-            Message *message = self.echo.messages[indexPath.row];
+            Message *message = self.messages[indexPath.row];
             cell.textLabel.text = message.name;
             cell.detailTextLabel.text = message.content;
         } break;
