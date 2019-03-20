@@ -7,30 +7,21 @@ import PinFairSelected from "lib/Icons/PinFairSelected"
 import PinSavedSelected from "lib/Icons/PinSavedSelected"
 import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { Schema, screenTrack, track } from "lib/utils/track"
-import { get, uniq } from "lodash"
+import { get, isEqual, uniq } from "lodash"
 import React from "react"
 import { Animated, Dimensions, Easing, Image, NativeModules, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { animated, config, Spring } from "react-spring/dist/native.cjs.js"
 import styled from "styled-components/native"
 import Supercluster from "supercluster"
-
 import { cityTabs } from "../City/cityTabs"
-import { bucketCityResults, BucketResults, emptyBucketResults } from "./bucketCityResults"
+import { bucketCityResults, BucketKey, BucketResults, emptyBucketResults } from "./bucketCityResults"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
 import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import {
-  Fair,
-  MapGeoFeature,
-  MapGeoFeatureCollection,
-  OSCoordsUpdate,
-  RelayErrorState,
-  SafeAreaInsets,
-  Show,
-} from "./types"
+import { Fair, FilterData, MapGeoFeature, RelayErrorState, SafeAreaInsets, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -99,10 +90,8 @@ interface State {
   currentLocation?: { lat: number; lng: number }
   /** The users's location from core location */
   userLocation?: { lat: number; lng: number }
-  /** True when we know that we can get location updates from the OS */
-  trackUserLocation?: boolean
   /** A set of GeoJSON features, which right now is our show clusters */
-  featureCollection: MapGeoFeatureCollection
+  featureCollections: { [key in BucketKey]?: FilterData }
   /** Has the map fully rendered? */
   mapLoaded: boolean
   /** In the process of saving a show */
@@ -160,8 +149,7 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   map: Mapbox.MapView
-  clusterEngine: Supercluster
-  featureCollection: MapGeoFeatureCollection
+  filters: { [key: string]: FilterData }
   moveButtons: Animated.Value
   currentZoom: number
 
@@ -203,8 +191,7 @@ export class GlobalMap extends React.Component<Props, State> {
       activeIndex: 0,
       currentLocation,
       bucketResults: emptyBucketResults,
-      trackUserLocation: false,
-      featureCollection: undefined,
+      featureCollections: null,
       mapLoaded: false,
       isSavingShow: false,
       nearestFeature: null,
@@ -212,18 +199,11 @@ export class GlobalMap extends React.Component<Props, State> {
       currentZoom: DefaultZoomLevel,
     }
 
-    this.clusterEngine = new Supercluster({
-      radius: 50,
-      minZoom: Math.floor(MinZoomLevel),
-      maxZoom: Math.floor(MaxZoomLevel),
-    })
-
     this.updateShowIdMap()
-    this.updateClusterMap(false)
   }
 
   handleFilterChange = activeIndex => {
-    this.setState({ activeIndex, activePin: null, activeShows: [] }, () => this.emitFilteredBucketResults())
+    this.setState({ activeIndex, activePin: null, activeShows: [] })
   }
 
   componentDidMount() {
@@ -232,6 +212,20 @@ export class GlobalMap extends React.Component<Props, State> {
 
   componentWillUnmount() {
     EventEmitter.unsubscribe("filters:change", this.handleFilterChange)
+  }
+
+  componentDidUpdate(_, prevState) {
+    // Update the clusterMap if new bucket results
+    if (this.state.bucketResults) {
+      const shouldUpdate = !isEqual(
+        prevState.bucketResults.saved.map(g => g.is_followed),
+        this.state.bucketResults.saved.map(g => g.is_followed)
+      )
+
+      if (shouldUpdate) {
+        this.updateClusterMap()
+      }
+    }
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -248,7 +242,6 @@ export class GlobalMap extends React.Component<Props, State> {
       this.setState({ bucketResults }, () => {
         this.emitFilteredBucketResults()
         this.updateShowIdMap()
-        this.updateClusterMap()
       })
     } else if (relayErrorState) {
       EventEmitter.dispatch("map:error", { relayErrorState })
@@ -291,31 +284,38 @@ export class GlobalMap extends React.Component<Props, State> {
     return null
   }
 
-  updateClusterMap(updateState: boolean = true) {
+  updateClusterMap() {
     if (!this.props.viewer) {
       return
     }
 
-    const tab = cityTabs[this.state.activeIndex]
-    const shows = tab.getShows(this.state.bucketResults)
-    const fairs = tab.getFairs(this.state.bucketResults)
+    const featureCollections: State["featureCollections"] = {}
+    cityTabs.forEach(tab => {
+      const shows = tab.getShows(this.state.bucketResults)
+      const fairs = tab.getFairs(this.state.bucketResults)
+      const showData = showsToGeoCityShow(shows)
+      const fairData = fairToGeoCityFairs(fairs)
+      const data = showData.concat((fairData as any) as Show[])
+      const geoJSONFeature = convertCityToGeoJSON(data)
 
-    const showData = showsToGeoCityShow(shows)
-    const fairData = fairToGeoCityFairs(fairs)
-
-    const data = showData.concat((fairData as any) as Show[])
-    const geoJSONFeature = convertCityToGeoJSON(data)
-
-    this.featureCollection = geoJSONFeature
-
-    if (updateState) {
-      this.setState({
-        featureCollection: geoJSONFeature,
+      const clusterEngine = new Supercluster({
+        radius: 50,
+        minZoom: Math.floor(MinZoomLevel),
+        maxZoom: Math.floor(MaxZoomLevel),
       })
-    }
 
-    // close but not enough yet
-    this.clusterEngine.load(this.featureCollection.features as any)
+      clusterEngine.load(geoJSONFeature.features as any)
+
+      featureCollections[tab.id] = {
+        featureCollection: geoJSONFeature,
+        filter: tab.id,
+        clusterEngine,
+      }
+    })
+
+    this.setState({
+      featureCollections,
+    })
   }
 
   emitFilteredBucketResults() {
@@ -323,13 +323,10 @@ export class GlobalMap extends React.Component<Props, State> {
       return
     }
 
-    // TODO: map region filtering can live here.
     const filter = cityTabs[this.state.activeIndex]
     const {
       city: { name: cityName, slug: citySlug, sponsoredContent },
     } = this.props.viewer
-
-    this.updateClusterMap(true)
 
     EventEmitter.dispatch("map:change", {
       filter,
@@ -521,21 +518,6 @@ export class GlobalMap extends React.Component<Props, State> {
     }
   }
 
-  onRegionDidChange = (location: MapGeoFeature) => {
-    this.setState({
-      trackUserLocation: false,
-      currentLocation: GlobalMap.lngLatArrayToLocation(location.geometry && location.geometry.coordinates),
-    })
-  }
-
-  onUserLocationUpdate = (location: OSCoordsUpdate) => {
-    this.setState({
-      userLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
-      currentLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
-      trackUserLocation: true,
-    })
-  }
-
   onDidFinishRenderingMapFully = () => {
     NativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryMapHasRendered", {})
     this.setState({ mapLoaded: true })
@@ -568,6 +550,11 @@ export class GlobalMap extends React.Component<Props, State> {
     if (c) {
       this.map = c.root
     }
+  }
+
+  get currentFeatureCollection(): FilterData {
+    const filterID = cityTabs[this.state.activeIndex].id
+    return this.state.featureCollections[filterID]
   }
 
   render() {
@@ -631,16 +618,18 @@ export class GlobalMap extends React.Component<Props, State> {
               <Map
                 {...mapProps}
                 onRegionIsChanging={this.onRegionIsChanging}
-                onRegionDidChange={this.onRegionDidChange}
-                onUserLocationUpdate={this.onUserLocationUpdate}
                 onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
                 onPress={this.onPressMap}
                 ref={this.storeMapRef}
               >
                 {city && (
                   <>
-                    {this.featureCollection && (
-                      <PinsShapeLayer featureCollection={this.featureCollection} onPress={this.onPressPinShapeLayer} />
+                    {this.state.featureCollections && (
+                      <PinsShapeLayer
+                        filterID={cityTabs[this.state.activeIndex].id}
+                        featureCollections={this.state.featureCollections}
+                        onPress={e => this.handleFeaturePress(e.nativeEvent)}
+                      />
                     )}
                     <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
                     {mapLoaded && activeShows && activePin && this.renderSelectedPin()}
@@ -711,9 +700,10 @@ export class GlobalMap extends React.Component<Props, State> {
       const [eastLng, northLat] = ne
       const [westLng, southLat] = sw
 
-      const visibleFeatures = this.clusterEngine.getClusters([westLng, southLat, eastLng, northLat], zoom)
+      const clusterEngine = this.currentFeatureCollection.clusterEngine
+      const visibleFeatures = clusterEngine.getClusters([westLng, southLat, eastLng, northLat], zoom)
       const nearestFeature = this.getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
-      const points = this.clusterEngine.getLeaves(nearestFeature.properties.cluster_id, Infinity)
+      const points = clusterEngine.getLeaves(nearestFeature.properties.cluster_id, Infinity)
       activeShows = points.map(a => a.properties) as any
       this.setState({
         nearestFeature,

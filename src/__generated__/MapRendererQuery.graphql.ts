@@ -261,14 +261,14 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_followed",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
@@ -303,7 +303,7 @@ v8 = {
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "is_followed",
   "args": null,
   "storageKey": null
 },
@@ -799,7 +799,7 @@ return {
                         "concreteType": "Fair",
                         "plural": false,
                         "selections": [
-                          v4,
+                          v3,
                           v1,
                           v10,
                           {
@@ -865,7 +865,7 @@ return {
                                 "concreteType": "Image",
                                 "plural": false,
                                 "selections": [
-                                  v4,
+                                  v3,
                                   v8,
                                   {
                                     "kind": "ScalarField",
@@ -898,7 +898,7 @@ return {
                                 ]
                               },
                               v5,
-                              v4,
+                              v3,
                               v1
                             ]
                           },

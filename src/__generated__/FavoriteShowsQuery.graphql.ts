@@ -237,14 +237,14 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "href",
+                            "name": "id",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "id",
+                            "name": "_id",
                             "args": null,
                             "storageKey": null
                           },
@@ -324,7 +324,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "_id",
+                            "name": "href",
                             "args": null,
                             "storageKey": null
                           },
