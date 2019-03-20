@@ -17,6 +17,7 @@ export type CityBMWList_city = {
                     readonly status: string | null;
                     readonly href: string | null;
                     readonly is_followed: boolean | null;
+                    readonly isStubShow: boolean | null;
                     readonly exhibition_period: string | null;
                     readonly cover_image: ({
                         readonly url: string | null;
@@ -33,6 +34,11 @@ export type CityBMWList_city = {
                     readonly partner: ({
                         readonly name?: string | null;
                         readonly type?: string | null;
+                        readonly profile?: ({
+                            readonly image: ({
+                                readonly url: string | null;
+                            }) | null;
+                        }) | null;
                     }) | null;
                 }) | null;
             }) | null> | null;
@@ -157,14 +163,14 @@ return {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "id",
+                      "name": "exhibition_period",
                       "args": null,
                       "storageKey": null
                     },
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "_id",
+                      "name": "id",
                       "args": null,
                       "storageKey": null
                     },
@@ -194,7 +200,14 @@ return {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "exhibition_period",
+                      "name": "isStubShow",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "_id",
                       "args": null,
                       "storageKey": null
                     },
@@ -283,7 +296,44 @@ return {
                           "type": "Partner",
                           "selections": [
                             v0,
-                            v2
+                            v2,
+                            {
+                              "kind": "LinkedField",
+                              "alias": null,
+                              "name": "profile",
+                              "storageKey": null,
+                              "args": null,
+                              "concreteType": "Profile",
+                              "plural": false,
+                              "selections": [
+                                {
+                                  "kind": "LinkedField",
+                                  "alias": null,
+                                  "name": "image",
+                                  "storageKey": null,
+                                  "args": null,
+                                  "concreteType": "Image",
+                                  "plural": false,
+                                  "selections": [
+                                    {
+                                      "kind": "ScalarField",
+                                      "alias": null,
+                                      "name": "url",
+                                      "args": [
+                                        {
+                                          "kind": "Literal",
+                                          "name": "version",
+                                          "value": "square",
+                                          "type": "[String]"
+                                        }
+                                      ],
+                                      "storageKey": "url(version:\"square\")"
+                                    }
+                                  ]
+                                },
+                                v1
+                              ]
+                            }
                           ]
                         }
                       ]
@@ -338,5 +388,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '5bed032f150e37e70f8e5c4fa2324b65';
+(node as any).hash = 'd9ccf42a06f9ac5eebb4328c62f0805b';
 export default node;

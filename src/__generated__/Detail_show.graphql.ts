@@ -50,14 +50,14 @@ const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -76,6 +76,11 @@ return {
   "argumentDefinitions": [],
   "selections": [
     {
+      "kind": "FragmentSpread",
+      "name": "ShowArtworksPreview_show",
+      "args": null
+    },
+    {
       "kind": "ScalarField",
       "alias": null,
       "name": "_id",
@@ -83,7 +88,6 @@ return {
       "storageKey": null
     },
     v0,
-    v1,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -114,7 +118,7 @@ return {
       "concreteType": "Image",
       "plural": true,
       "selections": [
-        v0
+        v1
       ]
     },
     {
@@ -122,11 +126,7 @@ return {
       "name": "ShowHeader_show",
       "args": null
     },
-    {
-      "kind": "FragmentSpread",
-      "name": "ShowArtworksPreview_show",
-      "args": null
-    },
+    v1,
     {
       "kind": "FragmentSpread",
       "name": "ShowArtistsPreview_show",
@@ -162,6 +162,19 @@ return {
           "selections": [
             {
               "kind": "InlineFragment",
+              "type": "OpeningHoursText",
+              "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "text",
+                  "args": null,
+                  "storageKey": null
+                }
+              ]
+            },
+            {
+              "kind": "InlineFragment",
               "type": "OpeningHoursArray",
               "selections": [
                 {
@@ -190,19 +203,6 @@ return {
                   ]
                 }
               ]
-            },
-            {
-              "kind": "InlineFragment",
-              "type": "OpeningHoursText",
-              "selections": [
-                {
-                  "kind": "ScalarField",
-                  "alias": null,
-                  "name": "text",
-                  "args": null,
-                  "storageKey": null
-                }
-              ]
             }
           ]
         },
@@ -218,7 +218,7 @@ return {
       "concreteType": "Artist",
       "plural": true,
       "selections": [
-        v0,
+        v1,
         v2
       ]
     },
@@ -268,7 +268,7 @@ return {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v1,
+            v0,
             {
               "kind": "ScalarField",
               "alias": null,
