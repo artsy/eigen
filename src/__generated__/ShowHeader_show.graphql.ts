@@ -10,6 +10,7 @@ export type ShowHeader_show = {
     readonly name: string | null;
     readonly press_release: string | null;
     readonly is_followed: boolean | null;
+    readonly end_at: string | null;
     readonly exhibition_period: string | null;
     readonly status: string | null;
     readonly isStubShow: boolean | null;
@@ -56,21 +57,21 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
@@ -82,11 +83,11 @@ v4 = {
   "storageKey": null
 },
 v5 = [
-  v2,
+  v3,
   v4,
   v0,
-  v3,
-  v1
+  v1,
+  v2
 ];
 return {
   "kind": "Fragment",
@@ -95,16 +96,10 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "exhibition_period",
-      "args": null,
-      "storageKey": null
-    },
     v0,
     v1,
     v2,
+    v3,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -119,7 +114,20 @@ return {
       "args": null,
       "storageKey": null
     },
-    v3,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "end_at",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "exhibition_period",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -143,12 +151,12 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v1,
+        v2,
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v2,
+            v3,
             v0,
             v4
           ]
@@ -243,5 +251,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '0b51ea9a40d471771b9fef3a018bc62b';
+(node as any).hash = '5089558909caacd4b4f76aa018c3c302';
 export default node;

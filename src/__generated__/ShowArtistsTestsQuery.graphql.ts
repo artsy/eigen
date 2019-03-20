@@ -157,14 +157,8 @@ return {
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "nationality",
-                    "args": null,
-                    "storageKey": null
-                  },
                   v1,
+                  v2,
                   v3,
                   {
                     "kind": "ScalarField",
@@ -180,7 +174,13 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v2,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "nationality",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,

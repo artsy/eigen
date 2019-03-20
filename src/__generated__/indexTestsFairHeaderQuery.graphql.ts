@@ -125,36 +125,36 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
 v6 = [
-  v2,
-  v3,
   v4,
   v5,
+  v2,
+  v3,
   v1
 ];
 return {
@@ -204,47 +204,9 @@ return {
         "concreteType": "Fair",
         "plural": false,
         "selections": [
-          {
-            "kind": "LinkedField",
-            "alias": "artists_names",
-            "name": "artists",
-            "storageKey": "artists(first:3)",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 3,
-                "type": "Int"
-              }
-            ],
-            "concreteType": "ArtistConnection",
-            "plural": false,
-            "selections": [
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "edges",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "ArtistEdge",
-                "plural": true,
-                "selections": [
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "node",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "Artist",
-                    "plural": false,
-                    "selections": v6
-                  }
-                ]
-              }
-            ]
-          },
-          v4,
           v2,
+          v3,
+          v4,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -298,8 +260,8 @@ return {
                 "concreteType": "Partner",
                 "plural": true,
                 "selections": [
-                  v5,
-                  v2,
+                  v3,
+                  v4,
                   v1
                 ]
               }
@@ -339,7 +301,7 @@ return {
                     "concreteType": "Show",
                     "plural": false,
                     "selections": [
-                      v4,
+                      v2,
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -370,9 +332,9 @@ return {
                                 "concreteType": "Profile",
                                 "plural": false,
                                 "selections": [
-                                  v2,
                                   v4,
-                                  v5,
+                                  v2,
+                                  v3,
                                   v1
                                 ]
                               }
@@ -387,7 +349,45 @@ return {
               }
             ]
           },
-          v5,
+          {
+            "kind": "LinkedField",
+            "alias": "artists_names",
+            "name": "artists",
+            "storageKey": "artists(first:3)",
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 3,
+                "type": "Int"
+              }
+            ],
+            "concreteType": "ArtistConnection",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "edges",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ArtistEdge",
+                "plural": true,
+                "selections": [
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "name": "node",
+                    "storageKey": null,
+                    "args": null,
+                    "concreteType": "Artist",
+                    "plural": false,
+                    "selections": v6
+                  }
+                ]
+              }
+            ]
+          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -438,8 +438,8 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v4,
-                  v3,
+                  v2,
+                  v5,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -471,8 +471,8 @@ return {
                 ]
               },
               v1,
-              v4,
               v2,
+              v4,
               {
                 "kind": "ScalarField",
                 "alias": null,

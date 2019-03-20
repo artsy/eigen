@@ -1,6 +1,6 @@
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 
-import { Fair, MapGeoFeatureCollection, Show } from "lib/Scenes/Map/types"
+import { Fair, Show } from "lib/Scenes/Map/types"
 
 // Here is a sample GeoJSON document
 // {
@@ -61,5 +61,5 @@ export const convertCityToGeoJSON = data => {
           },
         }
       }),
-  } as MapGeoFeatureCollection
+  } as any
 }
