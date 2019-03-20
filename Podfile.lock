@@ -2,7 +2,7 @@ PODS:
   - Adjust (4.17.1):
     - Adjust/Core (= 4.17.1)
   - Adjust/Core (4.17.1)
-  - Aerodramus (0.3.2):
+  - Aerodramus (1.0.0):
     - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
     - AFNetworking/NSURLConnection (~> 2.0)
@@ -491,7 +491,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Adjust: b1f2b0e0b426fa991d69ed7fc9de806cf6dff5a6
-  Aerodramus: a23208fd4d76a32ee4ca425a8e29319e6c6a9bdc
+  Aerodramus: 16b609776c84b6e0e785bb0ca1604b98473a8376
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AFOAuth1Client: 07ccc935ba06ac8d023c16d39a5bdf04bc6f92e1
