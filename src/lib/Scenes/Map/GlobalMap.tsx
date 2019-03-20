@@ -109,6 +109,7 @@ export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfo
 const DefaultZoomLevel = 11
 const MinZoomLevel = 9
 const MaxZoomLevel = 17.5
+const DefaultCameraMode = 1 // https://github.com/nitaliano/react-native-mapbox-gl/blob/master/ios/RCTMGL/CameraMode.m
 
 const ButtonAnimation = {
   yDelta: -200,
@@ -206,6 +207,16 @@ export class GlobalMap extends React.Component<Props, State> {
     this.setState({ activeIndex, activePin: null, activeShows: [] })
   }
 
+  resetZoomAndCamera = () => {
+    this.map.setCamera({
+      mode: DefaultCameraMode,
+      zoom: DefaultZoomLevel,
+      pitch: 0,
+      heading: 0,
+      duration: 1000,
+    })
+  }
+
   componentDidMount() {
     EventEmitter.subscribe("filters:change", this.handleFilterChange)
   }
@@ -232,8 +243,7 @@ export class GlobalMap extends React.Component<Props, State> {
     const { citySlug, relayErrorState } = this.props
 
     if (citySlug && citySlug !== nextProps.citySlug) {
-      // Reset zoom level after switching cities
-      setTimeout(() => this.map.zoomTo(DefaultZoomLevel, 100), 500)
+      setTimeout(this.resetZoomAndCamera, 500)
     }
 
     if (nextProps.viewer) {
