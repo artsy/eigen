@@ -444,28 +444,28 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "description",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "description",
+  "name": "city",
   "args": null,
   "storageKey": null
 },
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "city",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -552,6 +552,13 @@ v18 = {
   ]
 },
 v19 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_biddable",
+  "args": null,
+  "storageKey": null
+},
+v20 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -577,38 +584,31 @@ v19 = {
     }
   ]
 },
-v20 = {
+v21 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "title",
   "args": null,
   "storageKey": null
 },
-v21 = {
+v22 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "date",
   "args": null,
   "storageKey": null
 },
-v22 = {
+v23 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "sale_message",
   "args": null,
   "storageKey": null
 },
-v23 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_in_auction",
-  "args": null,
-  "storageKey": null
-},
 v24 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_biddable",
+  "name": "is_in_auction",
   "args": null,
   "storageKey": null
 },
@@ -736,7 +736,7 @@ v30 = {
   ]
 },
 v31 = [
-  v5,
+  v4,
   v2
 ],
 v32 = {
@@ -813,11 +813,17 @@ return {
         "concreteType": "Show",
         "plural": false,
         "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "isStubShow",
+            "args": null,
+            "storageKey": null
+          },
           v3,
           v4,
           v5,
           v6,
-          v7,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -834,7 +840,7 @@ return {
             "concreteType": "Image",
             "plural": true,
             "selections": [
-              v4,
+              v7,
               v8,
               v9
             ]
@@ -857,13 +863,7 @@ return {
             "args": null,
             "storageKey": null
           },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "isStubShow",
-            "args": null,
-            "storageKey": null
-          },
+          v7,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -879,8 +879,8 @@ return {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
-                  v5,
                   v4,
+                  v7,
                   v14,
                   {
                     "kind": "ScalarField",
@@ -943,9 +943,9 @@ return {
                         "concreteType": "Artist",
                         "plural": false,
                         "selections": [
-                          v5,
-                          v14,
                           v4,
+                          v14,
+                          v7,
                           v3,
                           v2
                         ]
@@ -965,9 +965,9 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              v5,
-              v14,
               v4,
+              v14,
+              v7,
               v3,
               v2,
               v10,
@@ -993,14 +993,14 @@ return {
             "concreteType": "Artwork",
             "plural": true,
             "selections": [
-              v2,
-              v4,
               v19,
+              v2,
               v20,
               v21,
               v22,
               v23,
               v24,
+              v7,
               v25,
               v26,
               v28,
@@ -1045,10 +1045,10 @@ return {
             "plural": true,
             "selections": [
               v3,
-              v4,
+              v7,
               v14,
               v2,
-              v5,
+              v4,
               v10,
               v15,
               v16,
@@ -1091,8 +1091,8 @@ return {
                     "plural": false,
                     "selections": [
                       v3,
+                      v7,
                       v4,
-                      v5,
                       v12,
                       v11,
                       {
@@ -1123,7 +1123,7 @@ return {
                             "kind": "InlineFragment",
                             "type": "Partner",
                             "selections": [
-                              v5
+                              v4
                             ]
                           }
                         ]
@@ -1145,8 +1145,8 @@ return {
             "plural": false,
             "selections": [
               v2,
-              v4,
               v7,
+              v6,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -1244,6 +1244,19 @@ return {
                   v13,
                   {
                     "kind": "InlineFragment",
+                    "type": "OpeningHoursText",
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "text",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "InlineFragment",
                     "type": "OpeningHoursArray",
                     "selections": [
                       {
@@ -1270,19 +1283,6 @@ return {
                             "storageKey": null
                           }
                         ]
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "InlineFragment",
-                    "type": "OpeningHoursText",
-                    "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "text",
-                        "args": null,
-                        "storageKey": null
                       }
                     ]
                   }
@@ -1320,7 +1320,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v6,
+              v5,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -1356,12 +1356,12 @@ return {
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
-                  v2,
-                  v3,
-                  v4,
-                  v5,
-                  v10,
                   v15,
+                  v2,
+                  v7,
+                  v4,
+                  v10,
+                  v3,
                   v16,
                   v17,
                   v18,
@@ -1440,8 +1440,8 @@ return {
                     "concreteType": "AggregationCount",
                     "plural": true,
                     "selections": [
+                      v7,
                       v4,
-                      v5,
                       v2
                     ]
                   }
@@ -1514,15 +1514,15 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          v4,
-                          v2,
-                          v19,
+                          v25,
+                          v7,
                           v20,
                           v21,
                           v22,
                           v23,
                           v24,
-                          v25,
+                          v19,
+                          v2,
                           v26,
                           v28,
                           v30,

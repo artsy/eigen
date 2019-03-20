@@ -341,11 +341,17 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
+                            "name": "is_acquireable",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
                             "name": "id",
                             "args": null,
                             "storageKey": null
                           },
-                          v2,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -413,13 +419,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "is_acquireable",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          v2,
                           {
                             "kind": "ScalarField",
                             "alias": null,

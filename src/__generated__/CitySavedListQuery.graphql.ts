@@ -43,6 +43,7 @@ fragment CitySavedList_viewer_40VqxQ on Viewer {
             _id
             __id
             name
+            isStubShow
             status
             href
             is_followed
@@ -65,6 +66,12 @@ fragment CitySavedList_viewer_40VqxQ on Viewer {
               ... on Partner {
                 name
                 type
+                profile {
+                  image {
+                    url(version: "square")
+                  }
+                  __id
+                }
               }
               ... on Node {
                 __id
@@ -141,7 +148,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "CitySavedListQuery",
-  "id": "0d8b3c139184b636f0e89510a6999b7c",
+  "id": "5354b57441ab2c0df50faa9547c652ac",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -294,19 +301,26 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "id",
+                                "name": "exhibition_period",
                                 "args": null,
                                 "storageKey": null
                               },
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "_id",
+                                "name": "id",
                                 "args": null,
                                 "storageKey": null
                               },
                               v2,
                               v1,
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "isStubShow",
+                                "args": null,
+                                "storageKey": null
+                              },
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -331,7 +345,7 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "exhibition_period",
+                                "name": "_id",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -421,7 +435,44 @@ return {
                                     "type": "Partner",
                                     "selections": [
                                       v1,
-                                      v3
+                                      v3,
+                                      {
+                                        "kind": "LinkedField",
+                                        "alias": null,
+                                        "name": "profile",
+                                        "storageKey": null,
+                                        "args": null,
+                                        "concreteType": "Profile",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "kind": "LinkedField",
+                                            "alias": null,
+                                            "name": "image",
+                                            "storageKey": null,
+                                            "args": null,
+                                            "concreteType": "Image",
+                                            "plural": false,
+                                            "selections": [
+                                              {
+                                                "kind": "ScalarField",
+                                                "alias": null,
+                                                "name": "url",
+                                                "args": [
+                                                  {
+                                                    "kind": "Literal",
+                                                    "name": "version",
+                                                    "value": "square",
+                                                    "type": "[String]"
+                                                  }
+                                                ],
+                                                "storageKey": "url(version:\"square\")"
+                                              }
+                                            ]
+                                          },
+                                          v2
+                                        ]
+                                      }
                                     ]
                                   }
                                 ]
