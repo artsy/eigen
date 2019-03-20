@@ -94,6 +94,7 @@ export default createPaginationContainer(
                 status
                 href
                 is_followed
+                isStubShow
                 exhibition_period
                 cover_image {
                   url
@@ -111,6 +112,12 @@ export default createPaginationContainer(
                   ... on Partner {
                     name
                     type
+                    profile {
+                      # This is only used for stubbed shows
+                      image {
+                        url(version: "square")
+                      }
+                    }
                   }
                 }
               }

@@ -16,6 +16,8 @@
 
 ### Master
 
+- Add cover images to stub shows in full list - luc
+
 ### 1.8.27
 
 - Map clustering data now doesn't recreate geo data on tab change - kieran & luc
