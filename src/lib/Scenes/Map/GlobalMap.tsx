@@ -21,7 +21,7 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { Fair, FilterData, MapGeoFeature, RelayErrorState, SafeAreaInsets, Show } from "./types"
+import { Fair, FilterData, MapGeoFeature, OSCoordsUpdate, RelayErrorState, SafeAreaInsets, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -213,7 +213,7 @@ export class GlobalMap extends React.Component<Props, State> {
       zoom: DefaultZoomLevel,
       pitch: 0,
       heading: 0,
-      duration: 2000,
+      duration: 1000,
     })
   }
 
@@ -252,6 +252,7 @@ export class GlobalMap extends React.Component<Props, State> {
       this.setState({ bucketResults }, () => {
         this.emitFilteredBucketResults()
         this.updateShowIdMap()
+        this.updateClusterMap()
       })
     } else if (relayErrorState) {
       EventEmitter.dispatch("map:error", { relayErrorState })
@@ -514,6 +515,12 @@ export class GlobalMap extends React.Component<Props, State> {
     )
   }
 
+  onUserLocationUpdate = (location: OSCoordsUpdate) => {
+    this.setState({
+      userLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
+    })
+  }
+
   onRegionIsChanging = async () => {
     const zoom = Math.floor(await this.map.getZoom())
 
@@ -628,6 +635,7 @@ export class GlobalMap extends React.Component<Props, State> {
               <Map
                 {...mapProps}
                 onRegionIsChanging={this.onRegionIsChanging}
+                onUserLocationUpdate={this.onUserLocationUpdate}
                 onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
                 onPress={this.onPressMap}
                 ref={this.storeMapRef}
