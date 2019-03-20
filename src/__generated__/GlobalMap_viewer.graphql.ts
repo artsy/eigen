@@ -466,7 +466,7 @@ return {
             {
               "kind": "Literal",
               "name": "dayThreshold",
-              "value": 30,
+              "value": 14,
               "type": "Int"
             },
             v18,
@@ -798,5 +798,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '3af456f9388dc63b6f49421dee47df3f';
+(node as any).hash = 'f43f2b20e21dec7a0db5c0e8b419ce7f';
 export default node;

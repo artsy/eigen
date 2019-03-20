@@ -80,7 +80,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
         totalCount
       }
     }
-    upcomingShows: shows(includeStubShows: true, status: UPCOMING, dayThreshold: 30, first: $maxInt, sort: START_AT_ASC) {
+    upcomingShows: shows(includeStubShows: true, status: UPCOMING, dayThreshold: 14, first: $maxInt, sort: START_AT_ASC) {
       edges {
         node {
           id
@@ -417,7 +417,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "MapRendererQuery",
-  "id": "3ae4ae5037d7371d34e4aa0bf863496a",
+  "id": "efc00a6a03cfc8cbcacb3774db38b711",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -583,7 +583,7 @@ return {
                   {
                     "kind": "Literal",
                     "name": "dayThreshold",
-                    "value": 30,
+                    "value": 14,
                     "type": "Int"
                   },
                   v20,
