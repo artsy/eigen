@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.8.27
+
 - Map clustering data now doesn't recreate geo data on tab change - kieran & luc
 - Updates copy in Global Saves and Follows Shows tab - ashley
 - Add shouldComponentUpdate checks across City and Map components to avoid re-renders - luc
