@@ -121,9 +121,7 @@
                 ArtsyEcho *echo = [[ArtsyEcho alloc] init];
                 [echo setup];
 
-                Message *setupURL = [[echo.messages select:^BOOL(Message *message) {
-                    return [message.name isEqualToString:@"ARVIRVideo"];
-                }] firstObject];
+                Message *setupURL = echo.messages[@"ARVIRVideo"];
 
 
                 NSURL *movieURL = setupURL.content.length ? [NSURL URLWithString:setupURL.content] : nil;

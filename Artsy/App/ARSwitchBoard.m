@@ -382,9 +382,7 @@ NSInteger const ARLiveAuctionsCurrentWebSocketVersionCompatibility = 4;
 
 - (BOOL)requiresUpdateForWebSocketVersionUpdate
 {
-    Message *webSocketVersion = [[self.echo.messages select:^BOOL(Message *message) {
-        return [message.name isEqualToString:@"LiveAuctionsCurrentWebSocketVersion"];
-    }] firstObject];
+    Message *webSocketVersion = self.echo.messages[@"LiveAuctionsCurrentWebSocketVersion"];
     return webSocketVersion.content.integerValue > ARLiveAuctionsCurrentWebSocketVersionCompatibility;
 }
 
