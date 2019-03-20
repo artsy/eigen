@@ -36,17 +36,6 @@ export class ShowItemRow extends React.Component<Props, State> {
   }
   isTapped: boolean
 
-  @track((__, _, args) => {
-    const slug = args[0]
-    const id = args[1]
-    return {
-      action_name: Schema.ActionNames.OpenShow,
-      action_type: Schema.ActionTypes.Tap,
-      context_screen_owner_type: Schema.OwnerEntityTypes.Show,
-      context_screen_owner_slug: slug,
-      context_screen_owner_id: id,
-    } as any
-  })
   handleTap(_slug, _id) {
     this.isTapped = true
     const href = hrefForPartialShow(this.props.show)

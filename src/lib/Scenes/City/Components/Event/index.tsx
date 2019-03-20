@@ -124,8 +124,6 @@ export class Event extends React.Component<Props, State> {
     const { id, _id } = this.props.event
     if (section === "bmw") {
       this.trackShowTap(Schema.ActionNames.OpenBMWShow, id, _id)
-    } else {
-      this.trackShowTap(Schema.ActionNames.OpenShow, id, _id)
     }
     SwitchBoard.presentNavigationViewController(this, `/show/${id}`)
   }
