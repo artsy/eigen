@@ -1,12 +1,13 @@
-import { Box, Separator, Serif, Spacer, Theme } from "@artsy/palette"
+import { Box, Sans, Separator, Serif, Spacer, Theme } from "@artsy/palette"
 import { MoreInfo_show } from "__generated__/MoreInfo_show.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
 import { FlatList, Linking, ViewProperties } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
-import { EventSectionContainer as EventSection } from "../Components/EventSection"
+import { ShowEventSectionContainer as ShowEventSection } from "../Components/ShowEventSection"
 import { TextSection } from "../Components/TextSection"
 
 const ListHeaderText = styled(Serif)`
@@ -19,7 +20,7 @@ interface Props extends ViewProperties {
 
 interface State {
   sections: Array<{
-    type: "event" | "press-release" | "gallery-website"
+    type: "event" | "pressRelease" | "galleryWebsite" | "pressReleaseUrl" | "receptionText"
     data: any
   }>
 }
@@ -46,16 +47,37 @@ export class MoreInfo extends React.Component<Props, State> {
       })
     })
 
+    if (show.openingReceptionText) {
+      sections.push({
+        type: "receptionText",
+        data: show.openingReceptionText,
+      })
+    }
+
     if (show.press_release) {
       sections.push({
-        type: "press-release",
+        type: "pressRelease",
+        data: show,
+      })
+    }
+
+    if (show.press_release) {
+      sections.push({
+        type: "pressRelease",
+        data: show,
+      })
+    }
+
+    if (show.pressReleaseUrl) {
+      sections.push({
+        type: "pressReleaseUrl",
         data: show,
       })
     }
 
     if (show.partner.website) {
       sections.push({
-        type: "gallery-website",
+        type: "galleryWebsite",
         data: show,
       })
     }
@@ -80,18 +102,26 @@ export class MoreInfo extends React.Component<Props, State> {
     Linking.openURL(url).catch(err => console.error("An error occurred opening gallery link", err))
   }
 
+  openPressReleaseLink = () => {
+    SwitchBoard.presentNavigationViewController(this, this.props.show.pressReleaseUrl)
+  }
+
   renderItem = ({ item: { data, type } }) => {
     switch (type) {
-      case "gallery-website":
+      case "galleryWebsite":
         return (
           <CaretButton
             onPress={() => this.renderGalleryWebsite(data.partner.website)}
             text={data.partner.type === "Gallery" ? "Visit gallery site" : "Visit institution site"}
           />
         )
+      case "pressReleaseUrl":
+        return <CaretButton onPress={() => this.openPressReleaseLink()} text="View press release" />
+      case "receptionText":
+        return <Sans size="3t">{data}</Sans>
       case "event":
-        return <EventSection {...data} />
-      case "press-release":
+        return <ShowEventSection {...data} />
+      case "pressRelease":
         return <TextSection title="Press Release" text={data.press_release} />
     }
   }
@@ -126,6 +156,8 @@ export const MoreInfoContainer = createFragmentContainer(
       _id
       id
       exhibition_period
+      pressReleaseUrl
+      openingReceptionText
       partner {
         ... on Partner {
           website
@@ -134,7 +166,7 @@ export const MoreInfoContainer = createFragmentContainer(
       }
       press_release
       events {
-        ...EventSection_event
+        ...ShowEventSection_event
       }
     }
   `

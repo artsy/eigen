@@ -1,4 +1,5 @@
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import Supercluster from "supercluster"
 import { BucketKey, BucketResults } from "./bucketCityResults"
 
 export interface Coordinates {
@@ -13,6 +14,7 @@ export interface City {
 
 export type Show = GlobalMap_viewer["city"]["shows"]["edges"][0]["node"]
 export type Fair = GlobalMap_viewer["city"]["fairs"]["edges"][0]["node"] & { type?: string }
+export type FilterTypes = BucketKey | "all"
 
 export interface MapTab {
   /** UUID for the tab */
@@ -56,6 +58,7 @@ export interface RelayErrorState {
 export interface MapGeoFeatureCollection {
   type: "FeatureCollection"
   features: MapGeoFeature[]
+  filter: string
 }
 
 /** Comes in from the OS via the MapBox onUserLocationUpdate */
@@ -76,4 +79,10 @@ export interface SafeAreaInsets {
   bottom: number
   left: number
   right: number
+}
+
+export interface FilterData {
+  filter: string
+  featureCollection: MapGeoFeatureCollection
+  clusterEngine: Supercluster
 }

@@ -5,6 +5,7 @@ import InvertedButton from "lib/Components/Buttons/InvertedButton"
 import { EntityList } from "lib/Components/EntityList"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { ExhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { uniq } from "lodash"
 import React from "react"
@@ -134,7 +135,7 @@ export class ShowHeader extends React.Component<Props, State> {
   render() {
     const { isFollowedSaving } = this.state
     const {
-      show: { artists, images, is_followed, name, partner, exhibition_period, followedArtists },
+      show: { artists, images, is_followed, name, partner, followedArtists, end_at, exhibition_period },
     } = this.props
     const fairfollowedArtistList =
       (followedArtists && followedArtists.edges && followedArtists.edges.map(fa => fa.node.artist)) || []
@@ -154,7 +155,7 @@ export class ShowHeader extends React.Component<Props, State> {
           <Serif size="8" lineHeight={34}>
             {name}
           </Serif>
-          <Sans size="3">{exhibition_period}</Sans>
+          {exhibition_period && <Sans size="3">{ExhibitionDates(exhibition_period, end_at)}</Sans>}
         </Box>
         {hasImages &&
           !singleImage && (
@@ -211,6 +212,7 @@ export const ShowHeaderContainer = createFragmentContainer(
       name
       press_release
       is_followed
+      end_at
       exhibition_period
       status
       isStubShow

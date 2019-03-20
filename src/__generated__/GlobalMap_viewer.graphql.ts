@@ -191,14 +191,14 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_followed",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
@@ -233,7 +233,7 @@ v7 = {
 v8 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "is_followed",
   "args": null,
   "storageKey": null
 },
@@ -466,7 +466,7 @@ return {
             {
               "kind": "Literal",
               "name": "dayThreshold",
-              "value": 30,
+              "value": 14,
               "type": "Int"
             },
             v18,
@@ -681,7 +681,7 @@ return {
                   "concreteType": "Fair",
                   "plural": false,
                   "selections": [
-                    v3,
+                    v2,
                     v0,
                     v9,
                     {
@@ -747,7 +747,7 @@ return {
                           "concreteType": "Image",
                           "plural": false,
                           "selections": [
-                            v3,
+                            v2,
                             v7,
                             {
                               "kind": "ScalarField",
@@ -780,7 +780,7 @@ return {
                           ]
                         },
                         v4,
-                        v3,
+                        v2,
                         v0
                       ]
                     },
@@ -798,5 +798,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '3af456f9388dc63b6f49421dee47df3f';
+(node as any).hash = 'f43f2b20e21dec7a0db5c0e8b419ce7f';
 export default node;

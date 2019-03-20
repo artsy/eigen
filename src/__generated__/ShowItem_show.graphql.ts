@@ -8,6 +8,7 @@ export type ShowItem_show = {
     readonly id: string;
     readonly name: string | null;
     readonly exhibition_period: string | null;
+    readonly end_at: string | null;
     readonly images: ReadonlyArray<({
         readonly url: string | null;
         readonly aspect_ratio: number;
@@ -65,6 +66,13 @@ return {
       "storageKey": null
     },
     {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "end_at",
+      "args": null,
+      "storageKey": null
+    },
+    {
       "kind": "LinkedField",
       "alias": null,
       "name": "images",
@@ -112,5 +120,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7ac020d2e64a923c6c62e86f5d21e57e';
+(node as any).hash = '4482314737ae44a25efb0b7b2772fa49';
 export default node;

@@ -34,8 +34,8 @@ const ChevronIcon: React.SFC<ChevronIconProps> = props => {
 }
 
 ChevronIcon.defaultProps = {
-  height: 16,
-  width: 16,
+  height: 14,
+  width: 14,
   color: color("black30"),
 }
 

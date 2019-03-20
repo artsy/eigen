@@ -80,7 +80,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
         totalCount
       }
     }
-    upcomingShows: shows(includeStubShows: true, status: UPCOMING, dayThreshold: 30, first: $maxInt, sort: START_AT_ASC) {
+    upcomingShows: shows(includeStubShows: true, status: UPCOMING, dayThreshold: 14, first: $maxInt, sort: START_AT_ASC) {
       edges {
         node {
           id
@@ -261,14 +261,14 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_followed",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
@@ -303,7 +303,7 @@ v8 = {
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "is_followed",
   "args": null,
   "storageKey": null
 },
@@ -417,7 +417,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "GlobalMapTestsQuery",
-  "id": "a434d2a811ce7a31d33f4fa143be4a79",
+  "id": "613d1ae2ea24bd2d615af89c95673967",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -583,7 +583,7 @@ return {
                   {
                     "kind": "Literal",
                     "name": "dayThreshold",
-                    "value": 30,
+                    "value": 14,
                     "type": "Int"
                   },
                   v20,
@@ -799,7 +799,7 @@ return {
                         "concreteType": "Fair",
                         "plural": false,
                         "selections": [
-                          v4,
+                          v3,
                           v1,
                           v10,
                           {
@@ -865,7 +865,7 @@ return {
                                 "concreteType": "Image",
                                 "plural": false,
                                 "selections": [
-                                  v4,
+                                  v3,
                                   v8,
                                   {
                                     "kind": "ScalarField",
@@ -898,7 +898,7 @@ return {
                                 ]
                               },
                               v5,
-                              v4,
+                              v3,
                               v1
                             ]
                           },

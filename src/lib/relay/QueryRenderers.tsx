@@ -53,8 +53,7 @@ import { QueryRenderersShowMoreInfoQuery } from "__generated__/QueryRenderersSho
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
-import createEnvironment, { defaultEnvironment } from "./createEnvironment"
-const environment = createEnvironment()
+import { defaultEnvironment as environment } from "./createEnvironment"
 
 export type RenderCallback = QueryRendererProps["render"]
 
@@ -369,7 +368,7 @@ interface ShowRendererProps extends RendererProps {
 export const ShowRenderer: React.SFC<ShowRendererProps> = ({ render, showID }) => {
   return (
     <QueryRenderer<QueryRenderersShowQuery>
-      environment={defaultEnvironment}
+      environment={environment}
       query={graphql`
         query QueryRenderersShowQuery($showID: String!) {
           show(id: $showID) {
@@ -530,12 +529,12 @@ export const CitySectionListRenderer: React.SFC<CitySectionListProps> = ({ rende
     case "closing":
       variables.status = "CLOSING_SOON"
       variables.sort = "END_AT_ASC"
-      variables.dayThreshold = 30
+      variables.dayThreshold = 7
       break
     case "opening":
       variables.status = "UPCOMING"
       variables.sort = "START_AT_ASC"
-      variables.dayThreshold = 30
+      variables.dayThreshold = 14
   }
 
   return (

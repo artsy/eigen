@@ -524,6 +524,9 @@
 							com.apple.Keychain = {
 								enabled = 1;
 							};
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
 						};
 					};
 					510DCB251CCA69EC0075E8CB = {

@@ -1,5 +1,5 @@
 import React from "react"
-import { Animated, StyleProp, StyleSheet, TextStyle, TouchableHighlight, View } from "react-native"
+import { Animated, Insets, StyleProp, StyleSheet, TextStyle, TouchableHighlight, View } from "react-native"
 
 import colors from "lib/data/colors"
 import Spinner from "../Spinner"
@@ -9,29 +9,37 @@ const AnimationDuration = 250
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableHighlight)
 const AnimatedHeadline = Animated.createAnimatedComponent(PrimaryButtonText)
 
+// Caveat: This button doesn't set its own height, this could/should
+// probably be considered a bug.
+// TODO: When moving to palette, fix this.
+
 export interface InvertedButtonProps extends React.Props<InvertedButton> {
+  /** Copy to use as on the button */
   text: string
+  /** Props to pass into the Text element of the button */
   textStyle?: StyleProp<TextStyle>
+  /** Is the button currently selected? */
   selected?: boolean
-  inProgress?: boolean
-  grayBorder?: boolean
-  noBackground?: boolean
-  onPress?: React.TouchEventHandler<InvertedButton>
-  onSelectionAnimationFinished?: Animated.EndCallback
-  buttonSize?: string
+  /** Should this button be interactable */
   disabled?: boolean
+  /** Should the button represent async work? */
+  inProgress?: boolean
+  /** Should the button have a grayBorder (should this be a style props on the view?) */
+  grayBorder?: boolean
+  /** Unsure... */
+  noBackground?: boolean
+  /** Tap handler */
+  onPress?: React.TouchEventHandler<InvertedButton>
+  /** Optional animation callback */
+  onSelectionAnimationFinished?: Animated.EndCallback
+  /** Offsets for the tap space to be increased, e.g. {top: 10, bottom: 10, left: 0, right: 0} to extend by 10 vertically */
+  hitSlop?: Insets
 }
 
 interface InvertedButtonState {
   textOpacity: Animated.Value
   backgroundColor: Animated.Value
   borderColor: Animated.Value
-}
-
-enum ButtonSize {
-  "large" = 50,
-  "medium" = 40,
-  "small" = 26,
 }
 
 export default class InvertedButton extends React.Component<InvertedButtonProps, InvertedButtonState> {
@@ -77,17 +85,14 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
       })
       styling = {
         underlayColor: this.props.selected ? "black" : "white",
-        style: [
-          styles.button,
-          { backgroundColor, borderColor, borderWidth: 1, height: ButtonSize[this.props.buttonSize] },
-        ],
+        style: [styles.button, { backgroundColor, borderColor, borderWidth: 1 }],
       }
       textStyle = { color: this.props.selected ? "black" : "white" }
     } else if (this.props.noBackground) {
       textStyle = { color: this.props.selected ? colors["purple-regular"] : "black" }
       styling = {
         underlayColor: "transparent",
-        style: [styles.button, { backgroundColor, height: ButtonSize[this.props.buttonSize] }],
+        style: [styles.button, { backgroundColor }],
       }
     } else {
       backgroundColor = this.state.backgroundColor.interpolate({
@@ -96,7 +101,7 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
       })
       styling = {
         underlayColor: this.props.selected ? "black" : colors["purple-regular"],
-        style: [styles.button, { backgroundColor, height: ButtonSize[this.props.buttonSize] }],
+        style: [styles.button, { backgroundColor }],
       }
     }
 
@@ -118,6 +123,7 @@ export default class InvertedButton extends React.Component<InvertedButtonProps,
         onPress={this.props.onPress}
         activeOpacity={1}
         disabled={this.props.inProgress || this.props.disabled}
+        hitSlop={this.props.hitSlop}
         {...styling}
       >
         <View>{content}</View>

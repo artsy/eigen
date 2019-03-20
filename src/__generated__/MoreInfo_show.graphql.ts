@@ -1,20 +1,22 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-import { EventSection_event$ref } from "./EventSection_event.graphql";
+import { ShowEventSection_event$ref } from "./ShowEventSection_event.graphql";
 declare const _MoreInfo_show$ref: unique symbol;
 export type MoreInfo_show$ref = typeof _MoreInfo_show$ref;
 export type MoreInfo_show = {
     readonly _id: string;
     readonly id: string;
     readonly exhibition_period: string | null;
+    readonly pressReleaseUrl: string | null;
+    readonly openingReceptionText: string | null;
     readonly partner: ({
         readonly website?: string | null;
         readonly type?: string | null;
     }) | null;
     readonly press_release: string | null;
     readonly events: ReadonlyArray<({
-        readonly " $fragmentRefs": EventSection_event$ref;
+        readonly " $fragmentRefs": ShowEventSection_event$ref;
     }) | null> | null;
     readonly " $refType": MoreInfo_show$ref;
 };
@@ -54,6 +56,20 @@ return {
       "kind": "ScalarField",
       "alias": null,
       "name": "exhibition_period",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "pressReleaseUrl",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "openingReceptionText",
       "args": null,
       "storageKey": null
     },
@@ -107,7 +123,7 @@ return {
       "selections": [
         {
           "kind": "FragmentSpread",
-          "name": "EventSection_event",
+          "name": "ShowEventSection_event",
           "args": null
         }
       ]
@@ -116,5 +132,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '7e038488dbad07937195628c1b8c6828';
+(node as any).hash = '01b7ea5805d12ef8925ee8235bed1885';
 export default node;

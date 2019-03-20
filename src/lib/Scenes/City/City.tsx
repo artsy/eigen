@@ -179,8 +179,8 @@ export class CityView extends Component<Props, State> {
             <ScrollableTabView
               initialPage={this.props.initialTab || AllCityMetaTab}
               onChangeTab={this.setSelectedTab}
-              prerenderingSiblingsNumber={2}
               renderTabBar={this.renderTabBar}
+              prerenderingSiblingsNumber={2}
               onLayout={this.onScrollableTabViewLayout}
               // These are the ScrollView props for inside the scrollable tab view
               contentProps={{
@@ -207,7 +207,9 @@ export class CityView extends Component<Props, State> {
                       bucket={buckets[tab.id]}
                       type={tab.id}
                       cityName={cityName}
+                      citySlug={citySlug}
                       relay={this.state.relay}
+                      renderedInTab
                     />
                   </ScrollableTab>
                 )

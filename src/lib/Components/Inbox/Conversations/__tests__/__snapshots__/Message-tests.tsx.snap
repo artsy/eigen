@@ -274,7 +274,6 @@ exports[`looks correct when rendered 1`] = `
                   "backgroundColor": "rgba(0, 0, 0, 1)",
                   "borderRadius": 2,
                   "flex": 1,
-                  "height": undefined,
                   "justifyContent": "center",
                 }
               }

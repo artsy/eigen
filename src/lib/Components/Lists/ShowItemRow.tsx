@@ -6,6 +6,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView"
 import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { ExhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
 import { hrefForPartialShow } from "lib/utils/router"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { get } from "lodash"
@@ -17,7 +18,6 @@ import styled from "styled-components/native"
 interface Props {
   show: ShowItemRow_show
   relay?: RelayProp
-  noPadding?: boolean
   onSaveStarted?: () => void
   onSaveEnded?: () => void
   shouldHideSaveButton?: boolean
@@ -34,6 +34,7 @@ export class ShowItemRow extends React.Component<Props, State> {
   state = {
     isFollowedSaving: false,
   }
+  isTapped: boolean
 
   @track((__, _, args) => {
     const slug = args[0]
@@ -47,8 +48,12 @@ export class ShowItemRow extends React.Component<Props, State> {
     } as any
   })
   handleTap(_slug, _id) {
+    this.isTapped = true
     const href = hrefForPartialShow(this.props.show)
     SwitchBoard.presentNavigationViewController(this, href)
+    setTimeout(() => {
+      this.isTapped = false
+    }, 300)
   }
 
   @track(props => {
@@ -126,59 +131,58 @@ export class ShowItemRow extends React.Component<Props, State> {
   }
 
   render() {
-    const { noPadding, show, shouldHideSaveButton } = this.props
+    const { show, shouldHideSaveButton } = this.props
     const mainCoverImageURL = show.cover_image && show.cover_image.url
     const galleryProfileIcon = show.isStubShow && get(show, "partner.profile.image.url")
 
     const imageURL = mainCoverImageURL || galleryProfileIcon
 
     return (
-      <TouchableWithoutFeedback onPress={() => this.handleTap(show.id, show._id)}>
-        <Box py={noPadding ? 0 : 2}>
-          <Flex flexDirection="row">
-            {!imageURL ? (
-              <DefaultImageContainer p={15}>
-                <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
-              </DefaultImageContainer>
-            ) : (
-              <OpaqueImageView width={58} height={58} imageURL={imageURL} />
-            )}
-            <Flex flexDirection="column" flexGrow={1} width={180} mr={10}>
-              {show.partner &&
-                show.partner.name && (
-                  <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
-                    {show.partner.name}
-                  </Sans>
-                )}
-              {show.name && (
-                <TightendSerif size="3t" color={color("black60")} ml={15} numberOfLines={1}>
-                  {show.name}
-                </TightendSerif>
+      <TouchableWithoutFeedback onPress={() => (!this.isTapped ? this.handleTap(show.id, show._id) : null)}>
+        <Flex flexDirection="row">
+          {!imageURL ? (
+            <DefaultImageContainer p={15}>
+              <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
+            </DefaultImageContainer>
+          ) : (
+            <OpaqueImageView width={58} height={58} imageURL={imageURL} />
+          )}
+          <Flex flexDirection="column" flexGrow={1} width={165} mr={10}>
+            {show.partner &&
+              show.partner.name && (
+                <Sans size="3t" color="black" weight="medium" numberOfLines={1} ml={15}>
+                  {show.partner.name}
+                </Sans>
               )}
-              {show.status &&
-                show.exhibition_period && (
-                  <Sans size="3t" color={color("black60")} ml={15}>
-                    {show.status.includes("closed")
-                      ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                      : show.exhibition_period}
-                  </Sans>
-                )}
-            </Flex>
-            {!shouldHideSaveButton && (
-              <Flex flexDirection="row">
-                <Box width={50} height={20}>
-                  <InvertedButton
-                    inProgress={this.state.isFollowedSaving}
-                    text={show.is_followed ? "Saved" : "Save"}
-                    selected={show.is_followed}
-                    onPress={() => this.handleSave()}
-                    noBackground={true}
-                  />
-                </Box>
-              </Flex>
+            {show.name && (
+              <TightendSerif size="3t" color={color("black60")} ml={15} numberOfLines={1}>
+                {show.name}
+              </TightendSerif>
             )}
+            {show.exhibition_period &&
+              show.status && (
+                <Sans size="3t" color={color("black60")} ml={15}>
+                  {show.status.includes("closed")
+                    ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
+                    : ExhibitionDates(show.exhibition_period, show.end_at)}
+                </Sans>
+              )}
           </Flex>
-        </Box>
+          {!shouldHideSaveButton && (
+            <Flex flexDirection="row">
+              <Box width={50} height={20}>
+                <InvertedButton
+                  inProgress={this.state.isFollowedSaving}
+                  text={show.is_followed ? "Saved" : "Save"}
+                  selected={show.is_followed}
+                  onPress={() => this.handleSave()}
+                  noBackground={true}
+                  hitSlop={{ top: 10, bottom: 10, left: 0, right: 0 }}
+                />
+              </Box>
+            </Flex>
+          )}
+        </Flex>
       </TouchableWithoutFeedback>
     )
   }

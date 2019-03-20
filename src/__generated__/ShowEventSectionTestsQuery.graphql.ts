@@ -1,36 +1,37 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { EventSection_event$ref } from "./EventSection_event.graphql";
-export type EventSectionTestsQueryVariables = {};
-export type EventSectionTestsQueryResponse = {
+import { ShowEventSection_event$ref } from "./ShowEventSection_event.graphql";
+export type ShowEventSectionTestsQueryVariables = {};
+export type ShowEventSectionTestsQueryResponse = {
     readonly show: ({
         readonly events: ReadonlyArray<({
-            readonly " $fragmentRefs": EventSection_event$ref;
+            readonly " $fragmentRefs": ShowEventSection_event$ref;
         }) | null> | null;
     }) | null;
 };
-export type EventSectionTestsQuery = {
-    readonly response: EventSectionTestsQueryResponse;
-    readonly variables: EventSectionTestsQueryVariables;
+export type ShowEventSectionTestsQuery = {
+    readonly response: ShowEventSectionTestsQueryResponse;
+    readonly variables: ShowEventSectionTestsQueryVariables;
 };
 
 
 
 /*
-query EventSectionTestsQuery {
+query ShowEventSectionTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     events {
-      ...EventSection_event
+      ...ShowEventSection_event
     }
     __id
   }
 }
 
-fragment EventSection_event on PartnerShowEventType {
+fragment ShowEventSection_event on PartnerShowEventType {
   event_type
   description
-  exhibitionPeriod
+  start_at
+  end_at
 }
 */
 
@@ -53,13 +54,13 @@ v1 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "EventSectionTestsQuery",
-  "id": "7737968272431d965fbeb56a6095b7c9",
+  "name": "ShowEventSectionTestsQuery",
+  "id": "f5649cf493d89ce52a968cb3d78033a9",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "EventSectionTestsQuery",
+    "name": "ShowEventSectionTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
@@ -84,7 +85,7 @@ return {
             "selections": [
               {
                 "kind": "FragmentSpread",
-                "name": "EventSection_event",
+                "name": "ShowEventSection_event",
                 "args": null
               }
             ]
@@ -96,7 +97,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "EventSectionTestsQuery",
+    "name": "ShowEventSectionTestsQuery",
     "argumentDefinitions": [],
     "selections": [
       {
@@ -134,7 +135,14 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "exhibitionPeriod",
+                "name": "start_at",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "end_at",
                 "args": null,
                 "storageKey": null
               }
@@ -147,5 +155,5 @@ return {
   }
 };
 })();
-(node as any).hash = '2ecb8e3dba5e94545b9ac457a7eb30c9';
+(node as any).hash = '491aa923b8d9aaf54ec5b6b9277b9a5e';
 export default node;
