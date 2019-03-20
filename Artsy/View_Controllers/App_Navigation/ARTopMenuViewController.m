@@ -713,13 +713,13 @@ static const CGFloat ARMenuButtonDimension = 50;
         switch (index) {
             case 0:
                 return @"home";
-            case 2:
+            case 1:
                 return @"search";
-            case 3:
+            case 2:
                 return @"cityGuide";
-            case 4:
+            case 3:
                 return @"messages";
-            case 5:
+            case 4:
                 return @"favorites";
             default:
                 return @"unknown";
@@ -728,11 +728,11 @@ static const CGFloat ARMenuButtonDimension = 50;
         switch (index) {
             case 0:
                 return @"home";
-            case 2:
+            case 1:
                 return @"search";
-            case 3:
+            case 2:
                 return @"messages";
-            case 4:
+            case 3:
                 return @"favorites";
             default:
                 return @"unknown";
