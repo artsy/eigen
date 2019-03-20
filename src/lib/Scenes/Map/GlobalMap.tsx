@@ -396,8 +396,7 @@ export class GlobalMap extends React.Component<Props, State> {
       const clusterId = properties.cluster_id.toString()
       let pointCount = properties.point_count
 
-      const width = pointCount < 4 ? 35 : pointCount < 21 ? 50 : 60
-      const height = pointCount < 4 ? 35 : pointCount < 21 ? 50 : 60
+      const radius = pointCount < 4 ? 40 : pointCount < 21 ? 50 : 65
       pointCount = pointCount.toString()
 
       return (
@@ -406,7 +405,7 @@ export class GlobalMap extends React.Component<Props, State> {
         clusterLng &&
         pointCount && (
           <Mapbox.PointAnnotation key={clusterId} id={clusterId} selected={true} coordinate={[clusterLat, clusterLng]}>
-            <SelectedCluster width={width} height={height}>
+            <SelectedCluster width={radius} height={radius}>
               <Sans size="3" weight="medium" color={color("white100")}>
                 {pointCount}
               </Sans>
