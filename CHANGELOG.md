@@ -16,6 +16,8 @@
 
 ### Master
 
+- Reset zoom, pitch and heading upon city switch - roop
+
 ### 1.8.27
 
 - Map clustering data now doesn't recreate geo data on tab change - kieran & luc
