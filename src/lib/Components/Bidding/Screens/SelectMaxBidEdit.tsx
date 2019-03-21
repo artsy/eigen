@@ -1,5 +1,6 @@
 import React from "react"
-import { NavigatorIOS, View, ViewProperties } from "react-native"
+import { View, ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 
 import { Schema, screenTrack } from "../../../utils/track"
 

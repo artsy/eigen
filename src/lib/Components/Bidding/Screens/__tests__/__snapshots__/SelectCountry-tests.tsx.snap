@@ -103,6 +103,7 @@ exports[`Sets up the right view hierarchy 1`] = `
       p={3}
       pb={2}
       placeholder="Country"
+      rejectResponderTermination={true}
       returnKeyType="search"
       style={
         Array [

@@ -58,7 +58,7 @@ describe("cacheMiddleware", () => {
       expect(cache.set.mock.calls[0][0]).toEqual(operation.id)
     })
 
-    describe("a response with errors", async () => {
+    describe("a response with errors", () => {
       it("clears the cache and throws an error", async () => {
         const mockedErrorsNext = () => {
           return new Promise(resolve => {

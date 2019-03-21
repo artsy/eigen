@@ -640,6 +640,7 @@ Array [
     onScroll={[Function]}
     onScrollBeginDrag={[Function]}
     onScrollEndDrag={[Function]}
+    removeClippedSubviews={false}
     renderItem={[Function]}
     scrollEventThrottle={50}
     showsHorizontalScrollIndicator={false}

@@ -139,6 +139,7 @@ exports[`renders properly 1`] = `
             p={3}
             pb={2}
             placeholder="Add your full name"
+            rejectResponderTermination={true}
             returnKeyType="next"
             style={
               Array [
@@ -209,6 +210,7 @@ exports[`renders properly 1`] = `
             p={3}
             pb={2}
             placeholder="Add your street address"
+            rejectResponderTermination={true}
             returnKeyType="next"
             style={
               Array [
@@ -279,6 +281,7 @@ exports[`renders properly 1`] = `
             p={3}
             pb={2}
             placeholder="Add your apt, floor, suite, etc."
+            rejectResponderTermination={true}
             returnKeyType="next"
             style={
               Array [
@@ -349,6 +352,7 @@ exports[`renders properly 1`] = `
             p={3}
             pb={2}
             placeholder="Add your city"
+            rejectResponderTermination={true}
             returnKeyType="next"
             style={
               Array [
@@ -419,6 +423,7 @@ exports[`renders properly 1`] = `
             p={3}
             pb={2}
             placeholder="Add state, province, or region"
+            rejectResponderTermination={true}
             returnKeyType="next"
             style={
               Array [
@@ -489,6 +494,7 @@ exports[`renders properly 1`] = `
             p={3}
             pb={2}
             placeholder="Add your postal code"
+            rejectResponderTermination={true}
             returnKeyType="next"
             style={
               Array [

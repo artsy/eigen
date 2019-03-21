@@ -112,6 +112,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                     onFocus={[Function]}
                     placeholder="City, Country"
                     placeholderTextColor="#666666"
+                    rejectResponderTermination={true}
                     returnKeyType="search"
                     selectionColor="#cccccc"
                     style={

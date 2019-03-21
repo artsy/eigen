@@ -1,5 +1,7 @@
 import React from "react"
-import { NavigatorIOS, ViewProperties } from "react-native"
+import { ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
+
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { TimeOffsetProvider } from "../Components/Bidding/Context/TimeOffsetProvider"

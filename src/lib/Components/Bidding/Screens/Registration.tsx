@@ -1,7 +1,8 @@
 import { Serif } from "@artsy/palette"
 import { get, isEmpty } from "lodash"
 import React from "react"
-import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
+import { NativeModules, View, ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import stripe from "tipsi-stripe"
 

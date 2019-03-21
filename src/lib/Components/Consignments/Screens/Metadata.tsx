@@ -3,7 +3,6 @@ import React from "react"
 import {
   Keyboard,
   LayoutAnimation,
-  NavigatorIOS,
   Picker,
   Route,
   ScrollView,
@@ -11,6 +10,7 @@ import {
   View,
   ViewProperties,
 } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 
 import { ConsignmentMetadata } from "../"
 import ConsignmentBG from "../Components/ConsignmentBG"

@@ -110,6 +110,7 @@ exports[`Sets up the right view hierarchy 1`] = `
                   keyboardAppearance="dark"
                   multiline={true}
                   onChangeText={[Function]}
+                  rejectResponderTermination={true}
                   selectionColor="#cccccc"
                   style={
                     Array [
@@ -279,6 +280,7 @@ exports[`with an existing state Sets up the right view hierarchy 1`] = `
                   keyboardAppearance="dark"
                   multiline={true}
                   onChangeText={[Function]}
+                  rejectResponderTermination={true}
                   selectionColor="#cccccc"
                   style={
                     Array [

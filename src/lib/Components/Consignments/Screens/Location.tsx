@@ -6,7 +6,8 @@ import Search from "../Components/SearchResults"
 
 import { ConsignmentSetup, SearchResult } from "../index"
 
-import { NavigatorIOS, Route, View, ViewProperties } from "react-native"
+import { Route, View, ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 
 import { stringify } from "qs"
 

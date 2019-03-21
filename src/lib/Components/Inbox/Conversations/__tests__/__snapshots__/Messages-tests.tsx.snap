@@ -3,7 +3,7 @@
 exports[`looks correct when rendered 1`] = `
 <RCTScrollView
   ListFooterComponent={
-    <Styled(Component)
+    <Styled(ActivityIndicator)
       animating={false}
       hidesWhenStopped={true}
     />
@@ -52,6 +52,7 @@ exports[`looks correct when rendered 1`] = `
       refreshing={false}
     />
   }
+  removeClippedSubviews={false}
   renderItem={[Function]}
   scrollEventThrottle={50}
   stickyHeaderIndices={Array []}

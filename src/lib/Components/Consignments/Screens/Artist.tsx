@@ -6,7 +6,8 @@ import ArtistSearch from "../Components/SearchResults"
 
 import { ConsignmentSetup, SearchResult } from "../index"
 
-import { Dimensions, NavigatorIOS, Route, View, ViewProperties } from "react-native"
+import { Dimensions, Route, View, ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 import metaphysics from "../../../metaphysics"
 
 interface ArtistSearchResponse {

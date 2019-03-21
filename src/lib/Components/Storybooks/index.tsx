@@ -1,5 +1,6 @@
 import React from "react"
-import { AppRegistry, NavigatorIOS } from "react-native"
+import { AppRegistry } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 
 import * as storybook from "@storybook/react-native"
 

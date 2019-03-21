@@ -1,7 +1,8 @@
 import React from "react"
 import Welcome from "./Screens/Welcome"
 
-import { NavigatorIOS, ViewProperties } from "react-native"
+import { ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 
 /** The metadata for a consigned work */
 export interface ConsignmentMetadata {

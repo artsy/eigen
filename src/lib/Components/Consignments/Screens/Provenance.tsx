@@ -3,7 +3,9 @@ import React from "react"
 import ConsignmentBG from "../Components/ConsignmentBG"
 import DoneButton from "../Components/DoneButton"
 
-import { NavigatorIOS, Route, View, ViewProperties } from "react-native"
+import { Route, View, ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
+
 import TextArea from "../Components/TextArea"
 import { ConsignmentSetup } from "../index"
 

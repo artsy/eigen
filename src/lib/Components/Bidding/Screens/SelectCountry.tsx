@@ -1,7 +1,8 @@
 import { Serif } from "@artsy/palette"
 import { stringify } from "qs"
 import React from "react"
-import { ActivityIndicator, NativeModules, NavigatorIOS, ScrollView, TouchableWithoutFeedback } from "react-native"
+import { ActivityIndicator, NativeModules, ScrollView, TouchableWithoutFeedback } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 
 import { Flex } from "../Elements/Flex"
 

@@ -1,6 +1,6 @@
 import React from "react"
-import { NavigatorIOS, TouchableWithoutFeedback, ViewProperties } from "react-native"
-
+import { TouchableWithoutFeedback, ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 import { Image } from "../Elements/Image"
 import { theme } from "../Elements/Theme"
 

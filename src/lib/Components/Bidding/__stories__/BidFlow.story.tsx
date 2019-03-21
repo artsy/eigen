@@ -7,7 +7,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import createEnvironment from "../../../relay/createEnvironment"
 
 import { BidFlowSelectMaxBidRendererQuery } from "__generated__/BidFlowSelectMaxBidRendererQuery.graphql"
-import { NavigatorIOS } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 import BidFlow from "../../../Containers/BidFlow"
 import RegistrationFlow from "../../../Containers/RegistrationFlow"
 import { BillingAddress } from "../Screens/BillingAddress"
