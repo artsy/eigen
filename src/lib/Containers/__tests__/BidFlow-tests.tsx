@@ -6,6 +6,10 @@ import BidFlow from "../BidFlow"
 
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
+jest.mock("../../Components/Bidding/Context/TimeOffsetProvider.tsx", () => ({
+  TimeOffsetProvider: ({ children }) => children,
+}))
+
 const Me = {
   has_qualified_credit_cards: true,
 }

@@ -12,9 +12,6 @@ exports[`looks correct when rendered 1`] = `
   }
 >
   <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
     numberOfLines={0}
     style={
       Array [
@@ -26,9 +23,6 @@ exports[`looks correct when rendered 1`] = `
     }
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       numberOfLines={0}
       style={
         Object {

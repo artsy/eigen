@@ -82,9 +82,6 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                 }
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Array [
                       Object {
@@ -102,9 +99,6 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                   JEAN-MICHEL BASQUIAT
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   numberOfLines={1}
                   style={
                     Array [
@@ -197,9 +191,6 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                 }
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Array [
                       Object {
@@ -217,9 +208,6 @@ exports[`with notifications lays out correctly on larger screens 1`] = `
                   ANA MENDIETA
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   numberOfLines={1}
                   style={
                     Array [
@@ -352,9 +340,6 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                 }
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Array [
                       Object {
@@ -372,9 +357,6 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                   JEAN-MICHEL BASQUIAT
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   numberOfLines={1}
                   style={
                     Array [
@@ -467,9 +449,6 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                 }
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Array [
                       Object {
@@ -487,9 +466,6 @@ exports[`with notifications lays out correctly on small screens 1`] = `
                   ANA MENDIETA
                 </Text>
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   numberOfLines={1}
                   style={
                     Array [
@@ -594,9 +570,6 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -613,9 +586,6 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
             You haven’t followed any artists yet.
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             numberOfLines={0}
             style={
               Array [
@@ -692,9 +662,6 @@ exports[`without notifications lays out correctly on small screens 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -711,9 +678,6 @@ exports[`without notifications lays out correctly on small screens 1`] = `
             You haven’t followed any artists yet.
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             numberOfLines={0}
             style={
               Array [

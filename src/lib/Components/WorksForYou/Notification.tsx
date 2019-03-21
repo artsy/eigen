@@ -1,5 +1,5 @@
 import React from "react"
-import { Image, StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
+import { Image, ImageStyle, StyleSheet, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import SwitchBoard from "../../NativeModules/SwitchBoard"
@@ -56,7 +56,7 @@ export class Notification extends React.Component<Props> {
 interface Styles {
   container: ViewStyle
   header: ViewStyle
-  artistAvatar: ViewStyle
+  artistAvatar: ImageStyle
   metadataContainer: ViewStyle
   artistName: TextStyle
   metadata: TextStyle

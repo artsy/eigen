@@ -26,6 +26,7 @@ interface State {
   sections: Array<{
     type: "hours" | "location"
     data: any
+    showIndex: any
   }>
   boothCount: number
   extraData?: { animatedValue: { height: number } }

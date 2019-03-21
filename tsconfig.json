@@ -5,6 +5,8 @@
     "baseUrl": "src",
     "experimentalDecorators": true,
     "jsx": "react",
+    "lib": ["es2015"],
+    "jsx": "react",
     "keyofStringsOnly": true,
     "module": "es2015",
     "moduleResolution": "node",

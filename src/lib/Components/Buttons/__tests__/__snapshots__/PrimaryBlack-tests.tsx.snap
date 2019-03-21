@@ -24,9 +24,6 @@ exports[`PrimaryBlack accepts textStyle prop 1`] = `
     style={null}
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Array [
           Object {
@@ -73,9 +70,6 @@ exports[`PrimaryBlack renders properly 1`] = `
     style={null}
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Array [
           Object {

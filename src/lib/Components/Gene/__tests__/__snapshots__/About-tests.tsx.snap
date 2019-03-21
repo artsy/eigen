@@ -12,9 +12,6 @@ exports[`shows trending artists correctly 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         numberOfLines={0}
         style={
           Array [
@@ -65,9 +62,6 @@ exports[`shows trending artists correctly 1`] = `
     }
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       numberOfLines={1}
       style={
         Array [
@@ -124,9 +118,6 @@ exports[`shows trending artists correctly 1`] = `
           }
         />
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           style={
             Object {
               "fontFamily": "AvantGardeGothicITC",
@@ -139,9 +130,6 @@ exports[`shows trending artists correctly 1`] = `
           LITA ALBUQUERQUE
         </Text>
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           style={
             Object {
               "color": "#666666",
@@ -180,9 +168,6 @@ exports[`shows trending artists correctly 1`] = `
           }
         />
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           style={
             Object {
               "fontFamily": "AvantGardeGothicITC",
@@ -195,9 +180,6 @@ exports[`shows trending artists correctly 1`] = `
           DOUG ARGUE
         </Text>
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           style={
             Object {
               "color": "#666666",

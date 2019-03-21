@@ -39,8 +39,6 @@ exports[`renders correctly 1`] = `
     }
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
       className="sc-bdVaJa bDWFJH"
       color="#cccccc"
       ellipsizeMode="tail"
@@ -87,8 +85,6 @@ exports[`renders correctly 1`] = `
     }
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
       className="sc-bdVaJa bDWFJH"
       color="#cccccc"
       ellipsizeMode="tail"
@@ -135,8 +131,6 @@ exports[`renders correctly 1`] = `
     }
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
       className="sc-bdVaJa bDWFJH"
       color="#cccccc"
       ellipsizeMode="tail"

@@ -8,6 +8,7 @@ export type Fairs_me = {
         readonly fairs: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
+                    readonly __id: string;
                     readonly profile: ({
                         readonly id: string;
                         readonly is_followed: boolean | null;
@@ -109,6 +110,7 @@ return {
                   "concreteType": "Fair",
                   "plural": false,
                   "selections": [
+                    v0,
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -206,7 +208,6 @@ return {
                       "args": null,
                       "storageKey": null
                     },
-                    v0,
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -258,5 +259,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '23ed5bd91071fac517df413e6d0c6a18';
+(node as any).hash = '7e39cfc0a8050cbb9a4e4c07381ef654';
 export default node;

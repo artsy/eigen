@@ -4,9 +4,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
 <View>
   <View>
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Array [
           Object {
@@ -209,9 +206,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 }
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Array [
                       Object {
@@ -262,8 +256,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 }
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
                   ellipsizeMode="tail"
                   numberOfLines={1}
                   style={
@@ -281,9 +273,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                   }
                 >
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Array [
                         Object {
@@ -298,9 +287,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                     Bradley Theodore · 
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Array [
                         Object {
@@ -320,9 +306,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                     Karl and Anna Face Off (Diptych), 
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Array [
                         Object {
@@ -339,8 +322,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 </Text>
               </View>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 ellipsizeMode="tail"
                 numberOfLines={1}
                 style={
@@ -360,9 +341,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 Karl and Anna... Fab!
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
                 style={
                   Array [
                     Object {
@@ -485,9 +463,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 }
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Array [
                       Object {
@@ -538,8 +513,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 }
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
                   ellipsizeMode="tail"
                   numberOfLines={1}
                   style={
@@ -557,9 +530,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                   }
                 >
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Array [
                         Object {
@@ -574,9 +544,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                     Aida Muluneh · 
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Array [
                         Object {
@@ -596,9 +563,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                     Darkness Give Way to Light, 
                   </Text>
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Array [
                         Object {
@@ -615,8 +579,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 </Text>
               </View>
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 ellipsizeMode="tail"
                 numberOfLines={1}
                 style={
@@ -636,9 +598,6 @@ exports[`messaging inbox looks correct when rendered 1`] = `
                 Hi, I’m interested in purchasing this work.                     Could you please provide more information about the piece?
               </Text>
               <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
                 style={
                   Array [
                     Object {

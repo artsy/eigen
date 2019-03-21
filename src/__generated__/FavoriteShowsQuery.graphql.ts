@@ -34,8 +34,8 @@ fragment Shows_me on Me {
       }
       edges {
         node {
-          ...ShowItemRow_show
           __id
+          ...ShowItemRow_show
           __typename
         }
         cursor
@@ -109,7 +109,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FavoriteShowsQuery",
-  "id": "66e388989b3c46509e2559d1bbe55707",
+  "id": "06e1dba28c8117fe1dbfd4c9878752b9",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -241,14 +241,14 @@ return {
                             "args": null,
                             "storageKey": null
                           },
+                          v0,
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "id",
+                            "name": "_id",
                             "args": null,
                             "storageKey": null
                           },
-                          v0,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -324,7 +324,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "_id",
+                            "name": "id",
                             "args": null,
                             "storageKey": null
                           },

@@ -71,22 +71,22 @@ export class LocationMap extends React.Component<Props> {
     const renderSegmentedAddress = () => {
       return (
         <Box my={2}>
-          {partnerName && (
+          {!!partnerName && (
             <Sans size="3" color="black100" textAlign="center" weight="medium">
               {partnerName}
             </Sans>
           )}
-          {address && (
+          {!!address && (
             <Serif size="3t" color="black60" textAlign="center">
               {address}
             </Serif>
           )}
-          {address_2 && (
+          {!!address_2 && (
             <Serif size="3t" color="black60" textAlign="center">
               {address_2}
             </Serif>
           )}
-          {(city || postal_code) && (
+          {(!!city || !!postal_code) && (
             <Serif size="3t" color="black60" textAlign="center">
               {cityAndPostalCode()}
             </Serif>

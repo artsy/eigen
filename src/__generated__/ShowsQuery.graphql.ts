@@ -40,8 +40,8 @@ fragment Shows_me_1G22uz on Me {
       }
       edges {
         node {
-          ...ShowItemRow_show
           __id
+          ...ShowItemRow_show
           __typename
         }
         cursor
@@ -129,7 +129,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ShowsQuery",
-  "id": "fa46ea34ba73f4fd8d30d67d9a41b41b",
+  "id": "edb302bf331c6fc8a0c7ecaf3c107bcb",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -280,14 +280,14 @@ return {
                             "args": null,
                             "storageKey": null
                           },
+                          v1,
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "id",
+                            "name": "_id",
                             "args": null,
                             "storageKey": null
                           },
-                          v1,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -363,7 +363,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "_id",
+                            "name": "id",
                             "args": null,
                             "storageKey": null
                           },

@@ -15,6 +15,7 @@ export type Shows_me = {
             };
             readonly edges: ReadonlyArray<({
                 readonly node: ({
+                    readonly __id: string;
                     readonly " $fragmentRefs": ShowItemRow_show$ref;
                 }) | null;
             }) | null> | null;
@@ -140,12 +141,12 @@ return {
                   "concreteType": "Show",
                   "plural": false,
                   "selections": [
+                    v0,
                     {
                       "kind": "FragmentSpread",
                       "name": "ShowItemRow_show",
                       "args": null
                     },
-                    v0,
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -172,5 +173,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '395f36cb713a12f70d897253e9e4f3af';
+(node as any).hash = '0e73772373b56b4e5a0ec6e6f1d38d01';
 export default node;

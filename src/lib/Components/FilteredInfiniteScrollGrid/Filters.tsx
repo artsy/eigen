@@ -4,9 +4,13 @@ import { Picker, PickerOption, PickerType } from "lib/Components/Picker"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
+interface FilterValue {
+  value: string
+}
+
 interface Props {
   filteredArtworks: Filters_filteredArtworks
-  onFilterChange: (filterName: string) => ({ value: string }) => void
+  onFilterChange: (filterName: string) => (value: FilterValue) => void
   mediumValue: string
   priceRangeValue: string
 }

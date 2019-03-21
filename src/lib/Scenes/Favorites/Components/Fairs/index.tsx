@@ -75,6 +75,7 @@ export default createPaginationContainer(
           fairs(first: $count, after: $cursor) @connection(key: "SavedFairs_fairs") {
             edges {
               node {
+                __id
                 profile {
                   id
                   is_followed

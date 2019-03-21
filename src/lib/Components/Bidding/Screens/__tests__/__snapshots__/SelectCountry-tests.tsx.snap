@@ -63,10 +63,7 @@ exports[`Sets up the right view hierarchy 1`] = `
     }
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
       className="sc-bwzfXH uTxCW"
-      ellipsizeMode="tail"
       fontFamily="AGaramondPro-Semibold"
       fontSize="22px"
       lineHeight="28px"
@@ -125,6 +122,7 @@ exports[`Sets up the right view hierarchy 1`] = `
           undefined,
         ]
       }
+      underlineColorAndroid="transparent"
     />
     <RCTScrollView
       keyboardShouldPersistTaps="always"

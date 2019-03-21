@@ -73,8 +73,8 @@ export default class TextInputField extends React.Component<TextInputProps, Stat
               placeholderTextColor={this.state.focused ? "white" : Colors.GraySemibold}
               selectionColor={Colors.GrayMedium}
               {...this.props.text}
-              onFocus={() => this.setState({ focused: true }, this.props.text.onFocus)}
-              onBlur={() => this.setState({ focused: false }, this.props.text.onBlur)}
+              onFocus={e => this.setState({ focused: true }, () => this.props.text.onFocus(e))}
+              onBlur={e => this.setState({ focused: false }, () => this.props.text.onBlur(e))}
             />
           )}
 

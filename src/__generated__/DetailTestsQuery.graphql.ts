@@ -164,8 +164,8 @@ fragment Shows_show on Show {
   nearbyShows(first: 20) {
     edges {
       node {
-        ...ShowItem_show
         __id
+        ...ShowItem_show
       }
     }
   }
@@ -449,7 +449,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "DetailTestsQuery",
-  "id": "eef8db4899e9c85616959ea1ce828fa9",
+  "id": "0131207ca134010e0c670f3dc5c87fce",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -951,6 +951,7 @@ return {
                     "concreteType": "Show",
                     "plural": false,
                     "selections": [
+                      v1,
                       v3,
                       v6,
                       v4,
@@ -988,8 +989,7 @@ return {
                             ]
                           }
                         ]
-                      },
-                      v1
+                      }
                     ]
                   }
                 ]

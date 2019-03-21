@@ -89,6 +89,7 @@ export default createPaginationContainer(
             }
             edges {
               node {
+                __id
                 ...ShowItemRow_show
               }
             }

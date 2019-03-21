@@ -16,6 +16,8 @@
 
 ### Master
 
+- Migrates to React Native 0.57.x - orta/alloy/luc/justin
+
 ### 1.9.1
 
 - Do no reset safeAreaInsets back to 0 - luc

@@ -1,5 +1,5 @@
 import React from "react"
-import { Dimensions, FlatList, RefreshControl, ScrollViewStyle } from "react-native"
+import { Dimensions, FlatList, RefreshControl, ViewStyle } from "react-native"
 import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -131,7 +131,7 @@ export class Messages extends React.Component<Props, State> {
 
     const refreshControl = <RefreshControl refreshing={this.state.reloadingData} onRefresh={this.reload.bind(this)} />
 
-    const messagesStyles: Partial<ScrollViewStyle> = isPad
+    const messagesStyles: Partial<ViewStyle> = isPad
       ? {
           width: 708,
           alignSelf: "center",

@@ -17,8 +17,7 @@ import { mockTimezone } from "lib/tests/mockTimezone"
 jest.mock("../../../../metaphysics", () => ({ metaphysics: jest.fn() }))
 import { metaphysics } from "../../../../metaphysics"
 const mockphysics = metaphysics as jest.Mock<any>
-import objectContaining = jasmine.objectContaining
-import any = jasmine.any
+const { objectContaining, any } = jasmine
 
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
