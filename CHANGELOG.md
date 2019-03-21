@@ -16,6 +16,8 @@
 
 ### Master
 
+- Requires phone number during bidder registration - sweir27
+
 ### 1.8.27
 
 - Map clustering data now doesn't recreate geo data on tab change - kieran & luc
