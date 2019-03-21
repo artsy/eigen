@@ -39,7 +39,6 @@ GEM
       nap (~> 1.0)
     cocoapods-deintegrate (1.0.2)
     cocoapods-downloader (1.2.2)
-    cocoapods-fix-react-native (2019.03.19.11)
     cocoapods-keys (2.0.2)
       dotenv
       osx_keychain
@@ -85,7 +84,6 @@ PLATFORMS
 DEPENDENCIES
   cocoapods
   cocoapods-check
-  cocoapods-fix-react-native
   cocoapods-keys
   psych
 

@@ -16,26 +16,26 @@ PODS:
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
     - Extraction (>= 1.2.1)
-    - Folly (= 2016.10.31.00)
+    - Folly (= 2018.10.22.00)
     - glog (= 0.3.5)
     - ISO8601DateFormatter
     - Pulley
     - react-native-mapbox-gl (= 6.1.4)
-    - React/Core (= 0.57.7)
-    - React/CxxBridge (= 0.57.7)
-    - React/RCTActionSheet (= 0.57.7)
-    - React/RCTAnimation (= 0.57.7)
-    - React/RCTCameraRoll (= 0.57.7)
-    - React/RCTGeolocation (= 0.57.7)
-    - React/RCTImage (= 0.57.7)
-    - React/RCTLinkingIOS (= 0.57.7)
-    - React/RCTNetwork (= 0.57.7)
-    - React/RCTText (= 0.57.7)
+    - React/Core (= 0.59.1)
+    - React/CxxBridge (= 0.59.1)
+    - React/RCTActionSheet (= 0.59.1)
+    - React/RCTAnimation (= 0.59.1)
+    - React/RCTCameraRoll (= 0.59.1)
+    - React/RCTGeolocation (= 0.59.1)
+    - React/RCTImage (= 0.59.1)
+    - React/RCTLinkingIOS (= 0.59.1)
+    - React/RCTNetwork (= 0.59.1)
+    - React/RCTText (= 0.59.1)
     - RNSVG (= 9.0.4)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.30.3)
     - tipsi-stripe (= 5.2.4)
-    - yoga (= 0.57.7.React)
+    - yoga (= 0.59.1.React)
   - Expecta (1.0.6)
   - Extraction (1.2.4):
     - Extraction/ARAnimationContinuation (= 1.2.4)
@@ -66,7 +66,7 @@ PODS:
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
   - FLKAutoLayout (1.0.0)
-  - Folly (2016.10.31.00):
+  - Folly (2018.10.22.00):
     - boost-for-react-native
     - DoubleConversion
     - glog
@@ -87,51 +87,61 @@ PODS:
   - ORStackView (2.0.3):
     - FLKAutoLayout
   - Pulley (2.6.2)
-  - React (0.57.7):
-    - React/Core (= 0.57.7)
+  - React (0.59.1):
+    - React/Core (= 0.59.1)
   - react-native-mapbox-gl (6.1.4):
     - React
-  - React/Core (0.57.7):
-    - yoga (= 0.57.7.React)
-  - React/CxxBridge (0.57.7):
-    - Folly (= 2016.10.31.00)
+  - react-native-navigator-ios (1.0.0):
+    - React
+  - React/Core (0.59.1):
+    - yoga (= 0.59.1.React)
+  - React/CxxBridge (0.59.1):
+    - Folly (= 2018.10.22.00)
     - React/Core
     - React/cxxreact
-  - React/cxxreact (0.57.7):
+    - React/jsiexecutor
+  - React/cxxreact (0.59.1):
     - boost-for-react-native (= 1.63.0)
-    - Folly (= 2016.10.31.00)
-    - React/jschelpers
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
     - React/jsinspector
-  - React/DevSupport (0.57.7):
+  - React/DevSupport (0.59.1):
     - React/Core
     - React/RCTWebSocket
-  - React/fishhook (0.57.7)
-  - React/jschelpers (0.57.7):
-    - Folly (= 2016.10.31.00)
-    - React/PrivateDatabase
-  - React/jsinspector (0.57.7)
-  - React/PrivateDatabase (0.57.7)
-  - React/RCTActionSheet (0.57.7):
+  - React/fishhook (0.59.1)
+  - React/jsi (0.59.1):
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+  - React/jsiexecutor (0.59.1):
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React/cxxreact
+    - React/jsi
+  - React/jsinspector (0.59.1)
+  - React/RCTActionSheet (0.59.1):
     - React/Core
-  - React/RCTAnimation (0.57.7):
+  - React/RCTAnimation (0.59.1):
     - React/Core
-  - React/RCTBlob (0.57.7):
+  - React/RCTBlob (0.59.1):
     - React/Core
-  - React/RCTCameraRoll (0.57.7):
+  - React/RCTCameraRoll (0.59.1):
     - React/Core
     - React/RCTImage
-  - React/RCTGeolocation (0.57.7):
+  - React/RCTGeolocation (0.59.1):
     - React/Core
-  - React/RCTImage (0.57.7):
+  - React/RCTImage (0.59.1):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.57.7):
+  - React/RCTLinkingIOS (0.59.1):
     - React/Core
-  - React/RCTNetwork (0.57.7):
+  - React/RCTNetwork (0.59.1):
     - React/Core
-  - React/RCTText (0.57.7):
+  - React/RCTText (0.59.1):
     - React/Core
-  - React/RCTWebSocket (0.57.7):
+  - React/RCTWebSocket (0.59.1):
     - React/Core
     - React/fishhook
     - React/RCTBlob
@@ -157,7 +167,7 @@ PODS:
     - React
     - Stripe (~> 11.2.0)
   - "UIView+BooleanAnimations (1.0.2)"
-  - yoga (0.57.7.React)
+  - yoga (0.59.1.React)
 
 DEPENDENCIES:
   - ARGenericTableViewController
@@ -173,6 +183,7 @@ DEPENDENCIES:
   - Keys (from `Pods/CocoaPodsKeys`)
   - Pulley (from `https://github.com/l2succes/Pulley.git`, branch `master`)
   - "react-native-mapbox-gl (from `../node_modules/@mapbox/react-native-mapbox-gl`)"
+  - react-native-navigator-ios (from `../node_modules/react-native-navigator-ios`)
   - React/DevSupport (from `../node_modules/react-native`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - SAMKeychain
@@ -227,6 +238,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native"
   react-native-mapbox-gl:
     :path: "../node_modules/@mapbox/react-native-mapbox-gl"
+  react-native-navigator-ios:
+    :path: "../node_modules/react-native-navigator-ios"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   SentryReactNative:
@@ -255,21 +268,22 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
-  Emission: f4f9aeb1c5e7f8d5d3f6f088f046160dcd00080a
+  Emission: 1ac4033d487c73442df1f3d9aad28cb0fff8c7b6
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
-  Folly: c89ac2d5c6ab169cd7397ef27485c44f35f742c7
-  glog: e8acf0ebbf99759d3ff18c86c292a5898282dcde
+  Folly: de497beb10f102453a1afa9edbf8cf8a251890de
+  glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   Keys: 7e91fe066d4f94790fd35b5a9fc63e441cd3b6d2
   KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
-  React: 67899bbb285ceb9b4ee1c88b3991602ba5772ad2
+  React: 34a405ead72252839fdc4afc1f972a7ed984af84
   react-native-mapbox-gl: b7309e99290963cc7fe0e34db86c6e16890cfcee
+  react-native-navigator-ios: 93db84cc26b6f8d776e1f504c56082f593efcd09
   RNSVG: 36f6615444ab569023444e09b01a1900d964e967
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
@@ -279,8 +293,8 @@ SPEC CHECKSUMS:
   Stripe: 898f83a95d72180c6eb4acd65b2ae6158fc6a8bd
   tipsi-stripe: 25a3f6ba746e9a27f7b21e928c9974d016efcd77
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
-  yoga: 192d724e53380b783e09b7d687a55cd8ed5188be
+  yoga: 8fb47f180b19b0dadb285a09e4c74c8a41721d3a
 
-PODFILE CHECKSUM: 1ccdde56e14a7d26fbc871fe040f9922f4385473
+PODFILE CHECKSUM: 6ce077b9f33ee2c2539754b4d34c29b0fe2abf2b
 
 COCOAPODS: 1.6.0
