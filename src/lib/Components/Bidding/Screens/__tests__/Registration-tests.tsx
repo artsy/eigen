@@ -98,7 +98,7 @@ it("shows no option for entering payment information if the user has a credit ca
 })
 
 describe("when pressing register button", () => {
-  it.only("when a credit card needs to be added, it commits three mutations on button press", async () => {
+  it("when a credit card needs to be added, it commits three mutations on button press", async () => {
     relay.commitMutation = jest
       .fn()
       .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
@@ -113,8 +113,6 @@ describe("when pressing register button", () => {
     component.root.instance.setState({ conditionsOfSaleChecked: true, billingAddress, creditCardToken: stripeToken })
 
     await component.root.findByType(Button).instance.props.onPress()
-
-    // jest.runAllTicks()
 
     expect(relay.commitMutation).toHaveBeenCalledWith(
       any(Object),
@@ -208,6 +206,10 @@ describe("when pressing register button", () => {
   })
 
   it("displays an error message on a stripe failure", () => {
+    relay.commitMutation = jest
+      .fn()
+      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
+
     stripe.createTokenWithCard.mockImplementation(() => {
       throw new Error("Error tokenizing card")
     })
@@ -225,10 +227,87 @@ describe("when pressing register button", () => {
     expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusError })
   })
 
+  it("shows the error screen with the default error message if there are unhandled errors from the updateUserProfile mutation", () => {
+    const errors = ["malformed error"]
+
+    console.error = jest.fn() // Silences component logging.
+    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted({}, errors))
+
+    const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+
+    // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
+    component.root.instance.setState({ billingAddress })
+    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
+
+    jest.runAllTicks()
+
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
+      "There was a problem processing your information. Check your payment details and try again."
+    )
+    component.root
+      .findByType(Modal)
+      .findByType(SecondaryOutlineButton)
+      .props.onPress()
+
+    // it dismisses the modal
+    expect(component.root.findByType(Modal).props.visible).toEqual(false)
+  })
+
+  it("displays an error message on a updateUserProfile failure", () => {
+    console.error = jest.fn() // Silences component logging.
+
+    const errors = [{ message: "There was an error with your request" }]
+    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted({}, errors))
+
+    const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+
+    component.root.instance.setState({ billingAddress })
+    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
+
+    jest.runAllTicks()
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual(
+      "There was a problem processing your information. Check your payment details and try again."
+    )
+    component.root
+      .findByType(Modal)
+      .findByType(SecondaryOutlineButton)
+      .props.onPress()
+
+    expect(component.root.findByType(Modal).props.visible).toEqual(false)
+  })
+
+  it("shows the generic error screen on a updateUserProfile mutation network failure", () => {
+    console.error = jest.fn() // Silences component logging.
+    relay.commitMutation = jest
+      .fn()
+      .mockImplementationOnce((_, { onError }) => onError(new TypeError("Network request failed")))
+
+    const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
+
+    // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
+    component.root.instance.setState({ billingAddress })
+    component.root.instance.setState({ creditCardToken: stripeToken })
+    component.root.findByType(Checkbox).instance.props.onPress()
+    component.root.findByType(Button).instance.props.onPress()
+
+    jest.runAllTicks()
+
+    expect(nextStep.component).toEqual(RegistrationResult)
+    expect(nextStep.passProps).toEqual({ status: RegistrationStatus.RegistrationStatusNetworkError })
+  })
+
   it("displays an error message on a creditCardMutation failure", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardError))
+
+    relay.commitMutation = jest
+      .fn()
+      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
+      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardError))
 
     const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
 
@@ -254,7 +333,11 @@ describe("when pressing register button", () => {
 
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted({}, errors))
+
+    relay.commitMutation = jest
+      .fn()
+      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
+      .mockImplementationOnce((_, { onCompleted }) => onCompleted({}, errors))
 
     const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
 
@@ -281,7 +364,13 @@ describe("when pressing register button", () => {
   it("shows the generic error screen on a createCreditCard mutation network failure", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-    relay.commitMutation = jest.fn((_, { onError }) => onError(new TypeError("Network request failed")))
+    relay.commitMutation = jest
+      .fn()
+      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
+      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardSuccess))
+      .mockImplementationOnce((_, { onError }) => onError(new TypeError("Network request failed")))
+
+    mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.qualifiedBidder))
 
     const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
 
@@ -381,6 +470,10 @@ const billingAddress: Partial<Address> = {
   state: "NY",
   postalCode: "10013",
   phoneNumber: "111 222 333",
+  country: {
+    longName: "United States",
+    shortName: "US",
+  },
 }
 
 const stripeToken = {

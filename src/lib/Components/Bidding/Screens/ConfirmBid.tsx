@@ -172,7 +172,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       const { phoneNumber } = this.state.billingAddress
       commitMutation<ConfirmBidUpdateUserMutation>(this.props.relay.environment, {
         onCompleted: (_, errors) => {
-          if (errors.length) {
+          if (errors && errors.length) {
             this.presentErrorModal(errors, null)
             reject(errors)
           } else {

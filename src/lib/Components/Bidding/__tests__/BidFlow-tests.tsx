@@ -140,6 +140,7 @@ const billingAddress = {
   city: "New York",
   state: "NY",
   postalCode: "10013",
+  phoneNumber: "111 222 333",
   country: {
     longName: "United States",
     shortName: "US",

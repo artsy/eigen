@@ -114,16 +114,11 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
   /** Run through the full flow setting up the user account and making a bid  */
   async setupAddressCardAndBidder() {
-    console.log("------------------")
     try {
       await this.updatePhoneNumber()
-      console.log("1")
       const token = await this.createTokenFromAddress()
-      console.log("2")
       await this.createCreditCard(token)
-      console.log("3")
       await this.createBidder()
-      console.log("4")
     } catch (error) {
       if (!this.state.errorModalVisible) {
         this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusError)
@@ -132,7 +127,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 
   /**
-   * Because the phone number lives on the user, not as creditcard metadata, then we
+   * Because the phone number lives on the user, not as credit card metadata, then we
    * need a separate call to update our User model to store that info
    */
   async updatePhoneNumber() {
@@ -140,17 +135,16 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       const { phoneNumber } = this.state.billingAddress
       commitMutation<RegistrationUpdateUserMutation>(this.props.relay.environment, {
         onCompleted: (_, errors) => {
-          console.log(1111)
-          if (errors.length) {
+          if (errors && errors.length) {
             this.presentErrorModal(errors, null)
-            console.log(2222)
             reject(errors)
           } else {
-            console.log(33333)
             done()
           }
         },
-        onError: errors => this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusError),
+        onError: error => {
+          this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
+        },
         mutation: graphql`
           mutation RegistrationUpdateUserMutation($input: UpdateMyProfileInput!) {
             updateMyUserProfile(input: $input) {
@@ -168,7 +162,6 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
   async createTokenFromAddress() {
     const { billingAddress, creditCardFormParams } = this.state
-
     return stripe.createTokenWithCard({
       ...creditCardFormParams,
       name: billingAddress.fullName,
