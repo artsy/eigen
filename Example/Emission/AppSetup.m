@@ -47,8 +47,6 @@
     isSimulator = !runningCITests; // Don't use RNP with unit tests
 #endif
 
-    NSLog(@"HI THERE %@", @(runningUnitTests));
-
     // Comment these out to set yourself up as though you were running the beta
     usePRBuild = [defaults boolForKey:ARUsePREmissionDefault];
     useMaster = useMaster || isSimulator;
@@ -101,7 +99,7 @@
     _usingMaster = useMaster;
     _usingRNP = useRNP;
     _usingPRBuild = usePRBuild;
-    
+
     _options = [ARLabOptions labOptionsMap];
   }
 

@@ -53,7 +53,6 @@ export class CitySwitcherButton extends Component<Props> {
         >
           {city ? (
             <>
-              {" "}
               <Sans size="3t" weight="medium" ml={3}>
                 {city.name}
               </Sans>

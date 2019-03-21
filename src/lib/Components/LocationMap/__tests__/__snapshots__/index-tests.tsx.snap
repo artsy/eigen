@@ -88,7 +88,6 @@ exports[`looks correct when rendered 1`] = `
       >
         25 Central Park West
       </Text>
-      
       <Text
         className="sc-bwzfXH uTxCW"
         color="black60"
