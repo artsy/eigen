@@ -40,6 +40,7 @@ exports[`doesn't show placeholder when initial text is present 1`] = `
           undefined,
         ]
       }
+      underlineColorAndroid="transparent"
       value="any text at all"
     />
   </View>
@@ -65,9 +66,6 @@ exports[`shows the placeholder when text is empty 1`] = `
     }
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Array [
           Object {
@@ -107,6 +105,7 @@ exports[`shows the placeholder when text is empty 1`] = `
           undefined,
         ]
       }
+      underlineColorAndroid="transparent"
     />
   </View>
 </View>

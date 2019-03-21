@@ -145,28 +145,28 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "is_open",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_open",
+  "name": "is_live_open",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_live_open",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
@@ -222,7 +222,7 @@ v11 = [
   }
 ],
 v12 = [
-  v2,
+  v5,
   v9
 ];
 return {
@@ -300,18 +300,6 @@ return {
             "concreteType": "Sale",
             "plural": true,
             "selections": [
-              v1,
-              v2,
-              v3,
-              v4,
-              v5,
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "live_url_if_open",
-                "args": null,
-                "storageKey": null
-              },
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -319,6 +307,18 @@ return {
                 "args": null,
                 "storageKey": null
               },
+              v1,
+              v2,
+              v3,
+              v4,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "live_url_if_open",
+                "args": null,
+                "storageKey": null
+              },
+              v5,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -445,8 +445,14 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_biddable",
+                            "args": null,
+                            "storageKey": null
+                          },
                           v9,
-                          v1,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -488,13 +494,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "is_biddable",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          v1,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -525,8 +525,8 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              v5,
                               v4,
+                              v3,
                               v10,
                               v6,
                               v9
@@ -611,7 +611,7 @@ return {
                             "plural": false,
                             "selections": v12
                           },
-                          v3
+                          v2
                         ]
                       },
                       v9,

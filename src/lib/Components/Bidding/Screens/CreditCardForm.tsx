@@ -59,7 +59,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
       this.setState({ isLoading: false })
       this.props.navigator.pop()
     } catch (error) {
-      console.log("CreditCardForm.tsx", error)
+      console.error("CreditCardForm.tsx", error)
       this.setState({ isError: true, isLoading: false })
     }
   }

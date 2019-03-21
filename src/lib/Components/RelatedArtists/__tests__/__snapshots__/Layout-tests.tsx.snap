@@ -10,9 +10,6 @@ exports[`lays out correctly 1`] = `
   }
 >
   <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
     numberOfLines={1}
     style={
       Array [
@@ -68,9 +65,6 @@ exports[`lays out correctly 1`] = `
         }
       />
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Object {
             "fontFamily": "AvantGardeGothicITC",
@@ -83,9 +77,6 @@ exports[`lays out correctly 1`] = `
         SARAH SCOTT
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Object {
             "color": "#666666",

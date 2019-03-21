@@ -2,8 +2,6 @@
 
 exports[`looks correct when rendered 1`] = `
 <View
-  enabled={true}
-  keyboardVerticalOffset={20}
   onLayout={[Function]}
   style={
     Array [
@@ -65,13 +63,12 @@ exports[`looks correct when rendered 1`] = `
           "paddingTop": 13,
         }
       }
+      underlineColorAndroid="transparent"
       value={null}
     />
     <Text
       accessible={true}
-      allowFontScaling={true}
       disabled={true}
-      ellipsizeMode="tail"
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}
@@ -111,6 +108,7 @@ ShallowWrapper {
   />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
     "getNode": [Function],
     "render": [Function],
     "simulateError": [Function],
@@ -149,6 +147,7 @@ ShallowWrapper {
                 "paddingTop": 13,
               }
             }
+            underlineColorAndroid="transparent"
             value="History repeats itself, first as tragedy, second as farce."
           />
           <TouchableWithoutFeedback
@@ -196,6 +195,7 @@ ShallowWrapper {
                   "paddingTop": 13,
                 }
               }
+              underlineColorAndroid="transparent"
               value="History repeats itself, first as tragedy, second as farce."
             />,
             <TouchableWithoutFeedback
@@ -235,6 +235,7 @@ ShallowWrapper {
                 "paddingRight": 10,
                 "paddingTop": 13,
               },
+              "underlineColorAndroid": "transparent",
               "value": "History repeats itself, first as tragedy, second as farce.",
             },
             "ref": [Function],
@@ -308,6 +309,7 @@ ShallowWrapper {
                   "paddingTop": 13,
                 }
               }
+              underlineColorAndroid="transparent"
               value="History repeats itself, first as tragedy, second as farce."
             />
             <TouchableWithoutFeedback
@@ -355,6 +357,7 @@ ShallowWrapper {
                     "paddingTop": 13,
                   }
                 }
+                underlineColorAndroid="transparent"
                 value="History repeats itself, first as tragedy, second as farce."
               />,
               <TouchableWithoutFeedback
@@ -394,6 +397,7 @@ ShallowWrapper {
                   "paddingRight": 10,
                   "paddingTop": 13,
                 },
+                "underlineColorAndroid": "transparent",
                 "value": "History repeats itself, first as tragedy, second as farce.",
               },
               "ref": [Function],
@@ -439,9 +443,13 @@ ShallowWrapper {
     "adapter": ReactSixteenAdapter {
       "options": Object {
         "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
         "lifecycles": Object {
           "componentDidUpdate": Object {
             "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
           },
           "getDerivedStateFromProps": true,
           "getSnapshotBeforeUpdate": true,
@@ -457,8 +465,6 @@ ShallowWrapper {
 
 exports[`regarding the send button disables it when there is no text 1`] = `
 <View
-  enabled={true}
-  keyboardVerticalOffset={20}
   onLayout={[Function]}
   style={
     Array [
@@ -520,13 +526,12 @@ exports[`regarding the send button disables it when there is no text 1`] = `
           "paddingTop": 13,
         }
       }
+      underlineColorAndroid="transparent"
       value={null}
     />
     <Text
       accessible={true}
-      allowFontScaling={true}
       disabled={true}
-      ellipsizeMode="tail"
       onResponderGrant={[Function]}
       onResponderMove={[Function]}
       onResponderRelease={[Function]}

@@ -68,9 +68,6 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -94,9 +91,6 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
         OUTBID
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -115,9 +109,6 @@ exports[`looks right for bids in live auctions that haven't started yet 1`] = `
         Lot 8 · Robert Longo 
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -220,9 +211,6 @@ exports[`looks right for bids in live open auctions 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -246,9 +234,6 @@ exports[`looks right for bids in live open auctions 1`] = `
         JOIN LIVE
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -267,9 +252,6 @@ exports[`looks right for bids in live open auctions 1`] = `
         Lot 8 · Robert Longo 
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -372,9 +354,6 @@ exports[`renders correctly 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -398,9 +377,6 @@ exports[`renders correctly 1`] = `
         OUTBID
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -419,9 +395,6 @@ exports[`renders correctly 1`] = `
         Lot 8 · Robert Longo 
       </Text>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {

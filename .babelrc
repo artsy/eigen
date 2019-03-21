@@ -1,4 +1,7 @@
 {
-  "plugins": [["relay", { "artifactDirectory": "./src/__generated__" }]],
-  "presets": ["react-native"]
+  "plugins": [
+    ["relay", { "artifactDirectory": "./src/__generated__" }],
+    ["@babel/plugin-proposal-decorators", { "legacy": true }]
+  ],
+  "presets": ["module:metro-react-native-babel-preset"]
 }

@@ -49,9 +49,6 @@ exports[`Sets up the right view hierarchy 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -74,9 +71,6 @@ exports[`Sets up the right view hierarchy 1`] = `
             Complete work details to submit
           </Text>
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -157,9 +151,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                   }
                 >
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Array [
                         Object {
@@ -237,9 +228,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                   }
                 >
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Array [
                         Object {
@@ -317,9 +305,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                   }
                 >
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Array [
                         Object {
@@ -397,9 +382,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                   }
                 >
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Array [
                         Object {
@@ -477,9 +459,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                   }
                 >
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Array [
                         Object {
@@ -557,9 +536,6 @@ exports[`Sets up the right view hierarchy 1`] = `
                   }
                 >
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Array [
                         Object {
@@ -668,11 +644,8 @@ exports[`Sets up the right view hierarchy 1`] = `
               }
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
                 color="white"
-                ellipsizeMode="tail"
                 fontFamily="Unica77LL-Medium"
                 fontSize="14px"
                 lineHeight="24px"

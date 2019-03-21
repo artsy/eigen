@@ -1,6 +1,16 @@
 import React from "react"
 
-import { Dimensions, Image, StyleSheet, Text, TextStyle, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
+import {
+  Dimensions,
+  Image,
+  ImageStyle,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+} from "react-native"
 
 import colors from "lib/data/colors"
 import Switchboard from "lib/NativeModules/SwitchBoard"
@@ -28,7 +38,7 @@ export default class SearchBar extends React.Component<any, any> {
 interface Styles {
   container: ViewStyle
   text: TextStyle
-  searchIcon: ViewStyle
+  searchIcon: ImageStyle
 }
 
 const styles = StyleSheet.create<Styles>({

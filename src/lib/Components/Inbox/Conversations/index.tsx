@@ -111,10 +111,13 @@ export class Conversations extends Component<Props, State> {
           keyExtractor={(_item, index) => String(index)}
           scrollEventThrottle={500}
           renderItem={({ item }) => {
+            // TODO: What is up with this `as any`?
+            //       there's a type mismatch here, as item above is a `ConversationSnippetProps`
+            //       but conversation is a `ConversationSnippet_conversation`
             return (
               <ConversationSnippet
-                conversation={item}
-                onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${item.id}`)}
+                conversation={item as any}
+                onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${(item as any).id}`)}
               />
             )
           }}

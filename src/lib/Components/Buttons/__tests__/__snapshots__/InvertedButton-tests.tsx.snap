@@ -23,11 +23,8 @@ exports[`InvertedButton accepts textStyle prop 1`] = `
   }
 >
   <Text
-    accessible={true}
-    allowFontScaling={true}
     className="sc-bdVaJa bDWFJH"
     color="white"
-    ellipsizeMode="tail"
     fontFamily="Unica77LL-Medium"
     fontSize="14px"
     lineHeight="24px"
@@ -71,11 +68,8 @@ exports[`InvertedButton renders properly 1`] = `
   }
 >
   <Text
-    accessible={true}
-    allowFontScaling={true}
     className="sc-bdVaJa bDWFJH"
     color="white"
-    ellipsizeMode="tail"
     fontFamily="Unica77LL-Medium"
     fontSize="14px"
     lineHeight="24px"
@@ -120,9 +114,6 @@ exports[`InvertedButtonWithSpinner accepts textStyle prop 1`] = `
     style={null}
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Array [
           Object {
@@ -169,9 +160,6 @@ exports[`InvertedButtonWithSpinner renders properly 1`] = `
     style={null}
   >
     <Text
-      accessible={true}
-      allowFontScaling={true}
-      ellipsizeMode="tail"
       style={
         Array [
           Object {

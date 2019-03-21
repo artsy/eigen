@@ -2,8 +2,6 @@
 
 exports[`renders properly 1`] = `
 <View
-  enabled={true}
-  keyboardVerticalOffset={15}
   onLayout={[Function]}
   style={
     Array [
@@ -66,10 +64,7 @@ exports[`renders properly 1`] = `
         }
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
           className="sc-bwzfXH uTxCW"
-          ellipsizeMode="tail"
           fontFamily="AGaramondPro-Semibold"
           fontSize="22px"
           lineHeight="28px"
@@ -108,10 +103,7 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
             className="sc-bwzfXH uTxCW"
-            ellipsizeMode="tail"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -166,6 +158,7 @@ exports[`renders properly 1`] = `
                 undefined,
               ]
             }
+            underlineColorAndroid="transparent"
           />
         </View>
         <View
@@ -181,10 +174,7 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
             className="sc-bwzfXH uTxCW"
-            ellipsizeMode="tail"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -238,6 +228,7 @@ exports[`renders properly 1`] = `
                 undefined,
               ]
             }
+            underlineColorAndroid="transparent"
           />
         </View>
         <View
@@ -253,10 +244,7 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
             className="sc-bwzfXH uTxCW"
-            ellipsizeMode="tail"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -310,6 +298,7 @@ exports[`renders properly 1`] = `
                 undefined,
               ]
             }
+            underlineColorAndroid="transparent"
           />
         </View>
         <View
@@ -325,10 +314,7 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
             className="sc-bwzfXH uTxCW"
-            ellipsizeMode="tail"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -382,6 +368,7 @@ exports[`renders properly 1`] = `
                 undefined,
               ]
             }
+            underlineColorAndroid="transparent"
           />
         </View>
         <View
@@ -397,10 +384,7 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
             className="sc-bwzfXH uTxCW"
-            ellipsizeMode="tail"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -454,6 +438,7 @@ exports[`renders properly 1`] = `
                 undefined,
               ]
             }
+            underlineColorAndroid="transparent"
           />
         </View>
         <View
@@ -469,10 +454,7 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
             className="sc-bwzfXH uTxCW"
-            ellipsizeMode="tail"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -526,6 +508,7 @@ exports[`renders properly 1`] = `
                 undefined,
               ]
             }
+            underlineColorAndroid="transparent"
           />
         </View>
         <View
@@ -612,10 +595,7 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
             className="sc-bwzfXH uTxCW"
-            ellipsizeMode="tail"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -664,11 +644,8 @@ exports[`renders properly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
               className="sc-bwzfXH uTxCW"
               color="black30"
-              ellipsizeMode="tail"
               fontFamily="AGaramondPro-Regular"
               fontSize="16px"
               lineHeight="24px"
@@ -722,9 +699,6 @@ exports[`renders properly 1`] = `
               style={null}
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
                 style={
                   Array [
                     Object {

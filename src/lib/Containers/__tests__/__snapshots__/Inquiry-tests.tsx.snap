@@ -16,8 +16,6 @@ exports[`renders correctly 1`] = `
   }
 >
   <View
-    enabled={true}
-    keyboardVerticalOffset={15}
     onLayout={[Function]}
     style={
       Array [
@@ -78,9 +76,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Array [
                   Object {
@@ -111,9 +106,6 @@ exports[`renders correctly 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Array [
                   Object {
@@ -153,9 +145,6 @@ exports[`renders correctly 1`] = `
               }
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
                 style={
                   Array [
                     Object {
@@ -182,9 +171,6 @@ exports[`renders correctly 1`] = `
             </View>
           </View>
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -281,8 +267,6 @@ exports[`renders correctly 1`] = `
               }
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 ellipsizeMode="tail"
                 numberOfLines={1}
                 style={
@@ -320,8 +304,6 @@ exports[`renders correctly 1`] = `
                 }
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
                   ellipsizeMode="middle"
                   numberOfLines={1}
                   style={
@@ -339,9 +321,6 @@ exports[`renders correctly 1`] = `
                 >
                   Karl and Anna Face Off (Diptych)
                   <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
                     style={
                       Array [
                         Object {
@@ -375,6 +354,7 @@ exports[`renders correctly 1`] = `
               undefined,
             ]
           }
+          underlineColorAndroid="transparent"
           value="Hi, I'm interested in purchasing this work. Could you please provide me with more information about the piece?"
         />
       </View>
@@ -410,9 +390,6 @@ exports[`renders correctly 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {

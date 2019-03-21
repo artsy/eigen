@@ -36,17 +36,6 @@ export class ShowItemRow extends React.Component<Props, State> {
   }
   isTapped: boolean
 
-  @track((__, _, args) => {
-    const slug = args[0]
-    const id = args[1]
-    return {
-      action_name: Schema.ActionNames.OpenShow,
-      action_type: Schema.ActionTypes.Tap,
-      context_screen_owner_type: Schema.OwnerEntityTypes.Show,
-      context_screen_owner_slug: slug,
-      context_screen_owner_id: id,
-    } as any
-  })
   handleTap(_slug, _id) {
     this.isTapped = true
     const href = hrefForPartialShow(this.props.show)
@@ -145,7 +134,9 @@ export class ShowItemRow extends React.Component<Props, State> {
               <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
             </DefaultImageContainer>
           ) : (
-            <OpaqueImageView width={58} height={58} imageURL={imageURL} />
+            <DefaultImageContainer>
+              <OpaqueImageView width={58} height={58} imageURL={imageURL} />
+            </DefaultImageContainer>
           )}
           <Flex flexDirection="column" flexGrow={1} width={165} mr={10}>
             {show.partner &&

@@ -26,9 +26,9 @@ export class Input extends Component<InputProps, InputState> {
     }
   }
 
-  onBlur() {
+  onBlur(e) {
     if (this.props.onBlur) {
-      this.props.onBlur()
+      this.props.onBlur(e)
     }
 
     this.setState({
@@ -36,9 +36,9 @@ export class Input extends Component<InputProps, InputState> {
     })
   }
 
-  onFocus() {
+  onFocus(e) {
     if (this.props.onFocus) {
-      this.props.onFocus()
+      this.props.onFocus(e)
     }
 
     this.setState({ borderColor: "purple100" })
@@ -55,8 +55,8 @@ export class Input extends Component<InputProps, InputState> {
         {...this.props}
         // These props should not be overridden so they are declared after `{...this.props}`
         ref={this.props.inputRef}
-        onBlur={() => this.onBlur()}
-        onFocus={() => this.onFocus()}
+        onBlur={e => this.onBlur(e)}
+        onFocus={e => this.onFocus(e)}
       />
     )
   }

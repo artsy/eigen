@@ -34,14 +34,14 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "start_at",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "name",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -76,7 +76,7 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "start_at",
+      "name": "name",
       "args": null,
       "storageKey": null
     },

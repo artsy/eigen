@@ -15,9 +15,6 @@ exports[`looks correct for a user with two initials 1`] = `
   }
 >
   <Text
-    accessible={true}
-    allowFontScaling={true}
-    ellipsizeMode="tail"
     style={
       Array [
         Object {

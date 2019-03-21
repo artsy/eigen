@@ -26,13 +26,13 @@ export class TabFairItemRow extends React.Component<Props> {
             <OpaqueImageView height={58} width={58} imageURL={fairImage} />
           </RoundedImageWrapper>
           <Box width={boxWidth} pl={1}>
-            {item.name && (
+            {!!item.name && (
               <Sans weight="medium" size="3t" numberOfLines={1} ellipsizeMode="tail">
                 {item.name}
               </Sans>
             )}
-            {item.counts &&
-              item.counts.partners && (
+            {!!item.counts &&
+              !!item.counts.partners && (
                 <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
                   {item.counts.partners > 1
                     ? `${item.counts.partners} Exhibitors`

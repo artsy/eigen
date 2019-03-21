@@ -35,9 +35,6 @@ exports[`renders properly 1`] = `
       style={null}
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {

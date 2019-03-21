@@ -43,9 +43,6 @@ exports[`looks correct when rendered 1`] = `
       }
     >
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -97,9 +94,6 @@ exports[`looks correct when rendered 1`] = `
         }
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {
@@ -124,9 +118,6 @@ exports[`looks correct when rendered 1`] = `
           SARAH
         </Text>
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {
@@ -209,9 +200,6 @@ exports[`looks correct when rendered 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Array [
                   Object {
@@ -225,9 +213,6 @@ exports[`looks correct when rendered 1`] = `
               Payment request
             </Text>
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               style={
                 Array [
                   Object {
@@ -282,9 +267,6 @@ exports[`looks correct when rendered 1`] = `
                 style={null}
               >
                 <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
                   style={
                     Array [
                       Object {
@@ -317,9 +299,6 @@ exports[`looks correct when rendered 1`] = `
         onPress={[Function]}
       >
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {

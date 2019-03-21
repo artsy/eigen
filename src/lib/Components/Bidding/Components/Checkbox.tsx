@@ -125,7 +125,7 @@ export const CheckMark = styled.View.attrs<CheckMarkProps>({})`
   border-left-width: 2px;
 `
 
-export const DisabledMark = CheckMark.extend`
+export const DisabledMark = styled(CheckMark)`
   border-bottom-color: ${theme.colors.black30};
   border-left-color: ${theme.colors.black30};
 `

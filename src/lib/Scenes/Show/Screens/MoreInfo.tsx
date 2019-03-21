@@ -103,6 +103,7 @@ export class MoreInfo extends React.Component<Props, State> {
   }
 
   openPressReleaseLink = () => {
+    console.log("this.props.show.pressReleaseUrl", this.props.show.pressReleaseUrl)
     SwitchBoard.presentNavigationViewController(this, this.props.show.pressReleaseUrl)
   }
 
@@ -118,7 +119,16 @@ export class MoreInfo extends React.Component<Props, State> {
       case "pressReleaseUrl":
         return <CaretButton onPress={() => this.openPressReleaseLink()} text="View press release" />
       case "receptionText":
-        return <Sans size="3t">{data}</Sans>
+        return (
+          <>
+            <Box mb={2}>
+              <Sans size="3t" weight="medium">
+                Opening reception
+              </Sans>
+            </Box>
+            <Sans size="3t">{data}</Sans>
+          </>
+        )
       case "event":
         return <ShowEventSection {...data} />
       case "pressRelease":

@@ -187,9 +187,6 @@ exports[`state looks okay by default 1`] = `
             }
           >
             <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
               numberOfLines={1}
               style={
                 Array [
@@ -232,11 +229,8 @@ exports[`state looks okay by default 1`] = `
               }
             >
               <Text
-                accessible={true}
-                allowFontScaling={true}
                 className="sc-bdVaJa bDWFJH"
                 color="black"
-                ellipsizeMode="tail"
                 fontFamily="Unica77LL-Medium"
                 fontSize="14px"
                 lineHeight="24px"

@@ -1,3 +1,5 @@
+// import "@babel/runtime"
+
 import React, { Component } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -15,6 +17,8 @@ import { Schema, Track, track as _track } from "lib/utils/track"
 import { Artist_artist } from "__generated__/Artist_artist.graphql"
 
 const isPad = Dimensions.get("window").width > 700
+
+// jest.unmock("lib/utils/track")
 
 const TABS = {
   ABOUT: "ABOUT",

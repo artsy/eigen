@@ -1,7 +1,7 @@
 {
   "name": "emission",
-  "version": "1.8.27",
-  "native-code-version": 28,
+  "version": "1.9.1",
+  "native-code-version": 29,
   "description": "Artsy React(Native) components.",
   "engines": {
     "node": "10.x",
@@ -72,7 +72,8 @@
     "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/relay-runtime-1.5.0-artsy.5.tgz",
     "@types/relay-runtime": "^1.3.5",
     "cheerio": "0.22.0",
-    "react-spring": "5.5"
+    "react-spring": "5.5",
+    "babel-core": "^7.0.0-bridge.0"
   },
   "dependencies": {
     "@artsy/palette": "^2.23.0",
@@ -82,11 +83,11 @@
     "moment-timezone": "^0.5.17",
     "prop-types": "^15.5.10",
     "query-string": "^4.1.0",
-    "react": "^16.3.0-alpha.1",
-    "react-native": "0.54.4",
+    "react": "16.6.1",
+    "react-native": "0.57.7",
     "react-native-hyperlink": "0.0.11",
     "react-native-parallax-scroll-view": "orta/react-native-parallax-scroll-view",
-    "react-native-scrollable-tab-view": "^0.8.0",
+    "react-native-scrollable-tab-view": "^0.9.0",
     "react-native-sentry": "^0.30.2",
     "react-native-svg": "^9.0.4",
     "react-relay": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/react-relay-1.5.0-artsy.5.tgz",
@@ -95,20 +96,27 @@
     "relay-runtime": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/relay-runtime-1.5.0-artsy.5.tgz",
     "remove-markdown": "0.1.0",
     "simple-markdown": "^0.4.2",
-    "styled-components": "3.2.2",
+    "styled-components": "3.4.9",
     "supercluster": "^6.0.1",
     "tipsi-stripe": "5.2.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-proposal-decorators": "^7.1.2",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-typescript": "^7.1.0",
+    "@babel/runtime": "^7.2.0",
     "@playlyfe/gql": "^2.3.2",
     "@storybook/react-native": "^3.3.11",
-    "@types/jest": "23.3.9",
+    "@types/chalk": "^2.2.0",
+    "@types/jest": "^23.3.9",
     "@types/lodash": "^4.14.64",
     "@types/moment-timezone": "^0.5.4",
     "@types/node": "^11.9.6",
     "@types/query-string": "^5.0.0",
     "@types/react": "^16.3.0",
-    "@types/react-native": "^0.52.1",
+    "@types/react-native": "^0.57.7",
     "@types/react-relay": "^1.3.9",
     "@types/react-test-renderer": "^16.0.2",
     "@types/react-tracking": "^5.0.0",
@@ -117,30 +125,29 @@
     "@types/supercluster": "^5.0.0",
     "awesome-typescript-loader": "^3.2.3",
     "babel-jest": "^23.6.0",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-plugin-relay": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/babel-plugin-relay-1.5.0-artsy.3.tgz",
-    "babel-polyfill": "^6.13.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-react-native": "^4.0.0",
-    "babel-preset-stage-0": "^6.24.1",
+    "chalk": "^2.4.2",
     "concurrently": "^2.2.0",
-    "danger": "^6",
+    "danger": "^6.1.1",
     "danger-plugin-jest": "^1.1.0",
     "enzyme": "^3.1.0",
-    "enzyme-adapter-react-16": "^1.0.2",
+    "enzyme-adapter-react-16": "^1.9.1",
     "husky": "^1.3.1",
     "jest": "^23.6.0",
+    "jest-styled-components": "^4.10.0",
     "lint-staged": "^6.0.0",
+    "metro-react-native-babel-preset": "0.49.0",
     "patch-package": "^5.0.0",
     "postinstall-prepare": "^1.0.1",
     "prettier": "^1.14",
     "pull-lock": "^1.0.0",
-    "react-dom": "^16.3.0-alpha.1",
     "react-native-storybook-loader": "^1.6.0",
     "react-native-typescript-transformer": "^1.2.3",
     "react-relay-network-modern": "^2.5.1",
+    "react-dom": "16.6.1",
     "react-storybooks-relay-container": "^1.0.0",
-    "react-test-renderer": "^16.3.0-alpha.1",
+    "react-test-renderer": "16.6.0-alpha.8af6728",
     "recursive-readdir-sync": "^1.0.6",
     "relay-compiler": "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/relay-compiler-1.5.0-artsy.5.tgz",
     "relay-compiler-language-typescript": "^1.1.0",
@@ -151,7 +158,7 @@
     "stylelint-config-standard": "^18.2.0",
     "stylelint-config-styled-components": "^0.1.1",
     "stylelint-processor-styled-components": "^1.5.1",
-    "ts-jest": "^22.0.2",
+    "ts-jest": "^23.10.4",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.6.0",
     "tslint-plugin-relay": "^0.0.2",
@@ -160,11 +167,6 @@
   },
   "jest": {
     "preset": "react-native",
-    "globals": {
-      "ts-jest": {
-        "useBabelrc": true
-      }
-    },
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -173,23 +175,19 @@
     "moduleNameMapper": {
       "^lib/(.*)": "<rootDir>/src/lib/$1"
     },
-    "transform": {
-      "^[./a-zA-Z0-9$_-]+\\.(bmp|gif|jpg|jpeg|mp4|png|psd|svg|webp)$": "<rootDir>/node_modules/react-native/jest/assetFileTransformer.js",
-      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
     "testRegex": "/__tests__/.*-tests.(ts|tsx|js)$",
     "testEnvironment": "jsdom",
     "testURL": "http://localhost/",
-    "testPathIgnorePatterns": [
-      "\\.snap$",
-      "<rootDir>/build",
-      "<rootDir>/node_modules/"
-    ],
-    "setupFiles": [
-      "./src/setupJest.ts"
-    ],
-    "cacheDirectory": ".jest/cache"
+    "setupTestFrameworkScriptFile": "./src/setupJest.ts",
+    "cacheDirectory": ".jest/cache",
+    "transform": {
+      "^[./a-zA-Z0-9$_-]+\\.(bmp|gif|jpg|jpeg|mp4|png|psd|svg|webp)$": "<rootDir>/node_modules/react-native/jest/assetFileTransformer.js",
+      "node_modules/react-native/.+\\.(js|tsx?)$": "<rootDir>/node_modules/react-native/jest/preprocessor.js",
+      ".*(ts|tsx|js|jsx)$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(react-native(-.*)?)/)"
+    ]
   },
   "lint-staged": {
     "*.@(ts|tsx)": [

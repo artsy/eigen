@@ -48,6 +48,7 @@ exports[`Search states:  Looks right when Found four results 1`] = `
             undefined,
           ]
         }
+        underlineColorAndroid="transparent"
         value="bank"
       />
     </View>
@@ -119,9 +120,6 @@ exports[`Search states:  Looks right when Found four results 1`] = `
             }
           />
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -187,9 +185,6 @@ exports[`Search states:  Looks right when Found four results 1`] = `
             }
           />
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -255,9 +250,6 @@ exports[`Search states:  Looks right when Found four results 1`] = `
             }
           />
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -323,9 +315,6 @@ exports[`Search states:  Looks right when Found four results 1`] = `
             }
           />
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -396,6 +385,7 @@ exports[`Search states:  Looks right when Found no results 1`] = `
             undefined,
           ]
         }
+        underlineColorAndroid="transparent"
         value="ba"
       />
     </View>
@@ -420,9 +410,6 @@ exports[`Search states:  Looks right when Found no results 1`] = `
   >
     <View>
       <Text
-        accessible={true}
-        allowFontScaling={true}
-        ellipsizeMode="tail"
         style={
           Array [
             Object {
@@ -437,9 +424,6 @@ exports[`Search states:  Looks right when Found no results 1`] = `
         Unfortunately we are not accepting consignments for works by
          
         <Text
-          accessible={true}
-          allowFontScaling={true}
-          ellipsizeMode="tail"
           style={
             Array [
               Object {
@@ -507,6 +491,7 @@ exports[`Search states:  Looks right when Found one result 1`] = `
             undefined,
           ]
         }
+        underlineColorAndroid="transparent"
         value="ban"
       />
     </View>
@@ -578,9 +563,6 @@ exports[`Search states:  Looks right when Found one result 1`] = `
             }
           />
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -651,6 +633,7 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
             undefined,
           ]
         }
+        underlineColorAndroid="transparent"
         value="ban"
       />
       <ActivityIndicator
@@ -728,9 +711,6 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
             }
           />
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -801,6 +781,7 @@ exports[`Search states:  Looks right when Found two results 1`] = `
             undefined,
           ]
         }
+        underlineColorAndroid="transparent"
         value="bank"
       />
     </View>
@@ -872,9 +853,6 @@ exports[`Search states:  Looks right when Found two results 1`] = `
             }
           />
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -940,9 +918,6 @@ exports[`Search states:  Looks right when Found two results 1`] = `
             }
           />
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -1013,6 +988,7 @@ exports[`Search states:  Looks right when Looking for new results 1`] = `
             undefined,
           ]
         }
+        underlineColorAndroid="transparent"
         value="ba"
       />
       <ActivityIndicator
@@ -1094,6 +1070,7 @@ exports[`Search states:  Looks right when No query 1`] = `
             undefined,
           ]
         }
+        underlineColorAndroid="transparent"
         value={null}
       />
     </View>

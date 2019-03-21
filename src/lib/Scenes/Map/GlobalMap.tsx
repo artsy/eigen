@@ -21,7 +21,7 @@ import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { EventEmitter } from "./EventEmitter"
-import { Fair, FilterData, MapGeoFeature, RelayErrorState, SafeAreaInsets, Show } from "./types"
+import { Fair, FilterData, MapGeoFeature, OSCoordsUpdate, RelayErrorState, SafeAreaInsets, Show } from "./types"
 
 const Emission = NativeModules.Emission || {}
 
@@ -252,6 +252,7 @@ export class GlobalMap extends React.Component<Props, State> {
       this.setState({ bucketResults }, () => {
         this.emitFilteredBucketResults()
         this.updateShowIdMap()
+        this.updateClusterMap()
       })
     } else if (relayErrorState) {
       EventEmitter.dispatch("map:error", { relayErrorState })
@@ -395,8 +396,7 @@ export class GlobalMap extends React.Component<Props, State> {
       const clusterId = properties.cluster_id.toString()
       let pointCount = properties.point_count
 
-      const width = pointCount < 6 ? 35 : pointCount < 21 ? 50 : 60
-      const height = pointCount < 6 ? 35 : pointCount < 21 ? 50 : 60
+      const radius = pointCount < 4 ? 40 : pointCount < 21 ? 50 : 65
       pointCount = pointCount.toString()
 
       return (
@@ -405,7 +405,7 @@ export class GlobalMap extends React.Component<Props, State> {
         clusterLng &&
         pointCount && (
           <Mapbox.PointAnnotation key={clusterId} id={clusterId} selected={true} coordinate={[clusterLat, clusterLng]}>
-            <SelectedCluster width={width} height={height}>
+            <SelectedCluster width={radius} height={radius}>
               <Sans size="3" weight="medium" color={color("white100")}>
                 {pointCount}
               </Sans>
@@ -512,6 +512,12 @@ export class GlobalMap extends React.Component<Props, State> {
         )}
       </Spring>
     )
+  }
+
+  onUserLocationUpdate = (location: OSCoordsUpdate) => {
+    this.setState({
+      userLocation: location.coords && GlobalMap.longCoordsToLocation(location.coords),
+    })
   }
 
   onRegionIsChanging = async () => {
@@ -628,6 +634,7 @@ export class GlobalMap extends React.Component<Props, State> {
               <Map
                 {...mapProps}
                 onRegionIsChanging={this.onRegionIsChanging}
+                onUserLocationUpdate={this.onUserLocationUpdate}
                 onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
                 onPress={this.onPressMap}
                 ref={this.storeMapRef}
@@ -846,6 +853,12 @@ export const GlobalMapContainer = createFragmentContainer(
                 ... on Partner {
                   name
                   type
+                  profile {
+                    # This is only used for stubbed shows
+                    image {
+                      url(version: "square")
+                    }
+                  }
                 }
               }
             }

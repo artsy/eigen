@@ -35,8 +35,6 @@ exports[`state is set up with empty consignment metadata 1`] = `
       }
     >
       <View
-        enabled={true}
-        keyboardVerticalOffset={15}
         onLayout={[Function]}
         style={
           Array [
@@ -140,6 +138,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                               undefined,
                             ]
                           }
+                          underlineColorAndroid="transparent"
                         />
                       </View>
                       <View
@@ -213,6 +212,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                               undefined,
                             ]
                           }
+                          underlineColorAndroid="transparent"
                         />
                       </View>
                       <View
@@ -286,6 +286,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                               undefined,
                             ]
                           }
+                          underlineColorAndroid="transparent"
                         />
                       </View>
                       <View
@@ -360,6 +361,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                               undefined,
                             ]
                           }
+                          underlineColorAndroid="transparent"
                         />
                       </View>
                       <View
@@ -421,6 +423,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                               undefined,
                             ]
                           }
+                          underlineColorAndroid="transparent"
                         />
                       </View>
                       <View
@@ -495,6 +498,7 @@ exports[`state is set up with empty consignment metadata 1`] = `
                               undefined,
                             ]
                           }
+                          underlineColorAndroid="transparent"
                           value=""
                         />
                       </View>
@@ -518,9 +522,6 @@ exports[`state is set up with empty consignment metadata 1`] = `
                       }
                     >
                       <Text
-                        accessible={true}
-                        allowFontScaling={true}
-                        ellipsizeMode="tail"
                         style={
                           Array [
                             Object {
@@ -589,9 +590,6 @@ exports[`state is set up with empty consignment metadata 1`] = `
                             }
                           >
                             <Text
-                              accessible={true}
-                              allowFontScaling={true}
-                              ellipsizeMode="tail"
                               style={
                                 Array [
                                   Object {
@@ -611,9 +609,6 @@ exports[`state is set up with empty consignment metadata 1`] = `
                               
                             </Text>
                             <Text
-                              accessible={true}
-                              allowFontScaling={true}
-                              ellipsizeMode="tail"
                               style={
                                 Array [
                                   Object {
@@ -711,9 +706,6 @@ exports[`state is set up with empty consignment metadata 1`] = `
                         }
                       >
                         <Text
-                          accessible={true}
-                          allowFontScaling={true}
-                          ellipsizeMode="tail"
                           style={
                             Object {
                               "color": "#666666",
@@ -772,9 +764,6 @@ exports[`state is set up with empty consignment metadata 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {
@@ -834,8 +823,6 @@ exports[`state is set up with filled consignment metadata 1`] = `
       }
     >
       <View
-        enabled={true}
-        keyboardVerticalOffset={15}
         onLayout={[Function]}
         style={
           Array [
@@ -939,6 +926,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                               undefined,
                             ]
                           }
+                          underlineColorAndroid="transparent"
                           value="My Work"
                         />
                       </View>
@@ -1013,6 +1001,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                               undefined,
                             ]
                           }
+                          underlineColorAndroid="transparent"
                           value="1983"
                         />
                       </View>
@@ -1087,6 +1076,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                               undefined,
                             ]
                           }
+                          underlineColorAndroid="transparent"
                           value="Wood"
                         />
                       </View>
@@ -1162,6 +1152,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                               undefined,
                             ]
                           }
+                          underlineColorAndroid="transparent"
                           value="100"
                         />
                       </View>
@@ -1224,6 +1215,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                               undefined,
                             ]
                           }
+                          underlineColorAndroid="transparent"
                           value="100"
                         />
                       </View>
@@ -1299,6 +1291,7 @@ exports[`state is set up with filled consignment metadata 1`] = `
                               undefined,
                             ]
                           }
+                          underlineColorAndroid="transparent"
                           value=""
                         />
                       </View>
@@ -1322,9 +1315,6 @@ exports[`state is set up with filled consignment metadata 1`] = `
                       }
                     >
                       <Text
-                        accessible={true}
-                        allowFontScaling={true}
-                        ellipsizeMode="tail"
                         style={
                           Array [
                             Object {
@@ -1393,9 +1383,6 @@ exports[`state is set up with filled consignment metadata 1`] = `
                             }
                           >
                             <Text
-                              accessible={true}
-                              allowFontScaling={true}
-                              ellipsizeMode="tail"
                               style={
                                 Array [
                                   Object {
@@ -1415,9 +1402,6 @@ exports[`state is set up with filled consignment metadata 1`] = `
                               
                             </Text>
                             <Text
-                              accessible={true}
-                              allowFontScaling={true}
-                              ellipsizeMode="tail"
                               style={
                                 Array [
                                   Object {
@@ -1515,9 +1499,6 @@ exports[`state is set up with filled consignment metadata 1`] = `
                         }
                       >
                         <Text
-                          accessible={true}
-                          allowFontScaling={true}
-                          ellipsizeMode="tail"
                           style={
                             Object {
                               "color": "white",
@@ -1576,9 +1557,6 @@ exports[`state is set up with filled consignment metadata 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
             style={
               Array [
                 Object {

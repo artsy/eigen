@@ -16,7 +16,20 @@
 
 ### Master
 
+
 - Requires phone number during bidder registration - sweir27
+- Migrates to React Native 0.57.x - orta/alloy/luc/justin
+
+### 1.9.1
+
+- Do no reset safeAreaInsets back to 0 - luc
+
+### 1.9.0
+
+- Add cover images to stub shows in full list - luc
+- Reset zoom, pitch and heading upon city switch - roop
+- Fixes map intermittenly not render pins - luc
+- User location button would not render for users in cities - luc
 
 ### 1.8.27
 
