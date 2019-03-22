@@ -16,6 +16,7 @@
 
 ### Master
 
+- Fixes scrollable tab bar on global saves & follows - ash & ashley
 - Requires phone number during bidder registration - sweir27
 - Migrates to React Native 0.57.x - orta/alloy/luc/justin
 - Adds correct margin/padding to last carousel image - kieran

@@ -107,8 +107,13 @@ export default class ScrollableTabBar extends React.Component<ScrollableTabBarPr
       return
     }
 
-    const { x, width } = this.els[index]
     const { width: screenWidth } = Dimensions.get("window")
+    // If the scrollview doesn't need to scroll, don't try to scroll it!
+    if (this.scrollViewWidth < screenWidth) {
+      return
+    }
+
+    const { x, width } = this.els[index]
     const maxOffset = this.scrollViewWidth - screenWidth
     const xOffset = x + width / 2 - screenWidth / 2
 
