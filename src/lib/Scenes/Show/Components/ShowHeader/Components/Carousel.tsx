@@ -40,7 +40,12 @@ export class Carousel extends React.Component<Props> {
     const { sources } = this.props
 
     return sources.map((source, i) => (
-      <Flex key={this.keyForSource(source)} mr={1} alignItems="flex-start">
+      <Flex
+        key={this.keyForSource(source)}
+        mr={i === sources.length - 1 ? 2 : 1}
+        pr={i === sources.length - 1 ? 2 : 0}
+        alignItems="flex-start"
+      >
         <ImageView {...source} isFirst={i === 0} />
       </Flex>
     ))
