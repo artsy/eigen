@@ -153,7 +153,7 @@ export class ShowHeader extends React.Component<Props, State> {
             </Sans>
           </TouchableWithoutFeedback>
           <Serif size="8" lineHeight={34}>
-            {name} + 4
+            {name}
           </Serif>
           {exhibition_period && <Sans size="3">{ExhibitionDates(exhibition_period, end_at)}</Sans>}
         </Box>
