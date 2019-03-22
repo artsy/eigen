@@ -524,10 +524,7 @@ exports[`renders properly 1`] = `
           }
         >
           <Text
-            accessible={true}
-            allowFontScaling={true}
             className="sc-bwzfXH uTxCW"
-            ellipsizeMode="tail"
             fontFamily="AGaramondPro-Regular"
             fontSize="16px"
             lineHeight="24px"
@@ -581,6 +578,7 @@ exports[`renders properly 1`] = `
                 undefined,
               ]
             }
+            underlineColorAndroid="transparent"
           />
         </View>
         <View

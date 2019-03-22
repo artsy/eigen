@@ -17,7 +17,6 @@ import { mockTimezone } from "lib/tests/mockTimezone"
 jest.mock("../../../../metaphysics", () => ({ metaphysics: jest.fn() }))
 import { metaphysics } from "../../../../metaphysics"
 const mockphysics = metaphysics as jest.Mock<any>
-const { objectContaining, any } = jasmine
 
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
@@ -114,8 +113,8 @@ describe("when pressing register button", () => {
     await component.root.findByType(Button).instance.props.onPress()
 
     expect(relay.commitMutation).toHaveBeenCalledWith(
-      any(Object),
-      objectContaining({
+      expect.any(Object),
+      expect.objectContaining({
         variables: {
           input: {
             phone: "111 222 333",
@@ -125,8 +124,8 @@ describe("when pressing register button", () => {
     )
 
     expect(relay.commitMutation).toHaveBeenCalledWith(
-      any(Object),
-      objectContaining({
+      expect.any(Object),
+      expect.objectContaining({
         variables: {
           input: {
             token: "fake-token",
@@ -136,8 +135,8 @@ describe("when pressing register button", () => {
     )
 
     expect(relay.commitMutation).toHaveBeenCalledWith(
-      any(Object),
-      objectContaining({
+      expect.any(Object),
+      expect.objectContaining({
         variables: {
           input: {
             sale_id: sale.id,

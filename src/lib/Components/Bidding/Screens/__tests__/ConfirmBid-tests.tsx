@@ -37,8 +37,6 @@ import { SecondaryOutlineButton } from "lib/Components/Buttons"
 import { Modal } from "lib/Components/Modal"
 import { SelectMaxBidEdit } from "../SelectMaxBidEdit"
 
-const { objectContaining, any } = jasmine
-
 let nextStep
 const mockNavigator = { push: route => (nextStep = route) }
 jest.useFakeTimers()
@@ -208,7 +206,7 @@ describe("when pressing bid button", () => {
 
         expect(nextStep.component).toEqual(BidResultScreen)
         expect(nextStep.passProps).toEqual(
-          objectContaining({
+          expect.objectContaining({
             bidderPositionResult: {
               message_header: "An error occurred",
               message_description_md:
@@ -234,7 +232,7 @@ describe("when pressing bid button", () => {
 
         expect(nextStep.component).toEqual(BidResultScreen)
         expect(nextStep.passProps).toEqual(
-          objectContaining({
+          expect.objectContaining({
             bidderPositionResult: {
               message_header: "An error occurred",
               message_description_md:
@@ -300,7 +298,7 @@ describe("polling to verify bid position", () => {
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
-        objectContaining({
+        expect.objectContaining({
           bidderPositionResult: mockRequestResponses.pollingForBid.highestBidder.data.me.bidder_position,
         })
       )
@@ -323,7 +321,7 @@ describe("polling to verify bid position", () => {
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
-        objectContaining({
+        expect.objectContaining({
           bidderPositionResult: mockRequestResponses.pollingForBid.pending.data.me.bidder_position,
         })
       )
@@ -342,7 +340,7 @@ describe("polling to verify bid position", () => {
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
-        objectContaining({
+        expect.objectContaining({
           bidderPositionResult: mockRequestResponses.pollingForBid.highestBidder.data.me.bidder_position,
         })
       )
@@ -361,7 +359,7 @@ describe("polling to verify bid position", () => {
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
-        objectContaining({
+        expect.objectContaining({
           bidderPositionResult: mockRequestResponses.pollingForBid.outbid.data.me.bidder_position,
         })
       )
@@ -380,7 +378,7 @@ describe("polling to verify bid position", () => {
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
-        objectContaining({
+        expect.objectContaining({
           bidderPositionResult: mockRequestResponses.pollingForBid.reserveNotMet.data.me.bidder_position,
         })
       )
@@ -439,7 +437,7 @@ describe("polling to verify bid position", () => {
 
       expect(nextStep.component).toEqual(BidResultScreen)
       expect(nextStep.passProps).toEqual(
-        objectContaining({
+        expect.objectContaining({
           bidderPositionResult: mockRequestResponses.placingBid.bidRejected.createBidderPosition.result,
         })
       )
@@ -488,7 +486,7 @@ describe("ConfirmBid for unqualified user", () => {
     jest.runAllTicks()
     expect(nextStep.component).toEqual(BidResultScreen)
     expect(nextStep.passProps).toEqual(
-      objectContaining({
+      expect.objectContaining({
         bidderPositionResult: {
           message_header: "An error occurred",
           message_description_md: "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
@@ -597,7 +595,7 @@ describe("ConfirmBid for unqualified user", () => {
 
     expect(nextStep.component).toEqual(BidResultScreen)
     expect(nextStep.passProps).toEqual(
-      objectContaining({
+      expect.objectContaining({
         bidderPositionResult: {
           message_header: "An error occurred",
           message_description_md: "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
@@ -629,8 +627,8 @@ describe("ConfirmBid for unqualified user", () => {
       jest.runAllTicks()
 
       expect(relay.commitMutation).toHaveBeenCalledWith(
-        any(Object),
-        objectContaining({
+        expect.any(Object),
+        expect.objectContaining({
           variables: {
             input: {
               token: "fake-token",
@@ -640,8 +638,8 @@ describe("ConfirmBid for unqualified user", () => {
       )
 
       expect(relay.commitMutation).toHaveBeenCalledWith(
-        any(Object),
-        objectContaining({
+        expect.any(Object),
+        expect.objectContaining({
           variables: {
             input: {
               sale_id: saleArtwork.sale.id,
