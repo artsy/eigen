@@ -44,6 +44,7 @@ it("calls the onSubmit() callback with billing address when ADD BILLING ADDRESS 
   textInputComponent(component, "City").props.onChangeText("New York")
   textInputComponent(component, "State, Province, or Region").props.onChangeText("NY")
   textInputComponent(component, "Postal code").props.onChangeText("10013")
+  textInputComponent(component, "Phone").props.onChangeText("656 333 11111")
   selectCountry(component, fakeNavigator, billingAddress.country)
 
   component.root.findByType(Button).instance.props.onPress()
@@ -62,6 +63,7 @@ it("updates the validation for country when coming back from the select country 
   textInputComponent(component, "City").props.onChangeText("New York")
   textInputComponent(component, "State, Province, or Region").props.onChangeText("NY")
   textInputComponent(component, "Postal code").props.onChangeText("10013")
+  textInputComponent(component, "Phone").props.onChangeText("656 333 11111")
 
   component.root.findByType(Button).instance.props.onPress()
 
@@ -83,7 +85,7 @@ it("pre-fills the fields if initial billing address is provided", () => {
   expect(textInputComponent(component, "State, Province, or Region").props.value).toEqual("NY")
   expect(textInputComponent(component, "Postal code").props.value).toEqual("10013")
 
-  const countryField = component.root.findAllByType(Serif)[8]
+  const countryField = component.root.findAllByType(Serif)[9]
   expect(countryField.props.children).toEqual("United States")
 })
 
@@ -104,4 +106,5 @@ const billingAddress = {
     longName: "United States",
     shortName: "US",
   },
+  phoneNumber: "656 333 11111",
 }

@@ -513,6 +513,76 @@ exports[`renders properly 1`] = `
         </View>
         <View
           mb={4}
+          onLayout={[Function]}
+          style={
+            Array [
+              Object {
+                "marginBottom": 20,
+              },
+              undefined,
+            ]
+          }
+        >
+          <Text
+            className="sc-bwzfXH uTxCW"
+            fontFamily="AGaramondPro-Regular"
+            fontSize="16px"
+            lineHeight="24px"
+            mb={2}
+            style={
+              Array [
+                Object {
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 16,
+                  "lineHeight": 24,
+                  "marginBottom": 5,
+                },
+                undefined,
+              ]
+            }
+          >
+            Phone
+          </Text>
+          <TextInput
+            allowFontScaling={true}
+            autoCapitalize="words"
+            border={1}
+            borderColor="black10"
+            error={false}
+            fontSize={3}
+            inputRef={[Function]}
+            mb={3}
+            onBlur={[Function]}
+            onChangeText={[Function]}
+            onFocus={[Function]}
+            onSubmitEditing={[Function]}
+            p={3}
+            pb={2}
+            placeholder="Add your phone number"
+            returnKeyType="next"
+            style={
+              Array [
+                Object {
+                  "borderColor": "#E5E5E5",
+                  "borderStyle": "solid",
+                  "borderWidth": 1,
+                  "fontFamily": "AGaramondPro-Regular",
+                  "fontSize": 16,
+                  "height": 40,
+                  "marginBottom": 10,
+                  "paddingBottom": 5,
+                  "paddingLeft": 10,
+                  "paddingRight": 10,
+                  "paddingTop": 10,
+                },
+                undefined,
+              ]
+            }
+            underlineColorAndroid="transparent"
+          />
+        </View>
+        <View
+          mb={4}
           style={
             Array [
               Object {

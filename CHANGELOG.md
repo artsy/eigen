@@ -16,6 +16,8 @@
 
 ### Master
 
+
+- Requires phone number during bidder registration - sweir27
 - Migrates to React Native 0.57.x - orta/alloy/luc/justin
 
 ### 1.9.1

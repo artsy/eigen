@@ -27,6 +27,7 @@ import { Registration_sale } from "__generated__/Registration_sale.graphql"
 
 import { RegistrationCreateBidderMutation } from "__generated__/RegistrationCreateBidderMutation.graphql"
 import { RegistrationCreateCreditCardMutation } from "__generated__/RegistrationCreateCreditCardMutation.graphql"
+import { RegistrationUpdateUserMutation } from "__generated__/RegistrationUpdateUserMutation.graphql"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
 const Emission = NativeModules.Emission || {}
@@ -100,29 +101,85 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     this.setState({ conditionsOfSaleChecked: !this.state.conditionsOfSaleChecked })
   }
 
-  register() {
+  async register() {
     this.setState({ isLoading: true })
 
-    this.state.requiresPaymentInformation ? this.createCreditCardAndBidder() : this.createBidder()
+    this.state.requiresPaymentInformation ? await this.setupAddressCardAndBidder() : await this.setupBidder()
   }
 
-  async createCreditCardAndBidder() {
-    const { billingAddress, creditCardFormParams } = this.state
-    try {
-      const token = await stripe.createTokenWithCard({
-        ...creditCardFormParams,
-        name: billingAddress.fullName,
-        addressLine1: billingAddress.addressLine1,
-        addressLine2: billingAddress.addressLine2,
-        addressCity: billingAddress.city,
-        addressState: billingAddress.state,
-        addressZip: billingAddress.postalCode,
-      })
+  /** Make a bid */
+  async setupBidder() {
+    await this.createBidder()
+  }
 
+  /** Run through the full flow setting up the user account and making a bid  */
+  async setupAddressCardAndBidder() {
+    try {
+      await this.updatePhoneNumber()
+      const token = await this.createTokenFromAddress()
+      await this.createCreditCard(token)
+      await this.createBidder()
+    } catch (error) {
+      if (!this.state.errorModalVisible) {
+        this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusError)
+      }
+    }
+  }
+
+  /**
+   * Because the phone number lives on the user, not as credit card metadata, then we
+   * need a separate call to update our User model to store that info
+   */
+  async updatePhoneNumber() {
+    return new Promise((done, reject) => {
+      const { phoneNumber } = this.state.billingAddress
+      commitMutation<RegistrationUpdateUserMutation>(this.props.relay.environment, {
+        onCompleted: (_, errors) => {
+          if (errors && errors.length) {
+            this.presentErrorModal(errors, null)
+            reject(errors)
+          } else {
+            done()
+          }
+        },
+        onError: error => {
+          this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
+        },
+        mutation: graphql`
+          mutation RegistrationUpdateUserMutation($input: UpdateMyProfileInput!) {
+            updateMyUserProfile(input: $input) {
+              clientMutationId
+              user {
+                phone
+              }
+            }
+          }
+        `,
+        variables: { input: { phone: phoneNumber } },
+      })
+    })
+  }
+
+  async createTokenFromAddress() {
+    const { billingAddress, creditCardFormParams } = this.state
+    return stripe.createTokenWithCard({
+      ...creditCardFormParams,
+      name: billingAddress.fullName,
+      addressLine1: billingAddress.addressLine1,
+      addressLine2: billingAddress.addressLine2,
+      addressCity: billingAddress.city,
+      addressState: billingAddress.state,
+      addressZip: billingAddress.postalCode,
+      addressCountry: billingAddress.country.shortName,
+    })
+  }
+
+  async createCreditCard(token: any) {
+    return new Promise(done => {
       commitMutation<RegistrationCreateCreditCardMutation>(this.props.relay.environment, {
         onCompleted: (data, errors) => {
           if (data && get(data, "createCreditCard.creditCardOrError.creditCard")) {
-            this.createBidder()
+            done()
           } else {
             if (isEmpty(errors)) {
               const mutationError = data && get(data, "createCreditCard.creditCardOrError.mutationError")
@@ -132,9 +189,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             }
           }
         },
-        onError: error => {
-          this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusNetworkError)
-        },
+        onError: errors => this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusError),
         mutation: graphql`
           mutation RegistrationCreateCreditCardMutation($input: CreditCardInput!) {
             createCreditCard(input: $input) {
@@ -160,15 +215,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             }
           }
         `,
-        variables: {
-          input: {
-            token: token.tokenId,
-          },
-        },
+        variables: { input: { token: token.tokenId } },
       })
-    } catch (error) {
-      this.presentRegistrationError(error, RegistrationStatus.RegistrationStatusError)
-    }
+    })
   }
 
   createBidder() {
@@ -289,7 +338,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
                 text="Complete registration"
                 inProgress={isLoading}
                 selected={isLoading}
-                onPress={this.canCreateBidder() ? () => this.register() : null}
+                onPress={this.canCreateBidder() ? this.register.bind(this) : null}
                 disabled={!this.canCreateBidder()}
               />
             </Flex>
