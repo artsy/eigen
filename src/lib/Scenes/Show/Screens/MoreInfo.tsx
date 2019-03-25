@@ -61,13 +61,6 @@ export class MoreInfo extends React.Component<Props, State> {
       })
     }
 
-    if (show.press_release) {
-      sections.push({
-        type: "pressRelease",
-        data: show,
-      })
-    }
-
     if (show.pressReleaseUrl) {
       sections.push({
         type: "pressReleaseUrl",
@@ -103,7 +96,6 @@ export class MoreInfo extends React.Component<Props, State> {
   }
 
   openPressReleaseLink = () => {
-    console.log("this.props.show.pressReleaseUrl", this.props.show.pressReleaseUrl)
     SwitchBoard.presentNavigationViewController(this, this.props.show.pressReleaseUrl)
   }
 
