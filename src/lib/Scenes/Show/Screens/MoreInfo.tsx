@@ -124,7 +124,6 @@ export class MoreInfo extends React.Component<Props, State> {
       case "event":
         return <ShowEventSection {...data} />
       case "pressRelease":
-        console.log("press_release", data.press_release)
         return <TextSection title="Press Release" text={data.press_release} />
     }
   }
