@@ -373,7 +373,7 @@
   }];
 }
 
-- (ARCellData *)jumpToFairx
+- (ARCellData *)jumpToFair
 {
   return [self tappableCellDataWithTitle:@"Fair" selection:^{
     id viewController = [[ARFairComponentViewController alloc] initWithFairID:@"the-art-show-2019"];
