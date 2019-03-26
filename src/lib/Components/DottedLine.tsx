@@ -22,4 +22,4 @@ class DottedLine extends React.Component<Props, null> {
 
 export default DottedLine
 
-const NativeDottedLine: React.ComponentClass<any> = requireNativeComponent("ARDottedLine", DottedLine)
+const NativeDottedLine: React.ComponentClass<any> = requireNativeComponent("ARDottedLine")

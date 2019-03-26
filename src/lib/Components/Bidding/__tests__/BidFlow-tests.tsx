@@ -21,6 +21,9 @@ jest.mock("tipsi-stripe", () => ({
 }))
 import stripe from "tipsi-stripe"
 
+const commitMutationMock = (fn?: typeof relay.commitMutation) =>
+  jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
+
 const mockphysics = metaphysics as jest.Mock<any>
 let fakeNavigator: FakeNavigator
 let fakeRelay
@@ -55,7 +58,10 @@ it("allows bidders with a qualified credit card to bid", () => {
   expect(getTitleText(screen)).toEqual("Confirm your bid")
 
   mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
-  relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted(mockRequestResponses.placingBid.bidAccepted))
+  relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+    onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
+    return null
+  }) as any
 
   screen.root.findByType(Checkbox).instance.props.onPress()
   screen.root.findByType(Button).instance.props.onPress()

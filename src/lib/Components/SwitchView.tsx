@@ -24,4 +24,4 @@ export default class SwitchView extends React.Component<Props, any> {
   }
 }
 
-const NativeSwitchView: React.ComponentClass<any> = requireNativeComponent("ARSwitchView", SwitchView)
+const NativeSwitchView: React.ComponentClass<any> = requireNativeComponent("ARSwitchView")

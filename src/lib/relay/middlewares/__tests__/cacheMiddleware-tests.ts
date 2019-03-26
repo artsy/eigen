@@ -1,9 +1,7 @@
 jest.mock("../../../NativeModules/GraphQLQueryCache")
 import * as _cache from "../../../NativeModules/GraphQLQueryCache"
 
-type Mockify<T> = { [P in keyof T]: jest.MockInstance<T[P]> }
-
-const cache: Mockify<typeof _cache> = _cache as any
+const cache: jest.Mocked<typeof _cache> = _cache as any
 
 import { NetworkError } from "lib/utils/errors"
 import { cacheMiddleware } from "../cacheMiddleware"
