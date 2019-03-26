@@ -78,13 +78,13 @@ class Favorites extends React.Component<Props, null> {
           <ScrollableTab tabLabel="Categories">
             <CategoriesRenderer render={renderWithLoadProgress(Categories)} />
           </ScrollableTab>
-          {isTabVisible && ( // @TODO: hides Fairs tab for now. Revert after v1 of Local Discovery is launched.
+          {!!isTabVisible && ( // @TODO: hides Fairs tab for now. Revert after v1 of Local Discovery is launched.
             <ScrollableTab tabLabel="Fairs">
               <FairsRenderer render={renderWithLoadProgress(Fairs)} />
             </ScrollableTab>
           )}
         </ScrollableTabView>
-        {isStaging && <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />}
+        {!!isStaging && <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />}
       </View>
     )
   }

@@ -25,7 +25,7 @@ export class BidInfoRow extends React.Component<BidInfoRowProps> {
           </Col>
 
           <Col alignItems="flex-end">
-            {value && (
+            {!!value && (
               <Serif size="3" numberOfLines={1}>
                 {value}
               </Serif>

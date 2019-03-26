@@ -164,7 +164,7 @@ export class ArtistListItem extends React.Component<Props, State> {
 
     return (
       <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
-        {image && <RoundedImage imageURL={image.url} aspectRatio={1} />}
+        {!!image && <RoundedImage imageURL={image.url} aspectRatio={1} />}
         {!image && (
           <RoundedBox>
             <Flex justifyContent="center" alignItems="center" flexGrow={1} alignContent="center" flexDirection="column">

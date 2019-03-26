@@ -196,7 +196,7 @@ export class AllEvents extends React.Component<Props, State> {
       case "header":
         return (
           <Box px={2} pt={4}>
-            {data && <Serif size="8">{data}</Serif>}
+            {!!data && <Serif size="8">{data}</Serif>}
           </Box>
         )
       default:

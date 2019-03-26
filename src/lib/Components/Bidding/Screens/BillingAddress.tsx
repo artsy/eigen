@@ -42,7 +42,7 @@ const StyledInput = ({ label, error, onLayout, ...props }) => (
       {label}
     </Serif>
     <Input mb={3} error={Boolean(error)} {...props} />
-    {error && (
+    {!!error && (
       <Sans size="2" color="red100">
         {error}
       </Sans>
@@ -280,7 +280,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                   </Flex>
                 </TouchableWithoutFeedback>
 
-                {errorForCountry && (
+                {!!errorForCountry && (
                   <Sans size="2" color="red100">
                     {errorForCountry}
                   </Sans>

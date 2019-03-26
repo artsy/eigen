@@ -20,13 +20,13 @@ export class ShowArtworksPreview extends React.Component<Props> {
     const { artworks, counts } = show
     return (
       <>
-        {title && (
+        {!!title && (
           <Serif size="6" mt={2} mb={3}>
             {title}
           </Serif>
         )}
         <GenericGrid artworks={this.props.show.artworks} />
-        {counts &&
+        {!!counts &&
           counts.artworks > artworks.length && (
             <Box mt={1}>
               <CaretButton text={`View all ${counts.artworks} works`} onPress={() => onViewAllArtworksPressed()} />

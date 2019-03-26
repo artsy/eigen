@@ -56,7 +56,7 @@ export class Artwork extends React.Component<Props, any> {
           {this.saleInfoLine()}
           {this.artists()}
           {this.artworkTitle()}
-          {partnerName && <SerifText style={styles.text}>{partnerName}</SerifText>}
+          {!!partnerName && <SerifText style={styles.text}>{partnerName}</SerifText>}
         </View>
       </TouchableWithoutFeedback>
     )
@@ -74,21 +74,21 @@ export class Artwork extends React.Component<Props, any> {
     return (
       this.hasBadges() && (
         <Badges>
-          {is_acquireable && (
+          {!!is_acquireable && (
             <Badge>
               <Sans fontSize="8px" lineHeight={8} style={{ paddingTop: 1 }} weight="medium" size="1">
                 BUY NOW
               </Sans>
             </Badge>
           )}
-          {is_offerable && (
+          {!!is_offerable && (
             <Badge>
               <Sans fontSize="8px" lineHeight={8} style={{ paddingTop: 1 }} weight="medium" size="1">
                 MAKE OFFER
               </Sans>
             </Badge>
           )}
-          {is_biddable && (
+          {!!is_biddable && (
             <Badge>
               <Sans fontSize="8px" lineHeight={8} style={{ paddingTop: 1 }} weight="medium" size="1">
                 BID

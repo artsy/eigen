@@ -155,9 +155,9 @@ export class ShowHeader extends React.Component<Props, State> {
           <Serif size="8" lineHeight={34}>
             {name}
           </Serif>
-          {exhibition_period && <Sans size="3">{ExhibitionDates(exhibition_period, end_at)}</Sans>}
+          {!!exhibition_period && <Sans size="3">{ExhibitionDates(exhibition_period, end_at)}</Sans>}
         </Box>
-        {hasImages &&
+        {!!hasImages &&
           !singleImage && (
             <Carousel
               sources={(images || []).map(({ url: imageURL, aspect_ratio: aspectRatio }) => ({
@@ -171,7 +171,7 @@ export class ShowHeader extends React.Component<Props, State> {
               }}
             />
           )}
-        {singleImage && (
+        {!!singleImage && (
           <Box px={2} py={2}>
             <OpaqueImageView imageURL={images[0].url} aspectRatio={images[0].aspect_ratio} />
           </Box>

@@ -32,7 +32,7 @@ export const FairBoothPreviewHeader: React.SFC<Props> = ({
     <Flex justifyContent="space-between" alignItems="center" flexDirection="row" mb={1}>
       <TouchableOpacity onPress={() => onViewFairBoothPressed()}>
         <ImageAndTextWrapper flexDirection="row" alignItems="center">
-          <Box mr={1}>{url && <RoundedImage imageURL={url} aspectRatio={1} />}</Box>
+          <Box mr={1}>{!!url && <RoundedImage imageURL={url} aspectRatio={1} />}</Box>
           <Box width={partnerNameWidth}>
             <TightendSerif size="2">{name}</TightendSerif>
             {!!location && (

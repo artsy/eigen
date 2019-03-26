@@ -41,7 +41,7 @@ export const EntityList: React.SFC<EntityListProps> = ({
           onPress={onItemSelected}
         />
       ))}
-      {shouldShowMore && (
+      {!!shouldShowMore && (
         <>
           <Sans size="3" lineHeight="19">
             {" and "}
