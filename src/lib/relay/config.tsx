@@ -4,15 +4,13 @@ const { Emission } = NativeModules
 let metaphysicsURL
 let gravityURL
 
-// if (Emission && Emission.gravityURL && Emission.metaphysicsURL) {
-//   metaphysicsURL = Emission.metaphysicsURL
-//   gravityURL = Emission.gravityURL
-// } else {
-// metaphysicsURL = "https://metaphysics-production.artsy.net"
-metaphysicsURL = "http://localhost:5001"
-gravityURL = "https://api.artsy.net"
-// gravityURL = "https://stagingapi.artsy.net"
-// }
+if (Emission && Emission.gravityURL && Emission.metaphysicsURL) {
+  metaphysicsURL = Emission.metaphysicsURL
+  gravityURL = Emission.gravityURL
+} else {
+  metaphysicsURL = "https://metaphysics-production.artsy.net"
+  gravityURL = "https://api.artsy.net"
+}
 
 export { metaphysicsURL, gravityURL }
 
