@@ -208,10 +208,12 @@ export class FairDetail extends React.Component<Props, State> {
     const { relay } = this.props
 
     if (!relay.hasMore() || relay.isLoading()) {
+      console.log("returning")
       return
     }
 
     relay.loadMore(PAGE_SIZE, error => {
+      console.log("next page")
       if (!error) {
         this.updateSections()
       }
