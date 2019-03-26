@@ -79,7 +79,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
                 profile {
                   id
                   _id
-                  isFollowed
+                  is_followed
                 }
               }
             }
