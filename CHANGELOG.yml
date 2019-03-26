@@ -3,7 +3,7 @@ upcoming:
   date: TBD
   emission_version: 1.9.1
   dev:
-    - 
+    - Fixes logic for Local Discovery Echo flag - ash
   user_facing:
     - 
 

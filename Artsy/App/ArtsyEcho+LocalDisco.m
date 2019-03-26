@@ -24,7 +24,7 @@ NSInteger const ARLocalDiscoCurrentVersionCompatibility = 2;
 
     Message *localDiscoVersion = self.messages[@"LocalDiscoveryCurrentVersion"];
 
-    return localDiscoVersion.content.integerValue >= ARLocalDiscoCurrentVersionCompatibility;
+    return localDiscoVersion.content.integerValue <= ARLocalDiscoCurrentVersionCompatibility;
 }
 
 - (BOOL)userIsAllowListed
