@@ -5,7 +5,7 @@ upcoming:
   dev:
     - Fixes logic for Local Discovery Echo flag - ash
   user_facing:
-    - 
+    - Fixes email autocomplete during login/signup - ash
 
 releases:
   - version: 5.0.0
