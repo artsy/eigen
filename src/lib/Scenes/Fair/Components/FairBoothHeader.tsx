@@ -140,7 +140,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
           {fairName}
         </Sans>
         <Spacer m={0.5} />
-        {boothLocation && (
+        {!!boothLocation && (
           <>
             <Serif size="3t">{boothLocation}</Serif>
             <Spacer m={0.3} />

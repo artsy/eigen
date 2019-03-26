@@ -76,7 +76,7 @@ class CityFairList extends React.Component<Props, State> {
             keyExtractor={item => item.node.id}
             renderItem={({ item }) => this.renderItem(item)}
             onScroll={isCloseToBottom(this.fetchData)}
-            ListFooterComponent={fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
+            ListFooterComponent={!!fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
           />
         </Box>
       </Theme>

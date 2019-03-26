@@ -28,7 +28,7 @@ export class ArtworksPreview extends React.Component<Props> {
           All works
         </Serif>
         <GenericGrid artworks={artworks} />
-        {counts &&
+        {!!counts &&
           counts.total > artworks.length && (
             <TouchableOpacity onPress={this.viewAllArtworksPressed.bind(this)}>
               <Sans size="3" my={2} weight="medium">

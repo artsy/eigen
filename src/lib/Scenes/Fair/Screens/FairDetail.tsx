@@ -167,7 +167,7 @@ export class FairDetail extends React.Component<Props, State> {
         return (
           <>
             <FairBoothPreview {...data} Component={this} />
-            {renderSeparator && <Separator mt={2} />}
+            {!!renderSeparator && <Separator mt={2} />}
           </>
         )
       case "information":

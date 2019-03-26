@@ -134,7 +134,7 @@ export default class Home extends React.Component<Props, State> {
             <SalesRenderer render={renderWithLoadProgress(Sales)} />
           </Tab>
         </ScrollableTabView>
-        {showConsignmentsSash && (
+        {!!showConsignmentsSash && (
           <DarkNavigationButton
             title="Sell works from your collection through Artsy"
             onPress={this.openLink.bind(this)}
