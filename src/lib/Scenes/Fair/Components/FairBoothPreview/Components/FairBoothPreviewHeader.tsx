@@ -35,7 +35,7 @@ export const FairBoothPreviewHeader: React.SFC<Props> = ({
           <Box mr={1}>{url && <RoundedImage imageURL={url} aspectRatio={1} />}</Box>
           <Box width={partnerNameWidth}>
             <TightendSerif size="2">{name}</TightendSerif>
-            {location && (
+            {!!location && (
               <TightendSans size="2" color="black60">
                 {location}
               </TightendSans>
