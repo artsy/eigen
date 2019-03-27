@@ -4,6 +4,8 @@ upcoming:
   emission_version: 1.8.26
   dev:
     - Updates Aerodramus - ash
+    - Updates Quick & Nimber for Xcode 10.2 support - orta
+    - Adds a check for whether we can render a page in the ARExternalWebVC and sends someone to Safari to DL if not - orta/myk
   user_facing:
     - Fixes extraneous calls to Echo setup - ash
 

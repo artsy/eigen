@@ -16,5 +16,6 @@
 
 // This hook is exposed for subclasses to be able to make decisions as to how to handle the navigation action.
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
+- (WKNavigationResponsePolicy)shouldLoadNavigationResponse:(WKNavigationResponse *)navigationResponse;
 
 @end

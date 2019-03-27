@@ -13,7 +13,9 @@
 #import <FLKAutoLayout/UIViewController+FLKAutoLayout.h>
 #import <JLRoutes/JLRoutes.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
+#import "ARDispatchManager.h"
 
+#import <CoreServices/CoreServices.h>
 
 @interface ARExternalWebBrowserViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate>
 @property (nonatomic, readonly, strong) UIGestureRecognizer *gesture;
@@ -164,7 +166,7 @@
         NSURL *URL = navigationAction.request.URL;
         ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
         if ([switchboard canRouteURL:URL]) {
-            UIViewController *controller = [switchboard loadURL:URL];
+            UIViewController *controller = [switchboard loadURL:URL ];
             if (controller) {
                 [switchboard presentViewController:controller];
             }
@@ -172,6 +174,31 @@
         }
     }
     return WKNavigationActionPolicyAllow;
+}
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler;
+{
+    decisionHandler([self shouldLoadNavigationResponse:navigationResponse]);
+}
+
+- (WKNavigationResponsePolicy)shouldLoadNavigationResponse:(WKNavigationResponse *)navigationResponse;
+{
+    if ([navigationResponse.response isKindOfClass:NSHTTPURLResponse.class]) {
+        NSHTTPURLResponse *response = (id)navigationResponse.response;
+        if (![navigationResponse canShowMIMEType]) {
+            ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
+            [switchboard openURLInExternalService:response.URL];
+
+            // Go back to whatever page you're on, because otherwise you just have a white screen
+            ar_dispatch_after(0.5, ^{
+                [self.navigationController popViewControllerAnimated:YES];
+            });
+            
+            return WKNavigationResponsePolicyCancel;
+        }
+    }
+
+    return WKNavigationResponsePolicyAllow;
 }
 
 - (BOOL)shouldAutorotate
