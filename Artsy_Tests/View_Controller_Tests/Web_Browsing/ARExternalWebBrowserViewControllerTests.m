@@ -45,4 +45,35 @@ it(@"uses the shared ARWebViewCacheHost WKWebView instances", ^{
     expect(vc.webView.configuration.processPool).to.equal(webView.configuration.processPool);
 });
 
+it(@"allows showing pages that a webview says it can show", ^{
+    OCMockObject *mock = [OCMockObject niceMockForClass:WKNavigationResponse.class];
+
+    NSURL *urlToRoute = [NSURL URLWithString:@"https://url.com/thing.pdf"];
+    NSHTTPURLResponse *fakedResponse = [[NSHTTPURLResponse alloc] initWithURL:urlToRoute statusCode:200 HTTPVersion:@"HTTP/1.1" headerFields:@{}];
+    [[[mock stub] andReturn: fakedResponse] response];
+
+    // This should show, so it should do nothing
+    [[[mock stub] andReturnValue:@YES] canShowMIMEType];
+
+    expect([vc shouldLoadNavigationResponse: (id)mock]).to.equal(WKNavigationResponsePolicyAllow);
+});
+
+
+it(@"handles showing an alert punting a user to safari if we can't show something in a webview", ^{
+    OCMockObject *mock = [OCMockObject niceMockForClass:WKNavigationResponse.class];
+
+    NSURL *urlToRoute = [NSURL URLWithString:@"https://url.com/thing.pdf"];
+    NSHTTPURLResponse *fakedResponse = [[NSHTTPURLResponse alloc] initWithURL:urlToRoute statusCode:200 HTTPVersion:@"HTTP/1.1" headerFields:@{}];
+    [[[mock stub] andReturn: fakedResponse] response];
+
+    [[[mock stub] andReturnValue:@NO] canShowMIMEType];
+
+    id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
+    // Validate that we call ARSwitchBoard's load extenal URL
+    [[switchboardMock expect] openURLInExternalService:[OCMArg checkWithBlock:^BOOL(id obj) {
+        return [obj isEqual:urlToRoute];
+    }]];
+});
+
+
 SpecEnd;
