@@ -7,7 +7,7 @@
 /// To be kept in lock-step with the corresponding echo value, and updated when there is a breaking Maps change.
 /// https://echo-web-production.herokuapp.com/accounts/1/features
 ///
-NSInteger const ARLocalDiscoCurrentVersionCompatibility = 1;
+NSInteger const ARLocalDiscoCurrentVersionCompatibility = 2;
 
 @implementation ArtsyEcho (LocalDiscovery)
 
@@ -24,7 +24,7 @@ NSInteger const ARLocalDiscoCurrentVersionCompatibility = 1;
 
     Message *localDiscoVersion = self.messages[@"LocalDiscoveryCurrentVersion"];
 
-    return localDiscoVersion.content.integerValue >= ARLocalDiscoCurrentVersionCompatibility;
+    return localDiscoVersion.content.integerValue <= ARLocalDiscoCurrentVersionCompatibility;
 }
 
 - (BOOL)userIsAllowListed
