@@ -1,3 +1,3 @@
 app_identifier 'net.artsy.artsy'
-username 'it@artsymail.com'
+apple_id "mobiledeploys@artsymail.com"
 automatic_release false
