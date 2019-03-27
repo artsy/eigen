@@ -80,7 +80,7 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission', '~> 1.9.0'
+  pod 'Emission', '~> 1.0'
 
   # Enable running Emission from Metro inside Eigen when developing (see issue #2497)
   if ENV['CIRCLE_BUILD_NUM']
