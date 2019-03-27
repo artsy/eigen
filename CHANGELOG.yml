@@ -4,6 +4,7 @@ upcoming:
   emission_version: 1.9.1
   dev:
     - Fixes logic for Local Discovery Echo flag - ash
+    - Adds offerable analytics to artwork view - ash
   user_facing:
     - Fixes email autocomplete during login/signup - ash
 

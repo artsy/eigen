@@ -802,6 +802,7 @@
                                     @"owner_id": view.artwork.artworkUUID ?: @"",
                                     @"owner_slug": view.artwork.artworkID ?: @"",
                                     @"acquireable": view.artwork.isAcquireable ?: @(NO),
+                                    @"offerable": view.artwork.isOfferable ?: @(NO),
                                     @"availability": view.artwork.availablityString ?: @"",
                                     @"price_listed": @(view.artwork.price.length != 0) ?: @(NO)
                                 };
