@@ -57,6 +57,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Shows the View Controller in Eigen
 - (void)presentViewController:(UIViewController *)controller;
 
+/// Shows an alert asking the user if they want to open in Safari, or some other app
+- (void)openURLInExternalService:(NSURL *)url;
+
+/// The Artsy echo instance for feature flags, and url routing etc
 @property (nonatomic, readonly, strong) Aerodramus *echo;
 
 @end

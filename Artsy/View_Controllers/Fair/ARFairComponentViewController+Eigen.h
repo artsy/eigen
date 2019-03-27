@@ -4,6 +4,6 @@
 
 @interface ARFairComponentViewController (Eigen) <ARFairSearchViewControllerDelegate, ARMenuAwareViewController>
 
-- (void)presentFairSearchViewController:(ARFairSearchViewController *)searchViewController completion:(void (^__nullable)(void))completion;
+- (void)presentFairSearchViewController:(ARFairSearchViewController *_Nullable)searchViewController completion:(void (^__nullable)(void))completion;
 
 @end
