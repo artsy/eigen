@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fixes City not re-rendering after a MP request is successfully retried - ash
+
 ### 1.9.2
 
 - Fixes scrollable tab bar on global saves & follows - ash & ashley
