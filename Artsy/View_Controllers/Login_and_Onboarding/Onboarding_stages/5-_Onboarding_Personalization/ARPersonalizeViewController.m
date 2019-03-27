@@ -527,7 +527,9 @@
 
 - (void)emailTextChanged
 {
-    NSString *email = self.onboardingTextFields.emailField.text;
+    // iOS Autocomplete includes a space after inserting the email, we need to remove it.
+    NSString *email = [self.onboardingTextFields.emailField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    self.onboardingTextFields.emailField.text = email;
     
     if ([self validEmail:email]) {
         [self.onboardingTextFields disableErrorState];

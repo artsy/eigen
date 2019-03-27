@@ -1,15 +1,25 @@
 upcoming:
-  version: 5.0.0
+  version: 5.0.1
   date: TBD
-  emission_version: 1.8.26
+  emission_version: 1.9.1
   dev:
     - Updates Aerodramus - ash
     - Updates Quick & Nimber for Xcode 10.2 support - orta
     - Adds a check for whether we can render a page in the ARExternalWebVC and sends someone to Safari to DL if not - orta/myk
+    - Fixes logic for Local Discovery Echo flag - ash
+    - Adds offerable analytics to artwork view - ash
   user_facing:
-    - Fixes extraneous calls to Echo setup - ash
+    - Fixes email autocomplete during login/signup - ash
 
 releases:
+  - version: 5.0.0
+    date: Mar 25, 2019
+    emission_version: 1.8.26
+    dev:
+      - Updates Aerodramus - ash
+    user_facing:
+      - Fixes extraneous calls to Echo setup - ash
+
   - version: 4.4.1
     date: Mar 18, 2019
     emission_version: 1.8.26
