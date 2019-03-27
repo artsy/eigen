@@ -169,7 +169,7 @@ PODS:
   - MARKRangeSlider (1.0.1)
   - MMMarkdown (0.4)
   - MultiDelegate (0.0.2)
-  - Nimble (7.3.0)
+  - Nimble (7.3.4)
   - Nimble-Snapshots (6.3.0):
     - Nimble-Snapshots/Core (= 6.3.0)
   - Nimble-Snapshots/Core (6.3.0):
@@ -183,7 +183,7 @@ PODS:
   - ORStackView (2.0.3):
     - FLKAutoLayout
   - Pulley (2.6.2)
-  - Quick (1.3.1)
+  - Quick (2.0.0)
   - React (0.54.4):
     - React/Core (= 0.54.4)
   - react-native-mapbox-gl (6.1.4):
@@ -535,7 +535,7 @@ SPEC CHECKSUMS:
   MARKRangeSlider: dbf0878b03e921b52e4ef1e7766c1a8affb0c577
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
-  Nimble: c8d6a1f463701921c46de965c673e13cafa09196
+  Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
   Nimble-Snapshots: f5459b5b091678dc942d03ec4741cacb58ba4a52
   NPKeyboardLayoutGuide: fea27700582570c8825a97b5cb96579a57bf0b73
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
@@ -544,7 +544,7 @@ SPEC CHECKSUMS:
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
-  Quick: d17304d58d0d169dd0bd1c6e5c28e3318de32a1a
+  Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
   React: e8b3cf60f93a0e64045862a003c1bf9408098cff
   react-native-mapbox-gl: b7309e99290963cc7fe0e34db86c6e16890cfcee
   ReactiveObjC: 7b6782ae39f9ac0f57205c3b0c0b69b9dd7048c0
