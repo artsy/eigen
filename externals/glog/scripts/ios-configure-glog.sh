@@ -2,8 +2,9 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 #
 # This source code is licensed under the MIT license found in the
-# LICENSE file in the root directory of this source tree.
-
+# LICENSE file in the root directory of this source tree:
+# https://github.com/facebook/react-native/blob/master/LICENSE
+#
 set -e
 
 PLATFORM_NAME="${PLATFORM_NAME:-iphoneos}"
