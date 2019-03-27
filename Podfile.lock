@@ -294,6 +294,7 @@ DEPENDENCIES:
   - FLKAutoLayout (from `https://github.com/orta/FLKAutoLayout.git`, branch `v1`)
   - Forgeries/Mocks
   - FXBlurView
+  - glog (from `./externals/glog/glog.podspec`)
   - Interstellar/Core (from `https://github.com/ashfurrow/Interstellar.git`, branch `observable-unsubscribe`)
   - iRate
   - ISO8601DateFormatter (from `https://github.com/orta/iso-8601-date-formatter`)
@@ -345,7 +346,6 @@ SPEC REPOS:
     - Emission
     - Extraction
     - Folly
-    - glog
     - React
     - yoga
   https://github.com/cocoapods/specs.git:
@@ -412,6 +412,8 @@ EXTERNAL SOURCES:
   FLKAutoLayout:
     :branch: v1
     :git: https://github.com/orta/FLKAutoLayout.git
+  glog:
+    :podspec: "./externals/glog/glog.podspec"
   Interstellar:
     :branch: observable-unsubscribe
     :git: https://github.com/ashfurrow/Interstellar.git
@@ -519,7 +521,7 @@ SPEC CHECKSUMS:
   Folly: c89ac2d5c6ab169cd7397ef27485c44f35f742c7
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  glog: 1483155b6b861a419c008e5fb36ff1af01815ac3
+  glog: 40216802cccbe22ce7dfaed575b875542114f10b
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
@@ -564,6 +566,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: 639d0fdc7332ae0cd12c1b7f76729f04e5a5faec
 
-PODFILE CHECKSUM: c15291ad30630f5949b1e61a1f7e82f070ae62e5
+PODFILE CHECKSUM: c6589ac3e0b75cf96dcf19610a45d54287817fa0
 
 COCOAPODS: 1.6.0.beta.1
