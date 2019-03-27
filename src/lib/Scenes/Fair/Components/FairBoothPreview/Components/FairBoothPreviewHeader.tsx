@@ -43,15 +43,17 @@ export const FairBoothPreviewHeader: React.SFC<Props> = ({
           </Box>
         </ImageAndTextWrapper>
       </TouchableOpacity>
-      <Box width={102} height={34}>
-        <InvertedButton
-          grayBorder={true}
-          text={isFollowed ? "Following" : "Follow"}
-          onPress={onFollowPartner}
-          selected={isFollowed}
-          inProgress={isFollowedChanging}
-        />
-      </Box>
+      {isFollowed !== null && (
+        <Box width={102} height={34}>
+          <InvertedButton
+            grayBorder={true}
+            text={isFollowed ? "Following" : "Follow"}
+            onPress={onFollowPartner}
+            selected={isFollowed}
+            inProgress={isFollowedChanging}
+          />
+        </Box>
+      )}
     </Flex>
   )
 }

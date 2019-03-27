@@ -31,12 +31,14 @@ export class FairBoothPreview extends React.Component<Props, State> {
     const partnerID = args[1]
     const {
       show: {
-        partner: {
-          profile: { is_followed: partnerFollowed },
-        },
+        partner: { profile },
       },
     } = props
-    const actionName = partnerFollowed ? Schema.ActionNames.GalleryFollow : Schema.ActionNames.GalleryUnfollow
+    const isFollowed = profile ? profile.is_followed : null
+    if (isFollowed === null) {
+      return
+    }
+    const actionName = isFollowed ? Schema.ActionNames.GalleryFollow : Schema.ActionNames.GalleryUnfollow
     return {
       action_name: actionName,
       action_type: Schema.ActionTypes.Success,
@@ -52,13 +54,13 @@ export class FairBoothPreview extends React.Component<Props, State> {
   handleFollowPartner = () => {
     const { show, relay } = this.props
     const {
-      partner: {
-        id: partnerSlug,
-        _id: partnerID,
-        __id: partnerRelayID,
-        profile: { is_followed: partnerFollowed, _id: profileID },
-      },
+      partner: { id: partnerSlug, _id: partnerID, __id: partnerRelayID, profile },
     } = show
+    const isFollowed = !!profile ? profile.is_followed : null
+    const _id = !!profile ? profile._id : null
+    if (isFollowed === null || !_id) {
+      return
+    }
     this.setState(
       {
         isFollowedChanging: true,
@@ -84,21 +86,21 @@ export class FairBoothPreview extends React.Component<Props, State> {
           `,
           variables: {
             input: {
-              profile_id: profileID,
-              unfollow: partnerFollowed,
+              profile_id: _id,
+              unfollow: isFollowed,
             },
           },
           optimisticResponse: {
             followProfile: {
               profile: {
-                _id: profileID,
+                _id,
                 id: partnerSlug,
-                is_followed: !partnerFollowed,
+                is_followed: !isFollowed,
               },
             },
           },
           updater: store => {
-            store.get(partnerRelayID).setValue(!partnerFollowed, "is_followed")
+            store.get(partnerRelayID).setValue(!isFollowed, "is_followed")
           },
         })
       }
@@ -139,10 +141,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
         artworks_connection,
         cover_image,
         location,
-        partner: {
-          name: partnerName,
-          profile: { is_followed: partnerFollowed },
-        },
+        partner: { name: partnerName, profile },
         counts: { artworks: artworkCount },
       },
     } = this.props
@@ -154,7 +153,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
           onFollowPartner={this.handleFollowPartner}
           name={partnerName}
           location={display}
-          isFollowed={partnerFollowed}
+          isFollowed={profile ? profile.is_followed : null}
           isFollowedChanging={this.state.isFollowedChanging}
           url={cover_image && cover_image.url}
           onViewFairBoothPressed={this.viewFairBoothPressed.bind(this)}
