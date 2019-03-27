@@ -81,7 +81,6 @@ target 'Artsy' do
   pod 'Extraction'
 
   pod 'Emission', '~> 1.9.0'
-  pod 'yoga', podspec: 'https://raw.githubusercontent.com/artsy/emission/v1.5.2/externals/yoga/yoga.podspec.json'
 
   # Enable running Emission from Metro inside Eigen when developing (see issue #2497)
   if ENV['CIRCLE_BUILD_NUM']

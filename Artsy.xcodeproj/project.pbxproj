@@ -91,11 +91,8 @@
 		3A179F5C21BEB38B007705F8 /* SearchSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A179F5B21BEB38B007705F8 /* SearchSuggestion.m */; };
 		3A1DDDA3216CFC7100190F84 /* AREigenInquiryComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1DDDA2216CFC7100190F84 /* AREigenInquiryComponentViewController.m */; };
 		3A1DDDA6216D04DB00190F84 /* ARAuthValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1DDDA5216D04DB00190F84 /* ARAuthValidator.m */; };
-
 		3A6EBA7F22358DE60052D0C0 /* Emission.podspec.json in Resources */ = {isa = PBXBuildFile; fileRef = 3A6EBA7E22358DE60052D0C0 /* Emission.podspec.json */; };
-
 		3A6EBA822236B45D0052D0C0 /* ArtsyEcho+LocalDisco.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A6EBA812236B45D0052D0C0 /* ArtsyEcho+LocalDisco.m */; };
-
 		3A860AD4214C5DD600C7F555 /* artwork.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 3A860AD3214C5DD600C7F555 /* artwork.graphql */; };
 		3AA847062224D1B400A1F688 /* ARFairNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA847042224D1B300A1F688 /* ARFairNetworkModel.m */; };
 		3AF584D7217A231E00BE4713 /* ARAppDelegateEmissionSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AF584D5217A1CF400BE4713 /* ARAppDelegateEmissionSpec.m */; };

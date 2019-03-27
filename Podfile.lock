@@ -70,33 +70,33 @@ PODS:
   - CocoaLumberjack/Extensions (2.0.1):
     - CocoaLumberjack/Default
   - DHCShakeNotifier (0.2.0)
-  - DoubleConversion (1.1.5)
+  - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
-  - Emission (1.9.0):
+  - Emission (1.9.2):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
-    - DoubleConversion (= 1.1.5)
+    - DoubleConversion (= 1.1.6)
     - Extraction (>= 1.2.1)
-    - Folly (= 2016.09.26.00)
-    - glog (= 0.3.4)
+    - Folly (= 2016.10.31.00)
+    - glog (= 0.3.5)
     - ISO8601DateFormatter
     - Pulley
     - react-native-mapbox-gl (= 6.1.4)
-    - React/Core (= 0.54.4)
-    - React/CxxBridge (= 0.54.4)
-    - React/RCTActionSheet (= 0.54.4)
-    - React/RCTAnimation (= 0.54.4)
-    - React/RCTCameraRoll (= 0.54.4)
-    - React/RCTGeolocation (= 0.54.4)
-    - React/RCTImage (= 0.54.4)
-    - React/RCTLinkingIOS (= 0.54.4)
-    - React/RCTNetwork (= 0.54.4)
-    - React/RCTText (= 0.54.4)
+    - React/Core (= 0.57.7)
+    - React/CxxBridge (= 0.57.7)
+    - React/RCTActionSheet (= 0.57.7)
+    - React/RCTAnimation (= 0.57.7)
+    - React/RCTCameraRoll (= 0.57.7)
+    - React/RCTGeolocation (= 0.57.7)
+    - React/RCTImage (= 0.57.7)
+    - React/RCTLinkingIOS (= 0.57.7)
+    - React/RCTNetwork (= 0.57.7)
+    - React/RCTText (= 0.57.7)
     - RNSVG (= 9.0.4)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.30.3)
     - tipsi-stripe (= 5.2.4)
-    - yoga (= 0.54.4.React)
+    - yoga (= 0.57.7.React)
   - Expecta (1.0.5)
   - "Expecta+Snapshots (3.0.0)":
     - Expecta (~> 1.0)
@@ -135,7 +135,7 @@ PODS:
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
   - FLKAutoLayout (1.0.0)
-  - Folly (2016.09.26.00):
+  - Folly (2016.10.31.00):
     - boost-for-react-native
     - DoubleConversion
     - glog
@@ -144,7 +144,7 @@ PODS:
     - Forgeries/Core
     - OCMock
   - FXBlurView (1.6.1)
-  - glog (0.3.4)
+  - glog (0.3.5)
   - Interstellar/Core (2.0.0)
   - iRate (1.10.2)
   - ISO8601DateFormatter (0.7.1)
@@ -184,51 +184,51 @@ PODS:
     - FLKAutoLayout
   - Pulley (2.6.2)
   - Quick (1.3.1)
-  - React (0.54.4):
-    - React/Core (= 0.54.4)
+  - React (0.57.7):
+    - React/Core (= 0.57.7)
   - react-native-mapbox-gl (6.1.4):
     - React
-  - React/Core (0.54.4):
-    - yoga (= 0.54.4.React)
-  - React/CxxBridge (0.54.4):
-    - Folly (= 2016.09.26.00)
+  - React/Core (0.57.7):
+    - yoga (= 0.57.7.React)
+  - React/CxxBridge (0.57.7):
+    - Folly (= 2016.10.31.00)
     - React/Core
     - React/cxxreact
-  - React/cxxreact (0.54.4):
+  - React/cxxreact (0.57.7):
     - boost-for-react-native (= 1.63.0)
-    - Folly (= 2016.09.26.00)
+    - Folly (= 2016.10.31.00)
     - React/jschelpers
     - React/jsinspector
-  - React/DevSupport (0.54.4):
+  - React/DevSupport (0.57.7):
     - React/Core
     - React/RCTWebSocket
-  - React/fishhook (0.54.4)
-  - React/jschelpers (0.54.4):
-    - Folly (= 2016.09.26.00)
+  - React/fishhook (0.57.7)
+  - React/jschelpers (0.57.7):
+    - Folly (= 2016.10.31.00)
     - React/PrivateDatabase
-  - React/jsinspector (0.54.4)
-  - React/PrivateDatabase (0.54.4)
-  - React/RCTActionSheet (0.54.4):
+  - React/jsinspector (0.57.7)
+  - React/PrivateDatabase (0.57.7)
+  - React/RCTActionSheet (0.57.7):
     - React/Core
-  - React/RCTAnimation (0.54.4):
+  - React/RCTAnimation (0.57.7):
     - React/Core
-  - React/RCTBlob (0.54.4):
+  - React/RCTBlob (0.57.7):
     - React/Core
-  - React/RCTCameraRoll (0.54.4):
+  - React/RCTCameraRoll (0.57.7):
     - React/Core
     - React/RCTImage
-  - React/RCTGeolocation (0.54.4):
+  - React/RCTGeolocation (0.57.7):
     - React/Core
-  - React/RCTImage (0.54.4):
+  - React/RCTImage (0.57.7):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.54.4):
+  - React/RCTLinkingIOS (0.57.7):
     - React/Core
-  - React/RCTNetwork (0.54.4):
+  - React/RCTNetwork (0.57.7):
     - React/Core
-  - React/RCTText (0.54.4):
+  - React/RCTText (0.57.7):
     - React/Core
-  - React/RCTWebSocket (0.54.4):
+  - React/RCTWebSocket (0.57.7):
     - React/Core
     - React/fishhook
     - React/RCTBlob
@@ -263,7 +263,7 @@ PODS:
   - VCRURLConnection (0.2.0)
   - "XCTest+OHHTTPStubSuiteCleanUp (1.0.0)":
     - OHHTTPStubs
-  - yoga (0.54.4.React)
+  - yoga (0.57.7.React)
 
 DEPENDENCIES:
   - Aerodramus
@@ -333,7 +333,6 @@ DEPENDENCIES:
   - "UIView+BooleanAnimations"
   - VCRURLConnection
   - "XCTest+OHHTTPStubSuiteCleanUp"
-  - yoga (from `https://raw.githubusercontent.com/artsy/emission/v1.5.2/externals/yoga/yoga.podspec.json`)
 
 SPEC REPOS:
   https://github.com/artsy/Specs.git:
@@ -342,9 +341,13 @@ SPEC REPOS:
     - "Artsy+UIFonts"
     - "Artsy+UILabels"
     - Artsy-UIButtons
+    - DoubleConversion
     - Emission
     - Extraction
+    - Folly
+    - glog
     - React
+    - yoga
   https://github.com/cocoapods/specs.git:
     - Adjust
     - AFNetworkActivityLogger
@@ -354,17 +357,14 @@ SPEC REPOS:
     - Bolts
     - boost-for-react-native
     - DHCShakeNotifier
-    - DoubleConversion
     - EDColor
     - Expecta
     - "Expecta+Snapshots"
     - FBSDKCoreKit
     - FBSDKLoginKit
     - FBSnapshotTestCase
-    - Folly
     - Forgeries
     - FXBlurView
-    - glog
     - iRate
     - JSDecoupledAppDelegate
     - JWTDecode
@@ -439,8 +439,6 @@ EXTERNAL SOURCES:
   tipsi-stripe:
     :git: https://github.com/tipsi/tipsi-stripe.git
     :tag: 5.2.4
-  yoga:
-    :podspec: https://raw.githubusercontent.com/artsy/emission/v1.5.2/externals/yoga/yoga.podspec.json
 
 CHECKOUT OPTIONS:
   AFOAuth1Client:
@@ -508,9 +506,9 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaLumberjack: 27ae9abcd376c3e4ee726ecd4adfd7b093ddef3f
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
-  DoubleConversion: e22e0762848812a87afd67ffda3998d9ef29170c
+  DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 07d25befa7d8f1499ca7448c66ed7f523dd0242a
+  Emission: da3f8593e3ae80177d5754d821a9cca7d1221343
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
@@ -518,10 +516,10 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: 2f7249686d1e30ce8a5ef5400eedf50b3e3df332
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
-  Folly: 211775e49d8da0ca658aebc8eab89d642935755c
+  Folly: c89ac2d5c6ab169cd7397ef27485c44f35f742c7
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  glog: 1de0bb937dccdc981596d3b5825ebfb765017ded
+  glog: 1483155b6b861a419c008e5fb36ff1af01815ac3
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
@@ -545,7 +543,7 @@ SPEC CHECKSUMS:
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
   Quick: d17304d58d0d169dd0bd1c6e5c28e3318de32a1a
-  React: e8b3cf60f93a0e64045862a003c1bf9408098cff
+  React: 67899bbb285ceb9b4ee1c88b3991602ba5772ad2
   react-native-mapbox-gl: b7309e99290963cc7fe0e34db86c6e16890cfcee
   ReactiveObjC: 7b6782ae39f9ac0f57205c3b0c0b69b9dd7048c0
   RNSVG: 36f6615444ab569023444e09b01a1900d964e967
@@ -564,8 +562,8 @@ SPEC CHECKSUMS:
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
-  yoga: de8782b10b9fdede33554bcad8a2a6653e0ebb30
+  yoga: 639d0fdc7332ae0cd12c1b7f76729f04e5a5faec
 
-PODFILE CHECKSUM: 3729bbcb76edf427bfeff1cc8083d6c995989d9a
+PODFILE CHECKSUM: 29dd3fba53f6ee2b9ac1f50f422a4f592d468734
 
 COCOAPODS: 1.6.0.beta.1
