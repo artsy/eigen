@@ -180,7 +180,7 @@ export class MockRelayRenderer<T extends OperationBase = OperationDefaults> exte
 
     if (this.state.caughtError) {
       const { error, errorInfo } = this.state.caughtError
-      console.error({ error, errorInfo })
+      console.log({ error, errorInfo })
       return `Error occurred while rendering Relay component: ${error}`
     }
 
