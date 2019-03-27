@@ -166,7 +166,7 @@
         NSURL *URL = navigationAction.request.URL;
         ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
         if ([switchboard canRouteURL:URL]) {
-            UIViewController *controller = [switchboard loadURL:URL ];
+            UIViewController *controller = [switchboard loadURL:URL];
             if (controller) {
                 [switchboard presentViewController:controller];
             }
