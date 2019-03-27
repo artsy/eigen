@@ -66,7 +66,6 @@ it(@"handles showing an alert punting a user to safari if we can't show somethin
     NSHTTPURLResponse *fakedResponse = [[NSHTTPURLResponse alloc] initWithURL:urlToRoute statusCode:200 HTTPVersion:@"HTTP/1.1" headerFields:@{}];
     [[[mock stub] andReturn: fakedResponse] response];
 
-    // This should show, so it should do nothing
     [[[mock stub] andReturnValue:@NO] canShowMIMEType];
 
     id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
