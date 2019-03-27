@@ -107,7 +107,7 @@ export class SelectCountry extends React.Component<SelectCountryProps, SelectCou
               autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
             />
 
-            {isLoading && <ActivityIndicator animating={isLoading} />}
+            {!!isLoading && <ActivityIndicator animating={isLoading} />}
 
             <ScrollView scrollEnabled={results.length > 0} keyboardShouldPersistTaps="always">
               {results.length > 0 && !isLoading

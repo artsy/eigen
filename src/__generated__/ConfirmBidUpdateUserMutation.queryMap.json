@@ -1,0 +1,3 @@
+{
+  "b158739b11e310e4f5690aa52671d2f1": "mutation ConfirmBidUpdateUserMutation(\n  $input: UpdateMyProfileInput!\n) {\n  updateMyUserProfile(input: $input) {\n    clientMutationId\n    user {\n      phone\n      __id\n    }\n  }\n}\n"
+}

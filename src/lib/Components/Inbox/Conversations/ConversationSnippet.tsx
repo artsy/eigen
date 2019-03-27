@@ -163,7 +163,7 @@ export class ConversationSnippet extends React.Component<Props> {
                 <DateHeading>{conversation.unread && <UnreadIndicator />}</DateHeading>
               </HorizontalLayout>
               {this.renderTitleForItem(item)}
-              {conversationText && <P>{conversationText}</P>}
+              {!!conversationText && <P>{conversationText}</P>}
               <MetadataText>{date}</MetadataText>
             </TextPreview>
           </CardContent>

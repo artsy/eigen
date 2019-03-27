@@ -75,12 +75,14 @@ exports[`Carousel renders properly 1`] = `
       <View
         alignItems="flex-start"
         mr={1}
+        pr={0}
         style={
           Array [
             Object {
               "alignItems": "flex-start",
               "display": "flex",
               "marginRight": 4,
+              "paddingRight": 0,
             },
             undefined,
           ]
@@ -105,12 +107,14 @@ exports[`Carousel renders properly 1`] = `
       <View
         alignItems="flex-start"
         mr={1}
+        pr={0}
         style={
           Array [
             Object {
               "alignItems": "flex-start",
               "display": "flex",
               "marginRight": 4,
+              "paddingRight": 0,
             },
             undefined,
           ]
@@ -134,12 +138,14 @@ exports[`Carousel renders properly 1`] = `
       <View
         alignItems="flex-start"
         mr={1}
+        pr={0}
         style={
           Array [
             Object {
               "alignItems": "flex-start",
               "display": "flex",
               "marginRight": 4,
+              "paddingRight": 0,
             },
             undefined,
           ]
@@ -163,12 +169,14 @@ exports[`Carousel renders properly 1`] = `
       <View
         alignItems="flex-start"
         mr={1}
+        pr={0}
         style={
           Array [
             Object {
               "alignItems": "flex-start",
               "display": "flex",
               "marginRight": 4,
+              "paddingRight": 0,
             },
             undefined,
           ]
@@ -192,12 +200,14 @@ exports[`Carousel renders properly 1`] = `
       <View
         alignItems="flex-start"
         mr={1}
+        pr={0}
         style={
           Array [
             Object {
               "alignItems": "flex-start",
               "display": "flex",
               "marginRight": 4,
+              "paddingRight": 0,
             },
             undefined,
           ]
@@ -221,12 +231,14 @@ exports[`Carousel renders properly 1`] = `
       <View
         alignItems="flex-start"
         mr={1}
+        pr={0}
         style={
           Array [
             Object {
               "alignItems": "flex-start",
               "display": "flex",
               "marginRight": 4,
+              "paddingRight": 0,
             },
             undefined,
           ]
@@ -250,12 +262,14 @@ exports[`Carousel renders properly 1`] = `
       <View
         alignItems="flex-start"
         mr={1}
+        pr={0}
         style={
           Array [
             Object {
               "alignItems": "flex-start",
               "display": "flex",
               "marginRight": 4,
+              "paddingRight": 0,
             },
             undefined,
           ]
@@ -279,12 +293,14 @@ exports[`Carousel renders properly 1`] = `
       <View
         alignItems="flex-start"
         mr={1}
+        pr={0}
         style={
           Array [
             Object {
               "alignItems": "flex-start",
               "display": "flex",
               "marginRight": 4,
+              "paddingRight": 0,
             },
             undefined,
           ]
@@ -308,12 +324,14 @@ exports[`Carousel renders properly 1`] = `
       <View
         alignItems="flex-start"
         mr={1}
+        pr={0}
         style={
           Array [
             Object {
               "alignItems": "flex-start",
               "display": "flex",
               "marginRight": 4,
+              "paddingRight": 0,
             },
             undefined,
           ]
@@ -336,13 +354,15 @@ exports[`Carousel renders properly 1`] = `
       </View>
       <View
         alignItems="flex-start"
-        mr={1}
+        mr={2}
+        pr={2}
         style={
           Array [
             Object {
               "alignItems": "flex-start",
               "display": "flex",
-              "marginRight": 4,
+              "marginRight": 8,
+              "paddingRight": 8,
             },
             undefined,
           ]

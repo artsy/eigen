@@ -137,7 +137,7 @@ export class Event extends React.Component<Props, State> {
     return (
       <TouchableWithoutFeedback onPress={() => this.handleTap()}>
         <Box mb={2} px={2}>
-          {url && (
+          {!!url && (
             <Box mb={2}>
               <OpaqueImageView imageURL={url} height={145} />
             </Box>
@@ -150,7 +150,7 @@ export class Event extends React.Component<Props, State> {
               <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
                 {name}
               </Serif>
-              {exhibition_period && (
+              {!!exhibition_period && (
                 <Sans size="2" color={color("black60")}>
                   {ExhibitionDates(exhibition_period, end_at)}
                 </Sans>

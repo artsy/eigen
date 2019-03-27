@@ -32,10 +32,10 @@ export const FairBoothPreviewHeader: React.SFC<Props> = ({
     <Flex justifyContent="space-between" alignItems="center" flexDirection="row" mb={1}>
       <TouchableOpacity onPress={() => onViewFairBoothPressed()}>
         <ImageAndTextWrapper flexDirection="row" alignItems="center">
-          <Box mr={1}>{url && <RoundedImage imageURL={url} aspectRatio={1} />}</Box>
+          <Box mr={1}>{!!url && <RoundedImage imageURL={url} aspectRatio={1} />}</Box>
           <Box width={partnerNameWidth}>
             <TightendSerif size="2">{name}</TightendSerif>
-            {location && (
+            {!!location && (
               <TightendSans size="2" color="black60">
                 {location}
               </TightendSans>
@@ -43,15 +43,17 @@ export const FairBoothPreviewHeader: React.SFC<Props> = ({
           </Box>
         </ImageAndTextWrapper>
       </TouchableOpacity>
-      <Box width={102} height={34}>
-        <InvertedButton
-          grayBorder={true}
-          text={isFollowed ? "Following" : "Follow"}
-          onPress={onFollowPartner}
-          selected={isFollowed}
-          inProgress={isFollowedChanging}
-        />
-      </Box>
+      {isFollowed !== null && (
+        <Box width={102} height={34}>
+          <InvertedButton
+            grayBorder={true}
+            text={isFollowed ? "Following" : "Follow"}
+            onPress={onFollowPartner}
+            selected={isFollowed}
+            inProgress={isFollowedChanging}
+          />
+        </Box>
+      )}
     </Flex>
   )
 }

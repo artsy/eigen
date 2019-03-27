@@ -42,7 +42,7 @@ const StyledInput = ({ label, error, onLayout, ...props }) => (
       {label}
     </Serif>
     <Input mb={3} error={Boolean(error)} {...props} />
-    {error && (
+    {!!error && (
       <Sans size="2" color="red100">
         {error}
       </Sans>
@@ -81,6 +81,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
   private city: StyledInputInterface
   private stateProvinceRegion: StyledInputInterface
   private postalCode: StyledInputInterface
+  private phoneNumber: StyledInputInterface
 
   private fullNameLayout: LayoutRectangle
   private addressLine1Layout: LayoutRectangle
@@ -88,6 +89,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
   private cityLayout: LayoutRectangle
   private stateProvinceRegionLayout: LayoutRectangle
   private postalCodeLayout: LayoutRectangle
+  private phoneNumberLayout: LayoutRectangle
 
   private keyboardDidShowListener: EmitterSubscription
 
@@ -105,7 +107,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
   }
 
   validateAddress(address: Address) {
-    const { fullName, addressLine1, city, state, country, postalCode } = address
+    const { fullName, addressLine1, city, state, country, postalCode, phoneNumber } = address
 
     return {
       fullName: validatePresence(fullName),
@@ -114,6 +116,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
       state: validatePresence(state),
       country: validatePresence(country && country.shortName),
       postalCode: validatePresence(postalCode),
+      phoneNumber: validatePresence(phoneNumber),
     }
   }
 
@@ -246,9 +249,18 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 {...this.defaultPropsForInput("postalCode")}
                 label="Postal code"
                 placeholder="Add your postal code"
-                onSubmitEditing={() => this.presentSelectCountry()}
+                onSubmitEditing={() => this.phoneNumber.root.focus()}
                 onLayout={({ nativeEvent }) => (this.postalCodeLayout = nativeEvent.layout)}
                 onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.postalCodeLayout) })}
+              />
+
+              <StyledInput
+                {...this.defaultPropsForInput("phoneNumber")}
+                label="Phone"
+                placeholder="Add your phone number"
+                onSubmitEditing={() => this.presentSelectCountry()}
+                onLayout={({ nativeEvent }) => (this.phoneNumberLayout = nativeEvent.layout)}
+                onFocus={() => this.scrollView.scrollTo({ x: 0, y: this.yPosition(this.phoneNumberLayout) })}
               />
 
               <Flex mb={4}>
@@ -268,7 +280,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                   </Flex>
                 </TouchableWithoutFeedback>
 
-                {errorForCountry && (
+                {!!errorForCountry && (
                   <Sans size="2" color="red100">
                     {errorForCountry}
                   </Sans>

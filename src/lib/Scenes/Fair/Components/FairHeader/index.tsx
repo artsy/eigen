@@ -127,23 +127,23 @@ export class FairHeader extends React.Component<Props, State> {
     return (
       <>
         <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
-          {image && <BackgroundImage imageURL={image.url} height={imageHeight} width={screenWidth} />}
+          {!!image && <BackgroundImage imageURL={image.url} height={imageHeight} width={screenWidth} />}
           <Overlay />
           <Flex flexDirection="row" justifyContent="center" alignItems="center" px={2} height={imageHeight}>
             <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-              {profile && <Logo source={{ uri: profile.icon.url }} resizeMode="contain" />}
+              {!!profile && <Logo source={{ uri: profile.icon.url }} resizeMode="contain" />}
               <Sans size="3t" weight="medium" textAlign="center" color="white100">
                 {name}
               </Sans>
-              {exhibition_period && (
+              {!!exhibition_period && (
                 <Sans size="3" textAlign="center" color="white100">
                   {exhibition_period}
                 </Sans>
               )}
             </Flex>
           </Flex>
-          {start_at &&
-            end_at && (
+          {!!start_at &&
+            !!end_at && (
               <CountdownContainer>
                 <CountdownTimer startAt={start_at} endAt={end_at} />
               </CountdownContainer>

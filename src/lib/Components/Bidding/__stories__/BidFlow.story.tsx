@@ -18,7 +18,7 @@ import { MaxBidScreen } from "../Screens/SelectMaxBid"
 
 const testSaleArtworkID = "5b48ed80360bca000104d057"
 const testArtworkID = "5b48ed80360bca000104d050"
-const testSaleID = "erik-reserves-moction"
+const testSaleID = "melanie-mocktion"
 
 const BidFlowMaxBidStoryRenderer: React.SFC<any> = ({ saleArtworkID }) => (
   <QueryRenderer<BidFlowSelectMaxBidRendererQuery>

@@ -84,7 +84,8 @@ export class Checkbox extends Component<CheckboxProps, CheckboxState> {
             animate={["backgroundColor", "borderColor"]}
             duration={this.duration}
           >
-            {checked && (disabled ? <DisabledMark size={this.checkboxSize} /> : <CheckMark size={this.checkboxSize} />)}
+            {!!checked &&
+              (!!disabled ? <DisabledMark size={this.checkboxSize} /> : <CheckMark size={this.checkboxSize} />)}
           </CssTransition>
 
           <Flex>{children}</Flex>

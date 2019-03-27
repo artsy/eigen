@@ -495,7 +495,7 @@ export class GlobalMap extends React.Component<Props, State> {
             }}
           >
             <Theme>
-              {hasShows && (
+              {!!hasShows && (
                 <ShowCard
                   shows={updatedShows as any}
                   relay={this.props.relay}
@@ -639,7 +639,7 @@ export class GlobalMap extends React.Component<Props, State> {
                 onPress={this.onPressMap}
                 ref={this.storeMapRef}
               >
-                {city && (
+                {!!city && (
                   <>
                     {this.state.featureCollections && (
                       <PinsShapeLayer
@@ -649,7 +649,7 @@ export class GlobalMap extends React.Component<Props, State> {
                       />
                     )}
                     <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
-                    {mapLoaded && activeShows && activePin && this.renderSelectedPin()}
+                    {!!mapLoaded && !!activeShows && !!activePin && this.renderSelectedPin()}
                   </>
                 )}
               </Map>

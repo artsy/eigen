@@ -56,7 +56,7 @@ export class LocationMap extends React.Component<Props> {
     const renderSummaryAddress = () => {
       return (
         <Box my={2}>
-          {partnerName && (
+          {!!partnerName && (
             <Sans size="3" color="black100" textAlign="center" weight="medium">
               {partnerName}
             </Sans>

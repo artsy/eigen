@@ -171,9 +171,9 @@ export class Message extends React.Component<Props> {
                 </TimeStamp>
               }
             </Header>
-            {artworkPreview && <PreviewContainer>{artworkPreview}</PreviewContainer>}
+            {!!artworkPreview && <PreviewContainer>{artworkPreview}</PreviewContainer>}
 
-            {showPreview && <PreviewContainer>{showPreview}</PreviewContainer>}
+            {!!showPreview && <PreviewContainer>{showPreview}</PreviewContainer>}
 
             {message.invoice && (
               <PreviewContainer>

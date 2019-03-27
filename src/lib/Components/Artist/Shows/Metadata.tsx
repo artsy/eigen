@@ -18,7 +18,7 @@ class Metadata extends React.Component<Props> {
     const partnerName = this.props.show.partner && this.props.show.partner.name
     return (
       <View style={styles.container}>
-        {partnerName && <Text style={styles.sansSerifText}>{partnerName.toUpperCase()}</Text>}
+        {!!partnerName && <Text style={styles.sansSerifText}>{partnerName.toUpperCase()}</Text>}
         <Text style={styles.sansSerifText}>{this.showTypeString()}</Text>
         <SerifText style={styles.serifText}>{this.props.show.name}</SerifText>
         {this.dateAndLocationString()}

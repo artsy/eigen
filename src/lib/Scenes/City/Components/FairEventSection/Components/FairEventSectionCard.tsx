@@ -24,17 +24,17 @@ export class FairEventSectionCard extends Component<Props> {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <Container>
-          {image && <BackgroundImage imageURL={image.url} />}
+          {!!image && <BackgroundImage imageURL={image.url} />}
           <Overlay />
           <Flex flexDirection="column" px={2}>
-            {profile && <Logo source={{ uri: profile.icon.url }} />}
+            {!!profile && <Logo source={{ uri: profile.icon.url }} />}
           </Flex>
           <Box p={2} style={{ position: "absolute", bottom: 0, left: 0 }}>
             <Flex flexDirection="column" flexGrow={1}>
               <Sans size="3t" weight="medium" color="white">
                 {name}
               </Sans>
-              {exhibition_period && (
+              {!!exhibition_period && (
                 <Sans size="3" color="white">
                   {exhibition_period}
                 </Sans>

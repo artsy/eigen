@@ -123,7 +123,7 @@ export class Conversations extends Component<Props, State> {
           }}
           onScroll={isCloseToBottom(this.fetchData)} // TODO: Investiate why onEndReached fires erroniously
         />
-        {showLoadingSpinner && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
+        {!!showLoadingSpinner && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
       </View>
     )
   }
