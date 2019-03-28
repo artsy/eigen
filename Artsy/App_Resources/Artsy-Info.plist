@@ -107,6 +107,8 @@
 	<string>Camera access is needed for this experience.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Used to display shows near you</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Using User Location to display nearby shows</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Using User Location to display nearby shows</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
