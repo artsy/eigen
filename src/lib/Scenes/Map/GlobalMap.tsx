@@ -246,7 +246,9 @@ export class GlobalMap extends React.Component<Props, State> {
       setTimeout(this.resetZoomAndCamera, 500)
     }
 
+    // If there is a new city, emity it and update our map.
     if (nextProps.viewer) {
+      // TODO: This is currently really inefficient.
       const bucketResults = bucketCityResults(nextProps.viewer)
 
       this.setState({ bucketResults }, () => {
@@ -254,8 +256,10 @@ export class GlobalMap extends React.Component<Props, State> {
         this.updateShowIdMap()
         this.updateClusterMap()
       })
-    } else if (relayErrorState) {
-      EventEmitter.dispatch("map:error", { relayErrorState })
+    }
+    // If the relayErrorState changes, emit a new event.
+    if (!!relayErrorState !== !!nextProps.relayErrorState) {
+      EventEmitter.dispatch("map:error", { relayErrorState: nextProps.relayErrorState })
     }
 
     if (nextProps.hideMapButtons !== this.props.hideMapButtons) {
