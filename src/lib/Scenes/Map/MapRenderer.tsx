@@ -71,7 +71,7 @@ export const MapRenderer: React.SFC<{
       }}
       cacheConfig={
         {
-          emissionCacheTTL: 86400, // 60 * 60 * 24 = 1 day
+          emissionCacheTTL: 7200000, // 1000 * 60 * 60 * 2 = 2 hours
         } as any
       }
     />
