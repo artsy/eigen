@@ -16,6 +16,8 @@
 
 ### Master
 
+- Reduces Emission's City cache TTL to 2 hours - kieran
+
 ### 1.9.2
 
 - Fixes scrollable tab bar on global saves & follows - ash & ashley
