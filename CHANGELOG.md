@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fixes Closing Soon and Opening Soon order - kieran
+
 ### 1.9.2
 
 - Fixes scrollable tab bar on global saves & follows - ash & ashley
