@@ -229,6 +229,7 @@ const Handle = styled.View`
   background-color: ${color("black30")};
 `
 
+// @TODO: Implement test for the ErrorScreen component
 const ErrorScreen: React.SFC<{ relayErrorState: RelayErrorState }> = ({ relayErrorState: { retry, isRetrying } }) => {
   return (
     <Box py={2}>

@@ -16,6 +16,7 @@ export class FairEventSectionCard extends Component<Props> {
     SwitchBoard.presentNavigationViewController(this, path)
   }
 
+  // @TODO: Implement tests for this component
   render() {
     const {
       fair: { image, name, profile, exhibition_period },

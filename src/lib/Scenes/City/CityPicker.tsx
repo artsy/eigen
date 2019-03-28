@@ -81,6 +81,7 @@ export class CityPicker extends Component<Props, State> {
     )
   }
 
+  // @TODO: Implement test for this component
   render() {
     const { selectedCity } = this.state
     const { height: screenHeight } = Dimensions.get("window")

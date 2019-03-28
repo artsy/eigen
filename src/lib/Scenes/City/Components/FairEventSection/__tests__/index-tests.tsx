@@ -3,6 +3,7 @@ import { mount } from "enzyme"
 import React from "react"
 import { FairEventSection } from "../index"
 
+// @TODO: This data mock is similarly reused in the event sections; can it be modularized?
 const data = [
   {
     name: "TEFAF New York Fall 2019",

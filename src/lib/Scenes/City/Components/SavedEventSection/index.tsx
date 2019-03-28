@@ -33,6 +33,7 @@ export class SavedEventSection extends Component<any> {
     SwitchBoard.presentNavigationViewController(this, sponsoredContentUrl)
   }
 
+  // @TODO: Implement test for this component
   render() {
     const { data } = this.props
     const hasSaves = data.length > 0

@@ -44,6 +44,7 @@ class CitySavedList extends React.Component<Props, State> {
     })
   }
 
+  // @TODO: Implement test for this component
   render() {
     const {
       viewer: {
