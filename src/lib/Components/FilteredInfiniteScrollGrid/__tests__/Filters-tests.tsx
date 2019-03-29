@@ -21,7 +21,7 @@ const renderTree = () =>
         <PortalProvider>
           <Filters
             filteredArtworks={show.filteredArtworks}
-            onFilterChange={null}
+            onFilterChange={() => jest.fn()}
             mediumValue={""}
             priceRangeValue={""}
           />
@@ -37,14 +37,14 @@ const renderTree = () =>
         }
       `}
       mockData={{
-        data: ShowFixture,
+        show: ShowFixture,
       }}
     />
   )
 
 describe("Filters", () => {
   // TODO: Fix test, it's currently timing out
-  xit("Passes Picker Options from available aggregrations", async () => {
+  it("Passes Picker Options from available aggregrations", async () => {
     const tree = await renderTree()
     const pickerOptions = tree
       .find(Picker)

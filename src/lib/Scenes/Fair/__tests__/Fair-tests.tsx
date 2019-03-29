@@ -25,7 +25,7 @@ describe("Fair", () => {
           }
         `}
         mockData={{
-          Fair: () => fairFixture,
+          fair: fairFixture,
         }}
       />
     )

@@ -4,7 +4,6 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": "src",
     "experimentalDecorators": true,
-    "jsx": "react",
     "lib": ["es2015"],
     "jsx": "react",
     "keyofStringsOnly": true,
