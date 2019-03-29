@@ -55,7 +55,6 @@ PreheatedCacheCreatedAt(NSURL *preHeatedCacheDirectory, NSError * __autoreleasin
     NSDate *preheatedCacheCreatedAt = [[ISO8601DateFormatter new] dateFromString:[NSString stringWithContentsOfURL:preheatedCacheCreatedAtURL
                                                                                                           encoding:NSUTF8StringEncoding
                                                                                                              error:error]];
-    NSCParameterAssert(preheatedCacheCreatedAt);
     return preheatedCacheCreatedAt;
 }
 
@@ -154,6 +153,12 @@ PreheatCache() {
     NSURL *preHeatedCacheDirectory = [[NSBundle mainBundle] URLForResource:ARGraphQLQueryCachePreheatedCacheDirname withExtension:nil];
     
     NSDate *preheatedCacheCreatedAt = PreheatedCacheCreatedAt(preHeatedCacheDirectory, &error);
+    
+    if (preheatedCacheCreatedAt == nil) {
+        DLog(@"[ARGraphQLQueryCache] Skip installing pre-heated cache");
+        return;
+    }
+    
     if (error == nil && CacheHasBeenPreheated(preheatedCacheCreatedAt)) {
         DLog(@"[ARGraphQLQueryCache] Cache has already been pre-heated before");
         return;
