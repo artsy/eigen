@@ -55,7 +55,6 @@ PreheatedCacheCreatedAt(NSURL *preHeatedCacheDirectory, NSError * __autoreleasin
     NSDate *preheatedCacheCreatedAt = [[ISO8601DateFormatter new] dateFromString:[NSString stringWithContentsOfURL:preheatedCacheCreatedAtURL
                                                                                                           encoding:NSUTF8StringEncoding
                                                                                                              error:error]];
-    NSCParameterAssert(preheatedCacheCreatedAt);
     return preheatedCacheCreatedAt;
 }
 
