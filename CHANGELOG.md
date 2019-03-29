@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.9.4
+
 ### 1.9.3
 
 - Reduces Emission's City cache TTL to 2 hours - kieran
