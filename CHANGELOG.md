@@ -16,6 +16,7 @@
 
 ### Master
 
+- Reduces Emission's City cache TTL to 2 hours - kieran
 - Fixes City not re-rendering after a MP request is successfully retried - ash
 - Fixes Closing Soon and Opening Soon order - kieran
 - Fairbooths now only pull 5 shows per page on connection - kieran

@@ -46,7 +46,7 @@ export const cacheMiddleware = () => {
       if (isQuery) {
         // Don't cache responses with errors in them (GraphQL responses are always 200, even if they contain errors).
         if (response.json.errors === undefined) {
-          cache.set(queryID, req.variables, JSON.stringify(response.json), req.cacheConfig.emissionCacheTTL)
+          cache.set(queryID, req.variables, JSON.stringify(response.json), req.cacheConfig.emissionCacheTTLSeconds)
         } else {
           clearCacheAndThrowError()
         }
