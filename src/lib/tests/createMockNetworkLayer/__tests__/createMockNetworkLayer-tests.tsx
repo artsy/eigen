@@ -1,12 +1,12 @@
-import { IResolvers } from "graphql-tools/dist/Interfaces"
 import { graphql } from "react-relay"
 import { Environment, fetchQuery, GraphQLTaggedNode, RecordSource, Store } from "relay-runtime"
 import { createMockNetworkLayer2 } from "../index"
 
-// Pulled from https://github.com/artsy/reaction/pull/1854
+jest.unmock("react-relay")
+
 describe("createMockNetworkLayer", () => {
-  function fetchQueryWithResolvers(resolvers: IResolvers, query?: GraphQLTaggedNode) {
-    const network = createMockNetworkLayer2(resolvers)
+  function fetchQueryWithData(options: Parameters<typeof createMockNetworkLayer2>[0], query?: GraphQLTaggedNode) {
+    const network = createMockNetworkLayer2(options)
 
     const source = new RecordSource()
     const store = new Store(source)
@@ -29,22 +29,27 @@ describe("createMockNetworkLayer", () => {
 
   describe("preserves the upstream behaviour", () => {
     it("returns the data if present", async () => {
-      const data = await fetchQueryWithResolvers({
-        artwork: { title: "Untitled", __id: "untitled" },
+      const data = await fetchQueryWithData({
+        mockData: {
+          artwork: { title: "Untitled", __id: "untitled" },
+        },
       })
       expect(data.artwork.title).toEqual("Untitled")
     })
-
     it("returns null for nullable fields which are given as null", async () => {
-      const data = await fetchQueryWithResolvers({
-        artwork: { title: null, __id: "null" },
+      const data = await fetchQueryWithData({
+        mockData: {
+          artwork: { title: null, __id: "null" },
+        },
       })
       expect(data.artwork.title).toEqual(null)
     })
 
     it("converts undefined to null", async () => {
-      const data = await fetchQueryWithResolvers({
-        artwork: { title: undefined, __id: "null" },
+      const data = await fetchQueryWithData({
+        mockData: {
+          artwork: { title: undefined, __id: "null" },
+        },
       })
       expect(data.artwork.title).toEqual(null)
     })
@@ -52,7 +57,11 @@ describe("createMockNetworkLayer", () => {
 
   it("complains with a helpful error when selected field is not present", async () => {
     try {
-      await fetchQueryWithResolvers({ artwork: { __id: "blah" } })
+      await fetchQueryWithData({
+        mockData: {
+          artwork: { __id: "blah" },
+        },
+      })
     } catch (e) {
       expect(e.message).toMatchInlineSnapshot(
         `"RelayMockNetworkLayerError: A mock for field at path 'artwork/title' of type 'String' was expected but not found."`
@@ -61,12 +70,14 @@ describe("createMockNetworkLayer", () => {
   })
 
   it("uses data provided with an aliased name", async () => {
-    const data = await fetchQueryWithResolvers(
+    const data = await fetchQueryWithData(
       {
-        artist: {
-          forSaleArtworks: [{ __id: "for-sale-work" }],
-          notForSaleArtworks: [{ __id: "no-for-sale-work" }],
-          __id: "id",
+        mockData: {
+          artist: {
+            forSaleArtworks: [{ __id: "for-sale-work" }],
+            notForSaleArtworks: [{ __id: "no-for-sale-work" }],
+            __id: "id",
+          },
         },
       },
       graphql`

@@ -8,7 +8,7 @@ import { FairBoothPreviewContainer } from "../index"
 jest.unmock("react-relay")
 
 describe("FairBoothPreview", () => {
-  it("renders properly", async () => {
+  xit("renders properly", async () => {
     const tree = await renderRelayTree({
       Component: (props: any) => (
         <Theme>
