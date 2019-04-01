@@ -8,7 +8,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 
 import { HoursCollapsible } from "lib/Components/HoursCollapsible"
 import { LocationMapContainer as LocationMap, PartnerType } from "lib/Components/LocationMap"
-import { PAGE_SIZE } from "lib/data/constants"
+import { FAIR_SHOW_PAGE_SIZE } from "lib/data/constants"
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import { ArtistsExhibitorsWorksLink } from "../Components/ArtistsExhibitorsWorksLink"
 import { FairBoothPreviewContainer as FairBoothPreview } from "../Components/FairBoothPreview"
@@ -211,7 +211,7 @@ export class FairDetail extends React.Component<Props, State> {
       return
     }
 
-    relay.loadMore(PAGE_SIZE, error => {
+    relay.loadMore(FAIR_SHOW_PAGE_SIZE, error => {
       if (!error) {
         this.updateSections()
       }

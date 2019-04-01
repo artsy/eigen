@@ -23,8 +23,7 @@ export class EventSection extends React.Component<Props> {
     const { data } = this.props
     let finalShowsForPreviewBricks
     const eligibleForBrick = data.filter(s => !s.isStubShow && !!s.cover_image && !!s.cover_image.url)
-    const sortedByStartDesc = [...eligibleForBrick].sort((a, b) => ((a.start_at as any) > b.start_at) as any).reverse()
-    finalShowsForPreviewBricks = sortedByStartDesc.slice(0, 2)
+    finalShowsForPreviewBricks = eligibleForBrick.slice(0, 2)
 
     if (!!finalShowsForPreviewBricks) {
       return finalShowsForPreviewBricks.map(event => {

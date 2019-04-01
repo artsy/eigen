@@ -54,7 +54,15 @@ export class AllEvents extends React.Component<Props, State> {
   }
 
   shouldUpdate(otherProps: Props): boolean {
-    return ["saved", "closing", "museums", "opening", "closing"]
+    let bmwUpdated
+    let showsUpdated
+    if (this.props.sponsoredContent && this.props.sponsoredContent.featuredShows) {
+      bmwUpdated = !isEqual(
+        this.props.sponsoredContent.featuredShows.map(g => g.is_followed),
+        otherProps.sponsoredContent.featuredShows.map(g => g.is_followed)
+      )
+    }
+    showsUpdated = ["saved", "closing", "museums", "opening", "closing"]
       .map(key => {
         return !isEqual(
           this.props.buckets[key].map(g => g.is_followed),
@@ -62,10 +70,12 @@ export class AllEvents extends React.Component<Props, State> {
         )
       })
       .some(a => a)
+
+    return bmwUpdated || showsUpdated
   }
 
   updateSections = props => {
-    const { buckets, cityName } = props
+    const { buckets, cityName, sponsoredContent } = props
     const sections = []
 
     sections.push({
@@ -101,10 +111,9 @@ export class AllEvents extends React.Component<Props, State> {
       })
     }
 
-    if (buckets.museums && buckets.museums.length) {
+    if (sponsoredContent && sponsoredContent.featuredShows) {
       sections.push({
         type: "bmw",
-        data: buckets.museums,
       })
     }
 

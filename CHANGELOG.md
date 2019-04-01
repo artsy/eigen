@@ -16,6 +16,18 @@
 
 ### Master
 
+### 1.9.4
+
+### 1.9.3
+
+- Reduces Emission's City cache TTL to 2 hours - kieran
+- Fixes City not re-rendering after a MP request is successfully retried - ash
+- Fixes Closing Soon and Opening Soon order - kieran
+- Fairbooths now only pull 5 shows per page on connection - kieran
+- Fixes BMW save button - kieran
+
+### 1.9.2
+
 - Fixes scrollable tab bar on global saves & follows - ash & ashley
 - Requires phone number during bidder registration - sweir27
 - Migrates to React Native 0.57.x - orta/alloy/luc/justin
