@@ -13,6 +13,7 @@ export default function<P>(
   let retrying = false
   return ({ error, props, retry }) => {
     if (error) {
+      // In tests we want errors to clearly bubble up.
       if (typeof jest !== "undefined") {
         throw error
       }
