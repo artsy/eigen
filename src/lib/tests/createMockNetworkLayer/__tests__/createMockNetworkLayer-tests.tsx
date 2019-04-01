@@ -5,7 +5,7 @@ import { createMockNetworkLayer2 } from "../index"
 jest.unmock("react-relay")
 
 describe("createMockNetworkLayer", () => {
-  function fetchQueryWithResolvers(options: Parameters<typeof createMockNetworkLayer2>[0], query?: GraphQLTaggedNode) {
+  function fetchQueryWithData(options: Parameters<typeof createMockNetworkLayer2>[0], query?: GraphQLTaggedNode) {
     const network = createMockNetworkLayer2(options)
 
     const source = new RecordSource()
@@ -29,7 +29,7 @@ describe("createMockNetworkLayer", () => {
 
   describe("preserves the upstream behaviour", () => {
     it("returns the data if present", async () => {
-      const data = await fetchQueryWithResolvers({
+      const data = await fetchQueryWithData({
         mockData: {
           artwork: { title: "Untitled", __id: "untitled" },
         },
@@ -37,7 +37,7 @@ describe("createMockNetworkLayer", () => {
       expect(data.artwork.title).toEqual("Untitled")
     })
     it("returns null for nullable fields which are given as null", async () => {
-      const data = await fetchQueryWithResolvers({
+      const data = await fetchQueryWithData({
         mockData: {
           artwork: { title: null, __id: "null" },
         },
@@ -46,7 +46,7 @@ describe("createMockNetworkLayer", () => {
     })
 
     it("converts undefined to null", async () => {
-      const data = await fetchQueryWithResolvers({
+      const data = await fetchQueryWithData({
         mockData: {
           artwork: { title: undefined, __id: "null" },
         },
@@ -57,7 +57,7 @@ describe("createMockNetworkLayer", () => {
 
   it("complains with a helpful error when selected field is not present", async () => {
     try {
-      await fetchQueryWithResolvers({
+      await fetchQueryWithData({
         mockData: {
           artwork: { __id: "blah" },
         },
@@ -70,7 +70,7 @@ describe("createMockNetworkLayer", () => {
   })
 
   it("uses data provided with an aliased name", async () => {
-    const data = await fetchQueryWithResolvers(
+    const data = await fetchQueryWithData(
       {
         mockData: {
           artist: {
