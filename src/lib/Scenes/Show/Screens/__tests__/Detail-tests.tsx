@@ -1,3 +1,4 @@
+import { Theme } from "@artsy/palette"
 import React from "react"
 import { graphql } from "react-relay"
 
@@ -10,16 +11,19 @@ import { DetailContainer } from "../Detail"
 
 jest.unmock("react-relay")
 
-jest.mock("../../../../Components/LocationMap/index.tsx", () => "LocationMap")
-
-// Blocked by LD-158.
-xit("Renders the Show Detail Screen", async () => {
+it("Renders the Show Detail Screen", async () => {
   const tree = await renderUntil(
     wrapper => {
       return wrapper.find(ShowHeader).length > 0
     },
     <MockRelayRenderer
-      Component={DetailContainer}
+      Component={({ show }) => {
+        return (
+          <Theme>
+            <DetailContainer show={show} />
+          </Theme>
+        )
+      }}
       query={graphql`
         query DetailTestsQuery {
           show(id: "anderson-fine-art-gallery-flickinger-collection") {
@@ -27,11 +31,8 @@ xit("Renders the Show Detail Screen", async () => {
           }
         }
       `}
-      mockResolvers={{
-        Show: () => ({
-          ...ShowFixture,
-          artists: () => ShowFixture.artists,
-        }),
+      mockData={{
+        show: ShowFixture,
       }}
     />
   )
@@ -40,6 +41,5 @@ xit("Renders the Show Detail Screen", async () => {
 })
 
 describe("with missing schedule values", () => {
-  // Blocked by LD-158.
   pending("it renders without (the missing) opening hours")
 })

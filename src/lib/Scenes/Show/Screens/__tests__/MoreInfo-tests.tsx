@@ -13,7 +13,7 @@ jest.unmock("react-relay")
   David Sheldrick recently commited a change in Reaction to support simpler gql data mocking, we
   are going to bring these changes into Emission and then revisit this test.
 */
-xit("Renders the Show MoreInfo screen", async () => {
+it("Renders the Show MoreInfo screen", async () => {
   const tree = await renderUntil(
     wrapper => wrapper.text().includes("Press Release"),
     <MockRelayRenderer
@@ -25,8 +25,8 @@ xit("Renders the Show MoreInfo screen", async () => {
           }
         }
       `}
-      mockResolvers={{
-        Show: () => ShowFixture,
+      mockData={{
+        show: ShowFixture,
       }}
     />
   )
