@@ -8,7 +8,7 @@ import { FairDetailContainer as FairDetail } from "../FairDetail"
 jest.unmock("react-relay")
 
 describe("FairDetail", () => {
-  xit("renders properly", async () => {
+  it("renders properly", async () => {
     const tree = await renderUntil(
       wrapper => {
         return wrapper.find("FairHeader").length > 0
@@ -23,7 +23,7 @@ describe("FairDetail", () => {
           }
         `}
         mockData={{
-          Fair: () => fairFixture,
+          fair: fairFixture,
         }}
       />
     )
