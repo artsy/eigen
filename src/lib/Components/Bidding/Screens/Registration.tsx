@@ -190,7 +190,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             }
           }
         },
-        onError: errors => this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusError),
+        onError: errors => this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusNetworkError),
         mutation: graphql`
           mutation RegistrationCreateCreditCardMutation($input: CreditCardInput!) {
             createCreditCard(input: $input) {

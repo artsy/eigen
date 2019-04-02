@@ -565,6 +565,7 @@ exports[`renders properly 1`] = `
             p={3}
             pb={2}
             placeholder="Add your phone number"
+            rejectResponderTermination={true}
             returnKeyType="next"
             style={
               Array [

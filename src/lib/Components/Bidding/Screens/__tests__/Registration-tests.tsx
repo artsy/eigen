@@ -99,7 +99,7 @@ it("shows no option for entering payment information if the user has a credit ca
 })
 
 describe("when pressing register button", () => {
-  it("when a credit card needs to be added, it commits two mutations on button press", () => {
+  it("when a credit card needs to be added, it commits two mutations on button press", async () => {
     relay.commitMutation = commitMutationMock()
       .mockImplementationOnce((_, { onCompleted }) => {
         onCompleted(mockRequestResponses.updateMyUserProfile, null)
@@ -120,7 +120,7 @@ describe("when pressing register button", () => {
     const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
     component.root.instance.setState({ conditionsOfSaleChecked: true, billingAddress, creditCardToken: stripeToken })
 
-    component.root.findByType(Button).instance.props.onPress()
+    await component.root.findByType(Button).instance.props.onPress()
 
     expect(relay.commitMutation).toHaveBeenCalledWith(
       expect.any(Object),
