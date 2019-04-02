@@ -15,7 +15,7 @@ It takes about 45 minutes for [Circle CI](https://circleci.com/gh/artsy/eigen) t
 
 Eigen's beta pre-submission checklist has [moved into Notion](https://www.notion.so/artsy/Pre-submission-QA-Checklist-785e3233fdcf423f95ee239ab3c22ec3).
 
-## Prepare Metadata
+## Preparing to Ship a Final Version
 
 1. You'll need to update the release notes in `/fastlane/metadata/common/release_notes.txt`.
 1. Then, run `make promote_beta_to_submission`.
