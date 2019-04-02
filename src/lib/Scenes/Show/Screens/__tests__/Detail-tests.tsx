@@ -41,5 +41,5 @@ it("Renders the Show Detail Screen", async () => {
 })
 
 describe("with missing schedule values", () => {
-  pending("it renders without (the missing) opening hours")
+  it.todo("renders without (the missing) opening hours")
 })

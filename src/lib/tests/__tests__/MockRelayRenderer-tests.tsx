@@ -36,7 +36,7 @@ describe("MockRelayRenderer", () => {
   })
 
   it("renders an error when child components throw", () => {
-    console.error = () => null // MockRelayRenderer prints out error info to the console, let's silence it.
+    console.log = () => null // MockRelayRenderer prints out error info to the console, let's silence it.
     const tree = mount(
       <MockRelayRenderer
         Component={Artwork}
