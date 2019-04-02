@@ -434,8 +434,7 @@
 - Adds MoreInfo screen to show detail view - javamonn
 - Clean up Jest log output, update relay-mock-network-layer - javamonn
 - Fair performance enhancements - ashley
-- Add start and end properties to Favorites Works and Shows page info queries - ashley
-- Identifies areas missing test coverage and adds files to support missing tests - ashley
+- Identifies areas missing test coverage and adds Jira urls to track them - ashley
 
 ### 1.7.1
 

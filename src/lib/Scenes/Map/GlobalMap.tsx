@@ -695,7 +695,6 @@ export class GlobalMap extends React.Component<Props, State> {
     // @TODO: Adding active Fairs to state only to handle Selecting Fairs
     // The rest of the logic for displaying active show shows and fairs in the
     // maps pins and cards will remain the same for now.
-
     if (!cluster) {
       if (type === "Show") {
         activeShows = [this.shows[id]]
