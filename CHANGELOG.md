@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fixes overflowing Save button on small screen devices - ashley
+
 ### 1.9.4
 
 ### 1.9.3
