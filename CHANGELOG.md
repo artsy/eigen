@@ -16,8 +16,16 @@
 
 ### Master
 
+- Fixes overflowing Save button on small screen devices - ashley
+
+### 1.9.4
+
+### 1.9.3
+
+- Reduces Emission's City cache TTL to 2 hours - kieran
 - Fixes City not re-rendering after a MP request is successfully retried - ash
 - Fixes Closing Soon and Opening Soon order - kieran
+- Fairbooths now only pull 5 shows per page on connection - kieran
 - Fixes BMW save button - kieran
 
 ### 1.9.2

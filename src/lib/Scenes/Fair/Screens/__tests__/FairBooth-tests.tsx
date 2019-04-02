@@ -1,4 +1,3 @@
-import { Theme } from "@artsy/palette"
 import { FairBoothShowFixture } from "lib/__fixtures__/FairBoothShowFixture"
 import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
 import { renderUntil } from "lib/tests/renderUntil"
@@ -9,15 +8,11 @@ import { FairBoothContainer as FairBooth } from "../FairBooth"
 
 jest.unmock("react-relay")
 
-xit("renders properly", async () => {
+it("renders properly", async () => {
   const tree = await renderUntil(
     wrapper => wrapper.find(FairBoothHeader).length > 0,
     <MockRelayRenderer
-      Component={({ show }) => (
-        <Theme>
-          <FairBooth show={show} />
-        </Theme>
-      )}
+      Component={({ show }) => <FairBooth show={show} />}
       query={graphql`
         query FairBoothTestsQuery {
           show(id: "two-palms-two-palms-at-art-basel-miami-beach-2018") {
@@ -25,7 +20,7 @@ xit("renders properly", async () => {
           }
         }
       `}
-      mockData={{
+      mockResolvers={{
         Show: () => FairBoothShowFixture,
       }}
     />
