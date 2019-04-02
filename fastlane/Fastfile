@@ -133,7 +133,6 @@ lane :promote_beta do
     skip_screenshots: true,
     skip_binary_upload: true,
     submit_for_review: true,
-    apple_id: "mobiledeploys@artsymail.com",
     # Comes from https://github.com/fastlane/fastlane/issues/5542#issuecomment-254201994
     submission_information: {
       add_id_info_limits_tracking: true,
