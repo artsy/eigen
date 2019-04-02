@@ -13950,10 +13950,10 @@ timers-browserify@^2.0.4:
   dependencies:
     setimmediate "^1.0.4"
 
-tipsi-stripe@5.2.4:
-  version "5.2.4"
-  resolved "https://registry.yarnpkg.com/tipsi-stripe/-/tipsi-stripe-5.2.4.tgz#bb68509359f0efb36434c332df889d867b19047a"
-  integrity sha512-FVPAAOXHXHz4P2rt4IjSCUxyG/oZDypAjBXdvpRCSPEzk5ipXkAYD71PDC2RYtg0LRT5T2gn5HMKC8+6ITBgcg==
+tipsi-stripe@7.4.0:
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/tipsi-stripe/-/tipsi-stripe-7.4.0.tgz#ddea184becad2e72b163f38ece561e87cd65cb70"
+  integrity sha512-GM9K10ahkcw42awSFsF/CHJnzmqEwzpR2Rr4ejy6g4TChYp+w2q0UNmPowvK+OmdPFNFK75D1SWJHTjsouS+pg==
 
 title-case@^2.1.0:
   version "2.1.1"
