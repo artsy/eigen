@@ -1,6 +1,9 @@
 export const fairFixture = {
   id: "sofa-chicago-2018",
+  _id: "5aa1a9ee8b3b817c61dff02d",
+  followed_content: null,
   name: "SOFA CHICAGO 2018",
+  exhibition_period: "Nov 1 – 4, 2018",
   image: {
     image_url: "https://d32dm0rphc51dk.cloudfront.net/o0Zrtm-CgwbV1syD_33DuA/:version.jpg",
     aspect_ratio: 1,
@@ -27,7 +30,7 @@ export const fairFixture = {
     profile: {
       icon: {
         id: "58ff95298b3b8104783c119c",
-        href: null,
+        href: "",
         height: 279,
         width: 279,
         url: "https://d32dm0rphc51dk.cloudfront.net/B1x-CqoWO1KitQnRj7PrrA/untouched-png.png",
@@ -35,13 +38,18 @@ export const fairFixture = {
       name: "SOFA CHICAGO",
       __id: "UHJvZmlsZTpzb2ZhLWNoaWNhZ28=",
     },
+    website: "",
   },
   start_at: "2018-11-01T17:00:00+00:00",
   end_at: "2018-11-04T18:00:00+00:00",
   location: {
     __id: "TG9jYXRpb246NWJiNjJmMzYyYjVlN2QwMDI5ODliZDhh",
     id: "5bb62f362b5e7d002989bd8a",
+    address_2: "",
+    postal_code: "60611",
+    summary: "Festival Hall, Navy Pier \r\n600 East Grand Avenue Chicago, IL 60611",
     address: "",
+    city: "Chicago",
     coordinates: {
       lat: 25.7949009,
       lng: -80.134698,
@@ -413,6 +421,7 @@ export const fairFixture = {
         node: {
           href: "/tamas",
           id: "tamas-abel",
+          _id: "1232222245",
           __id: "QXJ0aXN0OnRhbWFzLWFiZWw=",
           name: "Tamás Ábel",
           is_followed: false,
@@ -428,6 +437,7 @@ export const fairFixture = {
         node: {
           href: "/charlie",
           id: "charlie-aldrich",
+          _id: "12347775",
           __id: "QXJ0aXN0OmNoYXJsaWUtYWxkcmljaA==",
           name: "Charlie Aldrich",
           is_followed: false,
@@ -443,6 +453,7 @@ export const fairFixture = {
         node: {
           href: "/rik",
           id: "rik-allen",
+          _id: "123477750000000000",
           __id: "QXJ0aXN0OnJpay1hbGxlbg==",
           name: "Rik Allen",
           is_followed: false,
@@ -458,6 +469,7 @@ export const fairFixture = {
         node: {
           href: "/jean",
           id: "jean-luc-almond",
+          _id: "1232222245111",
           __id: "QXJ0aXN0OmplYW4tbHVjLWFsbW9uZA==",
           name: "Jean-Luc Almond",
           is_followed: false,
@@ -473,6 +485,7 @@ export const fairFixture = {
         node: {
           href: "/amador",
           id: "amador",
+          _id: "123222224588888",
           __id: "QXJ0aXN0OmFtYWRvcg==",
           name: "Amador",
           is_followed: false,
@@ -497,6 +510,7 @@ export const fairFixture = {
               id: "spruth-magers",
               href: "/spruth-magers",
               name: "Sprüth Magers",
+              _id: "123456",
             },
           },
         },
@@ -509,6 +523,7 @@ export const fairFixture = {
               id: "cardi-gallery",
               href: "/cardi-gallery",
               name: "CARDI GALLERY",
+              _id: "1234562",
             },
           },
         },
@@ -516,17 +531,32 @@ export const fairFixture = {
     ],
   },
   shows: {
+    pageInfo: {
+      endCursor: "0.7605261301690746:5ba9f83787830600062e7f86",
+      startCursor: "YXJyYXljb25uZWN0aW9uOjA=",
+      hasNextPage: true,
+      hasPreviousPage: false,
+    },
     edges: [
       {
         cursor: "YXJyYXljb25uZWN0aW9uOjA=",
         node: {
           id: "steidel-contemporary-steidel-contemporary-at-sofa-chicago-2018",
+          _id: "111",
+          counts: {
+            artworks: 4,
+          },
           name: "Steidel Contemporary at SOFA CHICAGO 2018",
           is_fair_booth: true,
           partner: {
             __id: "UGFydG5lcjpzdGVpZGVsLWNvbnRlbXBvcmFyeQ==",
+            _id: "123123123123123123123",
             name: "Steidel Contemporary",
             href: "http://www.stei.com",
+            profile: {
+              is_followed: false,
+              _id: "1231231231",
+            },
           },
           fair: {
             name: "SOFA CHICAGO 2018",
@@ -546,49 +576,121 @@ export const fairFixture = {
             edges: [
               {
                 node: {
-                  __id: "QXJ0d29yazpkZWJyYS1zdGVpZGVsLWNvcm51LWdsYWNpZWktMQ==",
-                  id: "debra-steidel-cornu-glaciei-1",
-                  image: {
-                    aspect_ratio: 1.52,
+                  id: "christine-flynn-costa-rica-palms-1",
+                  title: "Costa Rica Palms",
+                  date: "2018",
+                  sale_message: "£2,500 - 5,000",
+                  is_in_auction: false,
+                  is_biddable: false,
+                  is_acquireable: false,
+                  is_offerable: false,
+                  sale: null,
+                  sale_artwork: null,
+                  href: "/artwork/christine-flynn-costa-rica-palms-1",
+                  artists: [
+                    {
+                      id: "christine-flynn-1",
+                      name: "Christine Flynn",
+                    },
+                  ],
+                  partner: {
+                    id: "kahn-gallery",
+                    _id: "58d3ac7dc9dc241448f6ec7c",
+                    name: "Kahn Gallery",
                   },
-                  __fragments: {
-                    Artwork_artwork: {},
+                  image: {
+                    url: "https://d32dm0rphc51dk.cloudfront.net/sxzp6tLM3zFJ3dz5kfIqVA/larger.jpg",
+                    aspect_ratio: 1.64,
                   },
                 },
               },
               {
                 node: {
-                  __id: "QXJ0d29yazptYXJrLWhlbnJ5LWRvb2xpdHRsZS1jb3JhbC12ZXNzZWw=",
-                  id: "mark-henry-doolittle-coral-vessel",
-                  image: {
-                    aspect_ratio: 1,
+                  id: "reinhard-gorner-palacio-nacional-de-mafra-portugal",
+                  title: "Palacio Nacional de Mafra, Portugal",
+                  date: "2016",
+                  sale_message: "$5,500",
+                  is_in_auction: false,
+                  is_biddable: false,
+                  is_acquireable: false,
+                  is_offerable: false,
+                  sale: null,
+                  sale_artwork: null,
+                  href: "/artwork/reinhard-gorner-palacio-nacional-de-mafra-portugal",
+                  artists: [
+                    {
+                      id: "reinhard-gorner",
+                      name: "Reinhard Gorner",
+                    },
+                  ],
+                  partner: {
+                    id: "kahn-gallery",
+                    _id: "58d3ac7dc9dc241448f6ec7c",
+                    name: "Kahn Gallery",
                   },
-                  __fragments: {
-                    Artwork_artwork: {},
+                  image: {
+                    url: "https://d32dm0rphc51dk.cloudfront.net/nkFRIEsLDAZPUQkcN7Nb3Q/small.jpg",
+                    aspect_ratio: 0.88,
                   },
                 },
               },
               {
                 node: {
-                  __id: "QXJ0d29yazp0ZXNzYS1lYXN0bWFuLWNsb3VkLWxhbmRzY2FwZS1vcmFuZ2UtaG90LXBpbms=",
-                  id: "tessa-eastman-cloud-landscape-orange-hot-pink",
-                  image: {
-                    aspect_ratio: 1.5,
+                  id: "elisabeth-lecourt-ma-poupee-de-cire-en-fanfaron-nepal",
+                  title: "Ma Poupée de Cire en Fanfaron Népal",
+                  date: "2018",
+                  sale_message: "Sold",
+                  is_in_auction: false,
+                  is_biddable: false,
+                  is_acquireable: false,
+                  is_offerable: false,
+                  sale: null,
+                  sale_artwork: null,
+                  href: "/artwork/elisabeth-lecourt-ma-poupee-de-cire-en-fanfaron-nepal",
+                  artists: [
+                    {
+                      id: "elisabeth-lecourt",
+                      name: "Elisabeth LECOURT",
+                    },
+                  ],
+                  partner: {
+                    id: "kahn-gallery",
+                    _id: "58d3ac7dc9dc241448f6ec7c",
+                    name: "Kahn Gallery",
                   },
-                  __fragments: {
-                    Artwork_artwork: {},
+                  image: {
+                    url: "https://d32dm0rphc51dk.cloudfront.net/GJPv6LnC3XpZasK1C3rzmQ/larger.jpg",
+                    aspect_ratio: 0.74,
                   },
                 },
               },
               {
                 node: {
-                  __id: "QXJ0d29yazp0ZXNzYS1lYXN0bWFuLXNub3ctY2xvdWQtNg==",
-                  id: "tessa-eastman-snow-cloud-6",
-                  image: {
-                    aspect_ratio: 1,
+                  id: "damien-gard-au-travers-des-siecles-1",
+                  title: "Au Travers des Siècles",
+                  date: "2017",
+                  sale_message: "£2,500 - 5,000",
+                  is_in_auction: false,
+                  is_biddable: false,
+                  is_acquireable: false,
+                  is_offerable: false,
+                  sale: null,
+                  sale_artwork: null,
+                  href: "/artwork/damien-gard-au-travers-des-siecles-1",
+                  artists: [
+                    {
+                      id: "damien-gard",
+                      name: "Damien Gard",
+                    },
+                  ],
+                  partner: {
+                    id: "kahn-gallery",
+                    _id: "58d3ac7dc9dc241448f6ec7c",
+                    name: "Kahn Gallery",
                   },
-                  __fragments: {
-                    Artwork_artwork: {},
+                  image: {
+                    url: "https://d32dm0rphc51dk.cloudfront.net/SdvT-flDhUHGblmIDdsqtg/medium_rectangle.jpg",
+                    aspect_ratio: 0.71,
                   },
                 },
               },
@@ -600,6 +702,9 @@ export const fairFixture = {
       },
     ],
   },
+  isActive: true,
+  hours:
+    "Thursday, November 1, 2018: 5 - 9 pm\r\nFriday, November 2, 2018: 11 am - 7 pm (10 - 11 am VIP hour)\r\nSaturday, November 3, 2018: 11 am - 7 pm (10 - 11 am VIP hour)\r\nSunday, November 4, 2018: 12 - 6 pm ",
   links:
     "[Palm Beach Modern + Contempoary](http://www.artpbfair.com/)\r\n[Facebook](https://www.facebook.com/PalmBeachModernandContemporary) | [Instagram](https://www.instagram.com/artmiamifairs/) | [Twitter](https://twitter.com/PB_Modern)",
   about:
