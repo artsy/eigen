@@ -57,7 +57,7 @@ Array [
         ]
       }
     >
-      Anderson Fine Art Gallery
+      Two Palms
     </Text>
     <Text
       className="sc-bwzfXH uTxCW"
@@ -225,7 +225,7 @@ Array [
             ]
           }
         >
-          David Hockney, 
+          Sam Francis, 
         </Text>
       </View>
       <View
@@ -259,7 +259,7 @@ Array [
             ]
           }
         >
-          Sam Francis
+          Pablo Picasso
         </Text>
       </View>
       <Text
@@ -311,7 +311,7 @@ Array [
             ]
           }
         >
-          15 others
+          14 others
         </Text>
       </View>
     </View>
