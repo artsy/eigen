@@ -8,7 +8,9 @@ import { FairBoothContainer as FairBooth } from "../FairBooth"
 
 jest.unmock("react-relay")
 
-// This test is intentionally disabled as of RN 0.59 upgrade
+// FIXME: This one is unstable. It passes most of the time but not always. Because we take snapshots of HTML it is hard
+//        to understand exactly what changed. We should switch to snapshotting JSON and determine if the FairBooth
+//        renders correctly atm.
 xit("renders properly", async () => {
   const tree = await renderUntil(
     wrapper => wrapper.find(FairBoothHeader).length > 0,
