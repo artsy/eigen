@@ -4,7 +4,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { FavoriteFairsQuery } from "__generated__/FavoriteFairsQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 
-// @TODO: Implement test for this component
 export default ({ render }) => {
   return (
     <QueryRenderer<FavoriteFairsQuery>

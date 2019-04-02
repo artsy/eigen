@@ -5,7 +5,7 @@ import React from "react"
 import { TabFairItemRow } from "../index"
 
 // @TODO: We are already stubbing Fair data for tests in src/lib/Scenes/Fair/__fixtures__/index.ts; can we modularize this test by importing that fixture?
-// @TODO: Can we expand on this test by mocking the navigation function
+// @TODO: Can we expand on this test by mocking the navigation function https://artsyproduct.atlassian.net/browse/LD-549
 
 const fairData = ({
   counts: {

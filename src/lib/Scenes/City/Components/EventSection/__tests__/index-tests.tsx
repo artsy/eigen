@@ -4,7 +4,6 @@ import React from "react"
 import { RelayProp } from "react-relay"
 import { EventSection } from "../index"
 
-// @TODO: This data mock is similarly reused in the event sections; can it be modularized?
 const data = [
   {
     name: "PALAY, Trapunto Murals by Pacita Abad",

@@ -38,6 +38,7 @@ export class SavedFairs extends Component<Props, State> {
     })
   }
 
+  // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
     const fairs = this.props.me.followsAndSaves.fairs.edges.filter(edge => edge.node.profile.is_followed)
 

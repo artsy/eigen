@@ -46,6 +46,7 @@ export class SavedWorks extends Component<Props, State> {
     })
   }
 
+  // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
     const artworks = this.props.me.saved_artworks.artworks_connection.edges.map(edge => edge.node)
 

@@ -213,7 +213,7 @@ export class AllEvents extends React.Component<Props, State> {
     }
   }
 
-  // @TODO: Implement test for the AllEvents component
+  // @TODO: Implement test for the AllEvents component https://artsyproduct.atlassian.net/browse/LD-562
   render() {
     const { sections } = this.state
     return (

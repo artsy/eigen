@@ -53,7 +53,7 @@ class CityFairList extends React.Component<Props, State> {
     )
   }
 
-  // @TODO: Implement test for this component
+  // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
   render() {
     const {
       city: {

@@ -39,6 +39,7 @@ class Artists extends React.Component<Props, State> {
     })
   }
 
+  // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
     const rows: any[] = this.props.me.followed_artists_connection.edges.map(e => e.node.artist)
 

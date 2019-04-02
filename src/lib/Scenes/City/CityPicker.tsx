@@ -81,7 +81,7 @@ export class CityPicker extends Component<Props, State> {
     )
   }
 
-  // @TODO: Implement test for this component
+  // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
   render() {
     const { selectedCity } = this.state
     const { height: screenHeight } = Dimensions.get("window")

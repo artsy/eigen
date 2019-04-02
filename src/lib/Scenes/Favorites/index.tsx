@@ -54,7 +54,7 @@ interface Props {
   context_screen_owner_type: null,
 })
 
-// @TODO: Implement test on this component
+// @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
 class Favorites extends React.Component<Props, null> {
   render() {
     return (

@@ -5,7 +5,6 @@ import React from "react"
 import { RelayProp } from "react-relay"
 import { Event } from "../index"
 
-// @TODO: This data mock is similarly reused in the event sections; can it be modularized?
 const eventData = ({
   name: "PALAY, Trapunto Murals by Pacita Abad",
   __id: "U2hvdzpwYWNpdGEtYWJhZC1hcnQtZXN0YXRlLXBhbGF5LXRyYXB1bnRvLW11cmFscy1ieS1wYWNpdGEtYWJhZA==",

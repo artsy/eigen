@@ -112,6 +112,7 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
     }
   }
 
+  // @TODO: Implement tests for this component: https://artsyproduct.atlassian.net/browse/LD-549
   render() {
     return (
       <Theme>
