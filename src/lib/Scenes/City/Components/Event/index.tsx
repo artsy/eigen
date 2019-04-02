@@ -156,7 +156,7 @@ export class Event extends React.Component<Props, State> {
                 </Sans>
               )}
             </TextContainer>
-            <Box width={102} height={34}>
+            <Flex maxWidth={102} height={34} flexBasis="29%" flexDirection="row" flexGrow={1}>
               <InvertedButton
                 grayBorder={true}
                 text={is_followed ? "Saved" : "Save"}
@@ -164,7 +164,7 @@ export class Event extends React.Component<Props, State> {
                 selected={is_followed}
                 inProgress={isFollowedSaving}
               />
-            </Box>
+            </Flex>
           </Flex>
         </Box>
       </TouchableWithoutFeedback>
