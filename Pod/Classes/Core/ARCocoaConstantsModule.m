@@ -15,6 +15,7 @@ RCT_EXPORT_MODULE();
 {
     return @{
         @"UIApplicationOpenSettingsURLString": UIApplicationOpenSettingsURLString,
+        @"LocalTimeZone": [[NSTimeZone localTimeZone] name],
     };
 }
 
