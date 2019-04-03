@@ -577,6 +577,7 @@ export class GlobalMap extends React.Component<Props, State> {
     return this.state.featureCollections[filterID]
   }
 
+  // @TODO: Implement tests for this component https://artsyproduct.atlassian.net/browse/LD-564
   render() {
     const city = get(this.props, "viewer.city")
     const { relayErrorState, userLocationWithinCity } = this.props

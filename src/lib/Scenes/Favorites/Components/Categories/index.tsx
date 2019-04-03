@@ -38,6 +38,7 @@ export class Categories extends React.Component<Props, State> {
     })
   }
 
+  // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
     const rows: any[] = this.props.me.followed_genes.edges.map(edge => edge.node.gene)
 

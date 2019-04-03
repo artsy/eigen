@@ -36,5 +36,5 @@ it("renders properly", async () => {
   expect(dom).toContain("BMW Art Activations")
   expect(dom).toContain(fairFixture.sponsoredContent.activationText)
 
-  // @TODO: Add test here for View Press Release button
+  // @TODO: Add tests here for View Press Release button https://artsyproduct.atlassian.net/browse/LD-549
 })
