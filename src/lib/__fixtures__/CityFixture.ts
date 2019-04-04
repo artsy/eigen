@@ -1,4 +1,10 @@
 export const CityFixture = {
+  safeAreaInsets: {
+    top: 1,
+    bottom: 1,
+    left: 1,
+    right: 1,
+  },
   slug: "new-york-ny-usa",
   name: "New York",
   coordinates: { lat: 48.86, lng: 2.35 },

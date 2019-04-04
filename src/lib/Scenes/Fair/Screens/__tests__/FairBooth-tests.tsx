@@ -8,7 +8,7 @@ import { FairBoothContainer as FairBooth } from "../FairBooth"
 
 jest.unmock("react-relay")
 
-xit("renders properly", async () => {
+it("renders properly", async () => {
   const tree = await renderUntil(
     wrapper => wrapper.find(FairBoothHeader).length > 0,
     <MockRelayRenderer
