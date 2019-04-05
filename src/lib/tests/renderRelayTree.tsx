@@ -105,7 +105,9 @@ export function renderRelayTree<P = {}, S = {}, C extends React.Component = Reac
     renderUntil: renderUntilPredicate,
     variables,
     wrapper,
+    componentProps,
   } = params
+
   const renderer = (
     <MockRelayRenderer
       Component={Component}
@@ -114,6 +116,7 @@ export function renderRelayTree<P = {}, S = {}, C extends React.Component = Reac
       variables={variables}
       mockData={mockData}
       mockMutationResults={mockMutationResults}
+      componentProps={componentProps}
     />
   )
   return mount<C, P, S>(wrapper ? wrapper(renderer) : renderer).renderUntil(

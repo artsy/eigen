@@ -21,6 +21,11 @@ jest.mock("@mapbox/react-native-mapbox-gl", () => ({
 describe("GlobalMap", () => {
   it("renders correctly", async () => {
     await renderRelayTree({
+      componentProps: {
+        safeAreaInsets: {
+          top: 1,
+        },
+      },
       Component: GlobalMapContainer,
       query: graphql`
         query GlobalMapTestsQuery($citySlug: String!, $maxInt: Int!) {
@@ -30,9 +35,6 @@ describe("GlobalMap", () => {
         }
       `,
       mockData: {
-        safeAreaInsets: {
-          top: 1,
-        },
         viewer: {
           city: CityFixture,
         },
