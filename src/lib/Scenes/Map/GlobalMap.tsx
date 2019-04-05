@@ -604,7 +604,6 @@ export class GlobalMap extends React.Component<Props, State> {
           resizeMode="cover"
           style={{ ...this.backgroundImageSize }}
         />
-        {console.log("TCL: render -> this.props", this.props)}
         <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top }}>
           <Animated.View style={this.moveButtons && { transform: [{ translateY: this.moveButtons }] }}>
             <Flex flexDirection="row" justifyContent="flex-start" alignContent="flex-start" px={3} pt={1}>
