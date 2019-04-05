@@ -44,6 +44,23 @@ type AggregationCount {
   sortable_id: String
 }
 
+# Publish artwork Series Stats
+type AnalyticsArtworksPublishedStats {
+  percentageChanged: Int!
+  period: AnalyticsQueryPeriodEnum!
+
+  # Time series data on number of artworks published
+  timeSeries(samplingFrequency: AnalyticsSamplingFrequencyEnum): [AnalyticsArtworksPublishedTimeSeriesStats!]
+  totalCount: Int!
+}
+
+# Publish artwork Series Stats
+type AnalyticsArtworksPublishedTimeSeriesStats implements AnalyticsPartnerTimeSeriesStatsType {
+  count: Int
+  samplingFrequency: AnalyticsSamplingFrequencyEnum!
+  time: AnalyticsDateTime
+}
+
 # An ISO 8601 datetime
 scalar AnalyticsDateTime
 
@@ -52,20 +69,36 @@ type AnalyticsHistogramBin {
   maxPriceCents: Int!
   minPriceCents: Int!
   numArtworks: Int!
+  minPrice(
+    decimal: String = "."
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  maxPrice(
+    decimal: String = "."
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
 }
 
 # Partner Stats
 type AnalyticsPartnerStatsType {
+  # Time series data on number of artworks published
+  artworksPublished(period: AnalyticsQueryPeriodEnum!): AnalyticsArtworksPublishedStats
   partnerId: String!
-  timeSeries: [AnalyticsPartnerTimeSeriesStatsType!]
-  uniqueVisitors: Int
+
+  # Number of unique visitors
+  uniqueVisitors(period: AnalyticsQueryPeriodEnum!): Int
 }
 
 # Partner Time Series Stats
-type AnalyticsPartnerTimeSeriesStatsType {
-  artworksPublished: Int
-  date: AnalyticsDateTime
-  partnerId: String
+interface AnalyticsPartnerTimeSeriesStatsType {
+  samplingFrequency: AnalyticsSamplingFrequencyEnum!
+  time: AnalyticsDateTime
 }
 
 # Pricing Context Histogram
@@ -133,15 +166,26 @@ enum AnalyticsPricingContextCategoryEnum {
   WORK_ON_PAPER
 }
 
-enum AnalyticsPricingContextDimensionsEnum {
-  # large
-  LARGE
+enum AnalyticsQueryPeriodEnum {
+  # Four weeks
+  FOUR_WEEKS
 
-  # medium
-  MEDIUM
+  # One year
+  ONE_YEAR
 
-  # small
-  SMALL
+  # Sixteen weeks
+  SIXTEEN_WEEKS
+}
+
+enum AnalyticsSamplingFrequencyEnum {
+  # Daily
+  DAILY
+
+  # Monthly
+  MONTHLY
+
+  # Weekly
+  WEEKLY
 }
 
 input ApproveOrderInput {
@@ -1000,6 +1044,13 @@ type Artwork implements Node & Searchable & Sellable {
   signatureInfo: ArtworkInfoRow
   conditionDescription: ArtworkInfoRow
   certificateOfAuthenticity: ArtworkInfoRow
+
+  # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
+  widthCm: Float
+
+  # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
+  heightCm: Float
+  pricingContext: AnalyticsPricingContext
 }
 
 enum ArtworkAggregation {
@@ -1190,6 +1241,8 @@ type ArtworkContextFair {
   location: Location
   name: String
   profile: Profile
+
+  # This connection only supports forward pagination. We're replacing Relay's default cursor with one from Gravity.
   shows_connection(
     # Number of artworks to return
     section: String
@@ -1817,6 +1870,12 @@ type ArtworkItem implements Node & Searchable & Sellable {
   signatureInfo: ArtworkInfoRow
   conditionDescription: ArtworkInfoRow
   certificateOfAuthenticity: ArtworkInfoRow
+
+  # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
+  widthCm: Float
+
+  # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
+  heightCm: Float
 }
 
 type ArtworkLayer {
@@ -3326,6 +3385,8 @@ type Fair {
   location: Location
   name: String
   profile: Profile
+
+  # This connection only supports forward pagination. We're replacing Relay's default cursor with one from Gravity.
   shows_connection(
     # Number of artworks to return
     section: String
@@ -4560,6 +4621,8 @@ type HomePageModuleContextFair {
   location: Location
   name: String
   profile: Profile
+
+  # This connection only supports forward pagination. We're replacing Relay's default cursor with one from Gravity.
   shows_connection(
     # Number of artworks to return
     section: String
@@ -7300,6 +7363,9 @@ type Query {
     # Mode of search to execute. Default: SITE.
     mode: SearchMode
     aggregations: [SearchAggregation]
+
+    # If present, will be used for pagination instead of cursors.
+    page: Int
     after: String
     first: Int
     before: String
@@ -7407,14 +7473,6 @@ type Query {
 
   # Find PartnerStats
   analyticsPartnerStats(partnerId: String!): AnalyticsPartnerStatsType
-
-  # Pricing Context Histograms
-  analyticsPricingContext(
-    artistId: String!
-    category: AnalyticsPricingContextCategoryEnum!
-    dimensions: AnalyticsPricingContextDimensionsEnum!
-    listPriceCents: Int!
-  ): AnalyticsPricingContext
   marketingCollections(
     randomizationSeed: String
     size: Int
@@ -7954,10 +8012,12 @@ type SearchableItem implements Node & Searchable {
 
   # A type-specific Gravity Mongo Document ID.
   _id: String!
+  description: String
   displayLabel: String
   imageUrl: String
   href: String
-  searchableType: String
+  searchableType: String @deprecated(reason: "Switch to use `displayType`")
+  displayType: String
 }
 
 enum SearchAggregation {
@@ -9286,6 +9346,9 @@ type Viewer {
     # Mode of search to execute. Default: SITE.
     mode: SearchMode
     aggregations: [SearchAggregation]
+
+    # If present, will be used for pagination instead of cursors.
+    page: Int
     after: String
     first: Int
     before: String

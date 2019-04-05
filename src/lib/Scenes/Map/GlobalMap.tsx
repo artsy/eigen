@@ -246,7 +246,7 @@ export class GlobalMap extends React.Component<Props, State> {
       setTimeout(this.resetZoomAndCamera, 500)
     }
 
-    // If there is a new city, emity it and update our map.
+    // If there is a new city, enity it and update our map.
     if (nextProps.viewer) {
       // TODO: This is currently really inefficient.
       const bucketResults = bucketCityResults(nextProps.viewer)
