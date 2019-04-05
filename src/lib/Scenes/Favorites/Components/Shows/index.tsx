@@ -39,6 +39,7 @@ export class Shows extends Component<Props, State> {
     })
   }
 
+  // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
     const shows = this.props.me.followsAndSaves.shows.edges.map(edge => edge.node)
 

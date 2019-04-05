@@ -34,6 +34,7 @@ interface Props {
   renderedInTab?: boolean
 }
 
+// @TODO: Implement test for the EventList component https://artsyproduct.atlassian.net/browse/LD-562
 export class EventList extends React.Component<Props> {
   renderItem = item => {
     const { type } = this.props

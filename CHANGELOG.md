@@ -16,6 +16,7 @@
 
 ### Master
 
+- Inlcude local timezone in each MP request so MP can decide to render datetimes in the user’s local time - alloy
 - Fixes overflowing Save button on small screen devices - ashley
 
 ### 1.9.4
@@ -434,7 +435,7 @@
 - Adds MoreInfo screen to show detail view - javamonn
 - Clean up Jest log output, update relay-mock-network-layer - javamonn
 - Fair performance enhancements - ashley
-- Add start and end properties to Favorites Works and Shows page info queries -ashley
+- Identifies areas missing test coverage and adds Jira urls to track them - ashley
 
 ### 1.7.1
 

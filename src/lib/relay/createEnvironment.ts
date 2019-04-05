@@ -7,6 +7,7 @@ import { cacheMiddleware } from "./middlewares/cacheMiddleware"
 import { metaphysicsExtensionsLoggerMiddleware } from "./middlewares/metaphysicsMiddleware"
 
 const Emission = NativeModules.Emission || {}
+const Constants = NativeModules.ARCocoaConstantsModule || {}
 
 /// WARNING: Creates a whole new, separate Relay environment. Useful for testing and in Storybooks.
 /// Use `defaultEnvironment` for production code.
@@ -20,6 +21,7 @@ export default function createEnvironment() {
         "User-Agent": Emission.userAgent,
         "X-USER-ID": Emission.userID,
         "X-ACCESS-TOKEN": Emission.authenticationToken,
+        "X-TIMEZONE": Constants.LocalTimeZone,
       },
     }),
     loggerMiddleware(),

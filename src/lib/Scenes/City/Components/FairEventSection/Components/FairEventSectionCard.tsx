@@ -16,6 +16,7 @@ export class FairEventSectionCard extends Component<Props> {
     SwitchBoard.presentNavigationViewController(this, path)
   }
 
+  // @TODO: Implement tests for this component https://artsyproduct.atlassian.net/browse/LD-549
   render() {
     const {
       fair: { image, name, profile, exhibition_period },
