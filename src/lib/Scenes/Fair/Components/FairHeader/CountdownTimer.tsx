@@ -6,6 +6,7 @@ import React from "react"
 interface Props {
   startAt: string
   endAt: string
+  formattedOpeningHours: string
 }
 
 enum FairTimerState {
@@ -14,34 +15,13 @@ enum FairTimerState {
   PAST = "PAST",
 }
 
-export const formatDate = date => {
-  const momentToUse = moment(date)
-  const momentDate = momentToUse.format("MMM D")
-  const momentHour = momentToUse.format("ha")
-  if (!!momentHour && !!momentDate) {
-    return ` ${momentDate} at ${momentHour}`
-  } else if (!!momentDate) {
-    return ` ${momentDate}`
-  }
-}
-
-function relevantStateData(state, { startAt, endAt }: Props) {
-  switch (state) {
-    case FairTimerState.UPCOMING:
-      return {
-        date: startAt,
-        label: `Opens${formatDate(startAt)}`,
-      }
-    case FairTimerState.CURRENT:
-      return {
-        date: endAt,
-        label: `Closes${formatDate(endAt)}`,
-      }
-    case FairTimerState.PAST:
-      return {
-        date: null,
-        label: "Closed",
-      }
+function currentDateToUse({ startAt, endAt }: Props) {
+  if (Date.parse(startAt) > Date.now()) {
+    return startAt
+  } else if (Date.parse(endAt) > Date.now()) {
+    return endAt
+  } else {
+    return null
   }
 }
 
@@ -57,11 +37,11 @@ function currentState({ startAt, endAt }: Props) {
 
 interface CountdownTextProps {
   duration: moment.Duration
-  label: string
+  formattedOpeningHours: string
 }
 
-const CountdownText: React.SFC<CountdownTextProps> = ({ duration, label }) =>
-  label !== "Closed" && (
+const CountdownText: React.SFC<CountdownTextProps> = ({ duration, formattedOpeningHours }) =>
+  formattedOpeningHours !== "Closed" && (
     <Flex justifyContent="center" alignItems="center">
       <LabeledTicker
         renderSeparator={() => <Spacer mr={0.5} />}
@@ -69,7 +49,7 @@ const CountdownText: React.SFC<CountdownTextProps> = ({ duration, label }) =>
         duration={duration}
       />
       <Sans size="1" color="white">
-        {label}
+        {formattedOpeningHours}
       </Sans>
     </Flex>
   )
@@ -77,8 +57,8 @@ const CountdownText: React.SFC<CountdownTextProps> = ({ duration, label }) =>
 export const CountdownTimer: React.SFC<Props> = (props: Props) => {
   const onState = () => {
     const state = currentState(props)
-    const { label, date } = relevantStateData(state, props)
-    return { state, label, date }
+    const date = currentDateToUse(props)
+    return { state, date }
   }
   return (
     <CountdownStateManager
