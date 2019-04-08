@@ -119,7 +119,7 @@ export class FairHeader extends React.Component<Props, State> {
 
   render() {
     const {
-      fair: { image, name, profile, start_at, end_at, exhibition_period },
+      fair: { image, name, profile, start_at, end_at, exhibition_period, formattedOpeningHours },
     } = this.props
     const { width: screenWidth } = Dimensions.get("window")
     const imageHeight = 567
@@ -145,7 +145,7 @@ export class FairHeader extends React.Component<Props, State> {
           {!!start_at &&
             !!end_at && (
               <CountdownContainer>
-                <CountdownTimer startAt={start_at} endAt={end_at} />
+                <CountdownTimer startAt={start_at} endAt={end_at} formattedOpeningHours={formattedOpeningHours} />
               </CountdownContainer>
             )}
         </Box>
@@ -165,6 +165,7 @@ export const FairHeaderContainer = createFragmentContainer(
       id
       _id
       name
+      formattedOpeningHours
       counts {
         artists
         partners

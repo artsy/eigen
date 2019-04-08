@@ -6,6 +6,7 @@ import React from "react"
 interface Props {
   startAt: string
   endAt: string
+  formattedOpeningHours: string
 }
 
 enum FairTimerState {
@@ -14,33 +15,22 @@ enum FairTimerState {
   PAST = "PAST",
 }
 
-export const formatDate = date => {
-  const momentToUse = moment(date)
-  const momentDate = momentToUse.format("MMM D")
-  const momentHour = momentToUse.format("ha")
-  if (!!momentHour && !!momentDate) {
-    return ` ${momentDate} at ${momentHour}`
-  } else if (!!momentDate) {
-    return ` ${momentDate}`
-  }
-}
-
-function relevantStateData(state, { startAt, endAt }: Props) {
+function relevantStateData(state, { startAt, endAt, formattedOpeningHours }: Props) {
   switch (state) {
     case FairTimerState.UPCOMING:
       return {
         date: startAt,
-        label: `Opens${formatDate(startAt)}`,
+        label: formattedOpeningHours,
       }
     case FairTimerState.CURRENT:
       return {
         date: endAt,
-        label: `Closes${formatDate(endAt)}`,
+        label: formattedOpeningHours,
       }
     case FairTimerState.PAST:
       return {
         date: null,
-        label: "Closed",
+        label: formattedOpeningHours,
       }
   }
 }

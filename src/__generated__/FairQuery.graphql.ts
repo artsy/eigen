@@ -98,6 +98,7 @@ fragment FairHeader_fair on Fair {
   id
   _id
   name
+  formattedOpeningHours
   counts {
     artists
     partners
@@ -434,7 +435,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FairQuery",
-  "id": "b367348aa8d3100d0f577713d0c5be9a",
+  "id": "f20d8369c281bc3462ee70230cdd738b",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -487,6 +488,13 @@ return {
           v3,
           v4,
           v5,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "formattedOpeningHours",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "LinkedField",
             "alias": null,

@@ -1224,6 +1224,9 @@ type ArtworkContextFair {
 
   # A formatted description of the start to end dates
   exhibition_period: String
+
+  # A formatted description of when the fair starts or closes or if it is closed
+  formattedOpeningHours: String
   has_full_feature: Boolean
   has_homepage_section: Boolean
   has_large_banner: Boolean
@@ -3368,6 +3371,9 @@ type Fair {
 
   # A formatted description of the start to end dates
   exhibition_period: String
+
+  # A formatted description of when the fair starts or closes or if it is closed
+  formattedOpeningHours: String
   has_full_feature: Boolean
   has_homepage_section: Boolean
   has_large_banner: Boolean
@@ -4604,6 +4610,9 @@ type HomePageModuleContextFair {
 
   # A formatted description of the start to end dates
   exhibition_period: String
+
+  # A formatted description of when the fair starts or closes or if it is closed
+  formattedOpeningHours: String
   has_full_feature: Boolean
   has_homepage_section: Boolean
   has_large_banner: Boolean

@@ -7,6 +7,7 @@ export type FairHeader_fair = {
     readonly id: string;
     readonly _id: string;
     readonly name: string | null;
+    readonly formattedOpeningHours: string | null;
     readonly counts: ({
         readonly artists: any | null;
         readonly partners: any | null;
@@ -164,6 +165,13 @@ return {
     },
     v2,
     v0,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "formattedOpeningHours",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -419,5 +427,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '56735f5b815fcf6e09e8406e96d36777';
+(node as any).hash = 'e4643213b16645fc74aea82f6ed12d1a';
 export default node;
