@@ -15,13 +15,23 @@ enum FairTimerState {
   PAST = "PAST",
 }
 
-function currentDateToUse({ startAt, endAt }: Props) {
-  if (Date.parse(startAt) > Date.now()) {
-    return startAt
-  } else if (Date.parse(endAt) > Date.now()) {
-    return endAt
-  } else {
-    return null
+function relevantStateData(state, { startAt, endAt, formattedOpeningHours }: Props) {
+  switch (state) {
+    case FairTimerState.UPCOMING:
+      return {
+        date: startAt,
+        label: formattedOpeningHours,
+      }
+    case FairTimerState.CURRENT:
+      return {
+        date: endAt,
+        label: formattedOpeningHours,
+      }
+    case FairTimerState.PAST:
+      return {
+        date: null,
+        label: formattedOpeningHours,
+      }
   }
 }
 
@@ -37,11 +47,11 @@ function currentState({ startAt, endAt }: Props) {
 
 interface CountdownTextProps {
   duration: moment.Duration
-  formattedOpeningHours: string
+  label: string
 }
 
-const CountdownText: React.SFC<CountdownTextProps> = ({ duration, formattedOpeningHours }) =>
-  formattedOpeningHours !== "Closed" && (
+const CountdownText: React.SFC<CountdownTextProps> = ({ duration, label }) =>
+  label !== "Closed" && (
     <Flex justifyContent="center" alignItems="center">
       <LabeledTicker
         renderSeparator={() => <Spacer mr={0.5} />}
@@ -49,7 +59,7 @@ const CountdownText: React.SFC<CountdownTextProps> = ({ duration, formattedOpeni
         duration={duration}
       />
       <Sans size="1" color="white">
-        {formattedOpeningHours}
+        {label}
       </Sans>
     </Flex>
   )
@@ -57,8 +67,8 @@ const CountdownText: React.SFC<CountdownTextProps> = ({ duration, formattedOpeni
 export const CountdownTimer: React.SFC<Props> = (props: Props) => {
   const onState = () => {
     const state = currentState(props)
-    const date = currentDateToUse(props)
-    return { state, date }
+    const { label, date } = relevantStateData(state, props)
+    return { state, label, date }
   }
   return (
     <CountdownStateManager

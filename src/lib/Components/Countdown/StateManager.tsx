@@ -2,12 +2,13 @@ import React from "react"
 import { DurationProvider } from "./DurationProvider"
 
 export interface TickerState {
+  label: string
   date?: string
   state: string
 }
 
 interface Props {
-  CountdownComponent: React.ComponentType
+  CountdownComponent: React.ComponentType<{ label: string }>
   timeOffsetInMilliseconds?: number
   onCurrentTickerState: () => TickerState
   onNextTickerState: (currentState: TickerState) => TickerState
@@ -30,7 +31,7 @@ export class StateManager extends React.Component<Props, State> {
   render() {
     const { CountdownComponent, timeOffsetInMilliseconds } = this.props
     const {
-      tickerState: { date },
+      tickerState: { label, date },
     } = this.state
 
     return (
@@ -39,7 +40,7 @@ export class StateManager extends React.Component<Props, State> {
         timeOffsetInMilliseconds={timeOffsetInMilliseconds}
         onDurationEnd={this.handleDurationEnd}
       >
-        <CountdownComponent />
+        <CountdownComponent label={label} />
       </DurationProvider>
     )
   }
