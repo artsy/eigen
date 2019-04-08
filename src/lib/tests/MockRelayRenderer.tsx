@@ -41,6 +41,7 @@ export interface MockRelayRendererProps<T extends OperationBase = OperationDefau
    */
   mockMutationResults?: object
   mockNetwork?: RelayNetwork
+  componentProps?: object
 }
 
 export interface MockRelayRendererState {
@@ -184,8 +185,7 @@ export class MockRelayRenderer<T extends OperationBase = OperationDefaults> exte
       return `Error occurred while rendering Relay component: ${error}`
     }
 
-    const { Component, variables, query } = this.props
-
+    const { Component, variables, query, componentProps } = this.props
     const network = this.getRelayNetwork()
     const source = new RecordSource()
     const store = new Store(source)
@@ -206,7 +206,7 @@ export class MockRelayRenderer<T extends OperationBase = OperationDefaults> exte
               // We rely on renderWithLoadProgress to throw an error in the test
               // env ASAP. When we extract these test helpers to their own package
               // that will need to be handled explicitly.
-              render={renderWithLoadProgress(Component as any)}
+              render={renderWithLoadProgress(Component as any, componentProps)}
             />
           </ContextProvider>
         )}
