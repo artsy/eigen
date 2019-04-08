@@ -42,6 +42,7 @@ export const fairFixture = {
   },
   start_at: "2018-11-01T17:00:00+00:00",
   end_at: "2018-11-04T18:00:00+00:00",
+  formattedOpeningHours: "Opens Nov 1 at 5:00pm",
   location: {
     __id: "TG9jYXRpb246NWJiNjJmMzYyYjVlN2QwMDI5ODliZDhh",
     id: "5bb62f362b5e7d002989bd8a",

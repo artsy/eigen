@@ -27,12 +27,12 @@ describe("CountdownTimer", () => {
   it("renders current properly", () => {
     const comp = render(
       <CountdownTimer
-        formattedOpeningHours="Opens April 14 at 8:00pm"
+        formattedOpeningHours="Opens Apr 14 at 8:00pm"
         startAt="2018-04-14T20:00:00+00:00"
         endAt="2018-05-14T20:00:00+00:00"
       />
     )
-    expect(comp.text()).toContain("Opens April 14 at 8:00pm")
+    expect(comp.text()).toContain("Opens Apr 14 at 8:00pm")
   })
 
   it("renders closed properly", () => {
