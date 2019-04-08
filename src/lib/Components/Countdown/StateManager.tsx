@@ -2,7 +2,6 @@ import React from "react"
 import { DurationProvider } from "./DurationProvider"
 
 export interface TickerState {
-  // label: string
   date?: string
   state: string
 }
