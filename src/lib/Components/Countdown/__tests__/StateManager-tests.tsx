@@ -19,7 +19,7 @@ describe("StateManager", () => {
           date: new Date(Date.now() + 1000).toISOString(),
           label: "foo",
         })}
-        onNextTickerState={jest.fn(() => ({ label: "bar", date: null }))}
+        onNextTickerState={jest.fn(() => ({ label: "bar", date: null, state: "foo" }))}
       />
     )
 

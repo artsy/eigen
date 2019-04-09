@@ -25,6 +25,9 @@ const mockphysics = metaphysics as jest.Mock<any>
 jest.unmock("react-relay")
 import relay from "react-relay"
 
+const commitMutationMock = (fn?: typeof relay.commitMutation) =>
+  jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
+
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),
@@ -184,9 +187,10 @@ describe("when pressing bid button", () => {
         const component = renderer.create(<ConfirmBid {...initialProps} />)
         component.root.instance.setState({ conditionsOfSaleChecked: true })
         console.error = jest.fn() // Silences component logging.
-        relay.commitMutation = jest.fn((_, { onError }) => {
+        relay.commitMutation = commitMutationMock((_, { onError }) => {
           onError(new Error("An error occurred."))
-        })
+          return null
+        }) as any
 
         component.root.findByType(Button).instance.props.onPress()
 
@@ -200,7 +204,10 @@ describe("when pressing bid button", () => {
         console.error = jest.fn() // Silences component logging.
 
         // A TypeError is raised when the device has no internet connection.
-        relay.commitMutation = jest.fn((_, { onError }) => onError(new TypeError("Network request failed")))
+        relay.commitMutation = commitMutationMock((_, { onError }) => {
+          onError(new TypeError("Network request failed"))
+          return null
+        }) as any
 
         component.root.findByType(Button).instance.props.onPress()
 
@@ -221,7 +228,10 @@ describe("when pressing bid button", () => {
           message: 'GraphQL Timeout Error: Mutation.createBidderPosition has timed out after waiting for 5000ms"}',
         }
 
-        relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted({}, [error]))
+        relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+          onCompleted({}, [error])
+          return null
+        }) as any
 
         const component = renderer.create(<ConfirmBid {...initialProps} />)
 
@@ -277,9 +287,10 @@ describe("polling to verify bid position", () => {
     it("polls for new results", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} />)
       component.root.instance.setState({ conditionsOfSaleChecked: true })
-      relay.commitMutation = jest.fn((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.placingBid.bidAccepted)
-      })
+      relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
+        return null
+      }) as any
       let requestCounter = 0 // On the fifth attempt, return highestBidder
       mockphysics.mockImplementation(() => {
         requestCounter++
@@ -308,9 +319,10 @@ describe("polling to verify bid position", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} />)
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValue(Promise.resolve(mockRequestResponses.pollingForBid.pending))
-      relay.commitMutation = jest.fn((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.placingBid.bidAccepted)
-      })
+      relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
+        return null
+      }) as any
 
       component.root.findByType(Button).instance.props.onPress()
 
@@ -331,9 +343,10 @@ describe("polling to verify bid position", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} />)
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
-      relay.commitMutation = jest.fn((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.placingBid.bidAccepted)
-      })
+      relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
+        return null
+      }) as any
 
       component.root.findByType(Button).instance.props.onPress()
       jest.runAllTicks() // Required as metaphysics async call defers execution to next invocation of Node event loop.
@@ -350,9 +363,10 @@ describe("polling to verify bid position", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} />)
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.outbid))
-      relay.commitMutation = jest.fn((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.placingBid.bidAccepted)
-      })
+      relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
+        return null
+      }) as any
 
       component.root.findByType(Button).instance.props.onPress()
       jest.runAllTicks()
@@ -369,9 +383,10 @@ describe("polling to verify bid position", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} />)
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
-      relay.commitMutation = jest.fn((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.placingBid.bidAccepted)
-      })
+      relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
+        return null
+      }) as any
 
       component.root.findByType(Button).instance.props.onPress()
       jest.runAllTicks()
@@ -391,9 +406,10 @@ describe("polling to verify bid position", () => {
       )
       component.root.instance.setState({ conditionsOfSaleChecked: true })
       mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
-      relay.commitMutation = jest.fn((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.placingBid.bidAccepted)
-      })
+      relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
+        return null
+      }) as any
 
       component.root.findByType(Button).instance.props.onPress()
       jest.runAllTicks()
@@ -428,9 +444,10 @@ describe("polling to verify bid position", () => {
     it("shows the error screen with a failure", () => {
       const component = renderer.create(<ConfirmBid {...initialProps} />)
       component.root.instance.setState({ conditionsOfSaleChecked: true })
-      relay.commitMutation = jest.fn((_, { onCompleted }) => {
-        onCompleted(mockRequestResponses.placingBid.bidRejected)
-      })
+      relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.placingBid.bidRejected, null)
+        return null
+      }) as any
 
       component.root.findByType(Button).instance.props.onPress()
       jest.runAllTicks()
@@ -498,7 +515,10 @@ describe("ConfirmBid for unqualified user", () => {
   it("shows the error screen with the correct error message on a createCreditCard mutation failure", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardError))
+    relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      onCompleted(mockRequestResponses.creatingCreditCardError, null)
+      return null
+    }) as any
 
     const component = renderer.create(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
 
@@ -522,11 +542,14 @@ describe("ConfirmBid for unqualified user", () => {
   })
 
   it("shows the error screen with the default error message if there are unhandled errors from the createCreditCard mutation", () => {
-    const errors = ["malformed error"]
+    const errors = [{ message: "malformed error" }]
 
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted({}, errors))
+    relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      onCompleted({}, errors)
+      return null
+    }) as any
 
     const component = renderer.create(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
 
@@ -553,9 +576,10 @@ describe("ConfirmBid for unqualified user", () => {
   it("shows the error screen with the default error message if the creditCardMutation error message is empty", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-    relay.commitMutation = jest.fn((_, { onCompleted }) =>
-      onCompleted(mockRequestResponses.creatingCreditCardEmptyError)
-    )
+    relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      onCompleted(mockRequestResponses.creatingCreditCardEmptyError, null)
+      return null
+    }) as any
 
     const component = renderer.create(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
 
@@ -581,7 +605,10 @@ describe("ConfirmBid for unqualified user", () => {
   it("shows the generic error screen on a createCreditCard mutation network failure", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-    relay.commitMutation = jest.fn((_, { onError }) => onError(new TypeError("Network request failed")))
+    relay.commitMutation = commitMutationMock((_, { onError }) => {
+      onError(new TypeError("Network request failed"))
+      return null
+    }) as any
 
     const component = renderer.create(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
 

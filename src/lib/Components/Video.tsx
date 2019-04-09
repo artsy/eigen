@@ -79,4 +79,4 @@ export class Video extends React.Component<VideoProps> {
   }
 }
 
-const NativeVideo: React.ComponentClass<any> = requireNativeComponent("ARVideo", Video)
+const NativeVideo: React.ComponentClass<any> = requireNativeComponent("ARVideo")

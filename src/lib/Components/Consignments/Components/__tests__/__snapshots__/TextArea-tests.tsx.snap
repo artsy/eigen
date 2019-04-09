@@ -24,6 +24,7 @@ exports[`doesn't show placeholder when initial text is present 1`] = `
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
+      rejectResponderTermination={true}
       selectionColor="#cccccc"
       style={
         Array [
@@ -89,6 +90,7 @@ exports[`shows the placeholder when text is empty 1`] = `
       keyboardAppearance="dark"
       multiline={true}
       onChangeText={[Function]}
+      rejectResponderTermination={true}
       selectionColor="#cccccc"
       style={
         Array [

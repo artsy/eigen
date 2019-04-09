@@ -134,6 +134,7 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
             onFocus={[Function]}
             placeholder="Example"
             placeholderTextColor="#666666"
+            rejectResponderTermination={true}
             returnKeyType="search"
             selectionColor="#cccccc"
             style={

@@ -1,6 +1,8 @@
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import React from "react"
-import { AsyncStorage, Dimensions, NavigatorIOS, Route, ScrollView, View, ViewProperties } from "react-native"
+
+import { AsyncStorage, Dimensions, Route, ScrollView, View, ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 
 import { ConsignmentMetadata, ConsignmentSetup, SearchResult } from "../"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"

@@ -3,7 +3,8 @@
  */
 
 import React from "react"
-import { Image, LayoutChangeEvent, NavigatorIOS, Route, ScrollView, TextProperties, ViewProperties } from "react-native"
+import { Image, LayoutChangeEvent, Route, ScrollView, TextProperties, ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 
 import { Schema, screenTrack } from "lib/utils/track"
 import CloseButton from "../Components/CloseButton"

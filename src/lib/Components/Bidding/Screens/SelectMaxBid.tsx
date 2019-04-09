@@ -1,5 +1,6 @@
 import React from "react"
-import { NavigatorIOS, ViewProperties } from "react-native"
+import { ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 
 import Spinner from "../../../Components/Spinner"

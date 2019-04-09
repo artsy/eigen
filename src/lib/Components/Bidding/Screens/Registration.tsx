@@ -1,7 +1,8 @@
 import { Serif } from "@artsy/palette"
 import { get, isEmpty } from "lodash"
 import React from "react"
-import { NativeModules, NavigatorIOS, View, ViewProperties } from "react-native"
+import { NativeModules, View, ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 import { commitMutation, createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import stripe from "tipsi-stripe"
 
@@ -189,7 +190,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             }
           }
         },
-        onError: errors => this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusError),
+        onError: errors => this.presentRegistrationError(errors, RegistrationStatus.RegistrationStatusNetworkError),
         mutation: graphql`
           mutation RegistrationCreateCreditCardMutation($input: CreditCardInput!) {
             createCreditCard(input: $input) {

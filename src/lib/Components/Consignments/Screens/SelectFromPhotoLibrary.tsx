@@ -14,12 +14,13 @@ import {
   Dimensions,
   Linking,
   NativeModules,
-  NavigatorIOS,
   Route,
   ScrollView,
   View,
   ViewProperties,
 } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
+
 import { ConsignmentSetup } from "../index"
 
 const { ARCocoaConstantsModule, ARTakeCameraPhotoModule } = NativeModules

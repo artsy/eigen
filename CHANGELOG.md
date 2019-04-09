@@ -19,6 +19,7 @@
 - Include local timezone in each MP request so MP can decide to render datetimes in the user’s local time - alloy
 - Fixes overflowing Save button on small screen devices - ashley
 - Moves fair open hours display to metaphysics - kieran
+- Upgrade to React Native 0.59.2 - orta/alloy
 
 ### 1.9.4
 

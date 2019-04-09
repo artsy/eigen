@@ -9,8 +9,5 @@ gem 'cocoapods-check'
 # To manage our secret keys
 gem "cocoapods-keys"
 
-# To apply fixes to the React Native code
-gem 'cocoapods-fix-react-native'
-
 # To avoid ambiguous Podfile.lock contents
 gem "psych"

@@ -130,4 +130,4 @@ export default class OpaqueImageView extends React.Component<Props, State> {
   }
 }
 
-const NativeOpaqueImageView = requireNativeComponent<Props>("AROpaqueImageView", OpaqueImageView)
+const NativeOpaqueImageView = requireNativeComponent("AROpaqueImageView")

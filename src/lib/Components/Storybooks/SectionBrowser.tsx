@@ -1,5 +1,6 @@
 import React from "react"
-import { ListView, NavigatorIOS, Route, TouchableHighlight, View, ViewProperties } from "react-native"
+import { ListView, Route, TouchableHighlight, View, ViewProperties } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 
 import { StorySection } from "./"
 import StoryBrowser from "./StoryBrowser"

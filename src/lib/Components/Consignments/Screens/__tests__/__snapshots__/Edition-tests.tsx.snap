@@ -882,6 +882,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                           onFocus={[Function]}
                           placeholder="Edition Size"
                           placeholderTextColor="#666666"
+                          rejectResponderTermination={true}
                           selectionColor="#cccccc"
                           style={
                             Array [
@@ -941,6 +942,7 @@ exports[`Shows and additional 2 inputs when there's edition info 1`] = `
                           onFocus={[Function]}
                           placeholder="Edition Number"
                           placeholderTextColor="#666666"
+                          rejectResponderTermination={true}
                           selectionColor="#cccccc"
                           style={
                             Array [

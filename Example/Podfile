@@ -16,6 +16,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 inhibit_all_warnings!
 platform :ios, '9.0'
+
 # FIXME: Figure out why we are getting hit by this issue.
 install! 'cocoapods', :deterministic_uuids => false
 
@@ -31,6 +32,7 @@ double_conversion_spec_path = File.join(react_path, 'third-party-podspecs/Double
 sentry_path = File.join(node_modules_path, 'react-native-sentry')
 tispi_stripe_spec_path = File.join(node_modules_path, 'tipsi-stripe/tipsi-stripe.podspec')
 mapbox_path = File.join(node_modules_path, '@mapbox/react-native-mapbox-gl')
+react_native_navigator_ios_path = File.join(node_modules_path, 'react-native-navigator-ios')
 
 target 'Emission' do
   pod 'Emission', :path => '../', :inhibit_warnings => false
@@ -68,6 +70,9 @@ target 'Emission' do
   pod 'react-native-mapbox-gl', :path => mapbox_path
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+  # Deprecated from React Native, but fine until we support Android
+  pod 'react-native-navigator-ios', :path => react_native_navigator_ios_path
+
   # Bottom Sheet view controller for Map view
   pod 'Pulley', :git => 'https://github.com/l2succes/Pulley.git', :branch => 'master'
 
@@ -93,8 +98,6 @@ plugin 'cocoapods-keys', {
     'SentryProductionDSN'     # Used in the Emission betas
   ]
 }
-
-plugin 'cocoapods-fix-react-native'
 
 post_install do |installer|
   emission = installer.pods_project.targets.find { |target| target.name == 'Emission' }

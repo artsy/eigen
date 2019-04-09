@@ -37,4 +37,4 @@ const styles = StyleSheet.create({
   },
 })
 
-const NativeSpinner: React.ComponentClass<any> = requireNativeComponent("ARSpinner", Spinner)
+const NativeSpinner: React.ComponentClass<any> = requireNativeComponent("ARSpinner")

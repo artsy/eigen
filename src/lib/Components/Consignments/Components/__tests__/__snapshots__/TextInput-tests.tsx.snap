@@ -28,6 +28,7 @@ exports[`does not have an activity when searching  1`] = `
       onBlur={[Function]}
       onFocus={[Function]}
       placeholderTextColor="#666666"
+      rejectResponderTermination={true}
       selectionColor="#cccccc"
       style={
         Array [
@@ -93,6 +94,7 @@ exports[`shows an activity indicator when searching  1`] = `
       onBlur={[Function]}
       onFocus={[Function]}
       placeholderTextColor="#666666"
+      rejectResponderTermination={true}
       selectionColor="#cccccc"
       style={
         Array [

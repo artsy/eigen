@@ -1,5 +1,6 @@
 import React from "react"
-import { NavigatorIOS, View } from "react-native"
+import { View } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 
 import { BillingAddress } from "../Screens/BillingAddress"
 import { CreditCardForm } from "../Screens/CreditCardForm"

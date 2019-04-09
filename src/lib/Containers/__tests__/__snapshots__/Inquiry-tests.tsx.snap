@@ -344,6 +344,7 @@ exports[`renders correctly 1`] = `
           multiline={true}
           onChangeText={[Function]}
           onEndEditing={[Function]}
+          rejectResponderTermination={true}
           style={
             Array [
               Object {

@@ -9,10 +9,10 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   LayoutRectangle,
-  NavigatorIOS,
   ScrollView,
   TouchableWithoutFeedback,
 } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 
 import { Flex } from "../Elements/Flex"
 

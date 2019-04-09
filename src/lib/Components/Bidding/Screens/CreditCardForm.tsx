@@ -1,7 +1,8 @@
 import { Sans } from "@artsy/palette"
 import { Fonts } from "lib/data/fonts"
 import React, { Component } from "react"
-import { NavigatorIOS, ScrollView, StyleSheet, View } from "react-native"
+import { ScrollView, StyleSheet, View } from "react-native"
+import NavigatorIOS from "react-native-navigator-ios"
 import stripe, { PaymentCardTextField, StripeToken } from "tipsi-stripe"
 
 import BottomAlignedButtonWrapper from "lib/Components/Buttons/BottomAlignedButtonWrapper"

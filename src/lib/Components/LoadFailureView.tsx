@@ -23,4 +23,4 @@ export default class LoadFailureView extends React.Component<Props, any> {
   }
 }
 
-const NativeLoadFailureView = requireNativeComponent("ARLoadFailureView", LoadFailureView)
+const NativeLoadFailureView = requireNativeComponent("ARLoadFailureView")

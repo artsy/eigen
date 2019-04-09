@@ -22,6 +22,9 @@ const mockphysics = metaphysics as jest.Mock<any>
 jest.unmock("react-relay")
 import relay from "react-relay"
 
+const commitMutationMock = (fn?: typeof relay.commitMutation) =>
+  jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
+
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),
@@ -96,13 +99,20 @@ it("shows no option for entering payment information if the user has a credit ca
 })
 
 describe("when pressing register button", () => {
-  it("when a credit card needs to be added, it commits three mutations on button press", async () => {
-    relay.commitMutation = jest
-      .fn()
-      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
-      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardSuccess))
-      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.qualifiedBidder))
-
+  it("when a credit card needs to be added, it commits two mutations on button press", async () => {
+    relay.commitMutation = commitMutationMock()
+      .mockImplementationOnce((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.updateMyUserProfile, null)
+        return null
+      })
+      .mockImplementationOnce((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.creatingCreditCardSuccess, null)
+        return null
+      })
+      .mockImplementationOnce((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.qualifiedBidder, null)
+        return null
+      }) as any
     mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.qualifiedBidder))
 
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
@@ -226,10 +236,13 @@ describe("when pressing register button", () => {
   })
 
   it("shows the error screen with the default error message if there are unhandled errors from the updateUserProfile mutation", () => {
-    const errors = ["malformed error"]
+    const errors = [{ message: "malformed error" }]
 
     console.error = jest.fn() // Silences component logging.
-    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted({}, errors))
+    relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      onCompleted({}, errors)
+      return null
+    }) as any
 
     const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
 
@@ -257,7 +270,10 @@ describe("when pressing register button", () => {
     console.error = jest.fn() // Silences component logging.
 
     const errors = [{ message: "There was an error with your request" }]
-    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted({}, errors))
+    relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      onCompleted({}, errors)
+      return null
+    }) as any
 
     const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
 
@@ -301,11 +317,15 @@ describe("when pressing register button", () => {
   it("displays an error message on a creditCardMutation failure", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-
-    relay.commitMutation = jest
-      .fn()
-      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
-      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardError))
+    relay.commitMutation = commitMutationMock()
+      .mockImplementationOnce((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.updateMyUserProfile, null)
+        return null
+      })
+      .mockImplementationOnce((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.creatingCreditCardError, null)
+        return null
+      }) as any
 
     const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
 
@@ -327,15 +347,20 @@ describe("when pressing register button", () => {
   })
 
   it("shows the error screen with the default error message if there are unhandled errors from the createCreditCard mutation", () => {
-    const errors = ["malformed error"]
+    const errors = [{ message: "malformed error" }]
 
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
 
-    relay.commitMutation = jest
-      .fn()
-      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
-      .mockImplementationOnce((_, { onCompleted }) => onCompleted({}, errors))
+    relay.commitMutation = commitMutationMock()
+      .mockImplementationOnce((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.updateMyUserProfile, null)
+        return null
+      })
+      .mockImplementationOnce((_, { onCompleted }) => {
+        onCompleted({}, errors)
+        return null
+      }) as any
 
     const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
 
@@ -362,17 +387,19 @@ describe("when pressing register button", () => {
   it("shows the generic error screen on a createCreditCard mutation network failure", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-    relay.commitMutation = jest
-      .fn()
-      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
-      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardSuccess))
-      .mockImplementationOnce((_, { onError }) => onError(new TypeError("Network request failed")))
+    relay.commitMutation = commitMutationMock()
+      .mockImplementationOnce((_, { onCompleted }) => {
+        onCompleted(mockRequestResponses.creatingCreditCardSuccess, null)
+        return null
+      })
+      .mockImplementationOnce((_, { onError }) => {
+        onError(new TypeError("Network request failed"))
+        return null
+      }) as any
 
     mockphysics.mockReturnValueOnce(Promise.resolve(mockRequestResponses.qualifiedBidder))
 
     const component = renderer.create(<Registration {...initialPropsForUserWithoutCreditCard} />)
-
-    // manually setting state to avoid duplicating tests for UI interaction, but practically better not to do so.
     component.root.instance.setState({ billingAddress })
     component.root.instance.setState({ creditCardToken: stripeToken })
     component.root.findByType(Checkbox).instance.props.onPress()
@@ -391,7 +418,7 @@ describe("when pressing register button", () => {
     }
 
     console.error = jest.fn() // Silences component logging.
-    relay.commitMutation = jest.fn((_, { onCompleted }) => onCompleted({}, [error]))
+    relay.commitMutation = jest.fn().mockImplementation((_, { onCompleted }) => onCompleted({}, [error]))
 
     const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
 
@@ -406,7 +433,11 @@ describe("when pressing register button", () => {
 
   it("displays an error message on a network failure", () => {
     console.error = jest.fn() // Silences component logging.
-    relay.commitMutation = jest.fn((_, { onError }) => onError(new TypeError("Network request failed")))
+
+    relay.commitMutation = commitMutationMock((_, { onError }) => {
+      onError(new TypeError("Network request failed"))
+      return null
+    }) as any
 
     const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
 
@@ -420,9 +451,10 @@ describe("when pressing register button", () => {
   })
 
   it("displays the pending result when the bidder is not qualified_for_bidding", () => {
-    relay.commitMutation = jest.fn((_, { onCompleted }) =>
-      onCompleted({ createBidder: { bidder: { qualified_for_bidding: false } } })
-    )
+    relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      onCompleted({ createBidder: { bidder: { qualified_for_bidding: false } } }, null)
+      return null
+    }) as any
 
     const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
 
@@ -440,9 +472,10 @@ describe("when pressing register button", () => {
   })
 
   it("displays the completed result when the bidder is qualified_for_bidding", () => {
-    relay.commitMutation = jest.fn((_, { onCompleted }) =>
-      onCompleted({ createBidder: { bidder: { qualified_for_bidding: true } } })
-    )
+    relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
+      onCompleted({ createBidder: { bidder: { qualified_for_bidding: true } } }, null)
+      return null
+    }) as any
 
     const component = renderer.create(<Registration {...initialPropsForUserWithCreditCard} />)
 
