@@ -20,9 +20,8 @@ export class Fair extends React.Component<Props> {
   }
 }
 
-export const FairContainer = createFragmentContainer(
-  Fair,
-  graphql`
+export const FairContainer = createFragmentContainer(Fair, {
+  fair: graphql`
     fragment Fair_fair on Fair {
       id
       __id
@@ -34,5 +33,5 @@ export const FairContainer = createFragmentContainer(
       about
       ticketsLink
     }
-  `
-)
+  `,
+})

@@ -34,17 +34,16 @@ class Header extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(
-  Header,
-  graphql`
+export default createFragmentContainer(Header, {
+  sale: graphql`
     fragment Header_sale on Sale {
       name
       cover_image {
         href
       }
     }
-  `
-)
+  `,
+})
 
 const isPad = Dimensions.get("window").width > 700
 

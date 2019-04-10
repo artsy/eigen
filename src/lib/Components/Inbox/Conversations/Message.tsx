@@ -198,9 +198,8 @@ export class Message extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(
-  Message,
-  graphql`
+export default createFragmentContainer(Message, {
+  message: graphql`
     fragment Message_message on Message {
       body
       created_at
@@ -222,5 +221,5 @@ export default createFragmentContainer(
         ...PDFPreview_attachment
       }
     }
-  `
-)
+  `,
+})

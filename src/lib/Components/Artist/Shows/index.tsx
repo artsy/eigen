@@ -76,9 +76,8 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(
-  Shows,
-  graphql`
+export default createFragmentContainer(Shows, {
+  artist: graphql`
     fragment Shows_artist on Artist {
       current_shows: partner_shows(status: "running") {
         ...VariableSizeShowsList_shows
@@ -93,5 +92,5 @@ export default createFragmentContainer(
         ...VariableSizeShowsList_shows
       }
     }
-  `
-)
+  `,
+})

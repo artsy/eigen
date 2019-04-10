@@ -54,25 +54,27 @@ export class FairArtworks extends React.Component<Props, State> {
 
 export const FairArtworksContainer = createRefetchContainer(
   FairArtworks,
-  graphql`
-    fragment FairArtworks_fair on Fair
-      @argumentDefinitions(
-        medium: { type: "String", defaultValue: "*" }
-        price_range: { type: "String", defaultValue: "*-*" }
-      ) {
-      __id
-      _id
-      id
-      artworks: filteredArtworks(
-        size: 0
-        medium: $medium
-        price_range: $price_range
-        aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
-      ) {
-        ...FilteredInfiniteScrollGrid_filteredArtworks
+  {
+    fair: graphql`
+      fragment FairArtworks_fair on Fair
+        @argumentDefinitions(
+          medium: { type: "String", defaultValue: "*" }
+          price_range: { type: "String", defaultValue: "*-*" }
+        ) {
+        __id
+        _id
+        id
+        artworks: filteredArtworks(
+          size: 0
+          medium: $medium
+          price_range: $price_range
+          aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
+        ) {
+          ...FilteredInfiniteScrollGrid_filteredArtworks
+        }
       }
-    }
-  `,
+    `,
+  },
   graphql`
     query FairArtworksRefetchQuery($fairID: String!, $medium: String, $price_range: String) {
       fair(id: $fairID) {

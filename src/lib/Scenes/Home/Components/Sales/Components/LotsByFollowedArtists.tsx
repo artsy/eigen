@@ -57,31 +57,33 @@ export class LotsByFollowedArtists extends Component<Props, State> {
 
 export default createPaginationContainer(
   LotsByFollowedArtists,
-  graphql`
-    fragment LotsByFollowedArtists_viewer on Viewer
-      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-      sale_artworks: sale_artworks(
-        first: $count
-        after: $cursor
-        live_sale: true
-        is_auction: true
-        include_artworks_by_followed_artists: true
-      ) @connection(key: "LotsByFollowedArtists_sale_artworks") {
-        pageInfo {
-          endCursor
-          hasNextPage
-        }
-        edges {
-          cursor
-          node {
-            artwork {
-              ...GenericGrid_artworks
+  {
+    viewer: graphql`
+      fragment LotsByFollowedArtists_viewer on Viewer
+        @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+        sale_artworks: sale_artworks(
+          first: $count
+          after: $cursor
+          live_sale: true
+          is_auction: true
+          include_artworks_by_followed_artists: true
+        ) @connection(key: "LotsByFollowedArtists_sale_artworks") {
+          pageInfo {
+            endCursor
+            hasNextPage
+          }
+          edges {
+            cursor
+            node {
+              artwork {
+                ...GenericGrid_artworks
+              }
             }
           }
         }
       }
-    }
-  `,
+    `,
+  },
   {
     getConnectionFromProps: ({ viewer }) => viewer && (viewer.sale_artworks as ConnectionData),
     getFragmentVariables: (prevVars, totalCount) => ({ ...prevVars, count: totalCount }),

@@ -192,9 +192,8 @@ const styles = StyleSheet.create({
   },
 })
 
-export default createFragmentContainer(
-  Artwork,
-  graphql`
+export default createFragmentContainer(Artwork, {
+  artwork: graphql`
     fragment Artwork_artwork on Artwork {
       title
       date
@@ -235,5 +234,5 @@ export default createFragmentContainer(
       }
       href
     }
-  `
-)
+  `,
+})

@@ -86,9 +86,8 @@ export class ShowPreview extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(
-  ShowPreview,
-  graphql`
+export default createFragmentContainer(ShowPreview, {
+  show: graphql`
     fragment ShowPreview_show on Show {
       id
       _id
@@ -105,5 +104,5 @@ export default createFragmentContainer(
         }
       }
     }
-  `
-)
+  `,
+})

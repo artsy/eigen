@@ -174,9 +174,8 @@ export class ConversationSnippet extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(
-  ConversationSnippet,
-  graphql`
+export default createFragmentContainer(ConversationSnippet, {
+  conversation: graphql`
     fragment ConversationSnippet_conversation on Conversation {
       id
       to {
@@ -208,5 +207,5 @@ export default createFragmentContainer(
         }
       }
     }
-  `
-)
+  `,
+})

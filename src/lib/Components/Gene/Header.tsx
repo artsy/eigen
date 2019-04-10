@@ -143,13 +143,12 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(
-  Header,
-  graphql`
+export default createFragmentContainer(Header, {
+  gene: graphql`
     fragment Header_gene on Gene {
       _id
       id
       name
     }
-  `
-)
+  `,
+})

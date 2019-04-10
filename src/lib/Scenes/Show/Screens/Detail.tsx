@@ -192,9 +192,8 @@ function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTyp
   })
 }
 
-export const DetailContainer = createFragmentContainer(
-  Detail,
-  graphql`
+export const DetailContainer = createFragmentContainer(Detail, {
+  show: graphql`
     fragment Detail_show on Show {
       _id
       id
@@ -243,5 +242,5 @@ export const DetailContainer = createFragmentContainer(
         }
       }
     }
-  `
-)
+  `,
+})

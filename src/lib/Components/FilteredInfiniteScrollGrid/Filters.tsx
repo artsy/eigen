@@ -46,9 +46,8 @@ export const Filters: React.SFC<Props> = ({ onFilterChange, mediumValue, priceRa
   )
 }
 
-export const FiltersContainer = createFragmentContainer(
-  Filters,
-  graphql`
+export const FiltersContainer = createFragmentContainer(Filters, {
+  filteredArtworks: graphql`
     fragment Filters_filteredArtworks on FilterArtworks {
       aggregations {
         slice
@@ -58,5 +57,5 @@ export const FiltersContainer = createFragmentContainer(
         }
       }
     }
-  `
-)
+  `,
+})

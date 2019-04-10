@@ -46,12 +46,11 @@ export const PDFPreview: React.SFC<Props> = ({ attachment, onSelected }) => (
   </AttachmentPreview>
 )
 
-export default createFragmentContainer(
-  PDFPreview,
-  graphql`
+export default createFragmentContainer(PDFPreview, {
+  attachment: graphql`
     fragment PDFPreview_attachment on Attachment {
       file_name
       ...AttachmentPreview_attachment
     }
-  `
-)
+  `,
+})

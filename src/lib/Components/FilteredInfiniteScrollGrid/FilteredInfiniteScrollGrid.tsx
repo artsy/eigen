@@ -111,12 +111,11 @@ function eventProps(actionName: Schema.ActionNames) {
   })
 }
 
-export const FilteredInfiniteScrollGridContainer = createFragmentContainer(
-  FilteredInfiniteScrollGrid,
-  graphql`
+export const FilteredInfiniteScrollGridContainer = createFragmentContainer(FilteredInfiniteScrollGrid, {
+  filteredArtworks: graphql`
     fragment FilteredInfiniteScrollGrid_filteredArtworks on FilterArtworks {
       ...Filters_filteredArtworks
       ...ArtworksGridPaginationContainer_filteredArtworks
     }
-  `
-)
+  `,
+})

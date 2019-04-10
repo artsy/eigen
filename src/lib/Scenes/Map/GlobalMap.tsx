@@ -777,9 +777,8 @@ const SelectedCluster = styled(Flex)`
   align-items: center;
 `
 
-export const GlobalMapContainer = createFragmentContainer(
-  GlobalMap,
-  graphql`
+export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
+  viewer: graphql`
     fragment GlobalMap_viewer on Viewer @argumentDefinitions(citySlug: { type: "String!" }, maxInt: { type: "Int!" }) {
       city(slug: $citySlug) {
         name
@@ -953,5 +952,5 @@ export const GlobalMapContainer = createFragmentContainer(
         }
       }
     }
-  `
-)
+  `,
+})

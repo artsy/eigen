@@ -299,42 +299,44 @@ const styles = StyleSheet.create<Styles>({
 
 export default createRefetchContainer(
   ArtworkRail,
-  graphql`
-    fragment ArtworkRail_rail on HomePageArtworkModule
-      @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: false }) {
-      ...ArtworkRailHeader_rail
-      __id
-      key
-      params {
-        medium
-        price_range
-      }
-      context {
-        ... on HomePageModuleContextFollowedArtist {
-          artist {
+  {
+    rail: graphql`
+      fragment ArtworkRail_rail on HomePageArtworkModule
+        @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: false }) {
+        ...ArtworkRailHeader_rail
+        __id
+        key
+        params {
+          medium
+          price_range
+        }
+        context {
+          ... on HomePageModuleContextFollowedArtist {
+            artist {
+              href
+            }
+          }
+          ... on HomePageModuleContextRelatedArtist {
+            artist {
+              href
+            }
+          }
+          ... on HomePageModuleContextFair {
+            href
+          }
+          ... on HomePageModuleContextGene {
+            href
+          }
+          ... on HomePageModuleContextSale {
             href
           }
         }
-        ... on HomePageModuleContextRelatedArtist {
-          artist {
-            href
-          }
-        }
-        ... on HomePageModuleContextFair {
-          href
-        }
-        ... on HomePageModuleContextGene {
-          href
-        }
-        ... on HomePageModuleContextSale {
-          href
+        results @include(if: $fetchContent) {
+          ...GenericGrid_artworks
         }
       }
-      results @include(if: $fetchContent) {
-        ...GenericGrid_artworks
-      }
-    }
-  `,
+    `,
+  },
   graphql`
     query ArtworkRailRefetchQuery($__id: ID!, $fetchContent: Boolean!) {
       node(__id: $__id) {

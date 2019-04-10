@@ -50,14 +50,13 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(
-  About,
-  graphql`
+export default createFragmentContainer(About, {
+  gene: graphql`
     fragment About_gene on Gene {
       ...Biography_gene
       trending_artists {
         ...RelatedArtists_artists
       }
     }
-  `
-)
+  `,
+})

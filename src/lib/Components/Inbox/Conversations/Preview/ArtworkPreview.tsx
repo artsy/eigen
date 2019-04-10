@@ -98,9 +98,8 @@ export class ArtworkPreview extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(
-  ArtworkPreview,
-  graphql`
+export default createFragmentContainer(ArtworkPreview, {
+  artwork: graphql`
     fragment ArtworkPreview_artwork on Artwork {
       id
       _id
@@ -111,5 +110,5 @@ export default createFragmentContainer(
         url
       }
     }
-  `
-)
+  `,
+})

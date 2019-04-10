@@ -207,9 +207,8 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const ArtistCardContainer = createFragmentContainer(
-  ArtistCard,
-  graphql`
+const ArtistCardContainer = createFragmentContainer(ArtistCard, {
+  artist: graphql`
     fragment ArtistCard_artist on Artist {
       id
       _id
@@ -221,8 +220,8 @@ const ArtistCardContainer = createFragmentContainer(
         url(version: "large")
       }
     }
-  `
-)
+  `,
+})
 
 export interface ArtistCardResponse {
   id: string

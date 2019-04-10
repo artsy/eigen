@@ -76,48 +76,50 @@ class CitySavedList extends React.Component<Props, State> {
 
 export default createPaginationContainer(
   CitySavedList,
-  graphql`
-    fragment CitySavedList_viewer on Viewer
-      @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
-      city(slug: $citySlug) {
-        name
-      }
-      me {
-        followsAndSaves {
-          shows(first: $count, status: RUNNING_AND_UPCOMING, city: $citySlug, after: $cursor)
-            @connection(key: "CitySavedList_shows") {
-            edges {
-              node {
-                id
-                _id
-                __id
-                name
-                isStubShow
-                status
-                href
-                is_followed
-                isStubShow
-                exhibition_period
-                cover_image {
-                  url
-                }
-                location {
-                  coordinates {
-                    lat
-                    lng
+  {
+    viewer: graphql`
+      fragment CitySavedList_viewer on Viewer
+        @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
+        city(slug: $citySlug) {
+          name
+        }
+        me {
+          followsAndSaves {
+            shows(first: $count, status: RUNNING_AND_UPCOMING, city: $citySlug, after: $cursor)
+              @connection(key: "CitySavedList_shows") {
+              edges {
+                node {
+                  id
+                  _id
+                  __id
+                  name
+                  isStubShow
+                  status
+                  href
+                  is_followed
+                  isStubShow
+                  exhibition_period
+                  cover_image {
+                    url
                   }
-                }
-                type
-                start_at
-                end_at
-                partner {
-                  ... on Partner {
-                    name
-                    type
-                    profile {
-                      # This is only used for stubbed shows
-                      image {
-                        url(version: "square")
+                  location {
+                    coordinates {
+                      lat
+                      lng
+                    }
+                  }
+                  type
+                  start_at
+                  end_at
+                  partner {
+                    ... on Partner {
+                      name
+                      type
+                      profile {
+                        # This is only used for stubbed shows
+                        image {
+                          url(version: "square")
+                        }
                       }
                     }
                   }
@@ -127,8 +129,8 @@ export default createPaginationContainer(
           }
         }
       }
-    }
-  `,
+    `,
+  },
   {
     direction: "forward",
     getConnectionFromProps(props) {

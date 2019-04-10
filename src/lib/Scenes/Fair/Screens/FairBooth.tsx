@@ -104,9 +104,8 @@ export class FairBooth extends React.Component<Props, State> {
   }
 }
 
-export const FairBoothContainer = createFragmentContainer(
-  FairBooth,
-  graphql`
+export const FairBoothContainer = createFragmentContainer(FairBooth, {
+  show: graphql`
     fragment FairBooth_show on Show {
       id
       _id
@@ -116,8 +115,8 @@ export const FairBoothContainer = createFragmentContainer(
       ...ShowArtists_show
       ...ShowArtworks_show
     }
-  `
-)
+  `,
+})
 
 export const FairBoothRenderer: React.SFC<{ showID: string }> = ({ showID }) => (
   <QueryRenderer<FairBoothQuery>

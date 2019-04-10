@@ -149,9 +149,8 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(
-  ArtworkRailHeader,
-  graphql`
+export default createFragmentContainer(ArtworkRailHeader, {
+  rail: graphql`
     fragment ArtworkRailHeader_rail on HomePageArtworkModule {
       title
       key
@@ -166,5 +165,5 @@ export default createFragmentContainer(
         }
       }
     }
-  `
-)
+  `,
+})

@@ -73,9 +73,8 @@ const styles = StyleSheet.create({
   },
 })
 
-export default createFragmentContainer(
-  About,
-  graphql`
+export default createFragmentContainer(About, {
+  artist: graphql`
     fragment About_artist on Artist {
       has_metadata
       is_display_auction_link
@@ -88,5 +87,5 @@ export default createFragmentContainer(
         ...Articles_articles
       }
     }
-  `
-)
+  `,
+})

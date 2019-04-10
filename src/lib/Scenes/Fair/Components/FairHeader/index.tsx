@@ -158,9 +158,8 @@ export class FairHeader extends React.Component<Props, State> {
   }
 }
 
-export const FairHeaderContainer = createFragmentContainer(
-  FairHeader,
-  graphql`
+export const FairHeaderContainer = createFragmentContainer(FairHeader, {
+  fair: graphql`
     fragment FairHeader_fair on Fair {
       id
       _id
@@ -233,5 +232,5 @@ export const FairHeaderContainer = createFragmentContainer(
       end_at
       exhibition_period
     }
-  `
-)
+  `,
+})

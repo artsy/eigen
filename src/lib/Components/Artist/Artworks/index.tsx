@@ -116,9 +116,8 @@ const styles = StyleSheet.create({
   },
 })
 
-export default createFragmentContainer(
-  Artworks,
-  graphql`
+export default createFragmentContainer(Artworks, {
+  artist: graphql`
     fragment Artworks_artist on Artist {
       counts {
         artworks
@@ -127,5 +126,5 @@ export default createFragmentContainer(
       ...ArtistForSaleArtworksGrid_artist
       ...ArtistNotForSaleArtworksGrid_artist
     }
-  `
-)
+  `,
+})

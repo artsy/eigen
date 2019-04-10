@@ -150,9 +150,8 @@ class ActiveBid extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(
-  ActiveBid,
-  graphql`
+export default createFragmentContainer(ActiveBid, {
+  bid: graphql`
     fragment ActiveBid_bid on LotStanding {
       is_leading_bidder
       sale {
@@ -183,5 +182,5 @@ export default createFragmentContainer(
         }
       }
     }
-  `
-)
+  `,
+})

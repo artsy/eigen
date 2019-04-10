@@ -38,11 +38,10 @@ export class AttachmentPreview extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(
-  AttachmentPreview,
-  graphql`
+export default createFragmentContainer(AttachmentPreview, {
+  attachment: graphql`
     fragment AttachmentPreview_attachment on Attachment {
       id
     }
-  `
-)
+  `,
+})
