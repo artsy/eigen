@@ -166,9 +166,8 @@ export class FairBoothHeader extends React.Component<Props, State> {
   }
 }
 
-export const FairBoothHeaderContainer = createFragmentContainer(
-  FairBoothHeader,
-  graphql`
+export const FairBoothHeaderContainer = createFragmentContainer(FairBoothHeader, {
+  show: graphql`
     fragment FairBoothHeader_show on Show {
       fair {
         name
@@ -195,5 +194,5 @@ export const FairBoothHeaderContainer = createFragmentContainer(
         display
       }
     }
-  `
-)
+  `,
+})

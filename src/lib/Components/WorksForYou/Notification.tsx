@@ -98,9 +98,8 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(
-  Notification,
-  graphql`
+export default createFragmentContainer(Notification, {
+  notification: graphql`
     fragment Notification_notification on FollowedArtistsArtworksGroup {
       summary
       artists
@@ -116,5 +115,5 @@ export default createFragmentContainer(
         }
       }
     }
-  `
-)
+  `,
+})

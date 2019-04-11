@@ -108,12 +108,11 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(
-  RelatedArtists,
-  graphql`
+export default createFragmentContainer(RelatedArtists, {
+  artists: graphql`
     fragment RelatedArtists_artists on Artist @relay(plural: true) {
       __id
       ...RelatedArtist_artist
     }
-  `
-)
+  `,
+})

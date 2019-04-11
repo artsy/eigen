@@ -248,9 +248,8 @@ function suggestedArtistQuery(artistID: string): string {
   `
 }
 
-export default createFragmentContainer(
-  ArtistRail,
-  graphql`
+export default createFragmentContainer(ArtistRail, {
+  rail: graphql`
     fragment ArtistRail_rail on HomePageArtistModule {
       __id
       key
@@ -260,5 +259,5 @@ export default createFragmentContainer(
         ...ArtistCard_artist
       }
     }
-  `
-)
+  `,
+})

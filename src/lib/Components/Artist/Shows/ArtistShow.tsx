@@ -42,9 +42,8 @@ class Show extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(
-  Show,
-  graphql`
+export default createFragmentContainer(Show, {
+  show: graphql`
     fragment ArtistShow_show on PartnerShow {
       id
       href
@@ -54,5 +53,5 @@ export default createFragmentContainer(
       }
       ...Metadata_show
     }
-  `
-)
+  `,
+})

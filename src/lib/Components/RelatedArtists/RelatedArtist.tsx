@@ -75,9 +75,8 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(
-  RelatedArtist,
-  graphql`
+export default createFragmentContainer(RelatedArtist, {
+  artist: graphql`
     fragment RelatedArtist_artist on Artist {
       href
       name
@@ -89,5 +88,5 @@ export default createFragmentContainer(
         url(version: "large")
       }
     }
-  `
-)
+  `,
+})

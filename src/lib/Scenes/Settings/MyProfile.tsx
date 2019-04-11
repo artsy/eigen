@@ -124,12 +124,11 @@ export class MyProfile extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(
-  MyProfile,
-  graphql`
+export default createFragmentContainer(MyProfile, {
+  me: graphql`
     fragment MyProfile_me on Me {
       name
       initials
     }
-  `
-)
+  `,
+})

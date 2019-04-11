@@ -202,9 +202,8 @@ export class ShowHeader extends React.Component<Props, State> {
   }
 }
 
-export const ShowHeaderContainer = createFragmentContainer(
-  ShowHeader,
-  graphql`
+export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
+  show: graphql`
     fragment ShowHeader_show on Show {
       id
       _id
@@ -246,5 +245,5 @@ export const ShowHeaderContainer = createFragmentContainer(
         _id
       }
     }
-  `
-)
+  `,
+})

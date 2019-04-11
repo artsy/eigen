@@ -170,9 +170,8 @@ export class FairBoothPreview extends React.Component<Props, State> {
   }
 }
 
-export const FairBoothPreviewContainer = createFragmentContainer(
-  FairBoothPreview,
-  graphql`
+export const FairBoothPreviewContainer = createFragmentContainer(FairBoothPreview, {
+  show: graphql`
     fragment FairBoothPreview_show on Show {
       id
       _id
@@ -211,5 +210,5 @@ export const FairBoothPreviewContainer = createFragmentContainer(
         }
       }
     }
-  `
-)
+  `,
+})

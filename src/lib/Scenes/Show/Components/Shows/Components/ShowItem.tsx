@@ -76,9 +76,8 @@ export class ShowItem extends React.Component<Props> {
   }
 }
 
-export const ShowItemContainer = createFragmentContainer(
-  ShowItem,
-  graphql`
+export const ShowItemContainer = createFragmentContainer(ShowItem, {
+  show: graphql`
     fragment ShowItem_show on Show {
       _id
       id
@@ -95,5 +94,5 @@ export const ShowItemContainer = createFragmentContainer(
         }
       }
     }
-  `
-)
+  `,
+})

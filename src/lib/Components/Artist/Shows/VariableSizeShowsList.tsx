@@ -90,12 +90,11 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(
-  ShowsList,
-  graphql`
+export default createFragmentContainer(ShowsList, {
+  shows: graphql`
     fragment VariableSizeShowsList_shows on PartnerShow @relay(plural: true) {
       __id
       ...ArtistShow_show
     }
-  `
-)
+  `,
+})

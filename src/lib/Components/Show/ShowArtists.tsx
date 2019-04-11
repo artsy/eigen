@@ -51,9 +51,8 @@ export class ShowArtists extends React.Component<Props, State> {
   }
 }
 
-export const ShowArtistsContainer = createFragmentContainer(
-  ShowArtists,
-  graphql`
+export const ShowArtistsContainer = createFragmentContainer(ShowArtists, {
+  show: graphql`
     fragment ShowArtists_show on Show {
       _id
       id
@@ -66,5 +65,5 @@ export const ShowArtistsContainer = createFragmentContainer(
         }
       }
     }
-  `
-)
+  `,
+})

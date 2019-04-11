@@ -158,14 +158,16 @@ const styles = StyleSheet.create<Styles>({
 
 export default createRefetchContainer(
   Sale,
-  graphql`
-    fragment Sale_sale on Sale {
-      id
-      name
-      ...Header_sale
-      ...SaleArtworksGrid_sale
-    }
-  `,
+  {
+    sale: graphql`
+      fragment Sale_sale on Sale {
+        id
+        name
+        ...Header_sale
+        ...SaleArtworksGrid_sale
+      }
+    `,
+  },
   graphql`
     query SaleRefetchQuery($saleID: String!) {
       sale(id: $saleID) {

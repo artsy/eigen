@@ -151,9 +151,8 @@ export class MoreInfo extends React.Component<Props, State> {
   }
 }
 
-export const MoreInfoContainer = createFragmentContainer(
-  MoreInfo,
-  graphql`
+export const MoreInfoContainer = createFragmentContainer(MoreInfo, {
+  show: graphql`
     fragment MoreInfo_show on Show {
       _id
       id
@@ -171,5 +170,5 @@ export const MoreInfoContainer = createFragmentContainer(
         ...ShowEventSection_event
       }
     }
-  `
-)
+  `,
+})

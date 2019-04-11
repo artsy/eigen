@@ -76,9 +76,8 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(
-  Metadata,
-  graphql`
+export default createFragmentContainer(Metadata, {
+  show: graphql`
     fragment Metadata_show on PartnerShow {
       kind
       name
@@ -92,5 +91,5 @@ export default createFragmentContainer(
         city
       }
     }
-  `
-)
+  `,
+})

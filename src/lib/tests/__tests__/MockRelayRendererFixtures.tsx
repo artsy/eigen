@@ -12,11 +12,13 @@ import renderWithLoadProgress from "../../utils/renderWithLoadProgress"
 
 const Metadata = createFragmentContainer(
   (props: { artworkMetadata: MockRelayRendererFixtures_artworkMetadata }) => <Text>{props.artworkMetadata.title}</Text>,
-  graphql`
-    fragment MockRelayRendererFixtures_artworkMetadata on Artwork {
-      title
-    }
-  `
+  {
+    artworkMetadata: graphql`
+      fragment MockRelayRendererFixtures_artworkMetadata on Artwork {
+        title
+      }
+    `,
+  }
 )
 
 export const Artwork = createFragmentContainer(
@@ -27,26 +29,30 @@ export const Artwork = createFragmentContainer(
       {props.artwork.artist && <ArtistQueryRenderer id={props.artwork.artist.id} />}
     </View>
   ),
-  graphql`
-    fragment MockRelayRendererFixtures_artwork on Artwork {
-      image {
-        url
+  {
+    artwork: graphql`
+      fragment MockRelayRendererFixtures_artwork on Artwork {
+        image {
+          url
+        }
+        artist {
+          id
+        }
+        ...MockRelayRendererFixtures_artworkMetadata
       }
-      artist {
-        id
-      }
-      ...MockRelayRendererFixtures_artworkMetadata
-    }
-  `
+    `,
+  }
 )
 
 const Artist = createFragmentContainer(
   (props: { artist: MockRelayRendererFixtures_artist }) => <Text>{props.artist.name}</Text>,
-  graphql`
-    fragment MockRelayRendererFixtures_artist on Artist {
-      name
-    }
-  `
+  {
+    artist: graphql`
+      fragment MockRelayRendererFixtures_artist on Artist {
+        name
+      }
+    `,
+  }
 )
 
 const ArtistQueryRenderer = (props: { id: string }) => (

@@ -193,9 +193,8 @@ export class ArtistListItem extends React.Component<Props, State> {
   }
 }
 
-export const ArtistListItemContainer = createFragmentContainer(
-  ArtistListItem,
-  graphql`
+export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
+  artist: graphql`
     fragment ArtistListItem_artist on Artist {
       __id
       _id
@@ -209,5 +208,5 @@ export const ArtistListItemContainer = createFragmentContainer(
         url
       }
     }
-  `
-)
+  `,
+})

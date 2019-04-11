@@ -267,9 +267,8 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(
-  ArtworkCarousel,
-  graphql`
+export default createFragmentContainer(ArtworkCarousel, {
+  rail: graphql`
     fragment ArtworkCarousel_rail on HomePageArtworkModule {
       ...ArtworkCarouselHeader_rail
       __id
@@ -303,5 +302,5 @@ export default createFragmentContainer(
         ...GenericGrid_artworks
       }
     }
-  `
-)
+  `,
+})

@@ -43,12 +43,11 @@ const styles = StyleSheet.create({
   },
 })
 
-export default createFragmentContainer(
-  Articles,
-  graphql`
+export default createFragmentContainer(Articles, {
+  articles: graphql`
     fragment Articles_articles on Article @relay(plural: true) {
       __id
       ...Article_article
     }
-  `
-)
+  `,
+})

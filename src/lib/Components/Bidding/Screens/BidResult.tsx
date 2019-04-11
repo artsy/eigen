@@ -114,9 +114,8 @@ export class BidResult extends React.Component<BidResultProps> {
   }
 }
 
-export const BidResultScreen = createFragmentContainer(
-  BidResult,
-  graphql`
+export const BidResultScreen = createFragmentContainer(BidResult, {
+  sale_artwork: graphql`
     fragment BidResult_sale_artwork on SaleArtwork {
       minimum_next_bid {
         amount
@@ -129,5 +128,5 @@ export const BidResultScreen = createFragmentContainer(
         id
       }
     }
-  `
-)
+  `,
+})

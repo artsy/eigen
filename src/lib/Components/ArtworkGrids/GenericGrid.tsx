@@ -172,9 +172,8 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-const GenericGrid = createFragmentContainer(
-  GenericArtworksGrid,
-  graphql`
+const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
+  artworks: graphql`
     fragment GenericGrid_artworks on Artwork @relay(plural: true) {
       __id
       id
@@ -183,7 +182,7 @@ const GenericGrid = createFragmentContainer(
       }
       ...Artwork_artwork
     }
-  `
-)
+  `,
+})
 
 export default GenericGrid

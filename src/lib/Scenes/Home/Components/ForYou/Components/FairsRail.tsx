@@ -89,9 +89,8 @@ export class FairsRail extends Component<Props, null> {
   }
 }
 
-export default createFragmentContainer(
-  FairsRail,
-  graphql`
+export default createFragmentContainer(FairsRail, {
+  fairs_module: graphql`
     fragment FairsRail_fairs_module on HomePageFairsModule {
       results {
         id
@@ -105,5 +104,5 @@ export default createFragmentContainer(
         }
       }
     }
-  `
-)
+  `,
+})

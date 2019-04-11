@@ -41,9 +41,8 @@ export class ArtworksPreview extends React.Component<Props> {
   }
 }
 
-export const ArtworksPreviewContainer = createFragmentContainer(
-  ArtworksPreview,
-  graphql`
+export const ArtworksPreviewContainer = createFragmentContainer(ArtworksPreview, {
+  fair: graphql`
     fragment ArtworksPreview_fair on Fair {
       id
       __id
@@ -60,5 +59,5 @@ export const ArtworksPreviewContainer = createFragmentContainer(
         }
       }
     }
-  `
-)
+  `,
+})

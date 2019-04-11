@@ -89,9 +89,8 @@ class HeroUnits extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(
-  HeroUnits,
-  graphql`
+export default createFragmentContainer(HeroUnits, {
+  hero_units: graphql`
     fragment HeroUnits_hero_units on HomePageHeroUnit @relay(plural: true) {
       __id
       href
@@ -100,5 +99,5 @@ export default createFragmentContainer(
       narrow_image_url: background_image_url(version: NARROW)
       wide_image_url: background_image_url(version: WIDE)
     }
-  `
-)
+  `,
+})

@@ -51,25 +51,27 @@ export class ShowArtworks extends React.Component<Props, State> {
 
 export const ShowArtworksContainer = createRefetchContainer(
   ShowArtworks,
-  graphql`
-    fragment ShowArtworks_show on Show
-      @argumentDefinitions(
-        medium: { type: "String", defaultValue: "*" }
-        price_range: { type: "String", defaultValue: "*-*" }
-      ) {
-      __id
-      id
-      _id
-      filteredArtworks(
-        size: 0
-        medium: $medium
-        price_range: $price_range
-        aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
-      ) {
-        ...FilteredInfiniteScrollGrid_filteredArtworks
+  {
+    show: graphql`
+      fragment ShowArtworks_show on Show
+        @argumentDefinitions(
+          medium: { type: "String", defaultValue: "*" }
+          price_range: { type: "String", defaultValue: "*-*" }
+        ) {
+        __id
+        id
+        _id
+        filteredArtworks(
+          size: 0
+          medium: $medium
+          price_range: $price_range
+          aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
+        ) {
+          ...FilteredInfiniteScrollGrid_filteredArtworks
+        }
       }
-    }
-  `,
+    `,
+  },
   graphql`
     query ShowArtworksRefetchQuery($showID: String!, $medium: String, $price_range: String) {
       show(id: $showID) {

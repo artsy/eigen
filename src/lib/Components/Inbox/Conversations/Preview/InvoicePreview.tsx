@@ -172,14 +172,16 @@ export class InvoicePreview extends React.Component<Props, State> {
 
 export default createRefetchContainer(
   InvoicePreview,
-  graphql`
-    fragment InvoicePreview_invoice on Invoice {
-      payment_url
-      state
-      total
-      lewitt_invoice_id
-    }
-  `,
+  {
+    invoice: graphql`
+      fragment InvoicePreview_invoice on Invoice {
+        payment_url
+        state
+        total
+        lewitt_invoice_id
+      }
+    `,
+  },
   graphql`
     query InvoicePreviewRefetchQuery($conversationId: String!, $invoiceId: String!) {
       me {

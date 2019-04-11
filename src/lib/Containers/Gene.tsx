@@ -350,37 +350,39 @@ const styles = StyleSheet.create<Styles>({
 
 export default createRefetchContainer(
   Gene,
-  graphql`
-    fragment Gene_gene on Gene
-      @argumentDefinitions(
-        sort: { type: "String", defaultValue: "-partner_updated_at" }
-        medium: { type: "String", defaultValue: "*" }
-        price_range: { type: "String", defaultValue: "*-*" }
-      ) {
-      ...Header_gene
-      ...About_gene
+  {
+    gene: graphql`
+      fragment Gene_gene on Gene
+        @argumentDefinitions(
+          sort: { type: "String", defaultValue: "-partner_updated_at" }
+          medium: { type: "String", defaultValue: "*" }
+          price_range: { type: "String", defaultValue: "*-*" }
+        ) {
+        ...Header_gene
+        ...About_gene
 
-      filtered_artworks(
-        size: 0
-        medium: $medium
-        price_range: $price_range
-        sort: $sort
-        aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
-        for_sale: true
-      ) {
-        total
-        aggregations {
-          slice
-          counts {
-            id
-            name
-            count
+        filtered_artworks(
+          size: 0
+          medium: $medium
+          price_range: $price_range
+          sort: $sort
+          aggregations: [MEDIUM, PRICE_RANGE, TOTAL]
+          for_sale: true
+        ) {
+          total
+          aggregations {
+            slice
+            counts {
+              id
+              name
+              count
+            }
           }
+          ...GeneArtworksGrid_filtered_artworks @arguments(sort: $sort)
         }
-        ...GeneArtworksGrid_filtered_artworks @arguments(sort: $sort)
       }
-    }
-  `,
+    `,
+  },
   graphql`
     query GeneRefetchQuery($geneID: String!, $sort: String, $medium: String, $price_range: String) {
       gene(id: $geneID) {

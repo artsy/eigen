@@ -120,38 +120,40 @@ export class ForYou extends React.Component<Props, State> {
 
 export default createRefetchContainer(
   ForYou,
-  graphql`
-    fragment ForYou_forYou on HomePage {
-      artwork_modules(
-        max_rails: -1
-        max_followed_gene_rails: -1
-        order: [
-          ACTIVE_BIDS
-          RECENTLY_VIEWED_WORKS
-          RECOMMENDED_WORKS
-          FOLLOWED_ARTISTS
-          RELATED_ARTISTS
-          FOLLOWED_GALLERIES
-          SAVED_WORKS
-          LIVE_AUCTIONS
-          CURRENT_FAIRS
-          FOLLOWED_GENES
-          GENERIC_GENES
-        ]
-        exclude: [FOLLOWED_ARTISTS]
-      ) {
-        __id
-        ...ArtworkCarousel_rail
+  {
+    forYou: graphql`
+      fragment ForYou_forYou on HomePage {
+        artwork_modules(
+          max_rails: -1
+          max_followed_gene_rails: -1
+          order: [
+            ACTIVE_BIDS
+            RECENTLY_VIEWED_WORKS
+            RECOMMENDED_WORKS
+            FOLLOWED_ARTISTS
+            RELATED_ARTISTS
+            FOLLOWED_GALLERIES
+            SAVED_WORKS
+            LIVE_AUCTIONS
+            CURRENT_FAIRS
+            FOLLOWED_GENES
+            GENERIC_GENES
+          ]
+          exclude: [FOLLOWED_ARTISTS]
+        ) {
+          __id
+          ...ArtworkCarousel_rail
+        }
+        artist_modules {
+          __id
+          ...ArtistRail_rail
+        }
+        fairs_module {
+          ...FairsRail_fairs_module
+        }
       }
-      artist_modules {
-        __id
-        ...ArtistRail_rail
-      }
-      fairs_module {
-        ...FairsRail_fairs_module
-      }
-    }
-  `,
+    `,
+  },
   graphql`
     query ForYouRefetchQuery {
       forYou: home_page {

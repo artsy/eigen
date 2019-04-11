@@ -239,9 +239,8 @@ export class Inquiry extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(
-  Inquiry,
-  graphql`
+export default createFragmentContainer(Inquiry, {
+  artwork: graphql`
     fragment Inquiry_artwork on Artwork {
       _id
       id
@@ -251,5 +250,5 @@ export default createFragmentContainer(
       }
       ...ArtworkPreview_artwork
     }
-  `
-)
+  `,
+})

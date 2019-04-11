@@ -62,12 +62,11 @@ const styles = StyleSheet.create({
   },
 })
 
-export default createFragmentContainer(
-  Biography,
-  graphql`
+export default createFragmentContainer(Biography, {
+  artist: graphql`
     fragment Biography_artist on Artist {
       bio
       blurb
     }
-  `
-)
+  `,
+})

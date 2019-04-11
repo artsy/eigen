@@ -186,9 +186,8 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export default createFragmentContainer(
-  Header,
-  graphql`
+export default createFragmentContainer(Header, {
+  artist: graphql`
     fragment Header_artist on Artist {
       _id
       id
@@ -199,5 +198,5 @@ export default createFragmentContainer(
         follows
       }
     }
-  `
-)
+  `,
+})
