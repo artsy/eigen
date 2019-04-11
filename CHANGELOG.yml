@@ -1,15 +1,23 @@
 upcoming:
-  version: 5.0.1
+  version: 5.0.2
   date: TBD
-  emission_version: 1.9.1
+  emission_version: 1.9.5
   dev:
-    - Adds a check for whether we can render a page in the ARExternalWebVC and sends someone to Safari to DL if not - orta/myk
-    - Fixes logic for Local Discovery Echo flag - ash
-    - Adds offerable analytics to artwork view - ash
+    - 
   user_facing:
-    - Fixes email autocomplete during login/signup - ash
+    - Fixes a crash when trying to submit a consignment - ash/alloy
 
 releases:
+  - version: 5.0.1
+    date: Mar 29, 2019
+    emission_version: 1.9.4
+    dev:
+      - Adds a check for whether we can render a page in the ARExternalWebVC and sends someone to Safari to DL if not - orta/myk
+      - Fixes logic for Local Discovery Echo flag - ash
+      - Adds offerable analytics to artwork view - ash
+    user_facing:
+      - Fixes email autocomplete during login/signup - ash
+
   - version: 5.0.0
     date: Mar 25, 2019
     emission_version: 1.8.26
