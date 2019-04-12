@@ -1,3 +1,1 @@
-With this update, we’ve added the ability to navigate art fairs, museum exhibitions, and gallery shows with our new City Guide feature, in partnership with BMW.
-
-Explore the map to view and save art events in 6 major art cities around the globe.
+This release fixes a crash where users were unable to submit consignments.
