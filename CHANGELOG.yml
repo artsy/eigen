@@ -1,13 +1,21 @@
 upcoming:
-  version: 5.0.2
+  version: 5.0.3
   date: TBD
   emission_version: 1.9.5
   dev:
     - 
   user_facing:
-    - Fixes a crash when trying to submit a consignment - ash/alloy
+    - 
 
 releases:
+  - version: 5.0.2
+    date: Apr 13, 2019
+    emission_version: 1.9.5
+    dev:
+      - 
+    user_facing:
+      - Fixes a crash when trying to submit a consignment - ash/alloy
+
   - version: 5.0.1
     date: Mar 29, 2019
     emission_version: 1.9.4
