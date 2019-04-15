@@ -72,31 +72,31 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
-  - Emission (1.9.5):
+  - Emission (1.10.0):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
     - Extraction (>= 1.2.1)
-    - Folly (= 2016.10.31.00)
+    - Folly (= 2018.10.22.00)
     - glog (= 0.3.5)
     - ISO8601DateFormatter
     - Pulley
     - react-native-mapbox-gl (= 6.1.4)
-    - React/Core (= 0.57.7)
-    - React/CxxBridge (= 0.57.7)
-    - React/RCTActionSheet (= 0.57.7)
-    - React/RCTAnimation (= 0.57.7)
-    - React/RCTCameraRoll (= 0.57.7)
-    - React/RCTGeolocation (= 0.57.7)
-    - React/RCTImage (= 0.57.7)
-    - React/RCTLinkingIOS (= 0.57.7)
-    - React/RCTNetwork (= 0.57.7)
-    - React/RCTText (= 0.57.7)
+    - React/Core (= 0.59.2)
+    - React/CxxBridge (= 0.59.2)
+    - React/RCTActionSheet (= 0.59.2)
+    - React/RCTAnimation (= 0.59.2)
+    - React/RCTCameraRoll (= 0.59.2)
+    - React/RCTGeolocation (= 0.59.2)
+    - React/RCTImage (= 0.59.2)
+    - React/RCTLinkingIOS (= 0.59.2)
+    - React/RCTNetwork (= 0.59.2)
+    - React/RCTText (= 0.59.2)
     - RNSVG (= 9.0.4)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.30.3)
-    - tipsi-stripe (= 5.2.4)
-    - yoga (= 0.57.7.React)
+    - tipsi-stripe (= 7.4.0)
+    - yoga (= 0.59.2.React)
   - Expecta (1.0.5)
   - "Expecta+Snapshots (3.0.0)":
     - Expecta (~> 1.0)
@@ -135,7 +135,7 @@ PODS:
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
   - FLKAutoLayout (1.0.0)
-  - Folly (2016.10.31.00):
+  - Folly (2018.10.22.00):
     - boost-for-react-native
     - DoubleConversion
     - glog
@@ -184,51 +184,59 @@ PODS:
     - FLKAutoLayout
   - Pulley (2.6.2)
   - Quick (2.0.0)
-  - React (0.57.7):
-    - React/Core (= 0.57.7)
+  - React (0.59.2):
+    - React/Core (= 0.59.2)
   - react-native-mapbox-gl (6.1.4):
     - React
-  - React/Core (0.57.7):
-    - yoga (= 0.57.7.React)
-  - React/CxxBridge (0.57.7):
-    - Folly (= 2016.10.31.00)
+  - React/Core (0.59.2):
+    - yoga (= 0.59.2.React)
+  - React/CxxBridge (0.59.2):
+    - Folly (= 2018.10.22.00)
     - React/Core
     - React/cxxreact
-  - React/cxxreact (0.57.7):
+    - React/jsiexecutor
+  - React/cxxreact (0.59.2):
     - boost-for-react-native (= 1.63.0)
-    - Folly (= 2016.10.31.00)
-    - React/jschelpers
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
     - React/jsinspector
-  - React/DevSupport (0.57.7):
+  - React/DevSupport (0.59.2):
     - React/Core
     - React/RCTWebSocket
-  - React/fishhook (0.57.7)
-  - React/jschelpers (0.57.7):
-    - Folly (= 2016.10.31.00)
-    - React/PrivateDatabase
-  - React/jsinspector (0.57.7)
-  - React/PrivateDatabase (0.57.7)
-  - React/RCTActionSheet (0.57.7):
+  - React/fishhook (0.59.2)
+  - React/jsi (0.59.2):
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+  - React/jsiexecutor (0.59.2):
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React/cxxreact
+    - React/jsi
+  - React/jsinspector (0.59.2)
+  - React/RCTActionSheet (0.59.2):
     - React/Core
-  - React/RCTAnimation (0.57.7):
+  - React/RCTAnimation (0.59.2):
     - React/Core
-  - React/RCTBlob (0.57.7):
+  - React/RCTBlob (0.59.2):
     - React/Core
-  - React/RCTCameraRoll (0.57.7):
+  - React/RCTCameraRoll (0.59.2):
     - React/Core
     - React/RCTImage
-  - React/RCTGeolocation (0.57.7):
+  - React/RCTGeolocation (0.59.2):
     - React/Core
-  - React/RCTImage (0.57.7):
+  - React/RCTImage (0.59.2):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.57.7):
+  - React/RCTLinkingIOS (0.59.2):
     - React/Core
-  - React/RCTNetwork (0.57.7):
+  - React/RCTNetwork (0.59.2):
     - React/Core
-  - React/RCTText (0.57.7):
+  - React/RCTText (0.59.2):
     - React/Core
-  - React/RCTWebSocket (0.57.7):
+  - React/RCTWebSocket (0.59.2):
     - React/Core
     - React/fishhook
     - React/RCTBlob
@@ -252,18 +260,18 @@ PODS:
   - Specta (1.0.5)
   - SSFadingScrollView (1.1.0)
   - Starscream (3.0.4)
-  - Stripe (11.2.0)
+  - Stripe (14.0.0)
   - SwiftyJSON (4.0.0)
   - Then (2.3.0)
-  - tipsi-stripe (5.2.4):
+  - tipsi-stripe (7.4.0):
     - React
-    - Stripe (~> 11.2.0)
+    - Stripe (~> 14.0.0)
   - UICKeyChainStore (1.0.5)
   - "UIView+BooleanAnimations (1.0.2)"
   - VCRURLConnection (0.2.0)
   - "XCTest+OHHTTPStubSuiteCleanUp (1.0.0)":
     - OHHTTPStubs
-  - yoga (0.57.7.React)
+  - yoga (0.59.2.React)
 
 DEPENDENCIES:
   - Aerodramus
@@ -284,7 +292,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission (~> 1.0)
+  - Emission (~> 1)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -329,7 +337,7 @@ DEPENDENCIES:
   - Starscream
   - SwiftyJSON
   - Then
-  - tipsi-stripe (from `https://github.com/tipsi/tipsi-stripe.git`, tag `5.2.4`)
+  - tipsi-stripe (from `https://github.com/tipsi/tipsi-stripe.git`, tag `7.4.0`)
   - UICKeyChainStore
   - "UIView+BooleanAnimations"
   - VCRURLConnection
@@ -440,7 +448,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/alloy/SSFadingScrollView.git
   tipsi-stripe:
     :git: https://github.com/tipsi/tipsi-stripe.git
-    :tag: 5.2.4
+    :tag: 7.4.0
 
 CHECKOUT OPTIONS:
   AFOAuth1Client:
@@ -487,7 +495,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/alloy/SSFadingScrollView.git
   tipsi-stripe:
     :git: https://github.com/tipsi/tipsi-stripe.git
-    :tag: 5.2.4
+    :tag: 7.4.0
 
 SPEC CHECKSUMS:
   Adjust: b1f2b0e0b426fa991d69ed7fc9de806cf6dff5a6
@@ -510,7 +518,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 1583e495cd169d6c2506879e1bf105051ea00ff0
+  Emission: 3ef2ff0d9b58ffef17f314ea9812a54dbf5dc8da
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
@@ -518,7 +526,7 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: 2f7249686d1e30ce8a5ef5400eedf50b3e3df332
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
-  Folly: c89ac2d5c6ab169cd7397ef27485c44f35f742c7
+  Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
   glog: 40216802cccbe22ce7dfaed575b875542114f10b
@@ -545,7 +553,7 @@ SPEC CHECKSUMS:
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
   Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
-  React: 67899bbb285ceb9b4ee1c88b3991602ba5772ad2
+  React: 9d063e2f356c8cd2f54dd550d4507740037cbabe
   react-native-mapbox-gl: b7309e99290963cc7fe0e34db86c6e16890cfcee
   ReactiveObjC: 7b6782ae39f9ac0f57205c3b0c0b69b9dd7048c0
   RNSVG: 36f6615444ab569023444e09b01a1900d964e967
@@ -556,16 +564,16 @@ SPEC CHECKSUMS:
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   SSFadingScrollView: a2f142312afad23585e354a41a6ed337045e1aa3
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
-  Stripe: 898f83a95d72180c6eb4acd65b2ae6158fc6a8bd
+  Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
-  tipsi-stripe: 25a3f6ba746e9a27f7b21e928c9974d016efcd77
+  tipsi-stripe: a06dc6eaccd598d0c4d3094cd420c71844701c46
   UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
-  yoga: 639d0fdc7332ae0cd12c1b7f76729f04e5a5faec
+  yoga: 4ce3811b3db5f47fe1e125f15383003316a616b8
 
-PODFILE CHECKSUM: c6589ac3e0b75cf96dcf19610a45d54287817fa0
+PODFILE CHECKSUM: 3193a58d9650254633d6f98cbb18fa72e0a1ba68
 
 COCOAPODS: 1.6.0.beta.1

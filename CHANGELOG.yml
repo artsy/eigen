@@ -1,9 +1,9 @@
 upcoming:
   version: 5.0.3
   date: TBD
-  emission_version: 1.9.5
+  emission_version: 1.10.x
   dev:
-    - 
+    - Updates RN to 0.59 - orta/alloy
   user_facing:
     - 
 
