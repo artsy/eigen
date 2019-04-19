@@ -1,12 +1,15 @@
 import { Box, Sans, Separator, Serif, Spacer, Theme } from "@artsy/palette"
 import { MoreInfo_show } from "__generated__/MoreInfo_show.graphql"
+import { MoreInfoQuery } from "__generated__/MoreInfoQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import React from "react"
 import { FlatList, Linking, ViewProperties } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
+import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
 import { ShowEventSectionContainer as ShowEventSection } from "../Components/ShowEventSection"
 import { TextSection } from "../Components/TextSection"
 
@@ -16,6 +19,7 @@ const ListHeaderText = styled(Serif)`
 
 interface Props extends ViewProperties {
   show: MoreInfo_show
+  showID: string
 }
 
 interface State {
@@ -172,3 +176,20 @@ export const MoreInfoContainer = createFragmentContainer(MoreInfo, {
     }
   `,
 })
+
+export const ShowMoreInfoRenderer: React.SFC<{ showID: string }> = ({ showID }) => {
+  return (
+    <QueryRenderer<MoreInfoQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query MoreInfoQuery($showID: String!) {
+          show(id: $showID) {
+            ...MoreInfo_show
+          }
+        }
+      `}
+      variables={{ showID }}
+      render={renderWithLoadProgress(MoreInfoContainer)}
+    />
+  )
+}

@@ -47,9 +47,6 @@ import { QueryRenderersInquiryQuery } from "__generated__/QueryRenderersInquiryQ
 import { QueryRenderersMyProfileQuery } from "__generated__/QueryRenderersMyProfileQuery.graphql"
 import { QueryRenderersRegistrationFlowQuery } from "__generated__/QueryRenderersRegistrationFlowQuery.graphql"
 import { QueryRenderersSaleQuery } from "__generated__/QueryRenderersSaleQuery.graphql"
-import { QueryRenderersShowArtistsQuery } from "__generated__/QueryRenderersShowArtistsQuery.graphql"
-import { QueryRenderersShowArtworksQuery } from "__generated__/QueryRenderersShowArtworksQuery.graphql"
-import { QueryRenderersShowMoreInfoQuery } from "__generated__/QueryRenderersShowMoreInfoQuery.graphql"
 import { QueryRenderersShowQuery } from "__generated__/QueryRenderersShowQuery.graphql"
 import { QueryRenderersWorksForYouQuery } from "__generated__/QueryRenderersWorksForYouQuery.graphql"
 import { BucketKey } from "lib/Scenes/Map/bucketCityResults"
@@ -373,66 +370,6 @@ export const ShowRenderer: React.SFC<ShowRendererProps> = ({ render, showID }) =
         query QueryRenderersShowQuery($showID: String!) {
           show(id: $showID) {
             ...Show_show
-          }
-        }
-      `}
-      variables={{ showID }}
-      render={render}
-    />
-  )
-}
-
-interface ShowArtistProps extends RendererProps {
-  showID: string
-}
-export const ShowArtistsRenderer: React.SFC<ShowArtistProps> = ({ render, showID }) => {
-  return (
-    <QueryRenderer<QueryRenderersShowArtistsQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersShowArtistsQuery($showID: String!) {
-          show(id: $showID) {
-            ...ShowArtists_show
-          }
-        }
-      `}
-      variables={{ showID }}
-      render={render}
-    />
-  )
-}
-
-interface ShowArtworksProps extends RendererProps {
-  showID: string
-}
-export const ShowArtworksRenderer: React.SFC<ShowArtworksProps> = ({ render, showID }) => {
-  return (
-    <QueryRenderer<QueryRenderersShowArtworksQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersShowArtworksQuery($showID: String!) {
-          show(id: $showID) {
-            ...ShowArtworks_show
-          }
-        }
-      `}
-      variables={{ showID }}
-      render={render}
-    />
-  )
-}
-
-interface ShowMoreInfoProps extends RendererProps {
-  showID: string
-}
-export const ShowMoreInfoRenderer: React.SFC<ShowMoreInfoProps> = ({ render, showID }) => {
-  return (
-    <QueryRenderer<QueryRenderersShowMoreInfoQuery>
-      environment={environment}
-      query={graphql`
-        query QueryRenderersShowMoreInfoQuery($showID: String!) {
-          show(id: $showID) {
-            ...MoreInfo_show
           }
         }
       `}

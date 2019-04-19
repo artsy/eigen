@@ -1,16 +1,20 @@
 import { Theme } from "@artsy/palette"
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ShowArtists_show } from "__generated__/ShowArtists_show.graphql"
+import { ShowArtistsQuery } from "__generated__/ShowArtistsQuery.graphql"
 import { ArtistsGroupedByName } from "lib/Components/ArtistsGroupedByName"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { Schema, screenTrack } from "lib/utils/track"
 import { get } from "lodash"
 import React from "react"
 import { ViewProperties } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { defaultEnvironment } from "../../../relay/createEnvironment"
+import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
 
 interface Props extends ViewProperties {
   show: ShowArtists_show
+  showID: string
 }
 
 interface State {
@@ -67,3 +71,19 @@ export const ShowArtistsContainer = createFragmentContainer(ShowArtists, {
     }
   `,
 })
+export const ShowArtistsRenderer: React.SFC<{ showID: string }> = ({ showID }) => {
+  return (
+    <QueryRenderer<ShowArtistsQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query ShowArtistsQuery($showID: String!) {
+          show(id: $showID) {
+            ...ShowArtists_show
+          }
+        }
+      `}
+      variables={{ showID }}
+      render={renderWithLoadProgress(ShowArtistsContainer)}
+    />
+  )
+}
