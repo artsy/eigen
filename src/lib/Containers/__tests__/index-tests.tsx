@@ -21,9 +21,6 @@ it("should export all components", () => {
     "RegistrationFlow",
     "Sale",
     "Show",
-    "ShowMoreInfo",
-    "ShowArtistsContainer",
-    "ShowArtworksContainer",
     "WorksForYou",
   ])
 })
