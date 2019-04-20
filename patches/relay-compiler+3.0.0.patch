@@ -1,7 +1,15 @@
-diff --git a/node_modules/relay-compiler/bin/relay-compiler b/node_modules/relay-compiler/bin/relay-compiler
-index 7491530..ee377b4 100755
+patch-package
 --- a/node_modules/relay-compiler/bin/relay-compiler
 +++ b/node_modules/relay-compiler/bin/relay-compiler
+@@ -5555,7 +5555,7 @@ function highlightSourceAtLocation(source, location) {
+   var columnOffset = location.line === 1 ? firstLineColumnOffset : 0;
+   var columnNum = location.column + columnOffset;
+   var lines = body.split(/\r\n|[\n\r]/g);
+-  return "".concat(source.name, " (").concat(lineNum, ":").concat(columnNum, ")\n") + printPrefixedLines([// Lines specified like this: ["prefix", "string"],
++  return "".concat(source.name, ":").concat(lineNum, ":").concat(columnNum, "\n") + printPrefixedLines([// Lines specified like this: ["prefix", "string"],
+   ["".concat(lineNum - 1, ": "), lines[lineIndex - 1]], ["".concat(lineNum, ": "), lines[lineIndex]], ['', whitespace(columnNum - 1) + '^'], ["".concat(lineNum + 1, ": "), lines[lineIndex + 1]]]);
+ }
+ 
 @@ -16051,10 +16051,10 @@ module.exports = function (tagFinder) {
      !(text.indexOf('graphql') >= 0) ?  true ? invariant(false, 'RelaySourceModuleParser: Files should be filtered before passed to the ' + 'parser, got unfiltered file `%s`.', file.relPath) : undefined : void 0;
      var astDefinitions = [];
