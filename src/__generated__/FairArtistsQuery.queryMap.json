@@ -1,3 +1,0 @@
-{
-  "073f8ff4c4f9e225d610b863f8d8a3c3": "query FairArtistsQuery(\n  $id: String!\n  $count: Int!\n  $cursor: String\n) {\n  fair(id: $id) {\n    ...FairArtists_fair_1G22uz\n    __id\n  }\n}\n\nfragment FairArtists_fair_1G22uz on Fair {\n  id\n  _id\n  artists(first: $count, after: $cursor) {\n    pageInfo {\n      hasNextPage\n      startCursor\n      endCursor\n    }\n    edges {\n      cursor\n      node {\n        ...ArtistListItem_artist\n        sortable_id\n        href\n        _id\n        id\n        __id\n        __typename\n      }\n    }\n  }\n  __id\n}\n\nfragment ArtistListItem_artist on Artist {\n  __id\n  _id\n  id\n  name\n  is_followed\n  nationality\n  birthday\n  deathday\n  image {\n    url\n  }\n}\n"
-}

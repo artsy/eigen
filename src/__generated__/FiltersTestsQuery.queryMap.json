@@ -1,3 +1,0 @@
-{
-  "0f92e879c0ff3f99ab6965d47656db4a": "query FiltersTestsQuery {\n  show(id: \"anderson-fine-art-gallery-flickinger-collection\") {\n    filteredArtworks(size: 0, medium: \"*\", price_range: \"*-*\", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {\n      ...Filters_filteredArtworks\n      __id\n    }\n    __id\n  }\n}\n\nfragment Filters_filteredArtworks on FilterArtworks {\n  aggregations {\n    slice\n    counts {\n      id\n      name\n      __id\n    }\n  }\n  __id\n}\n"
-}

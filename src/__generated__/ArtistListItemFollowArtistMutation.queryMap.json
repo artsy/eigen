@@ -1,3 +1,0 @@
-{
-  "5fe5566b2c4b7ad53ce3fdfba9919f89": "mutation ArtistListItemFollowArtistMutation(\n  $input: FollowArtistInput!\n) {\n  followArtist(input: $input) {\n    artist {\n      __id\n      is_followed\n    }\n  }\n}\n"
-}

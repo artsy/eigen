@@ -1,3 +1,0 @@
-{
-  "41099fe5256606887fd639535958740c": "mutation ShowItemRowMutation(\n  $input: FollowShowInput!\n) {\n  followShow(input: $input) {\n    show {\n      id\n      _id\n      is_followed\n      __id\n    }\n  }\n}\n"
-}
