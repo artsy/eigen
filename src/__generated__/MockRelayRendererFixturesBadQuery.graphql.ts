@@ -19,6 +19,7 @@ export type MockRelayRendererFixturesBadQuery = {
 query MockRelayRendererFixturesBadQuery {
   something_that_is_not_expected: artwork(id: "mona-lisa") {
     ...MockRelayRendererFixtures_artwork
+    id
   }
 }
 
@@ -28,6 +29,7 @@ fragment MockRelayRendererFixtures_artwork on Artwork {
   }
   artist {
     gravityID
+    id
   }
   ...MockRelayRendererFixtures_artworkMetadata
 }
@@ -45,7 +47,14 @@ var v0 = [
     "value": "mona-lisa",
     "type": "String!"
   }
-];
+],
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -120,7 +129,8 @@ return {
                 "name": "gravityID",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              (v1/*: any*/)
             ]
           },
           {
@@ -129,7 +139,8 @@ return {
             "name": "title",
             "args": null,
             "storageKey": null
-          }
+          },
+          (v1/*: any*/)
         ]
       }
     ]

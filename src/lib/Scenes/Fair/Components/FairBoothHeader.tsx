@@ -66,7 +66,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
       partner: {
         gravityID: partnerSlug,
         _id: partnerID,
-        __id: partnerRelayID,
+        id: partnerRelayID,
         profile: { is_followed: partnerFollowed, _id: profileID },
       },
     } = show
@@ -177,7 +177,7 @@ export const FairBoothHeaderContainer = createFragmentContainer(FairBoothHeader,
           name
           gravityID
           _id
-          __id
+          id
           href
           profile {
             _id

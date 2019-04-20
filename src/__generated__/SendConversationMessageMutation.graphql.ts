@@ -19,7 +19,7 @@ export type SendConversationMessageMutationResponse = {
                 readonly impulse_id: string;
                 readonly is_from_user: boolean | null;
                 readonly body: string | null;
-                readonly __id: string;
+                readonly id: string;
                 readonly " $fragmentRefs": Message_message$ref;
             }) | null;
         }) | null;
@@ -42,7 +42,7 @@ mutation SendConversationMessageMutation(
         impulse_id
         is_from_user
         body
-        __id
+        id
         ...Message_message
       }
     }
@@ -60,6 +60,7 @@ fragment Message_message on Message {
   invoice {
     payment_url
     ...InvoicePreview_invoice
+    id
   }
   attachments {
     internalID
@@ -134,7 +135,7 @@ v4 = {
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -295,7 +296,8 @@ return {
                         "name": "lewitt_invoice_id",
                         "args": null,
                         "storageKey": null
-                      }
+                      },
+                      (v5/*: any*/)
                     ]
                   },
                   {
@@ -348,11 +350,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "SendConversationMessageMutation",
-    "id": "6e5ff1e232848ad66c3ad72e22ee1054",
+    "id": "73b32c449f481fc4adcb493b0ad329eb",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '6e5ff1e232848ad66c3ad72e22ee1054';
+(node as any).hash = '73b32c449f481fc4adcb493b0ad329eb';
 export default node;

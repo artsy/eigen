@@ -17,7 +17,7 @@ export type GlobalMap_viewer = {
             readonly featuredShows: ReadonlyArray<({
                 readonly gravityID: string;
                 readonly _id: string;
-                readonly __id: string;
+                readonly id: string;
                 readonly name: string | null;
                 readonly status: string | null;
                 readonly isStubShow: boolean | null;
@@ -50,7 +50,7 @@ export type GlobalMap_viewer = {
                 readonly node: ({
                     readonly gravityID: string;
                     readonly _id: string;
-                    readonly __id: string;
+                    readonly id: string;
                     readonly isStubShow: boolean | null;
                     readonly name: string | null;
                     readonly status: string | null;
@@ -86,7 +86,7 @@ export type GlobalMap_viewer = {
                 readonly node: ({
                     readonly gravityID: string;
                     readonly _id: string;
-                    readonly __id: string;
+                    readonly id: string;
                     readonly isStubShow: boolean | null;
                     readonly name: string | null;
                     readonly status: string | null;
@@ -145,7 +145,7 @@ export type GlobalMap_viewer = {
                             readonly width: number | null;
                             readonly url: string | null;
                         }) | null;
-                        readonly __id: string;
+                        readonly id: string;
                         readonly gravityID: string;
                         readonly name: string | null;
                     }) | null;
@@ -210,7 +210,7 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -760,5 +760,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'f30bce326300298a26e9e58fcdfa6ffb';
+(node as any).hash = 'd36b430e1001123e4f7e094ca3d6b401';
 export default node;

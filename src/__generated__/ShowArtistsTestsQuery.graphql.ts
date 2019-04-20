@@ -19,6 +19,7 @@ export type ShowArtistsTestsQuery = {
 query ShowArtistsTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...ShowArtists_show
+    id
   }
 }
 
@@ -31,12 +32,13 @@ fragment ShowArtists_show on Show {
       ...ArtistListItem_artist
       sortable_id
       href
+      id
     }
   }
 }
 
 fragment ArtistListItem_artist on Artist {
-  __id
+  id
   _id
   gravityID
   name
@@ -70,6 +72,13 @@ v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -148,13 +157,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "__id",
-                    "args": null,
-                    "storageKey": null
-                  },
+                  (v3/*: any*/),
                   (v2/*: any*/),
                   {
                     "kind": "ScalarField",
@@ -220,7 +223,8 @@ return {
                 ]
               }
             ]
-          }
+          },
+          (v3/*: any*/)
         ]
       }
     ]

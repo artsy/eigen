@@ -3,7 +3,7 @@
 import { ConcreteRequest } from "relay-runtime";
 import { SaleArtworksGrid_sale$ref } from "./SaleArtworksGrid_sale.graphql";
 export type SaleArtworksGridQueryVariables = {
-    readonly __id: string;
+    readonly id: string;
     readonly count: number;
     readonly cursor?: string | null;
 };
@@ -21,11 +21,11 @@ export type SaleArtworksGridQuery = {
 
 /*
 query SaleArtworksGridQuery(
-  $__id: ID!
+  $id: ID!
   $count: Int!
   $cursor: String
 ) {
-  node(__id: $__id) {
+  node(__id: $id) {
     __typename
     ... on Sale {
       ...SaleArtworksGrid_sale_1G22uz
@@ -35,7 +35,7 @@ query SaleArtworksGridQuery(
 }
 
 fragment SaleArtworksGrid_sale_1G22uz on Sale {
-  __id
+  id
   saleArtworks: sale_artworks_connection(first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
@@ -46,12 +46,13 @@ fragment SaleArtworksGrid_sale_1G22uz on Sale {
       node {
         artwork {
           gravityID
-          __id
+          id
           image {
             aspect_ratio
           }
           ...Artwork_artwork
         }
+        id
         __typename
       }
       cursor
@@ -74,6 +75,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
+    id
   }
   sale_artwork {
     opening_bid {
@@ -85,7 +87,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
+      id
     }
+    id
   }
   image {
     url(version: "large")
@@ -93,9 +97,11 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
+    id
   }
   partner {
     name
+    id
   }
   href
 }
@@ -105,7 +111,7 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "__id",
+    "name": "id",
     "type": "ID!",
     "defaultValue": null
   },
@@ -126,7 +132,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "__id",
-    "variableName": "__id",
+    "variableName": "id",
     "type": "ID!"
   }
 ],
@@ -140,7 +146,7 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -181,7 +187,8 @@ v7 = [
     "name": "name",
     "args": null,
     "storageKey": null
-  }
+  },
+  (v3/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -244,18 +251,11 @@ return {
         "plural": false,
         "selections": [
           (v2/*: any*/),
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
-            "storageKey": null
-          },
+          (v3/*: any*/),
           {
             "kind": "InlineFragment",
             "type": "Sale",
             "selections": [
-              (v3/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": "saleArtworks",
@@ -450,7 +450,8 @@ return {
                                     "name": "display_timely_at",
                                     "args": null,
                                     "storageKey": null
-                                  }
+                                  },
+                                  (v3/*: any*/)
                                 ]
                               },
                               {
@@ -498,9 +499,11 @@ return {
                                     "concreteType": "Sale",
                                     "plural": false,
                                     "selections": [
-                                      (v5/*: any*/)
+                                      (v5/*: any*/),
+                                      (v3/*: any*/)
                                     ]
-                                  }
+                                  },
+                                  (v3/*: any*/)
                                 ]
                               },
                               {
@@ -539,6 +542,7 @@ return {
                               }
                             ]
                           },
+                          (v3/*: any*/),
                           (v2/*: any*/)
                         ]
                       },
@@ -571,11 +575,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleArtworksGridQuery",
-    "id": "8382a7d89f9501ca7da6013e02e3ebdd",
+    "id": "8fdbad9e162d68c508e6296c63792f39",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '8382a7d89f9501ca7da6013e02e3ebdd';
+(node as any).hash = '8fdbad9e162d68c508e6296c63792f39';
 export default node;

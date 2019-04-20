@@ -59,7 +59,7 @@ export class ShowItemRow extends React.Component<Props, State> {
   })
   handleSave() {
     const {
-      show: { gravityID: showSlug, __id: nodeID, _id: showID, is_followed: isShowFollowed },
+      show: { gravityID: showSlug, id: nodeID, _id: showID, is_followed: isShowFollowed },
     } = this.props
 
     if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
@@ -187,7 +187,7 @@ export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
     fragment ShowItemRow_show on Show {
       gravityID
       _id
-      __id
+      id
       is_followed
       name
       isStubShow

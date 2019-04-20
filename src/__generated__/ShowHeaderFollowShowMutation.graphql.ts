@@ -34,6 +34,7 @@ mutation ShowHeaderFollowShowMutation(
       gravityID
       _id
       is_followed
+      id
     }
   }
 }
@@ -50,56 +51,33 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "followShow",
-    "storageKey": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "input",
-        "variableName": "input",
-        "type": "FollowShowInput!"
-      }
-    ],
-    "concreteType": "FollowShowPayload",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "show",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Show",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "gravityID",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "_id",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "is_followed",
-            "args": null,
-            "storageKey": null
-          }
-        ]
-      }
-    ]
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input",
+    "type": "FollowShowInput!"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "_id",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_followed",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -108,13 +86,72 @@ return {
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "followShow",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "FollowShowPayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "show",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Show",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/)
+            ]
+          }
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "ShowHeaderFollowShowMutation",
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "followShow",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "FollowShowPayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "show",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Show",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   "params": {
     "operationKind": "mutation",

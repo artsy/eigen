@@ -25,6 +25,7 @@ query CategoriesMeQuery(
 ) {
   me {
     ...Categories_me_1G22uz
+    id
   }
 }
 
@@ -38,13 +39,14 @@ fragment Categories_me_1G22uz on Me {
       node {
         gene {
           gravityID
-          __id
+          id
           name
           href
           image {
             url
           }
         }
+        id
         __typename
       }
       cursor
@@ -81,7 +83,14 @@ v1 = [
     "variableName": "count",
     "type": "Int"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -204,13 +213,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "__id",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -245,6 +248,7 @@ return {
                           }
                         ]
                       },
+                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -273,7 +277,8 @@ return {
             "handle": "connection",
             "key": "Categories_followed_genes",
             "filters": null
-          }
+          },
+          (v2/*: any*/)
         ]
       }
     ]

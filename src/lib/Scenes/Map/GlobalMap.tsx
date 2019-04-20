@@ -793,7 +793,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
           featuredShows {
             gravityID
             _id
-            __id
+            id
             name
             status
             isStubShow
@@ -834,7 +834,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
             node {
               gravityID
               _id
-              __id
+              id
               isStubShow
               name
               status
@@ -874,7 +874,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
             node {
               gravityID
               _id
-              __id
+              id
               isStubShow
               name
               status
@@ -940,7 +940,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
                   width
                   url(version: "square140")
                 }
-                __id
+                id
                 gravityID
                 name
               }

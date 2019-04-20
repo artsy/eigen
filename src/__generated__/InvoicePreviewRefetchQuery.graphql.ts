@@ -28,7 +28,9 @@ query InvoicePreviewRefetchQuery(
   me {
     invoice(conversationId: $conversationId, invoiceId: $invoiceId) {
       ...InvoicePreview_invoice
+      id
     }
+    id
   }
 }
 
@@ -68,7 +70,14 @@ v1 = [
     "variableName": "invoiceId",
     "type": "String!"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -157,9 +166,11 @@ return {
                 "name": "lewitt_invoice_id",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              (v2/*: any*/)
             ]
-          }
+          },
+          (v2/*: any*/)
         ]
       }
     ]

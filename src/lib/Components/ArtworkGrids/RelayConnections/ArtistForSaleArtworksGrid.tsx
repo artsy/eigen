@@ -1,8 +1,13 @@
+import { ArtistForSaleArtworksGrid_artist } from "__generated__/ArtistForSaleArtworksGrid_artist.graphql"
+import InfiniteScrollArtworksGrid, {
+  Props as InfiniteScrollGridProps,
+} from "lib/Components/ArtworkGrids/InfiniteScrollGrid"
 import { createPaginationContainer, graphql } from "react-relay"
-import InfiniteScrollArtworksGrid from "../InfiniteScrollGrid"
 
-const ArtistForSaleArtworksGrid = createPaginationContainer(
-  InfiniteScrollArtworksGrid,
+const ArtistForSaleArtworksGrid = createPaginationContainer<
+  { artist: ArtistForSaleArtworksGrid_artist } & InfiniteScrollGridProps
+>(
+  InfiniteScrollArtworksGrid as any,
   {
     artist: graphql`
       fragment ArtistForSaleArtworksGrid_artist on Artist
@@ -11,7 +16,7 @@ const ArtistForSaleArtworksGrid = createPaginationContainer(
           cursor: { type: "String" }
           filter: { type: "[ArtistArtworksFilters]", defaultValue: [IS_FOR_SALE] }
         ) {
-        __id
+        id
         forSaleArtworks: artworks_connection(
           first: $count
           after: $cursor
@@ -26,7 +31,7 @@ const ArtistForSaleArtworksGrid = createPaginationContainer(
           edges {
             node {
               gravityID
-              __id
+              id
               image {
                 aspect_ratio
               }
@@ -50,20 +55,15 @@ const ArtistForSaleArtworksGrid = createPaginationContainer(
     },
     getVariables(props, { count, cursor }, { filter }) {
       return {
-        __id: props.artist.__id,
+        id: props.artist.id,
         count,
         cursor,
         filter,
       }
     },
     query: graphql`
-      query ArtistForSaleArtworksGridQuery(
-        $__id: ID!
-        $count: Int!
-        $cursor: String
-        $filter: [ArtistArtworksFilters]
-      ) {
-        node(__id: $__id) {
+      query ArtistForSaleArtworksGridQuery($id: ID!, $count: Int!, $cursor: String, $filter: [ArtistArtworksFilters]) {
+        node(__id: $id) {
           ... on Artist {
             ...ArtistForSaleArtworksGrid_artist @arguments(count: $count, cursor: $cursor, filter: $filter)
           }
@@ -74,22 +74,3 @@ const ArtistForSaleArtworksGrid = createPaginationContainer(
 )
 
 export default ArtistForSaleArtworksGrid
-
-export interface ArtistRelayProps {
-  artist?: {
-    artworks_connection: {
-      pageInfo: {
-        hasNextPage: boolean
-      }
-      edges: Array<{
-        node: {
-          __id: string
-          id: string
-          image: {
-            aspect_ratio: number | null
-          } | null
-        } | null
-      }>
-    } | null
-  }
-}

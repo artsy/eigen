@@ -27,6 +27,7 @@ query QueryRenderersGeneQuery(
 ) {
   gene(id: $geneID) {
     ...Gene_gene_2UkO81
+    id
   }
 }
 
@@ -41,9 +42,11 @@ fragment Gene_gene_2UkO81 on Gene {
         gravityID
         name
         count
+        id
       }
     }
     ...GeneArtworksGrid_filtered_artworks_32r0OK
+    id
   }
 }
 
@@ -57,11 +60,12 @@ fragment About_gene on Gene {
   ...Biography_gene
   trending_artists {
     ...RelatedArtists_artists
+    id
   }
 }
 
 fragment GeneArtworksGrid_filtered_artworks_32r0OK on FilterArtworks {
-  __id
+  id
   artworks: artworks_connection(first: 10, after: "", sort: "-partner_updated_at") {
     pageInfo {
       hasNextPage
@@ -71,7 +75,7 @@ fragment GeneArtworksGrid_filtered_artworks_32r0OK on FilterArtworks {
     edges {
       node {
         gravityID
-        __id
+        id
         image {
           aspect_ratio
         }
@@ -98,6 +102,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
+    id
   }
   sale_artwork {
     opening_bid {
@@ -109,7 +114,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
+      id
     }
+    id
   }
   image {
     url(version: "large")
@@ -117,9 +124,11 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
+    id
   }
   partner {
     name
+    id
   }
   href
 }
@@ -129,7 +138,7 @@ fragment Biography_gene on Gene {
 }
 
 fragment RelatedArtists_artists on Artist {
-  __id
+  id
   ...RelatedArtist_artist
 }
 
@@ -192,7 +201,7 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -255,7 +264,8 @@ v10 = [
   }
 ],
 v11 = [
-  (v3/*: any*/)
+  (v3/*: any*/),
+  (v4/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -463,7 +473,8 @@ return {
                         "name": "count",
                         "args": null,
                         "storageKey": null
-                      }
+                      },
+                      (v4/*: any*/)
                     ]
                   }
                 ]
@@ -635,7 +646,8 @@ return {
                                 "name": "display_timely_at",
                                 "args": null,
                                 "storageKey": null
-                              }
+                              },
+                              (v4/*: any*/)
                             ]
                           },
                           {
@@ -683,9 +695,11 @@ return {
                                 "concreteType": "Sale",
                                 "plural": false,
                                 "selections": [
-                                  (v9/*: any*/)
+                                  (v9/*: any*/),
+                                  (v4/*: any*/)
                                 ]
-                              }
+                              },
+                              (v4/*: any*/)
                             ]
                           },
                           {
@@ -748,7 +762,8 @@ return {
                 ]
               }
             ]
-          }
+          },
+          (v4/*: any*/)
         ]
       }
     ]

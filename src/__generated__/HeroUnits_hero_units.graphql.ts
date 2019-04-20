@@ -4,7 +4,7 @@ import { ReaderFragment } from "relay-runtime";
 declare const _HeroUnits_hero_units$ref: unique symbol;
 export type HeroUnits_hero_units$ref = typeof _HeroUnits_hero_units$ref;
 export type HeroUnits_hero_units = ReadonlyArray<{
-    readonly __id: string;
+    readonly id: string;
     readonly href: string | null;
     readonly title: string | null;
     readonly heading: string | null;
@@ -27,7 +27,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "__id",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -82,5 +82,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '3c5a06f04a69b982da948725f333c9ed';
+(node as any).hash = '4ae7914d80f5d917a4d55d6d7a224fab';
 export default node;

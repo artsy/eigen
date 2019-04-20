@@ -23,6 +23,7 @@ query QueryRenderersShowMoreInfoQuery(
 ) {
   show(id: $showID) {
     ...MoreInfo_show
+    id
   }
 }
 
@@ -39,6 +40,9 @@ fragment MoreInfo_show on Show {
       type
     }
     ... on Node {
+      id
+    }
+    ... on ExternalPartner {
       id
     }
   }
@@ -72,7 +76,14 @@ v1 = [
     "variableName": "showID",
     "type": "String!"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -165,13 +176,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "id",
-                "args": null,
-                "storageKey": null
-              },
+              (v2/*: any*/),
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
@@ -239,7 +244,8 @@ return {
                 "storageKey": null
               }
             ]
-          }
+          },
+          (v2/*: any*/)
         ]
       }
     ]

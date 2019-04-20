@@ -58,7 +58,7 @@ export class Event extends React.Component<Props, State> {
   })
   handleSaveChange() {
     const node = this.props.event
-    const { gravityID: showSlug, __id: nodeID, _id: showID, is_followed: isShowFollowed } = node
+    const { gravityID: showSlug, id: nodeID, _id: showID, is_followed: isShowFollowed } = node
 
     if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
       this.setState(

@@ -19,13 +19,15 @@ export type ShowArtworksPreviewTestsQuery = {
 query ShowArtworksPreviewTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...ShowArtworksPreview_show
+    id
   }
 }
 
 fragment ShowArtworksPreview_show on Show {
-  __id
+  id
   artworks(size: 6) {
     ...GenericGrid_artworks
+    id
   }
   counts {
     artworks
@@ -33,7 +35,7 @@ fragment ShowArtworksPreview_show on Show {
 }
 
 fragment GenericGrid_artworks on Artwork {
-  __id
+  id
   gravityID
   image {
     aspect_ratio
@@ -56,6 +58,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
+    id
   }
   sale_artwork {
     opening_bid {
@@ -67,7 +70,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
+      id
     }
+    id
   }
   image {
     url(version: "large")
@@ -75,9 +80,11 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
+    id
   }
   partner {
     name
+    id
   }
   href
 }
@@ -95,7 +102,7 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -122,7 +129,8 @@ v4 = [
     "name": "name",
     "args": null,
     "storageKey": null
-  }
+  },
+  (v1/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -308,7 +316,8 @@ return {
                     "name": "display_timely_at",
                     "args": null,
                     "storageKey": null
-                  }
+                  },
+                  (v1/*: any*/)
                 ]
               },
               {
@@ -356,9 +365,11 @@ return {
                     "concreteType": "Sale",
                     "plural": false,
                     "selections": [
-                      (v2/*: any*/)
+                      (v2/*: any*/),
+                      (v1/*: any*/)
                     ]
-                  }
+                  },
+                  (v1/*: any*/)
                 ]
               },
               {

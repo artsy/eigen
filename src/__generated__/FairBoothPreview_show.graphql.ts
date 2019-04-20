@@ -17,7 +17,7 @@ export type FairBoothPreview_show = {
         readonly href?: string | null;
         readonly gravityID?: string;
         readonly _id?: string;
-        readonly __id?: string;
+        readonly id?: string;
         readonly profile?: ({
             readonly _id: string;
             readonly is_followed: boolean | null;
@@ -127,7 +127,7 @@ return {
             {
               "kind": "ScalarField",
               "alias": null,
-              "name": "__id",
+              "name": "id",
               "args": null,
               "storageKey": null
             },
@@ -250,5 +250,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '4a44e885a98f3a7021c4beb94024b4e0';
+(node as any).hash = 'c8dd7febb1a543b149c8ab0bb722bf67';
 export default node;

@@ -6,7 +6,7 @@ declare const _ArtworksPreview_fair$ref: unique symbol;
 export type ArtworksPreview_fair$ref = typeof _ArtworksPreview_fair$ref;
 export type ArtworksPreview_fair = {
     readonly gravityID: string;
-    readonly __id: string;
+    readonly id: string;
     readonly filteredArtworks: ({
         readonly artworks_connection: ({
             readonly edges: ReadonlyArray<({
@@ -41,7 +41,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "__id",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -136,5 +136,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'ad33a2a10fad882cb690e5aecf14aa3e';
+(node as any).hash = 'd4ce2800c4a9c91a3d919d5bb72fe6cc';
 export default node;

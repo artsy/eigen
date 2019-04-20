@@ -49,6 +49,6 @@ export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached, Com
       }
     }}
     sections={data}
-    keyExtractor={item => item.__id}
+    keyExtractor={item => item.id}
   />
 )

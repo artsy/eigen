@@ -5,7 +5,7 @@ import { FilteredInfiniteScrollGrid_filteredArtworks$ref } from "./FilteredInfin
 declare const _FairArtworks_fair$ref: unique symbol;
 export type FairArtworks_fair$ref = typeof _FairArtworks_fair$ref;
 export type FairArtworks_fair = {
-    readonly __id: string;
+    readonly id: string;
     readonly _id: string;
     readonly gravityID: string;
     readonly artworks: ({
@@ -39,7 +39,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "__id",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -104,5 +104,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'e28906ca31eb861676dd82fba38652b3';
+(node as any).hash = 'd0ebe2a3a124e305b11d11d914d39d09';
 export default node;

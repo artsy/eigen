@@ -15,7 +15,7 @@ it("looks correct when rendered", () => {
 
 const data = {
   location: {
-    __id: "123",
+    gravityID: "123",
     id: "52b0ced8cd530ed44400014f",
     city: "New York",
     address: "25 Central Park West",

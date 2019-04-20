@@ -19,6 +19,7 @@ export type DetailTestsQuery = {
 query DetailTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...Detail_show
+    id
   }
 }
 
@@ -50,9 +51,11 @@ fragment Detail_show on Show {
         text
       }
     }
+    id
   }
   artists_without_artworks {
     gravityID
+    id
   }
   counts {
     artworks
@@ -68,13 +71,16 @@ fragment Detail_show on Show {
     ... on Node {
       id
     }
+    ... on ExternalPartner {
+      id
+    }
   }
 }
 
 fragment ShowHeader_show on Show {
   gravityID
   _id
-  __id
+  id
   name
   press_release
   is_followed
@@ -92,6 +98,9 @@ fragment ShowHeader_show on Show {
     ... on Node {
       id
     }
+    ... on ExternalPartner {
+      id
+    }
   }
   images {
     url
@@ -105,6 +114,7 @@ fragment ShowHeader_show on Show {
           href
           gravityID
           _id
+          id
         }
       }
     }
@@ -114,13 +124,15 @@ fragment ShowHeader_show on Show {
     href
     gravityID
     _id
+    id
   }
 }
 
 fragment ShowArtworksPreview_show on Show {
-  __id
+  id
   artworks(size: 6) {
     ...GenericGrid_artworks
+    id
   }
   counts {
     artworks
@@ -135,12 +147,14 @@ fragment ShowArtistsPreview_show on Show {
     gravityID
     href
     ...ArtistListItem_artist
+    id
   }
   artists_without_artworks {
     _id
     gravityID
     href
     ...ArtistListItem_artist
+    id
   }
 }
 
@@ -148,7 +162,7 @@ fragment Shows_show on Show {
   nearbyShows(first: 20) {
     edges {
       node {
-        __id
+        id
         ...ShowItem_show
       }
     }
@@ -156,7 +170,7 @@ fragment Shows_show on Show {
 }
 
 fragment LocationMap_location on Location {
-  __id
+  id
   gravityID
   city
   address
@@ -204,11 +218,14 @@ fragment ShowItem_show on Show {
     ... on Node {
       id
     }
+    ... on ExternalPartner {
+      id
+    }
   }
 }
 
 fragment ArtistListItem_artist on Artist {
-  __id
+  id
   _id
   gravityID
   name
@@ -222,7 +239,7 @@ fragment ArtistListItem_artist on Artist {
 }
 
 fragment GenericGrid_artworks on Artwork {
-  __id
+  id
   gravityID
   image {
     aspect_ratio
@@ -245,6 +262,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
+    id
   }
   sale_artwork {
     opening_bid {
@@ -256,7 +274,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
+      id
     }
+    id
   }
   image {
     url(version: "large")
@@ -264,9 +284,11 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
+    id
   }
   partner {
     name
+    id
   }
   href
 }
@@ -333,7 +355,7 @@ v7 = {
 v8 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -361,39 +383,32 @@ v11 = {
 v12 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
 v13 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "nationality",
   "args": null,
   "storageKey": null
 },
 v14 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "nationality",
+  "name": "birthday",
   "args": null,
   "storageKey": null
 },
 v15 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "birthday",
-  "args": null,
-  "storageKey": null
-},
-v16 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "deathday",
   "args": null,
   "storageKey": null
 },
-v17 = {
+v16 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -405,14 +420,14 @@ v17 = {
     (v6/*: any*/)
   ]
 },
-v18 = {
+v17 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v19 = [
+v18 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -421,8 +436,9 @@ v19 = [
     "storageKey": null
   }
 ],
-v20 = [
-  (v3/*: any*/)
+v19 = [
+  (v3/*: any*/),
+  (v8/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -532,14 +548,14 @@ return {
             "plural": false,
             "selections": [
               (v11/*: any*/),
-              (v12/*: any*/),
+              (v8/*: any*/),
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
                   (v3/*: any*/),
                   (v5/*: any*/),
-                  (v13/*: any*/),
+                  (v12/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -595,9 +611,10 @@ return {
                         "plural": false,
                         "selections": [
                           (v3/*: any*/),
-                          (v13/*: any*/),
+                          (v12/*: any*/),
                           (v5/*: any*/),
-                          (v2/*: any*/)
+                          (v2/*: any*/),
+                          (v8/*: any*/)
                         ]
                       }
                     ]
@@ -616,15 +633,15 @@ return {
             "plural": true,
             "selections": [
               (v3/*: any*/),
-              (v13/*: any*/),
+              (v12/*: any*/),
               (v5/*: any*/),
               (v2/*: any*/),
               (v8/*: any*/),
               (v9/*: any*/),
+              (v13/*: any*/),
               (v14/*: any*/),
               (v15/*: any*/),
-              (v16/*: any*/),
-              (v17/*: any*/)
+              (v16/*: any*/)
             ]
           },
           {
@@ -750,14 +767,15 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v18/*: any*/),
+                  (v17/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
                     "name": "display_timely_at",
                     "args": null,
                     "storageKey": null
-                  }
+                  },
+                  (v8/*: any*/)
                 ]
               },
               {
@@ -777,7 +795,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkOpeningBid",
                     "plural": false,
-                    "selections": (v19/*: any*/)
+                    "selections": (v18/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -787,7 +805,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkCurrentBid",
                     "plural": false,
-                    "selections": (v19/*: any*/)
+                    "selections": (v18/*: any*/)
                   },
                   {
                     "kind": "ScalarField",
@@ -805,9 +823,11 @@ return {
                     "concreteType": "Sale",
                     "plural": false,
                     "selections": [
-                      (v18/*: any*/)
+                      (v17/*: any*/),
+                      (v8/*: any*/)
                     ]
-                  }
+                  },
+                  (v8/*: any*/)
                 ]
               },
               {
@@ -825,7 +845,7 @@ return {
                 ],
                 "concreteType": "Artist",
                 "plural": true,
-                "selections": (v20/*: any*/)
+                "selections": (v19/*: any*/)
               },
               {
                 "kind": "LinkedField",
@@ -835,9 +855,9 @@ return {
                 "args": null,
                 "concreteType": "Partner",
                 "plural": false,
-                "selections": (v20/*: any*/)
+                "selections": (v19/*: any*/)
               },
-              (v13/*: any*/)
+              (v12/*: any*/)
             ]
           },
           {
@@ -876,14 +896,14 @@ return {
             "selections": [
               (v2/*: any*/),
               (v5/*: any*/),
-              (v13/*: any*/),
+              (v12/*: any*/),
               (v8/*: any*/),
               (v3/*: any*/),
               (v9/*: any*/),
+              (v13/*: any*/),
               (v14/*: any*/),
               (v15/*: any*/),
-              (v16/*: any*/),
-              (v17/*: any*/)
+              (v16/*: any*/)
             ]
           },
           {
@@ -949,11 +969,13 @@ return {
                         "plural": false,
                         "selections": [
                           (v11/*: any*/),
-                          (v12/*: any*/),
+                          (v8/*: any*/),
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",
-                            "selections": (v20/*: any*/)
+                            "selections": [
+                              (v3/*: any*/)
+                            ]
                           }
                         ]
                       }

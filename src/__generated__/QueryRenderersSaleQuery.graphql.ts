@@ -23,6 +23,7 @@ query QueryRenderersSaleQuery(
 ) {
   sale(id: $saleID) {
     ...Sale_sale
+    id
   }
 }
 
@@ -41,7 +42,7 @@ fragment Header_sale on Sale {
 }
 
 fragment SaleArtworksGrid_sale on Sale {
-  __id
+  id
   saleArtworks: sale_artworks_connection(first: 10) {
     pageInfo {
       hasNextPage
@@ -52,12 +53,13 @@ fragment SaleArtworksGrid_sale on Sale {
       node {
         artwork {
           gravityID
-          __id
+          id
           image {
             aspect_ratio
           }
           ...Artwork_artwork
         }
+        id
         __typename
       }
       cursor
@@ -80,6 +82,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
+    id
   }
   sale_artwork {
     opening_bid {
@@ -91,7 +94,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
+      id
     }
+    id
   }
   image {
     url(version: "large")
@@ -99,9 +104,11 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
+    id
   }
   partner {
     name
+    id
   }
   href
 }
@@ -148,7 +155,7 @@ v4 = {
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -177,7 +184,8 @@ v8 = [
   }
 ],
 v9 = [
-  (v3/*: any*/)
+  (v3/*: any*/),
+  (v5/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -423,7 +431,8 @@ return {
                                 "name": "display_timely_at",
                                 "args": null,
                                 "storageKey": null
-                              }
+                              },
+                              (v5/*: any*/)
                             ]
                           },
                           {
@@ -471,9 +480,11 @@ return {
                                 "concreteType": "Sale",
                                 "plural": false,
                                 "selections": [
-                                  (v7/*: any*/)
+                                  (v7/*: any*/),
+                                  (v5/*: any*/)
                                 ]
-                              }
+                              },
+                              (v5/*: any*/)
                             ]
                           },
                           {
@@ -506,6 +517,7 @@ return {
                           (v4/*: any*/)
                         ]
                       },
+                      (v5/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,

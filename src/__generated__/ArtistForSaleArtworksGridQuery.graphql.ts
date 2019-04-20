@@ -4,7 +4,7 @@ import { ConcreteRequest } from "relay-runtime";
 import { ArtistForSaleArtworksGrid_artist$ref } from "./ArtistForSaleArtworksGrid_artist.graphql";
 export type ArtistArtworksFilters = "IS_FOR_SALE" | "IS_NOT_FOR_SALE" | "%future added value";
 export type ArtistForSaleArtworksGridQueryVariables = {
-    readonly __id: string;
+    readonly id: string;
     readonly count: number;
     readonly cursor?: string | null;
     readonly filter?: ReadonlyArray<ArtistArtworksFilters | null> | null;
@@ -23,12 +23,12 @@ export type ArtistForSaleArtworksGridQuery = {
 
 /*
 query ArtistForSaleArtworksGridQuery(
-  $__id: ID!
+  $id: ID!
   $count: Int!
   $cursor: String
   $filter: [ArtistArtworksFilters]
 ) {
-  node(__id: $__id) {
+  node(__id: $id) {
     __typename
     ... on Artist {
       ...ArtistForSaleArtworksGrid_artist_3KQYpM
@@ -38,7 +38,7 @@ query ArtistForSaleArtworksGridQuery(
 }
 
 fragment ArtistForSaleArtworksGrid_artist_3KQYpM on Artist {
-  __id
+  id
   forSaleArtworks: artworks_connection(first: $count, after: $cursor, filter: $filter, sort: partner_updated_at_desc) {
     pageInfo {
       hasNextPage
@@ -48,7 +48,7 @@ fragment ArtistForSaleArtworksGrid_artist_3KQYpM on Artist {
     edges {
       node {
         gravityID
-        __id
+        id
         image {
           aspect_ratio
         }
@@ -75,6 +75,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
+    id
   }
   sale_artwork {
     opening_bid {
@@ -86,7 +87,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
+      id
     }
+    id
   }
   image {
     url(version: "large")
@@ -94,9 +97,11 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
+    id
   }
   partner {
     name
+    id
   }
   href
 }
@@ -106,7 +111,7 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "__id",
+    "name": "id",
     "type": "ID!",
     "defaultValue": null
   },
@@ -133,7 +138,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "__id",
-    "variableName": "__id",
+    "variableName": "id",
     "type": "ID!"
   }
 ],
@@ -147,7 +152,7 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -200,7 +205,8 @@ v7 = [
     "name": "name",
     "args": null,
     "storageKey": null
-  }
+  },
+  (v3/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -269,18 +275,11 @@ return {
         "plural": false,
         "selections": [
           (v2/*: any*/),
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
-            "storageKey": null
-          },
+          (v3/*: any*/),
           {
             "kind": "InlineFragment",
             "type": "Artist",
             "selections": [
-              (v3/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": "forSaleArtworks",
@@ -466,7 +465,8 @@ return {
                                 "name": "display_timely_at",
                                 "args": null,
                                 "storageKey": null
-                              }
+                              },
+                              (v3/*: any*/)
                             ]
                           },
                           {
@@ -514,9 +514,11 @@ return {
                                 "concreteType": "Sale",
                                 "plural": false,
                                 "selections": [
-                                  (v5/*: any*/)
+                                  (v5/*: any*/),
+                                  (v3/*: any*/)
                                 ]
-                              }
+                              },
+                              (v3/*: any*/)
                             ]
                           },
                           {
@@ -588,11 +590,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistForSaleArtworksGridQuery",
-    "id": "d53e753743bf0e1d97d6a8353cf1e7ea",
+    "id": "00ffdd546924bf7f990a59a368391553",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'd53e753743bf0e1d97d6a8353cf1e7ea';
+(node as any).hash = '00ffdd546924bf7f990a59a368391553';
 export default node;

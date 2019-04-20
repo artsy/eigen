@@ -8,7 +8,7 @@ export type Inbox_me$ref = typeof _Inbox_me$ref;
 export type Inbox_me = {
     readonly lot_standings: ReadonlyArray<({
         readonly most_recent_bid: ({
-            readonly __id: string;
+            readonly id: string;
         }) | null;
     }) | null> | null;
     readonly conversations_existence_check: ({
@@ -59,7 +59,7 @@ const node: ReaderFragment = {
             {
               "kind": "ScalarField",
               "alias": null,
-              "name": "__id",
+              "name": "id",
               "args": null,
               "storageKey": null
             }
@@ -126,5 +126,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '89df49297c98118ae686b75aeb3d7c6e';
+(node as any).hash = '6f84d25799993678ad080bc08b359ca6';
 export default node;

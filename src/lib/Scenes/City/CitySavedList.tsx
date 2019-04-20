@@ -91,7 +91,7 @@ export default createPaginationContainer(
                 node {
                   gravityID
                   _id
-                  __id
+                  id
                   name
                   isStubShow
                   status

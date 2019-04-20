@@ -73,7 +73,7 @@ export class ArtistListItem extends React.Component<Props, State> {
   handleFollowArtist = () => {
     const {
       relay,
-      artist: { gravityID, __id, is_followed },
+      artist: { gravityID, id, is_followed },
     } = this.props
 
     this.setState(
@@ -87,7 +87,7 @@ export class ArtistListItem extends React.Component<Props, State> {
             mutation ArtistListItemFollowArtistMutation($input: FollowArtistInput!) {
               followArtist(input: $input) {
                 artist {
-                  __id
+                  id
                   is_followed
                 }
               }
@@ -102,13 +102,13 @@ export class ArtistListItem extends React.Component<Props, State> {
           optimisticResponse: {
             followArtist: {
               artist: {
-                __id,
+                id,
                 is_followed: !is_followed,
               },
             },
           },
           updater: store => {
-            store.get(__id).setValue(!is_followed, "is_followed")
+            store.get(id).setValue(!is_followed, "is_followed")
           },
         })
       }
@@ -196,7 +196,7 @@ export class ArtistListItem extends React.Component<Props, State> {
 export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
   artist: graphql`
     fragment ArtistListItem_artist on Artist {
-      __id
+      id
       _id
       gravityID
       name

@@ -32,10 +32,13 @@ query QueryRenderersBidFlowQuery(
   artwork(id: $artworkID) {
     sale_artwork(sale_id: $saleID) {
       ...BidFlow_sale_artwork
+      id
     }
+    id
   }
   me {
     ...BidFlow_me
+    id
   }
 }
 
@@ -55,6 +58,7 @@ fragment ConfirmBid_me on Me {
   has_qualified_credit_cards
   bidders(sale_id: $saleID) {
     qualified_for_bidding
+    id
   }
 }
 
@@ -73,12 +77,14 @@ fragment ConfirmBid_sale_artwork on SaleArtwork {
     gravityID
     live_start_at
     end_at
+    id
   }
   artwork {
     gravityID
     title
     date
     artist_names
+    id
   }
   lot_label
   ...BidResult_sale_artwork
@@ -94,6 +100,7 @@ fragment BidResult_sale_artwork on SaleArtwork {
     live_start_at
     end_at
     gravityID
+    id
   }
 }
 */
@@ -147,6 +154,13 @@ v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -277,7 +291,8 @@ return {
                     "name": "end_at",
                     "args": null,
                     "storageKey": null
-                  }
+                  },
+                  (v6/*: any*/)
                 ]
               },
               {
@@ -310,7 +325,8 @@ return {
                     "name": "artist_names",
                     "args": null,
                     "storageKey": null
-                  }
+                  },
+                  (v6/*: any*/)
                 ]
               },
               {
@@ -339,9 +355,11 @@ return {
                   (v4/*: any*/),
                   (v3/*: any*/)
                 ]
-              }
+              },
+              (v6/*: any*/)
             ]
-          }
+          },
+          (v6/*: any*/)
         ]
       },
       {
@@ -375,9 +393,11 @@ return {
                 "name": "qualified_for_bidding",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              (v6/*: any*/)
             ]
-          }
+          },
+          (v6/*: any*/)
         ]
       }
     ]

@@ -36,7 +36,7 @@ export class ActiveBids extends React.Component<Props, State> {
 
   renderRows() {
     const bids = this.props.me.lot_standings.map(bidData => {
-      return <ActiveBid key={bidData.most_recent_bid.__id} bid={bidData as any} />
+      return <ActiveBid key={bidData.most_recent_bid.id} bid={bidData as any} />
     })
     return bids
   }
@@ -85,7 +85,7 @@ export default createRefetchContainer(
       fragment ActiveBids_me on Me {
         lot_standings(live: true) {
           most_recent_bid {
-            __id
+            id
           }
           ...ActiveBid_bid
         }

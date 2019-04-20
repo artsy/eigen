@@ -45,7 +45,7 @@ export class ShowHeader extends React.Component<Props, State> {
   handleFollowShow = () => {
     const {
       relay,
-      show: { gravityID: showSlugID, __id: relayID, _id: showID, is_followed: isShowFollowed },
+      show: { gravityID: showSlugID, id: relayID, _id: showID, is_followed: isShowFollowed },
     } = this.props
 
     this.setState(
@@ -207,7 +207,7 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
     fragment ShowHeader_show on Show {
       gravityID
       _id
-      __id
+      id
       name
       press_release
       is_followed

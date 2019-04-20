@@ -12,7 +12,7 @@ export type CityBMWList_city = {
                 readonly node: ({
                     readonly gravityID: string;
                     readonly _id: string;
-                    readonly __id: string;
+                    readonly id: string;
                     readonly name: string | null;
                     readonly status: string | null;
                     readonly href: string | null;
@@ -170,7 +170,7 @@ return {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "__id",
+                      "name": "id",
                       "args": null,
                       "storageKey": null
                     },
@@ -384,5 +384,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '6105a1cae845fc99c8d1bd513515cf66';
+(node as any).hash = '33a4caefaea47f2a7ca7cc952f738a97';
 export default node;

@@ -61,7 +61,7 @@ export const FairArtworksContainer = createRefetchContainer(
           medium: { type: "String", defaultValue: "*" }
           price_range: { type: "String", defaultValue: "*-*" }
         ) {
-        __id
+        id
         _id
         gravityID
         artworks: filteredArtworks(

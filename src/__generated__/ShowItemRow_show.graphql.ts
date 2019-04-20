@@ -6,7 +6,7 @@ export type ShowItemRow_show$ref = typeof _ShowItemRow_show$ref;
 export type ShowItemRow_show = {
     readonly gravityID: string;
     readonly _id: string;
-    readonly __id: string;
+    readonly id: string;
     readonly is_followed: boolean | null;
     readonly name: string | null;
     readonly isStubShow: boolean | null;
@@ -65,7 +65,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "__id",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -208,5 +208,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '27ca8dbfc3a132e3cdecc9d6abb24fd6';
+(node as any).hash = '131383cfcc8134b973db5d155f0c67a1';
 export default node;

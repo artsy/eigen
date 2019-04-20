@@ -23,6 +23,7 @@ query ArtistHeaderQuery(
 ) {
   artist(id: $artistID) {
     ...Header_artist
+    id
   }
 }
 
@@ -148,6 +149,13 @@ return {
                 "storageKey": null
               }
             ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
           }
         ]
       }

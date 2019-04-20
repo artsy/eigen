@@ -5,7 +5,7 @@ import { Artwork_artwork$ref } from "./Artwork_artwork.graphql";
 declare const _GenericGrid_artworks$ref: unique symbol;
 export type GenericGrid_artworks$ref = typeof _GenericGrid_artworks$ref;
 export type GenericGrid_artworks = ReadonlyArray<{
-    readonly __id: string;
+    readonly id: string;
     readonly gravityID: string;
     readonly image: ({
         readonly aspect_ratio: number;
@@ -28,7 +28,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "__id",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -64,5 +64,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '8f857a11baf60285d1a878a7c75bfd02';
+(node as any).hash = '8777584b77484357ef787ad709532580';
 export default node;

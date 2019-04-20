@@ -35,7 +35,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
                 profile {
                   gravityID
                   is_followed
-                  __id
+                  id
                 }
               }
             }
@@ -49,7 +49,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
           optimisticResponse: {
             followProfile: {
               profile: {
-                __id: fairProfileID,
+                id: fairProfileID,
                 is_followed: !this.state.isSaved,
                 gravityID: fairID,
               },
@@ -90,7 +90,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
                 </Sans>
               )}
             </Flex>
-            <TouchableWithoutFeedback onPress={() => this.handleSave(item.profile.__id, item.profile.gravityID)}>
+            <TouchableWithoutFeedback onPress={() => this.handleSave(item.profile.id, item.profile.gravityID)}>
               <Flex flexGrow="1">
                 <Sans weight="medium" mb="30" size="3" color={color("black60")} textAlign="right">
                   {this.state.isSaved ? "Saved" : "Save"}

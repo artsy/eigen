@@ -45,7 +45,7 @@ export const ArtworksPreviewContainer = createFragmentContainer(ArtworksPreview,
   fair: graphql`
     fragment ArtworksPreview_fair on Fair {
       gravityID
-      __id
+      id
       filteredArtworks(size: 0, aggregations: [TOTAL]) {
         artworks_connection(first: 6) {
           edges {

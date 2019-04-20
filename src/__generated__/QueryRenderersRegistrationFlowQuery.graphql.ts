@@ -29,9 +29,11 @@ query QueryRenderersRegistrationFlowQuery(
   sale(id: $saleID) {
     name
     ...RegistrationFlow_sale
+    id
   }
   me {
     ...RegistrationFlow_me
+    id
   }
 }
 
@@ -78,6 +80,13 @@ v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -174,7 +183,8 @@ return {
             "name": "start_at",
             "args": null,
             "storageKey": null
-          }
+          },
+          (v3/*: any*/)
         ]
       },
       {
@@ -192,7 +202,8 @@ return {
             "name": "has_credit_cards",
             "args": null,
             "storageKey": null
-          }
+          },
+          (v3/*: any*/)
         ]
       }
     ]

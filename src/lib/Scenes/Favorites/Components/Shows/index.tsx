@@ -56,7 +56,7 @@ export class Shows extends Component<Props, State> {
       <Theme>
         <FlatList
           data={shows}
-          keyExtractor={item => item.__id}
+          keyExtractor={item => item.id}
           renderItem={item => (
             <Box m={2}>
               <ShowItemRow show={item.item} />
@@ -90,7 +90,7 @@ export default createPaginationContainer(
             }
             edges {
               node {
-                __id
+                id
                 ...ShowItemRow_show
               }
             }

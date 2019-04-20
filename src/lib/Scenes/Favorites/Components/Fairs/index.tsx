@@ -54,7 +54,7 @@ export class SavedFairs extends Component<Props, State> {
     return (
       <FlatList
         data={fairs}
-        keyExtractor={({ node }) => node.__id}
+        keyExtractor={({ node }) => node.id}
         renderItem={item => <SavedFairItemRow {...item.item} relayEnvironment={this.props.relay} />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
@@ -76,11 +76,11 @@ export default createPaginationContainer(
           fairs(first: $count, after: $cursor) @connection(key: "SavedFairs_fairs") {
             edges {
               node {
-                __id
+                id
                 profile {
                   gravityID
                   is_followed
-                  __id
+                  id
                 }
                 exhibition_period
                 name

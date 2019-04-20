@@ -13,7 +13,7 @@ it("renders properly", () => {
 
 const article = n => {
   return {
-    __id: `artwork-john-berger-${n}`,
+    id: `artwork-john-berger-${n}`,
     thumbnail_title: "Something Happened",
     href: "artsy.net/something-happened",
     author: {

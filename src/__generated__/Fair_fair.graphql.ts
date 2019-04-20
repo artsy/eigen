@@ -6,7 +6,7 @@ declare const _Fair_fair$ref: unique symbol;
 export type Fair_fair$ref = typeof _Fair_fair$ref;
 export type Fair_fair = {
     readonly gravityID: string;
-    readonly __id: string;
+    readonly id: string;
     readonly organizer: ({
         readonly website: string | null;
     }) | null;
@@ -35,7 +35,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "__id",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -78,5 +78,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '47bc0532538b9c7a758ae0fc9230112e';
+(node as any).hash = 'fb981a467b3b8c7da3bc732b41742b1d';
 export default node;

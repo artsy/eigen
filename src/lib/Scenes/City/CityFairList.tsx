@@ -121,7 +121,7 @@ export default createPaginationContainer(
                   width
                   url(version: "square140")
                 }
-                __id
+                id
                 gravityID
                 name
               }

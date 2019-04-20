@@ -11,7 +11,7 @@ exports[`looks correct when rendered 1`] = `
   data={
     Array [
       Object {
-        "__id": "unique-id",
+        "id": "unique-id",
         "attachments": Array [],
         "body": "Adoro! Por favor envie-me mais informações",
         "first_message": undefined,
@@ -301,4 +301,4 @@ exports[`looks correct when rendered 1`] = `
     </View>
   </View>
 </RCTScrollView>
-`;
+`

@@ -36,7 +36,7 @@ fragment WorksForYou_viewer_2hRnfI on Viewer {
         }
         edges {
           node {
-            __id
+            id
             ...Notification_notification
             __typename
           }
@@ -44,6 +44,7 @@ fragment WorksForYou_viewer_2hRnfI on Viewer {
         }
       }
     }
+    id
   }
   selectedArtist: artist(id: $selectedArtist) {
     gravityID
@@ -56,7 +57,9 @@ fragment WorksForYou_viewer_2hRnfI on Viewer {
     }
     artworks(sort: published_at_desc, size: 6) {
       ...GenericGrid_artworks
+      id
     }
+    id
   }
 }
 
@@ -66,8 +69,10 @@ fragment Notification_notification on FollowedArtistsArtworksGroup {
   artworks {
     artists(shallow: true) {
       href
+      id
     }
     ...GenericGrid_artworks
+    id
   }
   image {
     resized(height: 80, width: 80) {
@@ -77,7 +82,7 @@ fragment Notification_notification on FollowedArtistsArtworksGroup {
 }
 
 fragment GenericGrid_artworks on Artwork {
-  __id
+  id
   gravityID
   image {
     aspect_ratio
@@ -100,6 +105,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
+    id
   }
   sale_artwork {
     opening_bid {
@@ -111,7 +117,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
+      id
     }
+    id
   }
   image {
     url(version: "large")
@@ -119,9 +127,11 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
+    id
   }
   partner {
     name
+    id
   }
   href
 }
@@ -153,7 +163,7 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -311,7 +321,8 @@ v16 = {
       "name": "display_timely_at",
       "args": null,
       "storageKey": null
-    }
+    },
+    (v2/*: any*/)
   ]
 },
 v17 = [
@@ -368,13 +379,16 @@ v18 = {
       "concreteType": "Sale",
       "plural": false,
       "selections": [
-        (v15/*: any*/)
+        (v15/*: any*/),
+        (v2/*: any*/)
       ]
-    }
+    },
+    (v2/*: any*/)
   ]
 },
 v19 = [
-  (v6/*: any*/)
+  (v6/*: any*/),
+  (v2/*: any*/)
 ],
 v20 = {
   "kind": "LinkedField",
@@ -581,6 +595,7 @@ return {
                                     "plural": true,
                                     "selections": [
                                       (v5/*: any*/),
+                                      (v2/*: any*/),
                                       (v6/*: any*/)
                                     ]
                                   },
@@ -632,7 +647,8 @@ return {
                     ]
                   }
                 ]
-              }
+              },
+              (v2/*: any*/)
             ]
           },
           {
@@ -702,7 +718,8 @@ return {
                   (v20/*: any*/),
                   (v5/*: any*/)
                 ]
-              }
+              },
+              (v2/*: any*/)
             ]
           }
         ]

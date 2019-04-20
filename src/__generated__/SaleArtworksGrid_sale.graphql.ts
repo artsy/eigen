@@ -5,7 +5,7 @@ import { Artwork_artwork$ref } from "./Artwork_artwork.graphql";
 declare const _SaleArtworksGrid_sale$ref: unique symbol;
 export type SaleArtworksGrid_sale$ref = typeof _SaleArtworksGrid_sale$ref;
 export type SaleArtworksGrid_sale = {
-    readonly __id: string;
+    readonly id: string;
     readonly saleArtworks: ({
         readonly pageInfo: {
             readonly hasNextPage: boolean;
@@ -16,7 +16,7 @@ export type SaleArtworksGrid_sale = {
             readonly node: ({
                 readonly artwork: ({
                     readonly gravityID: string;
-                    readonly __id: string;
+                    readonly id: string;
                     readonly image: ({
                         readonly aspect_ratio: number;
                     }) | null;
@@ -34,7 +34,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -194,5 +194,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '4c4b92448f48f92802b57dcbaf74d652';
+(node as any).hash = '681664d5ac2dc76633731ff5368cdd05';
 export default node;

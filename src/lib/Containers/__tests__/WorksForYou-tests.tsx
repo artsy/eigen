@@ -42,7 +42,7 @@ describe("when it has a special notification", () => {
     const response = selectedArtistResponse()
     const worksForYou = new WorksForYou(response as any)
     const expectedFormattedNotification = {
-      __id: "notification-juliana-huxtable",
+      id: "notification-juliana-huxtable",
       message: "1 Work Added",
       artists: "Juliana Huxtable",
       artworks: selectedArtistResponse().viewer.selectedArtist.artworks,
@@ -179,7 +179,7 @@ const selectedArtistResponse = () => {
       },
       artworks: [
         {
-          __id: "4594385943",
+          id: "4594385943",
           title: "Untitled (Casual Power)",
         },
       ],

@@ -10,7 +10,7 @@ export type ActiveBid_bid = {
         readonly is_live_open: boolean | null;
     }) | null;
     readonly most_recent_bid: ({
-        readonly __id: string;
+        readonly id: string;
         readonly max_bid: ({
             readonly display: string | null;
         }) | null;
@@ -99,7 +99,7 @@ return {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "__id",
+          "name": "id",
           "args": null,
           "storageKey": null
         },
@@ -208,5 +208,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b7dfb7280121bbc46555b5ccaa2b2f0c';
+(node as any).hash = '7b64167349d432c1747ad635cbfaa110';
 export default node;

@@ -14,7 +14,7 @@ export type SavedFairItemRowMutationResponse = {
         readonly profile: ({
             readonly gravityID: string;
             readonly is_followed: boolean | null;
-            readonly __id: string;
+            readonly id: string;
         }) | null;
     }) | null;
 };
@@ -33,7 +33,7 @@ mutation SavedFairItemRowMutation(
     profile {
       gravityID
       is_followed
-      __id
+      id
     }
   }
 }
@@ -91,7 +91,7 @@ v1 = [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "__id",
+            "name": "id",
             "args": null,
             "storageKey": null
           }
@@ -119,11 +119,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "SavedFairItemRowMutation",
-    "id": "aa6dae754811d3cc380a3c475680fad6",
+    "id": "c56eee8376ea60d53b47c2c65360c191",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'aa6dae754811d3cc380a3c475680fad6';
+(node as any).hash = 'c56eee8376ea60d53b47c2c65360c191';
 export default node;

@@ -134,7 +134,7 @@ export default createPaginationContainer(
             node {
               gravityID
               _id
-              __id
+              id
               isStubShow
               is_followed
               start_at

@@ -6,7 +6,7 @@ export type ShowHeader_show$ref = typeof _ShowHeader_show$ref;
 export type ShowHeader_show = {
     readonly gravityID: string;
     readonly _id: string;
-    readonly __id: string;
+    readonly id: string;
     readonly name: string | null;
     readonly press_release: string | null;
     readonly is_followed: boolean | null;
@@ -99,7 +99,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "__id",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -248,5 +248,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'c8b6c0e3e42431866ddd27f47e6c6fe8';
+(node as any).hash = 'fdd849af1c57bebb1b009ed7b218ff08';
 export default node;

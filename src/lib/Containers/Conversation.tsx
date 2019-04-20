@@ -177,7 +177,7 @@ export default createFragmentContainer(Conversation, {
     fragment Conversation_me on Me {
       conversation(id: $conversationID) {
         internalID
-        __id
+        id
         to {
           name
           initials

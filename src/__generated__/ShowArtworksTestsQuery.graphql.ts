@@ -19,15 +19,17 @@ export type ShowArtworksTestsQuery = {
 query ShowArtworksTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...ShowArtworks_show
+    id
   }
 }
 
 fragment ShowArtworks_show on Show {
-  __id
+  id
   gravityID
   _id
   filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
+    id
   }
 }
 
@@ -42,12 +44,13 @@ fragment Filters_filteredArtworks on FilterArtworks {
     counts {
       gravityID
       name
+      id
     }
   }
 }
 
 fragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks {
-  __id
+  id
   artworks: artworks_connection(first: 10) {
     pageInfo {
       hasNextPage
@@ -57,7 +60,7 @@ fragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks {
     edges {
       node {
         gravityID
-        __id
+        id
         image {
           aspect_ratio
         }
@@ -84,6 +87,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
+    id
   }
   sale_artwork {
     opening_bid {
@@ -95,7 +99,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
+      id
     }
+    id
   }
   image {
     url(version: "large")
@@ -103,9 +109,11 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
+    id
   }
   partner {
     name
+    id
   }
   href
 }
@@ -123,7 +131,7 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -166,7 +174,8 @@ v6 = [
   }
 ],
 v7 = [
-  (v3/*: any*/)
+  (v3/*: any*/),
+  (v1/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -282,7 +291,8 @@ return {
                     "plural": true,
                     "selections": [
                       (v2/*: any*/),
-                      (v3/*: any*/)
+                      (v3/*: any*/),
+                      (v1/*: any*/)
                     ]
                   }
                 ]
@@ -467,7 +477,8 @@ return {
                                 "name": "display_timely_at",
                                 "args": null,
                                 "storageKey": null
-                              }
+                              },
+                              (v1/*: any*/)
                             ]
                           },
                           {
@@ -515,9 +526,11 @@ return {
                                 "concreteType": "Sale",
                                 "plural": false,
                                 "selections": [
-                                  (v5/*: any*/)
+                                  (v5/*: any*/),
+                                  (v1/*: any*/)
                                 ]
-                              }
+                              },
+                              (v1/*: any*/)
                             ]
                           },
                           {

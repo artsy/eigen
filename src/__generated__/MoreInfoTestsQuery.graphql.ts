@@ -19,6 +19,7 @@ export type MoreInfoTestsQuery = {
 query MoreInfoTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...MoreInfo_show
+    id
   }
 }
 
@@ -35,6 +36,9 @@ fragment MoreInfo_show on Show {
       type
     }
     ... on Node {
+      id
+    }
+    ... on ExternalPartner {
       id
     }
   }
@@ -60,7 +64,14 @@ var v0 = [
     "value": "anderson-fine-art-gallery-flickinger-collection",
     "type": "String!"
   }
-];
+],
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -153,13 +164,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "id",
-                "args": null,
-                "storageKey": null
-              },
+              (v1/*: any*/),
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
@@ -227,7 +232,8 @@ return {
                 "storageKey": null
               }
             ]
-          }
+          },
+          (v1/*: any*/)
         ]
       }
     ]

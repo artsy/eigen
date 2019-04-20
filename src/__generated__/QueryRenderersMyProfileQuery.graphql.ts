@@ -19,6 +19,7 @@ export type QueryRenderersMyProfileQuery = {
 query QueryRenderersMyProfileQuery {
   me {
     ...MyProfile_me
+    id
   }
 }
 
@@ -80,6 +81,13 @@ const node: ConcreteRequest = {
             "kind": "ScalarField",
             "alias": null,
             "name": "initials",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
             "args": null,
             "storageKey": null
           }

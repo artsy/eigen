@@ -27,15 +27,17 @@ query ShowArtworksRefetchQuery(
 ) {
   show(id: $showID) {
     ...ShowArtworks_show_2UkO81
+    id
   }
 }
 
 fragment ShowArtworks_show_2UkO81 on Show {
-  __id
+  id
   gravityID
   _id
   filteredArtworks(size: 0, medium: $medium, price_range: $price_range, aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
+    id
   }
 }
 
@@ -50,12 +52,13 @@ fragment Filters_filteredArtworks on FilterArtworks {
     counts {
       gravityID
       name
+      id
     }
   }
 }
 
 fragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks {
-  __id
+  id
   artworks: artworks_connection(first: 10) {
     pageInfo {
       hasNextPage
@@ -65,7 +68,7 @@ fragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks {
     edges {
       node {
         gravityID
-        __id
+        id
         image {
           aspect_ratio
         }
@@ -92,6 +95,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
+    id
   }
   sale_artwork {
     opening_bid {
@@ -103,7 +107,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
+      id
     }
+    id
   }
   image {
     url(version: "large")
@@ -111,9 +117,11 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
+    id
   }
   partner {
     name
+    id
   }
   href
 }
@@ -151,7 +159,7 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -194,7 +202,8 @@ v7 = [
   }
 ],
 v8 = [
-  (v4/*: any*/)
+  (v4/*: any*/),
+  (v2/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -323,7 +332,8 @@ return {
                     "plural": true,
                     "selections": [
                       (v3/*: any*/),
-                      (v4/*: any*/)
+                      (v4/*: any*/),
+                      (v2/*: any*/)
                     ]
                   }
                 ]
@@ -508,7 +518,8 @@ return {
                                 "name": "display_timely_at",
                                 "args": null,
                                 "storageKey": null
-                              }
+                              },
+                              (v2/*: any*/)
                             ]
                           },
                           {
@@ -556,9 +567,11 @@ return {
                                 "concreteType": "Sale",
                                 "plural": false,
                                 "selections": [
-                                  (v6/*: any*/)
+                                  (v6/*: any*/),
+                                  (v2/*: any*/)
                                 ]
-                              }
+                              },
+                              (v2/*: any*/)
                             ]
                           },
                           {

@@ -13,7 +13,7 @@ export type Artists_me = {
             readonly node: ({
                 readonly artist: ({
                     readonly gravityID: string;
-                    readonly __id: string;
+                    readonly id: string;
                     readonly name: string | null;
                     readonly href: string | null;
                     readonly image: ({
@@ -130,7 +130,7 @@ const node: ReaderFragment = {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "__id",
+                      "name": "id",
                       "args": null,
                       "storageKey": null
                     },
@@ -190,5 +190,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'b85ffc17a486fb9f94a9f96457bf6d3f';
+(node as any).hash = '07144b0ce87f52dfd91058762e6e0474';
 export default node;

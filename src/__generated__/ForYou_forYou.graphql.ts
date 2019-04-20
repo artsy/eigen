@@ -8,11 +8,11 @@ declare const _ForYou_forYou$ref: unique symbol;
 export type ForYou_forYou$ref = typeof _ForYou_forYou$ref;
 export type ForYou_forYou = {
     readonly artwork_modules: ReadonlyArray<({
-        readonly __id: string;
+        readonly id: string;
         readonly " $fragmentRefs": ArtworkCarousel_rail$ref;
     }) | null> | null;
     readonly artist_modules: ReadonlyArray<({
-        readonly __id: string;
+        readonly id: string;
         readonly " $fragmentRefs": ArtistRail_rail$ref;
     }) | null> | null;
     readonly fairs_module: ({
@@ -27,7 +27,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -130,5 +130,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '99fc1da2b9295af0f99d8960f0ca78e6';
+(node as any).hash = '47730faf316efe83b924ff6a730ec53a';
 export default node;

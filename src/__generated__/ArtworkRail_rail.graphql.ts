@@ -6,7 +6,7 @@ import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _ArtworkRail_rail$ref: unique symbol;
 export type ArtworkRail_rail$ref = typeof _ArtworkRail_rail$ref;
 export type ArtworkRail_rail = {
-    readonly __id: string;
+    readonly id: string;
     readonly key: string | null;
     readonly params: ({
         readonly medium: string | null;
@@ -71,7 +71,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "__id",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -169,5 +169,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '41d01e4231ca8c5ff67d56e8989582d5';
+(node as any).hash = '2d9a4662d25a7542dbe48112b76f7d19';
 export default node;

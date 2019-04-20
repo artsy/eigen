@@ -85,7 +85,7 @@ export default createPaginationContainer(
               node {
                 gravityID
                 _id
-                __id
+                id
                 name
                 status
                 href

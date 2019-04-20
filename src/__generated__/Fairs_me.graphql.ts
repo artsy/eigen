@@ -8,11 +8,11 @@ export type Fairs_me = {
         readonly fairs: ({
             readonly edges: ReadonlyArray<({
                 readonly node: ({
-                    readonly __id: string;
+                    readonly id: string;
                     readonly profile: ({
                         readonly gravityID: string;
                         readonly is_followed: boolean | null;
-                        readonly __id: string;
+                        readonly id: string;
                     }) | null;
                     readonly exhibition_period: string | null;
                     readonly name: string | null;
@@ -38,7 +38,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -258,5 +258,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'ea79bbfd3e12b37a81e7b9f4b63aff75';
+(node as any).hash = '5945c93f34f13346d986298354d5f992';
 export default node;

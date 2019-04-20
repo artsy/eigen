@@ -32,6 +32,7 @@ mutation UpdateConversationMutation(
     conversation {
       internalID
       from_last_viewed_message_id
+      id
     }
   }
 }
@@ -48,49 +49,26 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "updateConversation",
-    "storageKey": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "input",
-        "variableName": "input",
-        "type": "UpdateConversationMutationInput!"
-      }
-    ],
-    "concreteType": "UpdateConversationMutationPayload",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "conversation",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Conversation",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "internalID",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "from_last_viewed_message_id",
-            "args": null,
-            "storageKey": null
-          }
-        ]
-      }
-    ]
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input",
+    "type": "UpdateConversationMutationInput!"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "from_last_viewed_message_id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -99,13 +77,70 @@ return {
     "type": "Mutation",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "updateConversation",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "UpdateConversationMutationPayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "conversation",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Conversation",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/)
+            ]
+          }
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "UpdateConversationMutation",
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "updateConversation",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "UpdateConversationMutationPayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "conversation",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Conversation",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   "params": {
     "operationKind": "mutation",

@@ -5,7 +5,7 @@ import { Artwork_artwork$ref } from "./Artwork_artwork.graphql";
 declare const _ArtworksGridPaginationContainer_filteredArtworks$ref: unique symbol;
 export type ArtworksGridPaginationContainer_filteredArtworks$ref = typeof _ArtworksGridPaginationContainer_filteredArtworks$ref;
 export type ArtworksGridPaginationContainer_filteredArtworks = {
-    readonly __id: string;
+    readonly id: string;
     readonly artworks: ({
         readonly pageInfo: {
             readonly hasNextPage: boolean;
@@ -15,7 +15,7 @@ export type ArtworksGridPaginationContainer_filteredArtworks = {
         readonly edges: ReadonlyArray<({
             readonly node: ({
                 readonly gravityID: string;
-                readonly __id: string;
+                readonly id: string;
                 readonly image: ({
                     readonly aspect_ratio: number;
                 }) | null;
@@ -32,7 +32,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -181,5 +181,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '4733294ffd08532efebb110db5702756';
+(node as any).hash = '7b9aa4682365dfbbfc0b1acbde91569c';
 export default node;

@@ -5,7 +5,7 @@ import { ArtistShow_show$ref } from "./ArtistShow_show.graphql";
 declare const _VariableSizeShowsList_shows$ref: unique symbol;
 export type VariableSizeShowsList_shows$ref = typeof _VariableSizeShowsList_shows$ref;
 export type VariableSizeShowsList_shows = ReadonlyArray<{
-    readonly __id: string;
+    readonly id: string;
     readonly " $fragmentRefs": ArtistShow_show$ref;
     readonly " $refType": VariableSizeShowsList_shows$ref;
 }>;
@@ -24,7 +24,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "__id",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -35,5 +35,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '8249f8d45143d035782a84b2d6d1039d';
+(node as any).hash = 'ce5a415e13eb0451ea642946be490ed8';
 export default node;

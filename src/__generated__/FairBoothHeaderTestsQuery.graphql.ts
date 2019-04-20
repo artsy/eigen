@@ -19,12 +19,14 @@ export type FairBoothHeaderTestsQuery = {
 query FairBoothHeaderTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...FairBoothHeader_show
+    id
   }
 }
 
 fragment FairBoothHeader_show on Show {
   fair {
     name
+    id
   }
   partner {
     __typename
@@ -32,15 +34,19 @@ fragment FairBoothHeader_show on Show {
       name
       gravityID
       _id
-      __id
+      id
       href
       profile {
         _id
         gravityID
         is_followed
+        id
       }
     }
     ... on Node {
+      id
+    }
+    ... on ExternalPartner {
       id
     }
   }
@@ -50,6 +56,7 @@ fragment FairBoothHeader_show on Show {
   }
   location {
     display
+    id
   }
 }
 */
@@ -73,11 +80,18 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "_id",
@@ -134,7 +148,8 @@ return {
             "concreteType": "Fair",
             "plural": false,
             "selections": [
-              (v1/*: any*/)
+              (v1/*: any*/),
+              (v2/*: any*/)
             ]
           },
           {
@@ -153,27 +168,14 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "id",
-                "args": null,
-                "storageKey": null
-              },
+              (v2/*: any*/),
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
                   (v1/*: any*/),
-                  (v2/*: any*/),
                   (v3/*: any*/),
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "__id",
-                    "args": null,
-                    "storageKey": null
-                  },
+                  (v4/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -190,15 +192,16 @@ return {
                     "concreteType": "Profile",
                     "plural": false,
                     "selections": [
+                      (v4/*: any*/),
                       (v3/*: any*/),
-                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
                         "name": "is_followed",
                         "args": null,
                         "storageKey": null
-                      }
+                      },
+                      (v2/*: any*/)
                     ]
                   }
                 ]
@@ -245,9 +248,11 @@ return {
                 "name": "display",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              (v2/*: any*/)
             ]
-          }
+          },
+          (v2/*: any*/)
         ]
       }
     ]

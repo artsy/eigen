@@ -23,6 +23,7 @@ query BidFlowSelectMaxBidRendererQuery(
 ) {
   sale_artwork(id: $saleArtworkID) {
     ...SelectMaxBid_sale_artwork
+    id
   }
 }
 
@@ -41,12 +42,14 @@ fragment ConfirmBid_sale_artwork on SaleArtwork {
     gravityID
     live_start_at
     end_at
+    id
   }
   artwork {
     gravityID
     title
     date
     artist_names
+    id
   }
   lot_label
   ...BidResult_sale_artwork
@@ -62,6 +65,7 @@ fragment BidResult_sale_artwork on SaleArtwork {
     live_start_at
     end_at
     gravityID
+    id
   }
 }
 */
@@ -101,6 +105,13 @@ v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -195,7 +206,8 @@ return {
                 "name": "end_at",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              (v5/*: any*/)
             ]
           },
           {
@@ -228,7 +240,8 @@ return {
                 "name": "artist_names",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              (v5/*: any*/)
             ]
           },
           {
@@ -257,7 +270,8 @@ return {
               (v3/*: any*/),
               (v2/*: any*/)
             ]
-          }
+          },
+          (v5/*: any*/)
         ]
       }
     ]

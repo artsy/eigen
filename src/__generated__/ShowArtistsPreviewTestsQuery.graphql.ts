@@ -19,6 +19,7 @@ export type ShowArtistsPreviewTestsQuery = {
 query ShowArtistsPreviewTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...ShowArtistsPreview_show
+    id
   }
 }
 
@@ -30,17 +31,19 @@ fragment ShowArtistsPreview_show on Show {
     gravityID
     href
     ...ArtistListItem_artist
+    id
   }
   artists_without_artworks {
     _id
     gravityID
     href
     ...ArtistListItem_artist
+    id
   }
 }
 
 fragment ArtistListItem_artist on Artist {
-  __id
+  id
   _id
   gravityID
   name
@@ -77,7 +80,14 @@ v2 = {
   "args": null,
   "storageKey": null
 },
-v3 = [
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v4 = [
   (v1/*: any*/),
   (v2/*: any*/),
   {
@@ -87,13 +97,7 @@ v3 = [
     "args": null,
     "storageKey": null
   },
-  {
-    "kind": "ScalarField",
-    "alias": null,
-    "name": "__id",
-    "args": null,
-    "storageKey": null
-  },
+  (v3/*: any*/),
   {
     "kind": "ScalarField",
     "alias": null,
@@ -199,7 +203,7 @@ return {
             "args": null,
             "concreteType": "Artist",
             "plural": true,
-            "selections": (v3/*: any*/)
+            "selections": (v4/*: any*/)
           },
           {
             "kind": "LinkedField",
@@ -209,8 +213,9 @@ return {
             "args": null,
             "concreteType": "Artist",
             "plural": true,
-            "selections": (v3/*: any*/)
-          }
+            "selections": (v4/*: any*/)
+          },
+          (v3/*: any*/)
         ]
       }
     ]

@@ -13,7 +13,7 @@ export type Categories_me = {
             readonly node: ({
                 readonly gene: ({
                     readonly gravityID: string;
-                    readonly __id: string;
+                    readonly id: string;
                     readonly name: string | null;
                     readonly href: string | null;
                     readonly image: ({
@@ -130,7 +130,7 @@ const node: ReaderFragment = {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "__id",
+                      "name": "id",
                       "args": null,
                       "storageKey": null
                     },
@@ -190,5 +190,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '129ff159efecfa3cb0305024839a584e';
+(node as any).hash = '04f75d9a2efacaff8a7352fad230d28c';
 export default node;

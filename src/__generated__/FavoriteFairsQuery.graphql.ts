@@ -19,6 +19,7 @@ export type FavoriteFairsQuery = {
 query FavoriteFairsQuery {
   me {
     ...Fairs_me
+    id
   }
 }
 
@@ -27,11 +28,11 @@ fragment Fairs_me on Me {
     fairs(first: 10, after: "") {
       edges {
         node {
-          __id
+          id
           profile {
             gravityID
             is_followed
-            __id
+            id
           }
           exhibition_period
           name
@@ -75,7 +76,7 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -309,7 +310,8 @@ return {
                 "filters": null
               }
             ]
-          }
+          },
+          (v1/*: any*/)
         ]
       }
     ]

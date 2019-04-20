@@ -91,7 +91,7 @@ export default createRefetchContainer(
       fragment Inbox_me on Me {
         lot_standings(live: true) {
           most_recent_bid {
-            __id
+            id
           }
         }
         conversations_existence_check: conversations(first: 1) {

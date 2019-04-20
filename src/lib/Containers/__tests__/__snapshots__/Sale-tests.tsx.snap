@@ -115,7 +115,7 @@ exports[`state looks okay by default 1`] = `
                       Object {
                         "artwork": Object {
                           "node": Object {
-                            "__id": "artwork-talking-politics",
+                            "id": "artwork-talking-politics",
                             "artists": Array [
                               Object {
                                 "name": "Jenny Holzer",
@@ -293,7 +293,7 @@ exports[`state looks okay by default 1`] = `
                   Object {
                     "artwork": Object {
                       "node": Object {
-                        "__id": "artwork-talking-politics",
+                        "id": "artwork-talking-politics",
                         "artists": Array [
                           Object {
                             "name": "Jenny Holzer",
@@ -382,7 +382,7 @@ exports[`state looks okay by default 1`] = `
                   Object {
                     "artwork": Object {
                       "node": Object {
-                        "__id": "artwork-talking-politics",
+                        "id": "artwork-talking-politics",
                         "artists": Array [
                           Object {
                             "name": "Jenny Holzer",
@@ -413,4 +413,4 @@ exports[`state looks okay by default 1`] = `
     </View>
   </View>
 </View>
-`;
+`

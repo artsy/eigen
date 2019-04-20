@@ -47,7 +47,7 @@ class HeroUnits extends React.Component<Props, State> {
   renderHeroUnit(heroUnit, margin, width, height) {
     return (
       <TouchableHighlight
-        key={heroUnit.__id}
+        key={heroUnit.id}
         onPress={() => this.handlePress(heroUnit)}
         underlayColor="black"
         style={{ marginLeft: 5, marginRight: 5, marginTop: 20, width, height }}
@@ -92,7 +92,7 @@ class HeroUnits extends React.Component<Props, State> {
 export default createFragmentContainer(HeroUnits, {
   hero_units: graphql`
     fragment HeroUnits_hero_units on HomePageHeroUnit @relay(plural: true) {
-      __id
+      id
       href
       title
       heading

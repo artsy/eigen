@@ -12,7 +12,7 @@ export type ArtistListItemFollowArtistMutationVariables = {
 export type ArtistListItemFollowArtistMutationResponse = {
     readonly followArtist: ({
         readonly artist: ({
-            readonly __id: string;
+            readonly id: string;
             readonly is_followed: boolean | null;
         }) | null;
     }) | null;
@@ -30,7 +30,7 @@ mutation ArtistListItemFollowArtistMutation(
 ) {
   followArtist(input: $input) {
     artist {
-      __id
+      id
       is_followed
     }
   }
@@ -75,7 +75,7 @@ v1 = [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "__id",
+            "name": "id",
             "args": null,
             "storageKey": null
           },
@@ -110,11 +110,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ArtistListItemFollowArtistMutation",
-    "id": "0a86340c441f9e59f4bdc7acf46e5f4a",
+    "id": "16b283da27ff2aa22b0ac259bf6ad18a",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '0a86340c441f9e59f4bdc7acf46e5f4a';
+(node as any).hash = '16b283da27ff2aa22b0ac259bf6ad18a';
 export default node;

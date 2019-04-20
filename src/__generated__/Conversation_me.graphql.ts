@@ -7,7 +7,7 @@ export type Conversation_me$ref = typeof _Conversation_me$ref;
 export type Conversation_me = {
     readonly conversation: ({
         readonly internalID: string;
-        readonly __id: string;
+        readonly id: string;
         readonly to: {
             readonly name: string;
             readonly initials: string | null;
@@ -64,7 +64,7 @@ const node: ReaderFragment = {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "__id",
+          "name": "id",
           "args": null,
           "storageKey": null
         },
@@ -141,5 +141,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'ee7ca43d7086561e68b5b637873cd230';
+(node as any).hash = 'd0cd5c7682c62fffd430a7e1e2ffec3e';
 export default node;

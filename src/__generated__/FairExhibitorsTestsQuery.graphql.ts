@@ -30,8 +30,10 @@ query FairExhibitorsTestsQuery {
         name
         gravityID
         profile_id
+        id
       }
     }
+    id
   }
 }
 */
@@ -39,74 +41,47 @@ query FairExhibitorsTestsQuery {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "fair",
-    "storageKey": "fair(id:\"art-basel-in-miami-beach-2018\")",
-    "args": [
-      {
-        "kind": "Literal",
-        "name": "id",
-        "value": "art-basel-in-miami-beach-2018",
-        "type": "String!"
-      }
-    ],
-    "concreteType": "Fair",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "exhibitors_grouped_by_name",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "FairExhibitorsGroup",
-        "plural": true,
-        "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "letter",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "exhibitors",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "FairExhibitor",
-            "plural": true,
-            "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "name",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "gravityID",
-                "args": null,
-                "storageKey": null
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "profile_id",
-                "args": null,
-                "storageKey": null
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "kind": "Literal",
+    "name": "id",
+    "value": "art-basel-in-miami-beach-2018",
+    "type": "String!"
   }
-];
+],
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "letter",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "profile_id",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -115,13 +90,91 @@ return {
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
-    "selections": (v0/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "fair",
+        "storageKey": "fair(id:\"art-basel-in-miami-beach-2018\")",
+        "args": (v0/*: any*/),
+        "concreteType": "Fair",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "exhibitors_grouped_by_name",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "FairExhibitorsGroup",
+            "plural": true,
+            "selections": [
+              (v1/*: any*/),
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "exhibitors",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "FairExhibitor",
+                "plural": true,
+                "selections": [
+                  (v2/*: any*/),
+                  (v3/*: any*/),
+                  (v4/*: any*/)
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "FairExhibitorsTestsQuery",
     "argumentDefinitions": [],
-    "selections": (v0/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "fair",
+        "storageKey": "fair(id:\"art-basel-in-miami-beach-2018\")",
+        "args": (v0/*: any*/),
+        "concreteType": "Fair",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "exhibitors_grouped_by_name",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "FairExhibitorsGroup",
+            "plural": true,
+            "selections": [
+              (v1/*: any*/),
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "exhibitors",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "FairExhibitor",
+                "plural": true,
+                "selections": [
+                  (v2/*: any*/),
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  (v5/*: any*/)
+                ]
+              }
+            ]
+          },
+          (v5/*: any*/)
+        ]
+      }
+    ]
   },
   "params": {
     "operationKind": "query",

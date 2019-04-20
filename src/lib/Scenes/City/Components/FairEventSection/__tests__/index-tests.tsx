@@ -6,8 +6,8 @@ import { FairEventSection } from "../index"
 const data = [
   {
     name: "TEFAF New York Fall 2019",
-    __id: "RmFpcjp0ZWZhZi1uZXcteW9yay1mYWxsLTIwMTk=",
-    id: "tefaf-new-york-fall-2019",
+    id: "RmFpcjp0ZWZhZi1uZXcteW9yay1mYWxsLTIwMTk=",
+    gravityID: "tefaf-new-york-fall-2019",
     image: {
       aspect_ratio: 1,
       url: "https://d32dm0rphc51dk.cloudfront.net/3cn9Ln3DfEnHxJcjvfBNKA/wide.jpg",

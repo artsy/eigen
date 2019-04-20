@@ -1,5 +1,5 @@
 export const fairFixture = {
-  id: "sofa-chicago-2018",
+  gravityID: "sofa-chicago-2018",
   _id: "5aa1a9ee8b3b817c61dff02d",
   followed_content: null,
   name: "SOFA CHICAGO 2018",
@@ -36,7 +36,7 @@ export const fairFixture = {
         url: "https://d32dm0rphc51dk.cloudfront.net/B1x-CqoWO1KitQnRj7PrrA/untouched-png.png",
       },
       name: "SOFA CHICAGO",
-      __id: "UHJvZmlsZTpzb2ZhLWNoaWNhZ28=",
+      id: "UHJvZmlsZTpzb2ZhLWNoaWNhZ28=",
     },
     website: "",
   },
@@ -44,8 +44,8 @@ export const fairFixture = {
   end_at: "2018-11-04T18:00:00+00:00",
   formattedOpeningHours: "Opens Nov 1 at 5:00pm",
   location: {
-    __id: "TG9jYXRpb246NWJiNjJmMzYyYjVlN2QwMDI5ODliZDhh",
-    id: "5bb62f362b5e7d002989bd8a",
+    id: "TG9jYXRpb246NWJiNjJmMzYyYjVlN2QwMDI5ODliZDhh",
+    gravityID: "5bb62f362b5e7d002989bd8a",
     address_2: "",
     postal_code: "60611",
     summary: "Festival Hall, Navy Pier \r\n600 East Grand Avenue Chicago, IL 60611",
@@ -421,9 +421,9 @@ export const fairFixture = {
       {
         node: {
           href: "/tamas",
-          id: "tamas-abel",
+          gravityID: "tamas-abel",
           _id: "1232222245",
-          __id: "QXJ0aXN0OnRhbWFzLWFiZWw=",
+          id: "QXJ0aXN0OnRhbWFzLWFiZWw=",
           name: "Tamás Ábel",
           is_followed: false,
           nationality: "Hungarian",
@@ -437,9 +437,9 @@ export const fairFixture = {
       {
         node: {
           href: "/charlie",
-          id: "charlie-aldrich",
+          gravityID: "charlie-aldrich",
           _id: "12347775",
-          __id: "QXJ0aXN0OmNoYXJsaWUtYWxkcmljaA==",
+          id: "QXJ0aXN0OmNoYXJsaWUtYWxkcmljaA==",
           name: "Charlie Aldrich",
           is_followed: false,
           nationality: "United States",
@@ -453,9 +453,9 @@ export const fairFixture = {
       {
         node: {
           href: "/rik",
-          id: "rik-allen",
+          gravityID: "rik-allen",
           _id: "123477750000000000",
-          __id: "QXJ0aXN0OnJpay1hbGxlbg==",
+          id: "QXJ0aXN0OnJpay1hbGxlbg==",
           name: "Rik Allen",
           is_followed: false,
           nationality: "",
@@ -469,9 +469,9 @@ export const fairFixture = {
       {
         node: {
           href: "/jean",
-          id: "jean-luc-almond",
+          gravityID: "jean-luc-almond",
           _id: "1232222245111",
-          __id: "QXJ0aXN0OmplYW4tbHVjLWFsbW9uZA==",
+          id: "QXJ0aXN0OmplYW4tbHVjLWFsbW9uZA==",
           name: "Jean-Luc Almond",
           is_followed: false,
           nationality: "English",
@@ -485,9 +485,9 @@ export const fairFixture = {
       {
         node: {
           href: "/amador",
-          id: "amador",
+          gravityID: "amador",
           _id: "123222224588888",
-          __id: "QXJ0aXN0OmFtYWRvcg==",
+          id: "QXJ0aXN0OmFtYWRvcg==",
           name: "Amador",
           is_followed: false,
           nationality: "Spanish",
@@ -500,7 +500,7 @@ export const fairFixture = {
       },
     ],
   },
-  __id: "RmFpcjpzb2ZhLWNoaWNhZ28tMjAxOA==",
+  id: "RmFpcjpzb2ZhLWNoaWNhZ28tMjAxOA==",
   shows_connection: {
     edges: [
       {
@@ -508,7 +508,7 @@ export const fairFixture = {
           partner: {
             __typename: "Partner",
             profile: {
-              id: "spruth-magers",
+              gravityID: "spruth-magers",
               href: "/spruth-magers",
               name: "Sprüth Magers",
               _id: "123456",
@@ -542,7 +542,7 @@ export const fairFixture = {
       {
         cursor: "YXJyYXljb25uZWN0aW9uOjA=",
         node: {
-          id: "steidel-contemporary-steidel-contemporary-at-sofa-chicago-2018",
+          gravityID: "steidel-contemporary-steidel-contemporary-at-sofa-chicago-2018",
           _id: "111",
           counts: {
             artworks: 4,
@@ -550,7 +550,7 @@ export const fairFixture = {
           name: "Steidel Contemporary at SOFA CHICAGO 2018",
           is_fair_booth: true,
           partner: {
-            __id: "UGFydG5lcjpzdGVpZGVsLWNvbnRlbXBvcmFyeQ==",
+            id: "UGFydG5lcjpzdGVpZGVsLWNvbnRlbXBvcmFyeQ==",
             _id: "123123123123123123123",
             name: "Steidel Contemporary",
             href: "http://www.stei.com",
@@ -561,14 +561,14 @@ export const fairFixture = {
           },
           fair: {
             name: "SOFA CHICAGO 2018",
-            __id: "RmFpcjpzb2ZhLWNoaWNhZ28tMjAxOA==",
+            id: "RmFpcjpzb2ZhLWNoaWNhZ28tMjAxOA==",
           },
           cover_image: {
             url: "https://d32dm0rphc51dk.cloudfront.net/nltwPbizCU7VKKrjmEiqUA/medium.jpg",
           },
           location: {
             display: "Booth B32",
-            __id: "TG9jYXRpb246NWI5ODIwNjU0OTUzZjEwMDA1ZjY5ZTBh",
+            id: "TG9jYXRpb246NWI5ODIwNjU0OTUzZjEwMDA1ZjY5ZTBh",
           },
           profile: {
             id: "art-basel-in-miami-beach-2018",
@@ -697,7 +697,7 @@ export const fairFixture = {
               },
             ],
           },
-          __id: "U2hvdzpzdGVpZGVsLWNvbnRlbXBvcmFyeS1zdGVpZGVsLWNvbnRlbXBvcmFyeS1hdC1zb2ZhLWNoaWNhZ28tMjAxOA==",
+          id: "U2hvdzpzdGVpZGVsLWNvbnRlbXBvcmFyeS1zdGVpZGVsLWNvbnRlbXBvcmFyeS1hdC1zb2ZhLWNoaWNhZ28tMjAxOA==",
           __typename: "Show",
         },
       },

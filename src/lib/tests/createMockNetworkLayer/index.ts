@@ -82,8 +82,8 @@ export const createMockFetchQuery = ({
         return inferUnionOrInterfaceType(checkLeafType(source[info.fieldName], info), info)
       }
 
-      if (info.fieldName === "__id" || info.fieldName === "id") {
-        // if relay is looking for `__id` but we only supplied `id`
+      if (info.fieldName === "id" || info.fieldName === "id") {
+        // if relay is looking for `id` but we only supplied `id`
         if ("id" in source) {
           return source.id
         }

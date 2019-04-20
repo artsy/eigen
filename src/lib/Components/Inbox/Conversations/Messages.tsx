@@ -144,7 +144,7 @@ export class Messages extends React.Component<Props, State> {
         data={this.state.shouldStickFirstMessageToTop ? messages.reverse() : messages}
         renderItem={this.renderMessage.bind(this)}
         ref={flatList => (this.flatList = flatList as any)}
-        keyExtractor={({ __id }) => __id}
+        keyExtractor={({ id }) => id}
         keyboardShouldPersistTaps="always"
         onEndReached={this.loadMore.bind(this)}
         onEndReachedThreshold={0.2}
@@ -173,7 +173,7 @@ export default createPaginationContainer(
     conversation: graphql`
       fragment Messages_conversation on Conversation
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
-        __id
+        id
         internalID
         from {
           name
@@ -195,7 +195,7 @@ export default createPaginationContainer(
           edges {
             cursor
             node {
-              __id
+              id
               impulse_id
               is_from_user
               body

@@ -24,7 +24,7 @@ export const FairContainer = createFragmentContainer(Fair, {
   fair: graphql`
     fragment Fair_fair on Fair {
       gravityID
-      __id
+      id
       ...FairDetail_fair
 
       organizer {

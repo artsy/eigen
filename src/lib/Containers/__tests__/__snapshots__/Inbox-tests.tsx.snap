@@ -160,7 +160,7 @@ exports[`renders correctly 1`] = `
                 ]
               }
             >
-              Lot 14 · undefined 
+              Lot 14 · undefined
             </Text>
             <Text
               style={
@@ -299,7 +299,7 @@ exports[`renders correctly 1`] = `
                 ]
               }
             >
-              Lot 8 · undefined 
+              Lot 8 · undefined
             </Text>
             <Text
               style={
@@ -438,7 +438,7 @@ exports[`renders correctly 1`] = `
                 ]
               }
             >
-              Lot 2 · undefined 
+              Lot 2 · undefined
             </Text>
             <Text
               style={
@@ -617,7 +617,7 @@ exports[`renders correctly 1`] = `
           "lot_standings": Array [
             Object {
               "most_recent_bid": Object {
-                "__id": "594934048b3b8174796e285a",
+                "id": "594934048b3b8174796e285a",
                 "display_max_bid_amount_dollars": "$1,100",
                 "id": "594934048b3b8174796e285a",
                 "max_bid": Object {
@@ -650,7 +650,7 @@ exports[`renders correctly 1`] = `
             },
             Object {
               "most_recent_bid": Object {
-                "__id": "594933e6275b244305851e9c",
+                "id": "594933e6275b244305851e9c",
                 "display_max_bid_amount_dollars": "$10,000",
                 "id": "594933e6275b244305851e9c",
                 "max_bid": Object {
@@ -683,7 +683,7 @@ exports[`renders correctly 1`] = `
             },
             Object {
               "most_recent_bid": Object {
-                "__id": "594932d0275b244305851e99",
+                "id": "594932d0275b244305851e99",
                 "display_max_bid_amount_dollars": "$5,000",
                 "id": "594932d0275b244305851e99",
                 "max_bid": Object {
@@ -720,4 +720,4 @@ exports[`renders correctly 1`] = `
     />
   </View>
 </RCTScrollView>
-`;
+`

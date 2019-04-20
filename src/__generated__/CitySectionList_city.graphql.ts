@@ -14,7 +14,7 @@ export type CitySectionList_city = {
             readonly node: ({
                 readonly gravityID: string;
                 readonly _id: string;
-                readonly __id: string;
+                readonly id: string;
                 readonly isStubShow: boolean | null;
                 readonly is_followed: boolean | null;
                 readonly start_at: string | null;
@@ -215,7 +215,7 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "__id",
+                  "name": "id",
                   "args": null,
                   "storageKey": null
                 },
@@ -366,5 +366,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '49028bead5ca9a3c7d85fbf982f874e1';
+(node as any).hash = 'bdb96da6b94cda5884716cfc25702c14';
 export default node;

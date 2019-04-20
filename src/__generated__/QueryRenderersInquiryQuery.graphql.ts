@@ -23,6 +23,7 @@ query QueryRenderersInquiryQuery(
 ) {
   artwork(id: $artworkID) {
     ...Inquiry_artwork
+    id
   }
 }
 
@@ -32,6 +33,7 @@ fragment Inquiry_artwork on Artwork {
   contact_message
   partner {
     name
+    id
   }
   ...ArtworkPreview_artwork
 }
@@ -64,7 +66,14 @@ v1 = [
     "variableName": "artworkID",
     "type": "String!"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -142,7 +151,8 @@ return {
                 "name": "name",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              (v2/*: any*/)
             ]
           },
           {
@@ -183,7 +193,8 @@ return {
                 "storageKey": null
               }
             ]
-          }
+          },
+          (v2/*: any*/)
         ]
       }
     ]

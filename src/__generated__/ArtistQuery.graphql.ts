@@ -25,6 +25,7 @@ query ArtistQuery(
 ) {
   artist(id: $artistID) {
     ...Artist_artist
+    id
   }
 }
 
@@ -62,24 +63,30 @@ fragment About_artist on Artist {
   ...Biography_artist
   related_artists: artists(size: 16) {
     ...RelatedArtists_artists
+    id
   }
   articles {
     ...Articles_articles
+    id
   }
 }
 
 fragment Shows_artist on Artist {
   current_shows: partner_shows(status: "running") {
     ...VariableSizeShowsList_shows
+    id
   }
   upcoming_shows: partner_shows(status: "upcoming") {
     ...VariableSizeShowsList_shows
+    id
   }
   past_small_shows: partner_shows(status: "closed", size: 20) @skip(if: $isPad) {
     ...SmallList_shows
+    id
   }
   past_large_shows: partner_shows(status: "closed", size: 20) @include(if: $isPad) {
     ...VariableSizeShowsList_shows
+    id
   }
 }
 
@@ -93,7 +100,7 @@ fragment Artworks_artist on Artist {
 }
 
 fragment ArtistForSaleArtworksGrid_artist on Artist {
-  __id
+  id
   forSaleArtworks: artworks_connection(first: 10, filter: [IS_FOR_SALE], sort: partner_updated_at_desc) {
     pageInfo {
       hasNextPage
@@ -103,7 +110,7 @@ fragment ArtistForSaleArtworksGrid_artist on Artist {
     edges {
       node {
         gravityID
-        __id
+        id
         image {
           aspect_ratio
         }
@@ -116,7 +123,7 @@ fragment ArtistForSaleArtworksGrid_artist on Artist {
 }
 
 fragment ArtistNotForSaleArtworksGrid_artist on Artist {
-  __id
+  id
   notForSaleArtworks: artworks_connection(first: 10, filter: [IS_NOT_FOR_SALE], sort: partner_updated_at_desc) {
     pageInfo {
       hasNextPage
@@ -126,7 +133,7 @@ fragment ArtistNotForSaleArtworksGrid_artist on Artist {
     edges {
       node {
         gravityID
-        __id
+        id
         image {
           aspect_ratio
         }
@@ -153,6 +160,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
+    id
   }
   sale_artwork {
     opening_bid {
@@ -164,7 +172,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
+      id
     }
+    id
   }
   image {
     url(version: "large")
@@ -172,15 +182,17 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
+    id
   }
   partner {
     name
+    id
   }
   href
 }
 
 fragment VariableSizeShowsList_shows on PartnerShow {
-  __id
+  id
   ...ArtistShow_show
 }
 
@@ -206,9 +218,11 @@ fragment Metadata_show on PartnerShow {
   status
   partner {
     name
+    id
   }
   location {
     city
+    id
   }
 }
 
@@ -218,12 +232,12 @@ fragment Biography_artist on Artist {
 }
 
 fragment RelatedArtists_artists on Artist {
-  __id
+  id
   ...RelatedArtist_artist
 }
 
 fragment Articles_articles on Article {
-  __id
+  id
   ...Article_article
 }
 
@@ -232,6 +246,7 @@ fragment Article_article on Article {
   href
   author {
     name
+    id
   }
   thumbnail_image {
     url(version: "large")
@@ -305,7 +320,7 @@ v5 = {
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -334,7 +349,8 @@ v9 = [
   (v8/*: any*/)
 ],
 v10 = [
-  (v4/*: any*/)
+  (v4/*: any*/),
+  (v6/*: any*/)
 ],
 v11 = {
   "kind": "ScalarField",
@@ -406,7 +422,8 @@ v18 = {
       "name": "city",
       "args": null,
       "storageKey": null
-    }
+    },
+    (v6/*: any*/)
   ]
 },
 v19 = [
@@ -621,7 +638,8 @@ v25 = [
                 "name": "display_timely_at",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              (v6/*: any*/)
             ]
           },
           {
@@ -669,9 +687,11 @@ v25 = [
                 "concreteType": "Sale",
                 "plural": false,
                 "selections": [
-                  (v23/*: any*/)
+                  (v23/*: any*/),
+                  (v6/*: any*/)
                 ]
-              }
+              },
+              (v6/*: any*/)
             ]
           },
           {
@@ -1046,17 +1066,18 @@ return {
                 "concreteType": "PartnerShow",
                 "plural": true,
                 "selections": [
-                  (v4/*: any*/),
+                  (v14/*: any*/),
                   (v5/*: any*/),
                   (v11/*: any*/),
                   (v12/*: any*/),
                   (v13/*: any*/),
+                  (v4/*: any*/),
                   (v7/*: any*/),
-                  (v14/*: any*/),
                   (v15/*: any*/),
                   (v16/*: any*/),
                   (v17/*: any*/),
-                  (v18/*: any*/)
+                  (v18/*: any*/),
+                  (v6/*: any*/)
                 ]
               }
             ]

@@ -33,7 +33,7 @@ export type CityFairList_city = {
                         readonly width: number | null;
                         readonly url: string | null;
                     }) | null;
-                    readonly __id: string;
+                    readonly id: string;
                     readonly gravityID: string;
                     readonly name: string | null;
                 }) | null;
@@ -294,7 +294,7 @@ return {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "__id",
+                      "name": "id",
                       "args": null,
                       "storageKey": null
                     },
@@ -364,5 +364,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '8df2d6e2de156cec69f5aa4704bb1241';
+(node as any).hash = 'b69ae96800a8605eea2b0c23647e9d63';
 export default node;

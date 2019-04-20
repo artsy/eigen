@@ -24,7 +24,7 @@ class Articles extends Component<Props> {
           style={{ overflow: "visible", marginBottom: 40 }}
         >
           {articles.map(article => (
-            <Article key={article.__id} article={article as any} style={styles.article} />
+            <Article key={article.id} article={article as any} style={styles.article} />
           ))}
         </ScrollView>
       </View>
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 export default createFragmentContainer(Articles, {
   articles: graphql`
     fragment Articles_articles on Article @relay(plural: true) {
-      __id
+      id
       ...Article_article
     }
   `,

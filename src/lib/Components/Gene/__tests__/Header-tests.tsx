@@ -11,9 +11,9 @@ beforeAll(() => {
 
 it("renders properly", () => {
   const gene = {
-    __id: "gene-deep-time",
+    id: "gene-deep-time",
     _id: "gravity-id",
-    id: "deep-time",
+    gravityID: "deep-time",
     name: "Deep Time",
   }
 

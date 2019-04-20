@@ -11,7 +11,7 @@ export const ShowFixture = {
   start_at: "2018-07-01T12:00:00+00:00",
   pressReleaseUrl: "https://example.com",
   location: {
-    __id: "TG9jYXRpb246NWIzNjQ2NjRjYjRjMjcxNzQzNDkwMTkx",
+    gravityID: "TG9jYXRpb246NWIzNjQ2NjRjYjRjMjcxNzQzNDkwMTkx",
     id: "5b364664cb4c271743490191",
     city: "Sea Island ",
     address: "Online Exclusive",
@@ -35,16 +35,16 @@ export const ShowFixture = {
   partner: {
     __typename: "Partner",
     name: "Two Palms",
-    __id: "UGFydG5lcjp0d28tcGFsbXM=",
+    id: "UGFydG5lcjp0d28tcGFsbXM=",
     website: "",
     type: "Partner",
     href: "shows/two-palms",
   },
   artists_without_artworks: [
     {
-      __id: "QXJ0aXN0OnNhbS1mcmFuY2lz",
+      id: "QXJ0aXN0OnNhbS1mcmFuY2lz",
       _id: "4d8b92854eb68a1b2c0001b8",
-      id: "sam-francis",
+      gravityID: "sam-francis",
       name: "Sam Francis",
       is_followed: false,
       href: "/artist/sam-francis",
@@ -62,9 +62,9 @@ export const ShowFixture = {
       {
         node: {
           artist: {
-            __id: "QXJ0aXN0OmhhbnMtaG9mbWFubg==",
+            id: "QXJ0aXN0OmhhbnMtaG9mbWFubg==",
             _id: "4d8b92614eb68a1b2c000064",
-            id: "hans-hofmann",
+            gravityID: "hans-hofmann",
             name: "Hans Hofmann",
             is_followed: false,
             href: "/artist/hans-hofmann",
@@ -81,9 +81,9 @@ export const ShowFixture = {
       {
         node: {
           artist: {
-            __id: "QXJ0aXN0OnNhbS1mcmFuY2lz",
+            id: "QXJ0aXN0OnNhbS1mcmFuY2lz",
             _id: "4d8b92854eb68a1b2c0001b8",
-            id: "sam-francis",
+            gravityID: "sam-francis",
             name: "Sam Francis",
             is_followed: false,
             href: "/artist/sam-francis",
@@ -100,9 +100,9 @@ export const ShowFixture = {
       {
         node: {
           artist: {
-            __id: "QXJ0aXN0OnBhYmxvLXBpY2Fzc28=",
+            id: "QXJ0aXN0OnBhYmxvLXBpY2Fzc28=",
             _id: "4d8b928b4eb68a1b2c0001f2",
-            id: "pablo-picasso",
+            gravityID: "pablo-picasso",
             name: "Pablo Picasso",
             is_followed: false,
             href: "/artist/pablo-picasso",
@@ -120,9 +120,9 @@ export const ShowFixture = {
   },
   artists: [
     {
-      __id: "QXJ0aXN0OmhhbnMtaG9mbWFubg==",
+      id: "QXJ0aXN0OmhhbnMtaG9mbWFubg==",
       _id: "4d8b92614eb68a1b2c000064",
-      id: "hans-hofmann",
+      gravityID: "hans-hofmann",
       name: "Hans Hofmann",
       is_followed: false,
       href: "/artist/hans-hofmann",
@@ -135,9 +135,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0OmRhdmlkLWhvY2tuZXk=",
+      id: "QXJ0aXN0OmRhdmlkLWhvY2tuZXk=",
       _id: "4d8b92854eb68a1b2c0001b6",
-      id: "david-hockney",
+      gravityID: "david-hockney",
       name: "David Hockney",
       is_followed: false,
       href: "/artist/david-hockney",
@@ -150,9 +150,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0OnNhbS1mcmFuY2lz",
+      id: "QXJ0aXN0OnNhbS1mcmFuY2lz",
       _id: "4d8b92854eb68a1b2c0001b8",
-      id: "sam-francis",
+      gravityID: "sam-francis",
       name: "Sam Francis",
       is_followed: false,
       href: "/artist/sam-francis",
@@ -165,9 +165,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0OnBhYmxvLXBpY2Fzc28=",
+      id: "QXJ0aXN0OnBhYmxvLXBpY2Fzc28=",
       _id: "4d8b928b4eb68a1b2c0001f2",
-      id: "pablo-picasso",
+      gravityID: "pablo-picasso",
       name: "Pablo Picasso",
       is_followed: false,
       href: "/artist/pablo-picasso",
@@ -180,9 +180,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0OndvbGYta2Fobg==",
+      id: "QXJ0aXN0OndvbGYta2Fobg==",
       _id: "4d8b928b4eb68a1b2c0001fa",
-      id: "wolf-kahn",
+      gravityID: "wolf-kahn",
       name: "Wolf Kahn",
       is_followed: false,
       href: "/artist/wolf-kahn",
@@ -195,9 +195,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0OnJvYmVydC1tb3RoZXJ3ZWxs",
+      id: "QXJ0aXN0OnJvYmVydC1tb3RoZXJ3ZWxs",
       _id: "4d8b92a24eb68a1b2c000318",
-      id: "robert-motherwell",
+      gravityID: "robert-motherwell",
       name: "Robert Motherwell",
       is_followed: false,
       href: "/artist/robert-motherwell",
@@ -210,9 +210,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0OmppbS1kaW5l",
+      id: "QXJ0aXN0OmppbS1kaW5l",
       _id: "4d8d1266876c697ae1000050",
-      id: "jim-dine",
+      gravityID: "jim-dine",
       name: "Jim Dine",
       is_followed: false,
       href: "/artist/jim-dine",
@@ -225,9 +225,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0OmVsbHN3b3J0aC1rZWxseQ==",
+      id: "QXJ0aXN0OmVsbHN3b3J0aC1rZWxseQ==",
       _id: "4dbe1873a671b202fd0001b3",
-      id: "ellsworth-kelly",
+      gravityID: "ellsworth-kelly",
       name: "Ellsworth Kelly",
       is_followed: false,
       href: "/artist/ellsworth-kelly",
@@ -240,9 +240,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0OmJyaWRnZXQtcmlsZXk=",
+      id: "QXJ0aXN0OmJyaWRnZXQtcmlsZXk=",
       _id: "4ddbb26110c9af00010018a7",
-      id: "bridget-riley",
+      gravityID: "bridget-riley",
       name: "Bridget Riley",
       is_followed: false,
       href: "/artist/bridget-riley",
@@ -255,9 +255,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0OnJpY2hhcmQtZGllYmVua29ybg==",
+      id: "QXJ0aXN0OnJpY2hhcmQtZGllYmVua29ybg==",
       _id: "4df4438f81d91d0001002d9c",
-      id: "richard-diebenkorn",
+      gravityID: "richard-diebenkorn",
       name: "Richard Diebenkorn",
       is_followed: false,
       href: "/artist/richard-diebenkorn",
@@ -270,9 +270,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0OmthcmVsLWFwcGVs",
+      id: "QXJ0aXN0OmthcmVsLWFwcGVs",
       _id: "4df612a628eaa10001004397",
-      id: "karel-appel",
+      gravityID: "karel-appel",
       name: "Karel Appel",
       is_followed: false,
       href: "/artist/karel-appel",
@@ -285,9 +285,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0OmRhbGUtY2hpaHVseQ==",
+      id: "QXJ0aXN0OmRhbGUtY2hpaHVseQ==",
       _id: "4e97356d4e77d300010008fa",
-      id: "dale-chihuly",
+      gravityID: "dale-chihuly",
       name: "Dale Chihuly",
       is_followed: false,
       href: "/artist/dale-chihuly",
@@ -300,9 +300,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0OnBvbGx5LWFwZmVsYmF1bQ==",
+      id: "QXJ0aXN0OnBvbGx5LWFwZmVsYmF1bQ==",
       _id: "4f5f64c13b555230ac00003a",
-      id: "polly-apfelbaum",
+      gravityID: "polly-apfelbaum",
       name: "Polly Apfelbaum",
       is_followed: false,
       href: "/artist/polly-apfelbaum",
@@ -315,9 +315,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0OmNhcm9seW4tYnJhZHk=",
+      id: "QXJ0aXN0OmNhcm9seW4tYnJhZHk=",
       _id: "506b3335446617000200054c",
-      id: "carolyn-brady",
+      gravityID: "carolyn-brady",
       name: "Carolyn Brady",
       is_followed: false,
       href: "/artist/carolyn-brady",
@@ -330,9 +330,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0Om5lbGwtYmxhaW5l",
+      id: "QXJ0aXN0Om5lbGwtYmxhaW5l",
       _id: "50c84c1e623327ed6c000c24",
-      id: "nell-blaine",
+      gravityID: "nell-blaine",
       name: "Nell Blaine",
       is_followed: false,
       href: "/artist/nell-blaine",
@@ -345,9 +345,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0OmJydWNlLWJlYXNsZXk=",
+      id: "QXJ0aXN0OmJydWNlLWJlYXNsZXk=",
       _id: "55fc7e16726169225600007c",
-      id: "bruce-beasley",
+      gravityID: "bruce-beasley",
       name: "Bruce Beasley",
       is_followed: false,
       href: "/artist/bruce-beasley",
@@ -360,9 +360,9 @@ export const ShowFixture = {
       },
     },
     {
-      __id: "QXJ0aXN0OnJvYmVydC1oYXJtcw==",
+      id: "QXJ0aXN0OnJvYmVydC1oYXJtcw==",
       _id: "568453ce66fd1c650b000057",
-      id: "robert-harms",
+      gravityID: "robert-harms",
       name: "Robert Harms",
       is_followed: false,
       href: "/artist/robert-harms",
@@ -377,7 +377,7 @@ export const ShowFixture = {
   ],
   artworks: [
     {
-      __id: "QXJ0d29yazpjYXJvbHluLWJyYWR5LXN0b3VyaGVhZC1hY3Jvc3MtdGhlLWxha2U=",
+      gravityID: "QXJ0d29yazpjYXJvbHluLWJyYWR5LXN0b3VyaGVhZC1hY3Jvc3MtdGhlLWxha2U=",
       id: "carolyn-brady-stourhead-across-the-lake",
       title: "Stourhead Across the Lake",
       partner: {
@@ -419,7 +419,7 @@ export const ShowFixture = {
       date: "1997",
     },
     {
-      __id: "QXJ0d29yazpyb2JlcnQtaGFybXMtYmx1ZmYtcm9hZA==",
+      gravityID: "QXJ0d29yazpyb2JlcnQtaGFybXMtYmx1ZmYtcm9hZA==",
       id: "robert-harms-bluff-road",
       title: "Bluff Road",
       partner: {
@@ -461,7 +461,7 @@ export const ShowFixture = {
       date: "1998",
     },
     {
-      __id: "QXJ0d29yazpqaW0tZGluZS1hbi1pbmZvcm1hbC10aWU=",
+      gravityID: "QXJ0d29yazpqaW0tZGluZS1hbi1pbmZvcm1hbC10aWU=",
       id: "jim-dine-an-informal-tie",
       title: "An Informal Tie",
       partner: {
@@ -503,7 +503,7 @@ export const ShowFixture = {
       date: "1961",
     },
     {
-      __id: "QXJ0d29yazpyaWNoYXJkLWRpZWJlbmtvcm4tYmx1ZS13aXRoLXJlZC0xNQ==",
+      gravityID: "QXJ0d29yazpyaWNoYXJkLWRpZWJlbmtvcm4tYmx1ZS13aXRoLXJlZC0xNQ==",
       id: "richard-diebenkorn-blue-with-red-15",
       title: "Blue with Red",
       partner: {
@@ -545,7 +545,7 @@ export const ShowFixture = {
       date: "1987",
     },
     {
-      __id: "QXJ0d29yazprYXJlbC1hcHBlbC1oYXBweS1naG9zdA==",
+      gravityID: "QXJ0d29yazprYXJlbC1hcHBlbC1oYXBweS1naG9zdA==",
       id: "karel-appel-happy-ghost",
       title: "Happy Ghost",
       partner: {
@@ -587,7 +587,7 @@ export const ShowFixture = {
       date: "1960",
     },
     {
-      __id: "QXJ0d29yazpuZWxsLWJsYWluZS1hdWd1c3QtbGlnaHQ=",
+      gravityID: "QXJ0d29yazpuZWxsLWJsYWluZS1hdWd1c3QtbGlnaHQ=",
       id: "nell-blaine-august-light",
       title: "August Light",
       partner: {
@@ -629,7 +629,7 @@ export const ShowFixture = {
       date: "1989",
     },
     {
-      __id: "QXJ0d29yazpicnVjZS1iZWFzbGV5LXZveWFnZXI=",
+      gravityID: "QXJ0d29yazpicnVjZS1iZWFzbGV5LXZveWFnZXI=",
       id: "bruce-beasley-voyager",
       title: "Voyager",
       partner: {
@@ -671,7 +671,7 @@ export const ShowFixture = {
       date: "1999",
     },
     {
-      __id: "QXJ0d29yazpzYW0tZnJhbmNpcy11bmRlci1ibHVlLTM=",
+      gravityID: "QXJ0d29yazpzYW0tZnJhbmNpcy11bmRlci1ibHVlLTM=",
       id: "sam-francis-under-blue-3",
       title: "Under Blue",
       partner: {
@@ -713,7 +713,7 @@ export const ShowFixture = {
       date: "1974",
     },
     {
-      __id: "QXJ0d29yazpjYXJvbHluLWJyYWR5LXRhbWFyaW5k",
+      gravityID: "QXJ0d29yazpjYXJvbHluLWJyYWR5LXRhbWFyaW5k",
       id: "carolyn-brady-tamarind",
       title: "Tamarind",
       partner: {
@@ -755,7 +755,7 @@ export const ShowFixture = {
       date: "1999",
     },
     {
-      __id: "QXJ0d29yazpyb2JlcnQtbW90aGVyd2VsbC1udW1iZXItOA==",
+      gravityID: "QXJ0d29yazpyb2JlcnQtbW90aGVyd2VsbC1udW1iZXItOA==",
       id: "robert-motherwell-number-8",
       title: "Number 8",
       partner: {
@@ -797,7 +797,7 @@ export const ShowFixture = {
       date: "2000",
     },
     {
-      __id: "QXJ0d29yazplbGxzd29ydGgta2VsbHktZ3JlZW4tY3VydmUtMTQ=",
+      gravityID: "QXJ0d29yazplbGxzd29ydGgta2VsbHktZ3JlZW4tY3VydmUtMTQ=",
       id: "ellsworth-kelly-green-curve-14",
       title: "Green Curve",
       partner: {
@@ -839,7 +839,7 @@ export const ShowFixture = {
       date: "2000",
     },
     {
-      __id: "QXJ0d29yazp3b2xmLWthaG4taW4taXBzd2ljaC1tYXNz",
+      gravityID: "QXJ0d29yazp3b2xmLWthaG4taW4taXBzd2ljaC1tYXNz",
       id: "wolf-kahn-in-ipswich-mass",
       title: "In Ipswich, Mass",
       partner: {
@@ -881,7 +881,7 @@ export const ShowFixture = {
       date: "1987",
     },
     {
-      __id: "QXJ0d29yazpkYXZpZC1ob2NrbmV5LW15LXBvb2wtYW5kLXRlcnJhY2UtNA==",
+      gravityID: "QXJ0d29yazpkYXZpZC1ob2NrbmV5LW15LXBvb2wtYW5kLXRlcnJhY2UtNA==",
       id: "david-hockney-my-pool-and-terrace-4",
       title: "My Pool & Terrace",
       partner: {
@@ -923,7 +923,7 @@ export const ShowFixture = {
       date: "1983",
     },
     {
-      __id: "QXJ0d29yazp3b2xmLWthaG4tb3JjaGFyZC1hdC1kdXNr",
+      gravityID: "QXJ0d29yazp3b2xmLWthaG4tb3JjaGFyZC1hdC1kdXNr",
       id: "wolf-kahn-orchard-at-dusk",
       title: "Orchard at Dusk",
       partner: {
@@ -965,7 +965,7 @@ export const ShowFixture = {
       date: "1989",
     },
     {
-      __id: "QXJ0d29yazpoYW5zLWhvZm1hbm4tdW50aXRsZWQtMjIx",
+      gravityID: "QXJ0d29yazpoYW5zLWhvZm1hbm4tdW50aXRsZWQtMjIx",
       id: "hans-hofmann-untitled-221",
       title: "Untitled",
       partner: {
@@ -1007,7 +1007,7 @@ export const ShowFixture = {
       date: "1942",
     },
     {
-      __id: "QXJ0d29yazpwb2xseS1hcGZlbGJhdW0tbG92ZS1tZS10ZW5kZXItaWk=",
+      gravityID: "QXJ0d29yazpwb2xseS1hcGZlbGJhdW0tbG92ZS1tZS10ZW5kZXItaWk=",
       id: "polly-apfelbaum-love-me-tender-ii",
       title: "Love Me Tender II",
       partner: {
@@ -1049,7 +1049,7 @@ export const ShowFixture = {
       date: "",
     },
     {
-      __id: "QXJ0d29yazpicmlkZ2V0LXJpbGV5LWJsdWUtZG9taW5hbmNl",
+      gravityID: "QXJ0d29yazpicmlkZ2V0LXJpbGV5LWJsdWUtZG9taW5hbmNl",
       id: "bridget-riley-blue-dominance",
       title: "Blue Dominance",
       partner: {
@@ -1091,9 +1091,9 @@ export const ShowFixture = {
       date: "1977",
     },
     {
-      __id:
+      id:
         "QXJ0d29yazpwYWJsby1waWNhc3NvLW1vZGVsLWNvbnRlbXBsYXRpbmctYS1ncm91cC1vZi1zY3VscHR1cmVzLW1vZGVsZS1jb250ZW1wbGFudC11bi1ncm91cGUtc2N1bHB0ZQ==",
-      id: "pablo-picasso-model-contemplating-a-group-of-sculptures-modele-contemplant-un-groupe-sculpte",
+      gravityID: "pablo-picasso-model-contemplating-a-group-of-sculptures-modele-contemplant-un-groupe-sculpte",
       title: "Model Contemplating a Group of Sculptures (Modele Contemplant Un Groupe Sculpte)",
       partner: {
         __typename: "Partner",
@@ -1134,7 +1134,7 @@ export const ShowFixture = {
       date: "1933",
     },
     {
-      __id: "QXJ0d29yazpkYWxlLWNoaWh1bHktY2VsdGljLWVtZXJhbGQtcGVyc2lhbi1wYWly",
+      gravityID: "QXJ0d29yazpkYWxlLWNoaWh1bHktY2VsdGljLWVtZXJhbGQtcGVyc2lhbi1wYWly",
       id: "dale-chihuly-celtic-emerald-persian-pair",
       title: "Celtic Emerald Persian Pair",
       partner: {
@@ -1413,8 +1413,8 @@ export const ShowFixture = {
       letter: "A",
       items: [
         {
-          id: "polly-apfelbaum",
-          __id: "QXJ0aXN0OnBvbGx5LWFwZmVsYmF1bQ==",
+          gravityID: "polly-apfelbaum",
+          id: "QXJ0aXN0OnBvbGx5LWFwZmVsYmF1bQ==",
           name: "Polly Apfelbaum",
           is_followed: false,
           nationality: "American",
@@ -1425,8 +1425,8 @@ export const ShowFixture = {
           },
         },
         {
-          id: "karel-appel",
-          __id: "QXJ0aXN0OmthcmVsLWFwcGVs",
+          gravityID: "karel-appel",
+          id: "QXJ0aXN0OmthcmVsLWFwcGVs",
           name: "Karel Appel",
           is_followed: false,
           nationality: "Dutch",
@@ -1442,8 +1442,8 @@ export const ShowFixture = {
       letter: "B",
       items: [
         {
-          id: "bruce-beasley",
-          __id: "QXJ0aXN0OmJydWNlLWJlYXNsZXk=",
+          gravityID: "bruce-beasley",
+          id: "QXJ0aXN0OmJydWNlLWJlYXNsZXk=",
           name: "Bruce Beasley",
           is_followed: false,
           nationality: "American",
@@ -1454,8 +1454,8 @@ export const ShowFixture = {
           },
         },
         {
-          id: "nell-blaine",
-          __id: "QXJ0aXN0Om5lbGwtYmxhaW5l",
+          gravityID: "nell-blaine",
+          id: "QXJ0aXN0Om5lbGwtYmxhaW5l",
           name: "Nell Blaine",
           is_followed: false,
           nationality: "American",
@@ -1466,8 +1466,8 @@ export const ShowFixture = {
           },
         },
         {
-          id: "carolyn-brady",
-          __id: "QXJ0aXN0OmNhcm9seW4tYnJhZHk=",
+          gravityID: "carolyn-brady",
+          id: "QXJ0aXN0OmNhcm9seW4tYnJhZHk=",
           name: "Carolyn Brady",
           is_followed: false,
           nationality: "American",
@@ -1483,8 +1483,8 @@ export const ShowFixture = {
       letter: "C",
       items: [
         {
-          id: "dale-chihuly",
-          __id: "QXJ0aXN0OmRhbGUtY2hpaHVseQ==",
+          gravityID: "dale-chihuly",
+          id: "QXJ0aXN0OmRhbGUtY2hpaHVseQ==",
           name: "Dale Chihuly",
           is_followed: false,
           nationality: "American",
@@ -1500,8 +1500,8 @@ export const ShowFixture = {
       letter: "D",
       items: [
         {
-          id: "richard-diebenkorn",
-          __id: "QXJ0aXN0OnJpY2hhcmQtZGllYmVua29ybg==",
+          gravityID: "richard-diebenkorn",
+          id: "QXJ0aXN0OnJpY2hhcmQtZGllYmVua29ybg==",
           name: "Richard Diebenkorn",
           is_followed: false,
           nationality: "American",
@@ -1512,8 +1512,8 @@ export const ShowFixture = {
           },
         },
         {
-          id: "jim-dine",
-          __id: "QXJ0aXN0OmppbS1kaW5l",
+          gravityID: "jim-dine",
+          id: "QXJ0aXN0OmppbS1kaW5l",
           name: "Jim Dine",
           is_followed: false,
           nationality: "American",
@@ -1529,8 +1529,8 @@ export const ShowFixture = {
       letter: "F",
       items: [
         {
-          id: "sam-francis",
-          __id: "QXJ0aXN0OnNhbS1mcmFuY2lz",
+          gravityID: "sam-francis",
+          id: "QXJ0aXN0OnNhbS1mcmFuY2lz",
           name: "Sam Francis",
           is_followed: false,
           nationality: "American",
@@ -1546,8 +1546,8 @@ export const ShowFixture = {
       letter: "H",
       items: [
         {
-          id: "robert-harms",
-          __id: "QXJ0aXN0OnJvYmVydC1oYXJtcw==",
+          gravityID: "robert-harms",
+          id: "QXJ0aXN0OnJvYmVydC1oYXJtcw==",
           name: "Robert Harms",
           is_followed: false,
           nationality: "",
@@ -1558,8 +1558,8 @@ export const ShowFixture = {
           },
         },
         {
-          id: "david-hockney",
-          __id: "QXJ0aXN0OmRhdmlkLWhvY2tuZXk=",
+          gravityID: "david-hockney",
+          id: "QXJ0aXN0OmRhdmlkLWhvY2tuZXk=",
           name: "David Hockney",
           is_followed: false,
           nationality: "British",
@@ -1570,8 +1570,8 @@ export const ShowFixture = {
           },
         },
         {
-          id: "hans-hofmann",
-          __id: "QXJ0aXN0OmhhbnMtaG9mbWFubg==",
+          gravityID: "hans-hofmann",
+          id: "QXJ0aXN0OmhhbnMtaG9mbWFubg==",
           name: "Hans Hofmann",
           is_followed: false,
           nationality: "German-American",
@@ -1587,8 +1587,8 @@ export const ShowFixture = {
       letter: "K",
       items: [
         {
-          id: "wolf-kahn",
-          __id: "QXJ0aXN0OndvbGYta2Fobg==",
+          gravityID: "wolf-kahn",
+          id: "QXJ0aXN0OndvbGYta2Fobg==",
           name: "Wolf Kahn",
           is_followed: false,
           nationality: "American",
@@ -1599,8 +1599,8 @@ export const ShowFixture = {
           },
         },
         {
-          id: "ellsworth-kelly",
-          __id: "QXJ0aXN0OmVsbHN3b3J0aC1rZWxseQ==",
+          gravityID: "ellsworth-kelly",
+          id: "QXJ0aXN0OmVsbHN3b3J0aC1rZWxseQ==",
           name: "Ellsworth Kelly",
           is_followed: false,
           nationality: "American",
@@ -1616,8 +1616,8 @@ export const ShowFixture = {
       letter: "M",
       items: [
         {
-          id: "robert-motherwell",
-          __id: "QXJ0aXN0OnJvYmVydC1tb3RoZXJ3ZWxs",
+          gravityID: "robert-motherwell",
+          id: "QXJ0aXN0OnJvYmVydC1tb3RoZXJ3ZWxs",
           name: "Robert Motherwell",
           is_followed: false,
           nationality: "American",
@@ -1633,8 +1633,8 @@ export const ShowFixture = {
       letter: "P",
       items: [
         {
-          id: "pablo-picasso",
-          __id: "QXJ0aXN0OnBhYmxvLXBpY2Fzc28=",
+          gravityID: "pablo-picasso",
+          id: "QXJ0aXN0OnBhYmxvLXBpY2Fzc28=",
           name: "Pablo Picasso",
           is_followed: false,
           nationality: "Spanish",
@@ -1650,8 +1650,8 @@ export const ShowFixture = {
       letter: "R",
       items: [
         {
-          id: "bridget-riley",
-          __id: "QXJ0aXN0OmJyaWRnZXQtcmlsZXk=",
+          gravityID: "bridget-riley",
+          id: "QXJ0aXN0OmJyaWRnZXQtcmlsZXk=",
           name: "Bridget Riley",
           is_followed: false,
           nationality: "British",

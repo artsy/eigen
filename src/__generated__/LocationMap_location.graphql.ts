@@ -4,7 +4,7 @@ import { ReaderFragment } from "relay-runtime";
 declare const _LocationMap_location$ref: unique symbol;
 export type LocationMap_location$ref = typeof _LocationMap_location$ref;
 export type LocationMap_location = {
-    readonly __id: string;
+    readonly id: string;
     readonly gravityID: string;
     readonly city: string | null;
     readonly address: string | null;
@@ -42,7 +42,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "__id",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
@@ -202,5 +202,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'a9b90e37f50bccd8c88d531ccffbf24f';
+(node as any).hash = '4ab899f51b80ed405fe2b1b6d362dcd3';
 export default node;

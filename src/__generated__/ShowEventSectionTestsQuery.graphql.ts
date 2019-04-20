@@ -23,6 +23,7 @@ query ShowEventSectionTestsQuery {
     events {
       ...ShowEventSection_event
     }
+    id
   }
 }
 
@@ -133,6 +134,13 @@ return {
                 "storageKey": null
               }
             ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
           }
         ]
       }

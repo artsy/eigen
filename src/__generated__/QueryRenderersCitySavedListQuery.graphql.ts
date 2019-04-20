@@ -37,7 +37,7 @@ fragment CitySavedList_viewer on Viewer {
           node {
             gravityID
             _id
-            __id
+            id
             name
             isStubShow
             status
@@ -52,6 +52,7 @@ fragment CitySavedList_viewer on Viewer {
                 lat
                 lng
               }
+              id
             }
             type
             start_at
@@ -65,9 +66,13 @@ fragment CitySavedList_viewer on Viewer {
                   image {
                     url(version: "square")
                   }
+                  id
                 }
               }
               ... on Node {
+                id
+              }
+              ... on ExternalPartner {
                 id
               }
             }
@@ -81,6 +86,7 @@ fragment CitySavedList_viewer on Viewer {
         }
       }
     }
+    id
   }
 }
 */
@@ -130,11 +136,18 @@ v2 = [
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "type",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "type",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
@@ -260,13 +273,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "__id",
-                                "args": null,
-                                "storageKey": null
-                              },
+                              (v3/*: any*/),
                               (v1/*: any*/),
                               {
                                 "kind": "ScalarField",
@@ -354,10 +361,11 @@ return {
                                         "storageKey": null
                                       }
                                     ]
-                                  }
+                                  },
+                                  (v3/*: any*/)
                                 ]
                               },
-                              (v3/*: any*/),
+                              (v4/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -381,20 +389,14 @@ return {
                                 "concreteType": null,
                                 "plural": false,
                                 "selections": [
-                                  (v4/*: any*/),
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "id",
-                                    "args": null,
-                                    "storageKey": null
-                                  },
+                                  (v5/*: any*/),
+                                  (v3/*: any*/),
                                   {
                                     "kind": "InlineFragment",
                                     "type": "Partner",
                                     "selections": [
                                       (v1/*: any*/),
-                                      (v3/*: any*/),
+                                      (v4/*: any*/),
                                       {
                                         "kind": "LinkedField",
                                         "alias": null,
@@ -428,14 +430,15 @@ return {
                                                 "storageKey": "url(version:\"square\")"
                                               }
                                             ]
-                                          }
+                                          },
+                                          (v3/*: any*/)
                                         ]
                                       }
                                     ]
                                   }
                                 ]
                               },
-                              (v4/*: any*/)
+                              (v5/*: any*/)
                             ]
                           },
                           {
@@ -487,7 +490,8 @@ return {
                     ]
                   }
                 ]
-              }
+              },
+              (v3/*: any*/)
             ]
           }
         ]

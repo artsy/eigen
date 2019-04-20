@@ -61,7 +61,7 @@ export type FairHeader_fair = {
             readonly width: number | null;
             readonly url: string | null;
         }) | null;
-        readonly __id: string;
+        readonly id: string;
         readonly gravityID: string;
         readonly name: string | null;
         readonly is_followed: boolean | null;
@@ -381,7 +381,7 @@ return {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "__id",
+          "name": "id",
           "args": null,
           "storageKey": null
         },
@@ -420,5 +420,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b22186b52b234fdcac8c95445459b673';
+(node as any).hash = 'ebc6307845b73fde52e90400aea1e60b';
 export default node;

@@ -19,6 +19,7 @@ export type FavoriteArtistsQuery = {
 query FavoriteArtistsQuery {
   me {
     ...Artists_me
+    id
   }
 }
 
@@ -32,13 +33,14 @@ fragment Artists_me on Me {
       node {
         artist {
           gravityID
-          __id
+          id
           name
           href
           image {
             url
           }
         }
+        id
         __typename
       }
       cursor
@@ -55,7 +57,14 @@ var v0 = [
     "value": 10,
     "type": "Int"
   }
-];
+],
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -165,13 +174,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "__id",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          (v1/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -206,6 +209,7 @@ return {
                           }
                         ]
                       },
+                      (v1/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -234,7 +238,8 @@ return {
             "handle": "connection",
             "key": "Artists_followed_artists_connection",
             "filters": null
-          }
+          },
+          (v1/*: any*/)
         ]
       }
     ]

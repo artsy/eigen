@@ -19,11 +19,12 @@ export type ArtistsGroupedByNameTestsQuery = {
 query ArtistsGroupedByNameTestsQuery {
   artist(id: "pablo-picasso") {
     ...ArtistListItem_artist
+    id
   }
 }
 
 fragment ArtistListItem_artist on Artist {
-  __id
+  id
   _id
   gravityID
   name
@@ -90,7 +91,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "__id",
+            "name": "id",
             "args": null,
             "storageKey": null
           },

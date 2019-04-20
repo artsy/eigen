@@ -17,7 +17,7 @@ it("renders properly", () => {
 
 const showProps = n => {
   return {
-    __id: `show-expansive-exhibition-${n}`,
+    id: `show-expansive-exhibition-${n}`,
     href: "artsy.net/show",
     cover_image: {
       url: "artsy.net/image-url",

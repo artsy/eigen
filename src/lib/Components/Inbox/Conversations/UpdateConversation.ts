@@ -3,7 +3,7 @@ import { commitMutation, graphql } from "react-relay"
 import { Environment, MutationConfig } from "relay-runtime"
 
 interface Conversation {
-  __id: string
+  id: string
   internalID: string
 }
 
@@ -16,7 +16,7 @@ export function updateConversation(
 ) {
   return commitMutation<UpdateConversationMutation>(environment, {
     updater: store => {
-      store.get(conversation.__id).setValue(false, "unread")
+      store.get(conversation.id).setValue(false, "unread")
     },
     onCompleted,
     onError,

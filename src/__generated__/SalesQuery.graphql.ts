@@ -27,6 +27,7 @@ fragment Sales_viewer on Viewer {
     ...SaleListItem_sale
     href
     live_start_at
+    id
   }
   ...LotsByFollowedArtists_viewer
 }
@@ -60,7 +61,9 @@ fragment LotsByFollowedArtists_viewer on Viewer {
       node {
         artwork {
           ...GenericGrid_artworks
+          id
         }
+        id
         __typename
       }
     }
@@ -68,7 +71,7 @@ fragment LotsByFollowedArtists_viewer on Viewer {
 }
 
 fragment GenericGrid_artworks on Artwork {
-  __id
+  id
   gravityID
   image {
     aspect_ratio
@@ -91,6 +94,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
+    id
   }
   sale_artwork {
     opening_bid {
@@ -102,7 +106,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
+      id
     }
+    id
   }
   image {
     url(version: "large")
@@ -110,9 +116,11 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
+    id
   }
   partner {
     name
+    id
   }
   href
 }
@@ -188,7 +196,14 @@ v8 = {
   "args": null,
   "storageKey": null
 },
-v9 = [
+v9 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v10 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -209,14 +224,14 @@ v9 = [
     "type": "Boolean"
   }
 ],
-v10 = {
+v11 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v11 = [
+v12 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -225,8 +240,9 @@ v11 = [
     "storageKey": null
   }
 ],
-v12 = [
-  (v5/*: any*/)
+v13 = [
+  (v5/*: any*/),
+  (v9/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -351,7 +367,8 @@ return {
                   (v7/*: any*/),
                   (v8/*: any*/)
                 ]
-              }
+              },
+              (v9/*: any*/)
             ]
           },
           {
@@ -359,7 +376,7 @@ return {
             "alias": "sale_artworks",
             "name": "sale_artworks",
             "storageKey": "sale_artworks(first:10,include_artworks_by_followed_artists:true,is_auction:true,live_sale:true)",
-            "args": (v9/*: any*/),
+            "args": (v10/*: any*/),
             "concreteType": "SaleArtworksConnection",
             "plural": false,
             "selections": [
@@ -429,13 +446,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "__id",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          (v9/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -510,8 +521,9 @@ return {
                               },
                               (v4/*: any*/),
                               (v3/*: any*/),
-                              (v10/*: any*/),
-                              (v6/*: any*/)
+                              (v11/*: any*/),
+                              (v6/*: any*/),
+                              (v9/*: any*/)
                             ]
                           },
                           {
@@ -531,7 +543,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkOpeningBid",
                                 "plural": false,
-                                "selections": (v11/*: any*/)
+                                "selections": (v12/*: any*/)
                               },
                               {
                                 "kind": "LinkedField",
@@ -541,7 +553,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkCurrentBid",
                                 "plural": false,
-                                "selections": (v11/*: any*/)
+                                "selections": (v12/*: any*/)
                               },
                               {
                                 "kind": "ScalarField",
@@ -559,9 +571,11 @@ return {
                                 "concreteType": "Sale",
                                 "plural": false,
                                 "selections": [
-                                  (v10/*: any*/)
+                                  (v11/*: any*/),
+                                  (v9/*: any*/)
                                 ]
-                              }
+                              },
+                              (v9/*: any*/)
                             ]
                           },
                           {
@@ -579,7 +593,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": (v12/*: any*/)
+                            "selections": (v13/*: any*/)
                           },
                           {
                             "kind": "LinkedField",
@@ -589,11 +603,12 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": (v12/*: any*/)
+                            "selections": (v13/*: any*/)
                           },
                           (v2/*: any*/)
                         ]
                       },
+                      (v9/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -611,7 +626,7 @@ return {
             "kind": "LinkedHandle",
             "alias": "sale_artworks",
             "name": "sale_artworks",
-            "args": (v9/*: any*/),
+            "args": (v10/*: any*/),
             "handle": "connection",
             "key": "LotsByFollowedArtists_sale_artworks",
             "filters": [

@@ -46,6 +46,7 @@ fragment CityFairList_city_1G22uz on City {
             lat
             lng
           }
+          id
         }
         image {
           image_url
@@ -60,12 +61,13 @@ fragment CityFairList_city_1G22uz on City {
             width
             url(version: "square140")
           }
-          __id
+          id
           gravityID
           name
         }
         start_at
         end_at
+        id
         __typename
       }
       cursor
@@ -141,6 +143,13 @@ v3 = {
   "storageKey": null
 },
 v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
@@ -235,8 +244,39 @@ return {
                     "concreteType": "Fair",
                     "plural": false,
                     "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "image",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "image_url",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "aspect_ratio",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "url",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
                       (v3/*: any*/),
-                      (v4/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -295,41 +335,11 @@ return {
                                 "storageKey": null
                               }
                             ]
-                          }
+                          },
+                          (v4/*: any*/)
                         ]
                       },
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "image",
-                        "storageKey": null,
-                        "args": null,
-                        "concreteType": "Image",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "image_url",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "aspect_ratio",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "url",
-                            "args": null,
-                            "storageKey": null
-                          }
-                        ]
-                      },
+                      (v5/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -386,15 +396,9 @@ return {
                               }
                             ]
                           },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "__id",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          (v4/*: any*/),
                           (v3/*: any*/),
-                          (v4/*: any*/)
+                          (v5/*: any*/)
                         ]
                       },
                       {
@@ -411,6 +415,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
+                      (v4/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,

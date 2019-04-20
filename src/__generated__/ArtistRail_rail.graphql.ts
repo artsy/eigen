@@ -5,11 +5,11 @@ import { ArtistCard_artist$ref } from "./ArtistCard_artist.graphql";
 declare const _ArtistRail_rail$ref: unique symbol;
 export type ArtistRail_rail$ref = typeof _ArtistRail_rail$ref;
 export type ArtistRail_rail = {
-    readonly __id: string;
+    readonly id: string;
     readonly key: string | null;
     readonly results: ReadonlyArray<({
         readonly _id: string;
-        readonly __id: string;
+        readonly id: string;
         readonly " $fragmentRefs": ArtistCard_artist$ref;
     }) | null> | null;
     readonly " $refType": ArtistRail_rail$ref;
@@ -21,7 +21,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -67,5 +67,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2a2967494647d65d747400f084690b7e';
+(node as any).hash = '5a79a2ff8628b5bc2f81da9dac94bf1a';
 export default node;

@@ -27,7 +27,9 @@ query ConfirmBidRefetchQuery(
     has_qualified_credit_cards
     bidders(sale_id: $saleID) {
       qualified_for_bidding
+      id
     }
+    id
   }
 }
 */
@@ -41,51 +43,35 @@ var v0 = [
     "defaultValue": null
   }
 ],
-v1 = [
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "has_qualified_credit_cards",
+  "args": null,
+  "storageKey": null
+},
+v2 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "me",
-    "storageKey": null,
-    "args": null,
-    "concreteType": "Me",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "has_qualified_credit_cards",
-        "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "bidders",
-        "storageKey": null,
-        "args": [
-          {
-            "kind": "Variable",
-            "name": "sale_id",
-            "variableName": "saleID",
-            "type": "String"
-          }
-        ],
-        "concreteType": "Bidder",
-        "plural": true,
-        "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "qualified_for_bidding",
-            "args": null,
-            "storageKey": null
-          }
-        ]
-      }
-    ]
+    "kind": "Variable",
+    "name": "sale_id",
+    "variableName": "saleID",
+    "type": "String"
   }
-];
+],
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "qualified_for_bidding",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -94,13 +80,65 @@ return {
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
+          (v1/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "bidders",
+            "storageKey": null,
+            "args": (v2/*: any*/),
+            "concreteType": "Bidder",
+            "plural": true,
+            "selections": [
+              (v3/*: any*/)
+            ]
+          }
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "ConfirmBidRefetchQuery",
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "me",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Me",
+        "plural": false,
+        "selections": [
+          (v1/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "bidders",
+            "storageKey": null,
+            "args": (v2/*: any*/),
+            "concreteType": "Bidder",
+            "plural": true,
+            "selections": [
+              (v3/*: any*/),
+              (v4/*: any*/)
+            ]
+          },
+          (v4/*: any*/)
+        ]
+      }
+    ]
   },
   "params": {
     "operationKind": "query",

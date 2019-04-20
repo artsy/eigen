@@ -15,7 +15,7 @@ export type Shows_me = {
             };
             readonly edges: ReadonlyArray<({
                 readonly node: ({
-                    readonly __id: string;
+                    readonly id: string;
                     readonly " $fragmentRefs": ShowItemRow_show$ref;
                 }) | null;
             }) | null> | null;
@@ -136,7 +136,7 @@ const node: ReaderFragment = {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "__id",
+                      "name": "id",
                       "args": null,
                       "storageKey": null
                     },
@@ -169,5 +169,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '0e73772373b56b4e5a0ec6e6f1d38d01';
+(node as any).hash = 'dffb4fceed5efacee0716bdb02de0378';
 export default node;

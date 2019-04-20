@@ -25,6 +25,7 @@ query ConversationsQuery(
 ) {
   me {
     ...Conversations_me_1G22uz
+    id
   }
 }
 
@@ -39,6 +40,7 @@ fragment Conversations_me_1G22uz on Me {
         internalID
         last_message
         ...ConversationSnippet_conversation
+        id
         __typename
       }
       cursor
@@ -68,6 +70,7 @@ fragment ConversationSnippet_conversation on Conversation {
       ... on Show {
         fair {
           name
+          id
         }
         name
         cover_image {
@@ -118,13 +121,17 @@ v2 = {
   "args": null,
   "storageKey": null
 },
-v3 = [
-  (v2/*: any*/)
-],
-v4 = {
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -265,7 +272,9 @@ return {
                         "args": null,
                         "concreteType": "ConversationResponder",
                         "plural": false,
-                        "selections": (v3/*: any*/)
+                        "selections": [
+                          (v2/*: any*/)
+                        ]
                       },
                       {
                         "kind": "ScalarField",
@@ -299,14 +308,8 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
+                              (v3/*: any*/),
                               (v4/*: any*/),
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "id",
-                                "args": null,
-                                "storageKey": null
-                              },
                               {
                                 "kind": "InlineFragment",
                                 "type": "Show",
@@ -319,7 +322,10 @@ return {
                                     "args": null,
                                     "concreteType": "Fair",
                                     "plural": false,
-                                    "selections": (v3/*: any*/)
+                                    "selections": [
+                                      (v2/*: any*/),
+                                      (v4/*: any*/)
+                                    ]
                                   },
                                   (v2/*: any*/),
                                   {
@@ -375,7 +381,8 @@ return {
                           }
                         ]
                       },
-                      (v4/*: any*/)
+                      (v4/*: any*/),
+                      (v3/*: any*/)
                     ]
                   },
                   {
@@ -397,7 +404,8 @@ return {
             "handle": "connection",
             "key": "Conversations_conversations",
             "filters": null
-          }
+          },
+          (v4/*: any*/)
         ]
       }
     ]

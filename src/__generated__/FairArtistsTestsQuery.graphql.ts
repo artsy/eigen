@@ -19,6 +19,7 @@ export type FairArtistsTestsQuery = {
 query FairArtistsTestsQuery {
   fair(id: "sofa-chicago-2018") {
     ...FairArtists_fair
+    id
   }
 }
 
@@ -39,6 +40,7 @@ fragment FairArtists_fair on Fair {
         href
         _id
         gravityID
+        id
         __typename
       }
     }
@@ -46,7 +48,7 @@ fragment FairArtists_fair on Fair {
 }
 
 fragment ArtistListItem_artist on Artist {
-  __id
+  id
   _id
   gravityID
   name
@@ -90,7 +92,14 @@ v3 = [
     "value": 10,
     "type": "Int"
   }
-];
+],
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -207,13 +216,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "__id",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      (v4/*: any*/),
                       (v1/*: any*/),
                       {
                         "kind": "ScalarField",
@@ -297,7 +300,8 @@ return {
             "handle": "connection",
             "key": "Fair_artists",
             "filters": null
-          }
+          },
+          (v4/*: any*/)
         ]
       }
     ]

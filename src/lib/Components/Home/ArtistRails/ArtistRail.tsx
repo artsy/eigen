@@ -130,7 +130,7 @@ export class ArtistRail extends Component<Props, State> {
     if (this.state.artists.length > 0) {
       const cards = this.state.artists.map(artist => {
         // Compose key, because an artist may appear twice on the home view in different modules.
-        const key = this.props.rail.__id + artist.__id
+        const key = this.props.rail.id + artist.id
         const { opacity, translateY } = artist._animatedValues
         const style = { opacity, transform: [{ translateY }] }
         return (
@@ -218,7 +218,7 @@ const styles = StyleSheet.create<Styles>({
 
 interface SuggestedArtist extends ArtistCardResponse {
   _id: string
-  __id: string
+  id: string
   _animatedValues?: {
     opacity: Animated.Value
     translateY: Animated.Value
@@ -240,7 +240,7 @@ function suggestedArtistQuery(artistID: string): string {
                           exclude_followed_artists: true,
                           exclude_artists_without_forsale_artworks: true) {
           _id
-          __id
+          id
           ${ArtistCardQuery}
         }
       }
@@ -251,11 +251,11 @@ function suggestedArtistQuery(artistID: string): string {
 export default createFragmentContainer(ArtistRail, {
   rail: graphql`
     fragment ArtistRail_rail on HomePageArtistModule {
-      __id
+      id
       key
       results {
         _id
-        __id
+        id
         ...ArtistCard_artist
       }
     }

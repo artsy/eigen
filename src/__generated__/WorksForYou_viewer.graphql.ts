@@ -15,7 +15,7 @@ export type WorksForYou_viewer = {
                 };
                 readonly edges: ReadonlyArray<({
                     readonly node: ({
-                        readonly __id: string;
+                        readonly id: string;
                         readonly " $fragmentRefs": Notification_notification$ref;
                     }) | null;
                 }) | null> | null;
@@ -165,7 +165,7 @@ const node: ReaderFragment = {
                         {
                           "kind": "ScalarField",
                           "alias": null,
-                          "name": "__id",
+                          "name": "id",
                           "args": null,
                           "storageKey": null
                         },
@@ -310,5 +310,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'c0af2c64f36706fbe435e361f2a00aed';
+(node as any).hash = '902ce5b4b0d82cec0693796c4ae26b32';
 export default node;

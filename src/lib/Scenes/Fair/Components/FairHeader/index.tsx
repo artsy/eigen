@@ -222,7 +222,7 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
           width
           url(version: "square140")
         }
-        __id
+        id
         gravityID
         name
         is_followed

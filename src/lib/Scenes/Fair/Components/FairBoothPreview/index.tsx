@@ -54,7 +54,7 @@ export class FairBoothPreview extends React.Component<Props, State> {
   handleFollowPartner = () => {
     const { show, relay } = this.props
     const {
-      partner: { gravityID: partnerSlug, _id: partnerID, __id: partnerRelayID, profile },
+      partner: { gravityID: partnerSlug, _id: partnerID, id: partnerRelayID, profile },
     } = show
     const isFollowed = !!profile ? profile.is_followed : null
     const _id = !!profile ? profile._id : null
@@ -186,7 +186,7 @@ export const FairBoothPreviewContainer = createFragmentContainer(FairBoothPrevie
           href
           gravityID
           _id
-          __id
+          id
           profile {
             _id
             is_followed

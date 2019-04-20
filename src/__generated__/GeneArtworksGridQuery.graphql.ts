@@ -3,7 +3,7 @@
 import { ConcreteRequest } from "relay-runtime";
 import { GeneArtworksGrid_filtered_artworks$ref } from "./GeneArtworksGrid_filtered_artworks.graphql";
 export type GeneArtworksGridQueryVariables = {
-    readonly __id: string;
+    readonly id: string;
     readonly count: number;
     readonly cursor?: string | null;
     readonly sort?: string | null;
@@ -22,12 +22,12 @@ export type GeneArtworksGridQuery = {
 
 /*
 query GeneArtworksGridQuery(
-  $__id: ID!
+  $id: ID!
   $count: Int!
   $cursor: String
   $sort: String
 ) {
-  node(__id: $__id) {
+  node(__id: $id) {
     __typename
     ... on FilterArtworks {
       ...GeneArtworksGrid_filtered_artworks_1RfMLO
@@ -37,7 +37,7 @@ query GeneArtworksGridQuery(
 }
 
 fragment GeneArtworksGrid_filtered_artworks_1RfMLO on FilterArtworks {
-  __id
+  id
   artworks: artworks_connection(first: $count, after: $cursor, sort: $sort) {
     pageInfo {
       hasNextPage
@@ -47,7 +47,7 @@ fragment GeneArtworksGrid_filtered_artworks_1RfMLO on FilterArtworks {
     edges {
       node {
         gravityID
-        __id
+        id
         image {
           aspect_ratio
         }
@@ -74,6 +74,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
+    id
   }
   sale_artwork {
     opening_bid {
@@ -85,7 +86,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
+      id
     }
+    id
   }
   image {
     url(version: "large")
@@ -93,9 +96,11 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
+    id
   }
   partner {
     name
+    id
   }
   href
 }
@@ -105,7 +110,7 @@ const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
-    "name": "__id",
+    "name": "id",
     "type": "ID!",
     "defaultValue": null
   },
@@ -132,7 +137,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "__id",
-    "variableName": "__id",
+    "variableName": "id",
     "type": "ID!"
   }
 ],
@@ -146,7 +151,7 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -193,7 +198,8 @@ v7 = [
     "name": "name",
     "args": null,
     "storageKey": null
-  }
+  },
+  (v3/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -262,18 +268,11 @@ return {
         "plural": false,
         "selections": [
           (v2/*: any*/),
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
-            "storageKey": null
-          },
+          (v3/*: any*/),
           {
             "kind": "InlineFragment",
             "type": "FilterArtworks",
             "selections": [
-              (v3/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": "artworks",
@@ -459,7 +458,8 @@ return {
                                 "name": "display_timely_at",
                                 "args": null,
                                 "storageKey": null
-                              }
+                              },
+                              (v3/*: any*/)
                             ]
                           },
                           {
@@ -507,9 +507,11 @@ return {
                                 "concreteType": "Sale",
                                 "plural": false,
                                 "selections": [
-                                  (v5/*: any*/)
+                                  (v5/*: any*/),
+                                  (v3/*: any*/)
                                 ]
-                              }
+                              },
+                              (v3/*: any*/)
                             ]
                           },
                           {
@@ -580,11 +582,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "GeneArtworksGridQuery",
-    "id": "f067940108b24080905d5933ab8368e3",
+    "id": "b9f49148fa4f7b165660c09407cb5190",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'f067940108b24080905d5933ab8368e3';
+(node as any).hash = 'b9f49148fa4f7b165660c09407cb5190';
 export default node;

@@ -4,7 +4,7 @@ import { ConcreteRequest } from "relay-runtime";
 export type createMockNetworkLayerTestsQueryVariables = {};
 export type createMockNetworkLayerTestsQueryResponse = {
     readonly artwork: ({
-        readonly __id: string;
+        readonly id: string;
         readonly title: string | null;
     }) | null;
 };
@@ -18,7 +18,7 @@ export type createMockNetworkLayerTestsQuery = {
 /*
 query createMockNetworkLayerTestsQuery {
   artwork(id: "untitled") {
-    __id
+    id
     title
   }
 }
@@ -45,7 +45,7 @@ var v0 = [
       {
         "kind": "ScalarField",
         "alias": null,
-        "name": "__id",
+        "name": "id",
         "args": null,
         "storageKey": null
       },
@@ -78,11 +78,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "createMockNetworkLayerTestsQuery",
-    "id": "7c4943257f47c5a4f37e5c5212530eb1",
+    "id": "1eeffdf1d257e48e4d0b0d33a8f7a7f8",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '7c4943257f47c5a4f37e5c5212530eb1';
+(node as any).hash = '1eeffdf1d257e48e4d0b0d33a8f7a7f8';
 export default node;

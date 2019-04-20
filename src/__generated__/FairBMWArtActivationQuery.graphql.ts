@@ -32,6 +32,7 @@ query FairBMWArtActivationQuery(
       activationText
       pressReleaseUrl
     }
+    id
   }
 }
 */
@@ -47,63 +48,51 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "fair",
-    "storageKey": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "id",
-        "variableName": "fairID",
-        "type": "String!"
-      }
-    ],
-    "concreteType": "Fair",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "gravityID",
-        "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "_id",
-        "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "sponsoredContent",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "FairSponsoredContent",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "activationText",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "pressReleaseUrl",
-            "args": null,
-            "storageKey": null
-          }
-        ]
-      }
-    ]
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "fairID",
+    "type": "String!"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "_id",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "sponsoredContent",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "FairSponsoredContent",
+  "plural": false,
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "activationText",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "pressReleaseUrl",
+      "args": null,
+      "storageKey": null
+    }
+  ]
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -112,13 +101,50 @@ return {
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "fair",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "Fair",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
+          (v4/*: any*/)
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "FairBMWArtActivationQuery",
     "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "fair",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "Fair",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
+          (v4/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
+          }
+        ]
+      }
+    ]
   },
   "params": {
     "operationKind": "query",

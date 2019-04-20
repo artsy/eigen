@@ -23,6 +23,7 @@ query MockRelayRendererFixturesArtistQuery(
 ) {
   artist(id: $id) {
     ...MockRelayRendererFixtures_artist
+    id
   }
 }
 
@@ -93,6 +94,13 @@ return {
             "kind": "ScalarField",
             "alias": null,
             "name": "name",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
             "args": null,
             "storageKey": null
           }

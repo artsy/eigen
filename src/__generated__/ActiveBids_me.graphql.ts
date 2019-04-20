@@ -7,7 +7,7 @@ export type ActiveBids_me$ref = typeof _ActiveBids_me$ref;
 export type ActiveBids_me = {
     readonly lot_standings: ReadonlyArray<({
         readonly most_recent_bid: ({
-            readonly __id: string;
+            readonly id: string;
         }) | null;
         readonly " $fragmentRefs": ActiveBid_bid$ref;
     }) | null> | null;
@@ -51,7 +51,7 @@ const node: ReaderFragment = {
             {
               "kind": "ScalarField",
               "alias": null,
-              "name": "__id",
+              "name": "id",
               "args": null,
               "storageKey": null
             }
@@ -66,5 +66,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '7a308d9363d144841752a8266770a87e';
+(node as any).hash = '177e8644ddfa2c74520c46ff2adb0eb5';
 export default node;

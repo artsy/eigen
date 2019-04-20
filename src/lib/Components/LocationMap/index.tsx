@@ -176,7 +176,7 @@ export class LocationMap extends React.Component<Props> {
 export const LocationMapContainer = createFragmentContainer(LocationMap, {
   location: graphql`
     fragment LocationMap_location on Location {
-      __id
+      id
       gravityID
       city
       address

@@ -7,7 +7,7 @@ import { ShowPreview_show$ref } from "./ShowPreview_show.graphql";
 declare const _Messages_conversation$ref: unique symbol;
 export type Messages_conversation$ref = typeof _Messages_conversation$ref;
 export type Messages_conversation = {
-    readonly __id: string;
+    readonly id: string;
     readonly internalID: string;
     readonly from: {
         readonly name: string;
@@ -29,7 +29,7 @@ export type Messages_conversation = {
         readonly edges: ReadonlyArray<({
             readonly cursor: string;
             readonly node: ({
-                readonly __id: string;
+                readonly id: string;
                 readonly impulse_id: string;
                 readonly is_from_user: boolean | null;
                 readonly body: string | null;
@@ -59,7 +59,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -349,5 +349,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '071dbe614a9e4f5486494de108f303db';
+(node as any).hash = '84319c45becafc41c50bc51f3d909ca0';
 export default node;

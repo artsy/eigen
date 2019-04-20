@@ -22,7 +22,9 @@ query FiltersTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
       ...Filters_filteredArtworks
+      id
     }
+    id
   }
 }
 
@@ -32,6 +34,7 @@ fragment Filters_filteredArtworks on FilterArtworks {
     counts {
       gravityID
       name
+      id
     }
   }
 }
@@ -75,7 +78,14 @@ v1 = [
     "value": 0,
     "type": "Int"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -175,13 +185,16 @@ return {
                         "name": "name",
                         "args": null,
                         "storageKey": null
-                      }
+                      },
+                      (v2/*: any*/)
                     ]
                   }
                 ]
-              }
+              },
+              (v2/*: any*/)
             ]
-          }
+          },
+          (v2/*: any*/)
         ]
       }
     ]

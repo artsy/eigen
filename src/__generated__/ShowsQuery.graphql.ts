@@ -25,6 +25,7 @@ query ShowsQuery(
 ) {
   me {
     ...Shows_me_1G22uz
+    id
   }
 }
 
@@ -39,7 +40,7 @@ fragment Shows_me_1G22uz on Me {
       }
       edges {
         node {
-          __id
+          id
           ...ShowItemRow_show
           __typename
         }
@@ -52,7 +53,7 @@ fragment Shows_me_1G22uz on Me {
 fragment ShowItemRow_show on Show {
   gravityID
   _id
-  __id
+  id
   is_followed
   name
   isStubShow
@@ -64,9 +65,13 @@ fragment ShowItemRow_show on Show {
         image {
           url(version: "square")
         }
+        id
       }
     }
     ... on Node {
+      id
+    }
+    ... on ExternalPartner {
       id
     }
   }
@@ -115,11 +120,18 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
@@ -262,13 +274,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "__id",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -283,7 +289,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/),
+                          (v3/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -300,19 +306,13 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
-                              (v3/*: any*/),
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "id",
-                                "args": null,
-                                "storageKey": null
-                              },
+                              (v4/*: any*/),
+                              (v2/*: any*/),
                               {
                                 "kind": "InlineFragment",
                                 "type": "Partner",
                                 "selections": [
-                                  (v2/*: any*/),
+                                  (v3/*: any*/),
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
@@ -346,7 +346,8 @@ return {
                                             "storageKey": "url(version:\"square\")"
                                           }
                                         ]
-                                      }
+                                      },
+                                      (v2/*: any*/)
                                     ]
                                   }
                                 ]
@@ -420,7 +421,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v3/*: any*/)
+                          (v4/*: any*/)
                         ]
                       },
                       {
@@ -444,7 +445,8 @@ return {
                 "filters": null
               }
             ]
-          }
+          },
+          (v2/*: any*/)
         ]
       }
     ]

@@ -5,13 +5,13 @@ exports[`renders properly 1`] = `
   mapPropsToArtworksConnection={[Function]}
   sale={
     Object {
-      "__id": "sale-id",
+      "id": "sale-id",
       "salerArtworks": Object {
         "edges": Array [
           Object {
             "artwork": Object {
               "node": Object {
-                "__id": "artwork-talking-politics",
+                "id": "artwork-talking-politics",
                 "artists": Array [
                   Object {
                     "name": "Jenny Holzer",
@@ -35,7 +35,7 @@ exports[`renders properly 1`] = `
           Object {
             "artwork": Object {
               "node": Object {
-                "__id": "artwork-talking-politics",
+                "id": "artwork-talking-politics",
                 "artists": Array [
                   Object {
                     "name": "Jenny Holzer",
@@ -59,7 +59,7 @@ exports[`renders properly 1`] = `
           Object {
             "artwork": Object {
               "node": Object {
-                "__id": "artwork-talking-politics",
+                "id": "artwork-talking-politics",
                 "artists": Array [
                   Object {
                     "name": "Jenny Holzer",
@@ -85,4 +85,4 @@ exports[`renders properly 1`] = `
     }
   }
 />
-`;
+`

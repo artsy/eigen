@@ -35,7 +35,7 @@ fragment CityBMWList_city on City {
         node {
           gravityID
           _id
-          __id
+          id
           name
           status
           href
@@ -50,6 +50,7 @@ fragment CityBMWList_city on City {
               lat
               lng
             }
+            id
           }
           type
           start_at
@@ -63,9 +64,13 @@ fragment CityBMWList_city on City {
                 image {
                   url(version: "square")
                 }
+                id
               }
             }
             ... on Node {
+              id
+            }
+            ... on ExternalPartner {
               id
             }
           }
@@ -135,11 +140,18 @@ v3 = [
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "type",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "type",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
@@ -245,13 +257,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "__id",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          (v4/*: any*/),
                           (v2/*: any*/),
                           {
                             "kind": "ScalarField",
@@ -339,10 +345,11 @@ return {
                                     "storageKey": null
                                   }
                                 ]
-                              }
+                              },
+                              (v4/*: any*/)
                             ]
                           },
-                          (v4/*: any*/),
+                          (v5/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -366,20 +373,14 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
-                              (v5/*: any*/),
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "id",
-                                "args": null,
-                                "storageKey": null
-                              },
+                              (v6/*: any*/),
+                              (v4/*: any*/),
                               {
                                 "kind": "InlineFragment",
                                 "type": "Partner",
                                 "selections": [
                                   (v2/*: any*/),
-                                  (v4/*: any*/),
+                                  (v5/*: any*/),
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
@@ -413,14 +414,15 @@ return {
                                             "storageKey": "url(version:\"square\")"
                                           }
                                         ]
-                                      }
+                                      },
+                                      (v4/*: any*/)
                                     ]
                                   }
                                 ]
                               }
                             ]
                           },
-                          (v5/*: any*/)
+                          (v6/*: any*/)
                         ]
                       },
                       {

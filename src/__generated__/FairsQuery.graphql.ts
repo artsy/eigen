@@ -25,6 +25,7 @@ query FairsQuery(
 ) {
   me {
     ...Fairs_me_1G22uz
+    id
   }
 }
 
@@ -33,11 +34,11 @@ fragment Fairs_me_1G22uz on Me {
     fairs(first: $count, after: $cursor) {
       edges {
         node {
-          __id
+          id
           profile {
             gravityID
             is_followed
-            __id
+            id
           }
           exhibition_period
           name
@@ -95,7 +96,7 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -342,7 +343,8 @@ return {
                 "filters": null
               }
             ]
-          }
+          },
+          (v2/*: any*/)
         ]
       }
     ]

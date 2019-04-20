@@ -42,7 +42,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
       featuredShows {
         gravityID
         _id
-        __id
+        id
         name
         status
         isStubShow
@@ -57,6 +57,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
             lat
             lng
           }
+          id
         }
         type
         start_at
@@ -70,6 +71,9 @@ fragment GlobalMap_viewer_3La17j on Viewer {
           ... on Node {
             id
           }
+          ... on ExternalPartner {
+            id
+          }
         }
       }
       shows(first: 1, sort: START_AT_ASC) {
@@ -81,7 +85,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
         node {
           gravityID
           _id
-          __id
+          id
           isStubShow
           name
           status
@@ -96,6 +100,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
               lat
               lng
             }
+            id
           }
           type
           start_at
@@ -109,9 +114,13 @@ fragment GlobalMap_viewer_3La17j on Viewer {
                 image {
                   url(version: "square")
                 }
+                id
               }
             }
             ... on Node {
+              id
+            }
+            ... on ExternalPartner {
               id
             }
           }
@@ -123,7 +132,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
         node {
           gravityID
           _id
-          __id
+          id
           isStubShow
           name
           status
@@ -138,6 +147,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
               lat
               lng
             }
+            id
           }
           type
           start_at
@@ -151,9 +161,13 @@ fragment GlobalMap_viewer_3La17j on Viewer {
                 image {
                   url(version: "square")
                 }
+                id
               }
             }
             ... on Node {
+              id
+            }
+            ... on ExternalPartner {
               id
             }
           }
@@ -174,6 +188,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
               lat
               lng
             }
+            id
           }
           image {
             image_url
@@ -188,12 +203,13 @@ fragment GlobalMap_viewer_3La17j on Viewer {
               width
               url(version: "square140")
             }
-            __id
+            id
             gravityID
             name
           }
           start_at
           end_at
+          id
         }
       }
     }
@@ -265,7 +281,7 @@ v4 = {
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
@@ -332,7 +348,8 @@ v13 = {
   "concreteType": "Location",
   "plural": false,
   "selections": [
-    (v2/*: any*/)
+    (v2/*: any*/),
+    (v5/*: any*/)
   ]
 },
 v14 = {
@@ -364,31 +381,24 @@ v17 = {
   "storageKey": null
 },
 v18 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v19 = {
   "kind": "Literal",
   "name": "sort",
   "value": "START_AT_ASC",
   "type": "PartnerShowSorts"
 },
-v20 = {
+v19 = {
   "kind": "Variable",
   "name": "first",
   "variableName": "maxInt",
   "type": "Int"
 },
-v21 = {
+v20 = {
   "kind": "Literal",
   "name": "includeStubShows",
   "value": true,
   "type": "Boolean"
 },
-v22 = [
+v21 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -431,7 +441,7 @@ v22 = [
             "plural": false,
             "selections": [
               (v17/*: any*/),
-              (v18/*: any*/),
+              (v5/*: any*/),
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
@@ -471,7 +481,8 @@ v22 = [
                             "storageKey": "url(version:\"square\")"
                           }
                         ]
-                      }
+                      },
+                      (v5/*: any*/)
                     ]
                   }
                 ]
@@ -618,7 +629,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v17/*: any*/),
-                          (v18/*: any*/),
+                          (v5/*: any*/),
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",
@@ -643,7 +654,7 @@ return {
                         "value": 1,
                         "type": "Int"
                       },
-                      (v19/*: any*/)
+                      (v18/*: any*/)
                     ],
                     "concreteType": "ShowConnection",
                     "plural": false,
@@ -671,9 +682,9 @@ return {
                     "value": 14,
                     "type": "Int"
                   },
-                  (v20/*: any*/),
-                  (v21/*: any*/),
                   (v19/*: any*/),
+                  (v20/*: any*/),
+                  (v18/*: any*/),
                   {
                     "kind": "Literal",
                     "name": "status",
@@ -683,7 +694,7 @@ return {
                 ],
                 "concreteType": "ShowConnection",
                 "plural": false,
-                "selections": (v22/*: any*/)
+                "selections": (v21/*: any*/)
               },
               {
                 "kind": "LinkedField",
@@ -691,8 +702,8 @@ return {
                 "name": "shows",
                 "storageKey": null,
                 "args": [
+                  (v19/*: any*/),
                   (v20/*: any*/),
-                  (v21/*: any*/),
                   {
                     "kind": "Literal",
                     "name": "sort",
@@ -708,7 +719,7 @@ return {
                 ],
                 "concreteType": "ShowConnection",
                 "plural": false,
-                "selections": (v22/*: any*/)
+                "selections": (v21/*: any*/)
               },
               {
                 "kind": "LinkedField",
@@ -716,7 +727,7 @@ return {
                 "name": "fairs",
                 "storageKey": null,
                 "args": [
-                  (v20/*: any*/),
+                  (v19/*: any*/),
                   {
                     "kind": "Literal",
                     "name": "sort",
@@ -855,7 +866,8 @@ return {
                             ]
                           },
                           (v15/*: any*/),
-                          (v16/*: any*/)
+                          (v16/*: any*/),
+                          (v5/*: any*/)
                         ]
                       }
                     ]

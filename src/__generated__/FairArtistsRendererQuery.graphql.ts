@@ -23,6 +23,7 @@ query FairArtistsRendererQuery(
 ) {
   fair(id: $fairID) {
     ...FairArtists_fair
+    id
   }
 }
 
@@ -43,6 +44,7 @@ fragment FairArtists_fair on Fair {
         href
         _id
         gravityID
+        id
         __typename
       }
     }
@@ -50,7 +52,7 @@ fragment FairArtists_fair on Fair {
 }
 
 fragment ArtistListItem_artist on Artist {
-  __id
+  id
   _id
   gravityID
   name
@@ -102,7 +104,14 @@ v4 = [
     "value": 10,
     "type": "Int"
   }
-];
+],
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -219,13 +228,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "__id",
-                        "args": null,
-                        "storageKey": null
-                      },
+                      (v5/*: any*/),
                       (v2/*: any*/),
                       {
                         "kind": "ScalarField",
@@ -309,7 +312,8 @@ return {
             "handle": "connection",
             "key": "Fair_artists",
             "filters": null
-          }
+          },
+          (v5/*: any*/)
         ]
       }
     ]
