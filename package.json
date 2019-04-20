@@ -34,7 +34,7 @@
     "open-emission": "xcrun simctl launch booted net.artsy.Emission",
     "test": "jest",
     "testing": "jest --watch",
-    "relay": "relay-compiler --src ./src --schema data/schema.graphql --language typescript --artifactDirectory ./src/__generated__ --persist --persistOutput ./src/__generated__/complete.queryMap.json --exclude '**/node_modules/**,**/__mocks__/**,**/__generated__/**'",
+    "relay": "relay-compiler --src ./src --schema data/schema.graphql --language typescript --artifactDirectory ./src/__generated__ --persist-output ./data/complete.queryMap.json --exclude '**/node_modules/**,**/__mocks__/**,**/__generated__/**'",
     "release": "node scripts/release.js",
     "generate-graphql-query-map": "node scripts/generate-graphql-query-map.js > Pod/Classes/GraphQL/ARGraphQLQueryMap.generated.objc",
     "generate-cities-objc": "node scripts/generate-cities-objc.js",
