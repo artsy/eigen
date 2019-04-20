@@ -37,7 +37,7 @@ const track: Track<Props, State> = _track
   context_screen: Schema.PageNames.FairPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
   context_screen_owner_slug: props.fair.gravityID,
-  context_screen_owner_id: props.fair._id,
+  context_screen_owner_id: props.fair.internalID,
 }))
 export class FairDetail extends React.Component<Props, State> {
   state: State = {
@@ -106,7 +106,7 @@ export class FairDetail extends React.Component<Props, State> {
         type: "search",
         data: {
           id: fair.gravityID,
-          _id: fair._id,
+          internalID: fair.internalID,
         },
       })
 
@@ -246,7 +246,7 @@ function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTyp
   return props => ({
     action_name: actionName,
     action_type: actionType,
-    owner_id: props.fair._id,
+    owner_id: props.fair.internalID,
     owner_slug: props.fair.id,
     owner_type: Schema.OwnerEntityTypes.Fair,
   })
@@ -260,7 +260,7 @@ export const FairDetailContainer = createPaginationContainer(
         @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String" }) {
         ...FairHeader_fair
         gravityID
-        _id
+        internalID
         name
         hours
         isActive
@@ -294,7 +294,7 @@ export const FairDetailContainer = createPaginationContainer(
             cursor
             node {
               gravityID
-              _id
+              internalID
               artworks_connection(first: 4) {
                 edges {
                   node {

@@ -51,7 +51,7 @@ fragment CitySectionList_city_3BpxDU on City {
     edges {
       node {
         gravityID
-        _id
+        internalID
         id
         isStubShow
         is_followed
@@ -394,7 +394,7 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "_id",
+                        "name": "internalID",
                         "args": null,
                         "storageKey": null
                       },

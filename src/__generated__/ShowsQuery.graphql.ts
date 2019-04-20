@@ -52,7 +52,7 @@ fragment Shows_me_1G22uz on Me {
 
 fragment ShowItemRow_show on Show {
   gravityID
-  _id
+  internalID
   id
   is_followed
   name
@@ -278,7 +278,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "_id",
+                            "name": "internalID",
                             "args": null,
                             "storageKey": null
                           },

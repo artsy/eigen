@@ -6,7 +6,7 @@ import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 
 interface Props {
-  _id: string
+  internalID: string
   id: string
 }
 
@@ -18,7 +18,7 @@ export class SearchLink extends React.Component<Props> {
     return {
       action_name: Schema.ActionNames.Search,
       action_type: Schema.ActionTypes.Tap,
-      owner_id: params._id,
+      owner_id: params.internalID,
       owner_slug: params.id,
       owner_type: Schema.OwnerEntityTypes.Fair,
     } as any

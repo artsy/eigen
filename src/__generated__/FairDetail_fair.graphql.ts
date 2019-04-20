@@ -8,7 +8,7 @@ declare const _FairDetail_fair$ref: unique symbol;
 export type FairDetail_fair$ref = typeof _FairDetail_fair$ref;
 export type FairDetail_fair = {
     readonly gravityID: string;
-    readonly _id: string;
+    readonly internalID: string;
     readonly name: string | null;
     readonly hours: string | null;
     readonly isActive: boolean | null;
@@ -41,7 +41,7 @@ export type FairDetail_fair = {
             readonly cursor: string;
             readonly node: ({
                 readonly gravityID: string;
-                readonly _id: string;
+                readonly internalID: string;
                 readonly artworks_connection: ({
                     readonly edges: ReadonlyArray<({
                         readonly node: ({
@@ -63,7 +63,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -374,5 +374,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'aae77c94645d3cf6afb93e8ea160c1cb';
+(node as any).hash = '21bcee8ba13095494831a355104f2ba9';
 export default node;

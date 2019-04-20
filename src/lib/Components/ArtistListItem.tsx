@@ -118,7 +118,7 @@ export class ArtistListItem extends React.Component<Props, State> {
   @track((props: Props) => ({
     action_name: props.artist.is_followed ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Success,
-    owner_id: props.artist._id,
+    owner_id: props.artist.internalID,
     owner_slug: props.artist.gravityID,
     owner_type: Schema.OwnerEntityTypes.Artist,
   }))
@@ -197,7 +197,7 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
   artist: graphql`
     fragment ArtistListItem_artist on Artist {
       id
-      _id
+      internalID
       gravityID
       name
       is_followed

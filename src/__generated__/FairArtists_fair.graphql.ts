@@ -6,7 +6,7 @@ declare const _FairArtists_fair$ref: unique symbol;
 export type FairArtists_fair$ref = typeof _FairArtists_fair$ref;
 export type FairArtists_fair = {
     readonly gravityID: string;
-    readonly _id: string;
+    readonly internalID: string;
     readonly artists: ({
         readonly pageInfo: {
             readonly hasNextPage: boolean;
@@ -18,7 +18,7 @@ export type FairArtists_fair = {
             readonly node: ({
                 readonly sortable_id: string | null;
                 readonly href: string | null;
-                readonly _id: string;
+                readonly internalID: string;
                 readonly gravityID: string;
                 readonly " $fragmentRefs": ArtistListItem_artist$ref;
             }) | null;
@@ -40,7 +40,7 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 };
@@ -180,5 +180,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '76600a5db4c0a4f3b9a9691ad6971184';
+(node as any).hash = '798d5797ef0f9930ae89f7f2bb06219f';
 export default node;

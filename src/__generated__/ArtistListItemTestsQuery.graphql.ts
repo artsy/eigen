@@ -25,7 +25,7 @@ query ArtistListItemTestsQuery {
 
 fragment ArtistListItem_artist on Artist {
   id
-  _id
+  internalID
   gravityID
   name
   is_followed
@@ -98,7 +98,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "_id",
+            "name": "internalID",
             "args": null,
             "storageKey": null
           },

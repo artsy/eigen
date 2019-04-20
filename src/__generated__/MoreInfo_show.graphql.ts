@@ -5,7 +5,7 @@ import { ShowEventSection_event$ref } from "./ShowEventSection_event.graphql";
 declare const _MoreInfo_show$ref: unique symbol;
 export type MoreInfo_show$ref = typeof _MoreInfo_show$ref;
 export type MoreInfo_show = {
-    readonly _id: string;
+    readonly internalID: string;
     readonly gravityID: string;
     readonly exhibition_period: string | null;
     readonly pressReleaseUrl: string | null;
@@ -33,7 +33,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -121,5 +121,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '3ddcea70a64fa73a891b9985536f54b0';
+(node as any).hash = 'f42f7629f5a8030c1abdbf7570830617';
 export default node;

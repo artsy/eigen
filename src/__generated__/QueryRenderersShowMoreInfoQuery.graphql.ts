@@ -28,7 +28,7 @@ query QueryRenderersShowMoreInfoQuery(
 }
 
 fragment MoreInfo_show on Show {
-  _id
+  internalID
   gravityID
   exhibition_period
   pressReleaseUrl
@@ -128,7 +128,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "_id",
+            "name": "internalID",
             "args": null,
             "storageKey": null
           },

@@ -33,7 +33,7 @@ query FairArtworksRefetchQuery(
 
 fragment FairArtworks_fair_2UkO81 on Fair {
   id
-  _id
+  internalID
   gravityID
   artworks: filteredArtworks(size: 0, medium: $medium, price_range: $price_range, aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
@@ -263,7 +263,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "_id",
+            "name": "internalID",
             "args": null,
             "storageKey": null
           },

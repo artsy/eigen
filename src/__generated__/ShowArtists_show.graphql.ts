@@ -5,7 +5,7 @@ import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
 declare const _ShowArtists_show$ref: unique symbol;
 export type ShowArtists_show$ref = typeof _ShowArtists_show$ref;
 export type ShowArtists_show = {
-    readonly _id: string;
+    readonly internalID: string;
     readonly gravityID: string;
     readonly artists_grouped_by_name: ReadonlyArray<({
         readonly letter: string | null;
@@ -30,7 +30,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -91,5 +91,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'bb1b03ea1dc8f760126cec8d7912d8e5';
+(node as any).hash = 'b41972dd9b548a1f37d53382bdbce28d';
 export default node;

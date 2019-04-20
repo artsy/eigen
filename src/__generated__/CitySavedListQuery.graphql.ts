@@ -40,7 +40,7 @@ fragment CitySavedList_viewer_40VqxQ on Viewer {
         edges {
           node {
             gravityID
-            _id
+            internalID
             id
             name
             isStubShow
@@ -341,7 +341,7 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "_id",
+                                "name": "internalID",
                                 "args": null,
                                 "storageKey": null
                               },

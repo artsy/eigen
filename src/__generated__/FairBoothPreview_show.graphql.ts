@@ -6,7 +6,7 @@ declare const _FairBoothPreview_show$ref: unique symbol;
 export type FairBoothPreview_show$ref = typeof _FairBoothPreview_show$ref;
 export type FairBoothPreview_show = {
     readonly gravityID: string;
-    readonly _id: string;
+    readonly internalID: string;
     readonly name: string | null;
     readonly is_fair_booth: boolean | null;
     readonly counts: ({
@@ -16,10 +16,10 @@ export type FairBoothPreview_show = {
         readonly name?: string | null;
         readonly href?: string | null;
         readonly gravityID?: string;
-        readonly _id?: string;
+        readonly internalID?: string;
         readonly id?: string;
         readonly profile?: ({
-            readonly _id: string;
+            readonly internalID: string;
             readonly is_followed: boolean | null;
         }) | null;
     }) | null;
@@ -55,7 +55,7 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -250,5 +250,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'c8dd7febb1a543b149c8ab0bb722bf67';
+(node as any).hash = '49db3c85768b56bad9c3a1813b5d851c';
 export default node;

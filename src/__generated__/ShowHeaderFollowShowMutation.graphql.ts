@@ -13,7 +13,7 @@ export type ShowHeaderFollowShowMutationResponse = {
     readonly followShow: ({
         readonly show: ({
             readonly gravityID: string;
-            readonly _id: string;
+            readonly internalID: string;
             readonly is_followed: boolean | null;
         }) | null;
     }) | null;
@@ -32,7 +32,7 @@ mutation ShowHeaderFollowShowMutation(
   followShow(input: $input) {
     show {
       gravityID
-      _id
+      internalID
       is_followed
       id
     }
@@ -67,7 +67,7 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -156,11 +156,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ShowHeaderFollowShowMutation",
-    "id": "c6ea47cba397e65a27fbfaed30456f35",
+    "id": "5707bbf2fd919807b2baaafd4b20226f",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'c6ea47cba397e65a27fbfaed30456f35';
+(node as any).hash = '5707bbf2fd919807b2baaafd4b20226f';
 export default node;

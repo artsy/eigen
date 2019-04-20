@@ -8,7 +8,7 @@ import { Shows_artist$ref } from "./Shows_artist.graphql";
 declare const _Artist_artist$ref: unique symbol;
 export type Artist_artist$ref = typeof _Artist_artist$ref;
 export type Artist_artist = {
-    readonly _id: string;
+    readonly internalID: string;
     readonly gravityID: string;
     readonly has_metadata: boolean | null;
     readonly counts: ({
@@ -33,7 +33,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -112,5 +112,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '02a28b05dff0595f104818cc1fff2590';
+(node as any).hash = 'd1b317f91c9e76b708d7fb3265231b57';
 export default node;

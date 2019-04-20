@@ -28,7 +28,7 @@ query QueryRenderersInquiryQuery(
 }
 
 fragment Inquiry_artwork on Artwork {
-  _id
+  internalID
   gravityID
   contact_message
   partner {
@@ -40,7 +40,7 @@ fragment Inquiry_artwork on Artwork {
 
 fragment ArtworkPreview_artwork on Artwork {
   gravityID
-  _id
+  internalID
   title
   artist_names
   date
@@ -118,7 +118,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "_id",
+            "name": "internalID",
             "args": null,
             "storageKey": null
           },

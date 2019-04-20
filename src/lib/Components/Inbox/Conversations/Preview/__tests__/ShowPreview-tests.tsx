@@ -17,7 +17,7 @@ it("renders correctly for a fair booth", () => {
 const show = {
   name: "Catty Show",
   id: "slugID",
-  _id: "mongoID",
+  internalID: "mongoID",
   cover_image: {
     url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
   },

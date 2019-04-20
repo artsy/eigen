@@ -11,7 +11,7 @@ beforeAll(() => {
 
 it("renders properly", () => {
   const artist = {
-    _id: "some-id",
+    internalID: "some-id",
     id: "marcel-duchamp",
     name: "Marcel Duchamp",
     nationality: "French",

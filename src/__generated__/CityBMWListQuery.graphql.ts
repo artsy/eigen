@@ -38,7 +38,7 @@ fragment CityBMWList_city_1G22uz on City {
       edges {
         node {
           gravityID
-          _id
+          internalID
           id
           name
           status
@@ -319,7 +319,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "_id",
+                            "name": "internalID",
                             "args": null,
                             "storageKey": null
                           },

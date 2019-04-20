@@ -24,7 +24,7 @@ query DetailTestsQuery {
 }
 
 fragment Detail_show on Show {
-  _id
+  internalID
   gravityID
   name
   description
@@ -79,7 +79,7 @@ fragment Detail_show on Show {
 
 fragment ShowHeader_show on Show {
   gravityID
-  _id
+  internalID
   id
   name
   press_release
@@ -113,7 +113,7 @@ fragment ShowHeader_show on Show {
           name
           href
           gravityID
-          _id
+          internalID
           id
         }
       }
@@ -123,7 +123,7 @@ fragment ShowHeader_show on Show {
     name
     href
     gravityID
-    _id
+    internalID
     id
   }
 }
@@ -140,17 +140,17 @@ fragment ShowArtworksPreview_show on Show {
 }
 
 fragment ShowArtistsPreview_show on Show {
-  _id
+  internalID
   gravityID
   artists {
-    _id
+    internalID
     gravityID
     href
     ...ArtistListItem_artist
     id
   }
   artists_without_artworks {
-    _id
+    internalID
     gravityID
     href
     ...ArtistListItem_artist
@@ -201,7 +201,7 @@ fragment LocationMap_location on Location {
 }
 
 fragment ShowItem_show on Show {
-  _id
+  internalID
   gravityID
   name
   exhibition_period
@@ -226,7 +226,7 @@ fragment ShowItem_show on Show {
 
 fragment ArtistListItem_artist on Artist {
   id
-  _id
+  internalID
   gravityID
   name
   is_followed
@@ -313,7 +313,7 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },

@@ -82,7 +82,7 @@ fragment ArtistRail_rail on HomePageArtistModule {
   id
   key
   results {
-    _id
+    internalID
     id
     ...ArtistCard_artist
   }
@@ -106,7 +106,7 @@ fragment FairsRail_fairs_module on HomePageFairsModule {
 
 fragment ArtistCard_artist on Artist {
   gravityID
-  _id
+  internalID
   href
   name
   formatted_artworks_count
@@ -123,7 +123,7 @@ fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
     __typename
     ... on HomePageModuleContextFollowedArtist {
       artist {
-        _id
+        internalID
         gravityID
         id
       }
@@ -139,7 +139,7 @@ fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
     __typename
     ... on HomePageModuleContextRelatedArtist {
       artist {
-        _id
+        internalID
         gravityID
         id
       }
@@ -245,7 +245,7 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },

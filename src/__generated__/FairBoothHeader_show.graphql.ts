@@ -10,11 +10,11 @@ export type FairBoothHeader_show = {
     readonly partner: ({
         readonly name?: string | null;
         readonly gravityID?: string;
-        readonly _id?: string;
+        readonly internalID?: string;
         readonly id?: string;
         readonly href?: string | null;
         readonly profile?: ({
-            readonly _id: string;
+            readonly internalID: string;
             readonly gravityID: string;
             readonly is_followed: boolean | null;
         }) | null;
@@ -49,7 +49,7 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 };
@@ -172,5 +172,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '3ac7f2f005535f6eb207012404f58442';
+(node as any).hash = '2850f4093230d8302d5bbb0d667de960';
 export default node;

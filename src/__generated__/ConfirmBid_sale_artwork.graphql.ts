@@ -5,7 +5,7 @@ import { BidResult_sale_artwork$ref } from "./BidResult_sale_artwork.graphql";
 declare const _ConfirmBid_sale_artwork$ref: unique symbol;
 export type ConfirmBid_sale_artwork$ref = typeof _ConfirmBid_sale_artwork$ref;
 export type ConfirmBid_sale_artwork = {
-    readonly _id: string;
+    readonly internalID: string;
     readonly sale: ({
         readonly gravityID: string;
         readonly live_start_at: string | null;
@@ -42,7 +42,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -120,5 +120,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '980a5b1c81e82359813333c1065521dd';
+(node as any).hash = 'd80b17b99bcad40f06a5e689f9d9611a';
 export default node;

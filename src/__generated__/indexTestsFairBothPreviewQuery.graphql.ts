@@ -25,7 +25,7 @@ query indexTestsFairBothPreviewQuery {
 
 fragment FairBoothPreview_show on Show {
   gravityID
-  _id
+  internalID
   name
   is_fair_booth
   counts {
@@ -37,10 +37,10 @@ fragment FairBoothPreview_show on Show {
       name
       href
       gravityID
-      _id
+      internalID
       id
       profile {
-        _id
+        internalID
         is_followed
         id
       }
@@ -169,7 +169,7 @@ v4 = {
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },

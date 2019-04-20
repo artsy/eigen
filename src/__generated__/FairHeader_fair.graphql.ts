@@ -5,7 +5,7 @@ declare const _FairHeader_fair$ref: unique symbol;
 export type FairHeader_fair$ref = typeof _FairHeader_fair$ref;
 export type FairHeader_fair = {
     readonly gravityID: string;
-    readonly _id: string;
+    readonly internalID: string;
     readonly name: string | null;
     readonly formattedOpeningHours: string | null;
     readonly counts: ({
@@ -17,10 +17,10 @@ export type FairHeader_fair = {
             readonly name: string | null;
             readonly href: string | null;
             readonly gravityID: string;
-            readonly _id: string;
+            readonly internalID: string;
         }) | null> | null;
         readonly galleries: ReadonlyArray<({
-            readonly _id: string;
+            readonly internalID: string;
             readonly name: string | null;
         }) | null> | null;
     }) | null;
@@ -32,7 +32,7 @@ export type FairHeader_fair = {
                     readonly profile?: ({
                         readonly name: string | null;
                         readonly gravityID: string;
-                        readonly _id: string;
+                        readonly internalID: string;
                     }) | null;
                 }) | null;
             }) | null;
@@ -44,7 +44,7 @@ export type FairHeader_fair = {
                 readonly name: string | null;
                 readonly href: string | null;
                 readonly gravityID: string;
-                readonly _id: string;
+                readonly internalID: string;
             }) | null;
         }) | null> | null;
     }) | null;
@@ -92,7 +92,7 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -420,5 +420,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'ebc6307845b73fde52e90400aea1e60b';
+(node as any).hash = '3910c3c8c2ceaf3607cb25e04e106bf2';
 export default node;

@@ -7,7 +7,7 @@ export type FairExhibitorsQueryVariables = {
 export type FairExhibitorsQueryResponse = {
     readonly fair: ({
         readonly gravityID: string;
-        readonly _id: string;
+        readonly internalID: string;
         readonly exhibitors_grouped_by_name: ReadonlyArray<({
             readonly letter: string | null;
             readonly exhibitors: ReadonlyArray<({
@@ -32,7 +32,7 @@ query FairExhibitorsQuery(
 ) {
   fair(id: $fairID) {
     gravityID
-    _id
+    internalID
     exhibitors_grouped_by_name {
       letter
       exhibitors {
@@ -75,7 +75,7 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -217,11 +217,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairExhibitorsQuery",
-    "id": "cf575b6e904ec28debe7c6a21993dfa6",
+    "id": "9b3a8dfed1174d383384f086d200f959",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'cf575b6e904ec28debe7c6a21993dfa6';
+(node as any).hash = '9b3a8dfed1174d383384f086d200f959';
 export default node;

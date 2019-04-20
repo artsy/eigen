@@ -37,7 +37,7 @@ class Header extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    NativeModules.ARTemporaryAPIModule.followStatusForArtist(this.props.artist._id, (error, following) => {
+    NativeModules.ARTemporaryAPIModule.followStatusForArtist(this.props.artist.internalID, (error, following) => {
       if (error) {
         // FIXME: Handle error
         console.error("Artist/Header.tsx", error.message)
@@ -118,28 +118,32 @@ class Header extends React.Component<Props, State> {
   @track((props, state) => ({
     action_name: state.following ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
     action_type: Schema.ActionTypes.Tap,
-    owner_id: props.artist._id,
+    owner_id: props.artist.internalID,
     owner_slug: props.artist.gravityID,
     owner_type: Schema.OwnerEntityTypes.Artist,
   }))
   handleFollowChange() {
     const newFollowersCount = this.state.following ? this.state.followersCount - 1 : this.state.followersCount + 1
-    ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, this.props.artist._id, (error, following) => {
-      if (error) {
-        console.warn(error)
-        this.failedFollowChange()
-      } else {
-        this.successfulFollowChange()
+    ARTemporaryAPIModule.setFollowArtistStatus(
+      !this.state.following,
+      this.props.artist.internalID,
+      (error, following) => {
+        if (error) {
+          console.warn(error)
+          this.failedFollowChange()
+        } else {
+          this.successfulFollowChange()
+        }
+        this.setState({ following, followersCount: newFollowersCount })
       }
-      this.setState({ following, followersCount: newFollowersCount })
-    })
+    )
     this.setState({ following: !this.state.following, followersCount: newFollowersCount })
   }
 
   @track((props, state) => ({
     action_name: state.following ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Success,
-    owner_id: props.artist._id,
+    owner_id: props.artist.internalID,
     owner_slug: props.artist.gravityID,
     owner_type: Schema.OwnerEntityTypes.Artist,
   }))
@@ -150,7 +154,7 @@ class Header extends React.Component<Props, State> {
   @track((props, state) => ({
     action_name: state.following ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Fail,
-    owner_id: props.artist._id,
+    owner_id: props.artist.internalID,
     owner_slug: props.artist.gravityID,
     owner_type: Schema.OwnerEntityTypes.Artist,
   }))
@@ -189,7 +193,7 @@ const styles = StyleSheet.create<Styles>({
 export default createFragmentContainer(Header, {
   artist: graphql`
     fragment Header_artist on Artist {
-      _id
+      internalID
       gravityID
       name
       nationality

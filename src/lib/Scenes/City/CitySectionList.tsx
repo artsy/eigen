@@ -133,7 +133,7 @@ export default createPaginationContainer(
           edges {
             node {
               gravityID
-              _id
+              internalID
               id
               isStubShow
               is_followed

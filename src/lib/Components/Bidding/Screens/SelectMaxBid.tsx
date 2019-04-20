@@ -44,7 +44,7 @@ export class SelectMaxBid extends React.Component<SelectMaxBidProps, SelectMaxBi
   refreshSaleArtwork = () => {
     this.setState({ isRefreshingSaleArtwork: true })
     this.props.relay.refetch(
-      { saleArtworkID: this.props.sale_artwork._id },
+      { saleArtworkID: this.props.sale_artwork.internalID },
       null,
       () => {
         this.setState({ isRefreshingSaleArtwork: false })
@@ -102,7 +102,7 @@ export const MaxBidScreen = createRefetchContainer(
           display
           cents
         }
-        _id
+        internalID
         ...ConfirmBid_sale_artwork
       }
     `,

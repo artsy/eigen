@@ -25,7 +25,7 @@ query FairArtistsTestsQuery {
 
 fragment FairArtists_fair on Fair {
   gravityID
-  _id
+  internalID
   artists(first: 10) {
     pageInfo {
       hasNextPage
@@ -38,7 +38,7 @@ fragment FairArtists_fair on Fair {
         ...ArtistListItem_artist
         sortable_id
         href
-        _id
+        internalID
         gravityID
         id
         __typename
@@ -49,7 +49,7 @@ fragment FairArtists_fair on Fair {
 
 fragment ArtistListItem_artist on Artist {
   id
-  _id
+  internalID
   gravityID
   name
   is_followed
@@ -81,7 +81,7 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },

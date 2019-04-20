@@ -33,11 +33,11 @@ fragment FairBoothHeader_show on Show {
     ... on Partner {
       name
       gravityID
-      _id
+      internalID
       id
       href
       profile {
-        _id
+        internalID
         gravityID
         is_followed
         id
@@ -94,7 +94,7 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 };

@@ -73,7 +73,7 @@ const artistProps = (hasMetadata: boolean, counts?: any) => {
   }
   return {
     artist: ({
-      _id: null,
+      internalID: null,
       id: null,
       has_metadata: hasMetadata,
       counts,

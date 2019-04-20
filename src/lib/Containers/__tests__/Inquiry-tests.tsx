@@ -9,7 +9,7 @@ it("renders correctly", () => {
 })
 
 const inquiryProps = {
-  _id: "gravity-id",
+  internalID: "gravity-id",
   id: "bradley-theodore-karl-and-anna-face-off-diptych",
   contact_message:
     "Hi, I'm interested in purchasing this work. Could you please provide me with more information about the piece?",

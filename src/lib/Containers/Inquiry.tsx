@@ -112,7 +112,7 @@ export class Inquiry extends React.Component<Props, State> {
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.InquiryCancel,
     owner_type: Schema.OwnerEntityTypes.Artwork,
-    owner_id: props.artwork._id,
+    owner_id: props.artwork.internalID,
     owner_slug: props.artwork.gravityID,
   }))
   cancelModal() {
@@ -123,7 +123,7 @@ export class Inquiry extends React.Component<Props, State> {
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
-    owner_id: props.artwork._id,
+    owner_id: props.artwork.internalID,
     owner_slug: props.artwork.gravityID,
   }))
   inquirySent() {
@@ -138,7 +138,7 @@ export class Inquiry extends React.Component<Props, State> {
     action_type: Schema.ActionTypes.Tap,
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
-    owner_id: props.artwork._id,
+    owner_id: props.artwork.internalID,
     owner_slug: props.artwork.gravityID,
   }))
   sendInquiry() {
@@ -175,7 +175,7 @@ export class Inquiry extends React.Component<Props, State> {
     action_type: Schema.ActionTypes.Fail,
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
-    owner_id: props.artwork._id,
+    owner_id: props.artwork.internalID,
     owner_slug: props.artwork.gravityID,
   }))
   sendFailed(error) {
@@ -242,7 +242,7 @@ export class Inquiry extends React.Component<Props, State> {
 export default createFragmentContainer(Inquiry, {
   artwork: graphql`
     fragment Inquiry_artwork on Artwork {
-      _id
+      internalID
       gravityID
       contact_message
       partner {

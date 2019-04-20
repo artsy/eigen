@@ -101,14 +101,14 @@ export class ArtistRail extends Component<Props, State> {
   @trackWithArguments((_props, _state, [followArtist]) => ({
     action_name: Schema.ActionNames.HomeArtistRailFollow,
     action_type: Schema.ActionTypes.Tap,
-    owner_id: followArtist._id,
+    owner_id: followArtist.internalID,
     owner_slug: followArtist.id,
     owner_type: Schema.OwnerEntityTypes.Artist,
   }))
   handleFollowChange(followArtist, setFollowButtonStatus: ArtistFollowButtonStatusSetter) {
     // Get a new suggested artist based on the followed artist.
     return (
-      metaphysics<SuggestedArtistResponse>(suggestedArtistQuery(followArtist._id))
+      metaphysics<SuggestedArtistResponse>(suggestedArtistQuery(followArtist.internalID))
         // Return the suggested artist or `undefined` if there is no suggestion.
         .then(({ me: { suggested_artists } }) => suggested_artists[0])
         // Return `undefined` if an error occurred.
@@ -217,7 +217,7 @@ const styles = StyleSheet.create<Styles>({
 })
 
 interface SuggestedArtist extends ArtistCardResponse {
-  _id: string
+  internalID: string
   id: string
   _animatedValues?: {
     opacity: Animated.Value
@@ -239,7 +239,7 @@ function suggestedArtistQuery(artistID: string): string {
                           size: 1,
                           exclude_followed_artists: true,
                           exclude_artists_without_forsale_artworks: true) {
-          _id
+          internalID
           id
           ${ArtistCardQuery}
         }
@@ -254,7 +254,7 @@ export default createFragmentContainer(ArtistRail, {
       id
       key
       results {
-        _id
+        internalID
         id
         ...ArtistCard_artist
       }

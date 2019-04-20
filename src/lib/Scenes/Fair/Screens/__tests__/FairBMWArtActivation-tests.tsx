@@ -18,7 +18,7 @@ it("renders properly", async () => {
         query FairBMWArtActivationTestsQuery {
           fair(id: "art-basel-in-miami-beach-2018") {
             gravityID
-            _id
+            internalID
             sponsoredContent {
               activationText
               pressReleaseUrl

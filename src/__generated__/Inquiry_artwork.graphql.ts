@@ -5,7 +5,7 @@ import { ArtworkPreview_artwork$ref } from "./ArtworkPreview_artwork.graphql";
 declare const _Inquiry_artwork$ref: unique symbol;
 export type Inquiry_artwork$ref = typeof _Inquiry_artwork$ref;
 export type Inquiry_artwork = {
-    readonly _id: string;
+    readonly internalID: string;
     readonly gravityID: string;
     readonly contact_message: string | null;
     readonly partner: ({
@@ -27,7 +27,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -70,5 +70,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '19d03d0be292ca3457185c88965eade5';
+(node as any).hash = '2e11e336d72a6fecec5b35b5bcabfcea';
 export default node;

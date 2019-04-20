@@ -30,7 +30,7 @@ query QueryRenderersArtistQuery(
 }
 
 fragment Artist_artist on Artist {
-  _id
+  internalID
   gravityID
   has_metadata
   counts {
@@ -46,7 +46,7 @@ fragment Artist_artist on Artist {
 }
 
 fragment Header_artist on Artist {
-  _id
+  internalID
   gravityID
   name
   nationality
@@ -813,7 +813,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "_id",
+            "name": "internalID",
             "args": null,
             "storageKey": null
           },

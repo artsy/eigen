@@ -11,7 +11,7 @@ export type CityBMWList_city = {
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly gravityID: string;
-                    readonly _id: string;
+                    readonly internalID: string;
                     readonly id: string;
                     readonly name: string | null;
                     readonly status: string | null;
@@ -206,7 +206,7 @@ return {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "_id",
+                      "name": "internalID",
                       "args": null,
                       "storageKey": null
                     },
@@ -384,5 +384,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '33a4caefaea47f2a7ca7cc952f738a97';
+(node as any).hash = 'de715332a242b36b73e995e7f9e7b038';
 export default node;

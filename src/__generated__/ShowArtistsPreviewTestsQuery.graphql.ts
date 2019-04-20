@@ -24,17 +24,17 @@ query ShowArtistsPreviewTestsQuery {
 }
 
 fragment ShowArtistsPreview_show on Show {
-  _id
+  internalID
   gravityID
   artists {
-    _id
+    internalID
     gravityID
     href
     ...ArtistListItem_artist
     id
   }
   artists_without_artworks {
-    _id
+    internalID
     gravityID
     href
     ...ArtistListItem_artist
@@ -44,7 +44,7 @@ fragment ShowArtistsPreview_show on Show {
 
 fragment ArtistListItem_artist on Artist {
   id
-  _id
+  internalID
   gravityID
   name
   is_followed
@@ -69,7 +69,7 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },

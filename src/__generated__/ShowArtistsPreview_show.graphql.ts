@@ -5,16 +5,16 @@ import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
 declare const _ShowArtistsPreview_show$ref: unique symbol;
 export type ShowArtistsPreview_show$ref = typeof _ShowArtistsPreview_show$ref;
 export type ShowArtistsPreview_show = {
-    readonly _id: string;
+    readonly internalID: string;
     readonly gravityID: string;
     readonly artists: ReadonlyArray<({
-        readonly _id: string;
+        readonly internalID: string;
         readonly gravityID: string;
         readonly href: string | null;
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
     }) | null> | null;
     readonly artists_without_artworks: ReadonlyArray<({
-        readonly _id: string;
+        readonly internalID: string;
         readonly gravityID: string;
         readonly href: string | null;
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
@@ -28,7 +28,7 @@ const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -87,5 +87,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '8298a77a462b674a16a1104e98205816';
+(node as any).hash = '1305e01a383698e4045cde0d40e6917f';
 export default node;

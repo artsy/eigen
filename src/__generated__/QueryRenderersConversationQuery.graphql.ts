@@ -129,7 +129,7 @@ fragment Message_message on Message {
 
 fragment ArtworkPreview_artwork on Artwork {
   gravityID
-  _id
+  internalID
   title
   artist_names
   date
@@ -140,7 +140,7 @@ fragment ArtworkPreview_artwork on Artwork {
 
 fragment ShowPreview_show on Show {
   gravityID
-  _id
+  internalID
   name
   cover_image {
     url
@@ -264,14 +264,7 @@ v9 = {
   "args": null,
   "storageKey": null
 },
-v10 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "_id",
-  "args": null,
-  "storageKey": null
-},
-v11 = [
+v10 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -610,7 +603,7 @@ return {
                         "selections": [
                           (v8/*: any*/),
                           (v9/*: any*/),
-                          (v10/*: any*/),
+                          (v1/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -640,7 +633,7 @@ return {
                             "args": null,
                             "concreteType": "Image",
                             "plural": false,
-                            "selections": (v11/*: any*/)
+                            "selections": (v10/*: any*/)
                           }
                         ]
                       }
@@ -663,7 +656,7 @@ return {
                         "selections": [
                           (v8/*: any*/),
                           (v9/*: any*/),
-                          (v10/*: any*/),
+                          (v1/*: any*/),
                           (v3/*: any*/),
                           {
                             "kind": "LinkedField",
@@ -673,7 +666,7 @@ return {
                             "args": null,
                             "concreteType": "Image",
                             "plural": false,
-                            "selections": (v11/*: any*/)
+                            "selections": (v10/*: any*/)
                           },
                           {
                             "kind": "LinkedField",

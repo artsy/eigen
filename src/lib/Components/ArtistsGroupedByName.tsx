@@ -12,14 +12,14 @@ interface Props {
     index: number
   }>
   onEndReached?: () => void
-  viewArtist: (context: any, artist: string, id?: string, _id?: string) => void
+  viewArtist: (context: any, artist: string, id?: string, internalID?: string) => void
 }
 
 export const ArtistsGroupedByName: React.SFC<Props> = ({ data, onEndReached, Component, viewArtist }) => (
   <SectionList
     onEndReached={onEndReached}
     renderItem={({ item }) => (
-      <TouchableOpacity onPress={() => viewArtist(Component, item.href, item.id, item._id)}>
+      <TouchableOpacity onPress={() => viewArtist(Component, item.href, item.id, item.internalID)}>
         <Box px={2} mb={2}>
           <ArtistListItem artist={item} />
         </Box>

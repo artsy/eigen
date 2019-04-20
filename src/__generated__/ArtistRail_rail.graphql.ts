@@ -8,7 +8,7 @@ export type ArtistRail_rail = {
     readonly id: string;
     readonly key: string | null;
     readonly results: ReadonlyArray<({
-        readonly _id: string;
+        readonly internalID: string;
         readonly id: string;
         readonly " $fragmentRefs": ArtistCard_artist$ref;
     }) | null> | null;
@@ -52,7 +52,7 @@ return {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "_id",
+          "name": "internalID",
           "args": null,
           "storageKey": null
         },
@@ -67,5 +67,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '5a79a2ff8628b5bc2f81da9dac94bf1a';
+(node as any).hash = '834ab0d3fd94bf2132231c51d2b699cb';
 export default node;

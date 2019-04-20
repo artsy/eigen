@@ -117,7 +117,7 @@ it("looks like expected", () => {
   const props = {
     gene: {
       id: "An ID",
-      _id: "a UUID",
+      internalID: "a UUID",
       name: "Example Gene",
       description: "Here's some text",
       filtered_artworks: {

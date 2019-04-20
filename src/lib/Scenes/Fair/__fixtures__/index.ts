@@ -1,6 +1,6 @@
 export const fairFixture = {
   gravityID: "sofa-chicago-2018",
-  _id: "5aa1a9ee8b3b817c61dff02d",
+  internalID: "5aa1a9ee8b3b817c61dff02d",
   followed_content: null,
   name: "SOFA CHICAGO 2018",
   exhibition_period: "Nov 1 – 4, 2018",
@@ -15,7 +15,7 @@ export const fairFixture = {
   },
   profile: {
     id: "art-basel-in-miami-beach-2018",
-    _id: "dfdlfjfua7d8a0_",
+    internalID: "dfdlfjfua7d8a0_",
     is_followed: false,
     name: "art-basel",
     icon: {
@@ -422,7 +422,7 @@ export const fairFixture = {
         node: {
           href: "/tamas",
           gravityID: "tamas-abel",
-          _id: "1232222245",
+          internalID: "1232222245",
           id: "QXJ0aXN0OnRhbWFzLWFiZWw=",
           name: "Tamás Ábel",
           is_followed: false,
@@ -438,7 +438,7 @@ export const fairFixture = {
         node: {
           href: "/charlie",
           gravityID: "charlie-aldrich",
-          _id: "12347775",
+          internalID: "12347775",
           id: "QXJ0aXN0OmNoYXJsaWUtYWxkcmljaA==",
           name: "Charlie Aldrich",
           is_followed: false,
@@ -454,7 +454,7 @@ export const fairFixture = {
         node: {
           href: "/rik",
           gravityID: "rik-allen",
-          _id: "123477750000000000",
+          internalID: "123477750000000000",
           id: "QXJ0aXN0OnJpay1hbGxlbg==",
           name: "Rik Allen",
           is_followed: false,
@@ -470,7 +470,7 @@ export const fairFixture = {
         node: {
           href: "/jean",
           gravityID: "jean-luc-almond",
-          _id: "1232222245111",
+          internalID: "1232222245111",
           id: "QXJ0aXN0OmplYW4tbHVjLWFsbW9uZA==",
           name: "Jean-Luc Almond",
           is_followed: false,
@@ -486,7 +486,7 @@ export const fairFixture = {
         node: {
           href: "/amador",
           gravityID: "amador",
-          _id: "123222224588888",
+          internalID: "123222224588888",
           id: "QXJ0aXN0OmFtYWRvcg==",
           name: "Amador",
           is_followed: false,
@@ -511,7 +511,7 @@ export const fairFixture = {
               gravityID: "spruth-magers",
               href: "/spruth-magers",
               name: "Sprüth Magers",
-              _id: "123456",
+              internalID: "123456",
             },
           },
         },
@@ -524,7 +524,7 @@ export const fairFixture = {
               id: "cardi-gallery",
               href: "/cardi-gallery",
               name: "CARDI GALLERY",
-              _id: "1234562",
+              internalID: "1234562",
             },
           },
         },
@@ -543,7 +543,7 @@ export const fairFixture = {
         cursor: "YXJyYXljb25uZWN0aW9uOjA=",
         node: {
           gravityID: "steidel-contemporary-steidel-contemporary-at-sofa-chicago-2018",
-          _id: "111",
+          internalID: "111",
           counts: {
             artworks: 4,
           },
@@ -551,12 +551,12 @@ export const fairFixture = {
           is_fair_booth: true,
           partner: {
             id: "UGFydG5lcjpzdGVpZGVsLWNvbnRlbXBvcmFyeQ==",
-            _id: "123123123123123123123",
+            internalID: "123123123123123123123",
             name: "Steidel Contemporary",
             href: "http://www.stei.com",
             profile: {
               is_followed: false,
-              _id: "1231231231",
+              internalID: "1231231231",
             },
           },
           fair: {
@@ -596,7 +596,7 @@ export const fairFixture = {
                   ],
                   partner: {
                     id: "kahn-gallery",
-                    _id: "58d3ac7dc9dc241448f6ec7c",
+                    internalID: "58d3ac7dc9dc241448f6ec7c",
                     name: "Kahn Gallery",
                   },
                   image: {
@@ -626,7 +626,7 @@ export const fairFixture = {
                   ],
                   partner: {
                     id: "kahn-gallery",
-                    _id: "58d3ac7dc9dc241448f6ec7c",
+                    internalID: "58d3ac7dc9dc241448f6ec7c",
                     name: "Kahn Gallery",
                   },
                   image: {
@@ -656,7 +656,7 @@ export const fairFixture = {
                   ],
                   partner: {
                     id: "kahn-gallery",
-                    _id: "58d3ac7dc9dc241448f6ec7c",
+                    internalID: "58d3ac7dc9dc241448f6ec7c",
                     name: "Kahn Gallery",
                   },
                   image: {
@@ -686,7 +686,7 @@ export const fairFixture = {
                   ],
                   partner: {
                     id: "kahn-gallery",
-                    _id: "58d3ac7dc9dc241448f6ec7c",
+                    internalID: "58d3ac7dc9dc241448f6ec7c",
                     name: "Kahn Gallery",
                   },
                   image: {

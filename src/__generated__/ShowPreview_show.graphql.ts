@@ -5,7 +5,7 @@ declare const _ShowPreview_show$ref: unique symbol;
 export type ShowPreview_show$ref = typeof _ShowPreview_show$ref;
 export type ShowPreview_show = {
     readonly gravityID: string;
-    readonly _id: string;
+    readonly internalID: string;
     readonly name: string | null;
     readonly cover_image: ({
         readonly url: string | null;
@@ -49,7 +49,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -101,5 +101,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '281a05ba28f4c79f7c9fb7a6f0b984cb';
+(node as any).hash = '7ddf8e573ed5f7defd16d05487df0d4a';
 export default node;

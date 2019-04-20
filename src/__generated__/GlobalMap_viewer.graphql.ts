@@ -16,7 +16,7 @@ export type GlobalMap_viewer = {
             readonly artGuideUrl: string | null;
             readonly featuredShows: ReadonlyArray<({
                 readonly gravityID: string;
-                readonly _id: string;
+                readonly internalID: string;
                 readonly id: string;
                 readonly name: string | null;
                 readonly status: string | null;
@@ -49,7 +49,7 @@ export type GlobalMap_viewer = {
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly gravityID: string;
-                    readonly _id: string;
+                    readonly internalID: string;
                     readonly id: string;
                     readonly isStubShow: boolean | null;
                     readonly name: string | null;
@@ -85,7 +85,7 @@ export type GlobalMap_viewer = {
             readonly edges: ReadonlyArray<({
                 readonly node: ({
                     readonly gravityID: string;
-                    readonly _id: string;
+                    readonly internalID: string;
                     readonly id: string;
                     readonly isStubShow: boolean | null;
                     readonly name: string | null;
@@ -238,7 +238,7 @@ v7 = {
 v8 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -760,5 +760,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd36b430e1001123e4f7e094ca3d6b401';
+(node as any).hash = '756780b1d5a561adb5ff1c64a00d3ba8';
 export default node;

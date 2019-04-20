@@ -13,7 +13,7 @@ export type FairBoothHeaderMutationResponse = {
     readonly followProfile: ({
         readonly profile: ({
             readonly gravityID: string;
-            readonly _id: string;
+            readonly internalID: string;
             readonly is_followed: boolean | null;
         }) | null;
     }) | null;
@@ -32,7 +32,7 @@ mutation FairBoothHeaderMutation(
   followProfile(input: $input) {
     profile {
       gravityID
-      _id
+      internalID
       is_followed
       id
     }
@@ -67,7 +67,7 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -156,11 +156,11 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "FairBoothHeaderMutation",
-    "id": "0bd4463f2c268b54e41b47d5d4603fa8",
+    "id": "4dc5fc2a6ab95723244aab5b09753885",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '0bd4463f2c268b54e41b47d5d4603fa8';
+(node as any).hash = '4dc5fc2a6ab95723244aab5b09753885';
 export default node;

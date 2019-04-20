@@ -20,16 +20,16 @@ const track: Track<Props> = _track
 @track()
 export class ShowArtistsPreview extends React.Component<Props> {
   @track((_props, _state, args) => {
-    const [, id, _id] = args
+    const [, id, internalID] = args
     return {
       action_name: Schema.ActionNames.ListArtist,
       action_type: Schema.ActionTypes.Tap,
-      owner_id: _id,
+      owner_id: internalID,
       owner_slug: id,
       owner_type: Schema.OwnerEntityTypes.Artist,
     } as any
   })
-  handlePress(url: string, _slug: string, _id: string) {
+  handlePress(url: string, _slug: string, _gravityID: string) {
     Switchboard.presentNavigationViewController(this.props.Component || this, url)
   }
 
@@ -44,10 +44,10 @@ export class ShowArtistsPreview extends React.Component<Props> {
         <Serif size="5">Artists</Serif>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
-          const { href, gravityID, _id } = artist
+          const { href, gravityID, internalID } = artist
           return (
             <React.Fragment key={gravityID}>
-              <TouchableOpacity onPress={() => this.handlePress(href, gravityID, _id)}>
+              <TouchableOpacity onPress={() => this.handlePress(href, gravityID, internalID)}>
                 <ArtistListItem artist={artist} Component={Component} />
               </TouchableOpacity>
               {idx < arr.length - 1 && <Spacer m={1} />}
@@ -68,12 +68,12 @@ export class ShowArtistsPreview extends React.Component<Props> {
 export const ShowArtistsPreviewContainer = createFragmentContainer(ShowArtistsPreview, {
   show: graphql`
     fragment ShowArtistsPreview_show on Show {
-      _id
+      internalID
       gravityID
 
       # Comes from CMS
       artists {
-        _id
+        internalID
         gravityID
         href
         ...ArtistListItem_artist
@@ -81,7 +81,7 @@ export const ShowArtistsPreviewContainer = createFragmentContainer(ShowArtistsPr
 
       # Comes from stubbed data
       artists_without_artworks {
-        _id
+        internalID
         gravityID
         href
         ...ArtistListItem_artist

@@ -65,9 +65,9 @@ export class FairBoothHeader extends React.Component<Props, State> {
     const {
       partner: {
         gravityID: partnerSlug,
-        _id: partnerID,
+        internalID: partnerID,
         id: partnerRelayID,
-        profile: { is_followed: partnerFollowed, _id: profileID },
+        profile: { is_followed: partnerFollowed, internalID: profileID },
       },
     } = show
     this.setState(
@@ -87,7 +87,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
               followProfile(input: $input) {
                 profile {
                   gravityID
-                  _id
+                  internalID
                   is_followed
                 }
               }
@@ -102,7 +102,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
           optimisticResponse: {
             followProfile: {
               profile: {
-                _id: profileID,
+                internalID: profileID,
                 gravityID: partnerSlug,
                 is_followed: !partnerFollowed,
               },
@@ -176,11 +176,11 @@ export const FairBoothHeaderContainer = createFragmentContainer(FairBoothHeader,
         ... on Partner {
           name
           gravityID
-          _id
+          internalID
           id
           href
           profile {
-            _id
+            internalID
             gravityID
             is_followed
           }

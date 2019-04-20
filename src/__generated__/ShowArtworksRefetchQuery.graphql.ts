@@ -34,7 +34,7 @@ query ShowArtworksRefetchQuery(
 fragment ShowArtworks_show_2UkO81 on Show {
   id
   gravityID
-  _id
+  internalID
   filteredArtworks(size: 0, medium: $medium, price_range: $price_range, aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
     id
@@ -264,7 +264,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "_id",
+            "name": "internalID",
             "args": null,
             "storageKey": null
           },

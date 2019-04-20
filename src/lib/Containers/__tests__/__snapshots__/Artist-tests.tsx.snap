@@ -17,7 +17,7 @@ exports[`layout works as expected with no tabs 1`] = `
       <Header
         artist={
           Object {
-            "_id": null,
+            "internalID": null,
             "birthday": null,
             "counts": Object {
               "articles": 0,
@@ -45,7 +45,7 @@ exports[`layout works as expected with no tabs 1`] = `
     </View>
   </View>
 </RCTScrollView>
-`;
+`
 
 exports[`layout works as expected with one tab 1`] = `
 <RCTScrollView
@@ -64,7 +64,7 @@ exports[`layout works as expected with one tab 1`] = `
       <Header
         artist={
           Object {
-            "_id": null,
+            "internalID": null,
             "birthday": null,
             "counts": Object {
               "articles": 0,
@@ -92,7 +92,7 @@ exports[`layout works as expected with one tab 1`] = `
         <About
           artist={
             Object {
-              "_id": null,
+              "internalID": null,
               "birthday": null,
               "counts": Object {
                 "articles": 0,
@@ -114,7 +114,7 @@ exports[`layout works as expected with one tab 1`] = `
     </View>
   </View>
 </RCTScrollView>
-`;
+`
 
 exports[`layout works as expected with three tabs 1`] = `
 <RCTScrollView
@@ -133,7 +133,7 @@ exports[`layout works as expected with three tabs 1`] = `
       <Header
         artist={
           Object {
-            "_id": null,
+            "internalID": null,
             "birthday": null,
             "counts": Object {
               "artworks": 2,
@@ -174,7 +174,7 @@ exports[`layout works as expected with three tabs 1`] = `
           <Artworks
             artist={
               Object {
-                "_id": null,
+                "internalID": null,
                 "birthday": null,
                 "counts": Object {
                   "artworks": 2,
@@ -196,4 +196,4 @@ exports[`layout works as expected with three tabs 1`] = `
     </View>
   </View>
 </RCTScrollView>
-`;
+`

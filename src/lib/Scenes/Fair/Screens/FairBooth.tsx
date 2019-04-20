@@ -25,7 +25,7 @@ interface Props {
   context_screen: Schema.PageNames.FairBoothPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
   context_screen_owner_slug: props.show.gravityID,
-  context_screen_owner_id: props.show._id,
+  context_screen_owner_id: props.show.internalID,
 }))
 export class FairBooth extends React.Component<Props, State> {
   state = {
@@ -108,7 +108,7 @@ export const FairBoothContainer = createFragmentContainer(FairBooth, {
   show: graphql`
     fragment FairBooth_show on Show {
       gravityID
-      _id
+      internalID
       ...FairBoothHeader_show
       ...ShowArtworksPreview_show
       ...ShowArtistsPreview_show

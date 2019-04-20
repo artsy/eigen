@@ -26,7 +26,7 @@ query FairDetailTestsQuery {
 fragment FairDetail_fair on Fair {
   ...FairHeader_fair
   gravityID
-  _id
+  internalID
   name
   hours
   isActive
@@ -61,7 +61,7 @@ fragment FairDetail_fair on Fair {
       cursor
       node {
         gravityID
-        _id
+        internalID
         artworks_connection(first: 4) {
           edges {
             node {
@@ -80,7 +80,7 @@ fragment FairDetail_fair on Fair {
 
 fragment FairHeader_fair on Fair {
   gravityID
-  _id
+  internalID
   name
   formattedOpeningHours
   counts {
@@ -92,11 +92,11 @@ fragment FairHeader_fair on Fair {
       name
       href
       gravityID
-      _id
+      internalID
       id
     }
     galleries {
-      _id
+      internalID
       name
       id
     }
@@ -111,7 +111,7 @@ fragment FairHeader_fair on Fair {
             profile {
               name
               gravityID
-              _id
+              internalID
               id
             }
           }
@@ -132,7 +132,7 @@ fragment FairHeader_fair on Fair {
         name
         href
         gravityID
-        _id
+        internalID
         id
       }
     }
@@ -193,7 +193,7 @@ fragment LocationMap_location on Location {
 
 fragment FairBoothPreview_show on Show {
   gravityID
-  _id
+  internalID
   name
   is_fair_booth
   counts {
@@ -205,10 +205,10 @@ fragment FairBoothPreview_show on Show {
       name
       href
       gravityID
-      _id
+      internalID
       id
       profile {
-        _id
+        internalID
         is_followed
         id
       }
@@ -330,7 +330,7 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },

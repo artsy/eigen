@@ -6,7 +6,7 @@ declare const _FairArtworks_fair$ref: unique symbol;
 export type FairArtworks_fair$ref = typeof _FairArtworks_fair$ref;
 export type FairArtworks_fair = {
     readonly id: string;
-    readonly _id: string;
+    readonly internalID: string;
     readonly gravityID: string;
     readonly artworks: ({
         readonly " $fragmentRefs": FilteredInfiniteScrollGrid_filteredArtworks$ref;
@@ -46,7 +46,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -104,5 +104,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'd0ebe2a3a124e305b11d11d914d39d09';
+(node as any).hash = '83770f45f03b4b01ac566a4d67eadf27';
 export default node;

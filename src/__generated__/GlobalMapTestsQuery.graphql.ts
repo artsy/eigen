@@ -41,7 +41,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
       artGuideUrl
       featuredShows {
         gravityID
-        _id
+        internalID
         id
         name
         status
@@ -84,7 +84,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
       edges {
         node {
           gravityID
-          _id
+          internalID
           id
           isStubShow
           name
@@ -131,7 +131,7 @@ fragment GlobalMap_viewer_3La17j on Viewer {
       edges {
         node {
           gravityID
-          _id
+          internalID
           id
           isStubShow
           name
@@ -309,7 +309,7 @@ v8 = {
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },

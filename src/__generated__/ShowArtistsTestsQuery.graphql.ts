@@ -24,7 +24,7 @@ query ShowArtistsTestsQuery {
 }
 
 fragment ShowArtists_show on Show {
-  _id
+  internalID
   gravityID
   artists_grouped_by_name {
     letter
@@ -39,7 +39,7 @@ fragment ShowArtists_show on Show {
 
 fragment ArtistListItem_artist on Artist {
   id
-  _id
+  internalID
   gravityID
   name
   is_followed
@@ -64,7 +64,7 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },

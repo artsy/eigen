@@ -67,12 +67,12 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
     display
     cents
   }
-  _id
+  internalID
   ...ConfirmBid_sale_artwork
 }
 
 fragment ConfirmBid_sale_artwork on SaleArtwork {
-  _id
+  internalID
   sale {
     gravityID
     live_start_at
@@ -264,7 +264,7 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "_id",
+                "name": "internalID",
                 "args": null,
                 "storageKey": null
               },

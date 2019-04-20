@@ -98,7 +98,7 @@ export class FairHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Gallery,
     } as any
   })
-  handleExhibitorPress(href, _slug, _id) {
+  handleExhibitorPress(href, _slug, _gravityID) {
     SwitchBoard.presentNavigationViewController(this, `${href}?entity=fair-booth`)
   }
 
@@ -113,7 +113,7 @@ export class FairHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Artist,
     } as any
   })
-  handleArtistPress(href, _slug, _id) {
+  handleArtistPress(href, _slug, _gravityID) {
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
@@ -162,7 +162,7 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
   fair: graphql`
     fragment FairHeader_fair on Fair {
       gravityID
-      _id
+      internalID
       name
       formattedOpeningHours
       counts {
@@ -174,10 +174,10 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
           name
           href
           gravityID
-          _id
+          internalID
         }
         galleries {
-          _id
+          internalID
           name
         }
       }
@@ -190,7 +190,7 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
                 profile {
                   name
                   gravityID
-                  _id
+                  internalID
                 }
               }
             }
@@ -203,7 +203,7 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
             name
             href
             gravityID
-            _id
+            internalID
           }
         }
       }

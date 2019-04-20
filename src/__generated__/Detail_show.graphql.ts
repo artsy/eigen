@@ -9,7 +9,7 @@ import { Shows_show$ref } from "./Shows_show.graphql";
 declare const _Detail_show$ref: unique symbol;
 export type Detail_show$ref = typeof _Detail_show$ref;
 export type Detail_show = {
-    readonly _id: string;
+    readonly internalID: string;
     readonly gravityID: string;
     readonly name: string | null;
     readonly description: string | null;
@@ -79,7 +79,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -272,5 +272,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2ff82bc802f4d8c99cec5f37379da506';
+(node as any).hash = 'b9e9d8ee02a1e95f4179b17f4626e780';
 export default node;

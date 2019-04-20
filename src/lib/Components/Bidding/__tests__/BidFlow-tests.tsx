@@ -170,7 +170,7 @@ const Me = {
 }
 
 const SaleArtwork = {
-  _id: "sale-artwork-id",
+  internalID: "sale-artwork-id",
   artwork: {
     id: "meteor shower",
     title: "Meteor Shower",

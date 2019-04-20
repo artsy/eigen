@@ -29,7 +29,7 @@ query FairBoothQuery(
 
 fragment FairBooth_show on Show {
   gravityID
-  _id
+  internalID
   ...FairBoothHeader_show
   ...ShowArtworksPreview_show
   ...ShowArtistsPreview_show
@@ -47,11 +47,11 @@ fragment FairBoothHeader_show on Show {
     ... on Partner {
       name
       gravityID
-      _id
+      internalID
       id
       href
       profile {
-        _id
+        internalID
         gravityID
         is_followed
         id
@@ -86,17 +86,17 @@ fragment ShowArtworksPreview_show on Show {
 }
 
 fragment ShowArtistsPreview_show on Show {
-  _id
+  internalID
   gravityID
   artists {
-    _id
+    internalID
     gravityID
     href
     ...ArtistListItem_artist
     id
   }
   artists_without_artworks {
-    _id
+    internalID
     gravityID
     href
     ...ArtistListItem_artist
@@ -105,7 +105,7 @@ fragment ShowArtistsPreview_show on Show {
 }
 
 fragment ShowArtists_show on Show {
-  _id
+  internalID
   gravityID
   artists_grouped_by_name {
     letter
@@ -121,7 +121,7 @@ fragment ShowArtists_show on Show {
 fragment ShowArtworks_show on Show {
   id
   gravityID
-  _id
+  internalID
   filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
     id
@@ -215,7 +215,7 @@ fragment Artwork_artwork on Artwork {
 
 fragment ArtistListItem_artist on Artist {
   id
-  _id
+  internalID
   gravityID
   name
   is_followed
@@ -289,7 +289,7 @@ v6 = {
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },

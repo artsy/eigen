@@ -33,7 +33,7 @@ export class ShowItem extends React.Component<Props> {
   @track(props => ({
     action_name: Schema.ActionNames.NearbyShow,
     action_type: Schema.ActionTypes.Tap,
-    owner_id: props.show._id,
+    owner_id: props.show.internalID,
     owner_slug: props.show.id,
     owner_type: Schema.OwnerEntityTypes.Show,
   }))
@@ -79,7 +79,7 @@ export class ShowItem extends React.Component<Props> {
 export const ShowItemContainer = createFragmentContainer(ShowItem, {
   show: graphql`
     fragment ShowItem_show on Show {
-      _id
+      internalID
       gravityID
       name
       exhibition_period

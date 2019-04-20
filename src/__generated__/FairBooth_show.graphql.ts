@@ -10,7 +10,7 @@ declare const _FairBooth_show$ref: unique symbol;
 export type FairBooth_show$ref = typeof _FairBooth_show$ref;
 export type FairBooth_show = {
     readonly gravityID: string;
-    readonly _id: string;
+    readonly internalID: string;
     readonly " $fragmentRefs": FairBoothHeader_show$ref & ShowArtworksPreview_show$ref & ShowArtistsPreview_show$ref & ShowArtists_show$ref & ShowArtworks_show$ref;
     readonly " $refType": FairBooth_show$ref;
 };
@@ -34,7 +34,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -65,5 +65,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'd2ca0f593516cc2e05ad35e9569b448b';
+(node as any).hash = '1537a5257d548d7f92ed7bdfacbd282c';
 export default node;

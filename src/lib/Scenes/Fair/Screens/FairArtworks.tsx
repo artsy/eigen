@@ -24,7 +24,7 @@ interface State {
   context_screen: Schema.PageNames.FairAllArtworksPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
   context_screen_owner_slug: props.fair.gravityID,
-  context_screen_owner_id: props.fair._id,
+  context_screen_owner_id: props.fair.internalID,
 }))
 export class FairArtworks extends React.Component<Props, State> {
   handleRefetch = params => {
@@ -37,12 +37,12 @@ export class FairArtworks extends React.Component<Props, State> {
 
   render() {
     const { fair } = this.props
-    const { gravityID, _id, artworks } = fair
+    const { gravityID, internalID, artworks } = fair
     return (
       <Theme>
         <FilteredInfiniteScrollGrid
           id={gravityID}
-          slug={_id}
+          slug={internalID}
           type="Fair"
           filteredArtworks={artworks}
           onRefetch={this.handleRefetch}
@@ -62,7 +62,7 @@ export const FairArtworksContainer = createRefetchContainer(
           price_range: { type: "String", defaultValue: "*-*" }
         ) {
         id
-        _id
+        internalID
         gravityID
         artworks: filteredArtworks(
           size: 0

@@ -8,13 +8,13 @@ export type ArtworkCarouselHeader_rail = {
     readonly key: string | null;
     readonly followedArtistContext: ({
         readonly artist?: ({
-            readonly _id: string;
+            readonly internalID: string;
             readonly gravityID: string;
         }) | null;
     }) | null;
     readonly relatedArtistContext: ({
         readonly artist?: ({
-            readonly _id: string;
+            readonly internalID: string;
             readonly gravityID: string;
         }) | null;
         readonly based_on?: ({
@@ -39,7 +39,7 @@ var v0 = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -130,5 +130,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '8fedc808e198e5150b9ed3f1caaa92fa';
+(node as any).hash = 'f9f8ed70e15feeab8e14270b8390a7e8';
 export default node;

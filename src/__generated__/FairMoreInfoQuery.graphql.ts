@@ -10,7 +10,7 @@ export type FairMoreInfoQueryResponse = {
             readonly website: string | null;
         }) | null;
         readonly gravityID: string;
-        readonly _id: string;
+        readonly internalID: string;
         readonly about: string | null;
         readonly ticketsLink: string | null;
     }) | null;
@@ -31,7 +31,7 @@ query FairMoreInfoQuery(
       website
     }
     gravityID
-    _id
+    internalID
     about
     ticketsLink
     id
@@ -84,7 +84,7 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -162,11 +162,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairMoreInfoQuery",
-    "id": "96be176d8eb2bca6d5146ea07b8310ab",
+    "id": "0d41af657074535f2c67825a65f62bf3",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '96be176d8eb2bca6d5146ea07b8310ab';
+(node as any).hash = '0d41af657074535f2c67825a65f62bf3';
 export default node;

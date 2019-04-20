@@ -7,7 +7,7 @@ export type ShowArtworks_show$ref = typeof _ShowArtworks_show$ref;
 export type ShowArtworks_show = {
     readonly id: string;
     readonly gravityID: string;
-    readonly _id: string;
+    readonly internalID: string;
     readonly filteredArtworks: ({
         readonly " $fragmentRefs": FilteredInfiniteScrollGrid_filteredArtworks$ref;
     }) | null;
@@ -53,7 +53,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -104,5 +104,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '751e4fe2bf1dca4a401f1ec18c468383';
+(node as any).hash = 'd058455f31e38b7b75642f5407605908';
 export default node;

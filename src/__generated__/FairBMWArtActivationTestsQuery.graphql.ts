@@ -5,7 +5,7 @@ export type FairBMWArtActivationTestsQueryVariables = {};
 export type FairBMWArtActivationTestsQueryResponse = {
     readonly fair: ({
         readonly gravityID: string;
-        readonly _id: string;
+        readonly internalID: string;
         readonly sponsoredContent: ({
             readonly activationText: string | null;
             readonly pressReleaseUrl: string | null;
@@ -23,7 +23,7 @@ export type FairBMWArtActivationTestsQuery = {
 query FairBMWArtActivationTestsQuery {
   fair(id: "art-basel-in-miami-beach-2018") {
     gravityID
-    _id
+    internalID
     sponsoredContent {
       activationText
       pressReleaseUrl
@@ -52,7 +52,7 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -137,11 +137,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBMWArtActivationTestsQuery",
-    "id": "4f03f27d9813ae2f32c5ad658668bef0",
+    "id": "12397aa34f48c87c16800a8f2339ae29",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '4f03f27d9813ae2f32c5ad658668bef0';
+(node as any).hash = '12397aa34f48c87c16800a8f2339ae29';
 export default node;

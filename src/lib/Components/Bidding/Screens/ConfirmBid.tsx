@@ -538,7 +538,7 @@ export const ConfirmBidScreen = createRefetchContainer(
   {
     sale_artwork: graphql`
       fragment ConfirmBid_sale_artwork on SaleArtwork {
-        _id
+        internalID
         sale {
           gravityID
           live_start_at

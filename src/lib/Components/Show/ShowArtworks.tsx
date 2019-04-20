@@ -22,7 +22,7 @@ interface State {
   context_screen: Schema.PageNames.ShowAllArtists,
   context_screen_owner_type: Schema.OwnerEntityTypes.Show,
   context_screen_owner_slug: props.show.gravityID,
-  context_screen_owner_id: props.show._id,
+  context_screen_owner_id: props.show.internalID,
 }))
 export class ShowArtworks extends React.Component<Props, State> {
   handleRefetch = params => {
@@ -38,7 +38,7 @@ export class ShowArtworks extends React.Component<Props, State> {
     return (
       <Theme>
         <FilteredInfiniteScrollGrid
-          id={show._id}
+          id={show.internalID}
           slug={show.gravityID}
           type={"Show"}
           filteredArtworks={show.filteredArtworks}
@@ -60,7 +60,7 @@ export const ShowArtworksContainer = createRefetchContainer(
         ) {
         id
         gravityID
-        _id
+        internalID
         filteredArtworks(
           size: 0
           medium: $medium

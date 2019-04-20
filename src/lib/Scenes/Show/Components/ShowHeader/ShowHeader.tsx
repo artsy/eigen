@@ -45,7 +45,7 @@ export class ShowHeader extends React.Component<Props, State> {
   handleFollowShow = () => {
     const {
       relay,
-      show: { gravityID: showSlugID, id: relayID, _id: showID, is_followed: isShowFollowed },
+      show: { gravityID: showSlugID, id: relayID, internalID: showID, is_followed: isShowFollowed },
     } = this.props
 
     this.setState(
@@ -60,7 +60,7 @@ export class ShowHeader extends React.Component<Props, State> {
               followShow(input: $input) {
                 show {
                   gravityID
-                  _id
+                  internalID
                   is_followed
                 }
               }
@@ -75,7 +75,7 @@ export class ShowHeader extends React.Component<Props, State> {
           optimisticResponse: {
             followShow: {
               show: {
-                _id: showID,
+                internalID: showID,
                 is_followed: !isShowFollowed,
                 gravityID: showSlugID,
               },
@@ -92,7 +92,7 @@ export class ShowHeader extends React.Component<Props, State> {
   @track(props => ({
     action_name: props.show.is_followed ? Schema.ActionNames.SaveShow : Schema.ActionNames.UnsaveShow,
     action_type: Schema.ActionTypes.Success,
-    owner_id: props.show._id,
+    owner_id: props.show.internalID,
     owner_slug: props.show.gravityID,
     owner_type: Schema.OwnerEntityTypes.Show,
   }))
@@ -105,7 +105,7 @@ export class ShowHeader extends React.Component<Props, State> {
   @track(props => ({
     action_name: Schema.ActionNames.CarouselSwipe,
     action_type: Schema.ActionTypes.Tap,
-    owner_id: props.show._id,
+    owner_id: props.show.internalID,
     owner_slug: props.show.gravityID,
     owner_type: Schema.OwnerEntityTypes.Show,
   }))
@@ -124,7 +124,7 @@ export class ShowHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Artist,
     } as any
   })
-  handleArtistSelected(url, _slug, _id) {
+  handleArtistSelected(url, _slug, _gravityID) {
     SwitchBoard.presentNavigationViewController(this, url)
   }
 
@@ -206,7 +206,7 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
   show: graphql`
     fragment ShowHeader_show on Show {
       gravityID
-      _id
+      internalID
       id
       name
       press_release
@@ -233,7 +233,7 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
               name
               href
               gravityID
-              _id
+              internalID
             }
           }
         }
@@ -242,7 +242,7 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
         name
         href
         gravityID
-        _id
+        internalID
       }
     }
   `,

@@ -5,7 +5,7 @@ declare const _ShowHeader_show$ref: unique symbol;
 export type ShowHeader_show$ref = typeof _ShowHeader_show$ref;
 export type ShowHeader_show = {
     readonly gravityID: string;
-    readonly _id: string;
+    readonly internalID: string;
     readonly id: string;
     readonly name: string | null;
     readonly press_release: string | null;
@@ -30,7 +30,7 @@ export type ShowHeader_show = {
                     readonly name: string | null;
                     readonly href: string | null;
                     readonly gravityID: string;
-                    readonly _id: string;
+                    readonly internalID: string;
                 }) | null;
             }) | null;
         }) | null> | null;
@@ -39,7 +39,7 @@ export type ShowHeader_show = {
         readonly name: string | null;
         readonly href: string | null;
         readonly gravityID: string;
-        readonly _id: string;
+        readonly internalID: string;
     }) | null> | null;
     readonly " $refType": ShowHeader_show$ref;
 };
@@ -64,7 +64,7 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -248,5 +248,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'fdd849af1c57bebb1b009ed7b218ff08';
+(node as any).hash = 'f6f4d5d3eb75d0d185564a6ad0900eaa';
 export default node;

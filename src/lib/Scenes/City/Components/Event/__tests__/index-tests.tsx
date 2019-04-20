@@ -8,7 +8,7 @@ import { Event } from "../index"
 const eventData = ({
   name: "PALAY, Trapunto Murals by Pacita Abad",
   id: "U2hvdzpwYWNpdGEtYWJhZC1hcnQtZXN0YXRlLXBhbGF5LXRyYXB1bnRvLW11cmFscy1ieS1wYWNpdGEtYWJhZA==",
-  _id: "1234567",
+  internalID: "1234567",
   gravityID: "pacita-abad-art-estate-palay-trapunto-murals-by-pacita-abad",
   cover_image: {
     url: "",

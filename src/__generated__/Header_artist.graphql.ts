@@ -4,7 +4,7 @@ import { ReaderFragment } from "relay-runtime";
 declare const _Header_artist$ref: unique symbol;
 export type Header_artist$ref = typeof _Header_artist$ref;
 export type Header_artist = {
-    readonly _id: string;
+    readonly internalID: string;
     readonly gravityID: string;
     readonly name: string | null;
     readonly nationality: string | null;
@@ -27,7 +27,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -79,5 +79,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '04821936a0e40e0605a1d2d8d877fbcd';
+(node as any).hash = 'ed4bda1101c9d94982035be6a1d862b3';
 export default node;

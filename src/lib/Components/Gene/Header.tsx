@@ -27,7 +27,7 @@ class Header extends React.Component<Props, State> {
   state = { following: null }
 
   componentDidMount() {
-    NativeModules.ARTemporaryAPIModule.followStatusForGene(this.props.gene._id, (error, following) => {
+    NativeModules.ARTemporaryAPIModule.followStatusForGene(this.props.gene.internalID, (error, following) => {
       if (error) {
         // FIXME: Handle error
         console.error("Gene/Header.tsx", error.message)
@@ -53,12 +53,12 @@ class Header extends React.Component<Props, State> {
   @track((props, state) => ({
     action_name: state.following ? Schema.ActionNames.GeneUnfollow : Schema.ActionNames.GeneFollow,
     action_type: Schema.ActionTypes.Tap,
-    owner_id: props.gene._id,
+    owner_id: props.gene.internalID,
     owner_slug: props.gene.gravityID,
     owner_type: Schema.OwnerEntityTypes.Gene,
   }))
   handleFollowChange() {
-    ARTemporaryAPIModule.setFollowGeneStatus(!this.state.following, this.props.gene._id, (error, following) => {
+    ARTemporaryAPIModule.setFollowGeneStatus(!this.state.following, this.props.gene.internalID, (error, following) => {
       if (error) {
         console.warn(error)
         this.failedFollowChange()
@@ -73,7 +73,7 @@ class Header extends React.Component<Props, State> {
   @track((props, state) => ({
     action_name: state.following ? Schema.ActionNames.GeneFollow : Schema.ActionNames.GeneUnfollow,
     action_type: Schema.ActionTypes.Success,
-    owner_id: props.gene._id,
+    owner_id: props.gene.internalID,
     owner_slug: props.gene.gravityID,
     owner_type: Schema.OwnerEntityTypes.Gene,
   }))
@@ -84,7 +84,7 @@ class Header extends React.Component<Props, State> {
   @track((props, state) => ({
     action_name: state.following ? Schema.ActionNames.GeneFollow : Schema.ActionNames.GeneUnfollow,
     action_type: Schema.ActionTypes.Fail,
-    owner_id: props.gene._id,
+    owner_id: props.gene.internalID,
     owner_slug: props.gene.gravityID,
     owner_type: Schema.OwnerEntityTypes.Gene,
   }))
@@ -146,7 +146,7 @@ const styles = StyleSheet.create<Styles>({
 export default createFragmentContainer(Header, {
   gene: graphql`
     fragment Header_gene on Gene {
-      _id
+      internalID
       gravityID
       name
     }

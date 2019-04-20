@@ -290,7 +290,7 @@ export class GlobalMap extends React.Component<Props, State> {
     return {
       action_name: actionName,
       action_type: Schema.ActionTypes.Tap,
-      owner_id: !!show ? show[0]._id : "",
+      owner_id: !!show ? show[0].internalID : "",
       owner_slug: !!show ? show[0].id : "",
       owner_type: !!type ? type : "",
     } as any
@@ -792,7 +792,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
           artGuideUrl
           featuredShows {
             gravityID
-            _id
+            internalID
             id
             name
             status
@@ -833,7 +833,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
           edges {
             node {
               gravityID
-              _id
+              internalID
               id
               isStubShow
               name
@@ -873,7 +873,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
           edges {
             node {
               gravityID
-              _id
+              internalID
               id
               isStubShow
               name

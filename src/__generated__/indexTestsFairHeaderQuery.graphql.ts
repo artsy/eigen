@@ -25,7 +25,7 @@ query indexTestsFairHeaderQuery {
 
 fragment FairHeader_fair on Fair {
   gravityID
-  _id
+  internalID
   name
   formattedOpeningHours
   counts {
@@ -37,11 +37,11 @@ fragment FairHeader_fair on Fair {
       name
       href
       gravityID
-      _id
+      internalID
       id
     }
     galleries {
-      _id
+      internalID
       name
       id
     }
@@ -56,7 +56,7 @@ fragment FairHeader_fair on Fair {
             profile {
               name
               gravityID
-              _id
+              internalID
               id
             }
           }
@@ -77,7 +77,7 @@ fragment FairHeader_fair on Fair {
         name
         href
         gravityID
-        _id
+        internalID
         id
       }
     }
@@ -139,7 +139,7 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },

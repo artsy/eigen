@@ -51,7 +51,7 @@ fragment Gene_gene_2UkO81 on Gene {
 }
 
 fragment Header_gene on Gene {
-  _id
+  internalID
   gravityID
   name
 }
@@ -324,7 +324,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "_id",
+            "name": "internalID",
             "args": null,
             "storageKey": null
           },

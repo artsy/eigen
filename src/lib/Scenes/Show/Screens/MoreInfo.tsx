@@ -28,7 +28,7 @@ interface State {
   context_screen: Schema.PageNames.AboutTheShowPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Show,
   context_screen_owner_slug: props.show.gravityID,
-  context_screen_owner_id: props.show._id,
+  context_screen_owner_id: props.show.internalID,
 }))
 export class MoreInfo extends React.Component<Props, State> {
   state = {
@@ -87,7 +87,7 @@ export class MoreInfo extends React.Component<Props, State> {
   @track(props => ({
     action_name: Schema.ActionNames.GallerySite,
     action_type: Schema.ActionTypes.Tap,
-    owner_id: props.show._id,
+    owner_id: props.show.internalID,
     owner_slug: props.show.id,
     owner_type: Schema.OwnerEntityTypes.Show,
   }))
@@ -154,7 +154,7 @@ export class MoreInfo extends React.Component<Props, State> {
 export const MoreInfoContainer = createFragmentContainer(MoreInfo, {
   show: graphql`
     fragment MoreInfo_show on Show {
-      _id
+      internalID
       gravityID
       exhibition_period
       pressReleaseUrl

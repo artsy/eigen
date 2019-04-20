@@ -5,7 +5,7 @@ exports[`renders properly 1`] = `
   gene={
     Object {
       "id": "gene-deep-time",
-      "_id": "gravity-id",
+      "internalID": "gravity-id",
       "id": "deep-time",
       "name": "Deep Time",
     }
