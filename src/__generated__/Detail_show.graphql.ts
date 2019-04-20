@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { LocationMap_location$ref } from "./LocationMap_location.graphql";
 import { ShowArtistsPreview_show$ref } from "./ShowArtistsPreview_show.graphql";
 import { ShowArtworksPreview_show$ref } from "./ShowArtworksPreview_show.graphql";
@@ -10,13 +10,13 @@ declare const _Detail_show$ref: unique symbol;
 export type Detail_show$ref = typeof _Detail_show$ref;
 export type Detail_show = {
     readonly _id: string;
-    readonly id: string;
+    readonly gravityID: string;
     readonly name: string | null;
     readonly description: string | null;
     readonly city: string | null;
     readonly is_local_discovery: boolean | null;
     readonly images: ReadonlyArray<({
-        readonly id: string | null;
+        readonly gravityID: string | null;
     }) | null> | null;
     readonly location: ({
         readonly openingHours: ({
@@ -29,7 +29,7 @@ export type Detail_show = {
         readonly " $fragmentRefs": LocationMap_location$ref;
     }) | null;
     readonly artists_without_artworks: ReadonlyArray<({
-        readonly id: string;
+        readonly gravityID: string;
     }) | null> | null;
     readonly counts: ({
         readonly artworks: number | null;
@@ -46,7 +46,7 @@ export type Detail_show = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -57,17 +57,13 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+v2 = [
+  (v1/*: any*/)
+];
 return {
   "kind": "Fragment",
   "name": "Detail_show",
@@ -87,7 +83,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    v0,
+    (v0/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -117,16 +113,14 @@ return {
       "args": null,
       "concreteType": "Image",
       "plural": true,
-      "selections": [
-        v1
-      ]
+      "selections": (v2/*: any*/)
     },
     {
       "kind": "FragmentSpread",
       "name": "ShowHeader_show",
       "args": null
     },
-    v1,
+    (v1/*: any*/),
     {
       "kind": "FragmentSpread",
       "name": "ShowArtistsPreview_show",
@@ -205,8 +199,7 @@ return {
               ]
             }
           ]
-        },
-        v2
+        }
       ]
     },
     {
@@ -217,10 +210,7 @@ return {
       "args": null,
       "concreteType": "Artist",
       "plural": true,
-      "selections": [
-        v1,
-        v2
-      ]
+      "selections": (v2/*: any*/)
     },
     {
       "kind": "LinkedField",
@@ -263,12 +253,11 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v2,
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v0,
+            (v0/*: any*/),
             {
               "kind": "ScalarField",
               "alias": null,
@@ -279,10 +268,9 @@ return {
           ]
         }
       ]
-    },
-    v2
+    }
   ]
 };
 })();
-(node as any).hash = '767be19eb77e1ed0386c8e9181071043';
+(node as any).hash = '2ff82bc802f4d8c99cec5f37379da506';
 export default node;

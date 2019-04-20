@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtworkPreview_artwork$ref } from "./ArtworkPreview_artwork.graphql";
 import { Message_message$ref } from "./Message_message.graphql";
 import { ShowPreview_show$ref } from "./ShowPreview_show.graphql";
@@ -8,7 +8,7 @@ declare const _Messages_conversation$ref: unique symbol;
 export type Messages_conversation$ref = typeof _Messages_conversation$ref;
 export type Messages_conversation = {
     readonly __id: string;
-    readonly id: string | null;
+    readonly internalID: string;
     readonly from: {
         readonly name: string;
         readonly email: string;
@@ -34,7 +34,7 @@ export type Messages_conversation = {
                 readonly is_from_user: boolean | null;
                 readonly body: string | null;
                 readonly attachments: ReadonlyArray<({
-                    readonly id: string;
+                    readonly internalID: string;
                 }) | null> | null;
                 readonly " $fragmentRefs": Message_message$ref;
             }) | null;
@@ -55,7 +55,7 @@ export type Messages_conversation = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -66,7 +66,7 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -122,8 +122,8 @@ return {
     }
   ],
   "selections": [
-    v0,
-    v1,
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "kind": "LinkedField",
       "alias": null,
@@ -133,7 +133,7 @@ return {
       "concreteType": "ConversationInitiator",
       "plural": false,
       "selections": [
-        v2,
+        (v2/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -141,7 +141,7 @@ return {
           "args": null,
           "storageKey": null
         },
-        v3
+        (v3/*: any*/)
       ]
     },
     {
@@ -153,8 +153,8 @@ return {
       "concreteType": "ConversationResponder",
       "plural": false,
       "selections": [
-        v2,
-        v3
+        (v2/*: any*/),
+        (v3/*: any*/)
       ]
     },
     {
@@ -237,7 +237,7 @@ return {
               "concreteType": "Message",
               "plural": false,
               "selections": [
-                v0,
+                (v0/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -268,7 +268,7 @@ return {
                   "concreteType": "Attachment",
                   "plural": true,
                   "selections": [
-                    v1
+                    (v1/*: any*/)
                   ]
                 },
                 {
@@ -307,12 +307,11 @@ return {
           "concreteType": null,
           "plural": false,
           "selections": [
-            v0,
             {
               "kind": "InlineFragment",
               "type": "Artwork",
               "selections": [
-                v4,
+                (v4/*: any*/),
                 {
                   "kind": "FragmentSpread",
                   "name": "ArtworkPreview_artwork",
@@ -331,12 +330,11 @@ return {
           "concreteType": null,
           "plural": false,
           "selections": [
-            v0,
             {
               "kind": "InlineFragment",
               "type": "Show",
               "selections": [
-                v4,
+                (v4/*: any*/),
                 {
                   "kind": "FragmentSpread",
                   "name": "ShowPreview_show",
@@ -351,5 +349,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '943535ecfc6ac6a8a0561ac1e6bdf065';
+(node as any).hash = '071dbe614a9e4f5486494de108f303db';
 export default node;

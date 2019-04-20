@@ -58,11 +58,11 @@ export class FairsRail extends Component<Props, null> {
       }
 
       const selectionHandler = () => {
-        Switchboard.presentNavigationViewController(this, `${fair.id}?entity=fair`)
+        Switchboard.presentNavigationViewController(this, `${fair.gravityID}?entity=fair`)
       }
 
       return (
-        <TouchableHighlight style={circleIconStyle} onPress={selectionHandler} key={fair.id}>
+        <TouchableHighlight style={circleIconStyle} onPress={selectionHandler} key={fair.gravityID}>
           <TouchableWrapper>
             <ImageView style={circleIconStyle} imageURL={fair.mobile_image.url} placeholderBackgroundColor="white" />
           </TouchableWrapper>
@@ -93,13 +93,13 @@ export default createFragmentContainer(FairsRail, {
   fairs_module: graphql`
     fragment FairsRail_fairs_module on HomePageFairsModule {
       results {
-        id
+        gravityID
         name
         profile {
-          id
+          gravityID
         }
         mobile_image {
-          id
+          gravityID
           url
         }
       }

@@ -1,10 +1,10 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _SaleListItem_sale$ref: unique symbol;
 export type SaleListItem_sale$ref = typeof _SaleListItem_sale$ref;
 export type SaleListItem_sale = {
-    readonly id: string;
+    readonly gravityID: string;
     readonly name: string | null;
     readonly href: string | null;
     readonly is_open: boolean | null;
@@ -24,7 +24,7 @@ export type SaleListItem_sale = {
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "SaleListItem_sale",
   "type": "Sale",
@@ -41,7 +41,7 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -139,15 +139,8 @@ const node: ConcreteFragment = {
           "storageKey": null
         }
       ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "__id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };
-(node as any).hash = 'fd579669d2b83e54c046f261f2b51833';
+(node as any).hash = 'ac3784f714ce32f89604634a25aaef07';
 export default node;

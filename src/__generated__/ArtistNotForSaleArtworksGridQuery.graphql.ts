@@ -33,7 +33,7 @@ query ArtistNotForSaleArtworksGridQuery(
     ... on Artist {
       ...ArtistNotForSaleArtworksGrid_artist_3KQYpM
     }
-    __id
+    id
   }
 }
 
@@ -47,7 +47,7 @@ fragment ArtistNotForSaleArtworksGrid_artist_3KQYpM on Artist {
     }
     edges {
       node {
-        id
+        gravityID
         __id
         image {
           aspect_ratio
@@ -68,14 +68,13 @@ fragment Artwork_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  id
+  gravityID
   sale {
     is_auction
     is_live_open
     is_open
     is_closed
     display_timely_at
-    __id
   }
   sale_artwork {
     opening_bid {
@@ -87,9 +86,7 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
-      __id
     }
-    __id
   }
   image {
     url(version: "large")
@@ -97,14 +94,11 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
-    __id
   }
   partner {
     name
-    __id
   }
   href
-  __id
 }
 */
 
@@ -146,25 +140,51 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "__typename",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__typename",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
-v4 = {
+v4 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor",
+    "type": "String"
+  },
+  {
+    "kind": "Variable",
+    "name": "filter",
+    "variableName": "filter",
+    "type": "[ArtistArtworksFilters]"
+  },
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "count",
+    "type": "Int"
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "partner_updated_at_desc",
+    "type": "ArtworkSorts"
+  }
+],
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v5 = [
+v6 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -173,40 +193,33 @@ v5 = [
     "storageKey": null
   }
 ],
-v6 = [
+v7 = [
   {
     "kind": "ScalarField",
     "alias": null,
     "name": "name",
     "args": null,
     "storageKey": null
-  },
-  v2
+  }
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ArtistNotForSaleArtworksGridQuery",
-  "id": "947964d88dd6a30931de9f6158486298",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ArtistNotForSaleArtworksGridQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "node",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": null,
         "plural": false,
         "selections": [
-          v2,
           {
             "kind": "InlineFragment",
             "type": "Artist",
@@ -244,54 +257,36 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "ArtistNotForSaleArtworksGridQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "node",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": null,
         "plural": false,
         "selections": [
-          v3,
-          v2,
+          (v2/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "InlineFragment",
             "type": "Artist",
             "selections": [
+              (v3/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": "notForSaleArtworks",
                 "name": "artworks_connection",
                 "storageKey": null,
-                "args": [
-                  {
-                    "kind": "Variable",
-                    "name": "after",
-                    "variableName": "cursor",
-                    "type": "String"
-                  },
-                  {
-                    "kind": "Variable",
-                    "name": "filter",
-                    "variableName": "filter",
-                    "type": "[ArtistArtworksFilters]"
-                  },
-                  {
-                    "kind": "Variable",
-                    "name": "first",
-                    "variableName": "count",
-                    "type": "Int"
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "sort",
-                    "value": "partner_updated_at_desc",
-                    "type": "ArtworkSorts"
-                  }
-                ],
+                "args": (v4/*: any*/),
                 "concreteType": "ArtworkConnection",
                 "plural": false,
                 "selections": [
@@ -355,7 +350,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "id",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
@@ -426,7 +421,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v2,
+                          (v3/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -464,15 +459,14 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              v4,
+                              (v5/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
                                 "name": "display_timely_at",
                                 "args": null,
                                 "storageKey": null
-                              },
-                              v2
+                              }
                             ]
                           },
                           {
@@ -492,7 +486,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkOpeningBid",
                                 "plural": false,
-                                "selections": v5
+                                "selections": (v6/*: any*/)
                               },
                               {
                                 "kind": "LinkedField",
@@ -502,7 +496,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkCurrentBid",
                                 "plural": false,
-                                "selections": v5
+                                "selections": (v6/*: any*/)
                               },
                               {
                                 "kind": "ScalarField",
@@ -520,11 +514,9 @@ return {
                                 "concreteType": "Sale",
                                 "plural": false,
                                 "selections": [
-                                  v4,
-                                  v2
+                                  (v5/*: any*/)
                                 ]
-                              },
-                              v2
+                              }
                             ]
                           },
                           {
@@ -542,7 +534,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": v6
+                            "selections": (v7/*: any*/)
                           },
                           {
                             "kind": "LinkedField",
@@ -552,7 +544,7 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": v6
+                            "selections": (v7/*: any*/)
                           },
                           {
                             "kind": "ScalarField",
@@ -561,7 +553,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v3
+                          (v2/*: any*/)
                         ]
                       },
                       {
@@ -579,32 +571,7 @@ return {
                 "kind": "LinkedHandle",
                 "alias": "notForSaleArtworks",
                 "name": "artworks_connection",
-                "args": [
-                  {
-                    "kind": "Variable",
-                    "name": "after",
-                    "variableName": "cursor",
-                    "type": "String"
-                  },
-                  {
-                    "kind": "Variable",
-                    "name": "filter",
-                    "variableName": "filter",
-                    "type": "[ArtistArtworksFilters]"
-                  },
-                  {
-                    "kind": "Variable",
-                    "name": "first",
-                    "variableName": "count",
-                    "type": "Int"
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "sort",
-                    "value": "partner_updated_at_desc",
-                    "type": "ArtworkSorts"
-                  }
-                ],
+                "args": (v4/*: any*/),
                 "handle": "connection",
                 "key": "ArtistNotForSaleArtworksGrid_notForSaleArtworks",
                 "filters": [
@@ -617,6 +584,13 @@ return {
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ArtistNotForSaleArtworksGridQuery",
+    "id": "05075e0c740a2b8f3712c708ae6b6407",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

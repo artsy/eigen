@@ -4,7 +4,7 @@ import { Environment, MutationConfig } from "relay-runtime"
 
 interface Conversation {
   __id: string
-  id: string
+  internalID: string
 }
 
 export function updateConversation(
@@ -24,7 +24,7 @@ export function updateConversation(
       mutation UpdateConversationMutation($input: UpdateConversationMutationInput!) {
         updateConversation(input: $input) {
           conversation {
-            id
+            internalID
             from_last_viewed_message_id
           }
         }
@@ -32,7 +32,7 @@ export function updateConversation(
     `,
     variables: {
       input: {
-        conversationId: conversation.id,
+        conversationId: conversation.internalID,
         fromLastViewedMessageId,
       },
     },

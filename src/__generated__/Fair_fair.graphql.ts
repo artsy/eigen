@@ -1,11 +1,11 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { FairDetail_fair$ref } from "./FairDetail_fair.graphql";
 declare const _Fair_fair$ref: unique symbol;
 export type Fair_fair$ref = typeof _Fair_fair$ref;
 export type Fair_fair = {
-    readonly id: string;
+    readonly gravityID: string;
     readonly __id: string;
     readonly organizer: ({
         readonly website: string | null;
@@ -18,7 +18,7 @@ export type Fair_fair = {
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Fair_fair",
   "type": "Fair",
@@ -28,7 +28,7 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -78,5 +78,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = '523b64e8d9fd7067738385039bb35652';
+(node as any).hash = '47bc0532538b9c7a758ae0fc9230112e';
 export default node;

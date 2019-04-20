@@ -42,7 +42,7 @@ export const shouldGoStraightToWebsite = (data: ShowMoreMetadataForFairs) => {
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.AboutTheFairPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  context_screen_owner_slug: props.fair.id,
+  context_screen_owner_slug: props.fair.gravityID,
   context_screen_owner_id: props.fair._id,
 }))
 export class FairMoreInfo extends React.Component<Props, State> {
@@ -161,7 +161,7 @@ export const FairMoreInfoRenderer: React.SFC<{ fairID: string }> = ({ fairID }) 
           organizer {
             website
           }
-          id
+          gravityID
           _id
           about
           ticketsLink

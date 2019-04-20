@@ -1,12 +1,12 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { FilteredInfiniteScrollGrid_filteredArtworks$ref } from "./FilteredInfiniteScrollGrid_filteredArtworks.graphql";
 declare const _ShowArtworks_show$ref: unique symbol;
 export type ShowArtworks_show$ref = typeof _ShowArtworks_show$ref;
 export type ShowArtworks_show = {
     readonly __id: string;
-    readonly id: string;
+    readonly gravityID: string;
     readonly _id: string;
     readonly filteredArtworks: ({
         readonly " $fragmentRefs": FilteredInfiniteScrollGrid_filteredArtworks$ref;
@@ -16,15 +16,7 @@ export type ShowArtworks_show = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ShowArtworks_show",
   "type": "Show",
@@ -44,11 +36,17 @@ return {
     }
   ],
   "selections": [
-    v0,
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "__id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -101,12 +99,10 @@ return {
           "kind": "FragmentSpread",
           "name": "FilteredInfiniteScrollGrid_filteredArtworks",
           "args": null
-        },
-        v0
+        }
       ]
     }
   ]
 };
-})();
-(node as any).hash = 'a6acc525f7747926f2f9c109cb41365c';
+(node as any).hash = 'd14b311b48f7a052ff7ea767289c9c75';
 export default node;

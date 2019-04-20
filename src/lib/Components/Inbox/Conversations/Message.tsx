@@ -98,21 +98,26 @@ export class Message extends React.Component<Props> {
     // This function does not use the arrow syntax, because it shouldn’t be force bound to this component. Instead, it
     // gets bound to the AttachmentPreview component instance that’s touched, so we can pass `this` to `findNodeHandle`.
     const previewAttachment = function(attachmentID) {
-      const attachment = attachments.find(({ id }) => id === attachmentID)
-      SwitchBoard.presentMediaPreviewController(this, attachment.download_url, attachment.content_type, attachment.id)
+      const attachment = attachments.find(({ internalID }) => internalID === attachmentID)
+      SwitchBoard.presentMediaPreviewController(
+        this,
+        attachment.download_url,
+        attachment.content_type,
+        attachment.internalID
+      )
     }
 
     return attachments.map(attachment => {
       if (attachment.content_type.startsWith("image")) {
         return (
-          <PreviewContainer key={attachment.id}>
+          <PreviewContainer key={attachment.internalID}>
             <ImagePreview attachment={attachment as any} onSelected={previewAttachment} />
           </PreviewContainer>
         )
       }
       if (attachment.content_type === "application/pdf") {
         return (
-          <PreviewContainer key={attachment.id}>
+          <PreviewContainer key={attachment.internalID}>
             <PDFPreview attachment={attachment as any} onSelected={previewAttachment} />
           </PreviewContainer>
         )
@@ -213,7 +218,7 @@ export default createFragmentContainer(Message, {
         ...InvoicePreview_invoice
       }
       attachments {
-        id
+        internalID
         content_type
         download_url
         file_name

@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { SmallList_shows$ref } from "./SmallList_shows.graphql";
 import { VariableSizeShowsList_shows$ref } from "./VariableSizeShowsList_shows.graphql";
 declare const _Shows_artist$ref: unique symbol;
@@ -23,23 +23,15 @@ export type Shows_artist = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v1 = [
+const node: ReaderFragment = (function(){
+var v0 = [
   {
     "kind": "FragmentSpread",
     "name": "VariableSizeShowsList_shows",
     "args": null
-  },
-  v0
+  }
 ],
-v2 = [
+v1 = [
   {
     "kind": "Literal",
     "name": "size",
@@ -81,7 +73,7 @@ return {
       ],
       "concreteType": "PartnerShow",
       "plural": true,
-      "selections": v1
+      "selections": (v0/*: any*/)
     },
     {
       "kind": "LinkedField",
@@ -98,9 +90,8 @@ return {
       ],
       "concreteType": "PartnerShow",
       "plural": true,
-      "selections": v1
+      "selections": (v0/*: any*/)
     },
-    v0,
     {
       "kind": "Condition",
       "passingValue": true,
@@ -111,10 +102,10 @@ return {
           "alias": "past_large_shows",
           "name": "partner_shows",
           "storageKey": "partner_shows(size:20,status:\"closed\")",
-          "args": v2,
+          "args": (v1/*: any*/),
           "concreteType": "PartnerShow",
           "plural": true,
-          "selections": v1
+          "selections": (v0/*: any*/)
         }
       ]
     },
@@ -128,7 +119,7 @@ return {
           "alias": "past_small_shows",
           "name": "partner_shows",
           "storageKey": "partner_shows(size:20,status:\"closed\")",
-          "args": v2,
+          "args": (v1/*: any*/),
           "concreteType": "PartnerShow",
           "plural": true,
           "selections": [
@@ -136,8 +127,7 @@ return {
               "kind": "FragmentSpread",
               "name": "SmallList_shows",
               "args": null
-            },
-            v0
+            }
           ]
         }
       ]

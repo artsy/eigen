@@ -28,7 +28,7 @@ interface State {
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.FairAllArtistsPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  context_screen_owner_slug: props.fair.id,
+  context_screen_owner_slug: props.fair.gravityID,
   context_screen_owner_id: props.fair._id,
 }))
 export class FairArtists extends React.Component<Props, State> {
@@ -115,7 +115,7 @@ export const FairArtistsContainer = createPaginationContainer(
     fair: graphql`
       fragment FairArtists_fair on Fair
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        id
+        gravityID
         _id
         artists(first: $count, after: $cursor) @connection(key: "Fair_artists") {
           pageInfo {
@@ -130,7 +130,7 @@ export const FairArtistsContainer = createPaginationContainer(
               sortable_id
               href
               _id
-              id
+              gravityID
             }
           }
         }

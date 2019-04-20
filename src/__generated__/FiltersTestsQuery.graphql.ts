@@ -22,9 +22,7 @@ query FiltersTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
       ...Filters_filteredArtworks
-      __id
     }
-    __id
   }
 }
 
@@ -32,12 +30,10 @@ fragment Filters_filteredArtworks on FilterArtworks {
   aggregations {
     slice
     counts {
-      id
+      gravityID
       name
-      __id
     }
   }
-  __id
 }
 */
 
@@ -79,21 +75,9 @@ v1 = [
     "value": 0,
     "type": "Int"
   }
-],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FiltersTestsQuery",
-  "id": "0f92e879c0ff3f99ab6965d47656db4a",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FiltersTestsQuery",
@@ -106,7 +90,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -115,7 +99,7 @@ return {
             "alias": null,
             "name": "filteredArtworks",
             "storageKey": "filteredArtworks(aggregations:[\"MEDIUM\",\"PRICE_RANGE\",\"TOTAL\"],medium:\"*\",price_range:\"*-*\",size:0)",
-            "args": v1,
+            "args": (v1/*: any*/),
             "concreteType": "FilterArtworks",
             "plural": false,
             "selections": [
@@ -123,11 +107,9 @@ return {
                 "kind": "FragmentSpread",
                 "name": "Filters_filteredArtworks",
                 "args": null
-              },
-              v2
+              }
             ]
-          },
-          v2
+          }
         ]
       }
     ]
@@ -142,7 +124,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -151,7 +133,7 @@ return {
             "alias": null,
             "name": "filteredArtworks",
             "storageKey": "filteredArtworks(aggregations:[\"MEDIUM\",\"PRICE_RANGE\",\"TOTAL\"],medium:\"*\",price_range:\"*-*\",size:0)",
-            "args": v1,
+            "args": (v1/*: any*/),
             "concreteType": "FilterArtworks",
             "plural": false,
             "selections": [
@@ -183,7 +165,7 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "id",
+                        "name": "gravityID",
                         "args": null,
                         "storageKey": null
                       },
@@ -193,19 +175,23 @@ return {
                         "name": "name",
                         "args": null,
                         "storageKey": null
-                      },
-                      v2
+                      }
                     ]
                   }
                 ]
-              },
-              v2
+              }
             ]
-          },
-          v2
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FiltersTestsQuery",
+    "id": "498c50b425dfc69be09f5ed829194609",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

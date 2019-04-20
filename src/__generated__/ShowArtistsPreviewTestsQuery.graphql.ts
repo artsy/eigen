@@ -19,34 +19,30 @@ export type ShowArtistsPreviewTestsQuery = {
 query ShowArtistsPreviewTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...ShowArtistsPreview_show
-    __id
   }
 }
 
 fragment ShowArtistsPreview_show on Show {
   _id
-  id
+  gravityID
   artists {
     _id
-    id
+    gravityID
     href
     ...ArtistListItem_artist
-    __id
   }
   artists_without_artworks {
     _id
-    id
+    gravityID
     href
     ...ArtistListItem_artist
-    __id
   }
-  __id
 }
 
 fragment ArtistListItem_artist on Artist {
   __id
   _id
-  id
+  gravityID
   name
   is_followed
   nationality
@@ -70,27 +66,20 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v4 = [
-  v2,
-  v3,
+v3 = [
+  (v1/*: any*/),
+  (v2/*: any*/),
   {
     "kind": "ScalarField",
     "alias": null,
@@ -98,7 +87,13 @@ v4 = [
     "args": null,
     "storageKey": null
   },
-  v1,
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "__id",
+    "args": null,
+    "storageKey": null
+  },
   {
     "kind": "ScalarField",
     "alias": null,
@@ -155,11 +150,6 @@ v4 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ShowArtistsPreviewTestsQuery",
-  "id": "d9cca615ce67b2598f4ec00bd0044d80",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ShowArtistsPreviewTestsQuery",
@@ -172,7 +162,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -180,8 +170,7 @@ return {
             "kind": "FragmentSpread",
             "name": "ShowArtistsPreview_show",
             "args": null
-          },
-          v1
+          }
         ]
       }
     ]
@@ -196,12 +185,12 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          v2,
-          v3,
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -210,7 +199,7 @@ return {
             "args": null,
             "concreteType": "Artist",
             "plural": true,
-            "selections": v4
+            "selections": (v3/*: any*/)
           },
           {
             "kind": "LinkedField",
@@ -220,12 +209,18 @@ return {
             "args": null,
             "concreteType": "Artist",
             "plural": true,
-            "selections": v4
-          },
-          v1
+            "selections": (v3/*: any*/)
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ShowArtistsPreviewTestsQuery",
+    "id": "64a178290c2d0214fc7b8844da6be0a2",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

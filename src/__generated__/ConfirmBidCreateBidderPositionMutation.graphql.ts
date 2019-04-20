@@ -17,7 +17,7 @@ export type ConfirmBidCreateBidderPositionMutationResponse = {
             readonly message_header: string | null;
             readonly message_description_md: string | null;
             readonly position: ({
-                readonly id: string;
+                readonly gravityID: string;
                 readonly suggested_next_bid: ({
                     readonly cents: number | null;
                     readonly display: string | null;
@@ -43,12 +43,11 @@ mutation ConfirmBidCreateBidderPositionMutation(
       message_header
       message_description_md
       position {
-        id
+        gravityID
         suggested_next_bid {
           cents
           display
         }
-        __id
       }
     }
   }
@@ -123,7 +122,7 @@ v1 = [
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
+                "name": "gravityID",
                 "args": null,
                 "storageKey": null
               },
@@ -151,13 +150,6 @@ v1 = [
                     "storageKey": null
                   }
                 ]
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "__id",
-                "args": null,
-                "storageKey": null
               }
             ]
           }
@@ -168,26 +160,28 @@ v1 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "ConfirmBidCreateBidderPositionMutation",
-  "id": "6dc901d7cf30a2e5778b669b04fe3d35",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ConfirmBidCreateBidderPositionMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "ConfirmBidCreateBidderPositionMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "ConfirmBidCreateBidderPositionMutation",
+    "id": "260a925870a8baed707b576c1a5977e2",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '90b2051c0e404dbb3d3b528a9dbca3ff';
+(node as any).hash = '260a925870a8baed707b576c1a5977e2';
 export default node;

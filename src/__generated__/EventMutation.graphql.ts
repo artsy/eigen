@@ -12,7 +12,7 @@ export type EventMutationVariables = {
 export type EventMutationResponse = {
     readonly followShow: ({
         readonly show: ({
-            readonly id: string;
+            readonly gravityID: string;
             readonly _id: string;
             readonly is_followed: boolean | null;
         }) | null;
@@ -31,10 +31,9 @@ mutation EventMutation(
 ) {
   followShow(input: $input) {
     show {
-      id
+      gravityID
       _id
       is_followed
-      __id
     }
   }
 }
@@ -78,7 +77,7 @@ v1 = [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -95,13 +94,6 @@ v1 = [
             "name": "is_followed",
             "args": null,
             "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "__id",
-            "args": null,
-            "storageKey": null
           }
         ]
       }
@@ -110,26 +102,28 @@ v1 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "EventMutation",
-  "id": "275170b9b83a34d5992948e65bc521be",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "EventMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "EventMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "EventMutation",
+    "id": "fd1df715428d3ece4a5eed6da82aeb19",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '20537801a49048fcb15e6efbe081a36a';
+(node as any).hash = 'fd1df715428d3ece4a5eed6da82aeb19';
 export default node;

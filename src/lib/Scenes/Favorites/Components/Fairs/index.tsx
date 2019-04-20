@@ -78,7 +78,7 @@ export default createPaginationContainer(
               node {
                 __id
                 profile {
-                  id
+                  gravityID
                   is_followed
                   __id
                 }

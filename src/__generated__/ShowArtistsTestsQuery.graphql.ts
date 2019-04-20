@@ -19,29 +19,26 @@ export type ShowArtistsTestsQuery = {
 query ShowArtistsTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...ShowArtists_show
-    __id
   }
 }
 
 fragment ShowArtists_show on Show {
   _id
-  id
+  gravityID
   artists_grouped_by_name {
     letter
     items {
       ...ArtistListItem_artist
       sortable_id
       href
-      __id
     }
   }
-  __id
 }
 
 fragment ArtistListItem_artist on Artist {
   __id
   _id
-  id
+  gravityID
   name
   is_followed
   nationality
@@ -65,31 +62,19 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ShowArtistsTestsQuery",
-  "id": "05f3ff5a25b31f8c9149f123f9f68b7f",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ShowArtistsTestsQuery",
@@ -102,7 +87,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -110,8 +95,7 @@ return {
             "kind": "FragmentSpread",
             "name": "ShowArtists_show",
             "args": null
-          },
-          v1
+          }
         ]
       }
     ]
@@ -126,12 +110,12 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          v2,
-          v3,
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -164,8 +148,14 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v1,
-                  v3,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "__id",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  (v2/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -180,7 +170,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v2,
+                  (v1/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -230,11 +220,17 @@ return {
                 ]
               }
             ]
-          },
-          v1
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ShowArtistsTestsQuery",
+    "id": "112df1f78ef22031c816a0c5c43aa1f5",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

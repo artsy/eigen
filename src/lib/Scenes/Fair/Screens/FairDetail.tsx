@@ -36,7 +36,7 @@ const track: Track<Props, State> = _track
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.FairPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  context_screen_owner_slug: props.fair.id,
+  context_screen_owner_slug: props.fair.gravityID,
   context_screen_owner_id: props.fair._id,
 }))
 export class FairDetail extends React.Component<Props, State> {
@@ -99,13 +99,13 @@ export class FairDetail extends React.Component<Props, State> {
       sections.push({
         type: "artistsExhibitorsWorks",
         data: {
-          fairID: fair.id,
+          fairID: fair.gravityID,
         },
       })
       sections.push({
         type: "search",
         data: {
-          id: fair.id,
+          id: fair.gravityID,
           _id: fair._id,
         },
       })
@@ -141,12 +141,12 @@ export class FairDetail extends React.Component<Props, State> {
     if (shouldGoStraightToWebsite(this.props.fair)) {
       SwitchBoard.presentNavigationViewController(this, this.props.fair.organizer.website)
     } else {
-      SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/info`)
+      SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.gravityID}/info`)
     }
   }
 
   onViewBMWArtActivationPressed = () => {
-    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/bmw-sponsored-content`)
+    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.gravityID}/bmw-sponsored-content`)
   }
 
   renderItem = ({ item: { data, type, showIndex } }) => {
@@ -259,7 +259,7 @@ export const FairDetailContainer = createPaginationContainer(
       fragment FairDetail_fair on Fair
         @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String" }) {
         ...FairHeader_fair
-        id
+        gravityID
         _id
         name
         hours
@@ -293,12 +293,12 @@ export const FairDetailContainer = createPaginationContainer(
           edges {
             cursor
             node {
-              id
+              gravityID
               _id
               artworks_connection(first: 4) {
                 edges {
                   node {
-                    id
+                    gravityID
                   }
                 }
               }

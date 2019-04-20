@@ -40,7 +40,7 @@ export class Event extends React.Component<Props, State> {
   }
 
   @track(props => {
-    const { id, _id, is_followed } = props.event
+    const { gravityID, _id, is_followed } = props.event
     const { section } = props
     let actionName
     if (!!section && section === "bmw") {
@@ -53,12 +53,12 @@ export class Event extends React.Component<Props, State> {
       action_type: Schema.ActionTypes.Success,
       owner_type: Schema.OwnerEntityTypes.Show,
       owner_id: _id,
-      owner_slug: id,
+      owner_slug: gravityID,
     } as any
   })
   handleSaveChange() {
     const node = this.props.event
-    const { id: showSlug, __id: nodeID, _id: showID, is_followed: isShowFollowed } = node
+    const { gravityID: showSlug, __id: nodeID, _id: showID, is_followed: isShowFollowed } = node
 
     if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
       this.setState(
@@ -72,7 +72,7 @@ export class Event extends React.Component<Props, State> {
               mutation EventMutation($input: FollowShowInput!) {
                 followShow(input: $input) {
                   show {
-                    id
+                    gravityID
                     _id
                     is_followed
                   }
@@ -88,7 +88,7 @@ export class Event extends React.Component<Props, State> {
             optimisticResponse: {
               followShow: {
                 show: {
-                  id: showSlug,
+                  gravityID: showSlug,
                   _id: showID,
                   is_followed: !isShowFollowed,
                 },
@@ -121,11 +121,11 @@ export class Event extends React.Component<Props, State> {
 
   handleTap = () => {
     const { section } = this.props
-    const { id, _id } = this.props.event
+    const { gravityID, _id } = this.props.event
     if (section === "bmw") {
-      this.trackShowTap(Schema.ActionNames.OpenBMWShow, id, _id)
+      this.trackShowTap(Schema.ActionNames.OpenBMWShow, gravityID, _id)
     }
-    SwitchBoard.presentNavigationViewController(this, `/show/${id}`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${gravityID}`)
   }
 
   render() {

@@ -19,7 +19,7 @@ export const ArtworksGridPaginationContainer = createPaginationContainer<RelayPr
           }
           edges {
             node {
-              id
+              gravityID
               __id
               image {
                 aspect_ratio

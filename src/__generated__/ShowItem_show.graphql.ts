@@ -1,11 +1,11 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ShowItem_show$ref: unique symbol;
 export type ShowItem_show$ref = typeof _ShowItem_show$ref;
 export type ShowItem_show = {
     readonly _id: string;
-    readonly id: string;
+    readonly gravityID: string;
     readonly name: string | null;
     readonly exhibition_period: string | null;
     readonly end_at: string | null;
@@ -21,18 +21,11 @@ export type ShowItem_show = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
   "args": null,
   "storageKey": null
 };
@@ -53,11 +46,11 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
-    v0,
+    (v0/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -106,19 +99,17 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v1,
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v0
+            (v0/*: any*/)
           ]
         }
       ]
-    },
-    v1
+    }
   ]
 };
 })();
-(node as any).hash = '4482314737ae44a25efb0b7b2772fa49';
+(node as any).hash = 'd7a383ca11bcf0107e721949852b5fed';
 export default node;

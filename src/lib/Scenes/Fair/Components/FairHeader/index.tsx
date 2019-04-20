@@ -60,11 +60,11 @@ export class FairHeader extends React.Component<Props, State> {
   state = { isSavedFairStateUpdating: false }
 
   viewAllArtists() {
-    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/artists`)
+    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.gravityID}/artists`)
   }
 
   viewAllExhibitors() {
-    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/exhibitors`)
+    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.gravityID}/exhibitors`)
   }
 
   getContextualDetails() {
@@ -161,7 +161,7 @@ export class FairHeader extends React.Component<Props, State> {
 export const FairHeaderContainer = createFragmentContainer(FairHeader, {
   fair: graphql`
     fragment FairHeader_fair on Fair {
-      id
+      gravityID
       _id
       name
       formattedOpeningHours
@@ -173,7 +173,7 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
         artists {
           name
           href
-          id
+          gravityID
           _id
         }
         galleries {
@@ -184,12 +184,12 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
       partner_names: shows_connection(first: 2) {
         edges {
           node {
-            id
+            gravityID
             partner {
               ... on Partner {
                 profile {
                   name
-                  id
+                  gravityID
                   _id
                 }
               }
@@ -202,7 +202,7 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
           node {
             name
             href
-            id
+            gravityID
             _id
           }
         }
@@ -216,14 +216,14 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
 
       profile {
         icon {
-          id
+          gravityID
           href
           height
           width
           url(version: "square140")
         }
         __id
-        id
+        gravityID
         name
         is_followed
       }

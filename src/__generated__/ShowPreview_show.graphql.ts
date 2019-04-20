@@ -1,10 +1,10 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ShowPreview_show$ref: unique symbol;
 export type ShowPreview_show$ref = typeof _ShowPreview_show$ref;
 export type ShowPreview_show = {
-    readonly id: string;
+    readonly gravityID: string;
     readonly _id: string;
     readonly name: string | null;
     readonly cover_image: ({
@@ -21,7 +21,7 @@ export type ShowPreview_show = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -29,13 +29,9 @@ var v0 = {
   "args": null,
   "storageKey": null
 },
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+v1 = [
+  (v0/*: any*/)
+];
 return {
   "kind": "Fragment",
   "name": "ShowPreview_show",
@@ -46,7 +42,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -57,7 +53,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    v0,
+    (v0/*: any*/),
     {
       "kind": "LinkedField",
       "alias": null,
@@ -84,10 +80,7 @@ return {
       "args": null,
       "concreteType": "Fair",
       "plural": false,
-      "selections": [
-        v0,
-        v1
-      ]
+      "selections": (v1/*: any*/)
     },
     {
       "kind": "LinkedField",
@@ -98,19 +91,15 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v1,
         {
           "kind": "InlineFragment",
           "type": "Partner",
-          "selections": [
-            v0
-          ]
+          "selections": (v1/*: any*/)
         }
       ]
-    },
-    v1
+    }
   ]
 };
 })();
-(node as any).hash = 'e42f90e100b31f3feebfdb128960badd';
+(node as any).hash = '281a05ba28f4c79f7c9fb7a6f0b984cb';
 export default node;

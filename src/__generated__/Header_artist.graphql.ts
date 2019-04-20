@@ -1,11 +1,11 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _Header_artist$ref: unique symbol;
 export type Header_artist$ref = typeof _Header_artist$ref;
 export type Header_artist = {
     readonly _id: string;
-    readonly id: string;
+    readonly gravityID: string;
     readonly name: string | null;
     readonly nationality: string | null;
     readonly birthday: string | null;
@@ -17,7 +17,7 @@ export type Header_artist = {
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Header_artist",
   "type": "Artist",
@@ -34,7 +34,7 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -76,15 +76,8 @@ const node: ConcreteFragment = {
           "storageKey": null
         }
       ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "__id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };
-(node as any).hash = '7305ad117a1e704aab8ba0f23776ecf9';
+(node as any).hash = '04821936a0e40e0605a1d2d8d877fbcd';
 export default node;

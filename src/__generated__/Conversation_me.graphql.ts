@@ -1,12 +1,12 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { Messages_conversation$ref } from "./Messages_conversation.graphql";
 declare const _Conversation_me$ref: unique symbol;
 export type Conversation_me$ref = typeof _Conversation_me$ref;
 export type Conversation_me = {
     readonly conversation: ({
-        readonly id: string | null;
+        readonly internalID: string;
         readonly __id: string;
         readonly to: {
             readonly name: string;
@@ -25,15 +25,7 @@ export type Conversation_me = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Conversation_me",
   "type": "Me",
@@ -65,11 +57,17 @@ return {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "id",
+          "name": "internalID",
           "args": null,
           "storageKey": null
         },
-        v0,
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "__id",
+          "args": null,
+          "storageKey": null
+        },
         {
           "kind": "LinkedField",
           "alias": null,
@@ -140,10 +138,8 @@ return {
           "storageKey": null
         }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
-(node as any).hash = 'af2ea77ea1be72f5d6d7072b5909b8ea';
+(node as any).hash = 'ee7ca43d7086561e68b5b637873cd230';
 export default node;

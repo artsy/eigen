@@ -9,7 +9,7 @@ export type FairMoreInfoQueryResponse = {
         readonly organizer: ({
             readonly website: string | null;
         }) | null;
-        readonly id: string;
+        readonly gravityID: string;
         readonly _id: string;
         readonly about: string | null;
         readonly ticketsLink: string | null;
@@ -30,11 +30,10 @@ query FairMoreInfoQuery(
     organizer {
       website
     }
-    id
+    gravityID
     _id
     about
     ticketsLink
-    __id
   }
 }
 */
@@ -86,7 +85,7 @@ v1 = [
       {
         "kind": "ScalarField",
         "alias": null,
-        "name": "id",
+        "name": "gravityID",
         "args": null,
         "storageKey": null
       },
@@ -110,39 +109,34 @@ v1 = [
         "name": "ticketsLink",
         "args": null,
         "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "__id",
-        "args": null,
-        "storageKey": null
       }
     ]
   }
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FairMoreInfoQuery",
-  "id": "d76e1151c63e4910fb8886bc6960380a",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FairMoreInfoQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "FairMoreInfoQuery",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FairMoreInfoQuery",
+    "id": "96be176d8eb2bca6d5146ea07b8310ab",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = 'f88594a64df67812db5bef52a8d5ae5f';
+(node as any).hash = '96be176d8eb2bca6d5146ea07b8310ab';
 export default node;

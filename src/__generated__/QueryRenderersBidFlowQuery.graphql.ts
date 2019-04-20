@@ -32,38 +32,30 @@ query QueryRenderersBidFlowQuery(
   artwork(id: $artworkID) {
     sale_artwork(sale_id: $saleID) {
       ...BidFlow_sale_artwork
-      __id
     }
-    __id
   }
   me {
     ...BidFlow_me
-    __id
   }
 }
 
 fragment BidFlow_sale_artwork on SaleArtwork {
   ...SelectMaxBid_sale_artwork
-  __id
 }
 
 fragment BidFlow_me on Me {
   ...SelectMaxBid_me
-  __id
 }
 
 fragment SelectMaxBid_me on Me {
   ...ConfirmBid_me
-  __id
 }
 
 fragment ConfirmBid_me on Me {
   has_qualified_credit_cards
   bidders(sale_id: $saleID) {
     qualified_for_bidding
-    __id
   }
-  __id
 }
 
 fragment SelectMaxBid_sale_artwork on SaleArtwork {
@@ -73,27 +65,23 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
   }
   _id
   ...ConfirmBid_sale_artwork
-  __id
 }
 
 fragment ConfirmBid_sale_artwork on SaleArtwork {
   _id
   sale {
-    id
+    gravityID
     live_start_at
     end_at
-    __id
   }
   artwork {
-    id
+    gravityID
     title
     date
     artist_names
-    __id
   }
   lot_label
   ...BidResult_sale_artwork
-  __id
 }
 
 fragment BidResult_sale_artwork on SaleArtwork {
@@ -105,10 +93,8 @@ fragment BidResult_sale_artwork on SaleArtwork {
   sale {
     live_start_at
     end_at
-    id
-    __id
+    gravityID
   }
-  __id
 }
 */
 
@@ -146,51 +132,39 @@ v2 = [
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "display",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "display",
+  "name": "cents",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "cents",
-  "args": null,
-  "storageKey": null
-},
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "QueryRenderersBidFlowQuery",
-  "id": "79c707a33aa8c1d75ad950162468be2b",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "QueryRenderersBidFlowQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artwork",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
@@ -199,7 +173,7 @@ return {
             "alias": null,
             "name": "sale_artwork",
             "storageKey": null,
-            "args": v2,
+            "args": (v2/*: any*/),
             "concreteType": "SaleArtwork",
             "plural": false,
             "selections": [
@@ -207,11 +181,9 @@ return {
                 "kind": "FragmentSpread",
                 "name": "BidFlow_sale_artwork",
                 "args": null
-              },
-              v3
+              }
             ]
-          },
-          v3
+          }
         ]
       },
       {
@@ -227,8 +199,7 @@ return {
             "kind": "FragmentSpread",
             "name": "BidFlow_me",
             "args": null
-          },
-          v3
+          }
         ]
       }
     ]
@@ -236,14 +207,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "QueryRenderersBidFlowQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artwork",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
@@ -252,7 +223,7 @@ return {
             "alias": null,
             "name": "sale_artwork",
             "storageKey": null,
-            "args": v2,
+            "args": (v2/*: any*/),
             "concreteType": "SaleArtwork",
             "plural": false,
             "selections": [
@@ -272,8 +243,8 @@ return {
                 "concreteType": "BidIncrementsFormatted",
                 "plural": true,
                 "selections": [
-                  v4,
-                  v5
+                  (v3/*: any*/),
+                  (v4/*: any*/)
                 ]
               },
               {
@@ -292,7 +263,7 @@ return {
                 "concreteType": "Sale",
                 "plural": false,
                 "selections": [
-                  v6,
+                  (v5/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -306,8 +277,7 @@ return {
                     "name": "end_at",
                     "args": null,
                     "storageKey": null
-                  },
-                  v3
+                  }
                 ]
               },
               {
@@ -319,7 +289,7 @@ return {
                 "concreteType": "Artwork",
                 "plural": false,
                 "selections": [
-                  v6,
+                  (v5/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -340,8 +310,7 @@ return {
                     "name": "artist_names",
                     "args": null,
                     "storageKey": null
-                  },
-                  v3
+                  }
                 ]
               },
               {
@@ -367,14 +336,12 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v5,
-                  v4
+                  (v4/*: any*/),
+                  (v3/*: any*/)
                 ]
-              },
-              v3
+              }
             ]
-          },
-          v3
+          }
         ]
       },
       {
@@ -398,7 +365,7 @@ return {
             "alias": null,
             "name": "bidders",
             "storageKey": null,
-            "args": v2,
+            "args": (v2/*: any*/),
             "concreteType": "Bidder",
             "plural": true,
             "selections": [
@@ -408,14 +375,19 @@ return {
                 "name": "qualified_for_bidding",
                 "args": null,
                 "storageKey": null
-              },
-              v3
+              }
             ]
-          },
-          v3
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "QueryRenderersBidFlowQuery",
+    "id": "2d8c3fea75a28bde19b0f42c870bd574",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

@@ -93,24 +93,26 @@ v1 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "ArtistListItemFollowArtistMutation",
-  "id": "5fe5566b2c4b7ad53ce3fdfba9919f89",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ArtistListItemFollowArtistMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "ArtistListItemFollowArtistMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "ArtistListItemFollowArtistMutation",
+    "id": "0a86340c441f9e59f4bdc7acf46e5f4a",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

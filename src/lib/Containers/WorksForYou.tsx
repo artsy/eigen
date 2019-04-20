@@ -76,7 +76,7 @@ export class WorksForYou extends React.Component<Props, State> {
 
     return {
       // This is just some unique ID, don’t rely on MP being able to retrieve a notification by this ID.
-      __id: `notification-${artist.id}`,
+      __id: `notification-${artist.gravityID}`,
       message: artist.artworks.length + (artist.artworks.length > 1 ? " Works Added" : " Work Added"),
       artists: artist.name,
       artworks: artist.artworks,
@@ -214,7 +214,7 @@ const WorksForYouContainer = createPaginationContainer(
           }
         }
         selectedArtist: artist(id: $selectedArtist) {
-          id
+          gravityID
           href
           name
           image {

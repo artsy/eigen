@@ -61,24 +61,26 @@ var v0 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "createMockNetworkLayerTestsQuery",
-  "id": "5877ac7a9f471c577180881d0cd3ab4b",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "createMockNetworkLayerTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
-    "selections": v0
+    "selections": (v0/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "createMockNetworkLayerTestsQuery",
     "argumentDefinitions": [],
-    "selections": v0
+    "selections": (v0/*: any*/)
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "createMockNetworkLayerTestsQuery",
+    "id": "7c4943257f47c5a4f37e5c5212530eb1",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

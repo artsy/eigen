@@ -29,37 +29,31 @@ query QueryRenderersRegistrationFlowQuery(
   sale(id: $saleID) {
     name
     ...RegistrationFlow_sale
-    __id
   }
   me {
     ...RegistrationFlow_me
-    __id
   }
 }
 
 fragment RegistrationFlow_sale on Sale {
   ...Registration_sale
-  __id
 }
 
 fragment RegistrationFlow_me on Me {
   ...Registration_me
-  __id
 }
 
 fragment Registration_me on Me {
   has_credit_cards
-  __id
 }
 
 fragment Registration_sale on Sale {
-  id
+  gravityID
   end_at
   is_preview
   live_start_at
   name
   start_at
-  __id
 }
 */
 
@@ -86,44 +80,31 @@ v2 = {
   "name": "name",
   "args": null,
   "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "QueryRenderersRegistrationFlowQuery",
-  "id": "eae7174e3cddc451acab97c6294292ce",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "QueryRenderersRegistrationFlowQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "sale",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Sale",
         "plural": false,
         "selections": [
-          v2,
+          (v2/*: any*/),
           {
             "kind": "FragmentSpread",
             "name": "RegistrationFlow_sale",
             "args": null
-          },
-          v3
+          }
         ]
       },
       {
@@ -139,8 +120,7 @@ return {
             "kind": "FragmentSpread",
             "name": "RegistrationFlow_me",
             "args": null
-          },
-          v3
+          }
         ]
       }
     ]
@@ -148,22 +128,22 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "QueryRenderersRegistrationFlowQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "sale",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Sale",
         "plural": false,
         "selections": [
-          v2,
+          (v2/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -194,8 +174,7 @@ return {
             "name": "start_at",
             "args": null,
             "storageKey": null
-          },
-          v3
+          }
         ]
       },
       {
@@ -213,11 +192,17 @@ return {
             "name": "has_credit_cards",
             "args": null,
             "storageKey": null
-          },
-          v3
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "QueryRenderersRegistrationFlowQuery",
+    "id": "bce11602f08e3a5b15eae2a068725187",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

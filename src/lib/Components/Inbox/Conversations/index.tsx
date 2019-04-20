@@ -142,7 +142,7 @@ export default createPaginationContainer(
           }
           edges {
             node {
-              id
+              internalID
               last_message
               ...ConversationSnippet_conversation
             }

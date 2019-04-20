@@ -21,7 +21,6 @@ export type InboxQuery = {
 query InboxQuery {
   me {
     ...Inbox_me_38v0Te
-    __id
   }
 }
 
@@ -34,14 +33,12 @@ fragment Inbox_me_38v0Te on Me {
   conversations_existence_check: conversations(first: 1) {
     edges {
       node {
-        id
-        __id
+        internalID
       }
     }
   }
   ...Conversations_me
   ...ActiveBids_me
-  __id
 }
 
 fragment Conversations_me on Me {
@@ -52,16 +49,14 @@ fragment Conversations_me on Me {
     }
     edges {
       node {
-        id
+        internalID
         last_message
         ...ConversationSnippet_conversation
-        __id
         __typename
       }
       cursor
     }
   }
-  __id
 }
 
 fragment ActiveBids_me on Me {
@@ -71,7 +66,6 @@ fragment ActiveBids_me on Me {
     }
     ...ActiveBid_bid
   }
-  __id
 }
 
 fragment ActiveBid_bid on LotStanding {
@@ -79,7 +73,6 @@ fragment ActiveBid_bid on LotStanding {
   sale {
     href
     is_live_open
-    __id
   }
   most_recent_bid {
     __id
@@ -93,24 +86,21 @@ fragment ActiveBid_bid on LotStanding {
           url
         }
         artist_names
-        __id
       }
       counts {
         bidder_positions
       }
       highest_bid {
         display
-        __id: id
       }
       lot_number
       reserve_status
-      __id
     }
   }
 }
 
 fragment ConversationSnippet_conversation on Conversation {
-  id
+  internalID
   to {
     name
   }
@@ -131,7 +121,6 @@ fragment ConversationSnippet_conversation on Conversation {
       ... on Show {
         fair {
           name
-          __id
         }
         name
         cover_image {
@@ -139,11 +128,10 @@ fragment ConversationSnippet_conversation on Conversation {
         }
       }
       ... on Node {
-        __id
+        id
       }
     }
   }
-  __id
 }
 */
 
@@ -156,28 +144,23 @@ var v0 = [
     "defaultValue": null
   }
 ],
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
+v1 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "display",
+    "args": null,
+    "storageKey": null
+  }
+],
 v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "display",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v4 = [
+v3 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -186,7 +169,7 @@ v4 = [
     "storageKey": null
   }
 ],
-v5 = {
+v4 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "image",
@@ -194,22 +177,36 @@ v5 = {
   "args": null,
   "concreteType": "Image",
   "plural": false,
-  "selections": v4
+  "selections": (v3/*: any*/)
 },
-v6 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "artist_names",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
+v7 = [
+  {
+    "kind": "Literal",
+    "name": "after",
+    "value": "",
+    "type": "String"
+  },
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 10,
+    "type": "Int"
+  }
+],
 v8 = {
   "kind": "ScalarField",
   "alias": null,
@@ -217,7 +214,10 @@ v8 = {
   "args": null,
   "storageKey": null
 },
-v9 = {
+v9 = [
+  (v8/*: any*/)
+],
+v10 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
@@ -226,17 +226,12 @@ v9 = {
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "InboxQuery",
-  "id": "17540c1514e3b590735ff30349efb2ee",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "InboxQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -258,8 +253,7 @@ return {
                 "type": null
               }
             ]
-          },
-          v1
+          }
         ]
       }
     ]
@@ -267,7 +261,7 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "InboxQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -303,7 +297,13 @@ return {
                 "concreteType": "BidderPosition",
                 "plural": false,
                 "selections": [
-                  v1,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "__id",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -312,9 +312,7 @@ return {
                     "args": null,
                     "concreteType": "BidderPositionMaxBid",
                     "plural": false,
-                    "selections": [
-                      v2
-                    ]
+                    "selections": (v1/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -334,10 +332,9 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          v3,
-                          v5,
-                          v6,
-                          v1
+                          (v2/*: any*/),
+                          (v4/*: any*/),
+                          (v5/*: any*/)
                         ]
                       },
                       {
@@ -366,16 +363,7 @@ return {
                         "args": null,
                         "concreteType": "SaleArtworkHighestBid",
                         "plural": false,
-                        "selections": [
-                          v2,
-                          {
-                            "kind": "ScalarField",
-                            "alias": "__id",
-                            "name": "id",
-                            "args": null,
-                            "storageKey": null
-                          }
-                        ]
+                        "selections": (v1/*: any*/)
                       },
                       {
                         "kind": "ScalarField",
@@ -390,8 +378,7 @@ return {
                         "name": "reserve_status",
                         "args": null,
                         "storageKey": null
-                      },
-                      v1
+                      }
                     ]
                   }
                 ]
@@ -412,15 +399,14 @@ return {
                 "concreteType": "Sale",
                 "plural": false,
                 "selections": [
-                  v3,
+                  (v2/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
                     "name": "is_live_open",
                     "args": null,
                     "storageKey": null
-                  },
-                  v1
+                  }
                 ]
               }
             ]
@@ -459,8 +445,7 @@ return {
                     "concreteType": "Conversation",
                     "plural": false,
                     "selections": [
-                      v7,
-                      v1
+                      (v6/*: any*/)
                     ]
                   }
                 ]
@@ -472,20 +457,7 @@ return {
             "alias": null,
             "name": "conversations",
             "storageKey": "conversations(after:\"\",first:10)",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "after",
-                "value": "",
-                "type": "String"
-              },
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 10,
-                "type": "Int"
-              }
-            ],
+            "args": (v7/*: any*/),
             "concreteType": "ConversationConnection",
             "plural": false,
             "selections": [
@@ -532,7 +504,7 @@ return {
                     "concreteType": "Conversation",
                     "plural": false,
                     "selections": [
-                      v7,
+                      (v6/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -548,9 +520,7 @@ return {
                         "args": null,
                         "concreteType": "ConversationResponder",
                         "plural": false,
-                        "selections": [
-                          v8
-                        ]
+                        "selections": (v9/*: any*/)
                       },
                       {
                         "kind": "ScalarField",
@@ -584,8 +554,14 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
-                              v9,
-                              v1,
+                              (v10/*: any*/),
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "id",
+                                "args": null,
+                                "storageKey": null
+                              },
                               {
                                 "kind": "InlineFragment",
                                 "type": "Show",
@@ -598,12 +574,9 @@ return {
                                     "args": null,
                                     "concreteType": "Fair",
                                     "plural": false,
-                                    "selections": [
-                                      v8,
-                                      v1
-                                    ]
+                                    "selections": (v9/*: any*/)
                                   },
-                                  v8,
+                                  (v8/*: any*/),
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
@@ -612,7 +585,7 @@ return {
                                     "args": null,
                                     "concreteType": "Image",
                                     "plural": false,
-                                    "selections": v4
+                                    "selections": (v3/*: any*/)
                                   }
                                 ]
                               },
@@ -634,16 +607,15 @@ return {
                                     "args": null,
                                     "storageKey": null
                                   },
-                                  v6,
-                                  v5
+                                  (v5/*: any*/),
+                                  (v4/*: any*/)
                                 ]
                               }
                             ]
                           }
                         ]
                       },
-                      v1,
-                      v9
+                      (v10/*: any*/)
                     ]
                   },
                   {
@@ -661,28 +633,21 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "conversations",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "after",
-                "value": "",
-                "type": "String"
-              },
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 10,
-                "type": "Int"
-              }
-            ],
+            "args": (v7/*: any*/),
             "handle": "connection",
             "key": "Conversations_conversations",
             "filters": null
-          },
-          v1
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "InboxQuery",
+    "id": "465572f29045f85151e45bf5d4f1fe6b",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

@@ -1,10 +1,10 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ConversationSnippet_conversation$ref: unique symbol;
 export type ConversationSnippet_conversation$ref = typeof _ConversationSnippet_conversation$ref;
 export type ConversationSnippet_conversation = {
-    readonly id: string | null;
+    readonly internalID: string;
     readonly to: {
         readonly name: string;
     };
@@ -40,7 +40,7 @@ export type ConversationSnippet_conversation = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -48,13 +48,9 @@ var v0 = {
   "args": null,
   "storageKey": null
 },
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
+v1 = [
+  (v0/*: any*/)
+],
 v2 = [
   {
     "kind": "ScalarField",
@@ -74,7 +70,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -86,9 +82,7 @@ return {
       "args": null,
       "concreteType": "ConversationResponder",
       "plural": false,
-      "selections": [
-        v0
-      ]
+      "selections": (v1/*: any*/)
     },
     {
       "kind": "ScalarField",
@@ -136,7 +130,6 @@ return {
               "args": null,
               "storageKey": null
             },
-            v1,
             {
               "kind": "InlineFragment",
               "type": "Show",
@@ -149,12 +142,9 @@ return {
                   "args": null,
                   "concreteType": "Fair",
                   "plural": false,
-                  "selections": [
-                    v0,
-                    v1
-                  ]
+                  "selections": (v1/*: any*/)
                 },
-                v0,
+                (v0/*: any*/),
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -163,7 +153,7 @@ return {
                   "args": null,
                   "concreteType": "Image",
                   "plural": false,
-                  "selections": v2
+                  "selections": (v2/*: any*/)
                 }
               ]
             },
@@ -200,17 +190,16 @@ return {
                   "args": null,
                   "concreteType": "Image",
                   "plural": false,
-                  "selections": v2
+                  "selections": (v2/*: any*/)
                 }
               ]
             }
           ]
         }
       ]
-    },
-    v1
+    }
   ]
 };
 })();
-(node as any).hash = 'cbb14f6e62aa56f7c8e18f2ef16e8662';
+(node as any).hash = 'b7288fd5e5b265c114eca8c054883e80';
 export default node;

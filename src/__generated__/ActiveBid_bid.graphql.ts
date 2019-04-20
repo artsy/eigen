@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ActiveBid_bid$ref: unique symbol;
 export type ActiveBid_bid$ref = typeof _ActiveBid_bid$ref;
 export type ActiveBid_bid = {
@@ -37,7 +37,7 @@ export type ActiveBid_bid = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -45,20 +45,15 @@ var v0 = {
   "args": null,
   "storageKey": null
 },
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "display",
-  "args": null,
-  "storageKey": null
-};
+v1 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "display",
+    "args": null,
+    "storageKey": null
+  }
+];
 return {
   "kind": "Fragment",
   "name": "ActiveBid_bid",
@@ -82,15 +77,14 @@ return {
       "concreteType": "Sale",
       "plural": false,
       "selections": [
-        v0,
+        (v0/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
           "name": "is_live_open",
           "args": null,
           "storageKey": null
-        },
-        v1
+        }
       ]
     },
     {
@@ -102,7 +96,13 @@ return {
       "concreteType": "BidderPosition",
       "plural": false,
       "selections": [
-        v1,
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "__id",
+          "args": null,
+          "storageKey": null
+        },
         {
           "kind": "LinkedField",
           "alias": null,
@@ -111,9 +111,7 @@ return {
           "args": null,
           "concreteType": "BidderPositionMaxBid",
           "plural": false,
-          "selections": [
-            v2
-          ]
+          "selections": (v1/*: any*/)
         },
         {
           "kind": "LinkedField",
@@ -133,7 +131,7 @@ return {
               "concreteType": "Artwork",
               "plural": false,
               "selections": [
-                v0,
+                (v0/*: any*/),
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -158,8 +156,7 @@ return {
                   "name": "artist_names",
                   "args": null,
                   "storageKey": null
-                },
-                v1
+                }
               ]
             },
             {
@@ -188,16 +185,7 @@ return {
               "args": null,
               "concreteType": "SaleArtworkHighestBid",
               "plural": false,
-              "selections": [
-                v2,
-                {
-                  "kind": "ScalarField",
-                  "alias": "__id",
-                  "name": "id",
-                  "args": null,
-                  "storageKey": null
-                }
-              ]
+              "selections": (v1/*: any*/)
             },
             {
               "kind": "ScalarField",
@@ -212,8 +200,7 @@ return {
               "name": "reserve_status",
               "args": null,
               "storageKey": null
-            },
-            v1
+            }
           ]
         }
       ]

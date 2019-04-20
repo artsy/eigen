@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtistShow_show$ref } from "./ArtistShow_show.graphql";
 declare const _VariableSizeShowsList_shows$ref: unique symbol;
 export type VariableSizeShowsList_shows$ref = typeof _VariableSizeShowsList_shows$ref;
@@ -12,7 +12,7 @@ export type VariableSizeShowsList_shows = ReadonlyArray<{
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "VariableSizeShowsList_shows",
   "type": "PartnerShow",

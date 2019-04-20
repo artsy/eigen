@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _Article_article$ref: unique symbol;
 export type Article_article$ref = typeof _Article_article$ref;
 export type Article_article = {
@@ -17,15 +17,7 @@ export type Article_article = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Article_article",
   "type": "Article",
@@ -61,8 +53,7 @@ return {
           "name": "name",
           "args": null,
           "storageKey": null
-        },
-        v0
+        }
       ]
     },
     {
@@ -89,10 +80,8 @@ return {
           "storageKey": "url(version:\"large\")"
         }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
 (node as any).hash = '0c88898acb243d600094f137ff15cde0';
 export default node;

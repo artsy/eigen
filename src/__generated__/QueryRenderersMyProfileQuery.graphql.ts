@@ -19,32 +19,17 @@ export type QueryRenderersMyProfileQuery = {
 query QueryRenderersMyProfileQuery {
   me {
     ...MyProfile_me
-    __id
   }
 }
 
 fragment MyProfile_me on Me {
   name
   initials
-  __id
 }
 */
 
-const node: ConcreteRequest = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ConcreteRequest = {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "QueryRenderersMyProfileQuery",
-  "id": "85b61ef601f4dbaf3081af4877d57680",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "QueryRenderersMyProfileQuery",
@@ -65,8 +50,7 @@ return {
             "kind": "FragmentSpread",
             "name": "MyProfile_me",
             "args": null
-          },
-          v0
+          }
         ]
       }
     ]
@@ -98,13 +82,18 @@ return {
             "name": "initials",
             "args": null,
             "storageKey": null
-          },
-          v0
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "QueryRenderersMyProfileQuery",
+    "id": "748438ac1bef6795f42e7ff471971cde",
+    "text": null,
+    "metadata": {}
   }
 };
-})();
 (node as any).hash = '748438ac1bef6795f42e7ff471971cde';
 export default node;

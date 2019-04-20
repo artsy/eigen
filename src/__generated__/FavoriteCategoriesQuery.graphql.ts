@@ -19,7 +19,6 @@ export type FavoriteCategoriesQuery = {
 query FavoriteCategoriesQuery {
   me {
     ...Categories_me
-    __id
   }
 }
 
@@ -32,7 +31,7 @@ fragment Categories_me on Me {
     edges {
       node {
         gene {
-          id
+          gravityID
           __id
           name
           href
@@ -40,31 +39,25 @@ fragment Categories_me on Me {
             url
           }
         }
-        __id
         __typename
       }
       cursor
     }
   }
-  __id
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+var v0 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 10,
+    "type": "Int"
+  }
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FavoriteCategoriesQuery",
-  "id": "814089538a6782827e8d5bc579eea904",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FavoriteCategoriesQuery",
@@ -85,8 +78,7 @@ return {
             "kind": "FragmentSpread",
             "name": "Categories_me",
             "args": null
-          },
-          v0
+          }
         ]
       }
     ]
@@ -110,14 +102,7 @@ return {
             "alias": null,
             "name": "followed_genes",
             "storageKey": "followed_genes(first:10)",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 10,
-                "type": "Int"
-              }
-            ],
+            "args": (v0/*: any*/),
             "concreteType": "FollowGeneConnection",
             "plural": false,
             "selections": [
@@ -176,11 +161,17 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "id",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
-                          v0,
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "__id",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -215,7 +206,6 @@ return {
                           }
                         ]
                       },
-                      v0,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -240,22 +230,21 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "followed_genes",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 10,
-                "type": "Int"
-              }
-            ],
+            "args": (v0/*: any*/),
             "handle": "connection",
             "key": "Categories_followed_genes",
             "filters": null
-          },
-          v0
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FavoriteCategoriesQuery",
+    "id": "a31860bfc29ee72bfc110b9bb673d455",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

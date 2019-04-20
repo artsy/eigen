@@ -1,17 +1,17 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _FairsRail_fairs_module$ref: unique symbol;
 export type FairsRail_fairs_module$ref = typeof _FairsRail_fairs_module$ref;
 export type FairsRail_fairs_module = {
     readonly results: ReadonlyArray<({
-        readonly id: string;
+        readonly gravityID: string;
         readonly name: string | null;
         readonly profile: ({
-            readonly id: string;
+            readonly gravityID: string;
         }) | null;
         readonly mobile_image: ({
-            readonly id: string | null;
+            readonly gravityID: string | null;
             readonly url: string | null;
         }) | null;
     }) | null>;
@@ -20,18 +20,11 @@ export type FairsRail_fairs_module = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 };
@@ -51,7 +44,7 @@ return {
       "concreteType": "Fair",
       "plural": true,
       "selections": [
-        v0,
+        (v0/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -68,8 +61,7 @@ return {
           "concreteType": "Profile",
           "plural": false,
           "selections": [
-            v0,
-            v1
+            (v0/*: any*/)
           ]
         },
         {
@@ -81,7 +73,7 @@ return {
           "concreteType": "Image",
           "plural": false,
           "selections": [
-            v0,
+            (v0/*: any*/),
             {
               "kind": "ScalarField",
               "alias": null,
@@ -90,12 +82,11 @@ return {
               "storageKey": null
             }
           ]
-        },
-        v1
+        }
       ]
     }
   ]
 };
 })();
-(node as any).hash = '848f3ef1e7d35f58ee3c2abed5401d8d';
+(node as any).hash = '7849f55ec5e577046b113ddf72062595';
 export default node;

@@ -19,14 +19,13 @@ export type ArtistListItemTestsQuery = {
 query ArtistListItemTestsQuery {
   artist(id: "pablo-picasso") {
     ...ArtistListItem_artist
-    __id
   }
 }
 
 fragment ArtistListItem_artist on Artist {
   __id
   _id
-  id
+  gravityID
   name
   is_followed
   nationality
@@ -46,21 +45,9 @@ var v0 = [
     "value": "pablo-picasso",
     "type": "String!"
   }
-],
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ArtistListItemTestsQuery",
-  "id": "3439b99fe49b6fda99a4673c71da7da7",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ArtistListItemTestsQuery",
@@ -73,7 +60,7 @@ return {
         "alias": null,
         "name": "artist",
         "storageKey": "artist(id:\"pablo-picasso\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Artist",
         "plural": false,
         "selections": [
@@ -81,8 +68,7 @@ return {
             "kind": "FragmentSpread",
             "name": "ArtistListItem_artist",
             "args": null
-          },
-          v1
+          }
         ]
       }
     ]
@@ -97,11 +83,17 @@ return {
         "alias": null,
         "name": "artist",
         "storageKey": "artist(id:\"pablo-picasso\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Artist",
         "plural": false,
         "selections": [
-          v1,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "__id",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "ScalarField",
             "alias": null,
@@ -112,7 +104,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -172,6 +164,13 @@ return {
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ArtistListItemTestsQuery",
+    "id": "a82d3fc95c3382d7c4f56d0544e4f879",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

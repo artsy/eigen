@@ -13,7 +13,7 @@ export type ConfirmBidCreateCreditCardMutationResponse = {
     readonly createCreditCard: ({
         readonly creditCardOrError: ({
             readonly creditCard?: ({
-                readonly id: string;
+                readonly gravityID: string;
                 readonly brand: string;
                 readonly name: string | null;
                 readonly last_digits: string;
@@ -44,13 +44,12 @@ mutation ConfirmBidCreateCreditCardMutation(
       __typename
       ... on CreditCardMutationSuccess {
         creditCard {
-          id
+          gravityID
           brand
           name
           last_digits
           expiration_month
           expiration_year
-          __id
         }
       }
       ... on CreditCardMutationFailure {
@@ -136,7 +135,7 @@ v3 = {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "id",
+          "name": "gravityID",
           "args": null,
           "storageKey": null
         },
@@ -174,13 +173,6 @@ v3 = {
           "name": "expiration_year",
           "args": null,
           "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "__id",
-          "args": null,
-          "storageKey": null
         }
       ]
     }
@@ -188,24 +180,19 @@ v3 = {
 };
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "ConfirmBidCreateCreditCardMutation",
-  "id": "a833785410d332d2103d281ec3289db1",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ConfirmBidCreateCreditCardMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "createCreditCard",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "CreditCardPayload",
         "plural": false,
         "selections": [
@@ -218,8 +205,8 @@ return {
             "concreteType": null,
             "plural": false,
             "selections": [
-              v2,
-              v3
+              (v2/*: any*/),
+              (v3/*: any*/)
             ]
           }
         ]
@@ -229,14 +216,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "ConfirmBidCreateCreditCardMutation",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "createCreditCard",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "CreditCardPayload",
         "plural": false,
         "selections": [
@@ -256,15 +243,22 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v2,
-              v3
+              (v2/*: any*/),
+              (v3/*: any*/)
             ]
           }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "ConfirmBidCreateCreditCardMutation",
+    "id": "fd1e6e98e8876a03e8d2014261f9af3c",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = 'f50f9fe02a0a771b01a56146ee4a1e5c';
+(node as any).hash = 'fd1e6e98e8876a03e8d2014261f9af3c';
 export default node;

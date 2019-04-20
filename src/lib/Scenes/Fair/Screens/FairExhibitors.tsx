@@ -25,7 +25,7 @@ interface State {
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.FairAllExhibitorsPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  context_screen_owner_slug: props.fair.id,
+  context_screen_owner_slug: props.fair.gravityID,
   context_screen_owner_id: props.fair._id,
 }))
 export class FairExhibitors extends React.Component<Props, State> {
@@ -130,13 +130,13 @@ export const FairExhibitorsRenderer: React.SFC<{ fairID: string }> = ({ fairID }
     query={graphql`
       query FairExhibitorsQuery($fairID: String!) {
         fair(id: $fairID) {
-          id
+          gravityID
           _id
           exhibitors_grouped_by_name {
             letter
             exhibitors {
               name
-              id
+              gravityID
               profile_id
               partner_id
             }

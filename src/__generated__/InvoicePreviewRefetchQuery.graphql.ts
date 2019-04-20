@@ -28,9 +28,7 @@ query InvoicePreviewRefetchQuery(
   me {
     invoice(conversationId: $conversationId, invoiceId: $invoiceId) {
       ...InvoicePreview_invoice
-      __id
     }
-    __id
   }
 }
 
@@ -39,7 +37,6 @@ fragment InvoicePreview_invoice on Invoice {
   state
   total
   lewitt_invoice_id
-  __id
 }
 */
 
@@ -71,27 +68,15 @@ v1 = [
     "variableName": "invoiceId",
     "type": "String!"
   }
-],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "InvoicePreviewRefetchQuery",
-  "id": "6aaebb5a741e71949b67417a6c71890a",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "InvoicePreviewRefetchQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -107,7 +92,7 @@ return {
             "alias": null,
             "name": "invoice",
             "storageKey": null,
-            "args": v1,
+            "args": (v1/*: any*/),
             "concreteType": "Invoice",
             "plural": false,
             "selections": [
@@ -115,11 +100,9 @@ return {
                 "kind": "FragmentSpread",
                 "name": "InvoicePreview_invoice",
                 "args": null
-              },
-              v2
+              }
             ]
-          },
-          v2
+          }
         ]
       }
     ]
@@ -127,7 +110,7 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "InvoicePreviewRefetchQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -143,7 +126,7 @@ return {
             "alias": null,
             "name": "invoice",
             "storageKey": null,
-            "args": v1,
+            "args": (v1/*: any*/),
             "concreteType": "Invoice",
             "plural": false,
             "selections": [
@@ -174,14 +157,19 @@ return {
                 "name": "lewitt_invoice_id",
                 "args": null,
                 "storageKey": null
-              },
-              v2
+              }
             ]
-          },
-          v2
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "InvoicePreviewRefetchQuery",
+    "id": "cffdbe930d7bf0e07f33a435edc608c0",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

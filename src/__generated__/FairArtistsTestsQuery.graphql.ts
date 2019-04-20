@@ -19,12 +19,11 @@ export type FairArtistsTestsQuery = {
 query FairArtistsTestsQuery {
   fair(id: "sofa-chicago-2018") {
     ...FairArtists_fair
-    __id
   }
 }
 
 fragment FairArtists_fair on Fair {
-  id
+  gravityID
   _id
   artists(first: 10) {
     pageInfo {
@@ -39,19 +38,17 @@ fragment FairArtists_fair on Fair {
         sortable_id
         href
         _id
-        id
-        __id
+        gravityID
         __typename
       }
     }
   }
-  __id
 }
 
 fragment ArtistListItem_artist on Artist {
   __id
   _id
-  id
+  gravityID
   name
   is_followed
   nationality
@@ -75,31 +72,27 @@ var v0 = [
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "_id",
   "args": null,
   "storageKey": null
-};
+},
+v3 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 10,
+    "type": "Int"
+  }
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FairArtistsTestsQuery",
-  "id": "3117477906de0be138c5a3085556ed28",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FairArtistsTestsQuery",
@@ -112,7 +105,7 @@ return {
         "alias": null,
         "name": "fair",
         "storageKey": "fair(id:\"sofa-chicago-2018\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Fair",
         "plural": false,
         "selections": [
@@ -120,8 +113,7 @@ return {
             "kind": "FragmentSpread",
             "name": "FairArtists_fair",
             "args": null
-          },
-          v1
+          }
         ]
       }
     ]
@@ -136,25 +128,18 @@ return {
         "alias": null,
         "name": "fair",
         "storageKey": "fair(id:\"sofa-chicago-2018\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Fair",
         "plural": false,
         "selections": [
-          v2,
-          v3,
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
             "name": "artists",
             "storageKey": "artists(first:10)",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 10,
-                "type": "Int"
-              }
-            ],
+            "args": (v3/*: any*/),
             "concreteType": "ArtistConnection",
             "plural": false,
             "selections": [
@@ -222,8 +207,14 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v1,
-                      v2,
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "__id",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      (v1/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -245,7 +236,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v3,
+                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -302,22 +293,21 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "artists",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 10,
-                "type": "Int"
-              }
-            ],
+            "args": (v3/*: any*/),
             "handle": "connection",
             "key": "Fair_artists",
             "filters": null
-          },
-          v1
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FairArtistsTestsQuery",
+    "id": "48bf54144fa282b6f59e03ec5f86dcb8",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

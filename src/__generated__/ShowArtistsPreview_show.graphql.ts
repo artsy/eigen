@@ -1,21 +1,21 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
 declare const _ShowArtistsPreview_show$ref: unique symbol;
 export type ShowArtistsPreview_show$ref = typeof _ShowArtistsPreview_show$ref;
 export type ShowArtistsPreview_show = {
     readonly _id: string;
-    readonly id: string;
+    readonly gravityID: string;
     readonly artists: ReadonlyArray<({
         readonly _id: string;
-        readonly id: string;
+        readonly gravityID: string;
         readonly href: string | null;
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
     }) | null> | null;
     readonly artists_without_artworks: ReadonlyArray<({
         readonly _id: string;
-        readonly id: string;
+        readonly gravityID: string;
         readonly href: string | null;
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
     }) | null> | null;
@@ -24,7 +24,7 @@ export type ShowArtistsPreview_show = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -35,20 +35,13 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v3 = [
-  v0,
-  v1,
+v2 = [
+  (v0/*: any*/),
+  (v1/*: any*/),
   {
     "kind": "ScalarField",
     "alias": null,
@@ -60,8 +53,7 @@ v3 = [
     "kind": "FragmentSpread",
     "name": "ArtistListItem_artist",
     "args": null
-  },
-  v2
+  }
 ];
 return {
   "kind": "Fragment",
@@ -70,8 +62,8 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    v0,
-    v1,
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "kind": "LinkedField",
       "alias": null,
@@ -80,7 +72,7 @@ return {
       "args": null,
       "concreteType": "Artist",
       "plural": true,
-      "selections": v3
+      "selections": (v2/*: any*/)
     },
     {
       "kind": "LinkedField",
@@ -90,11 +82,10 @@ return {
       "args": null,
       "concreteType": "Artist",
       "plural": true,
-      "selections": v3
-    },
-    v2
+      "selections": (v2/*: any*/)
+    }
   ]
 };
 })();
-(node as any).hash = '211fd0417d1988d3ea260f0d2fd2300a';
+(node as any).hash = '8298a77a462b674a16a1104e98205816';
 export default node;

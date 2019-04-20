@@ -97,7 +97,7 @@ export default createRefetchContainer(
         conversations_existence_check: conversations(first: 1) {
           edges {
             node {
-              id
+              internalID
             }
           }
         }

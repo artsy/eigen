@@ -1,11 +1,11 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _LocationMap_location$ref: unique symbol;
 export type LocationMap_location$ref = typeof _LocationMap_location$ref;
 export type LocationMap_location = {
     readonly __id: string;
-    readonly id: string;
+    readonly gravityID: string;
     readonly city: string | null;
     readonly address: string | null;
     readonly address_2: string | null;
@@ -32,7 +32,7 @@ export type LocationMap_location = {
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "LocationMap_location",
   "type": "Location",
@@ -49,7 +49,7 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -202,5 +202,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = '8bea99f3ffcfca7cba12fb79ea897d0f';
+(node as any).hash = 'a9b90e37f50bccd8c88d531ccffbf24f';
 export default node;

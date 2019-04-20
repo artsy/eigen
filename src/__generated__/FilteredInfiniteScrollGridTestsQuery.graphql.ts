@@ -22,28 +22,23 @@ query FilteredInfiniteScrollGridTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
       ...FilteredInfiniteScrollGrid_filteredArtworks
-      __id
     }
-    __id
   }
 }
 
 fragment FilteredInfiniteScrollGrid_filteredArtworks on FilterArtworks {
   ...Filters_filteredArtworks
   ...ArtworksGridPaginationContainer_filteredArtworks
-  __id
 }
 
 fragment Filters_filteredArtworks on FilterArtworks {
   aggregations {
     slice
     counts {
-      id
+      gravityID
       name
-      __id
     }
   }
-  __id
 }
 
 fragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks {
@@ -56,7 +51,7 @@ fragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks {
     }
     edges {
       node {
-        id
+        gravityID
         __id
         image {
           aspect_ratio
@@ -77,14 +72,13 @@ fragment Artwork_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  id
+  gravityID
   sale {
     is_auction
     is_live_open
     is_open
     is_closed
     display_timely_at
-    __id
   }
   sale_artwork {
     opening_bid {
@@ -96,9 +90,7 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
-      __id
     }
-    __id
   }
   image {
     url(version: "large")
@@ -106,14 +98,11 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
-    __id
   }
   partner {
     name
-    __id
   }
   href
-  __id
 }
 */
 
@@ -159,32 +148,40 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "__id",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v5 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 10,
+    "type": "Int"
+  }
+],
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v6 = [
+v7 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -193,17 +190,11 @@ v6 = [
     "storageKey": null
   }
 ],
-v7 = [
-  v4,
-  v2
+v8 = [
+  (v3/*: any*/)
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FilteredInfiniteScrollGridTestsQuery",
-  "id": "e224bb99c21d6a18872cd5ea12b06190",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FilteredInfiniteScrollGridTestsQuery",
@@ -216,7 +207,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -225,7 +216,7 @@ return {
             "alias": null,
             "name": "filteredArtworks",
             "storageKey": "filteredArtworks(aggregations:[\"MEDIUM\",\"PRICE_RANGE\",\"TOTAL\"],medium:\"*\",price_range:\"*-*\",size:0)",
-            "args": v1,
+            "args": (v1/*: any*/),
             "concreteType": "FilterArtworks",
             "plural": false,
             "selections": [
@@ -233,11 +224,9 @@ return {
                 "kind": "FragmentSpread",
                 "name": "FilteredInfiniteScrollGrid_filteredArtworks",
                 "args": null
-              },
-              v2
+              }
             ]
-          },
-          v2
+          }
         ]
       }
     ]
@@ -252,7 +241,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -261,7 +250,7 @@ return {
             "alias": null,
             "name": "filteredArtworks",
             "storageKey": "filteredArtworks(aggregations:[\"MEDIUM\",\"PRICE_RANGE\",\"TOTAL\"],medium:\"*\",price_range:\"*-*\",size:0)",
-            "args": v1,
+            "args": (v1/*: any*/),
             "concreteType": "FilterArtworks",
             "plural": false,
             "selections": [
@@ -290,27 +279,19 @@ return {
                     "concreteType": "AggregationCount",
                     "plural": true,
                     "selections": [
-                      v3,
-                      v4,
-                      v2
+                      (v2/*: any*/),
+                      (v3/*: any*/)
                     ]
                   }
                 ]
               },
-              v2,
+              (v4/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": "artworks",
                 "name": "artworks_connection",
                 "storageKey": "artworks_connection(first:10)",
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "first",
-                    "value": 10,
-                    "type": "Int"
-                  }
-                ],
+                "args": (v5/*: any*/),
                 "concreteType": "ArtworkConnection",
                 "plural": false,
                 "selections": [
@@ -371,7 +352,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v3,
+                          (v2/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -439,7 +420,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v2,
+                          (v4/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -477,15 +458,14 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              v5,
+                              (v6/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
                                 "name": "display_timely_at",
                                 "args": null,
                                 "storageKey": null
-                              },
-                              v2
+                              }
                             ]
                           },
                           {
@@ -505,7 +485,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkOpeningBid",
                                 "plural": false,
-                                "selections": v6
+                                "selections": (v7/*: any*/)
                               },
                               {
                                 "kind": "LinkedField",
@@ -515,7 +495,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkCurrentBid",
                                 "plural": false,
-                                "selections": v6
+                                "selections": (v7/*: any*/)
                               },
                               {
                                 "kind": "ScalarField",
@@ -533,11 +513,9 @@ return {
                                 "concreteType": "Sale",
                                 "plural": false,
                                 "selections": [
-                                  v5,
-                                  v2
+                                  (v6/*: any*/)
                                 ]
-                              },
-                              v2
+                              }
                             ]
                           },
                           {
@@ -555,7 +533,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": v7
+                            "selections": (v8/*: any*/)
                           },
                           {
                             "kind": "LinkedField",
@@ -565,7 +543,7 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": v7
+                            "selections": (v8/*: any*/)
                           },
                           {
                             "kind": "ScalarField",
@@ -598,24 +576,23 @@ return {
                 "kind": "LinkedHandle",
                 "alias": "artworks",
                 "name": "artworks_connection",
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "first",
-                    "value": 10,
-                    "type": "Int"
-                  }
-                ],
+                "args": (v5/*: any*/),
                 "handle": "connection",
                 "key": "ArtworksGridPaginationContainer_artworks",
                 "filters": null
               }
             ]
-          },
-          v2
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FilteredInfiniteScrollGridTestsQuery",
+    "id": "b98fc08bec2ea3d38df622805613db71",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

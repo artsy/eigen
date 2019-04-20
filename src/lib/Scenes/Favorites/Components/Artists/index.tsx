@@ -82,7 +82,7 @@ export default createPaginationContainer(
           edges {
             node {
               artist {
-                id
+                gravityID
                 __id
                 name
                 href

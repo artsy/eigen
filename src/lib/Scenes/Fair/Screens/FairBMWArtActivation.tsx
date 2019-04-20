@@ -46,7 +46,7 @@ const PressReleaseContainer = styled(Flex)`
     ({
       context_screen: Schema.PageNames.BMWFairActivation,
       context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-      context_screen_owner_slug: props.fair.id,
+      context_screen_owner_slug: props.fair.gravityID,
       context_screen_owner_id: props.fair._id,
     } as any)
 )
@@ -155,7 +155,7 @@ export const FairBMWArtActivationRenderer: React.SFC<{ fairID: string }> = ({ fa
     query={graphql`
       query FairBMWArtActivationQuery($fairID: String!) {
         fair(id: $fairID) {
-          id
+          gravityID
           _id
           sponsoredContent {
             activationText

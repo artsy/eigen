@@ -4,7 +4,7 @@ import { ConcreteRequest } from "relay-runtime";
 export type FairBMWArtActivationTestsQueryVariables = {};
 export type FairBMWArtActivationTestsQueryResponse = {
     readonly fair: ({
-        readonly id: string;
+        readonly gravityID: string;
         readonly _id: string;
         readonly sponsoredContent: ({
             readonly activationText: string | null;
@@ -22,13 +22,12 @@ export type FairBMWArtActivationTestsQuery = {
 /*
 query FairBMWArtActivationTestsQuery {
   fair(id: "art-basel-in-miami-beach-2018") {
-    id
+    gravityID
     _id
     sponsoredContent {
       activationText
       pressReleaseUrl
     }
-    __id
   }
 }
 */
@@ -54,7 +53,7 @@ var v0 = [
       {
         "kind": "ScalarField",
         "alias": null,
-        "name": "id",
+        "name": "gravityID",
         "args": null,
         "storageKey": null
       },
@@ -89,39 +88,34 @@ var v0 = [
             "storageKey": null
           }
         ]
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "__id",
-        "args": null,
-        "storageKey": null
       }
     ]
   }
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FairBMWArtActivationTestsQuery",
-  "id": "67f3494bc95200964074abc58e819982",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FairBMWArtActivationTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
-    "selections": v0
+    "selections": (v0/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "FairBMWArtActivationTestsQuery",
     "argumentDefinitions": [],
-    "selections": v0
+    "selections": (v0/*: any*/)
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FairBMWArtActivationTestsQuery",
+    "id": "4f03f27d9813ae2f32c5ad658668bef0",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '9bf6aac12ebe9a1a77935ebf4a3844ca';
+(node as any).hash = '4f03f27d9813ae2f32c5ad658668bef0';
 export default node;

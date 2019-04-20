@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ImagePreview_attachment$ref } from "./ImagePreview_attachment.graphql";
 import { InvoicePreview_invoice$ref } from "./InvoicePreview_invoice.graphql";
 import { PDFPreview_attachment$ref } from "./PDFPreview_attachment.graphql";
@@ -19,7 +19,7 @@ export type Message_message = {
         readonly " $fragmentRefs": InvoicePreview_invoice$ref;
     }) | null;
     readonly attachments: ReadonlyArray<({
-        readonly id: string;
+        readonly internalID: string;
         readonly content_type: string;
         readonly download_url: string;
         readonly file_name: string;
@@ -30,15 +30,7 @@ export type Message_message = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Message_message",
   "type": "Message",
@@ -111,8 +103,7 @@ return {
           "kind": "FragmentSpread",
           "name": "InvoicePreview_invoice",
           "args": null
-        },
-        v0
+        }
       ]
     },
     {
@@ -127,7 +118,7 @@ return {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "id",
+          "name": "internalID",
           "args": null,
           "storageKey": null
         },
@@ -163,10 +154,8 @@ return {
           "args": null
         }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
-(node as any).hash = '04f6dec99660b3ec89bcebc4d828428f';
+(node as any).hash = 'b71af3f6aaf72a70554f326dc5a84f78';
 export default node;

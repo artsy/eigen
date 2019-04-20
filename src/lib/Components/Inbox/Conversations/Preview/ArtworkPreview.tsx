@@ -66,7 +66,7 @@ export class ArtworkPreview extends React.Component<Props> {
     action_name: Schema.ActionNames.ConversationAttachmentArtwork,
     owner_type: Schema.OwnerEntityTypes.Artwork,
     owner_id: props.artwork._id,
-    owner_slug: props.artwork.id,
+    owner_slug: props.artwork.gravityID,
   }))
   attachmentSelected() {
     this.props.onSelected()
@@ -101,7 +101,7 @@ export class ArtworkPreview extends React.Component<Props> {
 export default createFragmentContainer(ArtworkPreview, {
   artwork: graphql`
     fragment ArtworkPreview_artwork on Artwork {
-      id
+      gravityID
       _id
       title
       artist_names

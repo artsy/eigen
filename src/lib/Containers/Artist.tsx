@@ -70,7 +70,7 @@ export class Artist extends Component<Props, State> {
       action_name: actionName,
       action_type: Schema.ActionTypes.Tap,
       owner_id: props.artist._id,
-      owner_slug: props.artist.id,
+      owner_slug: props.artist.gravityID,
       owner_type: Schema.OwnerEntityTypes.Artist,
     }
   })
@@ -162,7 +162,7 @@ export default createFragmentContainer(Artist, {
   artist: graphql`
     fragment Artist_artist on Artist {
       _id
-      id
+      gravityID
       has_metadata
       counts {
         artworks

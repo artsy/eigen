@@ -23,13 +23,11 @@ query MockRelayRendererFixturesArtistQuery(
 ) {
   artist(id: $id) {
     ...MockRelayRendererFixtures_artist
-    __id
   }
 }
 
 fragment MockRelayRendererFixtures_artist on Artist {
   name
-  __id
 }
 */
 
@@ -49,34 +47,22 @@ v1 = [
     "variableName": "id",
     "type": "String!"
   }
-],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "MockRelayRendererFixturesArtistQuery",
-  "id": "1ee30e440ff6548ca9cf3a9e15a76f7c",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "MockRelayRendererFixturesArtistQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artist",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artist",
         "plural": false,
         "selections": [
@@ -84,8 +70,7 @@ return {
             "kind": "FragmentSpread",
             "name": "MockRelayRendererFixtures_artist",
             "args": null
-          },
-          v2
+          }
         ]
       }
     ]
@@ -93,14 +78,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "MockRelayRendererFixturesArtistQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artist",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artist",
         "plural": false,
         "selections": [
@@ -110,11 +95,17 @@ return {
             "name": "name",
             "args": null,
             "storageKey": null
-          },
-          v2
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "MockRelayRendererFixturesArtistQuery",
+    "id": "aabded82722f7ed4c4f873a3d0b315be",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

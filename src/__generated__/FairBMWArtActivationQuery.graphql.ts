@@ -6,7 +6,7 @@ export type FairBMWArtActivationQueryVariables = {
 };
 export type FairBMWArtActivationQueryResponse = {
     readonly fair: ({
-        readonly id: string;
+        readonly gravityID: string;
         readonly _id: string;
         readonly sponsoredContent: ({
             readonly activationText: string | null;
@@ -26,13 +26,12 @@ query FairBMWArtActivationQuery(
   $fairID: String!
 ) {
   fair(id: $fairID) {
-    id
+    gravityID
     _id
     sponsoredContent {
       activationText
       pressReleaseUrl
     }
-    __id
   }
 }
 */
@@ -66,7 +65,7 @@ v1 = [
       {
         "kind": "ScalarField",
         "alias": null,
-        "name": "id",
+        "name": "gravityID",
         "args": null,
         "storageKey": null
       },
@@ -101,39 +100,34 @@ v1 = [
             "storageKey": null
           }
         ]
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "__id",
-        "args": null,
-        "storageKey": null
       }
     ]
   }
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FairBMWArtActivationQuery",
-  "id": "3d38512472e702bc62b341971a7eda55",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FairBMWArtActivationQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "FairBMWArtActivationQuery",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FairBMWArtActivationQuery",
+    "id": "c3c26092b367e194ee00121f2af83b77",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '4ae1b4a57b61e1f7945a07675a1aa4c5';
+(node as any).hash = 'c3c26092b367e194ee00121f2af83b77';
 export default node;

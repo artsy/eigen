@@ -73,7 +73,7 @@ export class ArtistListItem extends React.Component<Props, State> {
   handleFollowArtist = () => {
     const {
       relay,
-      artist: { id, __id, is_followed },
+      artist: { gravityID, __id, is_followed },
     } = this.props
 
     this.setState(
@@ -95,7 +95,7 @@ export class ArtistListItem extends React.Component<Props, State> {
           `,
           variables: {
             input: {
-              artist_id: id,
+              artist_id: gravityID,
               unfollow: is_followed,
             },
           },
@@ -119,7 +119,7 @@ export class ArtistListItem extends React.Component<Props, State> {
     action_name: props.artist.is_followed ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Success,
     owner_id: props.artist._id,
-    owner_slug: props.artist.id,
+    owner_slug: props.artist.gravityID,
     owner_type: Schema.OwnerEntityTypes.Artist,
   }))
   handleShowSuccessfullyUpdated() {
@@ -198,7 +198,7 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
     fragment ArtistListItem_artist on Artist {
       __id
       _id
-      id
+      gravityID
       name
       is_followed
       nationality

@@ -74,7 +74,7 @@ class CityFairList extends React.Component<Props, State> {
             }}
             data={edges}
             ItemSeparatorComponent={() => <Separator />}
-            keyExtractor={item => item.node.id}
+            keyExtractor={item => item.node.gravityID}
             renderItem={({ item }) => this.renderItem(item)}
             onScroll={isCloseToBottom(this.fetchData)}
             ListFooterComponent={!!fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
@@ -96,7 +96,7 @@ export default createPaginationContainer(
           @connection(key: "CityFairList_fairs") {
           edges {
             node {
-              id
+              gravityID
               name
               exhibition_period
               counts {
@@ -115,14 +115,14 @@ export default createPaginationContainer(
               }
               profile {
                 icon {
-                  id
+                  gravityID
                   href
                   height
                   width
                   url(version: "square140")
                 }
                 __id
-                id
+                gravityID
                 name
               }
               start_at

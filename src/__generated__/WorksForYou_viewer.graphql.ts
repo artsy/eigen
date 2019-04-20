@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 import { Notification_notification$ref } from "./Notification_notification.graphql";
 declare const _WorksForYou_viewer$ref: unique symbol;
@@ -23,7 +23,7 @@ export type WorksForYou_viewer = {
         }) | null;
     }) | null;
     readonly selectedArtist: ({
-        readonly id: string;
+        readonly gravityID: string;
         readonly href: string | null;
         readonly name: string | null;
         readonly image: ({
@@ -40,15 +40,7 @@ export type WorksForYou_viewer = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "WorksForYou_viewer",
   "type": "Viewer",
@@ -170,7 +162,13 @@ return {
                       "concreteType": "FollowedArtistsArtworksGroup",
                       "plural": false,
                       "selections": [
-                        v0,
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "__id",
+                          "args": null,
+                          "storageKey": null
+                        },
                         {
                           "kind": "FragmentSpread",
                           "name": "Notification_notification",
@@ -197,8 +195,7 @@ return {
               ]
             }
           ]
-        },
-        v0
+        }
       ]
     },
     {
@@ -220,7 +217,7 @@ return {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "id",
+          "name": "gravityID",
           "args": null,
           "storageKey": null
         },
@@ -306,15 +303,12 @@ return {
               "kind": "FragmentSpread",
               "name": "GenericGrid_artworks",
               "args": null
-            },
-            v0
+            }
           ]
-        },
-        v0
+        }
       ]
     }
   ]
 };
-})();
-(node as any).hash = '80174d15b8c622c116f477a87ac96f89';
+(node as any).hash = 'c0af2c64f36706fbe435e361f2a00aed';
 export default node;

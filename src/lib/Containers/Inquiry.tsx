@@ -113,7 +113,7 @@ export class Inquiry extends React.Component<Props, State> {
     action_name: Schema.ActionNames.InquiryCancel,
     owner_type: Schema.OwnerEntityTypes.Artwork,
     owner_id: props.artwork._id,
-    owner_slug: props.artwork.id,
+    owner_slug: props.artwork.gravityID,
   }))
   cancelModal() {
     this.dismissModal()
@@ -124,7 +124,7 @@ export class Inquiry extends React.Component<Props, State> {
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
     owner_id: props.artwork._id,
-    owner_slug: props.artwork.id,
+    owner_slug: props.artwork.gravityID,
   }))
   inquirySent() {
     this.dismissModal()
@@ -139,7 +139,7 @@ export class Inquiry extends React.Component<Props, State> {
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
     owner_id: props.artwork._id,
-    owner_slug: props.artwork.id,
+    owner_slug: props.artwork.gravityID,
   }))
   sendInquiry() {
     // Using setState to trigger re-render for the button
@@ -153,7 +153,7 @@ export class Inquiry extends React.Component<Props, State> {
         "User-Agent": Emission.userAgent,
       },
       body: JSON.stringify({
-        artwork: this.props.artwork.id,
+        artwork: this.props.artwork.gravityID,
         message: this.state.text,
       }),
     })
@@ -176,7 +176,7 @@ export class Inquiry extends React.Component<Props, State> {
     action_name: Schema.ActionNames.InquirySend,
     owner_type: Schema.OwnerEntityTypes.Artwork,
     owner_id: props.artwork._id,
-    owner_slug: props.artwork.id,
+    owner_slug: props.artwork.gravityID,
   }))
   sendFailed(error) {
     this.setState(() => ({ sending: false }))
@@ -243,7 +243,7 @@ export default createFragmentContainer(Inquiry, {
   artwork: graphql`
     fragment Inquiry_artwork on Artwork {
       _id
-      id
+      gravityID
       contact_message
       partner {
         name

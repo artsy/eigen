@@ -52,7 +52,7 @@ export class Messages extends React.Component<Props, State> {
         firstMessage={item.first_message}
         initialText={conversation.initial_message}
         message={item}
-        conversationId={conversation.id}
+        conversationId={conversation.internalID}
         senderName={senderName}
         initials={initials}
         artworkPreview={
@@ -174,7 +174,7 @@ export default createPaginationContainer(
       fragment Messages_conversation on Conversation
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
         __id
-        id
+        internalID
         from {
           name
           email
@@ -200,7 +200,7 @@ export default createPaginationContainer(
               is_from_user
               body
               attachments {
-                id
+                internalID
               }
               ...Message_message
             }

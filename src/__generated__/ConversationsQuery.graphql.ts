@@ -25,7 +25,6 @@ query ConversationsQuery(
 ) {
   me {
     ...Conversations_me_1G22uz
-    __id
   }
 }
 
@@ -37,20 +36,18 @@ fragment Conversations_me_1G22uz on Me {
     }
     edges {
       node {
-        id
+        internalID
         last_message
         ...ConversationSnippet_conversation
-        __id
         __typename
       }
       cursor
     }
   }
-  __id
 }
 
 fragment ConversationSnippet_conversation on Conversation {
-  id
+  internalID
   to {
     name
   }
@@ -71,7 +68,6 @@ fragment ConversationSnippet_conversation on Conversation {
       ... on Show {
         fair {
           name
-          __id
         }
         name
         cover_image {
@@ -79,11 +75,10 @@ fragment ConversationSnippet_conversation on Conversation {
         }
       }
       ... on Node {
-        __id
+        id
       }
     }
   }
-  __id
 }
 */
 
@@ -102,13 +97,20 @@ var v0 = [
     "defaultValue": null
   }
 ],
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor",
+    "type": "String"
+  },
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "count",
+    "type": "Int"
+  }
+],
 v2 = {
   "kind": "ScalarField",
   "alias": null,
@@ -116,14 +118,17 @@ v2 = {
   "args": null,
   "storageKey": null
 },
-v3 = {
+v3 = [
+  (v2/*: any*/)
+],
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
   "args": null,
   "storageKey": null
 },
-v4 = [
+v5 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -134,17 +139,12 @@ v4 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ConversationsQuery",
-  "id": "4af7bbf7a45f0e2bfd6f6eaf48108225",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ConversationsQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -172,8 +172,7 @@ return {
                 "type": null
               }
             ]
-          },
-          v1
+          }
         ]
       }
     ]
@@ -181,7 +180,7 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "ConversationsQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -197,20 +196,7 @@ return {
             "alias": null,
             "name": "conversations",
             "storageKey": null,
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "after",
-                "variableName": "cursor",
-                "type": "String"
-              },
-              {
-                "kind": "Variable",
-                "name": "first",
-                "variableName": "count",
-                "type": "Int"
-              }
-            ],
+            "args": (v1/*: any*/),
             "concreteType": "ConversationConnection",
             "plural": false,
             "selections": [
@@ -260,7 +246,7 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "id",
+                        "name": "internalID",
                         "args": null,
                         "storageKey": null
                       },
@@ -279,9 +265,7 @@ return {
                         "args": null,
                         "concreteType": "ConversationResponder",
                         "plural": false,
-                        "selections": [
-                          v2
-                        ]
+                        "selections": (v3/*: any*/)
                       },
                       {
                         "kind": "ScalarField",
@@ -315,8 +299,14 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
-                              v3,
-                              v1,
+                              (v4/*: any*/),
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "id",
+                                "args": null,
+                                "storageKey": null
+                              },
                               {
                                 "kind": "InlineFragment",
                                 "type": "Show",
@@ -329,12 +319,9 @@ return {
                                     "args": null,
                                     "concreteType": "Fair",
                                     "plural": false,
-                                    "selections": [
-                                      v2,
-                                      v1
-                                    ]
+                                    "selections": (v3/*: any*/)
                                   },
-                                  v2,
+                                  (v2/*: any*/),
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
@@ -343,7 +330,7 @@ return {
                                     "args": null,
                                     "concreteType": "Image",
                                     "plural": false,
-                                    "selections": v4
+                                    "selections": (v5/*: any*/)
                                   }
                                 ]
                               },
@@ -380,7 +367,7 @@ return {
                                     "args": null,
                                     "concreteType": "Image",
                                     "plural": false,
-                                    "selections": v4
+                                    "selections": (v5/*: any*/)
                                   }
                                 ]
                               }
@@ -388,8 +375,7 @@ return {
                           }
                         ]
                       },
-                      v1,
-                      v3
+                      (v4/*: any*/)
                     ]
                   },
                   {
@@ -407,28 +393,21 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "conversations",
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "after",
-                "variableName": "cursor",
-                "type": "String"
-              },
-              {
-                "kind": "Variable",
-                "name": "first",
-                "variableName": "count",
-                "type": "Int"
-              }
-            ],
+            "args": (v1/*: any*/),
             "handle": "connection",
             "key": "Conversations_conversations",
             "filters": null
-          },
-          v1
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ConversationsQuery",
+    "id": "82b85cf4af654ade37df29ccb3f139d6",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

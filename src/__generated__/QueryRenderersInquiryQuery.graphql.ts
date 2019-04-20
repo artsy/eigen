@@ -23,24 +23,21 @@ query QueryRenderersInquiryQuery(
 ) {
   artwork(id: $artworkID) {
     ...Inquiry_artwork
-    __id
   }
 }
 
 fragment Inquiry_artwork on Artwork {
   _id
-  id
+  gravityID
   contact_message
   partner {
     name
-    __id
   }
   ...ArtworkPreview_artwork
-  __id
 }
 
 fragment ArtworkPreview_artwork on Artwork {
-  id
+  gravityID
   _id
   title
   artist_names
@@ -48,7 +45,6 @@ fragment ArtworkPreview_artwork on Artwork {
   image {
     url
   }
-  __id
 }
 */
 
@@ -68,34 +64,22 @@ v1 = [
     "variableName": "artworkID",
     "type": "String!"
   }
-],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "QueryRenderersInquiryQuery",
-  "id": "a061d9dbefece2ef49ce726b8725c34c",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "QueryRenderersInquiryQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artwork",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
@@ -103,8 +87,7 @@ return {
             "kind": "FragmentSpread",
             "name": "Inquiry_artwork",
             "args": null
-          },
-          v2
+          }
         ]
       }
     ]
@@ -112,14 +95,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "QueryRenderersInquiryQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artwork",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
@@ -133,7 +116,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -159,8 +142,7 @@ return {
                 "name": "name",
                 "args": null,
                 "storageKey": null
-              },
-              v2
+              }
             ]
           },
           {
@@ -201,11 +183,17 @@ return {
                 "storageKey": null
               }
             ]
-          },
-          v2
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "QueryRenderersInquiryQuery",
+    "id": "820a207464d113a1f04a3c89649aa9b8",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

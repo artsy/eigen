@@ -23,29 +23,26 @@ query QueryRenderersShowArtistsQuery(
 ) {
   show(id: $showID) {
     ...ShowArtists_show
-    __id
   }
 }
 
 fragment ShowArtists_show on Show {
   _id
-  id
+  gravityID
   artists_grouped_by_name {
     letter
     items {
       ...ArtistListItem_artist
       sortable_id
       href
-      __id
     }
   }
-  __id
 }
 
 fragment ArtistListItem_artist on Artist {
   __id
   _id
-  id
+  gravityID
   name
   is_followed
   nationality
@@ -77,44 +74,32 @@ v1 = [
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "_id",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "QueryRenderersShowArtistsQuery",
-  "id": "f289cd872dbc83c8ad7a0276a9b6008b",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "QueryRenderersShowArtistsQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -122,8 +107,7 @@ return {
             "kind": "FragmentSpread",
             "name": "ShowArtists_show",
             "args": null
-          },
-          v2
+          }
         ]
       }
     ]
@@ -131,19 +115,19 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "QueryRenderersShowArtistsQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          v3,
-          v4,
+          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -176,8 +160,14 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v2,
-                  v4,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "__id",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  (v3/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -192,7 +182,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v3,
+                  (v2/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -242,11 +232,17 @@ return {
                 ]
               }
             ]
-          },
-          v2
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "QueryRenderersShowArtistsQuery",
+    "id": "b0f50800f806619e2d413fa4c58f8957",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _Fairs_me$ref: unique symbol;
 export type Fairs_me$ref = typeof _Fairs_me$ref;
 export type Fairs_me = {
@@ -10,7 +10,7 @@ export type Fairs_me = {
                 readonly node: ({
                     readonly __id: string;
                     readonly profile: ({
-                        readonly id: string;
+                        readonly gravityID: string;
                         readonly is_followed: boolean | null;
                         readonly __id: string;
                     }) | null;
@@ -34,7 +34,7 @@ export type Fairs_me = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -110,7 +110,7 @@ return {
                   "concreteType": "Fair",
                   "plural": false,
                   "selections": [
-                    v0,
+                    (v0/*: any*/),
                     {
                       "kind": "LinkedField",
                       "alias": null,
@@ -123,7 +123,7 @@ return {
                         {
                           "kind": "ScalarField",
                           "alias": null,
-                          "name": "id",
+                          "name": "gravityID",
                           "args": null,
                           "storageKey": null
                         },
@@ -134,7 +134,7 @@ return {
                           "args": null,
                           "storageKey": null
                         },
-                        v0
+                        (v0/*: any*/)
                       ]
                     },
                     {
@@ -254,10 +254,9 @@ return {
           ]
         }
       ]
-    },
-    v0
+    }
   ]
 };
 })();
-(node as any).hash = '7e39cfc0a8050cbb9a4e4c07381ef654';
+(node as any).hash = 'ea79bbfd3e12b37a81e7b9f4b63aff75';
 export default node;

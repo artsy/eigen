@@ -47,7 +47,7 @@ export class ShowItemRow extends React.Component<Props, State> {
 
   @track(props => {
     const {
-      show: { id: slug, _id, is_followed },
+      show: { gravityID: slug, _id, is_followed },
     } = props
     return {
       action_name: is_followed ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow,
@@ -59,7 +59,7 @@ export class ShowItemRow extends React.Component<Props, State> {
   })
   handleSave() {
     const {
-      show: { id: showSlug, __id: nodeID, _id: showID, is_followed: isShowFollowed },
+      show: { gravityID: showSlug, __id: nodeID, _id: showID, is_followed: isShowFollowed },
     } = this.props
 
     if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
@@ -78,7 +78,7 @@ export class ShowItemRow extends React.Component<Props, State> {
               mutation ShowItemRowMutation($input: FollowShowInput!) {
                 followShow(input: $input) {
                   show {
-                    id
+                    gravityID
                     _id
                     is_followed
                   }
@@ -94,7 +94,7 @@ export class ShowItemRow extends React.Component<Props, State> {
             optimisticResponse: {
               followShow: {
                 show: {
-                  id: showSlug,
+                  gravityID: showSlug,
                   _id: showID,
                   is_followed: !isShowFollowed,
                 },
@@ -127,7 +127,7 @@ export class ShowItemRow extends React.Component<Props, State> {
     const imageURL = mainCoverImageURL || galleryProfileIcon
 
     return (
-      <TouchableWithoutFeedback onPress={() => (!this.isTapped ? this.handleTap(show.id, show._id) : null)}>
+      <TouchableWithoutFeedback onPress={() => (!this.isTapped ? this.handleTap(show.gravityID, show._id) : null)}>
         <Flex flexDirection="row">
           {!imageURL ? (
             <DefaultImageContainer p={15}>
@@ -185,7 +185,7 @@ export class ShowItemRow extends React.Component<Props, State> {
 export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
   show: graphql`
     fragment ShowItemRow_show on Show {
-      id
+      gravityID
       _id
       __id
       is_followed

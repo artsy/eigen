@@ -64,7 +64,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
     const { show, relay } = this.props
     const {
       partner: {
-        id: partnerSlug,
+        gravityID: partnerSlug,
         _id: partnerID,
         __id: partnerRelayID,
         profile: { is_followed: partnerFollowed, _id: profileID },
@@ -86,7 +86,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
             mutation FairBoothHeaderMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {
                 profile {
-                  id
+                  gravityID
                   _id
                   is_followed
                 }
@@ -103,7 +103,7 @@ export class FairBoothHeader extends React.Component<Props, State> {
             followProfile: {
               profile: {
                 _id: profileID,
-                id: partnerSlug,
+                gravityID: partnerSlug,
                 is_followed: !partnerFollowed,
               },
             },
@@ -175,13 +175,13 @@ export const FairBoothHeaderContainer = createFragmentContainer(FairBoothHeader,
       partner {
         ... on Partner {
           name
-          id
+          gravityID
           _id
           __id
           href
           profile {
             _id
-            id
+            gravityID
             is_followed
           }
         }

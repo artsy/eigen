@@ -12,7 +12,7 @@ export type ShowHeaderFollowShowMutationVariables = {
 export type ShowHeaderFollowShowMutationResponse = {
     readonly followShow: ({
         readonly show: ({
-            readonly id: string;
+            readonly gravityID: string;
             readonly _id: string;
             readonly is_followed: boolean | null;
         }) | null;
@@ -31,10 +31,9 @@ mutation ShowHeaderFollowShowMutation(
 ) {
   followShow(input: $input) {
     show {
-      id
+      gravityID
       _id
       is_followed
-      __id
     }
   }
 }
@@ -78,7 +77,7 @@ v1 = [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -95,13 +94,6 @@ v1 = [
             "name": "is_followed",
             "args": null,
             "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "__id",
-            "args": null,
-            "storageKey": null
           }
         ]
       }
@@ -110,26 +102,28 @@ v1 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "ShowHeaderFollowShowMutation",
-  "id": "d44aa468326d50ffcd43207d04c95ab2",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ShowHeaderFollowShowMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "ShowHeaderFollowShowMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "ShowHeaderFollowShowMutation",
+    "id": "c6ea47cba397e65a27fbfaed30456f35",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '3f78943c78e228426664034dffd9e97b';
+(node as any).hash = 'c6ea47cba397e65a27fbfaed30456f35';
 export default node;

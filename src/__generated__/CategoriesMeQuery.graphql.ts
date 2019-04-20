@@ -25,7 +25,6 @@ query CategoriesMeQuery(
 ) {
   me {
     ...Categories_me_1G22uz
-    __id
   }
 }
 
@@ -38,7 +37,7 @@ fragment Categories_me_1G22uz on Me {
     edges {
       node {
         gene {
-          id
+          gravityID
           __id
           name
           href
@@ -46,13 +45,11 @@ fragment Categories_me_1G22uz on Me {
             url
           }
         }
-        __id
         __typename
       }
       cursor
     }
   }
-  __id
 }
 */
 
@@ -71,26 +68,28 @@ var v0 = [
     "defaultValue": null
   }
 ],
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor",
+    "type": "String"
+  },
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "count",
+    "type": "Int"
+  }
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "CategoriesMeQuery",
-  "id": "812cc470cfee86444e17b02bab63bd57",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "CategoriesMeQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -118,8 +117,7 @@ return {
                 "type": null
               }
             ]
-          },
-          v1
+          }
         ]
       }
     ]
@@ -127,7 +125,7 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "CategoriesMeQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -143,20 +141,7 @@ return {
             "alias": null,
             "name": "followed_genes",
             "storageKey": null,
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "after",
-                "variableName": "cursor",
-                "type": "String"
-              },
-              {
-                "kind": "Variable",
-                "name": "first",
-                "variableName": "count",
-                "type": "Int"
-              }
-            ],
+            "args": (v1/*: any*/),
             "concreteType": "FollowGeneConnection",
             "plural": false,
             "selections": [
@@ -215,11 +200,17 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "id",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
-                          v1,
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "__id",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -254,7 +245,6 @@ return {
                           }
                         ]
                       },
-                      v1,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -279,28 +269,21 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "followed_genes",
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "after",
-                "variableName": "cursor",
-                "type": "String"
-              },
-              {
-                "kind": "Variable",
-                "name": "first",
-                "variableName": "count",
-                "type": "Int"
-              }
-            ],
+            "args": (v1/*: any*/),
             "handle": "connection",
             "key": "Categories_followed_genes",
             "filters": null
-          },
-          v1
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "CategoriesMeQuery",
+    "id": "e6ea0c0167f35c399e0d6490f9672e4d",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

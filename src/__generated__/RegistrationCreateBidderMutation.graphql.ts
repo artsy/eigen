@@ -11,7 +11,7 @@ export type RegistrationCreateBidderMutationVariables = {
 export type RegistrationCreateBidderMutationResponse = {
     readonly createBidder: ({
         readonly bidder: ({
-            readonly id: string;
+            readonly gravityID: string;
             readonly qualified_for_bidding: boolean | null;
         }) | null;
     }) | null;
@@ -29,9 +29,8 @@ mutation RegistrationCreateBidderMutation(
 ) {
   createBidder(input: $input) {
     bidder {
-      id
+      gravityID
       qualified_for_bidding
-      __id
     }
   }
 }
@@ -75,7 +74,7 @@ v1 = [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -83,13 +82,6 @@ v1 = [
             "kind": "ScalarField",
             "alias": null,
             "name": "qualified_for_bidding",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "__id",
             "args": null,
             "storageKey": null
           }
@@ -100,26 +92,28 @@ v1 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "RegistrationCreateBidderMutation",
-  "id": "5adb7100b533a36426ccc810956fd44a",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "RegistrationCreateBidderMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "RegistrationCreateBidderMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "RegistrationCreateBidderMutation",
+    "id": "415793ff340365341149ed83366d2edd",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '08d945c676043d45265618182413bb99';
+(node as any).hash = '415793ff340365341149ed83366d2edd';
 export default node;

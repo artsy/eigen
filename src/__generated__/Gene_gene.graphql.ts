@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { About_gene$ref } from "./About_gene.graphql";
 import { GeneArtworksGrid_filtered_artworks$ref } from "./GeneArtworksGrid_filtered_artworks.graphql";
 import { Header_gene$ref } from "./Header_gene.graphql";
@@ -13,7 +13,7 @@ export type Gene_gene = {
         readonly aggregations: ReadonlyArray<({
             readonly slice: ArtworkAggregation | null;
             readonly counts: ReadonlyArray<({
-                readonly id: string;
+                readonly gravityID: string;
                 readonly name: string | null;
                 readonly count: number | null;
             }) | null> | null;
@@ -26,15 +26,7 @@ export type Gene_gene = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Gene_gene",
   "type": "Gene",
@@ -155,7 +147,7 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "id",
+                  "name": "gravityID",
                   "args": null,
                   "storageKey": null
                 },
@@ -172,8 +164,7 @@ return {
                   "name": "count",
                   "args": null,
                   "storageKey": null
-                },
-                v0
+                }
               ]
             }
           ]
@@ -189,13 +180,10 @@ return {
               "type": null
             }
           ]
-        },
-        v0
+        }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
-(node as any).hash = 'b5dcbf530f6765ce1470ecc52166870e';
+(node as any).hash = 'bd6398fbfafab446e0635b8daf93314a';
 export default node;

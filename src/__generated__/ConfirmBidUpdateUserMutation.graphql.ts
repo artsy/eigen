@@ -47,7 +47,6 @@ mutation ConfirmBidUpdateUserMutation(
     clientMutationId
     user {
       phone
-      __id
     }
   }
 }
@@ -101,13 +100,6 @@ v1 = [
             "name": "phone",
             "args": null,
             "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "__id",
-            "args": null,
-            "storageKey": null
           }
         ]
       }
@@ -116,24 +108,26 @@ v1 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "ConfirmBidUpdateUserMutation",
-  "id": "b158739b11e310e4f5690aa52671d2f1",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ConfirmBidUpdateUserMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "ConfirmBidUpdateUserMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "ConfirmBidUpdateUserMutation",
+    "id": "30b967c971f3916e1e4e9f9213e83b41",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

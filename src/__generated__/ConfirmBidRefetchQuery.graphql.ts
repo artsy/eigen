@@ -27,9 +27,7 @@ query ConfirmBidRefetchQuery(
     has_qualified_credit_cards
     bidders(sale_id: $saleID) {
       qualified_for_bidding
-      __id
     }
-    __id
   }
 }
 */
@@ -43,14 +41,7 @@ var v0 = [
     "defaultValue": null
   }
 ],
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v2 = [
+v1 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -89,34 +80,34 @@ v2 = [
             "name": "qualified_for_bidding",
             "args": null,
             "storageKey": null
-          },
-          v1
+          }
         ]
-      },
-      v1
+      }
     ]
   }
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ConfirmBidRefetchQuery",
-  "id": "9d766fcdd80005d680dd9145655fa6ab",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ConfirmBidRefetchQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v2
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "ConfirmBidRefetchQuery",
-    "argumentDefinitions": v0,
-    "selections": v2
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ConfirmBidRefetchQuery",
+    "id": "12cc69f9d8252cdd1c762eea37e5ae8f",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

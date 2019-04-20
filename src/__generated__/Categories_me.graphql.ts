@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _Categories_me$ref: unique symbol;
 export type Categories_me$ref = typeof _Categories_me$ref;
 export type Categories_me = {
@@ -12,7 +12,7 @@ export type Categories_me = {
         readonly edges: ReadonlyArray<({
             readonly node: ({
                 readonly gene: ({
-                    readonly id: string;
+                    readonly gravityID: string;
                     readonly __id: string;
                     readonly name: string | null;
                     readonly href: string | null;
@@ -28,15 +28,7 @@ export type Categories_me = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Categories_me",
   "type": "Me",
@@ -131,11 +123,17 @@ return {
                     {
                       "kind": "ScalarField",
                       "alias": null,
-                      "name": "id",
+                      "name": "gravityID",
                       "args": null,
                       "storageKey": null
                     },
-                    v0,
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "__id",
+                      "args": null,
+                      "storageKey": null
+                    },
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -170,7 +168,6 @@ return {
                     }
                   ]
                 },
-                v0,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -190,10 +187,8 @@ return {
           ]
         }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
-(node as any).hash = 'f1a9e289f208bfcf51a972afc0cdf102';
+(node as any).hash = '129ff159efecfa3cb0305024839a584e';
 export default node;

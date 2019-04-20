@@ -54,7 +54,7 @@ class Header extends React.Component<Props, State> {
     action_name: state.following ? Schema.ActionNames.GeneUnfollow : Schema.ActionNames.GeneFollow,
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.gene._id,
-    owner_slug: props.gene.id,
+    owner_slug: props.gene.gravityID,
     owner_type: Schema.OwnerEntityTypes.Gene,
   }))
   handleFollowChange() {
@@ -74,7 +74,7 @@ class Header extends React.Component<Props, State> {
     action_name: state.following ? Schema.ActionNames.GeneFollow : Schema.ActionNames.GeneUnfollow,
     action_type: Schema.ActionTypes.Success,
     owner_id: props.gene._id,
-    owner_slug: props.gene.id,
+    owner_slug: props.gene.gravityID,
     owner_type: Schema.OwnerEntityTypes.Gene,
   }))
   successfulFollowChange() {
@@ -85,7 +85,7 @@ class Header extends React.Component<Props, State> {
     action_name: state.following ? Schema.ActionNames.GeneFollow : Schema.ActionNames.GeneUnfollow,
     action_type: Schema.ActionTypes.Fail,
     owner_id: props.gene._id,
-    owner_slug: props.gene.id,
+    owner_slug: props.gene.gravityID,
     owner_type: Schema.OwnerEntityTypes.Gene,
   }))
   failedFollowChange() {
@@ -147,7 +147,7 @@ export default createFragmentContainer(Header, {
   gene: graphql`
     fragment Header_gene on Gene {
       _id
-      id
+      gravityID
       name
     }
   `,

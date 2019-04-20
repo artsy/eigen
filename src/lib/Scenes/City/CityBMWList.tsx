@@ -83,7 +83,7 @@ export default createPaginationContainer(
             @connection(key: "CityBMWList_shows") {
             edges {
               node {
-                id
+                gravityID
                 _id
                 __id
                 name

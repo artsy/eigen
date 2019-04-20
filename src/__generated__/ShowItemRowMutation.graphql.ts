@@ -12,7 +12,7 @@ export type ShowItemRowMutationVariables = {
 export type ShowItemRowMutationResponse = {
     readonly followShow: ({
         readonly show: ({
-            readonly id: string;
+            readonly gravityID: string;
             readonly _id: string;
             readonly is_followed: boolean | null;
         }) | null;
@@ -31,10 +31,9 @@ mutation ShowItemRowMutation(
 ) {
   followShow(input: $input) {
     show {
-      id
+      gravityID
       _id
       is_followed
-      __id
     }
   }
 }
@@ -78,7 +77,7 @@ v1 = [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -95,13 +94,6 @@ v1 = [
             "name": "is_followed",
             "args": null,
             "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "__id",
-            "args": null,
-            "storageKey": null
           }
         ]
       }
@@ -110,26 +102,28 @@ v1 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "ShowItemRowMutation",
-  "id": "41099fe5256606887fd639535958740c",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ShowItemRowMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "ShowItemRowMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "ShowItemRowMutation",
+    "id": "a7cbe290750bf0384d5c95943b7e5393",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '54b6bed6b94620fd28756195eb00222f';
+(node as any).hash = 'a7cbe290750bf0384d5c95943b7e5393';
 export default node;

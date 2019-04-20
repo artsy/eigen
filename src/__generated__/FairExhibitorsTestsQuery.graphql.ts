@@ -8,7 +8,7 @@ export type FairExhibitorsTestsQueryResponse = {
             readonly letter: string | null;
             readonly exhibitors: ReadonlyArray<({
                 readonly name: string | null;
-                readonly id: string | null;
+                readonly gravityID: string;
                 readonly profile_id: string | null;
             }) | null> | null;
         }) | null> | null;
@@ -28,11 +28,10 @@ query FairExhibitorsTestsQuery {
       letter
       exhibitors {
         name
-        id
+        gravityID
         profile_id
       }
     }
-    __id
   }
 }
 */
@@ -90,7 +89,7 @@ var v0 = [
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
+                "name": "gravityID",
                 "args": null,
                 "storageKey": null
               },
@@ -104,39 +103,34 @@ var v0 = [
             ]
           }
         ]
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "__id",
-        "args": null,
-        "storageKey": null
       }
     ]
   }
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FairExhibitorsTestsQuery",
-  "id": "3e46c6aa2eae83724a8b6edb75dce53b",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FairExhibitorsTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
-    "selections": v0
+    "selections": (v0/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "FairExhibitorsTestsQuery",
     "argumentDefinitions": [],
-    "selections": v0
+    "selections": (v0/*: any*/)
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FairExhibitorsTestsQuery",
+    "id": "48bc24459b211231935a2c059ec68240",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = 'cbfa24bee4a376dea1245376746f0c5a';
+(node as any).hash = '48bc24459b211231935a2c059ec68240';
 export default node;

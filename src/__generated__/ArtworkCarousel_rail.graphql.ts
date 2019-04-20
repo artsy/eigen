@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtworkCarouselHeader_rail$ref } from "./ArtworkCarouselHeader_rail.graphql";
 import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _ArtworkCarousel_rail$ref: unique symbol;
@@ -27,25 +27,17 @@ export type ArtworkCarousel_rail = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "href",
-  "args": null,
-  "storageKey": null
-},
-v2 = [
-  v1
+const node: ReaderFragment = (function(){
+var v0 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "href",
+    "args": null,
+    "storageKey": null
+  }
 ],
-v3 = [
+v1 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -54,10 +46,7 @@ v3 = [
     "args": null,
     "concreteType": "Artist",
     "plural": false,
-    "selections": [
-      v1,
-      v0
-    ]
+    "selections": (v0/*: any*/)
   }
 ];
 return {
@@ -72,7 +61,13 @@ return {
       "name": "ArtworkCarouselHeader_rail",
       "args": null
     },
-    v0,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "__id",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -102,13 +97,6 @@ return {
           "name": "price_range",
           "args": null,
           "storageKey": null
-        },
-        {
-          "kind": "ScalarField",
-          "alias": "__id",
-          "name": "id",
-          "args": null,
-          "storageKey": null
         }
       ]
     },
@@ -121,31 +109,30 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v0,
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextSale",
-          "selections": v2
+          "selections": (v0/*: any*/)
         },
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextGene",
-          "selections": v2
+          "selections": (v0/*: any*/)
         },
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextFair",
-          "selections": v2
+          "selections": (v0/*: any*/)
         },
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextRelatedArtist",
-          "selections": v3
+          "selections": (v1/*: any*/)
         },
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextFollowedArtist",
-          "selections": v3
+          "selections": (v1/*: any*/)
         }
       ]
     },
@@ -162,8 +149,7 @@ return {
           "kind": "FragmentSpread",
           "name": "GenericGrid_artworks",
           "args": null
-        },
-        v0
+        }
       ]
     }
   ]

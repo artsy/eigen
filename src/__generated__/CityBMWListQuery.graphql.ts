@@ -37,7 +37,7 @@ fragment CityBMWList_city_1G22uz on City {
     shows(first: $count, status: RUNNING, after: $cursor, sort: PARTNER_ASC) {
       edges {
         node {
-          id
+          gravityID
           _id
           __id
           name
@@ -54,7 +54,6 @@ fragment CityBMWList_city_1G22uz on City {
               lat
               lng
             }
-            __id
           }
           type
           start_at
@@ -68,14 +67,10 @@ fragment CityBMWList_city_1G22uz on City {
                 image {
                   url(version: "square")
                 }
-                __id
               }
             }
             ... on Node {
-              __id
-            }
-            ... on ExternalPartner {
-              __id
+              id
             }
           }
           __typename
@@ -127,13 +122,32 @@ v2 = {
   "args": null,
   "storageKey": null
 },
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
+v3 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor",
+    "type": "String"
+  },
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "count",
+    "type": "Int"
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "PARTNER_ASC",
+    "type": "PartnerShowSorts"
+  },
+  {
+    "kind": "Literal",
+    "name": "status",
+    "value": "RUNNING",
+    "type": "EventStatus"
+  }
+],
 v4 = {
   "kind": "ScalarField",
   "alias": null,
@@ -150,24 +164,19 @@ v5 = {
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "CityBMWListQuery",
-  "id": "268706a9050816135d419a8662dc2cd9",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "CityBMWListQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "city",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "City",
         "plural": false,
         "selections": [
@@ -196,18 +205,18 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "CityBMWListQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "city",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "City",
         "plural": false,
         "selections": [
-          v2,
+          (v2/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -229,32 +238,7 @@ return {
                 "alias": null,
                 "name": "shows",
                 "storageKey": null,
-                "args": [
-                  {
-                    "kind": "Variable",
-                    "name": "after",
-                    "variableName": "cursor",
-                    "type": "String"
-                  },
-                  {
-                    "kind": "Variable",
-                    "name": "first",
-                    "variableName": "count",
-                    "type": "Int"
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "sort",
-                    "value": "PARTNER_ASC",
-                    "type": "PartnerShowSorts"
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "status",
-                    "value": "RUNNING",
-                    "type": "EventStatus"
-                  }
-                ],
+                "args": (v3/*: any*/),
                 "concreteType": "ShowConnection",
                 "plural": false,
                 "selections": [
@@ -286,12 +270,18 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "id",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
-                          v3,
-                          v2,
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "__id",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -378,11 +368,10 @@ return {
                                     "storageKey": null
                                   }
                                 ]
-                              },
-                              v3
+                              }
                             ]
                           },
-                          v4,
+                          (v4/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -406,14 +395,20 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
-                              v5,
-                              v3,
+                              (v5/*: any*/),
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "id",
+                                "args": null,
+                                "storageKey": null
+                              },
                               {
                                 "kind": "InlineFragment",
                                 "type": "Partner",
                                 "selections": [
-                                  v2,
-                                  v4,
+                                  (v2/*: any*/),
+                                  (v4/*: any*/),
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
@@ -447,15 +442,14 @@ return {
                                             "storageKey": "url(version:\"square\")"
                                           }
                                         ]
-                                      },
-                                      v3
+                                      }
                                     ]
                                   }
                                 ]
                               }
                             ]
                           },
-                          v5
+                          (v5/*: any*/)
                         ]
                       },
                       {
@@ -498,32 +492,7 @@ return {
                 "kind": "LinkedHandle",
                 "alias": null,
                 "name": "shows",
-                "args": [
-                  {
-                    "kind": "Variable",
-                    "name": "after",
-                    "variableName": "cursor",
-                    "type": "String"
-                  },
-                  {
-                    "kind": "Variable",
-                    "name": "first",
-                    "variableName": "count",
-                    "type": "Int"
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "sort",
-                    "value": "PARTNER_ASC",
-                    "type": "PartnerShowSorts"
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "status",
-                    "value": "RUNNING",
-                    "type": "EventStatus"
-                  }
-                ],
+                "args": (v3/*: any*/),
                 "handle": "connection",
                 "key": "CityBMWList_shows",
                 "filters": [
@@ -536,6 +505,13 @@ return {
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "CityBMWListQuery",
+    "id": "98cb9414ec7a4e9b18a815b66b00eb3e",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

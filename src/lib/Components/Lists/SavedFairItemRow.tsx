@@ -1,4 +1,5 @@
 import { Box, color, Flex, Sans, Separator } from "@artsy/palette"
+import { Fairs_me } from "__generated__/Fairs_me.graphql"
 import { SavedFairItemRowMutation } from "__generated__/SavedFairItemRowMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView"
 import Switchboard from "lib/NativeModules/SwitchBoard"
@@ -11,24 +12,7 @@ interface State {
 }
 
 interface Props {
-  node: {
-    profile: {
-      __id: string
-      id: string
-    }
-    href: string
-    name: string
-    image: {
-      url: string | null
-    }
-    exhibition_period: string
-    square_image?: boolean | undefined
-    counts: {
-      partners: number
-    }
-    start_at: string
-    end_at: string
-  }
+  node: Fairs_me["followsAndSaves"]["fairs"]["edges"][0]["node"]
   relayEnvironment: RelayProp
 }
 
@@ -49,7 +33,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
             mutation SavedFairItemRowMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {
                 profile {
-                  id
+                  gravityID
                   is_followed
                   __id
                 }
@@ -67,7 +51,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
               profile: {
                 __id: fairProfileID,
                 is_followed: !this.state.isSaved,
-                id: fairID,
+                gravityID: fairID,
               },
             },
           },
@@ -106,7 +90,7 @@ export default class SavedFairItemRow extends React.Component<Props, State> {
                 </Sans>
               )}
             </Flex>
-            <TouchableWithoutFeedback onPress={() => this.handleSave(item.profile.__id, item.profile.id)}>
+            <TouchableWithoutFeedback onPress={() => this.handleSave(item.profile.__id, item.profile.gravityID)}>
               <Flex flexGrow="1">
                 <Sans weight="medium" mb="30" size="3" color={color("black60")} textAlign="right">
                   {this.state.isSaved ? "Saved" : "Save"}

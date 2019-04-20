@@ -1,16 +1,16 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _AttachmentPreview_attachment$ref: unique symbol;
 export type AttachmentPreview_attachment$ref = typeof _AttachmentPreview_attachment$ref;
 export type AttachmentPreview_attachment = {
-    readonly id: string;
+    readonly internalID: string;
     readonly " $refType": AttachmentPreview_attachment$ref;
 };
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "AttachmentPreview_attachment",
   "type": "Attachment",
@@ -20,11 +20,11 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     }
   ]
 };
-(node as any).hash = 'c55e4e996032f6359f162b9312ae80cb';
+(node as any).hash = '2217887427ab884a634dd15c4f22d057';
 export default node;

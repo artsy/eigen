@@ -23,13 +23,12 @@ query QueryRenderersShowMoreInfoQuery(
 ) {
   show(id: $showID) {
     ...MoreInfo_show
-    __id
   }
 }
 
 fragment MoreInfo_show on Show {
   _id
-  id
+  gravityID
   exhibition_period
   pressReleaseUrl
   openingReceptionText
@@ -40,17 +39,13 @@ fragment MoreInfo_show on Show {
       type
     }
     ... on Node {
-      __id
-    }
-    ... on ExternalPartner {
-      __id
+      id
     }
   }
   press_release
   events {
     ...ShowEventSection_event
   }
-  __id
 }
 
 fragment ShowEventSection_event on PartnerShowEventType {
@@ -77,34 +72,22 @@ v1 = [
     "variableName": "showID",
     "type": "String!"
   }
-],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "QueryRenderersShowMoreInfoQuery",
-  "id": "57cbcaaaaae5c25cad7ff0a63f57470d",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "QueryRenderersShowMoreInfoQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -112,8 +95,7 @@ return {
             "kind": "FragmentSpread",
             "name": "MoreInfo_show",
             "args": null
-          },
-          v2
+          }
         ]
       }
     ]
@@ -121,14 +103,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "QueryRenderersShowMoreInfoQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -142,7 +124,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -183,7 +165,13 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v2,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
@@ -251,11 +239,17 @@ return {
                 "storageKey": null
               }
             ]
-          },
-          v2
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "QueryRenderersShowMoreInfoQuery",
+    "id": "f820e7caf00e9338c7bfa664a25c4c83",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

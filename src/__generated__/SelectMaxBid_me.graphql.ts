@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ConfirmBid_me$ref } from "./ConfirmBid_me.graphql";
 declare const _SelectMaxBid_me$ref: unique symbol;
 export type SelectMaxBid_me$ref = typeof _SelectMaxBid_me$ref;
@@ -11,7 +11,7 @@ export type SelectMaxBid_me = {
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "SelectMaxBid_me",
   "type": "Me",
@@ -22,13 +22,6 @@ const node: ConcreteFragment = {
       "kind": "FragmentSpread",
       "name": "ConfirmBid_me",
       "args": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "__id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };

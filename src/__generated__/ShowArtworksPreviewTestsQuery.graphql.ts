@@ -19,7 +19,6 @@ export type ShowArtworksPreviewTestsQuery = {
 query ShowArtworksPreviewTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...ShowArtworksPreview_show
-    __id
   }
 }
 
@@ -27,7 +26,6 @@ fragment ShowArtworksPreview_show on Show {
   __id
   artworks(size: 6) {
     ...GenericGrid_artworks
-    __id
   }
   counts {
     artworks
@@ -36,7 +34,7 @@ fragment ShowArtworksPreview_show on Show {
 
 fragment GenericGrid_artworks on Artwork {
   __id
-  id
+  gravityID
   image {
     aspect_ratio
   }
@@ -51,14 +49,13 @@ fragment Artwork_artwork on Artwork {
   is_biddable
   is_acquireable
   is_offerable
-  id
+  gravityID
   sale {
     is_auction
     is_live_open
     is_open
     is_closed
     display_timely_at
-    __id
   }
   sale_artwork {
     opening_bid {
@@ -70,9 +67,7 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
-      __id
     }
-    __id
   }
   image {
     url(version: "large")
@@ -80,14 +75,11 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
-    __id
   }
   partner {
     name
-    __id
   }
   href
-  __id
 }
 */
 
@@ -130,16 +122,10 @@ v4 = [
     "name": "name",
     "args": null,
     "storageKey": null
-  },
-  v1
+  }
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ShowArtworksPreviewTestsQuery",
-  "id": "8b70d62c01175528f049a7631a30707f",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ShowArtworksPreviewTestsQuery",
@@ -152,7 +138,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -160,8 +146,7 @@ return {
             "kind": "FragmentSpread",
             "name": "ShowArtworksPreview_show",
             "args": null
-          },
-          v1
+          }
         ]
       }
     ]
@@ -176,11 +161,11 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          v1,
+          (v1/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -204,7 +189,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v1,
+              (v1/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -268,7 +253,7 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
+                "name": "gravityID",
                 "args": null,
                 "storageKey": null
               },
@@ -316,15 +301,14 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v2,
+                  (v2/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
                     "name": "display_timely_at",
                     "args": null,
                     "storageKey": null
-                  },
-                  v1
+                  }
                 ]
               },
               {
@@ -344,7 +328,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkOpeningBid",
                     "plural": false,
-                    "selections": v3
+                    "selections": (v3/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -354,7 +338,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkCurrentBid",
                     "plural": false,
-                    "selections": v3
+                    "selections": (v3/*: any*/)
                   },
                   {
                     "kind": "ScalarField",
@@ -372,11 +356,9 @@ return {
                     "concreteType": "Sale",
                     "plural": false,
                     "selections": [
-                      v2,
-                      v1
+                      (v2/*: any*/)
                     ]
-                  },
-                  v1
+                  }
                 ]
               },
               {
@@ -394,7 +376,7 @@ return {
                 ],
                 "concreteType": "Artist",
                 "plural": true,
-                "selections": v4
+                "selections": (v4/*: any*/)
               },
               {
                 "kind": "LinkedField",
@@ -404,7 +386,7 @@ return {
                 "args": null,
                 "concreteType": "Partner",
                 "plural": false,
-                "selections": v4
+                "selections": (v4/*: any*/)
               },
               {
                 "kind": "ScalarField",
@@ -436,6 +418,13 @@ return {
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ShowArtworksPreviewTestsQuery",
+    "id": "b02e6f80c5fc819b0ba5608e1a0c30c2",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

@@ -1,11 +1,11 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _ArtworksPreview_fair$ref: unique symbol;
 export type ArtworksPreview_fair$ref = typeof _ArtworksPreview_fair$ref;
 export type ArtworksPreview_fair = {
-    readonly id: string;
+    readonly gravityID: string;
     readonly __id: string;
     readonly filteredArtworks: ({
         readonly artworks_connection: ({
@@ -24,15 +24,7 @@ export type ArtworksPreview_fair = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ArtworksPreview_fair",
   "type": "Fair",
@@ -42,11 +34,17 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
-    v0,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "__id",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -109,8 +107,7 @@ return {
                       "kind": "FragmentSpread",
                       "name": "GenericGrid_artworks",
                       "args": null
-                    },
-                    v0
+                    }
                   ]
                 }
               ]
@@ -134,12 +131,10 @@ return {
               "storageKey": null
             }
           ]
-        },
-        v0
+        }
       ]
     }
   ]
 };
-})();
-(node as any).hash = 'd72dd4c325beb363ba42fc602a619eba';
+(node as any).hash = 'ad33a2a10fad882cb690e5aecf14aa3e';
 export default node;

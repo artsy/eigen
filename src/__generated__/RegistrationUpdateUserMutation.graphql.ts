@@ -47,7 +47,6 @@ mutation RegistrationUpdateUserMutation(
     clientMutationId
     user {
       phone
-      __id
     }
   }
 }
@@ -101,13 +100,6 @@ v1 = [
             "name": "phone",
             "args": null,
             "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "__id",
-            "args": null,
-            "storageKey": null
           }
         ]
       }
@@ -116,24 +108,26 @@ v1 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "RegistrationUpdateUserMutation",
-  "id": "89b07d044650e13e2091363749aa271a",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "RegistrationUpdateUserMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "RegistrationUpdateUserMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "RegistrationUpdateUserMutation",
+    "id": "c0fa063813eeaa0721f07bde5237f58b",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

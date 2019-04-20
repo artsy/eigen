@@ -1,13 +1,13 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { FairBoothPreview_show$ref } from "./FairBoothPreview_show.graphql";
 import { FairHeader_fair$ref } from "./FairHeader_fair.graphql";
 import { LocationMap_location$ref } from "./LocationMap_location.graphql";
 declare const _FairDetail_fair$ref: unique symbol;
 export type FairDetail_fair$ref = typeof _FairDetail_fair$ref;
 export type FairDetail_fair = {
-    readonly id: string;
+    readonly gravityID: string;
     readonly _id: string;
     readonly name: string | null;
     readonly hours: string | null;
@@ -40,12 +40,12 @@ export type FairDetail_fair = {
         readonly edges: ReadonlyArray<({
             readonly cursor: string;
             readonly node: ({
-                readonly id: string;
+                readonly gravityID: string;
                 readonly _id: string;
                 readonly artworks_connection: ({
                     readonly edges: ReadonlyArray<({
                         readonly node: ({
-                            readonly id: string;
+                            readonly gravityID: string;
                         }) | null;
                     }) | null> | null;
                 }) | null;
@@ -59,7 +59,7 @@ export type FairDetail_fair = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -77,14 +77,7 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 };
@@ -119,45 +112,6 @@ return {
     }
   ],
   "selections": [
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "organizer",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "organizer",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "website",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "FairHeader_fair",
-      "args": null
-    },
-    v0,
-    v1,
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "hours",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "isActive",
-      "args": null,
-      "storageKey": null
-    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -196,11 +150,49 @@ return {
               "storageKey": null
             }
           ]
-        },
-        v2
+        }
       ]
     },
-    v3,
+    {
+      "kind": "FragmentSpread",
+      "name": "FairHeader_fair",
+      "args": null
+    },
+    (v0/*: any*/),
+    (v1/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "hours",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "isActive",
+      "args": null,
+      "storageKey": null
+    },
+    (v2/*: any*/),
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "organizer",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "organizer",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "website",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -224,8 +216,7 @@ return {
       "concreteType": "Profile",
       "plural": false,
       "selections": [
-        v1,
-        v2
+        (v1/*: any*/)
       ]
     },
     {
@@ -319,8 +310,8 @@ return {
               "concreteType": "Show",
               "plural": false,
               "selections": [
-                v3,
-                v0,
+                (v2/*: any*/),
+                (v0/*: any*/),
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -355,8 +346,7 @@ return {
                           "concreteType": "Artwork",
                           "plural": false,
                           "selections": [
-                            v3,
-                            v2
+                            (v2/*: any*/)
                           ]
                         }
                       ]
@@ -368,7 +358,6 @@ return {
                   "name": "FairBoothPreview_show",
                   "args": null
                 },
-                v2,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -381,10 +370,9 @@ return {
           ]
         }
       ]
-    },
-    v2
+    }
   ]
 };
 })();
-(node as any).hash = 'd82de16039d531467008dc6530845f72';
+(node as any).hash = 'aae77c94645d3cf6afb93e8ea160c1cb';
 export default node;

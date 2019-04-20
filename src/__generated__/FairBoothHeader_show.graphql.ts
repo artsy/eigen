@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _FairBoothHeader_show$ref: unique symbol;
 export type FairBoothHeader_show$ref = typeof _FairBoothHeader_show$ref;
 export type FairBoothHeader_show = {
@@ -9,13 +9,13 @@ export type FairBoothHeader_show = {
     }) | null;
     readonly partner: ({
         readonly name?: string | null;
-        readonly id?: string;
+        readonly gravityID?: string;
         readonly _id?: string;
         readonly __id?: string;
         readonly href?: string | null;
         readonly profile?: ({
             readonly _id: string;
-            readonly id: string;
+            readonly gravityID: string;
             readonly is_followed: boolean | null;
         }) | null;
     }) | null;
@@ -31,7 +31,7 @@ export type FairBoothHeader_show = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -42,18 +42,11 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "_id",
@@ -76,8 +69,7 @@ return {
       "concreteType": "Fair",
       "plural": false,
       "selections": [
-        v0,
-        v1
+        (v0/*: any*/)
       ]
     },
     {
@@ -89,14 +81,20 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v1,
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v0,
-            v2,
-            v3,
+            (v0/*: any*/),
+            (v1/*: any*/),
+            (v2/*: any*/),
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "__id",
+              "args": null,
+              "storageKey": null
+            },
             {
               "kind": "ScalarField",
               "alias": null,
@@ -113,16 +111,15 @@ return {
               "concreteType": "Profile",
               "plural": false,
               "selections": [
-                v3,
-                v2,
+                (v2/*: any*/),
+                (v1/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "is_followed",
                   "args": null,
                   "storageKey": null
-                },
-                v1
+                }
               ]
             }
           ]
@@ -169,13 +166,11 @@ return {
           "name": "display",
           "args": null,
           "storageKey": null
-        },
-        v1
+        }
       ]
-    },
-    v1
+    }
   ]
 };
 })();
-(node as any).hash = '6ba68e764e23bba639beb2f2a933b260';
+(node as any).hash = '438161903a0e5183dfc896ab7f1d3f6c';
 export default node;

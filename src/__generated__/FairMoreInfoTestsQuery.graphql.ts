@@ -22,7 +22,6 @@ query FairMoreInfoTestsQuery {
     links
     about
     ticketsLink
-    __id
   }
 }
 */
@@ -65,37 +64,32 @@ var v0 = [
         "name": "ticketsLink",
         "args": null,
         "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "__id",
-        "args": null,
-        "storageKey": null
       }
     ]
   }
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FairMoreInfoTestsQuery",
-  "id": "5f94084efd2a3b38df04063bfd4d7b3d",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FairMoreInfoTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
-    "selections": v0
+    "selections": (v0/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "FairMoreInfoTestsQuery",
     "argumentDefinitions": [],
-    "selections": v0
+    "selections": (v0/*: any*/)
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FairMoreInfoTestsQuery",
+    "id": "2ed3205d94bc196c8fe618fdc3db1933",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

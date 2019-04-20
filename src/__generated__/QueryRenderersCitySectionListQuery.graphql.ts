@@ -46,7 +46,7 @@ fragment CitySectionList_city_2xWq6T on City {
     }
     edges {
       node {
-        id
+        gravityID
         _id
         __id
         isStubShow
@@ -70,14 +70,10 @@ fragment CitySectionList_city_2xWq6T on City {
               image {
                 url(version: "square")
               }
-              __id
             }
           }
           ... on Node {
-            __id
-          }
-          ... on ExternalPartner {
-            __id
+            id
           }
         }
         __typename
@@ -136,13 +132,50 @@ v2 = {
   "args": null,
   "storageKey": null
 },
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
+v3 = [
+  {
+    "kind": "Literal",
+    "name": "after",
+    "value": "",
+    "type": "String"
+  },
+  {
+    "kind": "Variable",
+    "name": "dayThreshold",
+    "variableName": "dayThreshold",
+    "type": "Int"
+  },
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 20,
+    "type": "Int"
+  },
+  {
+    "kind": "Literal",
+    "name": "includeStubShows",
+    "value": true,
+    "type": "Boolean"
+  },
+  {
+    "kind": "Variable",
+    "name": "partnerType",
+    "variableName": "partnerType",
+    "type": "PartnerShowPartnerType"
+  },
+  {
+    "kind": "Variable",
+    "name": "sort",
+    "variableName": "sort",
+    "type": "PartnerShowSorts"
+  },
+  {
+    "kind": "Variable",
+    "name": "status",
+    "variableName": "status",
+    "type": "EventStatus"
+  }
+],
 v4 = {
   "kind": "ScalarField",
   "alias": null,
@@ -159,24 +192,19 @@ v5 = {
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "QueryRenderersCitySectionListQuery",
-  "id": "fcdbfbea97d6f18b9b25dae674e40679",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "QueryRenderersCitySectionListQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "city",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "City",
         "plural": false,
         "selections": [
@@ -217,67 +245,24 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "QueryRenderersCitySectionListQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "city",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "City",
         "plural": false,
         "selections": [
-          v2,
+          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
             "name": "shows",
             "storageKey": null,
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "after",
-                "value": "",
-                "type": "String"
-              },
-              {
-                "kind": "Variable",
-                "name": "dayThreshold",
-                "variableName": "dayThreshold",
-                "type": "Int"
-              },
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 20,
-                "type": "Int"
-              },
-              {
-                "kind": "Literal",
-                "name": "includeStubShows",
-                "value": true,
-                "type": "Boolean"
-              },
-              {
-                "kind": "Variable",
-                "name": "partnerType",
-                "variableName": "partnerType",
-                "type": "PartnerShowPartnerType"
-              },
-              {
-                "kind": "Variable",
-                "name": "sort",
-                "variableName": "sort",
-                "type": "PartnerShowSorts"
-              },
-              {
-                "kind": "Variable",
-                "name": "status",
-                "variableName": "status",
-                "type": "EventStatus"
-              }
-            ],
+            "args": (v3/*: any*/),
             "concreteType": "ShowConnection",
             "plural": false,
             "selections": [
@@ -334,11 +319,17 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "id",
+                        "name": "gravityID",
                         "args": null,
                         "storageKey": null
                       },
-                      v3,
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "__id",
+                        "args": null,
+                        "storageKey": null
+                      },
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -381,8 +372,8 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v4,
-                      v2,
+                      (v4/*: any*/),
+                      (v2/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -417,14 +408,20 @@ return {
                         "concreteType": null,
                         "plural": false,
                         "selections": [
-                          v5,
-                          v3,
+                          (v5/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "id",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",
                             "selections": [
-                              v2,
-                              v4,
+                              (v2/*: any*/),
+                              (v4/*: any*/),
                               {
                                 "kind": "LinkedField",
                                 "alias": null,
@@ -458,15 +455,14 @@ return {
                                         "storageKey": "url(version:\"square\")"
                                       }
                                     ]
-                                  },
-                                  v3
+                                  }
                                 ]
                               }
                             ]
                           }
                         ]
                       },
-                      v5
+                      (v5/*: any*/)
                     ]
                   },
                   {
@@ -484,50 +480,7 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "shows",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "after",
-                "value": "",
-                "type": "String"
-              },
-              {
-                "kind": "Variable",
-                "name": "dayThreshold",
-                "variableName": "dayThreshold",
-                "type": "Int"
-              },
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 20,
-                "type": "Int"
-              },
-              {
-                "kind": "Literal",
-                "name": "includeStubShows",
-                "value": true,
-                "type": "Boolean"
-              },
-              {
-                "kind": "Variable",
-                "name": "partnerType",
-                "variableName": "partnerType",
-                "type": "PartnerShowPartnerType"
-              },
-              {
-                "kind": "Variable",
-                "name": "sort",
-                "variableName": "sort",
-                "type": "PartnerShowSorts"
-              },
-              {
-                "kind": "Variable",
-                "name": "status",
-                "variableName": "status",
-                "type": "EventStatus"
-              }
-            ],
+            "args": (v3/*: any*/),
             "handle": "connection",
             "key": "CitySectionList_shows",
             "filters": [
@@ -541,6 +494,13 @@ return {
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "QueryRenderersCitySectionListQuery",
+    "id": "f07f6ad80ab324291f3478267765ff36",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

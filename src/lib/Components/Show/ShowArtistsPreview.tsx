@@ -44,10 +44,10 @@ export class ShowArtistsPreview extends React.Component<Props> {
         <Serif size="5">Artists</Serif>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
-          const { href, id, _id } = artist
+          const { href, gravityID, _id } = artist
           return (
-            <React.Fragment key={id}>
-              <TouchableOpacity onPress={() => this.handlePress(href, id, _id)}>
+            <React.Fragment key={gravityID}>
+              <TouchableOpacity onPress={() => this.handlePress(href, gravityID, _id)}>
                 <ArtistListItem artist={artist} Component={Component} />
               </TouchableOpacity>
               {idx < arr.length - 1 && <Spacer m={1} />}
@@ -69,12 +69,12 @@ export const ShowArtistsPreviewContainer = createFragmentContainer(ShowArtistsPr
   show: graphql`
     fragment ShowArtistsPreview_show on Show {
       _id
-      id
+      gravityID
 
       # Comes from CMS
       artists {
         _id
-        id
+        gravityID
         href
         ...ArtistListItem_artist
       }
@@ -82,7 +82,7 @@ export const ShowArtistsPreviewContainer = createFragmentContainer(ShowArtistsPr
       # Comes from stubbed data
       artists_without_artworks {
         _id
-        id
+        gravityID
         href
         ...ArtistListItem_artist
       }

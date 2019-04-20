@@ -12,7 +12,7 @@ export type UpdateConversationMutationVariables = {
 export type UpdateConversationMutationResponse = {
     readonly updateConversation: ({
         readonly conversation: ({
-            readonly id: string | null;
+            readonly internalID: string;
             readonly from_last_viewed_message_id: string | null;
         }) | null;
     }) | null;
@@ -30,9 +30,8 @@ mutation UpdateConversationMutation(
 ) {
   updateConversation(input: $input) {
     conversation {
-      id
+      internalID
       from_last_viewed_message_id
-      __id
     }
   }
 }
@@ -76,7 +75,7 @@ v1 = [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "internalID",
             "args": null,
             "storageKey": null
           },
@@ -84,13 +83,6 @@ v1 = [
             "kind": "ScalarField",
             "alias": null,
             "name": "from_last_viewed_message_id",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "__id",
             "args": null,
             "storageKey": null
           }
@@ -101,26 +93,28 @@ v1 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "UpdateConversationMutation",
-  "id": "376ca21dfba9abce2459940af585be24",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "UpdateConversationMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "UpdateConversationMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "UpdateConversationMutation",
+    "id": "626412cd0663f305e8f508f8aeb9c553",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '630d49bc88d58a296ed3b55fc479d569';
+(node as any).hash = '626412cd0663f305e8f508f8aeb9c553';
 export default node;

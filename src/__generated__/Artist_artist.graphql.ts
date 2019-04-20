@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { About_artist$ref } from "./About_artist.graphql";
 import { Artworks_artist$ref } from "./Artworks_artist.graphql";
 import { Header_artist$ref } from "./Header_artist.graphql";
@@ -9,7 +9,7 @@ declare const _Artist_artist$ref: unique symbol;
 export type Artist_artist$ref = typeof _Artist_artist$ref;
 export type Artist_artist = {
     readonly _id: string;
-    readonly id: string;
+    readonly gravityID: string;
     readonly has_metadata: boolean | null;
     readonly counts: ({
         readonly artworks: any | null;
@@ -23,7 +23,7 @@ export type Artist_artist = {
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Artist_artist",
   "type": "Artist",
@@ -40,7 +40,7 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -109,15 +109,8 @@ const node: ConcreteFragment = {
       "kind": "FragmentSpread",
       "name": "Artworks_artist",
       "args": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "__id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };
-(node as any).hash = '6dfcb3f59d2bd93131cb1f69a08340e8';
+(node as any).hash = '02a28b05dff0595f104818cc1fff2590';
 export default node;

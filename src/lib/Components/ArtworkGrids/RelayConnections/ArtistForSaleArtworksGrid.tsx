@@ -25,7 +25,7 @@ const ArtistForSaleArtworksGrid = createPaginationContainer(
           }
           edges {
             node {
-              id
+              gravityID
               __id
               image {
                 aspect_ratio

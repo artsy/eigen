@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { MockRelayRendererFixtures_artworkMetadata$ref } from "./MockRelayRendererFixtures_artworkMetadata.graphql";
 declare const _MockRelayRendererFixtures_artwork$ref: unique symbol;
 export type MockRelayRendererFixtures_artwork$ref = typeof _MockRelayRendererFixtures_artwork$ref;
@@ -9,7 +9,7 @@ export type MockRelayRendererFixtures_artwork = {
         readonly url: string | null;
     }) | null;
     readonly artist: ({
-        readonly id: string;
+        readonly gravityID: string;
     }) | null;
     readonly " $fragmentRefs": MockRelayRendererFixtures_artworkMetadata$ref;
     readonly " $refType": MockRelayRendererFixtures_artwork$ref;
@@ -17,15 +17,7 @@ export type MockRelayRendererFixtures_artwork = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "MockRelayRendererFixtures_artwork",
   "type": "Artwork",
@@ -62,21 +54,18 @@ return {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "id",
+          "name": "gravityID",
           "args": null,
           "storageKey": null
-        },
-        v0
+        }
       ]
     },
     {
       "kind": "FragmentSpread",
       "name": "MockRelayRendererFixtures_artworkMetadata",
       "args": null
-    },
-    v0
+    }
   ]
 };
-})();
-(node as any).hash = 'decbf11fdffcceb6e5fae04292842cb1';
+(node as any).hash = '418d67208237e68e952c6b28bc267e57';
 export default node;

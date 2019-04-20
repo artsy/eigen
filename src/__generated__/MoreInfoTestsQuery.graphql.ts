@@ -19,13 +19,12 @@ export type MoreInfoTestsQuery = {
 query MoreInfoTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...MoreInfo_show
-    __id
   }
 }
 
 fragment MoreInfo_show on Show {
   _id
-  id
+  gravityID
   exhibition_period
   pressReleaseUrl
   openingReceptionText
@@ -36,17 +35,13 @@ fragment MoreInfo_show on Show {
       type
     }
     ... on Node {
-      __id
-    }
-    ... on ExternalPartner {
-      __id
+      id
     }
   }
   press_release
   events {
     ...ShowEventSection_event
   }
-  __id
 }
 
 fragment ShowEventSection_event on PartnerShowEventType {
@@ -65,21 +60,9 @@ var v0 = [
     "value": "anderson-fine-art-gallery-flickinger-collection",
     "type": "String!"
   }
-],
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "MoreInfoTestsQuery",
-  "id": "ca9474d73a72f5c2edd64e822e99518f",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "MoreInfoTestsQuery",
@@ -92,7 +75,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -100,8 +83,7 @@ return {
             "kind": "FragmentSpread",
             "name": "MoreInfo_show",
             "args": null
-          },
-          v1
+          }
         ]
       }
     ]
@@ -116,7 +98,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -130,7 +112,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -171,7 +153,13 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v1,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
@@ -239,11 +227,17 @@ return {
                 "storageKey": null
               }
             ]
-          },
-          v1
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "MoreInfoTestsQuery",
+    "id": "bc9b5b8df734aa249ca91e119888e47e",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

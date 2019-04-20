@@ -1,10 +1,10 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ShowItemRow_show$ref: unique symbol;
 export type ShowItemRow_show$ref = typeof _ShowItemRow_show$ref;
 export type ShowItemRow_show = {
-    readonly id: string;
+    readonly gravityID: string;
     readonly _id: string;
     readonly __id: string;
     readonly is_followed: boolean | null;
@@ -33,15 +33,8 @@ export type ShowItemRow_show = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
@@ -65,11 +58,17 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
-    v0,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "__id",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -77,7 +76,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    v1,
+    (v0/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -94,12 +93,11 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v0,
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v1,
+            (v0/*: any*/),
             {
               "kind": "LinkedField",
               "alias": null,
@@ -133,8 +131,7 @@ return {
                       "storageKey": "url(version:\"square\")"
                     }
                   ]
-                },
-                v0
+                }
               ]
             }
           ]
@@ -211,5 +208,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'd7be6d385f44f7723e8345b9f653425f';
+(node as any).hash = '27ca8dbfc3a132e3cdecc9d6abb24fd6';
 export default node;

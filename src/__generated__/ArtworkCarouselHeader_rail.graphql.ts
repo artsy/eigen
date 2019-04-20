@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ArtworkCarouselHeader_rail$ref: unique symbol;
 export type ArtworkCarouselHeader_rail$ref = typeof _ArtworkCarouselHeader_rail$ref;
 export type ArtworkCarouselHeader_rail = {
@@ -9,13 +9,13 @@ export type ArtworkCarouselHeader_rail = {
     readonly followedArtistContext: ({
         readonly artist?: ({
             readonly _id: string;
-            readonly id: string;
+            readonly gravityID: string;
         }) | null;
     }) | null;
     readonly relatedArtistContext: ({
         readonly artist?: ({
             readonly _id: string;
-            readonly id: string;
+            readonly gravityID: string;
         }) | null;
         readonly based_on?: ({
             readonly name: string | null;
@@ -26,15 +26,8 @@ export type ArtworkCarouselHeader_rail = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "artist",
@@ -53,11 +46,10 @@ v1 = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
-    },
-    v0
+    }
   ]
 };
 return {
@@ -90,12 +82,11 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v0,
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextFollowedArtist",
           "selections": [
-            v1
+            (v0/*: any*/)
           ]
         }
       ]
@@ -109,12 +100,11 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v0,
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextRelatedArtist",
           "selections": [
-            v1,
+            (v0/*: any*/),
             {
               "kind": "LinkedField",
               "alias": null,
@@ -130,17 +120,15 @@ return {
                   "name": "name",
                   "args": null,
                   "storageKey": null
-                },
-                v0
+                }
               ]
             }
           ]
         }
       ]
-    },
-    v0
+    }
   ]
 };
 })();
-(node as any).hash = 'b6e75f07a90466a7811c73bd3e12abc1';
+(node as any).hash = '8fedc808e198e5150b9ed3f1caaa92fa';
 export default node;

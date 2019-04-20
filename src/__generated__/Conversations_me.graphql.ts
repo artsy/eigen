@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ConversationSnippet_conversation$ref } from "./ConversationSnippet_conversation.graphql";
 declare const _Conversations_me$ref: unique symbol;
 export type Conversations_me$ref = typeof _Conversations_me$ref;
@@ -12,7 +12,7 @@ export type Conversations_me = {
         };
         readonly edges: ReadonlyArray<({
             readonly node: ({
-                readonly id: string | null;
+                readonly internalID: string;
                 readonly last_message: string | null;
                 readonly " $fragmentRefs": ConversationSnippet_conversation$ref;
             }) | null;
@@ -23,15 +23,7 @@ export type Conversations_me = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Conversations_me",
   "type": "Me",
@@ -117,7 +109,7 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "id",
+                  "name": "internalID",
                   "args": null,
                   "storageKey": null
                 },
@@ -133,7 +125,6 @@ return {
                   "name": "ConversationSnippet_conversation",
                   "args": null
                 },
-                v0,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -153,10 +144,8 @@ return {
           ]
         }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
-(node as any).hash = 'a317e57538747221360b7fc2c92dd6a9';
+(node as any).hash = '4d6f13fc9a85f0c82d90bc6cb81c7d31';
 export default node;

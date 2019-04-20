@@ -373,7 +373,7 @@ export default createRefetchContainer(
           aggregations {
             slice
             counts {
-              id
+              gravityID
               name
               count
             }

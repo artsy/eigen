@@ -80,7 +80,7 @@ export default createPaginationContainer(
           edges {
             node {
               gene {
-                id
+                gravityID
                 __id
                 name
                 href

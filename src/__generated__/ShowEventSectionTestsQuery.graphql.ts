@@ -23,7 +23,6 @@ query ShowEventSectionTestsQuery {
     events {
       ...ShowEventSection_event
     }
-    __id
   }
 }
 
@@ -43,21 +42,9 @@ var v0 = [
     "value": "anderson-fine-art-gallery-flickinger-collection",
     "type": "String!"
   }
-],
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ShowEventSectionTestsQuery",
-  "id": "f5649cf493d89ce52a968cb3d78033a9",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ShowEventSectionTestsQuery",
@@ -70,7 +57,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -89,8 +76,7 @@ return {
                 "args": null
               }
             ]
-          },
-          v1
+          }
         ]
       }
     ]
@@ -105,7 +91,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -147,11 +133,17 @@ return {
                 "storageKey": null
               }
             ]
-          },
-          v1
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ShowEventSectionTestsQuery",
+    "id": "491aa923b8d9aaf54ec5b6b9277b9a5e",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

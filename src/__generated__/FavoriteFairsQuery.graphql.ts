@@ -19,7 +19,6 @@ export type FavoriteFairsQuery = {
 query FavoriteFairsQuery {
   me {
     ...Fairs_me
-    __id
   }
 }
 
@@ -30,7 +29,7 @@ fragment Fairs_me on Me {
         node {
           __id
           profile {
-            id
+            gravityID
             is_followed
             __id
           }
@@ -55,12 +54,25 @@ fragment Fairs_me on Me {
       }
     }
   }
-  __id
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
+var v0 = [
+  {
+    "kind": "Literal",
+    "name": "after",
+    "value": "",
+    "type": "String"
+  },
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 10,
+    "type": "Int"
+  }
+],
+v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
@@ -69,11 +81,6 @@ var v0 = {
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FavoriteFairsQuery",
-  "id": "993a93e1d3f802edbd863bdd51873e0c",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FavoriteFairsQuery",
@@ -94,8 +101,7 @@ return {
             "kind": "FragmentSpread",
             "name": "Fairs_me",
             "args": null
-          },
-          v0
+          }
         ]
       }
     ]
@@ -128,20 +134,7 @@ return {
                 "alias": null,
                 "name": "fairs",
                 "storageKey": "fairs(after:\"\",first:10)",
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "after",
-                    "value": "",
-                    "type": "String"
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "first",
-                    "value": 10,
-                    "type": "Int"
-                  }
-                ],
+                "args": (v0/*: any*/),
                 "concreteType": "FollowedFairConnection",
                 "plural": false,
                 "selections": [
@@ -163,7 +156,7 @@ return {
                         "concreteType": "Fair",
                         "plural": false,
                         "selections": [
-                          v0,
+                          (v1/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -176,7 +169,7 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "id",
+                                "name": "gravityID",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -187,7 +180,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              v0
+                              (v1/*: any*/)
                             ]
                           },
                           {
@@ -310,30 +303,23 @@ return {
                 "kind": "LinkedHandle",
                 "alias": null,
                 "name": "fairs",
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "after",
-                    "value": "",
-                    "type": "String"
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "first",
-                    "value": 10,
-                    "type": "Int"
-                  }
-                ],
+                "args": (v0/*: any*/),
                 "handle": "connection",
                 "key": "SavedFairs_fairs",
                 "filters": null
               }
             ]
-          },
-          v0
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FavoriteFairsQuery",
+    "id": "9f960de6c6c0b2a23c50ef0f8d37287b",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

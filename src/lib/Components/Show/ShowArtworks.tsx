@@ -21,7 +21,7 @@ interface State {
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.ShowAllArtists,
   context_screen_owner_type: Schema.OwnerEntityTypes.Show,
-  context_screen_owner_slug: props.show.id,
+  context_screen_owner_slug: props.show.gravityID,
   context_screen_owner_id: props.show._id,
 }))
 export class ShowArtworks extends React.Component<Props, State> {
@@ -39,7 +39,7 @@ export class ShowArtworks extends React.Component<Props, State> {
       <Theme>
         <FilteredInfiniteScrollGrid
           id={show._id}
-          slug={show.id}
+          slug={show.gravityID}
           type={"Show"}
           filteredArtworks={show.filteredArtworks}
           onRefetch={this.handleRefetch}
@@ -59,7 +59,7 @@ export const ShowArtworksContainer = createRefetchContainer(
           price_range: { type: "String", defaultValue: "*-*" }
         ) {
         __id
-        id
+        gravityID
         _id
         filteredArtworks(
           size: 0

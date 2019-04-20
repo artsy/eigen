@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _CitySavedList_viewer$ref: unique symbol;
 export type CitySavedList_viewer$ref = typeof _CitySavedList_viewer$ref;
 export type CitySavedList_viewer = {
@@ -12,7 +12,7 @@ export type CitySavedList_viewer = {
             readonly shows: ({
                 readonly edges: ReadonlyArray<({
                     readonly node: ({
-                        readonly id: string;
+                        readonly gravityID: string;
                         readonly _id: string;
                         readonly __id: string;
                         readonly name: string | null;
@@ -52,7 +52,7 @@ export type CitySavedList_viewer = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -61,13 +61,6 @@ var v0 = {
   "storageKey": null
 },
 v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
@@ -128,7 +121,7 @@ return {
       "concreteType": "City",
       "plural": false,
       "selections": [
-        v0
+        (v0/*: any*/)
       ]
     },
     {
@@ -199,12 +192,18 @@ return {
                         {
                           "kind": "ScalarField",
                           "alias": null,
-                          "name": "id",
+                          "name": "gravityID",
                           "args": null,
                           "storageKey": null
                         },
-                        v1,
-                        v0,
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "__id",
+                          "args": null,
+                          "storageKey": null
+                        },
+                        (v0/*: any*/),
                         {
                           "kind": "ScalarField",
                           "alias": null,
@@ -291,11 +290,10 @@ return {
                                   "storageKey": null
                                 }
                               ]
-                            },
-                            v1
+                            }
                           ]
                         },
-                        v2,
+                        (v1/*: any*/),
                         {
                           "kind": "ScalarField",
                           "alias": null,
@@ -319,13 +317,12 @@ return {
                           "concreteType": null,
                           "plural": false,
                           "selections": [
-                            v1,
                             {
                               "kind": "InlineFragment",
                               "type": "Partner",
                               "selections": [
-                                v0,
-                                v2,
+                                (v0/*: any*/),
+                                (v1/*: any*/),
                                 {
                                   "kind": "LinkedField",
                                   "alias": null,
@@ -359,8 +356,7 @@ return {
                                           "storageKey": "url(version:\"square\")"
                                         }
                                       ]
-                                    },
-                                    v1
+                                    }
                                   ]
                                 }
                               ]
@@ -413,12 +409,11 @@ return {
               ]
             }
           ]
-        },
-        v1
+        }
       ]
     }
   ]
 };
 })();
-(node as any).hash = '35d2ddb8dd67e03c4697beb64b24aec2';
+(node as any).hash = 'b944d9f71701d93cc098f821ac6b88ea';
 export default node;

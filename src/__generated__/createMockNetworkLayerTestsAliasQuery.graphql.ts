@@ -28,23 +28,21 @@ query createMockNetworkLayerTestsAliasQuery {
     notForSaleArtworks: artworks(filter: IS_NOT_FOR_SALE) {
       __id
     }
-    __id
   }
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v1 = [
-  v0
+var v0 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "__id",
+    "args": null,
+    "storageKey": null
+  }
 ],
-v2 = [
+v1 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -76,7 +74,7 @@ v2 = [
         ],
         "concreteType": "Artwork",
         "plural": true,
-        "selections": v1
+        "selections": (v0/*: any*/)
       },
       {
         "kind": "LinkedField",
@@ -93,32 +91,33 @@ v2 = [
         ],
         "concreteType": "Artwork",
         "plural": true,
-        "selections": v1
-      },
-      v0
+        "selections": (v0/*: any*/)
+      }
     ]
   }
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "createMockNetworkLayerTestsAliasQuery",
-  "id": "69b64c0c9c3852b75318b796375fd464",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "createMockNetworkLayerTestsAliasQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
-    "selections": v2
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "createMockNetworkLayerTestsAliasQuery",
     "argumentDefinitions": [],
-    "selections": v2
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "createMockNetworkLayerTestsAliasQuery",
+    "id": "1ce5538ad3920f602a6189085cc702ed",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

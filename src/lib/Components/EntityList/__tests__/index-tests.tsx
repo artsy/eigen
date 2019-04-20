@@ -7,7 +7,7 @@ describe("EntityList", () => {
     const wrapper = mount(
       <EntityList
         prefix="Works by"
-        list={[{ id: "12345", _id: "foxy-production", name: "Foxy Production", href: "/foxy-production" }]}
+        list={[{ gravityID: "12345", _id: "foxy-production", name: "Foxy Production", href: "/foxy-production" }]}
         count={1}
         displayedItems={2}
       />
@@ -21,8 +21,13 @@ describe("EntityList", () => {
       <EntityList
         prefix="Works by"
         list={[
-          { id: "12345", _id: "zarouhie abdalian", name: "Zarouhie Abdalian", href: "/artist/zarouhie-abdalian" },
-          { id: "12345", _id: "derya akay", name: "Derya Akay", href: "/artist/derya-akay" },
+          {
+            gravityID: "12345",
+            _id: "zarouhie abdalian",
+            name: "Zarouhie Abdalian",
+            href: "/artist/zarouhie-abdalian",
+          },
+          { gravityID: "12345", _id: "derya akay", name: "Derya Akay", href: "/artist/derya-akay" },
         ]}
         count={20}
         displayedItems={2}

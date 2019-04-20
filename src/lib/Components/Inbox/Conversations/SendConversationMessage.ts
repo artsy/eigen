@@ -4,7 +4,7 @@ import { ConnectionHandler, Environment, MutationConfig, RecordSourceSelectorPro
 
 interface Conversation {
   last_message_id: string
-  id: string
+  internalID: string
   __id: string
   from: {
     email: string
@@ -51,7 +51,7 @@ export function sendConversationMessage(
 
     variables: {
       input: {
-        id: conversation.id,
+        id: conversation.internalID,
         from: conversation.from.email,
         body_text: text,
         // Reply to the last message

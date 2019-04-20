@@ -45,7 +45,7 @@ export class ShowHeader extends React.Component<Props, State> {
   handleFollowShow = () => {
     const {
       relay,
-      show: { id: showSlugID, __id: relayID, _id: showID, is_followed: isShowFollowed },
+      show: { gravityID: showSlugID, __id: relayID, _id: showID, is_followed: isShowFollowed },
     } = this.props
 
     this.setState(
@@ -59,7 +59,7 @@ export class ShowHeader extends React.Component<Props, State> {
             mutation ShowHeaderFollowShowMutation($input: FollowShowInput!) {
               followShow(input: $input) {
                 show {
-                  id
+                  gravityID
                   _id
                   is_followed
                 }
@@ -77,7 +77,7 @@ export class ShowHeader extends React.Component<Props, State> {
               show: {
                 _id: showID,
                 is_followed: !isShowFollowed,
-                id: showSlugID,
+                gravityID: showSlugID,
               },
             },
           },
@@ -93,7 +93,7 @@ export class ShowHeader extends React.Component<Props, State> {
     action_name: props.show.is_followed ? Schema.ActionNames.SaveShow : Schema.ActionNames.UnsaveShow,
     action_type: Schema.ActionTypes.Success,
     owner_id: props.show._id,
-    owner_slug: props.show.id,
+    owner_slug: props.show.gravityID,
     owner_type: Schema.OwnerEntityTypes.Show,
   }))
   handleShowSuccessfullyUpdated() {
@@ -106,7 +106,7 @@ export class ShowHeader extends React.Component<Props, State> {
     action_name: Schema.ActionNames.CarouselSwipe,
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.show._id,
-    owner_slug: props.show.id,
+    owner_slug: props.show.gravityID,
     owner_type: Schema.OwnerEntityTypes.Show,
   }))
   handleUserSwipingCarousel() {
@@ -129,7 +129,7 @@ export class ShowHeader extends React.Component<Props, State> {
   }
 
   handleViewAllArtistsPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}/artists`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.gravityID}/artists`)
   }
 
   render() {
@@ -205,7 +205,7 @@ export class ShowHeader extends React.Component<Props, State> {
 export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
   show: graphql`
     fragment ShowHeader_show on Show {
-      id
+      gravityID
       _id
       __id
       name
@@ -218,7 +218,7 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
       partner {
         ... on Partner {
           name
-          id
+          gravityID
           href
         }
       }
@@ -232,7 +232,7 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
             artist {
               name
               href
-              id
+              gravityID
               _id
             }
           }
@@ -241,7 +241,7 @@ export const ShowHeaderContainer = createFragmentContainer(ShowHeader, {
       artists {
         name
         href
-        id
+        gravityID
         _id
       }
     }

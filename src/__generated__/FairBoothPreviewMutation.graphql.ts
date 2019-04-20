@@ -12,7 +12,7 @@ export type FairBoothPreviewMutationVariables = {
 export type FairBoothPreviewMutationResponse = {
     readonly followProfile: ({
         readonly profile: ({
-            readonly id: string;
+            readonly gravityID: string;
             readonly _id: string;
             readonly is_followed: boolean | null;
         }) | null;
@@ -31,10 +31,9 @@ mutation FairBoothPreviewMutation(
 ) {
   followProfile(input: $input) {
     profile {
-      id
+      gravityID
       _id
       is_followed
-      __id
     }
   }
 }
@@ -78,7 +77,7 @@ v1 = [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -95,13 +94,6 @@ v1 = [
             "name": "is_followed",
             "args": null,
             "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "__id",
-            "args": null,
-            "storageKey": null
           }
         ]
       }
@@ -110,26 +102,28 @@ v1 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "FairBoothPreviewMutation",
-  "id": "0c1010a8dedeee8e56d6342af4e5b83e",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FairBoothPreviewMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "FairBoothPreviewMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "FairBoothPreviewMutation",
+    "id": "c29898d991e3f13d3d1ddc349a76e234",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '032e6ecdb175dc6f4a8494290f71c078';
+(node as any).hash = 'c29898d991e3f13d3d1ddc349a76e234';
 export default node;

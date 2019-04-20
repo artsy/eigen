@@ -60,17 +60,15 @@ fragment Message_message on Message {
   invoice {
     payment_url
     ...InvoicePreview_invoice
-    __id
   }
   attachments {
-    id
+    internalID
     content_type
     download_url
     file_name
     ...ImagePreview_attachment
     ...PDFPreview_attachment
   }
-  __id
 }
 
 fragment InvoicePreview_invoice on Invoice {
@@ -78,7 +76,6 @@ fragment InvoicePreview_invoice on Invoice {
   state
   total
   lewitt_invoice_id
-  __id
 }
 
 fragment ImagePreview_attachment on Attachment {
@@ -92,7 +89,7 @@ fragment PDFPreview_attachment on Attachment {
 }
 
 fragment AttachmentPreview_attachment on Attachment {
-  id
+  internalID
 }
 */
 
@@ -143,24 +140,19 @@ v5 = {
 };
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "SendConversationMessageMutation",
-  "id": "fafb72e0ce2a42a7b7eb5db013f1f6a5",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "SendConversationMessageMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "sendConversationMessage",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "SendConversationMessageMutationPayload",
         "plural": false,
         "selections": [
@@ -182,10 +174,10 @@ return {
                 "concreteType": "Message",
                 "plural": false,
                 "selections": [
-                  v2,
-                  v3,
-                  v4,
-                  v5,
+                  (v2/*: any*/),
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  (v5/*: any*/),
                   {
                     "kind": "FragmentSpread",
                     "name": "Message_message",
@@ -202,14 +194,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "SendConversationMessageMutation",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "sendConversationMessage",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "SendConversationMessageMutationPayload",
         "plural": false,
         "selections": [
@@ -231,10 +223,10 @@ return {
                 "concreteType": "Message",
                 "plural": false,
                 "selections": [
-                  v2,
-                  v3,
-                  v4,
-                  v5,
+                  (v2/*: any*/),
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  (v5/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -303,8 +295,7 @@ return {
                         "name": "lewitt_invoice_id",
                         "args": null,
                         "storageKey": null
-                      },
-                      v5
+                      }
                     ]
                   },
                   {
@@ -319,7 +310,7 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "id",
+                        "name": "internalID",
                         "args": null,
                         "storageKey": null
                       },
@@ -353,6 +344,13 @@ return {
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "SendConversationMessageMutation",
+    "id": "6e5ff1e232848ad66c3ad72e22ee1054",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

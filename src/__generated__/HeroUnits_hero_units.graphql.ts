@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _HeroUnits_hero_units$ref: unique symbol;
 export type HeroUnits_hero_units$ref = typeof _HeroUnits_hero_units$ref;
 export type HeroUnits_hero_units = ReadonlyArray<{
@@ -15,7 +15,7 @@ export type HeroUnits_hero_units = ReadonlyArray<{
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "HeroUnits_hero_units",
   "type": "HomePageHeroUnit",

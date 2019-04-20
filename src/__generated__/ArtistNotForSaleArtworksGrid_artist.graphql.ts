@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { Artwork_artwork$ref } from "./Artwork_artwork.graphql";
 declare const _ArtistNotForSaleArtworksGrid_artist$ref: unique symbol;
 export type ArtistNotForSaleArtworksGrid_artist$ref = typeof _ArtistNotForSaleArtworksGrid_artist$ref;
@@ -14,7 +14,7 @@ export type ArtistNotForSaleArtworksGrid_artist = {
         };
         readonly edges: ReadonlyArray<({
             readonly node: ({
-                readonly id: string;
+                readonly gravityID: string;
                 readonly __id: string;
                 readonly image: ({
                     readonly aspect_ratio: number;
@@ -28,7 +28,7 @@ export type ArtistNotForSaleArtworksGrid_artist = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -75,7 +75,7 @@ return {
     }
   ],
   "selections": [
-    v0,
+    (v0/*: any*/),
     {
       "kind": "LinkedField",
       "alias": "notForSaleArtworks",
@@ -151,11 +151,11 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "id",
+                  "name": "gravityID",
                   "args": null,
                   "storageKey": null
                 },
-                v0,
+                (v0/*: any*/),
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -202,5 +202,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '0a2227851191d149ed117a8277e8acd1';
+(node as any).hash = '20cd39f6bccd85711c97ba3b1e780a16';
 export default node;
