@@ -4,15 +4,15 @@ exports[`renders properly 1`] = `
 <Header
   artist={
     Object {
-      "internalID": "some-id",
       "birthday": "11/17/1992",
       "counts": Object {
         "follows": 22,
       },
       "id": "marcel-duchamp",
+      "internalID": "some-id",
       "name": "Marcel Duchamp",
       "nationality": "French",
     }
   }
 />
-`
+`;

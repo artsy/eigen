@@ -4,12 +4,12 @@ exports[`renders properly 1`] = `
 <Header
   gene={
     Object {
+      "gravityID": "deep-time",
       "id": "gene-deep-time",
       "internalID": "gravity-id",
-      "id": "deep-time",
       "name": "Deep Time",
     }
   }
   shortForm={false}
 />
-`
+`;
