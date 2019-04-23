@@ -5,7 +5,7 @@ import ShowContainer from "../../../Scenes/Show/index"
 
 const show = jest.fn()
 describe(ShowContainer, () => {
-  it("passes this test", () => {
+  xit("passes this test", () => {
     expect(show).not.toHaveBeenCalled()
   })
 })
