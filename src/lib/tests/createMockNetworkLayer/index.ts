@@ -22,7 +22,7 @@ export const createMockNetworkLayer = (mockResolvers: IMocks) => {
       schema,
       mocks: { FormattedNumber: () => FormattedNumber, ...mockResolvers },
       resolveQueryFromOperation: ({ id }) => {
-        return require("../../../__generated__/complete.queryMap.json")[id]
+        return require("../../../../data/complete.queryMap.json")[id]
       },
     })
   )
@@ -108,7 +108,7 @@ export const createMockFetchQuery = ({
     }) as GraphQLFieldResolver<any, any>,
     schema,
     resolveQueryFromOperation: ({ id }) => {
-      return require("../../../__generated__/complete.queryMap.json")[id]
+      return require("../../../../data/complete.queryMap.json")[id]
     },
     resolvers: {
       FormattedNumber: () => FormattedNumber,
