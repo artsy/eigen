@@ -19,7 +19,6 @@ const ListHeaderText = styled(Serif)`
 
 interface Props extends ViewProperties {
   show: MoreInfo_show
-  showID: string
 }
 
 interface State {

@@ -14,7 +14,6 @@ import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
 
 interface Props extends ViewProperties {
   show: ShowArtists_show
-  showID: string
 }
 
 interface State {
