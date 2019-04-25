@@ -24,9 +24,6 @@ export const ShowContainer = createFragmentContainer(Show, {
   show: graphql`
     fragment Show_show on Show {
       ...Detail_show
-      ...MoreInfo_show
-      ...ShowArtists_show
-      ...ShowArtworks_show
     }
   `,
 })

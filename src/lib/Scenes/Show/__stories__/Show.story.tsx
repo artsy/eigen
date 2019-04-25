@@ -36,7 +36,7 @@ const RootContainer: React.SFC<any> = ({ Component, showID }) => {
 
 storiesOf("Shows")
   .add("Blk & Blue", () => {
-    return <RootContainer Component={Show} showID="abxy-blk-and-blue" />
+    return <RootContainer Component={Show} showID="art-gallery-pure-art-of-design-at-art-gallery-pure" />
   })
   .add("William A. Hall: Symphony of Survival", () => {
     return <RootContainer Component={Show} showID="ross-plus-kramer-gallery-william-a-hall-symphony-of-survival" />

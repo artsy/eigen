@@ -21,9 +21,6 @@ import {
   InquiryRenderer,
   MyProfileRenderer,
   RegistrationFlowRenderer,
-  ShowArtistsRenderer,
-  ShowArtworksRenderer,
-  ShowMoreInfoRenderer,
   ShowRenderer,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
@@ -41,6 +38,7 @@ import FavoritesScene from "./Scenes/Favorites"
 import HomeScene from "./Scenes/Home"
 import { MapContainer } from "./Scenes/Map"
 import { BucketKey } from "./Scenes/Map/bucketCityResults"
+import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from "./Scenes/Show"
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
 
@@ -166,28 +164,21 @@ interface ShowArtistsProps {
   showID: string
 }
 const ShowArtists: React.SFC<ShowArtistsProps> = ({ showID }) => {
-  return (
-    <ShowArtistsRenderer showID={showID} render={renderWithLoadProgress(Containers.ShowArtistsContainer, { showID })} />
-  )
+  return <ShowArtistsRenderer showID={showID} />
 }
 
 interface ShowArtworksProps {
   showID: string
 }
 const ShowArtworks: React.SFC<ShowArtworksProps> = ({ showID }) => {
-  return (
-    <ShowArtworksRenderer
-      showID={showID}
-      render={renderWithLoadProgress(Containers.ShowArtworksContainer, { showID })}
-    />
-  )
+  return <ShowArtworksRenderer showID={showID} />
 }
 
 interface ShowMoreInfoProps {
   showID: string
 }
 const ShowMoreInfo: React.SFC<ShowMoreInfoProps> = ({ showID }) => {
-  return <ShowMoreInfoRenderer showID={showID} render={renderWithLoadProgress(Containers.ShowMoreInfo, { showID })} />
+  return <ShowMoreInfoRenderer showID={showID} />
 }
 
 interface CityFairListProps {

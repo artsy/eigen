@@ -2,23 +2,23 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { ShowArtists_show$ref } from "./ShowArtists_show.graphql";
-export type QueryRenderersShowArtistsQueryVariables = {
+export type ShowArtistsQueryVariables = {
     readonly showID: string;
 };
-export type QueryRenderersShowArtistsQueryResponse = {
+export type ShowArtistsQueryResponse = {
     readonly show: ({
         readonly " $fragmentRefs": ShowArtists_show$ref;
     }) | null;
 };
-export type QueryRenderersShowArtistsQuery = {
-    readonly response: QueryRenderersShowArtistsQueryResponse;
-    readonly variables: QueryRenderersShowArtistsQueryVariables;
+export type ShowArtistsQuery = {
+    readonly response: ShowArtistsQueryResponse;
+    readonly variables: ShowArtistsQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersShowArtistsQuery(
+query ShowArtistsQuery(
   $showID: String!
 ) {
   show(id: $showID) {
@@ -98,13 +98,13 @@ v4 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "QueryRenderersShowArtistsQuery",
-  "id": "f289cd872dbc83c8ad7a0276a9b6008b",
+  "name": "ShowArtistsQuery",
+  "id": "323650445314a3f73847f8372e038cc1",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersShowArtistsQuery",
+    "name": "ShowArtistsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -130,7 +130,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersShowArtistsQuery",
+    "name": "ShowArtistsQuery",
     "argumentDefinitions": v0,
     "selections": [
       {
@@ -250,5 +250,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'b0f50800f806619e2d413fa4c58f8957';
+(node as any).hash = '6df07207a68e180b435619e641ce4a18';
 export default node;

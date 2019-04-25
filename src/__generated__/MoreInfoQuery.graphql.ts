@@ -2,23 +2,23 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { MoreInfo_show$ref } from "./MoreInfo_show.graphql";
-export type QueryRenderersShowMoreInfoQueryVariables = {
+export type MoreInfoQueryVariables = {
     readonly showID: string;
 };
-export type QueryRenderersShowMoreInfoQueryResponse = {
+export type MoreInfoQueryResponse = {
     readonly show: ({
         readonly " $fragmentRefs": MoreInfo_show$ref;
     }) | null;
 };
-export type QueryRenderersShowMoreInfoQuery = {
-    readonly response: QueryRenderersShowMoreInfoQueryResponse;
-    readonly variables: QueryRenderersShowMoreInfoQueryVariables;
+export type MoreInfoQuery = {
+    readonly response: MoreInfoQueryResponse;
+    readonly variables: MoreInfoQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersShowMoreInfoQuery(
+query MoreInfoQuery(
   $showID: String!
 ) {
   show(id: $showID) {
@@ -88,13 +88,13 @@ v2 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "QueryRenderersShowMoreInfoQuery",
-  "id": "57cbcaaaaae5c25cad7ff0a63f57470d",
+  "name": "MoreInfoQuery",
+  "id": "e5350718a5eade0206ef51d7f5c30a63",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersShowMoreInfoQuery",
+    "name": "MoreInfoQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": v0,
@@ -120,7 +120,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersShowMoreInfoQuery",
+    "name": "MoreInfoQuery",
     "argumentDefinitions": v0,
     "selections": [
       {
@@ -259,5 +259,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'f820e7caf00e9338c7bfa664a25c4c83';
+(node as any).hash = '845de9834db6c6e92fc0337a28679c20';
 export default node;

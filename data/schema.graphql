@@ -55,7 +55,7 @@ type AnalyticsArtworksPublishedStats {
 }
 
 # Publish artwork Series Stats
-type AnalyticsArtworksPublishedTimeSeriesStats implements AnalyticsPartnerTimeSeriesStatsType {
+type AnalyticsArtworksPublishedTimeSeriesStats implements AnalyticsPartnerTimeSeriesStats {
   count: Int
   samplingFrequency: AnalyticsSamplingFrequencyEnum!
   time: AnalyticsDateTime
@@ -85,26 +85,65 @@ type AnalyticsHistogramBin {
   ): String
 }
 
+# Information about pagination in a connection.
+type AnalyticsPageInfo {
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+}
+
 # Partner Stats
-type AnalyticsPartnerStatsType {
+type AnalyticsPartnerStats {
   # Time series data on number of artworks published
   artworksPublished(period: AnalyticsQueryPeriodEnum!): AnalyticsArtworksPublishedStats
   partnerId: String!
+
+  # Artworks ranked by views
+  topArtworks(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    period: AnalyticsQueryPeriodEnum!
+  ): AnalyticsTopArtworksConnection
 
   # Number of unique visitors
   uniqueVisitors(period: AnalyticsQueryPeriodEnum!): Int
 }
 
 # Partner Time Series Stats
-interface AnalyticsPartnerTimeSeriesStatsType {
+interface AnalyticsPartnerTimeSeriesStats {
   samplingFrequency: AnalyticsSamplingFrequencyEnum!
   time: AnalyticsDateTime
 }
 
+# Price Context Filter Type
+type AnalyticsPriceContextFilterType {
+  category: AnalyticsPricingContextCategoryEnum
+  dimension: AnalyticsPricingContextDimensionEnum
+}
+
 # Pricing Context Histogram
 type AnalyticsPricingContext {
+  appliedFilters: AnalyticsPriceContextFilterType!
   bins: [AnalyticsHistogramBin!]!
-  filterDescription: String!
+  filterDescription: String! @deprecated(reason: "switch to applied_filters")
+  appliedFiltersDisplay: String
 }
 
 enum AnalyticsPricingContextCategoryEnum {
@@ -118,10 +157,10 @@ enum AnalyticsPricingContextCategoryEnum {
   DESIGN_DECORATIVE_ART
 
   # Drawing, Collage or other Work on Paper
-  DRAWING_COLAGE_OTHER_WORK_ON_PAPER
+  DRAWING_COLLAGE_OTHER_WORK_ON_PAPER
 
   # Fashion Design and Wearable Art
-  FASHON
+  FASHION
 
   # Installation
   INSTALLATION
@@ -166,6 +205,17 @@ enum AnalyticsPricingContextCategoryEnum {
   WORK_ON_PAPER
 }
 
+enum AnalyticsPricingContextDimensionEnum {
+  # Large
+  LARGE
+
+  # Medium
+  MEDIUM
+
+  # Small
+  SMALL
+}
+
 enum AnalyticsQueryPeriodEnum {
   # Four weeks
   FOUR_WEEKS
@@ -186,6 +236,35 @@ enum AnalyticsSamplingFrequencyEnum {
 
   # Weekly
   WEEKLY
+}
+
+# Top artworks from a partner
+type AnalyticsTopArtworks {
+  artworkId: String!
+  period: AnalyticsQueryPeriodEnum!
+  value: Int!
+  artwork: Artwork
+}
+
+# The connection type for TopArtworks.
+type AnalyticsTopArtworksConnection {
+  # A list of edges.
+  edges: [AnalyticsTopArtworksEdge]
+
+  # A list of nodes.
+  nodes: [AnalyticsTopArtworks]
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+}
+
+# An edge in a connection.
+type AnalyticsTopArtworksEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AnalyticsTopArtworks
 }
 
 input ApproveOrderInput {
@@ -1149,7 +1228,9 @@ type ArtworkContextAuction implements Node {
   href: String
   name: String
   is_auction: Boolean
-  is_benefit: Boolean
+  is_benefit: Boolean @deprecated(reason: "Favor `isBenefit`")
+  isBenefit: Boolean
+  isGalleryAuction: Boolean
   is_auction_promo: Boolean
   is_closed: Boolean
   is_open: Boolean
@@ -1507,7 +1588,9 @@ type ArtworkContextSale implements Node {
   href: String
   name: String
   is_auction: Boolean
-  is_benefit: Boolean
+  is_benefit: Boolean @deprecated(reason: "Favor `isBenefit`")
+  isBenefit: Boolean
+  isGalleryAuction: Boolean
   is_auction_promo: Boolean
   is_closed: Boolean
   is_open: Boolean
@@ -4926,7 +5009,9 @@ type HomePageModuleContextSale implements Node {
   href: String
   name: String
   is_auction: Boolean
-  is_benefit: Boolean
+  is_benefit: Boolean @deprecated(reason: "Favor `isBenefit`")
+  isBenefit: Boolean
+  isGalleryAuction: Boolean
   is_auction_promo: Boolean
   is_closed: Boolean
   is_open: Boolean
@@ -6534,6 +6619,7 @@ type Partner implements Node {
 
   # The gallery partner's web address
   website: String
+  analytics: AnalyticsPartnerStats
 }
 
 type PartnerArtist {
@@ -7481,7 +7567,7 @@ type Query {
   _unused_gravity_partners(ids: [ID]!): [DoNotUseThisPartner]
 
   # Find PartnerStats
-  analyticsPartnerStats(partnerId: String!): AnalyticsPartnerStatsType
+  analyticsPartnerStats(partnerId: String!): AnalyticsPartnerStats
   marketingCollections(
     randomizationSeed: String
     size: Int
@@ -7644,7 +7730,9 @@ type Sale implements Node {
   href: String
   name: String
   is_auction: Boolean
-  is_benefit: Boolean
+  is_benefit: Boolean @deprecated(reason: "Favor `isBenefit`")
+  isBenefit: Boolean
+  isGalleryAuction: Boolean
   is_auction_promo: Boolean
   is_closed: Boolean
   is_open: Boolean
