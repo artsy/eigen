@@ -25,6 +25,7 @@
 - Moves fair open hours display to metaphysics - kieran
 - Upgrade to React Native 0.59.2 - orta/alloy
 - Refactors deprecated Relay `graphql` calls - chris
+- Refactors Shows queries to make Show screen more performant - ashley
 
 ### 1.9.4
 

@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 import { ImagePreview_attachment$ref } from "./ImagePreview_attachment.graphql";
 import { InvoicePreview_invoice$ref } from "./InvoicePreview_invoice.graphql";
 import { PDFPreview_attachment$ref } from "./PDFPreview_attachment.graphql";
@@ -30,7 +30,15 @@ export type Message_message = {
 
 
 
-const node: ReaderFragment = {
+const node: ConcreteFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "Message_message",
   "type": "Message",
@@ -103,7 +111,8 @@ const node: ReaderFragment = {
           "kind": "FragmentSpread",
           "name": "InvoicePreview_invoice",
           "args": null
-        }
+        },
+        v0
       ]
     },
     {
@@ -154,8 +163,10 @@ const node: ReaderFragment = {
           "args": null
         }
       ]
-    }
+    },
+    v0
   ]
 };
+})();
 (node as any).hash = 'b71af3f6aaf72a70554f326dc5a84f78';
 export default node;

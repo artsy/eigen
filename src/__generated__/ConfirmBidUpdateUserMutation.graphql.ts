@@ -47,7 +47,7 @@ mutation ConfirmBidUpdateUserMutation(
     clientMutationId
     user {
       phone
-      id
+      __id: id
     }
   }
 }
@@ -64,105 +64,76 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "Variable",
-    "name": "input",
-    "variableName": "input",
-    "type": "UpdateMyProfileInput!"
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "updateMyUserProfile",
+    "storageKey": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "input",
+        "variableName": "input",
+        "type": "UpdateMyProfileInput!"
+      }
+    ],
+    "concreteType": "UpdateMyProfilePayload",
+    "plural": false,
+    "selections": [
+      {
+        "kind": "ScalarField",
+        "alias": null,
+        "name": "clientMutationId",
+        "args": null,
+        "storageKey": null
+      },
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "user",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "User",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "phone",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": "__id",
+            "name": "id",
+            "args": null,
+            "storageKey": null
+          }
+        ]
+      }
+    ]
   }
-],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "clientMutationId",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "phone",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
+  "operationKind": "mutation",
+  "name": "ConfirmBidUpdateUserMutation",
+  "id": null,
+  "text": "mutation ConfirmBidUpdateUserMutation(\n  $input: UpdateMyProfileInput!\n) {\n  updateMyUserProfile(input: $input) {\n    clientMutationId\n    user {\n      phone\n      __id: id\n    }\n  }\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ConfirmBidUpdateUserMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "updateMyUserProfile",
-        "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "UpdateMyProfilePayload",
-        "plural": false,
-        "selections": [
-          (v2/*: any*/),
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "user",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "User",
-            "plural": false,
-            "selections": [
-              (v3/*: any*/)
-            ]
-          }
-        ]
-      }
-    ]
+    "argumentDefinitions": v0,
+    "selections": v1
   },
   "operation": {
     "kind": "Operation",
     "name": "ConfirmBidUpdateUserMutation",
-    "argumentDefinitions": (v0/*: any*/),
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "updateMyUserProfile",
-        "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "UpdateMyProfilePayload",
-        "plural": false,
-        "selections": [
-          (v2/*: any*/),
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "user",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "User",
-            "plural": false,
-            "selections": [
-              (v3/*: any*/),
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "id",
-                "args": null,
-                "storageKey": null
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "params": {
-    "operationKind": "mutation",
-    "name": "ConfirmBidUpdateUserMutation",
-    "id": "30b967c971f3916e1e4e9f9213e83b41",
-    "text": null,
-    "metadata": {}
+    "argumentDefinitions": v0,
+    "selections": v1
   }
 };
 })();

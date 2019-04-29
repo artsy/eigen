@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 import { ShowEventSection_event$ref } from "./ShowEventSection_event.graphql";
 declare const _MoreInfo_show$ref: unique symbol;
 export type MoreInfo_show$ref = typeof _MoreInfo_show$ref;
@@ -23,7 +23,15 @@ export type MoreInfo_show = {
 
 
 
-const node: ReaderFragment = {
+const node: ConcreteFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "MoreInfo_show",
   "type": "Show",
@@ -74,6 +82,7 @@ const node: ReaderFragment = {
       "concreteType": null,
       "plural": false,
       "selections": [
+        v0,
         {
           "kind": "InlineFragment",
           "type": "Partner",
@@ -118,8 +127,10 @@ const node: ReaderFragment = {
           "args": null
         }
       ]
-    }
+    },
+    v0
   ]
 };
+})();
 (node as any).hash = 'f42f7629f5a8030c1abdbf7570830617';
 export default node;

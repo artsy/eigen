@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 declare const _Metadata_show$ref: unique symbol;
 export type Metadata_show$ref = typeof _Metadata_show$ref;
 export type Metadata_show = {
@@ -20,11 +20,18 @@ export type Metadata_show = {
 
 
 
-const node: ReaderFragment = (function(){
+const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -42,7 +49,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    (v0/*: any*/),
+    v0,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -73,7 +80,8 @@ return {
       "concreteType": "Partner",
       "plural": false,
       "selections": [
-        (v0/*: any*/)
+        v0,
+        v1
       ]
     },
     {
@@ -91,9 +99,11 @@ return {
           "name": "city",
           "args": null,
           "storageKey": null
-        }
+        },
+        v1
       ]
-    }
+    },
+    v1
   ]
 };
 })();

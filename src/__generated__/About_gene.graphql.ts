@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 import { Biography_gene$ref } from "./Biography_gene.graphql";
 import { RelatedArtists_artists$ref } from "./RelatedArtists_artists.graphql";
 declare const _About_gene$ref: unique symbol;
@@ -15,7 +15,15 @@ export type About_gene = {
 
 
 
-const node: ReaderFragment = {
+const node: ConcreteFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "About_gene",
   "type": "Gene",
@@ -40,10 +48,13 @@ const node: ReaderFragment = {
           "kind": "FragmentSpread",
           "name": "RelatedArtists_artists",
           "args": null
-        }
+        },
+        v0
       ]
-    }
+    },
+    v0
   ]
 };
+})();
 (node as any).hash = 'f49aab34dd4e87ee0079aac465f2313a';
 export default node;

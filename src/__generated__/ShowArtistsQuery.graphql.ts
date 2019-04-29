@@ -2,28 +2,28 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { ShowArtists_show$ref } from "./ShowArtists_show.graphql";
-export type QueryRenderersShowArtistsQueryVariables = {
+export type ShowArtistsQueryVariables = {
     readonly showID: string;
 };
-export type QueryRenderersShowArtistsQueryResponse = {
+export type ShowArtistsQueryResponse = {
     readonly show: ({
         readonly " $fragmentRefs": ShowArtists_show$ref;
     }) | null;
 };
-export type QueryRenderersShowArtistsQuery = {
-    readonly response: QueryRenderersShowArtistsQueryResponse;
-    readonly variables: QueryRenderersShowArtistsQueryVariables;
+export type ShowArtistsQuery = {
+    readonly response: ShowArtistsQueryResponse;
+    readonly variables: ShowArtistsQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersShowArtistsQuery(
+query ShowArtistsQuery(
   $showID: String!
 ) {
   show(id: $showID) {
     ...ShowArtists_show
-    id
+    __id: id
   }
 }
 
@@ -36,9 +36,10 @@ fragment ShowArtists_show on Show {
       ...ArtistListItem_artist
       sortable_id
       href
-      id
+      __id: id
     }
   }
+  __id: id
 }
 
 fragment ArtistListItem_artist on Artist {
@@ -53,6 +54,7 @@ fragment ArtistListItem_artist on Artist {
   image {
     url
   }
+  __id: id
 }
 */
 
@@ -75,40 +77,45 @@ v1 = [
 ],
 v2 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
+  "alias": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "ShowArtistsQuery",
+  "id": null,
+  "text": "query ShowArtistsQuery(\n  $showID: String!\n) {\n  show(id: $showID) {\n    ...ShowArtists_show\n    __id: id\n  }\n}\n\nfragment ShowArtists_show on Show {\n  internalID\n  gravityID\n  artists_grouped_by_name {\n    letter\n    items {\n      ...ArtistListItem_artist\n      sortable_id\n      href\n      __id: id\n    }\n  }\n  __id: id\n}\n\nfragment ArtistListItem_artist on Artist {\n  id\n  internalID\n  gravityID\n  name\n  is_followed\n  nationality\n  birthday\n  deathday\n  image {\n    url\n  }\n  __id: id\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersShowArtistsQuery",
+    "name": "ShowArtistsQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -116,27 +123,28 @@ return {
             "kind": "FragmentSpread",
             "name": "ShowArtists_show",
             "args": null
-          }
+          },
+          v2
         ]
       }
     ]
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersShowArtistsQuery",
-    "argumentDefinitions": (v0/*: any*/),
+    "name": "ShowArtistsQuery",
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
+          v3,
+          v4,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -165,12 +173,18 @@ return {
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "nationality",
+                    "name": "birthday",
                     "args": null,
                     "storageKey": null
                   },
-                  (v4/*: any*/),
-                  (v3/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "id",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  v4,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -185,14 +199,14 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v2/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "birthday",
+                    "name": "nationality",
                     "args": null,
                     "storageKey": null
                   },
+                  v3,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -218,6 +232,7 @@ return {
                       }
                     ]
                   },
+                  v2,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -236,19 +251,12 @@ return {
               }
             ]
           },
-          (v4/*: any*/)
+          v2
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "QueryRenderersShowArtistsQuery",
-    "id": "b0f50800f806619e2d413fa4c58f8957",
-    "text": null,
-    "metadata": {}
   }
 };
 })();
-(node as any).hash = 'b0f50800f806619e2d413fa4c58f8957';
+(node as any).hash = '6df07207a68e180b435619e641ce4a18';
 export default node;

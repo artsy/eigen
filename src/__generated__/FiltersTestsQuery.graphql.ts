@@ -22,9 +22,9 @@ query FiltersTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
       ...Filters_filteredArtworks
-      id
+      __id: id
     }
-    id
+    __id: id
   }
 }
 
@@ -34,9 +34,10 @@ fragment Filters_filteredArtworks on FilterArtworks {
     counts {
       gravityID
       name
-      id
+      __id: id
     }
   }
+  __id: id
 }
 */
 
@@ -81,13 +82,18 @@ v1 = [
 ],
 v2 = {
   "kind": "ScalarField",
-  "alias": null,
+  "alias": "__id",
   "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "FiltersTestsQuery",
+  "id": null,
+  "text": "query FiltersTestsQuery {\n  show(id: \"anderson-fine-art-gallery-flickinger-collection\") {\n    filteredArtworks(size: 0, medium: \"*\", price_range: \"*-*\", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {\n      ...Filters_filteredArtworks\n      __id: id\n    }\n    __id: id\n  }\n}\n\nfragment Filters_filteredArtworks on FilterArtworks {\n  aggregations {\n    slice\n    counts {\n      gravityID\n      name\n      __id: id\n    }\n  }\n  __id: id\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FiltersTestsQuery",
@@ -100,7 +106,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": (v0/*: any*/),
+        "args": v0,
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -109,7 +115,7 @@ return {
             "alias": null,
             "name": "filteredArtworks",
             "storageKey": "filteredArtworks(aggregations:[\"MEDIUM\",\"PRICE_RANGE\",\"TOTAL\"],medium:\"*\",price_range:\"*-*\",size:0)",
-            "args": (v1/*: any*/),
+            "args": v1,
             "concreteType": "FilterArtworks",
             "plural": false,
             "selections": [
@@ -117,9 +123,11 @@ return {
                 "kind": "FragmentSpread",
                 "name": "Filters_filteredArtworks",
                 "args": null
-              }
+              },
+              v2
             ]
-          }
+          },
+          v2
         ]
       }
     ]
@@ -134,7 +142,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": (v0/*: any*/),
+        "args": v0,
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -143,7 +151,7 @@ return {
             "alias": null,
             "name": "filteredArtworks",
             "storageKey": "filteredArtworks(aggregations:[\"MEDIUM\",\"PRICE_RANGE\",\"TOTAL\"],medium:\"*\",price_range:\"*-*\",size:0)",
-            "args": (v1/*: any*/),
+            "args": v1,
             "concreteType": "FilterArtworks",
             "plural": false,
             "selections": [
@@ -186,25 +194,18 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v2/*: any*/)
+                      v2
                     ]
                   }
                 ]
               },
-              (v2/*: any*/)
+              v2
             ]
           },
-          (v2/*: any*/)
+          v2
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "FiltersTestsQuery",
-    "id": "498c50b425dfc69be09f5ed829194609",
-    "text": null,
-    "metadata": {}
   }
 };
 })();

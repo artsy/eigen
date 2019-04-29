@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 import { BidResult_sale_artwork$ref } from "./BidResult_sale_artwork.graphql";
 declare const _ConfirmBid_sale_artwork$ref: unique symbol;
 export type ConfirmBid_sale_artwork$ref = typeof _ConfirmBid_sale_artwork$ref;
@@ -24,11 +24,18 @@ export type ConfirmBid_sale_artwork = {
 
 
 
-const node: ReaderFragment = (function(){
+const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -55,7 +62,7 @@ return {
       "concreteType": "Sale",
       "plural": false,
       "selections": [
-        (v0/*: any*/),
+        v0,
         {
           "kind": "ScalarField",
           "alias": null,
@@ -69,7 +76,8 @@ return {
           "name": "end_at",
           "args": null,
           "storageKey": null
-        }
+        },
+        v1
       ]
     },
     {
@@ -81,7 +89,7 @@ return {
       "concreteType": "Artwork",
       "plural": false,
       "selections": [
-        (v0/*: any*/),
+        v0,
         {
           "kind": "ScalarField",
           "alias": null,
@@ -102,7 +110,8 @@ return {
           "name": "artist_names",
           "args": null,
           "storageKey": null
-        }
+        },
+        v1
       ]
     },
     {
@@ -116,7 +125,8 @@ return {
       "kind": "FragmentSpread",
       "name": "BidResult_sale_artwork",
       "args": null
-    }
+    },
+    v1
   ]
 };
 })();

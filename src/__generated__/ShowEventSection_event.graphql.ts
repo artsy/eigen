@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 declare const _ShowEventSection_event$ref: unique symbol;
 export type ShowEventSection_event$ref = typeof _ShowEventSection_event$ref;
 export type ShowEventSection_event = {
@@ -13,7 +13,7 @@ export type ShowEventSection_event = {
 
 
 
-const node: ReaderFragment = {
+const node: ConcreteFragment = {
   "kind": "Fragment",
   "name": "ShowEventSection_event",
   "type": "PartnerShowEventType",

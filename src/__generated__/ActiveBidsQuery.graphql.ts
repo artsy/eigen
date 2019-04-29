@@ -19,7 +19,7 @@ export type ActiveBidsQuery = {
 query ActiveBidsQuery {
   me {
     ...ActiveBids_me
-    id
+    __id: id
   }
 }
 
@@ -27,9 +27,11 @@ fragment ActiveBids_me on Me {
   lot_standings(live: true) {
     most_recent_bid {
       id
+      __id: id
     }
     ...ActiveBid_bid
   }
+  __id: id
 }
 
 fragment ActiveBid_bid on LotStanding {
@@ -37,7 +39,7 @@ fragment ActiveBid_bid on LotStanding {
   sale {
     href
     is_live_open
-    id
+    __id: id
   }
   most_recent_bid {
     id
@@ -51,19 +53,20 @@ fragment ActiveBid_bid on LotStanding {
           url
         }
         artist_names
-        id
+        __id: id
       }
       counts {
         bidder_positions
       }
       highest_bid {
         display
-        id
+        __id: id
       }
       lot_number
       reserve_status
-      id
+      __id: id
     }
+    __id: id
   }
 }
 */
@@ -71,7 +74,7 @@ fragment ActiveBid_bid on LotStanding {
 const node: ConcreteRequest = (function(){
 var v0 = {
   "kind": "ScalarField",
-  "alias": null,
+  "alias": "__id",
   "name": "id",
   "args": null,
   "storageKey": null
@@ -92,6 +95,11 @@ v2 = {
 };
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "ActiveBidsQuery",
+  "id": null,
+  "text": "query ActiveBidsQuery {\n  me {\n    ...ActiveBids_me\n    __id: id\n  }\n}\n\nfragment ActiveBids_me on Me {\n  lot_standings(live: true) {\n    most_recent_bid {\n      id\n      __id: id\n    }\n    ...ActiveBid_bid\n  }\n  __id: id\n}\n\nfragment ActiveBid_bid on LotStanding {\n  is_leading_bidder\n  sale {\n    href\n    is_live_open\n    __id: id\n  }\n  most_recent_bid {\n    id\n    max_bid {\n      display\n    }\n    sale_artwork {\n      artwork {\n        href\n        image {\n          url\n        }\n        artist_names\n        __id: id\n      }\n      counts {\n        bidder_positions\n      }\n      highest_bid {\n        display\n        __id: id\n      }\n      lot_number\n      reserve_status\n      __id: id\n    }\n    __id: id\n  }\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ActiveBidsQuery",
@@ -112,7 +120,8 @@ return {
             "kind": "FragmentSpread",
             "name": "ActiveBids_me",
             "args": null
-          }
+          },
+          v0
         ]
       }
     ]
@@ -156,7 +165,14 @@ return {
                 "concreteType": "BidderPosition",
                 "plural": false,
                 "selections": [
-                  (v0/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "id",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  v0,
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -166,7 +182,7 @@ return {
                     "concreteType": "BidderPositionMaxBid",
                     "plural": false,
                     "selections": [
-                      (v1/*: any*/)
+                      v1
                     ]
                   },
                   {
@@ -187,7 +203,7 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
+                          v2,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -213,7 +229,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v0/*: any*/)
+                          v0
                         ]
                       },
                       {
@@ -243,8 +259,8 @@ return {
                         "concreteType": "SaleArtworkHighestBid",
                         "plural": false,
                         "selections": [
-                          (v1/*: any*/),
-                          (v0/*: any*/)
+                          v1,
+                          v0
                         ]
                       },
                       {
@@ -261,7 +277,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v0/*: any*/)
+                      v0
                     ]
                   }
                 ]
@@ -282,7 +298,7 @@ return {
                 "concreteType": "Sale",
                 "plural": false,
                 "selections": [
-                  (v2/*: any*/),
+                  v2,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -290,22 +306,15 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v0/*: any*/)
+                  v0
                 ]
               }
             ]
           },
-          (v0/*: any*/)
+          v0
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "ActiveBidsQuery",
-    "id": "483ea8a9a4515e5f1b1d1adba38c309a",
-    "text": null,
-    "metadata": {}
   }
 };
 })();

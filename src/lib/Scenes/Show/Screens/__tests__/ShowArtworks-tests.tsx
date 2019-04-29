@@ -4,7 +4,7 @@ import { MockRelayRenderer } from "lib/tests/MockRelayRenderer"
 import { renderUntil } from "lib/tests/renderUntil"
 import React from "react"
 import { graphql } from "react-relay"
-import { ShowArtworksContainer as ShowArtworks } from "../ShowArtworks"
+import { ShowArtworksContainer as ShowArtworks } from "../../../../Scenes/Show/Screens/ShowArtworks"
 
 jest.unmock("react-relay")
 

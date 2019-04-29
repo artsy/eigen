@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "MAJOR_PERIOD" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 declare const _Filters_filteredArtworks$ref: unique symbol;
 export type Filters_filteredArtworks$ref = typeof _Filters_filteredArtworks$ref;
@@ -17,7 +17,15 @@ export type Filters_filteredArtworks = {
 
 
 
-const node: ReaderFragment = {
+const node: ConcreteFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "Filters_filteredArtworks",
   "type": "FilterArtworks",
@@ -62,12 +70,15 @@ const node: ReaderFragment = {
               "name": "name",
               "args": null,
               "storageKey": null
-            }
+            },
+            v0
           ]
         }
       ]
-    }
+    },
+    v0
   ]
 };
+})();
 (node as any).hash = 'a1f2ee6a37c09ada16819b191cea318f';
 export default node;

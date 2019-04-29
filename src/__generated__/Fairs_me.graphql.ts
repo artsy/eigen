@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 declare const _Fairs_me$ref: unique symbol;
 export type Fairs_me$ref = typeof _Fairs_me$ref;
 export type Fairs_me = {
@@ -34,10 +34,17 @@ export type Fairs_me = {
 
 
 
-const node: ReaderFragment = (function(){
+const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": "__id",
   "name": "id",
   "args": null,
   "storageKey": null
@@ -110,33 +117,14 @@ return {
                   "concreteType": "Fair",
                   "plural": false,
                   "selections": [
-                    (v0/*: any*/),
                     {
-                      "kind": "LinkedField",
+                      "kind": "ScalarField",
                       "alias": null,
-                      "name": "profile",
-                      "storageKey": null,
+                      "name": "href",
                       "args": null,
-                      "concreteType": "Profile",
-                      "plural": false,
-                      "selections": [
-                        {
-                          "kind": "ScalarField",
-                          "alias": null,
-                          "name": "gravityID",
-                          "args": null,
-                          "storageKey": null
-                        },
-                        {
-                          "kind": "ScalarField",
-                          "alias": null,
-                          "name": "is_followed",
-                          "args": null,
-                          "storageKey": null
-                        },
-                        (v0/*: any*/)
-                      ]
+                      "storageKey": null
                     },
+                    v0,
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -170,11 +158,31 @@ return {
                       ]
                     },
                     {
-                      "kind": "ScalarField",
+                      "kind": "LinkedField",
                       "alias": null,
-                      "name": "href",
+                      "name": "profile",
+                      "storageKey": null,
                       "args": null,
-                      "storageKey": null
+                      "concreteType": "Profile",
+                      "plural": false,
+                      "selections": [
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "gravityID",
+                          "args": null,
+                          "storageKey": null
+                        },
+                        {
+                          "kind": "ScalarField",
+                          "alias": null,
+                          "name": "is_followed",
+                          "args": null,
+                          "storageKey": null
+                        },
+                        v0,
+                        v1
+                      ]
                     },
                     {
                       "kind": "LinkedField",
@@ -208,6 +216,7 @@ return {
                       "args": null,
                       "storageKey": null
                     },
+                    v1,
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -254,7 +263,8 @@ return {
           ]
         }
       ]
-    }
+    },
+    v1
   ]
 };
 })();

@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 import { Metadata_show$ref } from "./Metadata_show.graphql";
 declare const _ArtistShow_show$ref: unique symbol;
 export type ArtistShow_show$ref = typeof _ArtistShow_show$ref;
@@ -17,7 +17,7 @@ export type ArtistShow_show = {
 
 
 
-const node: ReaderFragment = {
+const node: ConcreteFragment = {
   "kind": "Fragment",
   "name": "ArtistShow_show",
   "type": "PartnerShow",
@@ -74,6 +74,13 @@ const node: ReaderFragment = {
       "kind": "FragmentSpread",
       "name": "Metadata_show",
       "args": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": "__id",
+      "name": "id",
+      "args": null,
+      "storageKey": null
     }
   ]
 };

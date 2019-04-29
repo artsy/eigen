@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 import { ArtistRail_rail$ref } from "./ArtistRail_rail.graphql";
 import { ArtworkCarousel_rail$ref } from "./ArtworkCarousel_rail.graphql";
 import { FairsRail_fairs_module$ref } from "./FairsRail_fairs_module.graphql";
@@ -23,10 +23,17 @@ export type ForYou_forYou = {
 
 
 
-const node: ReaderFragment = (function(){
+const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": "__id",
   "name": "id",
   "args": null,
   "storageKey": null
@@ -86,12 +93,13 @@ return {
       "concreteType": "HomePageArtworkModule",
       "plural": true,
       "selections": [
-        (v0/*: any*/),
+        v0,
         {
           "kind": "FragmentSpread",
           "name": "ArtworkCarousel_rail",
           "args": null
-        }
+        },
+        v1
       ]
     },
     {
@@ -103,12 +111,13 @@ return {
       "concreteType": "HomePageArtistModule",
       "plural": true,
       "selections": [
-        (v0/*: any*/),
+        v0,
         {
           "kind": "FragmentSpread",
           "name": "ArtistRail_rail",
           "args": null
-        }
+        },
+        v1
       ]
     },
     {

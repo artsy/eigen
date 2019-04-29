@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 import { ShowItemRow_show$ref } from "./ShowItemRow_show.graphql";
 declare const _Shows_me$ref: unique symbol;
 export type Shows_me$ref = typeof _Shows_me$ref;
@@ -26,7 +26,15 @@ export type Shows_me = {
 
 
 
-const node: ReaderFragment = {
+const node: ConcreteFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "Shows_me",
   "type": "Me",
@@ -145,6 +153,7 @@ const node: ReaderFragment = {
                       "name": "ShowItemRow_show",
                       "args": null
                     },
+                    v0,
                     {
                       "kind": "ScalarField",
                       "alias": null,
@@ -166,8 +175,10 @@ const node: ReaderFragment = {
           ]
         }
       ]
-    }
+    },
+    v0
   ]
 };
+})();
 (node as any).hash = 'dffb4fceed5efacee0716bdb02de0378';
 export default node;

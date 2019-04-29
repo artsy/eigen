@@ -19,7 +19,7 @@ export type FavoriteShowsQuery = {
 query FavoriteShowsQuery {
   me {
     ...Shows_me
-    id
+    __id: id
   }
 }
 
@@ -36,12 +36,14 @@ fragment Shows_me on Me {
         node {
           id
           ...ShowItemRow_show
+          __id: id
           __typename
         }
         cursor
       }
     }
   }
+  __id: id
 }
 
 fragment ShowItemRow_show on Show {
@@ -59,14 +61,14 @@ fragment ShowItemRow_show on Show {
         image {
           url(version: "square")
         }
-        id
+        __id: id
       }
     }
     ... on Node {
-      id
+      __id: id
     }
     ... on ExternalPartner {
-      id
+      __id: id
     }
   }
   href
@@ -79,33 +81,26 @@ fragment ShowItemRow_show on Show {
   is_fair_booth
   start_at
   end_at
+  __id: id
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 10,
-    "type": "Int"
-  }
-],
-v1 = {
+var v0 = {
   "kind": "ScalarField",
-  "alias": null,
+  "alias": "__id",
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v2 = {
+v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v3 = {
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
@@ -114,6 +109,11 @@ v3 = {
 };
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "FavoriteShowsQuery",
+  "id": null,
+  "text": "query FavoriteShowsQuery {\n  me {\n    ...Shows_me\n    __id: id\n  }\n}\n\nfragment Shows_me on Me {\n  followsAndSaves {\n    shows(first: 10) {\n      pageInfo {\n        startCursor\n        endCursor\n        hasPreviousPage\n        hasNextPage\n      }\n      edges {\n        node {\n          id\n          ...ShowItemRow_show\n          __id: id\n          __typename\n        }\n        cursor\n      }\n    }\n  }\n  __id: id\n}\n\nfragment ShowItemRow_show on Show {\n  gravityID\n  internalID\n  id\n  is_followed\n  name\n  isStubShow\n  partner {\n    __typename\n    ... on Partner {\n      name\n      profile {\n        image {\n          url(version: \"square\")\n        }\n        __id: id\n      }\n    }\n    ... on Node {\n      __id: id\n    }\n    ... on ExternalPartner {\n      __id: id\n    }\n  }\n  href\n  exhibition_period\n  status\n  cover_image {\n    url\n    aspect_ratio\n  }\n  is_fair_booth\n  start_at\n  end_at\n  __id: id\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FavoriteShowsQuery",
@@ -134,7 +134,8 @@ return {
             "kind": "FragmentSpread",
             "name": "Shows_me",
             "args": null
-          }
+          },
+          v0
         ]
       }
     ]
@@ -167,7 +168,14 @@ return {
                 "alias": null,
                 "name": "shows",
                 "storageKey": "shows(first:10)",
-                "args": (v0/*: any*/),
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "first",
+                    "value": 10,
+                    "type": "Int"
+                  }
+                ],
                 "concreteType": "FollowedShowConnection",
                 "plural": false,
                 "selections": [
@@ -231,11 +239,17 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "href",
+                            "name": "exhibition_period",
                             "args": null,
                             "storageKey": null
                           },
-                          (v1/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "id",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -250,7 +264,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/),
+                          v1,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -267,13 +281,13 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
-                              (v3/*: any*/),
-                              (v1/*: any*/),
+                              v2,
+                              v0,
                               {
                                 "kind": "InlineFragment",
                                 "type": "Partner",
                                 "selections": [
-                                  (v2/*: any*/),
+                                  v1,
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
@@ -308,7 +322,7 @@ return {
                                           }
                                         ]
                                       },
-                                      (v1/*: any*/)
+                                      v0
                                     ]
                                   }
                                 ]
@@ -318,14 +332,14 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "gravityID",
+                            "name": "href",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "exhibition_period",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
@@ -382,7 +396,8 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v3/*: any*/)
+                          v0,
+                          v2
                         ]
                       },
                       {
@@ -400,24 +415,24 @@ return {
                 "kind": "LinkedHandle",
                 "alias": null,
                 "name": "shows",
-                "args": (v0/*: any*/),
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "first",
+                    "value": 10,
+                    "type": "Int"
+                  }
+                ],
                 "handle": "connection",
                 "key": "SavedShows_shows",
                 "filters": null
               }
             ]
           },
-          (v1/*: any*/)
+          v0
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "FavoriteShowsQuery",
-    "id": "6dbdf618a8913e9625487bb6719e165f",
-    "text": null,
-    "metadata": {}
   }
 };
 })();

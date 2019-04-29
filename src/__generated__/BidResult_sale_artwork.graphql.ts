@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 declare const _BidResult_sale_artwork$ref: unique symbol;
 export type BidResult_sale_artwork$ref = typeof _BidResult_sale_artwork$ref;
 export type BidResult_sale_artwork = {
@@ -19,7 +19,15 @@ export type BidResult_sale_artwork = {
 
 
 
-const node: ReaderFragment = {
+const node: ConcreteFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "BidResult_sale_artwork",
   "type": "SaleArtwork",
@@ -87,10 +95,13 @@ const node: ReaderFragment = {
           "name": "gravityID",
           "args": null,
           "storageKey": null
-        }
+        },
+        v0
       ]
-    }
+    },
+    v0
   ]
 };
+})();
 (node as any).hash = '7e7efbc1fdee3686cd3b2330b2dd2ae9';
 export default node;

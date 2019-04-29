@@ -1,9 +1,12 @@
 import { Theme } from "@artsy/palette"
 import { ShowArtworks_show } from "__generated__/ShowArtworks_show.graphql"
+import { ShowArtworksQuery } from "__generated__/ShowArtworksQuery.graphql"
 import { FilteredInfiniteScrollGrid } from "lib/Components/FilteredInfiniteScrollGrid"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { Schema, screenTrack } from "lib/utils/track"
 import React from "react"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import renderWithLoadProgress from "../../../utils/renderWithLoadProgress"
 
 interface Props {
   show: ShowArtworks_show
@@ -80,3 +83,20 @@ export const ShowArtworksContainer = createRefetchContainer(
     }
   `
 )
+
+export const ShowArtworksRenderer: React.SFC<{ showID: string }> = ({ showID }) => {
+  return (
+    <QueryRenderer<ShowArtworksQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query ShowArtworksQuery($showID: String!) {
+          show(id: $showID) {
+            ...ShowArtworks_show
+          }
+        }
+      `}
+      variables={{ showID }}
+      render={renderWithLoadProgress(ShowArtworksContainer)}
+    />
+  )
+}

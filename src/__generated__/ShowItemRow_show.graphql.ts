@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 declare const _ShowItemRow_show$ref: unique symbol;
 export type ShowItemRow_show$ref = typeof _ShowItemRow_show$ref;
 export type ShowItemRow_show = {
@@ -33,11 +33,18 @@ export type ShowItemRow_show = {
 
 
 
-const node: ReaderFragment = (function(){
+const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -76,7 +83,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    (v0/*: any*/),
+    v0,
     {
       "kind": "ScalarField",
       "alias": null,
@@ -93,11 +100,12 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
+        v1,
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            (v0/*: any*/),
+            v0,
             {
               "kind": "LinkedField",
               "alias": null,
@@ -131,7 +139,8 @@ return {
                       "storageKey": "url(version:\"square\")"
                     }
                   ]
-                }
+                },
+                v1
               ]
             }
           ]
@@ -204,7 +213,8 @@ return {
       "name": "end_at",
       "args": null,
       "storageKey": null
-    }
+    },
+    v1
   ]
 };
 })();

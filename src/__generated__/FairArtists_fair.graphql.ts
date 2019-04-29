@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
 declare const _FairArtists_fair$ref: unique symbol;
 export type FairArtists_fair$ref = typeof _FairArtists_fair$ref;
@@ -29,7 +29,7 @@ export type FairArtists_fair = {
 
 
 
-const node: ReaderFragment = (function(){
+const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -41,6 +41,13 @@ v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -75,8 +82,8 @@ return {
     }
   ],
   "selections": [
-    (v0/*: any*/),
-    (v1/*: any*/),
+    v0,
+    v1,
     {
       "kind": "LinkedField",
       "alias": "artists",
@@ -162,8 +169,9 @@ return {
                   "args": null,
                   "storageKey": null
                 },
-                (v1/*: any*/),
-                (v0/*: any*/),
+                v1,
+                v0,
+                v2,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -176,7 +184,8 @@ return {
           ]
         }
       ]
-    }
+    },
+    v2
   ]
 };
 })();

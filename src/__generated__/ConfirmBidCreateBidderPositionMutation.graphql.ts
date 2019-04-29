@@ -48,7 +48,7 @@ mutation ConfirmBidCreateBidderPositionMutation(
           cents
           display
         }
-        id
+        __id: id
       }
     }
   }
@@ -66,172 +66,126 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "Variable",
-    "name": "input",
-    "variableName": "input",
-    "type": "BidderPositionInput!"
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "createBidderPosition",
+    "storageKey": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "input",
+        "variableName": "input",
+        "type": "BidderPositionInput!"
+      }
+    ],
+    "concreteType": "BidderPositionPayload",
+    "plural": false,
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "result",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "BidderPositionResult",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "status",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "message_header",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "message_description_md",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "position",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "BidderPosition",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "gravityID",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "suggested_next_bid",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "BidderPositionSuggestedNextBid",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "cents",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "display",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
+              {
+                "kind": "ScalarField",
+                "alias": "__id",
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
-],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "status",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "message_header",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "message_description_md",
-  "args": null,
-  "storageKey": null
-},
-v5 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "gravityID",
-  "args": null,
-  "storageKey": null
-},
-v6 = {
-  "kind": "LinkedField",
-  "alias": null,
-  "name": "suggested_next_bid",
-  "storageKey": null,
-  "args": null,
-  "concreteType": "BidderPositionSuggestedNextBid",
-  "plural": false,
-  "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "cents",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "display",
-      "args": null,
-      "storageKey": null
-    }
-  ]
-};
+];
 return {
   "kind": "Request",
+  "operationKind": "mutation",
+  "name": "ConfirmBidCreateBidderPositionMutation",
+  "id": null,
+  "text": "mutation ConfirmBidCreateBidderPositionMutation(\n  $input: BidderPositionInput!\n) {\n  createBidderPosition(input: $input) {\n    result {\n      status\n      message_header\n      message_description_md\n      position {\n        gravityID\n        suggested_next_bid {\n          cents\n          display\n        }\n        __id: id\n      }\n    }\n  }\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ConfirmBidCreateBidderPositionMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "createBidderPosition",
-        "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "BidderPositionPayload",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "result",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "BidderPositionResult",
-            "plural": false,
-            "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/),
-              (v4/*: any*/),
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "position",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "BidderPosition",
-                "plural": false,
-                "selections": [
-                  (v5/*: any*/),
-                  (v6/*: any*/)
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "argumentDefinitions": v0,
+    "selections": v1
   },
   "operation": {
     "kind": "Operation",
     "name": "ConfirmBidCreateBidderPositionMutation",
-    "argumentDefinitions": (v0/*: any*/),
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "createBidderPosition",
-        "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "BidderPositionPayload",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "result",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "BidderPositionResult",
-            "plural": false,
-            "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/),
-              (v4/*: any*/),
-              {
-                "kind": "LinkedField",
-                "alias": null,
-                "name": "position",
-                "storageKey": null,
-                "args": null,
-                "concreteType": "BidderPosition",
-                "plural": false,
-                "selections": [
-                  (v5/*: any*/),
-                  (v6/*: any*/),
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "id",
-                    "args": null,
-                    "storageKey": null
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "params": {
-    "operationKind": "mutation",
-    "name": "ConfirmBidCreateBidderPositionMutation",
-    "id": "260a925870a8baed707b576c1a5977e2",
-    "text": null,
-    "metadata": {}
+    "argumentDefinitions": v0,
+    "selections": v1
   }
 };
 })();

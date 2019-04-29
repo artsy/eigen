@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 declare const _Artwork_artwork$ref: unique symbol;
 export type Artwork_artwork$ref = typeof _Artwork_artwork$ref;
 export type Artwork_artwork = {
@@ -47,7 +47,7 @@ export type Artwork_artwork = {
 
 
 
-const node: ReaderFragment = (function(){
+const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -55,7 +55,14 @@ var v0 = {
   "args": null,
   "storageKey": null
 },
-v1 = [
+v1 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v2 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -64,14 +71,15 @@ v1 = [
     "storageKey": null
   }
 ],
-v2 = [
+v3 = [
   {
     "kind": "ScalarField",
     "alias": null,
     "name": "name",
     "args": null,
     "storageKey": null
-  }
+  },
+  v1
 ];
 return {
   "kind": "Fragment",
@@ -166,14 +174,15 @@ return {
           "args": null,
           "storageKey": null
         },
-        (v0/*: any*/),
+        v0,
         {
           "kind": "ScalarField",
           "alias": null,
           "name": "display_timely_at",
           "args": null,
           "storageKey": null
-        }
+        },
+        v1
       ]
     },
     {
@@ -193,7 +202,7 @@ return {
           "args": null,
           "concreteType": "SaleArtworkOpeningBid",
           "plural": false,
-          "selections": (v1/*: any*/)
+          "selections": v2
         },
         {
           "kind": "LinkedField",
@@ -203,7 +212,7 @@ return {
           "args": null,
           "concreteType": "SaleArtworkCurrentBid",
           "plural": false,
-          "selections": (v1/*: any*/)
+          "selections": v2
         },
         {
           "kind": "ScalarField",
@@ -221,9 +230,11 @@ return {
           "concreteType": "Sale",
           "plural": false,
           "selections": [
-            (v0/*: any*/)
+            v0,
+            v1
           ]
-        }
+        },
+        v1
       ]
     },
     {
@@ -273,7 +284,7 @@ return {
       ],
       "concreteType": "Artist",
       "plural": true,
-      "selections": (v2/*: any*/)
+      "selections": v3
     },
     {
       "kind": "LinkedField",
@@ -283,7 +294,7 @@ return {
       "args": null,
       "concreteType": "Partner",
       "plural": false,
-      "selections": (v2/*: any*/)
+      "selections": v3
     },
     {
       "kind": "ScalarField",
@@ -291,7 +302,8 @@ return {
       "name": "href",
       "args": null,
       "storageKey": null
-    }
+    },
+    v1
   ]
 };
 })();

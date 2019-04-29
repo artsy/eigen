@@ -23,7 +23,7 @@ query ArtistHeaderQuery(
 ) {
   artist(id: $artistID) {
     ...Header_artist
-    id
+    __id: id
   }
 }
 
@@ -36,6 +36,7 @@ fragment Header_artist on Artist {
   counts {
     follows
   }
+  __id: id
 }
 */
 
@@ -55,22 +56,34 @@ v1 = [
     "variableName": "artistID",
     "type": "String!"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "ArtistHeaderQuery",
+  "id": null,
+  "text": "query ArtistHeaderQuery(\n  $artistID: String!\n) {\n  artist(id: $artistID) {\n    ...Header_artist\n    __id: id\n  }\n}\n\nfragment Header_artist on Artist {\n  internalID\n  gravityID\n  name\n  nationality\n  birthday\n  counts {\n    follows\n  }\n  __id: id\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ArtistHeaderQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artist",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": "Artist",
         "plural": false,
         "selections": [
@@ -78,7 +91,8 @@ return {
             "kind": "FragmentSpread",
             "name": "Header_artist",
             "args": null
-          }
+          },
+          v2
         ]
       }
     ]
@@ -86,14 +100,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "ArtistHeaderQuery",
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artist",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": "Artist",
         "plural": false,
         "selections": [
@@ -150,23 +164,10 @@ return {
               }
             ]
           },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
-            "storageKey": null
-          }
+          v2
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "ArtistHeaderQuery",
-    "id": "e7898450d087c728259c6cf89d6d7ce0",
-    "text": null,
-    "metadata": {}
   }
 };
 })();

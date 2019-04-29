@@ -19,7 +19,7 @@ export type FavoriteFairsQuery = {
 query FavoriteFairsQuery {
   me {
     ...Fairs_me
-    id
+    __id: id
   }
 }
 
@@ -33,6 +33,7 @@ fragment Fairs_me on Me {
             gravityID
             is_followed
             id
+            __id: id
           }
           exhibition_period
           name
@@ -45,6 +46,7 @@ fragment Fairs_me on Me {
           }
           start_at
           end_at
+          __id: id
           __typename
         }
         cursor
@@ -55,24 +57,18 @@ fragment Fairs_me on Me {
       }
     }
   }
+  __id: id
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "kind": "Literal",
-    "name": "after",
-    "value": "",
-    "type": "String"
-  },
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 10,
-    "type": "Int"
-  }
-],
+var v0 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
 v1 = {
   "kind": "ScalarField",
   "alias": null,
@@ -82,6 +78,11 @@ v1 = {
 };
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "FavoriteFairsQuery",
+  "id": null,
+  "text": "query FavoriteFairsQuery {\n  me {\n    ...Fairs_me\n    __id: id\n  }\n}\n\nfragment Fairs_me on Me {\n  followsAndSaves {\n    fairs(first: 10, after: \"\") {\n      edges {\n        node {\n          id\n          profile {\n            gravityID\n            is_followed\n            id\n            __id: id\n          }\n          exhibition_period\n          name\n          counts {\n            partners\n          }\n          href\n          image {\n            url\n          }\n          start_at\n          end_at\n          __id: id\n          __typename\n        }\n        cursor\n      }\n      pageInfo {\n        endCursor\n        hasNextPage\n      }\n    }\n  }\n  __id: id\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FavoriteFairsQuery",
@@ -102,7 +103,8 @@ return {
             "kind": "FragmentSpread",
             "name": "Fairs_me",
             "args": null
-          }
+          },
+          v0
         ]
       }
     ]
@@ -135,7 +137,20 @@ return {
                 "alias": null,
                 "name": "fairs",
                 "storageKey": "fairs(after:\"\",first:10)",
-                "args": (v0/*: any*/),
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "after",
+                    "value": "",
+                    "type": "String"
+                  },
+                  {
+                    "kind": "Literal",
+                    "name": "first",
+                    "value": 10,
+                    "type": "Int"
+                  }
+                ],
                 "concreteType": "FollowedFairConnection",
                 "plural": false,
                 "selections": [
@@ -157,33 +172,14 @@ return {
                         "concreteType": "Fair",
                         "plural": false,
                         "selections": [
-                          (v1/*: any*/),
                           {
-                            "kind": "LinkedField",
+                            "kind": "ScalarField",
                             "alias": null,
-                            "name": "profile",
-                            "storageKey": null,
+                            "name": "href",
                             "args": null,
-                            "concreteType": "Profile",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "gravityID",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "is_followed",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              (v1/*: any*/)
-                            ]
+                            "storageKey": null
                           },
+                          v1,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -217,11 +213,31 @@ return {
                             ]
                           },
                           {
-                            "kind": "ScalarField",
+                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "href",
+                            "name": "profile",
+                            "storageKey": null,
                             "args": null,
-                            "storageKey": null
+                            "concreteType": "Profile",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "gravityID",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "is_followed",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              v1,
+                              v0
+                            ]
                           },
                           {
                             "kind": "LinkedField",
@@ -255,6 +271,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
+                          v0,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -304,24 +321,30 @@ return {
                 "kind": "LinkedHandle",
                 "alias": null,
                 "name": "fairs",
-                "args": (v0/*: any*/),
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "after",
+                    "value": "",
+                    "type": "String"
+                  },
+                  {
+                    "kind": "Literal",
+                    "name": "first",
+                    "value": 10,
+                    "type": "Int"
+                  }
+                ],
                 "handle": "connection",
                 "key": "SavedFairs_fairs",
                 "filters": null
               }
             ]
           },
-          (v1/*: any*/)
+          v0
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "FavoriteFairsQuery",
-    "id": "9f960de6c6c0b2a23c50ef0f8d37287b",
-    "text": null,
-    "metadata": {}
   }
 };
 })();

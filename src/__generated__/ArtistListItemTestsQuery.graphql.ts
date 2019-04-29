@@ -19,7 +19,7 @@ export type ArtistListItemTestsQuery = {
 query ArtistListItemTestsQuery {
   artist(id: "pablo-picasso") {
     ...ArtistListItem_artist
-    id
+    __id: id
   }
 }
 
@@ -35,6 +35,7 @@ fragment ArtistListItem_artist on Artist {
   image {
     url
   }
+  __id: id
 }
 */
 
@@ -46,9 +47,21 @@ var v0 = [
     "value": "pablo-picasso",
     "type": "String!"
   }
-];
+],
+v1 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "ArtistListItemTestsQuery",
+  "id": null,
+  "text": "query ArtistListItemTestsQuery {\n  artist(id: \"pablo-picasso\") {\n    ...ArtistListItem_artist\n    __id: id\n  }\n}\n\nfragment ArtistListItem_artist on Artist {\n  id\n  internalID\n  gravityID\n  name\n  is_followed\n  nationality\n  birthday\n  deathday\n  image {\n    url\n  }\n  __id: id\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ArtistListItemTestsQuery",
@@ -61,7 +74,7 @@ return {
         "alias": null,
         "name": "artist",
         "storageKey": "artist(id:\"pablo-picasso\")",
-        "args": (v0/*: any*/),
+        "args": v0,
         "concreteType": "Artist",
         "plural": false,
         "selections": [
@@ -69,7 +82,8 @@ return {
             "kind": "FragmentSpread",
             "name": "ArtistListItem_artist",
             "args": null
-          }
+          },
+          v1
         ]
       }
     ]
@@ -84,7 +98,7 @@ return {
         "alias": null,
         "name": "artist",
         "storageKey": "artist(id:\"pablo-picasso\")",
-        "args": (v0/*: any*/),
+        "args": v0,
         "concreteType": "Artist",
         "plural": false,
         "selections": [
@@ -161,17 +175,11 @@ return {
                 "storageKey": null
               }
             ]
-          }
+          },
+          v1
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "ArtistListItemTestsQuery",
-    "id": "a82d3fc95c3382d7c4f56d0544e4f879",
-    "text": null,
-    "metadata": {}
   }
 };
 })();

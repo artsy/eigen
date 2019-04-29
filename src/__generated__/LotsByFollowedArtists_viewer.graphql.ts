@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _LotsByFollowedArtists_viewer$ref: unique symbol;
 export type LotsByFollowedArtists_viewer$ref = typeof _LotsByFollowedArtists_viewer$ref;
@@ -24,7 +24,15 @@ export type LotsByFollowedArtists_viewer = {
 
 
 
-const node: ReaderFragment = {
+const node: ConcreteFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "LotsByFollowedArtists_viewer",
   "type": "Viewer",
@@ -146,9 +154,11 @@ const node: ReaderFragment = {
                       "kind": "FragmentSpread",
                       "name": "GenericGrid_artworks",
                       "args": null
-                    }
+                    },
+                    v0
                   ]
                 },
+                v0,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -164,5 +174,6 @@ const node: ReaderFragment = {
     }
   ]
 };
+})();
 (node as any).hash = 'dcdc4bfa65bbc0cf27b7a438c8c3a5b7';
 export default node;

@@ -32,6 +32,7 @@ mutation ArtistListItemFollowArtistMutation(
     artist {
       id
       is_followed
+      __id: id
     }
   }
 }
@@ -85,6 +86,13 @@ v1 = [
             "name": "is_followed",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": "__id",
+            "name": "id",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -93,26 +101,24 @@ v1 = [
 ];
 return {
   "kind": "Request",
+  "operationKind": "mutation",
+  "name": "ArtistListItemFollowArtistMutation",
+  "id": null,
+  "text": "mutation ArtistListItemFollowArtistMutation(\n  $input: FollowArtistInput!\n) {\n  followArtist(input: $input) {\n    artist {\n      id\n      is_followed\n      __id: id\n    }\n  }\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ArtistListItemFollowArtistMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "argumentDefinitions": v0,
+    "selections": v1
   },
   "operation": {
     "kind": "Operation",
     "name": "ArtistListItemFollowArtistMutation",
-    "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
-  },
-  "params": {
-    "operationKind": "mutation",
-    "name": "ArtistListItemFollowArtistMutation",
-    "id": "16b283da27ff2aa22b0ac259bf6ad18a",
-    "text": null,
-    "metadata": {}
+    "argumentDefinitions": v0,
+    "selections": v1
   }
 };
 })();

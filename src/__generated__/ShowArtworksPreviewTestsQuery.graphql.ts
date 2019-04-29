@@ -19,7 +19,7 @@ export type ShowArtworksPreviewTestsQuery = {
 query ShowArtworksPreviewTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...ShowArtworksPreview_show
-    id
+    __id: id
   }
 }
 
@@ -27,11 +27,12 @@ fragment ShowArtworksPreview_show on Show {
   id
   artworks(size: 6) {
     ...GenericGrid_artworks
-    id
+    __id: id
   }
   counts {
     artworks
   }
+  __id: id
 }
 
 fragment GenericGrid_artworks on Artwork {
@@ -41,6 +42,7 @@ fragment GenericGrid_artworks on Artwork {
     aspect_ratio
   }
   ...Artwork_artwork
+  __id: id
 }
 
 fragment Artwork_artwork on Artwork {
@@ -58,7 +60,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
-    id
+    __id: id
   }
   sale_artwork {
     opening_bid {
@@ -70,9 +72,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
-      id
+      __id: id
     }
-    id
+    __id: id
   }
   image {
     url(version: "large")
@@ -80,13 +82,14 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
-    id
+    __id: id
   }
   partner {
     name
-    id
+    __id: id
   }
   href
+  __id: id
 }
 */
 
@@ -101,7 +104,7 @@ var v0 = [
 ],
 v1 = {
   "kind": "ScalarField",
-  "alias": null,
+  "alias": "__id",
   "name": "id",
   "args": null,
   "storageKey": null
@@ -109,11 +112,18 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v3 = [
+v4 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -122,7 +132,7 @@ v3 = [
     "storageKey": null
   }
 ],
-v4 = [
+v5 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -130,10 +140,15 @@ v4 = [
     "args": null,
     "storageKey": null
   },
-  (v1/*: any*/)
+  v1
 ];
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "ShowArtworksPreviewTestsQuery",
+  "id": null,
+  "text": "query ShowArtworksPreviewTestsQuery {\n  show(id: \"anderson-fine-art-gallery-flickinger-collection\") {\n    ...ShowArtworksPreview_show\n    __id: id\n  }\n}\n\nfragment ShowArtworksPreview_show on Show {\n  id\n  artworks(size: 6) {\n    ...GenericGrid_artworks\n    __id: id\n  }\n  counts {\n    artworks\n  }\n  __id: id\n}\n\nfragment GenericGrid_artworks on Artwork {\n  id\n  gravityID\n  image {\n    aspect_ratio\n  }\n  ...Artwork_artwork\n  __id: id\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  date\n  sale_message\n  is_in_auction\n  is_biddable\n  is_acquireable\n  is_offerable\n  gravityID\n  sale {\n    is_auction\n    is_live_open\n    is_open\n    is_closed\n    display_timely_at\n    __id: id\n  }\n  sale_artwork {\n    opening_bid {\n      display\n    }\n    current_bid {\n      display\n    }\n    bidder_positions_count\n    sale {\n      is_closed\n      __id: id\n    }\n    __id: id\n  }\n  image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  artists(shallow: true) {\n    name\n    __id: id\n  }\n  partner {\n    name\n    __id: id\n  }\n  href\n  __id: id\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ShowArtworksPreviewTestsQuery",
@@ -146,7 +161,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": (v0/*: any*/),
+        "args": v0,
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -154,7 +169,8 @@ return {
             "kind": "FragmentSpread",
             "name": "ShowArtworksPreview_show",
             "args": null
-          }
+          },
+          v1
         ]
       }
     ]
@@ -169,11 +185,11 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": (v0/*: any*/),
+        "args": v0,
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          (v1/*: any*/),
+          v2,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -193,11 +209,11 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "is_biddable",
+                "name": "is_acquireable",
                 "args": null,
                 "storageKey": null
               },
-              (v1/*: any*/),
+              v2,
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -261,14 +277,14 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "gravityID",
+                "name": "is_biddable",
                 "args": null,
                 "storageKey": null
               },
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "is_acquireable",
+                "name": "gravityID",
                 "args": null,
                 "storageKey": null
               },
@@ -309,7 +325,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v2/*: any*/),
+                  v3,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -317,7 +333,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v1/*: any*/)
+                  v1
                 ]
               },
               {
@@ -337,7 +353,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkOpeningBid",
                     "plural": false,
-                    "selections": (v3/*: any*/)
+                    "selections": v4
                   },
                   {
                     "kind": "LinkedField",
@@ -347,7 +363,7 @@ return {
                     "args": null,
                     "concreteType": "SaleArtworkCurrentBid",
                     "plural": false,
-                    "selections": (v3/*: any*/)
+                    "selections": v4
                   },
                   {
                     "kind": "ScalarField",
@@ -365,11 +381,11 @@ return {
                     "concreteType": "Sale",
                     "plural": false,
                     "selections": [
-                      (v2/*: any*/),
-                      (v1/*: any*/)
+                      v3,
+                      v1
                     ]
                   },
-                  (v1/*: any*/)
+                  v1
                 ]
               },
               {
@@ -387,7 +403,7 @@ return {
                 ],
                 "concreteType": "Artist",
                 "plural": true,
-                "selections": (v4/*: any*/)
+                "selections": v5
               },
               {
                 "kind": "LinkedField",
@@ -397,7 +413,7 @@ return {
                 "args": null,
                 "concreteType": "Partner",
                 "plural": false,
-                "selections": (v4/*: any*/)
+                "selections": v5
               },
               {
                 "kind": "ScalarField",
@@ -405,7 +421,8 @@ return {
                 "name": "href",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              v1
             ]
           },
           {
@@ -425,17 +442,11 @@ return {
                 "storageKey": null
               }
             ]
-          }
+          },
+          v1
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "ShowArtworksPreviewTestsQuery",
-    "id": "b02e6f80c5fc819b0ba5608e1a0c30c2",
-    "text": null,
-    "metadata": {}
   }
 };
 })();

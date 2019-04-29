@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 import { MockRelayRendererFixtures_artworkMetadata$ref } from "./MockRelayRendererFixtures_artworkMetadata.graphql";
 declare const _MockRelayRendererFixtures_artwork$ref: unique symbol;
 export type MockRelayRendererFixtures_artwork$ref = typeof _MockRelayRendererFixtures_artwork$ref;
@@ -17,7 +17,15 @@ export type MockRelayRendererFixtures_artwork = {
 
 
 
-const node: ReaderFragment = {
+const node: ConcreteFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "MockRelayRendererFixtures_artwork",
   "type": "Artwork",
@@ -57,15 +65,18 @@ const node: ReaderFragment = {
           "name": "gravityID",
           "args": null,
           "storageKey": null
-        }
+        },
+        v0
       ]
     },
     {
       "kind": "FragmentSpread",
       "name": "MockRelayRendererFixtures_artworkMetadata",
       "args": null
-    }
+    },
+    v0
   ]
 };
+})();
 (node as any).hash = '418d67208237e68e952c6b28bc267e57';
 export default node;

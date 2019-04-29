@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 declare const _FairsRail_fairs_module$ref: unique symbol;
 export type FairsRail_fairs_module$ref = typeof _FairsRail_fairs_module$ref;
 export type FairsRail_fairs_module = {
@@ -20,11 +20,18 @@ export type FairsRail_fairs_module = {
 
 
 
-const node: ReaderFragment = (function(){
+const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -44,7 +51,7 @@ return {
       "concreteType": "Fair",
       "plural": true,
       "selections": [
-        (v0/*: any*/),
+        v0,
         {
           "kind": "ScalarField",
           "alias": null,
@@ -61,7 +68,8 @@ return {
           "concreteType": "Profile",
           "plural": false,
           "selections": [
-            (v0/*: any*/)
+            v0,
+            v1
           ]
         },
         {
@@ -73,7 +81,7 @@ return {
           "concreteType": "Image",
           "plural": false,
           "selections": [
-            (v0/*: any*/),
+            v0,
             {
               "kind": "ScalarField",
               "alias": null,
@@ -82,7 +90,8 @@ return {
               "storageKey": null
             }
           ]
-        }
+        },
+        v1
       ]
     }
   ]

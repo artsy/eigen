@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 import { FairBoothHeader_show$ref } from "./FairBoothHeader_show.graphql";
 import { ShowArtistsPreview_show$ref } from "./ShowArtistsPreview_show.graphql";
 import { ShowArtists_show$ref } from "./ShowArtists_show.graphql";
@@ -17,7 +17,7 @@ export type FairBooth_show = {
 
 
 
-const node: ReaderFragment = {
+const node: ConcreteFragment = {
   "kind": "Fragment",
   "name": "FairBooth_show",
   "type": "Show",
@@ -62,6 +62,13 @@ const node: ReaderFragment = {
       "kind": "FragmentSpread",
       "name": "ShowArtworks_show",
       "args": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": "__id",
+      "name": "id",
+      "args": null,
+      "storageKey": null
     }
   ]
 };

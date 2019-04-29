@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 declare const _ArtworkRailHeader_rail$ref: unique symbol;
 export type ArtworkRailHeader_rail$ref = typeof _ArtworkRailHeader_rail$ref;
 export type ArtworkRailHeader_rail = {
@@ -19,7 +19,15 @@ export type ArtworkRailHeader_rail = {
 
 
 
-const node: ReaderFragment = {
+const node: ConcreteFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "ArtworkRailHeader_rail",
   "type": "HomePageArtworkModule",
@@ -49,6 +57,7 @@ const node: ReaderFragment = {
       "concreteType": null,
       "plural": false,
       "selections": [
+        v0,
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextRelatedArtist",
@@ -68,7 +77,8 @@ const node: ReaderFragment = {
                   "name": "gravityID",
                   "args": null,
                   "storageKey": null
-                }
+                },
+                v0
               ]
             },
             {
@@ -86,14 +96,17 @@ const node: ReaderFragment = {
                   "name": "name",
                   "args": null,
                   "storageKey": null
-                }
+                },
+                v0
               ]
             }
           ]
         }
       ]
-    }
+    },
+    v0
   ]
 };
+})();
 (node as any).hash = 'ed60c0a7afa22d89b838d4deab5bd106';
 export default node;

@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 import { Articles_articles$ref } from "./Articles_articles.graphql";
 import { Biography_artist$ref } from "./Biography_artist.graphql";
 import { RelatedArtists_artists$ref } from "./RelatedArtists_artists.graphql";
@@ -22,7 +22,15 @@ export type About_artist = {
 
 
 
-const node: ReaderFragment = {
+const node: ConcreteFragment = (function(){
+var v0 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
+return {
   "kind": "Fragment",
   "name": "About_artist",
   "type": "Artist",
@@ -75,7 +83,8 @@ const node: ReaderFragment = {
           "kind": "FragmentSpread",
           "name": "RelatedArtists_artists",
           "args": null
-        }
+        },
+        v0
       ]
     },
     {
@@ -91,10 +100,13 @@ const node: ReaderFragment = {
           "kind": "FragmentSpread",
           "name": "Articles_articles",
           "args": null
-        }
+        },
+        v0
       ]
-    }
+    },
+    v0
   ]
 };
+})();
 (node as any).hash = 'fd32ce5fe60123b9bf29932fe861bcd4';
 export default node;

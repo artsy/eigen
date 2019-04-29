@@ -34,6 +34,7 @@ mutation SavedFairItemRowMutation(
       gravityID
       is_followed
       id
+      __id: id
     }
   }
 }
@@ -94,6 +95,13 @@ v1 = [
             "name": "id",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": "__id",
+            "name": "id",
+            "args": null,
+            "storageKey": null
           }
         ]
       }
@@ -102,26 +110,24 @@ v1 = [
 ];
 return {
   "kind": "Request",
+  "operationKind": "mutation",
+  "name": "SavedFairItemRowMutation",
+  "id": null,
+  "text": "mutation SavedFairItemRowMutation(\n  $input: FollowProfileInput!\n) {\n  followProfile(input: $input) {\n    profile {\n      gravityID\n      is_followed\n      id\n      __id: id\n    }\n  }\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "SavedFairItemRowMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
+    "argumentDefinitions": v0,
+    "selections": v1
   },
   "operation": {
     "kind": "Operation",
     "name": "SavedFairItemRowMutation",
-    "argumentDefinitions": (v0/*: any*/),
-    "selections": (v1/*: any*/)
-  },
-  "params": {
-    "operationKind": "mutation",
-    "name": "SavedFairItemRowMutation",
-    "id": "c56eee8376ea60d53b47c2c65360c191",
-    "text": null,
-    "metadata": {}
+    "argumentDefinitions": v0,
+    "selections": v1
   }
 };
 })();

@@ -25,7 +25,7 @@ query FairsQuery(
 ) {
   me {
     ...Fairs_me_1G22uz
-    id
+    __id: id
   }
 }
 
@@ -39,6 +39,7 @@ fragment Fairs_me_1G22uz on Me {
             gravityID
             is_followed
             id
+            __id: id
           }
           exhibition_period
           name
@@ -51,6 +52,7 @@ fragment Fairs_me_1G22uz on Me {
           }
           start_at
           end_at
+          __id: id
           __typename
         }
         cursor
@@ -61,6 +63,7 @@ fragment Fairs_me_1G22uz on Me {
       }
     }
   }
+  __id: id
 }
 */
 
@@ -79,20 +82,13 @@ var v0 = [
     "defaultValue": null
   }
 ],
-v1 = [
-  {
-    "kind": "Variable",
-    "name": "after",
-    "variableName": "cursor",
-    "type": "String"
-  },
-  {
-    "kind": "Variable",
-    "name": "first",
-    "variableName": "count",
-    "type": "Int"
-  }
-],
+v1 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
 v2 = {
   "kind": "ScalarField",
   "alias": null,
@@ -102,12 +98,17 @@ v2 = {
 };
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "FairsQuery",
+  "id": null,
+  "text": "query FairsQuery(\n  $count: Int!\n  $cursor: String\n) {\n  me {\n    ...Fairs_me_1G22uz\n    __id: id\n  }\n}\n\nfragment Fairs_me_1G22uz on Me {\n  followsAndSaves {\n    fairs(first: $count, after: $cursor) {\n      edges {\n        node {\n          id\n          profile {\n            gravityID\n            is_followed\n            id\n            __id: id\n          }\n          exhibition_period\n          name\n          counts {\n            partners\n          }\n          href\n          image {\n            url\n          }\n          start_at\n          end_at\n          __id: id\n          __typename\n        }\n        cursor\n      }\n      pageInfo {\n        endCursor\n        hasNextPage\n      }\n    }\n  }\n  __id: id\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FairsQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
@@ -135,7 +136,8 @@ return {
                 "type": null
               }
             ]
-          }
+          },
+          v1
         ]
       }
     ]
@@ -143,7 +145,7 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "FairsQuery",
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
@@ -168,7 +170,20 @@ return {
                 "alias": null,
                 "name": "fairs",
                 "storageKey": null,
-                "args": (v1/*: any*/),
+                "args": [
+                  {
+                    "kind": "Variable",
+                    "name": "after",
+                    "variableName": "cursor",
+                    "type": "String"
+                  },
+                  {
+                    "kind": "Variable",
+                    "name": "first",
+                    "variableName": "count",
+                    "type": "Int"
+                  }
+                ],
                 "concreteType": "FollowedFairConnection",
                 "plural": false,
                 "selections": [
@@ -190,33 +205,14 @@ return {
                         "concreteType": "Fair",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
                           {
-                            "kind": "LinkedField",
+                            "kind": "ScalarField",
                             "alias": null,
-                            "name": "profile",
-                            "storageKey": null,
+                            "name": "href",
                             "args": null,
-                            "concreteType": "Profile",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "gravityID",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
-                                "name": "is_followed",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              (v2/*: any*/)
-                            ]
+                            "storageKey": null
                           },
+                          v2,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -250,11 +246,31 @@ return {
                             ]
                           },
                           {
-                            "kind": "ScalarField",
+                            "kind": "LinkedField",
                             "alias": null,
-                            "name": "href",
+                            "name": "profile",
+                            "storageKey": null,
                             "args": null,
-                            "storageKey": null
+                            "concreteType": "Profile",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "gravityID",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "is_followed",
+                                "args": null,
+                                "storageKey": null
+                              },
+                              v2,
+                              v1
+                            ]
                           },
                           {
                             "kind": "LinkedField",
@@ -288,6 +304,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
+                          v1,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -337,24 +354,30 @@ return {
                 "kind": "LinkedHandle",
                 "alias": null,
                 "name": "fairs",
-                "args": (v1/*: any*/),
+                "args": [
+                  {
+                    "kind": "Variable",
+                    "name": "after",
+                    "variableName": "cursor",
+                    "type": "String"
+                  },
+                  {
+                    "kind": "Variable",
+                    "name": "first",
+                    "variableName": "count",
+                    "type": "Int"
+                  }
+                ],
                 "handle": "connection",
                 "key": "SavedFairs_fairs",
                 "filters": null
               }
             ]
           },
-          (v2/*: any*/)
+          v1
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "FairsQuery",
-    "id": "5c0727a48c934795d98f43713cc278c3",
-    "text": null,
-    "metadata": {}
   }
 };
 })();

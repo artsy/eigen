@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 declare const _CityFairList_city$ref: unique symbol;
 export type CityFairList_city$ref = typeof _CityFairList_city$ref;
 export type CityFairList_city = {
@@ -47,7 +47,7 @@ export type CityFairList_city = {
 
 
 
-const node: ReaderFragment = (function(){
+const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -56,6 +56,13 @@ var v0 = {
   "storageKey": null
 },
 v1 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
@@ -140,8 +147,39 @@ return {
               "concreteType": "Fair",
               "plural": false,
               "selections": [
-                (v0/*: any*/),
-                (v1/*: any*/),
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "image",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Image",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "image_url",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "aspect_ratio",
+                      "args": null,
+                      "storageKey": null
+                    },
+                    {
+                      "kind": "ScalarField",
+                      "alias": null,
+                      "name": "url",
+                      "args": null,
+                      "storageKey": null
+                    }
+                  ]
+                },
+                v0,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -200,41 +238,11 @@ return {
                           "storageKey": null
                         }
                       ]
-                    }
+                    },
+                    v1
                   ]
                 },
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "image",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Image",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "image_url",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "aspect_ratio",
-                      "args": null,
-                      "storageKey": null
-                    },
-                    {
-                      "kind": "ScalarField",
-                      "alias": null,
-                      "name": "url",
-                      "args": null,
-                      "storageKey": null
-                    }
-                  ]
-                },
+                v2,
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -253,7 +261,7 @@ return {
                       "concreteType": "Image",
                       "plural": false,
                       "selections": [
-                        (v0/*: any*/),
+                        v0,
                         {
                           "kind": "ScalarField",
                           "alias": null,
@@ -298,8 +306,9 @@ return {
                       "args": null,
                       "storageKey": null
                     },
-                    (v0/*: any*/),
-                    (v1/*: any*/)
+                    v0,
+                    v2,
+                    v1
                   ]
                 },
                 {
@@ -316,6 +325,7 @@ return {
                   "args": null,
                   "storageKey": null
                 },
+                v1,
                 {
                   "kind": "ScalarField",
                   "alias": null,

@@ -32,7 +32,7 @@ query GeneArtworksGridQuery(
     ... on FilterArtworks {
       ...GeneArtworksGrid_filtered_artworks_1RfMLO
     }
-    id
+    __id: id
   }
 }
 
@@ -52,11 +52,13 @@ fragment GeneArtworksGrid_filtered_artworks_1RfMLO on FilterArtworks {
           aspect_ratio
         }
         ...Artwork_artwork
+        __id: id
         __typename
       }
       cursor
     }
   }
+  __id: id
 }
 
 fragment Artwork_artwork on Artwork {
@@ -74,7 +76,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
-    id
+    __id: id
   }
   sale_artwork {
     opening_bid {
@@ -86,9 +88,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
-      id
+      __id: id
     }
-    id
+    __id: id
   }
   image {
     url(version: "large")
@@ -96,13 +98,14 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
-    id
+    __id: id
   }
   partner {
     name
-    id
+    __id: id
   }
   href
+  __id: id
 }
 */
 
@@ -143,38 +146,25 @@ v1 = [
 ],
 v2 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "__typename",
+  "alias": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "__typename",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v4 = [
-  {
-    "kind": "Variable",
-    "name": "after",
-    "variableName": "cursor",
-    "type": "String"
-  },
-  {
-    "kind": "Variable",
-    "name": "first",
-    "variableName": "count",
-    "type": "Int"
-  },
-  {
-    "kind": "Variable",
-    "name": "sort",
-    "variableName": "sort",
-    "type": "String"
-  }
-],
 v5 = {
   "kind": "ScalarField",
   "alias": null,
@@ -199,26 +189,32 @@ v7 = [
     "args": null,
     "storageKey": null
   },
-  (v3/*: any*/)
+  v2
 ];
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "GeneArtworksGridQuery",
+  "id": null,
+  "text": "query GeneArtworksGridQuery(\n  $id: ID!\n  $count: Int!\n  $cursor: String\n  $sort: String\n) {\n  node(__id: $id) {\n    __typename\n    ... on FilterArtworks {\n      ...GeneArtworksGrid_filtered_artworks_1RfMLO\n    }\n    __id: id\n  }\n}\n\nfragment GeneArtworksGrid_filtered_artworks_1RfMLO on FilterArtworks {\n  id\n  artworks: artworks_connection(first: $count, after: $cursor, sort: $sort) {\n    pageInfo {\n      hasNextPage\n      startCursor\n      endCursor\n    }\n    edges {\n      node {\n        gravityID\n        id\n        image {\n          aspect_ratio\n        }\n        ...Artwork_artwork\n        __id: id\n        __typename\n      }\n      cursor\n    }\n  }\n  __id: id\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  date\n  sale_message\n  is_in_auction\n  is_biddable\n  is_acquireable\n  is_offerable\n  gravityID\n  sale {\n    is_auction\n    is_live_open\n    is_open\n    is_closed\n    display_timely_at\n    __id: id\n  }\n  sale_artwork {\n    opening_bid {\n      display\n    }\n    current_bid {\n      display\n    }\n    bidder_positions_count\n    sale {\n      is_closed\n      __id: id\n    }\n    __id: id\n  }\n  image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  artists(shallow: true) {\n    name\n    __id: id\n  }\n  partner {\n    name\n    __id: id\n  }\n  href\n  __id: id\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "GeneArtworksGridQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "node",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": null,
         "plural": false,
         "selections": [
+          v2,
           {
             "kind": "InlineFragment",
             "type": "FilterArtworks",
@@ -256,29 +252,49 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "GeneArtworksGridQuery",
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "node",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": null,
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
+          v3,
+          v2,
           {
             "kind": "InlineFragment",
             "type": "FilterArtworks",
             "selections": [
+              v4,
               {
                 "kind": "LinkedField",
                 "alias": "artworks",
                 "name": "artworks_connection",
                 "storageKey": null,
-                "args": (v4/*: any*/),
+                "args": [
+                  {
+                    "kind": "Variable",
+                    "name": "after",
+                    "variableName": "cursor",
+                    "type": "String"
+                  },
+                  {
+                    "kind": "Variable",
+                    "name": "first",
+                    "variableName": "count",
+                    "type": "Int"
+                  },
+                  {
+                    "kind": "Variable",
+                    "name": "sort",
+                    "variableName": "sort",
+                    "type": "String"
+                  }
+                ],
                 "concreteType": "ArtworkConnection",
                 "plural": false,
                 "selections": [
@@ -413,7 +429,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v3/*: any*/),
+                          v4,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -451,7 +467,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              (v5/*: any*/),
+                              v5,
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -459,7 +475,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              (v3/*: any*/)
+                              v2
                             ]
                           },
                           {
@@ -479,7 +495,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkOpeningBid",
                                 "plural": false,
-                                "selections": (v6/*: any*/)
+                                "selections": v6
                               },
                               {
                                 "kind": "LinkedField",
@@ -489,7 +505,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkCurrentBid",
                                 "plural": false,
-                                "selections": (v6/*: any*/)
+                                "selections": v6
                               },
                               {
                                 "kind": "ScalarField",
@@ -507,11 +523,11 @@ return {
                                 "concreteType": "Sale",
                                 "plural": false,
                                 "selections": [
-                                  (v5/*: any*/),
-                                  (v3/*: any*/)
+                                  v5,
+                                  v2
                                 ]
                               },
-                              (v3/*: any*/)
+                              v2
                             ]
                           },
                           {
@@ -529,7 +545,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": (v7/*: any*/)
+                            "selections": v7
                           },
                           {
                             "kind": "LinkedField",
@@ -539,7 +555,7 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": (v7/*: any*/)
+                            "selections": v7
                           },
                           {
                             "kind": "ScalarField",
@@ -548,7 +564,8 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/)
+                          v2,
+                          v3
                         ]
                       },
                       {
@@ -566,7 +583,26 @@ return {
                 "kind": "LinkedHandle",
                 "alias": "artworks",
                 "name": "artworks_connection",
-                "args": (v4/*: any*/),
+                "args": [
+                  {
+                    "kind": "Variable",
+                    "name": "after",
+                    "variableName": "cursor",
+                    "type": "String"
+                  },
+                  {
+                    "kind": "Variable",
+                    "name": "first",
+                    "variableName": "count",
+                    "type": "Int"
+                  },
+                  {
+                    "kind": "Variable",
+                    "name": "sort",
+                    "variableName": "sort",
+                    "type": "String"
+                  }
+                ],
                 "handle": "connection",
                 "key": "GeneArtworksGrid_artworks",
                 "filters": [
@@ -578,13 +614,6 @@ return {
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "GeneArtworksGridQuery",
-    "id": "b9f49148fa4f7b165660c09407cb5190",
-    "text": null,
-    "metadata": {}
   }
 };
 })();

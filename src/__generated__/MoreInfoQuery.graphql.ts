@@ -2,28 +2,28 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { MoreInfo_show$ref } from "./MoreInfo_show.graphql";
-export type QueryRenderersShowMoreInfoQueryVariables = {
+export type MoreInfoQueryVariables = {
     readonly showID: string;
 };
-export type QueryRenderersShowMoreInfoQueryResponse = {
+export type MoreInfoQueryResponse = {
     readonly show: ({
         readonly " $fragmentRefs": MoreInfo_show$ref;
     }) | null;
 };
-export type QueryRenderersShowMoreInfoQuery = {
-    readonly response: QueryRenderersShowMoreInfoQueryResponse;
-    readonly variables: QueryRenderersShowMoreInfoQueryVariables;
+export type MoreInfoQuery = {
+    readonly response: MoreInfoQueryResponse;
+    readonly variables: MoreInfoQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersShowMoreInfoQuery(
+query MoreInfoQuery(
   $showID: String!
 ) {
   show(id: $showID) {
     ...MoreInfo_show
-    id
+    __id: id
   }
 }
 
@@ -40,16 +40,17 @@ fragment MoreInfo_show on Show {
       type
     }
     ... on Node {
-      id
+      __id: id
     }
     ... on ExternalPartner {
-      id
+      __id: id
     }
   }
   press_release
   events {
     ...ShowEventSection_event
   }
+  __id: id
 }
 
 fragment ShowEventSection_event on PartnerShowEventType {
@@ -79,26 +80,31 @@ v1 = [
 ],
 v2 = {
   "kind": "ScalarField",
-  "alias": null,
+  "alias": "__id",
   "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "MoreInfoQuery",
+  "id": null,
+  "text": "query MoreInfoQuery(\n  $showID: String!\n) {\n  show(id: $showID) {\n    ...MoreInfo_show\n    __id: id\n  }\n}\n\nfragment MoreInfo_show on Show {\n  internalID\n  gravityID\n  exhibition_period\n  pressReleaseUrl\n  openingReceptionText\n  partner {\n    __typename\n    ... on Partner {\n      website\n      type\n    }\n    ... on Node {\n      __id: id\n    }\n    ... on ExternalPartner {\n      __id: id\n    }\n  }\n  press_release\n  events {\n    ...ShowEventSection_event\n  }\n  __id: id\n}\n\nfragment ShowEventSection_event on PartnerShowEventType {\n  event_type\n  description\n  start_at\n  end_at\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersShowMoreInfoQuery",
+    "name": "MoreInfoQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -106,22 +112,23 @@ return {
             "kind": "FragmentSpread",
             "name": "MoreInfo_show",
             "args": null
-          }
+          },
+          v2
         ]
       }
     ]
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersShowMoreInfoQuery",
-    "argumentDefinitions": (v0/*: any*/),
+    "name": "MoreInfoQuery",
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -176,7 +183,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v2/*: any*/),
+              v2,
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
@@ -245,19 +252,12 @@ return {
               }
             ]
           },
-          (v2/*: any*/)
+          v2
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "QueryRenderersShowMoreInfoQuery",
-    "id": "f820e7caf00e9338c7bfa664a25c4c83",
-    "text": null,
-    "metadata": {}
   }
 };
 })();
-(node as any).hash = 'f820e7caf00e9338c7bfa664a25c4c83';
+(node as any).hash = '845de9834db6c6e92fc0337a28679c20';
 export default node;

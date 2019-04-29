@@ -19,7 +19,7 @@ export type indexTestsFairHeaderQuery = {
 query indexTestsFairHeaderQuery {
   fair(id: "sofa-chicago-2018") {
     ...FairHeader_fair
-    id
+    __id: id
   }
 }
 
@@ -38,12 +38,12 @@ fragment FairHeader_fair on Fair {
       href
       gravityID
       internalID
-      id
+      __id: id
     }
     galleries {
       internalID
       name
-      id
+      __id: id
     }
   }
   partner_names: shows_connection(first: 2) {
@@ -57,17 +57,17 @@ fragment FairHeader_fair on Fair {
               name
               gravityID
               internalID
-              id
+              __id: id
             }
           }
           ... on Node {
-            id
+            __id: id
           }
           ... on ExternalPartner {
-            id
+            __id: id
           }
         }
-        id
+        __id: id
       }
     }
   }
@@ -78,7 +78,7 @@ fragment FairHeader_fair on Fair {
         href
         gravityID
         internalID
-        id
+        __id: id
       }
     }
   }
@@ -99,10 +99,12 @@ fragment FairHeader_fair on Fair {
     gravityID
     name
     is_followed
+    __id: id
   }
   start_at
   end_at
   exhibition_period
+  __id: id
 }
 */
 
@@ -117,48 +119,53 @@ var v0 = [
 ],
 v1 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
+  "alias": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v6 = [
-  (v1/*: any*/),
-  (v2/*: any*/),
-  (v3/*: any*/),
-  (v4/*: any*/),
-  (v5/*: any*/)
+  v2,
+  v3,
+  v4,
+  v5,
+  v1
 ];
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "indexTestsFairHeaderQuery",
+  "id": null,
+  "text": "query indexTestsFairHeaderQuery {\n  fair(id: \"sofa-chicago-2018\") {\n    ...FairHeader_fair\n    __id: id\n  }\n}\n\nfragment FairHeader_fair on Fair {\n  gravityID\n  internalID\n  name\n  formattedOpeningHours\n  counts {\n    artists\n    partners\n  }\n  followed_content {\n    artists {\n      name\n      href\n      gravityID\n      internalID\n      __id: id\n    }\n    galleries {\n      internalID\n      name\n      __id: id\n    }\n  }\n  partner_names: shows_connection(first: 2) {\n    edges {\n      node {\n        gravityID\n        partner {\n          __typename\n          ... on Partner {\n            profile {\n              name\n              gravityID\n              internalID\n              __id: id\n            }\n          }\n          ... on Node {\n            __id: id\n          }\n          ... on ExternalPartner {\n            __id: id\n          }\n        }\n        __id: id\n      }\n    }\n  }\n  artists_names: artists(first: 3) {\n    edges {\n      node {\n        name\n        href\n        gravityID\n        internalID\n        __id: id\n      }\n    }\n  }\n  image {\n    image_url\n    aspect_ratio\n    url\n  }\n  profile {\n    icon {\n      gravityID\n      href\n      height\n      width\n      url(version: \"square140\")\n    }\n    id\n    gravityID\n    name\n    is_followed\n    __id: id\n  }\n  start_at\n  end_at\n  exhibition_period\n  __id: id\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "indexTestsFairHeaderQuery",
@@ -171,7 +178,7 @@ return {
         "alias": null,
         "name": "fair",
         "storageKey": "fair(id:\"sofa-chicago-2018\")",
-        "args": (v0/*: any*/),
+        "args": v0,
         "concreteType": "Fair",
         "plural": false,
         "selections": [
@@ -179,7 +186,8 @@ return {
             "kind": "FragmentSpread",
             "name": "FairHeader_fair",
             "args": null
-          }
+          },
+          v1
         ]
       }
     ]
@@ -194,7 +202,7 @@ return {
         "alias": null,
         "name": "fair",
         "storageKey": "fair(id:\"sofa-chicago-2018\")",
-        "args": (v0/*: any*/),
+        "args": v0,
         "concreteType": "Fair",
         "plural": false,
         "selections": [
@@ -231,14 +239,14 @@ return {
                     "args": null,
                     "concreteType": "Artist",
                     "plural": false,
-                    "selections": (v6/*: any*/)
+                    "selections": v6
                   }
                 ]
               }
             ]
           },
-          (v3/*: any*/),
-          (v1/*: any*/),
+          v4,
+          v2,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -288,7 +296,7 @@ return {
                 "args": null,
                 "concreteType": "Artist",
                 "plural": true,
-                "selections": (v6/*: any*/)
+                "selections": v6
               },
               {
                 "kind": "LinkedField",
@@ -299,9 +307,9 @@ return {
                 "concreteType": "Partner",
                 "plural": true,
                 "selections": [
-                  (v4/*: any*/),
-                  (v1/*: any*/),
-                  (v5/*: any*/)
+                  v5,
+                  v2,
+                  v1
                 ]
               }
             ]
@@ -340,7 +348,7 @@ return {
                     "concreteType": "Show",
                     "plural": false,
                     "selections": [
-                      (v3/*: any*/),
+                      v4,
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -357,7 +365,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v5/*: any*/),
+                          v1,
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",
@@ -371,24 +379,24 @@ return {
                                 "concreteType": "Profile",
                                 "plural": false,
                                 "selections": [
-                                  (v1/*: any*/),
-                                  (v3/*: any*/),
-                                  (v4/*: any*/),
-                                  (v5/*: any*/)
+                                  v2,
+                                  v4,
+                                  v5,
+                                  v1
                                 ]
                               }
                             ]
                           }
                         ]
                       },
-                      (v5/*: any*/)
+                      v1
                     ]
                   }
                 ]
               }
             ]
           },
-          (v4/*: any*/),
+          v5,
           {
             "kind": "LinkedField",
             "alias": null,
@@ -439,8 +447,8 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  (v3/*: any*/),
-                  (v2/*: any*/),
+                  v4,
+                  v3,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -471,16 +479,23 @@ return {
                   }
                 ]
               },
-              (v5/*: any*/),
-              (v3/*: any*/),
-              (v1/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              },
+              v4,
+              v2,
               {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "is_followed",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              v1
             ]
           },
           {
@@ -504,17 +519,10 @@ return {
             "args": null,
             "storageKey": null
           },
-          (v5/*: any*/)
+          v1
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "indexTestsFairHeaderQuery",
-    "id": "5ef9b6e4aa7c6762bd2dd66872aa8eb0",
-    "text": null,
-    "metadata": {}
   }
 };
 })();

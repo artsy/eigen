@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 import { Artwork_artwork$ref } from "./Artwork_artwork.graphql";
 declare const _ArtistForSaleArtworksGrid_artist$ref: unique symbol;
 export type ArtistForSaleArtworksGrid_artist$ref = typeof _ArtistForSaleArtworksGrid_artist$ref;
@@ -28,10 +28,17 @@ export type ArtistForSaleArtworksGrid_artist = {
 
 
 
-const node: ReaderFragment = (function(){
+const node: ConcreteFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v1 = {
+  "kind": "ScalarField",
+  "alias": "__id",
   "name": "id",
   "args": null,
   "storageKey": null
@@ -75,7 +82,7 @@ return {
     }
   ],
   "selections": [
-    (v0/*: any*/),
+    v0,
     {
       "kind": "LinkedField",
       "alias": "forSaleArtworks",
@@ -155,7 +162,7 @@ return {
                   "args": null,
                   "storageKey": null
                 },
-                (v0/*: any*/),
+                v0,
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -179,6 +186,7 @@ return {
                   "name": "Artwork_artwork",
                   "args": null
                 },
+                v1,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -198,7 +206,8 @@ return {
           ]
         }
       ]
-    }
+    },
+    v1
   ]
 };
 })();

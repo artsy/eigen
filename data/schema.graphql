@@ -136,10 +136,18 @@ interface AnalyticsPartnerTimeSeriesStats {
   time: AnalyticsDateTime
 }
 
+# Price Context Filter Type
+type AnalyticsPriceContextFilterType {
+  category: AnalyticsPricingContextCategoryEnum
+  dimension: AnalyticsPricingContextDimensionEnum
+}
+
 # Pricing Context Histogram
 type AnalyticsPricingContext {
+  appliedFilters: AnalyticsPriceContextFilterType!
   bins: [AnalyticsHistogramBin!]!
-  filterDescription: String!
+  filterDescription: String! @deprecated(reason: "switch to applied_filters")
+  appliedFiltersDisplay: String
 }
 
 enum AnalyticsPricingContextCategoryEnum {
@@ -153,10 +161,10 @@ enum AnalyticsPricingContextCategoryEnum {
   DESIGN_DECORATIVE_ART
 
   # Drawing, Collage or other Work on Paper
-  DRAWING_COLAGE_OTHER_WORK_ON_PAPER
+  DRAWING_COLLAGE_OTHER_WORK_ON_PAPER
 
   # Fashion Design and Wearable Art
-  FASHON
+  FASHION
 
   # Installation
   INSTALLATION
@@ -199,6 +207,17 @@ enum AnalyticsPricingContextCategoryEnum {
 
   # Work on Paper
   WORK_ON_PAPER
+}
+
+enum AnalyticsPricingContextDimensionEnum {
+  # Large
+  LARGE
+
+  # Medium
+  MEDIUM
+
+  # Small
+  SMALL
 }
 
 enum AnalyticsQueryPeriodEnum {
@@ -1245,7 +1264,9 @@ type ArtworkContextAuction implements Node {
   href: String
   name: String
   is_auction: Boolean
-  is_benefit: Boolean
+  is_benefit: Boolean @deprecated(reason: "Favor `isBenefit`")
+  isBenefit: Boolean
+  isGalleryAuction: Boolean
   is_auction_promo: Boolean
   is_closed: Boolean
   is_open: Boolean
@@ -1615,7 +1636,9 @@ type ArtworkContextSale implements Node {
   href: String
   name: String
   is_auction: Boolean
-  is_benefit: Boolean
+  is_benefit: Boolean @deprecated(reason: "Favor `isBenefit`")
+  isBenefit: Boolean
+  isGalleryAuction: Boolean
   is_auction_promo: Boolean
   is_closed: Boolean
   is_open: Boolean
@@ -5165,7 +5188,9 @@ type HomePageModuleContextSale implements Node {
   href: String
   name: String
   is_auction: Boolean
-  is_benefit: Boolean
+  is_benefit: Boolean @deprecated(reason: "Favor `isBenefit`")
+  isBenefit: Boolean
+  isGalleryAuction: Boolean
   is_auction_promo: Boolean
   is_closed: Boolean
   is_open: Boolean
@@ -8010,7 +8035,9 @@ type Sale implements Node {
   href: String
   name: String
   is_auction: Boolean
-  is_benefit: Boolean
+  is_benefit: Boolean @deprecated(reason: "Favor `isBenefit`")
+  isBenefit: Boolean
+  isGalleryAuction: Boolean
   is_auction_promo: Boolean
   is_closed: Boolean
   is_open: Boolean

@@ -19,7 +19,7 @@ export type MoreInfoTestsQuery = {
 query MoreInfoTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...MoreInfo_show
-    id
+    __id: id
   }
 }
 
@@ -36,16 +36,17 @@ fragment MoreInfo_show on Show {
       type
     }
     ... on Node {
-      id
+      __id: id
     }
     ... on ExternalPartner {
-      id
+      __id: id
     }
   }
   press_release
   events {
     ...ShowEventSection_event
   }
+  __id: id
 }
 
 fragment ShowEventSection_event on PartnerShowEventType {
@@ -67,13 +68,18 @@ var v0 = [
 ],
 v1 = {
   "kind": "ScalarField",
-  "alias": null,
+  "alias": "__id",
   "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "MoreInfoTestsQuery",
+  "id": null,
+  "text": "query MoreInfoTestsQuery {\n  show(id: \"anderson-fine-art-gallery-flickinger-collection\") {\n    ...MoreInfo_show\n    __id: id\n  }\n}\n\nfragment MoreInfo_show on Show {\n  internalID\n  gravityID\n  exhibition_period\n  pressReleaseUrl\n  openingReceptionText\n  partner {\n    __typename\n    ... on Partner {\n      website\n      type\n    }\n    ... on Node {\n      __id: id\n    }\n    ... on ExternalPartner {\n      __id: id\n    }\n  }\n  press_release\n  events {\n    ...ShowEventSection_event\n  }\n  __id: id\n}\n\nfragment ShowEventSection_event on PartnerShowEventType {\n  event_type\n  description\n  start_at\n  end_at\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "MoreInfoTestsQuery",
@@ -86,7 +92,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": (v0/*: any*/),
+        "args": v0,
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -94,7 +100,8 @@ return {
             "kind": "FragmentSpread",
             "name": "MoreInfo_show",
             "args": null
-          }
+          },
+          v1
         ]
       }
     ]
@@ -109,7 +116,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": (v0/*: any*/),
+        "args": v0,
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -164,7 +171,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v1/*: any*/),
+              v1,
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
@@ -233,17 +240,10 @@ return {
               }
             ]
           },
-          (v1/*: any*/)
+          v1
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "MoreInfoTestsQuery",
-    "id": "bc9b5b8df734aa249ca91e119888e47e",
-    "text": null,
-    "metadata": {}
   }
 };
 })();

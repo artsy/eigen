@@ -23,7 +23,7 @@ query FairArtistsRendererQuery(
 ) {
   fair(id: $fairID) {
     ...FairArtists_fair
-    id
+    __id: id
   }
 }
 
@@ -44,11 +44,12 @@ fragment FairArtists_fair on Fair {
         href
         internalID
         gravityID
-        id
+        __id: id
         __typename
       }
     }
   }
+  __id: id
 }
 
 fragment ArtistListItem_artist on Artist {
@@ -63,6 +64,7 @@ fragment ArtistListItem_artist on Artist {
   image {
     url
   }
+  __id: id
 }
 */
 
@@ -85,48 +87,45 @@ v1 = [
 ],
 v2 = {
   "kind": "ScalarField",
-  "alias": null,
-  "name": "gravityID",
+  "alias": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
-v4 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 10,
-    "type": "Int"
-  }
-],
-v5 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "FairArtistsRendererQuery",
+  "id": null,
+  "text": "query FairArtistsRendererQuery(\n  $fairID: String!\n) {\n  fair(id: $fairID) {\n    ...FairArtists_fair\n    __id: id\n  }\n}\n\nfragment FairArtists_fair on Fair {\n  gravityID\n  internalID\n  artists(first: 10) {\n    pageInfo {\n      hasNextPage\n      startCursor\n      endCursor\n    }\n    edges {\n      cursor\n      node {\n        ...ArtistListItem_artist\n        sortable_id\n        href\n        internalID\n        gravityID\n        __id: id\n        __typename\n      }\n    }\n  }\n  __id: id\n}\n\nfragment ArtistListItem_artist on Artist {\n  id\n  internalID\n  gravityID\n  name\n  is_followed\n  nationality\n  birthday\n  deathday\n  image {\n    url\n  }\n  __id: id\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FairArtistsRendererQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "fair",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": "Fair",
         "plural": false,
         "selections": [
@@ -134,7 +133,8 @@ return {
             "kind": "FragmentSpread",
             "name": "FairArtists_fair",
             "args": null
-          }
+          },
+          v2
         ]
       }
     ]
@@ -142,25 +142,32 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "FairArtistsRendererQuery",
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "fair",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": "Fair",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
+          v3,
+          v4,
           {
             "kind": "LinkedField",
             "alias": null,
             "name": "artists",
             "storageKey": "artists(first:10)",
-            "args": (v4/*: any*/),
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 10,
+                "type": "Int"
+              }
+            ],
             "concreteType": "ArtistConnection",
             "plural": false,
             "selections": [
@@ -228,8 +235,14 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v5/*: any*/),
-                      (v2/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "id",
+                        "args": null,
+                        "storageKey": null
+                      },
+                      v3,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -251,7 +264,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v3/*: any*/),
+                      v4,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -277,6 +290,7 @@ return {
                           }
                         ]
                       },
+                      v2,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -308,22 +322,22 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "artists",
-            "args": (v4/*: any*/),
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 10,
+                "type": "Int"
+              }
+            ],
             "handle": "connection",
             "key": "Fair_artists",
             "filters": null
           },
-          (v5/*: any*/)
+          v2
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "FairArtistsRendererQuery",
-    "id": "cde0ba2cbaaaf494ed25f12db943cddc",
-    "text": null,
-    "metadata": {}
   }
 };
 })();

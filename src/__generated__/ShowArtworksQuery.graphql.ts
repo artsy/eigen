@@ -2,28 +2,28 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { ShowArtworks_show$ref } from "./ShowArtworks_show.graphql";
-export type QueryRenderersShowArtworksQueryVariables = {
+export type ShowArtworksQueryVariables = {
     readonly showID: string;
 };
-export type QueryRenderersShowArtworksQueryResponse = {
+export type ShowArtworksQueryResponse = {
     readonly show: ({
         readonly " $fragmentRefs": ShowArtworks_show$ref;
     }) | null;
 };
-export type QueryRenderersShowArtworksQuery = {
-    readonly response: QueryRenderersShowArtworksQueryResponse;
-    readonly variables: QueryRenderersShowArtworksQueryVariables;
+export type ShowArtworksQuery = {
+    readonly response: ShowArtworksQueryResponse;
+    readonly variables: ShowArtworksQueryVariables;
 };
 
 
 
 /*
-query QueryRenderersShowArtworksQuery(
+query ShowArtworksQuery(
   $showID: String!
 ) {
   show(id: $showID) {
     ...ShowArtworks_show
-    id
+    __id: id
   }
 }
 
@@ -33,13 +33,15 @@ fragment ShowArtworks_show on Show {
   internalID
   filteredArtworks(size: 0, medium: "*", price_range: "*-*", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {
     ...FilteredInfiniteScrollGrid_filteredArtworks
-    id
+    __id: id
   }
+  __id: id
 }
 
 fragment FilteredInfiniteScrollGrid_filteredArtworks on FilterArtworks {
   ...Filters_filteredArtworks
   ...ArtworksGridPaginationContainer_filteredArtworks
+  __id: id
 }
 
 fragment Filters_filteredArtworks on FilterArtworks {
@@ -48,9 +50,10 @@ fragment Filters_filteredArtworks on FilterArtworks {
     counts {
       gravityID
       name
-      id
+      __id: id
     }
   }
+  __id: id
 }
 
 fragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks {
@@ -69,11 +72,13 @@ fragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks {
           aspect_ratio
         }
         ...Artwork_artwork
+        __id: id
         __typename
       }
       cursor
     }
   }
+  __id: id
 }
 
 fragment Artwork_artwork on Artwork {
@@ -91,7 +96,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
-    id
+    __id: id
   }
   sale_artwork {
     opening_bid {
@@ -103,9 +108,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
-      id
+      __id: id
     }
-    id
+    __id: id
   }
   image {
     url(version: "large")
@@ -113,13 +118,14 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
-    id
+    __id: id
   }
   partner {
     name
-    id
+    __id: id
   }
   href
+  __id: id
 }
 */
 
@@ -142,7 +148,7 @@ v1 = [
 ],
 v2 = {
   "kind": "ScalarField",
-  "alias": null,
+  "alias": "__id",
   "name": "id",
   "args": null,
   "storageKey": null
@@ -150,25 +156,24 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v5 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 10,
-    "type": "Int"
-  }
-],
 v6 = {
   "kind": "ScalarField",
   "alias": null,
@@ -186,24 +191,29 @@ v7 = [
   }
 ],
 v8 = [
-  (v4/*: any*/),
-  (v2/*: any*/)
+  v5,
+  v2
 ];
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "ShowArtworksQuery",
+  "id": null,
+  "text": "query ShowArtworksQuery(\n  $showID: String!\n) {\n  show(id: $showID) {\n    ...ShowArtworks_show\n    __id: id\n  }\n}\n\nfragment ShowArtworks_show on Show {\n  id\n  gravityID\n  internalID\n  filteredArtworks(size: 0, medium: \"*\", price_range: \"*-*\", aggregations: [MEDIUM, PRICE_RANGE, TOTAL]) {\n    ...FilteredInfiniteScrollGrid_filteredArtworks\n    __id: id\n  }\n  __id: id\n}\n\nfragment FilteredInfiniteScrollGrid_filteredArtworks on FilterArtworks {\n  ...Filters_filteredArtworks\n  ...ArtworksGridPaginationContainer_filteredArtworks\n  __id: id\n}\n\nfragment Filters_filteredArtworks on FilterArtworks {\n  aggregations {\n    slice\n    counts {\n      gravityID\n      name\n      __id: id\n    }\n  }\n  __id: id\n}\n\nfragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks {\n  id\n  artworks: artworks_connection(first: 10) {\n    pageInfo {\n      hasNextPage\n      startCursor\n      endCursor\n    }\n    edges {\n      node {\n        gravityID\n        id\n        image {\n          aspect_ratio\n        }\n        ...Artwork_artwork\n        __id: id\n        __typename\n      }\n      cursor\n    }\n  }\n  __id: id\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  date\n  sale_message\n  is_in_auction\n  is_biddable\n  is_acquireable\n  is_offerable\n  gravityID\n  sale {\n    is_auction\n    is_live_open\n    is_open\n    is_closed\n    display_timely_at\n    __id: id\n  }\n  sale_artwork {\n    opening_bid {\n      display\n    }\n    current_bid {\n      display\n    }\n    bidder_positions_count\n    sale {\n      is_closed\n      __id: id\n    }\n    __id: id\n  }\n  image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  artists(shallow: true) {\n    name\n    __id: id\n  }\n  partner {\n    name\n    __id: id\n  }\n  href\n  __id: id\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "QueryRenderersShowArtworksQuery",
+    "name": "ShowArtworksQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -211,27 +221,28 @@ return {
             "kind": "FragmentSpread",
             "name": "ShowArtworks_show",
             "args": null
-          }
+          },
+          v2
         ]
       }
     ]
   },
   "operation": {
     "kind": "Operation",
-    "name": "QueryRenderersShowArtworksQuery",
-    "argumentDefinitions": (v0/*: any*/),
+    "name": "ShowArtworksQuery",
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
-          (v3/*: any*/),
+          v3,
+          v4,
           {
             "kind": "ScalarField",
             "alias": null,
@@ -302,20 +313,28 @@ return {
                     "concreteType": "AggregationCount",
                     "plural": true,
                     "selections": [
-                      (v3/*: any*/),
-                      (v4/*: any*/),
-                      (v2/*: any*/)
+                      v4,
+                      v5,
+                      v2
                     ]
                   }
                 ]
               },
-              (v2/*: any*/),
+              v2,
+              v3,
               {
                 "kind": "LinkedField",
                 "alias": "artworks",
                 "name": "artworks_connection",
                 "storageKey": "artworks_connection(first:10)",
-                "args": (v5/*: any*/),
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "first",
+                    "value": 10,
+                    "type": "Int"
+                  }
+                ],
                 "concreteType": "ArtworkConnection",
                 "plural": false,
                 "selections": [
@@ -376,7 +395,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v3/*: any*/),
+                          v4,
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -444,7 +463,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/),
+                          v3,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -482,7 +501,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              (v6/*: any*/),
+                              v6,
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -490,7 +509,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              (v2/*: any*/)
+                              v2
                             ]
                           },
                           {
@@ -510,7 +529,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkOpeningBid",
                                 "plural": false,
-                                "selections": (v7/*: any*/)
+                                "selections": v7
                               },
                               {
                                 "kind": "LinkedField",
@@ -520,7 +539,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkCurrentBid",
                                 "plural": false,
-                                "selections": (v7/*: any*/)
+                                "selections": v7
                               },
                               {
                                 "kind": "ScalarField",
@@ -538,11 +557,11 @@ return {
                                 "concreteType": "Sale",
                                 "plural": false,
                                 "selections": [
-                                  (v6/*: any*/),
-                                  (v2/*: any*/)
+                                  v6,
+                                  v2
                                 ]
                               },
-                              (v2/*: any*/)
+                              v2
                             ]
                           },
                           {
@@ -560,7 +579,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": (v8/*: any*/)
+                            "selections": v8
                           },
                           {
                             "kind": "LinkedField",
@@ -570,7 +589,7 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": (v8/*: any*/)
+                            "selections": v8
                           },
                           {
                             "kind": "ScalarField",
@@ -579,6 +598,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
+                          v2,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -603,25 +623,26 @@ return {
                 "kind": "LinkedHandle",
                 "alias": "artworks",
                 "name": "artworks_connection",
-                "args": (v5/*: any*/),
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "first",
+                    "value": 10,
+                    "type": "Int"
+                  }
+                ],
                 "handle": "connection",
                 "key": "ArtworksGridPaginationContainer_artworks",
                 "filters": null
               }
             ]
-          }
+          },
+          v2
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "QueryRenderersShowArtworksQuery",
-    "id": "5c80348b34e75502c27428412dcc531f",
-    "text": null,
-    "metadata": {}
   }
 };
 })();
-(node as any).hash = '5c80348b34e75502c27428412dcc531f';
+(node as any).hash = '920a97762ab5a6e35e1de3f5ef8b1621';
 export default node;

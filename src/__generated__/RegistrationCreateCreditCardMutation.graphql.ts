@@ -50,7 +50,7 @@ mutation RegistrationCreateCreditCardMutation(
           last_digits
           expiration_month
           expiration_year
-          id
+          __id: id
         }
       }
       ... on CreditCardMutationFailure {
@@ -121,62 +121,91 @@ v2 = {
   ]
 },
 v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "gravityID",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "brand",
-  "args": null,
-  "storageKey": null
-},
-v5 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "last_digits",
-  "args": null,
-  "storageKey": null
-},
-v7 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "expiration_month",
-  "args": null,
-  "storageKey": null
-},
-v8 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "expiration_year",
-  "args": null,
-  "storageKey": null
+  "kind": "InlineFragment",
+  "type": "CreditCardMutationSuccess",
+  "selections": [
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "creditCard",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "CreditCard",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "gravityID",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "brand",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "name",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "last_digits",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "expiration_month",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "expiration_year",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": "__id",
+          "name": "id",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    }
+  ]
 };
 return {
   "kind": "Request",
+  "operationKind": "mutation",
+  "name": "RegistrationCreateCreditCardMutation",
+  "id": null,
+  "text": "mutation RegistrationCreateCreditCardMutation(\n  $input: CreditCardInput!\n) {\n  createCreditCard(input: $input) {\n    creditCardOrError {\n      __typename\n      ... on CreditCardMutationSuccess {\n        creditCard {\n          gravityID\n          brand\n          name\n          last_digits\n          expiration_month\n          expiration_year\n          __id: id\n        }\n      }\n      ... on CreditCardMutationFailure {\n        mutationError {\n          type\n          message\n          detail\n        }\n      }\n    }\n  }\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "RegistrationCreateCreditCardMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "createCreditCard",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": "CreditCardPayload",
         "plural": false,
         "selections": [
@@ -189,30 +218,8 @@ return {
             "concreteType": null,
             "plural": false,
             "selections": [
-              (v2/*: any*/),
-              {
-                "kind": "InlineFragment",
-                "type": "CreditCardMutationSuccess",
-                "selections": [
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "creditCard",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "CreditCard",
-                    "plural": false,
-                    "selections": [
-                      (v3/*: any*/),
-                      (v4/*: any*/),
-                      (v5/*: any*/),
-                      (v6/*: any*/),
-                      (v7/*: any*/),
-                      (v8/*: any*/)
-                    ]
-                  }
-                ]
-              }
+              v2,
+              v3
             ]
           }
         ]
@@ -222,14 +229,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "RegistrationCreateCreditCardMutation",
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "createCreditCard",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": "CreditCardPayload",
         "plural": false,
         "selections": [
@@ -249,49 +256,13 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v2/*: any*/),
-              {
-                "kind": "InlineFragment",
-                "type": "CreditCardMutationSuccess",
-                "selections": [
-                  {
-                    "kind": "LinkedField",
-                    "alias": null,
-                    "name": "creditCard",
-                    "storageKey": null,
-                    "args": null,
-                    "concreteType": "CreditCard",
-                    "plural": false,
-                    "selections": [
-                      (v3/*: any*/),
-                      (v4/*: any*/),
-                      (v5/*: any*/),
-                      (v6/*: any*/),
-                      (v7/*: any*/),
-                      (v8/*: any*/),
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "id",
-                        "args": null,
-                        "storageKey": null
-                      }
-                    ]
-                  }
-                ]
-              }
+              v2,
+              v3
             ]
           }
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "mutation",
-    "name": "RegistrationCreateCreditCardMutation",
-    "id": "81d9bbd61ea9c9e8bfcf0f9015d38861",
-    "text": null,
-    "metadata": {}
   }
 };
 })();

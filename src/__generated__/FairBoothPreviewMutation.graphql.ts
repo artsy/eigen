@@ -34,7 +34,7 @@ mutation FairBoothPreviewMutation(
       gravityID
       internalID
       is_followed
-      id
+      __id: id
     }
   }
 }
@@ -51,114 +51,83 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "Variable",
-    "name": "input",
-    "variableName": "input",
-    "type": "FollowProfileInput!"
+    "kind": "LinkedField",
+    "alias": null,
+    "name": "followProfile",
+    "storageKey": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "input",
+        "variableName": "input",
+        "type": "FollowProfileInput!"
+      }
+    ],
+    "concreteType": "FollowProfilePayload",
+    "plural": false,
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "profile",
+        "storageKey": null,
+        "args": null,
+        "concreteType": "Profile",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "gravityID",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "internalID",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_followed",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": "__id",
+            "name": "id",
+            "args": null,
+            "storageKey": null
+          }
+        ]
+      }
+    ]
   }
-],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "gravityID",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "is_followed",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
+  "operationKind": "mutation",
+  "name": "FairBoothPreviewMutation",
+  "id": null,
+  "text": "mutation FairBoothPreviewMutation(\n  $input: FollowProfileInput!\n) {\n  followProfile(input: $input) {\n    profile {\n      gravityID\n      internalID\n      is_followed\n      __id: id\n    }\n  }\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FairBoothPreviewMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "followProfile",
-        "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "FollowProfilePayload",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "profile",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Profile",
-            "plural": false,
-            "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/),
-              (v4/*: any*/)
-            ]
-          }
-        ]
-      }
-    ]
+    "argumentDefinitions": v0,
+    "selections": v1
   },
   "operation": {
     "kind": "Operation",
     "name": "FairBoothPreviewMutation",
-    "argumentDefinitions": (v0/*: any*/),
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "followProfile",
-        "storageKey": null,
-        "args": (v1/*: any*/),
-        "concreteType": "FollowProfilePayload",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "LinkedField",
-            "alias": null,
-            "name": "profile",
-            "storageKey": null,
-            "args": null,
-            "concreteType": "Profile",
-            "plural": false,
-            "selections": [
-              (v2/*: any*/),
-              (v3/*: any*/),
-              (v4/*: any*/),
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "id",
-                "args": null,
-                "storageKey": null
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "params": {
-    "operationKind": "mutation",
-    "name": "FairBoothPreviewMutation",
-    "id": "fa6170bf9c5933351a87c80ac53a55bc",
-    "text": null,
-    "metadata": {}
+    "argumentDefinitions": v0,
+    "selections": v1
   }
 };
 })();

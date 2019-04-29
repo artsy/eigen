@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ReaderFragment } from "relay-runtime";
+import { ConcreteFragment } from "relay-runtime";
 declare const _MockRelayRendererFixtures_artist$ref: unique symbol;
 export type MockRelayRendererFixtures_artist$ref = typeof _MockRelayRendererFixtures_artist$ref;
 export type MockRelayRendererFixtures_artist = {
@@ -10,7 +10,7 @@ export type MockRelayRendererFixtures_artist = {
 
 
 
-const node: ReaderFragment = {
+const node: ConcreteFragment = {
   "kind": "Fragment",
   "name": "MockRelayRendererFixtures_artist",
   "type": "Artist",
@@ -21,6 +21,13 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "name",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": "__id",
+      "name": "id",
       "args": null,
       "storageKey": null
     }

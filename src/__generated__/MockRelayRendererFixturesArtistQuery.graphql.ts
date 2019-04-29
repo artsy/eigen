@@ -23,12 +23,13 @@ query MockRelayRendererFixturesArtistQuery(
 ) {
   artist(id: $id) {
     ...MockRelayRendererFixtures_artist
-    id
+    __id: id
   }
 }
 
 fragment MockRelayRendererFixtures_artist on Artist {
   name
+  __id: id
 }
 */
 
@@ -48,22 +49,34 @@ v1 = [
     "variableName": "id",
     "type": "String!"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": "__id",
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
+  "operationKind": "query",
+  "name": "MockRelayRendererFixturesArtistQuery",
+  "id": null,
+  "text": "query MockRelayRendererFixturesArtistQuery(\n  $id: String!\n) {\n  artist(id: $id) {\n    ...MockRelayRendererFixtures_artist\n    __id: id\n  }\n}\n\nfragment MockRelayRendererFixtures_artist on Artist {\n  name\n  __id: id\n}\n",
+  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "MockRelayRendererFixturesArtistQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artist",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": "Artist",
         "plural": false,
         "selections": [
@@ -71,7 +84,8 @@ return {
             "kind": "FragmentSpread",
             "name": "MockRelayRendererFixtures_artist",
             "args": null
-          }
+          },
+          v2
         ]
       }
     ]
@@ -79,14 +93,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "MockRelayRendererFixturesArtistQuery",
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": v0,
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artist",
         "storageKey": null,
-        "args": (v1/*: any*/),
+        "args": v1,
         "concreteType": "Artist",
         "plural": false,
         "selections": [
@@ -97,23 +111,10 @@ return {
             "args": null,
             "storageKey": null
           },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
-            "storageKey": null
-          }
+          v2
         ]
       }
     ]
-  },
-  "params": {
-    "operationKind": "query",
-    "name": "MockRelayRendererFixturesArtistQuery",
-    "id": "aabded82722f7ed4c4f873a3d0b315be",
-    "text": null,
-    "metadata": {}
   }
 };
 })();
