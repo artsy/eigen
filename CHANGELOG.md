@@ -16,6 +16,8 @@
 
 ### Master
 
+- Removes yellow box warnings from node_modules - ash
+
 ### 1.10.0
 
 ### 1.10.0
