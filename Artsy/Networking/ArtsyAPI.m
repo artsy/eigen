@@ -17,6 +17,8 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <ARAnalytics/ARAnalytics.h>
 
+#import <Emission/AREmission.h>
+#import <Emission/ARGraphQLQueryCache.h>
 
 NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
 {
@@ -183,6 +185,11 @@ NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
 {
     __weak AFHTTPRequestOperation *performOperation = nil;
     performOperation = [self requestOperation:request removeNullsFromResponse:removeNulls success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+        if ([@[@"POST", @"PUT", @"DELETE"] includes:request.HTTPMethod]) {
+            // Clear the GraphQL cache as if we performed a GraphQL mutation.
+            // See equivalent code in Emission: https://github.com/artsy/emission/blob/a33f7a5a0fc4af49022830290b05901c552a3088/src/lib/relay/middlewares/cacheMiddleware.ts#L53-L55
+            [[[AREmission sharedInstance] graphQLQueryCacheModule] clearAll];
+        }
         success(JSON);
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         if (failure) {

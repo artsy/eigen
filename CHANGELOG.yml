@@ -5,7 +5,7 @@ upcoming:
   dev:
     - Updates RN to 0.59 - orta/alloy
   user_facing:
-    - 
+    - Clears Relay cache when a PUT, POST, or DELETE is made to our API - ash
 
 releases:
   - version: 5.0.2
