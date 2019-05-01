@@ -4,9 +4,14 @@
 #import "MutableNSURLResponse.h"
 #import "AFHTTPRequestOperation+JSON.h"
 
+#import <Emission/AREmission.h>
+#import <Emission/ARGraphQLQueryCache.h>
 
 @interface ArtsyAPI (TestsPrivate)
 + (ArtsyAPI *)sharedAPI;
+
+- (AFHTTPRequestOperation *)requestOperation:(NSURLRequest *)request removeNullsFromResponse:(BOOL)removeNulls success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure;
+- (AFHTTPRequestOperation *)performRequest:(NSURLRequest *)request removeNullsFromResponse:(BOOL)removeNulls success:(void (^)(id))success failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error))failure;
 @end
 
 SpecBegin(ArtsyAPIPrivate);
@@ -70,6 +75,64 @@ it(@"removes JSON nulls when specified to", ^{
         failure(@"block unexepectedly invoked");
     }];
 
+    [apiMock verify];
+    [apiMock stopMocking];
+});
+
+sharedExamplesFor(@"API writes", ^(NSDictionary *data) {
+    it(@"clears the Relay cache", ^{
+        NSMutableURLRequest *postRequest = [request mutableCopy];
+        postRequest.HTTPMethod = data[@"method"];
+        id apiMock = [OCMockObject partialMockForObject:ArtsyAPI.sharedAPI];
+        [[[apiMock expect] andReturn:nil] requestOperation:OCMOCK_ANY removeNullsFromResponse:YES success:[OCMArg checkWithBlock:^BOOL(void (^callback)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)) {
+            callback(postRequest, [[NSHTTPURLResponse alloc] init], @{});
+            return YES;
+        }] failure:OCMOCK_ANY];
+
+        id mockCacheModule = [OCMockObject mockForClass:[ARGraphQLQueryCache class]];
+        id emissionMock = [OCMockObject partialMockForObject:[AREmission sharedInstance]];
+        [[[emissionMock stub] andReturn:mockCacheModule] graphQLQueryCacheModule];
+        [[mockCacheModule expect] clearAll];
+
+        [ArtsyAPI.sharedAPI performRequest:request removeNullsFromResponse:YES success:^(id json) {
+            // Nop
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            failure(@"block unexepectedly invoked");
+        }];
+
+        [mockCacheModule verify];
+        [emissionMock stopMocking];
+        [apiMock verify];
+        [apiMock stopMocking];
+    });
+});
+
+itBehavesLike(@"API writes", @{@"method": @"POST"});
+itBehavesLike(@"API writes", @{@"method": @"PUT"});
+itBehavesLike(@"API writes", @{@"method": @"DELETE"});
+
+it(@"does not clears the Relay cache on GET requests", ^{
+    NSMutableURLRequest *postRequest = [request mutableCopy];
+    postRequest.HTTPMethod = @"GET";
+    id apiMock = [OCMockObject partialMockForObject:ArtsyAPI.sharedAPI];
+    [[[apiMock expect] andReturn:nil] requestOperation:OCMOCK_ANY removeNullsFromResponse:YES success:[OCMArg checkWithBlock:^BOOL(void (^callback)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON)) {
+        callback(postRequest, [[NSHTTPURLResponse alloc] init], @{});
+        return YES;
+    }] failure:OCMOCK_ANY];
+
+    id mockCacheModule = [OCMockObject mockForClass:[ARGraphQLQueryCache class]];
+    id emissionMock = [OCMockObject partialMockForObject:[AREmission sharedInstance]];
+    [[[emissionMock stub] andReturn:mockCacheModule] graphQLQueryCacheModule];
+    [[mockCacheModule reject] clearAll];
+
+    [ArtsyAPI.sharedAPI performRequest:request removeNullsFromResponse:YES success:^(id json) {
+        // Nop
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        failure(@"block unexepectedly invoked");
+    }];
+
+    [mockCacheModule verify];
+    [emissionMock stopMocking];
     [apiMock verify];
     [apiMock stopMocking];
 });
