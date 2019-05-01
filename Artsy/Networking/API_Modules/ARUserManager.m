@@ -417,13 +417,19 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 + (void)logout
 {
     [self clearUserData];
-    exit(0);
+    // Clearning the Relay cache is an asynchonous operation, let's give it 0.5s to finish.
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        exit(0);
+    });
 }
 
 + (void)logoutAndSetUseStaging:(BOOL)useStaging
 {
     [self clearUserData:[self sharedManager] useStaging:@(useStaging)];
-    exit(0);
+    // Clearning the Relay cache is an asynchonous operation, let's give it 0.5s to finish.
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        exit(0);
+    });
 }
 
 + (void)clearUserData
