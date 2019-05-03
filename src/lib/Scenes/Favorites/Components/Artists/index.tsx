@@ -1,5 +1,5 @@
 import React from "react"
-import { FlatList } from "react-native"
+import { FlatList, RefreshControl } from "react-native"
 import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import SavedItemRow from "lib/Components/Lists/SavedItemRow"
@@ -17,11 +17,13 @@ interface Props {
 
 interface State {
   fetchingMoreData: boolean
+  refreshingFromPull: boolean
 }
 
 class Artists extends React.Component<Props, State> {
   state = {
     fetchingMoreData: false,
+    refreshingFromPull: false,
   }
 
   loadMore = () => {
@@ -36,6 +38,17 @@ class Artists extends React.Component<Props, State> {
         console.error("Artists/index.tsx", error.message)
       }
       this.setState({ fetchingMoreData: false })
+    })
+  }
+
+  handleRefresh = () => {
+    this.setState({ refreshingFromPull: true })
+    this.props.relay.refetchConnection(PAGE_SIZE, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("Artists/index.tsx #handleRefresh", error.message)
+      }
+      this.setState({ refreshingFromPull: false })
     })
   }
 
@@ -59,6 +72,7 @@ class Artists extends React.Component<Props, State> {
         renderItem={item => <SavedItemRow {...item.item} />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
+        refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
         ListFooterComponent={
           this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
         }
