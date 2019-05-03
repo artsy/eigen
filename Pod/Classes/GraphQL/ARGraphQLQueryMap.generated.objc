@@ -78,6 +78,7 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"MockRelayRendererFixturesArtistQuery": @"1ee30e440ff6548ca9cf3a9e15a76f7c",
       @"MockRelayRendererFixturesBadQuery": @"0023626ca915fceadd7566c4629371d5",
       @"MockRelayRendererFixturesQuery": @"50122dabff9832a9c8b3a7eba796ca36",
+      @"MoreInfoQuery": @"e5350718a5eade0206ef51d7f5c30a63",
       @"MoreInfoTestsQuery": @"ca9474d73a72f5c2edd64e822e99518f",
       @"QueryRenderersArtistQuery": @"30a2ca7f4089ebfff083c92848e4bc8c",
       @"QueryRenderersBidFlowQuery": @"79c707a33aa8c1d75ad950162468be2b",
@@ -94,10 +95,7 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"QueryRenderersMyProfileQuery": @"85b61ef601f4dbaf3081af4877d57680",
       @"QueryRenderersRegistrationFlowQuery": @"eae7174e3cddc451acab97c6294292ce",
       @"QueryRenderersSaleQuery": @"1a0344a5a8a36501af77d4ae2b37ebb0",
-      @"QueryRenderersShowArtistsQuery": @"f289cd872dbc83c8ad7a0276a9b6008b",
-      @"QueryRenderersShowArtworksQuery": @"87b37fe5ac84471b688ab4de332c7c3e",
-      @"QueryRenderersShowMoreInfoQuery": @"57cbcaaaaae5c25cad7ff0a63f57470d",
-      @"QueryRenderersShowQuery": @"3c666fff6d0da7d83f8912c45847be2e",
+      @"QueryRenderersShowQuery": @"f76af1876fa7c07bdace57fd5ad658eb",
       @"QueryRenderersWorksForYouQuery": @"305ff44a8eb537927fec12d82a4b2284",
       @"RegistrationCreateBidderMutation": @"5adb7100b533a36426ccc810956fd44a",
       @"RegistrationCreateCreditCardMutation": @"c050c181a19740d6db7ff99b876e0dad",
@@ -111,15 +109,17 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"SelectMaxBidRefetchQuery": @"add71fb5f4b666877f2e0b1415b2fb23",
       @"SendConversationMessageMutation": @"fafb72e0ce2a42a7b7eb5db013f1f6a5",
       @"ShowArtistsPreviewTestsQuery": @"d9cca615ce67b2598f4ec00bd0044d80",
+      @"ShowArtistsQuery": @"323650445314a3f73847f8372e038cc1",
       @"ShowArtistsTestsQuery": @"05f3ff5a25b31f8c9149f123f9f68b7f",
       @"ShowArtworksPreviewTestsQuery": @"8b70d62c01175528f049a7631a30707f",
+      @"ShowArtworksQuery": @"6d51204e2977fcbf5190f1e6444a3f13",
       @"ShowArtworksRefetchQuery": @"074d4102f712d2a5185be12cd45671ff",
       @"ShowArtworksTestsQuery": @"bbdc55f7188fa0c978b8188429f5798b",
       @"ShowEventSectionTestsQuery": @"f5649cf493d89ce52a968cb3d78033a9",
       @"ShowHeaderFollowShowMutation": @"d44aa468326d50ffcd43207d04c95ab2",
       @"ShowItemRowMutation": @"41099fe5256606887fd639535958740c",
-      @"ShowQuery": @"34b1d4b3dbfc6523d03cbb41fe417b12",
-      @"ShowTestsQuery": @"4534ea8e115e15baa7f77f2a652902a6",
+      @"ShowQuery": @"0d40b6b0d30058729ccdd15d9d7ca29c",
+      @"ShowTestsQuery": @"0f797bbeb45ba85a73bd75cdf3283311",
       @"ShowsQuery": @"edb302bf331c6fc8a0c7ecaf3c107bcb",
       @"UpdateConversationMutation": @"376ca21dfba9abce2459940af585be24",
       @"WorksForYouQuery": @"9764d46fed3f9857f19bdb5f18d01d83",
@@ -127,7 +127,7 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"createMockNetworkLayerTestsQuery": @"5877ac7a9f471c577180881d0cd3ab4b",
       @"indexTestsFairBothPreviewQuery": @"0487d07f7b4077a135e15d952a12a86c",
       @"indexTestsFairHeaderQuery": @"691fd17943c05f794cd207a7332b4338",
-      @"indexTestsQuery": @"e5c878c2ad186621b8ed4f9737f81519"
+      @"indexTestsQuery": @"feffaec1cbbfd0e41a6cd175825315ca"
     };
   });
   return queryMap[name];
