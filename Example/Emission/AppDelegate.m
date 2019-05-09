@@ -300,7 +300,7 @@ randomBOOL(void)
       params[item.name] = item.value;
     }
     viewController = [[ARGeneComponentViewController alloc] initWithGeneID:geneID refineSettings:params];
-    
+
   } else if ([route hasPrefix:@"/conversation/"] || [route hasPrefix:@"conversation/"]) {
     NSString *conversationID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARConversationComponentViewController alloc] initWithConversationID:conversationID];
