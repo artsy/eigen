@@ -18,6 +18,7 @@
 #import <Emission/ARGraphQLQueryCache.h>
 
 #import <Emission/ARArtistComponentViewController.h>
+#import <Emission/ARArtworkComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
@@ -112,6 +113,7 @@
   [sectionData addCellData:self.jumpToShow];
   [sectionData addCellData:self.jumpToFair];
   [sectionData addCellData:self.jumpToMap];
+  [sectionData addCellData:self.jumpToArtwork];
   [sectionData addCellData:self.jumpToArtist];
   [sectionData addCellData:self.jumpToRandomArtist];
   [sectionData addCellData:self.jumpToHomepage];
@@ -226,6 +228,14 @@
   return [self tappableCellDataWithTitle:@"Open Emission beta Docs" selection: ^{
     NSURL *url = [NSURL URLWithString:@"https://github.com/artsy/emission/blob/master/docs/using_the_beta.md"];
     id viewController = [[InternalWebViewController alloc] initWithURL:url];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+- (ARCellData *)jumpToArtwork
+{
+  return [self tappableCellDataWithTitle:@"Artwork" selection:^{
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"pablo-picasso-le-reve-the-dream"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }

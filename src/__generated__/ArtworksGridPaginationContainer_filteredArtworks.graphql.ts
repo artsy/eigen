@@ -1,7 +1,7 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
-import { Artwork_artwork$ref } from "./Artwork_artwork.graphql";
+import { ReaderFragment } from "relay-runtime";
+import { ArtworkGridItem_artwork$ref } from "./ArtworkGridItem_artwork.graphql";
 declare const _ArtworksGridPaginationContainer_filteredArtworks$ref: unique symbol;
 export type ArtworksGridPaginationContainer_filteredArtworks$ref = typeof _ArtworksGridPaginationContainer_filteredArtworks$ref;
 export type ArtworksGridPaginationContainer_filteredArtworks = {
@@ -19,7 +19,7 @@ export type ArtworksGridPaginationContainer_filteredArtworks = {
                 readonly image: ({
                     readonly aspect_ratio: number;
                 }) | null;
-                readonly " $fragmentRefs": Artwork_artwork$ref;
+                readonly " $fragmentRefs": ArtworkGridItem_artwork$ref;
             }) | null;
         }) | null> | null;
     }) | null;
@@ -28,17 +28,10 @@ export type ArtworksGridPaginationContainer_filteredArtworks = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": "__id",
   "name": "id",
   "args": null,
   "storageKey": null
@@ -74,7 +67,7 @@ return {
     }
   ],
   "selections": [
-    v0,
+    (v0/*: any*/),
     {
       "kind": "LinkedField",
       "alias": "artworks",
@@ -141,7 +134,7 @@ return {
                   "args": null,
                   "storageKey": null
                 },
-                v0,
+                (v0/*: any*/),
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -162,10 +155,9 @@ return {
                 },
                 {
                   "kind": "FragmentSpread",
-                  "name": "Artwork_artwork",
+                  "name": "ArtworkGridItem_artwork",
                   "args": null
                 },
-                v1,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -185,10 +177,9 @@ return {
           ]
         }
       ]
-    },
-    v1
+    }
   ]
 };
 })();
-(node as any).hash = '7b9aa4682365dfbbfc0b1acbde91569c';
+(node as any).hash = '9cd3d2abd2a116da00147685378bacb7';
 export default node;

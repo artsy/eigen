@@ -1,7 +1,7 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
-import { Artwork_artwork$ref } from "./Artwork_artwork.graphql";
+import { ReaderFragment } from "relay-runtime";
+import { ArtworkGridItem_artwork$ref } from "./ArtworkGridItem_artwork.graphql";
 declare const _GenericGrid_artworks$ref: unique symbol;
 export type GenericGrid_artworks$ref = typeof _GenericGrid_artworks$ref;
 export type GenericGrid_artworks = ReadonlyArray<{
@@ -10,13 +10,13 @@ export type GenericGrid_artworks = ReadonlyArray<{
     readonly image: ({
         readonly aspect_ratio: number;
     }) | null;
-    readonly " $fragmentRefs": Artwork_artwork$ref;
+    readonly " $fragmentRefs": ArtworkGridItem_artwork$ref;
     readonly " $refType": GenericGrid_artworks$ref;
 }>;
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "GenericGrid_artworks",
   "type": "Artwork",
@@ -59,17 +59,10 @@ const node: ConcreteFragment = {
     },
     {
       "kind": "FragmentSpread",
-      "name": "Artwork_artwork",
+      "name": "ArtworkGridItem_artwork",
       "args": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": "__id",
-      "name": "id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };
-(node as any).hash = '8777584b77484357ef787ad709532580';
+(node as any).hash = 'a46b6eab545bd57427676174e7e3b520';
 export default node;

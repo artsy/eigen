@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ShowHeader_show$ref: unique symbol;
 export type ShowHeader_show$ref = typeof _ShowHeader_show$ref;
 export type ShowHeader_show = {
@@ -46,7 +46,7 @@ export type ShowHeader_show = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -70,24 +70,16 @@ v2 = {
 },
 v3 = {
   "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v5 = [
-  v1,
-  v4,
-  v0,
-  v2,
-  v3
+v4 = [
+  (v1/*: any*/),
+  (v3/*: any*/),
+  (v0/*: any*/),
+  (v2/*: any*/)
 ];
 return {
   "kind": "Fragment",
@@ -103,7 +95,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    v0,
+    (v0/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -111,7 +103,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    v1,
+    (v1/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -133,7 +125,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    v2,
+    (v2/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -157,14 +149,13 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v3,
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v1,
-            v0,
-            v4
+            (v1/*: any*/),
+            (v0/*: any*/),
+            (v3/*: any*/)
           ]
         }
       ]
@@ -236,7 +227,7 @@ return {
                   "args": null,
                   "concreteType": "Artist",
                   "plural": false,
-                  "selections": v5
+                  "selections": (v4/*: any*/)
                 }
               ]
             }
@@ -252,9 +243,8 @@ return {
       "args": null,
       "concreteType": "Artist",
       "plural": true,
-      "selections": v5
-    },
-    v3
+      "selections": (v4/*: any*/)
+    }
   ]
 };
 })();

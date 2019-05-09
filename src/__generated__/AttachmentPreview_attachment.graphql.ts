@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _AttachmentPreview_attachment$ref: unique symbol;
 export type AttachmentPreview_attachment$ref = typeof _AttachmentPreview_attachment$ref;
 export type AttachmentPreview_attachment = {
@@ -10,7 +10,7 @@ export type AttachmentPreview_attachment = {
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "AttachmentPreview_attachment",
   "type": "Attachment",

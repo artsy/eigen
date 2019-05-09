@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _LocationMap_location$ref: unique symbol;
 export type LocationMap_location$ref = typeof _LocationMap_location$ref;
 export type LocationMap_location = {
@@ -32,7 +32,7 @@ export type LocationMap_location = {
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "LocationMap_location",
   "type": "Location",
@@ -42,14 +42,14 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "postal_code",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -77,7 +77,7 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "postal_code",
       "args": null,
       "storageKey": null
     },
@@ -199,13 +199,6 @@ const node: ConcreteFragment = {
           ]
         }
       ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": "__id",
-      "name": "id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };

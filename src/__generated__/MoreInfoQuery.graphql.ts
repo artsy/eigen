@@ -23,7 +23,7 @@ query MoreInfoQuery(
 ) {
   show(id: $showID) {
     ...MoreInfo_show
-    __id: id
+    id
   }
 }
 
@@ -40,17 +40,16 @@ fragment MoreInfo_show on Show {
       type
     }
     ... on Node {
-      __id: id
+      id
     }
     ... on ExternalPartner {
-      __id: id
+      id
     }
   }
   press_release
   events {
     ...ShowEventSection_event
   }
-  __id: id
 }
 
 fragment ShowEventSection_event on PartnerShowEventType {
@@ -80,31 +79,26 @@ v1 = [
 ],
 v2 = {
   "kind": "ScalarField",
-  "alias": "__id",
+  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "MoreInfoQuery",
-  "id": null,
-  "text": "query MoreInfoQuery(\n  $showID: String!\n) {\n  show(id: $showID) {\n    ...MoreInfo_show\n    __id: id\n  }\n}\n\nfragment MoreInfo_show on Show {\n  internalID\n  gravityID\n  exhibition_period\n  pressReleaseUrl\n  openingReceptionText\n  partner {\n    __typename\n    ... on Partner {\n      website\n      type\n    }\n    ... on Node {\n      __id: id\n    }\n    ... on ExternalPartner {\n      __id: id\n    }\n  }\n  press_release\n  events {\n    ...ShowEventSection_event\n  }\n  __id: id\n}\n\nfragment ShowEventSection_event on PartnerShowEventType {\n  event_type\n  description\n  start_at\n  end_at\n}\n",
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "MoreInfoQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -112,8 +106,7 @@ return {
             "kind": "FragmentSpread",
             "name": "MoreInfo_show",
             "args": null
-          },
-          v2
+          }
         ]
       }
     ]
@@ -121,14 +114,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "MoreInfoQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "show",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -183,7 +176,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v2,
+              (v2/*: any*/),
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
@@ -252,10 +245,17 @@ return {
               }
             ]
           },
-          v2
+          (v2/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "MoreInfoQuery",
+    "id": "845de9834db6c6e92fc0337a28679c20",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

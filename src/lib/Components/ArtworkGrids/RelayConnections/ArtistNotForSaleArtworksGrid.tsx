@@ -35,7 +35,7 @@ const ArtistNotForSaleArtworksGrid = createPaginationContainer<
               image {
                 aspect_ratio
               }
-              ...Artwork_artwork
+              ...ArtworkGridItem_artwork
             }
           }
         }

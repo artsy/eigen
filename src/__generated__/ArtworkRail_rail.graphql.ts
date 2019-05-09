@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtworkRailHeader_rail$ref } from "./ArtworkRailHeader_rail.graphql";
 import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _ArtworkRail_rail$ref: unique symbol;
@@ -27,25 +27,17 @@ export type ArtworkRail_rail = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "href",
-  "args": null,
-  "storageKey": null
-},
-v2 = [
-  v1
+const node: ReaderFragment = (function(){
+var v0 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "href",
+    "args": null,
+    "storageKey": null
+  }
 ],
-v3 = [
+v1 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -54,10 +46,7 @@ v3 = [
     "args": null,
     "concreteType": "Artist",
     "plural": false,
-    "selections": [
-      v1,
-      v0
-    ]
+    "selections": (v0/*: any*/)
   }
 ];
 return {
@@ -127,35 +116,33 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v0,
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextSale",
-          "selections": v2
+          "selections": (v0/*: any*/)
         },
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextGene",
-          "selections": v2
+          "selections": (v0/*: any*/)
         },
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextFair",
-          "selections": v2
+          "selections": (v0/*: any*/)
         },
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextRelatedArtist",
-          "selections": v3
+          "selections": (v1/*: any*/)
         },
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextFollowedArtist",
-          "selections": v3
+          "selections": (v1/*: any*/)
         }
       ]
     },
-    v0,
     {
       "kind": "Condition",
       "passingValue": true,
@@ -174,8 +161,7 @@ return {
               "kind": "FragmentSpread",
               "name": "GenericGrid_artworks",
               "args": null
-            },
-            v0
+            }
           ]
         }
       ]

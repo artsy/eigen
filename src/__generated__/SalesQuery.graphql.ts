@@ -27,7 +27,7 @@ fragment Sales_viewer on Viewer {
     ...SaleListItem_sale
     href
     live_start_at
-    __id: id
+    id
   }
   ...LotsByFollowedArtists_viewer
 }
@@ -48,7 +48,6 @@ fragment SaleListItem_sale on Sale {
     url(version: "large")
     aspect_ratio
   }
-  __id: id
 }
 
 fragment LotsByFollowedArtists_viewer on Viewer {
@@ -62,9 +61,9 @@ fragment LotsByFollowedArtists_viewer on Viewer {
       node {
         artwork {
           ...GenericGrid_artworks
-          __id: id
+          id
         }
-        __id: id
+        id
         __typename
       }
     }
@@ -77,11 +76,10 @@ fragment GenericGrid_artworks on Artwork {
   image {
     aspect_ratio
   }
-  ...Artwork_artwork
-  __id: id
+  ...ArtworkGridItem_artwork
 }
 
-fragment Artwork_artwork on Artwork {
+fragment ArtworkGridItem_artwork on Artwork {
   title
   date
   sale_message
@@ -96,7 +94,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
-    __id: id
+    id
   }
   sale_artwork {
     opening_bid {
@@ -108,9 +106,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
-      __id: id
+      id
     }
-    __id: id
+    id
   }
   image {
     url(version: "large")
@@ -118,14 +116,13 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
-    __id: id
+    id
   }
   partner {
     name
-    __id: id
+    id
   }
   href
-  __id: id
 }
 */
 
@@ -201,19 +198,40 @@ v8 = {
 },
 v9 = {
   "kind": "ScalarField",
-  "alias": "__id",
+  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v10 = {
+v10 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 10,
+    "type": "Int"
+  },
+  {
+    "kind": "Literal",
+    "name": "include_artworks_by_followed_artists",
+    "value": true,
+    "type": "Boolean"
+  },
+  (v0/*: any*/),
+  {
+    "kind": "Literal",
+    "name": "live_sale",
+    "value": true,
+    "type": "Boolean"
+  }
+],
+v11 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v11 = [
+v12 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -222,17 +240,12 @@ v11 = [
     "storageKey": null
   }
 ],
-v12 = [
-  v5,
-  v9
+v13 = [
+  (v5/*: any*/),
+  (v9/*: any*/)
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "SalesQuery",
-  "id": null,
-  "text": "query SalesQuery {\n  viewer {\n    ...Sales_viewer\n  }\n}\n\nfragment Sales_viewer on Viewer {\n  sales(live: true, is_auction: true, size: 100, sort: TIMELY_AT_NAME_ASC) {\n    ...SaleListItem_sale\n    href\n    live_start_at\n    __id: id\n  }\n  ...LotsByFollowedArtists_viewer\n}\n\nfragment SaleListItem_sale on Sale {\n  gravityID\n  name\n  href\n  is_open\n  is_live_open\n  live_url_if_open\n  start_at\n  end_at\n  registration_ends_at\n  live_start_at\n  display_timely_at\n  cover_image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  __id: id\n}\n\nfragment LotsByFollowedArtists_viewer on Viewer {\n  sale_artworks: sale_artworks(first: 10, live_sale: true, is_auction: true, include_artworks_by_followed_artists: true) {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      cursor\n      node {\n        artwork {\n          ...GenericGrid_artworks\n          __id: id\n        }\n        __id: id\n        __typename\n      }\n    }\n  }\n}\n\nfragment GenericGrid_artworks on Artwork {\n  id\n  gravityID\n  image {\n    aspect_ratio\n  }\n  ...Artwork_artwork\n  __id: id\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  date\n  sale_message\n  is_in_auction\n  is_biddable\n  is_acquireable\n  is_offerable\n  gravityID\n  sale {\n    is_auction\n    is_live_open\n    is_open\n    is_closed\n    display_timely_at\n    __id: id\n  }\n  sale_artwork {\n    opening_bid {\n      display\n    }\n    current_bid {\n      display\n    }\n    bidder_positions_count\n    sale {\n      is_closed\n      __id: id\n    }\n    __id: id\n  }\n  image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  artists(shallow: true) {\n    name\n    __id: id\n  }\n  partner {\n    name\n    __id: id\n  }\n  href\n  __id: id\n}\n",
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "SalesQuery",
@@ -278,7 +291,7 @@ return {
             "name": "sales",
             "storageKey": "sales(is_auction:true,live:true,size:100,sort:\"TIMELY_AT_NAME_ASC\")",
             "args": [
-              v0,
+              (v0/*: any*/),
               {
                 "kind": "Literal",
                 "name": "live",
@@ -308,10 +321,10 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v1,
-              v2,
-              v3,
-              v4,
+              (v1/*: any*/),
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -319,7 +332,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v5,
+              (v5/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -341,7 +354,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v6,
+              (v6/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -351,11 +364,11 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  v7,
-                  v8
+                  (v7/*: any*/),
+                  (v8/*: any*/)
                 ]
               },
-              v9
+              (v9/*: any*/)
             ]
           },
           {
@@ -363,27 +376,7 @@ return {
             "alias": "sale_artworks",
             "name": "sale_artworks",
             "storageKey": "sale_artworks(first:10,include_artworks_by_followed_artists:true,is_auction:true,live_sale:true)",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 10,
-                "type": "Int"
-              },
-              {
-                "kind": "Literal",
-                "name": "include_artworks_by_followed_artists",
-                "value": true,
-                "type": "Boolean"
-              },
-              v0,
-              {
-                "kind": "Literal",
-                "name": "live_sale",
-                "value": true,
-                "type": "Boolean"
-              }
-            ],
+            "args": (v10/*: any*/),
             "concreteType": "SaleArtworksConnection",
             "plural": false,
             "selections": [
@@ -449,17 +442,11 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "is_acquireable",
+                            "name": "is_biddable",
                             "args": null,
                             "storageKey": null
                           },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "id",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          (v9/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -469,8 +456,8 @@ return {
                             "concreteType": "Image",
                             "plural": false,
                             "selections": [
-                              v8,
-                              v7
+                              (v8/*: any*/),
+                              (v7/*: any*/)
                             ]
                           },
                           {
@@ -501,14 +488,14 @@ return {
                             "args": null,
                             "storageKey": null
                           },
+                          (v1/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "is_biddable",
+                            "name": "is_acquireable",
                             "args": null,
                             "storageKey": null
                           },
-                          v1,
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -532,11 +519,11 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              v4,
-                              v3,
-                              v10,
-                              v6,
-                              v9
+                              (v4/*: any*/),
+                              (v3/*: any*/),
+                              (v11/*: any*/),
+                              (v6/*: any*/),
+                              (v9/*: any*/)
                             ]
                           },
                           {
@@ -556,7 +543,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkOpeningBid",
                                 "plural": false,
-                                "selections": v11
+                                "selections": (v12/*: any*/)
                               },
                               {
                                 "kind": "LinkedField",
@@ -566,7 +553,7 @@ return {
                                 "args": null,
                                 "concreteType": "SaleArtworkCurrentBid",
                                 "plural": false,
-                                "selections": v11
+                                "selections": (v12/*: any*/)
                               },
                               {
                                 "kind": "ScalarField",
@@ -584,11 +571,11 @@ return {
                                 "concreteType": "Sale",
                                 "plural": false,
                                 "selections": [
-                                  v10,
-                                  v9
+                                  (v11/*: any*/),
+                                  (v9/*: any*/)
                                 ]
                               },
-                              v9
+                              (v9/*: any*/)
                             ]
                           },
                           {
@@ -606,7 +593,7 @@ return {
                             ],
                             "concreteType": "Artist",
                             "plural": true,
-                            "selections": v12
+                            "selections": (v13/*: any*/)
                           },
                           {
                             "kind": "LinkedField",
@@ -616,13 +603,12 @@ return {
                             "args": null,
                             "concreteType": "Partner",
                             "plural": false,
-                            "selections": v12
+                            "selections": (v13/*: any*/)
                           },
-                          v2,
-                          v9
+                          (v2/*: any*/)
                         ]
                       },
-                      v9,
+                      (v9/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -640,27 +626,7 @@ return {
             "kind": "LinkedHandle",
             "alias": "sale_artworks",
             "name": "sale_artworks",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 10,
-                "type": "Int"
-              },
-              {
-                "kind": "Literal",
-                "name": "include_artworks_by_followed_artists",
-                "value": true,
-                "type": "Boolean"
-              },
-              v0,
-              {
-                "kind": "Literal",
-                "name": "live_sale",
-                "value": true,
-                "type": "Boolean"
-              }
-            ],
+            "args": (v10/*: any*/),
             "handle": "connection",
             "key": "LotsByFollowedArtists_sale_artworks",
             "filters": [
@@ -681,6 +647,13 @@ return {
         "filters": null
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "SalesQuery",
+    "id": "9395045e8ee2d96df4d7ea5907766374",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

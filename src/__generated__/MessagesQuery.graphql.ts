@@ -30,9 +30,9 @@ query MessagesQuery(
   me {
     conversation(id: $conversationID) {
       ...Messages_conversation_2QE1um
-      __id: id
+      id
     }
-    __id: id
+    id
   }
 }
 
@@ -67,7 +67,6 @@ fragment Messages_conversation_2QE1um on Conversation {
           internalID
         }
         ...Message_message
-        __id: id
         __typename
       }
     }
@@ -80,7 +79,7 @@ fragment Messages_conversation_2QE1um on Conversation {
         ...ArtworkPreview_artwork
       }
       ... on Node {
-        __id: id
+        id
       }
     }
     show: item {
@@ -90,11 +89,10 @@ fragment Messages_conversation_2QE1um on Conversation {
         ...ShowPreview_show
       }
       ... on Node {
-        __id: id
+        id
       }
     }
   }
-  __id: id
 }
 
 fragment Message_message on Message {
@@ -108,7 +106,7 @@ fragment Message_message on Message {
   invoice {
     payment_url
     ...InvoicePreview_invoice
-    __id: id
+    id
   }
   attachments {
     internalID
@@ -118,7 +116,6 @@ fragment Message_message on Message {
     ...ImagePreview_attachment
     ...PDFPreview_attachment
   }
-  __id: id
 }
 
 fragment ArtworkPreview_artwork on Artwork {
@@ -130,7 +127,6 @@ fragment ArtworkPreview_artwork on Artwork {
   image {
     url
   }
-  __id: id
 }
 
 fragment ShowPreview_show on Show {
@@ -142,7 +138,7 @@ fragment ShowPreview_show on Show {
   }
   fair {
     name
-    __id: id
+    id
   }
   partner {
     __typename
@@ -150,13 +146,12 @@ fragment ShowPreview_show on Show {
       name
     }
     ... on Node {
-      __id: id
+      id
     }
     ... on ExternalPartner {
-      __id: id
+      id
     }
   }
-  __id: id
 }
 
 fragment InvoicePreview_invoice on Invoice {
@@ -164,7 +159,6 @@ fragment InvoicePreview_invoice on Invoice {
   state
   total
   lewitt_invoice_id
-  __id: id
 }
 
 fragment ImagePreview_attachment on Attachment {
@@ -213,7 +207,7 @@ v1 = [
 ],
 v2 = {
   "kind": "ScalarField",
-  "alias": "__id",
+  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
@@ -221,38 +215,51 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "email",
   "args": null,
   "storageKey": null
 },
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "email",
-  "args": null,
-  "storageKey": null
-},
-v7 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "initials",
   "args": null,
   "storageKey": null
 },
+v7 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "after",
+    "type": "String"
+  },
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "count",
+    "type": "Int"
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "DESC",
+    "type": "sort"
+  }
+],
 v8 = {
   "kind": "ScalarField",
   "alias": null,
@@ -285,17 +292,12 @@ v11 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "MessagesQuery",
-  "id": null,
-  "text": "query MessagesQuery(\n  $conversationID: String!\n  $count: Int!\n  $after: String\n) {\n  me {\n    conversation(id: $conversationID) {\n      ...Messages_conversation_2QE1um\n      __id: id\n    }\n    __id: id\n  }\n}\n\nfragment Messages_conversation_2QE1um on Conversation {\n  id\n  internalID\n  from {\n    name\n    email\n    initials\n  }\n  to {\n    name\n    initials\n  }\n  initial_message\n  messages(first: $count, after: $after, sort: DESC) {\n    pageInfo {\n      startCursor\n      endCursor\n      hasPreviousPage\n      hasNextPage\n    }\n    edges {\n      cursor\n      node {\n        id\n        impulse_id\n        is_from_user\n        body\n        attachments {\n          internalID\n        }\n        ...Message_message\n        __id: id\n        __typename\n      }\n    }\n  }\n  items {\n    artwork: item {\n      __typename\n      ... on Artwork {\n        href\n        ...ArtworkPreview_artwork\n      }\n      ... on Node {\n        __id: id\n      }\n    }\n    show: item {\n      __typename\n      ... on Show {\n        href\n        ...ShowPreview_show\n      }\n      ... on Node {\n        __id: id\n      }\n    }\n  }\n  __id: id\n}\n\nfragment Message_message on Message {\n  body\n  created_at\n  is_from_user\n  from {\n    name\n    email\n  }\n  invoice {\n    payment_url\n    ...InvoicePreview_invoice\n    __id: id\n  }\n  attachments {\n    internalID\n    content_type\n    download_url\n    file_name\n    ...ImagePreview_attachment\n    ...PDFPreview_attachment\n  }\n  __id: id\n}\n\nfragment ArtworkPreview_artwork on Artwork {\n  gravityID\n  internalID\n  title\n  artist_names\n  date\n  image {\n    url\n  }\n  __id: id\n}\n\nfragment ShowPreview_show on Show {\n  gravityID\n  internalID\n  name\n  cover_image {\n    url\n  }\n  fair {\n    name\n    __id: id\n  }\n  partner {\n    __typename\n    ... on Partner {\n      name\n    }\n    ... on Node {\n      __id: id\n    }\n    ... on ExternalPartner {\n      __id: id\n    }\n  }\n  __id: id\n}\n\nfragment InvoicePreview_invoice on Invoice {\n  payment_url\n  state\n  total\n  lewitt_invoice_id\n  __id: id\n}\n\nfragment ImagePreview_attachment on Attachment {\n  download_url\n  ...AttachmentPreview_attachment\n}\n\nfragment PDFPreview_attachment on Attachment {\n  file_name\n  ...AttachmentPreview_attachment\n}\n\nfragment AttachmentPreview_attachment on Attachment {\n  internalID\n}\n",
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "MessagesQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -311,7 +313,7 @@ return {
             "alias": null,
             "name": "conversation",
             "storageKey": null,
-            "args": v1,
+            "args": (v1/*: any*/),
             "concreteType": "Conversation",
             "plural": false,
             "selections": [
@@ -332,11 +334,9 @@ return {
                     "type": null
                   }
                 ]
-              },
-              v2
+              }
             ]
-          },
-          v2
+          }
         ]
       }
     ]
@@ -344,7 +344,7 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "MessagesQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -360,12 +360,12 @@ return {
             "alias": null,
             "name": "conversation",
             "storageKey": null,
-            "args": v1,
+            "args": (v1/*: any*/),
             "concreteType": "Conversation",
             "plural": false,
             "selections": [
-              v3,
-              v4,
+              (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -375,9 +375,9 @@ return {
                 "concreteType": "ConversationInitiator",
                 "plural": false,
                 "selections": [
-                  v5,
-                  v6,
-                  v7
+                  (v4/*: any*/),
+                  (v5/*: any*/),
+                  (v6/*: any*/)
                 ]
               },
               {
@@ -389,8 +389,8 @@ return {
                 "concreteType": "ConversationResponder",
                 "plural": false,
                 "selections": [
-                  v5,
-                  v7
+                  (v4/*: any*/),
+                  (v6/*: any*/)
                 ]
               },
               {
@@ -405,26 +405,7 @@ return {
                 "alias": null,
                 "name": "messages",
                 "storageKey": null,
-                "args": [
-                  {
-                    "kind": "Variable",
-                    "name": "after",
-                    "variableName": "after",
-                    "type": "String"
-                  },
-                  {
-                    "kind": "Variable",
-                    "name": "first",
-                    "variableName": "count",
-                    "type": "Int"
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "sort",
-                    "value": "DESC",
-                    "type": "sort"
-                  }
-                ],
+                "args": (v7/*: any*/),
                 "concreteType": "MessageConnection",
                 "plural": false,
                 "selections": [
@@ -492,7 +473,7 @@ return {
                         "concreteType": "Message",
                         "plural": false,
                         "selections": [
-                          v3,
+                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -523,7 +504,7 @@ return {
                             "concreteType": "Attachment",
                             "plural": true,
                             "selections": [
-                              v4,
+                              (v3/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -563,8 +544,8 @@ return {
                             "concreteType": "MessageInitiator",
                             "plural": false,
                             "selections": [
-                              v5,
-                              v6
+                              (v4/*: any*/),
+                              (v5/*: any*/)
                             ]
                           },
                           {
@@ -604,11 +585,10 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              v2
+                              (v2/*: any*/)
                             ]
                           },
-                          v2,
-                          v8
+                          (v8/*: any*/)
                         ]
                       }
                     ]
@@ -619,26 +599,7 @@ return {
                 "kind": "LinkedHandle",
                 "alias": null,
                 "name": "messages",
-                "args": [
-                  {
-                    "kind": "Variable",
-                    "name": "after",
-                    "variableName": "after",
-                    "type": "String"
-                  },
-                  {
-                    "kind": "Variable",
-                    "name": "first",
-                    "variableName": "count",
-                    "type": "Int"
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "sort",
-                    "value": "DESC",
-                    "type": "sort"
-                  }
-                ],
+                "args": (v7/*: any*/),
                 "handle": "connection",
                 "key": "Messages_messages",
                 "filters": []
@@ -661,15 +622,15 @@ return {
                     "concreteType": null,
                     "plural": false,
                     "selections": [
-                      v8,
-                      v2,
+                      (v8/*: any*/),
+                      (v2/*: any*/),
                       {
                         "kind": "InlineFragment",
                         "type": "Artwork",
                         "selections": [
-                          v9,
-                          v10,
-                          v4,
+                          (v9/*: any*/),
+                          (v10/*: any*/),
+                          (v3/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -699,7 +660,7 @@ return {
                             "args": null,
                             "concreteType": "Image",
                             "plural": false,
-                            "selections": v11
+                            "selections": (v11/*: any*/)
                           }
                         ]
                       }
@@ -714,16 +675,16 @@ return {
                     "concreteType": null,
                     "plural": false,
                     "selections": [
-                      v8,
-                      v2,
+                      (v8/*: any*/),
+                      (v2/*: any*/),
                       {
                         "kind": "InlineFragment",
                         "type": "Show",
                         "selections": [
-                          v9,
-                          v10,
-                          v4,
-                          v5,
+                          (v9/*: any*/),
+                          (v10/*: any*/),
+                          (v3/*: any*/),
+                          (v4/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -732,7 +693,7 @@ return {
                             "args": null,
                             "concreteType": "Image",
                             "plural": false,
-                            "selections": v11
+                            "selections": (v11/*: any*/)
                           },
                           {
                             "kind": "LinkedField",
@@ -743,8 +704,8 @@ return {
                             "concreteType": "Fair",
                             "plural": false,
                             "selections": [
-                              v5,
-                              v2
+                              (v4/*: any*/),
+                              (v2/*: any*/)
                             ]
                           },
                           {
@@ -756,13 +717,13 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
-                              v8,
-                              v2,
+                              (v8/*: any*/),
+                              (v2/*: any*/),
                               {
                                 "kind": "InlineFragment",
                                 "type": "Partner",
                                 "selections": [
-                                  v5
+                                  (v4/*: any*/)
                                 ]
                               }
                             ]
@@ -772,14 +733,20 @@ return {
                     ]
                   }
                 ]
-              },
-              v2
+              }
             ]
           },
-          v2
+          (v2/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "MessagesQuery",
+    "id": "8a4e8692f76af568a4c8b73c6306c1c0",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

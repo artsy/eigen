@@ -19,7 +19,7 @@ export type FairArtistsTestsQuery = {
 query FairArtistsTestsQuery {
   fair(id: "sofa-chicago-2018") {
     ...FairArtists_fair
-    __id: id
+    id
   }
 }
 
@@ -40,12 +40,11 @@ fragment FairArtists_fair on Fair {
         href
         internalID
         gravityID
-        __id: id
+        id
         __typename
       }
     }
   }
-  __id: id
 }
 
 fragment ArtistListItem_artist on Artist {
@@ -60,7 +59,6 @@ fragment ArtistListItem_artist on Artist {
   image {
     url
   }
-  __id: id
 }
 */
 
@@ -75,32 +73,35 @@ var v0 = [
 ],
 v1 = {
   "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
+  "alias": null,
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
-v3 = {
+v3 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 10,
+    "type": "Int"
+  }
+],
+v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FairArtistsTestsQuery",
-  "id": null,
-  "text": "query FairArtistsTestsQuery {\n  fair(id: \"sofa-chicago-2018\") {\n    ...FairArtists_fair\n    __id: id\n  }\n}\n\nfragment FairArtists_fair on Fair {\n  gravityID\n  internalID\n  artists(first: 10) {\n    pageInfo {\n      hasNextPage\n      startCursor\n      endCursor\n    }\n    edges {\n      cursor\n      node {\n        ...ArtistListItem_artist\n        sortable_id\n        href\n        internalID\n        gravityID\n        __id: id\n        __typename\n      }\n    }\n  }\n  __id: id\n}\n\nfragment ArtistListItem_artist on Artist {\n  id\n  internalID\n  gravityID\n  name\n  is_followed\n  nationality\n  birthday\n  deathday\n  image {\n    url\n  }\n  __id: id\n}\n",
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FairArtistsTestsQuery",
@@ -113,7 +114,7 @@ return {
         "alias": null,
         "name": "fair",
         "storageKey": "fair(id:\"sofa-chicago-2018\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Fair",
         "plural": false,
         "selections": [
@@ -121,8 +122,7 @@ return {
             "kind": "FragmentSpread",
             "name": "FairArtists_fair",
             "args": null
-          },
-          v1
+          }
         ]
       }
     ]
@@ -137,25 +137,18 @@ return {
         "alias": null,
         "name": "fair",
         "storageKey": "fair(id:\"sofa-chicago-2018\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Fair",
         "plural": false,
         "selections": [
-          v2,
-          v3,
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
             "name": "artists",
             "storageKey": "artists(first:10)",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 10,
-                "type": "Int"
-              }
-            ],
+            "args": (v3/*: any*/),
             "concreteType": "ArtistConnection",
             "plural": false,
             "selections": [
@@ -223,14 +216,8 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "id",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      v2,
+                      (v4/*: any*/),
+                      (v1/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -252,7 +239,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v3,
+                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -278,7 +265,6 @@ return {
                           }
                         ]
                       },
-                      v1,
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -310,22 +296,22 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "artists",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 10,
-                "type": "Int"
-              }
-            ],
+            "args": (v3/*: any*/),
             "handle": "connection",
             "key": "Fair_artists",
             "filters": null
           },
-          v1
+          (v4/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FairArtistsTestsQuery",
+    "id": "48bf54144fa282b6f59e03ec5f86dcb8",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

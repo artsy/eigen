@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 import { Notification_notification$ref } from "./Notification_notification.graphql";
 declare const _WorksForYou_viewer$ref: unique symbol;
@@ -40,15 +40,7 @@ export type WorksForYou_viewer = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "WorksForYou_viewer",
   "type": "Viewer",
@@ -182,7 +174,6 @@ return {
                           "name": "Notification_notification",
                           "args": null
                         },
-                        v0,
                         {
                           "kind": "ScalarField",
                           "alias": null,
@@ -204,8 +195,7 @@ return {
               ]
             }
           ]
-        },
-        v0
+        }
       ]
     },
     {
@@ -313,15 +303,12 @@ return {
               "kind": "FragmentSpread",
               "name": "GenericGrid_artworks",
               "args": null
-            },
-            v0
+            }
           ]
-        },
-        v0
+        }
       ]
     }
   ]
 };
-})();
 (node as any).hash = '902ce5b4b0d82cec0693796c4ae26b32';
 export default node;

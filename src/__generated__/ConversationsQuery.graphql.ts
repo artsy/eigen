@@ -25,7 +25,7 @@ query ConversationsQuery(
 ) {
   me {
     ...Conversations_me_1G22uz
-    __id: id
+    id
   }
 }
 
@@ -40,13 +40,12 @@ fragment Conversations_me_1G22uz on Me {
         internalID
         last_message
         ...ConversationSnippet_conversation
-        __id: id
+        id
         __typename
       }
       cursor
     }
   }
-  __id: id
 }
 
 fragment ConversationSnippet_conversation on Conversation {
@@ -71,7 +70,7 @@ fragment ConversationSnippet_conversation on Conversation {
       ... on Show {
         fair {
           name
-          __id: id
+          id
         }
         name
         cover_image {
@@ -79,11 +78,10 @@ fragment ConversationSnippet_conversation on Conversation {
         }
       }
       ... on Node {
-        __id: id
+        id
       }
     }
   }
-  __id: id
 }
 */
 
@@ -102,13 +100,20 @@ var v0 = [
     "defaultValue": null
   }
 ],
-v1 = {
-  "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor",
+    "type": "String"
+  },
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "count",
+    "type": "Int"
+  }
+],
 v2 = {
   "kind": "ScalarField",
   "alias": null,
@@ -123,7 +128,14 @@ v3 = {
   "args": null,
   "storageKey": null
 },
-v4 = [
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+},
+v5 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -134,17 +146,12 @@ v4 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ConversationsQuery",
-  "id": null,
-  "text": "query ConversationsQuery(\n  $count: Int!\n  $cursor: String\n) {\n  me {\n    ...Conversations_me_1G22uz\n    __id: id\n  }\n}\n\nfragment Conversations_me_1G22uz on Me {\n  conversations(first: $count, after: $cursor) {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      node {\n        internalID\n        last_message\n        ...ConversationSnippet_conversation\n        __id: id\n        __typename\n      }\n      cursor\n    }\n  }\n  __id: id\n}\n\nfragment ConversationSnippet_conversation on Conversation {\n  internalID\n  to {\n    name\n  }\n  last_message\n  last_message_at\n  unread\n  items {\n    item {\n      __typename\n      ... on Artwork {\n        date\n        title\n        artist_names\n        image {\n          url\n        }\n      }\n      ... on Show {\n        fair {\n          name\n          __id: id\n        }\n        name\n        cover_image {\n          url\n        }\n      }\n      ... on Node {\n        __id: id\n      }\n    }\n  }\n  __id: id\n}\n",
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ConversationsQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -172,8 +179,7 @@ return {
                 "type": null
               }
             ]
-          },
-          v1
+          }
         ]
       }
     ]
@@ -181,7 +187,7 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "ConversationsQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -197,20 +203,7 @@ return {
             "alias": null,
             "name": "conversations",
             "storageKey": null,
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "after",
-                "variableName": "cursor",
-                "type": "String"
-              },
-              {
-                "kind": "Variable",
-                "name": "first",
-                "variableName": "count",
-                "type": "Int"
-              }
-            ],
+            "args": (v1/*: any*/),
             "concreteType": "ConversationConnection",
             "plural": false,
             "selections": [
@@ -280,7 +273,7 @@ return {
                         "concreteType": "ConversationResponder",
                         "plural": false,
                         "selections": [
-                          v2
+                          (v2/*: any*/)
                         ]
                       },
                       {
@@ -315,8 +308,8 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
-                              v3,
-                              v1,
+                              (v3/*: any*/),
+                              (v4/*: any*/),
                               {
                                 "kind": "InlineFragment",
                                 "type": "Show",
@@ -330,11 +323,11 @@ return {
                                     "concreteType": "Fair",
                                     "plural": false,
                                     "selections": [
-                                      v2,
-                                      v1
+                                      (v2/*: any*/),
+                                      (v4/*: any*/)
                                     ]
                                   },
-                                  v2,
+                                  (v2/*: any*/),
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
@@ -343,7 +336,7 @@ return {
                                     "args": null,
                                     "concreteType": "Image",
                                     "plural": false,
-                                    "selections": v4
+                                    "selections": (v5/*: any*/)
                                   }
                                 ]
                               },
@@ -380,7 +373,7 @@ return {
                                     "args": null,
                                     "concreteType": "Image",
                                     "plural": false,
-                                    "selections": v4
+                                    "selections": (v5/*: any*/)
                                   }
                                 ]
                               }
@@ -388,8 +381,8 @@ return {
                           }
                         ]
                       },
-                      v1,
-                      v3
+                      (v4/*: any*/),
+                      (v3/*: any*/)
                     ]
                   },
                   {
@@ -407,28 +400,22 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "conversations",
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "after",
-                "variableName": "cursor",
-                "type": "String"
-              },
-              {
-                "kind": "Variable",
-                "name": "first",
-                "variableName": "count",
-                "type": "Int"
-              }
-            ],
+            "args": (v1/*: any*/),
             "handle": "connection",
             "key": "Conversations_conversations",
             "filters": null
           },
-          v1
+          (v4/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ConversationsQuery",
+    "id": "82b85cf4af654ade37df29ccb3f139d6",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

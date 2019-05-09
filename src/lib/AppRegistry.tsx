@@ -1,5 +1,5 @@
 import React from "react"
-import { AppRegistry, View } from "react-native"
+import { AppRegistry, View, YellowBox } from "react-native"
 import { RelayContainer } from "react-relay"
 
 import Consignments from "./Components/Consignments"
@@ -24,6 +24,7 @@ import {
   ShowRenderer,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
+import { ArtworkRenderer } from "./Scenes/Artwork"
 import { CityView } from "./Scenes/City"
 import { CityPicker } from "./Scenes/City/CityPicker"
 import {
@@ -42,6 +43,25 @@ import { ShowArtistsRenderer, ShowArtworksRenderer, ShowMoreInfoRenderer } from 
 import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { Schema, screenTrack as track } from "./utils/track"
 
+YellowBox.ignoreWarnings([
+  // Deprecated, we'll transition when it's removed.
+  "Warning: ListView is deprecated and will be removed in a future release. See https://fb.me/nolistview for more information",
+
+  // RN 0.59.0 ships with RNCameraRoll with this issue: https://github.com/facebook/react-native/issues/23755
+  // We can remove this once this PR gets shipped and we update: https://github.com/facebook/react-native/pull/24314
+  "Module RCTImagePickerManager requires main queue setup since it overrides `init`",
+
+  // RN 0.59.0 ships with this bug, see: https://github.com/facebook/react-native/issues/16376
+  "RCTBridge required dispatch_sync to load RCTDevLoadingView. This may lead to deadlocks",
+
+  // The following two items exist in node_modules. Once this PR is merged, to make warnings opt-in, we can ignore: https://github.com/facebook/metro/issues/287
+
+  // react-native-sentry ships with this error, tracked here: https://github.com/getsentry/react-native-sentry/issues/479
+  "Require cycle: node_modules/react-native-sentry/lib/Sentry.js -> node_modules/react-native-sentry/lib/RavenClient.js -> node_modules/react-native-sentry/lib/Sentry.js",
+  // RN 0.59.0 ships with this issue, which has been effectively marked as #wontfix: https://github.com/facebook/react-native/issues/23130
+  "Require cycle: node_modules/react-native/Libraries/Network/fetch.js -> node_modules/react-native/Libraries/vendor/core/whatwg-fetch.js -> node_modules/react-native/Libraries/Network/fetch.js",
+])
+
 interface ArtistProps {
   artistID: string
   isPad: boolean
@@ -54,6 +74,18 @@ const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
     context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
   }
 })(props => <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />)
+
+interface ArtworkProps {
+  artworkID: string
+}
+
+const Artwork: React.SFC<ArtworkProps> = track<ArtworkProps>(props => {
+  return {
+    context_screen: Schema.PageNames.ArtworkPage,
+    context_screen_owner_slug: props.artworkID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+  }
+})(props => <ArtworkRenderer artworkID={props.artworkID} />)
 
 const Inbox: React.SFC<{}> = track<{}>(() => {
   return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
@@ -272,6 +304,7 @@ const CitySavedList: React.SFC<CitySavedListProps> = ({ citySlug }) => {
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
+AppRegistry.registerComponent("Artwork", () => Artwork)
 AppRegistry.registerComponent("Home", () => HomeScene)
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYou)

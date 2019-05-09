@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtworkPreview_artwork$ref } from "./ArtworkPreview_artwork.graphql";
 import { Message_message$ref } from "./Message_message.graphql";
 import { ShowPreview_show$ref } from "./ShowPreview_show.graphql";
@@ -55,7 +55,7 @@ export type Messages_conversation = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -85,13 +85,6 @@ v3 = {
   "storageKey": null
 },
 v4 = {
-  "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
@@ -129,8 +122,8 @@ return {
     }
   ],
   "selections": [
-    v0,
-    v1,
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "kind": "LinkedField",
       "alias": null,
@@ -140,7 +133,7 @@ return {
       "concreteType": "ConversationInitiator",
       "plural": false,
       "selections": [
-        v2,
+        (v2/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -148,7 +141,7 @@ return {
           "args": null,
           "storageKey": null
         },
-        v3
+        (v3/*: any*/)
       ]
     },
     {
@@ -160,8 +153,8 @@ return {
       "concreteType": "ConversationResponder",
       "plural": false,
       "selections": [
-        v2,
-        v3
+        (v2/*: any*/),
+        (v3/*: any*/)
       ]
     },
     {
@@ -244,7 +237,7 @@ return {
               "concreteType": "Message",
               "plural": false,
               "selections": [
-                v0,
+                (v0/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -275,7 +268,7 @@ return {
                   "concreteType": "Attachment",
                   "plural": true,
                   "selections": [
-                    v1
+                    (v1/*: any*/)
                   ]
                 },
                 {
@@ -283,7 +276,6 @@ return {
                   "name": "Message_message",
                   "args": null
                 },
-                v4,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -315,12 +307,11 @@ return {
           "concreteType": null,
           "plural": false,
           "selections": [
-            v4,
             {
               "kind": "InlineFragment",
               "type": "Artwork",
               "selections": [
-                v5,
+                (v4/*: any*/),
                 {
                   "kind": "FragmentSpread",
                   "name": "ArtworkPreview_artwork",
@@ -339,12 +330,11 @@ return {
           "concreteType": null,
           "plural": false,
           "selections": [
-            v4,
             {
               "kind": "InlineFragment",
               "type": "Show",
               "selections": [
-                v5,
+                (v4/*: any*/),
                 {
                   "kind": "FragmentSpread",
                   "name": "ShowPreview_show",
@@ -355,8 +345,7 @@ return {
           ]
         }
       ]
-    },
-    v4
+    }
   ]
 };
 })();

@@ -19,7 +19,7 @@ export type MockRelayRendererFixturesQuery = {
 query MockRelayRendererFixturesQuery {
   artwork(id: "mona-lisa") {
     ...MockRelayRendererFixtures_artwork
-    __id: id
+    id
   }
 }
 
@@ -29,15 +29,13 @@ fragment MockRelayRendererFixtures_artwork on Artwork {
   }
   artist {
     gravityID
-    __id: id
+    id
   }
   ...MockRelayRendererFixtures_artworkMetadata
-  __id: id
 }
 
 fragment MockRelayRendererFixtures_artworkMetadata on Artwork {
   title
-  __id: id
 }
 */
 
@@ -52,18 +50,13 @@ var v0 = [
 ],
 v1 = {
   "kind": "ScalarField",
-  "alias": "__id",
+  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "MockRelayRendererFixturesQuery",
-  "id": null,
-  "text": "query MockRelayRendererFixturesQuery {\n  artwork(id: \"mona-lisa\") {\n    ...MockRelayRendererFixtures_artwork\n    __id: id\n  }\n}\n\nfragment MockRelayRendererFixtures_artwork on Artwork {\n  image {\n    url\n  }\n  artist {\n    gravityID\n    __id: id\n  }\n  ...MockRelayRendererFixtures_artworkMetadata\n  __id: id\n}\n\nfragment MockRelayRendererFixtures_artworkMetadata on Artwork {\n  title\n  __id: id\n}\n",
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "MockRelayRendererFixturesQuery",
@@ -76,7 +69,7 @@ return {
         "alias": null,
         "name": "artwork",
         "storageKey": "artwork(id:\"mona-lisa\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
@@ -84,8 +77,7 @@ return {
             "kind": "FragmentSpread",
             "name": "MockRelayRendererFixtures_artwork",
             "args": null
-          },
-          v1
+          }
         ]
       }
     ]
@@ -100,7 +92,7 @@ return {
         "alias": null,
         "name": "artwork",
         "storageKey": "artwork(id:\"mona-lisa\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
@@ -138,7 +130,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v1
+              (v1/*: any*/)
             ]
           },
           {
@@ -148,10 +140,17 @@ return {
             "args": null,
             "storageKey": null
           },
-          v1
+          (v1/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "MockRelayRendererFixturesQuery",
+    "id": "814458999981388a8402adebf4982530",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

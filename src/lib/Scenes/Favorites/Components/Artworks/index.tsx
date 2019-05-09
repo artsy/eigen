@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { ScrollView } from "react-native"
+import { RefreshControl, ScrollView } from "react-native"
 import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
@@ -17,11 +17,13 @@ interface Props {
 
 interface State {
   fetchingMoreData: boolean
+  refreshingFromPull: boolean
 }
 
 export class SavedWorks extends Component<Props, State> {
   state = {
     fetchingMoreData: false,
+    refreshingFromPull: false,
   }
 
   loadMore = () => {
@@ -40,9 +42,20 @@ export class SavedWorks extends Component<Props, State> {
     this.props.relay.loadMore(PAGE_SIZE, error => {
       if (error) {
         // FIXME: Handle error
-        console.error("Artworks/index.tsx", error.message)
+        console.error("SavedWorks/index.tsx", error.message)
       }
       updateState(false)
+    })
+  }
+
+  handleRefresh = () => {
+    this.setState({ refreshingFromPull: true })
+    this.props.relay.refetchConnection(PAGE_SIZE, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("SavedWorks/index.tsx #handleRefresh", error.message)
+      }
+      this.setState({ refreshingFromPull: false })
     })
   }
 
@@ -65,6 +78,7 @@ export class SavedWorks extends Component<Props, State> {
         scrollEventThrottle={400}
         style={{ flex: 1 }}
         contentContainerStyle={{ padding: 20 }}
+        refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
       >
         <GenericGrid artworks={artworks as any} isLoading={this.state.fetchingMoreData} />
       </ScrollView>

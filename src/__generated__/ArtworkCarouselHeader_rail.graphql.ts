@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ArtworkCarouselHeader_rail$ref: unique symbol;
 export type ArtworkCarouselHeader_rail$ref = typeof _ArtworkCarouselHeader_rail$ref;
 export type ArtworkCarouselHeader_rail = {
@@ -26,15 +26,8 @@ export type ArtworkCarouselHeader_rail = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "artist",
@@ -56,8 +49,7 @@ v1 = {
       "name": "gravityID",
       "args": null,
       "storageKey": null
-    },
-    v0
+    }
   ]
 };
 return {
@@ -90,12 +82,11 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v0,
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextFollowedArtist",
           "selections": [
-            v1
+            (v0/*: any*/)
           ]
         }
       ]
@@ -109,12 +100,11 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v0,
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextRelatedArtist",
           "selections": [
-            v1,
+            (v0/*: any*/),
             {
               "kind": "LinkedField",
               "alias": null,
@@ -130,15 +120,13 @@ return {
                   "name": "name",
                   "args": null,
                   "storageKey": null
-                },
-                v0
+                }
               ]
             }
           ]
         }
       ]
-    },
-    v0
+    }
   ]
 };
 })();

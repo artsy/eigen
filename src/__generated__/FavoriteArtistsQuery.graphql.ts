@@ -19,7 +19,7 @@ export type FavoriteArtistsQuery = {
 query FavoriteArtistsQuery {
   me {
     ...Artists_me
-    __id: id
+    id
   }
 }
 
@@ -39,33 +39,34 @@ fragment Artists_me on Me {
           image {
             url
           }
-          __id: id
         }
-        __id: id
+        id
         __typename
       }
       cursor
     }
   }
-  __id: id
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
+var v0 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 10,
+    "type": "Int"
+  }
+],
+v1 = {
   "kind": "ScalarField",
-  "alias": "__id",
+  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FavoriteArtistsQuery",
-  "id": null,
-  "text": "query FavoriteArtistsQuery {\n  me {\n    ...Artists_me\n    __id: id\n  }\n}\n\nfragment Artists_me on Me {\n  followed_artists_connection(first: 10) {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      node {\n        artist {\n          gravityID\n          id\n          name\n          href\n          image {\n            url\n          }\n          __id: id\n        }\n        __id: id\n        __typename\n      }\n      cursor\n    }\n  }\n  __id: id\n}\n",
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FavoriteArtistsQuery",
@@ -86,8 +87,7 @@ return {
             "kind": "FragmentSpread",
             "name": "Artists_me",
             "args": null
-          },
-          v0
+          }
         ]
       }
     ]
@@ -111,14 +111,7 @@ return {
             "alias": null,
             "name": "followed_artists_connection",
             "storageKey": "followed_artists_connection(first:10)",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 10,
-                "type": "Int"
-              }
-            ],
+            "args": (v0/*: any*/),
             "concreteType": "FollowArtistConnection",
             "plural": false,
             "selections": [
@@ -181,13 +174,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "id",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          (v1/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -219,11 +206,10 @@ return {
                                 "storageKey": null
                               }
                             ]
-                          },
-                          v0
+                          }
                         ]
                       },
-                      v0,
+                      (v1/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -248,22 +234,22 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "followed_artists_connection",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 10,
-                "type": "Int"
-              }
-            ],
+            "args": (v0/*: any*/),
             "handle": "connection",
             "key": "Artists_followed_artists_connection",
             "filters": null
           },
-          v0
+          (v1/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FavoriteArtistsQuery",
+    "id": "1a3b1c0e2584328d41f07185fb29f309",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

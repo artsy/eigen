@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ConversationSnippet_conversation$ref } from "./ConversationSnippet_conversation.graphql";
 declare const _Conversations_me$ref: unique symbol;
 export type Conversations_me$ref = typeof _Conversations_me$ref;
@@ -23,15 +23,7 @@ export type Conversations_me = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Conversations_me",
   "type": "Me",
@@ -133,7 +125,6 @@ return {
                   "name": "ConversationSnippet_conversation",
                   "args": null
                 },
-                v0,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -153,10 +144,8 @@ return {
           ]
         }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
 (node as any).hash = '4d6f13fc9a85f0c82d90bc6cb81c7d31';
 export default node;

@@ -26,12 +26,10 @@ fragment ForYou_forYou on HomePage {
   artwork_modules(max_rails: -1, max_followed_gene_rails: -1, order: [ACTIVE_BIDS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_ARTISTS, RELATED_ARTISTS, FOLLOWED_GALLERIES, SAVED_WORKS, LIVE_AUCTIONS, CURRENT_FAIRS, FOLLOWED_GENES, GENERIC_GENES], exclude: [FOLLOWED_ARTISTS]) {
     id
     ...ArtworkCarousel_rail
-    __id: id
   }
   artist_modules {
     id
     ...ArtistRail_rail
-    __id: id
   }
   fairs_module {
     ...FairsRail_fairs_module
@@ -51,18 +49,18 @@ fragment ArtworkCarousel_rail on HomePageArtworkModule {
     ... on HomePageModuleContextFollowedArtist {
       artist {
         href
-        __id: id
+        id
       }
     }
     ... on HomePageModuleContextRelatedArtist {
       artist {
         href
-        __id: id
+        id
       }
     }
     ... on HomePageModuleContextFair {
       href
-      __id: id
+      id
     }
     ... on HomePageModuleContextGene {
       href
@@ -71,14 +69,13 @@ fragment ArtworkCarousel_rail on HomePageArtworkModule {
       href
     }
     ... on Node {
-      __id: id
+      id
     }
   }
   results {
     ...GenericGrid_artworks
-    __id: id
+    id
   }
-  __id: id
 }
 
 fragment ArtistRail_rail on HomePageArtistModule {
@@ -88,9 +85,7 @@ fragment ArtistRail_rail on HomePageArtistModule {
     internalID
     id
     ...ArtistCard_artist
-    __id: id
   }
-  __id: id
 }
 
 fragment FairsRail_fairs_module on HomePageFairsModule {
@@ -99,13 +94,13 @@ fragment FairsRail_fairs_module on HomePageFairsModule {
     name
     profile {
       gravityID
-      __id: id
+      id
     }
     mobile_image {
       gravityID
       url
     }
-    __id: id
+    id
   }
 }
 
@@ -119,7 +114,6 @@ fragment ArtistCard_artist on Artist {
   image {
     url(version: "large")
   }
-  __id: id
 }
 
 fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
@@ -131,14 +125,14 @@ fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
       artist {
         internalID
         gravityID
-        __id: id
+        id
       }
     }
     ... on Node {
-      __id: id
+      id
     }
     ... on HomePageModuleContextFair {
-      __id: id
+      id
     }
   }
   relatedArtistContext: context {
@@ -147,21 +141,20 @@ fragment ArtworkCarouselHeader_rail on HomePageArtworkModule {
       artist {
         internalID
         gravityID
-        __id: id
+        id
       }
       based_on {
         name
-        __id: id
+        id
       }
     }
     ... on Node {
-      __id: id
+      id
     }
     ... on HomePageModuleContextFair {
-      __id: id
+      id
     }
   }
-  __id: id
 }
 
 fragment GenericGrid_artworks on Artwork {
@@ -170,11 +163,10 @@ fragment GenericGrid_artworks on Artwork {
   image {
     aspect_ratio
   }
-  ...Artwork_artwork
-  __id: id
+  ...ArtworkGridItem_artwork
 }
 
-fragment Artwork_artwork on Artwork {
+fragment ArtworkGridItem_artwork on Artwork {
   title
   date
   sale_message
@@ -189,7 +181,7 @@ fragment Artwork_artwork on Artwork {
     is_open
     is_closed
     display_timely_at
-    __id: id
+    id
   }
   sale_artwork {
     opening_bid {
@@ -201,9 +193,9 @@ fragment Artwork_artwork on Artwork {
     bidder_positions_count
     sale {
       is_closed
-      __id: id
+      id
     }
-    __id: id
+    id
   }
   image {
     url(version: "large")
@@ -211,14 +203,13 @@ fragment Artwork_artwork on Artwork {
   }
   artists(shallow: true) {
     name
-    __id: id
+    id
   }
   partner {
     name
-    __id: id
+    id
   }
   href
-  __id: id
 }
 */
 
@@ -253,26 +244,19 @@ v3 = {
 },
 v4 = {
   "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
+  "alias": null,
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
-  "args": null,
-  "storageKey": null
-},
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "gravityID",
   "args": null,
   "storageKey": null
 },
-v7 = {
+v6 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "artist",
@@ -281,33 +265,33 @@ v7 = {
   "concreteType": "Artist",
   "plural": false,
   "selections": [
-    v5,
-    v6,
-    v4
+    (v4/*: any*/),
+    (v5/*: any*/),
+    (v0/*: any*/)
   ]
 },
-v8 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v9 = [
-  v8,
-  v4
+v8 = [
+  (v7/*: any*/),
+  (v0/*: any*/)
 ],
-v10 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v11 = [
-  v10
+v10 = [
+  (v9/*: any*/)
 ],
-v12 = [
+v11 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -317,12 +301,12 @@ v12 = [
     "concreteType": "Artist",
     "plural": false,
     "selections": [
-      v10,
-      v4
+      (v9/*: any*/),
+      (v0/*: any*/)
     ]
   }
 ],
-v13 = {
+v12 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "url",
@@ -336,14 +320,14 @@ v13 = {
   ],
   "storageKey": "url(version:\"large\")"
 },
-v14 = {
+v13 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "is_closed",
   "args": null,
   "storageKey": null
 },
-v15 = [
+v14 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -354,11 +338,6 @@ v15 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ForYouRefetchQuery",
-  "id": null,
-  "text": "query ForYouRefetchQuery {\n  forYou: home_page {\n    ...ForYou_forYou\n  }\n}\n\nfragment ForYou_forYou on HomePage {\n  artwork_modules(max_rails: -1, max_followed_gene_rails: -1, order: [ACTIVE_BIDS, RECENTLY_VIEWED_WORKS, RECOMMENDED_WORKS, FOLLOWED_ARTISTS, RELATED_ARTISTS, FOLLOWED_GALLERIES, SAVED_WORKS, LIVE_AUCTIONS, CURRENT_FAIRS, FOLLOWED_GENES, GENERIC_GENES], exclude: [FOLLOWED_ARTISTS]) {\n    id\n    ...ArtworkCarousel_rail\n    __id: id\n  }\n  artist_modules {\n    id\n    ...ArtistRail_rail\n    __id: id\n  }\n  fairs_module {\n    ...FairsRail_fairs_module\n  }\n}\n\nfragment ArtworkCarousel_rail on HomePageArtworkModule {\n  ...ArtworkCarouselHeader_rail\n  id\n  key\n  params {\n    medium\n    price_range\n  }\n  context {\n    __typename\n    ... on HomePageModuleContextFollowedArtist {\n      artist {\n        href\n        __id: id\n      }\n    }\n    ... on HomePageModuleContextRelatedArtist {\n      artist {\n        href\n        __id: id\n      }\n    }\n    ... on HomePageModuleContextFair {\n      href\n      __id: id\n    }\n    ... on HomePageModuleContextGene {\n      href\n    }\n    ... on HomePageModuleContextSale {\n      href\n    }\n    ... on Node {\n      __id: id\n    }\n  }\n  results {\n    ...GenericGrid_artworks\n    __id: id\n  }\n  __id: id\n}\n\nfragment ArtistRail_rail on HomePageArtistModule {\n  id\n  key\n  results {\n    internalID\n    id\n    ...ArtistCard_artist\n    __id: id\n  }\n  __id: id\n}\n\nfragment FairsRail_fairs_module on HomePageFairsModule {\n  results {\n    gravityID\n    name\n    profile {\n      gravityID\n      __id: id\n    }\n    mobile_image {\n      gravityID\n      url\n    }\n    __id: id\n  }\n}\n\nfragment ArtistCard_artist on Artist {\n  gravityID\n  internalID\n  href\n  name\n  formatted_artworks_count\n  formatted_nationality_and_birthday\n  image {\n    url(version: \"large\")\n  }\n  __id: id\n}\n\nfragment ArtworkCarouselHeader_rail on HomePageArtworkModule {\n  title\n  key\n  followedArtistContext: context {\n    __typename\n    ... on HomePageModuleContextFollowedArtist {\n      artist {\n        internalID\n        gravityID\n        __id: id\n      }\n    }\n    ... on Node {\n      __id: id\n    }\n    ... on HomePageModuleContextFair {\n      __id: id\n    }\n  }\n  relatedArtistContext: context {\n    __typename\n    ... on HomePageModuleContextRelatedArtist {\n      artist {\n        internalID\n        gravityID\n        __id: id\n      }\n      based_on {\n        name\n        __id: id\n      }\n    }\n    ... on Node {\n      __id: id\n    }\n    ... on HomePageModuleContextFair {\n      __id: id\n    }\n  }\n  __id: id\n}\n\nfragment GenericGrid_artworks on Artwork {\n  id\n  gravityID\n  image {\n    aspect_ratio\n  }\n  ...Artwork_artwork\n  __id: id\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  date\n  sale_message\n  is_in_auction\n  is_biddable\n  is_acquireable\n  is_offerable\n  gravityID\n  sale {\n    is_auction\n    is_live_open\n    is_open\n    is_closed\n    display_timely_at\n    __id: id\n  }\n  sale_artwork {\n    opening_bid {\n      display\n    }\n    current_bid {\n      display\n    }\n    bidder_positions_count\n    sale {\n      is_closed\n      __id: id\n    }\n    __id: id\n  }\n  image {\n    url(version: \"large\")\n    aspect_ratio\n  }\n  artists(shallow: true) {\n    name\n    __id: id\n  }\n  partner {\n    name\n    __id: id\n  }\n  href\n  __id: id\n}\n",
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ForYouRefetchQuery",
@@ -446,9 +425,9 @@ return {
             "concreteType": "HomePageArtworkModule",
             "plural": true,
             "selections": [
-              v0,
-              v1,
-              v2,
+              (v0/*: any*/),
+              (v1/*: any*/),
+              (v2/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": "followedArtistContext",
@@ -458,13 +437,13 @@ return {
                 "concreteType": null,
                 "plural": false,
                 "selections": [
-                  v3,
-                  v4,
+                  (v3/*: any*/),
+                  (v0/*: any*/),
                   {
                     "kind": "InlineFragment",
                     "type": "HomePageModuleContextFollowedArtist",
                     "selections": [
-                      v7
+                      (v6/*: any*/)
                     ]
                   }
                 ]
@@ -478,13 +457,13 @@ return {
                 "concreteType": null,
                 "plural": false,
                 "selections": [
-                  v3,
-                  v4,
+                  (v3/*: any*/),
+                  (v0/*: any*/),
                   {
                     "kind": "InlineFragment",
                     "type": "HomePageModuleContextRelatedArtist",
                     "selections": [
-                      v7,
+                      (v6/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -493,13 +472,12 @@ return {
                         "args": null,
                         "concreteType": "Artist",
                         "plural": false,
-                        "selections": v9
+                        "selections": (v8/*: any*/)
                       }
                     ]
                   }
                 ]
               },
-              v4,
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -534,32 +512,32 @@ return {
                 "concreteType": null,
                 "plural": false,
                 "selections": [
-                  v3,
-                  v4,
+                  (v3/*: any*/),
+                  (v0/*: any*/),
                   {
                     "kind": "InlineFragment",
                     "type": "HomePageModuleContextSale",
-                    "selections": v11
+                    "selections": (v10/*: any*/)
                   },
                   {
                     "kind": "InlineFragment",
                     "type": "HomePageModuleContextGene",
-                    "selections": v11
+                    "selections": (v10/*: any*/)
                   },
                   {
                     "kind": "InlineFragment",
                     "type": "HomePageModuleContextFair",
-                    "selections": v11
+                    "selections": (v10/*: any*/)
                   },
                   {
                     "kind": "InlineFragment",
                     "type": "HomePageModuleContextRelatedArtist",
-                    "selections": v12
+                    "selections": (v11/*: any*/)
                   },
                   {
                     "kind": "InlineFragment",
                     "type": "HomePageModuleContextFollowedArtist",
-                    "selections": v12
+                    "selections": (v11/*: any*/)
                   }
                 ]
               },
@@ -575,11 +553,11 @@ return {
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "is_acquireable",
+                    "name": "is_biddable",
                     "args": null,
                     "storageKey": null
                   },
-                  v0,
+                  (v0/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -596,10 +574,10 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v13
+                      (v12/*: any*/)
                     ]
                   },
-                  v1,
+                  (v1/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -621,14 +599,14 @@ return {
                     "args": null,
                     "storageKey": null
                   },
+                  (v5/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
-                    "name": "is_biddable",
+                    "name": "is_acquireable",
                     "args": null,
                     "storageKey": null
                   },
-                  v6,
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -666,7 +644,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v14,
+                      (v13/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -674,7 +652,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v4
+                      (v0/*: any*/)
                     ]
                   },
                   {
@@ -694,7 +672,7 @@ return {
                         "args": null,
                         "concreteType": "SaleArtworkOpeningBid",
                         "plural": false,
-                        "selections": v15
+                        "selections": (v14/*: any*/)
                       },
                       {
                         "kind": "LinkedField",
@@ -704,7 +682,7 @@ return {
                         "args": null,
                         "concreteType": "SaleArtworkCurrentBid",
                         "plural": false,
-                        "selections": v15
+                        "selections": (v14/*: any*/)
                       },
                       {
                         "kind": "ScalarField",
@@ -722,11 +700,11 @@ return {
                         "concreteType": "Sale",
                         "plural": false,
                         "selections": [
-                          v14,
-                          v4
+                          (v13/*: any*/),
+                          (v0/*: any*/)
                         ]
                       },
-                      v4
+                      (v0/*: any*/)
                     ]
                   },
                   {
@@ -744,7 +722,7 @@ return {
                     ],
                     "concreteType": "Artist",
                     "plural": true,
-                    "selections": v9
+                    "selections": (v8/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -754,10 +732,9 @@ return {
                     "args": null,
                     "concreteType": "Partner",
                     "plural": false,
-                    "selections": v9
+                    "selections": (v8/*: any*/)
                   },
-                  v10,
-                  v4
+                  (v9/*: any*/)
                 ]
               }
             ]
@@ -771,8 +748,8 @@ return {
             "concreteType": "HomePageArtistModule",
             "plural": true,
             "selections": [
-              v0,
-              v2,
+              (v0/*: any*/),
+              (v2/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -782,11 +759,11 @@ return {
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
-                  v5,
-                  v0,
-                  v6,
-                  v10,
-                  v8,
+                  (v4/*: any*/),
+                  (v0/*: any*/),
+                  (v5/*: any*/),
+                  (v9/*: any*/),
+                  (v7/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -810,13 +787,11 @@ return {
                     "concreteType": "Image",
                     "plural": false,
                     "selections": [
-                      v13
+                      (v12/*: any*/)
                     ]
-                  },
-                  v4
+                  }
                 ]
-              },
-              v4
+              }
             ]
           },
           {
@@ -837,8 +812,8 @@ return {
                 "concreteType": "Fair",
                 "plural": true,
                 "selections": [
-                  v6,
-                  v8,
+                  (v5/*: any*/),
+                  (v7/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -848,8 +823,8 @@ return {
                     "concreteType": "Profile",
                     "plural": false,
                     "selections": [
-                      v6,
-                      v4
+                      (v5/*: any*/),
+                      (v0/*: any*/)
                     ]
                   },
                   {
@@ -861,7 +836,7 @@ return {
                     "concreteType": "Image",
                     "plural": false,
                     "selections": [
-                      v6,
+                      (v5/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -871,7 +846,7 @@ return {
                       }
                     ]
                   },
-                  v4
+                  (v0/*: any*/)
                 ]
               }
             ]
@@ -879,6 +854,13 @@ return {
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ForYouRefetchQuery",
+    "id": "a396ab3e36272c123daeab6aec1dd0fd",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

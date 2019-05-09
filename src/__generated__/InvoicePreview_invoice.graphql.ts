@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 export type InvoiceState = "PAID" | "REFUNDED" | "UNPAID" | "VOID" | "%future added value";
 declare const _InvoicePreview_invoice$ref: unique symbol;
 export type InvoicePreview_invoice$ref = typeof _InvoicePreview_invoice$ref;
@@ -14,7 +14,7 @@ export type InvoicePreview_invoice = {
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "InvoicePreview_invoice",
   "type": "Invoice",
@@ -46,13 +46,6 @@ const node: ConcreteFragment = {
       "kind": "ScalarField",
       "alias": null,
       "name": "lewitt_invoice_id",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": "__id",
-      "name": "id",
       "args": null,
       "storageKey": null
     }

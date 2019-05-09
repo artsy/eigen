@@ -3,7 +3,7 @@ import Spinner from "lib/Components/Spinner"
 import ZeroState from "lib/Components/States/ZeroState"
 import { PAGE_SIZE } from "lib/data/constants"
 import React, { Component } from "react"
-import { FlatList } from "react-native"
+import { FlatList, RefreshControl } from "react-native"
 import { ConnectionData, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 import { Box, Separator, Theme } from "@artsy/palette"
@@ -17,11 +17,13 @@ interface Props {
 
 interface State {
   fetchingMoreData: boolean
+  refreshingFromPull: boolean
 }
 
 export class Shows extends Component<Props, State> {
   state = {
     fetchingMoreData: false,
+    refreshingFromPull: false,
   }
 
   loadMore = () => {
@@ -36,6 +38,17 @@ export class Shows extends Component<Props, State> {
         console.error("Shows/index.tsx", error.message)
       }
       this.setState({ fetchingMoreData: false })
+    })
+  }
+
+  handleRefresh = () => {
+    this.setState({ refreshingFromPull: true })
+    this.props.relay.refetchConnection(PAGE_SIZE, error => {
+      if (error) {
+        // FIXME: Handle error
+        console.error("Shows/index.tsx #handleRefresh", error.message)
+      }
+      this.setState({ refreshingFromPull: false })
     })
   }
 
@@ -65,6 +78,7 @@ export class Shows extends Component<Props, State> {
           onEndReached={this.loadMore}
           onEndReachedThreshold={0.2}
           ItemSeparatorComponent={() => <Separator />}
+          refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
           ListFooterComponent={
             this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
           }

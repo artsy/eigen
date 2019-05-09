@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ConfirmBid_me$ref: unique symbol;
 export type ConfirmBid_me$ref = typeof _ConfirmBid_me$ref;
 export type ConfirmBid_me = {
@@ -13,15 +13,7 @@ export type ConfirmBid_me = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ConfirmBid_me",
   "type": "Me",
@@ -63,13 +55,10 @@ return {
           "name": "qualified_for_bidding",
           "args": null,
           "storageKey": null
-        },
-        v0
+        }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
 (node as any).hash = '1b89429657eeb192da84170bb8629c15';
 export default node;

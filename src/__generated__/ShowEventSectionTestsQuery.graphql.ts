@@ -23,7 +23,7 @@ query ShowEventSectionTestsQuery {
     events {
       ...ShowEventSection_event
     }
-    __id: id
+    id
   }
 }
 
@@ -43,21 +43,9 @@ var v0 = [
     "value": "anderson-fine-art-gallery-flickinger-collection",
     "type": "String!"
   }
-],
-v1 = {
-  "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ShowEventSectionTestsQuery",
-  "id": null,
-  "text": "query ShowEventSectionTestsQuery {\n  show(id: \"anderson-fine-art-gallery-flickinger-collection\") {\n    events {\n      ...ShowEventSection_event\n    }\n    __id: id\n  }\n}\n\nfragment ShowEventSection_event on PartnerShowEventType {\n  event_type\n  description\n  start_at\n  end_at\n}\n",
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ShowEventSectionTestsQuery",
@@ -70,7 +58,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -89,8 +77,7 @@ return {
                 "args": null
               }
             ]
-          },
-          v1
+          }
         ]
       }
     ]
@@ -105,7 +92,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -148,10 +135,23 @@ return {
               }
             ]
           },
-          v1
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ShowEventSectionTestsQuery",
+    "id": "491aa923b8d9aaf54ec5b6b9277b9a5e",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

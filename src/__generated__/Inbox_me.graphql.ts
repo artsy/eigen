@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ActiveBids_me$ref } from "./ActiveBids_me.graphql";
 import { Conversations_me$ref } from "./Conversations_me.graphql";
 declare const _Inbox_me$ref: unique symbol;
@@ -24,15 +24,7 @@ export type Inbox_me = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Inbox_me",
   "type": "Me",
@@ -70,8 +62,7 @@ return {
               "name": "id",
               "args": null,
               "storageKey": null
-            },
-            v0
+            }
           ]
         }
       ]
@@ -116,8 +107,7 @@ return {
                   "name": "internalID",
                   "args": null,
                   "storageKey": null
-                },
-                v0
+                }
               ]
             }
           ]
@@ -133,10 +123,8 @@ return {
       "kind": "FragmentSpread",
       "name": "ActiveBids_me",
       "args": null
-    },
-    v0
+    }
   ]
 };
-})();
 (node as any).hash = '6f84d25799993678ad080bc08b359ca6';
 export default node;

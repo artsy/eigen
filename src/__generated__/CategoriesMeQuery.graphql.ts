@@ -25,7 +25,7 @@ query CategoriesMeQuery(
 ) {
   me {
     ...Categories_me_1G22uz
-    __id: id
+    id
   }
 }
 
@@ -45,15 +45,13 @@ fragment Categories_me_1G22uz on Me {
           image {
             url
           }
-          __id: id
         }
-        __id: id
+        id
         __typename
       }
       cursor
     }
   }
-  __id: id
 }
 */
 
@@ -72,26 +70,35 @@ var v0 = [
     "defaultValue": null
   }
 ],
-v1 = {
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor",
+    "type": "String"
+  },
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "count",
+    "type": "Int"
+  }
+],
+v2 = {
   "kind": "ScalarField",
-  "alias": "__id",
+  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "CategoriesMeQuery",
-  "id": null,
-  "text": "query CategoriesMeQuery(\n  $count: Int!\n  $cursor: String\n) {\n  me {\n    ...Categories_me_1G22uz\n    __id: id\n  }\n}\n\nfragment Categories_me_1G22uz on Me {\n  followed_genes(first: $count, after: $cursor) {\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n    edges {\n      node {\n        gene {\n          gravityID\n          id\n          name\n          href\n          image {\n            url\n          }\n          __id: id\n        }\n        __id: id\n        __typename\n      }\n      cursor\n    }\n  }\n  __id: id\n}\n",
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "CategoriesMeQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -119,8 +126,7 @@ return {
                 "type": null
               }
             ]
-          },
-          v1
+          }
         ]
       }
     ]
@@ -128,7 +134,7 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "CategoriesMeQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -144,20 +150,7 @@ return {
             "alias": null,
             "name": "followed_genes",
             "storageKey": null,
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "after",
-                "variableName": "cursor",
-                "type": "String"
-              },
-              {
-                "kind": "Variable",
-                "name": "first",
-                "variableName": "count",
-                "type": "Int"
-              }
-            ],
+            "args": (v1/*: any*/),
             "concreteType": "FollowGeneConnection",
             "plural": false,
             "selections": [
@@ -220,13 +213,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "id",
-                            "args": null,
-                            "storageKey": null
-                          },
+                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -258,11 +245,10 @@ return {
                                 "storageKey": null
                               }
                             ]
-                          },
-                          v1
+                          }
                         ]
                       },
-                      v1,
+                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -287,28 +273,22 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "followed_genes",
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "after",
-                "variableName": "cursor",
-                "type": "String"
-              },
-              {
-                "kind": "Variable",
-                "name": "first",
-                "variableName": "count",
-                "type": "Int"
-              }
-            ],
+            "args": (v1/*: any*/),
             "handle": "connection",
             "key": "Categories_followed_genes",
             "filters": null
           },
-          v1
+          (v2/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "CategoriesMeQuery",
+    "id": "e6ea0c0167f35c399e0d6490f9672e4d",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

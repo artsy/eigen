@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { LocationMap_location$ref } from "./LocationMap_location.graphql";
 import { ShowArtistsPreview_show$ref } from "./ShowArtistsPreview_show.graphql";
 import { ShowArtworksPreview_show$ref } from "./ShowArtworksPreview_show.graphql";
@@ -46,7 +46,7 @@ export type Detail_show = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -61,13 +61,9 @@ v1 = {
   "args": null,
   "storageKey": null
 },
-v2 = {
-  "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
-  "args": null,
-  "storageKey": null
-};
+v2 = [
+  (v1/*: any*/)
+];
 return {
   "kind": "Fragment",
   "name": "Detail_show",
@@ -87,7 +83,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    v0,
+    (v0/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -117,16 +113,14 @@ return {
       "args": null,
       "concreteType": "Image",
       "plural": true,
-      "selections": [
-        v1
-      ]
+      "selections": (v2/*: any*/)
     },
     {
       "kind": "FragmentSpread",
       "name": "ShowHeader_show",
       "args": null
     },
-    v1,
+    (v1/*: any*/),
     {
       "kind": "FragmentSpread",
       "name": "ShowArtistsPreview_show",
@@ -205,8 +199,7 @@ return {
               ]
             }
           ]
-        },
-        v2
+        }
       ]
     },
     {
@@ -217,10 +210,7 @@ return {
       "args": null,
       "concreteType": "Artist",
       "plural": true,
-      "selections": [
-        v1,
-        v2
-      ]
+      "selections": (v2/*: any*/)
     },
     {
       "kind": "LinkedField",
@@ -263,12 +253,11 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v2,
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v0,
+            (v0/*: any*/),
             {
               "kind": "ScalarField",
               "alias": null,
@@ -279,8 +268,7 @@ return {
           ]
         }
       ]
-    },
-    v2
+    }
   ]
 };
 })();

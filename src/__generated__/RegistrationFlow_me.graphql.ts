@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { Registration_me$ref } from "./Registration_me.graphql";
 declare const _RegistrationFlow_me$ref: unique symbol;
 export type RegistrationFlow_me$ref = typeof _RegistrationFlow_me$ref;
@@ -11,7 +11,7 @@ export type RegistrationFlow_me = {
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "RegistrationFlow_me",
   "type": "Me",
@@ -22,13 +22,6 @@ const node: ConcreteFragment = {
       "kind": "FragmentSpread",
       "name": "Registration_me",
       "args": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": "__id",
-      "name": "id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };

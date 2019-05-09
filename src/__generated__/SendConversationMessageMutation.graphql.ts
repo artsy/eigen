@@ -44,7 +44,6 @@ mutation SendConversationMessageMutation(
         body
         id
         ...Message_message
-        __id: id
       }
     }
   }
@@ -61,7 +60,7 @@ fragment Message_message on Message {
   invoice {
     payment_url
     ...InvoicePreview_invoice
-    __id: id
+    id
   }
   attachments {
     internalID
@@ -71,7 +70,6 @@ fragment Message_message on Message {
     ...ImagePreview_attachment
     ...PDFPreview_attachment
   }
-  __id: id
 }
 
 fragment InvoicePreview_invoice on Invoice {
@@ -79,7 +77,6 @@ fragment InvoicePreview_invoice on Invoice {
   state
   total
   lewitt_invoice_id
-  __id: id
 }
 
 fragment ImagePreview_attachment on Attachment {
@@ -141,34 +138,22 @@ v5 = {
   "name": "id",
   "args": null,
   "storageKey": null
-},
-v6 = {
-  "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
-  "args": null,
-  "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "SendConversationMessageMutation",
-  "id": null,
-  "text": "mutation SendConversationMessageMutation(\n  $input: SendConversationMessageMutationInput!\n) {\n  sendConversationMessage(input: $input) {\n    messageEdge {\n      node {\n        impulse_id\n        is_from_user\n        body\n        id\n        ...Message_message\n        __id: id\n      }\n    }\n  }\n}\n\nfragment Message_message on Message {\n  body\n  created_at\n  is_from_user\n  from {\n    name\n    email\n  }\n  invoice {\n    payment_url\n    ...InvoicePreview_invoice\n    __id: id\n  }\n  attachments {\n    internalID\n    content_type\n    download_url\n    file_name\n    ...ImagePreview_attachment\n    ...PDFPreview_attachment\n  }\n  __id: id\n}\n\nfragment InvoicePreview_invoice on Invoice {\n  payment_url\n  state\n  total\n  lewitt_invoice_id\n  __id: id\n}\n\nfragment ImagePreview_attachment on Attachment {\n  download_url\n  ...AttachmentPreview_attachment\n}\n\nfragment PDFPreview_attachment on Attachment {\n  file_name\n  ...AttachmentPreview_attachment\n}\n\nfragment AttachmentPreview_attachment on Attachment {\n  internalID\n}\n",
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "SendConversationMessageMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "sendConversationMessage",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "SendConversationMessageMutationPayload",
         "plural": false,
         "selections": [
@@ -190,16 +175,15 @@ return {
                 "concreteType": "Message",
                 "plural": false,
                 "selections": [
-                  v2,
-                  v3,
-                  v4,
-                  v5,
+                  (v2/*: any*/),
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  (v5/*: any*/),
                   {
                     "kind": "FragmentSpread",
                     "name": "Message_message",
                     "args": null
-                  },
-                  v6
+                  }
                 ]
               }
             ]
@@ -211,14 +195,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "SendConversationMessageMutation",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "sendConversationMessage",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "SendConversationMessageMutationPayload",
         "plural": false,
         "selections": [
@@ -240,10 +224,10 @@ return {
                 "concreteType": "Message",
                 "plural": false,
                 "selections": [
-                  v2,
-                  v3,
-                  v4,
-                  v5,
+                  (v2/*: any*/),
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  (v5/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -313,7 +297,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v6
+                      (v5/*: any*/)
                     ]
                   },
                   {
@@ -354,8 +338,7 @@ return {
                         "storageKey": null
                       }
                     ]
-                  },
-                  v6
+                  }
                 ]
               }
             ]
@@ -363,6 +346,13 @@ return {
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "SendConversationMessageMutation",
+    "id": "73b32c449f481fc4adcb493b0ad329eb",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
 declare const _ShowArtistsPreview_show$ref: unique symbol;
 export type ShowArtistsPreview_show$ref = typeof _ShowArtistsPreview_show$ref;
@@ -24,7 +24,7 @@ export type ShowArtistsPreview_show = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -39,16 +39,9 @@ v1 = {
   "args": null,
   "storageKey": null
 },
-v2 = {
-  "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v3 = [
-  v0,
-  v1,
+v2 = [
+  (v0/*: any*/),
+  (v1/*: any*/),
   {
     "kind": "ScalarField",
     "alias": null,
@@ -60,8 +53,7 @@ v3 = [
     "kind": "FragmentSpread",
     "name": "ArtistListItem_artist",
     "args": null
-  },
-  v2
+  }
 ];
 return {
   "kind": "Fragment",
@@ -70,8 +62,8 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    v0,
-    v1,
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "kind": "LinkedField",
       "alias": null,
@@ -80,7 +72,7 @@ return {
       "args": null,
       "concreteType": "Artist",
       "plural": true,
-      "selections": v3
+      "selections": (v2/*: any*/)
     },
     {
       "kind": "LinkedField",
@@ -90,9 +82,8 @@ return {
       "args": null,
       "concreteType": "Artist",
       "plural": true,
-      "selections": v3
-    },
-    v2
+      "selections": (v2/*: any*/)
+    }
   ]
 };
 })();

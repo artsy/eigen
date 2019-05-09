@@ -5,7 +5,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 import Spinner from "lib/Components/Spinner"
-import Artwork from "./Artwork"
+import Artwork from "./ArtworkGridItem"
 
 import { GenericGrid_artworks } from "__generated__/GenericGrid_artworks.graphql"
 
@@ -180,7 +180,7 @@ const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
       image {
         aspect_ratio
       }
-      ...Artwork_artwork
+      ...ArtworkGridItem_artwork
     }
   `,
 })

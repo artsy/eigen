@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtworkPreview_artwork$ref } from "./ArtworkPreview_artwork.graphql";
 declare const _Inquiry_artwork$ref: unique symbol;
 export type Inquiry_artwork$ref = typeof _Inquiry_artwork$ref;
@@ -17,15 +17,7 @@ export type Inquiry_artwork = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Inquiry_artwork",
   "type": "Artwork",
@@ -68,18 +60,15 @@ return {
           "name": "name",
           "args": null,
           "storageKey": null
-        },
-        v0
+        }
       ]
     },
     {
       "kind": "FragmentSpread",
       "name": "ArtworkPreview_artwork",
       "args": null
-    },
-    v0
+    }
   ]
 };
-})();
 (node as any).hash = '2e11e336d72a6fecec5b35b5bcabfcea';
 export default node;

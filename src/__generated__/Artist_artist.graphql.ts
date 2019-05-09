@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { About_artist$ref } from "./About_artist.graphql";
 import { Artworks_artist$ref } from "./Artworks_artist.graphql";
 import { Header_artist$ref } from "./Header_artist.graphql";
@@ -23,7 +23,7 @@ export type Artist_artist = {
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Artist_artist",
   "type": "Artist",
@@ -109,13 +109,6 @@ const node: ConcreteFragment = {
       "kind": "FragmentSpread",
       "name": "Artworks_artist",
       "args": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": "__id",
-      "name": "id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };

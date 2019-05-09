@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _Artists_me$ref: unique symbol;
 export type Artists_me$ref = typeof _Artists_me$ref;
 export type Artists_me = {
@@ -28,15 +28,7 @@ export type Artists_me = {
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Artists_me",
   "type": "Me",
@@ -173,11 +165,9 @@ return {
                           "storageKey": null
                         }
                       ]
-                    },
-                    v0
+                    }
                   ]
                 },
-                v0,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -197,10 +187,8 @@ return {
           ]
         }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
 (node as any).hash = '07144b0ce87f52dfd91058762e6e0474';
 export default node;

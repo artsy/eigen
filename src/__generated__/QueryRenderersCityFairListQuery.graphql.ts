@@ -42,7 +42,7 @@ fragment CityFairList_city on City {
             lat
             lng
           }
-          __id: id
+          id
         }
         image {
           image_url
@@ -60,11 +60,10 @@ fragment CityFairList_city on City {
           id
           gravityID
           name
-          __id: id
         }
         start_at
         end_at
-        __id: id
+        id
         __typename
       }
       cursor
@@ -94,21 +93,47 @@ v1 = [
     "type": "String"
   }
 ],
-v2 = {
+v2 = [
+  {
+    "kind": "Literal",
+    "name": "after",
+    "value": "",
+    "type": "String"
+  },
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 20,
+    "type": "Int"
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "START_AT_ASC",
+    "type": "FairSorts"
+  },
+  {
+    "kind": "Literal",
+    "name": "status",
+    "value": "CURRENT",
+    "type": "EventStatus"
+  }
+],
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "gravityID",
   "args": null,
   "storageKey": null
 },
-v3 = {
+v4 = {
   "kind": "ScalarField",
-  "alias": "__id",
+  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v4 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
@@ -117,24 +142,19 @@ v4 = {
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "QueryRenderersCityFairListQuery",
-  "id": null,
-  "text": "query QueryRenderersCityFairListQuery(\n  $citySlug: String!\n) {\n  city(slug: $citySlug) {\n    ...CityFairList_city\n  }\n}\n\nfragment CityFairList_city on City {\n  slug\n  fairs(first: 20, after: \"\", status: CURRENT, sort: START_AT_ASC) {\n    edges {\n      node {\n        gravityID\n        name\n        exhibition_period\n        counts {\n          partners\n        }\n        location {\n          coordinates {\n            lat\n            lng\n          }\n          __id: id\n        }\n        image {\n          image_url\n          aspect_ratio\n          url\n        }\n        profile {\n          icon {\n            gravityID\n            href\n            height\n            width\n            url(version: \"square140\")\n          }\n          id\n          gravityID\n          name\n          __id: id\n        }\n        start_at\n        end_at\n        __id: id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n",
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "QueryRenderersCityFairListQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "city",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "City",
         "plural": false,
         "selections": [
@@ -150,14 +170,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "QueryRenderersCityFairListQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "city",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "City",
         "plural": false,
         "selections": [
@@ -173,32 +193,7 @@ return {
             "alias": null,
             "name": "fairs",
             "storageKey": "fairs(after:\"\",first:20,sort:\"START_AT_ASC\",status:\"CURRENT\")",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "after",
-                "value": "",
-                "type": "String"
-              },
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 20,
-                "type": "Int"
-              },
-              {
-                "kind": "Literal",
-                "name": "sort",
-                "value": "START_AT_ASC",
-                "type": "FairSorts"
-              },
-              {
-                "kind": "Literal",
-                "name": "status",
-                "value": "CURRENT",
-                "type": "EventStatus"
-              }
-            ],
+            "args": (v2/*: any*/),
             "concreteType": "FairConnection",
             "plural": false,
             "selections": [
@@ -252,7 +247,7 @@ return {
                           }
                         ]
                       },
-                      v2,
+                      (v3/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -312,10 +307,10 @@ return {
                               }
                             ]
                           },
-                          v3
+                          (v4/*: any*/)
                         ]
                       },
-                      v4,
+                      (v5/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -334,7 +329,7 @@ return {
                             "concreteType": "Image",
                             "plural": false,
                             "selections": [
-                              v2,
+                              (v3/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -372,16 +367,9 @@ return {
                               }
                             ]
                           },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "id",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          v2,
-                          v4,
-                          v3
+                          (v4/*: any*/),
+                          (v3/*: any*/),
+                          (v5/*: any*/)
                         ]
                       },
                       {
@@ -398,7 +386,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v3,
+                      (v4/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -448,32 +436,7 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "fairs",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "after",
-                "value": "",
-                "type": "String"
-              },
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 20,
-                "type": "Int"
-              },
-              {
-                "kind": "Literal",
-                "name": "sort",
-                "value": "START_AT_ASC",
-                "type": "FairSorts"
-              },
-              {
-                "kind": "Literal",
-                "name": "status",
-                "value": "CURRENT",
-                "type": "EventStatus"
-              }
-            ],
+            "args": (v2/*: any*/),
             "handle": "connection",
             "key": "CityFairList_fairs",
             "filters": [
@@ -484,6 +447,13 @@ return {
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "QueryRenderersCityFairListQuery",
+    "id": "0c133553ee090f49b2897e3fe7cca243",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

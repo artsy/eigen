@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _CitySectionList_city$ref: unique symbol;
 export type CitySectionList_city$ref = typeof _CitySectionList_city$ref;
 export type CitySectionList_city = {
@@ -44,7 +44,7 @@ export type CitySectionList_city = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -56,13 +56,6 @@ v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
-  "kind": "ScalarField",
-  "alias": "__id",
-  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -121,7 +114,7 @@ return {
     }
   ],
   "selections": [
-    v0,
+    (v0/*: any*/),
     {
       "kind": "LinkedField",
       "alias": "shows",
@@ -208,7 +201,7 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "href",
+                  "name": "status",
                   "args": null,
                   "storageKey": null
                 },
@@ -257,19 +250,19 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "status",
+                  "name": "internalID",
                   "args": null,
                   "storageKey": null
                 },
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "internalID",
+                  "name": "href",
                   "args": null,
                   "storageKey": null
                 },
-                v1,
-                v0,
+                (v1/*: any*/),
+                (v0/*: any*/),
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -304,13 +297,12 @@ return {
                   "concreteType": null,
                   "plural": false,
                   "selections": [
-                    v2,
                     {
                       "kind": "InlineFragment",
                       "type": "Partner",
                       "selections": [
-                        v0,
-                        v1,
+                        (v0/*: any*/),
+                        (v1/*: any*/),
                         {
                           "kind": "LinkedField",
                           "alias": null,
@@ -344,15 +336,13 @@ return {
                                   "storageKey": "url(version:\"square\")"
                                 }
                               ]
-                            },
-                            v2
+                            }
                           ]
                         }
                       ]
                     }
                   ]
                 },
-                v2,
                 {
                   "kind": "ScalarField",
                   "alias": null,

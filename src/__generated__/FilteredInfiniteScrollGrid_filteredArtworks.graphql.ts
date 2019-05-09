@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtworksGridPaginationContainer_filteredArtworks$ref } from "./ArtworksGridPaginationContainer_filteredArtworks.graphql";
 import { Filters_filteredArtworks$ref } from "./Filters_filteredArtworks.graphql";
 declare const _FilteredInfiniteScrollGrid_filteredArtworks$ref: unique symbol;
@@ -12,7 +12,7 @@ export type FilteredInfiniteScrollGrid_filteredArtworks = {
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "FilteredInfiniteScrollGrid_filteredArtworks",
   "type": "FilterArtworks",
@@ -28,13 +28,6 @@ const node: ConcreteFragment = {
       "kind": "FragmentSpread",
       "name": "ArtworksGridPaginationContainer_filteredArtworks",
       "args": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": "__id",
-      "name": "id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };

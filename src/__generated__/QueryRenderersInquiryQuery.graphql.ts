@@ -23,7 +23,7 @@ query QueryRenderersInquiryQuery(
 ) {
   artwork(id: $artworkID) {
     ...Inquiry_artwork
-    __id: id
+    id
   }
 }
 
@@ -33,10 +33,9 @@ fragment Inquiry_artwork on Artwork {
   contact_message
   partner {
     name
-    __id: id
+    id
   }
   ...ArtworkPreview_artwork
-  __id: id
 }
 
 fragment ArtworkPreview_artwork on Artwork {
@@ -48,7 +47,6 @@ fragment ArtworkPreview_artwork on Artwork {
   image {
     url
   }
-  __id: id
 }
 */
 
@@ -71,31 +69,26 @@ v1 = [
 ],
 v2 = {
   "kind": "ScalarField",
-  "alias": "__id",
+  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "QueryRenderersInquiryQuery",
-  "id": null,
-  "text": "query QueryRenderersInquiryQuery(\n  $artworkID: String!\n) {\n  artwork(id: $artworkID) {\n    ...Inquiry_artwork\n    __id: id\n  }\n}\n\nfragment Inquiry_artwork on Artwork {\n  internalID\n  gravityID\n  contact_message\n  partner {\n    name\n    __id: id\n  }\n  ...ArtworkPreview_artwork\n  __id: id\n}\n\nfragment ArtworkPreview_artwork on Artwork {\n  gravityID\n  internalID\n  title\n  artist_names\n  date\n  image {\n    url\n  }\n  __id: id\n}\n",
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "QueryRenderersInquiryQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artwork",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
@@ -103,8 +96,7 @@ return {
             "kind": "FragmentSpread",
             "name": "Inquiry_artwork",
             "args": null
-          },
-          v2
+          }
         ]
       }
     ]
@@ -112,14 +104,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "QueryRenderersInquiryQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artwork",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
@@ -160,7 +152,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v2
+              (v2/*: any*/)
             ]
           },
           {
@@ -202,10 +194,17 @@ return {
               }
             ]
           },
-          v2
+          (v2/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "QueryRenderersInquiryQuery",
+    "id": "820a207464d113a1f04a3c89649aa9b8",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

@@ -16,6 +16,13 @@
 
 ### Master
 
+- Bootstrap Artwork component view controller - alloy & david
+
+### 1.10.1
+
+- Removes yellow box warnings from node_modules - ash
+- Adds pull-to-refresh controls to fav tab components - ash
+
 ### 1.10.0
 
 ### 1.10.0
