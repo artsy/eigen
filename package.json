@@ -99,7 +99,7 @@
     "simple-markdown": "^0.4.2",
     "styled-components": "3.4.9",
     "supercluster": "^6.0.1",
-    "tipsi-stripe": "7.4.0"
+    "tipsi-stripe": "7.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

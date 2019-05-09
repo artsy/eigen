@@ -34,7 +34,7 @@ PODS:
     - RNSVG (= 9.0.4)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.30.3)
-    - tipsi-stripe (= 7.4.0)
+    - tipsi-stripe (= 7.5.0)
     - yoga (= 0.59.2.React)
   - Expecta (1.0.6)
   - Extraction (1.2.4):
@@ -163,7 +163,7 @@ PODS:
     - Sentry/KSCrash (~> 3.9.0)
   - Specta (1.0.7)
   - Stripe (14.0.0)
-  - tipsi-stripe (7.4.0):
+  - tipsi-stripe (7.5.0):
     - React
     - Stripe (~> 14.0.0)
   - "UIView+BooleanAnimations (1.0.2)"
@@ -268,7 +268,7 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
-  Emission: 2b6b4b05ccecdb40f0fbdb974b74473c4b943066
+  Emission: 434ce2ca3fa157df9aa2e1ef2609d82eaf0d263f
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
@@ -276,7 +276,7 @@ SPEC CHECKSUMS:
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
-  Keys: 7e91fe066d4f94790fd35b5a9fc63e441cd3b6d2
+  Keys: a576f4c9c1c641ca913a959a9c62ed3f215a8de9
   KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   "NSURL+QueryDictionary": bae616404e2adf6409d3d5c02a093cbf44c8a236
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
@@ -291,10 +291,10 @@ SPEC CHECKSUMS:
   SentryReactNative: 3dff4e9bd82aa581dc64ff8d2524d7007cea076b
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
-  tipsi-stripe: a06dc6eaccd598d0c4d3094cd420c71844701c46
+  tipsi-stripe: 2d0e33b5bb62168cd1f1777a904781725c5baf8a
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 3768a3026ade0fb46a68f3a31a917cf86bc34fc4
 
 PODFILE CHECKSUM: 6ce077b9f33ee2c2539754b4d34c29b0fe2abf2b
 
-COCOAPODS: 1.6.0
+COCOAPODS: 1.6.1
