@@ -1,3 +1,4 @@
+import { ArtworkContainer as Artwork } from "lib/Scenes/Artwork"
 import CityBMWList from "lib/Scenes/City/CityBMWList"
 import CityFairList from "lib/Scenes/City/CityFairList"
 import CitySavedList from "lib/Scenes/City/CitySavedList"
@@ -18,6 +19,7 @@ import WorksForYou from "./WorksForYou"
 
 export default {
   Artist,
+  Artwork,
   BidFlow,
   CitySavedList,
   CityBMWList,

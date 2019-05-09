@@ -24,6 +24,7 @@ import {
   ShowRenderer,
   WorksForYouRenderer,
 } from "./relay/QueryRenderers"
+import { ArtworkRenderer } from "./Scenes/Artwork"
 import { CityView } from "./Scenes/City"
 import { CityPicker } from "./Scenes/City/CityPicker"
 import {
@@ -73,6 +74,18 @@ const Artist: React.SFC<ArtistProps> = track<ArtistProps>(props => {
     context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
   }
 })(props => <ArtistRenderer {...props} render={renderWithLoadProgress(Containers.Artist, props)} />)
+
+interface ArtworkProps {
+  artworkID: string
+}
+
+const Artwork: React.SFC<ArtworkProps> = track<ArtworkProps>(props => {
+  return {
+    context_screen: Schema.PageNames.ArtworkPage,
+    context_screen_owner_slug: props.artworkID,
+    context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+  }
+})(props => <ArtworkRenderer artworkID={props.artworkID} />)
 
 const Inbox: React.SFC<{}> = track<{}>(() => {
   return { context_screen: Schema.PageNames.InboxPage, context_screen_owner_type: null }
@@ -291,6 +304,7 @@ const CitySavedList: React.SFC<CitySavedListProps> = ({ citySlug }) => {
 
 AppRegistry.registerComponent("Consignments", () => Consignments)
 AppRegistry.registerComponent("Artist", () => Artist)
+AppRegistry.registerComponent("Artwork", () => Artwork)
 AppRegistry.registerComponent("Home", () => HomeScene)
 AppRegistry.registerComponent("Gene", () => Gene)
 AppRegistry.registerComponent("WorksForYou", () => WorksForYou)
