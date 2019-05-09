@@ -11,7 +11,7 @@ import { Dimensions, LayoutChangeEvent, ScrollView, StyleSheet, View, ViewStyle 
 import { RelayPaginationProp } from "react-relay"
 
 import Spinner from "../Spinner"
-import Artwork from "./Artwork"
+import Artwork from "./ArtworkGridItem"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"

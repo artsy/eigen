@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
 
 export default createFragmentContainer(Artwork, {
   artwork: graphql`
-    fragment Artwork_artwork on Artwork {
+    fragment ArtworkGridItem_artwork on Artwork {
       title
       date
       sale_message
