@@ -61,7 +61,7 @@ fragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks {
         image {
           aspect_ratio
         }
-        ...Artwork_artwork
+        ...ArtworkGridItem_artwork
         __typename
       }
       cursor
@@ -69,7 +69,7 @@ fragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks {
   }
 }
 
-fragment Artwork_artwork on Artwork {
+fragment ArtworkGridItem_artwork on Artwork {
   title
   date
   sale_message
@@ -201,7 +201,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "FilteredInfiniteScrollGridTestsQuery",
-  "id": "e224bb99c21d6a18872cd5ea12b06190",
+  "id": "5b48e57e13dcc70aa7ef934557cdbff3",
   "text": null,
   "metadata": {},
   "fragment": {

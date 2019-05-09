@@ -257,10 +257,10 @@ fragment GenericGrid_artworks on Artwork {
   image {
     aspect_ratio
   }
-  ...Artwork_artwork
+  ...ArtworkGridItem_artwork
 }
 
-fragment Artwork_artwork on Artwork {
+fragment ArtworkGridItem_artwork on Artwork {
   title
   date
   sale_message
@@ -466,7 +466,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersShowQuery",
-  "id": "f76af1876fa7c07bdace57fd5ad658eb",
+  "id": "86fac2637f927c8553122033de4f3e24",
   "text": null,
   "metadata": {},
   "fragment": {

@@ -1,7 +1,7 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-import { Artwork_artwork$ref } from "./Artwork_artwork.graphql";
+import { ArtworkGridItem_artwork$ref } from "./ArtworkGridItem_artwork.graphql";
 declare const _SaleArtworksGrid_sale$ref: unique symbol;
 export type SaleArtworksGrid_sale$ref = typeof _SaleArtworksGrid_sale$ref;
 export type SaleArtworksGrid_sale = {
@@ -20,7 +20,7 @@ export type SaleArtworksGrid_sale = {
                     readonly image: ({
                         readonly aspect_ratio: number;
                     }) | null;
-                    readonly " $fragmentRefs": Artwork_artwork$ref;
+                    readonly " $fragmentRefs": ArtworkGridItem_artwork$ref;
                 }) | null;
             }) | null;
         }) | null> | null;
@@ -166,7 +166,7 @@ return {
                     },
                     {
                       "kind": "FragmentSpread",
-                      "name": "Artwork_artwork",
+                      "name": "ArtworkGridItem_artwork",
                       "args": null
                     }
                   ]
@@ -195,5 +195,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '173f04eab71fced664dcf4a84bf3f3c5';
+(node as any).hash = 'e4c7ac4ae1b49ecfe147fb750d338019';
 export default node;

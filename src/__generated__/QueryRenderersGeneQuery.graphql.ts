@@ -82,7 +82,7 @@ fragment GeneArtworksGrid_filtered_artworks_32r0OK on FilterArtworks {
         image {
           aspect_ratio
         }
-        ...Artwork_artwork
+        ...ArtworkGridItem_artwork
         __typename
       }
       cursor
@@ -90,7 +90,7 @@ fragment GeneArtworksGrid_filtered_artworks_32r0OK on FilterArtworks {
   }
 }
 
-fragment Artwork_artwork on Artwork {
+fragment ArtworkGridItem_artwork on Artwork {
   title
   date
   sale_message
@@ -262,7 +262,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "QueryRenderersGeneQuery",
-  "id": "566405923fc4928e7b0c07f51bc72d7b",
+  "id": "7b03b8ba2f0635e60341232fdf07ffe5",
   "text": null,
   "metadata": {},
   "fragment": {

@@ -52,7 +52,7 @@ fragment ArtistForSaleArtworksGrid_artist_3KQYpM on Artist {
         image {
           aspect_ratio
         }
-        ...Artwork_artwork
+        ...ArtworkGridItem_artwork
         __typename
       }
       cursor
@@ -60,7 +60,7 @@ fragment ArtistForSaleArtworksGrid_artist_3KQYpM on Artist {
   }
 }
 
-fragment Artwork_artwork on Artwork {
+fragment ArtworkGridItem_artwork on Artwork {
   title
   date
   sale_message
@@ -187,7 +187,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtistForSaleArtworksGridQuery",
-  "id": "3ec88fac128c12ebecc80d652f3db6dc",
+  "id": "e7a1468ddaebe511d7d38a232e05614d",
   "text": null,
   "metadata": {},
   "fragment": {

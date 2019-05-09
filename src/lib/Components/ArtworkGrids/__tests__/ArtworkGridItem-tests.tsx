@@ -3,7 +3,7 @@ import "react-native"
 import React from "react"
 import * as renderer from "react-test-renderer"
 
-import Artwork from "../Artwork"
+import Artwork from "../ArtworkGridItem"
 
 it("renders properly", () => {
   const artwork = renderer.create(<Artwork artwork={artworkProps() as any} />).toJSON()

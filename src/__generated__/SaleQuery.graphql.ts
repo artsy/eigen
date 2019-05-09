@@ -59,7 +59,7 @@ fragment SaleArtworksGrid_sale on Sale {
           image {
             aspect_ratio
           }
-          ...Artwork_artwork
+          ...ArtworkGridItem_artwork
         }
         __id
         __typename
@@ -69,7 +69,7 @@ fragment SaleArtworksGrid_sale on Sale {
   }
 }
 
-fragment Artwork_artwork on Artwork {
+fragment ArtworkGridItem_artwork on Artwork {
   title
   date
   sale_message
@@ -186,7 +186,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "SaleQuery",
-  "id": "825fc62d719d499459167dc5fb6f6b16",
+  "id": "b3c8dbe658acf91ea94bdfe9d88ed5fa",
   "text": null,
   "metadata": {},
   "fragment": {

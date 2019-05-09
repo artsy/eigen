@@ -31,7 +31,7 @@ const SaleArtworksGrid = createPaginationContainer<Props>(
                 image {
                   aspect_ratio
                 }
-                ...Artwork_artwork
+                ...ArtworkGridItem_artwork
               }
             }
           }

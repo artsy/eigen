@@ -1,0 +1,3 @@
+{
+  "1e4022982c4f1457bac6ded01af8577f": "query ArtworkQuery(\n  $artworkID: String!\n) {\n  artwork(id: $artworkID) {\n    ...Artwork_artwork\n    __id\n  }\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  __id\n}\n"
+}

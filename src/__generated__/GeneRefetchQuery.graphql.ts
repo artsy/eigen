@@ -84,7 +84,7 @@ fragment GeneArtworksGrid_filtered_artworks_2GL9EE on FilterArtworks {
         image {
           aspect_ratio
         }
-        ...Artwork_artwork
+        ...ArtworkGridItem_artwork
         __typename
       }
       cursor
@@ -92,7 +92,7 @@ fragment GeneArtworksGrid_filtered_artworks_2GL9EE on FilterArtworks {
   }
 }
 
-fragment Artwork_artwork on Artwork {
+fragment ArtworkGridItem_artwork on Artwork {
   title
   date
   sale_message
@@ -270,7 +270,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "GeneRefetchQuery",
-  "id": "16db08a3b713196cf4c3397b3cb110f3",
+  "id": "4c756596c8d6d4781c2098270d593335",
   "text": null,
   "metadata": {},
   "fragment": {

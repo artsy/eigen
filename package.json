@@ -44,7 +44,7 @@
     "sync-cities": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/src/schema/city/cityDataSortedByDisplayPreference.json -o data/cityDataSortedByDisplayPreference.json",
     "version": "yarn install && yarn bundle && pushd Example && bundle install && bundle exec pod update Emission --no-repo-update && popd && git add Pod/Assets Example/Podfile.lock",
     "postinstall": "prettier --write package.json",
-    "prestorybook": "rnstl",
+    "prestorybook": "rnstl --silent",
     "prepare": "patch-package"
   },
   "repository": {
@@ -99,7 +99,7 @@
     "simple-markdown": "^0.4.2",
     "styled-components": "3.4.9",
     "supercluster": "^6.0.1",
-    "tipsi-stripe": "7.4.0"
+    "tipsi-stripe": "7.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

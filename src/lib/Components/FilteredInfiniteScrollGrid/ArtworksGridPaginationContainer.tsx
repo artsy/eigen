@@ -24,7 +24,7 @@ export const ArtworksGridPaginationContainer = createPaginationContainer<RelayPr
               image {
                 aspect_ratio
               }
-              ...Artwork_artwork
+              ...ArtworkGridItem_artwork
             }
           }
         }

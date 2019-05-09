@@ -77,6 +77,7 @@ export interface PageView {
 
 export enum PageNames {
   ArtistPage = "Artist",
+  ArtworkPage = "Artwork",
   BidFlowMaxBidPage = "YourMaxBid",
   BidFlowConfirmBidPage = "ConfirmYourBid",
   BidFlowBillingAddressPage = "YourBillingAddress",

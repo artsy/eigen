@@ -52,7 +52,7 @@ fragment ArtistNotForSaleArtworksGrid_artist_3KQYpM on Artist {
         image {
           aspect_ratio
         }
-        ...Artwork_artwork
+        ...ArtworkGridItem_artwork
         __typename
       }
       cursor
@@ -60,7 +60,7 @@ fragment ArtistNotForSaleArtworksGrid_artist_3KQYpM on Artist {
   }
 }
 
-fragment Artwork_artwork on Artwork {
+fragment ArtworkGridItem_artwork on Artwork {
   title
   date
   sale_message
@@ -187,7 +187,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtistNotForSaleArtworksGridQuery",
-  "id": "947964d88dd6a30931de9f6158486298",
+  "id": "a35e40ba128166623bce7d2cc48b38ee",
   "text": null,
   "metadata": {},
   "fragment": {
