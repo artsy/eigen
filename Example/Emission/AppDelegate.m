@@ -19,6 +19,7 @@
 
 #import "ARStorybookComponentViewController.h"
 #import <Emission/ARArtistComponentViewController.h>
+#import <Emission/ARArtworkComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARShowComponentViewController.h>
@@ -286,6 +287,11 @@ randomBOOL(void)
   if ([route hasPrefix:@"/artist/"] && [route componentsSeparatedByString:@"/"].count == 3) {
     NSString *artistID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARArtistComponentViewController alloc] initWithArtistID:artistID];
+
+  } else if ([route hasPrefix:@"/artwork/"]) {
+    NSString *artworkID = [[route componentsSeparatedByString:@"/"] lastObject];
+    viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:artworkID];
+
   } else if ([route hasPrefix:@"/gene/"] || [route hasPrefix:@"gene/"]) {
     NSString *geneID = [[[[route componentsSeparatedByString:@"/"] lastObject] componentsSeparatedByString:@"?"] firstObject];
     NSURLComponents *components = [NSURLComponents componentsWithString:route];
@@ -294,7 +300,7 @@ randomBOOL(void)
       params[item.name] = item.value;
     }
     viewController = [[ARGeneComponentViewController alloc] initWithGeneID:geneID refineSettings:params];
-
+    
   } else if ([route hasPrefix:@"/conversation/"] || [route hasPrefix:@"conversation/"]) {
     NSString *conversationID = [[route componentsSeparatedByString:@"/"] lastObject];
     viewController = [[ARConversationComponentViewController alloc] initWithConversationID:conversationID];
