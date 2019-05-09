@@ -113,9 +113,7 @@
   [sectionData addCellData:self.jumpToShow];
   [sectionData addCellData:self.jumpToFair];
   [sectionData addCellData:self.jumpToMap];
-  [sectionData addCellData:self.jumpToInstitutionArtwork];
-  [sectionData addCellData:self.jumpToBNMOArtwork];
-  [sectionData addCellData:self.jumpToBiddableArtwork];
+  [sectionData addCellData:self.jumpToArtwork];
   [sectionData addCellData:self.jumpToArtist];
   [sectionData addCellData:self.jumpToRandomArtist];
   [sectionData addCellData:self.jumpToHomepage];
@@ -234,28 +232,10 @@
   }];
 }
 
-// At some point, this work will probably no longer be eligible for BNMO :shrug:
-- (ARCellData *)jumpToBNMOArtwork
+- (ARCellData *)jumpToArtwork
 {
-  return [self tappableCellDataWithTitle:@"Artwork - BNMO" selection:^{
+  return [self tappableCellDataWithTitle:@"Artwork" selection:^{
     id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"enrico-baj-portrait-1-from-baj-chez-picasso"];
-    [self.navigationController pushViewController:viewController animated:YES];
-  }];
-}
-
-// Hopefully this is an artowkr in a mocktion that gets recreated in staging each week
-- (ARCellData *)jumpToBiddableArtwork
-{
-  return [self tappableCellDataWithTitle:@"Artwork - Biddable" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"pablo-picasso-buste-de-femme-assise-dans-un-fauteuil"];
-    [self.navigationController pushViewController:viewController animated:YES];
-  }];
-}
-
-- (ARCellData *)jumpToInstitutionArtwork
-{
-  return [self tappableCellDataWithTitle:@"Artwork - Institution" selection:^{
-    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"pablo-picasso-le-reve-the-dream"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
