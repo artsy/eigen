@@ -22,6 +22,10 @@ jobs:
           name: List Simulators
           command: xcrun simctl list
 
+      - run:
+          name: Install Bundler 2.0.1
+          command: sudo gem install bundler -v 2.0.1
+
       - checkout
 
       - restore_cache:
