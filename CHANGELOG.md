@@ -16,6 +16,8 @@
 
 ### Master
 
+- Bootstrap Artwork component view controller - alloy & david
+
 ### 1.10.1
 
 - Removes yellow box warnings from node_modules - ash
