@@ -18,6 +18,7 @@
 #import <Emission/ARGraphQLQueryCache.h>
 
 #import <Emission/ARArtistComponentViewController.h>
+#import <Emission/ARArtworkComponentViewController.h>
 #import <Emission/ARHomeComponentViewController.h>
 #import <Emission/ARGeneComponentViewController.h>
 #import <Emission/ARWorksForYouComponentViewController.h>
@@ -112,6 +113,9 @@
   [sectionData addCellData:self.jumpToShow];
   [sectionData addCellData:self.jumpToFair];
   [sectionData addCellData:self.jumpToMap];
+  [sectionData addCellData:self.jumpToInstitutionArtwork];
+  [sectionData addCellData:self.jumpToBNMOArtwork];
+  [sectionData addCellData:self.jumpToBiddableArtwork];
   [sectionData addCellData:self.jumpToArtist];
   [sectionData addCellData:self.jumpToRandomArtist];
   [sectionData addCellData:self.jumpToHomepage];
@@ -226,6 +230,32 @@
   return [self tappableCellDataWithTitle:@"Open Emission beta Docs" selection: ^{
     NSURL *url = [NSURL URLWithString:@"https://github.com/artsy/emission/blob/master/docs/using_the_beta.md"];
     id viewController = [[InternalWebViewController alloc] initWithURL:url];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+// At some point, this work will probably no longer be eligible for BNMO :shrug:
+- (ARCellData *)jumpToBNMOArtwork
+{
+  return [self tappableCellDataWithTitle:@"Artwork - BNMO" selection:^{
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"enrico-baj-portrait-1-from-baj-chez-picasso"];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+// Hopefully this is an artowkr in a mocktion that gets recreated in staging each week
+- (ARCellData *)jumpToBiddableArtwork
+{
+  return [self tappableCellDataWithTitle:@"Artwork - Biddable" selection:^{
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"pablo-picasso-buste-de-femme-assise-dans-un-fauteuil"];
+    [self.navigationController pushViewController:viewController animated:YES];
+  }];
+}
+
+- (ARCellData *)jumpToInstitutionArtwork
+{
+  return [self tappableCellDataWithTitle:@"Artwork - Institution" selection:^{
+    id viewController = [[ARArtworkComponentViewController alloc] initWithArtworkID:@"pablo-picasso-le-reve-the-dream"];
     [self.navigationController pushViewController:viewController animated:YES];
   }];
 }
