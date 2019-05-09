@@ -1,5 +1,6 @@
 import { Theme } from "@artsy/palette"
 import { CityBMWList_city } from "__generated__/CityBMWList_city.graphql"
+import { CityBMWListQueryVariables } from "__generated__/CityBMWListQuery.graphql"
 import { PAGE_SIZE } from "lib/data/constants"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { Schema, screenTrack } from "lib/utils/track"
@@ -7,7 +8,7 @@ import React from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { EventList } from "./Components/EventList"
 
-interface Props {
+interface Props extends Pick<CityBMWListQueryVariables, "citySlug"> {
   city: CityBMWList_city
   relay: RelayPaginationProp
 }

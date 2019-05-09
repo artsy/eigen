@@ -151,7 +151,7 @@ export const FairArtistsContainer = createPaginationContainer(
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
         ...fragmentVariables,
-        id: props.fair.id,
+        id: props.fair.internalID,
         count,
         cursor,
       }

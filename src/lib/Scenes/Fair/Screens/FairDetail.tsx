@@ -322,7 +322,7 @@ export const FairDetailContainer = createPaginationContainer(
     },
     getVariables(props, { count, cursor }, { filter }) {
       return {
-        id: props.fair.id,
+        id: props.fair.internalID,
         count,
         cursor,
         filter,
