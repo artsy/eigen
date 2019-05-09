@@ -180,7 +180,7 @@ const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
       image {
         aspect_ratio
       }
-      ...Artwork_artwork
+      ...ArtworkGridItem_artwork
     }
   `,
 })

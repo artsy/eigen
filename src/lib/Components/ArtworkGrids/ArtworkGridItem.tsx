@@ -9,7 +9,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import SerifText from "../Text/Serif"
 
-import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
+import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
 
 const Badges = styled.View`
   position: absolute;
@@ -26,7 +26,7 @@ const Badge = styled.View`
 `
 
 interface Props {
-  artwork: Artwork_artwork
+  artwork: ArtworkGridItem_artwork
   // Passes the Artwork ID back up to another component
   // ideally, this would be used to send an array of Artworks
   // through to Eigen where this item is the default selected one.

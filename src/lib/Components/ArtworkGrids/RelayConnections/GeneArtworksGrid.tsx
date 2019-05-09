@@ -26,7 +26,7 @@ const GeneArtworksGrid = createPaginationContainer(
               image {
                 aspect_ratio
               }
-              ...Artwork_artwork
+              ...ArtworkGridItem_artwork
             }
           }
         }
