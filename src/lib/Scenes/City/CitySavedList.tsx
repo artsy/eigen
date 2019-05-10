@@ -153,7 +153,7 @@ export default createPaginationContainer(
     query: graphql`
       query CitySavedListQuery($count: Int!, $cursor: String, $citySlug: String!) {
         viewer {
-          ...CitySavedList_viewer @arguments(city: $citySlug, count: $count, cursor: $cursor)
+          ...CitySavedList_viewer @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
