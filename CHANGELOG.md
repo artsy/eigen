@@ -14,7 +14,7 @@
 
 -->
 
-### Master
+### 1.11.0
 
 - Bootstrap Artwork component view controller - alloy & david
 
