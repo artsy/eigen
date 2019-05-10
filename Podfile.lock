@@ -72,7 +72,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
-  - Emission (1.10.1):
+  - Emission (1.11.0):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -95,7 +95,7 @@ PODS:
     - RNSVG (= 9.0.4)
     - SDWebImage (< 4, >= 3.7.2)
     - SentryReactNative (= 0.30.3)
-    - tipsi-stripe (= 7.4.0)
+    - tipsi-stripe (= 7.5.0)
     - yoga (= 0.59.2.React)
   - Expecta (1.0.5)
   - "Expecta+Snapshots (3.0.0)":
@@ -263,7 +263,7 @@ PODS:
   - Stripe (14.0.0)
   - SwiftyJSON (4.0.0)
   - Then (2.3.0)
-  - tipsi-stripe (7.4.0):
+  - tipsi-stripe (7.5.0):
     - React
     - Stripe (~> 14.0.0)
   - UICKeyChainStore (1.0.5)
@@ -292,7 +292,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission (~> 1.0)
+  - Emission (~> 1.11.0)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -337,7 +337,7 @@ DEPENDENCIES:
   - Starscream
   - SwiftyJSON
   - Then
-  - tipsi-stripe (from `https://github.com/tipsi/tipsi-stripe.git`, tag `7.4.0`)
+  - tipsi-stripe (from `https://github.com/tipsi/tipsi-stripe.git`, tag `7.5.0`)
   - UICKeyChainStore
   - "UIView+BooleanAnimations"
   - VCRURLConnection
@@ -448,7 +448,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/alloy/SSFadingScrollView.git
   tipsi-stripe:
     :git: https://github.com/tipsi/tipsi-stripe.git
-    :tag: 7.4.0
+    :tag: 7.5.0
 
 CHECKOUT OPTIONS:
   AFOAuth1Client:
@@ -495,7 +495,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/alloy/SSFadingScrollView.git
   tipsi-stripe:
     :git: https://github.com/tipsi/tipsi-stripe.git
-    :tag: 7.4.0
+    :tag: 7.5.0
 
 SPEC CHECKSUMS:
   Adjust: b1f2b0e0b426fa991d69ed7fc9de806cf6dff5a6
@@ -518,7 +518,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: edbceec3372be19d6423ce67b1f1a97ec5d80150
+  Emission: 4f87136edd5a370ddbc15ac9953bfd47e45ab245
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
@@ -567,13 +567,13 @@ SPEC CHECKSUMS:
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
-  tipsi-stripe: a06dc6eaccd598d0c4d3094cd420c71844701c46
+  tipsi-stripe: 2d0e33b5bb62168cd1f1777a904781725c5baf8a
   UICKeyChainStore: e81dc3b58d56ffaed61ab6669eb97071e53fc377
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   VCRURLConnection: accd771ebd4be11183a3e4d5a4403f180a9a235e
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: 4ce3811b3db5f47fe1e125f15383003316a616b8
 
-PODFILE CHECKSUM: 1d26369ff279e0f7538e393c1fa2a874fb1ad0cc
+PODFILE CHECKSUM: f52f6fa8c2025046618c6926498a0331d41708e5
 
 COCOAPODS: 1.6.0.beta.1
