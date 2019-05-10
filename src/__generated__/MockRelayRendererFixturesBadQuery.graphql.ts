@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { MockRelayRendererFixtures_artwork$ref } from "./MockRelayRendererFixtures_artwork.graphql";
 export type MockRelayRendererFixturesBadQueryVariables = {};
 export type MockRelayRendererFixturesBadQueryResponse = {
-    readonly something_that_is_not_expected: ({
+    readonly something_that_is_not_expected: {
         readonly " $fragmentRefs": MockRelayRendererFixtures_artwork$ref;
-    }) | null;
+    } | null;
 };
 export type MockRelayRendererFixturesBadQuery = {
     readonly response: MockRelayRendererFixturesBadQueryResponse;
@@ -44,8 +44,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "mona-lisa",
-    "type": "String!"
+    "value": "mona-lisa"
   }
 ],
 v1 = {
@@ -148,7 +147,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MockRelayRendererFixturesBadQuery",
-    "id": "ab040493eb68f4cb47eb0f983cd4fdb2",
+    "id": "b36364071b6febbb68c78b418e8bfb7d",
     "text": null,
     "metadata": {}
   }

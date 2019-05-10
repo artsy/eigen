@@ -12,19 +12,30 @@ export type ShowItemRow_show = {
     readonly isStubShow: boolean | null;
     readonly partner: ({
         readonly name?: string | null;
-        readonly profile?: ({
-            readonly image: ({
+        readonly profile?: {
+            readonly image: {
                 readonly url: string | null;
-            }) | null;
-        }) | null;
-    }) | null;
+            } | null;
+        } | null;
+    } & ({
+        readonly name: string | null;
+        readonly profile: {
+            readonly image: {
+                readonly url: string | null;
+            } | null;
+        } | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly href: string | null;
     readonly exhibition_period: string | null;
     readonly status: string | null;
-    readonly cover_image: ({
+    readonly cover_image: {
         readonly url: string | null;
         readonly aspect_ratio: number;
-    }) | null;
+    } | null;
     readonly is_fair_booth: boolean | null;
     readonly start_at: string | null;
     readonly end_at: string | null;
@@ -51,14 +62,14 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "href",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -124,8 +135,7 @@ return {
                         {
                           "kind": "Literal",
                           "name": "version",
-                          "value": "square",
-                          "type": "[String]"
+                          "value": "square"
                         }
                       ],
                       "storageKey": "url(version:\"square\")"
@@ -141,7 +151,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "internalID",
+      "name": "href",
       "args": null,
       "storageKey": null
     },

@@ -10,12 +10,12 @@ export type UpdateConversationMutationVariables = {
     readonly input: UpdateConversationMutationInput;
 };
 export type UpdateConversationMutationResponse = {
-    readonly updateConversation: ({
-        readonly conversation: ({
+    readonly updateConversation: {
+        readonly conversation: {
             readonly internalID: string;
             readonly from_last_viewed_message_id: string | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type UpdateConversationMutation = {
     readonly response: UpdateConversationMutationResponse;
@@ -51,8 +51,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "input",
-    "variableName": "input",
-    "type": "UpdateConversationMutationInput!"
+    "variableName": "input"
   }
 ],
 v2 = {
@@ -145,7 +144,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "UpdateConversationMutation",
-    "id": "626412cd0663f305e8f508f8aeb9c553",
+    "id": "8b1b8891d85d2351a27f9b0c2f6a502b",
     "text": null,
     "metadata": {}
   }

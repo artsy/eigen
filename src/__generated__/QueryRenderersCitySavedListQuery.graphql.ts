@@ -6,9 +6,9 @@ export type QueryRenderersCitySavedListQueryVariables = {
     readonly citySlug: string;
 };
 export type QueryRenderersCitySavedListQueryResponse = {
-    readonly viewer: ({
+    readonly viewer: {
         readonly " $fragmentRefs": CitySavedList_viewer$ref;
-    }) | null;
+    } | null;
 };
 export type QueryRenderersCitySavedListQuery = {
     readonly response: QueryRenderersCitySavedListQueryResponse;
@@ -111,26 +111,22 @@ v2 = [
   {
     "kind": "Literal",
     "name": "after",
-    "value": "",
-    "type": "String"
+    "value": ""
   },
   {
     "kind": "Variable",
     "name": "city",
-    "variableName": "citySlug",
-    "type": "String"
+    "variableName": "citySlug"
   },
   {
     "kind": "Literal",
     "name": "first",
-    "value": 20,
-    "type": "Int"
+    "value": 20
   },
   {
     "kind": "Literal",
     "name": "status",
-    "value": "RUNNING_AND_UPCOMING",
-    "type": "EventStatus"
+    "value": "RUNNING_AND_UPCOMING"
   }
 ],
 v3 = {
@@ -204,8 +200,7 @@ return {
               {
                 "kind": "Variable",
                 "name": "slug",
-                "variableName": "citySlug",
-                "type": "String"
+                "variableName": "citySlug"
               }
             ],
             "concreteType": "City",
@@ -262,14 +257,14 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "exhibition_period",
+                                "name": "gravityID",
                                 "args": null,
                                 "storageKey": null
                               },
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "gravityID",
+                                "name": "internalID",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -306,7 +301,7 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "internalID",
+                                "name": "exhibition_period",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -423,8 +418,7 @@ return {
                                                   {
                                                     "kind": "Literal",
                                                     "name": "version",
-                                                    "value": "square",
-                                                    "type": "[String]"
+                                                    "value": "square"
                                                   }
                                                 ],
                                                 "storageKey": "url(version:\"square\")"
@@ -510,7 +504,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCitySavedListQuery",
-    "id": "16104d57df352d994547e7882be5f947",
+    "id": "98aa52f38707edd0a0835d5b6a703d41",
     "text": null,
     "metadata": {}
   }

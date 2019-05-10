@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { Artists_me$ref } from "./Artists_me.graphql";
 export type FavoriteArtistsQueryVariables = {};
 export type FavoriteArtistsQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Artists_me$ref;
-    }) | null;
+    } | null;
 };
 export type FavoriteArtistsQuery = {
     readonly response: FavoriteArtistsQueryResponse;
@@ -54,8 +54,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10,
-    "type": "Int"
+    "value": 10
   }
 ],
 v1 = {
@@ -247,7 +246,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtistsQuery",
-    "id": "1a3b1c0e2584328d41f07185fb29f309",
+    "id": "13ce6e809b67eac867e0f3d07b1d2111",
     "text": null,
     "metadata": {}
   }

@@ -25,12 +25,12 @@ export type ConfirmBidUpdateUserMutationVariables = {
     readonly input: UpdateMyProfileInput;
 };
 export type ConfirmBidUpdateUserMutationResponse = {
-    readonly updateMyUserProfile: ({
+    readonly updateMyUserProfile: {
         readonly clientMutationId: string | null;
-        readonly user: ({
+        readonly user: {
             readonly phone: string | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type ConfirmBidUpdateUserMutation = {
     readonly response: ConfirmBidUpdateUserMutationResponse;
@@ -66,8 +66,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "input",
-    "variableName": "input",
-    "type": "UpdateMyProfileInput!"
+    "variableName": "input"
   }
 ],
 v2 = {
@@ -160,7 +159,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ConfirmBidUpdateUserMutation",
-    "id": "30b967c971f3916e1e4e9f9213e83b41",
+    "id": "3580c0fe3b32d9febb4e67be71192572",
     "text": null,
     "metadata": {}
   }

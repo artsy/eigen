@@ -6,9 +6,9 @@ export type QueryRenderersCityFairListQueryVariables = {
     readonly citySlug: string;
 };
 export type QueryRenderersCityFairListQueryResponse = {
-    readonly city: ({
+    readonly city: {
         readonly " $fragmentRefs": CityFairList_city$ref;
-    }) | null;
+    } | null;
 };
 export type QueryRenderersCityFairListQuery = {
     readonly response: QueryRenderersCityFairListQueryResponse;
@@ -89,34 +89,29 @@ v1 = [
   {
     "kind": "Variable",
     "name": "slug",
-    "variableName": "citySlug",
-    "type": "String"
+    "variableName": "citySlug"
   }
 ],
 v2 = [
   {
     "kind": "Literal",
     "name": "after",
-    "value": "",
-    "type": "String"
+    "value": ""
   },
   {
     "kind": "Literal",
     "name": "first",
-    "value": 20,
-    "type": "Int"
+    "value": 20
   },
   {
     "kind": "Literal",
     "name": "sort",
-    "value": "START_AT_ASC",
-    "type": "FairSorts"
+    "value": "START_AT_ASC"
   },
   {
     "kind": "Literal",
     "name": "status",
-    "value": "CURRENT",
-    "type": "EventStatus"
+    "value": "CURRENT"
   }
 ],
 v3 = {
@@ -129,14 +124,14 @@ v3 = {
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -215,39 +210,8 @@ return {
                     "concreteType": "Fair",
                     "plural": false,
                     "selections": [
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "image",
-                        "storageKey": null,
-                        "args": null,
-                        "concreteType": "Image",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "image_url",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "aspect_ratio",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "url",
-                            "args": null,
-                            "storageKey": null
-                          }
-                        ]
-                      },
                       (v3/*: any*/),
+                      (v4/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -307,10 +271,41 @@ return {
                               }
                             ]
                           },
-                          (v4/*: any*/)
+                          (v5/*: any*/)
                         ]
                       },
-                      (v5/*: any*/),
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "image",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "image_url",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "aspect_ratio",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "url",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -359,17 +354,16 @@ return {
                                   {
                                     "kind": "Literal",
                                     "name": "version",
-                                    "value": "square140",
-                                    "type": "[String]"
+                                    "value": "square140"
                                   }
                                 ],
                                 "storageKey": "url(version:\"square140\")"
                               }
                             ]
                           },
-                          (v4/*: any*/),
+                          (v5/*: any*/),
                           (v3/*: any*/),
-                          (v5/*: any*/)
+                          (v4/*: any*/)
                         ]
                       },
                       {
@@ -386,7 +380,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v4/*: any*/),
+                      (v5/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -451,7 +445,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCityFairListQuery",
-    "id": "0c133553ee090f49b2897e3fe7cca243",
+    "id": "5fe8405fd30d97b2f3a5b8d4a4436688",
     "text": null,
     "metadata": {}
   }

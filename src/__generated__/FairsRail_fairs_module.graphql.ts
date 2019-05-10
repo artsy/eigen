@@ -4,17 +4,17 @@ import { ReaderFragment } from "relay-runtime";
 declare const _FairsRail_fairs_module$ref: unique symbol;
 export type FairsRail_fairs_module$ref = typeof _FairsRail_fairs_module$ref;
 export type FairsRail_fairs_module = {
-    readonly results: ReadonlyArray<({
+    readonly results: ReadonlyArray<{
         readonly gravityID: string;
         readonly name: string | null;
-        readonly profile: ({
+        readonly profile: {
             readonly gravityID: string;
-        }) | null;
-        readonly mobile_image: ({
+        } | null;
+        readonly mobile_image: {
             readonly gravityID: string | null;
             readonly url: string | null;
-        }) | null;
-    }) | null>;
+        } | null;
+    } | null>;
     readonly " $refType": FairsRail_fairs_module$ref;
 };
 

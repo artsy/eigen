@@ -11,30 +11,45 @@ export type ConversationSnippet_conversation = {
     readonly last_message: string | null;
     readonly last_message_at: string | null;
     readonly unread: boolean | null;
-    readonly items: ReadonlyArray<({
+    readonly items: ReadonlyArray<{
         readonly item: ({
+            readonly __typename: string;
+            readonly date?: string | null;
+            readonly title?: string | null;
+            readonly artist_names?: string | null;
+            readonly image?: {
+                readonly url: string | null;
+            } | null;
+            readonly fair?: {
+                readonly name: string | null;
+            } | null;
+            readonly name?: string | null;
+            readonly cover_image?: {
+                readonly url: string | null;
+            } | null;
+        } & ({
             readonly __typename: "Artwork";
             readonly date: string | null;
             readonly title: string | null;
             readonly artist_names: string | null;
-            readonly image: ({
+            readonly image: {
                 readonly url: string | null;
-            }) | null;
+            } | null;
         } | {
             readonly __typename: "Show";
-            readonly fair: ({
+            readonly fair: {
                 readonly name: string | null;
-            }) | null;
+            } | null;
             readonly name: string | null;
-            readonly cover_image: ({
+            readonly cover_image: {
                 readonly url: string | null;
-            }) | null;
+            } | null;
         } | {
             /*This will never be '% other', but we need some
             value in case none of the concrete values match.*/
             readonly __typename: "%other";
-        }) | null;
-    }) | null> | null;
+        })) | null;
+    } | null> | null;
     readonly " $refType": ConversationSnippet_conversation$ref;
 };
 
@@ -132,33 +147,6 @@ return {
             },
             {
               "kind": "InlineFragment",
-              "type": "Show",
-              "selections": [
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "fair",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Fair",
-                  "plural": false,
-                  "selections": (v1/*: any*/)
-                },
-                (v0/*: any*/),
-                {
-                  "kind": "LinkedField",
-                  "alias": null,
-                  "name": "cover_image",
-                  "storageKey": null,
-                  "args": null,
-                  "concreteType": "Image",
-                  "plural": false,
-                  "selections": (v2/*: any*/)
-                }
-              ]
-            },
-            {
-              "kind": "InlineFragment",
               "type": "Artwork",
               "selections": [
                 {
@@ -186,6 +174,33 @@ return {
                   "kind": "LinkedField",
                   "alias": null,
                   "name": "image",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Image",
+                  "plural": false,
+                  "selections": (v2/*: any*/)
+                }
+              ]
+            },
+            {
+              "kind": "InlineFragment",
+              "type": "Show",
+              "selections": [
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "fair",
+                  "storageKey": null,
+                  "args": null,
+                  "concreteType": "Fair",
+                  "plural": false,
+                  "selections": (v1/*: any*/)
+                },
+                (v0/*: any*/),
+                {
+                  "kind": "LinkedField",
+                  "alias": null,
+                  "name": "cover_image",
                   "storageKey": null,
                   "args": null,
                   "concreteType": "Image",

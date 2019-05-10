@@ -11,12 +11,12 @@ export type Artist_artist = {
     readonly internalID: string;
     readonly gravityID: string;
     readonly has_metadata: boolean | null;
-    readonly counts: ({
+    readonly counts: {
         readonly artworks: any | null;
         readonly partner_shows: any | null;
         readonly related_artists: number | null;
         readonly articles: number | null;
-    }) | null;
+    } | null;
     readonly " $fragmentRefs": Header_artist$ref & About_artist$ref & Shows_artist$ref & Artworks_artist$ref;
     readonly " $refType": Artist_artist$ref;
 };

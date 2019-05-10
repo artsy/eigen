@@ -7,23 +7,23 @@ export type FairArtists_fair$ref = typeof _FairArtists_fair$ref;
 export type FairArtists_fair = {
     readonly gravityID: string;
     readonly internalID: string;
-    readonly artists: ({
+    readonly artists: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
             readonly startCursor: string | null;
             readonly endCursor: string | null;
         };
-        readonly edges: ReadonlyArray<({
+        readonly edges: ReadonlyArray<{
             readonly cursor: string;
-            readonly node: ({
+            readonly node: {
                 readonly sortable_id: string | null;
                 readonly href: string | null;
                 readonly internalID: string;
                 readonly gravityID: string;
                 readonly " $fragmentRefs": ArtistListItem_artist$ref;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": FairArtists_fair$ref;
 };
 
@@ -144,11 +144,6 @@ return {
               "plural": false,
               "selections": [
                 {
-                  "kind": "FragmentSpread",
-                  "name": "ArtistListItem_artist",
-                  "args": null
-                },
-                {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "sortable_id",
@@ -170,6 +165,11 @@ return {
                   "name": "__typename",
                   "args": null,
                   "storageKey": null
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "ArtistListItem_artist",
+                  "args": null
                 }
               ]
             }

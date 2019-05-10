@@ -10,23 +10,42 @@ export type RegistrationCreateCreditCardMutationVariables = {
     readonly input: CreditCardInput;
 };
 export type RegistrationCreateCreditCardMutationResponse = {
-    readonly createCreditCard: ({
+    readonly createCreditCard: {
         readonly creditCardOrError: ({
-            readonly creditCard?: ({
+            readonly creditCard?: {
                 readonly gravityID: string;
                 readonly brand: string;
                 readonly name: string | null;
                 readonly last_digits: string;
                 readonly expiration_month: number;
                 readonly expiration_year: number;
-            }) | null;
-            readonly mutationError?: ({
+            } | null;
+            readonly mutationError?: {
                 readonly type: string | null;
                 readonly message: string | null;
                 readonly detail: string | null;
-            }) | null;
-        }) | null;
-    }) | null;
+            } | null;
+        } & ({
+            readonly creditCard: {
+                readonly gravityID: string;
+                readonly brand: string;
+                readonly name: string | null;
+                readonly last_digits: string;
+                readonly expiration_month: number;
+                readonly expiration_year: number;
+            } | null;
+        } | {
+            readonly mutationError: {
+                readonly type: string | null;
+                readonly message: string | null;
+                readonly detail: string | null;
+            } | null;
+        } | {
+            /*This will never be '% other', but we need some
+            value in case none of the concrete values match.*/
+            readonly __typename: "%other";
+        })) | null;
+    } | null;
 };
 export type RegistrationCreateCreditCardMutation = {
     readonly response: RegistrationCreateCreditCardMutationResponse;
@@ -78,11 +97,52 @@ v1 = [
   {
     "kind": "Variable",
     "name": "input",
-    "variableName": "input",
-    "type": "CreditCardInput!"
+    "variableName": "input"
   }
 ],
 v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "brand",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "last_digits",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "expiration_month",
+  "args": null,
+  "storageKey": null
+},
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "expiration_year",
+  "args": null,
+  "storageKey": null
+},
+v8 = {
   "kind": "InlineFragment",
   "type": "CreditCardMutationFailure",
   "selections": [
@@ -119,48 +179,6 @@ v2 = {
       ]
     }
   ]
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "gravityID",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "brand",
-  "args": null,
-  "storageKey": null
-},
-v5 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v6 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "last_digits",
-  "args": null,
-  "storageKey": null
-},
-v7 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "expiration_month",
-  "args": null,
-  "storageKey": null
-},
-v8 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "expiration_year",
-  "args": null,
-  "storageKey": null
 };
 return {
   "kind": "Request",
@@ -189,7 +207,6 @@ return {
             "concreteType": null,
             "plural": false,
             "selections": [
-              (v2/*: any*/),
               {
                 "kind": "InlineFragment",
                 "type": "CreditCardMutationSuccess",
@@ -203,16 +220,17 @@ return {
                     "concreteType": "CreditCard",
                     "plural": false,
                     "selections": [
+                      (v2/*: any*/),
                       (v3/*: any*/),
                       (v4/*: any*/),
                       (v5/*: any*/),
                       (v6/*: any*/),
-                      (v7/*: any*/),
-                      (v8/*: any*/)
+                      (v7/*: any*/)
                     ]
                   }
                 ]
-              }
+              },
+              (v8/*: any*/)
             ]
           }
         ]
@@ -249,7 +267,6 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v2/*: any*/),
               {
                 "kind": "InlineFragment",
                 "type": "CreditCardMutationSuccess",
@@ -263,12 +280,12 @@ return {
                     "concreteType": "CreditCard",
                     "plural": false,
                     "selections": [
+                      (v2/*: any*/),
                       (v3/*: any*/),
                       (v4/*: any*/),
                       (v5/*: any*/),
                       (v6/*: any*/),
                       (v7/*: any*/),
-                      (v8/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -279,7 +296,8 @@ return {
                     ]
                   }
                 ]
-              }
+              },
+              (v8/*: any*/)
             ]
           }
         ]
@@ -289,7 +307,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "RegistrationCreateCreditCardMutation",
-    "id": "81d9bbd61ea9c9e8bfcf0f9015d38861",
+    "id": "c913f98bd09ddbba86fd8db790d04d1c",
     "text": null,
     "metadata": {}
   }

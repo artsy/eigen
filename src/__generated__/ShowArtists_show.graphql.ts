@@ -7,14 +7,14 @@ export type ShowArtists_show$ref = typeof _ShowArtists_show$ref;
 export type ShowArtists_show = {
     readonly internalID: string;
     readonly gravityID: string;
-    readonly artists_grouped_by_name: ReadonlyArray<({
+    readonly artists_grouped_by_name: ReadonlyArray<{
         readonly letter: string | null;
-        readonly items: ReadonlyArray<({
+        readonly items: ReadonlyArray<{
             readonly sortable_id: string | null;
             readonly href: string | null;
             readonly " $fragmentRefs": ArtistListItem_artist$ref;
-        }) | null> | null;
-    }) | null> | null;
+        } | null> | null;
+    } | null> | null;
     readonly " $refType": ShowArtists_show$ref;
 };
 
@@ -67,11 +67,6 @@ const node: ReaderFragment = {
           "plural": true,
           "selections": [
             {
-              "kind": "FragmentSpread",
-              "name": "ArtistListItem_artist",
-              "args": null
-            },
-            {
               "kind": "ScalarField",
               "alias": null,
               "name": "sortable_id",
@@ -84,6 +79,11 @@ const node: ReaderFragment = {
               "name": "href",
               "args": null,
               "storageKey": null
+            },
+            {
+              "kind": "FragmentSpread",
+              "name": "ArtistListItem_artist",
+              "args": null
             }
           ]
         }

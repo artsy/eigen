@@ -4,25 +4,25 @@ import { ReaderFragment } from "relay-runtime";
 declare const _Categories_me$ref: unique symbol;
 export type Categories_me$ref = typeof _Categories_me$ref;
 export type Categories_me = {
-    readonly followed_genes: ({
+    readonly followed_genes: {
         readonly pageInfo: {
             readonly endCursor: string | null;
             readonly hasNextPage: boolean;
         };
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
-                readonly gene: ({
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly gene: {
                     readonly gravityID: string;
                     readonly id: string;
                     readonly name: string | null;
                     readonly href: string | null;
-                    readonly image: ({
+                    readonly image: {
                         readonly url: string | null;
-                    }) | null;
-                }) | null;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+                    } | null;
+                } | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": Categories_me$ref;
 };
 

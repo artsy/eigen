@@ -5,10 +5,10 @@ import { ConfirmBid_sale_artwork$ref } from "./ConfirmBid_sale_artwork.graphql";
 declare const _SelectMaxBid_sale_artwork$ref: unique symbol;
 export type SelectMaxBid_sale_artwork$ref = typeof _SelectMaxBid_sale_artwork$ref;
 export type SelectMaxBid_sale_artwork = {
-    readonly increments: ReadonlyArray<({
+    readonly increments: ReadonlyArray<{
         readonly display: string | null;
         readonly cents: number | null;
-    }) | null> | null;
+    } | null> | null;
     readonly internalID: string;
     readonly " $fragmentRefs": ConfirmBid_sale_artwork$ref;
     readonly " $refType": SelectMaxBid_sale_artwork$ref;
@@ -32,8 +32,7 @@ const node: ReaderFragment = {
         {
           "kind": "Literal",
           "name": "useMyMaxBid",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         }
       ],
       "concreteType": "BidIncrementsFormatted",

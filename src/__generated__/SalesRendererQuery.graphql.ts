@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { Sales_viewer$ref } from "./Sales_viewer.graphql";
 export type SalesRendererQueryVariables = {};
 export type SalesRendererQueryResponse = {
-    readonly viewer: ({
+    readonly viewer: {
         readonly " $fragmentRefs": Sales_viewer$ref;
-    }) | null;
+    } | null;
 };
 export type SalesRendererQuery = {
     readonly response: SalesRendererQueryResponse;
@@ -130,8 +130,7 @@ const node: ConcreteRequest = (function(){
 var v0 = {
   "kind": "Literal",
   "name": "is_auction",
-  "value": true,
-  "type": "Boolean"
+  "value": true
 },
 v1 = {
   "kind": "ScalarField",
@@ -143,28 +142,28 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "href",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_open",
+  "name": "href",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_live_open",
+  "name": "is_open",
   "args": null,
   "storageKey": null
 },
 v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "is_live_open",
   "args": null,
   "storageKey": null
 },
@@ -183,8 +182,7 @@ v7 = {
     {
       "kind": "Literal",
       "name": "version",
-      "value": "large",
-      "type": "[String]"
+      "value": "large"
     }
   ],
   "storageKey": "url(version:\"large\")"
@@ -207,21 +205,18 @@ v10 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10,
-    "type": "Int"
+    "value": 10
   },
   {
     "kind": "Literal",
     "name": "include_artworks_by_followed_artists",
-    "value": true,
-    "type": "Boolean"
+    "value": true
   },
   (v0/*: any*/),
   {
     "kind": "Literal",
     "name": "live_sale",
-    "value": true,
-    "type": "Boolean"
+    "value": true
   }
 ],
 v11 = {
@@ -241,7 +236,7 @@ v12 = [
   }
 ],
 v13 = [
-  (v5/*: any*/),
+  (v2/*: any*/),
   (v9/*: any*/)
 ];
 return {
@@ -295,36 +290,27 @@ return {
               {
                 "kind": "Literal",
                 "name": "live",
-                "value": true,
-                "type": "Boolean"
+                "value": true
               },
               {
                 "kind": "Literal",
                 "name": "size",
-                "value": 100,
-                "type": "Int"
+                "value": 100
               },
               {
                 "kind": "Literal",
                 "name": "sort",
-                "value": "TIMELY_AT_NAME_ASC",
-                "type": "SaleSorts"
+                "value": "TIMELY_AT_NAME_ASC"
               }
             ],
             "concreteType": "Sale",
             "plural": true,
             "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "start_at",
-                "args": null,
-                "storageKey": null
-              },
               (v1/*: any*/),
               (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
+              (v5/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -332,7 +318,13 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v5/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "start_at",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -439,14 +431,8 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "is_biddable",
-                            "args": null,
-                            "storageKey": null
-                          },
                           (v9/*: any*/),
+                          (v1/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -488,7 +474,13 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v1/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_biddable",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -519,8 +511,8 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
+                              (v5/*: any*/),
                               (v4/*: any*/),
-                              (v3/*: any*/),
                               (v11/*: any*/),
                               (v6/*: any*/),
                               (v9/*: any*/)
@@ -587,8 +579,7 @@ return {
                               {
                                 "kind": "Literal",
                                 "name": "shallow",
-                                "value": true,
-                                "type": "Boolean"
+                                "value": true
                               }
                             ],
                             "concreteType": "Artist",
@@ -605,7 +596,7 @@ return {
                             "plural": false,
                             "selections": (v13/*: any*/)
                           },
-                          (v2/*: any*/)
+                          (v3/*: any*/)
                         ]
                       },
                       (v9/*: any*/),
@@ -651,7 +642,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SalesRendererQuery",
-    "id": "96db6414736bd4634b88cf6c32e5121f",
+    "id": "549da78cc6a02a1748e58196da21d75b",
     "text": null,
     "metadata": {}
   }

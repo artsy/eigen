@@ -7,9 +7,9 @@ export type ShowsQueryVariables = {
     readonly cursor?: string | null;
 };
 export type ShowsQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Shows_me$ref;
-    }) | null;
+    } | null;
 };
 export type ShowsQuery = {
     readonly response: ShowsQueryResponse;
@@ -107,14 +107,12 @@ v1 = [
   {
     "kind": "Variable",
     "name": "after",
-    "variableName": "cursor",
-    "type": "String"
+    "variableName": "cursor"
   },
   {
     "kind": "Variable",
     "name": "first",
-    "variableName": "count",
-    "type": "Int"
+    "variableName": "count"
   }
 ],
 v2 = {
@@ -163,14 +161,12 @@ return {
               {
                 "kind": "Variable",
                 "name": "count",
-                "variableName": "count",
-                "type": null
+                "variableName": "count"
               },
               {
                 "kind": "Variable",
                 "name": "cursor",
-                "variableName": "cursor",
-                "type": null
+                "variableName": "cursor"
               }
             ]
           }
@@ -267,14 +263,14 @@ return {
                         "concreteType": "Show",
                         "plural": false,
                         "selections": [
+                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "href",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -339,8 +335,7 @@ return {
                                               {
                                                 "kind": "Literal",
                                                 "name": "version",
-                                                "value": "square",
-                                                "type": "[String]"
+                                                "value": "square"
                                               }
                                             ],
                                             "storageKey": "url(version:\"square\")"
@@ -357,7 +352,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "gravityID",
+                            "name": "href",
                             "args": null,
                             "storageKey": null
                           },
@@ -454,7 +449,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowsQuery",
-    "id": "a0795c243e7e0ba574be7686ab92f71b",
+    "id": "f2d15ba1120ea37d84bff23b1beb14e6",
     "text": null,
     "metadata": {}
   }

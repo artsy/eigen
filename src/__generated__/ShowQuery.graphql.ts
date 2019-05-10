@@ -6,9 +6,9 @@ export type ShowQueryVariables = {
     readonly showID: string;
 };
 export type ShowQueryResponse = {
-    readonly show: ({
+    readonly show: {
         readonly " $fragmentRefs": Show_show$ref;
-    }) | null;
+    } | null;
 };
 export type ShowQuery = {
     readonly response: ShowQueryResponse;
@@ -315,21 +315,20 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "showID",
-    "type": "String!"
+    "variableName": "showID"
   }
 ],
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "exhibition_period",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -350,42 +349,42 @@ v5 = {
 v6 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "url",
   "args": null,
   "storageKey": null
 },
 v7 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "url",
+  "name": "aspect_ratio",
   "args": null,
   "storageKey": null
 },
 v8 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "aspect_ratio",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "is_followed",
   "args": null,
   "storageKey": null
 },
 v10 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_followed",
+  "name": "end_at",
   "args": null,
   "storageKey": null
 },
 v11 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "end_at",
+  "name": "exhibition_period",
   "args": null,
   "storageKey": null
 },
@@ -433,7 +432,7 @@ v17 = {
   "concreteType": "Image",
   "plural": false,
   "selections": [
-    (v7/*: any*/)
+    (v6/*: any*/)
   ]
 },
 v18 = {
@@ -454,7 +453,7 @@ v19 = [
 ],
 v20 = [
   (v4/*: any*/),
-  (v9/*: any*/)
+  (v8/*: any*/)
 ];
 return {
   "kind": "Request",
@@ -524,12 +523,12 @@ return {
             "concreteType": "Image",
             "plural": true,
             "selections": [
+              (v3/*: any*/),
               (v6/*: any*/),
-              (v7/*: any*/),
-              (v8/*: any*/)
+              (v7/*: any*/)
             ]
           },
-          (v9/*: any*/),
+          (v8/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -537,9 +536,9 @@ return {
             "args": null,
             "storageKey": null
           },
+          (v9/*: any*/),
           (v10/*: any*/),
           (v11/*: any*/),
-          (v6/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
@@ -564,13 +563,13 @@ return {
             "plural": false,
             "selections": [
               (v12/*: any*/),
-              (v9/*: any*/),
+              (v8/*: any*/),
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
                   (v4/*: any*/),
-                  (v6/*: any*/),
+                  (v3/*: any*/),
                   (v13/*: any*/),
                   {
                     "kind": "ScalarField",
@@ -592,8 +591,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "first",
-                "value": 3,
-                "type": "Int"
+                "value": 3
               }
             ],
             "concreteType": "ShowFollowArtistConnection",
@@ -628,9 +626,9 @@ return {
                         "selections": [
                           (v4/*: any*/),
                           (v13/*: any*/),
-                          (v6/*: any*/),
                           (v3/*: any*/),
-                          (v9/*: any*/)
+                          (v2/*: any*/),
+                          (v8/*: any*/)
                         ]
                       }
                     ]
@@ -650,10 +648,10 @@ return {
             "selections": [
               (v4/*: any*/),
               (v13/*: any*/),
-              (v6/*: any*/),
               (v3/*: any*/),
+              (v2/*: any*/),
+              (v8/*: any*/),
               (v9/*: any*/),
-              (v10/*: any*/),
               (v14/*: any*/),
               (v15/*: any*/),
               (v16/*: any*/),
@@ -669,21 +667,14 @@ return {
               {
                 "kind": "Literal",
                 "name": "size",
-                "value": 6,
-                "type": "Int"
+                "value": 6
               }
             ],
             "concreteType": "Artwork",
             "plural": true,
             "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "is_biddable",
-                "args": null,
-                "storageKey": null
-              },
-              (v9/*: any*/),
+              (v8/*: any*/),
+              (v3/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -693,7 +684,7 @@ return {
                 "concreteType": "Image",
                 "plural": false,
                 "selections": [
-                  (v8/*: any*/),
+                  (v7/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -702,8 +693,7 @@ return {
                       {
                         "kind": "Literal",
                         "name": "version",
-                        "value": "large",
-                        "type": "[String]"
+                        "value": "large"
                       }
                     ],
                     "storageKey": "url(version:\"large\")"
@@ -738,7 +728,13 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              (v6/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "is_biddable",
+                "args": null,
+                "storageKey": null
+              },
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -791,7 +787,7 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v9/*: any*/)
+                  (v8/*: any*/)
                 ]
               },
               {
@@ -840,10 +836,10 @@ return {
                     "plural": false,
                     "selections": [
                       (v18/*: any*/),
-                      (v9/*: any*/)
+                      (v8/*: any*/)
                     ]
                   },
-                  (v9/*: any*/)
+                  (v8/*: any*/)
                 ]
               },
               {
@@ -855,8 +851,7 @@ return {
                   {
                     "kind": "Literal",
                     "name": "shallow",
-                    "value": true,
-                    "type": "Boolean"
+                    "value": true
                   }
                 ],
                 "concreteType": "Artist",
@@ -910,12 +905,12 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
+              (v2/*: any*/),
               (v3/*: any*/),
-              (v6/*: any*/),
               (v13/*: any*/),
-              (v9/*: any*/),
+              (v8/*: any*/),
               (v4/*: any*/),
-              (v10/*: any*/),
+              (v9/*: any*/),
               (v14/*: any*/),
               (v15/*: any*/),
               (v16/*: any*/),
@@ -931,8 +926,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "first",
-                "value": 20,
-                "type": "Int"
+                "value": 20
               }
             ],
             "concreteType": "ShowConnection",
@@ -956,12 +950,12 @@ return {
                     "concreteType": "Show",
                     "plural": false,
                     "selections": [
-                      (v9/*: any*/),
-                      (v3/*: any*/),
-                      (v6/*: any*/),
-                      (v4/*: any*/),
+                      (v8/*: any*/),
                       (v2/*: any*/),
+                      (v3/*: any*/),
+                      (v4/*: any*/),
                       (v11/*: any*/),
+                      (v10/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -971,8 +965,8 @@ return {
                         "concreteType": "Image",
                         "plural": true,
                         "selections": [
-                          (v7/*: any*/),
-                          (v8/*: any*/)
+                          (v6/*: any*/),
+                          (v7/*: any*/)
                         ]
                       },
                       {
@@ -985,7 +979,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v12/*: any*/),
-                          (v9/*: any*/),
+                          (v8/*: any*/),
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",
@@ -1010,8 +1004,8 @@ return {
             "concreteType": "Location",
             "plural": false,
             "selections": [
-              (v9/*: any*/),
-              (v6/*: any*/),
+              (v8/*: any*/),
+              (v3/*: any*/),
               (v5/*: any*/),
               {
                 "kind": "ScalarField",
@@ -1110,19 +1104,6 @@ return {
                   (v12/*: any*/),
                   {
                     "kind": "InlineFragment",
-                    "type": "OpeningHoursText",
-                    "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "text",
-                        "args": null,
-                        "storageKey": null
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "InlineFragment",
                     "type": "OpeningHoursArray",
                     "selections": [
                       {
@@ -1151,6 +1132,19 @@ return {
                         ]
                       }
                     ]
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "type": "OpeningHoursText",
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "text",
+                        "args": null,
+                        "storageKey": null
+                      }
+                    ]
                   }
                 ]
               }
@@ -1163,7 +1157,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowQuery",
-    "id": "89957ae2c1266a239c15b6ec18350961",
+    "id": "ac6627ece82c420677880b4c006f9f80",
     "text": null,
     "metadata": {}
   }

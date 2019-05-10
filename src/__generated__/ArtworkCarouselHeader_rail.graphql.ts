@@ -7,20 +7,41 @@ export type ArtworkCarouselHeader_rail = {
     readonly title: string | null;
     readonly key: string | null;
     readonly followedArtistContext: ({
-        readonly artist?: ({
+        readonly artist?: {
             readonly internalID: string;
             readonly gravityID: string;
-        }) | null;
-    }) | null;
+        } | null;
+    } & ({
+        readonly artist: {
+            readonly internalID: string;
+            readonly gravityID: string;
+        } | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly relatedArtistContext: ({
-        readonly artist?: ({
+        readonly artist?: {
             readonly internalID: string;
             readonly gravityID: string;
-        }) | null;
-        readonly based_on?: ({
+        } | null;
+        readonly based_on?: {
             readonly name: string | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } & ({
+        readonly artist: {
+            readonly internalID: string;
+            readonly gravityID: string;
+        } | null;
+        readonly based_on: {
+            readonly name: string | null;
+        } | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly " $refType": ArtworkCarouselHeader_rail$ref;
 };
 

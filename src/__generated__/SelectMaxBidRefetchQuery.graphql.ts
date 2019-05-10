@@ -6,9 +6,9 @@ export type SelectMaxBidRefetchQueryVariables = {
     readonly saleArtworkID: string;
 };
 export type SelectMaxBidRefetchQueryResponse = {
-    readonly sale_artwork: ({
+    readonly sale_artwork: {
         readonly " $fragmentRefs": SelectMaxBid_sale_artwork$ref;
-    }) | null;
+    } | null;
 };
 export type SelectMaxBidRefetchQuery = {
     readonly response: SelectMaxBidRefetchQueryResponse;
@@ -83,8 +83,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "saleArtworkID",
-    "type": "String!"
+    "variableName": "saleArtworkID"
   }
 ],
 v2 = {
@@ -165,8 +164,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "useMyMaxBid",
-                "value": true,
-                "type": "Boolean"
+                "value": true
               }
             ],
             "concreteType": "BidIncrementsFormatted",
@@ -279,7 +277,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SelectMaxBidRefetchQuery",
-    "id": "30414b397c1503132689a2120424e8b2",
+    "id": "4d52dcd1baccb5d70cbad979c571a698",
     "text": null,
     "metadata": {}
   }

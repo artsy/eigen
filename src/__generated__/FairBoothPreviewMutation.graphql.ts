@@ -10,13 +10,13 @@ export type FairBoothPreviewMutationVariables = {
     readonly input: FollowProfileInput;
 };
 export type FairBoothPreviewMutationResponse = {
-    readonly followProfile: ({
-        readonly profile: ({
+    readonly followProfile: {
+        readonly profile: {
             readonly gravityID: string;
             readonly internalID: string;
             readonly is_followed: boolean | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type FairBoothPreviewMutation = {
     readonly response: FairBoothPreviewMutationResponse;
@@ -53,8 +53,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "input",
-    "variableName": "input",
-    "type": "FollowProfileInput!"
+    "variableName": "input"
   }
 ],
 v2 = {
@@ -156,7 +155,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "FairBoothPreviewMutation",
-    "id": "fa6170bf9c5933351a87c80ac53a55bc",
+    "id": "ebf665878a41e989e0c4413303c63341",
     "text": null,
     "metadata": {}
   }

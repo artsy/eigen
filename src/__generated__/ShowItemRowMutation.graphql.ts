@@ -10,13 +10,13 @@ export type ShowItemRowMutationVariables = {
     readonly input: FollowShowInput;
 };
 export type ShowItemRowMutationResponse = {
-    readonly followShow: ({
-        readonly show: ({
+    readonly followShow: {
+        readonly show: {
             readonly gravityID: string;
             readonly internalID: string;
             readonly is_followed: boolean | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type ShowItemRowMutation = {
     readonly response: ShowItemRowMutationResponse;
@@ -53,8 +53,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "input",
-    "variableName": "input",
-    "type": "FollowShowInput!"
+    "variableName": "input"
   }
 ],
 v2 = {
@@ -156,7 +155,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ShowItemRowMutation",
-    "id": "ef0b3dc2785b7af03a066afbe891134b",
+    "id": "9cce1a5eda2827ba078041e835ccabcc",
     "text": null,
     "metadata": {}
   }

@@ -6,9 +6,9 @@ export type FairArtworksQueryVariables = {
     readonly fairID: string;
 };
 export type FairArtworksQueryResponse = {
-    readonly fair: ({
+    readonly fair: {
         readonly " $fragmentRefs": FairArtworks_fair$ref;
-    }) | null;
+    } | null;
 };
 export type FairArtworksQuery = {
     readonly response: FairArtworksQueryResponse;
@@ -136,8 +136,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "fairID",
-    "type": "String!"
+    "variableName": "fairID"
   }
 ],
 v2 = {
@@ -165,8 +164,7 @@ v5 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10,
-    "type": "Int"
+    "value": 10
   }
 ],
 v6 = {
@@ -252,26 +250,22 @@ return {
                   "MEDIUM",
                   "PRICE_RANGE",
                   "TOTAL"
-                ],
-                "type": "[ArtworkAggregation]"
+                ]
               },
               {
                 "kind": "Literal",
                 "name": "medium",
-                "value": "*",
-                "type": "String"
+                "value": "*"
               },
               {
                 "kind": "Literal",
                 "name": "price_range",
-                "value": "*-*",
-                "type": "String"
+                "value": "*-*"
               },
               {
                 "kind": "Literal",
                 "name": "size",
-                "value": 0,
-                "type": "Int"
+                "value": 0
               }
             ],
             "concreteType": "FilterArtworks",
@@ -369,14 +363,8 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "is_acquireable",
-                            "args": null,
-                            "storageKey": null
-                          },
                           (v3/*: any*/),
+                          (v2/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -401,8 +389,7 @@ return {
                                   {
                                     "kind": "Literal",
                                     "name": "version",
-                                    "value": "large",
-                                    "type": "[String]"
+                                    "value": "large"
                                   }
                                 ],
                                 "storageKey": "url(version:\"large\")"
@@ -444,7 +431,13 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_acquireable",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -554,8 +547,7 @@ return {
                               {
                                 "kind": "Literal",
                                 "name": "shallow",
-                                "value": true,
-                                "type": "Boolean"
+                                "value": true
                               }
                             ],
                             "concreteType": "Artist",
@@ -617,7 +609,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairArtworksQuery",
-    "id": "018407e0c3a6e019c27ef884e67f39ae",
+    "id": "0b7b66ac32df3d305487b45d6f443313",
     "text": null,
     "metadata": {}
   }

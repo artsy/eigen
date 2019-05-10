@@ -11,20 +11,20 @@ export type ConfirmBidCreateBidderPositionMutationVariables = {
     readonly input: BidderPositionInput;
 };
 export type ConfirmBidCreateBidderPositionMutationResponse = {
-    readonly createBidderPosition: ({
-        readonly result: ({
+    readonly createBidderPosition: {
+        readonly result: {
             readonly status: string;
             readonly message_header: string | null;
             readonly message_description_md: string | null;
-            readonly position: ({
+            readonly position: {
                 readonly gravityID: string;
-                readonly suggested_next_bid: ({
+                readonly suggested_next_bid: {
                     readonly cents: number | null;
                     readonly display: string | null;
-                }) | null;
-            }) | null;
-        }) | null;
-    }) | null;
+                } | null;
+            } | null;
+        } | null;
+    } | null;
 };
 export type ConfirmBidCreateBidderPositionMutation = {
     readonly response: ConfirmBidCreateBidderPositionMutationResponse;
@@ -68,8 +68,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "input",
-    "variableName": "input",
-    "type": "BidderPositionInput!"
+    "variableName": "input"
   }
 ],
 v2 = {
@@ -229,7 +228,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ConfirmBidCreateBidderPositionMutation",
-    "id": "260a925870a8baed707b576c1a5977e2",
+    "id": "b31b4dd9bc76276e2511a378a84fc357",
     "text": null,
     "metadata": {}
   }

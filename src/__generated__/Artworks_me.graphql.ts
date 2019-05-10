@@ -5,21 +5,21 @@ import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _Artworks_me$ref: unique symbol;
 export type Artworks_me$ref = typeof _Artworks_me$ref;
 export type Artworks_me = {
-    readonly saved_artworks: ({
-        readonly artworks_connection: ({
+    readonly saved_artworks: {
+        readonly artworks_connection: {
             readonly pageInfo: {
                 readonly startCursor: string | null;
                 readonly endCursor: string | null;
                 readonly hasPreviousPage: boolean;
                 readonly hasNextPage: boolean;
             };
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
+            readonly edges: ReadonlyArray<{
+                readonly node: {
                     readonly " $fragmentRefs": GenericGrid_artworks$ref;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-    }) | null;
+                } | null;
+            } | null> | null;
+        } | null;
+    } | null;
     readonly " $refType": Artworks_me$ref;
 };
 
@@ -75,8 +75,7 @@ const node: ReaderFragment = {
             {
               "kind": "Literal",
               "name": "private",
-              "value": true,
-              "type": "Boolean"
+              "value": true
             }
           ],
           "concreteType": "ArtworkConnection",
@@ -140,16 +139,16 @@ const node: ReaderFragment = {
                   "plural": false,
                   "selections": [
                     {
-                      "kind": "FragmentSpread",
-                      "name": "GenericGrid_artworks",
-                      "args": null
-                    },
-                    {
                       "kind": "ScalarField",
                       "alias": null,
                       "name": "__typename",
                       "args": null,
                       "storageKey": null
+                    },
+                    {
+                      "kind": "FragmentSpread",
+                      "name": "GenericGrid_artworks",
+                      "args": null
                     }
                   ]
                 },

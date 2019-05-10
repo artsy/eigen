@@ -11,22 +11,33 @@ export type LocationMap_location = {
     readonly address_2: string | null;
     readonly postal_code: string | null;
     readonly summary: string | null;
-    readonly coordinates: ({
+    readonly coordinates: {
         readonly lat: number | null;
         readonly lng: number | null;
-    }) | null;
-    readonly day_schedules: ReadonlyArray<({
+    } | null;
+    readonly day_schedules: ReadonlyArray<{
         readonly start_time: number | null;
         readonly end_time: number | null;
         readonly day_of_week: string | null;
-    }) | null> | null;
+    } | null> | null;
     readonly openingHours: ({
-        readonly schedules?: ReadonlyArray<({
+        readonly schedules?: ReadonlyArray<{
             readonly days: string | null;
             readonly hours: string | null;
-        }) | null> | null;
+        } | null> | null;
         readonly text?: string | null;
-    }) | null;
+    } & ({
+        readonly schedules: ReadonlyArray<{
+            readonly days: string | null;
+            readonly hours: string | null;
+        } | null> | null;
+    } | {
+        readonly text: string | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly " $refType": LocationMap_location$ref;
 };
 
@@ -156,19 +167,6 @@ const node: ReaderFragment = {
       "selections": [
         {
           "kind": "InlineFragment",
-          "type": "OpeningHoursText",
-          "selections": [
-            {
-              "kind": "ScalarField",
-              "alias": null,
-              "name": "text",
-              "args": null,
-              "storageKey": null
-            }
-          ]
-        },
-        {
-          "kind": "InlineFragment",
           "type": "OpeningHoursArray",
           "selections": [
             {
@@ -195,6 +193,19 @@ const node: ReaderFragment = {
                   "storageKey": null
                 }
               ]
+            }
+          ]
+        },
+        {
+          "kind": "InlineFragment",
+          "type": "OpeningHoursText",
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "text",
+              "args": null,
+              "storageKey": null
             }
           ]
         }

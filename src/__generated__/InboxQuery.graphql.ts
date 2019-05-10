@@ -6,9 +6,9 @@ export type InboxQueryVariables = {
     readonly cursor?: string | null;
 };
 export type InboxQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Inbox_me$ref;
-    }) | null;
+    } | null;
 };
 export type InboxQuery = {
     readonly response: InboxQueryResponse;
@@ -20,12 +20,12 @@ export type InboxQuery = {
 /*
 query InboxQuery {
   me {
-    ...Inbox_me_38v0Te
+    ...Inbox_me
     id
   }
 }
 
-fragment Inbox_me_38v0Te on Me {
+fragment Inbox_me on Me {
   lot_standings(live: true) {
     most_recent_bid {
       id
@@ -210,14 +210,12 @@ v8 = [
   {
     "kind": "Literal",
     "name": "after",
-    "value": "",
-    "type": "String"
+    "value": ""
   },
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10,
-    "type": "Int"
+    "value": 10
   }
 ],
 v9 = {
@@ -255,14 +253,7 @@ return {
           {
             "kind": "FragmentSpread",
             "name": "Inbox_me",
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "after",
-                "variableName": "cursor",
-                "type": null
-              }
-            ]
+            "args": null
           }
         ]
       }
@@ -291,8 +282,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "live",
-                "value": true,
-                "type": "Boolean"
+                "value": true
               }
             ],
             "concreteType": "LotStanding",
@@ -432,8 +422,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "first",
-                "value": 1,
-                "type": "Int"
+                "value": 1
               }
             ],
             "concreteType": "ConversationConnection",
@@ -573,6 +562,28 @@ return {
                               (v1/*: any*/),
                               {
                                 "kind": "InlineFragment",
+                                "type": "Artwork",
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "date",
+                                    "args": null,
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "title",
+                                    "args": null,
+                                    "storageKey": null
+                                  },
+                                  (v6/*: any*/),
+                                  (v5/*: any*/)
+                                ]
+                              },
+                              {
+                                "kind": "InlineFragment",
                                 "type": "Show",
                                 "selections": [
                                   {
@@ -599,28 +610,6 @@ return {
                                     "plural": false,
                                     "selections": (v4/*: any*/)
                                   }
-                                ]
-                              },
-                              {
-                                "kind": "InlineFragment",
-                                "type": "Artwork",
-                                "selections": [
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "date",
-                                    "args": null,
-                                    "storageKey": null
-                                  },
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "title",
-                                    "args": null,
-                                    "storageKey": null
-                                  },
-                                  (v6/*: any*/),
-                                  (v5/*: any*/)
                                 ]
                               }
                             ]
@@ -659,11 +648,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "InboxQuery",
-    "id": "465572f29045f85151e45bf5d4f1fe6b",
+    "id": "1c546b372f0c2850f0aa1b4277d03ae8",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = '465572f29045f85151e45bf5d4f1fe6b';
+(node as any).hash = '40899dc63f2edfb857060cf5834ce445';
 export default node;

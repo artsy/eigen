@@ -8,9 +8,9 @@ export type ArtistShow_show = {
     readonly gravityID: string;
     readonly href: string | null;
     readonly is_fair_booth: boolean | null;
-    readonly cover_image: ({
+    readonly cover_image: {
         readonly url: string | null;
-    }) | null;
+    } | null;
     readonly " $fragmentRefs": Metadata_show$ref;
     readonly " $refType": ArtistShow_show$ref;
 };
@@ -62,8 +62,7 @@ const node: ReaderFragment = {
             {
               "kind": "Literal",
               "name": "version",
-              "value": "large",
-              "type": "[String]"
+              "value": "large"
             }
           ],
           "storageKey": "url(version:\"large\")"

@@ -5,12 +5,12 @@ import { MockRelayRendererFixtures_artworkMetadata$ref } from "./MockRelayRender
 declare const _MockRelayRendererFixtures_artwork$ref: unique symbol;
 export type MockRelayRendererFixtures_artwork$ref = typeof _MockRelayRendererFixtures_artwork$ref;
 export type MockRelayRendererFixtures_artwork = {
-    readonly image: ({
+    readonly image: {
         readonly url: string | null;
-    }) | null;
-    readonly artist: ({
+    } | null;
+    readonly artist: {
         readonly gravityID: string;
-    }) | null;
+    } | null;
     readonly " $fragmentRefs": MockRelayRendererFixtures_artworkMetadata$ref;
     readonly " $refType": MockRelayRendererFixtures_artwork$ref;
 };

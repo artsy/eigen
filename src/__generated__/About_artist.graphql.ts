@@ -10,12 +10,12 @@ export type About_artist = {
     readonly has_metadata: boolean | null;
     readonly is_display_auction_link: boolean | null;
     readonly gravityID: string;
-    readonly related_artists: ReadonlyArray<({
+    readonly related_artists: ReadonlyArray<{
         readonly " $fragmentRefs": RelatedArtists_artists$ref;
-    }) | null> | null;
-    readonly articles: ReadonlyArray<({
+    } | null> | null;
+    readonly articles: ReadonlyArray<{
         readonly " $fragmentRefs": Articles_articles$ref;
-    }) | null> | null;
+    } | null> | null;
     readonly " $fragmentRefs": Biography_artist$ref;
     readonly " $refType": About_artist$ref;
 };
@@ -51,11 +51,6 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
-      "kind": "FragmentSpread",
-      "name": "Biography_artist",
-      "args": null
-    },
-    {
       "kind": "LinkedField",
       "alias": "related_artists",
       "name": "artists",
@@ -64,8 +59,7 @@ const node: ReaderFragment = {
         {
           "kind": "Literal",
           "name": "size",
-          "value": 16,
-          "type": "Int"
+          "value": 16
         }
       ],
       "concreteType": "Artist",
@@ -93,6 +87,11 @@ const node: ReaderFragment = {
           "args": null
         }
       ]
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "Biography_artist",
+      "args": null
     }
   ]
 };

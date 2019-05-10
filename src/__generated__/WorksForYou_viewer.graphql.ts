@@ -6,35 +6,35 @@ import { Notification_notification$ref } from "./Notification_notification.graph
 declare const _WorksForYou_viewer$ref: unique symbol;
 export type WorksForYou_viewer$ref = typeof _WorksForYou_viewer$ref;
 export type WorksForYou_viewer = {
-    readonly me: ({
-        readonly followsAndSaves: ({
-            readonly notifications: ({
+    readonly me: {
+        readonly followsAndSaves: {
+            readonly notifications: {
                 readonly pageInfo: {
                     readonly hasNextPage: boolean;
                     readonly endCursor: string | null;
                 };
-                readonly edges: ReadonlyArray<({
-                    readonly node: ({
+                readonly edges: ReadonlyArray<{
+                    readonly node: {
                         readonly id: string;
                         readonly " $fragmentRefs": Notification_notification$ref;
-                    }) | null;
-                }) | null> | null;
-            }) | null;
-        }) | null;
-    }) | null;
-    readonly selectedArtist: ({
+                    } | null;
+                } | null> | null;
+            } | null;
+        } | null;
+    } | null;
+    readonly selectedArtist: {
         readonly gravityID: string;
         readonly href: string | null;
         readonly name: string | null;
-        readonly image: ({
-            readonly resized: ({
+        readonly image: {
+            readonly resized: {
                 readonly url: string | null;
-            }) | null;
-        }) | null;
-        readonly artworks: ReadonlyArray<({
+            } | null;
+        } | null;
+        readonly artworks: ReadonlyArray<{
             readonly " $fragmentRefs": GenericGrid_artworks$ref;
-        }) | null> | null;
-    }) | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": WorksForYou_viewer$ref;
 };
 
@@ -112,8 +112,7 @@ const node: ReaderFragment = {
                 {
                   "kind": "Literal",
                   "name": "sort",
-                  "value": "PUBLISHED_AT_DESC",
-                  "type": "ArtworkSorts"
+                  "value": "PUBLISHED_AT_DESC"
                 }
               ],
               "concreteType": "FollowedArtistsArtworksGroupConnection",
@@ -170,16 +169,16 @@ const node: ReaderFragment = {
                           "storageKey": null
                         },
                         {
-                          "kind": "FragmentSpread",
-                          "name": "Notification_notification",
-                          "args": null
-                        },
-                        {
                           "kind": "ScalarField",
                           "alias": null,
                           "name": "__typename",
                           "args": null,
                           "storageKey": null
+                        },
+                        {
+                          "kind": "FragmentSpread",
+                          "name": "Notification_notification",
+                          "args": null
                         }
                       ]
                     },
@@ -207,8 +206,7 @@ const node: ReaderFragment = {
         {
           "kind": "Variable",
           "name": "id",
-          "variableName": "selectedArtist",
-          "type": "String!"
+          "variableName": "selectedArtist"
         }
       ],
       "concreteType": "Artist",
@@ -253,14 +251,12 @@ const node: ReaderFragment = {
                 {
                   "kind": "Literal",
                   "name": "height",
-                  "value": 80,
-                  "type": "Int"
+                  "value": 80
                 },
                 {
                   "kind": "Literal",
                   "name": "width",
-                  "value": 80,
-                  "type": "Int"
+                  "value": 80
                 }
               ],
               "concreteType": "ResizedImageUrl",
@@ -286,14 +282,12 @@ const node: ReaderFragment = {
             {
               "kind": "Literal",
               "name": "size",
-              "value": 6,
-              "type": "Int"
+              "value": 6
             },
             {
               "kind": "Literal",
               "name": "sort",
-              "value": "published_at_desc",
-              "type": "ArtworkSorts"
+              "value": "published_at_desc"
             }
           ],
           "concreteType": "Artwork",

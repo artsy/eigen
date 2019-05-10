@@ -6,9 +6,9 @@ export type QueryRenderersSaleQueryVariables = {
     readonly saleID: string;
 };
 export type QueryRenderersSaleQueryResponse = {
-    readonly sale: ({
+    readonly sale: {
         readonly " $fragmentRefs": Sale_sale$ref;
-    }) | null;
+    } | null;
 };
 export type QueryRenderersSaleQuery = {
     readonly response: QueryRenderersSaleQueryResponse;
@@ -127,8 +127,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "saleID",
-    "type": "String!"
+    "variableName": "saleID"
   }
 ],
 v2 = {
@@ -163,8 +162,7 @@ v6 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10,
-    "type": "Int"
+    "value": 10
   }
 ],
 v7 = {
@@ -311,14 +309,8 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "is_biddable",
-                            "args": null,
-                            "storageKey": null
-                          },
                           (v2/*: any*/),
+                          (v5/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -343,8 +335,7 @@ return {
                                   {
                                     "kind": "Literal",
                                     "name": "version",
-                                    "value": "large",
-                                    "type": "[String]"
+                                    "value": "large"
                                   }
                                 ],
                                 "storageKey": "url(version:\"large\")"
@@ -379,7 +370,13 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v5/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_biddable",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -496,8 +493,7 @@ return {
                               {
                                 "kind": "Literal",
                                 "name": "shallow",
-                                "value": true,
-                                "type": "Boolean"
+                                "value": true
                               }
                             ],
                             "concreteType": "Artist",
@@ -554,7 +550,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersSaleQuery",
-    "id": "9d4eb1eed042b5703942b17992bacdac",
+    "id": "bdfd06c17536d33a3aa9f85c26795db4",
     "text": null,
     "metadata": {}
   }

@@ -9,9 +9,9 @@ export type ArtworkPreview_artwork = {
     readonly title: string | null;
     readonly artist_names: string | null;
     readonly date: string | null;
-    readonly image: ({
+    readonly image: {
         readonly url: string | null;
-    }) | null;
+    } | null;
     readonly " $refType": ArtworkPreview_artwork$ref;
 };
 

@@ -3,16 +3,16 @@
 import { ConcreteRequest } from "relay-runtime";
 export type FairExhibitorsTestsQueryVariables = {};
 export type FairExhibitorsTestsQueryResponse = {
-    readonly fair: ({
-        readonly exhibitors_grouped_by_name: ReadonlyArray<({
+    readonly fair: {
+        readonly exhibitors_grouped_by_name: ReadonlyArray<{
             readonly letter: string | null;
-            readonly exhibitors: ReadonlyArray<({
+            readonly exhibitors: ReadonlyArray<{
                 readonly name: string | null;
                 readonly gravityID: string;
                 readonly profile_id: string | null;
-            }) | null> | null;
-        }) | null> | null;
-    }) | null;
+            } | null> | null;
+        } | null> | null;
+    } | null;
 };
 export type FairExhibitorsTestsQuery = {
     readonly response: FairExhibitorsTestsQueryResponse;
@@ -43,8 +43,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "art-basel-in-miami-beach-2018",
-    "type": "String!"
+    "value": "art-basel-in-miami-beach-2018"
   }
 ],
 v1 = {
@@ -179,7 +178,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairExhibitorsTestsQuery",
-    "id": "48bc24459b211231935a2c059ec68240",
+    "id": "b72de60b496d1e34e39ba9318b89bdae",
     "text": null,
     "metadata": {}
   }

@@ -6,9 +6,9 @@ export type ArtworkQueryVariables = {
     readonly artworkID: string;
 };
 export type ArtworkQueryResponse = {
-    readonly artwork: ({
+    readonly artwork: {
         readonly " $fragmentRefs": Artwork_artwork$ref;
-    }) | null;
+    } | null;
 };
 export type ArtworkQuery = {
     readonly response: ArtworkQueryResponse;
@@ -45,8 +45,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "artworkID",
-    "type": "String!"
+    "variableName": "artworkID"
   }
 ];
 return {
@@ -111,7 +110,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "5d0f8dca3f718f5dd5d9dbe1489d31a1",
+    "id": "fd45b642dd3e45958c3348c645d87296",
     "text": null,
     "metadata": {}
   }

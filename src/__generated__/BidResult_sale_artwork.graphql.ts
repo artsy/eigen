@@ -4,16 +4,16 @@ import { ReaderFragment } from "relay-runtime";
 declare const _BidResult_sale_artwork$ref: unique symbol;
 export type BidResult_sale_artwork$ref = typeof _BidResult_sale_artwork$ref;
 export type BidResult_sale_artwork = {
-    readonly minimum_next_bid: ({
+    readonly minimum_next_bid: {
         readonly amount: string | null;
         readonly cents: number | null;
         readonly display: string | null;
-    }) | null;
-    readonly sale: ({
+    } | null;
+    readonly sale: {
         readonly live_start_at: string | null;
         readonly end_at: string | null;
         readonly gravityID: string;
-    }) | null;
+    } | null;
     readonly " $refType": BidResult_sale_artwork$ref;
 };
 

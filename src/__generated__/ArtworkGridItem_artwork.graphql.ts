@@ -12,35 +12,35 @@ export type ArtworkGridItem_artwork = {
     readonly is_acquireable: boolean | null;
     readonly is_offerable: boolean | null;
     readonly gravityID: string;
-    readonly sale: ({
+    readonly sale: {
         readonly is_auction: boolean | null;
         readonly is_live_open: boolean | null;
         readonly is_open: boolean | null;
         readonly is_closed: boolean | null;
         readonly display_timely_at: string | null;
-    }) | null;
-    readonly sale_artwork: ({
-        readonly opening_bid: ({
+    } | null;
+    readonly sale_artwork: {
+        readonly opening_bid: {
             readonly display: string | null;
-        }) | null;
-        readonly current_bid: ({
+        } | null;
+        readonly current_bid: {
             readonly display: string | null;
-        }) | null;
+        } | null;
         readonly bidder_positions_count: number | null;
-        readonly sale: ({
+        readonly sale: {
             readonly is_closed: boolean | null;
-        }) | null;
-    }) | null;
-    readonly image: ({
+        } | null;
+    } | null;
+    readonly image: {
         readonly url: string | null;
         readonly aspect_ratio: number;
-    }) | null;
-    readonly artists: ReadonlyArray<({
+    } | null;
+    readonly artists: ReadonlyArray<{
         readonly name: string | null;
-    }) | null> | null;
-    readonly partner: ({
+    } | null> | null;
+    readonly partner: {
         readonly name: string | null;
-    }) | null;
+    } | null;
     readonly href: string | null;
     readonly " $refType": ArtworkGridItem_artwork$ref;
 };
@@ -83,14 +83,14 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "title",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "title",
+      "name": "date",
       "args": null,
       "storageKey": null
     },
@@ -132,7 +132,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "date",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -243,8 +243,7 @@ return {
             {
               "kind": "Literal",
               "name": "version",
-              "value": "large",
-              "type": "[String]"
+              "value": "large"
             }
           ],
           "storageKey": "url(version:\"large\")"
@@ -267,8 +266,7 @@ return {
         {
           "kind": "Literal",
           "name": "shallow",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         }
       ],
       "concreteType": "Artist",

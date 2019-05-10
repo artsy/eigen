@@ -6,9 +6,9 @@ export type QueryRenderersInquiryQueryVariables = {
     readonly artworkID: string;
 };
 export type QueryRenderersInquiryQueryResponse = {
-    readonly artwork: ({
+    readonly artwork: {
         readonly " $fragmentRefs": Inquiry_artwork$ref;
-    }) | null;
+    } | null;
 };
 export type QueryRenderersInquiryQuery = {
     readonly response: QueryRenderersInquiryQueryResponse;
@@ -63,8 +63,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "artworkID",
-    "type": "String!"
+    "variableName": "artworkID"
   }
 ],
 v2 = {
@@ -202,7 +201,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersInquiryQuery",
-    "id": "820a207464d113a1f04a3c89649aa9b8",
+    "id": "feda2b6ae0e12b004ff209a951c37502",
     "text": null,
     "metadata": {}
   }

@@ -7,17 +7,17 @@ export type Notification_notification$ref = typeof _Notification_notification$re
 export type Notification_notification = {
     readonly summary: string | null;
     readonly artists: string | null;
-    readonly artworks: ReadonlyArray<({
-        readonly artists: ReadonlyArray<({
+    readonly artworks: ReadonlyArray<{
+        readonly artists: ReadonlyArray<{
             readonly href: string | null;
-        }) | null> | null;
+        } | null> | null;
         readonly " $fragmentRefs": GenericGrid_artworks$ref;
-    }) | null> | null;
-    readonly image: ({
-        readonly resized: ({
+    } | null> | null;
+    readonly image: {
+        readonly resized: {
             readonly url: string | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
     readonly " $refType": Notification_notification$ref;
 };
 
@@ -62,8 +62,7 @@ const node: ReaderFragment = {
             {
               "kind": "Literal",
               "name": "shallow",
-              "value": true,
-              "type": "Boolean"
+              "value": true
             }
           ],
           "concreteType": "Artist",
@@ -103,14 +102,12 @@ const node: ReaderFragment = {
             {
               "kind": "Literal",
               "name": "height",
-              "value": 80,
-              "type": "Int"
+              "value": 80
             },
             {
               "kind": "Literal",
               "name": "width",
-              "value": 80,
-              "type": "Int"
+              "value": 80
             }
           ],
           "concreteType": "ResizedImageUrl",

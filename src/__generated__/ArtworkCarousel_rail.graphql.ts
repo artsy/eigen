@@ -8,19 +8,29 @@ export type ArtworkCarousel_rail$ref = typeof _ArtworkCarousel_rail$ref;
 export type ArtworkCarousel_rail = {
     readonly id: string;
     readonly key: string | null;
-    readonly params: ({
+    readonly params: {
         readonly medium: string | null;
         readonly price_range: string | null;
-    }) | null;
+    } | null;
     readonly context: ({
-        readonly artist?: ({
+        readonly artist?: {
             readonly href: string | null;
-        }) | null;
+        } | null;
         readonly href?: string | null;
-    }) | null;
-    readonly results: ReadonlyArray<({
+    } & ({
+        readonly artist: {
+            readonly href: string | null;
+        } | null;
+    } | {
+        readonly href: string | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
+    readonly results: ReadonlyArray<{
         readonly " $fragmentRefs": GenericGrid_artworks$ref;
-    }) | null> | null;
+    } | null> | null;
     readonly " $fragmentRefs": ArtworkCarouselHeader_rail$ref;
     readonly " $refType": ArtworkCarousel_rail$ref;
 };
@@ -56,11 +66,6 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "FragmentSpread",
-      "name": "ArtworkCarouselHeader_rail",
-      "args": null
-    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -111,7 +116,17 @@ return {
       "selections": [
         {
           "kind": "InlineFragment",
-          "type": "HomePageModuleContextSale",
+          "type": "HomePageModuleContextFollowedArtist",
+          "selections": (v1/*: any*/)
+        },
+        {
+          "kind": "InlineFragment",
+          "type": "HomePageModuleContextRelatedArtist",
+          "selections": (v1/*: any*/)
+        },
+        {
+          "kind": "InlineFragment",
+          "type": "HomePageModuleContextFair",
           "selections": (v0/*: any*/)
         },
         {
@@ -121,18 +136,8 @@ return {
         },
         {
           "kind": "InlineFragment",
-          "type": "HomePageModuleContextFair",
+          "type": "HomePageModuleContextSale",
           "selections": (v0/*: any*/)
-        },
-        {
-          "kind": "InlineFragment",
-          "type": "HomePageModuleContextRelatedArtist",
-          "selections": (v1/*: any*/)
-        },
-        {
-          "kind": "InlineFragment",
-          "type": "HomePageModuleContextFollowedArtist",
-          "selections": (v1/*: any*/)
         }
       ]
     },
@@ -151,6 +156,11 @@ return {
           "args": null
         }
       ]
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "ArtworkCarouselHeader_rail",
+      "args": null
     }
   ]
 };

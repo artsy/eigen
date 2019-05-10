@@ -4,11 +4,11 @@ import { ConcreteRequest } from "relay-runtime";
 import { ShowEventSection_event$ref } from "./ShowEventSection_event.graphql";
 export type ShowEventSectionTestsQueryVariables = {};
 export type ShowEventSectionTestsQueryResponse = {
-    readonly show: ({
-        readonly events: ReadonlyArray<({
+    readonly show: {
+        readonly events: ReadonlyArray<{
             readonly " $fragmentRefs": ShowEventSection_event$ref;
-        }) | null> | null;
-    }) | null;
+        } | null> | null;
+    } | null;
 };
 export type ShowEventSectionTestsQuery = {
     readonly response: ShowEventSectionTestsQueryResponse;
@@ -40,8 +40,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "anderson-fine-art-gallery-flickinger-collection",
-    "type": "String!"
+    "value": "anderson-fine-art-gallery-flickinger-collection"
   }
 ];
 return {
@@ -149,7 +148,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowEventSectionTestsQuery",
-    "id": "491aa923b8d9aaf54ec5b6b9277b9a5e",
+    "id": "0fade73ca6307a9c176676070d42d489",
     "text": null,
     "metadata": {}
   }

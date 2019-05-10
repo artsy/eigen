@@ -7,11 +7,11 @@ export type InvoicePreviewRefetchQueryVariables = {
     readonly invoiceId: string;
 };
 export type InvoicePreviewRefetchQueryResponse = {
-    readonly me: ({
-        readonly invoice: ({
+    readonly me: {
+        readonly invoice: {
             readonly " $fragmentRefs": InvoicePreview_invoice$ref;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type InvoicePreviewRefetchQuery = {
     readonly response: InvoicePreviewRefetchQueryResponse;
@@ -61,14 +61,12 @@ v1 = [
   {
     "kind": "Variable",
     "name": "conversationId",
-    "variableName": "conversationId",
-    "type": "String!"
+    "variableName": "conversationId"
   },
   {
     "kind": "Variable",
     "name": "invoiceId",
-    "variableName": "invoiceId",
-    "type": "String!"
+    "variableName": "invoiceId"
   }
 ],
 v2 = {
@@ -178,7 +176,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "InvoicePreviewRefetchQuery",
-    "id": "cffdbe930d7bf0e07f33a435edc608c0",
+    "id": "9abf17786f511440a509b78538b5a2a3",
     "text": null,
     "metadata": {}
   }

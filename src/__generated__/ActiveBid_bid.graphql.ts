@@ -5,33 +5,33 @@ declare const _ActiveBid_bid$ref: unique symbol;
 export type ActiveBid_bid$ref = typeof _ActiveBid_bid$ref;
 export type ActiveBid_bid = {
     readonly is_leading_bidder: boolean | null;
-    readonly sale: ({
+    readonly sale: {
         readonly href: string | null;
         readonly is_live_open: boolean | null;
-    }) | null;
-    readonly most_recent_bid: ({
+    } | null;
+    readonly most_recent_bid: {
         readonly id: string;
-        readonly max_bid: ({
+        readonly max_bid: {
             readonly display: string | null;
-        }) | null;
-        readonly sale_artwork: ({
-            readonly artwork: ({
+        } | null;
+        readonly sale_artwork: {
+            readonly artwork: {
                 readonly href: string | null;
-                readonly image: ({
+                readonly image: {
                     readonly url: string | null;
-                }) | null;
+                } | null;
                 readonly artist_names: string | null;
-            }) | null;
-            readonly counts: ({
+            } | null;
+            readonly counts: {
                 readonly bidder_positions: any | null;
-            }) | null;
-            readonly highest_bid: ({
+            } | null;
+            readonly highest_bid: {
                 readonly display: string | null;
-            }) | null;
+            } | null;
             readonly lot_number: string | null;
             readonly reserve_status: string | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
     readonly " $refType": ActiveBid_bid$ref;
 };
 

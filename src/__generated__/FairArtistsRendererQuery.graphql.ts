@@ -6,9 +6,9 @@ export type FairArtistsRendererQueryVariables = {
     readonly fairID: string;
 };
 export type FairArtistsRendererQueryResponse = {
-    readonly fair: ({
+    readonly fair: {
         readonly " $fragmentRefs": FairArtists_fair$ref;
-    }) | null;
+    } | null;
 };
 export type FairArtistsRendererQuery = {
     readonly response: FairArtistsRendererQueryResponse;
@@ -79,8 +79,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "fairID",
-    "type": "String!"
+    "variableName": "fairID"
   }
 ],
 v2 = {
@@ -101,8 +100,7 @@ v4 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10,
-    "type": "Int"
+    "value": 10
   }
 ],
 v5 = {
@@ -221,14 +219,8 @@ return {
                     "concreteType": "Artist",
                     "plural": false,
                     "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "birthday",
-                        "args": null,
-                        "storageKey": null
-                      },
                       (v5/*: any*/),
+                      (v3/*: any*/),
                       (v2/*: any*/),
                       {
                         "kind": "ScalarField",
@@ -251,7 +243,13 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v3/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "birthday",
+                        "args": null,
+                        "storageKey": null
+                      },
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -321,7 +319,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairArtistsRendererQuery",
-    "id": "cde0ba2cbaaaf494ed25f12db943cddc",
+    "id": "736fb0ce1be4789ab35d2e40493a8006",
     "text": null,
     "metadata": {}
   }

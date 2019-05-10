@@ -6,18 +6,18 @@ import { Conversations_me$ref } from "./Conversations_me.graphql";
 declare const _Inbox_me$ref: unique symbol;
 export type Inbox_me$ref = typeof _Inbox_me$ref;
 export type Inbox_me = {
-    readonly lot_standings: ReadonlyArray<({
-        readonly most_recent_bid: ({
+    readonly lot_standings: ReadonlyArray<{
+        readonly most_recent_bid: {
             readonly id: string;
-        }) | null;
-    }) | null> | null;
-    readonly conversations_existence_check: ({
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
+        } | null;
+    } | null> | null;
+    readonly conversations_existence_check: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
                 readonly internalID: string;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $fragmentRefs": Conversations_me$ref & ActiveBids_me$ref;
     readonly " $refType": Inbox_me$ref;
 };
@@ -40,8 +40,7 @@ const node: ReaderFragment = {
         {
           "kind": "Literal",
           "name": "live",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         }
       ],
       "concreteType": "LotStanding",
@@ -76,8 +75,7 @@ const node: ReaderFragment = {
         {
           "kind": "Literal",
           "name": "first",
-          "value": 1,
-          "type": "Int"
+          "value": 1
         }
       ],
       "concreteType": "ConversationConnection",

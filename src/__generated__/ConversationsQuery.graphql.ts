@@ -7,9 +7,9 @@ export type ConversationsQueryVariables = {
     readonly cursor?: string | null;
 };
 export type ConversationsQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Conversations_me$ref;
-    }) | null;
+    } | null;
 };
 export type ConversationsQuery = {
     readonly response: ConversationsQueryResponse;
@@ -104,14 +104,12 @@ v1 = [
   {
     "kind": "Variable",
     "name": "after",
-    "variableName": "cursor",
-    "type": "String"
+    "variableName": "cursor"
   },
   {
     "kind": "Variable",
     "name": "first",
-    "variableName": "count",
-    "type": "Int"
+    "variableName": "count"
   }
 ],
 v2 = {
@@ -169,14 +167,12 @@ return {
               {
                 "kind": "Variable",
                 "name": "count",
-                "variableName": "count",
-                "type": null
+                "variableName": "count"
               },
               {
                 "kind": "Variable",
                 "name": "cursor",
-                "variableName": "cursor",
-                "type": null
+                "variableName": "cursor"
               }
             ]
           }
@@ -312,36 +308,6 @@ return {
                               (v4/*: any*/),
                               {
                                 "kind": "InlineFragment",
-                                "type": "Show",
-                                "selections": [
-                                  {
-                                    "kind": "LinkedField",
-                                    "alias": null,
-                                    "name": "fair",
-                                    "storageKey": null,
-                                    "args": null,
-                                    "concreteType": "Fair",
-                                    "plural": false,
-                                    "selections": [
-                                      (v2/*: any*/),
-                                      (v4/*: any*/)
-                                    ]
-                                  },
-                                  (v2/*: any*/),
-                                  {
-                                    "kind": "LinkedField",
-                                    "alias": null,
-                                    "name": "cover_image",
-                                    "storageKey": null,
-                                    "args": null,
-                                    "concreteType": "Image",
-                                    "plural": false,
-                                    "selections": (v5/*: any*/)
-                                  }
-                                ]
-                              },
-                              {
-                                "kind": "InlineFragment",
                                 "type": "Artwork",
                                 "selections": [
                                   {
@@ -369,6 +335,36 @@ return {
                                     "kind": "LinkedField",
                                     "alias": null,
                                     "name": "image",
+                                    "storageKey": null,
+                                    "args": null,
+                                    "concreteType": "Image",
+                                    "plural": false,
+                                    "selections": (v5/*: any*/)
+                                  }
+                                ]
+                              },
+                              {
+                                "kind": "InlineFragment",
+                                "type": "Show",
+                                "selections": [
+                                  {
+                                    "kind": "LinkedField",
+                                    "alias": null,
+                                    "name": "fair",
+                                    "storageKey": null,
+                                    "args": null,
+                                    "concreteType": "Fair",
+                                    "plural": false,
+                                    "selections": [
+                                      (v2/*: any*/),
+                                      (v4/*: any*/)
+                                    ]
+                                  },
+                                  (v2/*: any*/),
+                                  {
+                                    "kind": "LinkedField",
+                                    "alias": null,
+                                    "name": "cover_image",
                                     "storageKey": null,
                                     "args": null,
                                     "concreteType": "Image",
@@ -413,7 +409,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConversationsQuery",
-    "id": "82b85cf4af654ade37df29ccb3f139d6",
+    "id": "4a460788273284f622d84acf7ae957e8",
     "text": null,
     "metadata": {}
   }

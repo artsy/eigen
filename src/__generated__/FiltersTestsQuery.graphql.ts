@@ -4,11 +4,11 @@ import { ConcreteRequest } from "relay-runtime";
 import { Filters_filteredArtworks$ref } from "./Filters_filteredArtworks.graphql";
 export type FiltersTestsQueryVariables = {};
 export type FiltersTestsQueryResponse = {
-    readonly show: ({
-        readonly filteredArtworks: ({
+    readonly show: {
+        readonly filteredArtworks: {
             readonly " $fragmentRefs": Filters_filteredArtworks$ref;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type FiltersTestsQuery = {
     readonly response: FiltersTestsQueryResponse;
@@ -45,8 +45,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "anderson-fine-art-gallery-flickinger-collection",
-    "type": "String!"
+    "value": "anderson-fine-art-gallery-flickinger-collection"
   }
 ],
 v1 = [
@@ -57,26 +56,22 @@ v1 = [
       "MEDIUM",
       "PRICE_RANGE",
       "TOTAL"
-    ],
-    "type": "[ArtworkAggregation]"
+    ]
   },
   {
     "kind": "Literal",
     "name": "medium",
-    "value": "*",
-    "type": "String"
+    "value": "*"
   },
   {
     "kind": "Literal",
     "name": "price_range",
-    "value": "*-*",
-    "type": "String"
+    "value": "*-*"
   },
   {
     "kind": "Literal",
     "name": "size",
-    "value": 0,
-    "type": "Int"
+    "value": 0
   }
 ],
 v2 = {
@@ -202,7 +197,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FiltersTestsQuery",
-    "id": "498c50b425dfc69be09f5ed829194609",
+    "id": "cf5a6a27aaf3f51645dd602badd07d9b",
     "text": null,
     "metadata": {}
   }

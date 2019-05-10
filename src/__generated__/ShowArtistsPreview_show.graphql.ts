@@ -7,18 +7,18 @@ export type ShowArtistsPreview_show$ref = typeof _ShowArtistsPreview_show$ref;
 export type ShowArtistsPreview_show = {
     readonly internalID: string;
     readonly gravityID: string;
-    readonly artists: ReadonlyArray<({
+    readonly artists: ReadonlyArray<{
         readonly internalID: string;
         readonly gravityID: string;
         readonly href: string | null;
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
-    }) | null> | null;
-    readonly artists_without_artworks: ReadonlyArray<({
+    } | null> | null;
+    readonly artists_without_artworks: ReadonlyArray<{
         readonly internalID: string;
         readonly gravityID: string;
         readonly href: string | null;
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
-    }) | null> | null;
+    } | null> | null;
     readonly " $refType": ShowArtistsPreview_show$ref;
 };
 

@@ -15,9 +15,9 @@ export type CitySectionListQueryVariables = {
     readonly sort?: PartnerShowSorts | null;
 };
 export type CitySectionListQueryResponse = {
-    readonly city: ({
+    readonly city: {
         readonly " $fragmentRefs": CitySectionList_city$ref;
-    }) | null;
+    } | null;
 };
 export type CitySectionListQuery = {
     readonly response: CitySectionListQueryResponse;
@@ -141,76 +141,72 @@ v1 = [
   {
     "kind": "Variable",
     "name": "slug",
-    "variableName": "citySlug",
-    "type": "String"
+    "variableName": "citySlug"
   }
 ],
 v2 = {
+  "kind": "Variable",
+  "name": "dayThreshold",
+  "variableName": "dayThreshold"
+},
+v3 = {
+  "kind": "Variable",
+  "name": "partnerType",
+  "variableName": "partnerType"
+},
+v4 = {
+  "kind": "Variable",
+  "name": "sort",
+  "variableName": "sort"
+},
+v5 = {
+  "kind": "Variable",
+  "name": "status",
+  "variableName": "status"
+},
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v3 = [
+v7 = [
   {
     "kind": "Variable",
     "name": "after",
-    "variableName": "cursor",
-    "type": "String"
+    "variableName": "cursor"
   },
-  {
-    "kind": "Variable",
-    "name": "dayThreshold",
-    "variableName": "dayThreshold",
-    "type": "Int"
-  },
+  (v2/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
-    "variableName": "count",
-    "type": "Int"
+    "variableName": "count"
   },
   {
     "kind": "Literal",
     "name": "includeStubShows",
-    "value": true,
-    "type": "Boolean"
+    "value": true
   },
-  {
-    "kind": "Variable",
-    "name": "partnerType",
-    "variableName": "partnerType",
-    "type": "PartnerShowPartnerType"
-  },
-  {
-    "kind": "Variable",
-    "name": "sort",
-    "variableName": "sort",
-    "type": "PartnerShowSorts"
-  },
-  {
-    "kind": "Variable",
-    "name": "status",
-    "variableName": "status",
-    "type": "EventStatus"
-  }
+  (v3/*: any*/),
+  (v4/*: any*/),
+  (v5/*: any*/)
 ],
-v4 = {
+v8 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
   "args": null,
   "storageKey": null
 },
-v6 = {
+v10 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
@@ -242,39 +238,17 @@ return {
               {
                 "kind": "Variable",
                 "name": "count",
-                "variableName": "count",
-                "type": null
+                "variableName": "count"
               },
               {
                 "kind": "Variable",
                 "name": "cursor",
-                "variableName": "cursor",
-                "type": null
+                "variableName": "cursor"
               },
-              {
-                "kind": "Variable",
-                "name": "dayThreshold",
-                "variableName": "dayThreshold",
-                "type": null
-              },
-              {
-                "kind": "Variable",
-                "name": "partnerType",
-                "variableName": "partnerType",
-                "type": null
-              },
-              {
-                "kind": "Variable",
-                "name": "sort",
-                "variableName": "sort",
-                "type": null
-              },
-              {
-                "kind": "Variable",
-                "name": "status",
-                "variableName": "status",
-                "type": null
-              }
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/),
+              (v5/*: any*/)
             ]
           }
         ]
@@ -295,13 +269,13 @@ return {
         "concreteType": "City",
         "plural": false,
         "selections": [
-          (v2/*: any*/),
+          (v6/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
             "name": "shows",
             "storageKey": null,
-            "args": (v3/*: any*/),
+            "args": (v7/*: any*/),
             "concreteType": "ShowConnection",
             "plural": false,
             "selections": [
@@ -351,18 +325,18 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "status",
+                        "name": "gravityID",
                         "args": null,
                         "storageKey": null
                       },
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "gravityID",
+                        "name": "internalID",
                         "args": null,
                         "storageKey": null
                       },
-                      (v4/*: any*/),
+                      (v8/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -394,7 +368,7 @@ return {
                       {
                         "kind": "ScalarField",
                         "alias": null,
-                        "name": "internalID",
+                        "name": "status",
                         "args": null,
                         "storageKey": null
                       },
@@ -405,8 +379,8 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v5/*: any*/),
-                      (v2/*: any*/),
+                      (v9/*: any*/),
+                      (v6/*: any*/),
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -441,14 +415,14 @@ return {
                         "concreteType": null,
                         "plural": false,
                         "selections": [
-                          (v6/*: any*/),
-                          (v4/*: any*/),
+                          (v10/*: any*/),
+                          (v8/*: any*/),
                           {
                             "kind": "InlineFragment",
                             "type": "Partner",
                             "selections": [
-                              (v2/*: any*/),
-                              (v5/*: any*/),
+                              (v6/*: any*/),
+                              (v9/*: any*/),
                               {
                                 "kind": "LinkedField",
                                 "alias": null,
@@ -475,22 +449,21 @@ return {
                                           {
                                             "kind": "Literal",
                                             "name": "version",
-                                            "value": "square",
-                                            "type": "[String]"
+                                            "value": "square"
                                           }
                                         ],
                                         "storageKey": "url(version:\"square\")"
                                       }
                                     ]
                                   },
-                                  (v4/*: any*/)
+                                  (v8/*: any*/)
                                 ]
                               }
                             ]
                           }
                         ]
                       },
-                      (v6/*: any*/)
+                      (v10/*: any*/)
                     ]
                   },
                   {
@@ -508,7 +481,7 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "shows",
-            "args": (v3/*: any*/),
+            "args": (v7/*: any*/),
             "handle": "connection",
             "key": "CitySectionList_shows",
             "filters": [
@@ -526,7 +499,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CitySectionListQuery",
-    "id": "65975035989d029351cd7d3f4461734f",
+    "id": "31bab43b9a9e3c3089f550b348e02671",
     "text": null,
     "metadata": {}
   }

@@ -10,13 +10,13 @@ export type EventMutationVariables = {
     readonly input: FollowShowInput;
 };
 export type EventMutationResponse = {
-    readonly followShow: ({
-        readonly show: ({
+    readonly followShow: {
+        readonly show: {
             readonly gravityID: string;
             readonly internalID: string;
             readonly is_followed: boolean | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type EventMutation = {
     readonly response: EventMutationResponse;
@@ -53,8 +53,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "input",
-    "variableName": "input",
-    "type": "FollowShowInput!"
+    "variableName": "input"
   }
 ],
 v2 = {
@@ -156,7 +155,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "EventMutation",
-    "id": "3045fff72da58f1d023b96d6da8d3a9a",
+    "id": "ef8a1d904c06c6e1f6ca241c98f14f2c",
     "text": null,
     "metadata": {}
   }

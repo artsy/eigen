@@ -5,14 +5,14 @@ import { ShowItem_show$ref } from "./ShowItem_show.graphql";
 declare const _Shows_show$ref: unique symbol;
 export type Shows_show$ref = typeof _Shows_show$ref;
 export type Shows_show = {
-    readonly nearbyShows: ({
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
+    readonly nearbyShows: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
                 readonly id: string;
                 readonly " $fragmentRefs": ShowItem_show$ref;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": Shows_show$ref;
 };
 
@@ -34,8 +34,7 @@ const node: ReaderFragment = {
         {
           "kind": "Literal",
           "name": "first",
-          "value": 20,
-          "type": "Int"
+          "value": 20
         }
       ],
       "concreteType": "ShowConnection",

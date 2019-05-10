@@ -5,7 +5,7 @@ import { Messages_conversation$ref } from "./Messages_conversation.graphql";
 declare const _Conversation_me$ref: unique symbol;
 export type Conversation_me$ref = typeof _Conversation_me$ref;
 export type Conversation_me = {
-    readonly conversation: ({
+    readonly conversation: {
         readonly internalID: string;
         readonly id: string;
         readonly to: {
@@ -19,7 +19,7 @@ export type Conversation_me = {
         readonly initial_message: string;
         readonly unread: boolean | null;
         readonly " $fragmentRefs": Messages_conversation$ref;
-    }) | null;
+    } | null;
     readonly " $refType": Conversation_me$ref;
 };
 
@@ -47,8 +47,7 @@ const node: ReaderFragment = {
         {
           "kind": "Variable",
           "name": "id",
-          "variableName": "conversationID",
-          "type": "String!"
+          "variableName": "conversationID"
         }
       ],
       "concreteType": "Conversation",
@@ -119,11 +118,6 @@ const node: ReaderFragment = {
           "storageKey": null
         },
         {
-          "kind": "FragmentSpread",
-          "name": "Messages_conversation",
-          "args": null
-        },
-        {
           "kind": "ScalarField",
           "alias": null,
           "name": "initial_message",
@@ -136,6 +130,11 @@ const node: ReaderFragment = {
           "name": "unread",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "FragmentSpread",
+          "name": "Messages_conversation",
+          "args": null
         }
       ]
     }

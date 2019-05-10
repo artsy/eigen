@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { ForYou_forYou$ref } from "./ForYou_forYou.graphql";
 export type ForYouRefetchQueryVariables = {};
 export type ForYouRefetchQueryResponse = {
-    readonly forYou: ({
+    readonly forYou: {
         readonly " $fragmentRefs": ForYou_forYou$ref;
-    }) | null;
+    } | null;
 };
 export type ForYouRefetchQuery = {
     readonly response: ForYouRefetchQueryResponse;
@@ -289,9 +289,6 @@ v9 = {
   "storageKey": null
 },
 v10 = [
-  (v9/*: any*/)
-],
-v11 = [
   {
     "kind": "LinkedField",
     "alias": null,
@@ -306,6 +303,9 @@ v11 = [
     ]
   }
 ],
+v11 = [
+  (v9/*: any*/)
+],
 v12 = {
   "kind": "ScalarField",
   "alias": null,
@@ -314,8 +314,7 @@ v12 = {
     {
       "kind": "Literal",
       "name": "version",
-      "value": "large",
-      "type": "[String]"
+      "value": "large"
     }
   ],
   "storageKey": "url(version:\"large\")"
@@ -388,20 +387,17 @@ return {
                 "name": "exclude",
                 "value": [
                   "FOLLOWED_ARTISTS"
-                ],
-                "type": "[HomePageArtworkModuleTypes]"
+                ]
               },
               {
                 "kind": "Literal",
                 "name": "max_followed_gene_rails",
-                "value": -1,
-                "type": "Int"
+                "value": -1
               },
               {
                 "kind": "Literal",
                 "name": "max_rails",
-                "value": -1,
-                "type": "Int"
+                "value": -1
               },
               {
                 "kind": "Literal",
@@ -418,8 +414,7 @@ return {
                   "CURRENT_FAIRS",
                   "FOLLOWED_GENES",
                   "GENERIC_GENES"
-                ],
-                "type": "[HomePageArtworkModuleTypes]"
+                ]
               }
             ],
             "concreteType": "HomePageArtworkModule",
@@ -516,27 +511,27 @@ return {
                   (v0/*: any*/),
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextSale",
-                    "selections": (v10/*: any*/)
-                  },
-                  {
-                    "kind": "InlineFragment",
-                    "type": "HomePageModuleContextGene",
-                    "selections": (v10/*: any*/)
-                  },
-                  {
-                    "kind": "InlineFragment",
-                    "type": "HomePageModuleContextFair",
+                    "type": "HomePageModuleContextFollowedArtist",
                     "selections": (v10/*: any*/)
                   },
                   {
                     "kind": "InlineFragment",
                     "type": "HomePageModuleContextRelatedArtist",
+                    "selections": (v10/*: any*/)
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "type": "HomePageModuleContextFair",
                     "selections": (v11/*: any*/)
                   },
                   {
                     "kind": "InlineFragment",
-                    "type": "HomePageModuleContextFollowedArtist",
+                    "type": "HomePageModuleContextGene",
+                    "selections": (v11/*: any*/)
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "type": "HomePageModuleContextSale",
                     "selections": (v11/*: any*/)
                   }
                 ]
@@ -550,14 +545,8 @@ return {
                 "concreteType": "Artwork",
                 "plural": true,
                 "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "is_biddable",
-                    "args": null,
-                    "storageKey": null
-                  },
                   (v0/*: any*/),
+                  (v5/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -599,7 +588,13 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v5/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "is_biddable",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -716,8 +711,7 @@ return {
                       {
                         "kind": "Literal",
                         "name": "shallow",
-                        "value": true,
-                        "type": "Boolean"
+                        "value": true
                       }
                     ],
                     "concreteType": "Artist",
@@ -858,7 +852,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ForYouRefetchQuery",
-    "id": "a396ab3e36272c123daeab6aec1dd0fd",
+    "id": "c96a5bbb433de6896e1b852d26dd527f",
     "text": null,
     "metadata": {}
   }

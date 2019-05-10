@@ -3,10 +3,10 @@
 import { ConcreteRequest } from "relay-runtime";
 export type createMockNetworkLayerTestsQueryVariables = {};
 export type createMockNetworkLayerTestsQueryResponse = {
-    readonly artwork: ({
+    readonly artwork: {
         readonly id: string;
         readonly title: string | null;
-    }) | null;
+    } | null;
 };
 export type createMockNetworkLayerTestsQuery = {
     readonly response: createMockNetworkLayerTestsQueryResponse;
@@ -35,8 +35,7 @@ var v0 = [
       {
         "kind": "Literal",
         "name": "id",
-        "value": "untitled",
-        "type": "String!"
+        "value": "untitled"
       }
     ],
     "concreteType": "Artwork",
@@ -78,7 +77,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "createMockNetworkLayerTestsQuery",
-    "id": "1eeffdf1d257e48e4d0b0d33a8f7a7f8",
+    "id": "0de7f21178b2e07411e95edac6027432",
     "text": null,
     "metadata": {}
   }

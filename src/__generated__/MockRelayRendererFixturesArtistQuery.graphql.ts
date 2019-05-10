@@ -6,9 +6,9 @@ export type MockRelayRendererFixturesArtistQueryVariables = {
     readonly id: string;
 };
 export type MockRelayRendererFixturesArtistQueryResponse = {
-    readonly artist: ({
+    readonly artist: {
         readonly " $fragmentRefs": MockRelayRendererFixtures_artist$ref;
-    }) | null;
+    } | null;
 };
 export type MockRelayRendererFixturesArtistQuery = {
     readonly response: MockRelayRendererFixturesArtistQueryResponse;
@@ -45,8 +45,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "id",
-    "type": "String!"
+    "variableName": "id"
   }
 ];
 return {
@@ -111,7 +110,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MockRelayRendererFixturesArtistQuery",
-    "id": "aabded82722f7ed4c4f873a3d0b315be",
+    "id": "cbf4686647f004d150e5f1a608cbe861",
     "text": null,
     "metadata": {}
   }

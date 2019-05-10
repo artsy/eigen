@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { Artworks_me$ref } from "./Artworks_me.graphql";
 export type FavoriteArtworksQueryVariables = {};
 export type FavoriteArtworksQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Artworks_me$ref;
-    }) | null;
+    } | null;
 };
 export type FavoriteArtworksQuery = {
     readonly response: FavoriteArtworksQueryResponse;
@@ -106,20 +106,17 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "after",
-    "value": "",
-    "type": "String"
+    "value": ""
   },
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10,
-    "type": "Int"
+    "value": 10
   },
   {
     "kind": "Literal",
     "name": "private",
-    "value": true,
-    "type": "Boolean"
+    "value": true
   }
 ],
 v1 = {
@@ -271,14 +268,14 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
+                          (v1/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "is_acquireable",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
-                          (v1/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -303,8 +300,7 @@ return {
                                   {
                                     "kind": "Literal",
                                     "name": "version",
-                                    "value": "large",
-                                    "type": "[String]"
+                                    "value": "large"
                                   }
                                 ],
                                 "storageKey": "url(version:\"large\")"
@@ -349,7 +345,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "gravityID",
+                            "name": "is_acquireable",
                             "args": null,
                             "storageKey": null
                           },
@@ -462,8 +458,7 @@ return {
                               {
                                 "kind": "Literal",
                                 "name": "shallow",
-                                "value": true,
-                                "type": "Boolean"
+                                "value": true
                               }
                             ],
                             "concreteType": "Artist",
@@ -529,7 +524,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteArtworksQuery",
-    "id": "4eee4601b64979e5357539469478d3ff",
+    "id": "aae1e3582cb10b86cd685a8bb23cf772",
     "text": null,
     "metadata": {}
   }

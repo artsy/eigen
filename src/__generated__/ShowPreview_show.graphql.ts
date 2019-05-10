@@ -7,15 +7,21 @@ export type ShowPreview_show = {
     readonly gravityID: string;
     readonly internalID: string;
     readonly name: string | null;
-    readonly cover_image: ({
+    readonly cover_image: {
         readonly url: string | null;
-    }) | null;
-    readonly fair: ({
+    } | null;
+    readonly fair: {
         readonly name: string | null;
-    }) | null;
+    } | null;
     readonly partner: ({
         readonly name?: string | null;
-    }) | null;
+    } & ({
+        readonly name: string | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly " $refType": ShowPreview_show$ref;
 };
 

@@ -6,9 +6,9 @@ export type QueryRenderersCityBMWListQueryVariables = {
     readonly citySlug: string;
 };
 export type QueryRenderersCityBMWListQueryResponse = {
-    readonly city: ({
+    readonly city: {
         readonly " $fragmentRefs": CityBMWList_city$ref;
-    }) | null;
+    } | null;
 };
 export type QueryRenderersCityBMWListQuery = {
     readonly response: QueryRenderersCityBMWListQueryResponse;
@@ -100,8 +100,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "slug",
-    "variableName": "citySlug",
-    "type": "String"
+    "variableName": "citySlug"
   }
 ],
 v2 = {
@@ -115,26 +114,22 @@ v3 = [
   {
     "kind": "Literal",
     "name": "after",
-    "value": "",
-    "type": "String"
+    "value": ""
   },
   {
     "kind": "Literal",
     "name": "first",
-    "value": 20,
-    "type": "Int"
+    "value": 20
   },
   {
     "kind": "Literal",
     "name": "sort",
-    "value": "PARTNER_ASC",
-    "type": "PartnerShowSorts"
+    "value": "PARTNER_ASC"
   },
   {
     "kind": "Literal",
     "name": "status",
-    "value": "RUNNING",
-    "type": "EventStatus"
+    "value": "RUNNING"
   }
 ],
 v4 = {
@@ -246,14 +241,14 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "exhibition_period",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "gravityID",
+                            "name": "internalID",
                             "args": null,
                             "storageKey": null
                           },
@@ -290,7 +285,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "internalID",
+                            "name": "exhibition_period",
                             "args": null,
                             "storageKey": null
                           },
@@ -407,8 +402,7 @@ return {
                                               {
                                                 "kind": "Literal",
                                                 "name": "version",
-                                                "value": "square",
-                                                "type": "[String]"
+                                                "value": "square"
                                               }
                                             ],
                                             "storageKey": "url(version:\"square\")"
@@ -482,7 +476,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersCityBMWListQuery",
-    "id": "7617b5ea5121adf4c2d8c05cc88c2828",
+    "id": "aa1e870134b98e529b11c009d7cd36c7",
     "text": null,
     "metadata": {}
   }

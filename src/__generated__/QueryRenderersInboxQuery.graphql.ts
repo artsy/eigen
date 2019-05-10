@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { Inbox_me$ref } from "./Inbox_me.graphql";
 export type QueryRenderersInboxQueryVariables = {};
 export type QueryRenderersInboxQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Inbox_me$ref;
-    }) | null;
+    } | null;
 };
 export type QueryRenderersInboxQuery = {
     readonly response: QueryRenderersInboxQueryResponse;
@@ -200,14 +200,12 @@ v7 = [
   {
     "kind": "Literal",
     "name": "after",
-    "value": "",
-    "type": "String"
+    "value": ""
   },
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10,
-    "type": "Int"
+    "value": 10
   }
 ],
 v8 = {
@@ -274,8 +272,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "live",
-                "value": true,
-                "type": "Boolean"
+                "value": true
               }
             ],
             "concreteType": "LotStanding",
@@ -415,8 +412,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "first",
-                "value": 1,
-                "type": "Int"
+                "value": 1
               }
             ],
             "concreteType": "ConversationConnection",
@@ -556,6 +552,28 @@ return {
                               (v0/*: any*/),
                               {
                                 "kind": "InlineFragment",
+                                "type": "Artwork",
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "date",
+                                    "args": null,
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "title",
+                                    "args": null,
+                                    "storageKey": null
+                                  },
+                                  (v5/*: any*/),
+                                  (v4/*: any*/)
+                                ]
+                              },
+                              {
+                                "kind": "InlineFragment",
                                 "type": "Show",
                                 "selections": [
                                   {
@@ -582,28 +600,6 @@ return {
                                     "plural": false,
                                     "selections": (v3/*: any*/)
                                   }
-                                ]
-                              },
-                              {
-                                "kind": "InlineFragment",
-                                "type": "Artwork",
-                                "selections": [
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "date",
-                                    "args": null,
-                                    "storageKey": null
-                                  },
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "title",
-                                    "args": null,
-                                    "storageKey": null
-                                  },
-                                  (v5/*: any*/),
-                                  (v4/*: any*/)
                                 ]
                               }
                             ]
@@ -642,7 +638,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersInboxQuery",
-    "id": "ce5f976e5f8f2b9a1c45e7241a60c8a0",
+    "id": "69e4994e5a5fa836289a5b13e9d96d95",
     "text": null,
     "metadata": {}
   }

@@ -6,12 +6,12 @@ export type Article_article$ref = typeof _Article_article$ref;
 export type Article_article = {
     readonly thumbnail_title: string | null;
     readonly href: string | null;
-    readonly author: ({
+    readonly author: {
         readonly name: string | null;
-    }) | null;
-    readonly thumbnail_image: ({
+    } | null;
+    readonly thumbnail_image: {
         readonly url: string | null;
-    }) | null;
+    } | null;
     readonly " $refType": Article_article$ref;
 };
 
@@ -73,8 +73,7 @@ const node: ReaderFragment = {
             {
               "kind": "Literal",
               "name": "version",
-              "value": "large",
-              "type": "[String]"
+              "value": "large"
             }
           ],
           "storageKey": "url(version:\"large\")"

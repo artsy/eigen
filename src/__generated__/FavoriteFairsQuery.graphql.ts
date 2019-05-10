@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { Fairs_me$ref } from "./Fairs_me.graphql";
 export type FavoriteFairsQueryVariables = {};
 export type FavoriteFairsQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Fairs_me$ref;
-    }) | null;
+    } | null;
 };
 export type FavoriteFairsQuery = {
     readonly response: FavoriteFairsQueryResponse;
@@ -63,14 +63,12 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "after",
-    "value": "",
-    "type": "String"
+    "value": ""
   },
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10,
-    "type": "Int"
+    "value": 10
   }
 ],
 v1 = {
@@ -319,7 +317,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteFairsQuery",
-    "id": "9f960de6c6c0b2a23c50ef0f8d37287b",
+    "id": "2a4e673fc614cc0d63c9f41857d22ab7",
     "text": null,
     "metadata": {}
   }

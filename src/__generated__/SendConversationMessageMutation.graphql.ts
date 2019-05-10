@@ -13,17 +13,17 @@ export type SendConversationMessageMutationVariables = {
     readonly input: SendConversationMessageMutationInput;
 };
 export type SendConversationMessageMutationResponse = {
-    readonly sendConversationMessage: ({
-        readonly messageEdge: ({
-            readonly node: ({
+    readonly sendConversationMessage: {
+        readonly messageEdge: {
+            readonly node: {
                 readonly impulse_id: string;
                 readonly is_from_user: boolean | null;
                 readonly body: string | null;
                 readonly id: string;
                 readonly " $fragmentRefs": Message_message$ref;
-            }) | null;
-        }) | null;
-    }) | null;
+            } | null;
+        } | null;
+    } | null;
 };
 export type SendConversationMessageMutation = {
     readonly response: SendConversationMessageMutationResponse;
@@ -107,8 +107,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "input",
-    "variableName": "input",
-    "type": "SendConversationMessageMutationInput!"
+    "variableName": "input"
   }
 ],
 v2 = {
@@ -350,7 +349,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "SendConversationMessageMutation",
-    "id": "73b32c449f481fc4adcb493b0ad329eb",
+    "id": "061c540ba7dfcdd30f4dd3d64207077c",
     "text": null,
     "metadata": {}
   }

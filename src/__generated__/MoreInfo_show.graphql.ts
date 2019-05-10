@@ -13,11 +13,18 @@ export type MoreInfo_show = {
     readonly partner: ({
         readonly website?: string | null;
         readonly type?: string | null;
-    }) | null;
+    } & ({
+        readonly website: string | null;
+        readonly type: string | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly press_release: string | null;
-    readonly events: ReadonlyArray<({
+    readonly events: ReadonlyArray<{
         readonly " $fragmentRefs": ShowEventSection_event$ref;
-    }) | null> | null;
+    } | null> | null;
     readonly " $refType": MoreInfo_show$ref;
 };
 

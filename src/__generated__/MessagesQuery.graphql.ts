@@ -8,11 +8,11 @@ export type MessagesQueryVariables = {
     readonly after?: string | null;
 };
 export type MessagesQueryResponse = {
-    readonly me: ({
-        readonly conversation: ({
+    readonly me: {
+        readonly conversation: {
             readonly " $fragmentRefs": Messages_conversation$ref;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type MessagesQuery = {
     readonly response: MessagesQueryResponse;
@@ -201,87 +201,84 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "conversationID",
-    "type": "String!"
+    "variableName": "conversationID"
   }
 ],
 v2 = {
+  "kind": "Variable",
+  "name": "after",
+  "variableName": "after"
+},
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
-v3 = {
+v4 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "internalID",
   "args": null,
   "storageKey": null
 },
-v4 = {
+v5 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v5 = {
+v6 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "email",
   "args": null,
   "storageKey": null
 },
-v6 = {
+v7 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "initials",
   "args": null,
   "storageKey": null
 },
-v7 = [
-  {
-    "kind": "Variable",
-    "name": "after",
-    "variableName": "after",
-    "type": "String"
-  },
+v8 = [
+  (v2/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
-    "variableName": "count",
-    "type": "Int"
+    "variableName": "count"
   },
   {
     "kind": "Literal",
     "name": "sort",
-    "value": "DESC",
-    "type": "sort"
+    "value": "DESC"
   }
 ],
-v8 = {
+v9 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
   "args": null,
   "storageKey": null
 },
-v9 = {
+v10 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v10 = {
+v11 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "gravityID",
   "args": null,
   "storageKey": null
 },
-v11 = [
+v12 = [
   {
     "kind": "ScalarField",
     "alias": null,
@@ -321,17 +318,11 @@ return {
                 "kind": "FragmentSpread",
                 "name": "Messages_conversation",
                 "args": [
-                  {
-                    "kind": "Variable",
-                    "name": "after",
-                    "variableName": "after",
-                    "type": null
-                  },
+                  (v2/*: any*/),
                   {
                     "kind": "Variable",
                     "name": "count",
-                    "variableName": "count",
-                    "type": null
+                    "variableName": "count"
                   }
                 ]
               }
@@ -364,8 +355,8 @@ return {
             "concreteType": "Conversation",
             "plural": false,
             "selections": [
-              (v2/*: any*/),
               (v3/*: any*/),
+              (v4/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -375,9 +366,9 @@ return {
                 "concreteType": "ConversationInitiator",
                 "plural": false,
                 "selections": [
-                  (v4/*: any*/),
                   (v5/*: any*/),
-                  (v6/*: any*/)
+                  (v6/*: any*/),
+                  (v7/*: any*/)
                 ]
               },
               {
@@ -389,8 +380,8 @@ return {
                 "concreteType": "ConversationResponder",
                 "plural": false,
                 "selections": [
-                  (v4/*: any*/),
-                  (v6/*: any*/)
+                  (v5/*: any*/),
+                  (v7/*: any*/)
                 ]
               },
               {
@@ -405,7 +396,7 @@ return {
                 "alias": null,
                 "name": "messages",
                 "storageKey": null,
-                "args": (v7/*: any*/),
+                "args": (v8/*: any*/),
                 "concreteType": "MessageConnection",
                 "plural": false,
                 "selections": [
@@ -473,7 +464,7 @@ return {
                         "concreteType": "Message",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
+                          (v3/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -504,7 +495,7 @@ return {
                             "concreteType": "Attachment",
                             "plural": true,
                             "selections": [
-                              (v3/*: any*/),
+                              (v4/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -544,8 +535,8 @@ return {
                             "concreteType": "MessageInitiator",
                             "plural": false,
                             "selections": [
-                              (v4/*: any*/),
-                              (v5/*: any*/)
+                              (v5/*: any*/),
+                              (v6/*: any*/)
                             ]
                           },
                           {
@@ -585,10 +576,10 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              (v2/*: any*/)
+                              (v3/*: any*/)
                             ]
                           },
-                          (v8/*: any*/)
+                          (v9/*: any*/)
                         ]
                       }
                     ]
@@ -599,7 +590,7 @@ return {
                 "kind": "LinkedHandle",
                 "alias": null,
                 "name": "messages",
-                "args": (v7/*: any*/),
+                "args": (v8/*: any*/),
                 "handle": "connection",
                 "key": "Messages_messages",
                 "filters": []
@@ -622,15 +613,15 @@ return {
                     "concreteType": null,
                     "plural": false,
                     "selections": [
-                      (v8/*: any*/),
-                      (v2/*: any*/),
+                      (v9/*: any*/),
+                      (v3/*: any*/),
                       {
                         "kind": "InlineFragment",
                         "type": "Artwork",
                         "selections": [
-                          (v9/*: any*/),
                           (v10/*: any*/),
-                          (v3/*: any*/),
+                          (v11/*: any*/),
+                          (v4/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -660,7 +651,7 @@ return {
                             "args": null,
                             "concreteType": "Image",
                             "plural": false,
-                            "selections": (v11/*: any*/)
+                            "selections": (v12/*: any*/)
                           }
                         ]
                       }
@@ -675,16 +666,16 @@ return {
                     "concreteType": null,
                     "plural": false,
                     "selections": [
-                      (v8/*: any*/),
-                      (v2/*: any*/),
+                      (v9/*: any*/),
+                      (v3/*: any*/),
                       {
                         "kind": "InlineFragment",
                         "type": "Show",
                         "selections": [
-                          (v9/*: any*/),
                           (v10/*: any*/),
-                          (v3/*: any*/),
+                          (v11/*: any*/),
                           (v4/*: any*/),
+                          (v5/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -693,7 +684,7 @@ return {
                             "args": null,
                             "concreteType": "Image",
                             "plural": false,
-                            "selections": (v11/*: any*/)
+                            "selections": (v12/*: any*/)
                           },
                           {
                             "kind": "LinkedField",
@@ -704,8 +695,8 @@ return {
                             "concreteType": "Fair",
                             "plural": false,
                             "selections": [
-                              (v4/*: any*/),
-                              (v2/*: any*/)
+                              (v5/*: any*/),
+                              (v3/*: any*/)
                             ]
                           },
                           {
@@ -717,13 +708,13 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
-                              (v8/*: any*/),
-                              (v2/*: any*/),
+                              (v9/*: any*/),
+                              (v3/*: any*/),
                               {
                                 "kind": "InlineFragment",
                                 "type": "Partner",
                                 "selections": [
-                                  (v4/*: any*/)
+                                  (v5/*: any*/)
                                 ]
                               }
                             ]
@@ -736,7 +727,7 @@ return {
               }
             ]
           },
-          (v2/*: any*/)
+          (v3/*: any*/)
         ]
       }
     ]
@@ -744,7 +735,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MessagesQuery",
-    "id": "8a4e8692f76af568a4c8b73c6306c1c0",
+    "id": "0b024bc14b66577095b5337d763a41f4",
     "text": null,
     "metadata": {}
   }

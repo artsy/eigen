@@ -7,9 +7,9 @@ export type CategoriesMeQueryVariables = {
     readonly cursor?: string | null;
 };
 export type CategoriesMeQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Categories_me$ref;
-    }) | null;
+    } | null;
 };
 export type CategoriesMeQuery = {
     readonly response: CategoriesMeQueryResponse;
@@ -74,14 +74,12 @@ v1 = [
   {
     "kind": "Variable",
     "name": "after",
-    "variableName": "cursor",
-    "type": "String"
+    "variableName": "cursor"
   },
   {
     "kind": "Variable",
     "name": "first",
-    "variableName": "count",
-    "type": "Int"
+    "variableName": "count"
   }
 ],
 v2 = {
@@ -116,14 +114,12 @@ return {
               {
                 "kind": "Variable",
                 "name": "count",
-                "variableName": "count",
-                "type": null
+                "variableName": "count"
               },
               {
                 "kind": "Variable",
                 "name": "cursor",
-                "variableName": "cursor",
-                "type": null
+                "variableName": "cursor"
               }
             ]
           }
@@ -286,7 +282,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CategoriesMeQuery",
-    "id": "e6ea0c0167f35c399e0d6490f9672e4d",
+    "id": "e5264855f35347905aed28a33b91ec7e",
     "text": null,
     "metadata": {}
   }

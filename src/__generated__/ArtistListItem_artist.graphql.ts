@@ -12,9 +12,9 @@ export type ArtistListItem_artist = {
     readonly nationality: string | null;
     readonly birthday: string | null;
     readonly deathday: string | null;
-    readonly image: ({
+    readonly image: {
         readonly url: string | null;
-    }) | null;
+    } | null;
     readonly " $refType": ArtistListItem_artist$ref;
 };
 

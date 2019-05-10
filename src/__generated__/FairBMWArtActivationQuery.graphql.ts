@@ -5,14 +5,14 @@ export type FairBMWArtActivationQueryVariables = {
     readonly fairID: string;
 };
 export type FairBMWArtActivationQueryResponse = {
-    readonly fair: ({
+    readonly fair: {
         readonly gravityID: string;
         readonly internalID: string;
-        readonly sponsoredContent: ({
+        readonly sponsoredContent: {
             readonly activationText: string | null;
             readonly pressReleaseUrl: string | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type FairBMWArtActivationQuery = {
     readonly response: FairBMWArtActivationQueryResponse;
@@ -50,8 +50,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "fairID",
-    "type": "String!"
+    "variableName": "fairID"
   }
 ],
 v2 = {
@@ -149,7 +148,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBMWArtActivationQuery",
-    "id": "89db77148ba86762e83a265a07599b7a",
+    "id": "a9052013f3c158869fa3957387d7a573",
     "text": null,
     "metadata": {}
   }

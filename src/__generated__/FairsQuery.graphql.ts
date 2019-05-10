@@ -7,9 +7,9 @@ export type FairsQueryVariables = {
     readonly cursor?: string | null;
 };
 export type FairsQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Fairs_me$ref;
-    }) | null;
+    } | null;
 };
 export type FairsQuery = {
     readonly response: FairsQueryResponse;
@@ -83,14 +83,12 @@ v1 = [
   {
     "kind": "Variable",
     "name": "after",
-    "variableName": "cursor",
-    "type": "String"
+    "variableName": "cursor"
   },
   {
     "kind": "Variable",
     "name": "first",
-    "variableName": "count",
-    "type": "Int"
+    "variableName": "count"
   }
 ],
 v2 = {
@@ -125,14 +123,12 @@ return {
               {
                 "kind": "Variable",
                 "name": "count",
-                "variableName": "count",
-                "type": null
+                "variableName": "count"
               },
               {
                 "kind": "Variable",
                 "name": "cursor",
-                "variableName": "cursor",
-                "type": null
+                "variableName": "cursor"
               }
             ]
           }
@@ -352,7 +348,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairsQuery",
-    "id": "5c0727a48c934795d98f43713cc278c3",
+    "id": "e4be6cc7f01e5eb7a089a2e72d0209f1",
     "text": null,
     "metadata": {}
   }

@@ -7,18 +7,18 @@ export type ArtworksPreview_fair$ref = typeof _ArtworksPreview_fair$ref;
 export type ArtworksPreview_fair = {
     readonly gravityID: string;
     readonly id: string;
-    readonly filteredArtworks: ({
-        readonly artworks_connection: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
+    readonly filteredArtworks: {
+        readonly artworks_connection: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
                     readonly " $fragmentRefs": GenericGrid_artworks$ref;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-        readonly counts: ({
+                } | null;
+            } | null> | null;
+        } | null;
+        readonly counts: {
             readonly total: any | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
     readonly " $refType": ArtworksPreview_fair$ref;
 };
 
@@ -56,14 +56,12 @@ const node: ReaderFragment = {
           "name": "aggregations",
           "value": [
             "TOTAL"
-          ],
-          "type": "[ArtworkAggregation]"
+          ]
         },
         {
           "kind": "Literal",
           "name": "size",
-          "value": 0,
-          "type": "Int"
+          "value": 0
         }
       ],
       "concreteType": "FilterArtworks",
@@ -78,8 +76,7 @@ const node: ReaderFragment = {
             {
               "kind": "Literal",
               "name": "first",
-              "value": 6,
-              "type": "Int"
+              "value": 6
             }
           ],
           "concreteType": "ArtworkConnection",

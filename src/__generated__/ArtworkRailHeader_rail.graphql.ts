@@ -7,13 +7,24 @@ export type ArtworkRailHeader_rail = {
     readonly title: string | null;
     readonly key: string | null;
     readonly context: ({
-        readonly artist?: ({
+        readonly artist?: {
             readonly gravityID: string;
-        }) | null;
-        readonly based_on?: ({
+        } | null;
+        readonly based_on?: {
             readonly name: string | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } & ({
+        readonly artist: {
+            readonly gravityID: string;
+        } | null;
+        readonly based_on: {
+            readonly name: string | null;
+        } | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly " $refType": ArtworkRailHeader_rail$ref;
 };
 

@@ -5,19 +5,19 @@ import { ConversationSnippet_conversation$ref } from "./ConversationSnippet_conv
 declare const _Conversations_me$ref: unique symbol;
 export type Conversations_me$ref = typeof _Conversations_me$ref;
 export type Conversations_me = {
-    readonly conversations: ({
+    readonly conversations: {
         readonly pageInfo: {
             readonly endCursor: string | null;
             readonly hasNextPage: boolean;
         };
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
+        readonly edges: ReadonlyArray<{
+            readonly node: {
                 readonly internalID: string;
                 readonly last_message: string | null;
                 readonly " $fragmentRefs": ConversationSnippet_conversation$ref;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": Conversations_me$ref;
 };
 
@@ -121,16 +121,16 @@ const node: ReaderFragment = {
                   "storageKey": null
                 },
                 {
-                  "kind": "FragmentSpread",
-                  "name": "ConversationSnippet_conversation",
-                  "args": null
-                },
-                {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "__typename",
                   "args": null,
                   "storageKey": null
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "ConversationSnippet_conversation",
+                  "args": null
                 }
               ]
             },

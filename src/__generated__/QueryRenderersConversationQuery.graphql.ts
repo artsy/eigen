@@ -6,9 +6,9 @@ export type QueryRenderersConversationQueryVariables = {
     readonly conversationID: string;
 };
 export type QueryRenderersConversationQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Conversation_me$ref;
-    }) | null;
+    } | null;
 };
 export type QueryRenderersConversationQuery = {
     readonly response: QueryRenderersConversationQueryResponse;
@@ -233,14 +233,12 @@ v6 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10,
-    "type": "Int"
+    "value": 10
   },
   {
     "kind": "Literal",
     "name": "sort",
-    "value": "DESC",
-    "type": "sort"
+    "value": "DESC"
   }
 ],
 v7 = {
@@ -323,8 +321,7 @@ return {
               {
                 "kind": "Variable",
                 "name": "id",
-                "variableName": "conversationID",
-                "type": "String!"
+                "variableName": "conversationID"
               }
             ],
             "concreteType": "Conversation",
@@ -724,7 +721,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersConversationQuery",
-    "id": "fe5889d5a36fd2a36e81e4d6f595a8b1",
+    "id": "d0ad215a9308c31ca5ab3adac2b048c6",
     "text": null,
     "metadata": {}
   }

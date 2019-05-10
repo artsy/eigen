@@ -4,17 +4,17 @@ import { ReaderFragment } from "relay-runtime";
 declare const _GlobalMap_viewer$ref: unique symbol;
 export type GlobalMap_viewer$ref = typeof _GlobalMap_viewer$ref;
 export type GlobalMap_viewer = {
-    readonly city: ({
+    readonly city: {
         readonly name: string | null;
         readonly slug: string | null;
-        readonly coordinates: ({
+        readonly coordinates: {
             readonly lat: number | null;
             readonly lng: number | null;
-        }) | null;
-        readonly sponsoredContent: ({
+        } | null;
+        readonly sponsoredContent: {
             readonly introText: string | null;
             readonly artGuideUrl: string | null;
-            readonly featuredShows: ReadonlyArray<({
+            readonly featuredShows: ReadonlyArray<{
                 readonly gravityID: string;
                 readonly internalID: string;
                 readonly id: string;
@@ -24,30 +24,37 @@ export type GlobalMap_viewer = {
                 readonly href: string | null;
                 readonly is_followed: boolean | null;
                 readonly exhibition_period: string | null;
-                readonly cover_image: ({
+                readonly cover_image: {
                     readonly url: string | null;
-                }) | null;
-                readonly location: ({
-                    readonly coordinates: ({
+                } | null;
+                readonly location: {
+                    readonly coordinates: {
                         readonly lat: number | null;
                         readonly lng: number | null;
-                    }) | null;
-                }) | null;
+                    } | null;
+                } | null;
                 readonly type: string | null;
                 readonly start_at: string | null;
                 readonly end_at: string | null;
                 readonly partner: ({
                     readonly name?: string | null;
                     readonly type?: string | null;
-                }) | null;
-            }) | null> | null;
-            readonly shows: ({
+                } & ({
+                    readonly name: string | null;
+                    readonly type: string | null;
+                } | {
+                    /*This will never be '% other', but we need some
+                    value in case none of the concrete values match.*/
+                    readonly __typename: "%other";
+                })) | null;
+            } | null> | null;
+            readonly shows: {
                 readonly totalCount: number | null;
-            }) | null;
-        }) | null;
-        readonly upcomingShows: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
+            } | null;
+        } | null;
+        readonly upcomingShows: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
                     readonly gravityID: string;
                     readonly internalID: string;
                     readonly id: string;
@@ -57,33 +64,45 @@ export type GlobalMap_viewer = {
                     readonly href: string | null;
                     readonly is_followed: boolean | null;
                     readonly exhibition_period: string | null;
-                    readonly cover_image: ({
+                    readonly cover_image: {
                         readonly url: string | null;
-                    }) | null;
-                    readonly location: ({
-                        readonly coordinates: ({
+                    } | null;
+                    readonly location: {
+                        readonly coordinates: {
                             readonly lat: number | null;
                             readonly lng: number | null;
-                        }) | null;
-                    }) | null;
+                        } | null;
+                    } | null;
                     readonly type: string | null;
                     readonly start_at: string | null;
                     readonly end_at: string | null;
                     readonly partner: ({
                         readonly name?: string | null;
                         readonly type?: string | null;
-                        readonly profile?: ({
-                            readonly image: ({
+                        readonly profile?: {
+                            readonly image: {
                                 readonly url: string | null;
-                            }) | null;
-                        }) | null;
-                    }) | null;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-        readonly shows: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
+                            } | null;
+                        } | null;
+                    } & ({
+                        readonly name: string | null;
+                        readonly type: string | null;
+                        readonly profile: {
+                            readonly image: {
+                                readonly url: string | null;
+                            } | null;
+                        } | null;
+                    } | {
+                        /*This will never be '% other', but we need some
+                        value in case none of the concrete values match.*/
+                        readonly __typename: "%other";
+                    })) | null;
+                } | null;
+            } | null> | null;
+        } | null;
+        readonly shows: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
                     readonly gravityID: string;
                     readonly internalID: string;
                     readonly id: string;
@@ -93,68 +112,80 @@ export type GlobalMap_viewer = {
                     readonly href: string | null;
                     readonly is_followed: boolean | null;
                     readonly exhibition_period: string | null;
-                    readonly cover_image: ({
+                    readonly cover_image: {
                         readonly url: string | null;
-                    }) | null;
-                    readonly location: ({
-                        readonly coordinates: ({
+                    } | null;
+                    readonly location: {
+                        readonly coordinates: {
                             readonly lat: number | null;
                             readonly lng: number | null;
-                        }) | null;
-                    }) | null;
+                        } | null;
+                    } | null;
                     readonly type: string | null;
                     readonly start_at: string | null;
                     readonly end_at: string | null;
                     readonly partner: ({
                         readonly name?: string | null;
                         readonly type?: string | null;
-                        readonly profile?: ({
-                            readonly image: ({
+                        readonly profile?: {
+                            readonly image: {
                                 readonly url: string | null;
-                            }) | null;
-                        }) | null;
-                    }) | null;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-        readonly fairs: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
+                            } | null;
+                        } | null;
+                    } & ({
+                        readonly name: string | null;
+                        readonly type: string | null;
+                        readonly profile: {
+                            readonly image: {
+                                readonly url: string | null;
+                            } | null;
+                        } | null;
+                    } | {
+                        /*This will never be '% other', but we need some
+                        value in case none of the concrete values match.*/
+                        readonly __typename: "%other";
+                    })) | null;
+                } | null;
+            } | null> | null;
+        } | null;
+        readonly fairs: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
                     readonly gravityID: string;
                     readonly name: string | null;
                     readonly exhibition_period: string | null;
-                    readonly counts: ({
+                    readonly counts: {
                         readonly partners: any | null;
-                    }) | null;
-                    readonly location: ({
-                        readonly coordinates: ({
+                    } | null;
+                    readonly location: {
+                        readonly coordinates: {
                             readonly lat: number | null;
                             readonly lng: number | null;
-                        }) | null;
-                    }) | null;
-                    readonly image: ({
+                        } | null;
+                    } | null;
+                    readonly image: {
                         readonly image_url: string | null;
                         readonly aspect_ratio: number;
                         readonly url: string | null;
-                    }) | null;
-                    readonly profile: ({
-                        readonly icon: ({
+                    } | null;
+                    readonly profile: {
+                        readonly icon: {
                             readonly gravityID: string | null;
                             readonly href: string | null;
                             readonly height: number | null;
                             readonly width: number | null;
                             readonly url: string | null;
-                        }) | null;
+                        } | null;
                         readonly id: string;
                         readonly gravityID: string;
                         readonly name: string | null;
-                    }) | null;
+                    } | null;
                     readonly start_at: string | null;
                     readonly end_at: string | null;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-    }) | null;
+                } | null;
+            } | null> | null;
+        } | null;
+    } | null;
     readonly " $refType": GlobalMap_viewer$ref;
 };
 
@@ -196,14 +227,14 @@ v1 = {
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_followed",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -238,7 +269,7 @@ v7 = {
 v8 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "is_followed",
   "args": null,
   "storageKey": null
 },
@@ -304,20 +335,17 @@ v15 = {
 v16 = {
   "kind": "Literal",
   "name": "sort",
-  "value": "START_AT_ASC",
-  "type": "PartnerShowSorts"
+  "value": "START_AT_ASC"
 },
 v17 = {
   "kind": "Variable",
   "name": "first",
-  "variableName": "maxInt",
-  "type": "Int"
+  "variableName": "maxInt"
 },
 v18 = {
   "kind": "Literal",
   "name": "includeStubShows",
-  "value": true,
-  "type": "Boolean"
+  "value": true
 },
 v19 = [
   {
@@ -393,8 +421,7 @@ v19 = [
                               {
                                 "kind": "Literal",
                                 "name": "version",
-                                "value": "square",
-                                "type": "[String]"
+                                "value": "square"
                               }
                             ],
                             "storageKey": "url(version:\"square\")"
@@ -441,8 +468,7 @@ return {
         {
           "kind": "Variable",
           "name": "slug",
-          "variableName": "citySlug",
-          "type": "String"
+          "variableName": "citySlug"
         }
       ],
       "concreteType": "City",
@@ -533,8 +559,7 @@ return {
                 {
                   "kind": "Literal",
                   "name": "first",
-                  "value": 1,
-                  "type": "Int"
+                  "value": 1
                 },
                 (v16/*: any*/)
               ],
@@ -561,8 +586,7 @@ return {
             {
               "kind": "Literal",
               "name": "dayThreshold",
-              "value": 14,
-              "type": "Int"
+              "value": 14
             },
             (v17/*: any*/),
             (v18/*: any*/),
@@ -570,8 +594,7 @@ return {
             {
               "kind": "Literal",
               "name": "status",
-              "value": "UPCOMING",
-              "type": "EventStatus"
+              "value": "UPCOMING"
             }
           ],
           "concreteType": "ShowConnection",
@@ -589,14 +612,12 @@ return {
             {
               "kind": "Literal",
               "name": "sort",
-              "value": "PARTNER_ASC",
-              "type": "PartnerShowSorts"
+              "value": "PARTNER_ASC"
             },
             {
               "kind": "Literal",
               "name": "status",
-              "value": "RUNNING",
-              "type": "EventStatus"
+              "value": "RUNNING"
             }
           ],
           "concreteType": "ShowConnection",
@@ -610,17 +631,11 @@ return {
           "storageKey": null,
           "args": [
             (v17/*: any*/),
-            {
-              "kind": "Literal",
-              "name": "sort",
-              "value": "START_AT_ASC",
-              "type": "FairSorts"
-            },
+            (v16/*: any*/),
             {
               "kind": "Literal",
               "name": "status",
-              "value": "CURRENT",
-              "type": "EventStatus"
+              "value": "CURRENT"
             }
           ],
           "concreteType": "FairConnection",
@@ -644,7 +659,7 @@ return {
                   "concreteType": "Fair",
                   "plural": false,
                   "selections": [
-                    (v3/*: any*/),
+                    (v2/*: any*/),
                     (v0/*: any*/),
                     (v9/*: any*/),
                     {
@@ -710,7 +725,7 @@ return {
                           "concreteType": "Image",
                           "plural": false,
                           "selections": [
-                            (v3/*: any*/),
+                            (v2/*: any*/),
                             (v7/*: any*/),
                             {
                               "kind": "ScalarField",
@@ -734,8 +749,7 @@ return {
                                 {
                                   "kind": "Literal",
                                   "name": "version",
-                                  "value": "square140",
-                                  "type": "[String]"
+                                  "value": "square140"
                                 }
                               ],
                               "storageKey": "url(version:\"square140\")"
@@ -743,7 +757,7 @@ return {
                           ]
                         },
                         (v4/*: any*/),
-                        (v3/*: any*/),
+                        (v2/*: any*/),
                         (v0/*: any*/)
                       ]
                     },

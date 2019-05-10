@@ -10,7 +10,13 @@ export type SaleArtworksGridQueryVariables = {
 export type SaleArtworksGridQueryResponse = {
     readonly node: ({
         readonly " $fragmentRefs": SaleArtworksGrid_sale$ref;
-    }) | null;
+    } & ({
+        readonly " $fragmentRefs": SaleArtworksGrid_sale$ref;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
 };
 export type SaleArtworksGridQuery = {
     readonly response: SaleArtworksGridQueryResponse;
@@ -132,8 +138,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "__id",
-    "variableName": "id",
-    "type": "ID!"
+    "variableName": "id"
   }
 ],
 v2 = {
@@ -154,14 +159,12 @@ v4 = [
   {
     "kind": "Variable",
     "name": "after",
-    "variableName": "cursor",
-    "type": "String"
+    "variableName": "cursor"
   },
   {
     "kind": "Variable",
     "name": "first",
-    "variableName": "count",
-    "type": "Int"
+    "variableName": "count"
   }
 ],
 v5 = {
@@ -219,14 +222,12 @@ return {
                   {
                     "kind": "Variable",
                     "name": "count",
-                    "variableName": "count",
-                    "type": null
+                    "variableName": "count"
                   },
                   {
                     "kind": "Variable",
                     "name": "cursor",
-                    "variableName": "cursor",
-                    "type": null
+                    "variableName": "cursor"
                   }
                 ]
               }
@@ -327,17 +328,11 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "is_biddable",
-                                "args": null,
-                                "storageKey": null
-                              },
-                              {
-                                "kind": "ScalarField",
-                                "alias": null,
                                 "name": "gravityID",
                                 "args": null,
                                 "storageKey": null
                               },
+                              (v3/*: any*/),
                               {
                                 "kind": "LinkedField",
                                 "alias": null,
@@ -362,8 +357,7 @@ return {
                                       {
                                         "kind": "Literal",
                                         "name": "version",
-                                        "value": "large",
-                                        "type": "[String]"
+                                        "value": "large"
                                       }
                                     ],
                                     "storageKey": "url(version:\"large\")"
@@ -398,7 +392,13 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              (v3/*: any*/),
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "name": "is_biddable",
+                                "args": null,
+                                "storageKey": null
+                              },
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -515,8 +515,7 @@ return {
                                   {
                                     "kind": "Literal",
                                     "name": "shallow",
-                                    "value": true,
-                                    "type": "Boolean"
+                                    "value": true
                                   }
                                 ],
                                 "concreteType": "Artist",
@@ -575,7 +574,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "SaleArtworksGridQuery",
-    "id": "8fdbad9e162d68c508e6296c63792f39",
+    "id": "5740404accb7920cf6bf7510fbd03c4b",
     "text": null,
     "metadata": {}
   }

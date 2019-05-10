@@ -5,15 +5,15 @@ export type FairMoreInfoQueryVariables = {
     readonly fairID: string;
 };
 export type FairMoreInfoQueryResponse = {
-    readonly fair: ({
-        readonly organizer: ({
+    readonly fair: {
+        readonly organizer: {
             readonly website: string | null;
-        }) | null;
+        } | null;
         readonly gravityID: string;
         readonly internalID: string;
         readonly about: string | null;
         readonly ticketsLink: string | null;
-    }) | null;
+    } | null;
 };
 export type FairMoreInfoQuery = {
     readonly response: FairMoreInfoQueryResponse;
@@ -52,8 +52,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "fairID",
-    "type": "String!"
+    "variableName": "fairID"
   }
 ],
 v2 = {
@@ -162,7 +161,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairMoreInfoQuery",
-    "id": "0d41af657074535f2c67825a65f62bf3",
+    "id": "39ba1ee67df64b558065c140cae0bc17",
     "text": null,
     "metadata": {}
   }

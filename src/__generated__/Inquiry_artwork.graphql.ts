@@ -8,9 +8,9 @@ export type Inquiry_artwork = {
     readonly internalID: string;
     readonly gravityID: string;
     readonly contact_message: string | null;
-    readonly partner: ({
+    readonly partner: {
         readonly name: string | null;
-    }) | null;
+    } | null;
     readonly " $fragmentRefs": ArtworkPreview_artwork$ref;
     readonly " $refType": Inquiry_artwork$ref;
 };

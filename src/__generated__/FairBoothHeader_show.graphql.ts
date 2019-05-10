@@ -4,28 +4,43 @@ import { ReaderFragment } from "relay-runtime";
 declare const _FairBoothHeader_show$ref: unique symbol;
 export type FairBoothHeader_show$ref = typeof _FairBoothHeader_show$ref;
 export type FairBoothHeader_show = {
-    readonly fair: ({
+    readonly fair: {
         readonly name: string | null;
-    }) | null;
+    } | null;
     readonly partner: ({
         readonly name?: string | null;
         readonly gravityID?: string;
         readonly internalID?: string;
         readonly id?: string;
         readonly href?: string | null;
-        readonly profile?: ({
+        readonly profile?: {
             readonly internalID: string;
             readonly gravityID: string;
             readonly is_followed: boolean | null;
-        }) | null;
-    }) | null;
-    readonly counts: ({
+        } | null;
+    } & ({
+        readonly name: string | null;
+        readonly gravityID: string;
+        readonly internalID: string;
+        readonly id: string;
+        readonly href: string | null;
+        readonly profile: {
+            readonly internalID: string;
+            readonly gravityID: string;
+            readonly is_followed: boolean | null;
+        } | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
+    readonly counts: {
         readonly artworks: number | null;
         readonly artists: number | null;
-    }) | null;
-    readonly location: ({
+    } | null;
+    readonly location: {
         readonly display: string | null;
-    }) | null;
+    } | null;
     readonly " $refType": FairBoothHeader_show$ref;
 };
 

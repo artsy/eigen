@@ -6,9 +6,9 @@ export type MoreInfoQueryVariables = {
     readonly showID: string;
 };
 export type MoreInfoQueryResponse = {
-    readonly show: ({
+    readonly show: {
         readonly " $fragmentRefs": MoreInfo_show$ref;
-    }) | null;
+    } | null;
 };
 export type MoreInfoQuery = {
     readonly response: MoreInfoQueryResponse;
@@ -73,8 +73,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "showID",
-    "type": "String!"
+    "variableName": "showID"
   }
 ],
 v2 = {
@@ -253,7 +252,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MoreInfoQuery",
-    "id": "845de9834db6c6e92fc0337a28679c20",
+    "id": "3eff8911aad2f129b8acef054008bb0a",
     "text": null,
     "metadata": {}
   }

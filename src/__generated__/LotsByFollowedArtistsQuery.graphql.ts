@@ -7,9 +7,9 @@ export type LotsByFollowedArtistsQueryVariables = {
     readonly cursor?: string | null;
 };
 export type LotsByFollowedArtistsQueryResponse = {
-    readonly viewer: ({
+    readonly viewer: {
         readonly " $fragmentRefs": LotsByFollowedArtists_viewer$ref;
-    }) | null;
+    } | null;
 };
 export type LotsByFollowedArtistsQuery = {
     readonly response: LotsByFollowedArtistsQueryResponse;
@@ -123,32 +123,27 @@ v1 = [
   {
     "kind": "Variable",
     "name": "after",
-    "variableName": "cursor",
-    "type": "String"
+    "variableName": "cursor"
   },
   {
     "kind": "Variable",
     "name": "first",
-    "variableName": "count",
-    "type": "Int"
+    "variableName": "count"
   },
   {
     "kind": "Literal",
     "name": "include_artworks_by_followed_artists",
-    "value": true,
-    "type": "Boolean"
+    "value": true
   },
   {
     "kind": "Literal",
     "name": "is_auction",
-    "value": true,
-    "type": "Boolean"
+    "value": true
   },
   {
     "kind": "Literal",
     "name": "live_sale",
-    "value": true,
-    "type": "Boolean"
+    "value": true
   }
 ],
 v2 = {
@@ -209,14 +204,12 @@ return {
               {
                 "kind": "Variable",
                 "name": "count",
-                "variableName": "count",
-                "type": null
+                "variableName": "count"
               },
               {
                 "kind": "Variable",
                 "name": "cursor",
-                "variableName": "cursor",
-                "type": null
+                "variableName": "cursor"
               }
             ]
           }
@@ -306,14 +299,14 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
+                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "is_biddable",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -338,8 +331,7 @@ return {
                                   {
                                     "kind": "Literal",
                                     "name": "version",
-                                    "value": "large",
-                                    "type": "[String]"
+                                    "value": "large"
                                   }
                                 ],
                                 "storageKey": "url(version:\"large\")"
@@ -377,7 +369,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "gravityID",
+                            "name": "is_biddable",
                             "args": null,
                             "storageKey": null
                           },
@@ -497,8 +489,7 @@ return {
                               {
                                 "kind": "Literal",
                                 "name": "shallow",
-                                "value": true,
-                                "type": "Boolean"
+                                "value": true
                               }
                             ],
                             "concreteType": "Artist",
@@ -567,7 +558,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "LotsByFollowedArtistsQuery",
-    "id": "b7000438d69fe66f5af0f851e78d6009",
+    "id": "dd36feb953f27743d00ddf3421e28470",
     "text": null,
     "metadata": {}
   }

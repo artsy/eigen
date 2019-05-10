@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { ArtworksPreview_fair$ref } from "./ArtworksPreview_fair.graphql";
 export type ArtworksPreviewTestsQueryVariables = {};
 export type ArtworksPreviewTestsQueryResponse = {
-    readonly fair: ({
+    readonly fair: {
         readonly " $fragmentRefs": ArtworksPreview_fair$ref;
-    }) | null;
+    } | null;
 };
 export type ArtworksPreviewTestsQuery = {
     readonly response: ArtworksPreviewTestsQueryResponse;
@@ -103,8 +103,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "sofa-chicago-2018",
-    "type": "String!"
+    "value": "sofa-chicago-2018"
   }
 ],
 v1 = {
@@ -201,14 +200,12 @@ return {
                 "name": "aggregations",
                 "value": [
                   "TOTAL"
-                ],
-                "type": "[ArtworkAggregation]"
+                ]
               },
               {
                 "kind": "Literal",
                 "name": "size",
-                "value": 0,
-                "type": "Int"
+                "value": 0
               }
             ],
             "concreteType": "FilterArtworks",
@@ -223,8 +220,7 @@ return {
                   {
                     "kind": "Literal",
                     "name": "first",
-                    "value": 6,
-                    "type": "Int"
+                    "value": 6
                   }
                 ],
                 "concreteType": "ArtworkConnection",
@@ -248,14 +244,8 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "is_biddable",
-                            "args": null,
-                            "storageKey": null
-                          },
                           (v2/*: any*/),
+                          (v1/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -280,8 +270,7 @@ return {
                                   {
                                     "kind": "Literal",
                                     "name": "version",
-                                    "value": "large",
-                                    "type": "[String]"
+                                    "value": "large"
                                   }
                                 ],
                                 "storageKey": "url(version:\"large\")"
@@ -316,7 +305,13 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v1/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_biddable",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -433,8 +428,7 @@ return {
                               {
                                 "kind": "Literal",
                                 "name": "shallow",
-                                "value": true,
-                                "type": "Boolean"
+                                "value": true
                               }
                             ],
                             "concreteType": "Artist",
@@ -492,7 +486,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksPreviewTestsQuery",
-    "id": "aecf2b5bf285d58888782cdc930538a5",
+    "id": "830d42fbac45ddf2a723fc68e728ab2e",
     "text": null,
     "metadata": {}
   }

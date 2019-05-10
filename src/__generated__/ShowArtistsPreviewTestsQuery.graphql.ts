@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { ShowArtistsPreview_show$ref } from "./ShowArtistsPreview_show.graphql";
 export type ShowArtistsPreviewTestsQueryVariables = {};
 export type ShowArtistsPreviewTestsQueryResponse = {
-    readonly show: ({
+    readonly show: {
         readonly " $fragmentRefs": ShowArtistsPreview_show$ref;
-    }) | null;
+    } | null;
 };
 export type ShowArtistsPreviewTestsQuery = {
     readonly response: ShowArtistsPreviewTestsQueryResponse;
@@ -62,8 +62,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "anderson-fine-art-gallery-flickinger-collection",
-    "type": "String!"
+    "value": "anderson-fine-art-gallery-flickinger-collection"
   }
 ],
 v1 = {
@@ -223,7 +222,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtistsPreviewTestsQuery",
-    "id": "64a178290c2d0214fc7b8844da6be0a2",
+    "id": "895f70fb99c72534467237e856cae5cf",
     "text": null,
     "metadata": {}
   }

@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { ShowArtists_show$ref } from "./ShowArtists_show.graphql";
 export type ShowArtistsTestsQueryVariables = {};
 export type ShowArtistsTestsQueryResponse = {
-    readonly show: ({
+    readonly show: {
         readonly " $fragmentRefs": ShowArtists_show$ref;
-    }) | null;
+    } | null;
 };
 export type ShowArtistsTestsQuery = {
     readonly response: ShowArtistsTestsQueryResponse;
@@ -57,8 +57,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "anderson-fine-art-gallery-flickinger-collection",
-    "type": "String!"
+    "value": "anderson-fine-art-gallery-flickinger-collection"
   }
 ],
 v1 = {
@@ -150,14 +149,8 @@ return {
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "nationality",
-                    "args": null,
-                    "storageKey": null
-                  },
                   (v3/*: any*/),
+                  (v1/*: any*/),
                   (v2/*: any*/),
                   {
                     "kind": "ScalarField",
@@ -173,7 +166,13 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v1/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "nationality",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -232,7 +231,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtistsTestsQuery",
-    "id": "112df1f78ef22031c816a0c5c43aa1f5",
+    "id": "7aa40aa2926832e43ad1b81a7f40fd27",
     "text": null,
     "metadata": {}
   }

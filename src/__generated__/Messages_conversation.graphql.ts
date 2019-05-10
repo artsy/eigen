@@ -19,37 +19,51 @@ export type Messages_conversation = {
         readonly initials: string | null;
     };
     readonly initial_message: string;
-    readonly messages: ({
+    readonly messages: {
         readonly pageInfo: {
             readonly startCursor: string | null;
             readonly endCursor: string | null;
             readonly hasPreviousPage: boolean;
             readonly hasNextPage: boolean;
         };
-        readonly edges: ReadonlyArray<({
+        readonly edges: ReadonlyArray<{
             readonly cursor: string;
-            readonly node: ({
+            readonly node: {
                 readonly id: string;
                 readonly impulse_id: string;
                 readonly is_from_user: boolean | null;
                 readonly body: string | null;
-                readonly attachments: ReadonlyArray<({
+                readonly attachments: ReadonlyArray<{
                     readonly internalID: string;
-                }) | null> | null;
+                } | null> | null;
                 readonly " $fragmentRefs": Message_message$ref;
-            }) | null;
-        }) | null> | null;
-    }) | null;
-    readonly items: ReadonlyArray<({
+            } | null;
+        } | null> | null;
+    } | null;
+    readonly items: ReadonlyArray<{
         readonly artwork: ({
             readonly href?: string | null;
             readonly " $fragmentRefs": ArtworkPreview_artwork$ref;
-        }) | null;
+        } & ({
+            readonly href: string | null;
+            readonly " $fragmentRefs": ArtworkPreview_artwork$ref;
+        } | {
+            /*This will never be '% other', but we need some
+            value in case none of the concrete values match.*/
+            readonly __typename: "%other";
+        })) | null;
         readonly show: ({
             readonly href?: string | null;
             readonly " $fragmentRefs": ShowPreview_show$ref;
-        }) | null;
-    }) | null> | null;
+        } & ({
+            readonly href: string | null;
+            readonly " $fragmentRefs": ShowPreview_show$ref;
+        } | {
+            /*This will never be '% other', but we need some
+            value in case none of the concrete values match.*/
+            readonly __typename: "%other";
+        })) | null;
+    } | null> | null;
     readonly " $refType": Messages_conversation$ref;
 };
 
@@ -272,16 +286,16 @@ return {
                   ]
                 },
                 {
-                  "kind": "FragmentSpread",
-                  "name": "Message_message",
-                  "args": null
-                },
-                {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "__typename",
                   "args": null,
                   "storageKey": null
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "Message_message",
+                  "args": null
                 }
               ]
             }

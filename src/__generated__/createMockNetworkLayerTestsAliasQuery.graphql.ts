@@ -3,14 +3,14 @@
 import { ConcreteRequest } from "relay-runtime";
 export type createMockNetworkLayerTestsAliasQueryVariables = {};
 export type createMockNetworkLayerTestsAliasQueryResponse = {
-    readonly artist: ({
-        readonly forSaleArtworks: ReadonlyArray<({
+    readonly artist: {
+        readonly forSaleArtworks: ReadonlyArray<{
             readonly id: string;
-        }) | null> | null;
-        readonly notForSaleArtworks: ReadonlyArray<({
+        } | null> | null;
+        readonly notForSaleArtworks: ReadonlyArray<{
             readonly id: string;
-        }) | null> | null;
-    }) | null;
+        } | null> | null;
+    } | null;
 };
 export type createMockNetworkLayerTestsAliasQuery = {
     readonly response: createMockNetworkLayerTestsAliasQueryResponse;
@@ -38,8 +38,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "banksy",
-    "type": "String!"
+    "value": "banksy"
   }
 ],
 v1 = {
@@ -61,8 +60,7 @@ v3 = {
     {
       "kind": "Literal",
       "name": "filter",
-      "value": "IS_FOR_SALE",
-      "type": "[ArtistArtworksFilters]"
+      "value": "IS_FOR_SALE"
     }
   ],
   "concreteType": "Artwork",
@@ -78,8 +76,7 @@ v4 = {
     {
       "kind": "Literal",
       "name": "filter",
-      "value": "IS_NOT_FOR_SALE",
-      "type": "[ArtistArtworksFilters]"
+      "value": "IS_NOT_FOR_SALE"
     }
   ],
   "concreteType": "Artwork",
@@ -134,7 +131,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "createMockNetworkLayerTestsAliasQuery",
-    "id": "d71064778be9a9526b5a559c23006b2c",
+    "id": "271418402f851ef8625420d5b6d2642e",
     "text": null,
     "metadata": {}
   }

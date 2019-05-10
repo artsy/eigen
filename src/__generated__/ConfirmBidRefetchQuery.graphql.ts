@@ -5,12 +5,12 @@ export type ConfirmBidRefetchQueryVariables = {
     readonly saleID: string;
 };
 export type ConfirmBidRefetchQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly has_qualified_credit_cards: boolean | null;
-        readonly bidders: ReadonlyArray<({
+        readonly bidders: ReadonlyArray<{
             readonly qualified_for_bidding: boolean | null;
-        }) | null> | null;
-    }) | null;
+        } | null> | null;
+    } | null;
 };
 export type ConfirmBidRefetchQuery = {
     readonly response: ConfirmBidRefetchQueryResponse;
@@ -54,8 +54,7 @@ v2 = [
   {
     "kind": "Variable",
     "name": "sale_id",
-    "variableName": "saleID",
-    "type": "String"
+    "variableName": "saleID"
   }
 ],
 v3 = {
@@ -143,7 +142,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ConfirmBidRefetchQuery",
-    "id": "12cc69f9d8252cdd1c762eea37e5ae8f",
+    "id": "8f1e3d1de99a2269877ab7b892fcf518",
     "text": null,
     "metadata": {}
   }

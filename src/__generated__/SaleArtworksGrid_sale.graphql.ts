@@ -6,25 +6,25 @@ declare const _SaleArtworksGrid_sale$ref: unique symbol;
 export type SaleArtworksGrid_sale$ref = typeof _SaleArtworksGrid_sale$ref;
 export type SaleArtworksGrid_sale = {
     readonly id: string;
-    readonly saleArtworks: ({
+    readonly saleArtworks: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
             readonly startCursor: string | null;
             readonly endCursor: string | null;
         };
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
-                readonly artwork: ({
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly artwork: {
                     readonly gravityID: string;
                     readonly id: string;
-                    readonly image: ({
+                    readonly image: {
                         readonly aspect_ratio: number;
-                    }) | null;
+                    } | null;
                     readonly " $fragmentRefs": ArtworkGridItem_artwork$ref;
-                }) | null;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+                } | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": SaleArtworksGrid_sale$ref;
 };
 

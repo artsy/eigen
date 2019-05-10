@@ -7,9 +7,9 @@ export type Fair_fair$ref = typeof _Fair_fair$ref;
 export type Fair_fair = {
     readonly gravityID: string;
     readonly id: string;
-    readonly organizer: ({
+    readonly organizer: {
         readonly website: string | null;
-    }) | null;
+    } | null;
     readonly about: string | null;
     readonly ticketsLink: string | null;
     readonly " $fragmentRefs": FairDetail_fair$ref;
@@ -38,11 +38,6 @@ const node: ReaderFragment = {
       "name": "id",
       "args": null,
       "storageKey": null
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "FairDetail_fair",
-      "args": null
     },
     {
       "kind": "LinkedField",
@@ -75,6 +70,11 @@ const node: ReaderFragment = {
       "name": "ticketsLink",
       "args": null,
       "storageKey": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "FairDetail_fair",
+      "args": null
     }
   ]
 };

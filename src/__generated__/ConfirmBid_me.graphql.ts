@@ -5,9 +5,9 @@ declare const _ConfirmBid_me$ref: unique symbol;
 export type ConfirmBid_me$ref = typeof _ConfirmBid_me$ref;
 export type ConfirmBid_me = {
     readonly has_qualified_credit_cards: boolean | null;
-    readonly bidders: ReadonlyArray<({
+    readonly bidders: ReadonlyArray<{
         readonly qualified_for_bidding: boolean | null;
-    }) | null> | null;
+    } | null> | null;
     readonly " $refType": ConfirmBid_me$ref;
 };
 
@@ -42,8 +42,7 @@ const node: ReaderFragment = {
         {
           "kind": "Variable",
           "name": "sale_id",
-          "variableName": "saleID",
-          "type": "String"
+          "variableName": "saleID"
         }
       ],
       "concreteType": "Bidder",

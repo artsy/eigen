@@ -5,22 +5,22 @@ import { ShowItemRow_show$ref } from "./ShowItemRow_show.graphql";
 declare const _Shows_me$ref: unique symbol;
 export type Shows_me$ref = typeof _Shows_me$ref;
 export type Shows_me = {
-    readonly followsAndSaves: ({
-        readonly shows: ({
+    readonly followsAndSaves: {
+        readonly shows: {
             readonly pageInfo: {
                 readonly startCursor: string | null;
                 readonly endCursor: string | null;
                 readonly hasPreviousPage: boolean;
                 readonly hasNextPage: boolean;
             };
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
+            readonly edges: ReadonlyArray<{
+                readonly node: {
                     readonly id: string;
                     readonly " $fragmentRefs": ShowItemRow_show$ref;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-    }) | null;
+                } | null;
+            } | null> | null;
+        } | null;
+    } | null;
     readonly " $refType": Shows_me$ref;
 };
 
@@ -141,16 +141,16 @@ const node: ReaderFragment = {
                       "storageKey": null
                     },
                     {
-                      "kind": "FragmentSpread",
-                      "name": "ShowItemRow_show",
-                      "args": null
-                    },
-                    {
                       "kind": "ScalarField",
                       "alias": null,
                       "name": "__typename",
                       "args": null,
                       "storageKey": null
+                    },
+                    {
+                      "kind": "FragmentSpread",
+                      "name": "ShowItemRow_show",
+                      "args": null
                     }
                   ]
                 },

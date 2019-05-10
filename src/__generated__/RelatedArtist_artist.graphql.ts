@@ -6,13 +6,13 @@ export type RelatedArtist_artist$ref = typeof _RelatedArtist_artist$ref;
 export type RelatedArtist_artist = {
     readonly href: string | null;
     readonly name: string | null;
-    readonly counts: ({
+    readonly counts: {
         readonly for_sale_artworks: any | null;
         readonly artworks: any | null;
-    }) | null;
-    readonly image: ({
+    } | null;
+    readonly image: {
         readonly url: string | null;
-    }) | null;
+    } | null;
     readonly " $refType": RelatedArtist_artist$ref;
 };
 
@@ -81,8 +81,7 @@ const node: ReaderFragment = {
             {
               "kind": "Literal",
               "name": "version",
-              "value": "large",
-              "type": "[String]"
+              "value": "large"
             }
           ],
           "storageKey": "url(version:\"large\")"

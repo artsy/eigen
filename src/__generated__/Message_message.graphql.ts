@@ -10,21 +10,21 @@ export type Message_message = {
     readonly body: string | null;
     readonly created_at: string | null;
     readonly is_from_user: boolean | null;
-    readonly from: ({
+    readonly from: {
         readonly name: string | null;
         readonly email: string | null;
-    }) | null;
-    readonly invoice: ({
+    } | null;
+    readonly invoice: {
         readonly payment_url: string | null;
         readonly " $fragmentRefs": InvoicePreview_invoice$ref;
-    }) | null;
-    readonly attachments: ReadonlyArray<({
+    } | null;
+    readonly attachments: ReadonlyArray<{
         readonly internalID: string;
         readonly content_type: string;
         readonly download_url: string;
         readonly file_name: string;
         readonly " $fragmentRefs": ImagePreview_attachment$ref & PDFPreview_attachment$ref;
-    }) | null> | null;
+    } | null> | null;
     readonly " $refType": Message_message$ref;
 };
 

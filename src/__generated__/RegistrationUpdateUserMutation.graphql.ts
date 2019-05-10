@@ -25,12 +25,12 @@ export type RegistrationUpdateUserMutationVariables = {
     readonly input: UpdateMyProfileInput;
 };
 export type RegistrationUpdateUserMutationResponse = {
-    readonly updateMyUserProfile: ({
+    readonly updateMyUserProfile: {
         readonly clientMutationId: string | null;
-        readonly user: ({
+        readonly user: {
             readonly phone: string | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type RegistrationUpdateUserMutation = {
     readonly response: RegistrationUpdateUserMutationResponse;
@@ -66,8 +66,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "input",
-    "variableName": "input",
-    "type": "UpdateMyProfileInput!"
+    "variableName": "input"
   }
 ],
 v2 = {
@@ -160,7 +159,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "RegistrationUpdateUserMutation",
-    "id": "c0fa063813eeaa0721f07bde5237f58b",
+    "id": "9e8a7891114d59f7905a4aa9027e24e0",
     "text": null,
     "metadata": {}
   }

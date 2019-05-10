@@ -7,9 +7,9 @@ export type ArtworksQueryVariables = {
     readonly cursor?: string | null;
 };
 export type ArtworksQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Artworks_me$ref;
-    }) | null;
+    } | null;
 };
 export type ArtworksQuery = {
     readonly response: ArtworksQueryResponse;
@@ -126,20 +126,17 @@ v1 = [
   {
     "kind": "Variable",
     "name": "after",
-    "variableName": "cursor",
-    "type": "String"
+    "variableName": "cursor"
   },
   {
     "kind": "Variable",
     "name": "first",
-    "variableName": "count",
-    "type": "Int"
+    "variableName": "count"
   },
   {
     "kind": "Literal",
     "name": "private",
-    "value": true,
-    "type": "Boolean"
+    "value": true
   }
 ],
 v2 = {
@@ -200,14 +197,12 @@ return {
               {
                 "kind": "Variable",
                 "name": "count",
-                "variableName": "count",
-                "type": null
+                "variableName": "count"
               },
               {
                 "kind": "Variable",
                 "name": "cursor",
-                "variableName": "cursor",
-                "type": null
+                "variableName": "cursor"
               }
             ]
           }
@@ -304,14 +299,14 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
+                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "is_acquireable",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
-                          (v2/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -336,8 +331,7 @@ return {
                                   {
                                     "kind": "Literal",
                                     "name": "version",
-                                    "value": "large",
-                                    "type": "[String]"
+                                    "value": "large"
                                   }
                                 ],
                                 "storageKey": "url(version:\"large\")"
@@ -382,7 +376,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "gravityID",
+                            "name": "is_acquireable",
                             "args": null,
                             "storageKey": null
                           },
@@ -495,8 +489,7 @@ return {
                               {
                                 "kind": "Literal",
                                 "name": "shallow",
-                                "value": true,
-                                "type": "Boolean"
+                                "value": true
                               }
                             ],
                             "concreteType": "Artist",
@@ -562,7 +555,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworksQuery",
-    "id": "6dbe7bc57a2235d40925152f64b7e085",
+    "id": "9129972c6e47bec43c228aa73ce415e6",
     "text": null,
     "metadata": {}
   }

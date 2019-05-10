@@ -9,12 +9,12 @@ export type Metadata_show = {
     readonly exhibition_period: string | null;
     readonly status_update: string | null;
     readonly status: string | null;
-    readonly partner: ({
+    readonly partner: {
         readonly name: string | null;
-    }) | null;
-    readonly location: ({
+    } | null;
+    readonly location: {
         readonly city: string | null;
-    }) | null;
+    } | null;
     readonly " $refType": Metadata_show$ref;
 };
 

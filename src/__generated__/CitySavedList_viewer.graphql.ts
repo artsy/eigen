@@ -4,14 +4,14 @@ import { ReaderFragment } from "relay-runtime";
 declare const _CitySavedList_viewer$ref: unique symbol;
 export type CitySavedList_viewer$ref = typeof _CitySavedList_viewer$ref;
 export type CitySavedList_viewer = {
-    readonly city: ({
+    readonly city: {
         readonly name: string | null;
-    }) | null;
-    readonly me: ({
-        readonly followsAndSaves: ({
-            readonly shows: ({
-                readonly edges: ReadonlyArray<({
-                    readonly node: ({
+    } | null;
+    readonly me: {
+        readonly followsAndSaves: {
+            readonly shows: {
+                readonly edges: ReadonlyArray<{
+                    readonly node: {
                         readonly gravityID: string;
                         readonly internalID: string;
                         readonly id: string;
@@ -21,32 +21,44 @@ export type CitySavedList_viewer = {
                         readonly href: string | null;
                         readonly is_followed: boolean | null;
                         readonly exhibition_period: string | null;
-                        readonly cover_image: ({
+                        readonly cover_image: {
                             readonly url: string | null;
-                        }) | null;
-                        readonly location: ({
-                            readonly coordinates: ({
+                        } | null;
+                        readonly location: {
+                            readonly coordinates: {
                                 readonly lat: number | null;
                                 readonly lng: number | null;
-                            }) | null;
-                        }) | null;
+                            } | null;
+                        } | null;
                         readonly type: string | null;
                         readonly start_at: string | null;
                         readonly end_at: string | null;
                         readonly partner: ({
                             readonly name?: string | null;
                             readonly type?: string | null;
-                            readonly profile?: ({
-                                readonly image: ({
+                            readonly profile?: {
+                                readonly image: {
                                     readonly url: string | null;
-                                }) | null;
-                            }) | null;
-                        }) | null;
-                    }) | null;
-                }) | null> | null;
-            }) | null;
-        }) | null;
-    }) | null;
+                                } | null;
+                            } | null;
+                        } & ({
+                            readonly name: string | null;
+                            readonly type: string | null;
+                            readonly profile: {
+                                readonly image: {
+                                    readonly url: string | null;
+                                } | null;
+                            } | null;
+                        } | {
+                            /*This will never be '% other', but we need some
+                            value in case none of the concrete values match.*/
+                            readonly __typename: "%other";
+                        })) | null;
+                    } | null;
+                } | null> | null;
+            } | null;
+        } | null;
+    } | null;
     readonly " $refType": CitySavedList_viewer$ref;
 };
 
@@ -114,8 +126,7 @@ return {
         {
           "kind": "Variable",
           "name": "slug",
-          "variableName": "citySlug",
-          "type": "String"
+          "variableName": "citySlug"
         }
       ],
       "concreteType": "City",
@@ -151,14 +162,12 @@ return {
                 {
                   "kind": "Variable",
                   "name": "city",
-                  "variableName": "citySlug",
-                  "type": "String"
+                  "variableName": "citySlug"
                 },
                 {
                   "kind": "Literal",
                   "name": "status",
-                  "value": "RUNNING_AND_UPCOMING",
-                  "type": "EventStatus"
+                  "value": "RUNNING_AND_UPCOMING"
                 }
               ],
               "concreteType": "FollowedShowConnection",
@@ -185,14 +194,14 @@ return {
                         {
                           "kind": "ScalarField",
                           "alias": null,
-                          "name": "exhibition_period",
+                          "name": "gravityID",
                           "args": null,
                           "storageKey": null
                         },
                         {
                           "kind": "ScalarField",
                           "alias": null,
-                          "name": "gravityID",
+                          "name": "internalID",
                           "args": null,
                           "storageKey": null
                         },
@@ -235,7 +244,7 @@ return {
                         {
                           "kind": "ScalarField",
                           "alias": null,
-                          "name": "internalID",
+                          "name": "exhibition_period",
                           "args": null,
                           "storageKey": null
                         },
@@ -349,8 +358,7 @@ return {
                                             {
                                               "kind": "Literal",
                                               "name": "version",
-                                              "value": "square",
-                                              "type": "[String]"
+                                              "value": "square"
                                             }
                                           ],
                                           "storageKey": "url(version:\"square\")"

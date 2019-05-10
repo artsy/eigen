@@ -15,10 +15,10 @@ export type SaleListItem_sale = {
     readonly registration_ends_at: string | null;
     readonly live_start_at: string | null;
     readonly display_timely_at: string | null;
-    readonly cover_image: ({
+    readonly cover_image: {
         readonly url: string | null;
         readonly aspect_ratio: number;
-    }) | null;
+    } | null;
     readonly " $refType": SaleListItem_sale$ref;
 };
 
@@ -34,14 +34,14 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "start_at",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "gravityID",
+      "name": "name",
       "args": null,
       "storageKey": null
     },
@@ -76,7 +76,7 @@ const node: ReaderFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "name",
+      "name": "start_at",
       "args": null,
       "storageKey": null
     },
@@ -125,8 +125,7 @@ const node: ReaderFragment = {
             {
               "kind": "Literal",
               "name": "version",
-              "value": "large",
-              "type": "[String]"
+              "value": "large"
             }
           ],
           "storageKey": "url(version:\"large\")"

@@ -6,23 +6,23 @@ declare const _ArtworksGridPaginationContainer_filteredArtworks$ref: unique symb
 export type ArtworksGridPaginationContainer_filteredArtworks$ref = typeof _ArtworksGridPaginationContainer_filteredArtworks$ref;
 export type ArtworksGridPaginationContainer_filteredArtworks = {
     readonly id: string;
-    readonly artworks: ({
+    readonly artworks: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
             readonly startCursor: string | null;
             readonly endCursor: string | null;
         };
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
+        readonly edges: ReadonlyArray<{
+            readonly node: {
                 readonly gravityID: string;
                 readonly id: string;
-                readonly image: ({
+                readonly image: {
                     readonly aspect_ratio: number;
-                }) | null;
+                } | null;
                 readonly " $fragmentRefs": ArtworkGridItem_artwork$ref;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": ArtworksGridPaginationContainer_filteredArtworks$ref;
 };
 
@@ -154,16 +154,16 @@ return {
                   ]
                 },
                 {
-                  "kind": "FragmentSpread",
-                  "name": "ArtworkGridItem_artwork",
-                  "args": null
-                },
-                {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "__typename",
                   "args": null,
                   "storageKey": null
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "ArtworkGridItem_artwork",
+                  "args": null
                 }
               ]
             },

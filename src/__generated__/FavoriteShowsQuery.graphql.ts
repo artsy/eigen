@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { Shows_me$ref } from "./Shows_me.graphql";
 export type FavoriteShowsQueryVariables = {};
 export type FavoriteShowsQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Shows_me$ref;
-    }) | null;
+    } | null;
 };
 export type FavoriteShowsQuery = {
     readonly response: FavoriteShowsQueryResponse;
@@ -87,8 +87,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10,
-    "type": "Int"
+    "value": 10
   }
 ],
 v1 = {
@@ -228,14 +227,14 @@ return {
                         "concreteType": "Show",
                         "plural": false,
                         "selections": [
+                          (v1/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "href",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
-                          (v1/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -300,8 +299,7 @@ return {
                                               {
                                                 "kind": "Literal",
                                                 "name": "version",
-                                                "value": "square",
-                                                "type": "[String]"
+                                                "value": "square"
                                               }
                                             ],
                                             "storageKey": "url(version:\"square\")"
@@ -318,7 +316,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "gravityID",
+                            "name": "href",
                             "args": null,
                             "storageKey": null
                           },
@@ -415,7 +413,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteShowsQuery",
-    "id": "6dbdf618a8913e9625487bb6719e165f",
+    "id": "a4e47aa958bc45bd3f152bee82f1984e",
     "text": null,
     "metadata": {}
   }

@@ -10,9 +10,9 @@ export type ArtistCard_artist = {
     readonly name: string | null;
     readonly formatted_artworks_count: string | null;
     readonly formatted_nationality_and_birthday: string | null;
-    readonly image: ({
+    readonly image: {
         readonly url: string | null;
-    }) | null;
+    } | null;
     readonly " $refType": ArtistCard_artist$ref;
 };
 
@@ -84,8 +84,7 @@ const node: ReaderFragment = {
             {
               "kind": "Literal",
               "name": "version",
-              "value": "large",
-              "type": "[String]"
+              "value": "large"
             }
           ],
           "storageKey": "url(version:\"large\")"

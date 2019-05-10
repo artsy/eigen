@@ -5,19 +5,19 @@ export type FairExhibitorsQueryVariables = {
     readonly fairID: string;
 };
 export type FairExhibitorsQueryResponse = {
-    readonly fair: ({
+    readonly fair: {
         readonly gravityID: string;
         readonly internalID: string;
-        readonly exhibitors_grouped_by_name: ReadonlyArray<({
+        readonly exhibitors_grouped_by_name: ReadonlyArray<{
             readonly letter: string | null;
-            readonly exhibitors: ReadonlyArray<({
+            readonly exhibitors: ReadonlyArray<{
                 readonly name: string | null;
                 readonly gravityID: string;
                 readonly profile_id: string | null;
                 readonly partner_id: string | null;
-            }) | null> | null;
-        }) | null> | null;
-    }) | null;
+            } | null> | null;
+        } | null> | null;
+    } | null;
 };
 export type FairExhibitorsQuery = {
     readonly response: FairExhibitorsQueryResponse;
@@ -61,8 +61,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "fairID",
-    "type": "String!"
+    "variableName": "fairID"
   }
 ],
 v2 = {
@@ -217,7 +216,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairExhibitorsQuery",
-    "id": "9b3a8dfed1174d383384f086d200f959",
+    "id": "90f7ce5c74b0b5f1e0ff0aefd7bd9431",
     "text": null,
     "metadata": {}
   }

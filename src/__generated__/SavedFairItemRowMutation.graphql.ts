@@ -10,13 +10,13 @@ export type SavedFairItemRowMutationVariables = {
     readonly input: FollowProfileInput;
 };
 export type SavedFairItemRowMutationResponse = {
-    readonly followProfile: ({
-        readonly profile: ({
+    readonly followProfile: {
+        readonly profile: {
             readonly gravityID: string;
             readonly is_followed: boolean | null;
             readonly id: string;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type SavedFairItemRowMutation = {
     readonly response: SavedFairItemRowMutationResponse;
@@ -58,8 +58,7 @@ v1 = [
       {
         "kind": "Variable",
         "name": "input",
-        "variableName": "input",
-        "type": "FollowProfileInput!"
+        "variableName": "input"
       }
     ],
     "concreteType": "FollowProfilePayload",
@@ -119,7 +118,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "SavedFairItemRowMutation",
-    "id": "c56eee8376ea60d53b47c2c65360c191",
+    "id": "e9ef5d6769540cb2e31a0501ef6770f3",
     "text": null,
     "metadata": {}
   }

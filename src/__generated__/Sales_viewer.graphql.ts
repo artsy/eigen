@@ -6,11 +6,11 @@ import { SaleListItem_sale$ref } from "./SaleListItem_sale.graphql";
 declare const _Sales_viewer$ref: unique symbol;
 export type Sales_viewer$ref = typeof _Sales_viewer$ref;
 export type Sales_viewer = {
-    readonly sales: ReadonlyArray<({
+    readonly sales: ReadonlyArray<{
         readonly href: string | null;
         readonly live_start_at: string | null;
         readonly " $fragmentRefs": SaleListItem_sale$ref;
-    }) | null> | null;
+    } | null> | null;
     readonly " $fragmentRefs": LotsByFollowedArtists_viewer$ref;
     readonly " $refType": Sales_viewer$ref;
 };
@@ -33,36 +33,27 @@ const node: ReaderFragment = {
         {
           "kind": "Literal",
           "name": "is_auction",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         },
         {
           "kind": "Literal",
           "name": "live",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         },
         {
           "kind": "Literal",
           "name": "size",
-          "value": 100,
-          "type": "Int"
+          "value": 100
         },
         {
           "kind": "Literal",
           "name": "sort",
-          "value": "TIMELY_AT_NAME_ASC",
-          "type": "SaleSorts"
+          "value": "TIMELY_AT_NAME_ASC"
         }
       ],
       "concreteType": "Sale",
       "plural": true,
       "selections": [
-        {
-          "kind": "FragmentSpread",
-          "name": "SaleListItem_sale",
-          "args": null
-        },
         {
           "kind": "ScalarField",
           "alias": null,
@@ -76,6 +67,11 @@ const node: ReaderFragment = {
           "name": "live_start_at",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "FragmentSpread",
+          "name": "SaleListItem_sale",
+          "args": null
         }
       ]
     },

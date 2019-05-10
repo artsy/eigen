@@ -7,9 +7,9 @@ export type ArtistsMeQueryVariables = {
     readonly cursor?: string | null;
 };
 export type ArtistsMeQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Artists_me$ref;
-    }) | null;
+    } | null;
 };
 export type ArtistsMeQuery = {
     readonly response: ArtistsMeQueryResponse;
@@ -74,14 +74,12 @@ v1 = [
   {
     "kind": "Variable",
     "name": "after",
-    "variableName": "cursor",
-    "type": "String"
+    "variableName": "cursor"
   },
   {
     "kind": "Variable",
     "name": "first",
-    "variableName": "count",
-    "type": "Int"
+    "variableName": "count"
   }
 ],
 v2 = {
@@ -116,14 +114,12 @@ return {
               {
                 "kind": "Variable",
                 "name": "count",
-                "variableName": "count",
-                "type": null
+                "variableName": "count"
               },
               {
                 "kind": "Variable",
                 "name": "cursor",
-                "variableName": "cursor",
-                "type": null
+                "variableName": "cursor"
               }
             ]
           }
@@ -286,7 +282,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistsMeQuery",
-    "id": "a06e6f32f9eb0bbdc9517ef7065762d2",
+    "id": "50c8259fa471d0389d67dfbb57d92dd4",
     "text": null,
     "metadata": {}
   }

@@ -6,9 +6,9 @@ import { RelatedArtists_artists$ref } from "./RelatedArtists_artists.graphql";
 declare const _About_gene$ref: unique symbol;
 export type About_gene$ref = typeof _About_gene$ref;
 export type About_gene = {
-    readonly trending_artists: ReadonlyArray<({
+    readonly trending_artists: ReadonlyArray<{
         readonly " $fragmentRefs": RelatedArtists_artists$ref;
-    }) | null> | null;
+    } | null> | null;
     readonly " $fragmentRefs": Biography_gene$ref;
     readonly " $refType": About_gene$ref;
 };
@@ -22,11 +22,6 @@ const node: ReaderFragment = {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "FragmentSpread",
-      "name": "Biography_gene",
-      "args": null
-    },
     {
       "kind": "LinkedField",
       "alias": null,
@@ -42,6 +37,11 @@ const node: ReaderFragment = {
           "args": null
         }
       ]
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "Biography_gene",
+      "args": null
     }
   ]
 };

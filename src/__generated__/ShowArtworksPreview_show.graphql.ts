@@ -6,12 +6,12 @@ declare const _ShowArtworksPreview_show$ref: unique symbol;
 export type ShowArtworksPreview_show$ref = typeof _ShowArtworksPreview_show$ref;
 export type ShowArtworksPreview_show = {
     readonly id: string;
-    readonly artworks: ReadonlyArray<({
+    readonly artworks: ReadonlyArray<{
         readonly " $fragmentRefs": GenericGrid_artworks$ref;
-    }) | null> | null;
-    readonly counts: ({
+    } | null> | null;
+    readonly counts: {
         readonly artworks: number | null;
-    }) | null;
+    } | null;
     readonly " $refType": ShowArtworksPreview_show$ref;
 };
 
@@ -40,8 +40,7 @@ const node: ReaderFragment = {
         {
           "kind": "Literal",
           "name": "size",
-          "value": 6,
-          "type": "Int"
+          "value": 6
         }
       ],
       "concreteType": "Artwork",

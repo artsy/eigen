@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
 export type ArtistListItemTestsQueryVariables = {};
 export type ArtistListItemTestsQueryResponse = {
-    readonly artist: ({
+    readonly artist: {
         readonly " $fragmentRefs": ArtistListItem_artist$ref;
-    }) | null;
+    } | null;
 };
 export type ArtistListItemTestsQuery = {
     readonly response: ArtistListItemTestsQueryResponse;
@@ -43,8 +43,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "pablo-picasso",
-    "type": "String!"
+    "value": "pablo-picasso"
   }
 ];
 return {
@@ -169,7 +168,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistListItemTestsQuery",
-    "id": "a82d3fc95c3382d7c4f56d0544e4f879",
+    "id": "ad42c869e9d3a391ca1609f30af5956b",
     "text": null,
     "metadata": {}
   }

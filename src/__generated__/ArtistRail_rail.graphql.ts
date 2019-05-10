@@ -7,11 +7,11 @@ export type ArtistRail_rail$ref = typeof _ArtistRail_rail$ref;
 export type ArtistRail_rail = {
     readonly id: string;
     readonly key: string | null;
-    readonly results: ReadonlyArray<({
+    readonly results: ReadonlyArray<{
         readonly internalID: string;
         readonly id: string;
         readonly " $fragmentRefs": ArtistCard_artist$ref;
-    }) | null> | null;
+    } | null> | null;
     readonly " $refType": ArtistRail_rail$ref;
 };
 

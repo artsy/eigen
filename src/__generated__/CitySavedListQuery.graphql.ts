@@ -8,9 +8,9 @@ export type CitySavedListQueryVariables = {
     readonly citySlug: string;
 };
 export type CitySavedListQueryResponse = {
-    readonly viewer: ({
+    readonly viewer: {
         readonly " $fragmentRefs": CitySavedList_viewer$ref;
-    }) | null;
+    } | null;
 };
 export type CitySavedListQuery = {
     readonly response: CitySavedListQueryResponse;
@@ -26,11 +26,11 @@ query CitySavedListQuery(
   $citySlug: String!
 ) {
   viewer {
-    ...CitySavedList_viewer_40VqxQ
+    ...CitySavedList_viewer_1G22uz
   }
 }
 
-fragment CitySavedList_viewer_40VqxQ on Viewer {
+fragment CitySavedList_viewer_1G22uz on Viewer {
   city(slug: $citySlug) {
     name
   }
@@ -127,26 +127,22 @@ v2 = [
   {
     "kind": "Variable",
     "name": "after",
-    "variableName": "cursor",
-    "type": "String"
+    "variableName": "cursor"
   },
   {
     "kind": "Variable",
     "name": "city",
-    "variableName": "citySlug",
-    "type": "String"
+    "variableName": "citySlug"
   },
   {
     "kind": "Variable",
     "name": "first",
-    "variableName": "count",
-    "type": "Int"
+    "variableName": "count"
   },
   {
     "kind": "Literal",
     "name": "status",
-    "value": "RUNNING_AND_UPCOMING",
-    "type": "EventStatus"
+    "value": "RUNNING_AND_UPCOMING"
   }
 ],
 v3 = {
@@ -194,21 +190,13 @@ return {
             "args": [
               {
                 "kind": "Variable",
-                "name": "city",
-                "variableName": "citySlug",
-                "type": null
-              },
-              {
-                "kind": "Variable",
                 "name": "count",
-                "variableName": "count",
-                "type": null
+                "variableName": "count"
               },
               {
                 "kind": "Variable",
                 "name": "cursor",
-                "variableName": "cursor",
-                "type": null
+                "variableName": "cursor"
               }
             ]
           }
@@ -239,8 +227,7 @@ return {
               {
                 "kind": "Variable",
                 "name": "slug",
-                "variableName": "citySlug",
-                "type": "String"
+                "variableName": "citySlug"
               }
             ],
             "concreteType": "City",
@@ -297,14 +284,14 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "exhibition_period",
+                                "name": "gravityID",
                                 "args": null,
                                 "storageKey": null
                               },
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "gravityID",
+                                "name": "internalID",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -341,7 +328,7 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "internalID",
+                                "name": "exhibition_period",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -458,8 +445,7 @@ return {
                                                   {
                                                     "kind": "Literal",
                                                     "name": "version",
-                                                    "value": "square",
-                                                    "type": "[String]"
+                                                    "value": "square"
                                                   }
                                                 ],
                                                 "storageKey": "url(version:\"square\")"
@@ -545,11 +531,11 @@ return {
   "params": {
     "operationKind": "query",
     "name": "CitySavedListQuery",
-    "id": "e62705bf01c43b189302e3cafe6104b0",
+    "id": "4970e95662a530b17224c91c55f5ba09",
     "text": null,
     "metadata": {}
   }
 };
 })();
-(node as any).hash = 'e62705bf01c43b189302e3cafe6104b0';
+(node as any).hash = 'df74e3e1fb7ef00a448946ba19450b01';
 export default node;

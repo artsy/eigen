@@ -4,11 +4,11 @@ import { ConcreteRequest } from "relay-runtime";
 import { FilteredInfiniteScrollGrid_filteredArtworks$ref } from "./FilteredInfiniteScrollGrid_filteredArtworks.graphql";
 export type FilteredInfiniteScrollGridTestsQueryVariables = {};
 export type FilteredInfiniteScrollGridTestsQueryResponse = {
-    readonly show: ({
-        readonly filteredArtworks: ({
+    readonly show: {
+        readonly filteredArtworks: {
             readonly " $fragmentRefs": FilteredInfiniteScrollGrid_filteredArtworks$ref;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type FilteredInfiniteScrollGridTestsQuery = {
     readonly response: FilteredInfiniteScrollGridTestsQueryResponse;
@@ -119,8 +119,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "anderson-fine-art-gallery-flickinger-collection",
-    "type": "String!"
+    "value": "anderson-fine-art-gallery-flickinger-collection"
   }
 ],
 v1 = [
@@ -131,26 +130,22 @@ v1 = [
       "MEDIUM",
       "PRICE_RANGE",
       "TOTAL"
-    ],
-    "type": "[ArtworkAggregation]"
+    ]
   },
   {
     "kind": "Literal",
     "name": "medium",
-    "value": "*",
-    "type": "String"
+    "value": "*"
   },
   {
     "kind": "Literal",
     "name": "price_range",
-    "value": "*-*",
-    "type": "String"
+    "value": "*-*"
   },
   {
     "kind": "Literal",
     "name": "size",
-    "value": 0,
-    "type": "Int"
+    "value": 0
   }
 ],
 v2 = {
@@ -178,8 +173,7 @@ v5 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10,
-    "type": "Int"
+    "value": 10
   }
 ],
 v6 = {
@@ -355,14 +349,8 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "is_acquireable",
-                            "args": null,
-                            "storageKey": null
-                          },
                           (v2/*: any*/),
+                          (v4/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -387,8 +375,7 @@ return {
                                   {
                                     "kind": "Literal",
                                     "name": "version",
-                                    "value": "large",
-                                    "type": "[String]"
+                                    "value": "large"
                                   }
                                 ],
                                 "storageKey": "url(version:\"large\")"
@@ -430,7 +417,13 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          (v4/*: any*/),
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "is_acquireable",
+                            "args": null,
+                            "storageKey": null
+                          },
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -540,8 +533,7 @@ return {
                               {
                                 "kind": "Literal",
                                 "name": "shallow",
-                                "value": true,
-                                "type": "Boolean"
+                                "value": true
                               }
                             ],
                             "concreteType": "Artist",
@@ -604,7 +596,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FilteredInfiniteScrollGridTestsQuery",
-    "id": "b98fc08bec2ea3d38df622805613db71",
+    "id": "aadef24ccf3123a99100fdab337adf23",
     "text": null,
     "metadata": {}
   }

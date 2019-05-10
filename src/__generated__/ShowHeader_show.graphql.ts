@@ -18,29 +18,37 @@ export type ShowHeader_show = {
         readonly name?: string | null;
         readonly gravityID?: string;
         readonly href?: string | null;
-    }) | null;
-    readonly images: ReadonlyArray<({
+    } & ({
+        readonly name: string | null;
+        readonly gravityID: string;
+        readonly href: string | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
+    readonly images: ReadonlyArray<{
         readonly url: string | null;
         readonly aspect_ratio: number;
-    }) | null> | null;
-    readonly followedArtists: ({
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
-                readonly artist: ({
+    } | null> | null;
+    readonly followedArtists: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly artist: {
                     readonly name: string | null;
                     readonly href: string | null;
                     readonly gravityID: string;
                     readonly internalID: string;
-                }) | null;
-            }) | null;
-        }) | null> | null;
-    }) | null;
-    readonly artists: ReadonlyArray<({
+                } | null;
+            } | null;
+        } | null> | null;
+    } | null;
+    readonly artists: ReadonlyArray<{
         readonly name: string | null;
         readonly href: string | null;
         readonly gravityID: string;
         readonly internalID: string;
-    }) | null> | null;
+    } | null> | null;
     readonly " $refType": ShowHeader_show$ref;
 };
 
@@ -57,14 +65,14 @@ var v0 = {
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
@@ -76,10 +84,10 @@ v3 = {
   "storageKey": null
 },
 v4 = [
-  (v1/*: any*/),
+  (v2/*: any*/),
   (v3/*: any*/),
   (v0/*: any*/),
-  (v2/*: any*/)
+  (v1/*: any*/)
 ];
 return {
   "kind": "Fragment",
@@ -88,14 +96,8 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "exhibition_period",
-      "args": null,
-      "storageKey": null
-    },
     (v0/*: any*/),
+    (v1/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -103,7 +105,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    (v1/*: any*/),
+    (v2/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -125,7 +127,13 @@ return {
       "args": null,
       "storageKey": null
     },
-    (v2/*: any*/),
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "exhibition_period",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -153,7 +161,7 @@ return {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            (v1/*: any*/),
+            (v2/*: any*/),
             (v0/*: any*/),
             (v3/*: any*/)
           ]
@@ -194,8 +202,7 @@ return {
         {
           "kind": "Literal",
           "name": "first",
-          "value": 3,
-          "type": "Int"
+          "value": 3
         }
       ],
       "concreteType": "ShowFollowArtistConnection",

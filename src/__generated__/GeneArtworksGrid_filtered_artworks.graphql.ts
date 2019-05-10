@@ -6,23 +6,23 @@ declare const _GeneArtworksGrid_filtered_artworks$ref: unique symbol;
 export type GeneArtworksGrid_filtered_artworks$ref = typeof _GeneArtworksGrid_filtered_artworks$ref;
 export type GeneArtworksGrid_filtered_artworks = {
     readonly id: string;
-    readonly artworks: ({
+    readonly artworks: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
             readonly startCursor: string | null;
             readonly endCursor: string | null;
         };
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
+        readonly edges: ReadonlyArray<{
+            readonly node: {
                 readonly gravityID: string;
                 readonly id: string;
-                readonly image: ({
+                readonly image: {
                     readonly aspect_ratio: number;
-                }) | null;
+                } | null;
                 readonly " $fragmentRefs": ArtworkGridItem_artwork$ref;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": GeneArtworksGrid_filtered_artworks$ref;
 };
 
@@ -83,8 +83,7 @@ return {
         {
           "kind": "Variable",
           "name": "sort",
-          "variableName": "sort",
-          "type": "String"
+          "variableName": "sort"
         }
       ],
       "concreteType": "ArtworkConnection",
@@ -167,16 +166,16 @@ return {
                   ]
                 },
                 {
-                  "kind": "FragmentSpread",
-                  "name": "ArtworkGridItem_artwork",
-                  "args": null
-                },
-                {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "__typename",
                   "args": null,
                   "storageKey": null
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "ArtworkGridItem_artwork",
+                  "args": null
                 }
               ]
             },

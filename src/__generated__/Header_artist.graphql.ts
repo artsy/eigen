@@ -9,9 +9,9 @@ export type Header_artist = {
     readonly name: string | null;
     readonly nationality: string | null;
     readonly birthday: string | null;
-    readonly counts: ({
+    readonly counts: {
         readonly follows: any | null;
-    }) | null;
+    } | null;
     readonly " $refType": Header_artist$ref;
 };
 

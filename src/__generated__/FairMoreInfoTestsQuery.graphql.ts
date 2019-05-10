@@ -3,11 +3,11 @@
 import { ConcreteRequest } from "relay-runtime";
 export type FairMoreInfoTestsQueryVariables = {};
 export type FairMoreInfoTestsQueryResponse = {
-    readonly fair: ({
+    readonly fair: {
         readonly links: string | null;
         readonly about: string | null;
         readonly ticketsLink: string | null;
-    }) | null;
+    } | null;
 };
 export type FairMoreInfoTestsQuery = {
     readonly response: FairMoreInfoTestsQueryResponse;
@@ -32,8 +32,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "sofa-chicago-2018",
-    "type": "String!"
+    "value": "sofa-chicago-2018"
   }
 ],
 v1 = {
@@ -113,7 +112,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairMoreInfoTestsQuery",
-    "id": "2ed3205d94bc196c8fe618fdc3db1933",
+    "id": "21d8ec4ea76fb5e8b71f3045b76905a0",
     "text": null,
     "metadata": {}
   }

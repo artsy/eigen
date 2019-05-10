@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { FairBoothHeader_show$ref } from "./FairBoothHeader_show.graphql";
 export type FairBoothHeaderTestsQueryVariables = {};
 export type FairBoothHeaderTestsQueryResponse = {
-    readonly show: ({
+    readonly show: {
         readonly " $fragmentRefs": FairBoothHeader_show$ref;
-    }) | null;
+    } | null;
 };
 export type FairBoothHeaderTestsQuery = {
     readonly response: FairBoothHeaderTestsQueryResponse;
@@ -66,8 +66,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "anderson-fine-art-gallery-flickinger-collection",
-    "type": "String!"
+    "value": "anderson-fine-art-gallery-flickinger-collection"
   }
 ],
 v1 = {
@@ -260,7 +259,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBoothHeaderTestsQuery",
-    "id": "ae12004335f8c4d530fc3b74a3a8e899",
+    "id": "075eef9b05a517134134c1782389911b",
     "text": null,
     "metadata": {}
   }

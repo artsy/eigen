@@ -8,14 +8,14 @@ export type QueryRenderersBidFlowQueryVariables = {
     readonly saleID: string;
 };
 export type QueryRenderersBidFlowQueryResponse = {
-    readonly artwork: ({
-        readonly sale_artwork: ({
+    readonly artwork: {
+        readonly sale_artwork: {
             readonly " $fragmentRefs": BidFlow_sale_artwork$ref;
-        }) | null;
-    }) | null;
-    readonly me: ({
+        } | null;
+    } | null;
+    readonly me: {
         readonly " $fragmentRefs": BidFlow_me$ref;
-    }) | null;
+    } | null;
 };
 export type QueryRenderersBidFlowQuery = {
     readonly response: QueryRenderersBidFlowQueryResponse;
@@ -124,16 +124,14 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "artworkID",
-    "type": "String!"
+    "variableName": "artworkID"
   }
 ],
 v2 = [
   {
     "kind": "Variable",
     "name": "sale_id",
-    "variableName": "saleID",
-    "type": "String"
+    "variableName": "saleID"
   }
 ],
 v3 = {
@@ -250,8 +248,7 @@ return {
                   {
                     "kind": "Literal",
                     "name": "useMyMaxBid",
-                    "value": true,
-                    "type": "Boolean"
+                    "value": true
                   }
                 ],
                 "concreteType": "BidIncrementsFormatted",
@@ -405,7 +402,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersBidFlowQuery",
-    "id": "2d8c3fea75a28bde19b0f42c870bd574",
+    "id": "37d88a0ab0f2bbbbc16d14c592df08ac",
     "text": null,
     "metadata": {}
   }

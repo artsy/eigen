@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { FairArtists_fair$ref } from "./FairArtists_fair.graphql";
 export type FairArtistsTestsQueryVariables = {};
 export type FairArtistsTestsQueryResponse = {
-    readonly fair: ({
+    readonly fair: {
         readonly " $fragmentRefs": FairArtists_fair$ref;
-    }) | null;
+    } | null;
 };
 export type FairArtistsTestsQuery = {
     readonly response: FairArtistsTestsQueryResponse;
@@ -67,8 +67,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "sofa-chicago-2018",
-    "type": "String!"
+    "value": "sofa-chicago-2018"
   }
 ],
 v1 = {
@@ -89,8 +88,7 @@ v3 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10,
-    "type": "Int"
+    "value": 10
   }
 ],
 v4 = {
@@ -209,14 +207,8 @@ return {
                     "concreteType": "Artist",
                     "plural": false,
                     "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "birthday",
-                        "args": null,
-                        "storageKey": null
-                      },
                       (v4/*: any*/),
+                      (v2/*: any*/),
                       (v1/*: any*/),
                       {
                         "kind": "ScalarField",
@@ -239,7 +231,13 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v2/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "birthday",
+                        "args": null,
+                        "storageKey": null
+                      },
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -309,7 +307,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairArtistsTestsQuery",
-    "id": "48bf54144fa282b6f59e03ec5f86dcb8",
+    "id": "e3e35709edd154a9f5e5acc02ebdc6cd",
     "text": null,
     "metadata": {}
   }

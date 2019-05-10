@@ -10,13 +10,13 @@ export type ShowHeaderFollowShowMutationVariables = {
     readonly input: FollowShowInput;
 };
 export type ShowHeaderFollowShowMutationResponse = {
-    readonly followShow: ({
-        readonly show: ({
+    readonly followShow: {
+        readonly show: {
             readonly gravityID: string;
             readonly internalID: string;
             readonly is_followed: boolean | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type ShowHeaderFollowShowMutation = {
     readonly response: ShowHeaderFollowShowMutationResponse;
@@ -53,8 +53,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "input",
-    "variableName": "input",
-    "type": "FollowShowInput!"
+    "variableName": "input"
   }
 ],
 v2 = {
@@ -156,7 +155,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "ShowHeaderFollowShowMutation",
-    "id": "5707bbf2fd919807b2baaafd4b20226f",
+    "id": "63378c05eabd24879b71b7b204eee3e7",
     "text": null,
     "metadata": {}
   }

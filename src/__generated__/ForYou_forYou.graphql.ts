@@ -7,17 +7,17 @@ import { FairsRail_fairs_module$ref } from "./FairsRail_fairs_module.graphql";
 declare const _ForYou_forYou$ref: unique symbol;
 export type ForYou_forYou$ref = typeof _ForYou_forYou$ref;
 export type ForYou_forYou = {
-    readonly artwork_modules: ReadonlyArray<({
+    readonly artwork_modules: ReadonlyArray<{
         readonly id: string;
         readonly " $fragmentRefs": ArtworkCarousel_rail$ref;
-    }) | null> | null;
-    readonly artist_modules: ReadonlyArray<({
+    } | null> | null;
+    readonly artist_modules: ReadonlyArray<{
         readonly id: string;
         readonly " $fragmentRefs": ArtistRail_rail$ref;
-    }) | null> | null;
-    readonly fairs_module: ({
+    } | null> | null;
+    readonly fairs_module: {
         readonly " $fragmentRefs": FairsRail_fairs_module$ref;
-    }) | null;
+    } | null;
     readonly " $refType": ForYou_forYou$ref;
 };
 
@@ -49,20 +49,17 @@ return {
           "name": "exclude",
           "value": [
             "FOLLOWED_ARTISTS"
-          ],
-          "type": "[HomePageArtworkModuleTypes]"
+          ]
         },
         {
           "kind": "Literal",
           "name": "max_followed_gene_rails",
-          "value": -1,
-          "type": "Int"
+          "value": -1
         },
         {
           "kind": "Literal",
           "name": "max_rails",
-          "value": -1,
-          "type": "Int"
+          "value": -1
         },
         {
           "kind": "Literal",
@@ -79,8 +76,7 @@ return {
             "CURRENT_FAIRS",
             "FOLLOWED_GENES",
             "GENERIC_GENES"
-          ],
-          "type": "[HomePageArtworkModuleTypes]"
+          ]
         }
       ],
       "concreteType": "HomePageArtworkModule",

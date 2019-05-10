@@ -6,9 +6,9 @@ export type ArtistHeaderQueryVariables = {
     readonly artistID: string;
 };
 export type ArtistHeaderQueryResponse = {
-    readonly artist: ({
+    readonly artist: {
         readonly " $fragmentRefs": Header_artist$ref;
-    }) | null;
+    } | null;
 };
 export type ArtistHeaderQuery = {
     readonly response: ArtistHeaderQueryResponse;
@@ -52,8 +52,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "artistID",
-    "type": "String!"
+    "variableName": "artistID"
   }
 ];
 return {
@@ -164,7 +163,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtistHeaderQuery",
-    "id": "e7898450d087c728259c6cf89d6d7ce0",
+    "id": "858d6efef918cfb78435929841e9b4f8",
     "text": null,
     "metadata": {}
   }

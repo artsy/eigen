@@ -5,43 +5,43 @@ declare const _CityFairList_city$ref: unique symbol;
 export type CityFairList_city$ref = typeof _CityFairList_city$ref;
 export type CityFairList_city = {
     readonly slug: string | null;
-    readonly fairs: ({
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
+    readonly fairs: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
                 readonly gravityID: string;
                 readonly name: string | null;
                 readonly exhibition_period: string | null;
-                readonly counts: ({
+                readonly counts: {
                     readonly partners: any | null;
-                }) | null;
-                readonly location: ({
-                    readonly coordinates: ({
+                } | null;
+                readonly location: {
+                    readonly coordinates: {
                         readonly lat: number | null;
                         readonly lng: number | null;
-                    }) | null;
-                }) | null;
-                readonly image: ({
+                    } | null;
+                } | null;
+                readonly image: {
                     readonly image_url: string | null;
                     readonly aspect_ratio: number;
                     readonly url: string | null;
-                }) | null;
-                readonly profile: ({
-                    readonly icon: ({
+                } | null;
+                readonly profile: {
+                    readonly icon: {
                         readonly gravityID: string | null;
                         readonly href: string | null;
                         readonly height: number | null;
                         readonly width: number | null;
                         readonly url: string | null;
-                    }) | null;
+                    } | null;
                     readonly id: string;
                     readonly gravityID: string;
                     readonly name: string | null;
-                }) | null;
+                } | null;
                 readonly start_at: string | null;
                 readonly end_at: string | null;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": CityFairList_city$ref;
 };
 
@@ -109,14 +109,12 @@ return {
         {
           "kind": "Literal",
           "name": "sort",
-          "value": "START_AT_ASC",
-          "type": "FairSorts"
+          "value": "START_AT_ASC"
         },
         {
           "kind": "Literal",
           "name": "status",
-          "value": "CURRENT",
-          "type": "EventStatus"
+          "value": "CURRENT"
         }
       ],
       "concreteType": "FairConnection",
@@ -283,8 +281,7 @@ return {
                             {
                               "kind": "Literal",
                               "name": "version",
-                              "value": "square140",
-                              "type": "[String]"
+                              "value": "square140"
                             }
                           ],
                           "storageKey": "url(version:\"square140\")"

@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { MoreInfo_show$ref } from "./MoreInfo_show.graphql";
 export type MoreInfoTestsQueryVariables = {};
 export type MoreInfoTestsQueryResponse = {
-    readonly show: ({
+    readonly show: {
         readonly " $fragmentRefs": MoreInfo_show$ref;
-    }) | null;
+    } | null;
 };
 export type MoreInfoTestsQuery = {
     readonly response: MoreInfoTestsQueryResponse;
@@ -61,8 +61,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "anderson-fine-art-gallery-flickinger-collection",
-    "type": "String!"
+    "value": "anderson-fine-art-gallery-flickinger-collection"
   }
 ],
 v1 = {
@@ -241,7 +240,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MoreInfoTestsQuery",
-    "id": "bc9b5b8df734aa249ca91e119888e47e",
+    "id": "8529d7f23d0a5f69a6eb985b98a260f7",
     "text": null,
     "metadata": {}
   }

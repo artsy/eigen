@@ -5,20 +5,20 @@ import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _LotsByFollowedArtists_viewer$ref: unique symbol;
 export type LotsByFollowedArtists_viewer$ref = typeof _LotsByFollowedArtists_viewer$ref;
 export type LotsByFollowedArtists_viewer = {
-    readonly sale_artworks: ({
+    readonly sale_artworks: {
         readonly pageInfo: {
             readonly endCursor: string | null;
             readonly hasNextPage: boolean;
         };
-        readonly edges: ReadonlyArray<({
+        readonly edges: ReadonlyArray<{
             readonly cursor: string;
-            readonly node: ({
-                readonly artwork: ({
+            readonly node: {
+                readonly artwork: {
                     readonly " $fragmentRefs": GenericGrid_artworks$ref;
-                }) | null;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+                } | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": LotsByFollowedArtists_viewer$ref;
 };
 
@@ -64,20 +64,17 @@ const node: ReaderFragment = {
         {
           "kind": "Literal",
           "name": "include_artworks_by_followed_artists",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         },
         {
           "kind": "Literal",
           "name": "is_auction",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         },
         {
           "kind": "Literal",
           "name": "live_sale",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         }
       ],
       "concreteType": "SaleArtworksConnection",

@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { Inbox_me$ref } from "./Inbox_me.graphql";
 export type InboxRefetchQueryVariables = {};
 export type InboxRefetchQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Inbox_me$ref;
-    }) | null;
+    } | null;
 };
 export type InboxRefetchQuery = {
     readonly response: InboxRefetchQueryResponse;
@@ -200,14 +200,12 @@ v7 = [
   {
     "kind": "Literal",
     "name": "after",
-    "value": "",
-    "type": "String"
+    "value": ""
   },
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10,
-    "type": "Int"
+    "value": 10
   }
 ],
 v8 = {
@@ -274,8 +272,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "live",
-                "value": true,
-                "type": "Boolean"
+                "value": true
               }
             ],
             "concreteType": "LotStanding",
@@ -415,8 +412,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "first",
-                "value": 1,
-                "type": "Int"
+                "value": 1
               }
             ],
             "concreteType": "ConversationConnection",
@@ -556,6 +552,28 @@ return {
                               (v0/*: any*/),
                               {
                                 "kind": "InlineFragment",
+                                "type": "Artwork",
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "date",
+                                    "args": null,
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "name": "title",
+                                    "args": null,
+                                    "storageKey": null
+                                  },
+                                  (v5/*: any*/),
+                                  (v4/*: any*/)
+                                ]
+                              },
+                              {
+                                "kind": "InlineFragment",
                                 "type": "Show",
                                 "selections": [
                                   {
@@ -582,28 +600,6 @@ return {
                                     "plural": false,
                                     "selections": (v3/*: any*/)
                                   }
-                                ]
-                              },
-                              {
-                                "kind": "InlineFragment",
-                                "type": "Artwork",
-                                "selections": [
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "date",
-                                    "args": null,
-                                    "storageKey": null
-                                  },
-                                  {
-                                    "kind": "ScalarField",
-                                    "alias": null,
-                                    "name": "title",
-                                    "args": null,
-                                    "storageKey": null
-                                  },
-                                  (v5/*: any*/),
-                                  (v4/*: any*/)
                                 ]
                               }
                             ]
@@ -642,7 +638,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "InboxRefetchQuery",
-    "id": "71d6c2e4e70f4a21597ded67b1da105b",
+    "id": "85c58e9eecb22c0e1e73157b2fce859b",
     "text": null,
     "metadata": {}
   }

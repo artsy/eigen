@@ -6,9 +6,9 @@ export type BidFlowSelectMaxBidRendererQueryVariables = {
     readonly saleArtworkID: string;
 };
 export type BidFlowSelectMaxBidRendererQueryResponse = {
-    readonly sale_artwork: ({
+    readonly sale_artwork: {
         readonly " $fragmentRefs": SelectMaxBid_sale_artwork$ref;
-    }) | null;
+    } | null;
 };
 export type BidFlowSelectMaxBidRendererQuery = {
     readonly response: BidFlowSelectMaxBidRendererQueryResponse;
@@ -83,8 +83,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "saleArtworkID",
-    "type": "String!"
+    "variableName": "saleArtworkID"
   }
 ],
 v2 = {
@@ -165,8 +164,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "useMyMaxBid",
-                "value": true,
-                "type": "Boolean"
+                "value": true
               }
             ],
             "concreteType": "BidIncrementsFormatted",
@@ -279,7 +277,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "BidFlowSelectMaxBidRendererQuery",
-    "id": "dcde3e88d982c125ae7d58799e69d88e",
+    "id": "ffe8e39663c75b6953bd6744900d6673",
     "text": null,
     "metadata": {}
   }

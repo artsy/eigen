@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { ActiveBids_me$ref } from "./ActiveBids_me.graphql";
 export type ActiveBidsQueryVariables = {};
 export type ActiveBidsQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": ActiveBids_me$ref;
-    }) | null;
+    } | null;
 };
 export type ActiveBidsQuery = {
     readonly response: ActiveBidsQueryResponse;
@@ -140,8 +140,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "live",
-                "value": true,
-                "type": "Boolean"
+                "value": true
               }
             ],
             "concreteType": "LotStanding",
@@ -303,7 +302,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ActiveBidsQuery",
-    "id": "483ea8a9a4515e5f1b1d1adba38c309a",
+    "id": "5f36a79200a3631b367f087be1bd7435",
     "text": null,
     "metadata": {}
   }

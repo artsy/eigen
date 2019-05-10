@@ -9,13 +9,19 @@ export type ShowItem_show = {
     readonly name: string | null;
     readonly exhibition_period: string | null;
     readonly end_at: string | null;
-    readonly images: ReadonlyArray<({
+    readonly images: ReadonlyArray<{
         readonly url: string | null;
         readonly aspect_ratio: number;
-    }) | null> | null;
+    } | null> | null;
     readonly partner: ({
         readonly name?: string | null;
-    }) | null;
+    } & ({
+        readonly name: string | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly " $refType": ShowItem_show$ref;
 };
 

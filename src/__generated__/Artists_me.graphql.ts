@@ -4,25 +4,25 @@ import { ReaderFragment } from "relay-runtime";
 declare const _Artists_me$ref: unique symbol;
 export type Artists_me$ref = typeof _Artists_me$ref;
 export type Artists_me = {
-    readonly followed_artists_connection: ({
+    readonly followed_artists_connection: {
         readonly pageInfo: {
             readonly endCursor: string | null;
             readonly hasNextPage: boolean;
         };
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
-                readonly artist: ({
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly artist: {
                     readonly gravityID: string;
                     readonly id: string;
                     readonly name: string | null;
                     readonly href: string | null;
-                    readonly image: ({
+                    readonly image: {
                         readonly url: string | null;
-                    }) | null;
-                }) | null;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+                    } | null;
+                } | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": Artists_me$ref;
 };
 

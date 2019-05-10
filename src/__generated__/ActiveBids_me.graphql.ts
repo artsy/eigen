@@ -5,12 +5,12 @@ import { ActiveBid_bid$ref } from "./ActiveBid_bid.graphql";
 declare const _ActiveBids_me$ref: unique symbol;
 export type ActiveBids_me$ref = typeof _ActiveBids_me$ref;
 export type ActiveBids_me = {
-    readonly lot_standings: ReadonlyArray<({
-        readonly most_recent_bid: ({
+    readonly lot_standings: ReadonlyArray<{
+        readonly most_recent_bid: {
             readonly id: string;
-        }) | null;
+        } | null;
         readonly " $fragmentRefs": ActiveBid_bid$ref;
-    }) | null> | null;
+    } | null> | null;
     readonly " $refType": ActiveBids_me$ref;
 };
 
@@ -32,8 +32,7 @@ const node: ReaderFragment = {
         {
           "kind": "Literal",
           "name": "live",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         }
       ],
       "concreteType": "LotStanding",

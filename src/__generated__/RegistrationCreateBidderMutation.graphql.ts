@@ -9,12 +9,12 @@ export type RegistrationCreateBidderMutationVariables = {
     readonly input: CreateBidderInput;
 };
 export type RegistrationCreateBidderMutationResponse = {
-    readonly createBidder: ({
-        readonly bidder: ({
+    readonly createBidder: {
+        readonly bidder: {
             readonly gravityID: string;
             readonly qualified_for_bidding: boolean | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type RegistrationCreateBidderMutation = {
     readonly response: RegistrationCreateBidderMutationResponse;
@@ -50,8 +50,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "input",
-    "variableName": "input",
-    "type": "CreateBidderInput!"
+    "variableName": "input"
   }
 ],
 v2 = {
@@ -144,7 +143,7 @@ return {
   "params": {
     "operationKind": "mutation",
     "name": "RegistrationCreateBidderMutation",
-    "id": "415793ff340365341149ed83366d2edd",
+    "id": "1d93f7e2063bf26c8ebdca407c94010d",
     "text": null,
     "metadata": {}
   }

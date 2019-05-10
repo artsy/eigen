@@ -7,9 +7,9 @@ export type MapRendererQueryVariables = {
     readonly maxInt: number;
 };
 export type MapRendererQueryResponse = {
-    readonly viewer: ({
+    readonly viewer: {
         readonly " $fragmentRefs": GlobalMap_viewer$ref;
-    }) | null;
+    } | null;
 };
 export type MapRendererQuery = {
     readonly response: MapRendererQueryResponse;
@@ -267,14 +267,14 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "is_followed",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "gravityID",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -309,7 +309,7 @@ v8 = {
 v9 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "internalID",
+  "name": "is_followed",
   "args": null,
   "storageKey": null
 },
@@ -383,20 +383,17 @@ v17 = {
 v18 = {
   "kind": "Literal",
   "name": "sort",
-  "value": "START_AT_ASC",
-  "type": "PartnerShowSorts"
+  "value": "START_AT_ASC"
 },
 v19 = {
   "kind": "Variable",
   "name": "first",
-  "variableName": "maxInt",
-  "type": "Int"
+  "variableName": "maxInt"
 },
 v20 = {
   "kind": "Literal",
   "name": "includeStubShows",
-  "value": true,
-  "type": "Boolean"
+  "value": true
 },
 v21 = [
   {
@@ -474,8 +471,7 @@ v21 = [
                               {
                                 "kind": "Literal",
                                 "name": "version",
-                                "value": "square",
-                                "type": "[String]"
+                                "value": "square"
                               }
                             ],
                             "storageKey": "url(version:\"square\")"
@@ -519,14 +515,12 @@ return {
               {
                 "kind": "Variable",
                 "name": "citySlug",
-                "variableName": "citySlug",
-                "type": null
+                "variableName": "citySlug"
               },
               {
                 "kind": "Variable",
                 "name": "maxInt",
-                "variableName": "maxInt",
-                "type": null
+                "variableName": "maxInt"
               }
             ]
           }
@@ -557,8 +551,7 @@ return {
               {
                 "kind": "Variable",
                 "name": "slug",
-                "variableName": "citySlug",
-                "type": "String"
+                "variableName": "citySlug"
               }
             ],
             "concreteType": "City",
@@ -651,8 +644,7 @@ return {
                       {
                         "kind": "Literal",
                         "name": "first",
-                        "value": 1,
-                        "type": "Int"
+                        "value": 1
                       },
                       (v18/*: any*/)
                     ],
@@ -679,8 +671,7 @@ return {
                   {
                     "kind": "Literal",
                     "name": "dayThreshold",
-                    "value": 14,
-                    "type": "Int"
+                    "value": 14
                   },
                   (v19/*: any*/),
                   (v20/*: any*/),
@@ -688,8 +679,7 @@ return {
                   {
                     "kind": "Literal",
                     "name": "status",
-                    "value": "UPCOMING",
-                    "type": "EventStatus"
+                    "value": "UPCOMING"
                   }
                 ],
                 "concreteType": "ShowConnection",
@@ -707,14 +697,12 @@ return {
                   {
                     "kind": "Literal",
                     "name": "sort",
-                    "value": "PARTNER_ASC",
-                    "type": "PartnerShowSorts"
+                    "value": "PARTNER_ASC"
                   },
                   {
                     "kind": "Literal",
                     "name": "status",
-                    "value": "RUNNING",
-                    "type": "EventStatus"
+                    "value": "RUNNING"
                   }
                 ],
                 "concreteType": "ShowConnection",
@@ -728,17 +716,11 @@ return {
                 "storageKey": null,
                 "args": [
                   (v19/*: any*/),
-                  {
-                    "kind": "Literal",
-                    "name": "sort",
-                    "value": "START_AT_ASC",
-                    "type": "FairSorts"
-                  },
+                  (v18/*: any*/),
                   {
                     "kind": "Literal",
                     "name": "status",
-                    "value": "CURRENT",
-                    "type": "EventStatus"
+                    "value": "CURRENT"
                   }
                 ],
                 "concreteType": "FairConnection",
@@ -762,7 +744,7 @@ return {
                         "concreteType": "Fair",
                         "plural": false,
                         "selections": [
-                          (v4/*: any*/),
+                          (v3/*: any*/),
                           (v1/*: any*/),
                           (v10/*: any*/),
                           {
@@ -828,7 +810,7 @@ return {
                                 "concreteType": "Image",
                                 "plural": false,
                                 "selections": [
-                                  (v4/*: any*/),
+                                  (v3/*: any*/),
                                   (v8/*: any*/),
                                   {
                                     "kind": "ScalarField",
@@ -852,8 +834,7 @@ return {
                                       {
                                         "kind": "Literal",
                                         "name": "version",
-                                        "value": "square140",
-                                        "type": "[String]"
+                                        "value": "square140"
                                       }
                                     ],
                                     "storageKey": "url(version:\"square140\")"
@@ -861,7 +842,7 @@ return {
                                 ]
                               },
                               (v5/*: any*/),
-                              (v4/*: any*/),
+                              (v3/*: any*/),
                               (v1/*: any*/)
                             ]
                           },
@@ -892,7 +873,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "MapRendererQuery",
-    "id": "d8abf81e6b44d92e592c67cc9b8161c8",
+    "id": "92440edb22c2e6e3e12a75532a5b7e80",
     "text": null,
     "metadata": {}
   }

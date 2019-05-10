@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { ShowArtworksPreview_show$ref } from "./ShowArtworksPreview_show.graphql";
 export type ShowArtworksPreviewTestsQueryVariables = {};
 export type ShowArtworksPreviewTestsQueryResponse = {
-    readonly show: ({
+    readonly show: {
         readonly " $fragmentRefs": ShowArtworksPreview_show$ref;
-    }) | null;
+    } | null;
 };
 export type ShowArtworksPreviewTestsQuery = {
     readonly response: ShowArtworksPreviewTestsQueryResponse;
@@ -95,8 +95,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "anderson-fine-art-gallery-flickinger-collection",
-    "type": "String!"
+    "value": "anderson-fine-art-gallery-flickinger-collection"
   }
 ],
 v1 = {
@@ -183,21 +182,20 @@ return {
               {
                 "kind": "Literal",
                 "name": "size",
-                "value": 6,
-                "type": "Int"
+                "value": 6
               }
             ],
             "concreteType": "Artwork",
             "plural": true,
             "selections": [
+              (v1/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "is_biddable",
+                "name": "gravityID",
                 "args": null,
                 "storageKey": null
               },
-              (v1/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
@@ -222,8 +220,7 @@ return {
                       {
                         "kind": "Literal",
                         "name": "version",
-                        "value": "large",
-                        "type": "[String]"
+                        "value": "large"
                       }
                     ],
                     "storageKey": "url(version:\"large\")"
@@ -261,7 +258,7 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "gravityID",
+                "name": "is_biddable",
                 "args": null,
                 "storageKey": null
               },
@@ -381,8 +378,7 @@ return {
                   {
                     "kind": "Literal",
                     "name": "shallow",
-                    "value": true,
-                    "type": "Boolean"
+                    "value": true
                   }
                 ],
                 "concreteType": "Artist",
@@ -433,7 +429,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtworksPreviewTestsQuery",
-    "id": "b02e6f80c5fc819b0ba5608e1a0c30c2",
+    "id": "8a453231909aaba090cf961397517731",
     "text": null,
     "metadata": {}
   }

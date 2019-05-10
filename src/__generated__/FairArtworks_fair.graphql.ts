@@ -8,9 +8,9 @@ export type FairArtworks_fair = {
     readonly id: string;
     readonly internalID: string;
     readonly gravityID: string;
-    readonly artworks: ({
+    readonly artworks: {
         readonly " $fragmentRefs": FilteredInfiniteScrollGrid_filteredArtworks$ref;
-    }) | null;
+    } | null;
     readonly " $refType": FairArtworks_fair$ref;
 };
 
@@ -70,26 +70,22 @@ const node: ReaderFragment = {
             "MEDIUM",
             "PRICE_RANGE",
             "TOTAL"
-          ],
-          "type": "[ArtworkAggregation]"
+          ]
         },
         {
           "kind": "Variable",
           "name": "medium",
-          "variableName": "medium",
-          "type": "String"
+          "variableName": "medium"
         },
         {
           "kind": "Variable",
           "name": "price_range",
-          "variableName": "price_range",
-          "type": "String"
+          "variableName": "price_range"
         },
         {
           "kind": "Literal",
           "name": "size",
-          "value": 0,
-          "type": "Int"
+          "value": 0
         }
       ],
       "concreteType": "FilterArtworks",

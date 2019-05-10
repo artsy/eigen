@@ -7,13 +7,13 @@ export type QueryRenderersRegistrationFlowQueryVariables = {
     readonly saleID: string;
 };
 export type QueryRenderersRegistrationFlowQueryResponse = {
-    readonly sale: ({
+    readonly sale: {
         readonly name: string | null;
         readonly " $fragmentRefs": RegistrationFlow_sale$ref;
-    }) | null;
-    readonly me: ({
+    } | null;
+    readonly me: {
         readonly " $fragmentRefs": RegistrationFlow_me$ref;
-    }) | null;
+    } | null;
 };
 export type QueryRenderersRegistrationFlowQuery = {
     readonly response: QueryRenderersRegistrationFlowQueryResponse;
@@ -72,8 +72,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "saleID",
-    "type": "String!"
+    "variableName": "saleID"
   }
 ],
 v2 = {
@@ -211,7 +210,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersRegistrationFlowQuery",
-    "id": "bce11602f08e3a5b15eae2a068725187",
+    "id": "2a2ddea02c40bf82d4346ad6dc91d9c0",
     "text": null,
     "metadata": {}
   }

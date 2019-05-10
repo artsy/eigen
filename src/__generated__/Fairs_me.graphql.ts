@@ -4,31 +4,31 @@ import { ReaderFragment } from "relay-runtime";
 declare const _Fairs_me$ref: unique symbol;
 export type Fairs_me$ref = typeof _Fairs_me$ref;
 export type Fairs_me = {
-    readonly followsAndSaves: ({
-        readonly fairs: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
+    readonly followsAndSaves: {
+        readonly fairs: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
                     readonly id: string;
-                    readonly profile: ({
+                    readonly profile: {
                         readonly gravityID: string;
                         readonly is_followed: boolean | null;
                         readonly id: string;
-                    }) | null;
+                    } | null;
                     readonly exhibition_period: string | null;
                     readonly name: string | null;
-                    readonly counts: ({
+                    readonly counts: {
                         readonly partners: any | null;
-                    }) | null;
+                    } | null;
                     readonly href: string | null;
-                    readonly image: ({
+                    readonly image: {
                         readonly url: string | null;
-                    }) | null;
+                    } | null;
                     readonly start_at: string | null;
                     readonly end_at: string | null;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-    }) | null;
+                } | null;
+            } | null> | null;
+        } | null;
+    } | null;
     readonly " $refType": Fairs_me$ref;
 };
 

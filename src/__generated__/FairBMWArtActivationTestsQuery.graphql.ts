@@ -3,14 +3,14 @@
 import { ConcreteRequest } from "relay-runtime";
 export type FairBMWArtActivationTestsQueryVariables = {};
 export type FairBMWArtActivationTestsQueryResponse = {
-    readonly fair: ({
+    readonly fair: {
         readonly gravityID: string;
         readonly internalID: string;
-        readonly sponsoredContent: ({
+        readonly sponsoredContent: {
             readonly activationText: string | null;
             readonly pressReleaseUrl: string | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type FairBMWArtActivationTestsQuery = {
     readonly response: FairBMWArtActivationTestsQueryResponse;
@@ -38,8 +38,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "art-basel-in-miami-beach-2018",
-    "type": "String!"
+    "value": "art-basel-in-miami-beach-2018"
   }
 ],
 v1 = {
@@ -137,7 +136,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairBMWArtActivationTestsQuery",
-    "id": "12397aa34f48c87c16800a8f2339ae29",
+    "id": "65fba72d9701712f1d6a9902a03b9688",
     "text": null,
     "metadata": {}
   }

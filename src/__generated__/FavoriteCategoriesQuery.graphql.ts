@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { Categories_me$ref } from "./Categories_me.graphql";
 export type FavoriteCategoriesQueryVariables = {};
 export type FavoriteCategoriesQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Categories_me$ref;
-    }) | null;
+    } | null;
 };
 export type FavoriteCategoriesQuery = {
     readonly response: FavoriteCategoriesQueryResponse;
@@ -54,8 +54,7 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 10,
-    "type": "Int"
+    "value": 10
   }
 ],
 v1 = {
@@ -247,7 +246,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FavoriteCategoriesQuery",
-    "id": "a31860bfc29ee72bfc110b9bb673d455",
+    "id": "b01176ed0f4407bdf74b8b03f6541075",
     "text": null,
     "metadata": {}
   }

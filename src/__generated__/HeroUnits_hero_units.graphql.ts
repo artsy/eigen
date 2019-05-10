@@ -60,8 +60,7 @@ const node: ReaderFragment = {
         {
           "kind": "Literal",
           "name": "version",
-          "value": "NARROW",
-          "type": "HomePageHeroUnitImageVersion"
+          "value": "NARROW"
         }
       ],
       "storageKey": "background_image_url(version:\"NARROW\")"
@@ -74,8 +73,7 @@ const node: ReaderFragment = {
         {
           "kind": "Literal",
           "name": "version",
-          "value": "WIDE",
-          "type": "HomePageHeroUnitImageVersion"
+          "value": "WIDE"
         }
       ],
       "storageKey": "background_image_url(version:\"WIDE\")"

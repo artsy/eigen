@@ -8,9 +8,9 @@ export type FairArtistsQueryVariables = {
     readonly cursor?: string | null;
 };
 export type FairArtistsQueryResponse = {
-    readonly fair: ({
+    readonly fair: {
         readonly " $fragmentRefs": FairArtists_fair$ref;
-    }) | null;
+    } | null;
 };
 export type FairArtistsQuery = {
     readonly response: FairArtistsQueryResponse;
@@ -95,8 +95,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "id",
-    "type": "String!"
+    "variableName": "id"
   }
 ],
 v2 = {
@@ -117,14 +116,12 @@ v4 = [
   {
     "kind": "Variable",
     "name": "after",
-    "variableName": "cursor",
-    "type": "String"
+    "variableName": "cursor"
   },
   {
     "kind": "Variable",
     "name": "first",
-    "variableName": "count",
-    "type": "Int"
+    "variableName": "count"
   }
 ],
 v5 = {
@@ -159,14 +156,12 @@ return {
               {
                 "kind": "Variable",
                 "name": "count",
-                "variableName": "count",
-                "type": null
+                "variableName": "count"
               },
               {
                 "kind": "Variable",
                 "name": "cursor",
-                "variableName": "cursor",
-                "type": null
+                "variableName": "cursor"
               }
             ]
           }
@@ -256,14 +251,8 @@ return {
                     "concreteType": "Artist",
                     "plural": false,
                     "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "birthday",
-                        "args": null,
-                        "storageKey": null
-                      },
                       (v5/*: any*/),
+                      (v3/*: any*/),
                       (v2/*: any*/),
                       {
                         "kind": "ScalarField",
@@ -286,7 +275,13 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      (v3/*: any*/),
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "birthday",
+                        "args": null,
+                        "storageKey": null
+                      },
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -356,7 +351,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "FairArtistsQuery",
-    "id": "9c840d3e11bad8354ba86dd753325db5",
+    "id": "6a83210cbef31857b37408361a9ddf82",
     "text": null,
     "metadata": {}
   }

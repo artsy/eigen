@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { MyProfile_me$ref } from "./MyProfile_me.graphql";
 export type QueryRenderersMyProfileQueryVariables = {};
 export type QueryRenderersMyProfileQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": MyProfile_me$ref;
-    }) | null;
+    } | null;
 };
 export type QueryRenderersMyProfileQuery = {
     readonly response: QueryRenderersMyProfileQueryResponse;
@@ -98,7 +98,7 @@ const node: ConcreteRequest = {
   "params": {
     "operationKind": "query",
     "name": "QueryRenderersMyProfileQuery",
-    "id": "748438ac1bef6795f42e7ff471971cde",
+    "id": "82ce08bed0f640d2f4d4c84e4a50e012",
     "text": null,
     "metadata": {}
   }

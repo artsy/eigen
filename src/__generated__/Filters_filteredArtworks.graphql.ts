@@ -5,13 +5,13 @@ export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS
 declare const _Filters_filteredArtworks$ref: unique symbol;
 export type Filters_filteredArtworks$ref = typeof _Filters_filteredArtworks$ref;
 export type Filters_filteredArtworks = {
-    readonly aggregations: ReadonlyArray<({
+    readonly aggregations: ReadonlyArray<{
         readonly slice: ArtworkAggregation | null;
-        readonly counts: ReadonlyArray<({
+        readonly counts: ReadonlyArray<{
             readonly gravityID: string;
             readonly name: string | null;
-        }) | null> | null;
-    }) | null> | null;
+        } | null> | null;
+    } | null> | null;
     readonly " $refType": Filters_filteredArtworks$ref;
 };
 

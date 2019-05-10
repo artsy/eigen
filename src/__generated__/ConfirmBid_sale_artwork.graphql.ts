@@ -6,17 +6,17 @@ declare const _ConfirmBid_sale_artwork$ref: unique symbol;
 export type ConfirmBid_sale_artwork$ref = typeof _ConfirmBid_sale_artwork$ref;
 export type ConfirmBid_sale_artwork = {
     readonly internalID: string;
-    readonly sale: ({
+    readonly sale: {
         readonly gravityID: string;
         readonly live_start_at: string | null;
         readonly end_at: string | null;
-    }) | null;
-    readonly artwork: ({
+    } | null;
+    readonly artwork: {
         readonly gravityID: string;
         readonly title: string | null;
         readonly date: string | null;
         readonly artist_names: string | null;
-    }) | null;
+    } | null;
     readonly lot_label: string | null;
     readonly " $fragmentRefs": BidResult_sale_artwork$ref;
     readonly " $refType": ConfirmBid_sale_artwork$ref;

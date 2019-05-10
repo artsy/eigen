@@ -9,36 +9,50 @@ export type FairBoothPreview_show = {
     readonly internalID: string;
     readonly name: string | null;
     readonly is_fair_booth: boolean | null;
-    readonly counts: ({
+    readonly counts: {
         readonly artworks: number | null;
-    }) | null;
+    } | null;
     readonly partner: ({
         readonly name?: string | null;
         readonly href?: string | null;
         readonly gravityID?: string;
         readonly internalID?: string;
         readonly id?: string;
-        readonly profile?: ({
+        readonly profile?: {
             readonly internalID: string;
             readonly is_followed: boolean | null;
-        }) | null;
-    }) | null;
-    readonly fair: ({
+        } | null;
+    } & ({
         readonly name: string | null;
-    }) | null;
-    readonly cover_image: ({
+        readonly href: string | null;
+        readonly gravityID: string;
+        readonly internalID: string;
+        readonly id: string;
+        readonly profile: {
+            readonly internalID: string;
+            readonly is_followed: boolean | null;
+        } | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
+    readonly fair: {
+        readonly name: string | null;
+    } | null;
+    readonly cover_image: {
         readonly url: string | null;
-    }) | null;
-    readonly location: ({
+    } | null;
+    readonly location: {
         readonly display: string | null;
-    }) | null;
-    readonly artworks_connection: ({
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
+    } | null;
+    readonly artworks_connection: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
                 readonly " $fragmentRefs": GenericGrid_artworks$ref;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": FairBoothPreview_show$ref;
 };
 
@@ -211,8 +225,7 @@ return {
         {
           "kind": "Literal",
           "name": "first",
-          "value": 4,
-          "type": "Int"
+          "value": 4
         }
       ],
       "concreteType": "ArtworkConnection",

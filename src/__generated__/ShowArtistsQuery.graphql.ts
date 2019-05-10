@@ -6,9 +6,9 @@ export type ShowArtistsQueryVariables = {
     readonly showID: string;
 };
 export type ShowArtistsQueryResponse = {
-    readonly show: ({
+    readonly show: {
         readonly " $fragmentRefs": ShowArtists_show$ref;
-    }) | null;
+    } | null;
 };
 export type ShowArtistsQuery = {
     readonly response: ShowArtistsQueryResponse;
@@ -69,8 +69,7 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "showID",
-    "type": "String!"
+    "variableName": "showID"
   }
 ],
 v2 = {
@@ -162,14 +161,8 @@ return {
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "nationality",
-                    "args": null,
-                    "storageKey": null
-                  },
                   (v4/*: any*/),
+                  (v2/*: any*/),
                   (v3/*: any*/),
                   {
                     "kind": "ScalarField",
@@ -185,7 +178,13 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  (v2/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "nationality",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -244,7 +243,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ShowArtistsQuery",
-    "id": "6df07207a68e180b435619e641ce4a18",
+    "id": "6d249093c807d20b7efc268fcb5c7497",
     "text": null,
     "metadata": {}
   }
