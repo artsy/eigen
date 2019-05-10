@@ -2409,10 +2409,10 @@ babel-plugin-minify-type-constructors@^0.2.0:
   dependencies:
     babel-helper-is-void-0 "^0.2.0"
 
-babel-plugin-relay@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-relay/-/babel-plugin-relay-3.0.0.tgz#dc5b66c94c8565f2e52edf8fbe86aadff6e7966d"
-  integrity sha512-lI+PR4/H8XytNVUtz8cYYM7sR2unFMeTsBbnKFvuU/mnxxmDO3JA7OHxtTdctLjlRSYrcCVmvIEL2JDehMxlTg==
+babel-plugin-relay@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-relay/-/babel-plugin-relay-4.0.0.tgz#123cbf7774ba5eb9005738d7cd3f8f1d58a46b37"
+  integrity sha512-wM2L7kyyZcIF8ZAN11OpEkWnOzTT8KX78ot7ElKPbPuKpLxjwbVJkAcbhUj60eCmvS8Vz817xP5JLO7y1Uu5eA==
   dependencies:
     babel-plugin-macros "^2.0.0"
 
@@ -11971,16 +11971,15 @@ react-relay-network-modern@^2.5.1:
   resolved "https://registry.yarnpkg.com/react-relay-network-modern/-/react-relay-network-modern-2.5.1.tgz#a081ae2691dbf2cfa53129cd6eb41a1e91a071aa"
   integrity sha512-Edp9XWAWLiAntrtNmfeLZMPMcwUmTpBhAoxHCaSKcet7gWN5RS0Z2OhKpVhKg3p1qZz+VLMMvWg8eQghBe0auQ==
 
-react-relay@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/react-relay/-/react-relay-3.0.0.tgz#b3fe7931f812a6700e2420a853adb74156e162b9"
-  integrity sha512-HZQ1CXhF2EBt6f5XG2nWoT5FZIn9zdoHeo8+u5rqQ3fCRBr4qmvLihfehWlCcYCcx57pnAiqsjUdJmwxGUmbsg==
+react-relay@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-relay/-/react-relay-4.0.0.tgz#000f63ca3ae179b4415ee11765d04bc2fe4278da"
+  integrity sha512-Z7O+zM5oUmUWqOiPv7Z3L8a9cNCXare8wkUfDgtTBl048wXXtkAWTHTP0QZdViRSLmNHmEwHo/y0lBpZ7iy6SQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
     fbjs "^1.0.0"
     nullthrows "^1.1.0"
-    prop-types "^15.5.8"
-    relay-runtime "3.0.0"
+    relay-runtime "4.0.0"
 
 react-split-pane@^0.1.74:
   version "0.1.87"
@@ -12386,19 +12385,20 @@ relateurl@0.2.x:
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
   integrity sha1-VNvzd+UUQKypCkzSdGANP/LYiKk=
 
-relay-compiler-language-typescript@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/relay-compiler-language-typescript/-/relay-compiler-language-typescript-2.0.0.tgz#87e53f023170923d0941022f91a09ffad0ed7b14"
-  integrity sha512-azUH4LE4vVHHFdCPwZ+6no0oUqczUuuZ+Z5VyKhJDx1/rlwFYz0iQLo9unECW2Bh+nhva41yzqnAY3rtZ4iPcg==
+relay-compiler-language-typescript@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/relay-compiler-language-typescript/-/relay-compiler-language-typescript-4.1.0.tgz#d250433648d9b229fcc440473051760a6cbea682"
+  integrity sha512-4htxUZ07meQ6P8m4jbeOlKSpuNnMPL5+Z0qBC/7IW2q0jLMbt/SxU3piWl5CPqbezQREfVemEqtYyvGbm04tqw==
   dependencies:
     immutable "^3.8.2"
     invariant "^2.2.2"
 
-relay-compiler@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/relay-compiler/-/relay-compiler-3.0.0.tgz#689015f2aa638296c82c5761e5b4cdb09aed7139"
-  integrity sha512-wCD1FV4IKCfeNZdNrdeRjAWl23C3hcInmBbR+rOE/w345+IoXwh1W4o152opRfwHMqPIC5YjyrWh2O73vJYGLw==
+relay-compiler@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/relay-compiler/-/relay-compiler-4.0.0.tgz#d97dd2819d3b92669599c9cfec8049c9b487be67"
+  integrity sha512-IljjuroVEBWfNgZHb9Qm2YeAH6GRagM64eRYIdyVN4kitY1u1Hitle4000y3A1XRwjgrEuD4CuryFK0ktGaszA==
   dependencies:
+    "@babel/core" "^7.0.0"
     "@babel/generator" "^7.0.0"
     "@babel/parser" "^7.0.0"
     "@babel/polyfill" "^7.0.0"
@@ -12412,7 +12412,7 @@ relay-compiler@^3.0.0:
     fbjs "^1.0.0"
     immutable "~3.7.6"
     nullthrows "^1.1.0"
-    relay-runtime "3.0.0"
+    relay-runtime "4.0.0"
     signedsource "^1.0.0"
     yargs "^9.0.0"
 
@@ -12422,10 +12422,10 @@ relay-mock-network-layer@^2.0.0:
   dependencies:
     graphql-tools "^4.0.2"
 
-relay-runtime@3.0.0, relay-runtime@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/relay-runtime/-/relay-runtime-3.0.0.tgz#a024e1d80c9a71e76495f3a15e8f3f40113385e2"
-  integrity sha512-P9pDoAaqku9m5MTMjampwo+0vsNd2Nv8x78GpWuxPxvqJusqz8MBpu0RVBViIpLzCn77Pegw2ihtXgQSBdvs0w==
+relay-runtime@4.0.0, relay-runtime@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/relay-runtime/-/relay-runtime-4.0.0.tgz#5cf50f52e3ea56ec81f0b5fed05b03e99a9e3906"
+  integrity sha512-Fd5nAMNfySINAYPf1zgtcYbCk33pO5ANiYfaMhKYzukfc2GCmn6RP7NEpG69GxVezu/E1aOxo72t+Y1NspDV8A==
   dependencies:
     "@babel/runtime" "^7.0.0"
     fbjs "^1.0.0"
