@@ -22,6 +22,8 @@ Instead of `make oss` below, run `make artsy` to set up [spacecommander](https:/
 
 Then you'll want to find "Eigen" in our Engineering 1Password for your ENV vars, CocoaPods Keys should ask during the `pod install`.
 
+The file `Artsy/App/Echo.json` is not checked in (a sample file is included for OSS contributors). When you run `pod install`, the latest `Echo.json` file will be downloaded for you. See note in `Podfile`.
+
 ### Quick Start
 
 Want to get the app running? Run this in your shell:
