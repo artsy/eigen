@@ -156,6 +156,14 @@ post_install do |installer|
   emission_podspec_json = installer.pod_targets.find { |f| f.name == "Emission" }.specs[0].to_json
   File.write("Pods/Local Podspecs/Emission.podspec.json", emission_podspec_json)
 
+  # Note: we don't want Echo.json checked in, so Artsy staff download it at pod install time. We
+  # use a stubbed copy for OSS developers.
+  echo_key = `bundle exec pod keys get ArtsyEchoProductionToken Artsy`
+  if echo_key.length > 1 # OSS contributors have "-" as their key
+    puts "Updating Echo..."
+    `make update_echo &> /dev/null`
+  end
+
   # Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
