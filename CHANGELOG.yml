@@ -4,6 +4,7 @@ upcoming:
   emission_version: 1.10.x
   dev:
     - Updates RN to 0.59 - orta/alloy
+    - Removes Echo.json from git index, moved to post-install CocoaPods hook - Ash & Chung-Yi
   user_facing:
     - Clears Relay cache when a PUT, POST, or DELETE is made to our API - ash
 

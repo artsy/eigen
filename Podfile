@@ -28,8 +28,6 @@ plugin 'cocoapods-keys',
          'ArtsyEchoProductionToken',  # Runtime behavior changes
          'SentryProductionDSN',       # Crash Logging
          'SentryStagingDSN',          #
-         'StripeProductionPublishableKey', # Necessary for Stripe integration
-         'StripeStagingPublishableKey',
          'GoogleMapsAPIKey', # Consignment Location Lookup,
          'MapBoxAPIClientKey' # Used in local discovery
        ]
