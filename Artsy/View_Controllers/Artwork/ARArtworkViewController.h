@@ -1,34 +1,21 @@
-#import "ARArtworkDetailView.h"
-#import "ARArtworkActionsView.h"
+#import <UIKit/UIKit.h>
 
-@class ArtsyEcho;
+NS_ASSUME_NONNULL_BEGIN
 
-@interface ARArtworkViewController : UIViewController <ARArtworkActionsViewDelegate, ARArtworkDetailViewDelegate>
+@class Fair, Artwork;
 
-/// Designated initializer
-- (instancetype)initWithArtworkID:(NSString *)artworkID fair:(Fair *)fair;
-- (instancetype)initWithArtwork:(Artwork *)artwork fair:(Fair *)fair;
+@interface ARArtworkViewController : UIViewController
 
-/// The artwork this VC represents
-@property (nonatomic, strong, readonly) Artwork *artwork;
-@property (nonatomic, strong, readonly) Fair *fair;
+@property (assign, nonatomic) NSInteger index;
+@property (strong, nonatomic, readonly) Artwork *artwork;
+@property (strong, nonatomic, readonly, nullable) Fair *fair;
 
-/// The index in the current set of artworks
-@property (nonatomic, assign) NSInteger index;
+- (instancetype)initWithArtwork:(Artwork *)artwork fair:(nullable Fair *)fair;
 
-/// Echo config. Useful for unit testing.
-@property (nonatomic, strong, readonly) ArtsyEcho *echo;
-
-/// The imageview for the artwork preview, used in transitions
 - (UIImageView *)imageView;
-
-/// The current offset that should be applied to the imageview
+- (void)setHasFinishedScrolling;
 - (CGPoint)imageViewOffset;
 
-/// Triggers actions based on when scrolling has settled
-- (void)setHasFinishedScrolling;
-
-- (NSString *)inquiryURLRepresentation;
-
-
 @end
+
+NS_ASSUME_NONNULL_END
