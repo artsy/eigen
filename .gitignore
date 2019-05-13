@@ -35,6 +35,9 @@ compiler_commands.json
 net.artsy.artsy.dev.pem
 .clang-format
 
+# See note in Podfile
+Artsy/App/Echo.json
+
 # Fastlane
 Preview.html
 fastlane/report.xml
