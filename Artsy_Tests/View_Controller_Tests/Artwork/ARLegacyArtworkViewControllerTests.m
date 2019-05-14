@@ -1,4 +1,4 @@
-#import "ARArtworkViewController.h"
+#import "ARLegacyArtworkViewController.h"
 #import "ARArtworkView.h"
 #import "ArtsyAPI+Artworks.h"
 
@@ -6,14 +6,13 @@ void stubEmptyBidderPositions(void);
 void stubSaleArtwork(void);
 void stubBidder(BOOL requiresApproval);
 
-@interface ARArtworkViewController ()
-
+@interface ARLegacyArtworkViewController ()
 @property (nonatomic, strong) NSTimer *updateInterfaceWhenAuctionChangesTimer;
 @end
 
-SpecBegin(ARArtworkViewController);
+SpecBegin(ARLegacyArtworkViewController);
 
-__block ARArtworkViewController *vc;
+__block ARLegacyArtworkViewController *vc;
 
 beforeEach(^{
     [OHHTTPStubs stubJSONResponseAtPath:@"/oauth2/access_token" withResponse:@{ @"access_token" : @"token", @"expires_in" : @"2034-11-11" }];
@@ -38,7 +37,7 @@ describe(@"no related data", ^{
     it(@"shows artwork on iPhone", ^{
         [ARTestContext useDevice:ARDeviceTypePhone6 :^{
 
-            vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+            vc = [[ARLegacyArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             [vc setHasFinishedScrolling];
             [vc.view snapshotViewAfterScreenUpdates:YES];
@@ -50,7 +49,7 @@ describe(@"no related data", ^{
     it(@"shows artwork on iPad", ^{
         [ARTestContext useDevice:ARDeviceTypePad :^{
 
-            vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+            vc = [[ARLegacyArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             [vc setHasFinishedScrolling];
             [vc.view snapshotViewAfterScreenUpdates:YES];
@@ -76,7 +75,7 @@ describe(@"with related artworks", ^{
         
         [ARTestContext useDevice:ARDeviceTypePhone6 :^{
     
-            vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+            vc = [[ARLegacyArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             [vc setHasFinishedScrolling];
             [vc.view snapshotViewAfterScreenUpdates:YES];
@@ -95,7 +94,7 @@ describe(@"with related artworks", ^{
 
             [ARTestContext useDevice:ARDeviceTypePhone6 :^{
 
-                vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+                vc = [[ARLegacyArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
                 [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
                 [vc setHasFinishedScrolling];
                 [vc.view snapshotViewAfterScreenUpdates:YES];
@@ -119,7 +118,7 @@ describe(@"with related artworks", ^{
 
             [ARTestContext useDevice:ARDeviceTypePad :^{
 
-                vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+                vc = [[ARLegacyArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
                 [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
                 [vc setHasFinishedScrolling];
                 [vc.view snapshotViewAfterScreenUpdates:YES];
@@ -142,7 +141,7 @@ it(@"shows an upublished banner", ^{
 
     Artwork *artwork = [Artwork modelWithJSON:artworkDict];
     CGRect frame = [[UIScreen mainScreen] bounds];
-    vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+    vc = [[ARLegacyArtworkViewController alloc] initWithArtwork:artwork fair:nil];
     [vc ar_presentWithFrame:frame];
 
     // The callbacks we're interested in are registered on view heriarchy things
@@ -175,7 +174,7 @@ describe(@"at a closed auction", ^{
     it(@"displays artwork on iPhone", ^{
         [ARTestContext useDevice:ARDeviceTypePhone6 :^{
 
-            vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+            vc = [[ARLegacyArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             [vc setHasFinishedScrolling];
 
@@ -187,7 +186,7 @@ describe(@"at a closed auction", ^{
     it(@"displays artwork on iPad", ^{
         [ARTestContext useDevice:ARDeviceTypePad :^{
 
-            vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+            vc = [[ARLegacyArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             [vc setHasFinishedScrolling];
             [vc.view snapshotViewAfterScreenUpdates:YES];
@@ -200,7 +199,7 @@ describe(@"at a closed auction", ^{
     
     it(@"does not set up a timer", ^{
         [ARTestContext useDevice:ARDeviceTypePad :^{
-            vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+            vc = [[ARLegacyArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
             [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
             [vc setHasFinishedScrolling];
             
@@ -230,7 +229,7 @@ describe(@"at an auction requireing registration", ^{
     });
 
     it(@"displays artwork on iPhone", ^{
-        vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+        vc = [[ARLegacyArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
         [vc setHasFinishedScrolling];
         
@@ -259,7 +258,7 @@ describe(@"before a live auction", ^{
     });
     
     it(@"sets up an internal timer", ^{
-        vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+        vc = [[ARLegacyArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
         [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
         [vc setHasFinishedScrolling];
         
@@ -268,7 +267,7 @@ describe(@"before a live auction", ^{
 });
 
 it(@"creates an NSUserActivity", ^{
-    vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+    vc = [[ARLegacyArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
     [vc ar_presentWithFrame:[[UIScreen mainScreen] bounds]];
     [vc setHasFinishedScrolling];
     [vc.view snapshotViewAfterScreenUpdates:YES];
@@ -278,7 +277,7 @@ it(@"creates an NSUserActivity", ^{
 });
 
 it(@"calls recordViewingOfArtwork within viewDidLoad", ^{
-  ARArtworkViewController *vc = [[ARArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
+  ARLegacyArtworkViewController *vc = [[ARLegacyArtworkViewController alloc] initWithArtworkID:@"some-artwork" fair:nil];
   id apiMock = [OCMockObject niceMockForClass:ArtsyAPI.class];
   
   [[apiMock expect] recordViewingOfArtwork:@"some-artwork" success:nil failure:nil];
