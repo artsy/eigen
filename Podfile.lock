@@ -328,7 +328,7 @@ DEPENDENCIES:
   - Pulley (from `https://github.com/l2succes/Pulley.git`, branch `master`)
   - Quick
   - react-native-mapbox-gl (from `https://github.com/l2succes/react-native-mapbox-gl`, branch `fix-gesture-recognizer`)
-  - react-native-navigator-ios (from `https://github.com/michaelknoch/react-native-navigator-ios`, branch `master`)
+  - react-native-navigator-ios (from `https://github.com/ashfurrow/react-native-navigator-ios`, branch `license_podspec`)
   - React/Core
   - React/DevSupport
   - ReactiveObjC
@@ -441,8 +441,8 @@ EXTERNAL SOURCES:
     :branch: fix-gesture-recognizer
     :git: https://github.com/l2succes/react-native-mapbox-gl
   react-native-navigator-ios:
-    :branch: master
-    :git: https://github.com/michaelknoch/react-native-navigator-ios
+    :branch: license_podspec
+    :git: https://github.com/ashfurrow/react-native-navigator-ios
   RNSVG:
     :git: https://github.com/react-native-community/react-native-svg.git
     :tag: v9.0.4
@@ -491,8 +491,8 @@ CHECKOUT OPTIONS:
     :commit: 8ad2d3a2207da62024c82624c71df5bf5dabc126
     :git: https://github.com/l2succes/react-native-mapbox-gl
   react-native-navigator-ios:
-    :commit: d928006245a9020ae047a277e962337eccdf0a7a
-    :git: https://github.com/michaelknoch/react-native-navigator-ios
+    :commit: 695725296669114ceeed76bba218fd91cde381c1
+    :git: https://github.com/ashfurrow/react-native-navigator-ios
   RNSVG:
     :git: https://github.com/react-native-community/react-native-svg.git
     :tag: v9.0.4
@@ -564,7 +564,7 @@ SPEC CHECKSUMS:
   Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
   React: 9d063e2f356c8cd2f54dd550d4507740037cbabe
   react-native-mapbox-gl: b7309e99290963cc7fe0e34db86c6e16890cfcee
-  react-native-navigator-ios: 6e91f250a5a3abd3691fd04b2944243b92a34329
+  react-native-navigator-ios: 93db84cc26b6f8d776e1f504c56082f593efcd09
   ReactiveObjC: 7b6782ae39f9ac0f57205c3b0c0b69b9dd7048c0
   RNSVG: 36f6615444ab569023444e09b01a1900d964e967
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
@@ -584,6 +584,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: 4ce3811b3db5f47fe1e125f15383003316a616b8
 
-PODFILE CHECKSUM: 00fb04544a79fe41bc9cbf6b96e607c367b91e58
+PODFILE CHECKSUM: 96a0b62610622bb883f5d089a28b030408232bf3
 
 COCOAPODS: 1.6.0.beta.1
