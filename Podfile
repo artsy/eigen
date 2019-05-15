@@ -99,6 +99,7 @@ target 'Artsy' do
   pod 'SentryReactNative', git: 'https://github.com/getsentry/react-native-sentry.git', tag: 'v0.30.3'
   pod 'Pulley', :git => 'https://github.com/l2succes/Pulley.git', :branch => 'master'
   pod 'RNSVG', git: 'https://github.com/react-native-community/react-native-svg.git', tag: 'v9.0.4'
+  pod 'react-native-navigator-ios', git: 'https://github.com/michaelknoch/react-native-navigator-ios', branch: 'master'
 
   # Facebook
   pod 'FBSDKCoreKit', '~> 4.33'
