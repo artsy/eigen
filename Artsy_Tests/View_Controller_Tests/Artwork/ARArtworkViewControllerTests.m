@@ -87,9 +87,27 @@ describe(@"ARArtworkViewController", ^{
         });
       }
     });
+
+    describe(@"when the lab option is disabled", ^{
+      beforeEach(^{
+        [AROptions setBool:NO forOption:AROptionsRNArtwork];
+      });
+
+      for (NSString *availability in componentAvailabilityStates) {
+        it([NSString stringWithFormat:@"shows it with a `%@` artwork", availability], ^{
+          StubArtworkWithAvailability(availability);
+          (void)vc.view;
+          expect(vc.childViewControllers[0]).to.equal(mockLegacyVC);
+        });
+      }
+    });
   });
 
   describe(@"concerning artworks for which to show the new component view", ^{
+    beforeEach(^{
+      [AROptions setBool:YES forOption:AROptionsRNArtwork];
+    });
+
     for (NSString *availability in componentAvailabilityStates) {
       it([NSString stringWithFormat:@"shows it with a `%@` artwork", availability], ^{
         StubArtworkWithAvailability(availability);
