@@ -11877,9 +11877,9 @@ react-native-iphone-x-helper@^1.0.1:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.0.tgz#9f8a376eb00bc712115abff4420318a0063fa796"
   integrity sha512-xIeTo4s77wwKgBZLVRIZC9tM9/PkXS46Ul76NXmvmixEb3ZwqGdQesR3zRiLMOoIdfOURB6N9bba9po7+x9Bag==
 
-"react-native-navigator-ios@https://github.com/orta/react-native-navigator-ios#license_podspec":
+"react-native-navigator-ios@https://github.com/ashfurrow/react-native-navigator-ios#license_podspec":
   version "1.0.0"
-  resolved "https://github.com/orta/react-native-navigator-ios#695725296669114ceeed76bba218fd91cde381c1"
+  resolved "https://github.com/ashfurrow/react-native-navigator-ios#695725296669114ceeed76bba218fd91cde381c1"
 
 react-native-parallax-scroll-view@orta/react-native-parallax-scroll-view:
   version "0.18.2"

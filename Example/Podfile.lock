@@ -21,6 +21,7 @@ PODS:
     - ISO8601DateFormatter
     - Pulley
     - react-native-mapbox-gl (= 6.1.4)
+    - react-native-navigator-ios (= 1.0.0)
     - React/Core (= 0.59.2)
     - React/CxxBridge (= 0.59.2)
     - React/RCTActionSheet (= 0.59.2)
@@ -268,7 +269,7 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
-  Emission: 339a1aa0637d709bc507ac027da7a6d3aecd6f56
+  Emission: e397596f22f8c3c632dcdab7432422afa181ceb3
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
