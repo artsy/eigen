@@ -2123,148 +2123,148 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
+			remoteGlobalIDString = 00000000F790;
+			remoteInfo = "react-native-navigator-ios";
+		};
+		000000010660 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000000000000 /* Project object */;
+			proxyType = 1;
 			remoteGlobalIDString = 000000009EF0;
 			remoteInfo = ORStackView;
 		};
-		000000010660 /* PBXContainerItemProxy */ = {
+		000000010680 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 000000007B70;
 			remoteInfo = "Artsy-UIButtons";
 		};
-		000000010680 /* PBXContainerItemProxy */ = {
+		0000000106A0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 00000000EC80;
 			remoteInfo = "UIView+BooleanAnimations";
 		};
-		0000000106A0 /* PBXContainerItemProxy */ = {
+		0000000106C0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 000000007A70;
 			remoteInfo = "Artsy+UIFonts";
 		};
-		0000000106C0 /* PBXContainerItemProxy */ = {
+		0000000106E0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 000000007950;
 			remoteInfo = "Artsy+UIColors";
 		};
-		0000000106E0 /* PBXContainerItemProxy */ = {
+		000000010700 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 000000008F70;
 			remoteInfo = FLKAutoLayout;
 		};
-		000000010700 /* PBXContainerItemProxy */ = {
+		000000010720 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 00000000ED80;
 			remoteInfo = "boost-for-react-native";
 		};
-		000000010720 /* PBXContainerItemProxy */ = {
+		000000010740 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 000000007C70;
 			remoteInfo = DoubleConversion;
 		};
-		000000010740 /* PBXContainerItemProxy */ = {
+		000000010760 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 00000000EDF0;
 			remoteInfo = glog;
 		};
-		000000010760 /* PBXContainerItemProxy */ = {
+		000000010780 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 000000008F70;
 			remoteInfo = FLKAutoLayout;
 		};
-		000000010780 /* PBXContainerItemProxy */ = {
+		0000000107A0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 00000000AA00;
 			remoteInfo = React;
 		};
-		0000000107A0 /* PBXContainerItemProxy */ = {
+		0000000107C0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 00000000FA70;
 			remoteInfo = yoga;
 		};
-		0000000107C0 /* PBXContainerItemProxy */ = {
+		0000000107E0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 000000009140;
 			remoteInfo = Folly;
 		};
-		0000000107E0 /* PBXContainerItemProxy */ = {
+		000000010800 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 00000000ED80;
 			remoteInfo = "boost-for-react-native";
 		};
-		000000010800 /* PBXContainerItemProxy */ = {
+		000000010820 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 000000007C70;
 			remoteInfo = DoubleConversion;
 		};
-		000000010820 /* PBXContainerItemProxy */ = {
+		000000010840 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 00000000EDF0;
 			remoteInfo = glog;
 		};
-		000000010840 /* PBXContainerItemProxy */ = {
+		000000010860 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 000000009410;
 			remoteInfo = KSCrash;
 		};
-		000000010860 /* PBXContainerItemProxy */ = {
+		000000010880 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 00000000AA00;
 			remoteInfo = React;
 		};
-		000000010880 /* PBXContainerItemProxy */ = {
+		0000000108A0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 00000000CD90;
 			remoteInfo = Sentry;
 		};
-		0000000108A0 /* PBXContainerItemProxy */ = {
+		0000000108C0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 00000000D670;
 			remoteInfo = "Stripe-Stripe";
-		};
-		0000000108C0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 000000000000 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 00000000AA00;
-			remoteInfo = React;
 		};
 		0000000108E0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2281,6 +2281,13 @@
 			remoteInfo = React;
 		};
 		000000010920 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000000000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 00000000AA00;
+			remoteInfo = React;
+		};
+		000000010940 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 000000000000 /* Project object */;
 			proxyType = 1;
@@ -9009,6 +9016,7 @@
 				000000010610 /* PBXTargetDependency */,
 				0000000105B0 /* PBXTargetDependency */,
 				0000000105F0 /* PBXTargetDependency */,
+				000000010650 /* PBXTargetDependency */,
 				0000000105D0 /* PBXTargetDependency */,
 				000000010550 /* PBXTargetDependency */,
 			);
@@ -9045,12 +9053,12 @@
 			buildRules = (
 			);
 			dependencies = (
-				0000000106D0 /* PBXTargetDependency */,
-				0000000106B0 /* PBXTargetDependency */,
-				000000010670 /* PBXTargetDependency */,
 				0000000106F0 /* PBXTargetDependency */,
-				000000010650 /* PBXTargetDependency */,
+				0000000106D0 /* PBXTargetDependency */,
 				000000010690 /* PBXTargetDependency */,
+				000000010710 /* PBXTargetDependency */,
+				000000010670 /* PBXTargetDependency */,
+				0000000106B0 /* PBXTargetDependency */,
 			);
 			name = Extraction;
 			productName = Extraction;
@@ -9103,9 +9111,9 @@
 			buildRules = (
 			);
 			dependencies = (
-				000000010730 /* PBXTargetDependency */,
-				000000010710 /* PBXTargetDependency */,
 				000000010750 /* PBXTargetDependency */,
+				000000010730 /* PBXTargetDependency */,
+				000000010770 /* PBXTargetDependency */,
 			);
 			name = Folly;
 			productName = Folly;
@@ -9191,7 +9199,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				000000010770 /* PBXTargetDependency */,
+				000000010790 /* PBXTargetDependency */,
 			);
 			name = ORStackView;
 			productName = ORStackView;
@@ -9227,7 +9235,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				000000010790 /* PBXTargetDependency */,
+				0000000107B0 /* PBXTargetDependency */,
 			);
 			name = RNSVG;
 			productName = RNSVG;
@@ -9245,11 +9253,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				000000010810 /* PBXTargetDependency */,
-				0000000107D0 /* PBXTargetDependency */,
-				0000000107F0 /* PBXTargetDependency */,
 				000000010830 /* PBXTargetDependency */,
-				0000000107B0 /* PBXTargetDependency */,
+				0000000107F0 /* PBXTargetDependency */,
+				000000010810 /* PBXTargetDependency */,
+				000000010850 /* PBXTargetDependency */,
+				0000000107D0 /* PBXTargetDependency */,
 			);
 			name = React;
 			productName = React;
@@ -9301,7 +9309,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				000000010850 /* PBXTargetDependency */,
+				000000010870 /* PBXTargetDependency */,
 			);
 			name = Sentry;
 			productName = Sentry;
@@ -9319,8 +9327,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				000000010870 /* PBXTargetDependency */,
 				000000010890 /* PBXTargetDependency */,
+				0000000108B0 /* PBXTargetDependency */,
 			);
 			name = SentryReactNative;
 			productName = SentryReactNative;
@@ -9355,7 +9363,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				0000000108B0 /* PBXTargetDependency */,
+				0000000108D0 /* PBXTargetDependency */,
 			);
 			name = Stripe;
 			productName = Stripe;
@@ -9424,7 +9432,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				0000000108D0 /* PBXTargetDependency */,
+				0000000108F0 /* PBXTargetDependency */,
 			);
 			name = "react-native-mapbox-gl";
 			productName = "react-native-mapbox-gl";
@@ -9442,7 +9450,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				0000000108F0 /* PBXTargetDependency */,
+				000000010910 /* PBXTargetDependency */,
 			);
 			name = "react-native-navigator-ios";
 			productName = "react-native-navigator-ios";
@@ -9460,8 +9468,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				000000010910 /* PBXTargetDependency */,
 				000000010930 /* PBXTargetDependency */,
+				000000010950 /* PBXTargetDependency */,
 			);
 			name = "tipsi-stripe";
 			productName = "tipsi-stripe";
@@ -11116,128 +11124,128 @@
 		};
 		000000010650 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = ORStackView;
-			target = 000000009EF0 /* ORStackView */;
+			name = "react-native-navigator-ios";
+			target = 00000000F790 /* react-native-navigator-ios */;
 			targetProxy = 000000010640 /* PBXContainerItemProxy */;
 		};
 		000000010670 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Artsy-UIButtons";
-			target = 000000007B70 /* Artsy-UIButtons */;
+			name = ORStackView;
+			target = 000000009EF0 /* ORStackView */;
 			targetProxy = 000000010660 /* PBXContainerItemProxy */;
 		};
 		000000010690 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "UIView+BooleanAnimations";
-			target = 00000000EC80 /* UIView+BooleanAnimations */;
+			name = "Artsy-UIButtons";
+			target = 000000007B70 /* Artsy-UIButtons */;
 			targetProxy = 000000010680 /* PBXContainerItemProxy */;
 		};
 		0000000106B0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Artsy+UIFonts";
-			target = 000000007A70 /* Artsy+UIFonts */;
+			name = "UIView+BooleanAnimations";
+			target = 00000000EC80 /* UIView+BooleanAnimations */;
 			targetProxy = 0000000106A0 /* PBXContainerItemProxy */;
 		};
 		0000000106D0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Artsy+UIColors";
-			target = 000000007950 /* Artsy+UIColors */;
+			name = "Artsy+UIFonts";
+			target = 000000007A70 /* Artsy+UIFonts */;
 			targetProxy = 0000000106C0 /* PBXContainerItemProxy */;
 		};
 		0000000106F0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = FLKAutoLayout;
-			target = 000000008F70 /* FLKAutoLayout */;
+			name = "Artsy+UIColors";
+			target = 000000007950 /* Artsy+UIColors */;
 			targetProxy = 0000000106E0 /* PBXContainerItemProxy */;
 		};
 		000000010710 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "boost-for-react-native";
-			target = 00000000ED80 /* boost-for-react-native */;
+			name = FLKAutoLayout;
+			target = 000000008F70 /* FLKAutoLayout */;
 			targetProxy = 000000010700 /* PBXContainerItemProxy */;
 		};
 		000000010730 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = DoubleConversion;
-			target = 000000007C70 /* DoubleConversion */;
+			name = "boost-for-react-native";
+			target = 00000000ED80 /* boost-for-react-native */;
 			targetProxy = 000000010720 /* PBXContainerItemProxy */;
 		};
 		000000010750 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = glog;
-			target = 00000000EDF0 /* glog */;
+			name = DoubleConversion;
+			target = 000000007C70 /* DoubleConversion */;
 			targetProxy = 000000010740 /* PBXContainerItemProxy */;
 		};
 		000000010770 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = FLKAutoLayout;
-			target = 000000008F70 /* FLKAutoLayout */;
+			name = glog;
+			target = 00000000EDF0 /* glog */;
 			targetProxy = 000000010760 /* PBXContainerItemProxy */;
 		};
 		000000010790 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = React;
-			target = 00000000AA00 /* React */;
+			name = FLKAutoLayout;
+			target = 000000008F70 /* FLKAutoLayout */;
 			targetProxy = 000000010780 /* PBXContainerItemProxy */;
 		};
 		0000000107B0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = yoga;
-			target = 00000000FA70 /* yoga */;
+			name = React;
+			target = 00000000AA00 /* React */;
 			targetProxy = 0000000107A0 /* PBXContainerItemProxy */;
 		};
 		0000000107D0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = Folly;
-			target = 000000009140 /* Folly */;
+			name = yoga;
+			target = 00000000FA70 /* yoga */;
 			targetProxy = 0000000107C0 /* PBXContainerItemProxy */;
 		};
 		0000000107F0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "boost-for-react-native";
-			target = 00000000ED80 /* boost-for-react-native */;
+			name = Folly;
+			target = 000000009140 /* Folly */;
 			targetProxy = 0000000107E0 /* PBXContainerItemProxy */;
 		};
 		000000010810 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = DoubleConversion;
-			target = 000000007C70 /* DoubleConversion */;
+			name = "boost-for-react-native";
+			target = 00000000ED80 /* boost-for-react-native */;
 			targetProxy = 000000010800 /* PBXContainerItemProxy */;
 		};
 		000000010830 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = glog;
-			target = 00000000EDF0 /* glog */;
+			name = DoubleConversion;
+			target = 000000007C70 /* DoubleConversion */;
 			targetProxy = 000000010820 /* PBXContainerItemProxy */;
 		};
 		000000010850 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = KSCrash;
-			target = 000000009410 /* KSCrash */;
+			name = glog;
+			target = 00000000EDF0 /* glog */;
 			targetProxy = 000000010840 /* PBXContainerItemProxy */;
 		};
 		000000010870 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = React;
-			target = 00000000AA00 /* React */;
+			name = KSCrash;
+			target = 000000009410 /* KSCrash */;
 			targetProxy = 000000010860 /* PBXContainerItemProxy */;
 		};
 		000000010890 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = Sentry;
-			target = 00000000CD90 /* Sentry */;
+			name = React;
+			target = 00000000AA00 /* React */;
 			targetProxy = 000000010880 /* PBXContainerItemProxy */;
 		};
 		0000000108B0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Stripe-Stripe";
-			target = 00000000D670 /* Stripe-Stripe */;
+			name = Sentry;
+			target = 00000000CD90 /* Sentry */;
 			targetProxy = 0000000108A0 /* PBXContainerItemProxy */;
 		};
 		0000000108D0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = React;
-			target = 00000000AA00 /* React */;
+			name = "Stripe-Stripe";
+			target = 00000000D670 /* Stripe-Stripe */;
 			targetProxy = 0000000108C0 /* PBXContainerItemProxy */;
 		};
 		0000000108F0 /* PBXTargetDependency */ = {
@@ -11254,9 +11262,15 @@
 		};
 		000000010930 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			name = React;
+			target = 00000000AA00 /* React */;
+			targetProxy = 000000010920 /* PBXContainerItemProxy */;
+		};
+		000000010950 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
 			name = Stripe;
 			target = 00000000D5E0 /* Stripe */;
-			targetProxy = 000000010920 /* PBXContainerItemProxy */;
+			targetProxy = 000000010940 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
