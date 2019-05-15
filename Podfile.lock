@@ -292,7 +292,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission (~> 1.11.0)
+  - Emission (~> 1.11)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
@@ -574,6 +574,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: 4ce3811b3db5f47fe1e125f15383003316a616b8
 
-PODFILE CHECKSUM: f52f6fa8c2025046618c6926498a0331d41708e5
+PODFILE CHECKSUM: 021253f3253725b2edf96ad6df760630cb1b3496
 
 COCOAPODS: 1.6.0.beta.1

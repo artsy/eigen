@@ -51,6 +51,7 @@ oss:
 	bundle exec pod keys set "ArtsyEchoProductionToken" "-"
 	bundle exec pod keys set "SentryProductionDSN" "-"
 	bundle exec pod keys set "SentryStagingDSN" "-"
+	cp Artsy/App/Echo.json.example Artsy/App/Echo.json
 
 artsy:
 	git submodule update --init
