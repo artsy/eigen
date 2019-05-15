@@ -3,7 +3,7 @@
 ### Meta
 
 * __State:__ production
-* __Point People:__ [@alloy](https://github.com/alloy), [@orta](https://github.com/orta)
+* __Point People:__ [@alloy](https://github.com/alloy), [@ashfurrow](https://github.com/ashfurrow)
 * __CI :__  [![Build Status](https://circleci.com/gh/artsy/eigen/tree/master.svg?style=shield&circle-token=f7a3e9b08ab306cd01a15da49933c0774d508ecb)](https://circleci.com/gh/artsy/eigen)
 
 This is a core [Artsy Mobile](https://github.com/artsy/mobile) OSS project, along with [Energy](https://github.com/artsy/energy), [Eidolon](https://github.com/artsy/eidolon), [Emission](https://github.com/artsy/emission) and [Emergence](https://github.com/artsy/emergence).
