@@ -3,6 +3,7 @@
 #import "Artwork.h"
 #import "ARDispatchManager.h"
 #import "ARSpinner.h"
+#import "AROptions.h"
 
 #import <Emission/ARArtworkComponentViewController.h>
 
@@ -18,8 +19,9 @@
 // TODO What do we do in the case of loading an artwork in the context of a Fair?
 - (BOOL)shouldShowNewVersion;
 {
-  return self.fair == nil
-  && (self.artwork.availability == ARArtworkAvailabilityNotForSale
+  return [AROptions boolForOption:AROptionsRNArtwork]
+    && self.fair == nil
+    && (self.artwork.availability == ARArtworkAvailabilityNotForSale
       || self.artwork.availability == ARArtworkAvailabilitySold);
 }
 
