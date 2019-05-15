@@ -1,5 +1,5 @@
 #import "ARArtworkMasonryModule.h"
-#import "ARArtworkViewController.h"
+#import "ARLegacyArtworkViewController.h"
 
 typedef NS_ENUM(NSInteger, ARRelatedArtworksSubviewOrder) {
     ARRelatedArtworksSameShow = 1,
@@ -24,7 +24,7 @@ typedef NS_ENUM(NSInteger, ARRelatedArtworksSubviewOrder) {
 
 @interface ARArtworkRelatedArtworksView : ORTagBasedAutoStackView <ARArtworkMasonryLayoutProvider>
 
-@property (nonatomic, weak) ARArtworkViewController<ARArtworkRelatedArtworksViewParentViewController> *parentViewController;
+@property (nonatomic, weak) ARLegacyArtworkViewController<ARArtworkRelatedArtworksViewParentViewController> *parentViewController;
 
 - (void)cancelRequests;
 

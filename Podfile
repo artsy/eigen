@@ -80,7 +80,7 @@ target 'Artsy' do
   pod 'Artsy+UILabels'
   pod 'Extraction'
 
-  pod 'Emission', '~> 1.0'
+  pod 'Emission', '~> 1.11'
   pod 'glog', podspec: './externals/glog/glog.podspec'
 
   # Enable running Emission from Metro inside Eigen when developing (see issue #2497)
@@ -96,7 +96,7 @@ target 'Artsy' do
   # use `cat ~/.cocoapods/repos/artsy/Emission/1.x.x/Emission.podspec.json` to see the Podspec
 
   # For Stripe integration with Emission
-  pod 'tipsi-stripe', git: 'https://github.com/tipsi/tipsi-stripe.git', tag: '7.4.0'
+  pod 'tipsi-stripe', git: 'https://github.com/tipsi/tipsi-stripe.git', tag: '7.5.0'
   pod 'react-native-mapbox-gl', git: 'https://github.com/l2succes/react-native-mapbox-gl', branch: 'fix-gesture-recognizer'
   pod 'SentryReactNative', git: 'https://github.com/getsentry/react-native-sentry.git', tag: 'v0.30.3'
   pod 'Pulley', :git => 'https://github.com/l2succes/Pulley.git', :branch => 'master'

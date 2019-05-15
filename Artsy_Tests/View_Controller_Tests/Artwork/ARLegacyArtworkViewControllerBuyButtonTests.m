@@ -1,11 +1,11 @@
-#import "ARArtworkViewController.h"
+#import "ARLegacyArtworkViewController.h"
 #import "ARRouter.h"
 #import "ArtsyEcho.h"
 #import "ARUserManager+Stubs.h"
 #import "ARNetworkConstants.h"
 
 
-@interface ARArtworkViewController (Tests)
+@interface ARLegacyArtworkViewController (Tests)
 - (void)tappedBuyButton;
 - (void)tappedMakeOfferButton;
 - (void)tappedContactGallery;
@@ -13,9 +13,9 @@
 @property (nonatomic, strong, readwrite) ArtsyEcho *echo;
 @end
 
-SpecBegin(ARArtworkViewControllerBuyButton);
+SpecBegin(ARLegacyArtworkViewControllerBuyButton);
 
-__block ARArtworkViewController *vc;
+__block ARLegacyArtworkViewController *vc;
 
 describe(@"buy button", ^{
     __block id routerMock;
@@ -66,7 +66,7 @@ describe(@"buy button", ^{
                               }
                        }
                 }];
-            vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+            vc = [[ARLegacyArtworkViewController alloc] initWithArtwork:artwork fair:nil];
             vc.echo = echo;
             vcMock = [OCMockObject partialMockForObject:vc];
             [[vcMock reject] tappedContactGallery];
@@ -90,7 +90,7 @@ describe(@"buy button", ^{
             } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:nil]];
             }];
-            vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+            vc = [[ARLegacyArtworkViewController alloc] initWithArtwork:artwork fair:nil];
             vc.echo = echo;
             vcMock = [OCMockObject partialMockForObject:vc];
             [[vcMock expect] presentErrorMessage:OCMOCK_ANY];
@@ -111,7 +111,7 @@ describe(@"buy button", ^{
                               }
                        }
                 }];
-            vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+            vc = [[ARLegacyArtworkViewController alloc] initWithArtwork:artwork fair:nil];
             vc.echo = echo;
             vcMock = [OCMockObject partialMockForObject:vc];
             [[vcMock expect] presentErrorMessage:OCMOCK_ANY];
@@ -149,7 +149,7 @@ describe(@"buy button", ^{
                               }
                        }
                 }];
-            vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+            vc = [[ARLegacyArtworkViewController alloc] initWithArtwork:artwork fair:nil];
             vc.echo = echo;
             vcMock = [OCMockObject partialMockForObject:vc];
             [[vcMock expect] presentViewController:OCMOCK_ANY animated:YES completion:nil];
@@ -172,7 +172,7 @@ describe(@"buy button", ^{
             } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
                 return [OHHTTPStubsResponse responseWithError:[NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:nil]];
             }];
-            vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+            vc = [[ARLegacyArtworkViewController alloc] initWithArtwork:artwork fair:nil];
             vc.echo = echo;
             vcMock = [OCMockObject partialMockForObject:vc];
             [[vcMock expect] presentErrorMessage:OCMOCK_ANY];
@@ -193,7 +193,7 @@ describe(@"buy button", ^{
                               }
                        }
                 }];
-            vc = [[ARArtworkViewController alloc] initWithArtwork:artwork fair:nil];
+            vc = [[ARLegacyArtworkViewController alloc] initWithArtwork:artwork fair:nil];
             vc.echo = echo;
             vcMock = [OCMockObject partialMockForObject:vc];
             [[vcMock expect] presentErrorMessage:OCMOCK_ANY];

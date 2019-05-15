@@ -54,9 +54,8 @@ describe(@"concerning loading a VC from a URL and reporting analytics", ^{
 
         topMenuMock = [OCMockObject partialMockForObject:[ARTopMenuViewController sharedController]];
         [[topMenuMock expect] pushViewController:[OCMArg checkWithBlock:^(ARArtworkSetViewController *viewController) {
-            (void)viewController.view; // ensure the artwork view controller gets created
-            NSString *artworkID = viewController.currentArtworkViewController.artwork.artworkID;
-            return [artworkID isEqualToString:@"andy-warhol-tree-frog"];
+            Artwork *artwork = viewController.artworks[viewController.index];
+            return [artwork.artworkID isEqualToString:@"andy-warhol-tree-frog"];
         }]];
         
         appDelegateMock = [OCMockObject partialMockForObject:[ARAppDelegate sharedInstance]];
