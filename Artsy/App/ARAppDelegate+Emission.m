@@ -112,16 +112,16 @@ FollowRequestFailure(RCTResponseSenderBlock block, BOOL following, NSError *erro
     
     NSString *liveAuctionsURL = [[[ARSwitchBoard sharedInstance] liveAuctionsURL] absoluteString];
 
-    NSString *stripePublishableKey;
-    if ([AROptions boolForOption:ARUseStagingDefault]) {
-        stripePublishableKey = keys.stripeStagingPublishableKey;
-    } else {
-        stripePublishableKey = keys.stripeProductionPublishableKey;
-    }
-
     // Grab echo features and make that the base of all options
     ArtsyEcho *aero = [[ArtsyEcho alloc] init];
     [aero setup];
+
+    NSString *stripePublishableKey;
+    if ([AROptions boolForOption:ARUseStagingDefault]) {
+        stripePublishableKey = [aero.messages[@"StripeStagingPublishableKey"] content];
+    } else {
+        stripePublishableKey = [aero.messages[@"StripeProductionPublishableKey"] content];
+    }
 
     NSDictionary *options = [self getOptionsForEmission:[aero featuresMap] labOptions:[AROptions labOptionsMap]];
     AREmissionConfiguration *config = [[AREmissionConfiguration alloc] initWithUserID:userID
