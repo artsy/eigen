@@ -2,6 +2,7 @@ import { storiesOf } from "@storybook/react-native"
 import React from "react"
 
 import { ArtworkRenderer } from "../Artwork"
+import { ArtworkTombstone } from "../Components/ArtworkTombstone"
 
 storiesOf("Artwork")
   .add("Institution", () => {
@@ -15,3 +16,6 @@ storiesOf("Artwork")
   .add("Biddable", () => {
     return <ArtworkRenderer artworkID="pablo-picasso-buste-de-femme-assise-dans-un-fauteuil" />
   })
+// .add("woooo", () => {
+//   return <ArtworkTombstone artwork={{ title: "Hello im a title" } as any} />
+// })

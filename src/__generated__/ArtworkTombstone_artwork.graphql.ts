@@ -1,20 +1,18 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
-import { ArtworkTombstone_artwork$ref } from "./ArtworkTombstone_artwork.graphql";
-declare const _Artwork_artwork$ref: unique symbol;
-export type Artwork_artwork$ref = typeof _Artwork_artwork$ref;
-export type Artwork_artwork = {
+declare const _ArtworkTombstone_artwork$ref: unique symbol;
+export type ArtworkTombstone_artwork$ref = typeof _ArtworkTombstone_artwork$ref;
+export type ArtworkTombstone_artwork = {
     readonly title: string | null;
-    readonly " $fragmentRefs": ArtworkTombstone_artwork$ref;
-    readonly " $refType": Artwork_artwork$ref;
+    readonly " $refType": ArtworkTombstone_artwork$ref;
 };
 
 
 
 const node: ConcreteFragment = {
   "kind": "Fragment",
-  "name": "Artwork_artwork",
+  "name": "ArtworkTombstone_artwork",
   "type": "Artwork",
   "metadata": null,
   "argumentDefinitions": [],
@@ -27,11 +25,6 @@ const node: ConcreteFragment = {
       "storageKey": null
     },
     {
-      "kind": "FragmentSpread",
-      "name": "ArtworkTombstone_artwork",
-      "args": null
-    },
-    {
       "kind": "ScalarField",
       "alias": null,
       "name": "__id",
@@ -40,5 +33,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = '4edd8c17ae40e94b249c04a80eb71abc';
+(node as any).hash = 'c113287a76a1e89f740cc6e5fd22b4ed';
 export default node;

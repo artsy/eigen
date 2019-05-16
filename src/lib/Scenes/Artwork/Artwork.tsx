@@ -5,6 +5,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { Text, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./Components/ArtworkTombstone"
 
 interface Props {
   artwork: Artwork_artwork
@@ -12,9 +13,11 @@ interface Props {
 
 export class Artwork extends React.Component<Props> {
   render() {
+    const { artwork } = this.props
     return (
       <View style={{ backgroundColor: "red" }}>
         <Text>{this.props.artwork.title}</Text>
+        <ArtworkTombstone artwork={artwork} />
       </View>
     )
   }
@@ -24,6 +27,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
       title
+      ...ArtworkTombstone_artwork
     }
   `,
 })

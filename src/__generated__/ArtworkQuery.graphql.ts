@@ -29,6 +29,12 @@ query ArtworkQuery(
 
 fragment Artwork_artwork on Artwork {
   title
+  ...ArtworkTombstone_artwork
+  __id
+}
+
+fragment ArtworkTombstone_artwork on Artwork {
+  title
   __id
 }
 */
@@ -61,7 +67,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtworkQuery",
-  "id": "1e4022982c4f1457bac6ded01af8577f",
+  "id": "eaa679c2b623f9c2b17ea08a2eae78e7",
   "text": null,
   "metadata": {},
   "fragment": {
