@@ -7,6 +7,7 @@ upcoming:
     - Removes Echo.json from git index, moved to post-install CocoaPods hook - Ash & Chung-Yi
   user_facing:
     - Clears Relay cache when a PUT, POST, or DELETE is made to our API - ash
+    - Fixes search result selection for features - ash & roop
 
 releases:
   - version: 5.0.2
