@@ -78,6 +78,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
     const fetchParams: any = {
       first: 20,
       assetType: "Photos",
+      groupTypes: "All",
     }
 
     if (this.state.lastCursor) {
@@ -146,6 +147,7 @@ export default class SelectFromPhotoLibrary extends React.Component<Props, State
           const fetchParams: any = {
             first: 1,
             assetType: "Photos",
+            groupTypes: "All",
           }
 
           this.getCameraRollPhotos(fetchParams).then(photos => {
