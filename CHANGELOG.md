@@ -14,10 +14,15 @@
 
 -->
 
+### Master
+
+### 1.11.1
+
+- Fixes consignment photo selection - ash
+
 ### 1.11.0
 
 - Bootstrap Artwork component view controller - alloy & david
-- Fixes consignment photo selection - ash
 
 ### 1.10.1
 
