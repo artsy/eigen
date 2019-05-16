@@ -1,5 +1,5 @@
 {
   "extends": ["@artsy"],
   "assignees": ["zephraph"],
-  "reviewers" ["ashfurrow"]
+  "reviewers": ["ashfurrow"]
 }
