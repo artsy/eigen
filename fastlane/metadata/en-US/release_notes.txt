@@ -1,1 +1,1 @@
-This release fixes a crash where users were unable to submit consignments.
+This release fixes a problem selecting certain search results, as well as some performance improvements.
