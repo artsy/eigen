@@ -28,8 +28,14 @@ query ArtworkQuery(
 }
 
 fragment Artwork_artwork on Artwork {
-  title
+  ...ArtworkActions_artwork
   __id
+}
+
+fragment ArtworkActions_artwork on Artwork {
+  __id
+  _id
+  is_saved
 }
 */
 
@@ -61,7 +67,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtworkQuery",
-  "id": "1e4022982c4f1457bac6ded01af8577f",
+  "id": "688fcea293c49d4428dd55c9f33e5142",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -104,14 +110,21 @@ return {
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
+          v2,
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "title",
+            "name": "_id",
             "args": null,
             "storageKey": null
           },
-          v2
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_saved",
+            "args": null,
+            "storageKey": null
+          }
         ]
       }
     ]
