@@ -2,6 +2,8 @@ import React from "react"
 import { Alert, Linking, NativeModules } from "react-native"
 import * as renderer from "react-test-renderer"
 
+jest.mock("@react-native-community/cameraroll", () => jest.fn())
+
 import SelectFromPhotoLibrary from "../SelectFromPhotoLibrary"
 
 jest.mock("lib/NativeModules/triggerCamera", () => ({ triggerCamera: jest.fn() }))
