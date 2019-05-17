@@ -64,7 +64,8 @@ podspec = Pod::Spec.new do |s|
     'node_modules/@mapbox/react-native-mapbox-gl/react-native-mapbox-gl.podspec',
     'node_modules/react-native-sentry/SentryReactNative.podspec',
     'node_modules/react-native-svg/RNSVG.podspec',
-    'node_modules/react-native-navigator-ios/react-native-navigator-ios.podspec'
+    'node_modules/react-native-navigator-ios/react-native-navigator-ios.podspec',
+    'node_modules/@react-native-community/cameraroll/react-native-cameraroll.podspec'
   ]
 
   # Ties the exact versions so host apps don't need to guess the version

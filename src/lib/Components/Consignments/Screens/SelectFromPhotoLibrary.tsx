@@ -8,17 +8,8 @@ import { BodyText as P } from "../Typography"
 
 import { triggerCamera } from "lib/NativeModules/triggerCamera"
 
-import {
-  Alert,
-  CameraRoll,
-  Dimensions,
-  Linking,
-  NativeModules,
-  Route,
-  ScrollView,
-  View,
-  ViewProperties,
-} from "react-native"
+import CameraRoll from "@react-native-community/cameraroll"
+import { Alert, Dimensions, Linking, NativeModules, Route, ScrollView, View, ViewProperties } from "react-native"
 import NavigatorIOS from "react-native-navigator-ios"
 
 import { ConsignmentSetup } from "../index"

@@ -4,6 +4,7 @@ import "react-native"
 import { getTextTree } from "lib/utils/getTestWrapper"
 import Confirmation, { SubmissionTypes } from "../Confirmation"
 
+jest.mock("@react-native-community/cameraroll", () => jest.fn())
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
   dismissModalViewController: jest.fn(),
 }))
