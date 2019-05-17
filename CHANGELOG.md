@@ -16,6 +16,8 @@
 
 ### Master
 
+- Moves from RN CameraRoll to @react-native-community/cameraroll - ash
+
 ### 1.11.1
 
 - Fixes consignment photo selection - ash

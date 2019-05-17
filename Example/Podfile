@@ -31,6 +31,7 @@ double_conversion_spec_path = File.join(react_path, 'third-party-podspecs/Double
 sentry_path = File.join(node_modules_path, 'react-native-sentry')
 tispi_stripe_spec_path = File.join(node_modules_path, 'tipsi-stripe/tipsi-stripe.podspec')
 mapbox_path = File.join(node_modules_path, '@mapbox/react-native-mapbox-gl')
+react_native_cameraroll_path = File.join(node_modules_path, '@react-native-community/cameraroll')
 react_native_navigator_ios_path = File.join(node_modules_path, 'react-native-navigator-ios')
 
 target 'Emission' do
@@ -69,6 +70,8 @@ target 'Emission' do
   # Map library
   pod 'react-native-mapbox-gl', path: mapbox_path
   pod 'RNSVG', path: '../node_modules/react-native-svg'
+
+  pod 'react-native-cameraroll', path: react_native_cameraroll_path
 
   # Deprecated from React Native, but fine until we support Android
   pod 'react-native-navigator-ios', path: react_native_navigator_ios_path

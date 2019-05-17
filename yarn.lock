@@ -1084,6 +1084,11 @@
     parse-glob "3.0.4"
     promise-retry "1.1.1"
 
+"@react-native-community/cameraroll@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cameraroll/-/cameraroll-1.0.5.tgz#c3e3cb6b7b120c5537b6582ceb2dd3516031f11a"
+  integrity sha512-qt9fj6JwNAe1Fe/+oMAmy6qnr8OLkYjmocWx1CvVWOSJSVLdp665z+3jyGbc62nGJL+M9JDjlQg+YldJHCJPMg==
+
 "@react-native-community/cli@^1.2.1":
   version "1.4.6"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli/-/cli-1.4.6.tgz#fc719675cb95d1146c004c8829ae32d50fb4dde3"
