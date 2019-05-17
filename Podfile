@@ -100,6 +100,7 @@ target 'Artsy' do
   pod 'Pulley', :git => 'https://github.com/l2succes/Pulley.git', :branch => 'master'
   pod 'RNSVG', git: 'https://github.com/react-native-community/react-native-svg.git', tag: 'v9.0.4'
   pod 'react-native-navigator-ios', git: 'https://github.com/ashfurrow/react-native-navigator-ios', branch: 'license_podspec'
+  pod 'react-native-cameraroll', git: 'https://github.com/react-native-community/react-native-cameraroll', tag: 'v1.0.5'
 
   # Facebook
   pod 'FBSDKCoreKit', '~> 4.33'
