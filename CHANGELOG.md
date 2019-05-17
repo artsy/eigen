@@ -16,6 +16,8 @@
 
 ### Master
 
+### 1.11.2
+
 - Moves from RN CameraRoll to @react-native-community/cameraroll - ash
 
 ### 1.11.1
