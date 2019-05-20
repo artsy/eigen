@@ -2,6 +2,8 @@ import { renderWithLayout } from "lib/tests/renderWithLayout"
 import React from "react"
 import "react-native"
 
+jest.mock("@react-native-community/cameraroll", () => jest.fn())
+
 import Welcome from "../Welcome"
 
 const devices = {

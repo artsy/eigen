@@ -14,6 +14,23 @@
 
 -->
 
+### Master
+
+- Adds a non-interactive ArtworkActions component - sweir27
+- Adds basic ArtworkAvailability component - ashkan18
+
+### 1.11.3
+
+- Updated background color to demonstrate beta flow - luc
+
+### 1.11.2
+
+- Moves from RN CameraRoll to @react-native-community/cameraroll - ash
+
+### 1.11.1
+
+- Fixes consignment photo selection - ash
+
 ### 1.11.0
 
 - Bootstrap Artwork component view controller - alloy & david

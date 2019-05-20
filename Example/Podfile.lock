@@ -11,7 +11,7 @@ PODS:
     - "UIView+BooleanAnimations"
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
-  - Emission (1.11.0):
+  - Emission (1.11.3):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -20,6 +20,7 @@ PODS:
     - glog (= 0.3.5)
     - ISO8601DateFormatter
     - Pulley
+    - react-native-cameraroll (= 1.0.5)
     - react-native-mapbox-gl (= 6.1.4)
     - react-native-navigator-ios (= 1.0.0)
     - React/Core (= 0.59.2)
@@ -90,6 +91,8 @@ PODS:
   - Pulley (2.6.2)
   - React (0.59.2):
     - React/Core (= 0.59.2)
+  - react-native-cameraroll (1.0.5):
+    - React
   - react-native-mapbox-gl (6.1.4):
     - React
   - react-native-navigator-ios (1.0.0):
@@ -183,6 +186,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Keys (from `Pods/CocoaPodsKeys`)
   - Pulley (from `https://github.com/l2succes/Pulley.git`, branch `master`)
+  - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - "react-native-mapbox-gl (from `../node_modules/@mapbox/react-native-mapbox-gl`)"
   - react-native-navigator-ios (from `../node_modules/react-native-navigator-ios`)
   - React/DevSupport (from `../node_modules/react-native`)
@@ -237,6 +241,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/l2succes/Pulley.git
   React:
     :path: "../node_modules/react-native"
+  react-native-cameraroll:
+    :path: "../node_modules/@react-native-community/cameraroll"
   react-native-mapbox-gl:
     :path: "../node_modules/@mapbox/react-native-mapbox-gl"
   react-native-navigator-ios:
@@ -269,7 +275,7 @@ SPEC CHECKSUMS:
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
-  Emission: e397596f22f8c3c632dcdab7432422afa181ceb3
+  Emission: 1ea165a8f70857d0933545d0a68b02c47b9dd4ae
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
@@ -283,8 +289,9 @@ SPEC CHECKSUMS:
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
   React: 9d063e2f356c8cd2f54dd550d4507740037cbabe
+  react-native-cameraroll: 4c5ca0eab943949e7c39fa549d8f442dae9d3776
   react-native-mapbox-gl: b7309e99290963cc7fe0e34db86c6e16890cfcee
-  react-native-navigator-ios: 93db84cc26b6f8d776e1f504c56082f593efcd09
+  react-native-navigator-ios: b0e7d4187b45e6961a112997a406b2ac361f9c75
   RNSVG: 36f6615444ab569023444e09b01a1900d964e967
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
@@ -292,10 +299,10 @@ SPEC CHECKSUMS:
   SentryReactNative: 3dff4e9bd82aa581dc64ff8d2524d7007cea076b
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
-  tipsi-stripe: 2d0e33b5bb62168cd1f1777a904781725c5baf8a
+  tipsi-stripe: ebb140e03325d93a7bfdaf6131b37c557485f98e
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 3768a3026ade0fb46a68f3a31a917cf86bc34fc4
 
-PODFILE CHECKSUM: dc3ebb6a71dc9f5fbf68dc4f08bf2c6ae69c99c3
+PODFILE CHECKSUM: cfa50c686f263796bb934d5a4bdc8561c4768db1
 
 COCOAPODS: 1.6.1

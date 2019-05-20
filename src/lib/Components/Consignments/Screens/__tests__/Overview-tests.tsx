@@ -9,6 +9,9 @@ import Metadata from "../Metadata"
 import Overview from "../Overview"
 
 import Provenance from "../Provenance"
+
+jest.mock("@react-native-community/cameraroll", () => jest.fn())
+
 import SelectFromPhotoLibrary from "../SelectFromPhotoLibrary"
 
 const nav = {} as any

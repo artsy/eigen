@@ -28,8 +28,9 @@ query ArtworkQuery(
 }
 
 fragment Artwork_artwork on Artwork {
-  title
   ...ArtworkTombstone_artwork
+  ...ArtworkActions_artwork
+  ...ArtworkAvailability_artwork
   __id
 }
 
@@ -51,6 +52,17 @@ fragment ArtworkTombstone_artwork on Artwork {
   attribution_class {
     short_description
   }
+  __id
+}
+
+fragment ArtworkActions_artwork on Artwork {
+  __id
+  _id
+  is_saved
+}
+
+fragment ArtworkAvailability_artwork on Artwork {
+  availability
   __id
 }
 */
@@ -83,7 +95,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtworkQuery",
-  "id": "ef3a6b21956abf0e074fb61d23e5b59a",
+  "id": "087431b9993661e8df6f52518c38d6d0",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -129,14 +141,14 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "title",
+            "name": "edition_of",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "medium",
+            "name": "title",
             "args": null,
             "storageKey": null
           },
@@ -208,7 +220,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "edition_of",
+            "name": "medium",
             "args": null,
             "storageKey": null
           },
@@ -230,7 +242,28 @@ return {
               }
             ]
           },
-          v2
+          v2,
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "_id",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_saved",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "availability",
+            "args": null,
+            "storageKey": null
+          }
         ]
       }
     ]

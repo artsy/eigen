@@ -2,6 +2,8 @@ import { shallow } from "enzyme"
 import Event from "lib/NativeModules/Events"
 import React from "react"
 
+jest.mock("@react-native-community/cameraroll", () => jest.fn())
+
 jest.unmock("react-tracking")
 import Overview from "../Overview"
 
