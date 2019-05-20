@@ -16,6 +16,8 @@
 
 ### Master
 
+- Updated background color to demonstrate beta flow - luc
+
 ### 1.11.2
 
 - Moves from RN CameraRoll to @react-native-community/cameraroll - ash
