@@ -17,6 +17,7 @@
 ### Master
 
 - Adds a non-interactive ArtworkActions component - sweir27
+- Adds basic ArtworkAvailability component - ashkan18
 
 ### 1.11.3
 
