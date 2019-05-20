@@ -13,7 +13,7 @@ interface Props {
 export class Artwork extends React.Component<Props> {
   render() {
     return (
-      <View style={{ backgroundColor: "red" }}>
+      <View style={{ backgroundColor: "green" }}>
         <Text>{this.props.artwork.title}</Text>
       </View>
     )
