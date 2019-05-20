@@ -1,7 +1,10 @@
-import { Box, color, Link, Sans, Serif } from "@artsy/palette"
+import { color, Flex, Link, Sans, Serif } from "@artsy/palette"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
 import Button from "lib/Components/Buttons/InvertedButton"
+import SerifText from "lib/Components/Text/Serif"
+import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
+import { Text, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 type Artist = ArtworkTombstone_artwork["artists"][0]
@@ -11,29 +14,36 @@ export interface ArtworkTombstoneProps {
 }
 
 export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps> {
+  handleTap(artist: Artist) {
+    console.log("HANDLE TAP!!!!")
+    SwitchBoard.presentNavigationViewController(this, artist.href)
+  }
+
   renderSingleArtist(artist: Artist) {
     return <React.Fragment>{this.renderArtistName(artist)}</React.Fragment>
   }
 
   renderArtistName(artist: Artist) {
     return artist.href ? (
-      <>
-        <Serif size="5t" weight="semibold">
-          {artist.name}
-        </Serif>
+      <Flex>
+        <TouchableWithoutFeedback onPress={this.handleTap.bind(this, artist)}>
+          <Serif size="5t" weight="semibold">
+            {artist.name}
+          </Serif>
+        </TouchableWithoutFeedback>
         <Sans color={color("black60")} size="3">
           Follow
         </Sans>
-      </>
+      </Flex>
     ) : (
-      <>
+      <Flex>
         <Serif size="5t" weight="semibold">
           {artist.name}
         </Serif>
         <Sans color={color("black60")} size="3">
           Follow
         </Sans>
-      </>
+      </Flex>
     )
   }
 
@@ -53,7 +63,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps> {
 
   renderCulturalMaker(culturalMaker: string) {
     return (
-      <Serif size="5t" display="inline-block" weight="semibold">
+      <Serif size="5t" weight="semibold">
         {culturalMaker}
       </Serif>
     )
@@ -64,11 +74,11 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps> {
     console.log("ARTOWRK", artwork)
     return (
       <>
-        <Box>
+        <Flex>
           {artwork.artists.length === 1 ? this.renderSingleArtist(artwork.artists[0]) : this.renderMultipleArtists()}
           {artwork.artists.length === 0 && artwork.cultural_maker && this.renderCulturalMaker(artwork.cultural_maker)}
-        </Box>
-        <Serif color={color("black60")} size="3" mb="0" pb="0">
+        </Flex>
+        <Serif color={color("black60")} size="3" m="0" p="0">
           {artwork.title}, {artwork.date}
         </Serif>
         <Serif color={color("black60")} size="3">
@@ -81,7 +91,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps> {
           {artwork.edition_of}
         </Serif>
         <Serif color={color("black60")} size="3">
-          {artwork.attribution_class.short_description}
+          {artwork.attribution_class ? artwork.attribution_class.short_description : ""}
         </Serif>
       </>
     )

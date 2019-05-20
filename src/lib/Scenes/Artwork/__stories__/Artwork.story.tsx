@@ -24,7 +24,7 @@ storiesOf("Artwork")
             title: "Hello im a title",
             medium: "Painting",
             date: "1992",
-            artists: [{ name: "Andy Warhol", __id: "1234", href: "www.calmingmanatee.com" }],
+            artists: [{ name: "Andy Warhol", __id: "1234", href: "/artist/pablo-picasso" }],
             cultural_maker: null,
             dimensions: {
               in: "15 × 20 in",
@@ -48,8 +48,8 @@ storiesOf("Artwork")
             medium: "Painting",
             date: "1992",
             artists: [
-              { name: "Andy Warhol", __id: "1234", href: "www.calmingmanatee.com" },
-              { name: "Alex Katz", __id: "6789", href: "www.calmingmanatee.com" },
+              { name: "Andy Warhol", __id: "1234", href: "/artist/pablo-picasso" },
+              { name: "Alex Katz", __id: "6789", href: "/artist/alex-katz" },
             ],
             cultural_maker: null,
             dimensions: {
