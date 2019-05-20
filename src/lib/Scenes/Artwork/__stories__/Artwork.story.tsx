@@ -16,6 +16,75 @@ storiesOf("Artwork")
   .add("Biddable", () => {
     return <ArtworkRenderer artworkID="pablo-picasso-buste-de-femme-assise-dans-un-fauteuil" />
   })
-// .add("woooo", () => {
-//   return <ArtworkTombstone artwork={{ title: "Hello im a title" } as any} />
-// })
+  .add("tombstone with artist", () => {
+    return (
+      <ArtworkTombstone
+        artwork={
+          {
+            title: "Hello im a title",
+            medium: "Painting",
+            date: "1992",
+            artists: [{ name: "Andy Warhol", __id: "1234", href: "www.calmingmanatee.com" }],
+            cultural_maker: null,
+            dimensions: {
+              in: "15 × 20 in",
+              cm: "38.1 × 50.8 cm",
+            },
+            edition_of: "Edition 100/200",
+            attribution_class: {
+              short_description: "This is an edition of something",
+            },
+          } as any
+        }
+      />
+    )
+  })
+  .add("tombstone with artists", () => {
+    return (
+      <ArtworkTombstone
+        artwork={
+          {
+            title: "Hello im a title",
+            medium: "Painting",
+            date: "1992",
+            artists: [
+              { name: "Andy Warhol", __id: "1234", href: "www.calmingmanatee.com" },
+              { name: "Alex Katz", __id: "6789", href: "www.calmingmanatee.com" },
+            ],
+            cultural_maker: null,
+            dimensions: {
+              in: "15 × 20 in",
+              cm: "38.1 × 50.8 cm",
+            },
+            edition_of: "Edition 100/200",
+            attribution_class: {
+              short_description: "This is an edition of something",
+            },
+          } as any
+        }
+      />
+    )
+  })
+  .add("tombstone with cultural maker", () => {
+    return (
+      <ArtworkTombstone
+        artwork={
+          {
+            title: "Hello im a title",
+            medium: "Painting",
+            date: "1992",
+            artists: [],
+            cultural_maker: "some guy idk",
+            dimensions: {
+              in: "15 × 20 in",
+              cm: "38.1 × 50.8 cm",
+            },
+            edition_of: "Edition 100/200",
+            attribution_class: {
+              short_description: "This is an edition of something",
+            },
+          } as any
+        }
+      />
+    )
+  })

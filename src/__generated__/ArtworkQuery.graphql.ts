@@ -35,6 +35,22 @@ fragment Artwork_artwork on Artwork {
 
 fragment ArtworkTombstone_artwork on Artwork {
   title
+  medium
+  date
+  cultural_maker
+  artists {
+    __id
+    name
+    href
+  }
+  dimensions {
+    in
+    cm
+  }
+  edition_of
+  attribution_class {
+    short_description
+  }
   __id
 }
 */
@@ -67,7 +83,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtworkQuery",
-  "id": "eaa679c2b623f9c2b17ea08a2eae78e7",
+  "id": "ef3a6b21956abf0e074fb61d23e5b59a",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -116,6 +132,103 @@ return {
             "name": "title",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "medium",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "date",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "cultural_maker",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artists",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artist",
+            "plural": true,
+            "selections": [
+              v2,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "href",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "dimensions",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "dimensions",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "in",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "cm",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "edition_of",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "attribution_class",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "AttributionClass",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "short_description",
+                "args": null,
+                "storageKey": null
+              }
+            ]
           },
           v2
         ]

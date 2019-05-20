@@ -15,7 +15,7 @@ export class Artwork extends React.Component<Props> {
   render() {
     const { artwork } = this.props
     return (
-      <View style={{ backgroundColor: "red" }}>
+      <View style={{ backgroundColor: "white" }}>
         <Text>{this.props.artwork.title}</Text>
         <ArtworkTombstone artwork={artwork} />
       </View>

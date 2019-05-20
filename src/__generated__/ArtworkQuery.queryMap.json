@@ -1,3 +1,3 @@
 {
-  "eaa679c2b623f9c2b17ea08a2eae78e7": "query ArtworkQuery(\n  $artworkID: String!\n) {\n  artwork(id: $artworkID) {\n    ...Artwork_artwork\n    __id\n  }\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  ...ArtworkTombstone_artwork\n  __id\n}\n\nfragment ArtworkTombstone_artwork on Artwork {\n  title\n  __id\n}\n"
+  "ef3a6b21956abf0e074fb61d23e5b59a": "query ArtworkQuery(\n  $artworkID: String!\n) {\n  artwork(id: $artworkID) {\n    ...Artwork_artwork\n    __id\n  }\n}\n\nfragment Artwork_artwork on Artwork {\n  title\n  ...ArtworkTombstone_artwork\n  __id\n}\n\nfragment ArtworkTombstone_artwork on Artwork {\n  title\n  medium\n  date\n  cultural_maker\n  artists {\n    __id\n    name\n    href\n  }\n  dimensions {\n    in\n    cm\n  }\n  edition_of\n  attribution_class {\n    short_description\n  }\n  __id\n}\n"
 }
