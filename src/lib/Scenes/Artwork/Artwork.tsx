@@ -1,10 +1,12 @@
+import { Flex } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
-import { Text, View } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { ArtworkActionsFragmentContainer as ArtworkActions } from "./Components/ArtworkActions"
 
 interface Props {
   artwork: Artwork_artwork
@@ -13,8 +15,11 @@ interface Props {
 export class Artwork extends React.Component<Props> {
   render() {
     return (
-      <View style={{ backgroundColor: "green" }}>
-        <Text>{this.props.artwork.title}</Text>
+      <View>
+        <Flex width="100%" style={{ backgroundColor: "gray" }} height={340} />
+        <Flex alignItems="center" mt={2}>
+          <ArtworkActions artwork={this.props.artwork} />
+        </Flex>
       </View>
     )
   }
@@ -23,7 +28,7 @@ export class Artwork extends React.Component<Props> {
 export const ArtworkContainer = createFragmentContainer(Artwork, {
   artwork: graphql`
     fragment Artwork_artwork on Artwork {
-      title
+      ...ArtworkActions_artwork
     }
   `,
 })

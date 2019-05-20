@@ -3,7 +3,7 @@ import React from "react"
 
 import { ArtworkRenderer } from "../Artwork"
 
-storiesOf("Artwork")
+storiesOf("Artwork/Screens")
   .add("Institution", () => {
     return <ArtworkRenderer artworkID="pablo-picasso-le-reve-the-dream" />
   })

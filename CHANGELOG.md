@@ -16,6 +16,10 @@
 
 ### Master
 
+- Adds a non-interactive ArtworkActions component - sweir27
+
+### 1.11.3
+
 - Updated background color to demonstrate beta flow - luc
 
 ### 1.11.2
