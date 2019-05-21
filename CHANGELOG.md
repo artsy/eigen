@@ -19,6 +19,7 @@
 - Adds a non-interactive ArtworkActions component - sweir27
 - Adds basic ArtworkAvailability component - ashkan18
 - Exposes AREnabled and a user's current locale - sweir27
+- Adds seller info section with SellerInfo component - ashkan18
 
 ### 1.11.3
 
