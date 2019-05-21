@@ -1117,13 +1117,14 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
-"@omakase/cli@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@omakase/cli/-/cli-0.0.6.tgz#6bc3eec961ebf2f079c86c9120a9039fb287e285"
-  integrity sha512-cSXGaOizhVILx6LLNhbBdFeaoC8yfqb0kALbrpHxo9REJytjj21Ui2UwWsx+ZEiZWAF64/9AcNFH12PHT3zjog==
+"@omakase/cli@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@omakase/cli/-/cli-0.0.9.tgz#df29c098e2b37db34029c4e481231d908a53b87d"
+  integrity sha512-ZHBUopmLuu9JPsaeZDScJvB7y51UogwGt6iCJUv9208X/2+UxR8XTFoaOj3l2UWA0ZOHgTJzLjkspwNXqwdHlQ==
   dependencies:
     "@oclif/command" "^1"
     "@oclif/config" "^1"
+    "@oclif/plugin-help" "^2.1.6"
     tslib "^1"
     yeoman-environment "^2.3.4"
     yeoman-generator "^3.1.1"
