@@ -67,14 +67,18 @@ it(@"gives the right messages for the right setup",^{
 });
 
 
-it(@"defaults to asking for camera access",^{
+/*
+ The following four tests are marked as pending because our tests must be run on iOS 10, but ARKit requires iOS 11.3+.
+ */
+
+pending(@"defaults to asking for camera access",^{
     ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil ];
     vc.defaults = (id)untouchedDefaults;
 
     expect(vc).to.haveValidSnapshot();
 });
 
-it(@"next sets ARAugmentedRealityHasTriedToSetup",^{
+pending(@"next sets ARAugmentedRealityHasTriedToSetup",^{
     ForgeriesUserDefaults *defaults = [ForgeriesUserDefaults defaults:@{
       ARAugmentedRealityHasTriedToSetup: @(NO),
       ARAugmentedRealityCameraAccessGiven: @(YES)
@@ -88,14 +92,14 @@ it(@"next sets ARAugmentedRealityHasTriedToSetup",^{
 });
 
 
-it(@"has different settings when denied access",^{
+pending(@"has different settings when denied access",^{
     ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
     vc.defaults = (id)deniedDefaults;
     expect(vc).to.haveValidSnapshot();
 });
 
 
-it(@"has different settings when you have given access but not succedded in putting a work on the wall",^{
+pending(@"has different settings when you have given access but not succedded in putting a work on the wall",^{
     ARAugmentedVIRSetupViewController *vc = [[ARAugmentedVIRSetupViewController alloc] initWithMovieURL:nil config:nil];
     vc.defaults = (id)setupButNotRanDefaults;
     expect(vc).to.haveValidSnapshot();
