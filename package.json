@@ -109,7 +109,7 @@
     "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-typescript": "^7.1.0",
     "@babel/runtime": "^7.2.0",
-    "@omakase/cli": "^0.0.9",
+    "@omakase/cli": "0.0.9",
     "@playlyfe/gql": "^2.3.2",
     "@storybook/react-native": "^3.3.11",
     "@types/chalk": "^2.2.0",
