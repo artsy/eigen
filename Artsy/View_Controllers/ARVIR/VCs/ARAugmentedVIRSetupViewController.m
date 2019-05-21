@@ -105,101 +105,103 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
     [super viewDidLoad];
     [self.defaults setBool:YES forKey:ARAugmentedRealityHasSeenSetup];
 
-    // Re-use the class check, this means it takes into account whether permissions have been changed after a user
-    // has successfully set up an Artwork.
-    [self.class canSkipARSetup:self.defaults callback:^(bool hasGivenAccess) {
-        NSString *buttonTitle = [self buttonTitleWithDefaults:self.defaults hasPermission:hasGivenAccess];
-        NSString *subtitleText = [self subtitleWithDefaults:self.defaults hasPermission:hasGivenAccess];
-        SEL nextButtonSelector = [self buttonSelectorWithDefaults:self.defaults hasPermission:hasGivenAccess];
+    if (@available(iOS 11.3, *)) {
+        // Re-use the class check, this means it takes into account whether permissions have been changed after a user
+        // has successfully set up an Artwork.
+        [self.class canSkipARSetup:self.defaults callback:^(bool hasGivenAccess) {
+            NSString *buttonTitle = [self buttonTitleWithDefaults:self.defaults hasPermission:hasGivenAccess];
+            NSString *subtitleText = [self subtitleWithDefaults:self.defaults hasPermission:hasGivenAccess];
+            SEL nextButtonSelector = [self buttonSelectorWithDefaults:self.defaults hasPermission:hasGivenAccess];
 
-        // Have a potential background video, otherwise it's a black screen
-        AVPlayerViewController *playVC = [[AVPlayerViewController alloc] init];
-        playVC.allowsPictureInPicturePlayback = NO;
-        playVC.updatesNowPlayingInfoCenter = NO;
-        playVC.showsPlaybackControls = NO;
-        playVC.videoGravity = AVLayerVideoGravityResizeAspectFill;
+            // Have a potential background video, otherwise it's a black screen
+            AVPlayerViewController *playVC = [[AVPlayerViewController alloc] init];
+            playVC.allowsPictureInPicturePlayback = NO;
+            playVC.updatesNowPlayingInfoCenter = NO;
+            playVC.showsPlaybackControls = NO;
+            playVC.videoGravity = AVLayerVideoGravityResizeAspectFill;
 
-        playVC.player = [AVPlayer playerWithURL:self.movieURL];
-        self.avPlayer = playVC.player;
-        [playVC.player play];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartVideo:) name:AVPlayerItemDidPlayToEndTimeNotification object:playVC.player.currentItem];
+            playVC.player = [AVPlayer playerWithURL:self.movieURL];
+            self.avPlayer = playVC.player;
+            [playVC.player play];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(restartVideo:) name:AVPlayerItemDidPlayToEndTimeNotification object:playVC.player.currentItem];
 
-        // Add the AV player as a childVC, aligned edge to edge
-        [playVC willMoveToParentViewController:self];
-        [self addChildViewController:playVC];
-        [self.view addSubview:playVC.view];
-        [playVC.view alignToView:self.view];
-        [playVC didMoveToParentViewController:self];
+            // Add the AV player as a childVC, aligned edge to edge
+            [playVC willMoveToParentViewController:self];
+            [self addChildViewController:playVC];
+            [self.view addSubview:playVC.view];
+            [playVC.view alignToView:self.view];
+            [playVC didMoveToParentViewController:self];
 
-        UIImageView *poster = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ar_vir_opening_frame.jpg"]];
-        poster.contentMode = UIViewContentModeScaleAspectFill;
-        [self.view addSubview:poster];
-        [poster alignToView:self.view];
+            UIImageView *poster = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ar_vir_opening_frame.jpg"]];
+            poster.contentMode = UIViewContentModeScaleAspectFill;
+            [self.view addSubview:poster];
+            [poster alignToView:self.view];
 
-        [playVC.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.5, 600) queue:nil usingBlock:^(CMTime time) {
-            if (CMTimeGetSeconds(time) > 0) {
-                [poster removeFromSuperview];
+            [playVC.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(0.5, 600) queue:nil usingBlock:^(CMTime time) {
+                if (CMTimeGetSeconds(time) > 0) {
+                    [poster removeFromSuperview];
+                }
+            }];
+
+            UIView *overlay = [[UIView alloc] init];
+            [self.view addSubview:overlay];
+            [overlay alignToView:self.view];
+
+            ARButton *allowAccessButton = [[ARWhiteFlatButton alloc] init];
+            [allowAccessButton setTitle:buttonTitle forState:UIControlStateNormal];
+            [allowAccessButton addTarget:self action:nextButtonSelector forControlEvents:UIControlEventTouchUpInside];
+            [overlay addSubview:allowAccessButton];
+            self.button = allowAccessButton;
+
+            UILabel *subtitle = [[ARSerifLabel alloc] init];
+            subtitle.font = [UIFont serifSemiBoldFontWithSize:16];
+            subtitle.backgroundColor = [UIColor clearColor];
+            subtitle.textColor = [UIColor whiteColor];
+            subtitle.text = subtitleText;
+            subtitle.textAlignment = NSTextAlignmentCenter;
+            [overlay addSubview:subtitle];
+            self.subtitleLabel = subtitle;
+
+            UILabel *title = [[ARSerifLabel alloc] init];
+            title.font = [UIFont serifSemiBoldFontWithSize:26];
+            title.backgroundColor = [UIColor clearColor];
+            title.textColor = [UIColor whiteColor];
+            title.text = arTitle;
+            title.numberOfLines = 1;
+            [overlay addSubview:title];
+
+            UIButton *backButton = [self.class createBackButton];
+            [backButton setTitle:@"Back to work" forState:UIControlStateNormal];
+            [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+            [overlay addSubview:backButton];
+
+            // Align the button to the exact center of the view
+            [allowAccessButton alignCenterWithView:overlay];
+
+            // Push up subtitle from the button
+            [subtitle constrainBottomSpaceToView:allowAccessButton predicate:@"-35"];
+            [subtitle alignCenterXWithView:self.view predicate:@"0"];
+            [subtitle alignLeading:@"20" trailing:@"-20" toView:self.view];
+
+            // Push up title from the subtitle
+            [title constrainBottomSpaceToView:subtitle predicate:@"-12"];
+            [title alignCenterXWithView:self.view predicate:@"0"];
+
+            // Align the back button to the bottom
+            [backButton alignCenterXWithView:self.view predicate:@"0"];
+
+            // ARKit is on on 11.0 so, this removes a bunch of warnings
+            if (@available(iOS 11.0, *)) {
+
+                [NSLayoutConstraint activateConstraints:@[
+                                                          [backButton.bottomAnchor constraintGreaterThanOrEqualToAnchor:overlay.safeAreaLayoutGuide.bottomAnchor constant:-20]
+                                                          ]];
+            } else {
+                // Mainly used for testing screenshots
+                [backButton alignBottomEdgeWithView:self.view predicate:@"-20"];
             }
         }];
-
-        UIView *overlay = [[UIView alloc] init];
-        [self.view addSubview:overlay];
-        [overlay alignToView:self.view];
-
-        ARButton *allowAccessButton = [[ARWhiteFlatButton alloc] init];
-        [allowAccessButton setTitle:buttonTitle forState:UIControlStateNormal];
-        [allowAccessButton addTarget:self action:nextButtonSelector forControlEvents:UIControlEventTouchUpInside];
-        [overlay addSubview:allowAccessButton];
-        self.button = allowAccessButton;
-
-        UILabel *subtitle = [[ARSerifLabel alloc] init];
-        subtitle.font = [UIFont serifSemiBoldFontWithSize:16];
-        subtitle.backgroundColor = [UIColor clearColor];
-        subtitle.textColor = [UIColor whiteColor];
-        subtitle.text = subtitleText;
-        subtitle.textAlignment = NSTextAlignmentCenter;
-        [overlay addSubview:subtitle];
-        self.subtitleLabel = subtitle;
-
-        UILabel *title = [[ARSerifLabel alloc] init];
-        title.font = [UIFont serifSemiBoldFontWithSize:26];
-        title.backgroundColor = [UIColor clearColor];
-        title.textColor = [UIColor whiteColor];
-        title.text = arTitle;
-        title.numberOfLines = 1;
-        [overlay addSubview:title];
-
-        UIButton *backButton = [self.class createBackButton];
-        [backButton setTitle:@"Back to work" forState:UIControlStateNormal];
-        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-        [overlay addSubview:backButton];
-
-        // Align the button to the exact center of the view
-        [allowAccessButton alignCenterWithView:overlay];
-
-        // Push up subtitle from the button
-        [subtitle constrainBottomSpaceToView:allowAccessButton predicate:@"-35"];
-        [subtitle alignCenterXWithView:self.view predicate:@"0"];
-        [subtitle alignLeading:@"20" trailing:@"-20" toView:self.view];
-
-        // Push up title from the subtitle
-        [title constrainBottomSpaceToView:subtitle predicate:@"-12"];
-        [title alignCenterXWithView:self.view predicate:@"0"];
-
-        // Align the back button to the bottom
-        [backButton alignCenterXWithView:self.view predicate:@"0"];
-
-        // ARKit is on on 11.0 so, this removes a bunch of warnings
-        if (@available(iOS 11.0, *)) {
-
-            [NSLayoutConstraint activateConstraints:@[
-              [backButton.bottomAnchor constraintGreaterThanOrEqualToAnchor:overlay.safeAreaLayoutGuide.bottomAnchor constant:-20]
-            ]];
-        } else {
-            // Mainly used for testing screenshots
-            [backButton alignBottomEdgeWithView:self.view predicate:@"-20"];
-        }
-    }];
+    }
 }
 
 - (void)restartVideo:(NSNotification *)notification
@@ -232,16 +234,18 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 
 - (void)next
 {
-    [self.class validateAVAccess:self.defaults callback:^(bool allowedAccess) {
-        if (allowedAccess) {
-            [self.defaults setBool:YES forKey:ARAugmentedRealityHasTriedToSetup];
+    if (@available(iOS 11.3, *)) {
+        [self.class validateAVAccess:self.defaults callback:^(bool allowedAccess) {
+            if (allowedAccess) {
+                [self.defaults setBool:YES forKey:ARAugmentedRealityHasTriedToSetup];
 
-            id vc = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:self.config];
-            [self.navigationController pushViewController:vc animated:YES];
-        } else {
-            [self requestDenied];
-        }
-    }];
+                id vc = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:self.config];
+                [self.navigationController pushViewController:vc animated:YES];
+            } else {
+                [self requestDenied];
+            }
+        }];
+    }
 }
 
 - (void)requestDenied

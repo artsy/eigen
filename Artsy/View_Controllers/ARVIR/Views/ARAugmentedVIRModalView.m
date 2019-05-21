@@ -14,7 +14,7 @@
         return nil;
     }
 
-    if (@available(iOS 11.0, *)) {
+    if (@available(iOS 11.3, *)) {
         _delegate = delegate;
 
         UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];

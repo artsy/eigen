@@ -3,7 +3,7 @@ upcoming:
   date: TBD
   emission_version: 1.x.y
   dev:
-    -
+    - Adds new availability checks and enables new compiler warning for better checking of API availabilities - ash
   user_facing:
     - 
 
