@@ -130,9 +130,11 @@ NSInteger attempt = 0;
 - (void)vibrate:(UIImpactFeedbackStyle)style
 {
     ar_dispatch_main_queue(^{
-        UIImpactFeedbackGenerator *impact = [[UIImpactFeedbackGenerator alloc] initWithStyle:style];
-        [impact prepare];
-        [impact impactOccurred];
+        if (@available(iOS 10.0, *)) {
+            UIImpactFeedbackGenerator *impact = [[UIImpactFeedbackGenerator alloc] initWithStyle:style];
+            [impact prepare];
+            [impact impactOccurred];
+        }
     });
 }
 
