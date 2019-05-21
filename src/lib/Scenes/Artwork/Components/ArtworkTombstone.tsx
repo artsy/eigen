@@ -1,4 +1,4 @@
-import { color, Flex, Link, Sans, Serif } from "@artsy/palette"
+import { Box, color, Flex, Link, Sans, Serif, Spacer } from "@artsy/palette"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
 import Button from "lib/Components/Buttons/InvertedButton"
 import SerifText from "lib/Components/Text/Serif"
@@ -20,30 +20,36 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps> {
   }
 
   renderSingleArtist(artist: Artist) {
-    return <React.Fragment>{this.renderArtistName(artist)}</React.Fragment>
+    return (
+      <React.Fragment>
+        <Flex flexDirection="row">
+          {this.renderArtistName(artist)}
+          <Sans color={color("black60")} size="6" mx={1}>
+            &middot;
+          </Sans>
+          <Sans color={color("black60")} size="4">
+            Follow
+          </Sans>
+        </Flex>
+      </React.Fragment>
+    )
   }
 
   renderArtistName(artist: Artist) {
     return artist.href ? (
-      <Flex>
+      <>
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this, artist)}>
           <Serif size="5t" weight="semibold">
             {artist.name}
           </Serif>
         </TouchableWithoutFeedback>
-        <Sans color={color("black60")} size="3">
-          Follow
-        </Sans>
-      </Flex>
+      </>
     ) : (
-      <Flex>
+      <>
         <Serif size="5t" weight="semibold">
           {artist.name}
         </Serif>
-        <Sans color={color("black60")} size="3">
-          Follow
-        </Sans>
-      </Flex>
+      </>
     )
   }
 
@@ -53,10 +59,12 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps> {
     } = this.props
     return artists.map((artist, index) => {
       return (
-        <React.Fragment key={artist.__id}>
+        <Flex flexDirection="row" key={artist.__id}>
           {this.renderArtistName(artist)}
-          {index !== artists.length - 1 && ", "}
-        </React.Fragment>
+          <Serif size="5t" weight="semibold">
+            {index !== artists.length - 1 && ", "}
+          </Serif>
+        </Flex>
       )
     })
   }
@@ -73,8 +81,8 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps> {
     const { artwork } = this.props
     console.log("ARTOWRK", artwork)
     return (
-      <>
-        <Flex>
+      <Box textAlign="left">
+        <Flex flexDirection="row" flexWrap="wrap">
           {artwork.artists.length === 1 ? this.renderSingleArtist(artwork.artists[0]) : this.renderMultipleArtists()}
           {artwork.artists.length === 0 && artwork.cultural_maker && this.renderCulturalMaker(artwork.cultural_maker)}
         </Flex>
@@ -93,7 +101,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps> {
         <Serif color={color("black60")} size="3">
           {artwork.attribution_class ? artwork.attribution_class.short_description : ""}
         </Serif>
-      </>
+      </Box>
     )
   }
 }

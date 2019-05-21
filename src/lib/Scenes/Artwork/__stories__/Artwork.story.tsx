@@ -16,6 +16,11 @@ storiesOf("Artwork/Screens")
   .add("Biddable", () => {
     return <ArtworkRenderer artworkID="pablo-picasso-buste-de-femme-assise-dans-un-fauteuil" />
   })
+  .add("multiple artists", () => {
+    return (
+      <ArtworkRenderer artworkID="andy-warhol-twenty-years-1977-signed-slash-inscribed-by-leo-exhibition-catalogue-leo-castelli-gallery-1st-edition" />
+    )
+  })
   .add("tombstone with artist", () => {
     return (
       <ArtworkTombstone
@@ -50,6 +55,10 @@ storiesOf("Artwork/Screens")
             artists: [
               { name: "Andy Warhol", __id: "1234", href: "/artist/pablo-picasso" },
               { name: "Alex Katz", __id: "6789", href: "/artist/alex-katz" },
+              { name: "Pablo Picasso", __id: "6789", href: "/artist/pablo-picasso" },
+              { name: "Banksy", __id: "6789", href: "/artist/banksy" },
+              { name: "Robert Trundelbed Bananahammock Verylongname", __id: "6789", href: "/artist/banksy" },
+              { name: "Barbara Kruger", __id: "6789", href: "/artist/barbara-kruger" },
             ],
             cultural_maker: null,
             dimensions: {
