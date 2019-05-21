@@ -93,7 +93,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
       artwork: { artists },
     } = this.props
     return (
-      <Flex flexDirection="row">
+      <Flex flexDirection="row" flexWrap="wrap">
         {this.renderMultipleArtists()}
         {!this.state.showingMoreArtists && (
           <TouchableWithoutFeedback onPress={this.showMoreArtists}>
