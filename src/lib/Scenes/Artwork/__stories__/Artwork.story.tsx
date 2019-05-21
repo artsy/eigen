@@ -16,84 +16,8 @@ storiesOf("Artwork/Screens")
   .add("Biddable", () => {
     return <ArtworkRenderer artworkID="pablo-picasso-buste-de-femme-assise-dans-un-fauteuil" />
   })
-  .add("multiple artists", () => {
+  .add("With multiple artists", () => {
     return (
       <ArtworkRenderer artworkID="andy-warhol-twenty-years-1977-signed-slash-inscribed-by-leo-exhibition-catalogue-leo-castelli-gallery-1st-edition" />
-    )
-  })
-  .add("tombstone with artist", () => {
-    return (
-      <ArtworkTombstone
-        artwork={
-          {
-            title: "Hello im a title",
-            medium: "Painting",
-            date: "1992",
-            artists: [{ name: "Andy Warhol", __id: "1234", href: "/artist/pablo-picasso" }],
-            cultural_maker: null,
-            dimensions: {
-              in: "15 × 20 in",
-              cm: "38.1 × 50.8 cm",
-            },
-            edition_of: "Edition 100/200",
-            attribution_class: {
-              short_description: "This is an edition of something",
-            },
-          } as any
-        }
-      />
-    )
-  })
-  .add("tombstone with artists", () => {
-    return (
-      <ArtworkTombstone
-        artwork={
-          {
-            title: "Hello im a title",
-            medium: "Painting",
-            date: "1992",
-            artists: [
-              { name: "Andy Warhol", __id: "1234", href: "/artist/pablo-picasso" },
-              { name: "Alex Katz", __id: "6789", href: "/artist/alex-katz" },
-              { name: "Pablo Picasso", __id: "6789", href: "/artist/pablo-picasso" },
-              { name: "Banksy", __id: "6789", href: "/artist/banksy" },
-              { name: "Robert Trundelbed Bananahammock Verylongname", __id: "6789", href: "/artist/banksy" },
-              { name: "Barbara Kruger", __id: "6789", href: "/artist/barbara-kruger" },
-            ],
-            cultural_maker: null,
-            dimensions: {
-              in: "15 × 20 in",
-              cm: "38.1 × 50.8 cm",
-            },
-            edition_of: "Edition 100/200",
-            attribution_class: {
-              short_description: "This is an edition of something",
-            },
-          } as any
-        }
-      />
-    )
-  })
-  .add("tombstone with cultural maker", () => {
-    return (
-      <ArtworkTombstone
-        artwork={
-          {
-            title: "Hello im a title",
-            medium: "Painting",
-            date: "1992",
-            artists: [],
-            cultural_maker: "some guy idk",
-            dimensions: {
-              in: "15 × 20 in",
-              cm: "38.1 × 50.8 cm",
-            },
-            edition_of: "Edition 100/200",
-            attribution_class: {
-              short_description: "This is an edition of something",
-            },
-          } as any
-        }
-      />
     )
   })

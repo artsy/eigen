@@ -1,10 +1,8 @@
-import { Box, color, Flex, Link, Sans, Serif, Spacer } from "@artsy/palette"
+import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
-import Button from "lib/Components/Buttons/InvertedButton"
-import SerifText from "lib/Components/Text/Serif"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
-import { Text, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 type Artist = ArtworkTombstone_artwork["artists"][0]
@@ -21,13 +19,11 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
   state = {
     showingMoreArtists: false,
   }
-  handleTap(artist: Artist) {
-    console.log("HANDLE TAP!!!!")
-    SwitchBoard.presentNavigationViewController(this, artist.href)
+  handleTap(href) {
+    SwitchBoard.presentNavigationViewController(this, href)
   }
 
   showMoreArtists = () => {
-    console.log("SHOWEInG MORE", this.state)
     this.setState({
       showingMoreArtists: !this.state.showingMoreArtists,
     })
@@ -37,7 +33,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     return (
       <React.Fragment>
         <Flex flexDirection="row">
-          {this.renderArtistName(artist)}
+          {this.renderArtistName(artist.name, artist.href)}
           <Sans color={color("black60")} size="6" mx={1}>
             &middot;
           </Sans>
@@ -49,19 +45,19 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     )
   }
 
-  renderArtistName(artist: Artist) {
-    return artist.href ? (
+  renderArtistName(artistName, href) {
+    return href ? (
       <>
-        <TouchableWithoutFeedback onPress={this.handleTap.bind(this, artist)}>
+        <TouchableWithoutFeedback onPress={this.handleTap.bind(this, href)}>
           <Serif size="5t" weight="semibold">
-            {artist.name}
+            {artistName}
           </Serif>
         </TouchableWithoutFeedback>
       </>
     ) : (
       <>
         <Serif size="5t" weight="semibold">
-          {artist.name}
+          {artistName}
         </Serif>
       </>
     )
@@ -73,18 +69,8 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     } = this.props
     return artists.map((artist, index) => {
       const isHidden = index > 2 && !this.state.showingMoreArtists
-      return (
-        <>
-          {!isHidden && (
-            <>
-              {this.renderArtistName(artist)}
-              <Serif size="5t" weight="semibold">
-                {index !== artists.length - 1 && ", "}
-              </Serif>
-            </>
-          )}
-        </>
-      )
+      const artistNameWithComma = index !== artists.length - 1 ? artist.name + ", " : artist.name
+      return <>{!isHidden && <>{this.renderArtistName(artistNameWithComma, artist.href)}</>}</>
     })
   }
 
@@ -95,13 +81,14 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     return (
       <Flex flexDirection="row" flexWrap="wrap">
         {this.renderMultipleArtists()}
-        {!this.state.showingMoreArtists && (
-          <TouchableWithoutFeedback onPress={this.showMoreArtists}>
-            <Serif size="5t" weight="semibold">
-              {artists.length - 3} more
-            </Serif>
-          </TouchableWithoutFeedback>
-        )}
+        {!this.state.showingMoreArtists &&
+          artists.length > 3 && (
+            <TouchableWithoutFeedback onPress={this.showMoreArtists}>
+              <Serif size="5t" weight="semibold">
+                {artists.length - 3} more
+              </Serif>
+            </TouchableWithoutFeedback>
+          )}
       </Flex>
     )
   }
@@ -116,7 +103,6 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
 
   render() {
     const { artwork } = this.props
-    console.log("state", this.state)
     return (
       <Box textAlign="left">
         <Flex flexDirection="row" flexWrap="wrap">
