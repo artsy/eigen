@@ -179,7 +179,7 @@
       "^lib/(.*)": "<rootDir>/src/lib/$1"
     },
     "testMatch": [
-      "<rootDir>/src/**/__tests__/*-tests.(ts|tsx|js)"
+      "<rootDir>/src/**/__tests__/*tests.(ts|tsx|js)"
     ],
     "testEnvironment": "jsdom",
     "testURL": "http://localhost/",
