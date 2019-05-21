@@ -61,6 +61,22 @@ Ran into issues? Try [troubleshoot](docs/troubleshooting.md).
 
 To use [Storybooks](https://github.com/storybooks/storybook), select "Open Storybook" from the "Developer" section of the root view in the app. You can also use the [VSCode Storybooks plugin](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-react-native-storybooks).
 
+To create your React components and Relay containers, use the [omakase generator][omakase-cli]. E.g.
+
+```
+$ yarn om g src/lib/Scenes/Artwork/ArtworkMetadata -f Artwork
+```
+
+```
+$ yarn om g src/lib/Scenes/Artwork/ArtworkMetadata -r Artwork
+```
+
+```
+$ yarn om g src/lib/Scenes/Artwork/ArtworkMetadata -p Artwork.artists
+```
+
+For full details see [the CLI README][omakase-cli].
+
 ---
 
 ### Using VS Code as an IDE
@@ -139,3 +155,4 @@ The Emission app (in `Example/`) is deployed automatically to TestFlight once a 
 [blog here]: http://artsy.github.io/blog/2016/08/24/On-Emission/
 [spec-repo]: https://github.com/artsy/Specs/tree/master/React
 [metaphysics]: https://github.com/artsy/metaphysics
+[omakase-cli]: https://github.com/omakase-js/omakase/blob/master/packages/cli/README.md
