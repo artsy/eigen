@@ -232,16 +232,18 @@ NSString *const hasDeniedAccessSubtitle = @"To view works in your room, we'll ne
 
 - (void)next
 {
-    [self.class validateAVAccess:self.defaults callback:^(bool allowedAccess) {
-        if (allowedAccess) {
-            [self.defaults setBool:YES forKey:ARAugmentedRealityHasTriedToSetup];
+    if (@available(iOS 11.3, *)) {
+        [self.class validateAVAccess:self.defaults callback:^(bool allowedAccess) {
+            if (allowedAccess) {
+                [self.defaults setBool:YES forKey:ARAugmentedRealityHasTriedToSetup];
 
-            id vc = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:self.config];
-            [self.navigationController pushViewController:vc animated:YES];
-        } else {
-            [self requestDenied];
-        }
-    }];
+                id vc = [[ARAugmentedFloorBasedVIRViewController alloc] initWithConfig:self.config];
+                [self.navigationController pushViewController:vc animated:YES];
+            } else {
+                [self requestDenied];
+            }
+        }];
+    }
 }
 
 - (void)requestDenied

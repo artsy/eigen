@@ -153,7 +153,7 @@ NSInteger attempt = 0;
 
 - (void)placeWall
 {
-    if (@available(iOS 11.0, *)) {
+    if (@available(iOS 11.3, *)) {
         NSDictionary *options = @{
             SCNHitTestIgnoreHiddenNodesKey: @NO,
             SCNHitTestFirstFoundOnlyKey: @YES,
@@ -191,7 +191,7 @@ NSInteger attempt = 0;
 
 - (void)placeArtwork
 {
-    if (@available(iOS 11.0, *)) {
+    if (@available(iOS 11.3, *)) {
         NSDictionary *options = @{
             SCNHitTestIgnoreHiddenNodesKey: @NO,
             SCNHitTestFirstFoundOnlyKey: @YES,
@@ -242,7 +242,7 @@ NSInteger attempt = 0;
     }];
 }
 
-- (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.0));
+- (void)session:(ARSession *)session didUpdateFrame:(ARFrame *)frame API_AVAILABLE(ios(11.3));
 {
     switch (self.state) {
         case ARHorizontalVIRModeLaunching:
@@ -364,7 +364,7 @@ NSInteger attempt = 0;
 }
 
 
-- (void)renderWhenPlacingArtwork:(ARFrame *)frame API_AVAILABLE(ios(11.0));
+- (void)renderWhenPlacingArtwork:(ARFrame *)frame API_AVAILABLE(ios(11.3));
 {
     NSDictionary *options = @{
         SCNHitTestIgnoreHiddenNodesKey: @NO,
