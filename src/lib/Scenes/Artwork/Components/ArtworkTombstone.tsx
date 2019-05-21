@@ -2,8 +2,10 @@ import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+
+const Constants = NativeModules.ARCocoaConstantsModule
 
 type Artist = ArtworkTombstone_artwork["artists"][0]
 
@@ -70,7 +72,11 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     return artists.map((artist, index) => {
       const isHidden = index > 2 && !this.state.showingMoreArtists
       const artistNameWithComma = index !== artists.length - 1 ? artist.name + ", " : artist.name
-      return <>{!isHidden && <>{this.renderArtistName(artistNameWithComma, artist.href)}</>}</>
+      return (
+        <React.Fragment key={artist.__id}>
+          {!isHidden && <>{this.renderArtistName(artistNameWithComma, artist.href)}</>}
+        </React.Fragment>
+      )
     })
   }
 
@@ -116,7 +122,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
           {artwork.medium}
         </Serif>
         <Serif color={color("black60")} size="3">
-          {artwork.dimensions.in}
+          {Constants.CurrentLocale === "en_US" ? artwork.dimensions.in : artwork.dimensions.cm}
         </Serif>
         {artwork.edition_of && (
           <Serif color={color("black60")} size="3">

@@ -1,6 +1,6 @@
 import { mount } from "enzyme"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import { ArtworkTombstone } from "../ArtworkTombstone"
 
 jest.mock("lib/NativeModules/SwitchBoard", () => ({
@@ -14,7 +14,6 @@ describe("ArtworkTombstone", () => {
     const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
     expect(component.text()).toContain("Hello im a title, 1992")
     expect(component.text()).toContain("Painting")
-    expect(component.text()).toContain("15 × 20 in")
     expect(component.text()).toContain("Edition 100/200")
     expect(component.text()).toContain("This is an edition of something")
   })
@@ -25,6 +24,26 @@ describe("ArtworkTombstone", () => {
     expect(artistName.text()).toContain("Andy Warhol")
     artistName.props().onPress()
     expect(SwitchBoard.presentNavigationViewController).toHaveBeenCalledWith(expect.anything(), "/artist/andy-warhol")
+  })
+
+  describe("for a user not in the US", () => {
+    beforeAll(() => {
+      NativeModules.ARCocoaConstantsModule.CurrentLocale = "fr_FR"
+    })
+    it("renders dimensions in centimeters", () => {
+      const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+      expect(component.text()).toContain("38.1 × 50.8 cm")
+    })
+  })
+
+  describe("for a US based user", () => {
+    beforeAll(() => {
+      NativeModules.ARCocoaConstantsModule.CurrentLocale = "en_US"
+    })
+    it("renders dimensions in inches", () => {
+      const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+      expect(component.text()).toContain("15 × 20 in")
+    })
   })
 
   describe("for an artwork with more than 3 artists", () => {
@@ -108,4 +127,5 @@ const artworkTombstoneArtwork = {
   attribution_class: {
     short_description: "This is an edition of something",
   },
+  " $refType": null,
 }
