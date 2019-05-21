@@ -1,8 +1,6 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
-
 import { ArtworkRenderer } from "../Artwork"
-import { ArtworkTombstone } from "../Components/ArtworkTombstone"
 
 storiesOf("Artwork/Screens")
   .add("Institution", () => {
