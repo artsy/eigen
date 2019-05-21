@@ -95,6 +95,7 @@ NativeModules.ARTakeCameraPhotoModule = {
 }
 NativeModules.ARCocoaConstantsModule = {
   UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
+  AREnabled: true,
 }
 NativeModules.ARSwitchBoardModule = {
   presentNavigationViewController: jest.fn(),

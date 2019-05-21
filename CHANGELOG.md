@@ -18,6 +18,7 @@
 
 - Adds a non-interactive ArtworkActions component - sweir27
 - Adds basic ArtworkAvailability component - ashkan18
+- Exposes AREnabled and a user's current locale - sweir27
 
 ### 1.11.3
 
