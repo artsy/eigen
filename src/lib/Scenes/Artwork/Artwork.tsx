@@ -22,8 +22,8 @@ export class Artwork extends React.Component<Props> {
       <View>
         <Flex width="100%" style={{ backgroundColor: "gray" }} height={340} />
         <Flex alignItems="center" mt={2}>
-          <ArtworkTombstone artwork={artwork} />
           <ArtworkActions artwork={artwork} />
+          <ArtworkTombstone artwork={artwork} />
           <Separator />
           <ArtworkAvailability artwork={artwork} />
         </Flex>

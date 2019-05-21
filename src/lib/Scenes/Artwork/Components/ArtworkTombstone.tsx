@@ -13,10 +13,24 @@ export interface ArtworkTombstoneProps {
   artwork: ArtworkTombstone_artwork
 }
 
-export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps> {
+export interface ArtworkTombstoneState {
+  showingMoreArtists: boolean
+}
+
+export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, ArtworkTombstoneState> {
+  state = {
+    showingMoreArtists: false,
+  }
   handleTap(artist: Artist) {
     console.log("HANDLE TAP!!!!")
     SwitchBoard.presentNavigationViewController(this, artist.href)
+  }
+
+  showMoreArtists = () => {
+    console.log("SHOWEInG MORE", this.state)
+    this.setState({
+      showingMoreArtists: !this.state.showingMoreArtists,
+    })
   }
 
   renderSingleArtist(artist: Artist) {
@@ -53,20 +67,43 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps> {
     )
   }
 
-  renderMultipleArtists() {
+  renderMultipleArtists = () => {
     const {
       artwork: { artists },
     } = this.props
     return artists.map((artist, index) => {
+      const isHidden = index > 2 && !this.state.showingMoreArtists
       return (
-        <Flex flexDirection="row" key={artist.__id}>
-          {this.renderArtistName(artist)}
-          <Serif size="5t" weight="semibold">
-            {index !== artists.length - 1 && ", "}
-          </Serif>
-        </Flex>
+        <>
+          {!isHidden && (
+            <>
+              {this.renderArtistName(artist)}
+              <Serif size="5t" weight="semibold">
+                {index !== artists.length - 1 && ", "}
+              </Serif>
+            </>
+          )}
+        </>
       )
     })
+  }
+
+  renderTruncatedArtists = () => {
+    const {
+      artwork: { artists },
+    } = this.props
+    return (
+      <Flex flexDirection="row">
+        {this.renderMultipleArtists()}
+        {!this.state.showingMoreArtists && (
+          <TouchableWithoutFeedback onPress={this.showMoreArtists}>
+            <Serif size="5t" weight="semibold">
+              {artists.length - 3} more
+            </Serif>
+          </TouchableWithoutFeedback>
+        )}
+      </Flex>
+    )
   }
 
   renderCulturalMaker(culturalMaker: string) {
@@ -79,11 +116,11 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps> {
 
   render() {
     const { artwork } = this.props
-    console.log("ARTOWRK", artwork)
+    console.log("state", this.state)
     return (
       <Box textAlign="left">
         <Flex flexDirection="row" flexWrap="wrap">
-          {artwork.artists.length === 1 ? this.renderSingleArtist(artwork.artists[0]) : this.renderMultipleArtists()}
+          {artwork.artists.length === 1 ? this.renderSingleArtist(artwork.artists[0]) : this.renderTruncatedArtists()}
           {artwork.artists.length === 0 && artwork.cultural_maker && this.renderCulturalMaker(artwork.cultural_maker)}
         </Flex>
         <Serif color={color("black60")} size="3" m="0" p="0">
@@ -95,12 +132,16 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps> {
         <Serif color={color("black60")} size="3">
           {artwork.dimensions.in}
         </Serif>
-        <Serif color={color("black60")} size="3">
-          {artwork.edition_of}
-        </Serif>
-        <Serif color={color("black60")} size="3">
-          {artwork.attribution_class ? artwork.attribution_class.short_description : ""}
-        </Serif>
+        {artwork.edition_of && (
+          <Serif color={color("black60")} size="3">
+            {artwork.edition_of}
+          </Serif>
+        )}
+        {artwork.attribution_class && (
+          <Serif color={color("black60")} size="3">
+            {artwork.attribution_class.short_description}
+          </Serif>
+        )}
       </Box>
     )
   }
