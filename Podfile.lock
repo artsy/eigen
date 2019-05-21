@@ -549,7 +549,7 @@ SPEC CHECKSUMS:
   Folly: de497beb10f102453a1afa9edbf8cf8a251890de
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
+  glog: affb802cb73dc1156005a5fb19085008bf6ffd52
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   iRate: 18fd2d3bd7d2ab01dcd801098cc2f5cbe9f25ffb
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
