@@ -6,7 +6,7 @@ import { NativeModules, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-const Constants = NativeModules.ARCocoaConstantsModule || {}
+const Constants = NativeModules.ARCocoaConstantsModule
 
 interface ArtworkActionsProps {
   artwork: ArtworkActions_artwork

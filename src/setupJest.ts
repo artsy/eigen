@@ -97,6 +97,9 @@ NativeModules.ARCocoaConstantsModule = {
   UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
   AREnabled: true,
 }
+NativeModules.Emission = {
+  userAgent: "Jest Unit Tests",
+}
 NativeModules.ARSwitchBoardModule = {
   presentNavigationViewController: jest.fn(),
   presentModalViewController: jest.fn(),
