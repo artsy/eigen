@@ -10,6 +10,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./Components/ArtworkActions"
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./Components/ArtworkAvailability"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./Components/ArtworkTombstone"
+import { SellerInfoFragmentContainer as SellerInfo } from "./Components/SellerInfo"
 
 interface Props {
   artwork: Artwork_artwork
@@ -24,8 +25,11 @@ export class Artwork extends React.Component<Props> {
         <Flex alignItems="center" mt={2}>
           <ArtworkActions artwork={artwork} />
           <ArtworkTombstone artwork={artwork} />
-          <Separator />
+        </Flex>
+        <Separator />
+        <Flex width="100%">
           <ArtworkAvailability artwork={artwork} />
+          <SellerInfo artwork={artwork} />
         </Flex>
       </View>
     )
@@ -38,6 +42,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
       ...ArtworkTombstone_artwork
       ...ArtworkActions_artwork
       ...ArtworkAvailability_artwork
+      ...SellerInfo_artwork
     }
   `,
 })

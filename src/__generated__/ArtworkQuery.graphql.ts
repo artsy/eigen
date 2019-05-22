@@ -31,6 +31,7 @@ fragment Artwork_artwork on Artwork {
   ...ArtworkTombstone_artwork
   ...ArtworkActions_artwork
   ...ArtworkAvailability_artwork
+  ...SellerInfo_artwork
   __id
 }
 
@@ -65,6 +66,15 @@ fragment ArtworkAvailability_artwork on Artwork {
   availability
   __id
 }
+
+fragment SellerInfo_artwork on Artwork {
+  partner {
+    __id
+    id
+    name
+  }
+  __id
+}
 */
 
 const node: ConcreteRequest = (function(){
@@ -90,12 +100,19 @@ v2 = {
   "name": "__id",
   "args": null,
   "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtworkQuery",
-  "id": "14714d0915b1c362dfd81d57306ffa29",
+  "id": "cd5322ed7e9fcfa200c18441d108609a",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -175,13 +192,7 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "name",
-                "args": null,
-                "storageKey": null
-              },
+              v3,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -263,6 +274,26 @@ return {
             "name": "availability",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "partner",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Partner",
+            "plural": false,
+            "selections": [
+              v2,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              },
+              v3
+            ]
           }
         ]
       }

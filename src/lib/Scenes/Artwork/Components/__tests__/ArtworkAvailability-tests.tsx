@@ -4,7 +4,7 @@ import React from "react"
 import { ArtworkAvailability } from "../ArtworkAvailability"
 
 describe("ArtworkAvailability", () => {
-  it("renders buttons correctly", () => {
+  it("renders artwork availability correctly", () => {
     const component = shallow(<ArtworkAvailability artwork={artworkAvailabilityArtwork} />)
     expect(component.find(Sans).length).toEqual(1)
 
@@ -14,11 +14,11 @@ describe("ArtworkAvailability", () => {
         .at(0)
         .render()
         .text()
-    ).toMatchInlineSnapshot(`"On Loan"`)
+    ).toMatchInlineSnapshot(`"On loan"`)
   })
 })
 
 const artworkAvailabilityArtwork = {
-  availability: "On Loan",
+  availability: "on Loan",
   " $refType": null,
 }
