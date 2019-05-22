@@ -40,9 +40,9 @@ fragment ArtworkTombstone_artwork on Artwork {
   date
   cultural_maker
   artists {
-    __id
     name
     href
+    __id
   }
   dimensions {
     in
@@ -95,7 +95,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtworkQuery",
-  "id": "087431b9993661e8df6f52518c38d6d0",
+  "id": "14714d0915b1c362dfd81d57306ffa29",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -175,7 +175,6 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              v2,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -189,7 +188,8 @@ return {
                 "name": "href",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              v2
             ]
           },
           {

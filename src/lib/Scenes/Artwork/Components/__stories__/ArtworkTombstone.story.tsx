@@ -11,7 +11,7 @@ storiesOf("Artwork/Components")
             title: "Hello im a title",
             medium: "Painting",
             date: "1992",
-            artists: [{ name: "Andy Warhol", __id: "1234", href: "/artist/pablo-picasso" }],
+            artists: [{ name: "Andy Warhol", href: "/artist/pablo-picasso" }],
             cultural_maker: null,
             dimensions: {
               in: "15 × 20 in",
@@ -35,12 +35,12 @@ storiesOf("Artwork/Components")
             medium: "Painting",
             date: "1992",
             artists: [
-              { name: "Andy Warhol", __id: "1234", href: "/artist/pablo-picasso" },
-              { name: "Alex Katz", __id: "6789", href: "/artist/alex-katz" },
-              { name: "Pablo Picasso", __id: "6789", href: "/artist/pablo-picasso" },
-              { name: "Banksy", __id: "6789", href: "/artist/banksy" },
-              { name: "Robert Trundelbed Bananahammock Verylongname", __id: "6789", href: "/artist/banksy" },
-              { name: "Barbara Kruger", __id: "6789", href: "/artist/barbara-kruger" },
+              { name: "Andy Warhol", href: "/artist/pablo-picasso" },
+              { name: "Alex Katz", href: "/artist/alex-katz" },
+              { name: "Pablo Picasso", href: "/artist/pablo-picasso" },
+              { name: "Banksy", href: "/artist/banksy" },
+              { name: "Robert Trundelbed Bananahammock Verylongname", href: "/artist/banksy" },
+              { name: "Barbara Kruger", href: "/artist/barbara-kruger" },
             ],
             cultural_maker: null,
             dimensions: {
@@ -65,9 +65,9 @@ storiesOf("Artwork/Components")
             medium: "Painting",
             date: "1992",
             artists: [
-              { name: "Andy Warhol", __id: "1234", href: "/artist/pablo-picasso" },
-              { name: "Alex Katz", __id: "6789", href: "/artist/alex-katz" },
-              { name: "Pablo Picasso", __id: "6789", href: "/artist/pablo-picasso" },
+              { name: "Andy Warhol", href: "/artist/pablo-picasso" },
+              { name: "Alex Katz", href: "/artist/alex-katz" },
+              { name: "Pablo Picasso", href: "/artist/pablo-picasso" },
             ],
             cultural_maker: null,
             dimensions: {

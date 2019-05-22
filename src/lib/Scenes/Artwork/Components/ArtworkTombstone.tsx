@@ -21,7 +21,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
   state = {
     showingMoreArtists: false,
   }
-  handleTap(href) {
+  handleTap(href: string) {
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
@@ -47,7 +47,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     )
   }
 
-  renderArtistName(artistName, href) {
+  renderArtistName(artistName: string, href: string) {
     return href ? (
       <>
         <TouchableWithoutFeedback onPress={this.handleTap.bind(this, href)}>
@@ -69,24 +69,18 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     const {
       artwork: { artists },
     } = this.props
-    return artists.map((artist, index) => {
-      const isHidden = index > 2 && !this.state.showingMoreArtists
+
+    const truncatedArtists = !this.state.showingMoreArtists ? artists.slice(0, 3) : artists
+    const artistNames = truncatedArtists.map((artist, index) => {
       const artistNameWithComma = index !== artists.length - 1 ? artist.name + ", " : artist.name
       return (
-        <React.Fragment key={artist.__id}>
-          {!isHidden && <>{this.renderArtistName(artistNameWithComma, artist.href)}</>}
-        </React.Fragment>
+        <React.Fragment key={artist.href}>{this.renderArtistName(artistNameWithComma, artist.href)}</React.Fragment>
       )
     })
-  }
 
-  renderTruncatedArtists = () => {
-    const {
-      artwork: { artists },
-    } = this.props
     return (
       <Flex flexDirection="row" flexWrap="wrap">
-        {this.renderMultipleArtists()}
+        {artistNames}
         {!this.state.showingMoreArtists &&
           artists.length > 3 && (
             <TouchableWithoutFeedback onPress={this.showMoreArtists}>
@@ -112,25 +106,25 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     return (
       <Box textAlign="left">
         <Flex flexDirection="row" flexWrap="wrap">
-          {artwork.artists.length === 1 ? this.renderSingleArtist(artwork.artists[0]) : this.renderTruncatedArtists()}
+          {artwork.artists.length === 1 ? this.renderSingleArtist(artwork.artists[0]) : this.renderMultipleArtists()}
           {artwork.artists.length === 0 && artwork.cultural_maker && this.renderCulturalMaker(artwork.cultural_maker)}
         </Flex>
-        <Serif color={color("black60")} size="3" m="0" p="0">
+        <Serif color={color("black60")} size="3t" m="0" p="0">
           {artwork.title}, {artwork.date}
         </Serif>
-        <Serif color={color("black60")} size="3">
+        <Serif color={color("black60")} size="3t">
           {artwork.medium}
         </Serif>
-        <Serif color={color("black60")} size="3">
+        <Serif color={color("black60")} size="3t">
           {Constants.CurrentLocale === "en_US" ? artwork.dimensions.in : artwork.dimensions.cm}
         </Serif>
         {artwork.edition_of && (
-          <Serif color={color("black60")} size="3">
+          <Serif color={color("black60")} size="3t">
             {artwork.edition_of}
           </Serif>
         )}
         {artwork.attribution_class && (
-          <Serif color={color("black60")} size="3">
+          <Serif color={color("black60")} size="3t">
             {artwork.attribution_class.short_description}
           </Serif>
         )}
@@ -147,7 +141,6 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
       date
       cultural_maker
       artists {
-        __id
         name
         href
       }

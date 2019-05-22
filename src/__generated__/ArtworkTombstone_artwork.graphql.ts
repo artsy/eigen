@@ -9,7 +9,6 @@ export type ArtworkTombstone_artwork = {
     readonly date: string | null;
     readonly cultural_maker: string | null;
     readonly artists: ReadonlyArray<({
-        readonly __id: string;
         readonly name: string | null;
         readonly href: string | null;
     }) | null> | null;
@@ -78,7 +77,6 @@ return {
       "concreteType": "Artist",
       "plural": true,
       "selections": [
-        v0,
         {
           "kind": "ScalarField",
           "alias": null,
@@ -92,7 +90,8 @@ return {
           "name": "href",
           "args": null,
           "storageKey": null
-        }
+        },
+        v0
       ]
     },
     {
@@ -149,5 +148,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '9fbd2b64d3561273488e238b5f3fab6b';
+(node as any).hash = '936ac7c973aa593b37c8fdc05ab1a23e';
 export default node;
