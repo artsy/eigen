@@ -5,8 +5,6 @@ declare const _SellerInfo_artwork$ref: unique symbol;
 export type SellerInfo_artwork$ref = typeof _SellerInfo_artwork$ref;
 export type SellerInfo_artwork = {
     readonly partner: ({
-        readonly __id: string;
-        readonly id: string;
         readonly name: string | null;
     }) | null;
     readonly " $refType": SellerInfo_artwork$ref;
@@ -38,26 +36,19 @@ return {
       "concreteType": "Partner",
       "plural": false,
       "selections": [
-        v0,
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "id",
-          "args": null,
-          "storageKey": null
-        },
         {
           "kind": "ScalarField",
           "alias": null,
           "name": "name",
           "args": null,
           "storageKey": null
-        }
+        },
+        v0
       ]
     },
     v0
   ]
 };
 })();
-(node as any).hash = 'c53b5d6e96903e4da81f1866cc369669';
+(node as any).hash = '490867aced0224449daac54947d7f5c4';
 export default node;
