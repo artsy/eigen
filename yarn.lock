@@ -1117,10 +1117,10 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
-"@omakase/cli@0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@omakase/cli/-/cli-0.0.9.tgz#df29c098e2b37db34029c4e481231d908a53b87d"
-  integrity sha512-ZHBUopmLuu9JPsaeZDScJvB7y51UogwGt6iCJUv9208X/2+UxR8XTFoaOj3l2UWA0ZOHgTJzLjkspwNXqwdHlQ==
+"@omakase/cli@0.0.10":
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/@omakase/cli/-/cli-0.0.10.tgz#a4e3f1c3199ff994d6502101f3becee803a6416f"
+  integrity sha512-rL6HIzHIlJtu03hamMIAr8w3iScmc7GZ5Z1XqRYPEXWZXYxYRH439J6+8klXMJdzcNRGFxBWpigwxYXLa4psbg==
   dependencies:
     "@oclif/command" "^1"
     "@oclif/config" "^1"
