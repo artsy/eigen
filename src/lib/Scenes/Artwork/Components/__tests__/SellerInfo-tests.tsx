@@ -1,7 +1,7 @@
 import { Sans } from "@artsy/palette"
 import { shallow } from "enzyme"
 import React from "react"
-import { SellerInfoFragmentContainer as SellerInfo } from "../SellerInfo"
+import { SellerInfo } from "../SellerInfo"
 
 jest.unmock("react-relay")
 
