@@ -22,6 +22,11 @@
 	<string>2017.09.22.12</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>comgooglemaps</string>
+		<string>comgooglemaps-x-callback</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MGLMapboxMetricsEnabledSettingShownInApp</key>
@@ -33,10 +38,12 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Using Camera to take photos for Consignments</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Using Camera Roll for Consignments Photos</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Using User Location to display nearby shows</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Using User Location to display nearby shows</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Using Camera Roll for Consignments Photos</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
@@ -46,11 +53,6 @@
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
-	</array>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>comgooglemaps</string>
-		<string>comgooglemaps-x-callback</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
