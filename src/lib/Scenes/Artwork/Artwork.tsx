@@ -9,6 +9,7 @@ import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./Components/ArtworkActions"
 import { ArtworkAvailabilityFragmentContainer as ArtworkAvailability } from "./Components/ArtworkAvailability"
+import { SellerInfoFragmentContainer as SellerInfo } from "./Components/SellerInfo"
 
 interface Props {
   artwork: Artwork_artwork
@@ -21,8 +22,11 @@ export class Artwork extends React.Component<Props> {
         <Flex width="100%" style={{ backgroundColor: "gray" }} height={340} />
         <Flex alignItems="center" mt={2}>
           <ArtworkActions artwork={this.props.artwork} />
-          <Separator />
+        </Flex>
+        <Separator />
+        <Flex width="100%">
           <ArtworkAvailability artwork={this.props.artwork} />
+          <SellerInfo artwork={this.props.artwork} />
         </Flex>
       </View>
     )
@@ -34,6 +38,7 @@ export const ArtworkContainer = createFragmentContainer(Artwork, {
     fragment Artwork_artwork on Artwork {
       ...ArtworkActions_artwork
       ...ArtworkAvailability_artwork
+      ...SellerInfo_artwork
     }
   `,
 })

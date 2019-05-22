@@ -1,5 +1,6 @@
 import { Box, Sans } from "@artsy/palette"
 import { ArtworkAvailability_artwork } from "__generated__/ArtworkAvailability_artwork.graphql"
+import { capitalize } from "lodash"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -11,7 +12,9 @@ export class ArtworkAvailability extends React.Component<ArtworkAvailabilityProp
   render() {
     return (
       <Box>
-        <Sans size="4">{this.props.artwork.availability}</Sans>
+        <Sans size="4" weight="medium">
+          {capitalize(this.props.artwork.availability)}
+        </Sans>
       </Box>
     )
   }

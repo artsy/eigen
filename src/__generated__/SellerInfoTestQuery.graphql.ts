@@ -1,48 +1,26 @@
 /* tslint:disable */
 
 import { ConcreteRequest } from "relay-runtime";
-import { Artwork_artwork$ref } from "./Artwork_artwork.graphql";
-export type ArtworkQueryVariables = {
-    readonly artworkID: string;
-};
-export type ArtworkQueryResponse = {
+import { SellerInfo_artwork$ref } from "./SellerInfo_artwork.graphql";
+export type SellerInfoTestQueryVariables = {};
+export type SellerInfoTestQueryResponse = {
     readonly artwork: ({
-        readonly " $fragmentRefs": Artwork_artwork$ref;
+        readonly " $fragmentRefs": SellerInfo_artwork$ref;
     }) | null;
 };
-export type ArtworkQuery = {
-    readonly response: ArtworkQueryResponse;
-    readonly variables: ArtworkQueryVariables;
+export type SellerInfoTestQuery = {
+    readonly response: SellerInfoTestQueryResponse;
+    readonly variables: SellerInfoTestQueryVariables;
 };
 
 
 
 /*
-query ArtworkQuery(
-  $artworkID: String!
-) {
-  artwork(id: $artworkID) {
-    ...Artwork_artwork
+query SellerInfoTestQuery {
+  artwork(id: "testArtwork") {
+    ...SellerInfo_artwork
     __id
   }
-}
-
-fragment Artwork_artwork on Artwork {
-  ...ArtworkActions_artwork
-  ...ArtworkAvailability_artwork
-  ...SellerInfo_artwork
-  __id
-}
-
-fragment ArtworkActions_artwork on Artwork {
-  __id
-  _id
-  is_saved
-}
-
-fragment ArtworkAvailability_artwork on Artwork {
-  availability
-  __id
 }
 
 fragment SellerInfo_artwork on Artwork {
@@ -58,21 +36,13 @@ fragment SellerInfo_artwork on Artwork {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "LocalArgument",
-    "name": "artworkID",
-    "type": "String!",
-    "defaultValue": null
-  }
-],
-v1 = [
-  {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "id",
-    "variableName": "artworkID",
+    "value": "testArtwork",
     "type": "String!"
   }
 ],
-v2 = {
+v1 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__id",
@@ -82,72 +52,50 @@ v2 = {
 return {
   "kind": "Request",
   "operationKind": "query",
-  "name": "ArtworkQuery",
-  "id": "ca3a4b59b49b8aef932121631b3c55bf",
+  "name": "SellerInfoTestQuery",
+  "id": "862bc386eb0d3315e26007b41164b054",
   "text": null,
   "metadata": {},
   "fragment": {
     "kind": "Fragment",
-    "name": "ArtworkQuery",
+    "name": "SellerInfoTestQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artwork",
-        "storageKey": null,
-        "args": v1,
+        "storageKey": "artwork(id:\"testArtwork\")",
+        "args": v0,
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Artwork_artwork",
+            "name": "SellerInfo_artwork",
             "args": null
           },
-          v2
+          v1
         ]
       }
     ]
   },
   "operation": {
     "kind": "Operation",
-    "name": "ArtworkQuery",
-    "argumentDefinitions": v0,
+    "name": "SellerInfoTestQuery",
+    "argumentDefinitions": [],
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artwork",
-        "storageKey": null,
-        "args": v1,
+        "storageKey": "artwork(id:\"testArtwork\")",
+        "args": v0,
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
-          v2,
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "_id",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "is_saved",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "availability",
-            "args": null,
-            "storageKey": null
-          },
           {
             "kind": "LinkedField",
             "alias": null,
@@ -157,7 +105,7 @@ return {
             "concreteType": "Partner",
             "plural": false,
             "selections": [
-              v2,
+              v1,
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -173,12 +121,13 @@ return {
                 "storageKey": null
               }
             ]
-          }
+          },
+          v1
         ]
       }
     ]
   }
 };
 })();
-(node as any).hash = '5d0f8dca3f718f5dd5d9dbe1489d31a1';
+(node as any).hash = '651703ef15b2b68c10cce9c39855b479';
 export default node;
