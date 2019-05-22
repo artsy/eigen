@@ -21,8 +21,6 @@ export const SellerInfoFragmentContainer = createFragmentContainer(SellerInfo, {
   artwork: graphql`
     fragment SellerInfo_artwork on Artwork {
       partner {
-        __id
-        id
         name
       }
     }
