@@ -30,6 +30,7 @@ query ArtworkQuery(
 fragment Artwork_artwork on Artwork {
   ...ArtworkActions_artwork
   ...ArtworkAvailability_artwork
+  ...SellerInfo_artwork
   __id
 }
 
@@ -41,6 +42,14 @@ fragment ArtworkActions_artwork on Artwork {
 
 fragment ArtworkAvailability_artwork on Artwork {
   availability
+  __id
+}
+
+fragment SellerInfo_artwork on Artwork {
+  partner {
+    name
+    __id
+  }
   __id
 }
 */
@@ -73,7 +82,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtworkQuery",
-  "id": "123b60266d09378c83e540742be35b9c",
+  "id": "6e1fa130f48dd2012d00255d29e8b862",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -137,6 +146,25 @@ return {
             "name": "availability",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "partner",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Partner",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "name",
+                "args": null,
+                "storageKey": null
+              },
+              v2
+            ]
           }
         ]
       }
