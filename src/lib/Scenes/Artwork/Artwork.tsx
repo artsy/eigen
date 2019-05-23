@@ -1,5 +1,4 @@
 import { Flex, Theme } from "@artsy/palette"
-import { Theme } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 import Separator from "lib/Components/Separator"
