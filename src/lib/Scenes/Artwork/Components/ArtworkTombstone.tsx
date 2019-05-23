@@ -93,21 +93,15 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
     )
   }
 
-  renderCulturalMaker(culturalMaker: string) {
-    return (
-      <Serif size="5t" weight="semibold">
-        {culturalMaker}
-      </Serif>
-    )
-  }
-
   render() {
     const { artwork } = this.props
     return (
       <Box textAlign="left">
         <Flex flexDirection="row" flexWrap="wrap">
           {artwork.artists.length === 1 ? this.renderSingleArtist(artwork.artists[0]) : this.renderMultipleArtists()}
-          {artwork.artists.length === 0 && artwork.cultural_maker && this.renderCulturalMaker(artwork.cultural_maker)}
+          {artwork.artists.length === 0 &&
+            artwork.cultural_maker &&
+            this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
         <Serif color={color("black60")} size="3t" m="0" p="0">
           {artwork.title}, {artwork.date}

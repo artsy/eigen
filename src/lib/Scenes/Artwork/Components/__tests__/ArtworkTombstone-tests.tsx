@@ -105,6 +105,21 @@ describe("ArtworkTombstone", () => {
       expect(component.text()).toContain("Follow")
     })
   })
+
+  describe("for an artwork with no artists but a cultural maker", () => {
+    beforeEach(() => {
+      artworkTombstoneArtwork.artists = []
+      artworkTombstoneArtwork.cultural_maker = "18th century American"
+    })
+    it("renders artist name", () => {
+      const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+      expect(component.text()).toContain("18th century American")
+    })
+    it("shows follow button", () => {
+      const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+      expect(component.text()).not.toContain("Follow")
+    })
+  })
 })
 
 const artworkTombstoneArtwork = {
