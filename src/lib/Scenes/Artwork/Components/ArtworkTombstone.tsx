@@ -36,10 +36,10 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
       <React.Fragment>
         <Flex flexDirection="row">
           {this.renderArtistName(artist.name, artist.href)}
-          <Sans color={color("black60")} size="6" mx={1}>
+          <Sans color="black60" size="6" mx={1}>
             &middot;
           </Sans>
-          <Sans color={color("black60")} size="4">
+          <Sans color="black60" size="4">
             Follow
           </Sans>
         </Flex>
