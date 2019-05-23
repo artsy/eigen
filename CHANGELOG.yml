@@ -5,7 +5,7 @@ upcoming:
   dev:
     - Adds new availability checks and enables new compiler warning for better checking of API availabilities - ash
   user_facing:
-    - 
+    - Fixes a problem entering credit cards for auction registration - ash
 
 releases:
   - version: 5.0.3
