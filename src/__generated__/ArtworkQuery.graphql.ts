@@ -47,9 +47,8 @@ fragment ArtworkAvailability_artwork on Artwork {
 
 fragment SellerInfo_artwork on Artwork {
   partner {
-    __id
-    id
     name
+    __id
   }
   __id
 }
@@ -83,7 +82,7 @@ return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtworkQuery",
-  "id": "ca3a4b59b49b8aef932121631b3c55bf",
+  "id": "6e1fa130f48dd2012d00255d29e8b862",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -157,21 +156,14 @@ return {
             "concreteType": "Partner",
             "plural": false,
             "selections": [
-              v2,
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "id",
-                "args": null,
-                "storageKey": null
-              },
               {
                 "kind": "ScalarField",
                 "alias": null,
                 "name": "name",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              v2
             ]
           }
         ]
