@@ -1,4 +1,4 @@
-import { Box, color, Flex, Sans, Serif } from "@artsy/palette"
+import { Box, Flex, Sans, Serif } from "@artsy/palette"
 import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"

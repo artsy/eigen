@@ -1,3 +1,4 @@
+import { Theme } from "@artsy/palette"
 import { mount } from "enzyme"
 import React from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
@@ -11,7 +12,11 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 
 describe("ArtworkTombstone", () => {
   it("renders fields correctly", () => {
-    const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+    const component = mount(
+      <Theme>
+        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+      </Theme>
+    )
     expect(component.text()).toContain("Hello im a title, 1992")
     expect(component.text()).toContain("Painting")
     expect(component.text()).toContain("Edition 100/200")
@@ -19,7 +24,11 @@ describe("ArtworkTombstone", () => {
   })
 
   it("redirects to artist page when artist name is clicked", () => {
-    const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+    const component = mount(
+      <Theme>
+        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+      </Theme>
+    )
     const artistName = component.find(TouchableWithoutFeedback).at(0)
     expect(artistName.text()).toContain("Andy Warhol")
     artistName.props().onPress()
@@ -31,7 +40,11 @@ describe("ArtworkTombstone", () => {
       NativeModules.ARCocoaConstantsModule.CurrentLocale = "fr_FR"
     })
     it("renders dimensions in centimeters", () => {
-      const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+      const component = mount(
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
+      )
       expect(component.text()).toContain("38.1 × 50.8 cm")
     })
   })
@@ -41,14 +54,22 @@ describe("ArtworkTombstone", () => {
       NativeModules.ARCocoaConstantsModule.CurrentLocale = "en_US"
     })
     it("renders dimensions in inches", () => {
-      const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+      const component = mount(
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
+      )
       expect(component.text()).toContain("15 × 20 in")
     })
   })
 
   describe("for an artwork with more than 3 artists", () => {
     it("truncates artist names", () => {
-      const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+      const component = mount(
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
+      )
       expect(component.text()).toContain("Andy Warhol")
       expect(component.text()).toContain("Alex Katz")
       expect(component.text()).toContain("Pablo Picasso")
@@ -58,12 +79,20 @@ describe("ArtworkTombstone", () => {
     })
 
     it("doesn't show follow button", () => {
-      const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+      const component = mount(
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
+      )
       expect(component.text()).not.toContain("Follow")
     })
 
     it("shows truncated artist names when 'x more' is clicked", () => {
-      const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+      const component = mount(
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
+      )
       const showMore = component.find(TouchableWithoutFeedback).at(3)
       expect(showMore.text()).toContain("2 more")
       showMore.props().onPress()
@@ -77,12 +106,20 @@ describe("ArtworkTombstone", () => {
       artworkTombstoneArtwork.artists = artworkTombstoneArtwork.artists.slice(0, 3)
     })
     it("doesn't show follow button", () => {
-      const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+      const component = mount(
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
+      )
       expect(component.text()).not.toContain("Follow")
     })
 
     it("doesn't truncate artist names", () => {
-      const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+      const component = mount(
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
+      )
       expect(component.text()).toContain("Andy Warhol")
       expect(component.text()).toContain("Alex Katz")
       expect(component.text()).toContain("Pablo Picasso")
@@ -97,11 +134,19 @@ describe("ArtworkTombstone", () => {
       artworkTombstoneArtwork.artists = artworkTombstoneArtwork.artists.slice(0, 1)
     })
     it("renders artist name", () => {
-      const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+      const component = mount(
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
+      )
       expect(component.text()).toContain("Andy Warhol")
     })
     it("shows follow button", () => {
-      const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+      const component = mount(
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
+      )
       expect(component.text()).toContain("Follow")
     })
   })
@@ -112,11 +157,19 @@ describe("ArtworkTombstone", () => {
       artworkTombstoneArtwork.cultural_maker = "18th century American"
     })
     it("renders artist name", () => {
-      const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+      const component = mount(
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
+      )
       expect(component.text()).toContain("18th century American")
     })
     it("shows follow button", () => {
-      const component = mount(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+      const component = mount(
+        <Theme>
+          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+        </Theme>
+      )
       expect(component.text()).not.toContain("Follow")
     })
   })
