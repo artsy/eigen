@@ -1,4 +1,5 @@
 import { Flex } from "@artsy/palette"
+import { Theme } from "@artsy/palette"
 import { Artwork_artwork } from "__generated__/Artwork_artwork.graphql"
 import { ArtworkQuery } from "__generated__/ArtworkQuery.graphql"
 import Separator from "lib/Components/Separator"
@@ -20,18 +21,20 @@ export class Artwork extends React.Component<Props> {
   render() {
     const { artwork } = this.props
     return (
-      <View>
-        <Flex width="100%" style={{ backgroundColor: "gray" }} height={340} />
-        <Flex alignItems="center" mt={2}>
-          <ArtworkActions artwork={artwork} />
-          <ArtworkTombstone artwork={artwork} />
-        </Flex>
-        <Separator />
-        <Flex width="100%">
-          <ArtworkAvailability artwork={artwork} />
-          <SellerInfo artwork={artwork} />
-        </Flex>
-      </View>
+      <Theme>
+        <View>
+          <Flex width="100%" style={{ backgroundColor: "gray" }} height={340} />
+          <Flex alignItems="center" mt={2}>
+            <ArtworkActions artwork={artwork} />
+            <ArtworkTombstone artwork={artwork} />
+          </Flex>
+          <Separator />
+          <Flex width="100%">
+            <ArtworkAvailability artwork={artwork} />
+            <SellerInfo artwork={artwork} />
+          </Flex>
+        </View>
+      </Theme>
     )
   }
 }
