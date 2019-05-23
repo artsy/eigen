@@ -1,1 +1,1 @@
-This release fixes a problem selecting certain search results, as well as some performance improvements.
+This release fixes a crash in the app for some users when registering for an auction.
