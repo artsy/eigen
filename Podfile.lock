@@ -345,7 +345,7 @@ DEPENDENCIES:
   - Starscream
   - SwiftyJSON
   - Then
-  - tipsi-stripe (from `https://github.com/tipsi/tipsi-stripe.git`, tag `7.5.0`)
+  - tipsi-stripe (from `https://github.com/ashfurrow/tipsi-stripe.git`, branch `fix-infinite-loop`)
   - UICKeyChainStore
   - "UIView+BooleanAnimations"
   - VCRURLConnection
@@ -461,8 +461,8 @@ EXTERNAL SOURCES:
     :branch: add-axial-support
     :git: https://github.com/alloy/SSFadingScrollView.git
   tipsi-stripe:
-    :git: https://github.com/tipsi/tipsi-stripe.git
-    :tag: 7.5.0
+    :branch: fix-infinite-loop
+    :git: https://github.com/ashfurrow/tipsi-stripe.git
 
 CHECKOUT OPTIONS:
   AFOAuth1Client:
@@ -514,8 +514,8 @@ CHECKOUT OPTIONS:
     :commit: 3920e3582e46c9fe23b0d1200e28614ebd66d801
     :git: https://github.com/alloy/SSFadingScrollView.git
   tipsi-stripe:
-    :git: https://github.com/tipsi/tipsi-stripe.git
-    :tag: 7.5.0
+    :commit: bfebb733fb44d3e1d0522a38a317993f9c686422
+    :git: https://github.com/ashfurrow/tipsi-stripe.git
 
 SPEC CHECKSUMS:
   Adjust: b1f2b0e0b426fa991d69ed7fc9de806cf6dff5a6
@@ -596,6 +596,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: 4ce3811b3db5f47fe1e125f15383003316a616b8
 
-PODFILE CHECKSUM: 5805fc0d5fff729311b6d94f6f8ba491404980a5
+PODFILE CHECKSUM: c03452c052adadc827dda2ff280a76b98e0a10fc
 
 COCOAPODS: 1.6.0.beta.1
