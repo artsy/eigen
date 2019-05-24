@@ -1,13 +1,21 @@
 upcoming:
-  version: 5.0.4
+  version: 5.0.5
   date: TBD
   emission_version: 1.x.y
   dev:
-    - Adds new availability checks and enables new compiler warning for better checking of API availabilities - ash
+    - 
   user_facing:
-    - Fixes a problem entering credit cards for auction registration - ash
+    - 
 
 releases:
+  - version: 5.0.4
+    date: May 24, 2019
+    emission_version: 1.11.3
+    dev:
+      - Adds new availability checks and enables new compiler warning for better checking of API availabilities - ash
+    user_facing:
+      - Fixes a problem entering credit cards for auction registration - ash
+
   - version: 5.0.3
     date: May 18, 2019
     emission_version: 1.11.3
