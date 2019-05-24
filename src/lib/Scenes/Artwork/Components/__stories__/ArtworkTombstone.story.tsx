@@ -1,12 +1,8 @@
-import { Theme } from "@artsy/palette"
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
 import { ArtworkTombstone } from "../ArtworkTombstone"
 
 storiesOf("Artwork/Components")
-  .addDecorator(storyFn => {
-    return <Theme>{storyFn()}</Theme>
-  })
   .add("Tombstone with 1 artist", () => {
     return (
       <ArtworkTombstone
