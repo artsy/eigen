@@ -1,23 +1,24 @@
-// Configuration for the vscode-apollo extension.
-module.exports = {
+// @ts-nocheck
+//
+// Install the apollo-language-server package to get typings for the configuration object when needing to make updates.
+// It seems overkill to install the package and all its dependencies for the occasional updates made here.
+
+const validationRulesToExcludeForRelay = ["NoUndefinedVariables"]
+
+/**
+ * @type {import("apollo-language-server/lib/config").ApolloConfigFormat}
+ */
+const config = {
   client: {
     service: {
       name: "local",
       localSchemaFile: "data/schema.graphql",
     },
-    excludeValidationRules: [
-      // Default of vscode-apollo.
-      "NoUnusedFragments",
-      // A default of vscode-apollo, but we also need it because of Relay’s
-      // client-side directives.
-      "KnownDirectives",
-      // Added because Relay has ‘local’ variables (defined with the
-      // `@argumentDefinitions` directive) and these don’t need to be defined on
-      // the operation.
-      "NoUndefinedVariables",
-    ],
+    validationRules: rule => !validationRulesToExcludeForRelay.includes(rule.name),
     includes: ["src/**/*.{ts,tsx,graphql}"],
     excludes: ["**/node_modules", "**/__tests__"],
     tagName: "graphql",
   },
 }
+
+module.exports = config
