@@ -2491,9 +2491,9 @@ babel-plugin-minify-type-constructors@^0.2.0:
   dependencies:
     babel-helper-is-void-0 "^0.2.0"
 
-"babel-plugin-relay@https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/babel-plugin-relay-1.5.0-artsy.3.tgz":
+"babel-plugin-relay@https://github.com/artsy/relay/releases/download/v1.5.0-artsy.3/babel-plugin-relay-1.5.0-artsy.3.tgz":
   version "1.5.0-artsy.3"
-  resolved "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.3/babel-plugin-relay-1.5.0-artsy.3.tgz#5e22fd4eadd1b24e9f89128f9bb2f9f4ec7ab082"
+  resolved "https://github.com/artsy/relay/releases/download/v1.5.0-artsy.3/babel-plugin-relay-1.5.0-artsy.3.tgz#5e22fd4eadd1b24e9f89128f9bb2f9f4ec7ab082"
   dependencies:
     babel-runtime "^6.23.0"
     babel-types "^6.24.1"
@@ -12456,9 +12456,9 @@ react-relay-network-modern@^2.5.1:
   resolved "https://registry.yarnpkg.com/react-relay-network-modern/-/react-relay-network-modern-2.5.1.tgz#a081ae2691dbf2cfa53129cd6eb41a1e91a071aa"
   integrity sha512-Edp9XWAWLiAntrtNmfeLZMPMcwUmTpBhAoxHCaSKcet7gWN5RS0Z2OhKpVhKg3p1qZz+VLMMvWg8eQghBe0auQ==
 
-"react-relay@https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/react-relay-1.5.0-artsy.5.tgz":
+"react-relay@https://github.com/artsy/relay/releases/download/v1.5.0-artsy.5/react-relay-1.5.0-artsy.5.tgz":
   version "1.5.0-artsy.5"
-  resolved "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/react-relay-1.5.0-artsy.5.tgz#956280da8d941af7f6f65f3831b01051ee2c32c7"
+  resolved "https://github.com/artsy/relay/releases/download/v1.5.0-artsy.5/react-relay-1.5.0-artsy.5.tgz#956280da8d941af7f6f65f3831b01051ee2c32c7"
   dependencies:
     babel-runtime "^6.23.0"
     fbjs "^0.8.14"
@@ -12894,9 +12894,9 @@ relay-compiler-language-typescript@^1.1.0:
     immutable "^3.7.6"
     invariant "^2.2.2"
 
-"relay-compiler@https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/relay-compiler-1.5.0-artsy.5.tgz":
+"relay-compiler@https://github.com/artsy/relay/releases/download/v1.5.0-artsy.5/relay-compiler-1.5.0-artsy.5.tgz":
   version "1.5.0-artsy.5"
-  resolved "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/relay-compiler-1.5.0-artsy.5.tgz#171e0716d30f2c3e8ee61b5af5aa893f366a1d2c"
+  resolved "https://github.com/artsy/relay/releases/download/v1.5.0-artsy.5/relay-compiler-1.5.0-artsy.5.tgz#171e0716d30f2c3e8ee61b5af5aa893f366a1d2c"
   dependencies:
     babel-generator "^6.26.0"
     babel-polyfill "^6.20.0"
@@ -12921,9 +12921,9 @@ relay-mock-network-layer@^2.0.0:
   dependencies:
     graphql-tools "^4.0.2"
 
-relay-runtime@1.5.0-artsy.5, "relay-runtime@https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/relay-runtime-1.5.0-artsy.5.tgz":
+relay-runtime@1.5.0-artsy.5, "relay-runtime@https://github.com/artsy/relay/releases/download/v1.5.0-artsy.5/relay-runtime-1.5.0-artsy.5.tgz":
   version "1.5.0-artsy.5"
-  resolved "https://github.com/alloy/relay/releases/download/v1.5.0-artsy.5/relay-runtime-1.5.0-artsy.5.tgz#6f24fa3cd7dcfc58164ee1b21b059c535e6419bf"
+  resolved "https://github.com/artsy/relay/releases/download/v1.5.0-artsy.5/relay-runtime-1.5.0-artsy.5.tgz#6f24fa3cd7dcfc58164ee1b21b059c535e6419bf"
   dependencies:
     babel-runtime "^6.23.0"
     fbjs "^0.8.14"
