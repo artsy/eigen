@@ -97,7 +97,7 @@
     "react-tracking": "5.7.0",
     "relay-runtime": "https://github.com/artsy/relay/releases/download/v1.5.0-artsy.5/relay-runtime-1.5.0-artsy.5.tgz",
     "remove-markdown": "0.1.0",
-    "simple-markdown": "0.4.2",
+    "simple-markdown": "0.4.4",
     "styled-components": "3.4.9",
     "supercluster": "6.0.1",
     "tipsi-stripe": "7.5.0"

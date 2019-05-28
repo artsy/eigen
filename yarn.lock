@@ -13636,10 +13636,10 @@ signedsource@^1.0.0:
   resolved "https://registry.yarnpkg.com/signedsource/-/signedsource-1.0.0.tgz#1ddace4981798f93bd833973803d80d52e93ad6a"
   integrity sha1-HdrOSYF5j5O9gzlzgD2A1S6TrWo=
 
-simple-markdown@0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/simple-markdown/-/simple-markdown-0.4.2.tgz#98fd72bd4f8ced9705f3e72c4cb4a00261a5eca0"
-  integrity sha512-lysF/mIJ3Trv/QsxY5Q5XWupVLtyPH6AslxOxscWhUshQNAfHRd7ayuXHlXkXVnujHfIVa0okDw3ZGnzCroO7Q==
+simple-markdown@0.4.4:
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/simple-markdown/-/simple-markdown-0.4.4.tgz#9bd597bdd5c2f5a789e56a4dbf06427d76c3834f"
+  integrity sha512-ZmlNUGR1KI12sPHeQ7dQY1qM5KfOgFqClNNVO8zQ9Pg6u7gHLCPFGD+VC7MCwpGDMd1uw3Bb2TfFfR8d6bB34A==
 
 simple-plist@^0.2.1:
   version "0.2.1"
