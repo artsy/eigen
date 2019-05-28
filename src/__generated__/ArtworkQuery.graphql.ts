@@ -28,9 +28,31 @@ query ArtworkQuery(
 }
 
 fragment Artwork_artwork on Artwork {
+  ...ArtworkTombstone_artwork
   ...ArtworkActions_artwork
   ...ArtworkAvailability_artwork
   ...SellerInfo_artwork
+  __id
+}
+
+fragment ArtworkTombstone_artwork on Artwork {
+  title
+  medium
+  date
+  cultural_maker
+  artists {
+    name
+    href
+    __id
+  }
+  dimensions {
+    in
+    cm
+  }
+  edition_of
+  attribution_class {
+    short_description
+  }
   __id
 }
 
@@ -77,12 +99,19 @@ v2 = {
   "name": "__id",
   "args": null,
   "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtworkQuery",
-  "id": "6e1fa130f48dd2012d00255d29e8b862",
+  "id": "bf2d6c945c8f989b07f2e948bec4d448",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -125,6 +154,104 @@ return {
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "edition_of",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "title",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "date",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "cultural_maker",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artists",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artist",
+            "plural": true,
+            "selections": [
+              v3,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "href",
+                "args": null,
+                "storageKey": null
+              },
+              v2
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "dimensions",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "dimensions",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "in",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "cm",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "medium",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "attribution_class",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "AttributionClass",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "short_description",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
           v2,
           {
             "kind": "ScalarField",
@@ -156,13 +283,7 @@ return {
             "concreteType": "Partner",
             "plural": false,
             "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "name",
-                "args": null,
-                "storageKey": null
-              },
+              v3,
               v2
             ]
           }
