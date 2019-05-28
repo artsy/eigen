@@ -4,7 +4,7 @@ PODS:
     - ISO8601DateFormatter
     - "NSURL+QueryDictionary"
   - "Artsy+UIColors (3.1.0)"
-  - "Artsy+UIFonts (3.2.0)"
+  - "Artsy+UIFonts (3.2.2)"
   - Artsy-UIButtons (2.3.3):
     - "Artsy+UIColors (~> 3.0)"
     - "Artsy+UIFonts"
@@ -271,7 +271,7 @@ SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   "Artsy+Authentication": 3bf11ceca61c52e9e31490535bf5798f625406fa
   "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  "Artsy+UIFonts": d29579aa105e3709032651fb3145d24f8339e905
+  "Artsy+UIFonts": 5c1e4916b21ea155de7b92b2be79f8b56bf1d48e
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
@@ -289,9 +289,9 @@ SPEC CHECKSUMS:
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
   React: 9d063e2f356c8cd2f54dd550d4507740037cbabe
-  react-native-cameraroll: 4c5ca0eab943949e7c39fa549d8f442dae9d3776
+  react-native-cameraroll: b1faef9f2ea27b07bdf818b8043909a93f797eca
   react-native-mapbox-gl: b7309e99290963cc7fe0e34db86c6e16890cfcee
-  react-native-navigator-ios: b0e7d4187b45e6961a112997a406b2ac361f9c75
+  react-native-navigator-ios: 93db84cc26b6f8d776e1f504c56082f593efcd09
   RNSVG: 36f6615444ab569023444e09b01a1900d964e967
   SAMKeychain: 1fc9ae02f576365395758b12888c84704eebc423
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
@@ -299,7 +299,7 @@ SPEC CHECKSUMS:
   SentryReactNative: 3dff4e9bd82aa581dc64ff8d2524d7007cea076b
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   Stripe: db29ad197c74aca6fb981e4e8355cf7ebd0fca5a
-  tipsi-stripe: ebb140e03325d93a7bfdaf6131b37c557485f98e
+  tipsi-stripe: 2d0e33b5bb62168cd1f1777a904781725c5baf8a
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   yoga: 3768a3026ade0fb46a68f3a31a917cf86bc34fc4
 
