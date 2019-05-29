@@ -4,6 +4,8 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+// import { FollowArtistButton } from "./FollowArtistButton"
+import { FollowArtistButtonFragmentContainer as FollowArtistButton } from "./FollowArtistButton"
 
 const Constants = NativeModules.ARCocoaConstantsModule
 
@@ -36,12 +38,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
       <React.Fragment>
         <Flex flexDirection="row">
           {this.renderArtistName(artist.name, artist.href)}
-          <Sans color="black60" size="6" mx={1}>
-            &middot;
-          </Sans>
-          <Sans color="black60" size="4">
-            Follow
-          </Sans>
+          <FollowArtistButton artist={artist as any} />
         </Flex>
       </React.Fragment>
     )

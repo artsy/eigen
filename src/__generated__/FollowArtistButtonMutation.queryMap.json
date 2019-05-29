@@ -1,0 +1,3 @@
+{
+  "9ffee858f944aaf631ac2aea110d46a1": "mutation FollowArtistButtonMutation(\n  $input: FollowArtistInput!\n) {\n  followArtist(input: $input) {\n    artist {\n      __id\n      is_followed\n      counts {\n        follows\n      }\n    }\n  }\n}\n"
+}
