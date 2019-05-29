@@ -1,7 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Search states:  Looks right when Found four results 1`] = `
-<View>
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+      "maxWidth": 540,
+      "paddingTop": 20,
+      "width": "100%",
+    }
+  }
+>
   <View
     style={
       Array [
@@ -339,7 +349,17 @@ exports[`Search states:  Looks right when Found four results 1`] = `
 `;
 
 exports[`Search states:  Looks right when Found no results 1`] = `
-<View>
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+      "maxWidth": 540,
+      "paddingTop": 20,
+      "width": "100%",
+    }
+  }
+>
   <View
     style={
       Array [
@@ -446,7 +466,17 @@ exports[`Search states:  Looks right when Found no results 1`] = `
 `;
 
 exports[`Search states:  Looks right when Found one result 1`] = `
-<View>
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+      "maxWidth": 540,
+      "paddingTop": 20,
+      "width": "100%",
+    }
+  }
+>
   <View
     style={
       Array [
@@ -589,7 +619,17 @@ exports[`Search states:  Looks right when Found one result 1`] = `
 `;
 
 exports[`Search states:  Looks right when Found one result, and searching 1`] = `
-<View>
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+      "maxWidth": 540,
+      "paddingTop": 20,
+      "width": "100%",
+    }
+  }
+>
   <View
     style={
       Array [
@@ -738,7 +778,17 @@ exports[`Search states:  Looks right when Found one result, and searching 1`] = 
 `;
 
 exports[`Search states:  Looks right when Found two results 1`] = `
-<View>
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+      "maxWidth": 540,
+      "paddingTop": 20,
+      "width": "100%",
+    }
+  }
+>
   <View
     style={
       Array [
@@ -946,7 +996,17 @@ exports[`Search states:  Looks right when Found two results 1`] = `
 `;
 
 exports[`Search states:  Looks right when Looking for new results 1`] = `
-<View>
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+      "maxWidth": 540,
+      "paddingTop": 20,
+      "width": "100%",
+    }
+  }
+>
   <View
     style={
       Array [
@@ -1029,7 +1089,17 @@ exports[`Search states:  Looks right when Looking for new results 1`] = `
 `;
 
 exports[`Search states:  Looks right when No query 1`] = `
-<View>
+<View
+  style={
+    Object {
+      "alignSelf": "center",
+      "flex": 1,
+      "maxWidth": 540,
+      "paddingTop": 20,
+      "width": "100%",
+    }
+  }
+>
   <View
     style={
       Array [

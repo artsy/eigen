@@ -16,6 +16,18 @@
 
 ### Master
 
+- Fixes a bug where artist search results in consignments overlap with search bar - yuki24
+
+### 1.11.4
+
+- Adds a non-interactive ArtworkActions component - sweir27
+- Adds basic ArtworkAvailability component - ashkan18
+- Exposes AREnabled and a user's current locale - sweir27
+- Adds seller info section with SellerInfo component - ashkan18
+- Adds ArtworkTombstone component - lilyfromseattle
+
+### 1.11.3
+
 - Updated background color to demonstrate beta flow - luc
 
 ### 1.11.2
