@@ -75,7 +75,15 @@ const render = (props: SearchQueryProps) => {
   )
 
   return (
-    <View>
+    <View
+      style={{
+        flex: 1,
+        width: "100%",
+        maxWidth: 540,
+        alignSelf: "center",
+        paddingTop: 20,
+      }}
+    >
       <TextInput
         searching={props.searching}
         preImage={props.preImage}

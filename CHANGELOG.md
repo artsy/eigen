@@ -16,6 +16,8 @@
 
 ### Master
 
+- Fixes a bug where artist search results in consignments overlap with search bar - yuki24
+
 ### 1.11.4
 
 - Adds a non-interactive ArtworkActions component - sweir27

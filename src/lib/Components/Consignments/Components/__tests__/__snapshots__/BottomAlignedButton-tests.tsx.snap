@@ -104,7 +104,17 @@ exports[`Bottom-Aligned states:  Looks right when With an Artist Search Results 
       }
     }
   >
-    <View>
+    <View
+      style={
+        Object {
+          "alignSelf": "center",
+          "flex": 1,
+          "maxWidth": 540,
+          "paddingTop": 20,
+          "width": "100%",
+        }
+      }
+    >
       <View
         style={
           Array [
