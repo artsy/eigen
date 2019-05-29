@@ -27,6 +27,8 @@ NSString *const AROptionsBuyNow = @"enableBuyNowMakeOffer";
 
 NSString *const AROptionsMakeOffer = @"Enable Make Offer";
 
+NSString *const AROptionsRNArtwork = @"Enable React Native Artwork view";
+
 @implementation AROptions
 
 // Down here is the user-facing description
@@ -42,6 +44,7 @@ NSString *const AROptionsMakeOffer = @"Enable Make Offer";
          AROptionsBuyNow: @"Enable Eigen/Emission Buy Now integration",
          AROptionsForceBuyNow: @"Enable Buy Now purchase flow via Force",
          AROptionsMakeOffer: @"Enable Make Offer via Force",
+         AROptionsRNArtwork: AROptionsRNArtwork,
          
          AROptionsLoadingScreenAlpha: @"Loading screens are transparent",
         };

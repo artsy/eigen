@@ -298,7 +298,7 @@ DEPENDENCIES:
   - CocoaLumberjack (from `https://github.com/CocoaLumberjack/CocoaLumberjack.git`)
   - DHCShakeNotifier
   - EDColor
-  - Emission (~> 1.0)
+  - Emission (~> 1.11)
   - Expecta
   - "Expecta+Snapshots"
   - Extraction
