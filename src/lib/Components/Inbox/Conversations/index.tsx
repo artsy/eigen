@@ -8,11 +8,12 @@ import { LargeHeadline } from "../Typography"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import SwitchBoard from "../../../NativeModules/SwitchBoard"
 import Spinner from "../../Spinner"
-import ConversationSnippet, { Props as ConversationSnippetProps } from "./ConversationSnippet"
+import ConversationSnippet from "./ConversationSnippet"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
+import { get } from "lib/utils/get"
 
 const Headline = styled(LargeHeadline)`
   margin-top: 20px;
@@ -27,42 +28,21 @@ interface Props {
 }
 
 interface State {
-  conversations: ConversationSnippetProps[] | null
+  isLoading?: boolean
 }
 
 export class Conversations extends Component<Props, State> {
-  get conversations() {
-    return this.getConversationsFrom(this.props.me)
-  }
-
-  componentWillMount() {
-    this.setState({
-      conversations: this.conversations,
-    })
-  }
-
-  componentWillReceiveProps(newProps) {
-    const conversations = this.getConversationsFrom(newProps.me)
-
-    this.setState({
-      conversations,
-    })
-  }
-
-  getConversationsFrom(me) {
-    let conversations = []
-
-    if (me) {
-      conversations = me.conversations.edges.map(edge => edge.node)
-    }
-
-    return conversations
+  state = {
+    isLoading: false,
   }
 
   fetchData = () => {
     const { relay } = this.props
 
     if (!relay.isLoading()) {
+      this.setState({
+        isLoading: true,
+      })
       relay.loadMore(PAGE_SIZE, error => {
         if (error) {
           console.error("Conversations/index.tsx #fetchData", error.message)
@@ -70,7 +50,7 @@ export class Conversations extends Component<Props, State> {
         }
 
         this.setState({
-          conversations: this.conversations,
+          isLoading: false,
         })
       })
     }
@@ -98,16 +78,16 @@ export class Conversations extends Component<Props, State> {
   }
 
   render() {
-    const showLoadingSpinner = this.props.relay.hasMore()
+    const conversations = get(this.props, ({ me }) => me.conversations.edges.map(edge => edge.node), [])
 
     return (
       <View>
         <View>
           {this.props.headerView}
-          {this.conversations.length > 0 && <Headline>Messages</Headline>}
+          {conversations.length > 0 && <Headline>Messages</Headline>}
         </View>
         <FlatList
-          data={this.state.conversations}
+          data={conversations}
           keyExtractor={(_item, index) => String(index)}
           scrollEventThrottle={500}
           renderItem={({ item }) => {
@@ -117,13 +97,13 @@ export class Conversations extends Component<Props, State> {
             return (
               <ConversationSnippet
                 conversation={item as any}
-                onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${(item as any).id}`)}
+                onSelected={() => SwitchBoard.presentNavigationViewController(this, `conversation/${item.internalID}`)}
               />
             )
           }}
           onScroll={isCloseToBottom(this.fetchData)} // TODO: Investiate why onEndReached fires erroniously
         />
-        {!!showLoadingSpinner && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
+        {this.state.isLoading && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
       </View>
     )
   }
