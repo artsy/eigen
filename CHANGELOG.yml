@@ -1,14 +1,31 @@
 upcoming:
-  version: 5.0.3
+  version: 5.0.5
   date: TBD
-  emission_version: 1.10.x
+  emission_version: 1.x.y
   dev:
-    - Updates RN to 0.59 - orta/alloy
-    - Removes Echo.json from git index, moved to post-install CocoaPods hook - Ash & Chung-Yi
+    - 
   user_facing:
-    - Clears Relay cache when a PUT, POST, or DELETE is made to our API - ash
+    - 
 
 releases:
+  - version: 5.0.4
+    date: May 24, 2019
+    emission_version: 1.11.3
+    dev:
+      - Adds new availability checks and enables new compiler warning for better checking of API availabilities - ash
+    user_facing:
+      - Fixes a problem entering credit cards for auction registration - ash
+
+  - version: 5.0.3
+    date: May 18, 2019
+    emission_version: 1.11.3
+    dev:
+      - Updates RN to 0.59 - orta/alloy
+      - Removes Echo.json from git index, moved to post-install CocoaPods hook - Ash & Chung-Yi
+    user_facing:
+      - Clears Relay cache when a PUT, POST, or DELETE is made to our API - ash
+      - Fixes search result selection for features - ash & roop
+
   - version: 5.0.2
     date: Apr 13, 2019
     emission_version: 1.9.5

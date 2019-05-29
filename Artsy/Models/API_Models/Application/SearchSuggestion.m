@@ -46,12 +46,10 @@
         return NSStringWithFormat(@"/artwork/%@", self.modelID);
     } else if ([self.model isEqualToString:@"article"]) {
         return NSStringWithFormat(@"/article/%@", self.modelID);
-    } else if ([self.model isEqualToString:@"page"]) {
-        return NSStringWithFormat(@"/artwork/%@", self.modelID);
     } else if ([self.model isEqualToString:@"sale"]) {
         return NSStringWithFormat(@"/auction/%@", self.modelID);
     } else if ([self.model isEqualToString:@"feature"]) {
-        return NSStringWithFormat(@"/auction/%@", self.modelID);
+        return NSStringWithFormat(@"/feature/%@", self.modelID);
     }
 
     NSAssert(NO, @"Got an unknown model from search");

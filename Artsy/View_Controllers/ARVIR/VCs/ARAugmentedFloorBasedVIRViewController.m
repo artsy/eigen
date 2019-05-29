@@ -70,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     _config = config;
 
-    if (@available(iOS 11.0, *)) {
+    if (@available(iOS 11.3, *)) {
         _sceneView = [[ARSCNView alloc] init];
 
         _interactionController = [[ARVIRHorizontalPlaneInteractionController alloc] initWithSession:_sceneView.session config:config scene:_sceneView delegate:self];
@@ -153,7 +153,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)viewDidLoad
 {
-    if (@available(iOS 11.0, *)) {
+    if (@available(iOS 11.3, *)) {
         _dateOpenedAR = [NSDate date];
 
 #if TARGET_OS_SIMULATOR

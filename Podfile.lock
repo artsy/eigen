@@ -46,7 +46,7 @@ PODS:
   - ARTiledImageView (1.2.0):
     - SDWebImage/Core
   - "Artsy+UIColors (3.1.0)"
-  - "Artsy+UIFonts (3.2.0)"
+  - "Artsy+UIFonts (3.2.2)"
   - "Artsy+UILabels (2.2.0)":
     - "Artsy+UIColors (~> 3.0)"
     - "Artsy+UIFonts"
@@ -72,7 +72,7 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.0)
-  - Emission (1.11.0):
+  - Emission (1.11.4):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
     - DoubleConversion (= 1.1.6)
@@ -81,7 +81,9 @@ PODS:
     - glog (= 0.3.5)
     - ISO8601DateFormatter
     - Pulley
+    - react-native-cameraroll (= 1.0.5)
     - react-native-mapbox-gl (= 6.1.4)
+    - react-native-navigator-ios (= 1.0.0)
     - React/Core (= 0.59.2)
     - React/CxxBridge (= 0.59.2)
     - React/RCTActionSheet (= 0.59.2)
@@ -186,7 +188,11 @@ PODS:
   - Quick (2.0.0)
   - React (0.59.2):
     - React/Core (= 0.59.2)
+  - react-native-cameraroll (1.0.5):
+    - React
   - react-native-mapbox-gl (6.1.4):
+    - React
+  - react-native-navigator-ios (1.0.0):
     - React
   - React/Core (0.59.2):
     - yoga (= 0.59.2.React)
@@ -325,7 +331,9 @@ DEPENDENCIES:
   - ORStackView (= 2.0.3)
   - Pulley (from `https://github.com/l2succes/Pulley.git`, branch `master`)
   - Quick
+  - react-native-cameraroll (from `https://github.com/react-native-community/react-native-cameraroll`, tag `v1.0.5`)
   - react-native-mapbox-gl (from `https://github.com/l2succes/react-native-mapbox-gl`, branch `fix-gesture-recognizer`)
+  - react-native-navigator-ios (from `https://github.com/ashfurrow/react-native-navigator-ios`, branch `license_podspec`)
   - React/Core
   - React/DevSupport
   - ReactiveObjC
@@ -337,7 +345,7 @@ DEPENDENCIES:
   - Starscream
   - SwiftyJSON
   - Then
-  - tipsi-stripe (from `https://github.com/tipsi/tipsi-stripe.git`, tag `7.5.0`)
+  - tipsi-stripe (from `https://github.com/ashfurrow/tipsi-stripe.git`, branch `fix-infinite-loop`)
   - UICKeyChainStore
   - "UIView+BooleanAnimations"
   - VCRURLConnection
@@ -434,9 +442,15 @@ EXTERNAL SOURCES:
   Pulley:
     :branch: master
     :git: https://github.com/l2succes/Pulley.git
+  react-native-cameraroll:
+    :git: https://github.com/react-native-community/react-native-cameraroll
+    :tag: v1.0.5
   react-native-mapbox-gl:
     :branch: fix-gesture-recognizer
     :git: https://github.com/l2succes/react-native-mapbox-gl
+  react-native-navigator-ios:
+    :branch: license_podspec
+    :git: https://github.com/ashfurrow/react-native-navigator-ios
   RNSVG:
     :git: https://github.com/react-native-community/react-native-svg.git
     :tag: v9.0.4
@@ -447,8 +461,8 @@ EXTERNAL SOURCES:
     :branch: add-axial-support
     :git: https://github.com/alloy/SSFadingScrollView.git
   tipsi-stripe:
-    :git: https://github.com/tipsi/tipsi-stripe.git
-    :tag: 7.5.0
+    :branch: fix-infinite-loop
+    :git: https://github.com/ashfurrow/tipsi-stripe.git
 
 CHECKOUT OPTIONS:
   AFOAuth1Client:
@@ -481,9 +495,15 @@ CHECKOUT OPTIONS:
   Pulley:
     :commit: 23f1c0e8cad5a72d03176fe33535c14726e7a160
     :git: https://github.com/l2succes/Pulley.git
+  react-native-cameraroll:
+    :git: https://github.com/react-native-community/react-native-cameraroll
+    :tag: v1.0.5
   react-native-mapbox-gl:
     :commit: 8ad2d3a2207da62024c82624c71df5bf5dabc126
     :git: https://github.com/l2succes/react-native-mapbox-gl
+  react-native-navigator-ios:
+    :commit: 695725296669114ceeed76bba218fd91cde381c1
+    :git: https://github.com/ashfurrow/react-native-navigator-ios
   RNSVG:
     :git: https://github.com/react-native-community/react-native-svg.git
     :tag: v9.0.4
@@ -494,8 +514,8 @@ CHECKOUT OPTIONS:
     :commit: 3920e3582e46c9fe23b0d1200e28614ebd66d801
     :git: https://github.com/alloy/SSFadingScrollView.git
   tipsi-stripe:
-    :git: https://github.com/tipsi/tipsi-stripe.git
-    :tag: 7.5.0
+    :commit: bfebb733fb44d3e1d0522a38a317993f9c686422
+    :git: https://github.com/ashfurrow/tipsi-stripe.git
 
 SPEC CHECKSUMS:
   Adjust: b1f2b0e0b426fa991d69ed7fc9de806cf6dff5a6
@@ -509,7 +529,7 @@ SPEC CHECKSUMS:
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   ARTiledImageView: 2db7735f5d3fcb4c859c912834a6a1bf20716377
   "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  "Artsy+UIFonts": d29579aa105e3709032651fb3145d24f8339e905
+  "Artsy+UIFonts": 5c1e4916b21ea155de7b92b2be79f8b56bf1d48e
   "Artsy+UILabels": 7cb6e290a4f70dddba037b7dbeb21e90b49d7275
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
@@ -518,7 +538,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 4f87136edd5a370ddbc15ac9953bfd47e45ab245
+  Emission: 4ad960349cd1cb6b47a12da80c664e007add5e61
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   "Expecta+Snapshots": c343f410c7a6392f3e22e78f94c44b6c0749a516
   Extraction: 642a73b8ccc7806e9a7daf95ebb4c14c374829f1
@@ -554,7 +574,9 @@ SPEC CHECKSUMS:
   Pulley: 2679a2b5a9714c5eb760b1fbb535d15c60e50fb4
   Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
   React: 9d063e2f356c8cd2f54dd550d4507740037cbabe
+  react-native-cameraroll: b1faef9f2ea27b07bdf818b8043909a93f797eca
   react-native-mapbox-gl: b7309e99290963cc7fe0e34db86c6e16890cfcee
+  react-native-navigator-ios: 93db84cc26b6f8d776e1f504c56082f593efcd09
   ReactiveObjC: 7b6782ae39f9ac0f57205c3b0c0b69b9dd7048c0
   RNSVG: 36f6615444ab569023444e09b01a1900d964e967
   RSSwizzle: d561958f595028bfcef98c7d55c318b3878a61c6
@@ -574,6 +596,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   yoga: 4ce3811b3db5f47fe1e125f15383003316a616b8
 
-PODFILE CHECKSUM: 021253f3253725b2edf96ad6df760630cb1b3496
+PODFILE CHECKSUM: c03452c052adadc827dda2ff280a76b98e0a10fc
 
 COCOAPODS: 1.6.0.beta.1

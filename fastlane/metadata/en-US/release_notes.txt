@@ -1,1 +1,1 @@
-This release fixes a crash where users were unable to submit consignments.
+This release fixes a crash in the app for some users when registering for an auction.

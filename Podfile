@@ -93,12 +93,14 @@ target 'Artsy' do
   # Emission's dependencies
   # use `cat ~/.cocoapods/repos/artsy/Emission/1.x.x/Emission.podspec.json` to see the Podspec
 
-  # For Stripe integration with Emission
-  pod 'tipsi-stripe', git: 'https://github.com/tipsi/tipsi-stripe.git', tag: '7.5.0'
+  # For Stripe integration with Emission. Using Ash's fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
+  pod 'tipsi-stripe', git: 'https://github.com/ashfurrow/tipsi-stripe.git', branch: 'fix-infinite-loop'
   pod 'react-native-mapbox-gl', git: 'https://github.com/l2succes/react-native-mapbox-gl', branch: 'fix-gesture-recognizer'
   pod 'SentryReactNative', git: 'https://github.com/getsentry/react-native-sentry.git', tag: 'v0.30.3'
   pod 'Pulley', :git => 'https://github.com/l2succes/Pulley.git', :branch => 'master'
   pod 'RNSVG', git: 'https://github.com/react-native-community/react-native-svg.git', tag: 'v9.0.4'
+  pod 'react-native-navigator-ios', git: 'https://github.com/ashfurrow/react-native-navigator-ios', branch: 'license_podspec'
+  pod 'react-native-cameraroll', git: 'https://github.com/react-native-community/react-native-cameraroll', tag: 'v1.0.5'
 
   # Facebook
   pod 'FBSDKCoreKit', '~> 4.33'
