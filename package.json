@@ -40,7 +40,7 @@
     "generate-cities-objc": "node scripts/generate-cities-objc.js",
     "generate-cities-cache": "node scripts/generate-cities-cache.js",
     "merge-graphql-query-map": "node scripts/merge-graphql-query-map.js",
-    "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/_schema.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
+    "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/_schemaV2.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
     "sync-cities": "curl https://raw.githubusercontent.com/artsy/metaphysics/master/src/schema/city/cityDataSortedByDisplayPreference.json -o data/cityDataSortedByDisplayPreference.json",
     "version": "yarn install && yarn bundle && pushd Example && bundle install && bundle exec pod update Emission --no-repo-update && popd && git add Pod/Assets Example/Podfile.lock",
     "postinstall": "prettier --write package.json",
