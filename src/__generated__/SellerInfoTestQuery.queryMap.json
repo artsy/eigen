@@ -1,3 +1,0 @@
-{
-  "862bc386eb0d3315e26007b41164b054": "query SellerInfoTestQuery {\n  artwork(id: \"testArtwork\") {\n    ...SellerInfo_artwork\n    __id\n  }\n}\n\nfragment SellerInfo_artwork on Artwork {\n  partner {\n    __id\n    id\n    name\n  }\n  __id\n}\n"
-}

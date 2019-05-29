@@ -19,7 +19,7 @@ ARGraphQLQueryNameToID(NSString *name) {
       @"ArtistQuery": @"76cf3a1d878507c2940524a0ad788807",
       @"ArtistsGroupedByNameTestsQuery": @"85e5839045e1e1888d2892beac30426f",
       @"ArtistsMeQuery": @"fee55966107b409fcea48f9422b25d5f",
-      @"ArtworkQuery": @"1e4022982c4f1457bac6ded01af8577f",
+      @"ArtworkQuery": @"bf2d6c945c8f989b07f2e948bec4d448",
       @"ArtworkRailRefetchQuery": @"0f813fcf1fff59dd8ceef1376502fc94",
       @"ArtworksGridPaginationContainerQuery": @"3e15ed32c3b71ab1d378c23097e6e9df",
       @"ArtworksPreviewTestsQuery": @"25913150785973454f8661ab6ccf6117",

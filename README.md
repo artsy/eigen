@@ -14,6 +14,7 @@ Inside Emission you will find:
 - **Point People:** [@alloy](https://github.com/alloy), [@ashfurrow](https://github.com/ashfurrow)
 - **CI:**
   - React Native components: [![Build Status](https://travis-ci.org/artsy/emission.svg?branch=master)](https://travis-ci.org/artsy/emission)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fartsy%2Femission.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fartsy%2Femission?ref=badge_shield)
   - Native unit tests: [![CircleCI](https://circleci.com/gh/artsy/emission.svg?style=svg)](https://circleci.com/gh/artsy/emission)
 - **[Troubleshooting](https://github.com/artsy/emission/blob/master/docs/troubleshooting.md)**
 
@@ -156,3 +157,7 @@ The Emission app (in `Example/`) is deployed automatically to TestFlight once a 
 [spec-repo]: https://github.com/artsy/Specs/tree/master/React
 [metaphysics]: https://github.com/artsy/metaphysics
 [omakase-cli]: https://github.com/omakase-js/omakase/blob/master/packages/cli/README.md
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fartsy%2Femission.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fartsy%2Femission?ref=badge_large)

@@ -42,6 +42,7 @@ function loadStories() {
   require('../src/lib/Containers/__stories__/Sale.story');
   require('../src/lib/Scenes/Artwork/Components/__stories__/ArtworkActions.story');
   require('../src/lib/Scenes/Artwork/Components/__stories__/ArtworkAvailability.story');
+  require('../src/lib/Scenes/Artwork/Components/__stories__/ArtworkTombstone.story');
   require('../src/lib/Scenes/Artwork/__stories__/Artwork.story');
   require('../src/lib/Scenes/Fair/__stories__/Fair.story');
   require('../src/lib/Scenes/Favorites/__stories__/Favorites.story');
@@ -91,6 +92,7 @@ const stories = [
   '../src/lib/Containers/__stories__/Sale.story',
   '../src/lib/Scenes/Artwork/Components/__stories__/ArtworkActions.story',
   '../src/lib/Scenes/Artwork/Components/__stories__/ArtworkAvailability.story',
+  '../src/lib/Scenes/Artwork/Components/__stories__/ArtworkTombstone.story',
   '../src/lib/Scenes/Artwork/__stories__/Artwork.story',
   '../src/lib/Scenes/Fair/__stories__/Fair.story',
   '../src/lib/Scenes/Favorites/__stories__/Favorites.story',
