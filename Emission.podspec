@@ -3,8 +3,8 @@ require 'date'
 
 root = ENV['EMISSION_ROOT'] || __dir__
 pkg_version = lambda do |dir_from_root = '', version = 'version'|
-  path = File.join(root, dir_from_root, 'package.json')
-  JSON.load(File.read(path))[version]
+  _path = File.join(root, dir_from_root, 'package.json')
+  JSON.load(File.read(_path))[version]
 end
 
 emission_version = pkg_version.call
