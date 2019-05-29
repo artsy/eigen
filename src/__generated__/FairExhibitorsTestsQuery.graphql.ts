@@ -8,7 +8,7 @@ export type FairExhibitorsTestsQueryResponse = {
             readonly letter: string | null;
             readonly exhibitors: ReadonlyArray<{
                 readonly name: string | null;
-                readonly gravityID: string;
+                readonly gravityID: string | null;
                 readonly profile_id: string | null;
             } | null> | null;
         } | null> | null;

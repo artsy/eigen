@@ -12,7 +12,7 @@ export type UpdateConversationMutationVariables = {
 export type UpdateConversationMutationResponse = {
     readonly updateConversation: {
         readonly conversation: {
-            readonly internalID: string;
+            readonly internalID: string | null;
             readonly from_last_viewed_message_id: string | null;
         } | null;
     } | null;

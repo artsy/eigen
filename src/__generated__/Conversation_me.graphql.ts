@@ -6,7 +6,7 @@ declare const _Conversation_me$ref: unique symbol;
 export type Conversation_me$ref = typeof _Conversation_me$ref;
 export type Conversation_me = {
     readonly conversation: {
-        readonly internalID: string;
+        readonly internalID: string | null;
         readonly id: string;
         readonly to: {
             readonly name: string;

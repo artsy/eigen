@@ -4,7 +4,7 @@ import { ReaderFragment } from "relay-runtime";
 declare const _ConversationSnippet_conversation$ref: unique symbol;
 export type ConversationSnippet_conversation$ref = typeof _ConversationSnippet_conversation$ref;
 export type ConversationSnippet_conversation = {
-    readonly internalID: string;
+    readonly internalID: string | null;
     readonly to: {
         readonly name: string;
     };

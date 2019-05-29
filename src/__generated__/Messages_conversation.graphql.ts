@@ -8,7 +8,7 @@ declare const _Messages_conversation$ref: unique symbol;
 export type Messages_conversation$ref = typeof _Messages_conversation$ref;
 export type Messages_conversation = {
     readonly id: string;
-    readonly internalID: string;
+    readonly internalID: string | null;
     readonly from: {
         readonly name: string;
         readonly email: string;

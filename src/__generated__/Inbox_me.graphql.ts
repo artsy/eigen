@@ -14,7 +14,7 @@ export type Inbox_me = {
     readonly conversations_existence_check: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly internalID: string;
+                readonly internalID: string | null;
             } | null;
         } | null> | null;
     } | null;

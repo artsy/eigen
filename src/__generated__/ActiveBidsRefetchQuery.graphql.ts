@@ -58,7 +58,6 @@ fragment ActiveBid_bid on LotStanding {
       }
       highest_bid {
         display
-        id
       }
       lot_number
       reserve_status
@@ -76,13 +75,15 @@ var v0 = {
   "args": null,
   "storageKey": null
 },
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "display",
-  "args": null,
-  "storageKey": null
-},
+v1 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "display",
+    "args": null,
+    "storageKey": null
+  }
+],
 v2 = {
   "kind": "ScalarField",
   "alias": null,
@@ -164,9 +165,7 @@ return {
                     "args": null,
                     "concreteType": "BidderPositionMaxBid",
                     "plural": false,
-                    "selections": [
-                      (v1/*: any*/)
-                    ]
+                    "selections": (v1/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -241,10 +240,7 @@ return {
                         "args": null,
                         "concreteType": "SaleArtworkHighestBid",
                         "plural": false,
-                        "selections": [
-                          (v1/*: any*/),
-                          (v0/*: any*/)
-                        ]
+                        "selections": (v1/*: any*/)
                       },
                       {
                         "kind": "ScalarField",
@@ -302,7 +298,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ActiveBidsRefetchQuery",
-    "id": "12c0ca1b14238f3649eaac37746c597e",
+    "id": "8fd9b831a78e59c600ff233e338a770b",
     "text": null,
     "metadata": {}
   }

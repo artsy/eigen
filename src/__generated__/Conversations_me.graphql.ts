@@ -12,7 +12,7 @@ export type Conversations_me = {
         };
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly internalID: string;
+                readonly internalID: string | null;
                 readonly last_message: string | null;
                 readonly " $fragmentRefs": ConversationSnippet_conversation$ref;
             } | null;

@@ -4067,8 +4067,8 @@ type Conversation implements Node {
   # A globally unique ID.
   id: ID!
 
-  # A type-specific ID.
-  gravityID: ID
+  # An optional type-specific ID.
+  internalID: ID
 
   # Gravity inquiry id.
   inquiry_id: String
@@ -4852,7 +4852,7 @@ type FairExhibitor {
   # A globally unique ID.
   id: ID!
 
-  # A type-specific ID.
+  # An optional type-specific ID.
   gravityID: ID
 
   # A type-specific Gravity Mongo Document ID.
@@ -6314,7 +6314,7 @@ type HomePageModuleContextTrending {
 }
 
 type HomePageModulesParams {
-  # A type-specific ID.
+  # An optional type-specific ID.
   gravityID: ID
   followed_artist_id: ID
   gene_id: String
@@ -6324,7 +6324,7 @@ type HomePageModulesParams {
 }
 
 type Image {
-  # A type-specific ID.
+  # An optional type-specific ID.
   gravityID: ID
   aspect_ratio: Float!
   caption: String
