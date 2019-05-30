@@ -18,6 +18,7 @@
 
 - Switch to use metaphysics v2 schema - justin/alloy
 - Fixes a bug where artist search results in consignments overlap with search bar - yuki24
+- Adds other works by artist to Artwork - ashkan18
 
 ### 1.11.4
 
