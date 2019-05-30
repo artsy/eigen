@@ -16,6 +16,8 @@
 
 ### Master
 
+- Switch to use metaphysics v2 schema - justin/alloy
+
 ### 1.11.4
 
 - Adds a non-interactive ArtworkActions component - sweir27
