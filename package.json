@@ -147,7 +147,7 @@
     "react-native-typescript-transformer": "1.2.12",
     "react-relay-network-modern": "2.5.1",
     "react-storybooks-relay-container": "1.2.2",
-    "react-test-renderer": "16.8.3",
+    "react-test-renderer": "^16.8.6",
     "recursive-readdir-sync": "1.0.6",
     "relay-compiler": "4.0.0",
     "relay-compiler-language-typescript": "4.1.0",
