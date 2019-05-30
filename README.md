@@ -14,6 +14,7 @@ Inside Emission you will find:
 - **Point People:** [@alloy](https://github.com/alloy), [@ashfurrow](https://github.com/ashfurrow)
 - **CI:**
   - React Native components: [![Build Status](https://travis-ci.org/artsy/emission.svg?branch=master)](https://travis-ci.org/artsy/emission)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fartsy%2Femission.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fartsy%2Femission?ref=badge_shield)
   - Native unit tests: [![CircleCI](https://circleci.com/gh/artsy/emission.svg?style=svg)](https://circleci.com/gh/artsy/emission)
 - **[Troubleshooting](https://github.com/artsy/emission/blob/master/docs/troubleshooting.md)**
 
@@ -61,6 +62,22 @@ Ran into issues? Try [troubleshoot](docs/troubleshooting.md).
 
 To use [Storybooks](https://github.com/storybooks/storybook), select "Open Storybook" from the "Developer" section of the root view in the app. You can also use the [VSCode Storybooks plugin](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-react-native-storybooks).
 
+To create your React components and Relay containers, use the [omakase generator][omakase-cli]. E.g.
+
+```
+$ yarn om g src/lib/Scenes/Artwork/ArtworkMetadata -f Artwork
+```
+
+```
+$ yarn om g src/lib/Scenes/Artwork/ArtworkMetadata -r Artwork
+```
+
+```
+$ yarn om g src/lib/Scenes/Artwork/ArtworkMetadata -p Artwork.artists
+```
+
+For full details see [the CLI README][omakase-cli].
+
 ---
 
 ### Using VS Code as an IDE
@@ -81,7 +98,6 @@ We vendor some data from other repositories that you will sometimes need to upda
 
 **Note 2:** If you're updating React Native, you're gonna have to do a lot of this stuff manually. See the makefile/alloy/orta for more info.
 
-1. Update the [CHANGELOG](CHANGELOG.md) file to reflect the version that will be released and commit it.
 1. Don't change the `package.json` version.
 1. For non-beta releases, use either `yarn release patch`, `yarn release minor`, or `yarn release major`. For
    beta releases use `yarn release prerelease`.
@@ -140,3 +156,8 @@ The Emission app (in `Example/`) is deployed automatically to TestFlight once a 
 [blog here]: http://artsy.github.io/blog/2016/08/24/On-Emission/
 [spec-repo]: https://github.com/artsy/Specs/tree/master/React
 [metaphysics]: https://github.com/artsy/metaphysics
+[omakase-cli]: https://github.com/omakase-js/omakase/blob/master/packages/cli/README.md
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fartsy%2Femission.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fartsy%2Femission?ref=badge_large)

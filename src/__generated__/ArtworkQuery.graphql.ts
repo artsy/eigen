@@ -28,6 +28,14 @@ query ArtworkQuery(
 }
 
 fragment Artwork_artwork on Artwork {
+  ...ArtworkTombstone_artwork
+  ...ArtworkActions_artwork
+  ...ArtworkAvailability_artwork
+  ...SellerInfo_artwork
+  __id
+}
+
+fragment ArtworkTombstone_artwork on Artwork {
   title
 }
 */
@@ -89,6 +97,13 @@ return {
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "edition_of",
+            "args": null,
+            "storageKey": null
+          },
           {
             "kind": "ScalarField",
             "alias": null,

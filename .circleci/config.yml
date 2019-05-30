@@ -15,11 +15,16 @@ jobs:
 
       # For caching gems, relative to current directory
       BUNDLE_PATH: vendor/bundle
+      BUNDLER_VERSION: 2.0.1
 
     steps:
       - run:
           name: List Simulators
           command: xcrun simctl list
+
+      - run:
+          name: Install Bundler 2.0.1
+          command: sudo gem install bundler -v 2.0.1
 
       - checkout
 

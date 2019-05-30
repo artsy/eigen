@@ -6,8 +6,8 @@ import { metaphysicsURL } from "./config"
 import { cacheMiddleware } from "./middlewares/cacheMiddleware"
 import { metaphysicsExtensionsLoggerMiddleware } from "./middlewares/metaphysicsMiddleware"
 
-const Emission = NativeModules.Emission || {}
-const Constants = NativeModules.ARCocoaConstantsModule || {}
+const Emission = NativeModules.Emission
+const Constants = NativeModules.ARCocoaConstantsModule
 
 /// WARNING: Creates a whole new, separate Relay environment. Useful for testing and in Storybooks.
 /// Use `defaultEnvironment` for production code.

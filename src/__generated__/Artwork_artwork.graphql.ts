@@ -4,7 +4,7 @@ import { ReaderFragment } from "relay-runtime";
 declare const _Artwork_artwork$ref: unique symbol;
 export type Artwork_artwork$ref = typeof _Artwork_artwork$ref;
 export type Artwork_artwork = {
-    readonly title: string | null;
+    readonly " $fragmentRefs": ArtworkTombstone_artwork$ref & ArtworkActions_artwork$ref & ArtworkAvailability_artwork$ref & SellerInfo_artwork$ref;
     readonly " $refType": Artwork_artwork$ref;
 };
 
@@ -26,5 +26,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = '508007f27a03d091ce763a7a2fe2c37c';
+(node as any).hash = '1021f50bee1850a3eccc9efbb82548c2';
 export default node;

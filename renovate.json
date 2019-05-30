@@ -1,4 +1,5 @@
 {
-  "extends": ["@artsy"],
-  "assignees": ["orta", "ashfurrow", "javamonn"]
+  "extends": ["@artsy:app"],
+  "assignees": ["zephraph"],
+  "reviewers": ["ashfurrow"]
 }
