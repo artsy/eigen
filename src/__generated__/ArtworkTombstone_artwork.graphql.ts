@@ -1,6 +1,7 @@
 /* tslint:disable */
 
 import { ConcreteFragment } from "relay-runtime";
+import { FollowArtistButton_artist$ref } from "./FollowArtistButton_artist.graphql";
 declare const _ArtworkTombstone_artwork$ref: unique symbol;
 export type ArtworkTombstone_artwork$ref = typeof _ArtworkTombstone_artwork$ref;
 export type ArtworkTombstone_artwork = {
@@ -11,6 +12,7 @@ export type ArtworkTombstone_artwork = {
     readonly artists: ReadonlyArray<({
         readonly name: string | null;
         readonly href: string | null;
+        readonly " $fragmentRefs": FollowArtistButton_artist$ref;
     }) | null> | null;
     readonly dimensions: ({
         readonly in: string | null;
@@ -91,6 +93,11 @@ return {
           "args": null,
           "storageKey": null
         },
+        {
+          "kind": "FragmentSpread",
+          "name": "FollowArtistButton_artist",
+          "args": null
+        },
         v0
       ]
     },
@@ -148,5 +155,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '936ac7c973aa593b37c8fdc05ab1a23e';
+(node as any).hash = 'c3bac2572caaeabbde7a8a1855295fe5';
 export default node;

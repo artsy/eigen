@@ -43,6 +43,7 @@ fragment ArtworkTombstone_artwork on Artwork {
   artists {
     name
     href
+    ...FollowArtistButton_artist
     __id
   }
   dimensions {
@@ -73,6 +74,16 @@ fragment SellerInfo_artwork on Artwork {
     __id
   }
   __id
+}
+
+fragment FollowArtistButton_artist on Artist {
+  __id
+  id
+  _id
+  is_followed
+  counts {
+    follows
+  }
 }
 */
 
@@ -106,12 +117,19 @@ v3 = {
   "name": "name",
   "args": null,
   "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "_id",
+  "args": null,
+  "storageKey": null
 };
 return {
   "kind": "Request",
   "operationKind": "query",
   "name": "ArtworkQuery",
-  "id": "bf2d6c945c8f989b07f2e948bec4d448",
+  "id": "33d527ac8076fea042a71fcb14bbbda4",
   "text": null,
   "metadata": {},
   "fragment": {
@@ -199,7 +217,40 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v2
+              v2,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              },
+              v4,
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "is_followed",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "counts",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "ArtistCounts",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "follows",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              }
             ]
           },
           {
@@ -253,13 +304,7 @@ return {
             ]
           },
           v2,
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "_id",
-            "args": null,
-            "storageKey": null
-          },
+          v4,
           {
             "kind": "ScalarField",
             "alias": null,

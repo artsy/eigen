@@ -6,6 +6,7 @@ export type FollowArtistButton_artist$ref = typeof _FollowArtistButton_artist$re
 export type FollowArtistButton_artist = {
     readonly __id: string;
     readonly id: string;
+    readonly _id: string;
     readonly is_followed: boolean | null;
     readonly counts: ({
         readonly follows: any | null;
@@ -39,6 +40,13 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "_id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "is_followed",
       "args": null,
       "storageKey": null
@@ -63,5 +71,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = '3d95f3ba8843502253efacc9c5d3d5f9';
+(node as any).hash = '875a686193e79d2ed5ae84c12725f9b1';
 export default node;

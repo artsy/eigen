@@ -134,6 +134,7 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
       artists {
         name
         href
+        ...FollowArtistButton_artist
       }
       dimensions {
         in
