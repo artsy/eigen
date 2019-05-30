@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { Fairs_me$ref } from "./Fairs_me.graphql";
 export type FavoriteFairsQueryVariables = {};
 export type FavoriteFairsQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Fairs_me$ref;
-    }) | null;
+    } | null;
 };
 export type FavoriteFairsQuery = {
     readonly response: FavoriteFairsQueryResponse;
@@ -19,7 +19,7 @@ export type FavoriteFairsQuery = {
 query FavoriteFairsQuery {
   me {
     ...Fairs_me
-    __id
+    id
   }
 }
 
@@ -28,11 +28,11 @@ fragment Fairs_me on Me {
     fairs(first: 10, after: "") {
       edges {
         node {
-          __id
+          id
           profile {
-            id
+            gravityID
             is_followed
-            __id
+            id
           }
           exhibition_period
           name
@@ -55,25 +55,31 @@ fragment Fairs_me on Me {
       }
     }
   }
-  __id
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
+var v0 = [
+  {
+    "kind": "Literal",
+    "name": "after",
+    "value": ""
+  },
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 10
+  }
+],
+v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FavoriteFairsQuery",
-  "id": "993a93e1d3f802edbd863bdd51873e0c",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FavoriteFairsQuery",
@@ -94,8 +100,7 @@ return {
             "kind": "FragmentSpread",
             "name": "Fairs_me",
             "args": null
-          },
-          v0
+          }
         ]
       }
     ]
@@ -128,20 +133,7 @@ return {
                 "alias": null,
                 "name": "fairs",
                 "storageKey": "fairs(after:\"\",first:10)",
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "after",
-                    "value": "",
-                    "type": "String"
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "first",
-                    "value": 10,
-                    "type": "Int"
-                  }
-                ],
+                "args": (v0/*: any*/),
                 "concreteType": "FollowedFairConnection",
                 "plural": false,
                 "selections": [
@@ -163,7 +155,7 @@ return {
                         "concreteType": "Fair",
                         "plural": false,
                         "selections": [
-                          v0,
+                          (v1/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -176,7 +168,7 @@ return {
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
-                                "name": "id",
+                                "name": "gravityID",
                                 "args": null,
                                 "storageKey": null
                               },
@@ -187,7 +179,7 @@ return {
                                 "args": null,
                                 "storageKey": null
                               },
-                              v0
+                              (v1/*: any*/)
                             ]
                           },
                           {
@@ -310,30 +302,24 @@ return {
                 "kind": "LinkedHandle",
                 "alias": null,
                 "name": "fairs",
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "after",
-                    "value": "",
-                    "type": "String"
-                  },
-                  {
-                    "kind": "Literal",
-                    "name": "first",
-                    "value": 10,
-                    "type": "Int"
-                  }
-                ],
+                "args": (v0/*: any*/),
                 "handle": "connection",
                 "key": "SavedFairs_fairs",
                 "filters": null
               }
             ]
           },
-          v0
+          (v1/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FavoriteFairsQuery",
+    "id": "2a4e673fc614cc0d63c9f41857d22ab7",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

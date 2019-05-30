@@ -4,11 +4,11 @@ import { ConcreteRequest } from "relay-runtime";
 import { ShowEventSection_event$ref } from "./ShowEventSection_event.graphql";
 export type ShowEventSectionTestsQueryVariables = {};
 export type ShowEventSectionTestsQueryResponse = {
-    readonly show: ({
-        readonly events: ReadonlyArray<({
+    readonly show: {
+        readonly events: ReadonlyArray<{
             readonly " $fragmentRefs": ShowEventSection_event$ref;
-        }) | null> | null;
-    }) | null;
+        } | null> | null;
+    } | null;
 };
 export type ShowEventSectionTestsQuery = {
     readonly response: ShowEventSectionTestsQueryResponse;
@@ -23,7 +23,7 @@ query ShowEventSectionTestsQuery {
     events {
       ...ShowEventSection_event
     }
-    __id
+    id
   }
 }
 
@@ -40,24 +40,11 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "anderson-fine-art-gallery-flickinger-collection",
-    "type": "String!"
+    "value": "anderson-fine-art-gallery-flickinger-collection"
   }
-],
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
+];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ShowEventSectionTestsQuery",
-  "id": "f5649cf493d89ce52a968cb3d78033a9",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ShowEventSectionTestsQuery",
@@ -70,7 +57,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -89,8 +76,7 @@ return {
                 "args": null
               }
             ]
-          },
-          v1
+          }
         ]
       }
     ]
@@ -105,7 +91,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -148,10 +134,23 @@ return {
               }
             ]
           },
-          v1
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
+          }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ShowEventSectionTestsQuery",
+    "id": "0fade73ca6307a9c176676070d42d489",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

@@ -65,8 +65,8 @@ describe("ArtworkActions", () => {
 })
 
 const artworkActionsArtwork = {
-  __id: "artwork12345",
-  _id: "12345",
+  id: "artwork12345",
+  internalID: "12345",
   is_saved: false,
   " $refType": null,
 }

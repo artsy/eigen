@@ -42,7 +42,7 @@ describe("when it has a special notification", () => {
     const response = selectedArtistResponse()
     const worksForYou = new WorksForYou(response as any)
     const expectedFormattedNotification = {
-      __id: "notification-juliana-huxtable",
+      id: "notification-juliana-huxtable",
       message: "1 Work Added",
       artists: "Juliana Huxtable",
       artworks: selectedArtistResponse().viewer.selectedArtist.artworks,
@@ -169,7 +169,7 @@ const selectedArtistResponse = () => {
   {
     const response = notificationsResponse()
     response.viewer.selectedArtist = {
-      id: "juliana-huxtable",
+      gravityID: "juliana-huxtable",
       name: "Juliana Huxtable",
       href: "artist/juliana-huxtable",
       image: {
@@ -179,7 +179,7 @@ const selectedArtistResponse = () => {
       },
       artworks: [
         {
-          __id: "4594385943",
+          gravityID: "4594385943",
           title: "Untitled (Casual Power)",
         },
       ],

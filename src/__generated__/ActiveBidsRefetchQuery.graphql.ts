@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { ActiveBids_me$ref } from "./ActiveBids_me.graphql";
 export type ActiveBidsRefetchQueryVariables = {};
 export type ActiveBidsRefetchQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": ActiveBids_me$ref;
-    }) | null;
+    } | null;
 };
 export type ActiveBidsRefetchQuery = {
     readonly response: ActiveBidsRefetchQueryResponse;
@@ -19,18 +19,17 @@ export type ActiveBidsRefetchQuery = {
 query ActiveBidsRefetchQuery {
   me {
     ...ActiveBids_me
-    __id
+    id
   }
 }
 
 fragment ActiveBids_me on Me {
   lot_standings(live: true) {
     most_recent_bid {
-      __id
+      id
     }
     ...ActiveBid_bid
   }
-  __id
 }
 
 fragment ActiveBid_bid on LotStanding {
@@ -38,10 +37,10 @@ fragment ActiveBid_bid on LotStanding {
   sale {
     href
     is_live_open
-    __id
+    id
   }
   most_recent_bid {
-    __id
+    id
     max_bid {
       display
     }
@@ -52,18 +51,17 @@ fragment ActiveBid_bid on LotStanding {
           url
         }
         artist_names
-        __id
+        id
       }
       counts {
         bidder_positions
       }
       highest_bid {
         display
-        __id: id
       }
       lot_number
       reserve_status
-      __id
+      id
     }
   }
 }
@@ -73,17 +71,19 @@ const node: ConcreteRequest = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "display",
-  "args": null,
-  "storageKey": null
-},
+v1 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "display",
+    "args": null,
+    "storageKey": null
+  }
+],
 v2 = {
   "kind": "ScalarField",
   "alias": null,
@@ -93,11 +93,6 @@ v2 = {
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ActiveBidsRefetchQuery",
-  "id": "a7bd30f1cd6c622b9118b99c03a8cb91",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ActiveBidsRefetchQuery",
@@ -118,8 +113,7 @@ return {
             "kind": "FragmentSpread",
             "name": "ActiveBids_me",
             "args": null
-          },
-          v0
+          }
         ]
       }
     ]
@@ -147,8 +141,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "live",
-                "value": true,
-                "type": "Boolean"
+                "value": true
               }
             ],
             "concreteType": "LotStanding",
@@ -163,7 +156,7 @@ return {
                 "concreteType": "BidderPosition",
                 "plural": false,
                 "selections": [
-                  v0,
+                  (v0/*: any*/),
                   {
                     "kind": "LinkedField",
                     "alias": null,
@@ -172,9 +165,7 @@ return {
                     "args": null,
                     "concreteType": "BidderPositionMaxBid",
                     "plural": false,
-                    "selections": [
-                      v1
-                    ]
+                    "selections": (v1/*: any*/)
                   },
                   {
                     "kind": "LinkedField",
@@ -194,7 +185,7 @@ return {
                         "concreteType": "Artwork",
                         "plural": false,
                         "selections": [
-                          v2,
+                          (v2/*: any*/),
                           {
                             "kind": "LinkedField",
                             "alias": null,
@@ -220,7 +211,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v0
+                          (v0/*: any*/)
                         ]
                       },
                       {
@@ -249,16 +240,7 @@ return {
                         "args": null,
                         "concreteType": "SaleArtworkHighestBid",
                         "plural": false,
-                        "selections": [
-                          v1,
-                          {
-                            "kind": "ScalarField",
-                            "alias": "__id",
-                            "name": "id",
-                            "args": null,
-                            "storageKey": null
-                          }
-                        ]
+                        "selections": (v1/*: any*/)
                       },
                       {
                         "kind": "ScalarField",
@@ -274,7 +256,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v0
+                      (v0/*: any*/)
                     ]
                   }
                 ]
@@ -295,7 +277,7 @@ return {
                 "concreteType": "Sale",
                 "plural": false,
                 "selections": [
-                  v2,
+                  (v2/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -303,15 +285,22 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v0
+                  (v0/*: any*/)
                 ]
               }
             ]
           },
-          v0
+          (v0/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ActiveBidsRefetchQuery",
+    "id": "8fd9b831a78e59c600ff233e338a770b",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

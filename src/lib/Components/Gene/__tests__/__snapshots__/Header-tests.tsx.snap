@@ -4,9 +4,9 @@ exports[`renders properly 1`] = `
 <Header
   gene={
     Object {
-      "__id": "gene-deep-time",
-      "_id": "gravity-id",
-      "id": "deep-time",
+      "gravityID": "deep-time",
+      "id": "gene-deep-time",
+      "internalID": "gravity-id",
       "name": "Deep Time",
     }
   }

@@ -1,22 +1,22 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { BidResult_sale_artwork$ref } from "./BidResult_sale_artwork.graphql";
 declare const _ConfirmBid_sale_artwork$ref: unique symbol;
 export type ConfirmBid_sale_artwork$ref = typeof _ConfirmBid_sale_artwork$ref;
 export type ConfirmBid_sale_artwork = {
-    readonly _id: string;
-    readonly sale: ({
-        readonly id: string;
+    readonly internalID: string;
+    readonly sale: {
+        readonly gravityID: string;
         readonly live_start_at: string | null;
         readonly end_at: string | null;
-    }) | null;
-    readonly artwork: ({
-        readonly id: string;
+    } | null;
+    readonly artwork: {
+        readonly gravityID: string;
         readonly title: string | null;
         readonly date: string | null;
         readonly artist_names: string | null;
-    }) | null;
+    } | null;
     readonly lot_label: string | null;
     readonly " $fragmentRefs": BidResult_sale_artwork$ref;
     readonly " $refType": ConfirmBid_sale_artwork$ref;
@@ -24,18 +24,11 @@ export type ConfirmBid_sale_artwork = {
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 };
@@ -49,7 +42,7 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
@@ -62,7 +55,7 @@ return {
       "concreteType": "Sale",
       "plural": false,
       "selections": [
-        v0,
+        (v0/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -76,8 +69,7 @@ return {
           "name": "end_at",
           "args": null,
           "storageKey": null
-        },
-        v1
+        }
       ]
     },
     {
@@ -89,7 +81,7 @@ return {
       "concreteType": "Artwork",
       "plural": false,
       "selections": [
-        v0,
+        (v0/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -110,8 +102,7 @@ return {
           "name": "artist_names",
           "args": null,
           "storageKey": null
-        },
-        v1
+        }
       ]
     },
     {
@@ -125,10 +116,9 @@ return {
       "kind": "FragmentSpread",
       "name": "BidResult_sale_artwork",
       "args": null
-    },
-    v1
+    }
   ]
 };
 })();
-(node as any).hash = '300fef1d8e9724f80dc04af78a542fd4';
+(node as any).hash = 'd80b17b99bcad40f06a5e689f9d9611a';
 export default node;

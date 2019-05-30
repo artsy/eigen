@@ -54,25 +54,25 @@ export const RelayFinishedLoading: RenderUntilPredicate<any, any, any> = tree =>
  *       <img src={props.artwork.image.url} />
  *     </div>
  *   ),
- *   graphql`
+ *   graphql\`
  *     fragment MockRelayRenderer_artwork on Artwork {
  *       image {
  *         url
  *       }
  *     }
- *   `
+ *   \`
  * )
  *
  * it("renders a Relay tree", () => {
  *   return renderRelayTree({
  *     Component: Artwork,
- *     query: graphql`
+ *     query: graphql\`
  *       query MockRelayRendererQuery {
  *         artwork(id: "mona-lisa") {
  *           ...MockRelayRenderer_artwork
  *         }
  *        }
- *     `,
+ *     \`,
  *     mockResolvers: {
  *       Artwork: () => ({
  *         title: "Mona Lisa",

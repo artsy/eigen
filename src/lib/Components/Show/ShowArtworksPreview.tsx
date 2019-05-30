@@ -40,7 +40,7 @@ export class ShowArtworksPreview extends React.Component<Props> {
 export const ShowArtworksPreviewContainer = createFragmentContainer(ShowArtworksPreview, {
   show: graphql`
     fragment ShowArtworksPreview_show on Show {
-      __id
+      id
       artworks(size: 6) {
         ...GenericGrid_artworks
       }

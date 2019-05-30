@@ -45,7 +45,7 @@ export { Schema }
  *        @track((props, state) => ({
  *          action_type: Schema.ActionTypes.Tap,
  *          action_name: state.following ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
- *          owner_id: props.artist._id,
+ *          owner_id: props.artist.internalID,
  *          owner_type: Schema.OwnerEntityTypes.Artist,
  *          owner_slug: props.artist.id,
  *        }))

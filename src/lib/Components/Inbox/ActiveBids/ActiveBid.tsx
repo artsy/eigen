@@ -159,7 +159,7 @@ export default createFragmentContainer(ActiveBid, {
         is_live_open
       }
       most_recent_bid {
-        __id
+        id
         max_bid {
           display
         }

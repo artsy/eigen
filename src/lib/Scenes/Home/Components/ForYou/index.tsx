@@ -104,11 +104,11 @@ export class ForYou extends React.Component<Props, State> {
         renderItem={({ item: { data, type } }) => {
           switch (type) {
             case "artwork":
-              return <ArtworkCarousel key={data.__id} rail={data} />
+              return <ArtworkCarousel key={data.id} rail={data} />
             case "artist":
-              return <ArtistRail key={data.__id} rail={data} />
+              return <ArtistRail key={data.id} rail={data} />
             case "fairs":
-              return <FairsRail key={data.__id} fairs_module={data} />
+              return <FairsRail key={data.id} fairs_module={data} />
           }
         }}
         keyExtractor={(item, index) => item.data.type + String(index)}
@@ -141,11 +141,11 @@ export default createRefetchContainer(
           ]
           exclude: [FOLLOWED_ARTISTS]
         ) {
-          __id
+          id
           ...ArtworkCarousel_rail
         }
         artist_modules {
-          __id
+          id
           ...ArtistRail_rail
         }
         fairs_module {

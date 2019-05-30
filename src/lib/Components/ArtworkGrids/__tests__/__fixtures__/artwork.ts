@@ -1,7 +1,7 @@
 export default () => {
   return {
     node: {
-      __id: "artwork-talking-politics",
+      id: "artwork-talking-politics",
       title: "TALKING POLITICS",
       date: "2008",
       sale_message: "Not for sale",

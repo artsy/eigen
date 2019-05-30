@@ -28,8 +28,8 @@ interface State {
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.FairAllArtistsPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  context_screen_owner_slug: props.fair.id,
-  context_screen_owner_id: props.fair._id,
+  context_screen_owner_slug: props.fair.gravityID,
+  context_screen_owner_id: props.fair.internalID,
 }))
 export class FairArtists extends React.Component<Props, State> {
   state = {
@@ -90,7 +90,7 @@ export class FairArtists extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Artist,
     } as any
   })
-  handleViewArtist(context, href, _slug, _id) {
+  handleViewArtist(context, href, _slug, _gravityID) {
     SwitchBoard.presentNavigationViewController(context, href)
   }
 
@@ -115,8 +115,8 @@ export const FairArtistsContainer = createPaginationContainer(
     fair: graphql`
       fragment FairArtists_fair on Fair
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        id
-        _id
+        gravityID
+        internalID
         artists(first: $count, after: $cursor) @connection(key: "Fair_artists") {
           pageInfo {
             hasNextPage
@@ -129,8 +129,8 @@ export const FairArtistsContainer = createPaginationContainer(
               ...ArtistListItem_artist
               sortable_id
               href
-              _id
-              id
+              internalID
+              gravityID
             }
           }
         }
@@ -151,7 +151,7 @@ export const FairArtistsContainer = createPaginationContainer(
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
         ...fragmentVariables,
-        id: props.fair.id,
+        id: props.fair.internalID,
         count,
         cursor,
       }

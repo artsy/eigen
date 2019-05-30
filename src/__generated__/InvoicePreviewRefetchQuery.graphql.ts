@@ -7,11 +7,11 @@ export type InvoicePreviewRefetchQueryVariables = {
     readonly invoiceId: string;
 };
 export type InvoicePreviewRefetchQueryResponse = {
-    readonly me: ({
-        readonly invoice: ({
+    readonly me: {
+        readonly invoice: {
             readonly " $fragmentRefs": InvoicePreview_invoice$ref;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type InvoicePreviewRefetchQuery = {
     readonly response: InvoicePreviewRefetchQueryResponse;
@@ -28,9 +28,9 @@ query InvoicePreviewRefetchQuery(
   me {
     invoice(conversationId: $conversationId, invoiceId: $invoiceId) {
       ...InvoicePreview_invoice
-      __id
+      id
     }
-    __id
+    id
   }
 }
 
@@ -39,7 +39,6 @@ fragment InvoicePreview_invoice on Invoice {
   state
   total
   lewitt_invoice_id
-  __id
 }
 */
 
@@ -62,36 +61,29 @@ v1 = [
   {
     "kind": "Variable",
     "name": "conversationId",
-    "variableName": "conversationId",
-    "type": "String!"
+    "variableName": "conversationId"
   },
   {
     "kind": "Variable",
     "name": "invoiceId",
-    "variableName": "invoiceId",
-    "type": "String!"
+    "variableName": "invoiceId"
   }
 ],
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "InvoicePreviewRefetchQuery",
-  "id": "6aaebb5a741e71949b67417a6c71890a",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "InvoicePreviewRefetchQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -107,7 +99,7 @@ return {
             "alias": null,
             "name": "invoice",
             "storageKey": null,
-            "args": v1,
+            "args": (v1/*: any*/),
             "concreteType": "Invoice",
             "plural": false,
             "selections": [
@@ -115,11 +107,9 @@ return {
                 "kind": "FragmentSpread",
                 "name": "InvoicePreview_invoice",
                 "args": null
-              },
-              v2
+              }
             ]
-          },
-          v2
+          }
         ]
       }
     ]
@@ -127,7 +117,7 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "InvoicePreviewRefetchQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -143,7 +133,7 @@ return {
             "alias": null,
             "name": "invoice",
             "storageKey": null,
-            "args": v1,
+            "args": (v1/*: any*/),
             "concreteType": "Invoice",
             "plural": false,
             "selections": [
@@ -175,13 +165,20 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v2
+              (v2/*: any*/)
             ]
           },
-          v2
+          (v2/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "InvoicePreviewRefetchQuery",
+    "id": "9abf17786f511440a509b78538b5a2a3",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

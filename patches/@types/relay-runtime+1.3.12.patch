@@ -1,7 +1,7 @@
 patch-package
 --- a/node_modules/@types/relay-runtime/index.d.ts
 +++ b/node_modules/@types/relay-runtime/index.d.ts
-@@ -1083,3 +1083,5 @@ export interface GraphQLSubscriptionConfig {
+@@ -1105,3 +1105,5 @@ export interface GraphQLSubscriptionConfig {
      updater?(store: RecordSourceSelectorProxy): void;
  }
  export function requestRelaySubscription(environment: Environment, config: GraphQLSubscriptionConfig): Disposable;

@@ -10,7 +10,7 @@ it("looks correct when rendered", () => {
 })
 
 const props = {
-  __id: "Conversation:420",
+  gravityID: "Conversation:420",
   id: "420",
   from: {
     name: "Anita Garibaldi",
@@ -30,7 +30,7 @@ const props = {
       {
         cursor: "some-cursor",
         node: {
-          __id: "unique-id",
+          gravityID: "unique-id",
           id: 222,
           impulse_id: "impulse:222",
           is_from_user: true,

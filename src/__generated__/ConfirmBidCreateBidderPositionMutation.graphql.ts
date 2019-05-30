@@ -11,20 +11,20 @@ export type ConfirmBidCreateBidderPositionMutationVariables = {
     readonly input: BidderPositionInput;
 };
 export type ConfirmBidCreateBidderPositionMutationResponse = {
-    readonly createBidderPosition: ({
-        readonly result: ({
+    readonly createBidderPosition: {
+        readonly result: {
             readonly status: string;
             readonly message_header: string | null;
             readonly message_description_md: string | null;
-            readonly position: ({
-                readonly id: string;
-                readonly suggested_next_bid: ({
+            readonly position: {
+                readonly gravityID: string;
+                readonly suggested_next_bid: {
                     readonly cents: number | null;
                     readonly display: string | null;
-                }) | null;
-            }) | null;
-        }) | null;
-    }) | null;
+                } | null;
+            } | null;
+        } | null;
+    } | null;
 };
 export type ConfirmBidCreateBidderPositionMutation = {
     readonly response: ConfirmBidCreateBidderPositionMutationResponse;
@@ -43,12 +43,12 @@ mutation ConfirmBidCreateBidderPositionMutation(
       message_header
       message_description_md
       position {
-        id
+        gravityID
         suggested_next_bid {
           cents
           display
         }
-        __id
+        id
       }
     }
   }
@@ -66,128 +66,173 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "createBidderPosition",
-    "storageKey": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "input",
-        "variableName": "input",
-        "type": "BidderPositionInput!"
-      }
-    ],
-    "concreteType": "BidderPositionPayload",
-    "plural": false,
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input"
+  }
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "status",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "message_header",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "message_description_md",
+  "args": null,
+  "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v6 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "suggested_next_bid",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "BidderPositionSuggestedNextBid",
+  "plural": false,
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "cents",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "display",
+      "args": null,
+      "storageKey": null
+    }
+  ]
+};
+return {
+  "kind": "Request",
+  "fragment": {
+    "kind": "Fragment",
+    "name": "ConfirmBidCreateBidderPositionMutation",
+    "type": "Mutation",
+    "metadata": null,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
-        "name": "result",
+        "name": "createBidderPosition",
         "storageKey": null,
-        "args": null,
-        "concreteType": "BidderPositionResult",
+        "args": (v1/*: any*/),
+        "concreteType": "BidderPositionPayload",
         "plural": false,
         "selections": [
           {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "status",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "message_header",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "message_description_md",
-            "args": null,
-            "storageKey": null
-          },
-          {
             "kind": "LinkedField",
             "alias": null,
-            "name": "position",
+            "name": "result",
             "storageKey": null,
             "args": null,
-            "concreteType": "BidderPosition",
+            "concreteType": "BidderPositionResult",
             "plural": false,
             "selections": [
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "id",
-                "args": null,
-                "storageKey": null
-              },
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/),
               {
                 "kind": "LinkedField",
                 "alias": null,
-                "name": "suggested_next_bid",
+                "name": "position",
                 "storageKey": null,
                 "args": null,
-                "concreteType": "BidderPositionSuggestedNextBid",
+                "concreteType": "BidderPosition",
                 "plural": false,
                 "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "cents",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "display",
-                    "args": null,
-                    "storageKey": null
-                  }
+                  (v5/*: any*/),
+                  (v6/*: any*/)
                 ]
-              },
-              {
-                "kind": "ScalarField",
-                "alias": null,
-                "name": "__id",
-                "args": null,
-                "storageKey": null
               }
             ]
           }
         ]
       }
     ]
-  }
-];
-return {
-  "kind": "Request",
-  "operationKind": "mutation",
-  "name": "ConfirmBidCreateBidderPositionMutation",
-  "id": "6dc901d7cf30a2e5778b669b04fe3d35",
-  "text": null,
-  "metadata": {},
-  "fragment": {
-    "kind": "Fragment",
-    "name": "ConfirmBidCreateBidderPositionMutation",
-    "type": "Mutation",
-    "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
   },
   "operation": {
     "kind": "Operation",
     "name": "ConfirmBidCreateBidderPositionMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "createBidderPosition",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "BidderPositionPayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "result",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "BidderPositionResult",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/),
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "position",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "BidderPosition",
+                "plural": false,
+                "selections": [
+                  (v5/*: any*/),
+                  (v6/*: any*/),
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "id",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "ConfirmBidCreateBidderPositionMutation",
+    "id": "b31b4dd9bc76276e2511a378a84fc357",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '90b2051c0e404dbb3d3b528a9dbca3ff';
+(node as any).hash = '260a925870a8baed707b576c1a5977e2';
 export default node;

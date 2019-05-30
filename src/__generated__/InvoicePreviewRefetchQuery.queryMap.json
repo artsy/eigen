@@ -1,3 +1,0 @@
-{
-  "6aaebb5a741e71949b67417a6c71890a": "query InvoicePreviewRefetchQuery(\n  $conversationId: String!\n  $invoiceId: String!\n) {\n  me {\n    invoice(conversationId: $conversationId, invoiceId: $invoiceId) {\n      ...InvoicePreview_invoice\n      __id\n    }\n    __id\n  }\n}\n\nfragment InvoicePreview_invoice on Invoice {\n  payment_url\n  state\n  total\n  lewitt_invoice_id\n  __id\n}\n"
-}

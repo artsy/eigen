@@ -1,3 +1,0 @@
-{
-  "5adb7100b533a36426ccc810956fd44a": "mutation RegistrationCreateBidderMutation(\n  $input: CreateBidderInput!\n) {\n  createBidder(input: $input) {\n    bidder {\n      id\n      qualified_for_bidding\n      __id\n    }\n  }\n}\n"
-}

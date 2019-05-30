@@ -71,7 +71,7 @@ class ShowsList extends Component<Props, State> {
   }
 
   renderShow(show, showStyles) {
-    return <ArtistShow show={show} styles={showStyles} key={show.__id} />
+    return <ArtistShow show={show} styles={showStyles} key={show.id} />
   }
 }
 
@@ -93,7 +93,7 @@ const styles = StyleSheet.create<Styles>({
 export default createFragmentContainer(ShowsList, {
   shows: graphql`
     fragment VariableSizeShowsList_shows on PartnerShow @relay(plural: true) {
-      __id
+      id
       ...ArtistShow_show
     }
   `,

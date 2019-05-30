@@ -6,9 +6,9 @@ export type ArtworkQueryVariables = {
     readonly artworkID: string;
 };
 export type ArtworkQueryResponse = {
-    readonly artwork: ({
+    readonly artwork: {
         readonly " $fragmentRefs": Artwork_artwork$ref;
-    }) | null;
+    } | null;
 };
 export type ArtworkQuery = {
     readonly response: ArtworkQueryResponse;
@@ -23,7 +23,7 @@ query ArtworkQuery(
 ) {
   artwork(id: $artworkID) {
     ...Artwork_artwork
-    __id
+    id
   }
 }
 
@@ -32,7 +32,6 @@ fragment Artwork_artwork on Artwork {
   ...ArtworkActions_artwork
   ...ArtworkAvailability_artwork
   ...SellerInfo_artwork
-  __id
 }
 
 fragment ArtworkTombstone_artwork on Artwork {
@@ -43,7 +42,7 @@ fragment ArtworkTombstone_artwork on Artwork {
   artists {
     name
     href
-    __id
+    id
   }
   dimensions {
     in
@@ -52,27 +51,25 @@ fragment ArtworkTombstone_artwork on Artwork {
   edition_of
   attribution_class {
     short_description
+    id
   }
-  __id
 }
 
 fragment ArtworkActions_artwork on Artwork {
-  __id
-  _id
+  id
+  internalID
   is_saved
 }
 
 fragment ArtworkAvailability_artwork on Artwork {
   availability
-  __id
 }
 
 fragment SellerInfo_artwork on Artwork {
   partner {
     name
-    __id
+    id
   }
-  __id
 }
 */
 
@@ -89,44 +86,38 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "artworkID",
-    "type": "String!"
+    "variableName": "artworkID"
   }
 ],
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "name",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ArtworkQuery",
-  "id": "bf2d6c945c8f989b07f2e948bec4d448",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ArtworkQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artwork",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
@@ -134,8 +125,7 @@ return {
             "kind": "FragmentSpread",
             "name": "Artwork_artwork",
             "args": null
-          },
-          v2
+          }
         ]
       }
     ]
@@ -143,28 +133,28 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "ArtworkQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artwork",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "edition_of",
+            "name": "title",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "title",
+            "name": "medium",
             "args": null,
             "storageKey": null
           },
@@ -191,7 +181,7 @@ return {
             "concreteType": "Artist",
             "plural": true,
             "selections": [
-              v3,
+              (v2/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -199,7 +189,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v2
+              (v3/*: any*/)
             ]
           },
           {
@@ -230,7 +220,7 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "medium",
+            "name": "edition_of",
             "args": null,
             "storageKey": null
           },
@@ -249,14 +239,15 @@ return {
                 "name": "short_description",
                 "args": null,
                 "storageKey": null
-              }
+              },
+              (v3/*: any*/)
             ]
           },
-          v2,
+          (v3/*: any*/),
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "_id",
+            "name": "internalID",
             "args": null,
             "storageKey": null
           },
@@ -283,13 +274,20 @@ return {
             "concreteType": "Partner",
             "plural": false,
             "selections": [
-              v3,
-              v2
+              (v2/*: any*/),
+              (v3/*: any*/)
             ]
           }
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ArtworkQuery",
+    "id": "6eb32fbe8e061b64f42935fb575fb03b",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

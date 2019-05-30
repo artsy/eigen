@@ -30,7 +30,7 @@ export class AttachmentPreview extends React.Component<Props> {
     return (
       <TouchableHighlight
         underlayColor={colors["gray-light"]}
-        onPress={onSelected && onSelected.bind(this, attachment.id)}
+        onPress={onSelected && onSelected.bind(this, attachment.internalID)}
       >
         <Container>{children}</Container>
       </TouchableHighlight>
@@ -41,7 +41,7 @@ export class AttachmentPreview extends React.Component<Props> {
 export default createFragmentContainer(AttachmentPreview, {
   attachment: graphql`
     fragment AttachmentPreview_attachment on Attachment {
-      id
+      internalID
     }
   `,
 })

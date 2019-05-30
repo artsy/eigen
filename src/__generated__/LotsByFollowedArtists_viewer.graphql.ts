@@ -1,38 +1,30 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _LotsByFollowedArtists_viewer$ref: unique symbol;
 export type LotsByFollowedArtists_viewer$ref = typeof _LotsByFollowedArtists_viewer$ref;
 export type LotsByFollowedArtists_viewer = {
-    readonly sale_artworks: ({
+    readonly sale_artworks: {
         readonly pageInfo: {
             readonly endCursor: string | null;
             readonly hasNextPage: boolean;
         };
-        readonly edges: ReadonlyArray<({
+        readonly edges: ReadonlyArray<{
             readonly cursor: string;
-            readonly node: ({
-                readonly artwork: ({
+            readonly node: {
+                readonly artwork: {
                     readonly " $fragmentRefs": GenericGrid_artworks$ref;
-                }) | null;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+                } | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": LotsByFollowedArtists_viewer$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "LotsByFollowedArtists_viewer",
   "type": "Viewer",
@@ -72,20 +64,17 @@ return {
         {
           "kind": "Literal",
           "name": "include_artworks_by_followed_artists",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         },
         {
           "kind": "Literal",
           "name": "is_auction",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         },
         {
           "kind": "Literal",
           "name": "live_sale",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         }
       ],
       "concreteType": "SaleArtworksConnection",
@@ -154,11 +143,9 @@ return {
                       "kind": "FragmentSpread",
                       "name": "GenericGrid_artworks",
                       "args": null
-                    },
-                    v0
+                    }
                   ]
                 },
-                v0,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -174,6 +161,5 @@ return {
     }
   ]
 };
-})();
 (node as any).hash = 'dcdc4bfa65bbc0cf27b7a438c8c3a5b7';
 export default node;

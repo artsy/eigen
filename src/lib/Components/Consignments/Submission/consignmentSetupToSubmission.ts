@@ -12,7 +12,7 @@ export const consignmentSetupToMutationInput = (submission: ConsignmentSetup): s
               .slice(2)
           : "ID",
       // Required fields by metaphysics
-      artist_id: submission.artist && submission.artist.id,
+      artist_id: submission.artist && submission.artist.internalID,
       // Required for updating a submission
       id: submission.submission_id,
       // Required for finalizing a submission

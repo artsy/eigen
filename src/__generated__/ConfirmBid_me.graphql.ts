@@ -1,27 +1,19 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ConfirmBid_me$ref: unique symbol;
 export type ConfirmBid_me$ref = typeof _ConfirmBid_me$ref;
 export type ConfirmBid_me = {
     readonly has_qualified_credit_cards: boolean | null;
-    readonly bidders: ReadonlyArray<({
+    readonly bidders: ReadonlyArray<{
         readonly qualified_for_bidding: boolean | null;
-    }) | null> | null;
+    } | null> | null;
     readonly " $refType": ConfirmBid_me$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ConfirmBid_me",
   "type": "Me",
@@ -50,8 +42,7 @@ return {
         {
           "kind": "Variable",
           "name": "sale_id",
-          "variableName": "saleID",
-          "type": "String"
+          "variableName": "saleID"
         }
       ],
       "concreteType": "Bidder",
@@ -63,13 +54,10 @@ return {
           "name": "qualified_for_bidding",
           "args": null,
           "storageKey": null
-        },
-        v0
+        }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
 (node as any).hash = '1b89429657eeb192da84170bb8629c15';
 export default node;

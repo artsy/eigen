@@ -1,32 +1,24 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ShowItem_show$ref } from "./ShowItem_show.graphql";
 declare const _Shows_show$ref: unique symbol;
 export type Shows_show$ref = typeof _Shows_show$ref;
 export type Shows_show = {
-    readonly nearbyShows: ({
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
-                readonly __id: string;
+    readonly nearbyShows: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly id: string;
                 readonly " $fragmentRefs": ShowItem_show$ref;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": Shows_show$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Shows_show",
   "type": "Show",
@@ -42,8 +34,7 @@ return {
         {
           "kind": "Literal",
           "name": "first",
-          "value": 20,
-          "type": "Int"
+          "value": 20
         }
       ],
       "concreteType": "ShowConnection",
@@ -67,7 +58,13 @@ return {
               "concreteType": "Show",
               "plural": false,
               "selections": [
-                v0,
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "id",
+                  "args": null,
+                  "storageKey": null
+                },
                 {
                   "kind": "FragmentSpread",
                   "name": "ShowItem_show",
@@ -78,10 +75,8 @@ return {
           ]
         }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
-(node as any).hash = '4877545048325d9b4c62f76889d5ac3d';
+(node as any).hash = '070ccc80cd85f303be399d74c690fbcb';
 export default node;

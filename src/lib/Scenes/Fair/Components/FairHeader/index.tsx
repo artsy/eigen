@@ -60,11 +60,11 @@ export class FairHeader extends React.Component<Props, State> {
   state = { isSavedFairStateUpdating: false }
 
   viewAllArtists() {
-    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/artists`)
+    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.gravityID}/artists`)
   }
 
   viewAllExhibitors() {
-    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/exhibitors`)
+    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.gravityID}/exhibitors`)
   }
 
   getContextualDetails() {
@@ -98,7 +98,7 @@ export class FairHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Gallery,
     } as any
   })
-  handleExhibitorPress(href, _slug, _id) {
+  handleExhibitorPress(href, _slug, _gravityID) {
     SwitchBoard.presentNavigationViewController(this, `${href}?entity=fair-booth`)
   }
 
@@ -113,7 +113,7 @@ export class FairHeader extends React.Component<Props, State> {
       owner_type: Schema.OwnerEntityTypes.Artist,
     } as any
   })
-  handleArtistPress(href, _slug, _id) {
+  handleArtistPress(href, _slug, _gravityID) {
     SwitchBoard.presentNavigationViewController(this, href)
   }
 
@@ -161,8 +161,8 @@ export class FairHeader extends React.Component<Props, State> {
 export const FairHeaderContainer = createFragmentContainer(FairHeader, {
   fair: graphql`
     fragment FairHeader_fair on Fair {
-      id
-      _id
+      gravityID
+      internalID
       name
       formattedOpeningHours
       counts {
@@ -173,24 +173,24 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
         artists {
           name
           href
-          id
-          _id
+          gravityID
+          internalID
         }
         galleries {
-          _id
+          internalID
           name
         }
       }
       partner_names: shows_connection(first: 2) {
         edges {
           node {
-            id
+            gravityID
             partner {
               ... on Partner {
                 profile {
                   name
-                  id
-                  _id
+                  gravityID
+                  internalID
                 }
               }
             }
@@ -202,8 +202,8 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
           node {
             name
             href
-            id
-            _id
+            gravityID
+            internalID
           }
         }
       }
@@ -216,14 +216,14 @@ export const FairHeaderContainer = createFragmentContainer(FairHeader, {
 
       profile {
         icon {
-          id
+          gravityID
           href
           height
           width
           url(version: "square140")
         }
-        __id
         id
+        gravityID
         name
         is_followed
       }

@@ -15,8 +15,6 @@ import Artwork from "./ArtworkGridItem"
 
 import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
-import { ArtistRelayProps } from "./RelayConnections/ArtistForSaleArtworksGrid"
-import { GeneRelayProps } from "./RelayConnections/GeneArtworksGrid"
 
 import { PAGE_SIZE } from "lib/data/constants"
 
@@ -32,8 +30,8 @@ import { Box, space } from "@artsy/palette"
  */
 
 interface Artwork {
-  __id: string
   id: string
+  gravityID: string
   image: {
     aspect_ratio: number | null
   } | null
@@ -48,7 +46,7 @@ interface ArtworksConnection {
   }>
 }
 
-export interface Props extends ArtistRelayProps, GeneRelayProps {
+export interface Props {
   /** The direction for the grid, currently only 'column' is supported . */
   sectionDirection?: string
 
@@ -253,14 +251,14 @@ class InfiniteScrollArtworksGrid extends React.Component<Props, State> {
         artworkComponents.push(
           <Artwork
             artwork={artwork as any}
-            key={"artwork-" + j + "-" + artwork.__id}
+            key={"artwork-" + j + "-" + artwork.id}
             onPress={this.tappedOnArtwork.bind(this)}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
         if (j < artworks.length - 1) {
           artworkComponents.push(
-            <View style={spacerStyle} key={"spacer-" + j + "-" + artwork.__id} accessibilityLabel="Spacer View" />
+            <View style={spacerStyle} key={"spacer-" + j + "-" + artwork.id} accessibilityLabel="Spacer View" />
           )
         }
       }

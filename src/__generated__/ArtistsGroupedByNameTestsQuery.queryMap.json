@@ -1,3 +1,0 @@
-{
-  "85e5839045e1e1888d2892beac30426f": "query ArtistsGroupedByNameTestsQuery {\n  artist(id: \"pablo-picasso\") {\n    ...ArtistListItem_artist\n    __id\n  }\n}\n\nfragment ArtistListItem_artist on Artist {\n  __id\n  _id\n  id\n  name\n  is_followed\n  nationality\n  birthday\n  deathday\n  image {\n    url\n  }\n}\n"
-}

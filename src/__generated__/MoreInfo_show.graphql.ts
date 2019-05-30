@@ -1,37 +1,36 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ShowEventSection_event$ref } from "./ShowEventSection_event.graphql";
 declare const _MoreInfo_show$ref: unique symbol;
 export type MoreInfo_show$ref = typeof _MoreInfo_show$ref;
 export type MoreInfo_show = {
-    readonly _id: string;
-    readonly id: string;
+    readonly internalID: string;
+    readonly gravityID: string;
     readonly exhibition_period: string | null;
     readonly pressReleaseUrl: string | null;
     readonly openingReceptionText: string | null;
     readonly partner: ({
         readonly website?: string | null;
         readonly type?: string | null;
-    }) | null;
+    } & ({
+        readonly website: string | null;
+        readonly type: string | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly press_release: string | null;
-    readonly events: ReadonlyArray<({
+    readonly events: ReadonlyArray<{
         readonly " $fragmentRefs": ShowEventSection_event$ref;
-    }) | null> | null;
+    } | null> | null;
     readonly " $refType": MoreInfo_show$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "MoreInfo_show",
   "type": "Show",
@@ -41,14 +40,14 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -82,7 +81,6 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v0,
         {
           "kind": "InlineFragment",
           "type": "Partner",
@@ -127,10 +125,8 @@ return {
           "args": null
         }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
-(node as any).hash = '01b7ea5805d12ef8925ee8235bed1885';
+(node as any).hash = 'f42f7629f5a8030c1abdbf7570830617';
 export default node;

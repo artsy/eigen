@@ -3,14 +3,14 @@
 import { ConcreteRequest } from "relay-runtime";
 export type FairBMWArtActivationTestsQueryVariables = {};
 export type FairBMWArtActivationTestsQueryResponse = {
-    readonly fair: ({
-        readonly id: string;
-        readonly _id: string;
-        readonly sponsoredContent: ({
+    readonly fair: {
+        readonly gravityID: string;
+        readonly internalID: string;
+        readonly sponsoredContent: {
             readonly activationText: string | null;
             readonly pressReleaseUrl: string | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type FairBMWArtActivationTestsQuery = {
     readonly response: FairBMWArtActivationTestsQueryResponse;
@@ -22,13 +22,13 @@ export type FairBMWArtActivationTestsQuery = {
 /*
 query FairBMWArtActivationTestsQuery {
   fair(id: "art-basel-in-miami-beach-2018") {
-    id
-    _id
+    gravityID
+    internalID
     sponsoredContent {
       activationText
       pressReleaseUrl
     }
-    __id
+    id
   }
 }
 */
@@ -36,92 +36,111 @@ query FairBMWArtActivationTestsQuery {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "fair",
-    "storageKey": "fair(id:\"art-basel-in-miami-beach-2018\")",
-    "args": [
-      {
-        "kind": "Literal",
-        "name": "id",
-        "value": "art-basel-in-miami-beach-2018",
-        "type": "String!"
-      }
-    ],
-    "concreteType": "Fair",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "id",
-        "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "_id",
-        "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "sponsoredContent",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "FairSponsoredContent",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "activationText",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "pressReleaseUrl",
-            "args": null,
-            "storageKey": null
-          }
-        ]
-      },
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "__id",
-        "args": null,
-        "storageKey": null
-      }
-    ]
+    "kind": "Literal",
+    "name": "id",
+    "value": "art-basel-in-miami-beach-2018"
   }
-];
+],
+v1 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "LinkedField",
+  "alias": null,
+  "name": "sponsoredContent",
+  "storageKey": null,
+  "args": null,
+  "concreteType": "FairSponsoredContent",
+  "plural": false,
+  "selections": [
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "activationText",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "pressReleaseUrl",
+      "args": null,
+      "storageKey": null
+    }
+  ]
+};
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FairBMWArtActivationTestsQuery",
-  "id": "67f3494bc95200964074abc58e819982",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FairBMWArtActivationTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
-    "selections": v0
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "fair",
+        "storageKey": "fair(id:\"art-basel-in-miami-beach-2018\")",
+        "args": (v0/*: any*/),
+        "concreteType": "Fair",
+        "plural": false,
+        "selections": [
+          (v1/*: any*/),
+          (v2/*: any*/),
+          (v3/*: any*/)
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "FairBMWArtActivationTestsQuery",
     "argumentDefinitions": [],
-    "selections": v0
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "fair",
+        "storageKey": "fair(id:\"art-basel-in-miami-beach-2018\")",
+        "args": (v0/*: any*/),
+        "concreteType": "Fair",
+        "plural": false,
+        "selections": [
+          (v1/*: any*/),
+          (v2/*: any*/),
+          (v3/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "id",
+            "args": null,
+            "storageKey": null
+          }
+        ]
+      }
+    ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FairBMWArtActivationTestsQuery",
+    "id": "65fba72d9701712f1d6a9902a03b9688",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '9bf6aac12ebe9a1a77935ebf4a3844ca';
+(node as any).hash = '12397aa34f48c87c16800a8f2339ae29';
 export default node;

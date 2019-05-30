@@ -54,7 +54,7 @@ export default class Artist extends React.Component<Props, State> {
     const results = await metaphysics<ArtistSearchResponse>(`
       {
         match_artist(term: "${query}") {
-          id: _id
+          internalID
           name
           image {
             url

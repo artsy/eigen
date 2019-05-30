@@ -10,13 +10,13 @@ export type FairBoothPreviewMutationVariables = {
     readonly input: FollowProfileInput;
 };
 export type FairBoothPreviewMutationResponse = {
-    readonly followProfile: ({
-        readonly profile: ({
-            readonly id: string;
-            readonly _id: string;
+    readonly followProfile: {
+        readonly profile: {
+            readonly gravityID: string;
+            readonly internalID: string;
             readonly is_followed: boolean | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type FairBoothPreviewMutation = {
     readonly response: FairBoothPreviewMutationResponse;
@@ -31,10 +31,10 @@ mutation FairBoothPreviewMutation(
 ) {
   followProfile(input: $input) {
     profile {
-      id
-      _id
+      gravityID
+      internalID
       is_followed
-      __id
+      id
     }
   }
 }
@@ -51,85 +51,115 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "followProfile",
-    "storageKey": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "input",
-        "variableName": "input",
-        "type": "FollowProfileInput!"
-      }
-    ],
-    "concreteType": "FollowProfilePayload",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "profile",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Profile",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "_id",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "is_followed",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "__id",
-            "args": null,
-            "storageKey": null
-          }
-        ]
-      }
-    ]
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_followed",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "FairBoothPreviewMutation",
-  "id": "0c1010a8dedeee8e56d6342af4e5b83e",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FairBoothPreviewMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "followProfile",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "FollowProfilePayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "profile",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Profile",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/)
+            ]
+          }
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "FairBoothPreviewMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "followProfile",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "FollowProfilePayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "profile",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Profile",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "FairBoothPreviewMutation",
+    "id": "ebf665878a41e989e0c4413303c63341",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '032e6ecdb175dc6f4a8494290f71c078';
+(node as any).hash = 'fa6170bf9c5933351a87c80ac53a55bc';
 export default node;

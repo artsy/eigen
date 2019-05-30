@@ -10,13 +10,13 @@ export type EventMutationVariables = {
     readonly input: FollowShowInput;
 };
 export type EventMutationResponse = {
-    readonly followShow: ({
-        readonly show: ({
-            readonly id: string;
-            readonly _id: string;
+    readonly followShow: {
+        readonly show: {
+            readonly gravityID: string;
+            readonly internalID: string;
             readonly is_followed: boolean | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type EventMutation = {
     readonly response: EventMutationResponse;
@@ -31,10 +31,10 @@ mutation EventMutation(
 ) {
   followShow(input: $input) {
     show {
-      id
-      _id
+      gravityID
+      internalID
       is_followed
-      __id
+      id
     }
   }
 }
@@ -51,85 +51,115 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "followShow",
-    "storageKey": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "input",
-        "variableName": "input",
-        "type": "FollowShowInput!"
-      }
-    ],
-    "concreteType": "FollowShowPayload",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "show",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Show",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "_id",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "is_followed",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "__id",
-            "args": null,
-            "storageKey": null
-          }
-        ]
-      }
-    ]
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_followed",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "EventMutation",
-  "id": "275170b9b83a34d5992948e65bc521be",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "EventMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "followShow",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "FollowShowPayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "show",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Show",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/)
+            ]
+          }
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "EventMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "followShow",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "FollowShowPayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "show",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Show",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "EventMutation",
+    "id": "ef8a1d904c06c6e1f6ca241c98f14f2c",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '20537801a49048fcb15e6efbe081a36a';
+(node as any).hash = '3045fff72da58f1d023b96d6da8d3a9a';
 export default node;

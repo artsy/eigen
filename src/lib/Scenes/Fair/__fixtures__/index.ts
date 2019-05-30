@@ -1,6 +1,6 @@
 export const fairFixture = {
-  id: "sofa-chicago-2018",
-  _id: "5aa1a9ee8b3b817c61dff02d",
+  gravityID: "sofa-chicago-2018",
+  internalID: "5aa1a9ee8b3b817c61dff02d",
   followed_content: null,
   name: "SOFA CHICAGO 2018",
   exhibition_period: "Nov 1 – 4, 2018",
@@ -14,12 +14,12 @@ export const fairFixture = {
     pressReleaseUrl: "https://www.somefair.com",
   },
   profile: {
-    id: "art-basel-in-miami-beach-2018",
-    _id: "dfdlfjfua7d8a0_",
+    gravityID: "art-basel-in-miami-beach-2018",
+    internalID: "dfdlfjfua7d8a0_",
     is_followed: false,
     name: "art-basel",
     icon: {
-      id: "58ff95298b3b8104783c119c",
+      gravityID: "58ff95298b3b8104783c119c",
       href: null,
       height: 279,
       width: 279,
@@ -29,14 +29,14 @@ export const fairFixture = {
   organizer: {
     profile: {
       icon: {
-        id: "58ff95298b3b8104783c119c",
+        gravityID: "58ff95298b3b8104783c119c",
         href: "",
         height: 279,
         width: 279,
         url: "https://d32dm0rphc51dk.cloudfront.net/B1x-CqoWO1KitQnRj7PrrA/untouched-png.png",
       },
       name: "SOFA CHICAGO",
-      __id: "UHJvZmlsZTpzb2ZhLWNoaWNhZ28=",
+      id: "UHJvZmlsZTpzb2ZhLWNoaWNhZ28=",
     },
     website: "",
   },
@@ -44,8 +44,8 @@ export const fairFixture = {
   end_at: "2018-11-04T18:00:00+00:00",
   formattedOpeningHours: "Opens Nov 1 at 5:00pm",
   location: {
-    __id: "TG9jYXRpb246NWJiNjJmMzYyYjVlN2QwMDI5ODliZDhh",
-    id: "5bb62f362b5e7d002989bd8a",
+    id: "TG9jYXRpb246NWJiNjJmMzYyYjVlN2QwMDI5ODliZDhh",
+    gravityID: "5bb62f362b5e7d002989bd8a",
     address_2: "",
     postal_code: "60611",
     summary: "Festival Hall, Navy Pier \r\n600 East Grand Avenue Chicago, IL 60611",
@@ -80,7 +80,7 @@ export const fairFixture = {
       exhibitors: [
         {
           name: "303 Gallery",
-          id: "303 Gallery",
+          gravityID: "303 Gallery",
           profile_id: "303 Gallery",
         },
       ],
@@ -88,13 +88,13 @@ export const fairFixture = {
     {
       letter: "A",
       exhibitors: [
-        { name: "Acquavella Galleries", id: "Acquavella Galleries", profile_id: "Acquavella Galleries" },
-        { name: "Alan Cristea Gallery", id: "Alan Cristea Gallery", profile_id: "Alan Cristea Gallery" },
-        { name: "Alfonso Artiaco", id: "Alfonso Artiaco", profile_id: "Alfonso Artiaco" },
-        { name: "Altman Siegel", id: "Altman Siegel", profile_id: "Altman Siegel" },
-        { name: "Anat Ebgi", id: "Anat Ebgi", profile_id: "Anat Ebgi" },
-        { name: "Annely Juda Fine Art", id: "Annely Juda Fine Art", profile_id: "Annely Juda Fine Art" },
-        { name: "Anton Kern Gallery", id: "Anton Kern Gallery", profile_id: "Anton Kern Gallery" },
+        { name: "Acquavella Galleries", gravityID: "Acquavella Galleries", profile_id: "Acquavella Galleries" },
+        { name: "Alan Cristea Gallery", gravityID: "Alan Cristea Gallery", profile_id: "Alan Cristea Gallery" },
+        { name: "Alfonso Artiaco", gravityID: "Alfonso Artiaco", profile_id: "Alfonso Artiaco" },
+        { name: "Altman Siegel", gravityID: "Altman Siegel", profile_id: "Altman Siegel" },
+        { name: "Anat Ebgi", gravityID: "Anat Ebgi", profile_id: "Anat Ebgi" },
+        { name: "Annely Juda Fine Art", gravityID: "Annely Juda Fine Art", profile_id: "Annely Juda Fine Art" },
+        { name: "Anton Kern Gallery", gravityID: "Anton Kern Gallery", profile_id: "Anton Kern Gallery" },
       ],
     },
     {
@@ -259,7 +259,7 @@ export const fairFixture = {
       edges: [
         {
           node: {
-            id: "watanabe-chiaki-links",
+            gravityID: "watanabe-chiaki-links",
             title: "Links",
             date: "2018",
             sale_message: "Sold",
@@ -285,7 +285,7 @@ export const fairFixture = {
         },
         {
           node: {
-            id: "dylan-martinez-water-bag-number-34",
+            gravityID: "dylan-martinez-water-bag-number-34",
             title: "Water Bag #34",
             date: "2018",
             sale_message: "$1,800",
@@ -311,7 +311,7 @@ export const fairFixture = {
         },
         {
           node: {
-            id: "dylan-martinez-water-bag-number-23",
+            gravityID: "dylan-martinez-water-bag-number-23",
             title: "Water Bag #23",
             date: "2018",
             sale_message: "$1,800",
@@ -337,7 +337,7 @@ export const fairFixture = {
         },
         {
           node: {
-            id: "dylan-martinez-water-bag-number-32",
+            gravityID: "dylan-martinez-water-bag-number-32",
             title: "Water Bag #32",
             date: "2018",
             sale_message: "$1,800",
@@ -363,7 +363,7 @@ export const fairFixture = {
         },
         {
           node: {
-            id: "dylan-martinez-mach-2",
+            gravityID: "dylan-martinez-mach-2",
             title: "Mach 2",
             date: "2018",
             sale_message: "$12,000",
@@ -389,7 +389,7 @@ export const fairFixture = {
         },
         {
           node: {
-            id: "dylan-martinez-water-bag-trio",
+            gravityID: "dylan-martinez-water-bag-trio",
             title: "Water Bag Trio",
             date: "2018",
             sale_message: "$5,400",
@@ -421,9 +421,9 @@ export const fairFixture = {
       {
         node: {
           href: "/tamas",
-          id: "tamas-abel",
-          _id: "1232222245",
-          __id: "QXJ0aXN0OnRhbWFzLWFiZWw=",
+          gravityID: "tamas-abel",
+          internalID: "1232222245",
+          id: "QXJ0aXN0OnRhbWFzLWFiZWw=",
           name: "Tamás Ábel",
           is_followed: false,
           nationality: "Hungarian",
@@ -437,9 +437,9 @@ export const fairFixture = {
       {
         node: {
           href: "/charlie",
-          id: "charlie-aldrich",
-          _id: "12347775",
-          __id: "QXJ0aXN0OmNoYXJsaWUtYWxkcmljaA==",
+          gravityID: "charlie-aldrich",
+          internalID: "12347775",
+          id: "QXJ0aXN0OmNoYXJsaWUtYWxkcmljaA==",
           name: "Charlie Aldrich",
           is_followed: false,
           nationality: "United States",
@@ -453,9 +453,9 @@ export const fairFixture = {
       {
         node: {
           href: "/rik",
-          id: "rik-allen",
-          _id: "123477750000000000",
-          __id: "QXJ0aXN0OnJpay1hbGxlbg==",
+          gravityID: "rik-allen",
+          internalID: "123477750000000000",
+          id: "QXJ0aXN0OnJpay1hbGxlbg==",
           name: "Rik Allen",
           is_followed: false,
           nationality: "",
@@ -469,9 +469,9 @@ export const fairFixture = {
       {
         node: {
           href: "/jean",
-          id: "jean-luc-almond",
-          _id: "1232222245111",
-          __id: "QXJ0aXN0OmplYW4tbHVjLWFsbW9uZA==",
+          gravityID: "jean-luc-almond",
+          internalID: "1232222245111",
+          id: "QXJ0aXN0OmplYW4tbHVjLWFsbW9uZA==",
           name: "Jean-Luc Almond",
           is_followed: false,
           nationality: "English",
@@ -485,9 +485,9 @@ export const fairFixture = {
       {
         node: {
           href: "/amador",
-          id: "amador",
-          _id: "123222224588888",
-          __id: "QXJ0aXN0OmFtYWRvcg==",
+          gravityID: "amador",
+          internalID: "123222224588888",
+          id: "QXJ0aXN0OmFtYWRvcg==",
           name: "Amador",
           is_followed: false,
           nationality: "Spanish",
@@ -500,31 +500,33 @@ export const fairFixture = {
       },
     ],
   },
-  __id: "RmFpcjpzb2ZhLWNoaWNhZ28tMjAxOA==",
+  id: "RmFpcjpzb2ZhLWNoaWNhZ28tMjAxOA==",
   shows_connection: {
     edges: [
       {
         node: {
+          gravityID: "spruth-magers",
           partner: {
             __typename: "Partner",
             profile: {
-              id: "spruth-magers",
+              gravityID: "spruth-magers",
               href: "/spruth-magers",
               name: "Sprüth Magers",
-              _id: "123456",
+              internalID: "123456",
             },
           },
         },
       },
       {
         node: {
+          gravityID: "cardi-gallery",
           partner: {
             __typename: "Partner",
             profile: {
-              id: "cardi-gallery",
+              gravityID: "cardi-gallery",
               href: "/cardi-gallery",
               name: "CARDI GALLERY",
-              _id: "1234562",
+              internalID: "1234562",
             },
           },
         },
@@ -542,42 +544,43 @@ export const fairFixture = {
       {
         cursor: "YXJyYXljb25uZWN0aW9uOjA=",
         node: {
-          id: "steidel-contemporary-steidel-contemporary-at-sofa-chicago-2018",
-          _id: "111",
+          gravityID: "steidel-contemporary-steidel-contemporary-at-sofa-chicago-2018",
+          internalID: "111",
           counts: {
             artworks: 4,
           },
           name: "Steidel Contemporary at SOFA CHICAGO 2018",
           is_fair_booth: true,
           partner: {
-            __id: "UGFydG5lcjpzdGVpZGVsLWNvbnRlbXBvcmFyeQ==",
-            _id: "123123123123123123123",
+            id: "UGFydG5lcjpzdGVpZGVsLWNvbnRlbXBvcmFyeQ==",
+            internalID: "123123123123123123123",
+            gravityID: "steidel-contemporary",
             name: "Steidel Contemporary",
             href: "http://www.stei.com",
             profile: {
               is_followed: false,
-              _id: "1231231231",
+              internalID: "1231231231",
             },
           },
           fair: {
             name: "SOFA CHICAGO 2018",
-            __id: "RmFpcjpzb2ZhLWNoaWNhZ28tMjAxOA==",
+            id: "RmFpcjpzb2ZhLWNoaWNhZ28tMjAxOA==",
           },
           cover_image: {
             url: "https://d32dm0rphc51dk.cloudfront.net/nltwPbizCU7VKKrjmEiqUA/medium.jpg",
           },
           location: {
             display: "Booth B32",
-            __id: "TG9jYXRpb246NWI5ODIwNjU0OTUzZjEwMDA1ZjY5ZTBh",
+            id: "TG9jYXRpb246NWI5ODIwNjU0OTUzZjEwMDA1ZjY5ZTBh",
           },
           profile: {
-            id: "art-basel-in-miami-beach-2018",
+            gravityID: "art-basel-in-miami-beach-2018",
           },
           artworks_connection: {
             edges: [
               {
                 node: {
-                  id: "christine-flynn-costa-rica-palms-1",
+                  gravityID: "christine-flynn-costa-rica-palms-1",
                   title: "Costa Rica Palms",
                   date: "2018",
                   sale_message: "£2,500 - 5,000",
@@ -590,13 +593,13 @@ export const fairFixture = {
                   href: "/artwork/christine-flynn-costa-rica-palms-1",
                   artists: [
                     {
-                      id: "christine-flynn-1",
+                      gravityID: "christine-flynn-1",
                       name: "Christine Flynn",
                     },
                   ],
                   partner: {
-                    id: "kahn-gallery",
-                    _id: "58d3ac7dc9dc241448f6ec7c",
+                    gravityID: "kahn-gallery",
+                    internalID: "58d3ac7dc9dc241448f6ec7c",
                     name: "Kahn Gallery",
                   },
                   image: {
@@ -607,7 +610,7 @@ export const fairFixture = {
               },
               {
                 node: {
-                  id: "reinhard-gorner-palacio-nacional-de-mafra-portugal",
+                  gravityID: "reinhard-gorner-palacio-nacional-de-mafra-portugal",
                   title: "Palacio Nacional de Mafra, Portugal",
                   date: "2016",
                   sale_message: "$5,500",
@@ -620,13 +623,13 @@ export const fairFixture = {
                   href: "/artwork/reinhard-gorner-palacio-nacional-de-mafra-portugal",
                   artists: [
                     {
-                      id: "reinhard-gorner",
+                      gravityID: "reinhard-gorner",
                       name: "Reinhard Gorner",
                     },
                   ],
                   partner: {
-                    id: "kahn-gallery",
-                    _id: "58d3ac7dc9dc241448f6ec7c",
+                    gravityID: "kahn-gallery",
+                    internalID: "58d3ac7dc9dc241448f6ec7c",
                     name: "Kahn Gallery",
                   },
                   image: {
@@ -637,7 +640,7 @@ export const fairFixture = {
               },
               {
                 node: {
-                  id: "elisabeth-lecourt-ma-poupee-de-cire-en-fanfaron-nepal",
+                  gravityID: "elisabeth-lecourt-ma-poupee-de-cire-en-fanfaron-nepal",
                   title: "Ma Poupée de Cire en Fanfaron Népal",
                   date: "2018",
                   sale_message: "Sold",
@@ -650,13 +653,13 @@ export const fairFixture = {
                   href: "/artwork/elisabeth-lecourt-ma-poupee-de-cire-en-fanfaron-nepal",
                   artists: [
                     {
-                      id: "elisabeth-lecourt",
+                      gravityID: "elisabeth-lecourt",
                       name: "Elisabeth LECOURT",
                     },
                   ],
                   partner: {
-                    id: "kahn-gallery",
-                    _id: "58d3ac7dc9dc241448f6ec7c",
+                    gravityID: "kahn-gallery",
+                    internalID: "58d3ac7dc9dc241448f6ec7c",
                     name: "Kahn Gallery",
                   },
                   image: {
@@ -667,7 +670,7 @@ export const fairFixture = {
               },
               {
                 node: {
-                  id: "damien-gard-au-travers-des-siecles-1",
+                  gravityID: "damien-gard-au-travers-des-siecles-1",
                   title: "Au Travers des Siècles",
                   date: "2017",
                   sale_message: "£2,500 - 5,000",
@@ -680,13 +683,13 @@ export const fairFixture = {
                   href: "/artwork/damien-gard-au-travers-des-siecles-1",
                   artists: [
                     {
-                      id: "damien-gard",
+                      gravityID: "damien-gard",
                       name: "Damien Gard",
                     },
                   ],
                   partner: {
-                    id: "kahn-gallery",
-                    _id: "58d3ac7dc9dc241448f6ec7c",
+                    gravityID: "kahn-gallery",
+                    internalID: "58d3ac7dc9dc241448f6ec7c",
                     name: "Kahn Gallery",
                   },
                   image: {
@@ -697,7 +700,7 @@ export const fairFixture = {
               },
             ],
           },
-          __id: "U2hvdzpzdGVpZGVsLWNvbnRlbXBvcmFyeS1zdGVpZGVsLWNvbnRlbXBvcmFyeS1hdC1zb2ZhLWNoaWNhZ28tMjAxOA==",
+          id: "U2hvdzpzdGVpZGVsLWNvbnRlbXBvcmFyeS1zdGVpZGVsLWNvbnRlbXBvcmFyeS1hdC1zb2ZhLWNoaWNhZ28tMjAxOA==",
           __typename: "Show",
         },
       },

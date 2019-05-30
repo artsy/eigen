@@ -1,90 +1,83 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { FairBoothPreview_show$ref } from "./FairBoothPreview_show.graphql";
 import { FairHeader_fair$ref } from "./FairHeader_fair.graphql";
 import { LocationMap_location$ref } from "./LocationMap_location.graphql";
 declare const _FairDetail_fair$ref: unique symbol;
 export type FairDetail_fair$ref = typeof _FairDetail_fair$ref;
 export type FairDetail_fair = {
-    readonly id: string;
-    readonly _id: string;
+    readonly gravityID: string;
+    readonly internalID: string;
     readonly name: string | null;
     readonly hours: string | null;
     readonly isActive: boolean | null;
-    readonly location: ({
-        readonly coordinates: ({
+    readonly location: {
+        readonly coordinates: {
             readonly lat: number | null;
             readonly lng: number | null;
-        }) | null;
+        } | null;
         readonly " $fragmentRefs": LocationMap_location$ref;
-    }) | null;
-    readonly organizer: ({
+    } | null;
+    readonly organizer: {
         readonly website: string | null;
-    }) | null;
+    } | null;
     readonly about: string | null;
     readonly ticketsLink: string | null;
-    readonly profile: ({
+    readonly profile: {
         readonly name: string | null;
-    }) | null;
-    readonly sponsoredContent: ({
+    } | null;
+    readonly sponsoredContent: {
         readonly activationText: string | null;
         readonly pressReleaseUrl: string | null;
-    }) | null;
-    readonly shows: ({
+    } | null;
+    readonly shows: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
             readonly startCursor: string | null;
             readonly endCursor: string | null;
         };
-        readonly edges: ReadonlyArray<({
+        readonly edges: ReadonlyArray<{
             readonly cursor: string;
-            readonly node: ({
-                readonly id: string;
-                readonly _id: string;
-                readonly artworks_connection: ({
-                    readonly edges: ReadonlyArray<({
-                        readonly node: ({
-                            readonly id: string;
-                        }) | null;
-                    }) | null> | null;
-                }) | null;
+            readonly node: {
+                readonly gravityID: string;
+                readonly internalID: string;
+                readonly artworks_connection: {
+                    readonly edges: ReadonlyArray<{
+                        readonly node: {
+                            readonly gravityID: string;
+                        } | null;
+                    } | null> | null;
+                } | null;
                 readonly " $fragmentRefs": FairBoothPreview_show$ref;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $fragmentRefs": FairHeader_fair$ref;
     readonly " $refType": FairDetail_fair$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "name",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
+  "name": "name",
   "args": null,
   "storageKey": null
 };
@@ -119,31 +112,9 @@ return {
     }
   ],
   "selections": [
-    {
-      "kind": "LinkedField",
-      "alias": null,
-      "name": "organizer",
-      "storageKey": null,
-      "args": null,
-      "concreteType": "organizer",
-      "plural": false,
-      "selections": [
-        {
-          "kind": "ScalarField",
-          "alias": null,
-          "name": "website",
-          "args": null,
-          "storageKey": null
-        }
-      ]
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "FairHeader_fair",
-      "args": null
-    },
-    v0,
-    v1,
+    (v0/*: any*/),
+    (v1/*: any*/),
+    (v2/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -167,11 +138,6 @@ return {
       "concreteType": "Location",
       "plural": false,
       "selections": [
-        {
-          "kind": "FragmentSpread",
-          "name": "LocationMap_location",
-          "args": null
-        },
         {
           "kind": "LinkedField",
           "alias": null,
@@ -197,10 +163,31 @@ return {
             }
           ]
         },
-        v2
+        {
+          "kind": "FragmentSpread",
+          "name": "LocationMap_location",
+          "args": null
+        }
       ]
     },
-    v3,
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "name": "organizer",
+      "storageKey": null,
+      "args": null,
+      "concreteType": "organizer",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "website",
+          "args": null,
+          "storageKey": null
+        }
+      ]
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -224,8 +211,7 @@ return {
       "concreteType": "Profile",
       "plural": false,
       "selections": [
-        v1,
-        v2
+        (v2/*: any*/)
       ]
     },
     {
@@ -319,8 +305,8 @@ return {
               "concreteType": "Show",
               "plural": false,
               "selections": [
-                v3,
-                v0,
+                (v0/*: any*/),
+                (v1/*: any*/),
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -330,8 +316,7 @@ return {
                     {
                       "kind": "Literal",
                       "name": "first",
-                      "value": 4,
-                      "type": "Int"
+                      "value": 4
                     }
                   ],
                   "concreteType": "ArtworkConnection",
@@ -355,8 +340,7 @@ return {
                           "concreteType": "Artwork",
                           "plural": false,
                           "selections": [
-                            v3,
-                            v2
+                            (v0/*: any*/)
                           ]
                         }
                       ]
@@ -364,17 +348,16 @@ return {
                   ]
                 },
                 {
-                  "kind": "FragmentSpread",
-                  "name": "FairBoothPreview_show",
-                  "args": null
-                },
-                v2,
-                {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "__typename",
                   "args": null,
                   "storageKey": null
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "FairBoothPreview_show",
+                  "args": null
                 }
               ]
             }
@@ -382,9 +365,13 @@ return {
         }
       ]
     },
-    v2
+    {
+      "kind": "FragmentSpread",
+      "name": "FairHeader_fair",
+      "args": null
+    }
   ]
 };
 })();
-(node as any).hash = 'd82de16039d531467008dc6530845f72';
+(node as any).hash = '21bcee8ba13095494831a355104f2ba9';
 export default node;

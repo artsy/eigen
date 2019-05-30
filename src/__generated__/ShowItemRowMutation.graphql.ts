@@ -10,13 +10,13 @@ export type ShowItemRowMutationVariables = {
     readonly input: FollowShowInput;
 };
 export type ShowItemRowMutationResponse = {
-    readonly followShow: ({
-        readonly show: ({
-            readonly id: string;
-            readonly _id: string;
+    readonly followShow: {
+        readonly show: {
+            readonly gravityID: string;
+            readonly internalID: string;
             readonly is_followed: boolean | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type ShowItemRowMutation = {
     readonly response: ShowItemRowMutationResponse;
@@ -31,10 +31,10 @@ mutation ShowItemRowMutation(
 ) {
   followShow(input: $input) {
     show {
-      id
-      _id
+      gravityID
+      internalID
       is_followed
-      __id
+      id
     }
   }
 }
@@ -51,85 +51,115 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "followShow",
-    "storageKey": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "input",
-        "variableName": "input",
-        "type": "FollowShowInput!"
-      }
-    ],
-    "concreteType": "FollowShowPayload",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "show",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "Show",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "id",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "_id",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "is_followed",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "__id",
-            "args": null,
-            "storageKey": null
-          }
-        ]
-      }
-    ]
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "internalID",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "is_followed",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "ShowItemRowMutation",
-  "id": "41099fe5256606887fd639535958740c",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ShowItemRowMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "followShow",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "FollowShowPayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "show",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Show",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/)
+            ]
+          }
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "ShowItemRowMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "followShow",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "FollowShowPayload",
+        "plural": false,
+        "selections": [
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "show",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Show",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              (v4/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "ShowItemRowMutation",
+    "id": "9cce1a5eda2827ba078041e835ccabcc",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '54b6bed6b94620fd28756195eb00222f';
+(node as any).hash = 'ef0b3dc2785b7af03a066afbe891134b';
 export default node;

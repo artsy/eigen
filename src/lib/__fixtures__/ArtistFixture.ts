@@ -1,6 +1,6 @@
 export const ArtistFixture = {
-  id: "pablo-picasso",
-  __id: "QXJ0aXN0OnBhYmxvLXBpY2Fzc28=",
+  gravityID: "pablo-picasso",
+  id: "QXJ0aXN0OnBhYmxvLXBpY2Fzc28=",
   name: "Pablo Picasso",
   is_followed: false,
   nationality: "Spanish",

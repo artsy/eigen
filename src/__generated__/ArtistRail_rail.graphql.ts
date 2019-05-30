@@ -1,27 +1,27 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtistCard_artist$ref } from "./ArtistCard_artist.graphql";
 declare const _ArtistRail_rail$ref: unique symbol;
 export type ArtistRail_rail$ref = typeof _ArtistRail_rail$ref;
 export type ArtistRail_rail = {
-    readonly __id: string;
+    readonly id: string;
     readonly key: string | null;
-    readonly results: ReadonlyArray<({
-        readonly _id: string;
-        readonly __id: string;
+    readonly results: ReadonlyArray<{
+        readonly internalID: string;
+        readonly id: string;
         readonly " $fragmentRefs": ArtistCard_artist$ref;
-    }) | null> | null;
+    } | null> | null;
     readonly " $refType": ArtistRail_rail$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -32,7 +32,7 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
-    v0,
+    (v0/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -52,11 +52,11 @@ return {
         {
           "kind": "ScalarField",
           "alias": null,
-          "name": "_id",
+          "name": "internalID",
           "args": null,
           "storageKey": null
         },
-        v0,
+        (v0/*: any*/),
         {
           "kind": "FragmentSpread",
           "name": "ArtistCard_artist",
@@ -67,5 +67,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '2a2967494647d65d747400f084690b7e';
+(node as any).hash = '834ab0d3fd94bf2132231c51d2b699cb';
 export default node;

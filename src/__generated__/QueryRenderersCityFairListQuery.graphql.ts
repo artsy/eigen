@@ -6,9 +6,9 @@ export type QueryRenderersCityFairListQueryVariables = {
     readonly citySlug: string;
 };
 export type QueryRenderersCityFairListQueryResponse = {
-    readonly city: ({
+    readonly city: {
         readonly " $fragmentRefs": CityFairList_city$ref;
-    }) | null;
+    } | null;
 };
 export type QueryRenderersCityFairListQuery = {
     readonly response: QueryRenderersCityFairListQueryResponse;
@@ -31,7 +31,7 @@ fragment CityFairList_city on City {
   fairs(first: 20, after: "", status: CURRENT, sort: START_AT_ASC) {
     edges {
       node {
-        id
+        gravityID
         name
         exhibition_period
         counts {
@@ -42,7 +42,7 @@ fragment CityFairList_city on City {
             lat
             lng
           }
-          __id
+          id
         }
         image {
           image_url
@@ -51,19 +51,19 @@ fragment CityFairList_city on City {
         }
         profile {
           icon {
-            id
+            gravityID
             href
             height
             width
             url(version: "square140")
           }
-          __id
           id
+          gravityID
           name
         }
         start_at
         end_at
-        __id
+        id
         __typename
       }
       cursor
@@ -89,21 +89,35 @@ v1 = [
   {
     "kind": "Variable",
     "name": "slug",
-    "variableName": "citySlug",
-    "type": "String"
+    "variableName": "citySlug"
   }
 ],
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "id",
-  "args": null,
-  "storageKey": null
-},
+v2 = [
+  {
+    "kind": "Literal",
+    "name": "after",
+    "value": ""
+  },
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 20
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "START_AT_ASC"
+  },
+  {
+    "kind": "Literal",
+    "name": "status",
+    "value": "CURRENT"
+  }
+],
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -113,27 +127,29 @@ v4 = {
   "name": "name",
   "args": null,
   "storageKey": null
+},
+v5 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "QueryRenderersCityFairListQuery",
-  "id": "a925a2a159967b2440093e0dc03fe9e2",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "QueryRenderersCityFairListQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "city",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "City",
         "plural": false,
         "selections": [
@@ -149,14 +165,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "QueryRenderersCityFairListQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "city",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "City",
         "plural": false,
         "selections": [
@@ -172,32 +188,7 @@ return {
             "alias": null,
             "name": "fairs",
             "storageKey": "fairs(after:\"\",first:20,sort:\"START_AT_ASC\",status:\"CURRENT\")",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "after",
-                "value": "",
-                "type": "String"
-              },
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 20,
-                "type": "Int"
-              },
-              {
-                "kind": "Literal",
-                "name": "sort",
-                "value": "START_AT_ASC",
-                "type": "FairSorts"
-              },
-              {
-                "kind": "Literal",
-                "name": "status",
-                "value": "CURRENT",
-                "type": "EventStatus"
-              }
-            ],
+            "args": (v2/*: any*/),
             "concreteType": "FairConnection",
             "plural": false,
             "selections": [
@@ -219,39 +210,8 @@ return {
                     "concreteType": "Fair",
                     "plural": false,
                     "selections": [
-                      {
-                        "kind": "LinkedField",
-                        "alias": null,
-                        "name": "image",
-                        "storageKey": null,
-                        "args": null,
-                        "concreteType": "Image",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "image_url",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "aspect_ratio",
-                            "args": null,
-                            "storageKey": null
-                          },
-                          {
-                            "kind": "ScalarField",
-                            "alias": null,
-                            "name": "url",
-                            "args": null,
-                            "storageKey": null
-                          }
-                        ]
-                      },
-                      v2,
+                      (v3/*: any*/),
+                      (v4/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -311,10 +271,41 @@ return {
                               }
                             ]
                           },
-                          v3
+                          (v5/*: any*/)
                         ]
                       },
-                      v4,
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "name": "image",
+                        "storageKey": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "image_url",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "aspect_ratio",
+                            "args": null,
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "name": "url",
+                            "args": null,
+                            "storageKey": null
+                          }
+                        ]
+                      },
                       {
                         "kind": "LinkedField",
                         "alias": null,
@@ -333,7 +324,7 @@ return {
                             "concreteType": "Image",
                             "plural": false,
                             "selections": [
-                              v2,
+                              (v3/*: any*/),
                               {
                                 "kind": "ScalarField",
                                 "alias": null,
@@ -363,17 +354,16 @@ return {
                                   {
                                     "kind": "Literal",
                                     "name": "version",
-                                    "value": "square140",
-                                    "type": "[String]"
+                                    "value": "square140"
                                   }
                                 ],
                                 "storageKey": "url(version:\"square140\")"
                               }
                             ]
                           },
-                          v3,
-                          v2,
-                          v4
+                          (v5/*: any*/),
+                          (v3/*: any*/),
+                          (v4/*: any*/)
                         ]
                       },
                       {
@@ -390,7 +380,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v3,
+                      (v5/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -440,32 +430,7 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "fairs",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "after",
-                "value": "",
-                "type": "String"
-              },
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 20,
-                "type": "Int"
-              },
-              {
-                "kind": "Literal",
-                "name": "sort",
-                "value": "START_AT_ASC",
-                "type": "FairSorts"
-              },
-              {
-                "kind": "Literal",
-                "name": "status",
-                "value": "CURRENT",
-                "type": "EventStatus"
-              }
-            ],
+            "args": (v2/*: any*/),
             "handle": "connection",
             "key": "CityFairList_fairs",
             "filters": [
@@ -476,6 +441,13 @@ return {
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "QueryRenderersCityFairListQuery",
+    "id": "5fe8405fd30d97b2f3a5b8d4a4436688",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

@@ -36,8 +36,8 @@ const track: Track<Props, State> = _track
 @screenTrack<Props>(props => ({
   context_screen: Schema.PageNames.FairPage,
   context_screen_owner_type: Schema.OwnerEntityTypes.Fair,
-  context_screen_owner_slug: props.fair.id,
-  context_screen_owner_id: props.fair._id,
+  context_screen_owner_slug: props.fair.gravityID,
+  context_screen_owner_id: props.fair.internalID,
 }))
 export class FairDetail extends React.Component<Props, State> {
   state: State = {
@@ -99,14 +99,14 @@ export class FairDetail extends React.Component<Props, State> {
       sections.push({
         type: "artistsExhibitorsWorks",
         data: {
-          fairID: fair.id,
+          fairID: fair.gravityID,
         },
       })
       sections.push({
         type: "search",
         data: {
-          id: fair.id,
-          _id: fair._id,
+          id: fair.gravityID,
+          internalID: fair.internalID,
         },
       })
 
@@ -141,12 +141,12 @@ export class FairDetail extends React.Component<Props, State> {
     if (shouldGoStraightToWebsite(this.props.fair)) {
       SwitchBoard.presentNavigationViewController(this, this.props.fair.organizer.website)
     } else {
-      SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/info`)
+      SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.gravityID}/info`)
     }
   }
 
   onViewBMWArtActivationPressed = () => {
-    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/bmw-sponsored-content`)
+    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.gravityID}/bmw-sponsored-content`)
   }
 
   renderItem = ({ item: { data, type, showIndex } }) => {
@@ -246,7 +246,7 @@ function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTyp
   return props => ({
     action_name: actionName,
     action_type: actionType,
-    owner_id: props.fair._id,
+    owner_id: props.fair.internalID,
     owner_slug: props.fair.id,
     owner_type: Schema.OwnerEntityTypes.Fair,
   })
@@ -259,8 +259,8 @@ export const FairDetailContainer = createPaginationContainer(
       fragment FairDetail_fair on Fair
         @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String" }) {
         ...FairHeader_fair
-        id
-        _id
+        gravityID
+        internalID
         name
         hours
         isActive
@@ -293,12 +293,12 @@ export const FairDetailContainer = createPaginationContainer(
           edges {
             cursor
             node {
-              id
-              _id
+              gravityID
+              internalID
               artworks_connection(first: 4) {
                 edges {
                   node {
-                    id
+                    gravityID
                   }
                 }
               }
@@ -322,7 +322,7 @@ export const FairDetailContainer = createPaginationContainer(
     },
     getVariables(props, { count, cursor }, { filter }) {
       return {
-        id: props.fair.id,
+        id: props.fair.internalID,
         count,
         cursor,
         filter,

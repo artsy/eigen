@@ -34,7 +34,7 @@ describe("concerning selection handling", () => {
 
 const artwork = {
   id: "bradley-theodore-karl-and-anna-face-off-diptych",
-  _id: "mongoID",
+  internalID: "mongoID",
   href: "/artwork/bradley-theodore-karl-and-anna-face-off-diptych",
   title: "Karl and Anna Face Off (Diptych)",
   date: "2016",

@@ -17,7 +17,7 @@ describe("getSubjectArtist", () => {
     const props = getProps({
       followedArtistContext: {
         artist: {
-          _id: "banksy",
+          internalID: "banksy",
           id: "banksy",
         },
       },
@@ -30,7 +30,7 @@ describe("getSubjectArtist", () => {
     const props = getProps({
       relatedArtistContext: {
         artist: {
-          _id: "banksy",
+          internalID: "banksy",
           id: "banksy",
         },
       },

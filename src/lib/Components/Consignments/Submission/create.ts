@@ -13,7 +13,7 @@ export const createADraftSubmission = async (submission: ConsignmentSetup) => {
   const query = `mutation {
     createConsignmentSubmission(input:${input}) {
       consignment_submission {
-        id
+        internalID
       }
     }
   }`

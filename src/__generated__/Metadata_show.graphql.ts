@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _Metadata_show$ref: unique symbol;
 export type Metadata_show$ref = typeof _Metadata_show$ref;
 export type Metadata_show = {
@@ -9,29 +9,22 @@ export type Metadata_show = {
     readonly exhibition_period: string | null;
     readonly status_update: string | null;
     readonly status: string | null;
-    readonly partner: ({
+    readonly partner: {
         readonly name: string | null;
-    }) | null;
-    readonly location: ({
+    } | null;
+    readonly location: {
         readonly city: string | null;
-    }) | null;
+    } | null;
     readonly " $refType": Metadata_show$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
   "args": null,
   "storageKey": null
 };
@@ -49,7 +42,7 @@ return {
       "args": null,
       "storageKey": null
     },
-    v0,
+    (v0/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -80,8 +73,7 @@ return {
       "concreteType": "Partner",
       "plural": false,
       "selections": [
-        v0,
-        v1
+        (v0/*: any*/)
       ]
     },
     {
@@ -99,11 +91,9 @@ return {
           "name": "city",
           "args": null,
           "storageKey": null
-        },
-        v1
+        }
       ]
-    },
-    v1
+    }
   ]
 };
 })();

@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { SelectMaxBid_sale_artwork$ref } from "./SelectMaxBid_sale_artwork.graphql";
 declare const _BidFlow_sale_artwork$ref: unique symbol;
 export type BidFlow_sale_artwork$ref = typeof _BidFlow_sale_artwork$ref;
@@ -11,7 +11,7 @@ export type BidFlow_sale_artwork = {
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "BidFlow_sale_artwork",
   "type": "SaleArtwork",
@@ -22,13 +22,6 @@ const node: ConcreteFragment = {
       "kind": "FragmentSpread",
       "name": "SelectMaxBid_sale_artwork",
       "args": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "__id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };

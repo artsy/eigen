@@ -1,3 +1,0 @@
-{
-  "1ee30e440ff6548ca9cf3a9e15a76f7c": "query MockRelayRendererFixturesArtistQuery(\n  $id: String!\n) {\n  artist(id: $id) {\n    ...MockRelayRendererFixtures_artist\n    __id\n  }\n}\n\nfragment MockRelayRendererFixtures_artist on Artist {\n  name\n  __id\n}\n"
-}

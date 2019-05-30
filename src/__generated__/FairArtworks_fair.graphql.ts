@@ -1,30 +1,22 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { FilteredInfiniteScrollGrid_filteredArtworks$ref } from "./FilteredInfiniteScrollGrid_filteredArtworks.graphql";
 declare const _FairArtworks_fair$ref: unique symbol;
 export type FairArtworks_fair$ref = typeof _FairArtworks_fair$ref;
 export type FairArtworks_fair = {
-    readonly __id: string;
-    readonly _id: string;
     readonly id: string;
-    readonly artworks: ({
+    readonly internalID: string;
+    readonly gravityID: string;
+    readonly artworks: {
         readonly " $fragmentRefs": FilteredInfiniteScrollGrid_filteredArtworks$ref;
-    }) | null;
+    } | null;
     readonly " $refType": FairArtworks_fair$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "FairArtworks_fair",
   "type": "Fair",
@@ -44,18 +36,24 @@ return {
     }
   ],
   "selections": [
-    v0,
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -72,26 +70,22 @@ return {
             "MEDIUM",
             "PRICE_RANGE",
             "TOTAL"
-          ],
-          "type": "[ArtworkAggregation]"
+          ]
         },
         {
           "kind": "Variable",
           "name": "medium",
-          "variableName": "medium",
-          "type": "String"
+          "variableName": "medium"
         },
         {
           "kind": "Variable",
           "name": "price_range",
-          "variableName": "price_range",
-          "type": "String"
+          "variableName": "price_range"
         },
         {
           "kind": "Literal",
           "name": "size",
-          "value": 0,
-          "type": "Int"
+          "value": 0
         }
       ],
       "concreteType": "FilterArtworks",
@@ -101,12 +95,10 @@ return {
           "kind": "FragmentSpread",
           "name": "FilteredInfiniteScrollGrid_filteredArtworks",
           "args": null
-        },
-        v0
+        }
       ]
     }
   ]
 };
-})();
-(node as any).hash = '0977778a951a1d28b1ae16e0c477cb94';
+(node as any).hash = '83770f45f03b4b01ac566a4d67eadf27';
 export default node;

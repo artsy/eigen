@@ -149,7 +149,7 @@ describe("when pressing register button", () => {
       expect.objectContaining({
         variables: {
           input: {
-            sale_id: sale.id,
+            sale_id: sale.gravityID,
           },
         },
       })
@@ -520,7 +520,7 @@ const stripeToken = {
 }
 
 const sale = {
-  id: "sale-id",
+  gravityID: "sale-id",
   live_start_at: "2029-06-11T01:00:00+00:00",
   end_at: null,
   name: "Phillips New Now",

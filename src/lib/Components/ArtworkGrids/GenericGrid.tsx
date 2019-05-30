@@ -37,7 +37,7 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
   width = 0
 
   tappedOnArtwork = (artworkID: string) => {
-    const allArtworkIDs = this.props.artworks.map(a => a.id)
+    const allArtworkIDs = this.props.artworks.map(a => a.gravityID)
     const index = allArtworkIDs.indexOf(artworkID)
     SwitchBoard.presentArtworkSet(this, allArtworkIDs, index)
   }
@@ -121,7 +121,7 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
       for (let j = 0; j < artworks.length; j++) {
         const artwork = artworks[j]
         artworkComponents.push(
-          <Artwork artwork={artwork} key={artwork.__id + i + j} onPress={this.tappedOnArtwork.bind(this)} />
+          <Artwork artwork={artwork} key={artwork.id + i + j} onPress={this.tappedOnArtwork.bind(this)} />
         )
         if (j < artworks.length - 1) {
           artworkComponents.push(<View style={spacerStyle} key={"spacer-" + j} accessibilityLabel="Spacer View" />)
@@ -175,8 +175,8 @@ const styles = StyleSheet.create<Styles>({
 const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
   artworks: graphql`
     fragment GenericGrid_artworks on Artwork @relay(plural: true) {
-      __id
       id
+      gravityID
       image {
         aspect_ratio
       }

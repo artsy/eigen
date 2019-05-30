@@ -87,26 +87,26 @@ export interface MockRelayRendererState {
  *       <img src={props.artwork.image.url} />
  *     </div>
  *   ),
- *   graphql`
+ *   graphql\`
  *     fragment MockRelayRenderer_artwork on Artwork {
  *       image {
  *          url
  *       }
  *     }
- *   `
+ *   \`
  * )
  *
  * it("renders a Relay tree", done => {
  *   const wrapper = mount(
  *     <MockRelayRenderer
  *       Component={Artwork}
- *       query={graphql`
+ *       query={graphql\`
  *         query MockRelayRendererQuery {
  *           artwork(id: "mona-lisa") {
  *             ...MockRelayRenderer_artwork
  *           }
  *         }
- *       `}
+ *       \`}
  *       mockResolvers={{
  *         Artwork: () => ({
  *           title: "Mona Lisa",

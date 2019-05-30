@@ -1,26 +1,26 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ArtistListItem_artist$ref: unique symbol;
 export type ArtistListItem_artist$ref = typeof _ArtistListItem_artist$ref;
 export type ArtistListItem_artist = {
-    readonly __id: string;
-    readonly _id: string;
     readonly id: string;
+    readonly internalID: string;
+    readonly gravityID: string;
     readonly name: string | null;
     readonly is_followed: boolean | null;
     readonly nationality: string | null;
     readonly birthday: string | null;
     readonly deathday: string | null;
-    readonly image: ({
+    readonly image: {
         readonly url: string | null;
-    }) | null;
+    } | null;
     readonly " $refType": ArtistListItem_artist$ref;
 };
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ArtistListItem_artist",
   "type": "Artist",
@@ -30,21 +30,21 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "__id",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "_id",
-      "args": null,
-      "storageKey": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
       "name": "id",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "internalID",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -103,5 +103,5 @@ const node: ConcreteFragment = {
     }
   ]
 };
-(node as any).hash = '32c85235a10b3a5787d77a19cf73f7c9';
+(node as any).hash = 'e17f03b6c6d7bdd5b10e46675ddad5b9';
 export default node;

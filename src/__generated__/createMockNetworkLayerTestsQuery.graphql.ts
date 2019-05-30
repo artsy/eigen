@@ -3,10 +3,10 @@
 import { ConcreteRequest } from "relay-runtime";
 export type createMockNetworkLayerTestsQueryVariables = {};
 export type createMockNetworkLayerTestsQueryResponse = {
-    readonly artwork: ({
-        readonly __id: string;
+    readonly artwork: {
+        readonly id: string;
         readonly title: string | null;
-    }) | null;
+    } | null;
 };
 export type createMockNetworkLayerTestsQuery = {
     readonly response: createMockNetworkLayerTestsQueryResponse;
@@ -18,7 +18,7 @@ export type createMockNetworkLayerTestsQuery = {
 /*
 query createMockNetworkLayerTestsQuery {
   artwork(id: "untitled") {
-    __id
+    id
     title
   }
 }
@@ -35,8 +35,7 @@ var v0 = [
       {
         "kind": "Literal",
         "name": "id",
-        "value": "untitled",
-        "type": "String!"
+        "value": "untitled"
       }
     ],
     "concreteType": "Artwork",
@@ -45,7 +44,7 @@ var v0 = [
       {
         "kind": "ScalarField",
         "alias": null,
-        "name": "__id",
+        "name": "id",
         "args": null,
         "storageKey": null
       },
@@ -61,26 +60,28 @@ var v0 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "createMockNetworkLayerTestsQuery",
-  "id": "5877ac7a9f471c577180881d0cd3ab4b",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "createMockNetworkLayerTestsQuery",
     "type": "Query",
     "metadata": null,
     "argumentDefinitions": [],
-    "selections": v0
+    "selections": (v0/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "createMockNetworkLayerTestsQuery",
     "argumentDefinitions": [],
-    "selections": v0
+    "selections": (v0/*: any*/)
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "createMockNetworkLayerTestsQuery",
+    "id": "0de7f21178b2e07411e95edac6027432",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '7c4943257f47c5a4f37e5c5212530eb1';
+(node as any).hash = '1eeffdf1d257e48e4d0b0d33a8f7a7f8';
 export default node;

@@ -1,3 +1,0 @@
-{
-  "50122dabff9832a9c8b3a7eba796ca36": "query MockRelayRendererFixturesQuery {\n  artwork(id: \"mona-lisa\") {\n    ...MockRelayRendererFixtures_artwork\n    __id\n  }\n}\n\nfragment MockRelayRendererFixtures_artwork on Artwork {\n  image {\n    url\n  }\n  artist {\n    id\n    __id\n  }\n  ...MockRelayRendererFixtures_artworkMetadata\n  __id\n}\n\nfragment MockRelayRendererFixtures_artworkMetadata on Artwork {\n  title\n  __id\n}\n"
-}

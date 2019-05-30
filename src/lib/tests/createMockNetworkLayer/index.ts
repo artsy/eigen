@@ -22,7 +22,7 @@ export const createMockNetworkLayer = (mockResolvers: IMocks) => {
       schema,
       mocks: { FormattedNumber: () => FormattedNumber, ...mockResolvers },
       resolveQueryFromOperation: ({ id }) => {
-        return require("../../../__generated__/complete.queryMap.json")[id]
+        return require("../../../../data/complete.queryMap.json")[id]
       },
     })
   )
@@ -82,8 +82,14 @@ export const createMockFetchQuery = ({
         return inferUnionOrInterfaceType(checkLeafType(source[info.fieldName], info), info)
       }
 
-      if (info.fieldName === "__id" || info.fieldName === "id") {
-        // if relay is looking for `__id` but we only supplied `id`
+      if (info.fieldName === "id" || info.fieldName === "gravityID" || info.fieldName === "internalID") {
+        // if relay is looking for `id`, `gravityID`, or `internalID`, but we only supplied one of the other
+        if ("gravityID" in source) {
+          return source.gravityID
+        }
+        if ("internalID" in source) {
+          return source.internalID
+        }
         if ("id" in source) {
           return source.id
         }
@@ -108,7 +114,7 @@ export const createMockFetchQuery = ({
     }) as GraphQLFieldResolver<any, any>,
     schema,
     resolveQueryFromOperation: ({ id }) => {
-      return require("../../../__generated__/complete.queryMap.json")[id]
+      return require("../../../../data/complete.queryMap.json")[id]
     },
     resolvers: {
       FormattedNumber: () => FormattedNumber,

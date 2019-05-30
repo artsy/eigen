@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { About_artist$ref } from "./About_artist.graphql";
 import { Artworks_artist$ref } from "./Artworks_artist.graphql";
 import { Header_artist$ref } from "./Header_artist.graphql";
@@ -8,22 +8,22 @@ import { Shows_artist$ref } from "./Shows_artist.graphql";
 declare const _Artist_artist$ref: unique symbol;
 export type Artist_artist$ref = typeof _Artist_artist$ref;
 export type Artist_artist = {
-    readonly _id: string;
-    readonly id: string;
+    readonly internalID: string;
+    readonly gravityID: string;
     readonly has_metadata: boolean | null;
-    readonly counts: ({
+    readonly counts: {
         readonly artworks: any | null;
         readonly partner_shows: any | null;
         readonly related_artists: number | null;
         readonly articles: number | null;
-    }) | null;
+    } | null;
     readonly " $fragmentRefs": Header_artist$ref & About_artist$ref & Shows_artist$ref & Artworks_artist$ref;
     readonly " $refType": Artist_artist$ref;
 };
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Artist_artist",
   "type": "Artist",
@@ -33,14 +33,14 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -109,15 +109,8 @@ const node: ConcreteFragment = {
       "kind": "FragmentSpread",
       "name": "Artworks_artist",
       "args": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "__id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };
-(node as any).hash = '6dfcb3f59d2bd93131cb1f69a08340e8';
+(node as any).hash = 'd1b317f91c9e76b708d7fb3265231b57';
 export default node;

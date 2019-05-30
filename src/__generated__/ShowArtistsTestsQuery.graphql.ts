@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { ShowArtists_show$ref } from "./ShowArtists_show.graphql";
 export type ShowArtistsTestsQueryVariables = {};
 export type ShowArtistsTestsQueryResponse = {
-    readonly show: ({
+    readonly show: {
         readonly " $fragmentRefs": ShowArtists_show$ref;
-    }) | null;
+    } | null;
 };
 export type ShowArtistsTestsQuery = {
     readonly response: ShowArtistsTestsQueryResponse;
@@ -19,29 +19,28 @@ export type ShowArtistsTestsQuery = {
 query ShowArtistsTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...ShowArtists_show
-    __id
+    id
   }
 }
 
 fragment ShowArtists_show on Show {
-  _id
-  id
+  internalID
+  gravityID
   artists_grouped_by_name {
     letter
     items {
       ...ArtistListItem_artist
       sortable_id
       href
-      __id
+      id
     }
   }
-  __id
 }
 
 fragment ArtistListItem_artist on Artist {
-  __id
-  _id
   id
+  internalID
+  gravityID
   name
   is_followed
   nationality
@@ -58,21 +57,20 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "anderson-fine-art-gallery-flickinger-collection",
-    "type": "String!"
+    "value": "anderson-fine-art-gallery-flickinger-collection"
   }
 ],
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -85,11 +83,6 @@ v3 = {
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ShowArtistsTestsQuery",
-  "id": "05f3ff5a25b31f8c9149f123f9f68b7f",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ShowArtistsTestsQuery",
@@ -102,7 +95,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -110,8 +103,7 @@ return {
             "kind": "FragmentSpread",
             "name": "ShowArtists_show",
             "args": null
-          },
-          v1
+          }
         ]
       }
     ]
@@ -126,12 +118,12 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
-          v2,
-          v3,
+          (v1/*: any*/),
+          (v2/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
@@ -157,15 +149,9 @@ return {
                 "concreteType": "Artist",
                 "plural": true,
                 "selections": [
-                  {
-                    "kind": "ScalarField",
-                    "alias": null,
-                    "name": "nationality",
-                    "args": null,
-                    "storageKey": null
-                  },
-                  v1,
-                  v3,
+                  (v3/*: any*/),
+                  (v1/*: any*/),
+                  (v2/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -180,7 +166,13 @@ return {
                     "args": null,
                     "storageKey": null
                   },
-                  v2,
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "nationality",
+                    "args": null,
+                    "storageKey": null
+                  },
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -231,10 +223,17 @@ return {
               }
             ]
           },
-          v1
+          (v3/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ShowArtistsTestsQuery",
+    "id": "7aa40aa2926832e43ad1b81a7f40fd27",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

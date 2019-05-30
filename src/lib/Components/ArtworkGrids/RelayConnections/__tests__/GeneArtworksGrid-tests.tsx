@@ -13,8 +13,11 @@ it("renders properly", () => {
     },
   }
 
-  const grid = renderWithLayout(<GeneArtworks gene={gene} mapPropsToArtworksConnection={props => props.gene} />, {
-    width: 768,
-  })
+  const grid = renderWithLayout(
+    <GeneArtworks gene={gene} filtered_artworks={null} mapPropsToArtworksConnection={props => props.gene} />,
+    {
+      width: 768,
+    }
+  )
   expect(grid).toMatchSnapshot()
 })

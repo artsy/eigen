@@ -25,8 +25,8 @@ it("handles showing an update when there are new artworks", () => {
 
 const artwork = () => {
   return {
-    __id: "artwork-long-title",
-    id: "long-title",
+    id: "artwork-long-title",
+    gravityID: "long-title",
     title: "DO WOMEN STILL HAVE TO BE NAKED TO GET INTO THE MET. MUSEUM",
     date: "2012",
     sale_message: null,

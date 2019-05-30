@@ -65,7 +65,7 @@ export class ArtworkRail extends React.Component<Props, State> {
 
   componentDidMount() {
     if (this.props.relay) {
-      this.props.relay.refetch({ __id: this.props.rail.__id, fetchContent: true }, null, error => {
+      this.props.relay.refetch({ id: this.props.rail.id, fetchContent: true }, null, error => {
         if (error) {
           console.error("ArtworkRail.tsx", error.message)
         }
@@ -304,7 +304,7 @@ export default createRefetchContainer(
       fragment ArtworkRail_rail on HomePageArtworkModule
         @argumentDefinitions(fetchContent: { type: "Boolean!", defaultValue: false }) {
         ...ArtworkRailHeader_rail
-        __id
+        id
         key
         params {
           medium
@@ -338,8 +338,8 @@ export default createRefetchContainer(
     `,
   },
   graphql`
-    query ArtworkRailRefetchQuery($__id: ID!, $fetchContent: Boolean!) {
-      node(__id: $__id) {
+    query ArtworkRailRefetchQuery($id: ID!, $fetchContent: Boolean!) {
+      node(__id: $id) {
         ...ArtworkRail_rail @arguments(fetchContent: $fetchContent)
       }
     }
