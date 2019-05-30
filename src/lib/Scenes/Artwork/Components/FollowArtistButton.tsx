@@ -21,8 +21,9 @@ export class FollowArtistButton extends React.Component<Props, State> {
     const { artist, relay } = this.props
     console.log("RELAT", relay)
 
-    const environment = relay && relay.environment
+    const environment = relay
     if (environment) {
+      console.log("ENV")
       const newFollowCount = artist.is_followed ? artist.counts.follows - 1 : artist.counts.follows + 1
 
       this.setState(

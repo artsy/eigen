@@ -4,7 +4,6 @@ import SwitchBoard from "lib/NativeModules/SwitchBoard"
 import React from "react"
 import { NativeModules, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-// import { FollowArtistButton } from "./FollowArtistButton"
 import { FollowArtistButtonFragmentContainer as FollowArtistButton } from "./FollowArtistButton"
 
 const Constants = NativeModules.ARCocoaConstantsModule
