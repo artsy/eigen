@@ -1514,10 +1514,10 @@
   resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-1.3.6.tgz#839610054c1747217e814c8993fa642e902d0de0"
   integrity sha512-NobpY0XFh0O9FTRkFJsN5ZNd+M+4eac8ZgM5LP3C0tLd1JkfrwuGkyBUMTuDDGYf+T5zl6vTO6EGgXKD+0QpGA==
 
-"@types/relay-runtime@1.3.7":
-  version "1.3.7"
-  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-1.3.7.tgz#b25f5014c672ff3cda394e562691cadae706a827"
-  integrity sha512-lay9Ni0EbJ6hxQLuBu0uA8F1JrRjq5XQp+W4+G6GDzM1lh8jgJzP2YLIbh9GlKUEyVDrZRaBw+ymN47bNHmdjA==
+"@types/relay-runtime@1.3.12":
+  version "1.3.12"
+  resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-1.3.12.tgz#602b98eb333b47d98213816d7e40273edaac3e90"
+  integrity sha512-MXM7ElUpLzPfaIlG6263qDd7+zdNpqy43K90yyQzB0ax1hKMJ+R3WfaVLFxn/X49YR8fa6kwA3ikjh2A/JNFJg==
 
 "@types/stack-utils@^1.0.1":
   version "1.0.1"

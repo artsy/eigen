@@ -1,7 +1,7 @@
 patch-package
 --- a/node_modules/@types/react-relay/index.d.ts
 +++ b/node_modules/@types/react-relay/index.d.ts
-@@ -157,7 +157,7 @@ export interface ConnectionConfig<P> {
+@@ -155,7 +155,7 @@ export interface ConnectionConfig<P> {
      getConnectionFromProps?(props: P): ConnectionData | undefined | null;
      getFragmentVariables?: typeof FragmentVariablesGetter;
      getVariables(
