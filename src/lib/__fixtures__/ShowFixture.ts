@@ -1,5 +1,5 @@
 export const ShowFixture = {
-  id: "anderson-fine-art-gallery-flickinger-collection",
+  gravityID: "anderson-fine-art-gallery-flickinger-collection",
   internalID: "5b368a02275b245afc034d6f",
   openingReceptionText: "",
   city: "Sea Island ",

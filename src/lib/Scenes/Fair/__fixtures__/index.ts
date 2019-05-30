@@ -14,12 +14,12 @@ export const fairFixture = {
     pressReleaseUrl: "https://www.somefair.com",
   },
   profile: {
-    id: "art-basel-in-miami-beach-2018",
+    gravityID: "art-basel-in-miami-beach-2018",
     internalID: "dfdlfjfua7d8a0_",
     is_followed: false,
     name: "art-basel",
     icon: {
-      id: "58ff95298b3b8104783c119c",
+      gravityID: "58ff95298b3b8104783c119c",
       href: null,
       height: 279,
       width: 279,
@@ -29,7 +29,7 @@ export const fairFixture = {
   organizer: {
     profile: {
       icon: {
-        id: "58ff95298b3b8104783c119c",
+        gravityID: "58ff95298b3b8104783c119c",
         href: "",
         height: 279,
         width: 279,
@@ -80,7 +80,7 @@ export const fairFixture = {
       exhibitors: [
         {
           name: "303 Gallery",
-          id: "303 Gallery",
+          gravityID: "303 Gallery",
           profile_id: "303 Gallery",
         },
       ],
@@ -88,13 +88,13 @@ export const fairFixture = {
     {
       letter: "A",
       exhibitors: [
-        { name: "Acquavella Galleries", id: "Acquavella Galleries", profile_id: "Acquavella Galleries" },
-        { name: "Alan Cristea Gallery", id: "Alan Cristea Gallery", profile_id: "Alan Cristea Gallery" },
-        { name: "Alfonso Artiaco", id: "Alfonso Artiaco", profile_id: "Alfonso Artiaco" },
-        { name: "Altman Siegel", id: "Altman Siegel", profile_id: "Altman Siegel" },
-        { name: "Anat Ebgi", id: "Anat Ebgi", profile_id: "Anat Ebgi" },
-        { name: "Annely Juda Fine Art", id: "Annely Juda Fine Art", profile_id: "Annely Juda Fine Art" },
-        { name: "Anton Kern Gallery", id: "Anton Kern Gallery", profile_id: "Anton Kern Gallery" },
+        { name: "Acquavella Galleries", gravityID: "Acquavella Galleries", profile_id: "Acquavella Galleries" },
+        { name: "Alan Cristea Gallery", gravityID: "Alan Cristea Gallery", profile_id: "Alan Cristea Gallery" },
+        { name: "Alfonso Artiaco", gravityID: "Alfonso Artiaco", profile_id: "Alfonso Artiaco" },
+        { name: "Altman Siegel", gravityID: "Altman Siegel", profile_id: "Altman Siegel" },
+        { name: "Anat Ebgi", gravityID: "Anat Ebgi", profile_id: "Anat Ebgi" },
+        { name: "Annely Juda Fine Art", gravityID: "Annely Juda Fine Art", profile_id: "Annely Juda Fine Art" },
+        { name: "Anton Kern Gallery", gravityID: "Anton Kern Gallery", profile_id: "Anton Kern Gallery" },
       ],
     },
     {
@@ -259,7 +259,7 @@ export const fairFixture = {
       edges: [
         {
           node: {
-            id: "watanabe-chiaki-links",
+            gravityID: "watanabe-chiaki-links",
             title: "Links",
             date: "2018",
             sale_message: "Sold",
@@ -285,7 +285,7 @@ export const fairFixture = {
         },
         {
           node: {
-            id: "dylan-martinez-water-bag-number-34",
+            gravityID: "dylan-martinez-water-bag-number-34",
             title: "Water Bag #34",
             date: "2018",
             sale_message: "$1,800",
@@ -311,7 +311,7 @@ export const fairFixture = {
         },
         {
           node: {
-            id: "dylan-martinez-water-bag-number-23",
+            gravityID: "dylan-martinez-water-bag-number-23",
             title: "Water Bag #23",
             date: "2018",
             sale_message: "$1,800",
@@ -337,7 +337,7 @@ export const fairFixture = {
         },
         {
           node: {
-            id: "dylan-martinez-water-bag-number-32",
+            gravityID: "dylan-martinez-water-bag-number-32",
             title: "Water Bag #32",
             date: "2018",
             sale_message: "$1,800",
@@ -363,7 +363,7 @@ export const fairFixture = {
         },
         {
           node: {
-            id: "dylan-martinez-mach-2",
+            gravityID: "dylan-martinez-mach-2",
             title: "Mach 2",
             date: "2018",
             sale_message: "$12,000",
@@ -389,7 +389,7 @@ export const fairFixture = {
         },
         {
           node: {
-            id: "dylan-martinez-water-bag-trio",
+            gravityID: "dylan-martinez-water-bag-trio",
             title: "Water Bag Trio",
             date: "2018",
             sale_message: "$5,400",
@@ -505,6 +505,7 @@ export const fairFixture = {
     edges: [
       {
         node: {
+          gravityID: "spruth-magers",
           partner: {
             __typename: "Partner",
             profile: {
@@ -518,10 +519,11 @@ export const fairFixture = {
       },
       {
         node: {
+          gravityID: "cardi-gallery",
           partner: {
             __typename: "Partner",
             profile: {
-              id: "cardi-gallery",
+              gravityID: "cardi-gallery",
               href: "/cardi-gallery",
               name: "CARDI GALLERY",
               internalID: "1234562",
@@ -552,6 +554,7 @@ export const fairFixture = {
           partner: {
             id: "UGFydG5lcjpzdGVpZGVsLWNvbnRlbXBvcmFyeQ==",
             internalID: "123123123123123123123",
+            gravityID: "steidel-contemporary",
             name: "Steidel Contemporary",
             href: "http://www.stei.com",
             profile: {
@@ -571,13 +574,13 @@ export const fairFixture = {
             id: "TG9jYXRpb246NWI5ODIwNjU0OTUzZjEwMDA1ZjY5ZTBh",
           },
           profile: {
-            id: "art-basel-in-miami-beach-2018",
+            gravityID: "art-basel-in-miami-beach-2018",
           },
           artworks_connection: {
             edges: [
               {
                 node: {
-                  id: "christine-flynn-costa-rica-palms-1",
+                  gravityID: "christine-flynn-costa-rica-palms-1",
                   title: "Costa Rica Palms",
                   date: "2018",
                   sale_message: "£2,500 - 5,000",
@@ -590,12 +593,12 @@ export const fairFixture = {
                   href: "/artwork/christine-flynn-costa-rica-palms-1",
                   artists: [
                     {
-                      id: "christine-flynn-1",
+                      gravityID: "christine-flynn-1",
                       name: "Christine Flynn",
                     },
                   ],
                   partner: {
-                    id: "kahn-gallery",
+                    gravityID: "kahn-gallery",
                     internalID: "58d3ac7dc9dc241448f6ec7c",
                     name: "Kahn Gallery",
                   },
@@ -607,7 +610,7 @@ export const fairFixture = {
               },
               {
                 node: {
-                  id: "reinhard-gorner-palacio-nacional-de-mafra-portugal",
+                  gravityID: "reinhard-gorner-palacio-nacional-de-mafra-portugal",
                   title: "Palacio Nacional de Mafra, Portugal",
                   date: "2016",
                   sale_message: "$5,500",
@@ -620,12 +623,12 @@ export const fairFixture = {
                   href: "/artwork/reinhard-gorner-palacio-nacional-de-mafra-portugal",
                   artists: [
                     {
-                      id: "reinhard-gorner",
+                      gravityID: "reinhard-gorner",
                       name: "Reinhard Gorner",
                     },
                   ],
                   partner: {
-                    id: "kahn-gallery",
+                    gravityID: "kahn-gallery",
                     internalID: "58d3ac7dc9dc241448f6ec7c",
                     name: "Kahn Gallery",
                   },
@@ -637,7 +640,7 @@ export const fairFixture = {
               },
               {
                 node: {
-                  id: "elisabeth-lecourt-ma-poupee-de-cire-en-fanfaron-nepal",
+                  gravityID: "elisabeth-lecourt-ma-poupee-de-cire-en-fanfaron-nepal",
                   title: "Ma Poupée de Cire en Fanfaron Népal",
                   date: "2018",
                   sale_message: "Sold",
@@ -650,12 +653,12 @@ export const fairFixture = {
                   href: "/artwork/elisabeth-lecourt-ma-poupee-de-cire-en-fanfaron-nepal",
                   artists: [
                     {
-                      id: "elisabeth-lecourt",
+                      gravityID: "elisabeth-lecourt",
                       name: "Elisabeth LECOURT",
                     },
                   ],
                   partner: {
-                    id: "kahn-gallery",
+                    gravityID: "kahn-gallery",
                     internalID: "58d3ac7dc9dc241448f6ec7c",
                     name: "Kahn Gallery",
                   },
@@ -667,7 +670,7 @@ export const fairFixture = {
               },
               {
                 node: {
-                  id: "damien-gard-au-travers-des-siecles-1",
+                  gravityID: "damien-gard-au-travers-des-siecles-1",
                   title: "Au Travers des Siècles",
                   date: "2017",
                   sale_message: "£2,500 - 5,000",
@@ -680,12 +683,12 @@ export const fairFixture = {
                   href: "/artwork/damien-gard-au-travers-des-siecles-1",
                   artists: [
                     {
-                      id: "damien-gard",
+                      gravityID: "damien-gard",
                       name: "Damien Gard",
                     },
                   ],
                   partner: {
-                    id: "kahn-gallery",
+                    gravityID: "kahn-gallery",
                     internalID: "58d3ac7dc9dc241448f6ec7c",
                     name: "Kahn Gallery",
                   },
