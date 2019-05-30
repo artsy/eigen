@@ -20,7 +20,7 @@ const RootContainer: React.SFC<any> = ({ Component }) => {
       query={graphql`
         query InboxQuery($cursor: String) {
           me {
-            ...Inbox_me @arguments(after: $cursor)
+            ...Inbox_me
           }
         }
       `}

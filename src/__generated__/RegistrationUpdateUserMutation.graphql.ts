@@ -25,12 +25,12 @@ export type RegistrationUpdateUserMutationVariables = {
     readonly input: UpdateMyProfileInput;
 };
 export type RegistrationUpdateUserMutationResponse = {
-    readonly updateMyUserProfile: ({
+    readonly updateMyUserProfile: {
         readonly clientMutationId: string | null;
-        readonly user: ({
+        readonly user: {
             readonly phone: string | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
 };
 export type RegistrationUpdateUserMutation = {
     readonly response: RegistrationUpdateUserMutationResponse;
@@ -47,7 +47,7 @@ mutation RegistrationUpdateUserMutation(
     clientMutationId
     user {
       phone
-      __id
+      id
     }
   }
 }
@@ -64,76 +64,104 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "LinkedField",
-    "alias": null,
-    "name": "updateMyUserProfile",
-    "storageKey": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "input",
-        "variableName": "input",
-        "type": "UpdateMyProfileInput!"
-      }
-    ],
-    "concreteType": "UpdateMyProfilePayload",
-    "plural": false,
-    "selections": [
-      {
-        "kind": "ScalarField",
-        "alias": null,
-        "name": "clientMutationId",
-        "args": null,
-        "storageKey": null
-      },
-      {
-        "kind": "LinkedField",
-        "alias": null,
-        "name": "user",
-        "storageKey": null,
-        "args": null,
-        "concreteType": "User",
-        "plural": false,
-        "selections": [
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "phone",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
-            "name": "__id",
-            "args": null,
-            "storageKey": null
-          }
-        ]
-      }
-    ]
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "clientMutationId",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "phone",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "RegistrationUpdateUserMutation",
-  "id": "89b07d044650e13e2091363749aa271a",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "RegistrationUpdateUserMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "updateMyUserProfile",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "UpdateMyProfilePayload",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "user",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "User",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/)
+            ]
+          }
+        ]
+      }
+    ]
   },
   "operation": {
     "kind": "Operation",
     "name": "RegistrationUpdateUserMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": [
+      {
+        "kind": "LinkedField",
+        "alias": null,
+        "name": "updateMyUserProfile",
+        "storageKey": null,
+        "args": (v1/*: any*/),
+        "concreteType": "UpdateMyProfilePayload",
+        "plural": false,
+        "selections": [
+          (v2/*: any*/),
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "user",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "User",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "id",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "RegistrationUpdateUserMutation",
+    "id": "9e8a7891114d59f7905a4aa9027e24e0",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

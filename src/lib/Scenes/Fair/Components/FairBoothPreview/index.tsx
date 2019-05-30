@@ -54,11 +54,11 @@ export class FairBoothPreview extends React.Component<Props, State> {
   handleFollowPartner = () => {
     const { show, relay } = this.props
     const {
-      partner: { id: partnerSlug, _id: partnerID, __id: partnerRelayID, profile },
+      partner: { gravityID: partnerSlug, internalID: partnerID, id: partnerRelayID, profile },
     } = show
     const isFollowed = !!profile ? profile.is_followed : null
-    const _id = !!profile ? profile._id : null
-    if (isFollowed === null || !_id) {
+    const internalID = !!profile ? profile.internalID : null
+    if (isFollowed === null || !internalID) {
       return
     }
     this.setState(
@@ -77,8 +77,8 @@ export class FairBoothPreview extends React.Component<Props, State> {
             mutation FairBoothPreviewMutation($input: FollowProfileInput!) {
               followProfile(input: $input) {
                 profile {
-                  id
-                  _id
+                  gravityID
+                  internalID
                   is_followed
                 }
               }
@@ -86,15 +86,15 @@ export class FairBoothPreview extends React.Component<Props, State> {
           `,
           variables: {
             input: {
-              profile_id: _id,
+              profile_id: internalID,
               unfollow: isFollowed,
             },
           },
           optimisticResponse: {
             followProfile: {
               profile: {
-                _id,
-                id: partnerSlug,
+                internalID,
+                gravityID: partnerSlug,
                 is_followed: !isFollowed,
               },
             },
@@ -110,13 +110,13 @@ export class FairBoothPreview extends React.Component<Props, State> {
   @track(props => ({
     action_name: Schema.ActionNames.AllBoothWorks,
     action_type: Schema.ActionTypes.Tap,
-    owner_id: props.show._id,
-    owner_slug: props.show.id,
+    owner_id: props.show.internalID,
+    owner_slug: props.show.gravityID,
     owner_type: Schema.OwnerEntityTypes.Gallery,
   }))
   trackOnViewFairBoothWorks() {
     const {
-      show: { id: showID },
+      show: { gravityID: showID },
     } = this.props
     SwitchBoard.presentNavigationViewController(this, `show/${showID}?entity=fair-booth`)
   }
@@ -124,13 +124,13 @@ export class FairBoothPreview extends React.Component<Props, State> {
   @track(props => ({
     action_name: Schema.ActionNames.ListGallery,
     action_type: Schema.ActionTypes.Tap,
-    owner_id: props.show._id,
-    owner_slug: props.show.id,
+    owner_id: props.show.internalID,
+    owner_slug: props.show.gravityID,
     owner_type: Schema.OwnerEntityTypes.Gallery,
   }))
   viewFairBoothPressed() {
     const {
-      show: { id: showID },
+      show: { gravityID: showID },
     } = this.props
     SwitchBoard.presentNavigationViewController(this, `/show/${showID}?entity=fair-booth`)
   }
@@ -173,8 +173,8 @@ export class FairBoothPreview extends React.Component<Props, State> {
 export const FairBoothPreviewContainer = createFragmentContainer(FairBoothPreview, {
   show: graphql`
     fragment FairBoothPreview_show on Show {
-      id
-      _id
+      gravityID
+      internalID
       name
       is_fair_booth
       counts {
@@ -184,11 +184,11 @@ export const FairBoothPreviewContainer = createFragmentContainer(FairBoothPrevie
         ... on Partner {
           name
           href
+          gravityID
+          internalID
           id
-          _id
-          __id
           profile {
-            _id
+            internalID
             is_followed
           }
         }

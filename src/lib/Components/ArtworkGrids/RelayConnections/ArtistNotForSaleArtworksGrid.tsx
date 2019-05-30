@@ -1,8 +1,13 @@
+import { ArtistNotForSaleArtworksGrid_artist } from "__generated__/ArtistNotForSaleArtworksGrid_artist.graphql"
+import InfiniteScrollArtworksGrid, {
+  Props as InfiniteScrollGridProps,
+} from "lib/Components/ArtworkGrids/InfiniteScrollGrid"
 import { createPaginationContainer, graphql } from "react-relay"
-import InfiniteScrollArtworksGrid from "../InfiniteScrollGrid"
 
-const ArtistNotForSaleArtworksGrid = createPaginationContainer(
-  InfiniteScrollArtworksGrid,
+const ArtistNotForSaleArtworksGrid = createPaginationContainer<
+  { artist: ArtistNotForSaleArtworksGrid_artist } & InfiniteScrollGridProps
+>(
+  InfiniteScrollArtworksGrid as any,
   {
     artist: graphql`
       fragment ArtistNotForSaleArtworksGrid_artist on Artist
@@ -11,7 +16,7 @@ const ArtistNotForSaleArtworksGrid = createPaginationContainer(
           cursor: { type: "String" }
           filter: { type: "[ArtistArtworksFilters]", defaultValue: [IS_NOT_FOR_SALE] }
         ) {
-        __id
+        id
         notForSaleArtworks: artworks_connection(
           first: $count
           after: $cursor
@@ -25,8 +30,8 @@ const ArtistNotForSaleArtworksGrid = createPaginationContainer(
           }
           edges {
             node {
+              gravityID
               id
-              __id
               image {
                 aspect_ratio
               }
@@ -50,7 +55,7 @@ const ArtistNotForSaleArtworksGrid = createPaginationContainer(
     },
     getVariables(props, { count, cursor }, { filter }) {
       return {
-        __id: props.artist.__id,
+        id: props.artist.id,
         count,
         cursor,
         filter,
@@ -58,12 +63,12 @@ const ArtistNotForSaleArtworksGrid = createPaginationContainer(
     },
     query: graphql`
       query ArtistNotForSaleArtworksGridQuery(
-        $__id: ID!
+        $id: ID!
         $count: Int!
         $cursor: String
         $filter: [ArtistArtworksFilters]
       ) {
-        node(__id: $__id) {
+        node(__id: $id) {
           ... on Artist {
             ...ArtistNotForSaleArtworksGrid_artist @arguments(count: $count, cursor: $cursor, filter: $filter)
           }
@@ -74,22 +79,3 @@ const ArtistNotForSaleArtworksGrid = createPaginationContainer(
 )
 
 export default ArtistNotForSaleArtworksGrid
-
-export interface ArtistRelayProps {
-  artist: {
-    artworks_connection: {
-      pageInfo: {
-        hasNextPage: boolean
-      }
-      edges: Array<{
-        node: {
-          __id: string
-          id: string
-          image: {
-            aspect_ratio: number | null
-          } | null
-        } | null
-      }>
-    } | null
-  }
-}

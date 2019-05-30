@@ -11,7 +11,6 @@ exports[`looks correct when rendered 1`] = `
   data={
     Array [
       Object {
-        "__id": "unique-id",
         "attachments": Array [],
         "body": "Adoro! Por favor envie-me mais informações",
         "first_message": undefined,
@@ -20,6 +19,7 @@ exports[`looks correct when rendered 1`] = `
           "name": "Percy",
         },
         "from_email_address": "anita@garibaldi.br",
+        "gravityID": "unique-id",
         "id": 222,
         "impulse_id": "impulse:222",
         "is_from_user": true,

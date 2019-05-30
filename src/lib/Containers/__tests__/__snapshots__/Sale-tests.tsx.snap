@@ -115,7 +115,6 @@ exports[`state looks okay by default 1`] = `
                       Object {
                         "artwork": Object {
                           "node": Object {
-                            "__id": "artwork-talking-politics",
                             "artists": Array [
                               Object {
                                 "name": "Jenny Holzer",
@@ -123,6 +122,7 @@ exports[`state looks okay by default 1`] = `
                             ],
                             "date": "2008",
                             "href": "/artwork/jenny-holzer-talking-politics",
+                            "id": "artwork-talking-politics",
                             "image": Object {
                               "aspect_ratio": 1.27,
                               "url": "artsy.net/image-url",
@@ -293,7 +293,6 @@ exports[`state looks okay by default 1`] = `
                   Object {
                     "artwork": Object {
                       "node": Object {
-                        "__id": "artwork-talking-politics",
                         "artists": Array [
                           Object {
                             "name": "Jenny Holzer",
@@ -301,6 +300,7 @@ exports[`state looks okay by default 1`] = `
                         ],
                         "date": "2008",
                         "href": "/artwork/jenny-holzer-talking-politics",
+                        "id": "artwork-talking-politics",
                         "image": Object {
                           "aspect_ratio": 1.27,
                           "url": "artsy.net/image-url",
@@ -382,7 +382,6 @@ exports[`state looks okay by default 1`] = `
                   Object {
                     "artwork": Object {
                       "node": Object {
-                        "__id": "artwork-talking-politics",
                         "artists": Array [
                           Object {
                             "name": "Jenny Holzer",
@@ -390,6 +389,7 @@ exports[`state looks okay by default 1`] = `
                         ],
                         "date": "2008",
                         "href": "/artwork/jenny-holzer-talking-politics",
+                        "id": "artwork-talking-politics",
                         "image": Object {
                           "aspect_ratio": 1.27,
                           "url": "artsy.net/image-url",

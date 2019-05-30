@@ -1,43 +1,43 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ActiveBid_bid$ref: unique symbol;
 export type ActiveBid_bid$ref = typeof _ActiveBid_bid$ref;
 export type ActiveBid_bid = {
     readonly is_leading_bidder: boolean | null;
-    readonly sale: ({
+    readonly sale: {
         readonly href: string | null;
         readonly is_live_open: boolean | null;
-    }) | null;
-    readonly most_recent_bid: ({
-        readonly __id: string;
-        readonly max_bid: ({
+    } | null;
+    readonly most_recent_bid: {
+        readonly id: string;
+        readonly max_bid: {
             readonly display: string | null;
-        }) | null;
-        readonly sale_artwork: ({
-            readonly artwork: ({
+        } | null;
+        readonly sale_artwork: {
+            readonly artwork: {
                 readonly href: string | null;
-                readonly image: ({
+                readonly image: {
                     readonly url: string | null;
-                }) | null;
+                } | null;
                 readonly artist_names: string | null;
-            }) | null;
-            readonly counts: ({
+            } | null;
+            readonly counts: {
                 readonly bidder_positions: any | null;
-            }) | null;
-            readonly highest_bid: ({
+            } | null;
+            readonly highest_bid: {
                 readonly display: string | null;
-            }) | null;
+            } | null;
             readonly lot_number: string | null;
             readonly reserve_status: string | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
     readonly " $refType": ActiveBid_bid$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -45,20 +45,15 @@ var v0 = {
   "args": null,
   "storageKey": null
 },
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "display",
-  "args": null,
-  "storageKey": null
-};
+v1 = [
+  {
+    "kind": "ScalarField",
+    "alias": null,
+    "name": "display",
+    "args": null,
+    "storageKey": null
+  }
+];
 return {
   "kind": "Fragment",
   "name": "ActiveBid_bid",
@@ -82,15 +77,14 @@ return {
       "concreteType": "Sale",
       "plural": false,
       "selections": [
-        v0,
+        (v0/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
           "name": "is_live_open",
           "args": null,
           "storageKey": null
-        },
-        v1
+        }
       ]
     },
     {
@@ -102,7 +96,13 @@ return {
       "concreteType": "BidderPosition",
       "plural": false,
       "selections": [
-        v1,
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "name": "id",
+          "args": null,
+          "storageKey": null
+        },
         {
           "kind": "LinkedField",
           "alias": null,
@@ -111,9 +111,7 @@ return {
           "args": null,
           "concreteType": "BidderPositionMaxBid",
           "plural": false,
-          "selections": [
-            v2
-          ]
+          "selections": (v1/*: any*/)
         },
         {
           "kind": "LinkedField",
@@ -133,7 +131,7 @@ return {
               "concreteType": "Artwork",
               "plural": false,
               "selections": [
-                v0,
+                (v0/*: any*/),
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -158,8 +156,7 @@ return {
                   "name": "artist_names",
                   "args": null,
                   "storageKey": null
-                },
-                v1
+                }
               ]
             },
             {
@@ -188,16 +185,7 @@ return {
               "args": null,
               "concreteType": "SaleArtworkHighestBid",
               "plural": false,
-              "selections": [
-                v2,
-                {
-                  "kind": "ScalarField",
-                  "alias": "__id",
-                  "name": "id",
-                  "args": null,
-                  "storageKey": null
-                }
-              ]
+              "selections": (v1/*: any*/)
             },
             {
               "kind": "ScalarField",
@@ -212,8 +200,7 @@ return {
               "name": "reserve_status",
               "args": null,
               "storageKey": null
-            },
-            v1
+            }
           ]
         }
       ]
@@ -221,5 +208,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'b7dfb7280121bbc46555b5ccaa2b2f0c';
+(node as any).hash = '7b64167349d432c1747ad635cbfaa110';
 export default node;

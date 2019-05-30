@@ -1,20 +1,20 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _CitySectionList_city$ref: unique symbol;
 export type CitySectionList_city$ref = typeof _CitySectionList_city$ref;
 export type CitySectionList_city = {
     readonly name: string | null;
-    readonly shows: ({
+    readonly shows: {
         readonly pageInfo: {
             readonly endCursor: string | null;
             readonly hasNextPage: boolean;
         };
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly gravityID: string;
+                readonly internalID: string;
                 readonly id: string;
-                readonly _id: string;
-                readonly __id: string;
                 readonly isStubShow: boolean | null;
                 readonly is_followed: boolean | null;
                 readonly start_at: string | null;
@@ -23,28 +23,40 @@ export type CitySectionList_city = {
                 readonly href: string | null;
                 readonly type: string | null;
                 readonly name: string | null;
-                readonly cover_image: ({
+                readonly cover_image: {
                     readonly url: string | null;
-                }) | null;
+                } | null;
                 readonly exhibition_period: string | null;
                 readonly partner: ({
                     readonly name?: string | null;
                     readonly type?: string | null;
-                    readonly profile?: ({
-                        readonly image: ({
+                    readonly profile?: {
+                        readonly image: {
                             readonly url: string | null;
-                        }) | null;
-                    }) | null;
-                }) | null;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+                        } | null;
+                    } | null;
+                } & ({
+                    readonly name: string | null;
+                    readonly type: string | null;
+                    readonly profile: {
+                        readonly image: {
+                            readonly url: string | null;
+                        } | null;
+                    } | null;
+                } | {
+                    /*This will never be '% other', but we need some
+                    value in case none of the concrete values match.*/
+                    readonly __typename: "%other";
+                })) | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": CitySectionList_city$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
@@ -53,13 +65,6 @@ var v0 = {
   "storageKey": null
 },
 v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "type",
@@ -121,7 +126,7 @@ return {
     }
   ],
   "selections": [
-    v0,
+    (v0/*: any*/),
     {
       "kind": "LinkedField",
       "alias": "shows",
@@ -131,32 +136,27 @@ return {
         {
           "kind": "Variable",
           "name": "dayThreshold",
-          "variableName": "dayThreshold",
-          "type": "Int"
+          "variableName": "dayThreshold"
         },
         {
           "kind": "Literal",
           "name": "includeStubShows",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         },
         {
           "kind": "Variable",
           "name": "partnerType",
-          "variableName": "partnerType",
-          "type": "PartnerShowPartnerType"
+          "variableName": "partnerType"
         },
         {
           "kind": "Variable",
           "name": "sort",
-          "variableName": "sort",
-          "type": "PartnerShowSorts"
+          "variableName": "sort"
         },
         {
           "kind": "Variable",
           "name": "status",
-          "variableName": "status",
-          "type": "EventStatus"
+          "variableName": "status"
         }
       ],
       "concreteType": "ShowConnection",
@@ -208,7 +208,14 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "status",
+                  "name": "gravityID",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "internalID",
                   "args": null,
                   "storageKey": null
                 },
@@ -219,7 +226,6 @@ return {
                   "args": null,
                   "storageKey": null
                 },
-                v1,
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -251,7 +257,7 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "_id",
+                  "name": "status",
                   "args": null,
                   "storageKey": null
                 },
@@ -262,8 +268,8 @@ return {
                   "args": null,
                   "storageKey": null
                 },
-                v2,
-                v0,
+                (v1/*: any*/),
+                (v0/*: any*/),
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -298,13 +304,12 @@ return {
                   "concreteType": null,
                   "plural": false,
                   "selections": [
-                    v1,
                     {
                       "kind": "InlineFragment",
                       "type": "Partner",
                       "selections": [
-                        v0,
-                        v2,
+                        (v0/*: any*/),
+                        (v1/*: any*/),
                         {
                           "kind": "LinkedField",
                           "alias": null,
@@ -331,15 +336,13 @@ return {
                                     {
                                       "kind": "Literal",
                                       "name": "version",
-                                      "value": "square",
-                                      "type": "[String]"
+                                      "value": "square"
                                     }
                                   ],
                                   "storageKey": "url(version:\"square\")"
                                 }
                               ]
-                            },
-                            v1
+                            }
                           ]
                         }
                       ]
@@ -369,5 +372,5 @@ return {
   ]
 };
 })();
-(node as any).hash = 'cc1090732a1066a4fdcad9948aa89604';
+(node as any).hash = '030f3667193c78d8ae02fc1f37677737';
 export default node;

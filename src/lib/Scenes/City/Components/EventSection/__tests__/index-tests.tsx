@@ -7,8 +7,8 @@ import { EventSection } from "../index"
 const data = [
   {
     name: "PALAY, Trapunto Murals by Pacita Abad",
-    __id: "U2hvdzpwYWNpdGEtYWJhZC1hcnQtZXN0YXRlLXBhbGF5LXRyYXB1bnRvLW11cmFscy1ieS1wYWNpdGEtYWJhZA==",
-    id: "pacita-abad-art-estate-palay-trapunto-murals-by-pacita-abad",
+    id: "U2hvdzpwYWNpdGEtYWJhZC1hcnQtZXN0YXRlLXBhbGF5LXRyYXB1bnRvLW11cmFscy1ieS1wYWNpdGEtYWJhZA==",
+    gravityID: "pacita-abad-art-estate-palay-trapunto-murals-by-pacita-abad",
     cover_image: {
       url: "",
     },

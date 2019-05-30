@@ -45,7 +45,7 @@ storiesOf("Bidding")
       <ConfirmBid
         sale_artwork={
           {
-            _id: "saleartwork12345",
+            internalID: "saleartwork12345",
             sale: { id: "sale-id", live_start_at: "2018-08-13T18:00:00+00:00", end_at: null },
             artwork: { id: "artwork-id", title: "Morgan Hill (Prototype)", date: "1973", artist_names: "Lewis balts" },
             lot_label: "2",
@@ -63,7 +63,7 @@ storiesOf("Bidding")
       <ConfirmBid
         sale_artwork={
           {
-            _id: "saleartwork12345",
+            internalID: "saleartwork12345",
             sale: { id: "sale-id", live_start_at: "2018-08-11T01:00:00+00:00", end_at: null },
             artwork: { id: "artwork-id", title: "Morgan Hill (Prototype)", date: null, artist_names: "Lewis balts" },
             lot_label: "2",

@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { AttachmentPreview_attachment$ref } from "./AttachmentPreview_attachment.graphql";
 declare const _ImagePreview_attachment$ref: unique symbol;
 export type ImagePreview_attachment$ref = typeof _ImagePreview_attachment$ref;
@@ -12,7 +12,7 @@ export type ImagePreview_attachment = {
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ImagePreview_attachment",
   "type": "Attachment",

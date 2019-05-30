@@ -1,12 +1,12 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ShowHeader_show$ref: unique symbol;
 export type ShowHeader_show$ref = typeof _ShowHeader_show$ref;
 export type ShowHeader_show = {
+    readonly gravityID: string;
+    readonly internalID: string;
     readonly id: string;
-    readonly _id: string;
-    readonly __id: string;
     readonly name: string | null;
     readonly press_release: string | null;
     readonly is_followed: boolean | null;
@@ -16,48 +16,56 @@ export type ShowHeader_show = {
     readonly isStubShow: boolean | null;
     readonly partner: ({
         readonly name?: string | null;
-        readonly id?: string;
+        readonly gravityID?: string;
         readonly href?: string | null;
-    }) | null;
-    readonly images: ReadonlyArray<({
+    } & ({
+        readonly name: string | null;
+        readonly gravityID: string;
+        readonly href: string | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
+    readonly images: ReadonlyArray<{
         readonly url: string | null;
         readonly aspect_ratio: number;
-    }) | null> | null;
-    readonly followedArtists: ({
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
-                readonly artist: ({
+    } | null> | null;
+    readonly followedArtists: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly artist: {
                     readonly name: string | null;
                     readonly href: string | null;
-                    readonly id: string;
-                    readonly _id: string;
-                }) | null;
-            }) | null;
-        }) | null> | null;
-    }) | null;
-    readonly artists: ReadonlyArray<({
+                    readonly gravityID: string;
+                    readonly internalID: string;
+                } | null;
+            } | null;
+        } | null> | null;
+    } | null;
+    readonly artists: ReadonlyArray<{
         readonly name: string | null;
         readonly href: string | null;
-        readonly id: string;
-        readonly _id: string;
-    }) | null> | null;
+        readonly gravityID: string;
+        readonly internalID: string;
+    } | null> | null;
     readonly " $refType": ShowHeader_show$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -71,23 +79,15 @@ v2 = {
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
-  "args": null,
-  "storageKey": null
-},
-v4 = {
-  "kind": "ScalarField",
-  "alias": null,
   "name": "href",
   "args": null,
   "storageKey": null
 },
-v5 = [
-  v2,
-  v4,
-  v0,
-  v3,
-  v1
+v4 = [
+  (v2/*: any*/),
+  (v3/*: any*/),
+  (v0/*: any*/),
+  (v1/*: any*/)
 ];
 return {
   "kind": "Fragment",
@@ -96,16 +96,16 @@ return {
   "metadata": null,
   "argumentDefinitions": [],
   "selections": [
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "exhibition_period",
+      "name": "id",
       "args": null,
       "storageKey": null
     },
-    v0,
-    v1,
-    v2,
+    (v2/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -127,7 +127,13 @@ return {
       "args": null,
       "storageKey": null
     },
-    v3,
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "name": "exhibition_period",
+      "args": null,
+      "storageKey": null
+    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -151,14 +157,13 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v1,
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v2,
-            v0,
-            v4
+            (v2/*: any*/),
+            (v0/*: any*/),
+            (v3/*: any*/)
           ]
         }
       ]
@@ -197,8 +202,7 @@ return {
         {
           "kind": "Literal",
           "name": "first",
-          "value": 3,
-          "type": "Int"
+          "value": 3
         }
       ],
       "concreteType": "ShowFollowArtistConnection",
@@ -230,7 +234,7 @@ return {
                   "args": null,
                   "concreteType": "Artist",
                   "plural": false,
-                  "selections": v5
+                  "selections": (v4/*: any*/)
                 }
               ]
             }
@@ -246,10 +250,10 @@ return {
       "args": null,
       "concreteType": "Artist",
       "plural": true,
-      "selections": v5
+      "selections": (v4/*: any*/)
     }
   ]
 };
 })();
-(node as any).hash = '5089558909caacd4b4f76aa018c3c302';
+(node as any).hash = 'f6f4d5d3eb75d0d185564a6ad0900eaa';
 export default node;

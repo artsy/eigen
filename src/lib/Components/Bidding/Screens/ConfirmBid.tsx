@@ -233,7 +233,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               creditCardOrError {
                 ... on CreditCardMutationSuccess {
                   creditCard {
-                    id
+                    gravityID
                     brand
                     name
                     last_digits
@@ -270,7 +270,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               message_header
               message_description_md
               position {
-                id
+                gravityID
                 suggested_next_bid {
                   cents
                   display
@@ -282,8 +282,8 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       `,
       variables: {
         input: {
-          sale_id: this.props.sale_artwork.sale.id,
-          artwork_id: this.props.sale_artwork.artwork.id,
+          sale_id: this.props.sale_artwork.sale.gravityID,
+          artwork_id: this.props.sale_artwork.artwork.gravityID,
           max_bid_amount_cents: this.selectedBid().cents,
         },
       },
@@ -331,7 +331,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   refreshBidderInfo = () => {
     this.props.relay.refetch(
-      { saleID: this.props.sale_artwork.sale.id },
+      { saleID: this.props.sale_artwork.sale.gravityID },
       null,
       error => {
         if (error) {
@@ -385,11 +385,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   presentBidResult(bidderPositionResult: BidderPositionResult) {
     NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
-      ARAuctionID: this.props.sale_artwork.sale.id,
-      ARAuctionArtworkID: this.props.sale_artwork.artwork.id,
+      ARAuctionID: this.props.sale_artwork.sale.gravityID,
+      ARAuctionArtworkID: this.props.sale_artwork.artwork.gravityID,
     })
     NativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
-      ARAuctionID: this.props.sale_artwork.sale.id,
+      ARAuctionID: this.props.sale_artwork.sale.gravityID,
     })
 
     this.props.navigator.push({
@@ -538,14 +538,14 @@ export const ConfirmBidScreen = createRefetchContainer(
   {
     sale_artwork: graphql`
       fragment ConfirmBid_sale_artwork on SaleArtwork {
-        _id
+        internalID
         sale {
-          id
+          gravityID
           live_start_at
           end_at
         }
         artwork {
-          id
+          gravityID
           title
           date
           artist_names

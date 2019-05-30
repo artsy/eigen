@@ -6,9 +6,9 @@ export type BidFlowSelectMaxBidRendererQueryVariables = {
     readonly saleArtworkID: string;
 };
 export type BidFlowSelectMaxBidRendererQueryResponse = {
-    readonly sale_artwork: ({
+    readonly sale_artwork: {
         readonly " $fragmentRefs": SelectMaxBid_sale_artwork$ref;
-    }) | null;
+    } | null;
 };
 export type BidFlowSelectMaxBidRendererQuery = {
     readonly response: BidFlowSelectMaxBidRendererQueryResponse;
@@ -23,7 +23,7 @@ query BidFlowSelectMaxBidRendererQuery(
 ) {
   sale_artwork(id: $saleArtworkID) {
     ...SelectMaxBid_sale_artwork
-    __id
+    id
   }
 }
 
@@ -32,29 +32,27 @@ fragment SelectMaxBid_sale_artwork on SaleArtwork {
     display
     cents
   }
-  _id
+  internalID
   ...ConfirmBid_sale_artwork
-  __id
 }
 
 fragment ConfirmBid_sale_artwork on SaleArtwork {
-  _id
+  internalID
   sale {
-    id
+    gravityID
     live_start_at
     end_at
-    __id
+    id
   }
   artwork {
-    id
+    gravityID
     title
     date
     artist_names
-    __id
+    id
   }
   lot_label
   ...BidResult_sale_artwork
-  __id
 }
 
 fragment BidResult_sale_artwork on SaleArtwork {
@@ -66,10 +64,9 @@ fragment BidResult_sale_artwork on SaleArtwork {
   sale {
     live_start_at
     end_at
+    gravityID
     id
-    __id
   }
-  __id
 }
 */
 
@@ -86,28 +83,27 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "saleArtworkID",
-    "type": "String!"
+    "variableName": "saleArtworkID"
   }
 ],
 v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "display",
   "args": null,
   "storageKey": null
 },
-v4 = {
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "cents",
+  "args": null,
+  "storageKey": null
+},
+v4 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
@@ -120,24 +116,19 @@ v5 = {
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "BidFlowSelectMaxBidRendererQuery",
-  "id": "d207d8e09f14b7d428c2c809671792db",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "BidFlowSelectMaxBidRendererQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "sale_artwork",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "SaleArtwork",
         "plural": false,
         "selections": [
@@ -145,8 +136,7 @@ return {
             "kind": "FragmentSpread",
             "name": "SelectMaxBid_sale_artwork",
             "args": null
-          },
-          v2
+          }
         ]
       }
     ]
@@ -154,14 +144,14 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "BidFlowSelectMaxBidRendererQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "sale_artwork",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "SaleArtwork",
         "plural": false,
         "selections": [
@@ -174,21 +164,20 @@ return {
               {
                 "kind": "Literal",
                 "name": "useMyMaxBid",
-                "value": true,
-                "type": "Boolean"
+                "value": true
               }
             ],
             "concreteType": "BidIncrementsFormatted",
             "plural": true,
             "selections": [
-              v3,
-              v4
+              (v2/*: any*/),
+              (v3/*: any*/)
             ]
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "_id",
+            "name": "internalID",
             "args": null,
             "storageKey": null
           },
@@ -201,7 +190,7 @@ return {
             "concreteType": "Sale",
             "plural": false,
             "selections": [
-              v5,
+              (v4/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -216,7 +205,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v2
+              (v5/*: any*/)
             ]
           },
           {
@@ -228,7 +217,7 @@ return {
             "concreteType": "Artwork",
             "plural": false,
             "selections": [
-              v5,
+              (v4/*: any*/),
               {
                 "kind": "ScalarField",
                 "alias": null,
@@ -250,7 +239,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v2
+              (v5/*: any*/)
             ]
           },
           {
@@ -276,14 +265,21 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v4,
-              v3
+              (v3/*: any*/),
+              (v2/*: any*/)
             ]
           },
-          v2
+          (v5/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "BidFlowSelectMaxBidRendererQuery",
+    "id": "ffe8e39663c75b6953bd6744900d6673",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

@@ -19,7 +19,7 @@ export interface ConsignmentMetadata {
 }
 
 export interface SearchResult {
-  id: string
+  internalID: string
   name: string
   image?: {
     url: string

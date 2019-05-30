@@ -1,3 +1,0 @@
-{
-  "f5649cf493d89ce52a968cb3d78033a9": "query ShowEventSectionTestsQuery {\n  show(id: \"anderson-fine-art-gallery-flickinger-collection\") {\n    events {\n      ...ShowEventSection_event\n    }\n    __id\n  }\n}\n\nfragment ShowEventSection_event on PartnerShowEventType {\n  event_type\n  description\n  start_at\n  end_at\n}\n"
-}

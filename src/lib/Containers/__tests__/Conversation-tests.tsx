@@ -78,7 +78,7 @@ it("sends message when composer is submitted", async () => {
 const props = {
   initials: "JC",
   conversation: {
-    __id: "conversation-420",
+    gravityID: "conversation-420",
     id: "420",
     from: {
       name: "Anita Garibaldi",
@@ -93,7 +93,7 @@ const props = {
       edges: [
         {
           node: {
-            __id: "unique-id",
+            gravityID: "unique-id",
             id: 222,
             body: "Adoro! Por favor envie-me mais informações",
             from_email_address: "anita@garibaldi.br",

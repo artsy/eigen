@@ -12,7 +12,7 @@ interface Props {
 
 export class ArtworksPreview extends React.Component<Props> {
   viewAllArtworksPressed() {
-    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.id}/artworks`)
+    SwitchBoard.presentNavigationViewController(this, `/fair/${this.props.fair.gravityID}/artworks`)
   }
 
   render() {
@@ -44,8 +44,8 @@ export class ArtworksPreview extends React.Component<Props> {
 export const ArtworksPreviewContainer = createFragmentContainer(ArtworksPreview, {
   fair: graphql`
     fragment ArtworksPreview_fair on Fair {
+      gravityID
       id
-      __id
       filteredArtworks(size: 0, aggregations: [TOTAL]) {
         artworks_connection(first: 6) {
           edges {

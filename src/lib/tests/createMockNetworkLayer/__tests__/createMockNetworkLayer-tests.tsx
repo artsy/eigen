@@ -18,7 +18,7 @@ describe("createMockNetworkLayer", () => {
         graphql`
           query createMockNetworkLayerTestsQuery {
             artwork(id: "untitled") {
-              __id
+              id
               title
             }
           }
@@ -31,7 +31,7 @@ describe("createMockNetworkLayer", () => {
     it("returns the data if present", async () => {
       const data = await fetchQueryWithData({
         mockData: {
-          artwork: { title: "Untitled", __id: "untitled" },
+          artwork: { title: "Untitled", id: "untitled" },
         },
       })
       expect(data.artwork.title).toEqual("Untitled")
@@ -39,7 +39,7 @@ describe("createMockNetworkLayer", () => {
     it("returns null for nullable fields which are given as null", async () => {
       const data = await fetchQueryWithData({
         mockData: {
-          artwork: { title: null, __id: "null" },
+          artwork: { title: null, id: "null" },
         },
       })
       expect(data.artwork.title).toEqual(null)
@@ -48,7 +48,7 @@ describe("createMockNetworkLayer", () => {
     it("converts undefined to null", async () => {
       const data = await fetchQueryWithData({
         mockData: {
-          artwork: { title: undefined, __id: "null" },
+          artwork: { title: undefined, id: "null" },
         },
       })
       expect(data.artwork.title).toEqual(null)
@@ -59,7 +59,7 @@ describe("createMockNetworkLayer", () => {
     try {
       await fetchQueryWithData({
         mockData: {
-          artwork: { __id: "blah" },
+          artwork: { id: "blah" },
         },
       })
     } catch (e) {
@@ -74,9 +74,9 @@ describe("createMockNetworkLayer", () => {
       {
         mockData: {
           artist: {
-            forSaleArtworks: [{ __id: "for-sale-work" }],
-            notForSaleArtworks: [{ __id: "no-for-sale-work" }],
-            __id: "id",
+            forSaleArtworks: [{ id: "for-sale-work" }],
+            notForSaleArtworks: [{ id: "no-for-sale-work" }],
+            id: "id",
           },
         },
       },
@@ -84,16 +84,16 @@ describe("createMockNetworkLayer", () => {
         query createMockNetworkLayerTestsAliasQuery {
           artist(id: "banksy") {
             forSaleArtworks: artworks(filter: IS_FOR_SALE) {
-              __id
+              id
             }
             notForSaleArtworks: artworks(filter: IS_NOT_FOR_SALE) {
-              __id
+              id
             }
           }
         }
       `
     )
-    expect(data.artist.forSaleArtworks).toEqual([{ __id: "for-sale-work" }])
-    expect(data.artist.notForSaleArtworks).toEqual([{ __id: "no-for-sale-work" }])
+    expect(data.artist.forSaleArtworks).toEqual([{ id: "for-sale-work" }])
+    expect(data.artist.notForSaleArtworks).toEqual([{ id: "no-for-sale-work" }])
   })
 })

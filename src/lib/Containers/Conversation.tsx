@@ -104,7 +104,7 @@ export class Conversation extends React.Component<Props, State> {
   @track(props => ({
     action_type: Schema.ActionTypes.Success,
     action_name: Schema.ActionNames.ConversationSendReply,
-    owner_id: props.me.conversation.id,
+    owner_id: props.me.conversation.internalID,
     owner_type: Schema.OwnerEntityTypes.Conversation,
   }))
   messageSuccessfullySent(text: string) {
@@ -118,7 +118,7 @@ export class Conversation extends React.Component<Props, State> {
   @track(props => ({
     action_type: Schema.ActionTypes.Fail,
     action_name: Schema.ActionNames.ConversationSendReply,
-    owner_id: props.me.conversation.id,
+    owner_id: props.me.conversation.internalID,
     owner_type: Schema.OwnerEntityTypes.Conversation,
   }))
   messageFailedToSend(error: Error, text: string) {
@@ -176,8 +176,8 @@ export default createFragmentContainer(Conversation, {
   me: graphql`
     fragment Conversation_me on Me {
       conversation(id: $conversationID) {
+        internalID
         id
-        __id
         to {
           name
           initials

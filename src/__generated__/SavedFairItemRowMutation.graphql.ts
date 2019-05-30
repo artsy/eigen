@@ -10,13 +10,13 @@ export type SavedFairItemRowMutationVariables = {
     readonly input: FollowProfileInput;
 };
 export type SavedFairItemRowMutationResponse = {
-    readonly followProfile: ({
-        readonly profile: ({
-            readonly id: string;
+    readonly followProfile: {
+        readonly profile: {
+            readonly gravityID: string;
             readonly is_followed: boolean | null;
-            readonly __id: string;
-        }) | null;
-    }) | null;
+            readonly id: string;
+        } | null;
+    } | null;
 };
 export type SavedFairItemRowMutation = {
     readonly response: SavedFairItemRowMutationResponse;
@@ -31,9 +31,9 @@ mutation SavedFairItemRowMutation(
 ) {
   followProfile(input: $input) {
     profile {
-      id
+      gravityID
       is_followed
-      __id
+      id
     }
   }
 }
@@ -58,8 +58,7 @@ v1 = [
       {
         "kind": "Variable",
         "name": "input",
-        "variableName": "input",
-        "type": "FollowProfileInput!"
+        "variableName": "input"
       }
     ],
     "concreteType": "FollowProfilePayload",
@@ -77,7 +76,7 @@ v1 = [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -91,7 +90,7 @@ v1 = [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "__id",
+            "name": "id",
             "args": null,
             "storageKey": null
           }
@@ -102,26 +101,28 @@ v1 = [
 ];
 return {
   "kind": "Request",
-  "operationKind": "mutation",
-  "name": "SavedFairItemRowMutation",
-  "id": "9cf2c5eb9b7d9b7d15a2ae33316c6205",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "SavedFairItemRowMutation",
     "type": "Mutation",
     "metadata": null,
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
   },
   "operation": {
     "kind": "Operation",
     "name": "SavedFairItemRowMutation",
-    "argumentDefinitions": v0,
-    "selections": v1
+    "argumentDefinitions": (v0/*: any*/),
+    "selections": (v1/*: any*/)
+  },
+  "params": {
+    "operationKind": "mutation",
+    "name": "SavedFairItemRowMutation",
+    "id": "e9ef5d6769540cb2e31a0501ef6770f3",
+    "text": null,
+    "metadata": {}
   }
 };
 })();
-(node as any).hash = '9b5e1d82370a12ce6e307eb5cc2bb258';
+(node as any).hash = 'c56eee8376ea60d53b47c2c65360c191';
 export default node;

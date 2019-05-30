@@ -1,3 +1,0 @@
-{
-  "0c1010a8dedeee8e56d6342af4e5b83e": "mutation FairBoothPreviewMutation(\n  $input: FollowProfileInput!\n) {\n  followProfile(input: $input) {\n    profile {\n      id\n      _id\n      is_followed\n      __id\n    }\n  }\n}\n"
-}

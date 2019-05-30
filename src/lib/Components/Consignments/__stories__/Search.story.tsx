@@ -35,7 +35,7 @@ const query1Result: SearchQueryProps = {
   results: [
     {
       name: "Banksy",
-      id: "banksy",
+      internalID: "banksy",
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
     },
   ],
@@ -49,7 +49,7 @@ const query1ResultSearching: SearchQueryProps = {
   results: [
     {
       name: "Banksy",
-      id: "banksy",
+      internalID: "banksy",
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
     },
   ],
@@ -63,12 +63,12 @@ const query2Results: SearchQueryProps = {
   results: [
     {
       name: "Banksy",
-      id: "banksy",
+      internalID: "banksy",
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
     },
     {
       name: "Banksy's Brother",
-      id: "thanksy",
+      internalID: "thanksy",
       image: { url: "https://d32dm0rphc51dk.cloudfront.net/zKBFBZPGN-V5TljXtsSuEg/square.jpg" },
     },
   ],
@@ -78,7 +78,7 @@ const query2Results: SearchQueryProps = {
 
 const artistGen = (artistName: string) => ({
   name: artistName,
-  id: camelCase(artistName),
+  internalID: camelCase(artistName),
   image: { url: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg" },
 })
 

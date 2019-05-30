@@ -26,7 +26,7 @@ const bid = (_isLive?: boolean, isOpen?: boolean) => {
       href: "/to-the-auction",
     },
     most_recent_bid: {
-      __id: "bid-most-recent",
+      gravityID: "bid-most-recent",
       id: "594933e6275b244305851e9c",
       display_max_bid_amount_dollars: "$10,000",
       max_bid: {

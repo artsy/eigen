@@ -1,33 +1,36 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ArtworkRailHeader_rail$ref: unique symbol;
 export type ArtworkRailHeader_rail$ref = typeof _ArtworkRailHeader_rail$ref;
 export type ArtworkRailHeader_rail = {
     readonly title: string | null;
     readonly key: string | null;
     readonly context: ({
-        readonly artist?: ({
-            readonly id: string;
-        }) | null;
-        readonly based_on?: ({
+        readonly artist?: {
+            readonly gravityID: string;
+        } | null;
+        readonly based_on?: {
             readonly name: string | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } & ({
+        readonly artist: {
+            readonly gravityID: string;
+        } | null;
+        readonly based_on: {
+            readonly name: string | null;
+        } | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly " $refType": ArtworkRailHeader_rail$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ArtworkRailHeader_rail",
   "type": "HomePageArtworkModule",
@@ -57,7 +60,6 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v0,
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextRelatedArtist",
@@ -74,11 +76,10 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "id",
+                  "name": "gravityID",
                   "args": null,
                   "storageKey": null
-                },
-                v0
+                }
               ]
             },
             {
@@ -96,17 +97,14 @@ return {
                   "name": "name",
                   "args": null,
                   "storageKey": null
-                },
-                v0
+                }
               ]
             }
           ]
         }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
-(node as any).hash = '6405fd5aae7b7073451b921d55d0014e';
+(node as any).hash = 'ed60c0a7afa22d89b838d4deab5bd106';
 export default node;

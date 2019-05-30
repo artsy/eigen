@@ -1,3 +1,0 @@
-{
-  "5f94084efd2a3b38df04063bfd4d7b3d": "query FairMoreInfoTestsQuery {\n  fair(id: \"sofa-chicago-2018\") {\n    links\n    about\n    ticketsLink\n    __id\n  }\n}\n"
-}

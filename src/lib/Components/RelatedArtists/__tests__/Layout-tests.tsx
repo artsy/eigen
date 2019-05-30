@@ -7,7 +7,7 @@ import RelatedArtists from "../"
 it("lays out correctly", () => {
   const artists = [
     {
-      __id: "artist-sarah-scott",
+      id: "artist-sarah-scott",
       name: "Sarah Scott",
       counts: {
         for_sale_artworks: 2,

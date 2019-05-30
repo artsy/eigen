@@ -100,7 +100,7 @@
 		510E95151CCEC22C00BDF098 /* TestHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestHelper.h; sourceTree = "<group>"; };
 		515687BC2079A300002F365C /* ARAdminPreloadTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARAdminPreloadTableViewCell.h; sourceTree = "<group>"; };
 		515687BD2079A300002F365C /* ARAdminPreloadTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAdminPreloadTableViewCell.m; sourceTree = "<group>"; };
-		515926A7206BA0C000048C74 /* complete.queryMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = complete.queryMap.json; path = ../../src/__generated__/complete.queryMap.json; sourceTree = "<group>"; };
+		515926A7206BA0C000048C74 /* complete.queryMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = complete.queryMap.json; path = ../../data/complete.queryMap.json; sourceTree = "<group>"; };
 		515926AD206CF8B900048C74 /* UITabBarDownloadsTemplate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UITabBarDownloadsTemplate@2x.png"; sourceTree = "<group>"; };
 		51F3E9A21CF3B8A4004A2013 /* EigenLikeNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EigenLikeNavigationController.h; sourceTree = "<group>"; };
 		51F3E9A31CF3B8A4004A2013 /* EigenLikeNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EigenLikeNavigationController.m; sourceTree = "<group>"; };

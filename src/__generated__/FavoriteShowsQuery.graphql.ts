@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { Shows_me$ref } from "./Shows_me.graphql";
 export type FavoriteShowsQueryVariables = {};
 export type FavoriteShowsQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Shows_me$ref;
-    }) | null;
+    } | null;
 };
 export type FavoriteShowsQuery = {
     readonly response: FavoriteShowsQueryResponse;
@@ -19,7 +19,7 @@ export type FavoriteShowsQuery = {
 query FavoriteShowsQuery {
   me {
     ...Shows_me
-    __id
+    id
   }
 }
 
@@ -34,7 +34,7 @@ fragment Shows_me on Me {
       }
       edges {
         node {
-          __id
+          id
           ...ShowItemRow_show
           __typename
         }
@@ -42,13 +42,12 @@ fragment Shows_me on Me {
       }
     }
   }
-  __id
 }
 
 fragment ShowItemRow_show on Show {
+  gravityID
+  internalID
   id
-  _id
-  __id
   is_followed
   name
   isStubShow
@@ -60,14 +59,14 @@ fragment ShowItemRow_show on Show {
         image {
           url(version: "square")
         }
-        __id
+        id
       }
     }
     ... on Node {
-      __id
+      id
     }
     ... on ExternalPartner {
-      __id
+      id
     }
   }
   href
@@ -84,21 +83,28 @@ fragment ShowItemRow_show on Show {
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
+var v0 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 10
+  }
+],
+v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
-v1 = {
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v2 = {
+v3 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "__typename",
@@ -107,11 +113,6 @@ v2 = {
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FavoriteShowsQuery",
-  "id": "06e1dba28c8117fe1dbfd4c9878752b9",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FavoriteShowsQuery",
@@ -132,8 +133,7 @@ return {
             "kind": "FragmentSpread",
             "name": "Shows_me",
             "args": null
-          },
-          v0
+          }
         ]
       }
     ]
@@ -166,14 +166,7 @@ return {
                 "alias": null,
                 "name": "shows",
                 "storageKey": "shows(first:10)",
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "first",
-                    "value": 10,
-                    "type": "Int"
-                  }
-                ],
+                "args": (v0/*: any*/),
                 "concreteType": "FollowedShowConnection",
                 "plural": false,
                 "selections": [
@@ -234,18 +227,18 @@ return {
                         "concreteType": "Show",
                         "plural": false,
                         "selections": [
+                          (v1/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "href",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
-                          v0,
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "_id",
+                            "name": "internalID",
                             "args": null,
                             "storageKey": null
                           },
@@ -256,7 +249,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v1,
+                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -273,13 +266,13 @@ return {
                             "concreteType": null,
                             "plural": false,
                             "selections": [
-                              v2,
-                              v0,
+                              (v3/*: any*/),
+                              (v1/*: any*/),
                               {
                                 "kind": "InlineFragment",
                                 "type": "Partner",
                                 "selections": [
-                                  v1,
+                                  (v2/*: any*/),
                                   {
                                     "kind": "LinkedField",
                                     "alias": null,
@@ -306,15 +299,14 @@ return {
                                               {
                                                 "kind": "Literal",
                                                 "name": "version",
-                                                "value": "square",
-                                                "type": "[String]"
+                                                "value": "square"
                                               }
                                             ],
                                             "storageKey": "url(version:\"square\")"
                                           }
                                         ]
                                       },
-                                      v0
+                                      (v1/*: any*/)
                                     ]
                                   }
                                 ]
@@ -324,7 +316,7 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "id",
+                            "name": "href",
                             "args": null,
                             "storageKey": null
                           },
@@ -388,7 +380,7 @@ return {
                             "args": null,
                             "storageKey": null
                           },
-                          v2
+                          (v3/*: any*/)
                         ]
                       },
                       {
@@ -406,24 +398,24 @@ return {
                 "kind": "LinkedHandle",
                 "alias": null,
                 "name": "shows",
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "first",
-                    "value": 10,
-                    "type": "Int"
-                  }
-                ],
+                "args": (v0/*: any*/),
                 "handle": "connection",
                 "key": "SavedShows_shows",
                 "filters": null
               }
             ]
           },
-          v0
+          (v1/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FavoriteShowsQuery",
+    "id": "a4e47aa958bc45bd3f152bee82f1984e",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

@@ -1,23 +1,23 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { Metadata_show$ref } from "./Metadata_show.graphql";
 declare const _ArtistShow_show$ref: unique symbol;
 export type ArtistShow_show$ref = typeof _ArtistShow_show$ref;
 export type ArtistShow_show = {
-    readonly id: string;
+    readonly gravityID: string;
     readonly href: string | null;
     readonly is_fair_booth: boolean | null;
-    readonly cover_image: ({
+    readonly cover_image: {
         readonly url: string | null;
-    }) | null;
+    } | null;
     readonly " $fragmentRefs": Metadata_show$ref;
     readonly " $refType": ArtistShow_show$ref;
 };
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ArtistShow_show",
   "type": "PartnerShow",
@@ -27,7 +27,7 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -62,8 +62,7 @@ const node: ConcreteFragment = {
             {
               "kind": "Literal",
               "name": "version",
-              "value": "large",
-              "type": "[String]"
+              "value": "large"
             }
           ],
           "storageKey": "url(version:\"large\")"
@@ -74,15 +73,8 @@ const node: ConcreteFragment = {
       "kind": "FragmentSpread",
       "name": "Metadata_show",
       "args": null
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "__id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };
-(node as any).hash = 'c8834a74654abccca7fa4108e536062a';
+(node as any).hash = '55462e468567e888bdb42839ff72912e';
 export default node;

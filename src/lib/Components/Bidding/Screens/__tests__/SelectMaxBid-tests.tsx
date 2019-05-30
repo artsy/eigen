@@ -17,7 +17,7 @@ const Me = ({
 } as any) as SelectMaxBid_me
 
 const SaleArtwork = ({
-  _id: "sale-artwork-id",
+  internalID: "sale-artwork-id",
   artwork: {
     id: "meteor shower",
     title: "Meteor Shower",

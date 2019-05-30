@@ -1,38 +1,30 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { GenericGrid_artworks$ref } from "./GenericGrid_artworks.graphql";
 declare const _ArtworksPreview_fair$ref: unique symbol;
 export type ArtworksPreview_fair$ref = typeof _ArtworksPreview_fair$ref;
 export type ArtworksPreview_fair = {
+    readonly gravityID: string;
     readonly id: string;
-    readonly __id: string;
-    readonly filteredArtworks: ({
-        readonly artworks_connection: ({
-            readonly edges: ReadonlyArray<({
-                readonly node: ({
+    readonly filteredArtworks: {
+        readonly artworks_connection: {
+            readonly edges: ReadonlyArray<{
+                readonly node: {
                     readonly " $fragmentRefs": GenericGrid_artworks$ref;
-                }) | null;
-            }) | null> | null;
-        }) | null;
-        readonly counts: ({
+                } | null;
+            } | null> | null;
+        } | null;
+        readonly counts: {
             readonly total: any | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } | null;
     readonly " $refType": ArtworksPreview_fair$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ArtworksPreview_fair",
   "type": "Fair",
@@ -42,11 +34,17 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
+      "name": "gravityID",
+      "args": null,
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
       "name": "id",
       "args": null,
       "storageKey": null
     },
-    v0,
     {
       "kind": "LinkedField",
       "alias": null,
@@ -58,14 +56,12 @@ return {
           "name": "aggregations",
           "value": [
             "TOTAL"
-          ],
-          "type": "[ArtworkAggregation]"
+          ]
         },
         {
           "kind": "Literal",
           "name": "size",
-          "value": 0,
-          "type": "Int"
+          "value": 0
         }
       ],
       "concreteType": "FilterArtworks",
@@ -80,8 +76,7 @@ return {
             {
               "kind": "Literal",
               "name": "first",
-              "value": 6,
-              "type": "Int"
+              "value": 6
             }
           ],
           "concreteType": "ArtworkConnection",
@@ -109,8 +104,7 @@ return {
                       "kind": "FragmentSpread",
                       "name": "GenericGrid_artworks",
                       "args": null
-                    },
-                    v0
+                    }
                   ]
                 }
               ]
@@ -134,12 +128,10 @@ return {
               "storageKey": null
             }
           ]
-        },
-        v0
+        }
       ]
     }
   ]
 };
-})();
-(node as any).hash = 'd72dd4c325beb363ba42fc602a619eba';
+(node as any).hash = 'd4ce2800c4a9c91a3d919d5bb72fe6cc';
 export default node;

@@ -26,9 +26,9 @@ exports[`renders properly with credit card 1`] = `
               "has_credit_cards": true,
             },
             "sale": Object {
-              "__id": "U2FsZTpkYXZpZC1seW5jaC1mb3VuZGF0aW9uLWJlbmVmaXQtYXVjdGlvbi0yMDE4",
               "end_at": "2018-06-26T19:30:00+00:00",
-              "id": "david-lynch-foundation-benefit-auction-2018",
+              "gravityID": "david-lynch-foundation-benefit-auction-2018",
+              "id": "U2FsZTpkYXZpZC1seW5jaC1mb3VuZGF0aW9uLWJlbmVmaXQtYXVjdGlvbi0yMDE4",
               "is_preview": false,
               "live_start_at": null,
               "name": "David Lynch Foundation: Benefit Auction 2018",
@@ -543,9 +543,9 @@ exports[`renders properly without credit card 1`] = `
               "has_credit_cards": false,
             },
             "sale": Object {
-              "__id": "U2FsZTpkYXZpZC1seW5jaC1mb3VuZGF0aW9uLWJlbmVmaXQtYXVjdGlvbi0yMDE4",
               "end_at": "2018-06-26T19:30:00+00:00",
-              "id": "david-lynch-foundation-benefit-auction-2018",
+              "gravityID": "david-lynch-foundation-benefit-auction-2018",
+              "id": "U2FsZTpkYXZpZC1seW5jaC1mb3VuZGF0aW9uLWJlbmVmaXQtYXVjdGlvbi0yMDE4",
               "is_preview": false,
               "live_start_at": null,
               "name": "David Lynch Foundation: Benefit Auction 2018",

@@ -1,53 +1,46 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
 declare const _FairArtists_fair$ref: unique symbol;
 export type FairArtists_fair$ref = typeof _FairArtists_fair$ref;
 export type FairArtists_fair = {
-    readonly id: string;
-    readonly _id: string;
-    readonly artists: ({
+    readonly gravityID: string;
+    readonly internalID: string;
+    readonly artists: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
             readonly startCursor: string | null;
             readonly endCursor: string | null;
         };
-        readonly edges: ReadonlyArray<({
+        readonly edges: ReadonlyArray<{
             readonly cursor: string;
-            readonly node: ({
+            readonly node: {
                 readonly sortable_id: string | null;
                 readonly href: string | null;
-                readonly _id: string;
-                readonly id: string;
+                readonly internalID: string;
+                readonly gravityID: string;
                 readonly " $fragmentRefs": ArtistListItem_artist$ref;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": FairArtists_fair$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 };
@@ -82,8 +75,8 @@ return {
     }
   ],
   "selections": [
-    v0,
-    v1,
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "kind": "LinkedField",
       "alias": "artists",
@@ -151,11 +144,6 @@ return {
               "plural": false,
               "selections": [
                 {
-                  "kind": "FragmentSpread",
-                  "name": "ArtistListItem_artist",
-                  "args": null
-                },
-                {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "sortable_id",
@@ -169,25 +157,28 @@ return {
                   "args": null,
                   "storageKey": null
                 },
-                v1,
-                v0,
-                v2,
+                (v1/*: any*/),
+                (v0/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "__typename",
                   "args": null,
                   "storageKey": null
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "ArtistListItem_artist",
+                  "args": null
                 }
               ]
             }
           ]
         }
       ]
-    },
-    v2
+    }
   ]
 };
 })();
-(node as any).hash = 'bc2423b3205828936124cb5753054e23';
+(node as any).hash = '798d5797ef0f9930ae89f7f2bb06219f';
 export default node;

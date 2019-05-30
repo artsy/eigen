@@ -6,9 +6,9 @@ export type QueryRenderersInquiryQueryVariables = {
     readonly artworkID: string;
 };
 export type QueryRenderersInquiryQueryResponse = {
-    readonly artwork: ({
+    readonly artwork: {
         readonly " $fragmentRefs": Inquiry_artwork$ref;
-    }) | null;
+    } | null;
 };
 export type QueryRenderersInquiryQuery = {
     readonly response: QueryRenderersInquiryQueryResponse;
@@ -23,32 +23,30 @@ query QueryRenderersInquiryQuery(
 ) {
   artwork(id: $artworkID) {
     ...Inquiry_artwork
-    __id
+    id
   }
 }
 
 fragment Inquiry_artwork on Artwork {
-  _id
-  id
+  internalID
+  gravityID
   contact_message
   partner {
     name
-    __id
+    id
   }
   ...ArtworkPreview_artwork
-  __id
 }
 
 fragment ArtworkPreview_artwork on Artwork {
-  id
-  _id
+  gravityID
+  internalID
   title
   artist_names
   date
   image {
     url
   }
-  __id
 }
 */
 
@@ -65,37 +63,31 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "artworkID",
-    "type": "String!"
+    "variableName": "artworkID"
   }
 ],
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "QueryRenderersInquiryQuery",
-  "id": "a061d9dbefece2ef49ce726b8725c34c",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "QueryRenderersInquiryQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artwork",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
@@ -103,8 +95,7 @@ return {
             "kind": "FragmentSpread",
             "name": "Inquiry_artwork",
             "args": null
-          },
-          v2
+          }
         ]
       }
     ]
@@ -112,28 +103,28 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "QueryRenderersInquiryQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "artwork",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "_id",
+            "name": "internalID",
             "args": null,
             "storageKey": null
           },
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "gravityID",
             "args": null,
             "storageKey": null
           },
@@ -160,7 +151,7 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v2
+              (v2/*: any*/)
             ]
           },
           {
@@ -202,10 +193,17 @@ return {
               }
             ]
           },
-          v2
+          (v2/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "QueryRenderersInquiryQuery",
+    "id": "feda2b6ae0e12b004ff209a951c37502",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

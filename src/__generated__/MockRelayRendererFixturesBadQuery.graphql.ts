@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { MockRelayRendererFixtures_artwork$ref } from "./MockRelayRendererFixtures_artwork.graphql";
 export type MockRelayRendererFixturesBadQueryVariables = {};
 export type MockRelayRendererFixturesBadQueryResponse = {
-    readonly something_that_is_not_expected: ({
+    readonly something_that_is_not_expected: {
         readonly " $fragmentRefs": MockRelayRendererFixtures_artwork$ref;
-    }) | null;
+    } | null;
 };
 export type MockRelayRendererFixturesBadQuery = {
     readonly response: MockRelayRendererFixturesBadQueryResponse;
@@ -19,7 +19,7 @@ export type MockRelayRendererFixturesBadQuery = {
 query MockRelayRendererFixturesBadQuery {
   something_that_is_not_expected: artwork(id: "mona-lisa") {
     ...MockRelayRendererFixtures_artwork
-    __id
+    id
   }
 }
 
@@ -28,16 +28,14 @@ fragment MockRelayRendererFixtures_artwork on Artwork {
     url
   }
   artist {
+    gravityID
     id
-    __id
   }
   ...MockRelayRendererFixtures_artworkMetadata
-  __id
 }
 
 fragment MockRelayRendererFixtures_artworkMetadata on Artwork {
   title
-  __id
 }
 */
 
@@ -46,24 +44,18 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "mona-lisa",
-    "type": "String!"
+    "value": "mona-lisa"
   }
 ],
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "MockRelayRendererFixturesBadQuery",
-  "id": "0023626ca915fceadd7566c4629371d5",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "MockRelayRendererFixturesBadQuery",
@@ -76,7 +68,7 @@ return {
         "alias": "something_that_is_not_expected",
         "name": "artwork",
         "storageKey": "artwork(id:\"mona-lisa\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
@@ -84,8 +76,7 @@ return {
             "kind": "FragmentSpread",
             "name": "MockRelayRendererFixtures_artwork",
             "args": null
-          },
-          v1
+          }
         ]
       }
     ]
@@ -100,7 +91,7 @@ return {
         "alias": "something_that_is_not_expected",
         "name": "artwork",
         "storageKey": "artwork(id:\"mona-lisa\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Artwork",
         "plural": false,
         "selections": [
@@ -134,11 +125,11 @@ return {
               {
                 "kind": "ScalarField",
                 "alias": null,
-                "name": "id",
+                "name": "gravityID",
                 "args": null,
                 "storageKey": null
               },
-              v1
+              (v1/*: any*/)
             ]
           },
           {
@@ -148,10 +139,17 @@ return {
             "args": null,
             "storageKey": null
           },
-          v1
+          (v1/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "MockRelayRendererFixturesBadQuery",
+    "id": "b36364071b6febbb68c78b418e8bfb7d",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

@@ -33,12 +33,12 @@ export class ShowItem extends React.Component<Props> {
   @track(props => ({
     action_name: Schema.ActionNames.NearbyShow,
     action_type: Schema.ActionTypes.Tap,
-    owner_id: props.show._id,
+    owner_id: props.show.internalID,
     owner_slug: props.show.id,
     owner_type: Schema.OwnerEntityTypes.Show,
   }))
   onPress() {
-    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.id}`)
+    SwitchBoard.presentNavigationViewController(this, `/show/${this.props.show.gravityID}`)
   }
 
   render() {
@@ -79,8 +79,8 @@ export class ShowItem extends React.Component<Props> {
 export const ShowItemContainer = createFragmentContainer(ShowItem, {
   show: graphql`
     fragment ShowItem_show on Show {
-      _id
-      id
+      internalID
+      gravityID
       name
       exhibition_period
       end_at

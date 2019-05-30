@@ -8,9 +8,9 @@ export type FairArtistsQueryVariables = {
     readonly cursor?: string | null;
 };
 export type FairArtistsQueryResponse = {
-    readonly fair: ({
+    readonly fair: {
         readonly " $fragmentRefs": FairArtists_fair$ref;
-    }) | null;
+    } | null;
 };
 export type FairArtistsQuery = {
     readonly response: FairArtistsQueryResponse;
@@ -27,13 +27,13 @@ query FairArtistsQuery(
 ) {
   fair(id: $id) {
     ...FairArtists_fair_1G22uz
-    __id
+    id
   }
 }
 
 fragment FairArtists_fair_1G22uz on Fair {
-  id
-  _id
+  gravityID
+  internalID
   artists(first: $count, after: $cursor) {
     pageInfo {
       hasNextPage
@@ -46,20 +46,19 @@ fragment FairArtists_fair_1G22uz on Fair {
         ...ArtistListItem_artist
         sortable_id
         href
-        _id
+        internalID
+        gravityID
         id
-        __id
         __typename
       }
     }
   }
-  __id
 }
 
 fragment ArtistListItem_artist on Artist {
-  __id
-  _id
   id
+  internalID
+  gravityID
   name
   is_followed
   nationality
@@ -96,51 +95,57 @@ v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "id",
-    "type": "String!"
+    "variableName": "id"
   }
 ],
 v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "gravityID",
   "args": null,
   "storageKey": null
 },
 v3 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
-v4 = {
+v4 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor"
+  },
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "count"
+  }
+],
+v5 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FairArtistsQuery",
-  "id": "073f8ff4c4f9e225d610b863f8d8a3c3",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FairArtistsQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "fair",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Fair",
         "plural": false,
         "selections": [
@@ -151,18 +156,15 @@ return {
               {
                 "kind": "Variable",
                 "name": "count",
-                "variableName": "count",
-                "type": null
+                "variableName": "count"
               },
               {
                 "kind": "Variable",
                 "name": "cursor",
-                "variableName": "cursor",
-                "type": null
+                "variableName": "cursor"
               }
             ]
-          },
-          v2
+          }
         ]
       }
     ]
@@ -170,38 +172,25 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "FairArtistsQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
         "alias": null,
         "name": "fair",
         "storageKey": null,
-        "args": v1,
+        "args": (v1/*: any*/),
         "concreteType": "Fair",
         "plural": false,
         "selections": [
-          v3,
-          v4,
+          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "kind": "LinkedField",
             "alias": null,
             "name": "artists",
             "storageKey": null,
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "after",
-                "variableName": "cursor",
-                "type": "String"
-              },
-              {
-                "kind": "Variable",
-                "name": "first",
-                "variableName": "count",
-                "type": "Int"
-              }
-            ],
+            "args": (v4/*: any*/),
             "concreteType": "ArtistConnection",
             "plural": false,
             "selections": [
@@ -262,15 +251,9 @@ return {
                     "concreteType": "Artist",
                     "plural": false,
                     "selections": [
-                      {
-                        "kind": "ScalarField",
-                        "alias": null,
-                        "name": "birthday",
-                        "args": null,
-                        "storageKey": null
-                      },
-                      v2,
-                      v3,
+                      (v5/*: any*/),
+                      (v3/*: any*/),
+                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -292,7 +275,13 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v4,
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "birthday",
+                        "args": null,
+                        "storageKey": null
+                      },
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -349,28 +338,22 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "artists",
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "after",
-                "variableName": "cursor",
-                "type": "String"
-              },
-              {
-                "kind": "Variable",
-                "name": "first",
-                "variableName": "count",
-                "type": "Int"
-              }
-            ],
+            "args": (v4/*: any*/),
             "handle": "connection",
             "key": "Fair_artists",
             "filters": null
           },
-          v2
+          (v5/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FairArtistsQuery",
+    "id": "6a83210cbef31857b37408361a9ddf82",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

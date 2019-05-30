@@ -11,7 +11,7 @@ describe("consignment metadata -> submission", () => {
   it("Handles a subset of the setup", () => {
     const setup: ConsignmentSetup = {
       artist: {
-        id: "danger",
+        internalID: "danger",
         name: "Danger McShane",
       },
       metadata: {

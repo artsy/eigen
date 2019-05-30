@@ -67,7 +67,7 @@ export class Categories extends React.Component<Props, State> {
     return (
       <FlatList
         data={rows}
-        keyExtractor={({ __id }) => __id}
+        keyExtractor={({ id }) => id}
         renderItem={data => <SavedItemRow square_image {...data.item} />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
@@ -94,8 +94,8 @@ export default createPaginationContainer(
           edges {
             node {
               gene {
+                gravityID
                 id
-                __id
                 name
                 href
                 image {

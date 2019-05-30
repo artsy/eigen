@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ArtworkTombstone_artwork$ref: unique symbol;
 export type ArtworkTombstone_artwork$ref = typeof _ArtworkTombstone_artwork$ref;
 export type ArtworkTombstone_artwork = {
@@ -8,32 +8,24 @@ export type ArtworkTombstone_artwork = {
     readonly medium: string | null;
     readonly date: string | null;
     readonly cultural_maker: string | null;
-    readonly artists: ReadonlyArray<({
+    readonly artists: ReadonlyArray<{
         readonly name: string | null;
         readonly href: string | null;
-    }) | null> | null;
-    readonly dimensions: ({
+    } | null> | null;
+    readonly dimensions: {
         readonly in: string | null;
         readonly cm: string | null;
-    }) | null;
+    } | null;
     readonly edition_of: string | null;
-    readonly attribution_class: ({
+    readonly attribution_class: {
         readonly short_description: string | null;
-    }) | null;
+    } | null;
     readonly " $refType": ArtworkTombstone_artwork$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ArtworkTombstone_artwork",
   "type": "Artwork",
@@ -90,8 +82,7 @@ return {
           "name": "href",
           "args": null,
           "storageKey": null
-        },
-        v0
+        }
       ]
     },
     {
@@ -143,10 +134,8 @@ return {
           "storageKey": null
         }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
 (node as any).hash = '936ac7c973aa593b37c8fdc05ab1a23e';
 export default node;

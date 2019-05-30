@@ -1,40 +1,54 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ArtworkCarouselHeader_rail$ref: unique symbol;
 export type ArtworkCarouselHeader_rail$ref = typeof _ArtworkCarouselHeader_rail$ref;
 export type ArtworkCarouselHeader_rail = {
     readonly title: string | null;
     readonly key: string | null;
     readonly followedArtistContext: ({
-        readonly artist?: ({
-            readonly _id: string;
-            readonly id: string;
-        }) | null;
-    }) | null;
+        readonly artist?: {
+            readonly internalID: string;
+            readonly gravityID: string;
+        } | null;
+    } & ({
+        readonly artist: {
+            readonly internalID: string;
+            readonly gravityID: string;
+        } | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly relatedArtistContext: ({
-        readonly artist?: ({
-            readonly _id: string;
-            readonly id: string;
-        }) | null;
-        readonly based_on?: ({
+        readonly artist?: {
+            readonly internalID: string;
+            readonly gravityID: string;
+        } | null;
+        readonly based_on?: {
             readonly name: string | null;
-        }) | null;
-    }) | null;
+        } | null;
+    } & ({
+        readonly artist: {
+            readonly internalID: string;
+            readonly gravityID: string;
+        } | null;
+        readonly based_on: {
+            readonly name: string | null;
+        } | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly " $refType": ArtworkCarouselHeader_rail$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
   "kind": "LinkedField",
   "alias": null,
   "name": "artist",
@@ -46,18 +60,17 @@ v1 = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
-    },
-    v0
+    }
   ]
 };
 return {
@@ -90,12 +103,11 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v0,
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextFollowedArtist",
           "selections": [
-            v1
+            (v0/*: any*/)
           ]
         }
       ]
@@ -109,12 +121,11 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v0,
         {
           "kind": "InlineFragment",
           "type": "HomePageModuleContextRelatedArtist",
           "selections": [
-            v1,
+            (v0/*: any*/),
             {
               "kind": "LinkedField",
               "alias": null,
@@ -130,17 +141,15 @@ return {
                   "name": "name",
                   "args": null,
                   "storageKey": null
-                },
-                v0
+                }
               ]
             }
           ]
         }
       ]
-    },
-    v0
+    }
   ]
 };
 })();
-(node as any).hash = 'b6e75f07a90466a7811c73bd3e12abc1';
+(node as any).hash = 'f9f8ed70e15feeab8e14270b8390a7e8';
 export default node;

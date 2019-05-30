@@ -103,14 +103,14 @@ class ArtworkCarouselHeader extends Component<Props, State> {
     return {
       action_name: Schema.ActionNames.HomeArtistArtworksBlockFollow,
       action_type: Schema.ActionTypes.Tap,
-      owner_id: artist._id,
-      owner_slug: artist.id,
+      owner_id: artist.internalID,
+      owner_slug: artist.gravityID,
       owner_type: Schema.OwnerEntityTypes.Artist,
     }
   })
   handleFollowChange() {
     const artist = getSubjectArtist(this.props)
-    ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, artist.id, (error, following) => {
+    ARTemporaryAPIModule.setFollowArtistStatus(!this.state.following, artist.gravityID, (error, following) => {
       if (error) {
         console.error("ArtworkCarouselHeader.tsx", error)
       }
@@ -168,16 +168,16 @@ export default createFragmentContainer(ArtworkCarouselHeader, {
       followedArtistContext: context {
         ... on HomePageModuleContextFollowedArtist {
           artist {
-            _id
-            id
+            internalID
+            gravityID
           }
         }
       }
       relatedArtistContext: context {
         ... on HomePageModuleContextRelatedArtist {
           artist {
-            _id
-            id
+            internalID
+            gravityID
           }
           based_on {
             name
@@ -195,13 +195,13 @@ export default createFragmentContainer(ArtworkCarouselHeader, {
       #   __typename
       #   ... on HomePageModuleContextFollowedArtist {
       #     artist {
-      #       _id
+      #       internalID
       #       id
       #     }
       #   }
       #   ... on HomePageModuleContextRelatedArtist {
       #     artist {
-      #       _id
+      #       internalID
       #       id
       #     }
       #     based_on {

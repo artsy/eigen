@@ -1,15 +1,18 @@
+import { ArtworksGridPaginationContainer_filteredArtworks } from "__generated__/ArtworksGridPaginationContainer_filteredArtworks.graphql"
 import InfiniteScrollArtworksGrid, {
   Props as InfiniteScrollGridProps,
 } from "lib/Components/ArtworkGrids/InfiniteScrollGrid"
 import { createPaginationContainer, graphql } from "react-relay"
 
-export const ArtworksGridPaginationContainer = createPaginationContainer<RelayProps & InfiniteScrollGridProps>(
-  InfiniteScrollArtworksGrid,
+export const ArtworksGridPaginationContainer = createPaginationContainer<
+  { filteredArtworks: ArtworksGridPaginationContainer_filteredArtworks } & InfiniteScrollGridProps
+>(
+  InfiniteScrollArtworksGrid as any,
   {
     filteredArtworks: graphql`
       fragment ArtworksGridPaginationContainer_filteredArtworks on FilterArtworks
         @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        __id
+        id
         artworks: artworks_connection(first: $count, after: $cursor)
           @connection(key: "ArtworksGridPaginationContainer_artworks") {
           pageInfo {
@@ -19,8 +22,8 @@ export const ArtworksGridPaginationContainer = createPaginationContainer<RelayPr
           }
           edges {
             node {
+              gravityID
               id
-              __id
               image {
                 aspect_ratio
               }
@@ -45,14 +48,14 @@ export const ArtworksGridPaginationContainer = createPaginationContainer<RelayPr
     getVariables(props, { count, cursor }, fragmentVariables) {
       return {
         ...fragmentVariables,
-        __id: props.filteredArtworks.__id,
+        id: props.filteredArtworks.id,
         count,
         cursor,
       }
     },
     query: graphql`
-      query ArtworksGridPaginationContainerQuery($__id: ID!, $count: Int!, $cursor: String) {
-        node(__id: $__id) {
+      query ArtworksGridPaginationContainerQuery($id: ID!, $count: Int!, $cursor: String) {
+        node(__id: $id) {
           ... on FilterArtworks {
             ...ArtworksGridPaginationContainer_filteredArtworks @arguments(count: $count, cursor: $cursor)
           }
@@ -61,22 +64,3 @@ export const ArtworksGridPaginationContainer = createPaginationContainer<RelayPr
     `,
   }
 )
-
-export interface RelayProps {
-  filteredArtworks?: {
-    artworks: {
-      pageInfo: {
-        hasNextPage: boolean
-      }
-      edges: Array<{
-        node: {
-          __id: string
-          id: string
-          image: {
-            aspect_ratio: number | null
-          } | null
-        } | null
-      }>
-    }
-  }
-}

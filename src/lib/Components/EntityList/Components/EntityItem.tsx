@@ -5,18 +5,23 @@ import { TouchableOpacity } from "react-native"
 export interface Item {
   name: string
   href: string
-  id: string
-  _id: string
+  gravityID: string
+  internalID: string
 }
 
 export interface EntityItemProps {
   item: Item
   isFirst: boolean
   isLast: boolean
-  onPress: (href: string, id: string, _id: string) => void
+  onPress: (href: string, id: string, internalID: string) => void
 }
 
-export const EntityItem: React.SFC<EntityItemProps> = ({ item: { name, href, id, _id }, isFirst, isLast, onPress }) => {
+export const EntityItem: React.SFC<EntityItemProps> = ({
+  item: { name, href, gravityID, internalID },
+  isFirst,
+  isLast,
+  onPress,
+}) => {
   let text = `${name}, `
 
   if ((isFirst && isLast) || isLast) {
@@ -24,7 +29,7 @@ export const EntityItem: React.SFC<EntityItemProps> = ({ item: { name, href, id,
   }
 
   return (
-    <TouchableOpacity onPress={() => onPress(href, id, _id)}>
+    <TouchableOpacity onPress={() => onPress(href, gravityID, internalID)}>
       <Sans weight="medium" size="3" lineHeight="19">
         {text}
       </Sans>

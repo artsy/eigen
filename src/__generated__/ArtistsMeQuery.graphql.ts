@@ -7,9 +7,9 @@ export type ArtistsMeQueryVariables = {
     readonly cursor?: string | null;
 };
 export type ArtistsMeQueryResponse = {
-    readonly me: ({
+    readonly me: {
         readonly " $fragmentRefs": Artists_me$ref;
-    }) | null;
+    } | null;
 };
 export type ArtistsMeQuery = {
     readonly response: ArtistsMeQueryResponse;
@@ -25,7 +25,7 @@ query ArtistsMeQuery(
 ) {
   me {
     ...Artists_me_1G22uz
-    __id
+    id
   }
 }
 
@@ -38,21 +38,20 @@ fragment Artists_me_1G22uz on Me {
     edges {
       node {
         artist {
+          gravityID
           id
-          __id
           name
           href
           image {
             url
           }
         }
-        __id
+        id
         __typename
       }
       cursor
     }
   }
-  __id
 }
 */
 
@@ -71,26 +70,33 @@ var v0 = [
     "defaultValue": null
   }
 ],
-v1 = {
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor"
+  },
+  {
+    "kind": "Variable",
+    "name": "first",
+    "variableName": "count"
+  }
+],
+v2 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "ArtistsMeQuery",
-  "id": "fee55966107b409fcea48f9422b25d5f",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "ArtistsMeQuery",
     "type": "Query",
     "metadata": null,
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -108,18 +114,15 @@ return {
               {
                 "kind": "Variable",
                 "name": "count",
-                "variableName": "count",
-                "type": null
+                "variableName": "count"
               },
               {
                 "kind": "Variable",
                 "name": "cursor",
-                "variableName": "cursor",
-                "type": null
+                "variableName": "cursor"
               }
             ]
-          },
-          v1
+          }
         ]
       }
     ]
@@ -127,7 +130,7 @@ return {
   "operation": {
     "kind": "Operation",
     "name": "ArtistsMeQuery",
-    "argumentDefinitions": v0,
+    "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
         "kind": "LinkedField",
@@ -143,20 +146,7 @@ return {
             "alias": null,
             "name": "followed_artists_connection",
             "storageKey": null,
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "after",
-                "variableName": "cursor",
-                "type": "String"
-              },
-              {
-                "kind": "Variable",
-                "name": "first",
-                "variableName": "count",
-                "type": "Int"
-              }
-            ],
+            "args": (v1/*: any*/),
             "concreteType": "FollowArtistConnection",
             "plural": false,
             "selections": [
@@ -215,11 +205,11 @@ return {
                           {
                             "kind": "ScalarField",
                             "alias": null,
-                            "name": "id",
+                            "name": "gravityID",
                             "args": null,
                             "storageKey": null
                           },
-                          v1,
+                          (v2/*: any*/),
                           {
                             "kind": "ScalarField",
                             "alias": null,
@@ -254,7 +244,7 @@ return {
                           }
                         ]
                       },
-                      v1,
+                      (v2/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -279,28 +269,22 @@ return {
             "kind": "LinkedHandle",
             "alias": null,
             "name": "followed_artists_connection",
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "after",
-                "variableName": "cursor",
-                "type": "String"
-              },
-              {
-                "kind": "Variable",
-                "name": "first",
-                "variableName": "count",
-                "type": "Int"
-              }
-            ],
+            "args": (v1/*: any*/),
             "handle": "connection",
             "key": "Artists_followed_artists_connection",
             "filters": null
           },
-          v1
+          (v2/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "ArtistsMeQuery",
+    "id": "50c8259fa471d0389d67dfbb57d92dd4",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

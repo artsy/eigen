@@ -1,6 +1,6 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { About_gene$ref } from "./About_gene.graphql";
 import { GeneArtworksGrid_filtered_artworks$ref } from "./GeneArtworksGrid_filtered_artworks.graphql";
 import { Header_gene$ref } from "./Header_gene.graphql";
@@ -8,31 +8,29 @@ export type ArtworkAggregation = "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS
 declare const _Gene_gene$ref: unique symbol;
 export type Gene_gene$ref = typeof _Gene_gene$ref;
 export type Gene_gene = {
-    readonly filtered_artworks: ({
+    readonly filtered_artworks: {
         readonly total: number | null;
-        readonly aggregations: ReadonlyArray<({
+        readonly aggregations: ReadonlyArray<{
             readonly slice: ArtworkAggregation | null;
-            readonly counts: ReadonlyArray<({
-                readonly id: string;
+            readonly counts: ReadonlyArray<{
+                readonly gravityID: string;
                 readonly name: string | null;
                 readonly count: number | null;
-            }) | null> | null;
-        }) | null> | null;
+            } | null> | null;
+        } | null> | null;
         readonly " $fragmentRefs": GeneArtworksGrid_filtered_artworks$ref;
-    }) | null;
+    } | null;
     readonly " $fragmentRefs": Header_gene$ref & About_gene$ref;
     readonly " $refType": Gene_gene$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
+  "kind": "Variable",
+  "name": "sort",
+  "variableName": "sort"
 };
 return {
   "kind": "Fragment",
@@ -61,16 +59,6 @@ return {
   ],
   "selections": [
     {
-      "kind": "FragmentSpread",
-      "name": "Header_gene",
-      "args": null
-    },
-    {
-      "kind": "FragmentSpread",
-      "name": "About_gene",
-      "args": null
-    },
-    {
       "kind": "LinkedField",
       "alias": null,
       "name": "filtered_artworks",
@@ -83,39 +71,29 @@ return {
             "MEDIUM",
             "PRICE_RANGE",
             "TOTAL"
-          ],
-          "type": "[ArtworkAggregation]"
+          ]
         },
         {
           "kind": "Literal",
           "name": "for_sale",
-          "value": true,
-          "type": "Boolean"
+          "value": true
         },
         {
           "kind": "Variable",
           "name": "medium",
-          "variableName": "medium",
-          "type": "String"
+          "variableName": "medium"
         },
         {
           "kind": "Variable",
           "name": "price_range",
-          "variableName": "price_range",
-          "type": "String"
+          "variableName": "price_range"
         },
         {
           "kind": "Literal",
           "name": "size",
-          "value": 0,
-          "type": "Int"
+          "value": 0
         },
-        {
-          "kind": "Variable",
-          "name": "sort",
-          "variableName": "sort",
-          "type": "String"
-        }
+        (v0/*: any*/)
       ],
       "concreteType": "FilterArtworks",
       "plural": false,
@@ -155,7 +133,7 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "id",
+                  "name": "gravityID",
                   "args": null,
                   "storageKey": null
                 },
@@ -172,8 +150,7 @@ return {
                   "name": "count",
                   "args": null,
                   "storageKey": null
-                },
-                v0
+                }
               ]
             }
           ]
@@ -182,20 +159,23 @@ return {
           "kind": "FragmentSpread",
           "name": "GeneArtworksGrid_filtered_artworks",
           "args": [
-            {
-              "kind": "Variable",
-              "name": "sort",
-              "variableName": "sort",
-              "type": null
-            }
+            (v0/*: any*/)
           ]
-        },
-        v0
+        }
       ]
     },
-    v0
+    {
+      "kind": "FragmentSpread",
+      "name": "Header_gene",
+      "args": null
+    },
+    {
+      "kind": "FragmentSpread",
+      "name": "About_gene",
+      "args": null
+    }
   ]
 };
 })();
-(node as any).hash = 'b5dcbf530f6765ce1470ecc52166870e';
+(node as any).hash = 'bd6398fbfafab446e0635b8daf93314a';
 export default node;

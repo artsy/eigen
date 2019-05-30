@@ -1,56 +1,46 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { SmallList_shows$ref } from "./SmallList_shows.graphql";
 import { VariableSizeShowsList_shows$ref } from "./VariableSizeShowsList_shows.graphql";
 declare const _Shows_artist$ref: unique symbol;
 export type Shows_artist$ref = typeof _Shows_artist$ref;
 export type Shows_artist = {
-    readonly current_shows: ReadonlyArray<({
+    readonly current_shows: ReadonlyArray<{
         readonly " $fragmentRefs": VariableSizeShowsList_shows$ref;
-    }) | null> | null;
-    readonly upcoming_shows: ReadonlyArray<({
+    } | null> | null;
+    readonly upcoming_shows: ReadonlyArray<{
         readonly " $fragmentRefs": VariableSizeShowsList_shows$ref;
-    }) | null> | null;
-    readonly past_small_shows?: ReadonlyArray<({
+    } | null> | null;
+    readonly past_small_shows?: ReadonlyArray<{
         readonly " $fragmentRefs": SmallList_shows$ref;
-    }) | null> | null;
-    readonly past_large_shows?: ReadonlyArray<({
+    } | null> | null;
+    readonly past_large_shows?: ReadonlyArray<{
         readonly " $fragmentRefs": VariableSizeShowsList_shows$ref;
-    }) | null> | null;
+    } | null> | null;
     readonly " $refType": Shows_artist$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v1 = [
+const node: ReaderFragment = (function(){
+var v0 = [
   {
     "kind": "FragmentSpread",
     "name": "VariableSizeShowsList_shows",
     "args": null
-  },
-  v0
+  }
 ],
-v2 = [
+v1 = [
   {
     "kind": "Literal",
     "name": "size",
-    "value": 20,
-    "type": "Int"
+    "value": 20
   },
   {
     "kind": "Literal",
     "name": "status",
-    "value": "closed",
-    "type": "String"
+    "value": "closed"
   }
 ];
 return {
@@ -75,13 +65,12 @@ return {
         {
           "kind": "Literal",
           "name": "status",
-          "value": "running",
-          "type": "String"
+          "value": "running"
         }
       ],
       "concreteType": "PartnerShow",
       "plural": true,
-      "selections": v1
+      "selections": (v0/*: any*/)
     },
     {
       "kind": "LinkedField",
@@ -92,31 +81,12 @@ return {
         {
           "kind": "Literal",
           "name": "status",
-          "value": "upcoming",
-          "type": "String"
+          "value": "upcoming"
         }
       ],
       "concreteType": "PartnerShow",
       "plural": true,
-      "selections": v1
-    },
-    v0,
-    {
-      "kind": "Condition",
-      "passingValue": true,
-      "condition": "isPad",
-      "selections": [
-        {
-          "kind": "LinkedField",
-          "alias": "past_large_shows",
-          "name": "partner_shows",
-          "storageKey": "partner_shows(size:20,status:\"closed\")",
-          "args": v2,
-          "concreteType": "PartnerShow",
-          "plural": true,
-          "selections": v1
-        }
-      ]
+      "selections": (v0/*: any*/)
     },
     {
       "kind": "Condition",
@@ -128,7 +98,7 @@ return {
           "alias": "past_small_shows",
           "name": "partner_shows",
           "storageKey": "partner_shows(size:20,status:\"closed\")",
-          "args": v2,
+          "args": (v1/*: any*/),
           "concreteType": "PartnerShow",
           "plural": true,
           "selections": [
@@ -136,9 +106,25 @@ return {
               "kind": "FragmentSpread",
               "name": "SmallList_shows",
               "args": null
-            },
-            v0
+            }
           ]
+        }
+      ]
+    },
+    {
+      "kind": "Condition",
+      "passingValue": true,
+      "condition": "isPad",
+      "selections": [
+        {
+          "kind": "LinkedField",
+          "alias": "past_large_shows",
+          "name": "partner_shows",
+          "storageKey": "partner_shows(size:20,status:\"closed\")",
+          "args": (v1/*: any*/),
+          "concreteType": "PartnerShow",
+          "plural": true,
+          "selections": (v0/*: any*/)
         }
       ]
     }

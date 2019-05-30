@@ -4,8 +4,8 @@ import { ConnectionHandler, Environment, MutationConfig, RecordSourceSelectorPro
 
 interface Conversation {
   last_message_id: string
+  internalID: string
   id: string
-  __id: string
   from: {
     email: string
   }
@@ -21,7 +21,7 @@ export function sendConversationMessage(
   const storeUpdater = (store: RecordSourceSelectorProxy) => {
     const mutationPayload = store.getRootField("sendConversationMessage")
     const newMessageEdge = mutationPayload.getLinkedRecord("messageEdge")
-    const conversationStore = store.get(conversation.__id)
+    const conversationStore = store.get(conversation.id)
     const connection = ConnectionHandler.getConnection(conversationStore, "Messages_messages")
     ConnectionHandler.insertEdgeBefore(connection, newMessageEdge)
   }
@@ -41,7 +41,7 @@ export function sendConversationMessage(
               impulse_id
               is_from_user
               body
-              __id
+              id
               ...Message_message
             }
           }
@@ -51,7 +51,7 @@ export function sendConversationMessage(
 
     variables: {
       input: {
-        id: conversation.id,
+        id: conversation.internalID,
         from: conversation.from.email,
         body_text: text,
         // Reply to the last message
@@ -66,7 +66,7 @@ export function sendConversationMessage(
       {
         type: "RANGE_ADD",
         parentName: "conversation",
-        parentID: "__id",
+        parentID: "id",
         connectionName: "messages",
         edgeName: "messageEdge",
         rangeBehaviors: {

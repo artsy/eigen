@@ -1,6 +1,7 @@
 src/__generated__/*.ts
 src/__generated__/*.json
 src/__generated__/*.graphql.ts
+data/complete.queryMap.json
 Pod/Assets/PreHeatedGraphQLCache/*.json
 node_modules
 package.json

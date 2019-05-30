@@ -123,7 +123,7 @@ export class SaleListItem extends React.Component<Props> {
 export default createFragmentContainer(SaleListItem, {
   sale: graphql`
     fragment SaleListItem_sale on Sale {
-      id
+      gravityID
       name
       href
       is_open

@@ -1,34 +1,26 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtistListItem_artist$ref } from "./ArtistListItem_artist.graphql";
 declare const _ShowArtists_show$ref: unique symbol;
 export type ShowArtists_show$ref = typeof _ShowArtists_show$ref;
 export type ShowArtists_show = {
-    readonly _id: string;
-    readonly id: string;
-    readonly artists_grouped_by_name: ReadonlyArray<({
+    readonly internalID: string;
+    readonly gravityID: string;
+    readonly artists_grouped_by_name: ReadonlyArray<{
         readonly letter: string | null;
-        readonly items: ReadonlyArray<({
+        readonly items: ReadonlyArray<{
             readonly sortable_id: string | null;
             readonly href: string | null;
             readonly " $fragmentRefs": ArtistListItem_artist$ref;
-        }) | null> | null;
-    }) | null> | null;
+        } | null> | null;
+    } | null> | null;
     readonly " $refType": ShowArtists_show$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "ShowArtists_show",
   "type": "Show",
@@ -38,14 +30,14 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
@@ -75,11 +67,6 @@ return {
           "plural": true,
           "selections": [
             {
-              "kind": "FragmentSpread",
-              "name": "ArtistListItem_artist",
-              "args": null
-            },
-            {
               "kind": "ScalarField",
               "alias": null,
               "name": "sortable_id",
@@ -93,14 +80,16 @@ return {
               "args": null,
               "storageKey": null
             },
-            v0
+            {
+              "kind": "FragmentSpread",
+              "name": "ArtistListItem_artist",
+              "args": null
+            }
           ]
         }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
-(node as any).hash = '49bc2a087941cebe598c7ddbbab55362';
+(node as any).hash = 'b41972dd9b548a1f37d53382bdbce28d';
 export default node;

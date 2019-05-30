@@ -38,8 +38,8 @@ interface Props {
 
 export class Artwork extends React.Component<Props, any> {
   handleTap() {
-    this.props.onPress && this.props.artwork.id
-      ? this.props.onPress(this.props.artwork.id)
+    this.props.onPress && this.props.artwork.gravityID
+      ? this.props.onPress(this.props.artwork.gravityID)
       : SwitchBoard.presentNavigationViewController(this, this.props.artwork.href)
   }
 
@@ -202,7 +202,7 @@ export default createFragmentContainer(Artwork, {
       is_biddable
       is_acquireable
       is_offerable
-      id
+      gravityID
       sale {
         is_auction
         is_live_open

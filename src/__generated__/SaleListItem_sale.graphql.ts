@@ -1,10 +1,10 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _SaleListItem_sale$ref: unique symbol;
 export type SaleListItem_sale$ref = typeof _SaleListItem_sale$ref;
 export type SaleListItem_sale = {
-    readonly id: string;
+    readonly gravityID: string;
     readonly name: string | null;
     readonly href: string | null;
     readonly is_open: boolean | null;
@@ -15,16 +15,16 @@ export type SaleListItem_sale = {
     readonly registration_ends_at: string | null;
     readonly live_start_at: string | null;
     readonly display_timely_at: string | null;
-    readonly cover_image: ({
+    readonly cover_image: {
         readonly url: string | null;
         readonly aspect_ratio: number;
-    }) | null;
+    } | null;
     readonly " $refType": SaleListItem_sale$ref;
 };
 
 
 
-const node: ConcreteFragment = {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "SaleListItem_sale",
   "type": "Sale",
@@ -34,14 +34,14 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "start_at",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "name",
       "args": null,
       "storageKey": null
     },
@@ -76,7 +76,7 @@ const node: ConcreteFragment = {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "name",
+      "name": "start_at",
       "args": null,
       "storageKey": null
     },
@@ -125,8 +125,7 @@ const node: ConcreteFragment = {
             {
               "kind": "Literal",
               "name": "version",
-              "value": "large",
-              "type": "[String]"
+              "value": "large"
             }
           ],
           "storageKey": "url(version:\"large\")"
@@ -139,15 +138,8 @@ const node: ConcreteFragment = {
           "storageKey": null
         }
       ]
-    },
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "name": "__id",
-      "args": null,
-      "storageKey": null
     }
   ]
 };
-(node as any).hash = 'fd579669d2b83e54c046f261f2b51833';
+(node as any).hash = 'ac3784f714ce32f89604634a25aaef07';
 export default node;

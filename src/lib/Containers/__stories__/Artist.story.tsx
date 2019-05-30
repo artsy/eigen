@@ -12,7 +12,7 @@ const RootContainer: React.SFC<any> = ({ Component, artistID }) => {
     <QueryRenderer<ArtistQuery>
       environment={createEnvironment()}
       query={graphql`
-        query ArtistQuery($artistID: String!) {
+        query ArtistQuery($artistID: String!, $isPad: Boolean!) {
           artist(id: $artistID) {
             ...Artist_artist
           }
@@ -20,6 +20,7 @@ const RootContainer: React.SFC<any> = ({ Component, artistID }) => {
       `}
       variables={{
         artistID,
+        isPad: false,
       }}
       render={({ error, props }) => {
         if (error) {

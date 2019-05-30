@@ -12,7 +12,7 @@ const saleArtwork = () => ({
 
 it("renders properly", () => {
   const sale = {
-    __id: "sale-id",
+    id: "sale-id",
     salerArtworks: {
       edges: [saleArtwork(), saleArtwork(), saleArtwork()],
     },

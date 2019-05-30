@@ -1,38 +1,37 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 declare const _ShowItem_show$ref: unique symbol;
 export type ShowItem_show$ref = typeof _ShowItem_show$ref;
 export type ShowItem_show = {
-    readonly _id: string;
-    readonly id: string;
+    readonly internalID: string;
+    readonly gravityID: string;
     readonly name: string | null;
     readonly exhibition_period: string | null;
     readonly end_at: string | null;
-    readonly images: ReadonlyArray<({
+    readonly images: ReadonlyArray<{
         readonly url: string | null;
         readonly aspect_ratio: number;
-    }) | null> | null;
+    } | null> | null;
     readonly partner: ({
         readonly name?: string | null;
-    }) | null;
+    } & ({
+        readonly name: string | null;
+    } | {
+        /*This will never be '% other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    })) | null;
     readonly " $refType": ShowItem_show$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
-  "args": null,
-  "storageKey": null
-},
-v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
   "args": null,
   "storageKey": null
 };
@@ -46,18 +45,18 @@ return {
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "_id",
+      "name": "internalID",
       "args": null,
       "storageKey": null
     },
     {
       "kind": "ScalarField",
       "alias": null,
-      "name": "id",
+      "name": "gravityID",
       "args": null,
       "storageKey": null
     },
-    v0,
+    (v0/*: any*/),
     {
       "kind": "ScalarField",
       "alias": null,
@@ -106,19 +105,17 @@ return {
       "concreteType": null,
       "plural": false,
       "selections": [
-        v1,
         {
           "kind": "InlineFragment",
           "type": "Partner",
           "selections": [
-            v0
+            (v0/*: any*/)
           ]
         }
       ]
-    },
-    v1
+    }
   ]
 };
 })();
-(node as any).hash = '4482314737ae44a25efb0b7b2772fa49';
+(node as any).hash = '3537d1816ba20c632714599023446d51';
 export default node;

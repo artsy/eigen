@@ -1,14 +1,14 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtworkPreview_artwork$ref } from "./ArtworkPreview_artwork.graphql";
 import { Message_message$ref } from "./Message_message.graphql";
 import { ShowPreview_show$ref } from "./ShowPreview_show.graphql";
 declare const _Messages_conversation$ref: unique symbol;
 export type Messages_conversation$ref = typeof _Messages_conversation$ref;
 export type Messages_conversation = {
-    readonly __id: string;
-    readonly id: string | null;
+    readonly id: string;
+    readonly internalID: string | null;
     readonly from: {
         readonly name: string;
         readonly email: string;
@@ -19,54 +19,68 @@ export type Messages_conversation = {
         readonly initials: string | null;
     };
     readonly initial_message: string;
-    readonly messages: ({
+    readonly messages: {
         readonly pageInfo: {
             readonly startCursor: string | null;
             readonly endCursor: string | null;
             readonly hasPreviousPage: boolean;
             readonly hasNextPage: boolean;
         };
-        readonly edges: ReadonlyArray<({
+        readonly edges: ReadonlyArray<{
             readonly cursor: string;
-            readonly node: ({
-                readonly __id: string;
+            readonly node: {
+                readonly id: string;
                 readonly impulse_id: string;
                 readonly is_from_user: boolean | null;
                 readonly body: string | null;
-                readonly attachments: ReadonlyArray<({
-                    readonly id: string;
-                }) | null> | null;
+                readonly attachments: ReadonlyArray<{
+                    readonly internalID: string;
+                } | null> | null;
                 readonly " $fragmentRefs": Message_message$ref;
-            }) | null;
-        }) | null> | null;
-    }) | null;
-    readonly items: ReadonlyArray<({
+            } | null;
+        } | null> | null;
+    } | null;
+    readonly items: ReadonlyArray<{
         readonly artwork: ({
             readonly href?: string | null;
             readonly " $fragmentRefs": ArtworkPreview_artwork$ref;
-        }) | null;
+        } & ({
+            readonly href: string | null;
+            readonly " $fragmentRefs": ArtworkPreview_artwork$ref;
+        } | {
+            /*This will never be '% other', but we need some
+            value in case none of the concrete values match.*/
+            readonly __typename: "%other";
+        })) | null;
         readonly show: ({
             readonly href?: string | null;
             readonly " $fragmentRefs": ShowPreview_show$ref;
-        }) | null;
-    }) | null> | null;
+        } & ({
+            readonly href: string | null;
+            readonly " $fragmentRefs": ShowPreview_show$ref;
+        } | {
+            /*This will never be '% other', but we need some
+            value in case none of the concrete values match.*/
+            readonly __typename: "%other";
+        })) | null;
+    } | null> | null;
     readonly " $refType": Messages_conversation$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 },
 v1 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 },
@@ -122,8 +136,8 @@ return {
     }
   ],
   "selections": [
-    v0,
-    v1,
+    (v0/*: any*/),
+    (v1/*: any*/),
     {
       "kind": "LinkedField",
       "alias": null,
@@ -133,7 +147,7 @@ return {
       "concreteType": "ConversationInitiator",
       "plural": false,
       "selections": [
-        v2,
+        (v2/*: any*/),
         {
           "kind": "ScalarField",
           "alias": null,
@@ -141,7 +155,7 @@ return {
           "args": null,
           "storageKey": null
         },
-        v3
+        (v3/*: any*/)
       ]
     },
     {
@@ -153,8 +167,8 @@ return {
       "concreteType": "ConversationResponder",
       "plural": false,
       "selections": [
-        v2,
-        v3
+        (v2/*: any*/),
+        (v3/*: any*/)
       ]
     },
     {
@@ -237,7 +251,7 @@ return {
               "concreteType": "Message",
               "plural": false,
               "selections": [
-                v0,
+                (v0/*: any*/),
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -268,13 +282,8 @@ return {
                   "concreteType": "Attachment",
                   "plural": true,
                   "selections": [
-                    v1
+                    (v1/*: any*/)
                   ]
-                },
-                {
-                  "kind": "FragmentSpread",
-                  "name": "Message_message",
-                  "args": null
                 },
                 {
                   "kind": "ScalarField",
@@ -282,6 +291,11 @@ return {
                   "name": "__typename",
                   "args": null,
                   "storageKey": null
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "Message_message",
+                  "args": null
                 }
               ]
             }
@@ -307,12 +321,11 @@ return {
           "concreteType": null,
           "plural": false,
           "selections": [
-            v0,
             {
               "kind": "InlineFragment",
               "type": "Artwork",
               "selections": [
-                v4,
+                (v4/*: any*/),
                 {
                   "kind": "FragmentSpread",
                   "name": "ArtworkPreview_artwork",
@@ -331,12 +344,11 @@ return {
           "concreteType": null,
           "plural": false,
           "selections": [
-            v0,
             {
               "kind": "InlineFragment",
               "type": "Show",
               "selections": [
-                v4,
+                (v4/*: any*/),
                 {
                   "kind": "FragmentSpread",
                   "name": "ShowPreview_show",
@@ -351,5 +363,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '943535ecfc6ac6a8a0561ac1e6bdf065';
+(node as any).hash = '84319c45becafc41c50bc51f3d909ca0';
 export default node;

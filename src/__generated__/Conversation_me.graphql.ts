@@ -1,13 +1,13 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { Messages_conversation$ref } from "./Messages_conversation.graphql";
 declare const _Conversation_me$ref: unique symbol;
 export type Conversation_me$ref = typeof _Conversation_me$ref;
 export type Conversation_me = {
-    readonly conversation: ({
-        readonly id: string | null;
-        readonly __id: string;
+    readonly conversation: {
+        readonly internalID: string | null;
+        readonly id: string;
         readonly to: {
             readonly name: string;
             readonly initials: string | null;
@@ -19,21 +19,13 @@ export type Conversation_me = {
         readonly initial_message: string;
         readonly unread: boolean | null;
         readonly " $fragmentRefs": Messages_conversation$ref;
-    }) | null;
+    } | null;
     readonly " $refType": Conversation_me$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
-var v0 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "kind": "Fragment",
   "name": "Conversation_me",
   "type": "Me",
@@ -55,8 +47,7 @@ return {
         {
           "kind": "Variable",
           "name": "id",
-          "variableName": "conversationID",
-          "type": "String!"
+          "variableName": "conversationID"
         }
       ],
       "concreteType": "Conversation",
@@ -65,11 +56,17 @@ return {
         {
           "kind": "ScalarField",
           "alias": null,
+          "name": "internalID",
+          "args": null,
+          "storageKey": null
+        },
+        {
+          "kind": "ScalarField",
+          "alias": null,
           "name": "id",
           "args": null,
           "storageKey": null
         },
-        v0,
         {
           "kind": "LinkedField",
           "alias": null,
@@ -121,11 +118,6 @@ return {
           "storageKey": null
         },
         {
-          "kind": "FragmentSpread",
-          "name": "Messages_conversation",
-          "args": null
-        },
-        {
           "kind": "ScalarField",
           "alias": null,
           "name": "initial_message",
@@ -138,12 +130,15 @@ return {
           "name": "unread",
           "args": null,
           "storageKey": null
+        },
+        {
+          "kind": "FragmentSpread",
+          "name": "Messages_conversation",
+          "args": null
         }
       ]
-    },
-    v0
+    }
   ]
 };
-})();
-(node as any).hash = 'af2ea77ea1be72f5d6d7072b5909b8ea';
+(node as any).hash = 'd0cd5c7682c62fffd430a7e1e2ffec3e';
 export default node;

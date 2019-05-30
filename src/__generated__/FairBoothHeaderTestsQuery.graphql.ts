@@ -4,9 +4,9 @@ import { ConcreteRequest } from "relay-runtime";
 import { FairBoothHeader_show$ref } from "./FairBoothHeader_show.graphql";
 export type FairBoothHeaderTestsQueryVariables = {};
 export type FairBoothHeaderTestsQueryResponse = {
-    readonly show: ({
+    readonly show: {
         readonly " $fragmentRefs": FairBoothHeader_show$ref;
-    }) | null;
+    } | null;
 };
 export type FairBoothHeaderTestsQuery = {
     readonly response: FairBoothHeaderTestsQueryResponse;
@@ -19,35 +19,35 @@ export type FairBoothHeaderTestsQuery = {
 query FairBoothHeaderTestsQuery {
   show(id: "anderson-fine-art-gallery-flickinger-collection") {
     ...FairBoothHeader_show
-    __id
+    id
   }
 }
 
 fragment FairBoothHeader_show on Show {
   fair {
     name
-    __id
+    id
   }
   partner {
     __typename
     ... on Partner {
       name
+      gravityID
+      internalID
       id
-      _id
-      __id
       href
       profile {
-        _id
-        id
+        internalID
+        gravityID
         is_followed
-        __id
+        id
       }
     }
     ... on Node {
-      __id
+      id
     }
     ... on ExternalPartner {
-      __id
+      id
     }
   }
   counts {
@@ -56,9 +56,8 @@ fragment FairBoothHeader_show on Show {
   }
   location {
     display
-    __id
+    id
   }
-  __id
 }
 */
 
@@ -67,45 +66,39 @@ var v0 = [
   {
     "kind": "Literal",
     "name": "id",
-    "value": "anderson-fine-art-gallery-flickinger-collection",
-    "type": "String!"
+    "value": "anderson-fine-art-gallery-flickinger-collection"
   }
 ],
 v1 = {
-  "kind": "ScalarField",
-  "alias": null,
-  "name": "__id",
-  "args": null,
-  "storageKey": null
-},
-v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "name",
   "args": null,
   "storageKey": null
 },
-v3 = {
+v2 = {
   "kind": "ScalarField",
   "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
 },
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "gravityID",
+  "args": null,
+  "storageKey": null
+},
 v4 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "_id",
+  "name": "internalID",
   "args": null,
   "storageKey": null
 };
 return {
   "kind": "Request",
-  "operationKind": "query",
-  "name": "FairBoothHeaderTestsQuery",
-  "id": "ae72185480770495b6fdacf6b37ebf13",
-  "text": null,
-  "metadata": {},
   "fragment": {
     "kind": "Fragment",
     "name": "FairBoothHeaderTestsQuery",
@@ -118,7 +111,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -126,8 +119,7 @@ return {
             "kind": "FragmentSpread",
             "name": "FairBoothHeader_show",
             "args": null
-          },
-          v1
+          }
         ]
       }
     ]
@@ -142,7 +134,7 @@ return {
         "alias": null,
         "name": "show",
         "storageKey": "show(id:\"anderson-fine-art-gallery-flickinger-collection\")",
-        "args": v0,
+        "args": (v0/*: any*/),
         "concreteType": "Show",
         "plural": false,
         "selections": [
@@ -155,8 +147,8 @@ return {
             "concreteType": "Fair",
             "plural": false,
             "selections": [
-              v2,
-              v1
+              (v1/*: any*/),
+              (v2/*: any*/)
             ]
           },
           {
@@ -175,14 +167,14 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v1,
+              (v2/*: any*/),
               {
                 "kind": "InlineFragment",
                 "type": "Partner",
                 "selections": [
-                  v2,
-                  v3,
-                  v4,
+                  (v1/*: any*/),
+                  (v3/*: any*/),
+                  (v4/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -199,8 +191,8 @@ return {
                     "concreteType": "Profile",
                     "plural": false,
                     "selections": [
-                      v4,
-                      v3,
+                      (v4/*: any*/),
+                      (v3/*: any*/),
                       {
                         "kind": "ScalarField",
                         "alias": null,
@@ -208,7 +200,7 @@ return {
                         "args": null,
                         "storageKey": null
                       },
-                      v1
+                      (v2/*: any*/)
                     ]
                   }
                 ]
@@ -256,13 +248,20 @@ return {
                 "args": null,
                 "storageKey": null
               },
-              v1
+              (v2/*: any*/)
             ]
           },
-          v1
+          (v2/*: any*/)
         ]
       }
     ]
+  },
+  "params": {
+    "operationKind": "query",
+    "name": "FairBoothHeaderTestsQuery",
+    "id": "075eef9b05a517134134c1782389911b",
+    "text": null,
+    "metadata": {}
   }
 };
 })();

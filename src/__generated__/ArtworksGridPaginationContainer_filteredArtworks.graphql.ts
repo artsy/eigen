@@ -1,38 +1,38 @@
 /* tslint:disable */
 
-import { ConcreteFragment } from "relay-runtime";
+import { ReaderFragment } from "relay-runtime";
 import { ArtworkGridItem_artwork$ref } from "./ArtworkGridItem_artwork.graphql";
 declare const _ArtworksGridPaginationContainer_filteredArtworks$ref: unique symbol;
 export type ArtworksGridPaginationContainer_filteredArtworks$ref = typeof _ArtworksGridPaginationContainer_filteredArtworks$ref;
 export type ArtworksGridPaginationContainer_filteredArtworks = {
-    readonly __id: string;
-    readonly artworks: ({
+    readonly id: string;
+    readonly artworks: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
             readonly startCursor: string | null;
             readonly endCursor: string | null;
         };
-        readonly edges: ReadonlyArray<({
-            readonly node: ({
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly gravityID: string;
                 readonly id: string;
-                readonly __id: string;
-                readonly image: ({
+                readonly image: {
                     readonly aspect_ratio: number;
-                }) | null;
+                } | null;
                 readonly " $fragmentRefs": ArtworkGridItem_artwork$ref;
-            }) | null;
-        }) | null> | null;
-    }) | null;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": ArtworksGridPaginationContainer_filteredArtworks$ref;
 };
 
 
 
-const node: ConcreteFragment = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "kind": "ScalarField",
   "alias": null,
-  "name": "__id",
+  "name": "id",
   "args": null,
   "storageKey": null
 };
@@ -67,7 +67,7 @@ return {
     }
   ],
   "selections": [
-    v0,
+    (v0/*: any*/),
     {
       "kind": "LinkedField",
       "alias": "artworks",
@@ -130,11 +130,11 @@ return {
                 {
                   "kind": "ScalarField",
                   "alias": null,
-                  "name": "id",
+                  "name": "gravityID",
                   "args": null,
                   "storageKey": null
                 },
-                v0,
+                (v0/*: any*/),
                 {
                   "kind": "LinkedField",
                   "alias": null,
@@ -154,16 +154,16 @@ return {
                   ]
                 },
                 {
-                  "kind": "FragmentSpread",
-                  "name": "ArtworkGridItem_artwork",
-                  "args": null
-                },
-                {
                   "kind": "ScalarField",
                   "alias": null,
                   "name": "__typename",
                   "args": null,
                   "storageKey": null
+                },
+                {
+                  "kind": "FragmentSpread",
+                  "name": "ArtworkGridItem_artwork",
+                  "args": null
                 }
               ]
             },
@@ -181,5 +181,5 @@ return {
   ]
 };
 })();
-(node as any).hash = '137d1c51580a790fc77ea298b8e62992';
+(node as any).hash = '9cd3d2abd2a116da00147685378bacb7';
 export default node;
