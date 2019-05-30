@@ -14,7 +14,6 @@ Array [
           "paddingRight": 8,
           "paddingTop": 64,
         },
-        undefined,
       ]
     }
   >
@@ -28,13 +27,12 @@ Array [
             "marginRight": 8,
             "marginTop": 8,
           },
-          undefined,
         ]
       }
     />
     <Text
       accessible={true}
-      className="sc-bdVaJa bDWFJH"
+      className="Typography-sc-1pie2ao-0 ehDCiu"
       fontFamily="Unica77LL-Medium"
       fontSize="14px"
       lineHeight="24px"
@@ -53,14 +51,13 @@ Array [
             "lineHeight": 24,
             "marginBottom": 0.5,
           },
-          undefined,
         ]
       }
     >
       Two Palms
     </Text>
     <Text
-      className="sc-bwzfXH uTxCW"
+      className="Typography-sc-1pie2ao-0 ehDCiu"
       fontFamily="AGaramondPro-Regular"
       fontSize="32px"
       lineHeight={34}
@@ -71,14 +68,13 @@ Array [
             "fontSize": 32,
             "lineHeight": 34,
           },
-          undefined,
         ]
       }
     >
       Flickinger Collection
     </Text>
     <Text
-      className="sc-bdVaJa bDWFJH"
+      className="Typography-sc-1pie2ao-0 ehDCiu"
       fontFamily="Unica77LL-Regular"
       fontSize="14px"
       lineHeight="24px"
@@ -89,7 +85,6 @@ Array [
             "fontSize": 14,
             "lineHeight": 24,
           },
-          undefined,
         ]
       }
     >
@@ -107,7 +102,6 @@ Array [
           "paddingRight": 8,
           "paddingTop": 8,
         },
-        undefined,
       ]
     }
   >
@@ -124,7 +118,6 @@ Array [
           "paddingLeft": 8,
           "paddingRight": 8,
         },
-        undefined,
       ]
     }
   >
@@ -138,12 +131,11 @@ Array [
             "flexDirection": "row",
             "flexWrap": "wrap",
           },
-          undefined,
         ]
       }
     >
       <Text
-        className="sc-bdVaJa bDWFJH"
+        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="Unica77LL-Regular"
         fontSize="14px"
         lineHeight="19"
@@ -154,7 +146,6 @@ Array [
               "fontSize": 14,
               "lineHeight": 19,
             },
-            undefined,
           ]
         }
       >
@@ -176,7 +167,7 @@ Array [
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
+          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="14px"
           lineHeight="19"
@@ -187,7 +178,6 @@ Array [
                 "fontSize": 14,
                 "lineHeight": 19,
               },
-              undefined,
             ]
           }
         >
@@ -210,7 +200,7 @@ Array [
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
+          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="14px"
           lineHeight="19"
@@ -221,7 +211,6 @@ Array [
                 "fontSize": 14,
                 "lineHeight": 19,
               },
-              undefined,
             ]
           }
         >
@@ -244,7 +233,7 @@ Array [
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
+          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="14px"
           lineHeight="19"
@@ -255,7 +244,6 @@ Array [
                 "fontSize": 14,
                 "lineHeight": 19,
               },
-              undefined,
             ]
           }
         >
@@ -263,7 +251,7 @@ Array [
         </Text>
       </View>
       <Text
-        className="sc-bdVaJa bDWFJH"
+        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="Unica77LL-Regular"
         fontSize="14px"
         lineHeight="19"
@@ -274,7 +262,6 @@ Array [
               "fontSize": 14,
               "lineHeight": 19,
             },
-            undefined,
           ]
         }
       >
@@ -296,7 +283,7 @@ Array [
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
+          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="14px"
           lineHeight="19"
@@ -307,7 +294,6 @@ Array [
                 "fontSize": 14,
                 "lineHeight": 19,
               },
-              undefined,
             ]
           }
         >
@@ -318,14 +304,10 @@ Array [
     <View
       style={
         Array [
-          Object {},
-          Array [
-            Object {
-              "height": 85,
-              "width": "100%",
-            },
-            undefined,
-          ],
+          Object {
+            "height": 85,
+            "width": "100%",
+          },
         ]
       }
     >
@@ -340,7 +322,6 @@ Array [
               "marginRight": 4,
               "marginTop": 4,
             },
-            undefined,
           ]
         }
       />
@@ -398,7 +379,6 @@ Array [
               "marginRight": 4,
               "marginTop": 4,
             },
-            undefined,
           ]
         }
       />

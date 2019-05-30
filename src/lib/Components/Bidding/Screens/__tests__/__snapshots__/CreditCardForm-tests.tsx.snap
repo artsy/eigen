@@ -68,13 +68,12 @@ exports[`renders properly 1`] = `
                 "marginRight": 0,
                 "marginTop": 0,
               },
-              undefined,
             ]
           }
         >
           <View>
             <Text
-              className="sc-bwzfXH uTxCW"
+              className="Typography-sc-1pie2ao-0 ehDCiu"
               fontFamily="AGaramondPro-Semibold"
               fontSize="22px"
               lineHeight="28px"
@@ -85,13 +84,12 @@ exports[`renders properly 1`] = `
                     "fontFamily": "AGaramondPro-Semibold",
                     "fontSize": 22,
                     "lineHeight": 28,
-                    "marginBottom": 20,
-                    "marginLeft": 20,
-                    "marginRight": 20,
-                    "marginTop": 20,
+                    "marginBottom": 32,
+                    "marginLeft": 32,
+                    "marginRight": 32,
+                    "marginTop": 32,
                     "textAlign": "center",
                   },
-                  undefined,
                 ]
               }
               textAlign="center"
@@ -103,12 +101,11 @@ exports[`renders properly 1`] = `
               style={
                 Array [
                   Object {
-                    "marginBottom": 20,
-                    "marginLeft": 20,
-                    "marginRight": 20,
-                    "marginTop": 20,
+                    "marginBottom": 32,
+                    "marginLeft": 32,
+                    "marginRight": 32,
+                    "marginTop": 32,
                   },
-                  undefined,
                 ]
               }
             >
@@ -124,12 +121,11 @@ exports[`renders properly 1`] = `
     style={
       Array [
         Object {
-          "marginBottom": 20,
-          "marginLeft": 20,
-          "marginRight": 20,
-          "marginTop": 20,
+          "marginBottom": 32,
+          "marginLeft": 32,
+          "marginRight": 32,
+          "marginTop": 32,
         },
-        undefined,
       ]
     }
   >
@@ -140,7 +136,6 @@ exports[`renders properly 1`] = `
           Object {
             "height": 50,
           },
-          undefined,
         ]
       }
     >

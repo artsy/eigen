@@ -31,7 +31,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
             "left": 1,
             "position": "absolute",
           },
-          undefined,
         ]
       }
     >
@@ -47,12 +46,11 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
               "paddingRight": 5,
               "paddingTop": 3,
             },
-            undefined,
           ]
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
+          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
           lineHeight={8}
@@ -84,12 +82,11 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
               "paddingRight": 5,
               "paddingTop": 3,
             },
-            undefined,
           ]
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
+          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
           lineHeight={8}
@@ -121,12 +118,11 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
           "flexDirection": "row",
           "marginBottom": 2,
         },
-        undefined,
       ]
     }
   >
     <Text
-      className="sc-bdVaJa bDWFJH"
+      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="#000"
       fontFamily="Unica77LL-Medium"
       fontSize="13px"
@@ -139,7 +135,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
             "fontSize": 13,
             "lineHeight": 18,
           },
-          undefined,
         ]
       }
     >
@@ -147,7 +142,7 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
        
     </Text>
     <Text
-      className="sc-bdVaJa bDWFJH"
+      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="#666"
       fontFamily="Unica77LL-Regular"
       fontSize="12px"
@@ -160,7 +155,6 @@ exports[`in a closed sale renders bid when an auction is about to open, but not 
             "fontSize": 12,
             "lineHeight": 16,
           },
-          undefined,
         ]
       }
     >
@@ -295,7 +289,6 @@ exports[`in a closed sale renders without any price information 1`] = `
             "left": 1,
             "position": "absolute",
           },
-          undefined,
         ]
       }
     >
@@ -311,12 +304,11 @@ exports[`in a closed sale renders without any price information 1`] = `
               "paddingRight": 5,
               "paddingTop": 3,
             },
-            undefined,
           ]
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
+          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
           lineHeight={8}
@@ -348,12 +340,11 @@ exports[`in a closed sale renders without any price information 1`] = `
               "paddingRight": 5,
               "paddingTop": 3,
             },
-            undefined,
           ]
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
+          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
           lineHeight={8}
@@ -385,12 +376,11 @@ exports[`in a closed sale renders without any price information 1`] = `
           "flexDirection": "row",
           "marginBottom": 2,
         },
-        undefined,
       ]
     }
   >
     <Text
-      className="sc-bdVaJa bDWFJH"
+      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="#000"
       fontFamily="Unica77LL-Medium"
       fontSize="13px"
@@ -403,7 +393,6 @@ exports[`in a closed sale renders without any price information 1`] = `
             "fontSize": 13,
             "lineHeight": 18,
           },
-          undefined,
         ]
       }
     >
@@ -411,7 +400,7 @@ exports[`in a closed sale renders without any price information 1`] = `
        
     </Text>
     <Text
-      className="sc-bdVaJa bDWFJH"
+      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="#666"
       fontFamily="Unica77LL-Regular"
       fontSize="12px"
@@ -424,7 +413,6 @@ exports[`in a closed sale renders without any price information 1`] = `
             "fontSize": 12,
             "lineHeight": 16,
           },
-          undefined,
         ]
       }
     >
@@ -559,7 +547,6 @@ exports[`in an open sale renders with current bid 1`] = `
             "left": 1,
             "position": "absolute",
           },
-          undefined,
         ]
       }
     >
@@ -575,12 +562,11 @@ exports[`in an open sale renders with current bid 1`] = `
               "paddingRight": 5,
               "paddingTop": 3,
             },
-            undefined,
           ]
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
+          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
           lineHeight={8}
@@ -612,12 +598,11 @@ exports[`in an open sale renders with current bid 1`] = `
               "paddingRight": 5,
               "paddingTop": 3,
             },
-            undefined,
           ]
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
+          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
           lineHeight={8}
@@ -649,12 +634,11 @@ exports[`in an open sale renders with current bid 1`] = `
           "flexDirection": "row",
           "marginBottom": 2,
         },
-        undefined,
       ]
     }
   >
     <Text
-      className="sc-bdVaJa bDWFJH"
+      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="#000"
       fontFamily="Unica77LL-Medium"
       fontSize="13px"
@@ -667,7 +651,6 @@ exports[`in an open sale renders with current bid 1`] = `
             "fontSize": 13,
             "lineHeight": 18,
           },
-          undefined,
         ]
       }
     >
@@ -675,7 +658,7 @@ exports[`in an open sale renders with current bid 1`] = `
        
     </Text>
     <Text
-      className="sc-bdVaJa bDWFJH"
+      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="#666"
       fontFamily="Unica77LL-Regular"
       fontSize="12px"
@@ -688,7 +671,6 @@ exports[`in an open sale renders with current bid 1`] = `
             "fontSize": 12,
             "lineHeight": 16,
           },
-          undefined,
         ]
       }
     >
@@ -823,7 +805,6 @@ exports[`in an open sale renders with starting bid 1`] = `
             "left": 1,
             "position": "absolute",
           },
-          undefined,
         ]
       }
     >
@@ -839,12 +820,11 @@ exports[`in an open sale renders with starting bid 1`] = `
               "paddingRight": 5,
               "paddingTop": 3,
             },
-            undefined,
           ]
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
+          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
           lineHeight={8}
@@ -876,12 +856,11 @@ exports[`in an open sale renders with starting bid 1`] = `
               "paddingRight": 5,
               "paddingTop": 3,
             },
-            undefined,
           ]
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
+          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
           lineHeight={8}
@@ -913,12 +892,11 @@ exports[`in an open sale renders with starting bid 1`] = `
           "flexDirection": "row",
           "marginBottom": 2,
         },
-        undefined,
       ]
     }
   >
     <Text
-      className="sc-bdVaJa bDWFJH"
+      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="#000"
       fontFamily="Unica77LL-Medium"
       fontSize="13px"
@@ -931,14 +909,13 @@ exports[`in an open sale renders with starting bid 1`] = `
             "fontSize": 13,
             "lineHeight": 18,
           },
-          undefined,
         ]
       }
     >
        
     </Text>
     <Text
-      className="sc-bdVaJa bDWFJH"
+      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="#666"
       fontFamily="Unica77LL-Regular"
       fontSize="12px"
@@ -951,7 +928,6 @@ exports[`in an open sale renders with starting bid 1`] = `
             "fontSize": 12,
             "lineHeight": 16,
           },
-          undefined,
         ]
       }
     >
@@ -1086,7 +1062,6 @@ exports[`renders properly 1`] = `
             "left": 1,
             "position": "absolute",
           },
-          undefined,
         ]
       }
     >
@@ -1102,12 +1077,11 @@ exports[`renders properly 1`] = `
               "paddingRight": 5,
               "paddingTop": 3,
             },
-            undefined,
           ]
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
+          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
           lineHeight={8}
@@ -1139,12 +1113,11 @@ exports[`renders properly 1`] = `
               "paddingRight": 5,
               "paddingTop": 3,
             },
-            undefined,
           ]
         }
       >
         <Text
-          className="sc-bdVaJa bDWFJH"
+          className="Typography-sc-1pie2ao-0 ehDCiu"
           fontFamily="Unica77LL-Medium"
           fontSize="8px"
           lineHeight={8}
@@ -1176,12 +1149,11 @@ exports[`renders properly 1`] = `
           "flexDirection": "row",
           "marginBottom": 2,
         },
-        undefined,
       ]
     }
   >
     <Text
-      className="sc-bdVaJa bDWFJH"
+      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="#000"
       fontFamily="Unica77LL-Medium"
       fontSize="13px"
@@ -1194,7 +1166,6 @@ exports[`renders properly 1`] = `
             "fontSize": 13,
             "lineHeight": 18,
           },
-          undefined,
         ]
       }
     >
@@ -1202,7 +1173,7 @@ exports[`renders properly 1`] = `
        
     </Text>
     <Text
-      className="sc-bdVaJa bDWFJH"
+      className="Typography-sc-1pie2ao-0 ehDCiu"
       color="#666"
       fontFamily="Unica77LL-Regular"
       fontSize="12px"
@@ -1215,7 +1186,6 @@ exports[`renders properly 1`] = `
             "fontSize": 12,
             "lineHeight": 16,
           },
-          undefined,
         ]
       }
     />

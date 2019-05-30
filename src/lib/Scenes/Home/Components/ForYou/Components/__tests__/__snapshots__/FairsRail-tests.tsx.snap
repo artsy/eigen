@@ -7,7 +7,6 @@ exports[`looks correct when rendered 1`] = `
       Object {
         "marginBottom": 15,
       },
-      undefined,
     ]
   }
 >
@@ -18,7 +17,6 @@ exports[`looks correct when rendered 1`] = `
         Object {
           "marginLeft": 20,
         },
-        undefined,
       ]
     }
   >
@@ -47,7 +45,6 @@ exports[`looks correct when rendered 1`] = `
           "marginTop": 10,
           "overflow": "visible",
         },
-        undefined,
       ]
     }
   >

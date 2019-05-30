@@ -554,7 +554,6 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
               "marginLeft": 20,
               "marginRight": 20,
             },
-            undefined,
           ]
         }
       >
@@ -565,7 +564,6 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
                 "maxWidth": 320,
                 "paddingBottom": 60,
               },
-              undefined,
             ]
           }
         >
@@ -579,7 +577,6 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
                   "marginRight": 10,
                   "textAlign": "center",
                 },
-                undefined,
               ]
             }
           >
@@ -595,7 +592,6 @@ exports[`without notifications lays out correctly on larger screens 1`] = `
                   "marginTop": 10,
                   "textAlign": "center",
                 },
-                undefined,
               ]
             }
           >
@@ -646,7 +642,6 @@ exports[`without notifications lays out correctly on small screens 1`] = `
               "marginLeft": 20,
               "marginRight": 20,
             },
-            undefined,
           ]
         }
       >
@@ -657,7 +652,6 @@ exports[`without notifications lays out correctly on small screens 1`] = `
                 "maxWidth": 320,
                 "paddingBottom": 60,
               },
-              undefined,
             ]
           }
         >
@@ -671,7 +665,6 @@ exports[`without notifications lays out correctly on small screens 1`] = `
                   "marginRight": 10,
                   "textAlign": "center",
                 },
-                undefined,
               ]
             }
           >
@@ -687,7 +680,6 @@ exports[`without notifications lays out correctly on small screens 1`] = `
                   "marginTop": 10,
                   "textAlign": "center",
                 },
-                undefined,
               ]
             }
           >

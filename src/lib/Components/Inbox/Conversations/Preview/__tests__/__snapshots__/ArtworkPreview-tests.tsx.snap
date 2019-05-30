@@ -36,7 +36,6 @@ exports[`handles dateless artworks 1`] = `
             "marginTop": 12,
             "width": 80,
           },
-          undefined,
         ]
       }
     />
@@ -44,17 +43,12 @@ exports[`handles dateless artworks 1`] = `
       style={
         Array [
           Object {
+            "alignSelf": "center",
             "flexBasis": 0,
             "flexDirection": "column",
             "flexGrow": 1,
             "flexShrink": 1,
           },
-          Array [
-            Object {
-              "alignSelf": "center",
-            },
-            undefined,
-          ],
         ]
       }
     >
@@ -72,7 +66,6 @@ exports[`handles dateless artworks 1`] = `
               Object {
                 "fontSize": 14,
               },
-              undefined,
             ],
             Object {
               "fontFamily": "AGaramondPro-Regular",
@@ -91,7 +84,6 @@ exports[`handles dateless artworks 1`] = `
               "marginRight": 12,
               "marginTop": 3,
             },
-            undefined,
           ]
         }
       >
@@ -118,7 +110,6 @@ exports[`handles dateless artworks 1`] = `
                 Object {
                   "fontFamily": "AGaramondPro-Regular",
                 },
-                undefined,
               ]
             }
           >
@@ -167,7 +158,6 @@ exports[`renders correctly 1`] = `
             "marginTop": 12,
             "width": 80,
           },
-          undefined,
         ]
       }
     />
@@ -175,17 +165,12 @@ exports[`renders correctly 1`] = `
       style={
         Array [
           Object {
+            "alignSelf": "center",
             "flexBasis": 0,
             "flexDirection": "column",
             "flexGrow": 1,
             "flexShrink": 1,
           },
-          Array [
-            Object {
-              "alignSelf": "center",
-            },
-            undefined,
-          ],
         ]
       }
     >
@@ -203,7 +188,6 @@ exports[`renders correctly 1`] = `
               Object {
                 "fontSize": 14,
               },
-              undefined,
             ],
             Object {
               "fontFamily": "AGaramondPro-Regular",
@@ -222,7 +206,6 @@ exports[`renders correctly 1`] = `
               "marginRight": 12,
               "marginTop": 3,
             },
-            undefined,
           ]
         }
       >
@@ -249,7 +232,6 @@ exports[`renders correctly 1`] = `
                 Object {
                   "fontFamily": "AGaramondPro-Regular",
                 },
-                undefined,
               ]
             }
           >

@@ -1,4 +1,4 @@
-import { Sans, Serif } from "@artsy/palette"
+import { Sans, Serif, Theme } from "@artsy/palette"
 import React from "react"
 import { TextInput, TouchableWithoutFeedback } from "react-native"
 import * as renderer from "react-test-renderer"
@@ -15,6 +15,7 @@ const selectCountry = (component, navigator, country) => {
   navigator.nextStep().root.instance.props.onCountrySelected(country)
 }
 
+// FIXME: Remove `.only`
 it("renders properly", () => {
   const component = renderer.create(<BillingAddress />).toJSON()
   expect(component).toMatchSnapshot()

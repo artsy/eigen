@@ -8,7 +8,6 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
       Object {
         "marginBottom": 4,
       },
-      undefined,
     ]
   }
 >
@@ -24,7 +23,6 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
           "flexWrap": "nowrap",
           "justifyContent": "space-between",
         },
-        undefined,
       ]
     }
   >
@@ -44,12 +42,11 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
             "display": "flex",
             "flexDirection": "row",
           },
-          undefined,
         ]
       }
     >
       <Text
-        className="sc-bdVaJa bDWFJH"
+        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="Unica77LL-Medium"
         fontSize="14px"
         lineHeight="20px"
@@ -60,7 +57,6 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
               "fontSize": 14,
               "lineHeight": 20,
             },
-            undefined,
           ]
         }
       >
@@ -277,12 +273,11 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
             "display": "flex",
             "flexDirection": "row",
           },
-          undefined,
         ]
       }
     >
       <Text
-        className="sc-bdVaJa bDWFJH"
+        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="Unica77LL-Medium"
         fontSize="14px"
         lineHeight="20px"
@@ -293,7 +288,6 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
               "fontSize": 14,
               "lineHeight": 20,
             },
-            undefined,
           ]
         }
       >
@@ -510,12 +504,11 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
             "display": "flex",
             "flexDirection": "row",
           },
-          undefined,
         ]
       }
     >
       <Text
-        className="sc-bdVaJa bDWFJH"
+        className="Typography-sc-1pie2ao-0 ehDCiu"
         fontFamily="Unica77LL-Medium"
         fontSize="14px"
         lineHeight="20px"
@@ -526,7 +519,6 @@ exports[`ArtistsExhibitorsWorksLink Renders correctly 1`] = `
               "fontSize": 14,
               "lineHeight": 20,
             },
-            undefined,
           ]
         }
       >

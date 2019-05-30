@@ -25,7 +25,6 @@ exports[`SearchLink Renders properly 1`] = `
         "paddingRight": 8,
         "paddingTop": 4,
       },
-      undefined,
     ]
   }
 >
@@ -41,7 +40,6 @@ exports[`SearchLink Renders properly 1`] = `
           "flexDirection": "row",
           "flexWrap": "nowrap",
         },
-        undefined,
       ]
     }
   >
@@ -188,12 +186,11 @@ exports[`SearchLink Renders properly 1`] = `
             "marginLeft": 4,
             "paddingTop": 0.3,
           },
-          undefined,
         ]
       }
     >
       <Text
-        className="sc-bwzfXH uTxCW"
+        className="Typography-sc-1pie2ao-0 ehDCiu"
         color="#666"
         fontFamily="AGaramondPro-Regular"
         fontSize="16px"
@@ -206,7 +203,6 @@ exports[`SearchLink Renders properly 1`] = `
               "fontSize": 16,
               "lineHeight": 24,
             },
-            undefined,
           ]
         }
       >

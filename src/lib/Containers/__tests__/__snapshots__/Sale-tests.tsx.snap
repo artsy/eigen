@@ -229,7 +229,7 @@ exports[`state looks okay by default 1`] = `
               }
             >
               <Text
-                className="sc-bdVaJa bDWFJH"
+                className="Typography-sc-1pie2ao-0 ehDCiu"
                 color="black"
                 fontFamily="Unica77LL-Medium"
                 fontSize="14px"
@@ -242,7 +242,6 @@ exports[`state looks okay by default 1`] = `
                       "fontSize": 14,
                       "lineHeight": 24,
                     },
-                    undefined,
                   ]
                 }
               >

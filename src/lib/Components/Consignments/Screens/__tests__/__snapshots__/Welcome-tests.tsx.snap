@@ -11,7 +11,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
         "flexGrow": 1,
         "flexShrink": 1,
       },
-      undefined,
     ]
   }
 >
@@ -24,7 +23,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
           "height": "100%",
           "width": "100%",
         },
-        undefined,
       ]
     }
   >
@@ -50,7 +48,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                 "flexGrow": 1,
                 "flexShrink": 1,
               },
-              undefined,
             ]
           }
         >
@@ -66,7 +63,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                   "marginTop": 0,
                   "width": 330,
                 },
-                undefined,
               ]
             }
           >
@@ -85,7 +81,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                     "marginBottom": 63,
                     "marginTop": 58,
                   },
-                  undefined,
                 ]
               }
             >
@@ -103,7 +98,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -120,7 +114,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -151,7 +144,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -174,7 +166,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -191,7 +182,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -222,7 +212,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -245,7 +234,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -262,7 +250,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -293,7 +280,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -316,7 +302,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -333,7 +318,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -364,7 +348,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -392,7 +375,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                     "marginBottom": 10,
                     "marginTop": 50,
                   },
-                  undefined,
                 ]
               }
             >
@@ -420,7 +402,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                 }
               >
                 <Text
-                  className="sc-bdVaJa bDWFJH"
+                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="black"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -433,7 +415,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
-                      undefined,
                     ]
                   }
                 >
@@ -464,7 +445,7 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                 }
               >
                 <Text
-                  className="sc-bdVaJa bDWFJH"
+                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="white"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -477,7 +458,6 @@ exports[`Sets up the right view hierarchy for iPad in landscape mode 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
-                      undefined,
                     ]
                   }
                 >
@@ -504,7 +484,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
         "flexGrow": 1,
         "flexShrink": 1,
       },
-      undefined,
     ]
   }
 >
@@ -517,7 +496,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
           "height": "100%",
           "width": "100%",
         },
-        undefined,
       ]
     }
   >
@@ -543,7 +521,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                 "flexGrow": 1,
                 "flexShrink": 1,
               },
-              undefined,
             ]
           }
         >
@@ -559,7 +536,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                   "marginTop": 0,
                   "width": 330,
                 },
-                undefined,
               ]
             }
           >
@@ -578,7 +554,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                     "marginBottom": 63,
                     "marginTop": 230,
                   },
-                  undefined,
                 ]
               }
             >
@@ -596,7 +571,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -613,7 +587,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -644,7 +617,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -667,7 +639,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -684,7 +655,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -715,7 +685,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -738,7 +707,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -755,7 +723,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -786,7 +753,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -809,7 +775,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -826,7 +791,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -857,7 +821,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -885,7 +848,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                     "marginBottom": 10,
                     "marginTop": 50,
                   },
-                  undefined,
                 ]
               }
             >
@@ -913,7 +875,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                 }
               >
                 <Text
-                  className="sc-bdVaJa bDWFJH"
+                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="black"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -926,7 +888,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
-                      undefined,
                     ]
                   }
                 >
@@ -957,7 +918,7 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                 }
               >
                 <Text
-                  className="sc-bdVaJa bDWFJH"
+                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="white"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -970,7 +931,6 @@ exports[`Sets up the right view hierarchy for iPad in portrait mode 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
-                      undefined,
                     ]
                   }
                 >
@@ -997,7 +957,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
         "flexGrow": 1,
         "flexShrink": 1,
       },
-      undefined,
     ]
   }
 >
@@ -1010,7 +969,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
           "height": "100%",
           "width": "100%",
         },
-        undefined,
       ]
     }
   >
@@ -1036,7 +994,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                 "flexGrow": 1,
                 "flexShrink": 1,
               },
-              undefined,
             ]
           }
         >
@@ -1052,7 +1009,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                   "marginTop": 0,
                   "width": 280,
                 },
-                undefined,
               ]
             }
           >
@@ -1071,7 +1027,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                     "marginBottom": 63,
                     "marginTop": 58,
                   },
-                  undefined,
                 ]
               }
             >
@@ -1089,7 +1044,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -1106,7 +1060,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -1137,7 +1090,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -1160,7 +1112,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -1177,7 +1128,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -1208,7 +1158,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -1231,7 +1180,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -1248,7 +1196,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -1279,7 +1226,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -1302,7 +1248,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -1319,7 +1264,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -1350,7 +1294,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -1378,7 +1321,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                     "marginBottom": 10,
                     "marginTop": 8,
                   },
-                  undefined,
                 ]
               }
             >
@@ -1406,7 +1348,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                 }
               >
                 <Text
-                  className="sc-bdVaJa bDWFJH"
+                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="black"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -1419,7 +1361,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
-                      undefined,
                     ]
                   }
                 >
@@ -1450,7 +1391,7 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                 }
               >
                 <Text
-                  className="sc-bdVaJa bDWFJH"
+                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="white"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -1463,7 +1404,6 @@ exports[`Sets up the right view hierarchy for iPhone 4 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
-                      undefined,
                     ]
                   }
                 >
@@ -1490,7 +1430,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
         "flexGrow": 1,
         "flexShrink": 1,
       },
-      undefined,
     ]
   }
 >
@@ -1503,7 +1442,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
           "height": "100%",
           "width": "100%",
         },
-        undefined,
       ]
     }
   >
@@ -1529,7 +1467,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                 "flexGrow": 1,
                 "flexShrink": 1,
               },
-              undefined,
             ]
           }
         >
@@ -1545,7 +1482,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                   "marginTop": 0,
                   "width": 280,
                 },
-                undefined,
               ]
             }
           >
@@ -1564,7 +1500,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                     "marginBottom": 63,
                     "marginTop": 58,
                   },
-                  undefined,
                 ]
               }
             >
@@ -1582,7 +1517,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -1599,7 +1533,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -1630,7 +1563,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -1653,7 +1585,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -1670,7 +1601,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -1701,7 +1631,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -1724,7 +1653,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -1741,7 +1669,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -1772,7 +1699,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -1795,7 +1721,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -1812,7 +1737,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -1843,7 +1767,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -1871,7 +1794,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                     "marginBottom": 10,
                     "marginTop": 8,
                   },
-                  undefined,
                 ]
               }
             >
@@ -1899,7 +1821,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                 }
               >
                 <Text
-                  className="sc-bdVaJa bDWFJH"
+                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="black"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -1912,7 +1834,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
-                      undefined,
                     ]
                   }
                 >
@@ -1943,7 +1864,7 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                 }
               >
                 <Text
-                  className="sc-bdVaJa bDWFJH"
+                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="white"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -1956,7 +1877,6 @@ exports[`Sets up the right view hierarchy for iPhone 5 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
-                      undefined,
                     ]
                   }
                 >
@@ -1983,7 +1903,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
         "flexGrow": 1,
         "flexShrink": 1,
       },
-      undefined,
     ]
   }
 >
@@ -1996,7 +1915,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
           "height": "100%",
           "width": "100%",
         },
-        undefined,
       ]
     }
   >
@@ -2022,7 +1940,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                 "flexGrow": 1,
                 "flexShrink": 1,
               },
-              undefined,
             ]
           }
         >
@@ -2038,7 +1955,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                   "marginTop": 0,
                   "width": 330,
                 },
-                undefined,
               ]
             }
           >
@@ -2057,7 +1973,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                     "marginBottom": 63,
                     "marginTop": 58,
                   },
-                  undefined,
                 ]
               }
             >
@@ -2075,7 +1990,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -2092,7 +2006,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -2123,7 +2036,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -2146,7 +2058,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -2163,7 +2074,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -2194,7 +2104,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -2217,7 +2126,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -2234,7 +2142,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -2265,7 +2172,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -2288,7 +2194,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                     "marginLeft": 0,
                     "marginTop": 0,
                   },
-                  undefined,
                 ]
               }
             >
@@ -2305,7 +2210,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                       "resizeMode": "contain",
                       "width": 40,
                     },
-                    undefined,
                   ]
                 }
               />
@@ -2336,7 +2240,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                         "paddingTop": 0,
                         "textAlign": "left",
                       },
-                      undefined,
                     ],
                     Object {
                       "fontFamily": "AGaramondPro-Regular",
@@ -2364,7 +2267,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                     "marginBottom": 10,
                     "marginTop": 8,
                   },
-                  undefined,
                 ]
               }
             >
@@ -2392,7 +2294,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                 }
               >
                 <Text
-                  className="sc-bdVaJa bDWFJH"
+                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="black"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -2405,7 +2307,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
-                      undefined,
                     ]
                   }
                 >
@@ -2436,7 +2337,7 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                 }
               >
                 <Text
-                  className="sc-bdVaJa bDWFJH"
+                  className="Typography-sc-1pie2ao-0 ehDCiu"
                   color="white"
                   fontFamily="Unica77LL-Medium"
                   fontSize="14px"
@@ -2449,7 +2350,6 @@ exports[`Sets up the right view hierarchy for iPhone 6 1`] = `
                         "fontSize": 14,
                         "lineHeight": 24,
                       },
-                      undefined,
                     ]
                   }
                 >

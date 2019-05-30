@@ -7,7 +7,6 @@ exports[`renders properly 1`] = `
       Object {
         "width": "100%",
       },
-      undefined,
     ]
   }
 >

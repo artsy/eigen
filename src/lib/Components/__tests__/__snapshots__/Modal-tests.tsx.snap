@@ -33,7 +33,6 @@ exports[`looks like expected 1`] = `
             "flexShrink": 1,
             "justifyContent": "center",
           },
-          undefined,
         ]
       }
     >
@@ -57,7 +56,6 @@ exports[`looks like expected 1`] = `
               "paddingTop": 20,
               "width": 300,
             },
-            undefined,
           ]
         }
       >
@@ -69,7 +67,7 @@ exports[`looks like expected 1`] = `
           }
         >
           <Text
-            className="sc-bdVaJa bDWFJH"
+            className="Typography-sc-1pie2ao-0 ehDCiu"
             fontFamily="Unica77LL-Medium"
             fontSize="14px"
             lineHeight="24px"
@@ -80,7 +78,6 @@ exports[`looks like expected 1`] = `
                   "fontSize": 14,
                   "lineHeight": 24,
                 },
-                undefined,
               ]
             }
           >
@@ -95,7 +92,7 @@ exports[`looks like expected 1`] = `
           }
         >
           <Text
-            className="sc-bdVaJa bDWFJH"
+            className="Typography-sc-1pie2ao-0 ehDCiu"
             color="#666"
             fontFamily="Unica77LL-Regular"
             fontSize="14px"
@@ -108,7 +105,6 @@ exports[`looks like expected 1`] = `
                   "fontSize": 14,
                   "lineHeight": 24,
                 },
-                undefined,
               ]
             }
           >
@@ -137,7 +133,7 @@ exports[`looks like expected 1`] = `
           }
         >
           <Text
-            className="sc-bdVaJa bDWFJH"
+            className="Typography-sc-1pie2ao-0 ehDCiu"
             color="black"
             fontFamily="Unica77LL-Medium"
             fontSize="14px"
@@ -150,7 +146,6 @@ exports[`looks like expected 1`] = `
                   "fontSize": 14,
                   "lineHeight": 24,
                 },
-                undefined,
               ]
             }
           >
