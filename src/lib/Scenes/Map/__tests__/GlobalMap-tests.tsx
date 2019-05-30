@@ -13,7 +13,7 @@ jest.mock("@mapbox/react-native-mapbox-gl", () => ({
   InterpolationMode: {
     Exponential: jest.fn(),
   },
-  MapView: jest.fn(),
+  MapView: () => null,
   setAccessToken: jest.fn(),
   UserTrackingModes: jest.fn(),
 }))
