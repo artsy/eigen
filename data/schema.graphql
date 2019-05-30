@@ -3968,15 +3968,9 @@ type ConfirmPickupPayload {
 }
 
 # A work to be consigned to the user
-type ConsignmentSubmission implements Node {
-  # A globally unique ID.
-  id: ID!
-
-  # A type-specific ID.
-  gravityID: ID!
-
-  # A type-specific Gravity Mongo Document ID.
-  internalID: ID!
+type ConsignmentSubmission {
+  # An optional type-specific ID.
+  internalID: ID
 
   # The gravity ID for an Artist
   artist_id: String!

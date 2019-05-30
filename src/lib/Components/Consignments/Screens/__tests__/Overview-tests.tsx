@@ -80,8 +80,8 @@ describe("Updating State", () => {
   })
 
   it("updates Artist", () => {
-    overview.updateArtist({ id: "banksy", name: "Banksy" })
-    expect(stateMock).toBeCalledWith({ artist: { id: "banksy", name: "Banksy" } }, update)
+    overview.updateArtist({ internalID: "banksy", name: "Banksy" })
+    expect(stateMock).toBeCalledWith({ artist: { internalID: "banksy", name: "Banksy" } }, update)
   })
 
   it("updates work metadata", () => {

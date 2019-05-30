@@ -13,7 +13,7 @@ const updateASubmission = async (submission: ConsignmentSetup, _gravityID: strin
   const query = `mutation {
     updateConsignmentSubmission(input:${input}) {
       consignment_submission {
-        id
+        internalID
       }
     }
   }`

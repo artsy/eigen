@@ -117,7 +117,7 @@ export default class Overview extends React.Component<Props, State> {
       updateSubmission(this.state, this.state.submission_id)
     } else if (this.state.artist) {
       const submission = await createSubmission(this.state)
-      this.setState({ submission_id: submission.id }, () => {
+      this.setState({ submission_id: submission.internalID }, () => {
         this.submissionDraftCreated()
       })
     }

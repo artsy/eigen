@@ -46,7 +46,7 @@ export default class Location extends React.Component<Props, State> {
     const apiKey = Emission.googleMapsAPIKey || "AIzaSyBJRIy_zCXQ7XYt9Ubn8bpUIEAxEOKUmx8"
     const queryString = stringify({
       key: apiKey,
-      placeid: result.id,
+      placeid: result.internalID,
     })
 
     const response = await fetch("https://maps.googleapis.com/maps/api/place/details/json?" + queryString)
