@@ -50,8 +50,8 @@ const UtilButton = styled(Flex)`
 export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkActions, {
   artwork: graphql`
     fragment ArtworkActions_artwork on Artwork {
-      __id
-      _id
+      id
+      internalID
       is_saved
     }
   `,

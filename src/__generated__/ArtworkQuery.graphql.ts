@@ -32,11 +32,44 @@ fragment Artwork_artwork on Artwork {
   ...ArtworkActions_artwork
   ...ArtworkAvailability_artwork
   ...SellerInfo_artwork
-  __id
 }
 
 fragment ArtworkTombstone_artwork on Artwork {
   title
+  medium
+  date
+  cultural_maker
+  artists {
+    name
+    href
+    id
+  }
+  dimensions {
+    in
+    cm
+  }
+  edition_of
+  attribution_class {
+    short_description
+    id
+  }
+}
+
+fragment ArtworkActions_artwork on Artwork {
+  id
+  internalID
+  is_saved
+}
+
+fragment ArtworkAvailability_artwork on Artwork {
+  availability
+}
+
+fragment SellerInfo_artwork on Artwork {
+  partner {
+    name
+    id
+  }
 }
 */
 
@@ -55,7 +88,21 @@ v1 = [
     "name": "id",
     "variableName": "artworkID"
   }
-];
+],
+v2 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "name",
+  "args": null,
+  "storageKey": null
+},
+v3 = {
+  "kind": "ScalarField",
+  "alias": null,
+  "name": "id",
+  "args": null,
+  "storageKey": null
+};
 return {
   "kind": "Request",
   "fragment": {
@@ -100,13 +147,6 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "edition_of",
-            "args": null,
-            "storageKey": null
-          },
-          {
-            "kind": "ScalarField",
-            "alias": null,
             "name": "title",
             "args": null,
             "storageKey": null
@@ -114,9 +154,129 @@ return {
           {
             "kind": "ScalarField",
             "alias": null,
-            "name": "id",
+            "name": "medium",
             "args": null,
             "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "date",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "cultural_maker",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "artists",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Artist",
+            "plural": true,
+            "selections": [
+              (v2/*: any*/),
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "href",
+                "args": null,
+                "storageKey": null
+              },
+              (v3/*: any*/)
+            ]
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "dimensions",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "dimensions",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "in",
+                "args": null,
+                "storageKey": null
+              },
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "cm",
+                "args": null,
+                "storageKey": null
+              }
+            ]
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "edition_of",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "attribution_class",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "AttributionClass",
+            "plural": false,
+            "selections": [
+              {
+                "kind": "ScalarField",
+                "alias": null,
+                "name": "short_description",
+                "args": null,
+                "storageKey": null
+              },
+              (v3/*: any*/)
+            ]
+          },
+          (v3/*: any*/),
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "internalID",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "is_saved",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "name": "availability",
+            "args": null,
+            "storageKey": null
+          },
+          {
+            "kind": "LinkedField",
+            "alias": null,
+            "name": "partner",
+            "storageKey": null,
+            "args": null,
+            "concreteType": "Partner",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/)
+            ]
           }
         ]
       }
@@ -125,7 +285,7 @@ return {
   "params": {
     "operationKind": "query",
     "name": "ArtworkQuery",
-    "id": "fd45b642dd3e45958c3348c645d87296",
+    "id": "6eb32fbe8e061b64f42935fb575fb03b",
     "text": null,
     "metadata": {}
   }
